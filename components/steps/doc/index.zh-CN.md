@@ -27,7 +27,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 </nz-steps>
 ```
 
-### nz-steps:standalone
+### nz-steps
 
 整体步骤条。
 
@@ -43,7 +43,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 | `[nzStartIndex]`     | 指定起始位置的序号                                                                   | `number`                                                                                  | `0`          |
 | `(nzIndexChange)`    | 点击单个步骤时触发的事件                                                             | `number`                                                                                  | -            |
 
-### nz-step:standalone
+### nz-step
 
 步骤条内的每一个步骤。
 

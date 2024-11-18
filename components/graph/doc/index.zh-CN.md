@@ -38,7 +38,7 @@ import { NzGraphModule } from 'ng-zorro-antd/graph';
 npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
-### nz-graph:standalone
+### nz-graph
 
 | 参数                    | 说明                                 | 类型                                 | 默认值  |
 | ----------------------- | ------------------------------------ | ------------------------------------ | ------- |
@@ -53,7 +53,7 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 | ------------- | ---------------------------------------------------------- |
 | `fitCenter()` | 居中图并自适应缩放（如使用缩放功能请使用 `nz-graph-zoom`） |
 
-### [nz-graph-zoom]:standalone
+### [nz-graph-zoom]
 
 | 参数                 | 说明               | 类型                                         | 默认值 |
 | -------------------- | ------------------ | -------------------------------------------- | ------ |

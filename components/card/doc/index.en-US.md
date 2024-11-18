@@ -22,7 +22,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 <nz-card nzTitle="card title">card content</nz-card>
 ```
 
-### nz-card:standalone
+### nz-card
 
 | Property        | Description                                                                | Type                        | Default     | Global Config |
 | --------------- | -------------------------------------------------------------------------- | --------------------------- | ----------- | ------------- |
@@ -37,7 +37,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 | `[nzType]`      | Card style type, can be set to `inner` or not set                          | `'inner'`                   | -           |
 | `[nzSize]`      | Size of card                                                               | `'default'\|'small'`        | `'default'` | ✅             |
 
-### nz-card-meta:standalone
+### nz-card-meta
 
 | Property          | Description         | Type                        | Default |
 | ----------------- | ------------------- | --------------------------- | ------- |
@@ -45,7 +45,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 | `[nzDescription]` | description content | `string\|TemplateRef<void>` | -       |
 | `[nzTitle]`       | title content       | `string\|TemplateRef<void>` | -       |
 
-### [nz-card-grid]:standalone
+### [nz-card-grid]
 
 | Property        | Description                | Type      | Default | Global Config |
 | --------------- | -------------------------- | --------- | ------- | ------------- |
@@ -53,6 +53,6 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 
 Area for grid style card
 
-### nz-card-tab:standalone
+### nz-card-tab
 
 Area for tab card

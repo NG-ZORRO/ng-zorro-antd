@@ -30,7 +30,7 @@ import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
 npm install cron-parser
 ```
 
-### nz-cron-expression:standalone
+### nz-cron-expression
 
 | 参数                  | 说明                   | 类型                          | 默认值    |
 | --------------------- | ---------------------- | ----------------------------- | --------- |

@@ -23,10 +23,10 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 ## API
 
-### nz-drawer:standalone
+### nz-drawer
 
 | Props                   | Description                                                                                                                                                                                 | Type                                     | Default     | Global Config |
-|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|-------------|---------------|
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------- | ------------- |
 | `[nzClosable]`          | Whether a close (x) button is visible on top left of the Drawer dialog or not.                                                                                                              | `boolean`                                | `true`      |
 | `[nzCloseIcon]`         | Custom close icon                                                                                                                                                                           | `string \| TemplateRef<void> \| null`    | `'close'`   |
 | `[nzExtra]`             | Extra actions area at corner.                                                                                                                                                               | `string \| TemplateRef<void> \| null`    | -           |
@@ -43,8 +43,8 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzSize]`              | Preset size of drawer, default `378px` and large `736px`.                                                                                                                                   | `'default' \| 'large'`                   | `'default'` |
 | `[nzWidth]`             | Width of the Drawer dialog, only when placement is `'right'` or `'left'`, having a higher priority than `nzSize`.                                                                           | `number \| string`                       | -           |
 | `[nzHeight]`            | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`, having a higher priority than `nzSize`.                                                                          | `number \| string`                       | -           |
-| `[nzOffsetX]`           | The X coordinate offset(px), only when placement is `'right'` or `'left'`.                                                                                                              | `number`                                 | `0`         |
-| `[nzOffsetY]`           | The Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.                                                                                                              | `number`                                 | `0`         |
+| `[nzOffsetX]`           | The X coordinate offset(px), only when placement is `'right'` or `'left'`.                                                                                                                  | `number`                                 | `0`         |
+| `[nzOffsetY]`           | The Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.                                                                                                                  | `number`                                 | `0`         |
 | `[nzWrapClassName]`     | The class name of the container of the Drawer dialog.                                                                                                                                       | `string`                                 | -           |
 | `[nzZIndex]`            | The `z-index` of the Drawer.                                                                                                                                                                | `number`                                 | `1000`      |
 | `(nzOnClose)`           | Specify a callback that will be called when a user clicks mask, close button or Cancel button.                                                                                              | `EventEmitter<MouseEvent>`               | -           |
@@ -52,13 +52,13 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 ### NzDrawerService
 
 | Method          | Description               | Params                  | Return              |
-|-----------------|---------------------------|-------------------------|---------------------|
+| --------------- | ------------------------- | ----------------------- | ------------------- |
 | create<T, D, R> | create and open an Drawer | `NzDrawerOptions<T, D>` | `NzDrawerRef<T, R>` |
 
 ### NzDrawerOptions
 
 | Params              | Description                                                                                                                                                                                                    | Type                                                               | Default     | Global Config |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|-------------|---------------|
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------- | ------------- |
 | nzContent           | The drawer body content.                                                                                                                                                                                       | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \| Type<T>` | -           |
 | nzContentParams     | Deprecated: Use NzData instead. The component inputs the param / The Template context                                                                                                                          | `D`                                                                | -           |
 | nzData              | Will be a template variable when nzContent is TemplateRef. <br /> object, will be the value of the injection token NZ_MODAL_DATA when nzContent is a component                                                 | `D`                                                                | -           |
@@ -81,8 +81,8 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzWrapClassName     | The class name of the container of the Drawer dialog.                                                                                                                                                          | `string`                                                           | -           |
 | nzZIndex            | The `z-index` of the Drawer.                                                                                                                                                                                   | `number`                                                           | `1000`      |
 | nzPlacement         | The placement of the Drawer.                                                                                                                                                                                   | `'top' \| 'right' \| 'bottom' \| 'left'`                           | `'right'`   |
-| nzOffsetX           | The X coordinate offset(px).                                                                                                                                                                               | `number`                                                           | `0`         |
-| nzOffsetY           | The Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.                                                                                                                                 | `number`                                                           | `0`         |
+| nzOffsetX           | The X coordinate offset(px).                                                                                                                                                                                   | `number`                                                           | `0`         |
+| nzOffsetY           | The Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.                                                                                                                                     | `number`                                                           | `0`         |
 
 ### NZ_DRAWER_DATA
 
@@ -95,7 +95,7 @@ parameters that have used to the 'nzContent component'
 #### Methods
 
 | Name                   | Description                                                               | Type                            |
-|------------------------|---------------------------------------------------------------------------|---------------------------------|
+| ---------------------- | ------------------------------------------------------------------------- | ------------------------------- |
 | close                  | close the drawer.                                                         | `(result?: R) => void`          |
 | open                   | open the drawer.                                                          | `() => void`                    |
 | getContentComponent    | Returns the instance when `nzContent` is the component.                   | `() => T \| null`               |
@@ -104,7 +104,7 @@ parameters that have used to the 'nzContent component'
 #### Property
 
 | Name            | Description                                                                     | Type                                     |
-|-----------------|---------------------------------------------------------------------------------|------------------------------------------|
+| --------------- | ------------------------------------------------------------------------------- | ---------------------------------------- |
 | afterOpen       | Callback called after open.                                                     | `Observable<void>`                       |
 | afterClose      | Callback called after close.                                                    | `Observable<R>`                          |
 | nzCloseIcon     | Custom close icon                                                               | `string \| TemplateRef<void> \| null`    |
@@ -121,5 +121,5 @@ parameters that have used to the 'nzContent component'
 | nzWrapClassName | The class name of the container of the Drawer dialog.                           | `string`                                 |
 | nzZIndex        | The `z-index` of the Drawer.                                                    | `number`                                 |
 | nzPlacement     | The placement of the Drawer.                                                    | `'top' \| 'right' \| 'bottom' \| 'left'` |
-| nzOffsetX       | The X coordinate offset(px).                                                | `number`                                 |
-| nzOffsetY       | The Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.  | `number`                                 |
+| nzOffsetX       | The X coordinate offset(px).                                                    | `number`                                 |
+| nzOffsetY       | The Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.      | `number`                                 |

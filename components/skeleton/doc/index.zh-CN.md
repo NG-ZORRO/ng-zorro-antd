@@ -22,7 +22,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 ## API
 
-### nz-skeleton:standalone
+### nz-skeleton
 
 | 属性            | 说明                                           | 类型                             | 默认值  |
 | --------------- | ---------------------------------------------- | -------------------------------- | ------- |
@@ -53,15 +53,15 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 | `rows`  | 设置段落占位图的行数                                                       | `number`                                      | -      |
 | `width` | 设置标题占位图的宽度，若为数组时则为对应的每行宽度，反之则是最后一行的宽度 | `number \| string \| Array<number \| string>` | -      |
 
-### nz-skeleton-element [nzType="button"]:standalone
+### nz-skeleton-element [nzType="button"]
 
-| 属性         | 说明             | 类型                               | 默认值      |
-| ------------ | ---------------- | ---------------------------------- | ----------- |
-| `[nzActive]` | 是否展示动画效果 | `boolean`                          | `false`     |
-| `[nzSize]`   | 大小             | `'large' \| 'small' \| 'default'`  | `'default'` |
+| 属性         | 说明             | 类型                                           | 默认值      |
+| ------------ | ---------------- | ---------------------------------------------- | ----------- |
+| `[nzActive]` | 是否展示动画效果 | `boolean`                                      | `false`     |
+| `[nzSize]`   | 大小             | `'large' \| 'small' \| 'default'`              | `'default'` |
 | `[nzShape]`  | 形状             | `'square' \| 'circle' \| 'round' \| 'default'` | `'default'` |
 
-### nz-skeleton-element [nzType="avatar"]:standalone
+### nz-skeleton-element [nzType="avatar"]
 
 | 属性         | 说明             | 类型                                        | 默认值      |
 | ------------ | ---------------- | ------------------------------------------- | ----------- |
@@ -69,14 +69,14 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 | `[nzSize]`   | 大小             | `number \| 'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzShape]`  | 形状             | `'circle' \| 'square'`                      | `'square'`  |
 
-### nz-skeleton-element [nzType="input"]:standalone
+### nz-skeleton-element [nzType="input"]
 
 | 属性         | 说明             | 类型                              | 默认值      |
 | ------------ | ---------------- | --------------------------------- | ----------- |
 | `[nzActive]` | 是否展示动画效果 | `boolean`                         | `false`     |
 | `[nzSize]`   | 大小             | `'large' \| 'small' \| 'default'` | `'default'` |
 
-### nz-skeleton-element [nzType="image"]:standalone
+### nz-skeleton-element [nzType="image"]
 
 | 属性         | 说明             | 类型      | 默认值  |
 | ------------ | ---------------- | --------- | ------- |

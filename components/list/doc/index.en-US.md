@@ -18,7 +18,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 ## API
 
-### nz-list:standalone
+### nz-list
 
 | Property         | Description                                                                                                           | Type                              | Default        |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------- | -------------- |
@@ -30,7 +30,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 | `[nzSize]`       | Size of list                                                                                                          | `'large' \| 'small' \| 'default'` | `'default'`    |
 | `[nzSplit]`      | Toggles rendering of the split under the list item                                                                    | `boolean`                         | `true`         |
 
-### nz-list-empty:standalone
+### nz-list-empty
 
 Empty content component for the list.
 
@@ -38,29 +38,29 @@ Empty content component for the list.
 | -------------- | ------------- | ----------------------------- | ------- |
 | `[nzNoResult]` | Empty content | `string \| TemplateRef<void>` | -       |
 
-### nz-list[nzGrid]:standalone
+### nz-list[nzGrid]
 
 Use grid layout for the list.
 
-### nz-list-header:standalone
+### nz-list-header
 
 Header component for the list.
 
-### nz-list-footer:standalone
+### nz-list-footer
 
 Footer component for the list.
 
-### nz-list-pagination:standalone
+### nz-list-pagination
 
 Pagination component for the list.
 
-### nz-list-load-more:standalone
+### nz-list-load-more
 
 Load more component for the list.
 
 ---
 
-### nz-list-item:standalone
+### nz-list-item
 
 | Property     | Description                              | Type      | Default |
 | ------------ | ---------------------------------------- | --------- | ------- |
@@ -80,7 +80,7 @@ Extra content for the list items.
 
 ---
 
-### nz-list-item-meta:standalone
+### nz-list-item-meta
 
 | Property          | Description                  | Type                          | Default |
 | ----------------- | ---------------------------- | ----------------------------- | ------- |

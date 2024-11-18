@@ -22,7 +22,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 ## API
 
-### nz-tabset:standalone
+### nz-tabset
 
 | Property                     | Description                                                                               | Type                                                | Default                            | Global Config |
 | ---------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------- | ------------- |
@@ -43,7 +43,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzSelectedIndexChange)`    | Current tab's index change callback                                                       | `EventEmitter<number>`                              | -                                  |
 | `(nzSelectChange)`           | Current tab's change callback                                                             | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                  |
 
-### nz-tabset[nzType="editable-card"]:standalone
+### nz-tabset[nzType="editable-card"]
 
 | Property      | Description                    | Type                              | Default | Global Config |
 | ------------- | ------------------------------ | --------------------------------- | ------- | ------------- |
@@ -52,7 +52,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzAdd)`     | When add button clicked emit   | `EventEmitter<>`                  | -       |
 | `(nzClose)`   | When close button clicked emit | `EventEmitter<{ index: number }>` | -       |
 
-### nz-tab:standalone
+### nz-tab
 
 | Property          | Description                                                              | Type                          | Default |
 | ----------------- | ------------------------------------------------------------------------ | ----------------------------- | ------- |
@@ -64,7 +64,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzSelect)`      | title select callback                                                    | `EventEmitter<void>`          | -       |
 | `(nzDeselect)`    | title deselect callback                                                  | `EventEmitter<void>`          | -       |
 
-### nz-tabset[nzType="editable-card"] > nz-tab:standalone
+### nz-tabset[nzType="editable-card"] > nz-tab
 
 | Property        | Description            | Type                          | Default | Global Config |
 | --------------- | ---------------------- | ----------------------------- | ------- | ------------- |

@@ -23,7 +23,7 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 </nz-mention>
 ```
 
-### nz-mention:standalone
+### nz-mention
 
 | Property                | Description                                                                               | Type                                           | Default                          |
 | ----------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------- | -------------------------------- |

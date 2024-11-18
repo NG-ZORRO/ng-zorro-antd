@@ -16,7 +16,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 ## API
 
-### nz-segmented:standalone
+### nz-segmented
 
 | Property          | Description                                               | Type                                                                                                          | Default | Global Config |
 | ----------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------- | ------------- |
@@ -28,7 +28,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 | `(nzValueChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -       |               |
 | `(ngModelChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -       |               |
 
-### label[nz-segmented-item]:standalone
+### label[nz-segmented-item]
 
 | Property       | Description                | Type               | Default | Global Config |
 | -------------- | -------------------------- | ------------------ | ------- | ------------- |

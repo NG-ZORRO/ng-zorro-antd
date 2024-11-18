@@ -16,7 +16,7 @@ import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 ## API
 
-### nz-tree-view:standalone
+### nz-tree-view
 
 | Property          | Description                                        | Type                                                                                                       | Default |
 | ----------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------- |
@@ -25,7 +25,7 @@ import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 | [nzDirectoryTree] | Whether nodes are displayed as directory style     | `boolean`                                                                                                  | `false` |
 | [nzBlockNode]     | Whether tree nodes fill remaining horizontal space | `boolean`                                                                                                  | `false` |
 
-### nz-tree-virtual-scroll-view:standalone
+### nz-tree-virtual-scroll-view
 
 The virtual scroll tree view, which can be accessed from
 the [CdkVirtualScrollViewport](https://material.angular.io/cdk/scrolling/api#CdkVirtualScrollViewport) instance through
@@ -41,7 +41,7 @@ the `virtualScrollViewport` member of the component instance.
 | [nzMinBufferPx]   | The minimum amount of buffer rendered allowed outside the viewport (in pixels) | `number`                                                                                                   | `28 * 5`  |
 | [nzMaxBufferPx]   | The amount of buffer required for rendering new nodes (in pixels)              | `number`                                                                                                   | `28 * 10` |
 
-### [nzTreeNodeDef]:standalone
+### [nzTreeNodeDef]
 
 Directive to define `nz-tree-node`.
 
@@ -49,11 +49,11 @@ Directive to define `nz-tree-node`.
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ------- |
 | [nzTreeNodeDefWhen] | A matching function which indicates whether inputted node should be used. It matches the very first node that makes this function return `true`. If no nodes that makes this function return `true`, the node which does not define this function would be matched instead. | `(index: number, nodeData: T) => boolean` | -       |
 
-### nz-tree-node:standalone
+### nz-tree-node
 
 The tree node container component, which needs to be defined by the `nzTreeNodeDef` directive.
 
-### [nzTreeNodePadding]:standalone
+### [nzTreeNodePadding]
 
 ```html
 <nz-tree-node nzTreeNodePadding></nz-tree-node>
@@ -61,7 +61,7 @@ The tree node container component, which needs to be defined by the `nzTreeNodeD
 
 Show node indentation by adding `padding` **Best Performance**.
 
-### nzTreeNodeIndentLine:standalone
+### nzTreeNodeIndentLine
 
 ```html
 <nz-tree-node nzTreeNodeIndentLine></nz-tree-node>
@@ -69,7 +69,7 @@ Show node indentation by adding `padding` **Best Performance**.
 
 Show node indentation by adding indent lines.
 
-### nz-tree-node-toggle:standalone
+### nz-tree-node-toggle
 
 A toggle which is used to expand / collapse the node.
 
@@ -77,19 +77,19 @@ A toggle which is used to expand / collapse the node.
 | --------------------------- | ----------------------------------- | --------- | ------- |
 | [nzTreeNodeToggleRecursive] | Is it recursively expand / collapse | `boolean` | `false` |
 
-### nz-tree-node-toggle[nzTreeNodeNoopToggle]:standalone
+### nz-tree-node-toggle[nzTreeNodeNoopToggle]
 
 A toggle that does no actions. This can be used for placeholders or displays icons.
 
-### [nz-icon][nztreenodetogglerotateicon]:standalone
+### [nz-icon][nztreenodetogglerotateicon]
 
 Define an icon in the toggle, which it will automatically rotate depending on the collapse/expand state.
 
-### [nz-icon][nztreenodetoggleactiveicon]:standalone
+### [nz-icon][nztreenodetoggleactiveicon]
 
 Define an icon in the toggle for an active style, which it can be used for the loading state.
 
-### nz-tree-node-option:standalone
+### nz-tree-node-option
 
 Define the selectable feature of a node.
 
@@ -99,7 +99,7 @@ Define the selectable feature of a node.
 | [nzDisabled] | Whether the option is disabled | `boolean`                  | `false` |
 | (nzClick)    | Event on click                 | `EventEmitter<MouseEvent>` | -       |
 
-### nz-tree-node-checkbox:standalone
+### nz-tree-node-checkbox
 
 Define the checkbox feature of a node.
 

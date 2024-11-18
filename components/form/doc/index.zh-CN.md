@@ -21,15 +21,15 @@ cover: https://gw.alipayobjects.com/zos/alicdn/ORmcdeaoO/Form.svg
 - 垂直排列：标签和表单控件上下垂直排列；
 - 行内排列：表单项水平行内排列。
 
-### 表单项 nz-form-item:standalone
+### 表单项 nz-form-item
 
 表单项用于区分表单中不同的区域，包含表单域和表单标签(可选)。
 
-### 表单标签 nz-form-label:standalone
+### 表单标签 nz-form-label
 
 用于标示当前表单项的内容，可选。
 
-### 表单域 nz-form-control:standalone
+### 表单域 nz-form-control
 
 表单一定会包含表单域，表单域可以是输入控件，标准表单域，标签，下拉菜单，文本域等。
 
@@ -50,25 +50,25 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 
 ## API
 
-### [nz-form]:standalone
+### [nz-form]
 
 | 参数                  | 说明                                                                                | 类型                                           | 默认值                                          | 全局配置 |
 | --------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- | -------- |
 | `[nzLayout]`          | 表单布局                                                                            | `'horizontal' \| 'vertical' \| 'inline'`       | `'horizontal'`                                  |
-| `[nzAutoTips]`        | 配置 `nz-form-control` 的 `[nzAutoTips]` 的默认值, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅       |
-| `[nzDisableAutoTips]` | 配置 `nz-form-control` 的 `[nzDisableAutoTips]` 的默认值                            | `boolean`                                      | `false`                                         | ✅       |
-| `[nzNoColon]`         | 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值                                      | `boolean`                                      | `false`                                         | ✅       |
-| `[nzTooltipIcon]`     | 配置 `nz-form-label` 的 `[nzTooltipIcon]` 的默认值                                  | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅       |
+| `[nzAutoTips]`        | 配置 `nz-form-control` 的 `[nzAutoTips]` 的默认值, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅        |
+| `[nzDisableAutoTips]` | 配置 `nz-form-control` 的 `[nzDisableAutoTips]` 的默认值                            | `boolean`                                      | `false`                                         | ✅        |
+| `[nzNoColon]`         | 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值                                      | `boolean`                                      | `false`                                         | ✅        |
+| `[nzTooltipIcon]`     | 配置 `nz-form-label` 的 `[nzTooltipIcon]` 的默认值                                  | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅        |
 | `[nzLabelAlign]`      | 配置 `nz-form-label` 的 `[nzLabelAlign]` 的默认值                                   | `'left' \| 'right'`                            | `'right'`                                       |
 | `[nzLabelWrap]`       | 配置 `nz-form-label` 的 `[nzLabelWrap]` 的默认值                                    | `boolean`                                      | `false`                                         |
 
-### nz-form-item:standalone
+### nz-form-item
 
 表单项用于区分表单中不同的区域，包含表单域和表单标签(可选)。
 
 > 所有 [nz-row](/components/grid/zh) 的参数在 `nz-form-item` 上均可直接使用。
 
-### nz-form-label:standalone
+### nz-form-label
 
 用于标示当前表单项的内容，可选。
 
@@ -84,7 +84,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | `[nzLabelAlign]`   | 标签文本对齐方式             | `'left' \| 'right'`           | `'right'` |
 | `[nzLabelWrap]`    | label 标签的文本换行方式     | `boolean`                     | `false`   |
 
-### nz-form-control:standalone
+### nz-form-control
 
 > 注意：由于 Angular Form 目前提供的[状态变更订阅](https://github.com/angular/angular/issues/10887)不完整。手动更改表单状态时，例如 `markAsDirty` 后，需要执行 `updateValueAndValidity` 通知 `nz-form-control` 进行状态变更。
 
@@ -92,10 +92,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 
 > 所有 [nz-col](/components/grid/zh) 的参数在 `nz-form-control` 上均可直接使用。
 
-| 参数     | 说明     | 类型    | 默认值|
-| ------ | ---------- | -------- | ------- |
+| 参数                  | 说明                                                                                                                                                       | 类型                                                                          | 默认值                                                      |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------- |
 | `[nzValidateStatus]`  | 会根据传入的 `FormControl` 或 `NgModel` 自动生成校验状态，也可以直接指定状态，不传入时默认值为 `nz-form-control` 中包裹的第一个 `FormControl` 或 `NgModel` | `'success' \| 'warning' \| 'error' \| 'validating' \| FormControl \| NgModel` | `nz-form-control` 中包裹的第一个 `FormControl` 或 `NgModel` |
-| `[nzHasFeedback]`     | 配合 `nzValidateStatus` 属性使用，展示校验状态图标  | `boolean`     | `false`                                                     |
+| `[nzHasFeedback]`     | 配合 `nzValidateStatus` 属性使用，展示校验状态图标                                                                                                         | `boolean`                                                                     | `false`                                                     |
 | `[nzExtra]`           | 用于显示表单额外提示信息                                                                                                                                   | `string \| TemplateRef<void>`                                                 | -                                                           |
 | `[nzSuccessTip]`      | 校验状态 success 时提示信息                                                                                                                                | `string \| TemplateRef<{ $implicit: FormControl \| NgModel }>`                | -                                                           |
 | `[nzWarningTip]`      | 校验状态 warning 时提示信息                                                                                                                                | `string \| TemplateRef<{ $implicit: FormControl \| NgModel }>`                | -                                                           |
@@ -104,10 +104,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | `[nzAutoTips]`        | 配置提示的对象, 具体用法请参考示例：**自动提示**                                                                                                           | `Record<string, Record<string, string>>`                                      | -                                                           |
 | `[nzDisableAutoTips]` | 禁用自动提示                                                                                                                                               | `boolean`                                                                     | -                                                           |
 
-### nz-form-split:standalone
+### nz-form-split
 
 用于显示分隔符 `-`
 
-### nz-form-text:standalone
+### nz-form-text
 
 在 `nz-form-control` 中直接显示文本

@@ -19,7 +19,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 ## API
 
-### nz-space:standalone
+### nz-space
 
 | Property        | Description                                 | Type                                         | Default      | Global Config |
 | --------------- | ------------------------------------------- | -------------------------------------------- | ------------ | ------------- |

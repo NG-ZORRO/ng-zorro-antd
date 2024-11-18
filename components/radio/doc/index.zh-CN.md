@@ -19,7 +19,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 ## API
 
-### [nz-radio] | [nz-radio-button]:standalone
+### [nz-radio] | [nz-radio-button]
 
 | 参数              | 说明                                     | 类型                    | 默认值  |
 | ----------------- | ---------------------------------------- | ----------------------- | ------- |
@@ -29,7 +29,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 | `[nzValue]`       | 设置 value，与 `nz-radio-group` 配合使用 | `any`                   | -       |
 | `(ngModelChange)` | 选中变化时回调                           | `EventEmitter<boolean>` | -       |
 
-### nz-radio-group:standalone
+### nz-radio-group
 
 单选框组合，用于包裹一组 `nz-radio`。
 
@@ -44,7 +44,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 ## 方法
 
-### [nz-radio]:standalone
+### [nz-radio]
 
 可以通过 `ViewChild` 等其他方式获取 `NzRadioComponent` 使用以下方法
 

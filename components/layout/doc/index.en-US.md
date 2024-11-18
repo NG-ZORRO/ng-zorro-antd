@@ -74,7 +74,7 @@ Style of a navigation should conform to the its level.
 </nz-layout>
 ```
 
-### nz-sider:standalone
+### nz-sider
 
 The sidebar.
 

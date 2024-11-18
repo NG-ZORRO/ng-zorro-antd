@@ -19,7 +19,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 ## API
 
-### nz-tag:standalone
+### nz-tag
 
 | Property            | Description                                                                 | Type                                      | Default     |
 | ------------------- | --------------------------------------------------------------------------- | ----------------------------------------- | ----------- |

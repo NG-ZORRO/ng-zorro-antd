@@ -27,7 +27,7 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 </nz-timeline>
 ```
 
-### nz-timeline:standalone
+### nz-timeline
 
 Timeline
 
@@ -38,7 +38,7 @@ Timeline
 | `[nzReverse]`    | Reverse nodes or not                                                                | `boolean`                                      | `false`                                  |
 | `[nzMode]`       | By sending `alternate` the timeline will distribute the nodes to the left and right | `'left' \| 'alternate' \| 'right' \| 'custom'` | -                                        |
 
-### nz-timeline-item:standalone
+### nz-timeline-item
 
 Node of timeline
 

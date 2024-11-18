@@ -19,7 +19,7 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 
 ## API
 
-### nz-qrcode:standalone
+### nz-qrcode
 
 | 参数               | 说明                 | 类型                              | 默认值    |
 | ------------------ | -------------------- | --------------------------------- | --------- |

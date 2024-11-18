@@ -19,7 +19,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 ## API
 
-### nz-list:standalone
+### nz-list
 
 | 参数             | 说明                                                                 | 类型                              | 默认值         |
 | ---------------- | -------------------------------------------------------------------- | --------------------------------- | -------------- |
@@ -31,7 +31,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 | `[nzSize]`       | list 的尺寸                                                          | `'large' \| 'small' \| 'default'` | `'default'`    |
 | `[nzSplit]`      | 是否展示分割线                                                       | `boolean`                         | `true`         |
 
-### nz-list-empty:standalone
+### nz-list-empty
 
 列表空内容组件
 
@@ -39,29 +39,29 @@ import { NzListModule } from 'ng-zorro-antd/list';
 | -------------- | -------------- | ----------------------------- | ------ |
 | `[nzNoResult]` | 空内容显示内容 | `string \| TemplateRef<void>` | -      |
 
-### nz-list[nzGrid]:standalone
+### nz-list[nzGrid]
 
 使用栅格布局
 
-### nz-list-header:standalone
+### nz-list-header
 
 列表头部位置组件
 
-### nz-list-footer:standalone
+### nz-list-footer
 
 列表脚部位置组件
 
-### nz-list-pagination:standalone
+### nz-list-pagination
 
 列表分页位置组件
 
-### nz-list-load-more:standalone
+### nz-list-load-more
 
 列表加载更多位置组件
 
 ---
 
-### nz-list-item:standalone
+### nz-list-item
 
 | 参数         | 说明                   | 类型      | 默认值  |
 | ------------ | ---------------------- | --------- | ------- |
@@ -81,7 +81,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 列表项扩展内容位置组件
 
-### nz-list-item-meta:standalone
+### nz-list-item-meta
 
 | 参数              | 说明               | 类型                          | 默认值 |
 | ----------------- | ------------------ | ----------------------------- | ------ |

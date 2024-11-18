@@ -75,7 +75,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 </nz-layout>
 ```
 
-### nz-sider:standalone
+### nz-sider
 
 侧边栏。
 

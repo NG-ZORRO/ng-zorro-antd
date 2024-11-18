@@ -19,7 +19,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
 ## API
 
-### nz-statistic:standalone
+### nz-statistic
 
 | 参数                | 说明           | 类型                                           | 默认值  |
 | ------------------- | -------------- | ---------------------------------------------- | ------- |
@@ -31,7 +31,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 | `[nzValueTemplate]` | 自定义数值展示 | `TemplateRef<{ $implicit: string \| number }>` | -       |
 | `[nzLoading]`       | 数值是否加载中 | `boolean`                                      | `false` |
 
-### nz-countdown:standalone
+### nz-countdown
 
 | 参数                  | 说明                   | 类型                                 | 默认值       |
 | --------------------- | ---------------------- | ------------------------------------ | ------------ |

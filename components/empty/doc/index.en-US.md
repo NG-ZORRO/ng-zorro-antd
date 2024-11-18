@@ -18,7 +18,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 ## API
 
-### nz-empty:standalone
+### nz-empty
 
 | Property              | Description                                                   | Type                                  | Default |
 | --------------------- | ------------------------------------------------------------- | ------------------------------------- | ------- |

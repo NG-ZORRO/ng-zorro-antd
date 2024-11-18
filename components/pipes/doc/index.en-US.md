@@ -23,7 +23,7 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 ## API
 
-### **nzBytes**:standalone
+### **nzBytes**
 
 | Property  | Description                     | Type     | Default |
 | --------- | ------------------------------- | -------- | ------- |
@@ -31,26 +31,26 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 | `from`    | Unit of current value           | `string` | 'B'     |
 | `to`      | Units converted to target value | `string` | ''      |
 
-### **nzToCssUnit**:standalone
+### **nzToCssUnit**
 
 | Property      | Description  | Type     | Default |
 | ------------- | ------------ | -------- | ------- |
 | `defaultUnit` | Default Unit | `string` | 'px'    |
 
-### **nzEllipsis**:standalone
+### **nzEllipsis**
 
 | Property | Description       | Type     | Default |
 | -------- | ----------------- | -------- | ------- |
 | `length` | Truncate length   | `number` | ''      |
 | `suffix` | Replace character | `string` | ''      |
 
-### **nzAggregate**:standalone
+### **nzAggregate**
 
 | Property | Description | Type                               | Default |
 | -------- | ----------- | ---------------------------------- | ------- |
 | `method` | Aggregation | `'sum' \| 'max' \| 'min' \| 'avg'` | ''      |
 
-### **nzSanitizer**:standalone
+### **nzSanitizer**
 
 | Property | Description    | Type     | Default |
 | -------- | -------------- | -------- | ------- |

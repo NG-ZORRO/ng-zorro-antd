@@ -18,10 +18,10 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 ## API
 
-### nz-descriptions:standalone
+### nz-descriptions
 
 | Property       | Description                                                                                                     | Type                               | Default                                         | Global Config |
-|----------------|-----------------------------------------------------------------------------------------------------------------|------------------------------------|-------------------------------------------------|---------------|
+| -------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------- | ------------- |
 | `[nzTitle]`    | Describe the title of the list, displayed at the top                                                            | `string\|TemplateRef<void>`        | `false`                                         |
 | `[nzExtra]`    | The action area of the description list, placed at the top-right                                                | `string\|TemplateRef<void>`        | `-`                                             |
 | `[nzBordered]` | Whether to display the border                                                                                   | `boolean`                          | `false`                                         | ✅             |
@@ -30,9 +30,9 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 | `[nzColon]`    | Show colon after title                                                                                          | `boolean`                          | `true`                                          | ✅             |
 | `[nzLayout]`   | Set the layout of the list                                                                                      | `'horizontal' \| 'vertical'`       | `'horizontal'`                                  |               |
 
-### nz-descriptions-item:standalone
+### nz-descriptions-item
 
 | Property    | Description                    | Type      | Default                     |
-|-------------|--------------------------------|-----------|-----------------------------|
+| ----------- | ------------------------------ | --------- | --------------------------- |
 | `[nzTitle]` | Description of the content     | `boolean` | `string\|TemplateRef<void>` |
 | `[nzSpan]`  | The number of columns included | `number`  | `1`                         |

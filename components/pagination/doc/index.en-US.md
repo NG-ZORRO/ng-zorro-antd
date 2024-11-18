@@ -23,7 +23,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
 ```
 
-### nz-pagination:standalone
+### nz-pagination
 
 | Property               | Description                                                    | Type                                                                                         | Default            | Global Config |
 | ---------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------ | ------------- |
@@ -31,12 +31,12 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 | `[nzPageIndex]`        | current page number，double binding                            | `number`                                                                                     | `1`                | -             |
 | `[nzPageSize]`         | number of data items per page, double binding                  | `number`                                                                                     | `10`               | -             |
 | `[nzDisabled]`         | disable pagination                                             | `boolean`                                                                                    | `false`            | -             |
-| `[nzShowQuickJumper]`  | determine whether you can jump to pages directly               | `boolean`                                                                                    | `false`            | ✅            |
-| `[nzShowSizeChanger]`  | determine whether `nzPageSize` can be changed                  | `boolean`                                                                                    | `false`            | ✅            |
-| `[nzSimple]`           | whether to use simple mode                                     | `boolean`                                                                                    | -                  | ✅            |
-| `[nzSize]`             | specify the size of `nz-pagination`, can be set to `small`     | `'small' \| 'default'`                                                                       | `'default'`        | ✅            |
+| `[nzShowQuickJumper]`  | determine whether you can jump to pages directly               | `boolean`                                                                                    | `false`            | ✅             |
+| `[nzShowSizeChanger]`  | determine whether `nzPageSize` can be changed                  | `boolean`                                                                                    | `false`            | ✅             |
+| `[nzSimple]`           | whether to use simple mode                                     | `boolean`                                                                                    | -                  | ✅             |
+| `[nzSize]`             | specify the size of `nz-pagination`, can be set to `small`     | `'small' \| 'default'`                                                                       | `'default'`        | ✅             |
 | `[nzResponsive]`       | `Pagination` would resize according to the width of the window | `boolean`                                                                                    | `false`            | -             |
-| `[nzPageSizeOptions]`  | specify the sizeChanger options                                | `number[]`                                                                                   | `[10, 20, 30, 40]` | ✅            |
+| `[nzPageSizeOptions]`  | specify the sizeChanger options                                | `number[]`                                                                                   | `[10, 20, 30, 40]` | ✅             |
 | `[nzItemRender]`       | to customize item                                              | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next'\| 'prev_5'\| 'next_5', page: number }>` | -                  | -             |
 | `[nzShowTotal]`        | to display the total number and range                          | `TemplateRef<{ $implicit: number, range: [ number, number ] }>`                              | -                  | -             |
 | `[nzHideOnSinglePage]` | Whether to hide pager on single page                           | `boolean`                                                                                    | `false`            | -             |

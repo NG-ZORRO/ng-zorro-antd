@@ -15,23 +15,23 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 ## API
 
-### nz-tree:standalone
+### nz-tree
 
 > Tips: According to the current data structure design, you need to ensure that `nzData` is set first, otherwise other attributes will not take effect. After the asynchronous operation returns data, re-assign other attributes to trigger rendering(including `nzExpandAll` `nzExpandedKeys` `nzCheckedKeys` `nzSelectedKeys` `nzSearchValue`). Please refer to [#5152](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5152) to track the optimization progress.
 
 | Property                 | Description                                                                                                                                           | Type                                                        | Default | Global Config |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------- | ------------- |
 | `[nzData]`               | Tree data (Reference NzTreeNode)                                                                                                                      | `NzTreeNodeOptions[] \| NzTreeNode[]`                       | `[]`    |
-| `[nzBlockNode]`          | Whether treeNode fill remaining horizontal space                                                                                                      | `boolean`                                                   | `false` | ✅            |
+| `[nzBlockNode]`          | Whether treeNode fill remaining horizontal space                                                                                                      | `boolean`                                                   | `false` | ✅             |
 | `[nzCheckable]`          | Adds a Checkbox before the treeNodes                                                                                                                  | `boolean`                                                   | `false` |
 | `[nzShowExpand]`         | Show a Expand Icon before the treeNodes                                                                                                               | `boolean`                                                   | `true`  |               |
 | `[nzShowLine]`           | Shows a connecting line                                                                                                                               | `boolean`                                                   | `false` |               |
 | `[nzExpandedIcon]`       | Customize an expand icon                                                                                                                              | `TemplateRef<{ $implicit: NzTreeNode }>`                    | -       |
-| `[nzShowIcon]`           | Shows the icon before a TreeNode's title. There is no default style                                                                                   | `boolean`                                                   | `false` | ✅            |
+| `[nzShowIcon]`           | Shows the icon before a TreeNode's title. There is no default style                                                                                   | `boolean`                                                   | `false` | ✅             |
 | `[nzAsyncData]`          | Load data asynchronously (should be used with NzTreeNode.addChildren(...))                                                                            | `boolean`                                                   | `false` |
 | `[nzDraggable]`          | Specifies whether this Tree is draggable (IE > 8)                                                                                                     | `boolean`                                                   | `false` |
 | `[nzMultiple]`           | Allows selecting multiple treeNodes                                                                                                                   | `boolean`                                                   | `false` |
-| `[nzHideUnMatched]`      | Hide unmatched nodes while searching                                                                                                                  | `boolean`                                                   | `false` | ✅            |
+| `[nzHideUnMatched]`      | Hide unmatched nodes while searching                                                                                                                  | `boolean`                                                   | `false` | ✅             |
 | `[nzCheckStrictly]`      | Check treeNode precisely; parent treeNode and children treeNodes are not associated                                                                   | `boolean`                                                   | `false` |
 | `[nzTreeTemplate]`       | Custom Nodes                                                                                                                                          | `TemplateRef<{ $implicit: NzTreeNode }>`                    | -       |
 | `[nzExpandAll]`          | Whether to expand all treeNodes                                                                                                                       | `boolean`                                                   | `false` |

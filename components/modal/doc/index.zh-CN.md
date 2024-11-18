@@ -43,10 +43,10 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzDraggable         | 模态框是否可拖动                                                                                                                                                                                                                                                                    | `boolean`                                        | `false`             |
 | nzFooter            | 底部内容。<i>1. 仅在普通模式下有效。<br>2. 可通过传入 ModalButtonOptions 来最大程度自定义按钮（详见案例或下方说明）。<br>3. 当不需要底部时，可以设为 null</i>                                                                                                                       | string<br>TemplateRef<br>ModalButtonOptions      | 默认的确定取消按钮  |
 | nzKeyboard          | 是否支持键盘 esc 关闭                                                                                                                                                                                                                                                               | `boolean`                                        | `true`              |
-| nzMask              | 是否展示遮罩                                                                                                                                                                                                                                                                        | `boolean`                                        | `true`              | ✅       |
-| nzMaskClosable      | 点击蒙层是否允许关闭                                                                                                                                                                                                                                                                | `boolean`                                        | `true`              | ✅       |
-| nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭模态框。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。                                                                                                                                                                          | `boolean`                                        | `true`              | ✅       |
-| nzDirection         | 文字方向                                                                                                                                                                                                                                                                            | `'ltr' \| 'rtl'`                                 | -                   | ✅       |
+| nzMask              | 是否展示遮罩                                                                                                                                                                                                                                                                        | `boolean`                                        | `true`              | ✅        |
+| nzMaskClosable      | 点击蒙层是否允许关闭                                                                                                                                                                                                                                                                | `boolean`                                        | `true`              | ✅        |
+| nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭模态框。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。                                                                                                                                                                          | `boolean`                                        | `true`              | ✅        |
+| nzDirection         | 文字方向                                                                                                                                                                                                                                                                            | `'ltr' \| 'rtl'`                                 | -                   | ✅        |
 | nzMaskStyle         | 遮罩样式                                                                                                                                                                                                                                                                            | `object`                                         | -                   |
 | nzOkText            | 确认按钮文字。<i>设为 null 表示不显示确认按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i>                                                                                                                                                                                 | `string`                                         | 确定                |
 | nzOkType            | 确认按钮类型。<i>与 `nz-button` 的 `nzType` 类型值一致</i>                                                                                                                                                                                                                          | `string`                                         | `primary`           |
@@ -155,7 +155,7 @@ nzFooter: [{
 
 以上配置项也可在运行态实时改变，来触发按钮行为改变。
 
-### [nzModalTitle]:standalone
+### [nzModalTitle]
 
 自定义标题。
 
@@ -167,7 +167,7 @@ nzFooter: [{
 <ng-template [nzModalTitle]> Custom Modal Title </ng-template>
 ```
 
-### [nzModalContent]:standalone
+### [nzModalContent]
 
 自定义内容。
 
@@ -179,7 +179,7 @@ nzFooter: [{
 <ng-template [nzModalContent]> Custom Modal Content </ng-template>
 ```
 
-### [nzModalFooter]:standalone
+### [nzModalFooter]
 
 自定义页脚。
 

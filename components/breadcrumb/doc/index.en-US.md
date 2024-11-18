@@ -20,15 +20,15 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 ## API
 
-### nz-breadcrumb:standalone
+### nz-breadcrumb
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzSeparator]` | Custom separator | `string \| TemplateRef<void> \| null` | `'/'` |
-| `[nzAutoGenerate]` | Auto generate breadcrumb | `boolean` | `false` |
-| `[nzRouteLabel]` | Name of property that determines displayed text in routing config. It should be used when `nzAutoGenerate` is `true` | `string` | `'breadcrumb'` |
-| `[nzRouteLabelFn]` | Format breadcrumb item label text, normally used in international app to translate i18n key. It should be used when `nzAutoGenerate` is `true` | `(label:string) => string` | `label => label` |
-| `[nzRouteFn]` | Format breadcrumb item route, normally used in international app to bind current params or query strings to avoid losing them while navigate using breadcrumb. It should be used when `nzAutoGenerate` is `true` | `(route:string) => route` | `route => route` |
+| Property           | Description                                                                                                                                                                                                      | Type                                  | Default          |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ---------------- |
+| `[nzSeparator]`    | Custom separator                                                                                                                                                                                                 | `string \| TemplateRef<void> \| null` | `'/'`            |
+| `[nzAutoGenerate]` | Auto generate breadcrumb                                                                                                                                                                                         | `boolean`                             | `false`          |
+| `[nzRouteLabel]`   | Name of property that determines displayed text in routing config. It should be used when `nzAutoGenerate` is `true`                                                                                             | `string`                              | `'breadcrumb'`   |
+| `[nzRouteLabelFn]` | Format breadcrumb item label text, normally used in international app to translate i18n key. It should be used when `nzAutoGenerate` is `true`                                                                   | `(label:string) => string`            | `label => label` |
+| `[nzRouteFn]`      | Format breadcrumb item route, normally used in international app to bind current params or query strings to avoid losing them while navigate using breadcrumb. It should be used when `nzAutoGenerate` is `true` | `(route:string) => route`             | `route => route` |
 
 Using `[nzAutoGenerate]` by configuring `data` like this:
 

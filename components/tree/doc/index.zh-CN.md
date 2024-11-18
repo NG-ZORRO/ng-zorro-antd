@@ -16,23 +16,23 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 ## API
 
-### nz-tree:standalone
+### nz-tree
 
 > 说明: 根据目前的数据结构设计，需要保证优先设置 `nzData`，否则各属性不会生效。异步操作待数据返回后，重新赋值其他各属性触发渲染(`nzExpandAll` `nzExpandedKeys` `nzCheckedKeys` `nzSelectedKeys` `nzSearchValue`)。重构优化工作请追踪 [#5152](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5152)。
 
 | 参数                     | 说明                                                                                                                 | 类型                                                        | 默认值  | 全局配置 |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------- | -------- |
 | `[nzData]`               | 元数据                                                                                                               | `NzTreeNodeOptions[] \| NzTreeNode[]`                       | `[]`    |
-| `[nzBlockNode]`          | 是否节点占据一行                                                                                                     | `boolean`                                                   | `false` | ✅       |
+| `[nzBlockNode]`          | 是否节点占据一行                                                                                                     | `boolean`                                                   | `false` | ✅        |
 | `[nzCheckable]`          | 节点前添加 Checkbox 复选框                                                                                           | `boolean`                                                   | `false` |
 | `[nzShowExpand]`         | 节点前添加展开图标                                                                                                   | `boolean`                                                   | `true`  |          |
 | `[nzShowLine]`           | 是否展示连接线                                                                                                       | `boolean`                                                   | `false` |          |
 | `[nzExpandedIcon]`       | 自定义展开图标                                                                                                       | `TemplateRef<{ $implicit: NzTreeNode }>`                    | -       |
-| `[nzShowIcon]`           | 是否展示 TreeNode title 前的图标，没有默认样式                                                                       | `boolean`                                                   | `false` | ✅       |
+| `[nzShowIcon]`           | 是否展示 TreeNode title 前的图标，没有默认样式                                                                       | `boolean`                                                   | `false` | ✅        |
 | `[nzAsyncData]`          | 是否异步加载(显示加载状态)                                                                                           | `boolean`                                                   | `false` |
 | `[nzDraggable]`          | 设置节点可拖拽                                                                                                       | `boolean`                                                   | `false` |
 | `[nzMultiple]`           | 支持点选多个节点（节点本身）                                                                                         | `boolean`                                                   | `false` |
-| `[nzHideUnMatched]`      | 搜索隐藏未匹配的节点                                                                                                 | `boolean`                                                   | `false` | ✅       |
+| `[nzHideUnMatched]`      | 搜索隐藏未匹配的节点                                                                                                 | `boolean`                                                   | `false` | ✅        |
 | `[nzCheckStrictly]`      | checkable 状态下节点选择完全受控（父子节点选中状态不再关联）                                                         | `boolean`                                                   | `false` |
 | `[nzTreeTemplate]`       | 自定义节点                                                                                                           | `TemplateRef<{ $implicit: NzTreeNode }>`                    | -       |
 | `[nzExpandAll]`          | 默认展开所有树节点                                                                                                   | `boolean`                                                   | `false` |

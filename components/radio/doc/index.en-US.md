@@ -18,7 +18,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 ## API
 
-### [nz-radio] | [nz-radio-button]:standalone
+### [nz-radio] | [nz-radio-button]
 
 | Property          | Description                                                     | Type                    | Default |
 | ----------------- | --------------------------------------------------------------- | ----------------------- | ------- |
@@ -28,7 +28,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 | `[nzValue]`       | use with `nz-radio-group`                                       | `any`                   | -       |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<boolean>` | -       |
 
-### nz-radio-group:standalone
+### nz-radio-group
 
 radio group，wrap a group of `nz-radio`。
 
@@ -43,7 +43,7 @@ radio group，wrap a group of `nz-radio`。
 
 ## Methods
 
-### [nz-radio]:standalone
+### [nz-radio]
 
 you can get `NzRadioComponent` via `ViewChild`
 

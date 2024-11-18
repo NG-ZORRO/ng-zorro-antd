@@ -30,7 +30,7 @@ Install `cron-parser` in your project first:
 npm install cron-parser
 ```
 
-### nz-cron-expression:standalone
+### nz-cron-expression
 
 | Parameter             | Description                          | Type                          | Default   |
 | --------------------- | ------------------------------------ | ----------------------------- | --------- |

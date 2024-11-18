@@ -19,7 +19,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 ## API
 
-### [nz-checkbox]:standalone
+### [nz-checkbox]
 
 | 参数                | 说明                                          | 类型                    | 默认值  |
 | ------------------- | --------------------------------------------- | ----------------------- | ------- |
@@ -31,7 +31,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | `[nzValue]`         | 仅与 `nz-checkbox-wrapper` 的选中回调配合使用 | `any`                   | -       |
 | `(ngModelChange)`   | 选中变化时回调                                | `EventEmitter<boolean>` | -       |
 
-### nz-checkbox-group:standalone
+### nz-checkbox-group
 
 | 参数              | 说明                           | 类型                                                                        | 默认值  |
 | ----------------- | ------------------------------ | --------------------------------------------------------------------------- | ------- |
@@ -39,7 +39,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | `[nzDisabled]`    | 设定全部 checkbox disable 状态 | `boolean`                                                                   | `false` |
 | `(ngModelChange)` | 选中数据变化时的回调           | `EventEmitter<Array<{ label: string; value: string; checked?: boolean; }>>` | -       |
 
-### nz-checkbox-wrapper:standalone
+### nz-checkbox-wrapper
 
 | 参数           | 说明                 | 类型                  | 默认值 |
 | -------------- | -------------------- | --------------------- | ------ |
@@ -47,7 +47,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 ## 方法
 
-### [nz-checkbox]:standalone
+### [nz-checkbox]
 
 通过 ViewChild 或其他方式获得 `nz-checkbox` 实例
 

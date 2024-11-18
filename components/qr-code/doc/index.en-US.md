@@ -18,7 +18,7 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 
 ## API
 
-### nz-qrcode:standalone
+### nz-qrcode
 
 | Property           | Description                         | Type                              | Default   |
 | ------------------ | ----------------------------------- | --------------------------------- | --------- |

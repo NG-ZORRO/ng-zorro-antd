@@ -18,7 +18,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 ## API
 
-### [nz-checkbox]:standalone
+### [nz-checkbox]
 
 | Property            | Description                                                     | Type                    | Default |
 | ------------------- | --------------------------------------------------------------- | ----------------------- | ------- |
@@ -30,7 +30,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | `[nzValue]`         | use for the callback of `nz-checkbox-wrapper`                   | `any`                   | -       |
 | `(ngModelChange)`   | The callback function that is triggered when the state changes. | `EventEmitter<boolean>` | -       |
 
-### nz-checkbox-group:standalone
+### nz-checkbox-group
 
 | Property          | Description                                                     | Type                                                                        | Default |
 | ----------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------- | ------- |
@@ -38,7 +38,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | `[nzDisabled]`    | Disable all checkboxes                                          | `boolean`                                                                   | `false` |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<Array<{ label: string; value: string; checked?: boolean; }>>` | -       |
 
-### nz-checkbox-wrapper:standalone
+### nz-checkbox-wrapper
 
 | Property       | Description                                                     | Type                  | Default |
 | -------------- | --------------------------------------------------------------- | --------------------- | ------- |
@@ -46,7 +46,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 ## Methods
 
-### [nz-checkbox]:standalone
+### [nz-checkbox]
 
 | Name    | Description  |
 | ------- | ------------ |
