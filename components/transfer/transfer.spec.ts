@@ -71,6 +71,24 @@ describe('transfer', () => {
       ).toBe(true);
     });
 
+    it('nzOneWay', () => {
+      instance.nzOneWay = true;
+      fixture.detectChanges();
+      expect(!pageObject.rightList.querySelector('.ant-transfer-list-header .ant-transfer-list-checkbox')).toBeTrue();
+      expect(dl.queryAll(By.css('.ant-transfer-operation .ant-btn')).length).toBe(1);
+      expect(dl.query(By.css('.ant-transfer-operation .ant-btn .anticon')).nativeElement.getAttribute('nztype')).toBe(
+        'right'
+      );
+      expect(
+        pageObject.rightList.querySelector('.ant-transfer-list-content-item .ant-transfer-list-content-item-text')
+          ?.tagName
+      ).toBe('SPAN');
+      expect(
+        pageObject.rightList.querySelector('.ant-transfer-list-content-item .ant-transfer-list-content-item-remove')
+          ?.tagName
+      ).toBe('DIV');
+    });
+
     it('should be from left to right', () => {
       pageObject
         .expectLeft(LEFTCOUNT)
@@ -578,6 +596,7 @@ interface AbstractTestTransferComponent {
       [nzCanMove]="canMove"
       [nzFooter]="footer"
       [nzTargetKeys]="nzTargetKeys"
+      [nzOneWay]="nzOneWay"
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
@@ -606,6 +625,7 @@ class TestTransferComponent implements OnInit, AbstractTestTransferComponent {
   nzFilterOption: null | ((inputValue: string, item: NzSafeAny) => boolean) = null;
   nzSearchPlaceholder = '请输入搜索内容';
   nzNotFoundContent = '列表为空';
+  nzOneWay = false;
 
   canMove(arg: TransferCanMove): Observable<TransferItem[]> {
     // if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
