@@ -19,14 +19,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 ## API
 
-### [nz-icon]:standalone
+### nz-icon, [nz-icon]:standalone
 
 | 参数               | 说明                                                           | 类型                           | 默认值      | 支持全局配置 |
 | ------------------ | -------------------------------------------------------------- | ------------------------------ | ----------- | ------------ |
 | `[nzType]`         | 图标类型，遵循图标的命名规范                                   | string                         | -           |
-| `[nzTheme]`        | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标   | `'fill'丨'outline'丨'twotone'` | `'outline'` | ✅           |
+| `[nzTheme]`        | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标   | `'fill'丨'outline'丨'twotone'` | `'outline'` | ✅            |
 | `[nzSpin]`         | 是否有旋转动画                                                 | `boolean`                      | `false`     |
-| `[nzTwotoneColor]` | 仅适用双色图标，设置双色图标的主要颜色，默认为 Ant Design 蓝色 | `string (十六进制颜色)`        | -           | ✅           |
+| `[nzTwotoneColor]` | 仅适用双色图标，设置双色图标的主要颜色，默认为 Ant Design 蓝色 | `string (十六进制颜色)`        | -           | ✅            |
 | `[nzIconfont]`     | 指定来自 IconFont 的图标类型                                   | string                         | -           |
 | `[nzRotate]`       | 图标旋转角度（7.0.0 开始支持）                                 | `number`                       | -           |
 
