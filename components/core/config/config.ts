@@ -151,7 +151,6 @@ export interface CardConfig {
   nzSize?: NzSizeDSType;
   nzHoverable?: boolean;
   nzBordered?: boolean;
-  nzBorderless?: boolean;
 }
 
 export interface CarouselConfig {
