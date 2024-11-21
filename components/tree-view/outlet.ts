@@ -4,14 +4,14 @@
  */
 
 import { CDK_TREE_NODE_OUTLET_NODE, CdkTreeNodeOutlet } from '@angular/cdk/tree';
-import { Directive, ViewContainerRef, inject } from '@angular/core';
+import { Directive, ViewContainerRef, forwardRef, inject } from '@angular/core';
 
 @Directive({
   selector: '[nzTreeNodeOutlet]',
   providers: [
     {
       provide: CdkTreeNodeOutlet,
-      useExisting: NzTreeNodeOutletDirective
+      useExisting: forwardRef(() => NzTreeNodeOutletDirective)
     }
   ],
   standalone: true

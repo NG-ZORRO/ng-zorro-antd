@@ -13,7 +13,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
+  inject,
   NgZone,
   OnInit,
   ViewChild,
@@ -230,6 +230,7 @@ export class NzImagePreviewComponent implements OnInit {
   @ViewChild('imgRef') imageRef!: ElementRef<HTMLImageElement>;
   @ViewChild('imagePreviewWrapper', { static: true }) imagePreviewWrapper!: ElementRef<HTMLElement>;
 
+  private document = inject(DOCUMENT);
   private zoom: number;
   private rotate: number;
   private scaleStep: number;
@@ -251,8 +252,7 @@ export class NzImagePreviewComponent implements OnInit {
     public nzConfigService: NzConfigService,
     public config: NzImagePreviewOptions,
     private destroy$: NzDestroyService,
-    private sanitizer: DomSanitizer,
-    @Inject(DOCUMENT) private document: Document
+    private sanitizer: DomSanitizer
   ) {
     this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
     this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
