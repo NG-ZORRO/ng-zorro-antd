@@ -75,10 +75,10 @@ describe('transfer', () => {
       instance.nzOneWay = true;
       fixture.detectChanges();
       expect(!pageObject.rightList.querySelector('.ant-transfer-list-header .ant-transfer-list-checkbox')).toBeTrue();
-      expect(dl.queryAll(By.css('.ant-transfer-operation .ant-btn')).length).toBe(1);
-      expect(dl.query(By.css('.ant-transfer-operation .ant-btn .anticon')).nativeElement.getAttribute('nztype')).toBe(
-        'right'
-      );
+      expect(debugElement.queryAll(By.css('.ant-transfer-operation .ant-btn')).length).toBe(1);
+      expect(
+        debugElement.query(By.css('.ant-transfer-operation .ant-btn .anticon')).nativeElement.getAttribute('nztype')
+      ).toBe('right');
       expect(
         pageObject.rightList.querySelector('.ant-transfer-list-content-item .ant-transfer-list-content-item-text')
           ?.tagName
