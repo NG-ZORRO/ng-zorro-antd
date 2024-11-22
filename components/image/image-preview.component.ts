@@ -5,12 +5,15 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { ESCAPE } from '@angular/cdk/keycodes';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   NgZone,
   OnInit,
   ViewChild,
@@ -104,7 +107,7 @@ const NZ_DEFAULT_ROTATE = 0;
       (click)="maskClosable && $event.target === $event.currentTarget && onClose()"
     >
       <div class="ant-image-preview" role="dialog" aria-modal="true">
-        <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
+        <div tabindex="0" aria-hidden="true" class="ant-image-preview-focus-trap"></div>
         <div class="ant-image-preview-content">
           <div class="ant-image-preview-body">
             <div
@@ -133,7 +136,7 @@ const NZ_DEFAULT_ROTATE = 0;
             </div>
           </div>
         </div>
-        <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
+        <div tabindex="0" aria-hidden="true" class="ant-image-preview-focus-trap"></div>
       </div>
     </div>
   `,
@@ -227,6 +230,7 @@ export class NzImagePreviewComponent implements OnInit {
   @ViewChild('imgRef') imageRef!: ElementRef<HTMLImageElement>;
   @ViewChild('imagePreviewWrapper', { static: true }) imagePreviewWrapper!: ElementRef<HTMLElement>;
 
+  private document = inject(DOCUMENT);
   private zoom: number;
   private rotate: number;
   private scaleStep: number;
@@ -272,6 +276,17 @@ export class NzImagePreviewComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe(event => {
           this.ngZone.run(() => this.wheelZoomEventHandler(event));
+        });
+
+      fromEvent<KeyboardEvent>(this.document, 'keydown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          this.ngZone.run(() => {
+            if (event.keyCode === ESCAPE) {
+              this.onClose();
+              this.markForCheck();
+            }
+          });
         });
     });
   }

@@ -1,37 +1,43 @@
 import { Component } from '@angular/core';
-export type NzPlacementType = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | '';
+import { FormsModule } from '@angular/forms';
+
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzTreeSelectModule, NzPlacementType } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-placement',
+  standalone: true,
+  imports: [FormsModule, NzRadioModule, NzTreeSelectModule],
   template: `
-    <nz-space nzDirection="vertical" style="width:100%;">
-      <nz-radio-group *nzSpaceItem [(ngModel)]="placement">
-        <label *ngFor="let item of list" nz-radio-button [nzValue]="item">{{ item }}</label>
-      </nz-radio-group>
-      <nz-tree-select
-        *nzSpaceItem
-        style="width: 120px"
-        nzPlaceHolder="Please select"
-        [nzPlacement]="placement"
-        [(ngModel)]="value"
-        [nzMaxTagCount]="3"
-        [nzMaxTagPlaceholder]="omittedPlaceHolder"
-        [nzNodes]="nodes"
-        [nzDropdownStyle]="{ width: '300px' }"
-        [nzDefaultExpandAll]="true"
-        [nzAllowClear]="false"
-        [nzMultiple]="true"
-        (ngModelChange)="onChange($event)"
-      ></nz-tree-select>
-      <ng-template #omittedPlaceHolder let-omittedValues>and {{ omittedValues.length }} more...</ng-template>
-    </nz-space>
+    <nz-radio-group [(ngModel)]="placement">
+      @for (item of list; track item) {
+        <label nz-radio-button [nzValue]="item">{{ item }}</label>
+      }
+    </nz-radio-group>
+    <br />
+    <br />
+    <nz-tree-select
+      style="width: 120px"
+      nzPlaceHolder="Please select"
+      [nzPlacement]="placement"
+      [(ngModel)]="value"
+      [nzMaxTagCount]="3"
+      [nzMaxTagPlaceholder]="omittedPlaceHolder"
+      [nzNodes]="nodes"
+      [nzDropdownStyle]="{ width: '300px' }"
+      [nzDefaultExpandAll]="true"
+      [nzAllowClear]="false"
+      [nzMultiple]="true"
+      (ngModelChange)="onChange($event)"
+    ></nz-tree-select>
+    <ng-template #omittedPlaceHolder let-omittedValues>and {{ omittedValues.length }} more...</ng-template>
   `
 })
 export class NzDemoTreeSelectPlacementComponent {
   list: NzPlacementType[] = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'];
   placement: NzPlacementType = 'topLeft';
   value: string[] = [];
-  nodes = [
+  readonly nodes = [
     {
       title: 'parent 1',
       key: '100',

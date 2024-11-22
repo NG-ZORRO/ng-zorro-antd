@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+
 @Component({
   selector: 'nz-demo-steps-nav',
+  standalone: true,
+  imports: [NzStepsModule],
   template: `
     <nz-steps nzType="navigation" nzSize="small" [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
       <nz-step
@@ -40,7 +44,7 @@ import { Component } from '@angular/core';
     `
       nz-steps {
         margin-bottom: 60px;
-        box-shadow: rgb(232, 232, 232) 0px -1px 0px 0 inset;
+        box-shadow: rgb(232, 232, 232) 0 -1px 0 0 inset;
       }
     `
   ]

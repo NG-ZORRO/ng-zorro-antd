@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+
 @Component({
   selector: 'nz-demo-pagination-item-render',
+  standalone: true,
+  imports: [NzPaginationModule],
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="500" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">

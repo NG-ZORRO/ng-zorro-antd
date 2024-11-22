@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-info',
+  standalone: true,
+  imports: [NzButtonModule, NzModalModule],
   template: `
     <button nz-button (click)="info()">Info</button>
     <button nz-button (click)="success()">Success</button>

@@ -1,37 +1,25 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
-import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
-import { NzDemoPageHeaderActionsComponent } from './demo/actions';
 import { NzDemoPageHeaderBasicComponent } from './demo/basic';
 import { NzDemoPageHeaderBreadcrumbComponent } from './demo/breadcrumb';
 import { NzDemoPageHeaderContentComponent } from './demo/content';
 import { NzDemoPageHeaderGhostComponent } from './demo/ghost';
 import { NzDemoPageHeaderResponsiveComponent } from './demo/responsive';
 import { NzPageHeaderComponent } from './page-header.component';
-import { NzPageHeaderModule } from './page-header.module';
 
 describe('NzPageHeaderComponent', () => {
   let location: Location;
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [
-        NzDemoPageHeaderBasicComponent,
-        NzDemoPageHeaderBreadcrumbComponent,
-        NzDemoPageHeaderContentComponent,
-        NzDemoPageHeaderActionsComponent,
-        NzDemoPageHeaderResponsiveComponent,
-        NzDemoPageHeaderGhostComponent,
-        NzDemoPageHeaderRtlComponent
-      ]
+      imports: [NoopAnimationsModule],
+      providers: [provideNzIconsTesting()]
     }).compileComponents();
     location = TestBed.inject(Location);
   }));
@@ -165,6 +153,8 @@ describe('NzPageHeaderComponent', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzDemoPageHeaderBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-demo-page-header-basic></nz-demo-page-header-basic>
@@ -173,5 +163,5 @@ describe('NzPageHeaderComponent', () => {
 })
 export class NzDemoPageHeaderRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

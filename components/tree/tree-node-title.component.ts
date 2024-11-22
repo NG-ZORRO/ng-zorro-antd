@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -28,31 +28,30 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
       [ngTemplateOutlet]="treeTemplate"
       [ngTemplateOutletContext]="{ $implicit: context, origin: context.origin }"
     ></ng-template>
-    <ng-container *ngIf="!treeTemplate">
-      <span
-        *ngIf="icon && showIcon"
-        [class.ant-tree-icon__open]="isSwitcherOpen"
-        [class.ant-tree-icon__close]="isSwitcherClose"
-        [class.ant-tree-icon_loading]="isLoading"
-        [class.ant-select-tree-iconEle]="selectMode"
-        [class.ant-tree-iconEle]="!selectMode"
-      >
+    @if (!treeTemplate) {
+      @if (icon && showIcon) {
         <span
+          [class.ant-tree-icon__open]="isSwitcherOpen"
+          [class.ant-tree-icon__close]="isSwitcherClose"
+          [class.ant-tree-icon_loading]="isLoading"
           [class.ant-select-tree-iconEle]="selectMode"
-          [class.ant-select-tree-icon__customize]="selectMode"
           [class.ant-tree-iconEle]="!selectMode"
-          [class.ant-tree-icon__customize]="!selectMode"
         >
-          <span nz-icon *ngIf="icon" [nzType]="icon"></span>
+          <span
+            [class.ant-select-tree-iconEle]="selectMode"
+            [class.ant-select-tree-icon__customize]="selectMode"
+            [class.ant-tree-iconEle]="!selectMode"
+            [class.ant-tree-icon__customize]="!selectMode"
+          >
+            <span nz-icon [nzType]="icon"></span>
+          </span>
         </span>
-      </span>
+      }
       <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue : 'i' : 'font-highlight'"></span>
-    </ng-container>
-    <nz-tree-drop-indicator
-      *ngIf="showIndicator"
-      [dropPosition]="dragPosition"
-      [level]="context.level"
-    ></nz-tree-drop-indicator>
+    }
+    @if (showIndicator) {
+      <nz-tree-drop-indicator [dropPosition]="dragPosition" [level]="context.level"></nz-tree-drop-indicator>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
@@ -70,7 +69,7 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
     '[class.ant-tree-node-content-wrapper-close]': `!selectMode && isSwitcherClose`,
     '[class.ant-tree-node-selected]': `!selectMode && isSelected`
   },
-  imports: [NgTemplateOutlet, NgIf, NzIconModule, NzHighlightModule, NzTreeDropIndicatorComponent],
+  imports: [NgTemplateOutlet, NzIconModule, NzHighlightModule, NzTreeDropIndicatorComponent],
   standalone: true
 })
 export class NzTreeNodeTitleComponent implements OnChanges {

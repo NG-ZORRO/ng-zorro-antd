@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-label-align',
+  standalone: true,
+  imports: [ReactiveFormsModule, NzFormModule, NzInputModule],
   template: `
-    <form nz-form [formGroup]="validateForm">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-label nzRequired nzLabelAlign="left" nzSpan="4">Left-aligned text label</nz-form-label>
         <nz-form-control nzErrorTip="Please input your username!" nzSpan="8">
-          <input formControlName="userName" nz-input placeholder="Username" />
+          <input formControlName="username" nz-input placeholder="username" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -21,14 +26,10 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
   `
 })
 export class NzDemoFormLabelAlignComponent {
-  validateForm: FormGroup<{
-    userName: FormControl<string>;
-    password: FormControl<string>;
-    remember: FormControl<boolean>;
-  }> = this.fb.group({
-    userName: ['', [Validators.required]],
-    password: ['', [Validators.required]],
-    remember: [true]
+  validateForm = this.fb.group({
+    username: this.fb.control('', [Validators.required]),
+    password: this.fb.control('', [Validators.required]),
+    remember: this.fb.control(true)
   });
 
   submitForm(): void {

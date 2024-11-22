@@ -8,6 +8,8 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 declare const monaco: any;
 
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzCodeEditorModule],
   template: `
     <nz-code-editor
       class="editor"
@@ -49,13 +51,6 @@ describe('code editor', () => {
   describe('full control', () => {
     let fixture: ComponentFixture<NzTestCodeEditorFullControlComponent>;
     let testComponent: NzTestCodeEditorFullControlComponent;
-
-    beforeEach(waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NzCodeEditorModule],
-        declarations: [NzTestCodeEditorFullControlComponent]
-      }).compileComponents();
-    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCodeEditorFullControlComponent);

@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-size',
+  standalone: true,
+  imports: [FormsModule, NzRadioModule, NzTabsModule],
   template: `
     <nz-radio-group [(ngModel)]="size">
       <label nz-radio-button nzValue="small"><span>Small</span></label>
@@ -9,7 +15,9 @@ import { Component } from '@angular/core';
       <label nz-radio-button nzValue="large"><span>Large</span></label>
     </nz-radio-group>
     <nz-tabset [nzSize]="size">
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
+      }
     </nz-tabset>
   `
 })

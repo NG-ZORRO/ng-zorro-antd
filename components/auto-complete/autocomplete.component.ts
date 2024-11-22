@@ -81,8 +81,8 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
         (@slideMotion.done)="onAnimationEvent($event)"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
       >
-        <div style="max-height: 256px; overflow-y: auto; overflow-anchor: none;">
-          <div style="display: flex; flex-direction: column;">
+        <div class="ant-select-dropdown-content-wrapper">
+          <div class="ant-select-dropdown-content">
             <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"></ng-template>
           </div>
         </div>

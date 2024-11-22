@@ -1,17 +1,18 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
-import { NzResultComponent } from './result.component';
+import { NzResultComponent, NzResultStatusType } from './result.component';
 import { NzResultModule } from './result.module';
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-basic-result',
+  standalone: true,
+  imports: [NzIconModule, NzResultModule],
   template: `
     <nz-result [nzIcon]="icon" [nzStatus]="status" [nzTitle]="title" [nzSubTitle]="subtitle" [nzExtra]="extra">
       <span nz-icon nz-result-icon nzType="up" nzTheme="outline"></span>
@@ -25,12 +26,14 @@ import { NzResultModule } from './result.module';
 export class NzTestResultBasicComponent {
   icon?: string = 'success';
   title?: string = 'Title';
-  status?: string = 'error';
+  status?: NzResultStatusType = 'error';
   subtitle?: string = 'SubTitle';
   extra?: string = 'Extra';
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTestResultBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-basic-result></nz-test-basic-result>
@@ -39,22 +42,22 @@ export class NzTestResultBasicComponent {
 })
 export class NzTestResultRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 describe('nz-result', () => {
   describe('basic', () => {
-    let testBed: ComponentBed<NzTestResultBasicComponent>;
     let fixture: ComponentFixture<NzTestResultBasicComponent>;
     let testComponent: NzTestResultBasicComponent;
     let resultEl: DebugElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestResultBasicComponent, {
-        imports: [NzResultModule, NzIconModule]
+      TestBed.configureTestingModule({
+        providers: [provideNzIconsTesting()]
       });
-      fixture = testBed.fixture;
-      testComponent = testBed.component;
+
+      fixture = TestBed.createComponent(NzTestResultBasicComponent);
+      testComponent = fixture.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzResultComponent));
     });
 
@@ -110,16 +113,15 @@ describe('nz-result', () => {
   });
 
   describe('RTL', () => {
-    let testBed: ComponentBed<NzTestResultRtlComponent>;
     let fixture: ComponentFixture<NzTestResultRtlComponent>;
     let resultEl: DebugElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestResultRtlComponent, {
-        imports: [BidiModule, NzResultModule, NzIconModule],
-        declarations: [NzTestResultBasicComponent]
+      TestBed.configureTestingModule({
+        providers: [provideNzIconsTesting()]
       });
-      fixture = testBed.fixture;
+
+      fixture = TestBed.createComponent(NzTestResultRtlComponent);
       fixture.detectChanges();
       resultEl = fixture.debugElement.query(By.directive(NzResultComponent));
     });

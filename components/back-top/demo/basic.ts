@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzBackTopModule } from 'ng-zorro-antd/back-top';
+
 @Component({
+  standalone: true,
   selector: 'nz-demo-back-top-basic',
+  imports: [NzBackTopModule],
   template: `
     <nz-back-top></nz-back-top>
     Scroll down to see the bottom-right

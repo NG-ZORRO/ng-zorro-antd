@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -20,6 +19,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { COMPOSITION_BUFFER_MODE, FormsModule } from '@angular/forms';
+
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 
 @Component({
   selector: 'nz-select-search',
@@ -39,11 +40,13 @@ import { COMPOSITION_BUFFER_MODE, FormsModule } from '@angular/forms';
       (compositionstart)="setCompositionState(true)"
       (compositionend)="setCompositionState(false)"
     />
-    <span #mirrorElement *ngIf="mirrorSync" class="ant-select-selection-search-mirror"></span>
+    @if (mirrorSync) {
+      <span #mirrorElement class="ant-select-selection-search-mirror"></span>
+    }
   `,
   host: { class: 'ant-select-selection-search' },
   providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }],
-  imports: [FormsModule, NgIf],
+  imports: [FormsModule],
   standalone: true
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
@@ -78,12 +81,14 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   }
 
   syncMirrorWidth(): void {
-    const mirrorDOM = this.mirrorElement!.nativeElement;
-    const hostDOM = this.elementRef.nativeElement;
-    const inputDOM = this.inputElement.nativeElement;
-    this.renderer.removeStyle(hostDOM, 'width');
-    this.renderer.setProperty(mirrorDOM, 'textContent', `${inputDOM.value}\u00a0`);
-    this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
+    reqAnimFrame(() => {
+      const mirrorDOM = this.mirrorElement!.nativeElement;
+      const hostDOM = this.elementRef.nativeElement;
+      const inputDOM = this.inputElement.nativeElement;
+      this.renderer.removeStyle(hostDOM, 'width');
+      this.renderer.setProperty(mirrorDOM, 'textContent', `${inputDOM.value}\u00a0`);
+      this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
+    });
   }
 
   focus(): void {

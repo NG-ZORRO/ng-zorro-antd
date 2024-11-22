@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -29,14 +29,21 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   selector: 'nz-option-item',
   template: `
     <div class="ant-select-item-option-content">
-      <ng-template [ngIf]="customContent" [ngIfElse]="noCustomContent">
+      @if (customContent) {
         <ng-template [ngTemplateOutlet]="template"></ng-template>
-      </ng-template>
-      <ng-template #noCustomContent>{{ label }}</ng-template>
+      } @else {
+        {{ label }}
+      }
     </div>
-    <div *ngIf="showState && selected" class="ant-select-item-option-state" style="user-select: none" unselectable="on">
-      <span nz-icon nzType="check" class="ant-select-selected-icon" *ngIf="!icon; else icon"></span>
-    </div>
+    @if (showState && selected) {
+      <div class="ant-select-item-option-state" unselectable="on">
+        @if (!icon) {
+          <span nz-icon nzType="check" class="ant-select-selected-icon"></span>
+        } @else {
+          <ng-template [ngTemplateOutlet]="icon"></ng-template>
+        }
+      </div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -49,7 +56,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-select-item-option-active]': 'activated && !disabled'
   },
   providers: [NzDestroyService],
-  imports: [NgIf, NgTemplateOutlet, NzIconModule],
+  imports: [NgTemplateOutlet, NzIconModule],
   standalone: true
 })
 export class NzOptionItemComponent implements OnChanges, OnInit {

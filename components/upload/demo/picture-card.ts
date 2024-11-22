@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
-import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 
 const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
   new Promise((resolve, reject) => {
@@ -12,31 +14,31 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
 
 @Component({
   selector: 'nz-demo-upload-picture-card',
+  standalone: true,
+  imports: [NzIconModule, NzModalModule, NzUploadModule],
   template: `
-    <div class="clearfix">
-      <nz-upload
-        nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        nzListType="picture-card"
-        [(nzFileList)]="fileList"
-        [nzShowButton]="fileList.length < 8"
-        [nzPreview]="handlePreview"
-      >
-        <div>
-          <span nz-icon nzType="plus"></span>
-          <div style="margin-top: 8px">Upload</div>
-        </div>
-      </nz-upload>
-      <nz-modal
-        [nzVisible]="previewVisible"
-        [nzContent]="modalContent"
-        [nzFooter]="null"
-        (nzOnCancel)="previewVisible = false"
-      >
-        <ng-template #modalContent>
-          <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-        </ng-template>
-      </nz-modal>
-    </div>
+    <nz-upload
+      nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      nzListType="picture-card"
+      [(nzFileList)]="fileList"
+      [nzShowButton]="fileList.length < 8"
+      [nzPreview]="handlePreview"
+    >
+      <div>
+        <span nz-icon nzType="plus"></span>
+        <div style="margin-top: 8px">Upload</div>
+      </div>
+    </nz-upload>
+    <nz-modal
+      [nzVisible]="previewVisible"
+      [nzContent]="modalContent"
+      [nzFooter]="null"
+      (nzOnCancel)="previewVisible = false"
+    >
+      <ng-template #modalContent>
+        <img [src]="previewImage" style="width: 100%" />
+      </ng-template>
+    </nz-modal>
   `
 })
 export class NzDemoUploadPictureCardComponent {

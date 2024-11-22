@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { endOfMonth } from 'date-fns';
 
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+
 @Component({
   selector: 'nz-demo-date-picker-presetted-ranges',
+  standalone: true,
+  imports: [FormsModule, NzDatePickerModule],
   template: `
     <nz-range-picker [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
     <br />

@@ -1,10 +1,13 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
+import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 interface ItemData {
   gender: string;
@@ -20,6 +23,8 @@ interface Name {
 
 @Component({
   selector: 'nz-demo-list-infinite-load',
+  standalone: true,
+  imports: [CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf, NzListModule, NzSkeletonModule],
   template: `
     <div>
       <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">

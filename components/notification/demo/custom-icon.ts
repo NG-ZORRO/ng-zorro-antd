@@ -1,9 +1,13 @@
 import { Component, TemplateRef } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-custom-icon',
+  standalone: true,
+  imports: [NzIconModule, NzButtonModule],
   template: `
     <ng-template #template>
       <div class="ant-notification-notice-content">
@@ -19,15 +23,13 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
         </div>
       </div>
     </ng-template>
-    <button nz-button [nzType]="'primary'" (click)="createBasicNotification(template)">
-      Open the notification box
-    </button>
+    <button nz-button nzType="primary" (click)="createNotification(template)">Open the notification box</button>
   `
 })
 export class NzDemoNotificationCustomIconComponent {
   constructor(private notification: NzNotificationService) {}
 
-  createBasicNotification(template: TemplateRef<{}>): void {
+  createNotification(template: TemplateRef<{}>): void {
     this.notification.template(template);
   }
 }

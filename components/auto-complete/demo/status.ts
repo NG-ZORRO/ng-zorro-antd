@@ -1,7 +1,14 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
+  standalone: true,
   selector: 'nz-demo-auto-complete-status',
+  imports: [FormsModule, NzAutocompleteModule, NzInputModule, NzSpaceModule],
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-space nzDirection="vertical" style="width: 100%">

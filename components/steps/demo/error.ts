@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+
 @Component({
   selector: 'nz-demo-steps-error',
+  standalone: true,
+  imports: [NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1" nzStatus="error">
       <nz-step nzTitle="Finished" nzDescription="This is a description."></nz-step>

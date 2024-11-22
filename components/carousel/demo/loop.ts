@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+
 @Component({
   selector: 'nz-demo-carousel-loop',
+  standalone: true,
+  imports: [NzCarouselModule],
   template: `
     <nz-carousel nzAutoPlay [nzEffect]="effect" [nzLoop]="false">
       @for (index of array; track index) {

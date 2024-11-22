@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf, NgIf, NgClass } from '@angular/common';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 import { DateHelperService } from 'ng-zorro-antd/i18n';
@@ -11,6 +11,7 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
 import { transCompatFormat } from './util';
+import { NzDateMode } from '../standard-types';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -22,6 +23,8 @@ import { transCompatFormat } from './util';
   imports: [NgForOf, NgIf, NgClass]
 })
 export class DateHeaderComponent extends AbstractPanelHeader {
+  override mode: NzDateMode = 'date';
+
   constructor(private dateHelper: DateHelperService) {
     super();
   }
@@ -31,13 +34,19 @@ export class DateHeaderComponent extends AbstractPanelHeader {
       {
         className: `${this.prefixCls}-year-btn`,
         title: this.locale.yearSelect,
-        onClick: () => this.changeMode('year'),
+        onClick: () => {
+          this.mode = 'year';
+          this.changeMode('year');
+        },
         label: this.dateHelper.format(this.value.nativeDate, transCompatFormat(this.locale.yearFormat))
       },
       {
         className: `${this.prefixCls}-month-btn`,
         title: this.locale.monthSelect,
-        onClick: () => this.changeMode('month'),
+        onClick: () => {
+          this.mode = 'month';
+          this.changeMode('month');
+        },
         label: this.dateHelper.format(this.value.nativeDate, this.locale.monthFormat || 'MMM')
       }
     ];

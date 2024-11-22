@@ -1,36 +1,17 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { createMouseEvent } from 'ng-zorro-antd/core/testing';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 import { NzRadioGroupComponent } from './radio-group.component';
 import { NzRadioComponent } from './radio.component';
 import { NzRadioModule } from './radio.module';
 
 describe('radio', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzRadioModule, FormsModule, ReactiveFormsModule],
-      declarations: [
-        NzTestRadioSingleComponent,
-        NzTestRadioButtonComponent,
-        NzTestRadioGroupComponent,
-        NzTestRadioFormComponent,
-        NzTestRadioGroupFormComponent,
-        NzTestRadioGroupDisabledComponent,
-        NzTestRadioGroupDisabledFormComponent,
-        NzTestRadioGroupLabelNgModelComponent,
-        NzTestRadioGroupSolidComponent,
-        NzTestRadioSingleRtlComponent,
-        NzTestRadioGroupRtlComponent,
-        NzTestRadioButtonRtlComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
   describe('single radio basic', () => {
     let fixture: ComponentFixture<NzTestRadioSingleComponent>;
     let testComponent: NzTestRadioSingleComponent;
@@ -432,8 +413,9 @@ describe('radio', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-radio-single',
+  standalone: true,
+  imports: [FormsModule, NzRadioModule],
   template: `
     <label
       nz-radio
@@ -455,13 +437,16 @@ export class NzTestRadioSingleComponent {
 }
 
 @Component({
-  template: ` <label nz-radio-button>Radio</label> `
+  standalone: true,
+  imports: [FormsModule, NzRadioModule],
+  template: `<label nz-radio-button>Radio</label>`
 })
 export class NzTestRadioButtonComponent {}
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-radio-group',
+  standalone: true,
+  imports: [FormsModule, NzRadioModule],
   template: `
     <nz-radio-group
       [(ngModel)]="value"
@@ -470,24 +455,24 @@ export class NzTestRadioButtonComponent {}
       (ngModelChange)="modelChange($event)"
       [nzSize]="size"
     >
-      <ng-container [ngClass]>
-        <label nz-radio-button nzValue="A">A</label>
-        <label nz-radio-button nzValue="B">B</label>
-        <label nz-radio-button nzValue="C">C</label>
-        <label nz-radio-button nzValue="D">D</label>
-      </ng-container>
+      <label nz-radio-button nzValue="A">A</label>
+      <label nz-radio-button nzValue="B">B</label>
+      <label nz-radio-button nzValue="C">C</label>
+      <label nz-radio-button nzValue="D">D</label>
     </nz-radio-group>
   `
 })
 export class NzTestRadioGroupComponent {
-  size = 'default';
+  size: NzSizeLDSType = 'default';
   value = 'A';
   disabled = false;
-  name?: string;
+  name!: string;
   modelChange = jasmine.createSpy('change callback');
 }
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzRadioModule],
   template: `
     <form>
       <label nz-radio [formControl]="formControl" [nzDisabled]="disabled"></label>
@@ -509,6 +494,8 @@ export class NzTestRadioFormComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzRadioModule],
   template: `
     <form>
       <nz-radio-group [formControl]="formControl" [nzDisabled]="nzDisabled">
@@ -534,9 +521,10 @@ export class NzTestRadioGroupFormComponent {
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1543 **/
-/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1734 **/
 
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" [nzSize]="size">
       <label nz-radio-button nzValue="A">A</label>
@@ -547,17 +535,19 @@ export class NzTestRadioGroupFormComponent {
   `
 })
 export class NzTestRadioGroupDisabledComponent {
-  size = 'default';
+  size: NzSizeLDSType = 'default';
   value = 'A';
   disabled = false;
-  name?: string;
+  name!: string;
   singleDisabled = false;
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1735 **/
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzRadioModule],
   template: `
-    <form nz-form>
+    <form>
       <nz-radio-group [formControl]="formControl">
         @for (val of radioValues; track val) {
           <label nz-radio [nzValue]="val">{{ val }}</label>
@@ -572,8 +562,10 @@ export class NzTestRadioGroupDisabledFormComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzRadioModule],
   template: `
-    <nz-radio-group [(ngModel)]="value" [nzButtonStyle]="'solid'">
+    <nz-radio-group [(ngModel)]="value" nzButtonStyle="solid">
       <label nz-radio-button nzValue="A">A</label>
       <label nz-radio-button nzValue="B">B</label>
       <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled">C</label>
@@ -588,6 +580,8 @@ export class NzTestRadioGroupSolidComponent {
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/7254 */
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzRadioModule],
   template: `
     <nz-radio-group>
       @for (item of items; track item) {
@@ -620,6 +614,8 @@ export class NzTestRadioGroupLabelNgModelComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTestRadioSingleComponent],
   template: `
     <div [dir]="direction">
       <nz-test-radio-single></nz-test-radio-single>
@@ -628,10 +624,12 @@ export class NzTestRadioGroupLabelNgModelComponent {
 })
 export class NzTestRadioSingleRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzRadioModule],
   template: `
     <div [dir]="direction">
       <label nz-radio-button>Radio</label>
@@ -640,10 +638,12 @@ export class NzTestRadioSingleRtlComponent {
 })
 export class NzTestRadioButtonRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTestRadioGroupComponent],
   template: `
     <div [dir]="direction">
       <nz-test-radio-group></nz-test-radio-group>
@@ -652,5 +652,5 @@ export class NzTestRadioButtonRtlComponent {
 })
 export class NzTestRadioGroupRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

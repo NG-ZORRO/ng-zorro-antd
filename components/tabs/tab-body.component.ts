@@ -3,16 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf, NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  TemplateRef,
-  ViewEncapsulation
-} from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
 
@@ -22,11 +14,7 @@ import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ng-container *ngIf="hasBeenActive || forceRender">
-      <ng-template [ngTemplateOutlet]="content"></ng-template>
-    </ng-container>
-  `,
+  template: ` <ng-template [ngTemplateOutlet]="content"></ng-template> `,
   host: {
     class: 'ant-tabs-tabpane',
     '[class.ant-tabs-tabpane-active]': 'active',
@@ -37,25 +25,12 @@ import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
     '[@tabSwitchMotion]': `active ? 'enter' : 'leave'`,
     '[@.disabled]': `!animated`
   },
-  imports: [NgIf, NgTemplateOutlet],
+  imports: [NgTemplateOutlet],
   standalone: true,
   animations: [tabSwitchMotion]
 })
-export class NzTabBodyComponent implements OnChanges {
+export class NzTabBodyComponent {
   @Input() content: TemplateRef<void> | null = null;
   @Input() active = false;
   @Input() animated = true;
-  @Input() forceRender = false;
-
-  /**
-   * If this tab is ever activated, then the content should always be rendered.
-   */
-  protected hasBeenActive = false;
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const { active } = changes;
-    if (active?.currentValue) {
-      this.hasBeenActive = true;
-    }
-  }
 }

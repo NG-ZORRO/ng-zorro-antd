@@ -1,15 +1,21 @@
 import { Component } from '@angular/core';
 
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-tabs-card-top',
+  standalone: true,
+  imports: [NzTabsModule],
   template: `
     <div class="card-container">
       <nz-tabset nzType="card">
-        <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab Title ' + tab">
-          <p>Content of Tab Pane {{ tab }}</p>
-          <p>Content of Tab Pane {{ tab }}</p>
-          <p>Content of Tab Pane {{ tab }}</p>
-        </nz-tab>
+        @for (tab of tabs; track tab) {
+          <nz-tab [nzTitle]="'Tab Title ' + tab">
+            <p>Content of Tab Pane {{ tab }}</p>
+            <p>Content of Tab Pane {{ tab }}</p>
+            <p>Content of Tab Pane {{ tab }}</p>
+          </nz-tab>
+        }
       </nz-tabset>
     </div>
   `,

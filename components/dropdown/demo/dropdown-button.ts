@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: 'nz-demo-dropdown-dropdown-button',
+  standalone: true,
+  imports: [NzButtonModule, NzDropDownModule, NzIconModule],
   template: `
     <nz-button-group>
       <button nz-button (click)="log()">DropDown</button>

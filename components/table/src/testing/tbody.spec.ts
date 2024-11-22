@@ -1,18 +1,10 @@
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzTableModule } from '../table.module';
-import { NzTbodyComponent } from '../table/tbody.component';
+import { NzTableModule, NzTbodyComponent } from 'ng-zorro-antd/table';
 
 describe('nz-tbody', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzTableModule],
-      declarations: [NzTbodyTestTableComponent, NzTbodyTestNzTableComponent]
-    });
-    TestBed.compileComponents();
-  }));
   describe('nz-tbody in table', () => {
     let fixture: ComponentFixture<NzTbodyTestTableComponent>;
     let tbody: DebugElement;
@@ -46,6 +38,8 @@ describe('nz-tbody', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <table>
       <tbody></tbody>
@@ -55,6 +49,8 @@ describe('nz-tbody', () => {
 export class NzTbodyTestTableComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table>
       <tbody></tbody>

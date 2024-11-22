@@ -13,7 +13,7 @@ import {
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import { Platform, _getEventTarget } from '@angular/cdk/platform';
-import { NgIf, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -124,27 +124,28 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
-    <nz-select-arrow
-      *ngIf="nzShowArrow || (hasFeedback && !!status) || isMaxTagCountSet"
-      [showArrow]="nzShowArrow"
-      [loading]="nzLoading"
-      [search]="nzOpen && nzShowSearch"
-      [suffixIcon]="nzSuffixIcon"
-      [feedbackIcon]="feedbackIconTpl"
-      [nzMaxMultipleCount]="nzMaxMultipleCount"
-      [listOfValue]="listOfValue"
-      [isMaxTagCountSet]="isMaxTagCountSet"
-    >
-      <ng-template #feedbackIconTpl>
-        <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
-      </ng-template>
-    </nz-select-arrow>
+    @if (nzShowArrow || (hasFeedback && !!status) || isMaxTagCountSet) {
+      <nz-select-arrow
+        [showArrow]="nzShowArrow"
+        [loading]="nzLoading"
+        [search]="nzOpen && nzShowSearch"
+        [suffixIcon]="nzSuffixIcon"
+        [feedbackIcon]="feedbackIconTpl"
+        [nzMaxMultipleCount]="nzMaxMultipleCount"
+        [listOfValue]="listOfValue"
+        [isMaxTagCountSet]="isMaxTagCountSet"
+      >
+        <ng-template #feedbackIconTpl>
+          @if (hasFeedback && !!status) {
+            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+          }
+        </ng-template>
+      </nz-select-arrow>
+    }
 
-    <nz-select-clear
-      *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
-      [clearIcon]="nzClearIcon"
-      (clear)="onClearSelection()"
-    ></nz-select-clear>
+    @if (nzAllowClear && !nzDisabled && listOfValue.length) {
+      <nz-select-clear [clearIcon]="nzClearIcon" (clear)="onClearSelection()"></nz-select-clear>
+    }
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
@@ -208,7 +209,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     CdkOverlayOrigin,
     NzNoAnimationDirective,
     NzSelectArrowComponent,
-    NgIf,
     NzFormPatchModule,
     NzSelectClearComponent,
     CdkConnectedOverlay,
@@ -224,7 +224,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
-  @Input() @WithConfig<number>() nzOptionHeightPx = 32;
+  @Input() @WithConfig() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string[] | string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
@@ -236,7 +236,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
   @Input()
-  @WithConfig<TemplateRef<NzSafeAny> | string | null>()
+  @WithConfig()
   nzSuffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
@@ -248,7 +248,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input({ transform: booleanAttribute }) nzAllowClear = false;
-  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBorderless = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBorderless = false;
   @Input({ transform: booleanAttribute }) nzShowSearch = false;
   @Input({ transform: booleanAttribute }) nzLoading = false;
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
@@ -257,7 +257,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzOpen = false;
   @Input({ transform: booleanAttribute }) nzSelectOnTab = false;
-  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
 
   @Input({ transform: booleanAttribute })

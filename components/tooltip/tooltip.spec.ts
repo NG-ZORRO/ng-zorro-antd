@@ -1,28 +1,28 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzElementPatchModule } from 'ng-zorro-antd/core/element-patch';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 import { NzTooltipDirective } from './tooltip';
 import { NzToolTipModule } from './tooltip.module';
 
 describe('nz-tooltip', () => {
-  let testBed: ComponentBed<NzTooltipTestComponent>;
   let fixture: ComponentFixture<NzTooltipTestComponent>;
   let component: NzTooltipTestComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzTooltipTestComponent, {
-      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule]
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
     });
+    fixture = TestBed.createComponent(NzTooltipTestComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   }));
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -48,12 +48,6 @@ describe('nz-tooltip', () => {
     tick(1000);
     fixture.detectChanges();
   }
-
-  beforeEach(() => {
-    fixture = testBed.fixture;
-    component = testBed.component;
-    fixture.detectChanges();
-  });
 
   describe('visibility', () => {
     it('should hover mode work', fakeAsync(() => {
@@ -281,7 +275,7 @@ describe('nz-tooltip', () => {
     it('should support changing position', fakeAsync(() => {
       const tooltipComponent = component.titleStringDirective.component!;
 
-      // here we just making sure the preferred position is the first in the position array
+      // here we just make sure the preferred position is the first in the position array
       expect(tooltipComponent._positions.length).toBe(5);
     }));
 
@@ -320,14 +314,15 @@ describe('nz-tooltip', () => {
 });
 
 describe('origin', () => {
-  let testBed: ComponentBed<NzTestTooltipTargetComponent>;
   let component: NzTestTooltipTargetComponent;
 
   beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzTestTooltipTargetComponent, {
-      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule, NzElementPatchModule]
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
     });
-    component = testBed.component;
+    const fixture = TestBed.createComponent(NzTestTooltipTargetComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   }));
 
   it('should target work', () => {
@@ -336,14 +331,15 @@ describe('origin', () => {
 });
 
 describe('arrow', () => {
-  let testBed: ComponentBed<NzTestTooltipArrowComponent>;
   let component: NzTestTooltipArrowComponent;
 
   beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzTestTooltipArrowComponent, {
-      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule, NzElementPatchModule]
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
     });
-    component = testBed.component;
+    const fixture = TestBed.createComponent(NzTestTooltipArrowComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   }));
 
   it('should support arrow pointing at center', () => {
@@ -363,6 +359,8 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
 }
 
 @Component({
+  standalone: true,
+  imports: [NzToolTipModule],
   template: `
     <a
       #titleString
@@ -445,33 +443,32 @@ export class NzTooltipTestComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzElementPatchModule, NzToolTipModule],
   template: `
-    <button nz-button nz-element #button="nzElement">Action</button>
+    <button nz-element #button="nzElement">Action</button>
     <a nz-tooltip nzTooltipTitle="This action could not be revoked!" [nzTooltipOrigin]="button.elementRef">Notice</a>
-  `,
-  styles: [
-    `
-      button {
-        margin-right: 8px;
-      }
-    `
-  ]
+  `
 })
 export class NzTestTooltipTargetComponent {
   @ViewChild(NzTooltipDirective) tooltip?: NzTooltipDirective;
 }
 
 @Component({
-  template: ` <a
-    #titleString
-    nz-tooltip
-    [nzTooltipVisible]="true"
-    nzTooltipTitle="Title"
-    nzTooltipPlacement="bottomLeft"
-    [nzTooltipArrowPointAtCenter]="true"
-  >
-    Tooltip
-  </a>`
+  standalone: true,
+  imports: [NzToolTipModule],
+  template: `
+    <a
+      #titleString
+      nz-tooltip
+      [nzTooltipVisible]="true"
+      nzTooltipTitle="Title"
+      nzTooltipPlacement="bottomLeft"
+      [nzTooltipArrowPointAtCenter]="true"
+    >
+      Tooltip
+    </a>
+  `
 })
 export class NzTestTooltipArrowComponent {
   @ViewChild('titleString', { static: false, read: NzTooltipDirective }) tooltipDirective!: NzTooltipDirective;

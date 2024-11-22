@@ -16,19 +16,19 @@ title:
 ```ts
 import { environment } from 'environments/environment';
 
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { aliObjectsLoader, defaultImageSrcLoader } from 'ng-zorro-antd/experimental/image';
 
-const ngZorroConfig: NzConfig = {
+const nzConfig: NzConfig = {
   imageExperimental: {
     nzSrcLoader: environment.production ? aliObjectsLoader : defaultImageSrcLoader
   }
 };
 
 @NgModule({
-  ...
+  // ...
   providers: [
-    { provide: NZ_CONFIG, useValue: ngZorroConfig }
+    provideNzConfig(nzConfig)
   ]
 })
 export class AppModule {}
@@ -45,19 +45,19 @@ If you want to use a different Loader in a different environment you can do the 
 ```ts
 import { environment } from 'environments/environment';
 
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { createAliObjectsLoader, defaultImageSrcLoader } from 'ng-zorro-antd/experimental/image';
 
-const ngZorroConfig: NzConfig = {
+const nzConfig: NzConfig = {
   imageExperimental: {
     nzSrcLoader: environment.production ? createAliObjectsLoader('https://zos.alipayobjects.com/rmsportal') : defaultImageSrcLoader
   }
 };
 
 @NgModule({
-  ...
+  // ...
   providers: [
-    { provide: NZ_CONFIG, useValue: ngZorroConfig }
+    provideNzConfig(nzConfig)
   ]
 })
 export class AppModule {}

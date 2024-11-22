@@ -1,10 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+
+interface MockUser {
+  name: {
+    first: string;
+  };
+}
+
 @Component({
   selector: 'nz-demo-select-select-users',
+  standalone: true,
+  imports: [FormsModule, NzIconModule, NzSelectModule],
   template: `
     <nz-select
       nzMode="multiple"
@@ -15,13 +27,16 @@ import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
       [(ngModel)]="selectedUser"
       (nzOnSearch)="onSearch($event)"
     >
-      <ng-container *ngFor="let o of optionList">
-        <nz-option *ngIf="!isLoading" [nzValue]="o" [nzLabel]="o"></nz-option>
-      </ng-container>
-      <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
-        <span nz-icon nzType="loading" class="loading-icon"></span>
-        Loading Data...
-      </nz-option>
+      @if (!loading) {
+        @for (o of optionList; track o) {
+          <nz-option [nzValue]="o" [nzLabel]="o"></nz-option>
+        }
+      } @else {
+        <nz-option nzDisabled nzCustomContent>
+          <span nz-icon nzType="loading" class="loading-icon"></span>
+          Loading Data...
+        </nz-option>
+      }
     </nz-select>
   `,
   styles: [
@@ -41,32 +56,32 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
   searchChange$ = new BehaviorSubject('');
   optionList: string[] = [];
   selectedUser?: string;
-  isLoading = false;
+  loading = false;
 
   onSearch(value: string): void {
-    this.isLoading = true;
+    this.loading = true;
     this.searchChange$.next(value);
   }
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    const getRandomNameList = (name: string): Observable<any> =>
-      this.http
-        .get(`${this.randomUserUrl}`)
-        .pipe(
-          catchError(() => of({ results: [] })),
-          map((res: any) => res.results)
-        )
-        .pipe(map((list: any) => list.map((item: any) => `${item.name.first} ${name}`)));
-    const optionList$: Observable<string[]> = this.searchChange$
-      .asObservable()
-      .pipe(debounceTime(500))
-      .pipe(switchMap(getRandomNameList));
-    optionList$.subscribe(data => {
-      this.optionList = data;
-      this.isLoading = false;
-    });
+    this.searchChange$
+      .pipe(
+        debounceTime(500),
+        switchMap(name => this.getRandomNameList(name))
+      )
+      .subscribe(data => {
+        this.optionList = data;
+        this.loading = false;
+      });
+  }
+
+  getRandomNameList(name: string): Observable<string[]> {
+    return this.http.get<{ results: MockUser[] }>(`${this.randomUserUrl}`).pipe(
+      map(res => res.results),
+      catchError(() => of<MockUser[]>([])),
+      map(list => list.map(item => `${item.name.first} ${name}`))
+    );
   }
 }

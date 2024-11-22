@@ -1,30 +1,13 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzI18nService } from 'ng-zorro-antd/i18n';
-import { NzTableComponent } from 'ng-zorro-antd/table';
-
-import en_US from '../../../i18n/languages/en_US';
-import { NzTableModule } from '../table.module';
+import en_US from 'ng-zorro-antd/i18n/languages/en_US';
+import { NzTableComponent, NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
 
 describe('nz-table', () => {
-  let injector: Injector;
-
-  beforeEach(waitForAsync(() => {
-    injector = TestBed.configureTestingModule({
-      imports: [BidiModule, NzTableModule],
-      declarations: [
-        NzTestTableBasicComponent,
-        NzTestTableScrollComponent,
-        NzTableSpecCrashComponent,
-        NzTestTableRtlComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
-
   describe('basic nz-table', () => {
     let fixture: ComponentFixture<NzTestTableBasicComponent>;
     let testComponent: NzTestTableBasicComponent;
@@ -36,10 +19,12 @@ describe('nz-table', () => {
       testComponent = fixture.debugElement.componentInstance;
       table = fixture.debugElement.query(By.directive(NzTableComponent));
     });
+
     it('should className correct', () => {
       fixture.detectChanges();
       expect(table.nativeElement.classList).toContain('ant-table-wrapper');
     });
+
     it('should pageIndex set work', () => {
       fixture.detectChanges();
       expect(testComponent.pageIndex).toBe(1);
@@ -50,6 +35,7 @@ describe('nz-table', () => {
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
       expect(table.nativeElement.querySelector('.ant-pagination-item-active').innerText).toBe('2');
     });
+
     it('should pageIndex click work', () => {
       fixture.detectChanges();
       expect(testComponent.pageIndex).toBe(1);
@@ -60,6 +46,7 @@ describe('nz-table', () => {
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
       expect(table.nativeElement.querySelector('.ant-pagination-item-active').innerText).toBe('2');
     });
+
     it('should pageSize change work', () => {
       fixture.detectChanges();
       expect(testComponent.pageSize).toBe(10);
@@ -72,6 +59,7 @@ describe('nz-table', () => {
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
     });
+
     it('should pageSize change check pageIndex bounding', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.pageSize).toBe(10);
@@ -98,6 +86,7 @@ describe('nz-table', () => {
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
       testComponent.nzTableComponent.ngOnDestroy();
     }));
+
     it('should nzData change check pageIndex bounding', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.pageSize).toBe(10);
@@ -124,6 +113,7 @@ describe('nz-table', () => {
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
       testComponent.nzTableComponent.ngOnDestroy();
     }));
+
     it('should pagination simple work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination-simple')).toBeNull();
@@ -131,6 +121,7 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination-simple')).toBeDefined();
     });
+
     it('should pagination work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination')).toBeDefined();
@@ -141,6 +132,7 @@ describe('nz-table', () => {
       expect(table.nativeElement.querySelector('.ant-pagination')).toBeNull();
       expect(table.nativeElement.querySelectorAll('.ant-table-tbody tr').length).toBe(20);
     });
+
     it('should bordered work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table').classList).not.toContain('ant-table-bordered');
@@ -148,12 +140,7 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table-bordered');
     });
-    it('should emitPageSize work', () => {
-      // fixture.detectChanges();
-      // expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(0);
-      // testComponent.nzTableComponent.emitPageSizeOrIndex(100, 1);
-      // expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(1);
-    });
+
     it('should size work', () => {
       fixture.detectChanges();
       expect(testComponent.size).toBe('small');
@@ -165,6 +152,7 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table').classList).toContain('ant-table');
     });
+
     it('should footer & title work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table-title').innerText).toBe('Here is Title');
@@ -175,6 +163,7 @@ describe('nz-table', () => {
       expect(table.nativeElement.querySelector('.ant-table-title')).toBeNull();
       expect(table.nativeElement.querySelector('.ant-table-footer')).toBeNull();
     });
+
     it('should noResult work', () => {
       testComponent.dataSet = [];
       fixture.detectChanges();
@@ -183,12 +172,14 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText).toBe('test');
     });
+
     it('should fixed header work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table-scroll')).toBe(null);
       testComponent.fixHeader = true;
       expect(table.nativeElement.querySelector('.ant-table-scroll')).toBeDefined();
     });
+
     it('should width config', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelectorAll('col').length).toBe(4);
@@ -197,6 +188,7 @@ describe('nz-table', () => {
       expect(table.nativeElement.querySelectorAll('col')[0].style.width).toBe('100px');
       expect(table.nativeElement.querySelectorAll('col')[1].style.width).toBe('50px');
     });
+
     it('should showQuickJumper & showSizeChanger work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination-options-quick-jumper')).toBe(null);
@@ -206,6 +198,7 @@ describe('nz-table', () => {
       expect(table.nativeElement.querySelector('.ant-pagination-options-quick-jumper')).toBeDefined();
       expect(table.nativeElement.querySelector('.ant-pagination-options-size-changer')).toBeDefined();
     });
+
     it('should hideOnSinglePage work', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination').children.length).not.toBe(0);
@@ -214,6 +207,7 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination[hidden]')).not.toBeNull();
     });
+
     it('should showPagination work with nzFrontPagination and hideOnSinglePage', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination').children.length).not.toBe(0);
@@ -223,15 +217,17 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-pagination').children.length).not.toBe(0);
     });
-    it('#18n', () => {
+
+    it('i18n', () => {
       testComponent.dataSet = [];
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText.trim()).toBe('暂无数据');
-      injector.get(NzI18nService).setLocale(en_US);
+      TestBed.inject(NzI18nService).setLocale(en_US);
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText.trim()).toBe('No Data');
     });
   });
+
   describe('scroll nz-table', () => {
     let fixture: ComponentFixture<NzTestTableScrollComponent>;
     let testComponent: NzTestTableScrollComponent;
@@ -243,6 +239,7 @@ describe('nz-table', () => {
       testComponent = fixture.debugElement.componentInstance;
       table = fixture.debugElement.query(By.directive(NzTableComponent));
     });
+
     it('should change width affect scroll', () => {
       fixture.detectChanges();
       testComponent.width = 1000;
@@ -252,6 +249,7 @@ describe('nz-table', () => {
       expect(tableBody.scrollWidth).toBe(tableBody.clientWidth);
     });
   });
+
   describe('double binding nz-table', () => {
     let fixture: ComponentFixture<NzTableSpecCrashComponent>;
     let testComponent: NzTableSpecCrashComponent;
@@ -300,11 +298,17 @@ interface BasicTestDataItem {
   expand?: boolean;
 }
 
+interface NzPageSizeChangeFn {
+  (pageSize: number): void;
+}
+
 @Component({
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table
       #dynamicTable
-      [nzScroll]="fixHeader ? { y: '240px' } : null"
+      [nzScroll]="fixHeader ? { y: '240px' } : {}"
       [(nzPageIndex)]="pageIndex"
       (nzPageIndexChange)="pageIndexChange($event)"
       [(nzPageSize)]="pageSize"
@@ -324,16 +328,18 @@ interface BasicTestDataItem {
       [nzTitle]="title ? 'Here is Title' : null"
       [nzSize]="size"
     >
-      <thead *ngIf="header">
-        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Address</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+      @if (header) {
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Address</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+      }
       <tbody>
-        <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+        @for (data of dynamicTable.data; track data.age) {
           <tr>
             <td>{{ data.name }}</td>
             <td>{{ data.age }}</td>
@@ -343,7 +349,7 @@ interface BasicTestDataItem {
               <a href="#">Delete</a>
             </td>
           </tr>
-        </ng-template>
+        }
       </tbody>
     </nz-table>
   `
@@ -351,9 +357,9 @@ interface BasicTestDataItem {
 export class NzTestTableBasicComponent implements OnInit {
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<BasicTestDataItem>;
   pageIndex = 1;
-  pageIndexChange = jasmine.createSpy('pageIndex callback');
+  pageIndexChange = jasmine.createSpy<NzPageSizeChangeFn>('pageIndex callback');
   pageSize = 10;
-  pageSizeChange = jasmine.createSpy('pageSize callback');
+  pageSizeChange = jasmine.createSpy<NzPageSizeChangeFn>('pageSize callback');
   dataSet: BasicTestDataItem[] = [];
   noResult = '';
   showSizeChanger = false;
@@ -368,7 +374,7 @@ export class NzTestTableBasicComponent implements OnInit {
   front = true;
   fixHeader = false;
   simple = false;
-  size = 'small';
+  size: NzTableSize = 'small';
   widthConfig: string[] = [];
 
   ngOnInit(): void {
@@ -392,6 +398,8 @@ interface ScrollTestDataItem {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <div style="display: block;" [style.width.px]="width">
       <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x: '600px', y: '240px' }">
@@ -411,21 +419,23 @@ interface ScrollTestDataItem {
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of nzTable.data">
-            <td>{{ data.name }}</td>
-            <td>{{ data.age }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>{{ data.address }}</td>
-            <td>
-              <a>action</a>
-            </td>
-          </tr>
+          @for (data of nzTable.data; track data) {
+            <tr>
+              <td>{{ data.name }}</td>
+              <td>{{ data.age }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>{{ data.address }}</td>
+              <td>
+                <a>action</a>
+              </td>
+            </tr>
+          }
         </tbody>
       </nz-table>
     </div>
@@ -454,13 +464,15 @@ export class NzTestTableScrollComponent implements OnInit {
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3004 **/
 @Component({
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table
       #nzTable
       [nzData]="data"
       [(nzPageIndex)]="pageIndex"
       [(nzPageSize)]="pageSize"
-      (nzPageIndexChange)="(pageIndexChange)"
+      (nzPageIndexChange)="pageIndexChange($event)"
     >
       <thead>
         <tr>
@@ -469,12 +481,12 @@ export class NzTestTableScrollComponent implements OnInit {
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let item of nzTable.data">
+        @for (item of nzTable.data; track item) {
           <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
           </tr>
-        </ng-container>
+        }
       </tbody>
     </nz-table>
   `
@@ -483,7 +495,7 @@ export class NzTableSpecCrashComponent {
   data: Array<{ id: number; name: string }> = [];
   pageIndex = 1;
   pageSize = 10;
-  pageIndexChange = jasmine.createSpy('pageSize callback');
+  pageIndexChange = jasmine.createSpy<NzPageSizeChangeFn>('pageSize callback');
 
   constructor() {
     setTimeout(() => {
@@ -505,19 +517,23 @@ interface RtlTestDataItem {
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTableModule],
   template: `
     <div [dir]="direction">
       <nz-table #dynamicTable [nzData]="dataSet" [nzSimple]="simple">
-        <thead *ngIf="header">
-          <tr>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Address</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+        @if (header) {
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Address</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+        }
         <tbody>
-          <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+          @for (data of dynamicTable.data; track data) {
             <tr>
               <td>{{ data.name }}</td>
               <td>{{ data.age }}</td>
@@ -527,7 +543,7 @@ interface RtlTestDataItem {
                 <a href="#">Delete</a>
               </td>
             </tr>
-          </ng-template>
+          }
         </tbody>
       </nz-table>
     </div>
@@ -535,7 +551,7 @@ interface RtlTestDataItem {
 })
 export class NzTestTableRtlComponent implements OnInit {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<RtlTestDataItem>;
   pageIndex = 1;

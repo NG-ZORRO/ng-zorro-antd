@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzGridModule } from 'ng-zorro-antd/grid';
+
 @Component({
   selector: 'nz-demo-grid-responsive',
+  standalone: true,
+  imports: [NzGridModule],
   template: `
     <div nz-row>
       <div nz-col nzXs="2" nzSm="4" nzMd="6" nzLg="8" nzXl="10">Col</div>

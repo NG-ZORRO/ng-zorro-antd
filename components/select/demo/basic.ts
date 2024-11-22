@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-basic',
+  standalone: true,
+  imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select ngModel="lucy">
       <nz-option nzValue="jack" nzLabel="Jack"></nz-option>

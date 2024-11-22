@@ -1,17 +1,14 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigService, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
-import { NzMessageModule } from './message.module';
 import { NzMessageService } from './message.service';
 
 describe('message', () => {
-  let testBed: ComponentBed<NzTestMessageComponent>;
   let messageService: NzMessageService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
@@ -20,23 +17,12 @@ describe('message', () => {
   let configService: NzConfigService;
 
   beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzTestMessageComponent, {
-      imports: [NzMessageModule, NoopAnimationsModule],
-      providers: [
-        {
-          provide: NZ_CONFIG,
-          useValue: {
-            message: {
-              nzMaxStack: 2,
-              nzTop: 24
-            }
-          }
-        }
-      ]
-    });
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations(), provideNzConfig({ message: { nzMaxStack: 2, nzTop: 24 } }), NzMessageService]
+    }).compileComponents();
 
-    fixture = testBed.fixture;
-    testComponent = testBed.component;
+    fixture = TestBed.createComponent(NzTestMessageComponent);
+    testComponent = fixture.componentInstance;
   }));
 
   beforeEach(inject(
@@ -221,7 +207,8 @@ describe('message', () => {
 });
 
 @Component({
-  template: ` <ng-template #contentTemplate>Content in template</ng-template> `
+  standalone: true,
+  template: `<ng-template #contentTemplate>Content in template</ng-template>`
 })
 export class NzTestMessageComponent {
   @ViewChild('contentTemplate', { static: true }) template!: TemplateRef<void>;

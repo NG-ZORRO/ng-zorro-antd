@@ -1,16 +1,23 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-tabs-icon',
+  standalone: true,
+  imports: [NzIconModule, NzTabsModule],
   template: `
     <nz-tabset>
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
-        <ng-template #titleTemplate>
-          <span nz-icon [nzType]="tab.icon"></span>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzTitle]="titleTemplate">
+          <ng-template #titleTemplate>
+            <span nz-icon [nzType]="tab.icon"></span>
+            {{ tab.name }}
+          </ng-template>
           {{ tab.name }}
-        </ng-template>
-        {{ tab.name }}
-      </nz-tab>
+        </nz-tab>
+      }
     </nz-tabset>
   `
 })

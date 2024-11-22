@@ -1,7 +1,12 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
-import { NzCustomColumn } from 'ng-zorro-antd/table';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzCustomColumn, NzTableModule } from 'ng-zorro-antd/table';
 
 interface Person {
   key: string;
@@ -19,6 +24,17 @@ interface CustomColumn extends NzCustomColumn {
 
 @Component({
   selector: 'nz-demo-table-custom-column',
+  standalone: true,
+  imports: [
+    NzButtonModule,
+    NzDividerModule,
+    NzGridModule,
+    NzIconModule,
+    NzModalModule,
+    NzTableModule,
+    CdkDrag,
+    CdkDropList
+  ],
   template: `
     <button nz-button nzType="primary" nzSize="small" (click)="showModal()" style="margin-bottom: 8px;">
       <span nz-icon nzType="setting" nzTheme="outline"></span>
@@ -34,17 +50,19 @@ interface CustomColumn extends NzCustomColumn {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data">
-          <td nzCellControl="name">{{ data.name }}</td>
-          <td nzCellControl="gender">{{ data.gender }}</td>
-          <td nzCellControl="age">{{ data.age }}</td>
-          <td nzCellControl="address">{{ data.address }}</td>
-          <td nzCellControl="action">
-            <a>Action</a>
-            <nz-divider nzType="vertical"></nz-divider>
-            <a>Delete</a>
-          </td>
-        </tr>
+        @for (data of basicTable.data; track data) {
+          <tr>
+            <td nzCellControl="name">{{ data.name }}</td>
+            <td nzCellControl="gender">{{ data.gender }}</td>
+            <td nzCellControl="age">{{ data.age }}</td>
+            <td nzCellControl="address">{{ data.address }}</td>
+            <td nzCellControl="action">
+              <a>Action</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a>Delete</a>
+            </td>
+          </tr>
+        }
       </tbody>
     </nz-table>
 
@@ -54,9 +72,11 @@ interface CustomColumn extends NzCustomColumn {
           <div nz-col class="gutter-row" [nzSpan]="12">
             <div class="example-container">
               <p>Displayed (drag and drop to sort)</p>
-              <div class="example-box" *ngFor="let item of title">
-                {{ item.name }}
-              </div>
+              @for (item of title; track item) {
+                <div class="example-box">
+                  {{ item.name }}
+                </div>
+              }
               <div
                 cdkDropList
                 #todoList="cdkDropList"
@@ -65,14 +85,18 @@ interface CustomColumn extends NzCustomColumn {
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                <div class="example-box" *ngFor="let item of fix; let i = index" cdkDrag>
+                @for (item of fix; track item; let i = $index) {
+                  <div class="example-box" cdkDrag>
+                    {{ item.name }}
+                    <span nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, i)"></span>
+                  </div>
+                }
+              </div>
+              @for (item of footer; track item) {
+                <div class="example-box">
                   {{ item.name }}
-                  <span nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, i)"></span>
                 </div>
-              </div>
-              <div class="example-box" *ngFor="let item of footer">
-                {{ item.name }}
-              </div>
+              }
             </div>
           </div>
           <div nz-col class="gutter-row" [nzSpan]="12">
@@ -86,10 +110,12 @@ interface CustomColumn extends NzCustomColumn {
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                <div class="example-box" *ngFor="let item of notFix; let i = index" cdkDrag>
-                  {{ item.name }}
-                  <span nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, i)"></span>
-                </div>
+                @for (item of notFix; track item; let i = $index) {
+                  <div class="example-box" cdkDrag>
+                    {{ item.name }}
+                    <span nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, i)"></span>
+                  </div>
+                }
               </div>
             </div>
           </div>

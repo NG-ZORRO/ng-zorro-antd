@@ -5,7 +5,6 @@
 
 import { PlatformModule } from '@angular/cdk/platform';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -16,6 +15,7 @@ import {
   Output,
   ViewChild,
   ViewEncapsulation,
+  afterRender,
   numberAttribute
 } from '@angular/core';
 
@@ -33,11 +33,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   template: `
     @if (nzIcon && hasIcon) {
       <span nz-icon [nzType]="nzIcon"></span>
-    }
-    @if (nzSrc && hasSrc) {
+    } @else if (nzSrc && hasSrc) {
       <img [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
-    }
-    @if (nzText && hasText) {
+    } @else if (nzText && hasText) {
       <span class="ant-avatar-string" #textEl>{{ nzText }}</span>
     }
   `,
@@ -59,7 +57,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzAvatarComponent implements OnChanges, AfterViewInit {
+export class NzAvatarComponent implements OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   @Input() @WithConfig() nzShape: NzShapeSCType = 'circle';
   @Input() @WithConfig() nzSize: NzSizeLDSType | number = 'default';
@@ -85,7 +83,9 @@ export class NzAvatarComponent implements OnChanges, AfterViewInit {
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    afterRender(() => this.calcStringSize());
+  }
 
   imgError($event: Event): void {
     this.nzError.emit($event);
@@ -110,10 +110,6 @@ export class NzAvatarComponent implements OnChanges, AfterViewInit {
     this.hasSrc = !!this.nzSrc;
 
     this.setSizeStyle();
-    this.calcStringSize();
-  }
-
-  ngAfterViewInit(): void {
     this.calcStringSize();
   }
 

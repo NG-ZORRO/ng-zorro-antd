@@ -6,26 +6,13 @@ import { By } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 
 import { createKeyboardEvent, createMouseEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
-import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
-import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputNumberComponent } from './input-number.component';
 import { NzInputNumberModule } from './input-number.module';
 
 describe('input number', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzInputNumberModule, FormsModule, ReactiveFormsModule, NzFormModule],
-      declarations: [
-        NzTestInputNumberBasicComponent,
-        NzTestInputNumberFormComponent,
-        NzTestReadOnlyInputNumberBasicComponent,
-        NzTestInputNumberStatusComponent,
-        NzTestInputNumberInFormComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
   describe('input number basic', () => {
     let fixture: ComponentFixture<NzTestInputNumberBasicComponent>;
     let testComponent: NzTestInputNumberBasicComponent;
@@ -624,6 +611,8 @@ describe('input number', () => {
   });
 });
 @Component({
+  standalone: true,
+  imports: [FormsModule, NzInputNumberModule],
   template: `
     <nz-input-number
       [(ngModel)]="value"
@@ -650,19 +639,21 @@ export class NzTestInputNumberBasicComponent {
   disabled = false;
   min = -1;
   max = 1;
-  size = 'default';
+  size: NzSizeLDSType = 'default';
   placeholder = 'placeholder';
   step = 1;
   bordered = true;
   precision?: number = 2;
-  precisionMode?: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number);
+  precisionMode!: NzInputNumberComponent['nzPrecisionMode'];
   formatter = (value: number): string => (value !== null ? `${value}` : '');
-  parser = (value: number): number => value;
+  parser = (value: string): string => value;
   modelChange = jasmine.createSpy('change callback');
 }
 
 @Component({
-  template: ` <nz-input-number [nzReadOnly]="readonly"></nz-input-number> `
+  standalone: true,
+  imports: [NzInputNumberModule],
+  template: `<nz-input-number [nzReadOnly]="readonly"></nz-input-number>`
 })
 export class NzTestReadOnlyInputNumberBasicComponent {
   @ViewChild(NzInputNumberComponent, { static: false }) nzInputNumberComponent!: NzInputNumberComponent;
@@ -670,6 +661,8 @@ export class NzTestReadOnlyInputNumberBasicComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzInputNumberModule],
   template: `
     <form>
       <nz-input-number [formControl]="formControl" nzMax="10" nzMin="-10" [nzDisabled]="disabled"></nz-input-number>
@@ -690,13 +683,17 @@ export class NzTestInputNumberFormComponent {
 }
 
 @Component({
-  template: ` <nz-input-number [nzStatus]="status"></nz-input-number> `
+  standalone: true,
+  imports: [NzInputNumberModule],
+  template: `<nz-input-number [nzStatus]="status"></nz-input-number>`
 })
 export class NzTestInputNumberStatusComponent {
   status: NzStatus = 'error';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzFormModule, NzInputNumberModule],
   template: `
     <form nz-form>
       <nz-form-item>
