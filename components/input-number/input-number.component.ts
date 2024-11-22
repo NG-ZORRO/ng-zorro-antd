@@ -479,8 +479,8 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzStatus, nzDisabled } = changes;
-    if (changes.nzFormatter && !changes.nzFormatter.isFirstChange()) {
+    const { nzStatus, nzDisabled, nzFormatter, nzMin, nzMax } = changes;
+    if ((nzFormatter && !nzFormatter.isFirstChange()) || nzMin || nzMax) {
       const validValue = this.getCurrentValidValue(this.parsedValue!);
       this.setValue(validValue);
       this.updateDisplayValue(validValue);
