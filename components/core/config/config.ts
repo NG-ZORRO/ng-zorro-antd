@@ -299,7 +299,7 @@ export interface TableConfig {
   /**
    * @see {@link NzTableSortOrder}
    */
-  nzSortDirections?: Array<string | null>;
+  nzSortDirections?: Array<string | 'ascend' | 'descend' | null>;
 }
 
 export interface TabsConfig {
