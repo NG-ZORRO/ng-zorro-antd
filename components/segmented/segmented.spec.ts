@@ -38,30 +38,36 @@ describe('nz-segmented', () => {
       expect((segmentedComponent.nativeElement as HTMLElement).classList.contains('ant-segmented-block')).toBeTrue();
     });
 
-    it('should emit when index changes', fakeAsync(() => {
-      spyOn(component, 'handleIndexChange');
+    it('should be auto selected the first option', async () => {
+      const theFirstElement = getSegmentedOptionByIndex(0);
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(component.value).toBe(1);
+      expect(theFirstElement.classList.contains('ant-segmented-item-selected')).toBeTrue();
+    });
+
+    it('should emit when value changes', fakeAsync(() => {
+      spyOn(component, 'handleValueChange');
 
       const theFirstElement = getSegmentedOptionByIndex(0);
-      expect(theFirstElement.classList.contains('ant-segmented-item-selected')).toBeTrue();
-
       const theThirdElement = getSegmentedOptionByIndex(2);
       dispatchMouseEvent(theThirdElement.querySelector('.ant-segmented-item-label')!, 'click');
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
-      expect(component.index).toBe(2);
+      expect(component.value).toBe(3);
       expect(theFirstElement.classList.contains('ant-segmented-item-selected')).toBeFalse();
       expect(theThirdElement.classList.contains('ant-segmented-item-selected')).toBeTrue();
-      expect(component.handleIndexChange).toHaveBeenCalledWith(2);
-      expect(component.handleIndexChange).toHaveBeenCalledTimes(2);
+      expect(component.handleValueChange).toHaveBeenCalledWith(3);
+      expect(component.handleValueChange).toHaveBeenCalledTimes(1);
 
-      component.index = 1;
+      component.value = 2;
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
       const theSecondElement = getSegmentedOptionByIndex(1);
-      expect(segmentedComponent.componentInstance.selectedIndex).toBe(1);
-      expect(component.handleIndexChange).toHaveBeenCalledTimes(2);
+      expect(segmentedComponent.componentInstance.value).toBe(2);
+      expect(component.handleValueChange).toHaveBeenCalledTimes(2);
       expect(theSecondElement.classList.contains('ant-segmented-item-selected')).toBeTrue();
     }));
 
@@ -74,7 +80,7 @@ describe('nz-segmented', () => {
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
-      expect(component.index).toBe(0);
+      expect(component.value).toBe(1);
 
       component.disabled = false;
       fixture.detectChanges();
@@ -82,7 +88,7 @@ describe('nz-segmented', () => {
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
-      expect(component.index).toBe(2);
+      expect(component.value).toBe(3);
 
       component.options = [
         'Daily',
@@ -98,7 +104,7 @@ describe('nz-segmented', () => {
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
-      expect(component.index).toBe(2);
+      expect(component.value).toBe('Daily');
     }));
   });
 });
@@ -110,22 +116,21 @@ describe('nz-segmented', () => {
     <nz-segmented
       [nzSize]="size"
       [nzOptions]="options"
-      [(ngModel)]="index"
+      [(ngModel)]="value"
       [nzDisabled]="disabled"
       [nzBlock]="block"
-      (ngModelChange)="handleIndexChange($event)"
-      (nzValueChange)="handleIndexChange($event)"
+      (nzValueChange)="handleValueChange($event)"
     ></nz-segmented>
   `
 })
 export class NzSegmentedTestComponent {
   size: NzSizeLDSType = 'default';
   options: NzSegmentedOptions = [1, 2, 3];
-  index = 0;
+  value?: number | string;
   block = false;
   disabled = false;
 
-  handleIndexChange(_e: number): void {
+  handleValueChange(_e: string | number): void {
     // empty
   }
 }
