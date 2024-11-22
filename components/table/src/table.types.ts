@@ -29,4 +29,9 @@ export interface NzCustomColumn {
   fixWidth?: boolean;
 }
 
+export interface NzHiddenColumn {
+  value: string;
+  hidden: boolean;
+}
+
 export type NzTableSummaryFixedType = 'top' | 'bottom';

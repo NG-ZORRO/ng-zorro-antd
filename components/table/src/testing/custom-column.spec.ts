@@ -3,59 +3,96 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzCustomColumn, NzTableComponent, NzTableModule } from 'ng-zorro-antd/table';
+import { NzCustomColumn, NzHiddenColumn, NzTableComponent, NzTableModule } from 'ng-zorro-antd/table';
 
 describe('nz-table-custom-column', () => {
-  let fixture: ComponentFixture<NzCustomColumnTestTableComponent>;
-  let testComponent: NzCustomColumnTestTableComponent;
-  let resultEl: DebugElement;
+  describe('default nz-table-custom-column', () => {
+    let fixture: ComponentFixture<NzCustomColumnTestTableComponent>;
+    let testComponent: NzCustomColumnTestTableComponent;
+    let resultEl: DebugElement;
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NzCustomColumnTestTableComponent);
-    fixture.detectChanges();
-    testComponent = fixture.componentInstance;
-    resultEl = fixture.debugElement.query(By.directive(NzTableComponent));
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzCustomColumnTestTableComponent);
+      fixture.detectChanges();
+      testComponent = fixture.componentInstance;
+      resultEl = fixture.debugElement.query(By.directive(NzTableComponent));
+    });
+
+    it('custom-column basic', () => {
+      fixture.detectChanges();
+      // age: order = 3
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].getAttribute('nzcellcontrol')).toBe('age');
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].style.order).toBe('3');
+      testComponent.customColumn = [
+        {
+          value: 'name',
+          default: true,
+          width: 200
+        },
+        {
+          value: 'age',
+          default: true,
+          width: 200
+        },
+        {
+          value: 'gender',
+          default: false,
+          width: 200
+        },
+        {
+          value: 'address',
+          default: true,
+          width: 200
+        },
+        {
+          value: 'action',
+          default: true,
+          width: 200
+        }
+      ];
+      fixture.detectChanges();
+      // age: order = 1
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].getAttribute('nzcellcontrol')).toBe('age');
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].style.order).toBe('1');
+
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[1].getAttribute('nzcellcontrol')).toBe(
+        'gender'
+      );
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[1].style.display).toBe('none');
+    });
   });
 
-  it('custom-column basic', () => {
-    fixture.detectChanges();
-    // age: order = 3
-    expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].getAttribute('nzcellcontrol')).toBe('age');
-    expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].style.order).toBe('3');
-    testComponent.customColumn = [
-      {
-        value: 'name',
-        default: true,
-        width: 200
-      },
-      {
-        value: 'age',
-        default: true,
-        width: 200
-      },
-      {
-        value: 'gender',
-        default: false,
-        width: 200
-      },
-      {
-        value: 'address',
-        default: true,
-        width: 200
-      },
-      {
-        value: 'action',
-        default: true,
-        width: 200
-      }
-    ];
-    fixture.detectChanges();
-    // age: order = 1
-    expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].getAttribute('nzcellcontrol')).toBe('age');
-    expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].style.order).toBe('1');
+  describe('hidden nz-table-custom-column', () => {
+    let fixture: ComponentFixture<NzHiddenColumnTestTableComponent>;
+    let testComponent: NzHiddenColumnTestTableComponent;
+    let resultEl: DebugElement;
 
-    expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[1].getAttribute('nzcellcontrol')).toBe('gender');
-    expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[1].style.display).toBe('none');
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzHiddenColumnTestTableComponent);
+      fixture.detectChanges();
+      testComponent = fixture.componentInstance;
+      resultEl = fixture.debugElement.query(By.directive(NzTableComponent));
+    });
+
+    it('custom-column hidden', () => {
+      fixture.detectChanges();
+      // age: display = none
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].getAttribute('nzcellcontrol')).toBe('age');
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].style.display).toBe('none');
+      testComponent.customColumn = [
+        {
+          value: 'name',
+          hidden: true
+        }
+      ];
+      fixture.detectChanges();
+      // name: display = none
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[0].getAttribute('nzcellcontrol')).toBe('name');
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[0].style.display).toBe('none');
+      // age: display = ''
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].getAttribute('nzcellcontrol')).toBe('age');
+      expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].style.display).toBe('');
+    });
   });
 });
 
@@ -149,6 +186,71 @@ export class NzCustomColumnTestTableComponent {
       value: 'action',
       default: true,
       width: 200
+    }
+  ];
+}
+
+@Component({
+  standalone: true,
+  imports: [NzDividerModule, NzTableModule],
+  template: `
+    <nz-table #basicTable [nzData]="listOfData" [nzCustomColumn]="customColumn">
+      <thead>
+        <tr>
+          <th nzCellControl="name">Name</th>
+          <th nzCellControl="gender">Gender</th>
+          <th nzCellControl="age">Age</th>
+          <th nzCellControl="address">Address</th>
+          <th nzCellControl="action">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of basicTable.data; track data) {
+          <tr>
+            <td nzCellControl="name">{{ data.name }}</td>
+            <td nzCellControl="gender">{{ data.gender }}</td>
+            <td nzCellControl="age">{{ data.age }}</td>
+            <td nzCellControl="address">{{ data.address }}</td>
+            <td nzCellControl="action">
+              <a>Action</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a>Delete</a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </nz-table>
+  `
+})
+export class NzHiddenColumnTestTableComponent {
+  listOfData: Person[] = [
+    {
+      key: '1',
+      name: 'John Brown',
+      gender: 'female',
+      age: 32,
+      address: 'New York No. 1 Lake Park'
+    },
+    {
+      key: '2',
+      name: 'Jim Green',
+      gender: 'female',
+      age: 42,
+      address: 'London No. 1 Lake Park'
+    },
+    {
+      key: '3',
+      name: 'Joe Black',
+      gender: 'male',
+      age: 32,
+      address: 'Sidney No. 1 Lake Park'
+    }
+  ];
+
+  customColumn: NzHiddenColumn[] = [
+    {
+      value: 'age',
+      hidden: true
     }
   ];
 }

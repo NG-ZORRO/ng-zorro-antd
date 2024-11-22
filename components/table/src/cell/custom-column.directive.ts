@@ -29,16 +29,24 @@ export class NzCustomColumnDirective<T> implements OnInit, OnDestroy {
       if (item.length) {
         item.forEach((v, i) => {
           if (v.value === this.nzCellControl) {
-            if (!v.default) {
-              this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+            if ('default' in v) {
+              if (!v.default) {
+                this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+              } else {
+                this.renderer.setStyle(this.el.nativeElement, 'display', 'block');
+              }
+              this.renderer.setStyle(this.el.nativeElement, 'order', i);
+              if (!v?.fixWidth) {
+                this.renderer.setStyle(this.el.nativeElement, 'flex', `1 1 ${v.width}px`);
+              } else {
+                this.renderer.setStyle(this.el.nativeElement, 'flex', `1 0 ${v.width}px`);
+              }
             } else {
-              this.renderer.setStyle(this.el.nativeElement, 'display', 'block');
-            }
-            this.renderer.setStyle(this.el.nativeElement, 'order', i);
-            if (!v?.fixWidth) {
-              this.renderer.setStyle(this.el.nativeElement, 'flex', `1 1 ${v.width}px`);
-            } else {
-              this.renderer.setStyle(this.el.nativeElement, 'flex', `1 0 ${v.width}px`);
+              if (v.hidden) {
+                this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+              } else {
+                this.renderer.removeStyle(this.el.nativeElement, 'display');
+              }
             }
           }
         });
