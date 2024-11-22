@@ -43,6 +43,13 @@ describe('nz-qrcode', () => {
       expect(widthView.style.width).toBe('200px');
     });
 
+    it('qr code custom status', () => {
+      testComponent.statusRender = 'custom status';
+      fixture.detectChanges();
+      const statusView = resultEl.nativeElement.querySelector('.ant-qrcode-mask');
+      expect(statusView.innerText).toBe('custom status');
+    });
+
     it('qr code status', () => {
       const statusList: Array<'active' | 'expired' | 'loading' | 'scanned'> = ['expired', 'loading', 'scanned'];
 
@@ -63,11 +70,18 @@ describe('nz-qrcode', () => {
 @Component({
   standalone: true,
   imports: [NzQRCodeModule],
-  template: `<nz-qrcode [nzValue]="value" [nzSize]="size" [nzBordered]="bordered" [nzStatus]="status"></nz-qrcode>`
+  template: `<nz-qrcode
+    [nzValue]="value"
+    [nzSize]="size"
+    [nzBordered]="bordered"
+    [nzStatus]="status"
+    [nzStatusRender]="statusRender"
+  ></nz-qrcode>`
 })
 export class NzTestQrCodeBasicComponent {
   value: string = 'https://ng.ant.design/';
   size: number = 160;
   bordered: boolean = true;
+  statusRender: string | null = null;
   status: 'active' | 'expired' | 'loading' | 'scanned' = 'active';
 }
