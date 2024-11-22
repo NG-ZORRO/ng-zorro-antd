@@ -295,6 +295,10 @@ export interface TableConfig {
   nzShowSizeChanger?: boolean;
   nzSimple?: boolean;
   nzHideOnSinglePage?: boolean;
+  /**
+   * @see {@link NzTableSortOrder}
+   */
+  nzSortDirections?: Array<string | 'ascend' | 'descend' | null>;
 }
 
 export interface TabsConfig {
