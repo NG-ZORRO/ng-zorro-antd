@@ -64,6 +64,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     <div
       class="slick-initialized slick-slider"
       [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'"
+      [dir]="'ltr'"
     >
       <div
         #slickList
