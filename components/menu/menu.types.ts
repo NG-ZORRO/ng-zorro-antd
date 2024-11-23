@@ -5,3 +5,4 @@
 
 export type NzMenuModeType = 'vertical' | 'horizontal' | 'inline';
 export type NzMenuThemeType = 'light' | 'dark';
+export type NzSubmenuTrigger = 'hover' | 'click';

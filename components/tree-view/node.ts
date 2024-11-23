@@ -11,6 +11,7 @@ import {
   Directive,
   ElementRef,
   EmbeddedViewRef,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -39,8 +40,8 @@ export interface NzTreeVirtualNodeData<T> {
   exportAs: 'nzTreeNode',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: CdkTreeNode, useExisting: NzTreeNodeComponent },
-    { provide: NzNodeBase, useExisting: NzTreeNodeComponent }
+    { provide: CdkTreeNode, useExisting: forwardRef(() => NzTreeNodeComponent) },
+    { provide: NzNodeBase, useExisting: forwardRef(() => NzTreeNodeComponent) }
   ],
   template: `
     @if (indents.length) {
@@ -127,7 +128,7 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
 
 @Directive({
   selector: '[nzTreeNodeDef]',
-  providers: [{ provide: CdkTreeNodeDef, useExisting: NzTreeNodeDefDirective }],
+  providers: [{ provide: CdkTreeNodeDef, useExisting: forwardRef(() => NzTreeNodeDefDirective) }],
   standalone: true
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {

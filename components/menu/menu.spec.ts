@@ -9,6 +9,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
+import { NzSubmenuTrigger } from 'ng-zorro-antd/menu/menu.types';
 
 import { NzMenuItemComponent } from './menu-item.component';
 import { NzMenuDirective } from './menu.directive';
@@ -271,6 +272,42 @@ describe('menu', () => {
         expect(mouseenterCallback).toHaveBeenCalledWith(true);
         expect(mouseenterCallback).toHaveBeenCalledTimes(1);
       });
+      it('should have "hover" as default trigger', () => {
+        fixture.detectChanges();
+        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const subs = testComponent.subs.toArray();
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+        dispatchFakeEvent(title, 'mouseenter');
+        fixture.detectChanges();
+        expect(mouseenterCallback).toHaveBeenCalledWith(true);
+        expect(mouseenterCallback).toHaveBeenCalledTimes(1);
+      });
+      it('should have not open with mouse hover if trigger is set to "click"', () => {
+        testComponent.nzTriggerSubMenuAction = 'click';
+        fixture.detectChanges();
+        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const subs = testComponent.subs.toArray();
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+        dispatchFakeEvent(title, 'mouseenter');
+        fixture.detectChanges();
+        expect(mouseenterCallback).toHaveBeenCalledTimes(0);
+      });
+      it('should open with mouse click if trigger is set to "click"', () => {
+        testComponent.nzTriggerSubMenuAction = 'click';
+        fixture.detectChanges();
+        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const subs = testComponent.subs.toArray();
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+        title.click();
+        fixture.detectChanges();
+        expect(mouseenterCallback).toHaveBeenCalledTimes(1);
+      });
       it('should submenu mouseleave work', () => {
         fixture.detectChanges();
         const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
@@ -524,7 +561,13 @@ describe('menu', () => {
   imports: [NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
-      <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
+      <li
+        nz-submenu
+        [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
+        nzMenuClassName="submenu"
+        [nzOpen]="open"
+        [style.width.px]="width"
+      >
         <span title>
           <span nz-icon nzType="setting"></span>
           Navigation Three - Submenu
@@ -567,6 +610,7 @@ export class NzTestMenuHorizontalComponent {
   width = 200;
   open = false;
   disabled = false;
+  nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
   @ViewChildren(NzSubMenuComponent) subs!: QueryList<NzSubMenuComponent>;
   @ViewChild('menuitem', { static: false, read: ElementRef }) menuitem!: ElementRef;
   @ViewChild('menuitem1', { static: false, read: ElementRef }) menuitem1!: ElementRef;

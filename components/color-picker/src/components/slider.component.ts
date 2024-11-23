@@ -54,7 +54,7 @@ function getPosition(e: EventType): { pageX: number; pageY: number } {
       <color-palette>
         <div
           #transform
-          style="position: absolute; z-index: 1;"
+          class="ant-color-picker-transform"
           [style.left]="offsetValue.x + 'px'"
           [style.top]="offsetValue.y + 'px'"
         >

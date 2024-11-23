@@ -10,7 +10,14 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
     <nz-segmented [nzOptions]="['Map', 'Transit', 'Satellite']" nzDisabled></nz-segmented>
     <br />
     <nz-segmented [nzOptions]="options"></nz-segmented>
-  `
+  `,
+  styles: [
+    `
+      .ant-segmented {
+        margin-bottom: 10px;
+      }
+    `
+  ]
 })
 export class NzDemoSegmentedDisabledComponent {
   options = [

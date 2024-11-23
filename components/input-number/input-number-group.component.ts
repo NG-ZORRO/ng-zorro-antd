@@ -32,6 +32,7 @@ import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
+import { NZ_SPACE_COMPACT_ITEM_TYPE } from 'ng-zorro-antd/space';
 
 import { NzInputNumberGroupSlotComponent } from './input-number-group-slot.component';
 import { NzInputNumberComponent } from './input-number.component';
@@ -47,10 +48,8 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
 @Component({
   selector: 'nz-input-number-group',
   exportAs: 'nzInputNumberGroup',
-  preserveWhitespaces: false,
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzFormNoStatusService],
+  standalone: true,
+  imports: [NzInputNumberGroupSlotComponent, NgClass, NgTemplateOutlet, NzFormPatchModule],
   template: `
     @if (isAddOn) {
       <span class="ant-input-number-wrapper ant-input-number-group">
@@ -126,8 +125,9 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
     '[class.ant-input-number-affix-wrapper-lg]': `!isAddOn && isAffix && isLarge`,
     '[class.ant-input-number-affix-wrapper-sm]': `!isAddOn && isAffix && isSmall`
   },
-  imports: [NzInputNumberGroupSlotComponent, NgClass, NgTemplateOutlet, NzFormPatchModule],
-  standalone: true
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzFormNoStatusService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input-number' }]
 })
 export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
   @ContentChildren(NzInputNumberComponent, { descendants: true })
@@ -142,6 +142,9 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   @Input() nzStatus: NzStatus = '';
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
+  /**
+   * @deprecated Will be removed in v20. Use `NzSpaceCompactComponent` instead.
+   */
   @Input({ transform: booleanAttribute }) nzCompact = false;
   isLarge = false;
   isSmall = false;
@@ -172,7 +175,7 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
 
   updateChildrenInputSize(): void {
     if (this.listOfNzInputNumberComponent) {
-      this.listOfNzInputNumberComponent.forEach(item => (item.nzSize = this.nzSize));
+      this.listOfNzInputNumberComponent.forEach(item => item['size'].set(this.nzSize));
     }
   }
 

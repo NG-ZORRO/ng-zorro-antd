@@ -15,8 +15,8 @@ export default {
             outputPath: 'dist/demo',
             index: 'src/index.html',
             main: 'src/main.ts',
-            polyfills: 'src/polyfills.ts',
-            tsConfig: 'src/tsconfig.app.json',
+            polyfills: 'zone.js',
+            tsConfig: 'tsconfig.app.json',
             assets: [
               'src/favicon.ico',
               'src/assets',
@@ -33,10 +33,44 @@ export default {
               'node_modules/ng-zorro-antd/graph/style/index.min.css',
               'src/styles.css'
             ]
-          }
+          },
+          configurations: {
+            production: {
+              budgets: [
+                {
+                  type: 'initial',
+                  maximumWarning: '500kB',
+                  maximumError: '1MB'
+                },
+                {
+                  type: 'anyComponentStyle',
+                  maximumWarning: '2kB',
+                  maximumError: '4kB'
+                }
+              ],
+              outputHashing: 'all'
+            },
+            development: {
+              optimization: false,
+              extractLicenses: false,
+              sourceMap: true
+            }
+          },
+          defaultConfiguration: 'production'
+        },
+        serve: {
+          builder: '@angular-devkit/build-angular:dev-server',
+          configurations: {
+            production: {
+              buildTarget: 'demo:build:production'
+            },
+            development: {
+              buildTarget: 'demo:build:development'
+            }
+          },
+          defaultConfiguration: 'development'
         }
       }
     }
-  },
-  defaultProject: 'demo'
+  }
 };

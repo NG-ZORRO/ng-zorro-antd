@@ -13,7 +13,7 @@
 
   // Special styles for Primary Button
   &-compact-item.@{btn-prefix-cls}-primary {
-    &:not([disabled]) + &:not([disabled]) {
+    &:not([disabled]) + &:not([disabled]):not([ant-click-animating-without-extra-node='true']) {
       position: relative;
 
       &::after {
@@ -69,7 +69,7 @@
   // Special styles for Primary Button
   &-compact-vertical-item {
     &.@{btn-prefix-cls}-primary {
-      &:not([disabled]) + &:not([disabled]) {
+      &:not([disabled]) + &:not([disabled]):not([ant-click-animating-without-extra-node='true']) {
         position: relative;
 
         &::after {
