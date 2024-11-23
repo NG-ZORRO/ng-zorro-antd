@@ -35,6 +35,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   @Input() locale!: NzCalendarI18nInterface;
   @Input() activeDate: CandyDate = new CandyDate();
   @Input({ transform: booleanAttribute }) showWeek: boolean = false;
+  @Input({ transform: booleanAttribute }) showTime?: boolean;
   @Input() selectedValue: CandyDate[] = []; // Range ONLY
   @Input() hoverValue: CandyDate[] = []; // Range ONLY
   @Input() disabledDate?: (d: Date) => boolean;

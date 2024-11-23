@@ -32,8 +32,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   private changeValueFromInside(value: CandyDate): void {
-    // Only change date not change time
-    this.activeDate = this.activeDate.setYear(value.getYear()).setMonth(value.getMonth()).setDate(value.getDate());
+    // if show time, only change date not change time
+    this.activeDate = this.showTime ? this.activeDate.setYear(value.getYear()).setMonth(value.getMonth()).setDate(value.getDate()) : value;
     this.valueChange.emit(this.activeDate);
 
     if (!this.activeDate.isSameMonth(this.value)) {

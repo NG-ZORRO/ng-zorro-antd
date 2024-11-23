@@ -1,5 +1,7 @@
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -26,6 +28,8 @@ import { NzDatePickerModule } from './date-picker.module';
 import { CompatibleDate, NzPanelChangeType } from './standard-types';
 import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
 import { PREFIX_CLASS } from './util';
+
+registerLocaleData(zh);
 
 describe('NzDatePickerComponent', () => {
   let fixture: ComponentFixture<NzTestDatePickerComponent>;

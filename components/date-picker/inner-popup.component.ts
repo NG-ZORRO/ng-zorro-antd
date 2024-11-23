@@ -147,6 +147,7 @@ import { PREFIX_CLASS } from './util';
               <date-table
                 [locale]="locale"
                 [showWeek]="showWeek"
+                [showTime]="showTimePicker"
                 [value]="value"
                 [activeDate]="activeDate"
                 [disabledDate]="disabledDate"
