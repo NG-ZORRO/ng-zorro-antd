@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 
+import { NzTransferModule } from 'ng-zorro-antd/transfer';
+
 @Component({
   selector: 'nz-demo-transfer-status',
+  standalone: true,
+  imports: [NzTransferModule],
   template: `
-    <nz-space nzDirection="vertical">
-      <nz-transfer *nzSpaceItem [nzDataSource]="[]" nzStatus="error"></nz-transfer>
-      <nz-transfer *nzSpaceItem [nzDataSource]="[]" nzStatus="warning" nzShowSearch></nz-transfer>
-    </nz-space>
+    <nz-transfer [nzDataSource]="[]" nzStatus="error"></nz-transfer>
+    <br />
+    <nz-transfer [nzDataSource]="[]" nzStatus="warning" nzShowSearch></nz-transfer>
   `
 })
 export class NzDemoTransferStatusComponent {}

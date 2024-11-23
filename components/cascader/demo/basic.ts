@@ -1,7 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-const options = [
+import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
+
+const options: NzCascaderOption[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -43,7 +45,7 @@ const options = [
   }
 ];
 
-const otherOptions = [
+const otherOptions: NzCascaderOption[] = [
   {
     value: 'fujian',
     label: 'Fujian',
@@ -82,10 +84,11 @@ const otherOptions = [
 
 @Component({
   selector: 'nz-demo-cascader-basic',
+  standalone: true,
+  imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)"></nz-cascader>
-    &nbsp;
-    <a href="javascript:;" (click)="changeNzOptions()" class="change-options">Change Options</a>
+    <a (click)="changeNzOptions()" class="change-options">Change Options</a>
   `,
   styles: [
     `
@@ -98,8 +101,8 @@ const otherOptions = [
   ]
 })
 export class NzDemoCascaderBasicComponent implements OnInit {
-  nzOptions: any[] | null = null;
-  values: any[] | null = null;
+  nzOptions: NzCascaderOption[] | null = null;
+  values: string[] | null = null;
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -115,7 +118,7 @@ export class NzDemoCascaderBasicComponent implements OnInit {
     }
   }
 
-  onChanges(values: any): void {
+  onChanges(values: string): void {
     console.log(values, this.values);
   }
 }

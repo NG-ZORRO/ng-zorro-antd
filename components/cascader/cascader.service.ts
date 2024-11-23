@@ -358,8 +358,8 @@ export class NzCascaderService implements OnDestroy {
     if (!arraysEqual(existingOptions, options)) {
       options.forEach(o => (o.parent = parent));
       this.columns[columnIndex] = options;
-      this.dropBehindColumns(columnIndex);
     }
+    this.dropBehindColumns(columnIndex);
   }
 
   /**
@@ -377,7 +377,7 @@ export class NzCascaderService implements OnDestroy {
     this.activatedOptions = this.activatedOptions.splice(0, lastReserveIndex + 1);
   }
 
-  private dropBehindColumns(lastReserveIndex: number): void {
+  dropBehindColumns(lastReserveIndex: number): void {
     if (lastReserveIndex < this.columns.length - 1) {
       this.columns = this.columns.slice(0, lastReserveIndex + 1);
     }

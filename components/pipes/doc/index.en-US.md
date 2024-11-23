@@ -23,12 +23,6 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 ## API
 
-### **nzSafeNull**:standalone
-
-| Property  | Description       | Type     | Default |
-| --------- | ----------------- | -------- | ------- |
-| `replace` | Replace character | `string` | ''      |
-
 ### **nzBytes**:standalone
 
 | Property  | Description                     | Type     | Default |

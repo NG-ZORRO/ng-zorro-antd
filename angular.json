@@ -24,7 +24,7 @@
               "entry": "site/doc/server.ts"
             },
             "polyfills": [
-              "site/doc/polyfills.ts"
+              "zone.js"
             ],
             "assets": [
               "site/doc/assets",

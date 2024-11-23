@@ -1,16 +1,15 @@
 import { BidiModule } from '@angular/cdk/bidi';
 import { provideHttpClient, withFetch, withJsonpSupport } from '@angular/common/http';
 import { APP_ID, ApplicationConfig, EnvironmentProviders, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 
 import { IconDefinition } from '@ant-design/icons-angular';
 import { EditOutline, LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
 import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
-import { NzMessageModule } from 'ng-zorro-antd/message';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
@@ -25,9 +24,8 @@ const nzConfig: NzConfig = {
   icon: { nzTwotoneColor: '#1890ff' }
 };
 
-const environmentProviders: EnvironmentProviders =  importProvidersFrom(
+const environmentProviders: EnvironmentProviders = importProvidersFrom(
   BidiModule,
-  NzMessageModule,
   QuicklinkModule
 );
 

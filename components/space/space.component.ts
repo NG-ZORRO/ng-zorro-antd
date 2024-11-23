@@ -21,6 +21,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzSpaceItemDirective } from './space-item.directive';
@@ -37,7 +38,7 @@ const SPACE_SIZE: {
 
 @Component({
   selector: 'nz-space, [nz-space]',
-  exportAs: 'NzSpace',
+  exportAs: 'nzSpace',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-content></ng-content>
@@ -55,7 +56,9 @@ const SPACE_SIZE: {
           [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
           [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
         >
-          <ng-template [ngTemplateOutlet]="nzSplit" [ngTemplateOutletContext]="{ $implicit: index }"></ng-template>
+          <ng-template [nzStringTemplateOutlet]="nzSplit" [nzStringTemplateOutletContext]="{ $implicit: index }">{{
+            nzSplit
+          }}</ng-template>
         </span>
       }
     }
@@ -70,7 +73,7 @@ const SPACE_SIZE: {
     '[class.ant-space-align-baseline]': 'mergedAlign === "baseline"',
     '[style.flex-wrap]': 'nzWrap ? "wrap" : null'
   },
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, NzStringTemplateOutletDirective],
   standalone: true
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
@@ -78,7 +81,7 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
 
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
   @Input() nzAlign?: NzSpaceAlign;
-  @Input() nzSplit: TemplateRef<{ $implicit: number }> | null = null;
+  @Input() nzSplit: TemplateRef<{ $implicit: number }> | string | null = null;
   @Input({ transform: booleanAttribute }) nzWrap: boolean = false;
   @Input() @WithConfig() nzSize: NzSpaceSize = 'small';
 

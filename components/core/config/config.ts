@@ -151,7 +151,6 @@ export interface CardConfig {
   nzSize?: NzSizeDSType;
   nzHoverable?: boolean;
   nzBordered?: boolean;
-  nzBorderless?: boolean;
 }
 
 export interface CarouselConfig {
@@ -297,6 +296,10 @@ export interface TableConfig {
   nzShowSizeChanger?: boolean;
   nzSimple?: boolean;
   nzHideOnSinglePage?: boolean;
+  /**
+   * @see {@link NzTableSortOrder}
+   */
+  nzSortDirections?: Array<string | 'ascend' | 'descend' | null>;
 }
 
 export interface TabsConfig {

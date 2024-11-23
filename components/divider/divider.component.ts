@@ -36,7 +36,8 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
     '[class.ant-divider-with-text-left]': `nzText && nzOrientation === 'left'`,
     '[class.ant-divider-with-text-right]': `nzText && nzOrientation === 'right'`,
     '[class.ant-divider-with-text-center]': `nzText && nzOrientation === 'center'`,
-    '[class.ant-divider-dashed]': `nzDashed`
+    '[class.ant-divider-dashed]': `nzDashed || nzVariant === 'dashed'`,
+    '[class.ant-divider-dotted]': `nzVariant === 'dotted'`
   },
   imports: [NzOutletModule],
   standalone: true
@@ -45,6 +46,7 @@ export class NzDividerComponent {
   @Input() nzText?: string | TemplateRef<void>;
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
   @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';
+  @Input() nzVariant: 'dashed' | 'dotted' | 'solid' = 'solid';
   @Input({ transform: booleanAttribute }) nzDashed = false;
   @Input({ transform: booleanAttribute }) nzPlain = false;
 

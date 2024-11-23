@@ -26,6 +26,15 @@
     }
   }
 
+  &-gradient {
+    position: absolute;
+    inset: 0;
+  }
+
+  &-palette {
+    position: relative;
+  }
+
   &-select {
     .@{color-picker-prefix-cls}-palette {
       min-height: 160px;
@@ -46,7 +55,13 @@
     right: 0;
     bottom: 0;
     left: 0;
+    background-image: linear-gradient(0deg, #000, transparent), linear-gradient(90deg, #fff, hsla(0deg, 0%, 100%, 0));
     border-radius: inherit;
+  }
+
+  &-transform {
+    position: absolute;
+    z-index: 1;
   }
 
   &-handler {

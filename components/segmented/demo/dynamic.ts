@@ -13,7 +13,14 @@ const defaultOptions = ['Daily', 'Weekly', 'Monthly'];
     <nz-segmented [nzOptions]="options"></nz-segmented>
     <br />
     <button nz-button nzType="primary" [disabled]="moreLoaded" (click)="handleLoadMore()"> Load more options </button>
-  `
+  `,
+  styles: [
+    `
+      .ant-segmented {
+        margin-bottom: 10px;
+      }
+    `
+  ]
 })
 export class NzDemoSegmentedDynamicComponent {
   options = [...defaultOptions];

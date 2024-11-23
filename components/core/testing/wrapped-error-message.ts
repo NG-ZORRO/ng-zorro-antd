@@ -6,6 +6,9 @@
 /**
  * Gets a RegExp used to detect an angular wrapped error message.
  * See https://github.com/angular/angular/issues/8348
+ *
+ * @internal
+ * @deprecated Internal use only, do not use directly. Will be removed in v20
  */
 export function wrappedErrorMessage(e: Error): RegExp {
   const escapedMessage = e.message.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
