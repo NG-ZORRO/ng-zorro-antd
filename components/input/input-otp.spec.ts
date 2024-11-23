@@ -1,7 +1,7 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -11,12 +11,6 @@ describe('NzInputOtpComponent', () => {
   let component: NzInputOtpComponent;
   let fixture: ComponentFixture<NzInputOtpComponent>;
   let inputElements: DebugElement[];
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NzInputOtpComponent]
-    }).compileComponents();
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NzInputOtpComponent);

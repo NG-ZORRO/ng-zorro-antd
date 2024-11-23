@@ -55,7 +55,7 @@ nz-input 可以使用所有的 W3C 标准下的所有 [使用方式](https://www
 | Property        | Description                                       | Type                              | Default   |
 | --------------- | ------------------------------------------------- | --------------------------------- | --------- |
 | `[disabled]`    | 是否禁用                                          | boolean                           | `false`   |
-| `[nzFormatter]` | 格式化展示，留空字段会被 填充                     | `(value: string) => string`       | -         |
+| `[nzFormatter]` | 格式化展示，留空字段会被 ` ` 填充                 | `(value: string) => string`       | -         |
 | `[nzMask]`      | 自定义展示，和 `formatter` 的区别是不会修改原始值 | `boolean  \| null`                | `null`    |
 | `[nzLength]`    | 输入元素数量                                      | `number`                          | 6         |
 | `[nzStatus]`    | 设置校验状态                                      | `'error' \| 'warning'`            | -         |
