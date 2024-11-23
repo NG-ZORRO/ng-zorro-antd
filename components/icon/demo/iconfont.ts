@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 
-import { NzIconService } from 'ng-zorro-antd/icon';
+import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-icon-iconfont',
+  standalone: true,
+  imports: [NzIconModule],
   template: `
-    <div class="icons-list">
-      <span nz-icon [nzIconfont]="'icon-tuichu'"></span>
-      <span nz-icon [nzIconfont]="'icon-facebook'"></span>
-      <span nz-icon [nzIconfont]="'icon-twitter'"></span>
-    </div>
+    <nz-icon nzIconfont="icon-tuichu" />
+    <nz-icon nzIconfont="icon-facebook" />
+    <nz-icon nzIconfont="icon-twitter" />
   `,
   styles: [
     `
-      [nz-icon] {
+      nz-icon {
         margin-right: 6px;
         font-size: 24px;
       }

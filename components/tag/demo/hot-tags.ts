@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzTagModule } from 'ng-zorro-antd/tag';
+
 const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
 
 @Component({
   selector: 'nz-demo-tag-hot-tags',
+  standalone: true,
+  imports: [NzTagModule],
   template: `
     <strong>Categories:</strong>
     @for (tag of hotTags; track $index) {

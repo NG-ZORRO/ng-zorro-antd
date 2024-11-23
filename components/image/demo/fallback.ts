@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzImageModule } from 'ng-zorro-antd/image';
+
 @Component({
   selector: 'nz-demo-image-fallback',
+  standalone: true,
+  imports: [NzImageModule],
   template: ` <img nz-image width="200px" height="200px" nzSrc="error" [nzFallback]="fallback" alt="" /> `
 })
 export class NzDemoImageFallbackComponent {

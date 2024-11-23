@@ -3,6 +3,11 @@ const fs = require('fs');
 const capitalizeFirstLetter = require('./capitalize-first-letter');
 const camelCase = require('./camelcase');
 
+/**
+ * Generate demos for the component
+ * @param {string} showCaseComponentPath The path of the component
+ * @param {ComponentDemo} result The result of the component
+ */
 module.exports = function (showCaseComponentPath, result) {
   if (result.pageDemo) {
     const pageDemoComponent = generatePageDemoComponent(result);
@@ -15,27 +20,23 @@ module.exports = function (showCaseComponentPath, result) {
   const demoComponent = generateDemoComponent(result);
   fs.writeFileSync(path.join(showCaseComponentPath, `zh.component.ts`), demoComponent.zh);
   fs.writeFileSync(path.join(showCaseComponentPath, `en.component.ts`), demoComponent.en);
-  const demoModule = generateDemoModule(result);
-  fs.writeFileSync(path.join(showCaseComponentPath, `index.module.ts`), demoModule);
+  if (result.standalone) {
+    const demoRoutes = generateDemoRoutes(result);
+    fs.writeFileSync(path.join(showCaseComponentPath, `routes.ts`), demoRoutes);
+  } else {
+    const demoModule = generateDemoModule(result);
+    fs.writeFileSync(path.join(showCaseComponentPath, `index.module.ts`), demoModule);
+  }
 };
 
+/**
+ * @param {ComponentDemo} content
+ * @return {string}
+ */
 function generateDemoModule(content) {
   const demoModuleTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-module.template.ts')));
   const component = content.name;
-  const demoMap = content.demoMap;
-  let imports = '';
-  let declarations = '';
-  for (const key in demoMap) {
-    const declareComponents = [`NzDemo${componentName(component)}${componentName(key)}Component`];
-    const entries = retrieveEntryComponents(demoMap[key] && demoMap[key].ts);
-    declareComponents.push(...entries);
-    imports += `import { ${declareComponents.join(', ')} } from './${key}';\n`;
-    declarations += `\t\t${declareComponents.join(',\n\t')},\n`;
-  }
-  imports += `import { NzDemo${componentName(component)}ZhComponent } from './zh.component';\n`;
-  imports += `import { NzDemo${componentName(component)}EnComponent } from './en.component';\n`;
-  declarations += `\t\tNzDemo${componentName(component)}ZhComponent,\n`;
-  declarations += `\t\tNzDemo${componentName(component)}EnComponent,\n`;
+  let { imports, declarations } = generateDemoImports(content);
   if (content.pageDemo) {
     imports += `import { NzPageDemo${componentName(component)}ZhComponent } from './zh.page.component';\n`;
     imports += `import { NzPageDemo${componentName(component)}EnComponent } from './en.page.component';\n`;
@@ -48,6 +49,41 @@ function generateDemoModule(content) {
     .replace(/{{component}}/g, componentName(component));
 }
 
+/**
+ * @param {ComponentDemo} content
+ * @return {{imports: string, declarations: string}}
+ */
+function generateDemoImports(content) {
+  const component = content.name;
+  const demoMap = content.demoMap;
+  let imports = '';
+  let declarations = '';
+  for (const key in demoMap) {
+    const declareComponents = [`NzDemo${componentName(component)}${componentName(key)}Component`];
+    const entries = retrieveEntryComponents(demoMap[key] && demoMap[key].ts);
+    declareComponents.push(...entries);
+    imports += `import { ${declareComponents.join(', ')} } from './${key}';\n`;
+    declarations += `\t\t${declareComponents.join(',\n\t')},\n`;
+  }
+  if (!content.standalone) {
+    imports += `import { NzDemo${componentName(component)}ZhComponent } from './zh.component';\n`;
+    imports += `import { NzDemo${componentName(component)}EnComponent } from './en.component';\n`;
+    declarations += `\t\tNzDemo${componentName(component)}ZhComponent,\n`;
+    declarations += `\t\tNzDemo${componentName(component)}EnComponent,\n`;
+  }
+  return { imports, declarations };
+}
+
+/**
+ * @param {ComponentDemo} content
+ * @return {string}
+ */
+function generateDemoRoutes(content) {
+  const demoRoutesTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-routes.template.ts')));
+  const component = content.name;
+  return demoRoutesTemplate.replace(/{{component}}/g, componentName(component));
+}
+
 function componentName(component) {
   return camelCase(capitalizeFirstLetter(component));
 }
@@ -56,6 +92,10 @@ function generateComponentName(component, language) {
   return `NzDemo${componentName(component)}${capitalizeFirstLetter(language)}Component`;
 }
 
+/**
+ * @param {ComponentDemo} content
+ * @return {{zh: string, en: string}}
+ */
 function generatePageDemoComponent(content) {
   const component = content.name;
   let zhOutput = content.pageDemo.zhCode;
@@ -72,17 +112,41 @@ function generatePageDemoComponent(content) {
   };
 }
 
+/**
+ * @param {ComponentDemo} content
+ * @return {{zh: string, en: string}}
+ */
 function generateDemoComponent(content) {
   const demoComponentTemplate = String(
-    fs.readFileSync(path.resolve(__dirname, '../template/demo-component.template.ts'))
+    fs.readFileSync(path.resolve(__dirname, `../template/demo-component${content.standalone ? '.standalone' : ''}.template.ts`))
   );
   const component = content.name;
 
-  let output = demoComponentTemplate;
-  output = output.replace(/{{component}}/g, component);
-
+  let output = demoComponentTemplate.replace(/{{component}}/g, component);
   let zhOutput = output;
   let enOutput = output;
+
+  if (content.standalone) {
+    let { imports, declarations } = generateDemoImports(content);
+
+    if (content.pageDemo) {
+      // zh
+      let zhImports = imports + `import { NzPageDemo${componentName(component)}ZhComponent } from './zh.page.component';\n`;
+      let zhDeclarations = declarations + `\t\tNzPageDemo${componentName(component)}ZhComponent,\n`;
+      zhOutput = zhOutput.replace(/{{imports}}/g, zhImports);
+      zhOutput = zhOutput.replace(/{{declarations}}/g, zhDeclarations);
+      // en
+      let enImports = imports + `import { NzPageDemo${componentName(component)}EnComponent } from './en.page.component';\n`;
+      let enDeclarations = declarations + `\t\tNzPageDemo${componentName(component)}EnComponent,\n`;
+      enOutput = enOutput.replace(/{{imports}}/g, enImports);
+      enOutput = enOutput.replace(/{{declarations}}/g, enDeclarations);
+    } else {
+      output = output.replace(/{{imports}}/g, imports);
+      output = output.replace(/{{declarations}}/g, declarations);
+      zhOutput = output;
+      enOutput = output;
+    }
+  }
 
   enOutput = enOutput.replace(/{{componentName}}/g, generateComponentName(component, 'en'));
   enOutput = enOutput.replace(/{{language}}/g, 'en');
@@ -95,6 +159,10 @@ function generateDemoComponent(content) {
   };
 }
 
+/**
+ * @param {ComponentDemo} result
+ * @return {{zh: string, en: string}}
+ */
 function generateTemplate(result) {
   const generateTitle = require('./generate.title');
   const innerMap = generateExample(result);
@@ -140,13 +208,15 @@ function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
       language === 'zh' ? '展开全部代码' : 'Expand All Code'
     }" (click)="expandAllCode()"></span>
 	</h2>
-</section>${example}`;
+</section>
+${example}`;
   } else {
     return `<section class="markdown">
 	${title}
 	<section class="markdown">
 		${whenToUse}
-	</section></section>`;
+	</section>
+</section>`;
   }
 }
 
@@ -154,6 +224,13 @@ function wrapperAll(toc, content) {
   return `<article>${toc}${content}</article>`;
 }
 
+/**
+ *
+ * @param {string} language
+ * @param {string }name
+ * @param {Record.<string, ComponentDemoDoc>} demoMap
+ * @return {string}
+ */
 function generateToc(language, name, demoMap) {
   let linkArray = [];
   for (const key in demoMap) {
@@ -173,6 +250,10 @@ function generateToc(language, name, demoMap) {
 </nz-affix>`;
 }
 
+/**
+ * @param {ComponentDemo} result
+ * @return {{zh: string, en: string}}
+ */
 function generateExample(result) {
   const demoMap = result.demoMap;
   const isZhUnion = result.docZh.meta.cols;
@@ -211,6 +292,11 @@ function generateExample(result) {
   };
 }
 
+/**
+ *
+ * @param {string} plainCode - plain code content
+ * @return {Array.<string>}
+ */
 function retrieveEntryComponents(plainCode) {
   const matches = (plainCode + '').match(/^\/\*\s*?declarations:\s*([^\n]+?)\*\//) || [];
   if (matches[1]) {

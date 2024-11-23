@@ -1,64 +1,56 @@
 import { Component, ElementRef } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzTableModule } from '../table.module';
 import { NzTableSummaryFixedType } from '../table.types';
 
 describe('tfoot', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzTableModule],
-      declarations: [TestComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  let fixture: ComponentFixture<TestComponent>;
+  let component: TestComponent;
 
-  describe('nz-foot in nz-table', () => {
-    let fixture: ComponentFixture<TestComponent>;
-    let component: TestComponent;
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+    component = fixture.componentInstance;
+  });
 
-    beforeEach(() => {
-      fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
-      component = fixture.componentInstance;
-    });
+  it('should nzSummary work ', () => {
+    fixture.detectChanges();
+    const tfoot = component.elementRef.nativeElement.querySelector('tfoot.ant-table-summary') as HTMLElement;
+    expect(tfoot.textContent).toContain('summary');
+  });
 
-    it('should nzSummary work ', () => {
-      fixture.detectChanges();
-      const tfoot = component.elementRef.nativeElement.querySelector('tfoot.ant-table-summary') as HTMLElement;
-      expect(tfoot.textContent).toContain('summary');
-    });
+  it('should fixed work', () => {
+    component.scrollY = '100px';
+    component.fixed = true;
+    fixture.detectChanges();
 
-    it('should fixed work', () => {
-      component.scrollY = '100px';
-      component.fixed = true;
-      fixture.detectChanges();
+    const tfoot = component.elementRef.nativeElement.querySelector('div.ant-table-summary tfoot.ant-table-summary');
+    expect(tfoot).toBeTruthy();
+  });
 
-      const tfoot = component.elementRef.nativeElement.querySelector('div.ant-table-summary tfoot.ant-table-summary');
-      expect(tfoot).toBeTruthy();
-    });
+  it('should fixed not work when scrollY is not set', () => {
+    component.scrollY = null;
+    component.fixed = true;
+    fixture.detectChanges();
 
-    it('should fixed not work when scrollY is not set', () => {
-      component.scrollY = null;
-      component.fixed = true;
-      fixture.detectChanges();
+    const tfoot = component.elementRef.nativeElement.querySelector('div.ant-table-summary tfoot.ant-table-summary');
+    expect(tfoot).not.toBeTruthy();
+  });
 
-      const tfoot = component.elementRef.nativeElement.querySelector('div.ant-table-summary tfoot.ant-table-summary');
-      expect(tfoot).not.toBeTruthy();
-    });
+  it('should fixed at top work', () => {
+    component.scrollY = '100px';
+    component.fixed = 'top';
+    fixture.detectChanges();
 
-    it('should fixed at top work', () => {
-      component.scrollY = '100px';
-      component.fixed = 'top';
-      fixture.detectChanges();
-
-      const tfoot = component.elementRef.nativeElement.querySelector('div.ant-table-header tfoot.ant-table-summary');
-      expect(tfoot).toBeTruthy();
-    });
+    const tfoot = component.elementRef.nativeElement.querySelector('div.ant-table-header tfoot.ant-table-summary');
+    expect(tfoot).toBeTruthy();
   });
 });
 
 @Component({
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table [nzScroll]="{ x: scrollX, y: scrollY }">
       <thead>

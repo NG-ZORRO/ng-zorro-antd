@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
-interface DataItem {
+import { NzTableModule } from 'ng-zorro-antd/table';
+
+interface ItemData {
   name: string;
   chinese: number;
   math: number;
@@ -9,22 +11,28 @@ interface DataItem {
 
 @Component({
   selector: 'nz-demo-table-multiple-sorter',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #sortTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th *ngFor="let column of listOfColumn" [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
-            {{ column.title }}
-          </th>
+          @for (column of listOfColumn; track column) {
+            <th [nzSortFn]="column.compare" [nzSortPriority]="column.priority">
+              {{ column.title }}
+            </th>
+          }
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of sortTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.chinese }}</td>
-          <td>{{ data.math }}</td>
-          <td>{{ data.english }}</td>
-        </tr>
+        @for (data of sortTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.chinese }}</td>
+            <td>{{ data.math }}</td>
+            <td>{{ data.english }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `
@@ -33,26 +41,26 @@ export class NzDemoTableMultipleSorterComponent {
   listOfColumn = [
     {
       title: 'Name',
-      compare: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
+      compare: (a: ItemData, b: ItemData) => a.name.localeCompare(b.name),
       priority: false
     },
     {
       title: 'Chinese Score',
-      compare: (a: DataItem, b: DataItem) => a.chinese - b.chinese,
+      compare: (a: ItemData, b: ItemData) => a.chinese - b.chinese,
       priority: 3
     },
     {
       title: 'Math Score',
-      compare: (a: DataItem, b: DataItem) => a.math - b.math,
+      compare: (a: ItemData, b: ItemData) => a.math - b.math,
       priority: 2
     },
     {
       title: 'English Score',
-      compare: (a: DataItem, b: DataItem) => a.english - b.english,
+      compare: (a: ItemData, b: ItemData) => a.english - b.english,
       priority: 1
     }
   ];
-  listOfData: DataItem[] = [
+  listOfData: ItemData[] = [
     {
       name: 'John Brown',
       chinese: 98,

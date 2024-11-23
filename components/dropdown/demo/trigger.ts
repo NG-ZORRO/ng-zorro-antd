@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: 'nz-demo-dropdown-trigger',
+  standalone: true,
+  imports: [NzDropDownModule, NzIconModule],
   template: `
     <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
       Click me

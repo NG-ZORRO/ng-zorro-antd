@@ -1,7 +1,25 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-input-number-group',
+  standalone: true,
+  imports: [
+    FormsModule,
+    NzButtonModule,
+    NzDatePickerModule,
+    NzGridModule,
+    NzInputNumberModule,
+    NzSelectModule,
+    NzSpaceModule
+  ],
   template: `
     <nz-space nzDirection="vertical" style="width: 100%">
       <nz-input-number-group nz-row [nzGutter]="8" nzSize="large" *nzSpaceItem>

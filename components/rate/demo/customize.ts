@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzRateModule } from 'ng-zorro-antd/rate';
 
 @Component({
   selector: 'nz-demo-rate-customize',
+  standalone: true,
+  imports: [FormsModule, NzIconModule, NzRateModule],
   template: `
     <nz-rate [ngModel]="2" [nzCharacter]="characterNumber"></nz-rate>
     <br />

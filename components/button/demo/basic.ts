@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+
 @Component({
   selector: 'nz-demo-button-basic',
+  standalone: true,
+  imports: [NzButtonModule],
   template: `
     <button nz-button nzType="primary">Primary Button</button>
     <button nz-button nzType="default">Default Button</button>

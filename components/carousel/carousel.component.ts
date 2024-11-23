@@ -87,7 +87,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
           [class.slick-dots-right]="nzDotPosition === 'right'"
         >
           @for (content of carouselContents; track content) {
-            <li [class.slick-active]="$index === activeIndex" (click)="onLiClick($index)">
+            <li [class.slick-active]="$index === activeIndex" (click)="goTo($index)">
               <ng-template
                 [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
                 [ngTemplateOutletContext]="{ $implicit: $index }"
@@ -288,14 +288,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.destroy$.complete();
   }
 
-  onLiClick = (index: number): void => {
-    if (this.dir === 'rtl') {
-      this.goTo(this.carouselContents.length - 1 - index);
-    } else {
-      this.goTo(index);
-    }
-  };
-
   next(): void {
     this.goTo(this.activeIndex + 1);
   }
@@ -365,11 +357,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     if (this.carouselContents) {
       this.carouselContents.forEach((slide, i) => {
-        if (this.dir === 'rtl') {
-          slide.isActive = index === this.carouselContents.length - 1 - i;
-        } else {
-          slide.isActive = index === i;
-        }
+        slide.isActive = index === i;
       });
     }
 

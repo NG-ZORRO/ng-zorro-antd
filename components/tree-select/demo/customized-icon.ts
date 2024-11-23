@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-customized-icon',
+  standalone: true,
+  imports: [FormsModule, NzIconModule, NzTreeSelectModule],
   template: `
     <nz-tree-select
       style="width: 250px"
@@ -30,7 +36,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoTreeSelectCustomizedIconComponent {
   value?: string;
-  nodes = [
+  readonly nodes = [
     {
       title: 'parent 1',
       key: '100',

@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: 'nz-demo-card-meta',
+  standalone: true,
+  imports: [NzAvatarModule, NzCardModule, NzIconModule],
   template: `
     <nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
       <nz-card-meta

@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-collapse-extra',
+  standalone: true,
+  imports: [FormsModule, NzCollapseModule, NzIconModule, NzSelectModule],
   template: `
     <nz-collapse [nzExpandIconPosition]="expandIconPosition">
       @for (panel of panels; track panel) {

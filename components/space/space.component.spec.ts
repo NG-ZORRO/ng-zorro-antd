@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzSpaceAlign } from 'ng-zorro-antd/space';
+import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize } from 'ng-zorro-antd/space';
 import { NzSpaceComponent } from 'ng-zorro-antd/space/space.component';
 
 import { NzSpaceModule } from './space.module';
@@ -12,10 +12,7 @@ describe('Space', () => {
   let fixture: ComponentFixture<SpaceTestComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzSpaceModule],
-      declarations: [SpaceTestComponent]
-    }).compileComponents();
+    TestBed.configureTestingModule({}).compileComponents();
   }));
 
   beforeEach(() => {
@@ -219,6 +216,8 @@ describe('Space', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzSpaceModule],
   template: `
     <nz-space [nzSplit]="showSplit ? spaceSplit : null" [nzSize]="size" [nzDirection]="direction" [nzAlign]="align">
       <div *nzSpaceItem>item</div>
@@ -232,8 +231,8 @@ describe('Space', () => {
   `
 })
 class SpaceTestComponent {
-  size: string | number = 'small';
-  direction = 'horizontal';
+  size: NzSpaceSize = 'small';
+  direction: NzSpaceDirection = 'horizontal';
   show = false;
   align?: NzSpaceAlign;
   showSplit = false;

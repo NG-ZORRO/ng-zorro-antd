@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzBytesPipe } from 'ng-zorro-antd/pipes';
+
 @Component({
   selector: 'nz-demo-pipes-bytes',
+  standalone: true,
+  imports: [NzBytesPipe],
   template: `
     <ul>
       <li>{{ 200 | nzBytes }}</li>

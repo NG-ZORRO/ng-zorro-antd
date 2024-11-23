@@ -1,17 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
   NonNullableFormBuilder,
-  ValidatorFn,
+  ReactiveFormsModule,
+  ValidationErrors,
   Validators
 } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzFormModule, NzFormTooltipIcon } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-form-register',
+  standalone: true,
+  imports: [ReactiveFormsModule, NzButtonModule, NzCheckboxModule, NzFormModule, NzInputModule, NzSelectModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
@@ -23,13 +30,7 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your password!">
-          <input
-            nz-input
-            type="password"
-            id="password"
-            formControlName="password"
-            (ngModelChange)="updateConfirmValidator()"
-          />
+          <input nz-input type="password" id="password" formControlName="password" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -129,7 +130,6 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
       </nz-form-item>
     </form>
   `,
-
   styles: [
     `
       [nz-form] {
@@ -137,7 +137,7 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
       }
 
       .ant-select.ant-select-in-form-item.phone-select {
-        width: 70px;
+        width: 80px;
       }
 
       .register-area {
@@ -146,22 +146,36 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
     `
   ]
 })
-export class NzDemoFormRegisterComponent {
-  validateForm: FormGroup<{
-    email: FormControl<string>;
-    password: FormControl<string>;
-    checkPassword: FormControl<string>;
-    nickname: FormControl<string>;
-    phoneNumberPrefix: FormControl<'+86' | '+87'>;
-    phoneNumber: FormControl<string>;
-    website: FormControl<string>;
-    captcha: FormControl<string>;
-    agree: FormControl<boolean>;
-  }>;
+export class NzDemoFormRegisterComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  validateForm = this.fb.group({
+    email: this.fb.control('', [Validators.email, Validators.required]),
+    password: this.fb.control('', [Validators.required]),
+    checkPassword: this.fb.control('', [Validators.required, this.confirmationValidator]),
+    nickname: this.fb.control('', [Validators.required]),
+    phoneNumberPrefix: this.fb.control<'+86' | '+87'>('+86'),
+    phoneNumber: this.fb.control('', [Validators.required]),
+    website: this.fb.control('', [Validators.required]),
+    captcha: this.fb.control('', [Validators.required]),
+    agree: this.fb.control(false)
+  });
   captchaTooltipIcon: NzFormTooltipIcon = {
     type: 'info-circle',
     theme: 'twotone'
   };
+
+  constructor(private fb: NonNullableFormBuilder) {}
+
+  ngOnInit(): void {
+    this.validateForm.controls.password.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.validateForm.controls.checkPassword.updateValueAndValidity();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   submitForm(): void {
     if (this.validateForm.valid) {
@@ -176,35 +190,16 @@ export class NzDemoFormRegisterComponent {
     }
   }
 
-  updateConfirmValidator(): void {
-    /** wait for refresh value */
-    Promise.resolve().then(() => this.validateForm.controls.checkPassword.updateValueAndValidity());
-  }
-
-  confirmationValidator: ValidatorFn = (control: AbstractControl): { [s: string]: boolean } => {
+  confirmationValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) {
       return { required: true };
     } else if (control.value !== this.validateForm.controls.password.value) {
       return { confirm: true, error: true };
     }
     return {};
-  };
+  }
 
   getCaptcha(e: MouseEvent): void {
     e.preventDefault();
-  }
-
-  constructor(private fb: NonNullableFormBuilder) {
-    this.validateForm = this.fb.group({
-      email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required]],
-      checkPassword: ['', [Validators.required, this.confirmationValidator]],
-      nickname: ['', [Validators.required]],
-      phoneNumberPrefix: '+86' as '+86' | '+87',
-      phoneNumber: ['', [Validators.required]],
-      website: ['', [Validators.required]],
-      captcha: ['', [Validators.required]],
-      agree: [false]
-    });
   }
 }

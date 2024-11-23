@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzMarks } from 'ng-zorro-antd/slider';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-grid-playground',
+  standalone: true,
+  imports: [FormsModule, NzGridModule, NzSliderModule],
   template: `
     <div class="slider-container">
       <span>Horizontal Gutter (px):</span>

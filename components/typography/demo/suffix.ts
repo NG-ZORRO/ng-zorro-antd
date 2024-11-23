@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-typography-suffix',
+  standalone: true,
+  imports: [FormsModule, NzSliderModule, NzTypographyModule],
   template: `
     <nz-slider [(ngModel)]="rows" [nzMax]="10" [nzMin]="1"></nz-slider>
     <p

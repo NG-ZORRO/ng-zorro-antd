@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzTabPosition } from 'ng-zorro-antd/tabs';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-slide',
+  standalone: true,
+  imports: [FormsModule, NzInputNumberModule, NzRadioModule, NzTabsModule],
   template: `
     <nz-radio-group [(ngModel)]="nzTabPosition" style="margin-bottom: 8px;">
       <label nz-radio-button [nzValue]="'top'">Horizontal</label>

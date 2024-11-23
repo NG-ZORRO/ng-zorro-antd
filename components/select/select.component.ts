@@ -35,8 +35,10 @@ import {
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
+  computed,
   forwardRef,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, fromEvent, merge, of as observableOf } from 'rxjs';
@@ -52,12 +54,14 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   NgClassInterface,
   NzSafeAny,
+  NzSizeLDSType,
   NzStatus,
   NzValidateStatus,
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
+import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 import { NzOptionContainerComponent } from './option-container.component';
 import { NzOptionGroupComponent } from './option-group.component';
@@ -83,7 +87,7 @@ const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSe
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'select';
 
-export type NzSelectSizeType = 'large' | 'default' | 'small';
+export type NzSelectSizeType = NzSizeLDSType;
 
 @Component({
   selector: 'nz-select',
@@ -95,7 +99,8 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSelectComponent),
       multi: true
-    }
+    },
+    { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'select' }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -191,8 +196,8 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
   host: {
     class: 'ant-select',
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
-    '[class.ant-select-lg]': 'nzSize === "large"',
-    '[class.ant-select-sm]': 'nzSize === "small"',
+    '[class.ant-select-lg]': 'finalSize() === "large"',
+    '[class.ant-select-sm]': 'finalSize() === "small"',
     '[class.ant-select-show-arrow]': `nzShowArrow`,
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-show-search]': `(nzShowSearch || nzMode !== 'default') && !nzDisabled`,
@@ -204,6 +209,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select-multiple]': `nzMode !== 'default'`,
     '[class.ant-select-rtl]': `dir === 'rtl'`
   },
+  hostDirectives: [NzSpaceCompactItemDirective],
   imports: [
     NzSelectTopControlComponent,
     CdkOverlayOrigin,
@@ -224,7 +230,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
-  @Input() @WithConfig<number>() nzOptionHeightPx = 32;
+  @Input() @WithConfig() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string[] | string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
@@ -236,7 +242,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
   @Input()
-  @WithConfig<TemplateRef<NzSafeAny> | string | null>()
+  @WithConfig()
   nzSuffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
@@ -248,7 +254,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input({ transform: booleanAttribute }) nzAllowClear = false;
-  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBorderless = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBorderless = false;
   @Input({ transform: booleanAttribute }) nzShowSearch = false;
   @Input({ transform: booleanAttribute }) nzLoading = false;
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
@@ -257,7 +263,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzOpen = false;
   @Input({ transform: booleanAttribute }) nzSelectOnTab = false;
-  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
 
   @Input({ transform: booleanAttribute })
@@ -286,6 +292,16 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @ViewChild(NzOptionGroupComponent, { static: true, read: ElementRef }) nzOptionGroupComponentElement!: ElementRef;
   @ViewChild(NzSelectTopControlComponent, { static: true, read: ElementRef })
   nzSelectTopControlComponentElement!: ElementRef;
+
+  protected finalSize = computed(() => {
+    if (this.compactSize) {
+      return this.compactSize();
+    }
+    return this.size();
+  });
+
+  private size = signal<NzSizeLDSType>(this.nzSize);
+  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private listOfValue$ = new BehaviorSubject<NzSafeAny[]>([]);
   private listOfTemplateItem$ = new BehaviorSubject<NzSelectItemInterface[]>([]);
   private listOfTagAndTemplateItem: NzSelectItemInterface[] = [];
@@ -295,6 +311,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private _nzShowArrow: boolean | undefined;
   private requestId: number = -1;
   private isNzDisableFirstChange: boolean = true;
+
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   dropDownPosition: NzSelectPlacementType = 'bottomLeft';
@@ -632,8 +649,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     this.cdr.markForCheck();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzOpen, nzDisabled, nzOptions, nzStatus, nzPlacement } = changes;
+  ngOnChanges({ nzOpen, nzDisabled, nzOptions, nzStatus, nzPlacement, nzSize }: SimpleChanges): void {
     if (nzOpen) {
       this.onOpenChange();
     }
@@ -671,6 +687,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       } else {
         this.positions = listOfPlacement.map(e => POSITION_MAP[e as POSITION_TYPE]);
       }
+    }
+    if (nzSize) {
+      this.size.set(nzSize.currentValue);
     }
   }
 
@@ -733,6 +752,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       .getConfigChangeEventForComponent('select')
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
+        this.size.set(this.nzSize);
         this.cdr.markForCheck();
       });
 

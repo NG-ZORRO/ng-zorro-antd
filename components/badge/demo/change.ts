@@ -1,14 +1,22 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
+  standalone: true,
   selector: 'nz-demo-badge-change',
+  imports: [FormsModule, NzBadgeModule, NzButtonModule, NzIconModule, NzSwitchModule],
   template: `
     <div>
       <nz-badge [nzCount]="count">
         <a class="head-example"></a>
       </nz-badge>
       <nz-button-group>
-        <button nz-button (click)="minCount()"><span nz-icon nzType="minus"></span></button>
+        <button nz-button (click)="minusCount()"><span nz-icon nzType="minus"></span></button>
         <button nz-button (click)="addCount()"><span nz-icon nzType="plus"></span></button>
       </nz-button-group>
     </div>
@@ -50,10 +58,7 @@ export class NzDemoBadgeChangeComponent {
     this.count++;
   }
 
-  minCount(): void {
-    this.count--;
-    if (this.count < 0) {
-      this.count = 0;
-    }
+  minusCount(): void {
+    this.count = Math.max(0, this.count - 1);
   }
 }

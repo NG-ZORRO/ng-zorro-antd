@@ -27,23 +27,24 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 ### nz-tabset:standalone
 
-| 参数                      | 说明                                                               | 类型                                                | 默认值                                | 全局配置 |
-| ------------------------- | ------------------------------------------------------------------ | --------------------------------------------------- | ------------------------------------- | -------- |
-| `[nzSelectedIndex]`       | 当前激活 tab 面板的 序列号，可双向绑定                             | `number`                                            | -                                     |
-| `[nzAnimated]`            | 是否使用动画切换 Tabs，在 `nzTabPosition="top" \| "bottom"` 时有效 | `boolean \| {inkBar:boolean, tabPane:boolean}`      | `true`, 当 `type="card"` 时为 `false` | ✅       |
-| `[nzSize]`                | 大小，提供 `large` `default` 和 `small` 三种大小                   | `'large' \| 'small' \| 'default'`                   | `'default'`                           | ✅       |
-| `[nzTabBarExtraContent]`  | tab bar 上额外的元素                                               | `TemplateRef<void>`                                 | -                                     |
-| `[nzTabBarStyle]`         | tab bar 的样式对象                                                 | `object`                                            | -                                     |
-| `[nzTabPosition]`         | 页签位置，可选值有 `top` `right` `bottom` `left`                   | `'top' \| 'right' \| 'bottom' \| 'left'`            | `'top'`                               |          |
-| `[nzType]`                | 页签的基本样式                                                     | `'line' \| 'card' \| 'editable-card'`               | `'line'`                              | ✅       |
-| `[nzTabBarGutter]`        | tabs 之间的间隙                                                    | `number`                                            | -                                     | ✅       |
-| `[nzHideAll]`             | 是否隐藏所有 tab 内容                                              | `boolean`                                           | `false`                               |
-| `[nzLinkRouter]`          | 与 Angular 路由联动                                                | `boolean`                                           | `false`                               |          |
-| `[nzLinkExact]`           | 以严格匹配模式确定联动的路由                                       | `boolean`                                           | `true`                                |
-| `[nzCanDeactivate]`       | 决定一个 tab 是否可以被切换                                        | `NzTabsCanDeactivateFn`                             | -                                     |
-| `[nzCentered]`            | 标签居中展示                                                       | `boolean`                                           | `false`                               |
-| `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数                             | `EventEmitter<number>`                              | -                                     |
-| `(nzSelectChange)`        | 当前激活 tab 面板变更回调函数                                      | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                     |
+| 参数                         | 说明                                                               | 类型                                                | 默认值                                | 全局配置 |
+| ---------------------------- | ------------------------------------------------------------------ | --------------------------------------------------- | ------------------------------------- | -------- |
+| `[nzSelectedIndex]`          | 当前激活 tab 面板的 序列号，可双向绑定                             | `number`                                            | -                                     |
+| `[nzAnimated]`               | 是否使用动画切换 Tabs，在 `nzTabPosition="top" \| "bottom"` 时有效 | `boolean \| {inkBar:boolean, tabPane:boolean}`      | `true`, 当 `type="card"` 时为 `false` | ✅        |
+| `[nzSize]`                   | 大小，提供 `large` `default` 和 `small` 三种大小                   | `'large' \| 'small' \| 'default'`                   | `'default'`                           | ✅        |
+| `[nzTabBarExtraContent]`     | tab bar 上额外的元素                                               | `TemplateRef<void>`                                 | -                                     |
+| `[nzTabBarStyle]`            | tab bar 的样式对象                                                 | `object`                                            | -                                     |
+| `[nzTabPosition]`            | 页签位置，可选值有 `top` `right` `bottom` `left`                   | `'top' \| 'right' \| 'bottom' \| 'left'`            | `'top'`                               |          |
+| `[nzType]`                   | 页签的基本样式                                                     | `'line' \| 'card' \| 'editable-card'`               | `'line'`                              | ✅        |
+| `[nzTabBarGutter]`           | tabs 之间的间隙                                                    | `number`                                            | -                                     | ✅        |
+| `[nzHideAll]`                | 是否隐藏所有 tab 内容                                              | `boolean`                                           | `false`                               |
+| `[nzLinkRouter]`             | 与 Angular 路由联动                                                | `boolean`                                           | `false`                               |          |
+| `[nzLinkExact]`              | 以严格匹配模式确定联动的路由                                       | `boolean`                                           | `true`                                |
+| `[nzCanDeactivate]`          | 决定一个 tab 是否可以被切换                                        | `NzTabsCanDeactivateFn`                             | -                                     |
+| `[nzCentered]`               | 标签居中展示                                                       | `boolean`                                           | `false`                               |
+| `[nzDestroyInactiveTabPane]` | 被隐藏时是否销毁 DOM 结构                                          | `boolean`                                           | `false`                               |
+| `(nzSelectedIndexChange)`    | 当前激活 tab 面板的 序列号变更回调函数                             | `EventEmitter<number>`                              | -                                     |
+| `(nzSelectChange)`           | 当前激活 tab 面板变更回调函数                                      | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                     |
 
 ### nz-tabset[nzType="editable-card"]:standalone
 

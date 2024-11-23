@@ -1,8 +1,13 @@
-import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-input-tooltip',
-  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [FormsModule, NzInputModule, NzToolTipModule],
   template: `
     <input
       #inputElement
@@ -11,7 +16,7 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
       nz-tooltip
       nzTooltipTrigger="focus"
       nzTooltipPlacement="topLeft"
-      nzOverlayClassName="numeric-input"
+      nzTooltipOverlayClassName="numeric-input"
       [ngModel]="value"
       [nzTooltipTitle]="title"
       placeholder="Input a number"

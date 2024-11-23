@@ -1,13 +1,10 @@
-import { Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import isEqual from 'date-fns/isEqual';
 import isSameDay from 'date-fns/isSameDay';
@@ -19,19 +16,16 @@ import {
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-import { NgStyleInterface, NzStatus } from 'ng-zorro-antd/core/types';
-import { NZ_DATE_LOCALE, NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NgStyleInterface, NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NZ_DATE_LOCALE, NzI18nService } from 'ng-zorro-antd/i18n';
+import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 
-import { NzFormModule } from '../form';
-import en_US from '../i18n/languages/en_US';
-import { NzDatePickerComponent } from './date-picker.component';
+import { NzDatePickerComponent, NzDatePickerSizeType, NzPlacement } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
+import { CompatibleDate, NzPanelChangeType } from './standard-types';
 import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
 import { PREFIX_CLASS } from './util';
-
-registerLocaleData(zh);
 
 describe('NzDatePickerComponent', () => {
   let fixture: ComponentFixture<NzTestDatePickerComponent>;
@@ -41,19 +35,11 @@ describe('NzDatePickerComponent', () => {
   let overlayContainerElement: HTMLElement;
   let i18nService: NzI18nService;
 
-  beforeEach(fakeAsync(() => {
-    const dir = 'ltr';
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule, ReactiveFormsModule],
-      providers: [
-        { provide: Directionality, useFactory: () => ({ value: dir }) }
-        // { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 1 } }
-      ],
-      declarations: [NzTestDatePickerComponent]
+      providers: [provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NzTestDatePickerComponent);
@@ -159,7 +145,7 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
     }));
 
-    it('should have focus when opened progammatically', fakeAsync(() => {
+    it('should have focus when opened programmatically', fakeAsync(() => {
       fixture.detectChanges();
       openPickerByCode();
       expect(document.activeElement).toEqual(getPickerInput(fixture.debugElement));
@@ -185,6 +171,7 @@ describe('NzDatePickerComponent', () => {
       expect(isSameDay(new Date('2021-04-12'), result)).toBeTruthy();
       expect(getPickerContainer()).toBeNull();
     }));
+
     it("should not send onChangeEvent if value doesn't change", fakeAsync(() => {
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       fixtureInstance.useSuite = 5;
@@ -209,7 +196,6 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).placeholder).toBe('请选择日期');
       i18nService.setLocale(en_US);
-      // i18nService.setDateLocale(en);
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).placeholder).toBe('Select date');
 
@@ -218,7 +204,7 @@ describe('NzDatePickerComponent', () => {
     }));
 
     /* Issue https://github.com/NG-ZORRO/ng-zorro-antd/issues/1539 */
-    it('should be openable after closed by "Escape" key', fakeAsync(() => {
+    it('should be able to open after closed by "Escape" key', fakeAsync(() => {
       fixture.detectChanges();
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
@@ -880,8 +866,7 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzShowTime', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11 11:22:33');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      fixtureInstance.nzShowTime = '' as any;
+      fixtureInstance.nzShowTime = '' as NzSafeAny;
       fixture.detectChanges();
       openPickerByClickTrigger();
       flush();
@@ -892,7 +877,7 @@ describe('NzDatePickerComponent', () => {
         queryFromOverlay('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner').textContent!.trim()
       ).toBe('11');
 
-      // Click to choose a hour
+      // Click to choose an hour
       dispatchMouseEvent(queryFromOverlay('.ant-picker-time-panel-cell:first-child'), 'click');
       fixture.detectChanges();
       flush();
@@ -1008,7 +993,7 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerInput(fixture.debugElement).value).toBe('');
     }));
 
-    it('should support updating the disabledtime state when the current time changes', fakeAsync(() => {
+    it('should support updating the nzDisabledTime state when the current time changes', fakeAsync(() => {
       fixtureInstance.nzShowTime = true;
       fixtureInstance.nzDisabledTime = (current: Date) => ({
         nzDisabledHours: () => {
@@ -1077,7 +1062,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(isSameDay(new Date(), result)).toBeTruthy();
-      expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should closed
+      expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should be closed
     }));
 
     it('should support nzShowNow', fakeAsync(() => {
@@ -1107,7 +1092,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should closed
+      expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should be closed
     }));
 
     it('should support nzMode', fakeAsync(() => {
@@ -1129,6 +1114,7 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzOnPanelChange', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-12-01');
       spyOn(fixtureInstance, 'nzOnPanelChange');
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -1138,7 +1124,61 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith('month');
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({ mode: 'month', date: new Date('2020-12-01') });
+    }));
+
+    it('should support nzOnPanelChange when next button is clicked', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-11-01');
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getNextBtn(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({ mode: 'date', date: new Date('2020-12-01') });
+    }));
+
+    it('should support nzOnPanelChange when super next button is clicked', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-11-01');
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getSuperNextBtn(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({ mode: 'date', date: new Date('2021-11-01') });
+    }));
+
+    it('should support nzOnPanelChange when previous button is clicked', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-11-01 11:22:33');
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getPreBtn(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: 'date',
+        date: new Date('2020-10-01 11:22:33')
+      });
+    }));
+
+    it('should support nzOnPanelChange when super previous button is clicked', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2020-11-01 11:22:33');
+      spyOn(fixtureInstance, 'nzOnPanelChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(getSuperPreBtn(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
+        mode: 'date',
+        date: new Date('2019-11-01 11:22:33')
+      });
     }));
 
     it('should support nzOnOk', fakeAsync(() => {
@@ -1164,14 +1204,14 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
       const input = getPickerInput(fixture.debugElement);
 
-      // Wrong inputing support
+      // Wrong input support
       typeInElement('wrong', input);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       // expect(input.classList.contains('ant-calendar-input-invalid')).toBeTruthy();
 
-      // Correct inputing
+      // Correct input
       input.value = '2018-11-22';
       input.dispatchEvent(ENTER_EVENT);
       // dispatchKeyboardEvent(input, 'keyup', ENTER); // Not working?
@@ -1184,12 +1224,12 @@ describe('NzDatePickerComponent', () => {
     }));
 
     // #6070
-    it('should reset after inputing invalid value and close panel', fakeAsync(() => {
+    it('should reset after input invalid value and close panel', fakeAsync(() => {
       fixture.detectChanges();
       openPickerByClickTrigger();
       const input = getPickerInput(fixture.debugElement);
 
-      // Wrong inputing support
+      // Wrong input support
       typeInElement('wrong', input);
       fixture.detectChanges();
       flush();
@@ -1263,8 +1303,6 @@ describe('NzDatePickerComponent', () => {
     }));
   });
 
-  ////////////
-
   function getPickerContainer(): HTMLElement {
     return queryFromOverlay(`.${PREFIX_CLASS}-panel-container`) as HTMLElement;
   }
@@ -1306,11 +1344,8 @@ describe('date-fns testing', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule],
-      providers: [{ provide: NZ_DATE_LOCALE, useValue: enUS }],
-      declarations: [NzTestDatePickerComponent]
+      providers: [provideNoopAnimations(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
     });
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -1328,11 +1363,13 @@ describe('date-fns testing', () => {
     tick(500);
     fixture.detectChanges();
     const input = getPickerInput(fixture.debugElement);
+    expect(input).not.toBeNull();
     typeInElement('25.10.2019', input);
     fixture.detectChanges();
     input.dispatchEvent(ENTER_EVENT);
     fixture.detectChanges();
     flush();
+    expect(nzOnChange).toHaveBeenCalled();
     const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
     expect(result.getFullYear()).toBe(2019);
     expect(result.getMonth() + 1).toBe(10);
@@ -1341,17 +1378,23 @@ describe('date-fns testing', () => {
 });
 
 describe('status', () => {
-  let testBed: ComponentBed<NzTestDatePickerStatusComponent>;
   let fixture: ComponentFixture<NzTestDatePickerStatusComponent>;
   let fixtureInstance: NzTestDatePickerStatusComponent;
   let datePickerElement!: HTMLElement;
+
   beforeEach(() => {
-    testBed = createComponentBed(NzTestDatePickerStatusComponent, { imports: [NzDatePickerModule, NzIconTestModule] });
-    fixture = testBed.fixture;
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
+    });
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestDatePickerStatusComponent);
     fixtureInstance = fixture.componentInstance;
     datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
     fixture.detectChanges();
   });
+
   it('should classname correct', () => {
     expect(datePickerElement.classList).toContain('ant-picker-status-error');
 
@@ -1366,21 +1409,25 @@ describe('status', () => {
 });
 
 describe('in form', () => {
-  let testBed: ComponentBed<NzTestDatePickerInFormComponent>;
   let fixture: ComponentFixture<NzTestDatePickerInFormComponent>;
   let datePickerElement!: HTMLElement;
   let formGroup: FormGroup<{
     demo: FormControl<Date | null>;
   }>;
+
   beforeEach(() => {
-    testBed = createComponentBed(NzTestDatePickerInFormComponent, {
-      imports: [NzDatePickerModule, NzIconTestModule, NzFormModule, ReactiveFormsModule, FormsModule]
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
     });
-    fixture = testBed.fixture;
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestDatePickerInFormComponent);
     datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
     formGroup = fixture.componentInstance.validateForm;
     fixture.detectChanges();
   });
+
   it('should classname correct', () => {
     expect(datePickerElement.classList).not.toContain('ant-picker-status-error');
     expect(datePickerElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
@@ -1409,6 +1456,8 @@ describe('in form', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, FormsModule, NzDatePickerModule],
   template: `
     @switch (useSuite) {
       @case (1) {
@@ -1480,21 +1529,23 @@ class NzTestDatePickerComponent {
   nzInputReadOnly: boolean = false;
   nzFormat!: string;
   nzDisabledDate!: (d: Date) => boolean;
-  nzLocale: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  nzLocale: NzSafeAny;
   nzPlaceHolder!: string;
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;
-  nzSize!: string;
+  nzSize!: NzDatePickerSizeType;
 
   nzOnChange(_: Date | null): void {}
-  nzOnCalendarChange(): void {}
+
+  nzOnCalendarChange(_: Array<Date | null>): void {}
+
   nzOnOpenChange(_: boolean): void {}
 
   nzValue: Date | null = null;
   nzDefaultPickerValue: Date | null = null;
-  nzDateRender: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  nzDateRender: NzSafeAny;
   nzShowTime: boolean | object = false;
-  nzDisabledTime: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  nzDisabledTime: NzSafeAny;
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
   nzShowNow = false;
@@ -1503,13 +1554,13 @@ class NzTestDatePickerComponent {
   nzBorderless = false;
   nzInline = false;
   nzBackdrop = false;
-  nzPlacement = 'bottomLeft';
+  nzPlacement: NzPlacement = 'bottomLeft';
   nzShowWeekNumber = false;
 
   // nzRanges;
-  nzOnPanelChange(_: string): void {}
+  nzOnPanelChange(_: NzPanelChangeType): void {}
 
-  nzOnOk(_: Date): void {}
+  nzOnOk(_: CompatibleDate | null): void {}
 
   // --- Suite 2
   nzOpen: boolean = false;
@@ -1526,13 +1577,17 @@ class NzTestDatePickerComponent {
 }
 
 @Component({
-  template: ` <nz-date-picker [nzStatus]="status"></nz-date-picker> `
+  standalone: true,
+  imports: [NzDatePickerModule],
+  template: `<nz-date-picker [nzStatus]="status"></nz-date-picker>`
 })
 class NzTestDatePickerStatusComponent {
   status: NzStatus = 'error';
 }
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzFormModule, NzDatePickerModule],
   template: `
     <form nz-form [formGroup]="validateForm">
       <nz-form-item>
@@ -1547,5 +1602,6 @@ class NzTestDatePickerInFormComponent {
   validateForm = this.fb.group({
     demo: this.fb.control<Date | null>(null, Validators.required)
   });
+
   constructor(private fb: FormBuilder) {}
 }

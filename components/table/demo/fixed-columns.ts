@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 @Component({
   selector: 'nz-demo-table-fixed-columns',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #columnTable [nzData]="listOfData" [nzScroll]="{ x: '1100px' }">
       <thead>
@@ -20,21 +24,23 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of columnTable.data">
-          <td nzLeft>{{ data.name }}</td>
-          <td nzLeft>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td nzRight>{{ data.address }}</td>
-          <td nzRight>
-            <a>action</a>
-          </td>
-        </tr>
+        @for (data of columnTable.data; track data) {
+          <tr>
+            <td nzLeft>{{ data.name }}</td>
+            <td nzLeft>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td nzRight>{{ data.address }}</td>
+            <td nzRight>
+              <a>action</a>
+            </td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `

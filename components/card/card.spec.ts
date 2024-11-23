@@ -1,7 +1,13 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Subject } from 'rxjs';
+
+import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzCardComponent } from './card.component';
 import { NzCardModule } from './card.module';
@@ -19,22 +25,9 @@ import { NzDemoCardTabsComponent } from './demo/tabs';
 describe('card', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzCardModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [
-        NzDemoCardBasicComponent,
-        NzDemoCardBorderLessComponent,
-        NzDemoCardFlexibleContentComponent,
-        NzDemoCardGridCardComponent,
-        NzDemoCardInColumnComponent,
-        NzDemoCardInnerComponent,
-        NzDemoCardLoadingComponent,
-        NzDemoCardMetaComponent,
-        NzDemoCardSimpleComponent,
-        NzDemoCardTabsComponent,
-        TestCardSizeComponent,
-        NzTestCardRtlComponent
-      ]
+      providers: [provideNzIconsTesting()],
+      imports: [BidiModule, NzCardModule, NoopAnimationsModule],
+      schemas: [NO_ERRORS_SCHEMA]
     });
     TestBed.compileComponents();
   }));
@@ -138,6 +131,8 @@ describe('card', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzCardModule],
   template: `
     <nz-card [nzSize]="size">
       <p>Card content</p>
@@ -147,10 +142,12 @@ describe('card', () => {
   `
 })
 class TestCardSizeComponent {
-  size = 'default';
+  size: NzSizeDSType = 'default';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzCardModule],
   template: `
     <div [dir]="direction">
       <nz-card>
@@ -163,5 +160,35 @@ class TestCardSizeComponent {
 })
 export class NzTestCardRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
+
+describe('card component', () => {
+  let fixture: ComponentFixture<NzCardComponent>;
+  let component: NzCardComponent;
+  let configChangeEvent$: Subject<void>;
+
+  beforeEach(() => {
+    configChangeEvent$ = new Subject<void>();
+    const nzConfigServiceSpy = jasmine.createSpyObj('NzConfigService', {
+      getConfigChangeEventForComponent: configChangeEvent$.asObservable(),
+      getConfigForComponent: {}
+    });
+
+    TestBed.configureTestingModule({
+      imports: [NzCardModule, NzCardModule],
+      providers: [{ provide: NzConfigService, useValue: nzConfigServiceSpy }]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(NzCardComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should call markForCheck when changing nzConfig', fakeAsync(() => {
+    spyOn(component['cdr'], 'markForCheck');
+    fixture.detectChanges();
+    configChangeEvent$.next();
+    tick();
+    expect(component['cdr'].markForCheck).toHaveBeenCalled();
+  }));
+});

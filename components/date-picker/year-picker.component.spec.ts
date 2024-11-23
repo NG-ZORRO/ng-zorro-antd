@@ -7,8 +7,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NzDatePickerSizeType } from 'ng-zorro-antd/date-picker/date-picker.component';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
+import { NzDatePickerI18nInterface, NzDatePickerLangI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzDatePickerModule } from './date-picker.module';
@@ -169,13 +171,17 @@ describe('NzYearPickerComponent', () => {
 
     it('should support nzLocale', () => {
       const featureKey = 'TEST_PLACEHOLDER';
-      fixtureInstance.nzLocale = { lang: { yearPlaceholder: featureKey } };
+      fixtureInstance.nzLocale = {
+        lang: { yearPlaceholder: featureKey } as unknown as NzDatePickerLangI18nInterface,
+        timePickerLocale: {}
+      };
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
 
     it('should support nzPlaceHolder', () => {
-      const featureKey = (fixtureInstance.nzPlaceHolder = 'TEST_PLACEHOLDER');
+      const featureKey = 'TEST_PLACEHOLDER';
+      fixtureInstance.nzPlaceHolder = featureKey;
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
@@ -293,10 +299,10 @@ describe('NzYearPickerComponent', () => {
     }));
   }); // /specified date picker testing
 
-  describe('ngModel value accesors', () => {
+  describe('ngModel value accessors', () => {
     beforeEach(() => (fixtureInstance.useSuite = 3));
 
-    it('should specified date provide by "modelValue" be choosed', fakeAsync(() => {
+    it('should specified date provide by "modelValue" be chosen', fakeAsync(() => {
       fixtureInstance.modelValue = new Date('2018-11');
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done
@@ -398,11 +404,11 @@ class NzTestYearPickerComponent {
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
   nzDisabledDate?: (d: Date) => boolean;
-  nzLocale: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  nzPlaceHolder?: string;
+  nzLocale!: NzDatePickerI18nInterface;
+  nzPlaceHolder!: string;
   nzPopupStyle?: NgStyleInterface;
   nzDropdownClassName?: string;
-  nzSize?: string;
+  nzSize!: NzDatePickerSizeType;
 
   nzOnOpenChange(_: boolean): void {}
 

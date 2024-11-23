@@ -16,7 +16,6 @@ import { generateColor } from '../util/util';
   template: `
     <div
       class="ant-color-picker-gradient"
-      style="position: absolute; inset: 0"
       [style.background]="'linear-gradient(' + direction + ', ' + gradientColors + ')'"
     >
       <ng-content></ng-content>

@@ -1,4 +1,11 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 interface DataItem {
   name: string;
@@ -7,6 +14,8 @@ interface DataItem {
 }
 @Component({
   selector: 'nz-demo-table-custom-filter-panel',
+  standalone: true,
+  imports: [FormsModule, NzButtonModule, NzDropDownModule, NzIconModule, NzInputModule, NzTableModule],
   template: `
     <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
       <thead>
@@ -22,11 +31,13 @@ interface DataItem {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of nzTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-        </tr>
+        @for (data of nzTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
     <nz-dropdown-menu #menu="nzDropdownMenu">

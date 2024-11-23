@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
+
 @Component({
   selector: 'nz-demo-cron-expression-type',
+  standalone: true,
+  imports: [NzCronExpressionModule],
   template: `
     <div class="example-cron-expression">
       <nz-cron-expression nzType="linux"></nz-cron-expression>

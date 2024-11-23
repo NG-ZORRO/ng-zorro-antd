@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-layout-responsive',
+  standalone: true,
+  imports: [NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout class="layout">
       <nz-sider nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">

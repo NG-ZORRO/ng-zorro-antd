@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-size',
+  standalone: true,
+  imports: [FormsModule, NzRadioModule, NzTabsModule],
   template: `
     <nz-radio-group [(ngModel)]="size">
       <label nz-radio-button nzValue="small"><span>Small</span></label>

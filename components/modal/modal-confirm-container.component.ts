@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { CdkScrollable } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import { NgClass, NgStyle } from '@angular/common';
 import {
@@ -91,6 +92,7 @@ import { BaseModalContainerComponent } from './modal-container.directive';
       </div>
     </div>
   `,
+  hostDirectives: [CdkScrollable],
   animations: [nzModalAnimations.modalContainer],
   // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
   changeDetection: ChangeDetectionStrategy.Default,

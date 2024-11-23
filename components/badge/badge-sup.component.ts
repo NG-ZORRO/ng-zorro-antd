@@ -7,12 +7,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
+  numberAttribute,
   OnChanges,
   OnInit,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation,
-  numberAttribute
+  ViewEncapsulation
 } from '@angular/core';
 
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
@@ -81,7 +81,10 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   constructor() {}
 
   generateMaxNumberArray(): void {
-    this.maxNumberArray = this.nzOverflowCount.toString().split('');
+    this.maxNumberArray = this.nzOverflowCount
+      .toString()
+      .split('')
+      .map((value: string, index: number) => `${value}-${index}`);
   }
 
   ngOnInit(): void {

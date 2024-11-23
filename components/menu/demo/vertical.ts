@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-menu-vertical',
+  standalone: true,
+  imports: [NzMenuModule],
   template: `
     <ul nz-menu [nzMode]="'vertical'">
       <li nz-submenu nzTitle="Navigation One" nzIcon="mail">

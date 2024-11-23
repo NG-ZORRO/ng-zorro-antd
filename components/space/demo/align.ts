@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+
 @Component({
   selector: 'nz-demo-space-align',
+  standalone: true,
+  imports: [NzButtonModule, NzSpaceModule],
   template: `
     <div class="space-align-container">
       <div nz-space nzAlign="center" class="space-align-block">

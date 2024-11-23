@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+
 @Component({
   selector: 'nz-demo-carousel-fade',
+  standalone: true,
+  imports: [NzCarouselModule],
   template: `
     <nz-carousel [nzEffect]="'fade'">
       @for (index of array; track index) {

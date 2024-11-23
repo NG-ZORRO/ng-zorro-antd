@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
-import { RouterList } from '../router';
+import { RouterList } from '../types';
 
 @Component({
   standalone: true,

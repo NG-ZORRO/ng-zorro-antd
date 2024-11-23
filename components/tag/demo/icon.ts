@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+
 @Component({
   selector: 'nz-demo-tag-icon',
+  standalone: true,
+  imports: [NzIconModule, NzTagModule],
   template: `
     <nz-tag nzColor="#55acee">
       <span nz-icon nzType="twitter"></span>

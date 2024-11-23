@@ -13,7 +13,7 @@ import {
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import { _getEventTarget } from '@angular/cdk/platform';
-import { NgClass, NgFor, NgIf, NgStyle, SlicePipe } from '@angular/common';
+import { NgClass, NgStyle, SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -30,9 +30,11 @@ import {
   TemplateRef,
   ViewChild,
   booleanAttribute,
+  computed,
   forwardRef,
   inject,
-  numberAttribute
+  numberAttribute,
+  signal
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, combineLatest, merge, of as observableOf } from 'rxjs';
@@ -44,6 +46,7 @@ import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'n
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   NzFormatEmitEvent,
   NzTreeBase,
@@ -63,6 +66,7 @@ import {
 import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzSelectModule, NzSelectSearchComponent } from 'ng-zorro-antd/select';
+import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 import { NzTreeSelectService } from './tree-select.service';
@@ -80,6 +84,20 @@ const listOfPositions = [
 @Component({
   selector: 'nz-tree-select',
   exportAs: 'nzTreeSelect',
+  standalone: true,
+  imports: [
+    NzOverlayModule,
+    CdkConnectedOverlay,
+    NgClass,
+    NzNoAnimationDirective,
+    NgStyle,
+    NzTreeModule,
+    NzEmptyModule,
+    CdkOverlayOrigin,
+    SlicePipe,
+    NzSelectModule,
+    NzFormPatchModule
+  ],
   animations: [slideMotion],
   template: `
     <ng-template
@@ -140,31 +158,34 @@ const listOfPositions = [
           (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
           (nzSearchValueChange)="setSearchValues($event)"
         ></nz-tree>
-        <span *ngIf="nzNodes.length === 0 || isNotFound" class="ant-select-not-found">
-          <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
-        </span>
+        @if (nzNodes.length === 0 || isNotFound) {
+          <span class="ant-select-not-found">
+            <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
+          </span>
+        }
       </div>
     </ng-template>
 
     <div cdkOverlayOrigin class="ant-select-selector">
-      <ng-container *ngIf="isMultiple">
-        <nz-select-item
-          *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy: trackValue"
-          [deletable]="true"
-          [disabled]="node.isDisabled || nzDisabled"
-          [label]="nzDisplayWith(node)"
-          (delete)="removeSelected(node, true)"
-        ></nz-select-item>
-
-        <nz-select-item
-          *ngIf="selectedNodes.length > nzMaxTagCount"
-          [contentTemplateOutlet]="nzMaxTagPlaceholder"
-          [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
-          [deletable]="false"
-          [disabled]="false"
-          [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
-        ></nz-select-item>
-      </ng-container>
+      @if (isMultiple) {
+        @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node.key) {
+          <nz-select-item
+            [deletable]="true"
+            [disabled]="node.isDisabled || nzDisabled"
+            [label]="nzDisplayWith(node)"
+            (delete)="removeSelected(node, true)"
+          ></nz-select-item>
+        }
+        @if (selectedNodes.length > nzMaxTagCount) {
+          <nz-select-item
+            [contentTemplateOutlet]="nzMaxTagPlaceholder"
+            [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
+            [deletable]="false"
+            [disabled]="false"
+            [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
+          ></nz-select-item>
+        }
+      }
 
       <nz-select-search
         [nzId]="nzId"
@@ -178,37 +199,42 @@ const listOfPositions = [
         [focusTrigger]="nzOpen"
       ></nz-select-search>
 
-      <nz-select-placeholder
-        *ngIf="nzPlaceHolder && selectedNodes.length === 0"
-        [placeholder]="nzPlaceHolder"
-        [style.display]="placeHolderDisplay"
-      ></nz-select-placeholder>
+      @if (nzPlaceHolder && selectedNodes.length === 0) {
+        <nz-select-placeholder
+          [placeholder]="nzPlaceHolder"
+          [style.display]="placeHolderDisplay"
+        ></nz-select-placeholder>
+      }
 
-      <nz-select-item
-        *ngIf="!isMultiple && selectedNodes.length === 1 && !isComposing && inputValue === ''"
-        [deletable]="false"
-        [disabled]="false"
-        [label]="nzDisplayWith(selectedNodes[0])"
-      ></nz-select-item>
+      @if (!isMultiple && selectedNodes.length === 1 && !isComposing && inputValue === '') {
+        <nz-select-item
+          [deletable]="false"
+          [disabled]="false"
+          [label]="nzDisplayWith(selectedNodes[0])"
+        ></nz-select-item>
+      }
 
-      <nz-select-arrow *ngIf="!isMultiple"></nz-select-arrow>
-      <nz-select-arrow
-        *ngIf="!isMultiple || (hasFeedback && !!status)"
-        [showArrow]="!isMultiple"
-        [feedbackIcon]="feedbackIconTpl"
-      >
-        <ng-template #feedbackIconTpl>
-          <nz-form-item-feedback-icon *ngIf="hasFeedback && !!status" [status]="status"></nz-form-item-feedback-icon>
-        </ng-template>
-      </nz-select-arrow>
-      <nz-select-clear
-        *ngIf="nzAllowClear && !nzDisabled && selectedNodes.length"
-        (clear)="onClearSelection()"
-      ></nz-select-clear>
+      @if (!isMultiple) {
+        <nz-select-arrow></nz-select-arrow>
+      }
+      @if (!isMultiple || (hasFeedback && !!status)) {
+        <nz-select-arrow [showArrow]="!isMultiple" [feedbackIcon]="feedbackIconTpl">
+          <ng-template #feedbackIconTpl>
+            @if (hasFeedback && !!status) {
+              <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+            }
+          </ng-template>
+        </nz-select-arrow>
+      }
+      @if (nzAllowClear && !nzDisabled && selectedNodes.length) {
+        <nz-select-clear (clear)="onClearSelection()"></nz-select-clear>
+      }
     </div>
   `,
   providers: [
+    NzDestroyService,
     NzTreeSelectService,
+    { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'select' },
     {
       provide: NzTreeHigherOrderServiceToken,
       useExisting: NzTreeSelectService
@@ -220,11 +246,11 @@ const listOfPositions = [
     }
   ],
   host: {
-    class: 'ant-select',
+    class: 'ant-select ant-tree-select',
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
-    '[class.ant-select-lg]': 'nzSize==="large"',
     '[class.ant-select-rtl]': 'dir==="rtl"',
-    '[class.ant-select-sm]': 'nzSize==="small"',
+    '[class.ant-select-lg]': 'finalSize() === "large"',
+    '[class.ant-select-sm]': 'finalSize() === "small"',
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-single]': '!isMultiple',
     '[class.ant-select-show-arrow]': '!isMultiple',
@@ -236,22 +262,7 @@ const listOfPositions = [
     '(click)': 'trigger()',
     '(keydown)': 'onKeydown($event)'
   },
-  imports: [
-    NzOverlayModule,
-    CdkConnectedOverlay,
-    NgClass,
-    NzNoAnimationDirective,
-    NgStyle,
-    NzTreeModule,
-    NgIf,
-    NzEmptyModule,
-    CdkOverlayOrigin,
-    SlicePipe,
-    NzSelectModule,
-    NgFor,
-    NzFormPatchModule
-  ],
-  standalone: true
+  hostDirectives: [NzSpaceCompactItemDirective]
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -336,9 +347,17 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   dir: Direction = 'ltr';
   positions: ConnectionPositionPair[] = [];
 
-  private destroy$ = new Subject<void>();
-  private isNzDisableFirstChange: boolean = true;
+  protected finalSize = computed(() => {
+    if (this.compactSize) {
+      return this.compactSize();
+    }
+    return this.size();
+  });
 
+  private size = signal<NzSizeLDSType>(this.nzSize);
+  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
+  private destroy$ = inject(NzDestroyService);
+  private isNzDisableFirstChange: boolean = true;
   private isComposingChange$ = new Subject<boolean>();
   private searchValueChange$ = new Subject<string>();
 
@@ -367,12 +386,18 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private focusMonitor: FocusMonitor
   ) {
     super(nzTreeService);
-
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-select');
   }
 
   ngOnInit(): void {
+    this.size.set(this.nzSize);
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.size.set(this.nzSize);
+        this.cdr.markForCheck();
+      });
+
     this.nzFormStatusService?.formStatusChanges
       .pipe(
         distinctUntilChanged((pre, cur) => {
@@ -456,8 +481,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzNodes, nzDropdownClassName, nzStatus, nzPlacement } = changes;
+  ngOnChanges({ nzNodes, nzDropdownClassName, nzStatus, nzPlacement, nzSize }: SimpleChanges): void {
     if (nzNodes) {
       this.updateSelectedNodes(true);
     }
@@ -474,6 +498,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
         this.positions = [POSITION_MAP[this.nzPlacement]];
       }
     }
+    if (nzSize) {
+      this.size.set(nzSize.currentValue);
+    }
   }
 
   writeValue(value: string[] | string): void {
@@ -483,12 +510,12 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       } else {
         this.value = [value as string];
       }
+      // need clear selected nodes when user set value before updating
+      this.clearSelectedNodes();
       this.updateSelectedNodes(true);
     } else {
       this.value = [];
-      this.selectedNodes.forEach(node => {
-        this.removeSelected(node, false);
-      });
+      this.clearSelectedNodes();
       this.selectedNodes = [];
     }
     this.cdr.markForCheck();
@@ -705,7 +732,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     }
   }
 
-  trackValue(_index: number, option: NzTreeNode): string {
-    return option.key!;
+  clearSelectedNodes(): void {
+    this.selectedNodes.forEach(node => {
+      this.removeSelected(node, false);
+    });
   }
 }

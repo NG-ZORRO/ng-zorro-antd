@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+
 @Component({
   selector: 'nz-demo-descriptions-responsive',
+  standalone: true,
+  imports: [NzDescriptionsModule],
   template: `
     <nz-descriptions
       nzTitle="Responsive Descriptions"

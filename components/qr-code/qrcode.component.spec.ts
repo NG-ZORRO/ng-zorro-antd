@@ -5,39 +5,28 @@
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
 import { NzQRCodeComponent } from './qrcode.component';
 import { NzQRCodeModule } from './qrcode.module';
 
-@Component({
-  template: ` <nz-qrcode [nzValue]="value" [nzSize]="size" [nzBordered]="bordered" [nzStatus]="status"> </nz-qrcode> `
-})
-export class NzTestQrCodeBasicComponent {
-  value: string = 'https://ng.ant.design/';
-  size: number = 160;
-  bordered: boolean = true;
-  status: 'active' | 'expired' | 'loading' | 'scanned' = 'active';
-}
-
 describe('nz-qrcode', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideHttpClientTesting()]
+    });
+  });
+
   describe('basic', () => {
-    let testBed: ComponentBed<NzTestQrCodeBasicComponent>;
     let fixture: ComponentFixture<NzTestQrCodeBasicComponent>;
     let testComponent: NzTestQrCodeBasicComponent;
     let resultEl: DebugElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestQrCodeBasicComponent, {
-        imports: [NzQRCodeModule],
-        providers: [provideHttpClientTesting()]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestQrCodeBasicComponent);
       fixture.detectChanges();
-      testComponent = testBed.component;
+      testComponent = fixture.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzQRCodeComponent));
     });
 
@@ -52,6 +41,13 @@ describe('nz-qrcode', () => {
       fixture.detectChanges();
       const widthView = resultEl.nativeElement.querySelector('.ant-qrcode > canvas');
       expect(widthView.style.width).toBe('200px');
+    });
+
+    it('qr code custom status', () => {
+      testComponent.statusRender = 'custom status';
+      fixture.detectChanges();
+      const statusView = resultEl.nativeElement.querySelector('.ant-qrcode-mask');
+      expect(statusView.innerText).toBe('custom status');
     });
 
     it('qr code status', () => {
@@ -70,3 +66,22 @@ describe('nz-qrcode', () => {
     });
   });
 });
+
+@Component({
+  standalone: true,
+  imports: [NzQRCodeModule],
+  template: `<nz-qrcode
+    [nzValue]="value"
+    [nzSize]="size"
+    [nzBordered]="bordered"
+    [nzStatus]="status"
+    [nzStatusRender]="statusRender"
+  ></nz-qrcode>`
+})
+export class NzTestQrCodeBasicComponent {
+  value: string = 'https://ng.ant.design/';
+  size: number = 160;
+  bordered: boolean = true;
+  statusRender: string | null = null;
+  status: 'active' | 'expired' | 'loading' | 'scanned' = 'active';
+}
