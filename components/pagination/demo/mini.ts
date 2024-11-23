@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+
 @Component({
   selector: 'nz-demo-pagination-mini',
+  standalone: true,
+  imports: [NzPaginationModule],
   template: `
     <nz-pagination [(nzPageIndex)]="current" [nzTotal]="50" [nzSize]="'small'"></nz-pagination>
     <br />

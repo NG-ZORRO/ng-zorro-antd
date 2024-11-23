@@ -1,35 +1,25 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, DebugElement, Injector, ViewChild } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { createKeyboardEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import en_US from 'ng-zorro-antd/i18n/languages/en_US';
+import { NzI18nService } from 'ng-zorro-antd/i18n/nz-i18n.service';
 
-import en_US from '../i18n/languages/en_US';
-import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzPaginationComponent } from './pagination.component';
 import { NzPaginationModule } from './pagination.module';
 
 declare const viewport: NzSafeAny;
 
 describe('pagination', () => {
-  let injector: Injector;
-
   beforeEach(waitForAsync(() => {
-    injector = TestBed.configureTestingModule({
-      imports: [BidiModule, NzPaginationModule, NoopAnimationsModule],
-      declarations: [
-        NzTestPaginationComponent,
-        NzTestPaginationRenderComponent,
-        NzTestPaginationTotalComponent,
-        NzTestPaginationAutoResizeComponent,
-        NzTestPaginationRtlComponent
-      ]
-    });
-    TestBed.compileComponents();
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
+    }).compileComponents();
   }));
 
   describe('pagination complex', () => {
@@ -370,7 +360,7 @@ describe('pagination', () => {
     const fixture = TestBed.createComponent(NzTestPaginationComponent);
     const dl = fixture.debugElement;
     fixture.detectChanges();
-    injector.get(NzI18nService).setLocale(en_US);
+    TestBed.inject(NzI18nService).setLocale(en_US);
     fixture.detectChanges();
     const prevText = (dl.query(By.css('.ant-pagination-prev')).nativeElement as HTMLElement).title;
     expect(prevText).toBe(en_US.Pagination.prev_page);
@@ -420,6 +410,8 @@ describe('pagination', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzPaginationModule],
   template: `
     <nz-pagination
       [nzSimple]="simple"
@@ -443,17 +435,19 @@ export class NzTestPaginationComponent {
   pageSize = 10;
   total = 50;
   disabled = false;
-  pageIndexChange = jasmine.createSpy('pageIndexChange callback');
-  pageSizeChange = jasmine.createSpy('pageSizeChange callback');
+  pageIndexChange = jasmine.createSpy<NzSafeAny>('pageIndexChange callback');
+  pageSizeChange = jasmine.createSpy<NzSafeAny>('pageSizeChange callback');
   showQuickJumper = false;
   showSizeChanger = false;
   hideOnSinglePage = false;
   pageSizeOptions = [10, 20, 30, 40];
   simple = false;
-  size = '';
+  size: 'default' | 'small' = 'default';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzPaginationModule],
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
@@ -474,6 +468,8 @@ export class NzTestPaginationComponent {
 export class NzTestPaginationRenderComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzPaginationModule],
   template: `
     <nz-pagination
       [(nzPageIndex)]="pageIndex"
@@ -491,11 +487,15 @@ export class NzTestPaginationTotalComponent {
 }
 
 @Component({
-  template: ` <nz-pagination nzResponsive></nz-pagination> `
+  standalone: true,
+  imports: [NzPaginationModule],
+  template: `<nz-pagination nzResponsive></nz-pagination>`
 })
 export class NzTestPaginationAutoResizeComponent {}
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzPaginationModule],
   template: `
     <div [dir]="direction">
       <nz-pagination
@@ -509,7 +509,7 @@ export class NzTestPaginationAutoResizeComponent {}
 })
 export class NzTestPaginationRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
   pageIndex = 1;
   pageSize = 10;
   total = 50;

@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-menu-horizontal',
+  standalone: true,
+  imports: [NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu nzMode="horizontal">
       <li nz-menu-item nzSelected>
@@ -25,6 +30,12 @@ import { Component } from '@angular/core';
               <li nz-menu-item>Option 3</li>
               <li nz-menu-item>Option 4</li>
               <li nz-submenu nzTitle="Sub Menu">
+                <ul>
+                  <li nz-menu-item nzDisabled>Option 5</li>
+                  <li nz-menu-item>Option 6</li>
+                </ul>
+              </li>
+              <li nz-submenu nzTitle="Click me" [nzTriggerSubMenuAction]="'click'">
                 <ul>
                   <li nz-menu-item nzDisabled>Option 5</li>
                   <li nz-menu-item>Option 6</li>

@@ -4,6 +4,9 @@ import { Component } from '@angular/core';
 import { BehaviorSubject, Observable, merge, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
+
 interface FlatNode {
   expandable: boolean;
   id: number;
@@ -122,6 +125,8 @@ class DynamicDatasource implements DataSource<FlatNode> {
 
 @Component({
   selector: 'nz-demo-tree-view-dynamic',
+  standalone: true,
+  imports: [NzIconModule, NzTreeViewModule],
   template: `
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>

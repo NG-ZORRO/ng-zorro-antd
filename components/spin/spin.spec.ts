@@ -1,10 +1,12 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzSpinComponent } from './spin.component';
 import { NzSpinModule } from './spin.module';
@@ -12,10 +14,8 @@ import { NzSpinModule } from './spin.module';
 describe('spin', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzSpinModule, NzIconTestModule],
-      declarations: [NzTestSpinBasicComponent, NzTestSpinRtlComponent]
+      providers: [provideNzIconsTesting()]
     });
-    TestBed.compileComponents();
   }));
 
   describe('spin basic', () => {
@@ -150,8 +150,9 @@ describe('spin', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-basic-spin',
+  standalone: true,
+  imports: [NzIconModule, NzSpinModule],
   template: `
     <ng-template #indicatorTemplate><span nz-icon nzType="loading" style="font-size: 24px;"></span></ng-template>
     <nz-spin
@@ -169,17 +170,19 @@ describe('spin', () => {
 export class NzTestSpinBasicComponent {
   @ViewChild('indicatorTemplate', { static: false }) indicatorTemplate!: TemplateRef<void>;
 
-  size = 'default';
+  size: NzSizeLDSType = 'default';
   delay = 0;
   spinning = true;
-  indicator?: TemplateRef<void>;
-  tip?: string;
+  indicator!: TemplateRef<NzSafeAny>;
+  tip!: string;
   simple = false;
 
   constructor(public nzConfigService: NzConfigService) {}
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTestSpinBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-basic-spin></nz-test-basic-spin>
@@ -188,5 +191,5 @@ export class NzTestSpinBasicComponent {
 })
 export class NzTestSpinRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

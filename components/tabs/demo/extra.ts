@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-tabs-extra',
+  standalone: true,
+  imports: [NzButtonModule, NzTabsModule],
   template: `
     <nz-tabset [nzTabBarExtraContent]="extraTemplate">
       @for (tab of tabs; track tab) {

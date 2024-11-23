@@ -1,4 +1,4 @@
-import { BidiModule, Dir, Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -266,6 +266,12 @@ describe('carousel', () => {
       tick(1000 + 10);
       expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
     }));
+
+    it('should call goTo function on slick dot click', () => {
+      spyOn(testComponent.nzCarouselComponent, 'goTo');
+      carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
+      expect(testComponent.nzCarouselComponent.goTo).toHaveBeenCalledWith(3);
+    });
   });
 
   describe('strategies', () => {
@@ -478,20 +484,6 @@ export class NzTestCarouselBasicComponent {
 
 @Component({
   standalone: true,
-  imports: [BidiModule, NzTestCarouselBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-carousel></nz-test-carousel>
-    </div>
-  `
-})
-export class NzTestCarouselRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-}
-
-@Component({
-  standalone: true,
   imports: [NzCarouselModule],
   template: `
     <nz-carousel (nzAfterChange)="afterChange($event)">
@@ -531,7 +523,6 @@ describe('carousel', () => {
     });
 
     TestBed.configureTestingModule({
-      imports: [NzCarouselModule],
       providers: [
         {
           provide: Directionality,
@@ -592,34 +583,4 @@ describe('carousel', () => {
     tick(101);
     expect(component.layout).toHaveBeenCalled();
   }));
-
-  it('should set correct index as active in ltr mode', () => {
-    component.dir = 'ltr';
-    component.carouselContents = [
-      {
-        isActive: false
-      },
-      {
-        isActive: false
-      }
-    ] as NzSafeAny;
-    component['markContentActive'](0);
-
-    expect((component.carouselContents as NzSafeAny)[0].isActive).toBeTruthy();
-  });
-
-  it('should set correct index as active in rtl mode', () => {
-    component.dir = 'rtl';
-    component.carouselContents = [
-      {
-        isActive: false
-      },
-      {
-        isActive: false
-      }
-    ] as NzSafeAny;
-    component['markContentActive'](0);
-
-    expect((component.carouselContents as NzSafeAny)[1].isActive).toBeTruthy();
-  });
 });

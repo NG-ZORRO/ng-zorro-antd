@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
-import { NzResizeEvent } from 'ng-zorro-antd/resizable';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-customize',
+  standalone: true,
+  imports: [NzIconModule, NzResizableModule],
   template: `
     <div class="box" nz-resizable (nzResize)="onResize($event)" [style.height.px]="height" [style.width.px]="width">
       content

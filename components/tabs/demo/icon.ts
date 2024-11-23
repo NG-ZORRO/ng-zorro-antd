@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-tabs-icon',
+  standalone: true,
+  imports: [NzIconModule, NzTabsModule],
   template: `
     <nz-tabset>
       @for (tab of tabs; track tab) {

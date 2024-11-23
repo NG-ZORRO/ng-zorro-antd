@@ -23,7 +23,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 ### nz-transfer:standalone
 
 | Property                | Description                                                                                                                       | Type                                                   | Default               |
-| ----------------------- |-----------------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------------ |-----------------------|
+|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------------ |-----------------------|
 | `[nzDataSource]`        | Used for setting the data source. Except for the elements whose keys are `direction: 'right'` prop, or using `nzTargetKeys` prop. | `TransferItem[]`                                       | `[]`                  |
 | `[nzDisabled]`          | Whether the transfer is disabled                                                                                                  | `boolean`                                              | `false`               |
 | `[nzTitles]`            | A set of titles that are sorted from left to right.                                                                               | `string[]`                                             | `['', '']`            |
@@ -42,6 +42,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzCanMove]`           | A function to determine what items should be moved (by default all checked items are moved). please refer to the case.            | `(arg: TransferCanMove) => Observable<TransferItem[]>` | -                     |
 | `[nzSelectedKeys]`      | A set of keys of selected items.                                                                                                  | `string[]`                                             | -                     |
 | `[nzTargetKeys]`        | A set of keys of elements that are listed on the right column.                                                                    | `string[]`                                             | -                     |
+| `[nzOneWay]`            | Display as single direction style                                                                                                 | `boolean`                                              | `false`               |
 | `[nzStatus]`            | Set validation status                                                                                                             | `'error' \| 'warning'`                                 | -                     |
 | `(nzChange)`            | A callback function that is executed when the transfer between columns is complete.                                               | `EventEmitter<TransferChange>`                         | -                     |
 | `(nzSearchChange)`      | A callback function which is executed when search field are changed                                                               | `EventEmitter<TransferSearchChange>`                   | -                     |

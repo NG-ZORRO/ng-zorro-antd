@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
-interface DataItem {
+import { NzTableModule } from 'ng-zorro-antd/table';
+
+interface ItemData {
   name: string;
   chinese: number;
   math: number;
@@ -9,6 +11,8 @@ interface DataItem {
 
 @Component({
   selector: 'nz-demo-table-multiple-sorter',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #sortTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
@@ -37,26 +41,26 @@ export class NzDemoTableMultipleSorterComponent {
   listOfColumn = [
     {
       title: 'Name',
-      compare: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
+      compare: (a: ItemData, b: ItemData) => a.name.localeCompare(b.name),
       priority: false
     },
     {
       title: 'Chinese Score',
-      compare: (a: DataItem, b: DataItem) => a.chinese - b.chinese,
+      compare: (a: ItemData, b: ItemData) => a.chinese - b.chinese,
       priority: 3
     },
     {
       title: 'Math Score',
-      compare: (a: DataItem, b: DataItem) => a.math - b.math,
+      compare: (a: ItemData, b: ItemData) => a.math - b.math,
       priority: 2
     },
     {
       title: 'English Score',
-      compare: (a: DataItem, b: DataItem) => a.english - b.english,
+      compare: (a: ItemData, b: ItemData) => a.english - b.english,
       priority: 1
     }
   ];
-  listOfData: DataItem[] = [
+  listOfData: ItemData[] = [
     {
       name: 'John Brown',
       chinese: 98,

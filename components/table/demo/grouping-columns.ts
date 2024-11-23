@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-interface DataItem {
+import { NzTableModule } from 'ng-zorro-antd/table';
+
+interface ItemData {
   name: string;
   age: number;
   street: string;
@@ -13,6 +15,8 @@ interface DataItem {
 
 @Component({
   selector: 'nz-demo-table-grouping-columns',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #groupingTable [nzData]="listOfData" nzBordered nzSize="middle" [nzScroll]="{ x: '1200px', y: '240px' }">
       <thead>
@@ -55,15 +59,16 @@ interface DataItem {
   `
 })
 export class NzDemoTableGroupingColumnsComponent implements OnInit {
-  listOfData: DataItem[] = [];
-  sortAgeFn = (a: DataItem, b: DataItem): number => a.age - b.age;
-  nameFilterFn = (list: string[], item: DataItem): boolean => list.some(name => item.name.indexOf(name) !== -1);
+  listOfData: ItemData[] = [];
+  sortAgeFn = (a: ItemData, b: ItemData): number => a.age - b.age;
+  nameFilterFn = (list: string[], item: ItemData): boolean => list.some(name => item.name.indexOf(name) !== -1);
   filterName = [
     { text: 'Joe', value: 'Joe' },
     { text: 'John', value: 'John' }
   ];
+
   ngOnInit(): void {
-    const data = [];
+    const data: ItemData[] = [];
     for (let i = 0; i < 100; i++) {
       data.push({
         name: 'John Brown',

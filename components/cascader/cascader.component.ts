@@ -29,9 +29,11 @@ import {
   ViewChildren,
   ViewEncapsulation,
   booleanAttribute,
+  computed,
   forwardRef,
   inject,
-  numberAttribute
+  numberAttribute,
+  signal
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
@@ -48,6 +50,7 @@ import {
   NgClassType,
   NgStyleInterface,
   NzSafeAny,
+  NzSizeLDSType,
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
@@ -55,6 +58,7 @@ import { getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 import { NzCascaderOptionComponent } from './cascader-li.component';
 import { NzCascaderService } from './cascader.service';
@@ -78,137 +82,136 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   exportAs: 'nzCascader',
   preserveWhitespaces: false,
   template: `
-    <div cdkOverlayOrigin #origin="cdkOverlayOrigin" #trigger>
-      @if (nzShowInput) {
-        <div #selectContainer class="ant-select-selector">
-          <span class="ant-select-selection-search">
-            <input
-              #input
-              type="search"
-              class="ant-select-selection-search-input"
-              [style.opacity]="nzShowSearch ? '' : '0'"
-              [attr.autoComplete]="'off'"
-              [attr.expanded]="menuVisible"
-              [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
-              [readonly]="!nzShowSearch"
-              [disabled]="nzDisabled"
-              [(ngModel)]="inputValue"
-              (blur)="handleInputBlur()"
-              (focus)="handleInputFocus()"
-              (compositionstart)="handleInputCompositionstart()"
-              (compositionend)="handleInputCompositionend()"
-            />
-          </span>
-          @if (showLabelRender) {
-            <span class="ant-select-selection-item" [title]="labelRenderText">
-              @if (!isLabelRenderTemplate) {
-                <ng-container>{{ labelRenderText }}</ng-container>
-              } @else {
-                <ng-template
-                  [ngTemplateOutlet]="nzLabelRender"
-                  [ngTemplateOutletContext]="labelRenderContext"
-                ></ng-template>
-              }
-            </span>
-          } @else {
-            <span
-              class="ant-select-selection-placeholder"
-              [style.visibility]="isComposing || inputValue ? 'hidden' : 'visible'"
-              >{{ showPlaceholder ? nzPlaceHolder || locale?.placeholder : null }}</span
-            >
-          }
-        </div>
-        @if (nzShowArrow) {
-          <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
-            @if (!isLoading) {
-              <span nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible"></span>
+    @if (nzShowInput) {
+      <div #selectContainer #origin="cdkOverlayOrigin" cdkOverlayOrigin class="ant-select-selector">
+        <span class="ant-select-selection-search">
+          <input
+            #input
+            type="search"
+            class="ant-select-selection-search-input"
+            [style.opacity]="nzShowSearch ? '' : '0'"
+            [attr.autoComplete]="'off'"
+            [attr.expanded]="menuVisible"
+            [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
+            [readonly]="!nzShowSearch"
+            [disabled]="nzDisabled"
+            [(ngModel)]="inputValue"
+            (blur)="handleInputBlur()"
+            (focus)="handleInputFocus()"
+            (compositionstart)="handleInputCompositionstart()"
+            (compositionend)="handleInputCompositionend()"
+          />
+        </span>
+        @if (showLabelRender) {
+          <span class="ant-select-selection-item" [title]="labelRenderText">
+            @if (!isLabelRenderTemplate) {
+              <ng-container>{{ labelRenderText }}</ng-container>
             } @else {
-              <span nz-icon nzType="loading"></span>
+              <ng-template
+                [ngTemplateOutlet]="nzLabelRender"
+                [ngTemplateOutletContext]="labelRenderContext"
+              ></ng-template>
             }
+          </span>
+        } @else {
+          <span
+            class="ant-select-selection-placeholder"
+            [style.visibility]="isComposing || inputValue ? 'hidden' : 'visible'"
+            >{{ showPlaceholder ? nzPlaceHolder || locale?.placeholder : null }}</span
+          >
+        }
+      </div>
+      @if (nzShowArrow) {
+        <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
+          @if (!isLoading) {
+            <span nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible"></span>
+          } @else {
+            <span nz-icon nzType="loading"></span>
+          }
 
-            @if (hasFeedback && !!status) {
-              <nz-form-item-feedback-icon [status]="status" />
-            }
-          </span>
-        }
-        @if (clearIconVisible) {
-          <span class="ant-select-clear">
-            <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
-          </span>
-        }
+          @if (hasFeedback && !!status) {
+            <nz-form-item-feedback-icon [status]="status" />
+          }
+        </span>
       }
-      <ng-content></ng-content>
-    </div>
-    <ng-template
-      cdkConnectedOverlay
-      nzConnectedOverlay
-      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
-      [cdkConnectedOverlayOrigin]="origin"
-      [cdkConnectedOverlayPositions]="positions"
-      [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-dropdown'"
-      [cdkConnectedOverlayOpen]="menuVisible"
-      (overlayOutsideClick)="onClickOutside($event)"
-      (detach)="closeMenu()"
-    >
-      <div
-        class="ant-select-dropdown ant-cascader-dropdown ant-select-dropdown-placement-bottomLeft"
-        [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
-        [@slideMotion]="'enter'"
-        [@.disabled]="!!noAnimation?.nzNoAnimation"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation"
-        (mouseenter)="onTriggerMouseEnter()"
-        (mouseleave)="onTriggerMouseLeave($event)"
+      @if (clearIconVisible) {
+        <span class="ant-select-clear">
+          <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
+        </span>
+      }
+
+      <ng-template
+        cdkConnectedOverlay
+        nzConnectedOverlay
+        [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
+        [cdkConnectedOverlayOrigin]="origin"
+        [cdkConnectedOverlayPositions]="positions"
+        [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-dropdown'"
+        [cdkConnectedOverlayOpen]="menuVisible"
+        (overlayOutsideClick)="onClickOutside($event)"
+        (detach)="closeMenu()"
       >
         <div
-          #menu
-          class="ant-cascader-menus"
-          [class.ant-cascader-rtl]="dir === 'rtl'"
-          [class.ant-cascader-menus-hidden]="!menuVisible"
-          [class.ant-cascader-menu-empty]="shouldShowEmpty"
-          [ngClass]="menuCls"
-          [ngStyle]="nzMenuStyle"
+          class="ant-select-dropdown ant-cascader-dropdown ant-select-dropdown-placement-bottomLeft"
+          [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
+          [@slideMotion]="'enter'"
+          [@.disabled]="!!noAnimation?.nzNoAnimation"
+          [nzNoAnimation]="noAnimation?.nzNoAnimation"
+          (mouseenter)="onTriggerMouseEnter()"
+          (mouseleave)="onTriggerMouseLeave($event)"
         >
-          @if (shouldShowEmpty) {
-            <ul class="ant-cascader-menu" [style.width]="dropdownWidthStyle" [style.height]="dropdownHeightStyle">
-              <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
-                <nz-embed-empty
-                  class="ant-cascader-menu-item-content"
-                  [nzComponentName]="'cascader'"
-                  [specificContent]="nzNotFoundContent"
-                />
-              </li>
-            </ul>
-          } @else {
-            @for (options of cascaderService.columns; track options; let i = $index) {
-              <ul
-                class="ant-cascader-menu"
-                role="menuitemcheckbox"
-                [ngClass]="menuColumnCls"
-                [style.height]="dropdownHeightStyle"
-                [style.width]="dropdownWidthStyle"
-              >
-                @for (option of options; track option.value) {
-                  <li
-                    nz-cascader-option
-                    [expandIcon]="nzExpandIcon"
-                    [columnIndex]="i"
-                    [nzLabelProperty]="nzLabelProperty"
-                    [optionTemplate]="nzOptionRender"
-                    [activated]="isOptionActivated(option, i)"
-                    [highlightText]="inSearchingMode ? inputValue : ''"
-                    [option]="option"
-                    [dir]="dir"
-                    (mouseenter)="onOptionMouseEnter(option, i, $event)"
-                    (mouseleave)="onOptionMouseLeave(option, i, $event)"
-                    (click)="onOptionClick(option, i, $event)"
-                  ></li>
-                }
+          <div
+            #menu
+            class="ant-cascader-menus"
+            [class.ant-cascader-rtl]="dir === 'rtl'"
+            [class.ant-cascader-menus-hidden]="!menuVisible"
+            [class.ant-cascader-menu-empty]="shouldShowEmpty"
+            [ngClass]="menuCls"
+            [ngStyle]="nzMenuStyle"
+          >
+            @if (shouldShowEmpty) {
+              <ul class="ant-cascader-menu" [style.width]="dropdownWidthStyle" [style.height]="dropdownHeightStyle">
+                <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
+                  <nz-embed-empty
+                    class="ant-cascader-menu-item-content"
+                    [nzComponentName]="'cascader'"
+                    [specificContent]="nzNotFoundContent"
+                  />
+                </li>
               </ul>
+            } @else {
+              @for (options of cascaderService.columns; track options; let i = $index) {
+                <ul
+                  class="ant-cascader-menu"
+                  role="menuitemcheckbox"
+                  [ngClass]="menuColumnCls"
+                  [style.height]="dropdownHeightStyle"
+                  [style.width]="dropdownWidthStyle"
+                >
+                  @for (option of options; track option.value) {
+                    <li
+                      nz-cascader-option
+                      [expandIcon]="nzExpandIcon"
+                      [columnIndex]="i"
+                      [nzLabelProperty]="nzLabelProperty"
+                      [optionTemplate]="nzOptionRender"
+                      [activated]="isOptionActivated(option, i)"
+                      [highlightText]="inSearchingMode ? inputValue : ''"
+                      [option]="option"
+                      [dir]="dir"
+                      (mouseenter)="onOptionMouseEnter(option, i, $event)"
+                      (mouseleave)="onOptionMouseLeave(option, i, $event)"
+                      (click)="onOptionClick(option, i, $event)"
+                    ></li>
+                  }
+                </ul>
+              }
             }
-          }
+          </div>
         </div>
-      </div>
-    </ng-template>
+      </ng-template>
+    }
+    <ng-content></ng-content>
   `,
   animations: [slideMotion],
   providers: [
@@ -217,14 +220,15 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       useExisting: forwardRef(() => NzCascaderComponent),
       multi: true
     },
+    { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'select' },
     NzCascaderService,
     NzDestroyService
   ],
   host: {
     '[attr.tabIndex]': '"0"',
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
-    '[class.ant-select-lg]': 'nzSize === "large"',
-    '[class.ant-select-sm]': 'nzSize === "small"',
+    '[class.ant-select-lg]': 'finalSize() === "large"',
+    '[class.ant-select-sm]': 'finalSize() === "small"',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-show-arrow]': 'nzShowArrow',
     '[class.ant-select-show-search]': '!!nzShowSearch',
@@ -234,6 +238,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-single]': 'true',
     '[class.ant-select-rtl]': `dir === 'rtl'`
   },
+  hostDirectives: [NzSpaceCompactItemDirective],
   imports: [
     OverlayModule,
     FormsModule,
@@ -346,6 +351,15 @@ export class NzCascaderComponent
 
   isComposing = false;
 
+  protected finalSize = computed(() => {
+    if (this.compactSize) {
+      return this.compactSize();
+    }
+    return this.size();
+  });
+
+  private size = signal<NzSizeLDSType>(this.nzSize);
+  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private inputString = '';
   private isOpening = false;
   private delayMenuTimer?: ReturnType<typeof setTimeout>;
@@ -474,10 +488,12 @@ export class NzCascaderComponent
       this.setLocale();
     });
 
+    this.size.set(this.nzSize);
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
+        this.size.set(this.nzSize);
         this.cdr.markForCheck();
       });
 
@@ -491,10 +507,12 @@ export class NzCascaderComponent
     this.setupKeydownListener();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzStatus } = changes;
+  ngOnChanges({ nzStatus, nzSize }: SimpleChanges): void {
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
+    }
+    if (nzSize) {
+      this.size.set(nzSize.currentValue);
     }
   }
 
@@ -734,6 +752,7 @@ export class NzCascaderComponent
     const options = this.cascaderService.activatedOptions;
     if (options.length) {
       options.pop(); // Remove the last one
+      this.cascaderService.setOptionDeactivatedSinceColumn(options.length); // collapse menu
     }
   }
 
@@ -790,6 +809,10 @@ export class NzCascaderComponent
     this.blur();
     this.clearDelayMenuTimer();
     this.setMenuVisible(false);
+    // if select none, clear previous state
+    if (!this.hasValue && this.cascaderService.columns.length) {
+      this.cascaderService.dropBehindColumns(0);
+    }
   }
 
   /**

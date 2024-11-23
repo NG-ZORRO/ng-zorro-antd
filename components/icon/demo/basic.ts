@@ -8,18 +8,18 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   imports: [NzIconModule],
   template: `
     <div class="icons-list">
-      <span nz-icon nzType="home"></span>
-      <span nz-icon nzType="setting" nzTheme="fill"></span>
-      <span nz-icon nzType="smile" nzTheme="outline"></span>
-      <span nz-icon nzType="sync" [nzSpin]="true"></span>
-      <span nz-icon nzType="smile" nzTheme="outline" [nzRotate]="180"></span>
+      <nz-icon nzType="home" />
+      <nz-icon nzType="setting" nzTheme="fill" />
+      <nz-icon nzType="smile" nzTheme="outline" />
+      <nz-icon nzType="sync" [nzSpin]="true" />
+      <nz-icon nzType="smile" nzTheme="outline" [nzRotate]="180" />
       <!-- Loading with new API would spin automatically! -->
-      <span nz-icon nzType="loading"></span>
+      <nz-icon nzType="loading" />
     </div>
   `,
   styles: [
     `
-      [nz-icon] {
+      nz-icon {
         margin-right: 6px;
         font-size: 24px;
       }

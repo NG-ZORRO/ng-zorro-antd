@@ -44,6 +44,7 @@ export interface TransferStat {
   checkHalf: boolean;
   checkCount: number;
   shownCount: number;
+  availableCount: number;
 }
 
 export interface RenderListContext {

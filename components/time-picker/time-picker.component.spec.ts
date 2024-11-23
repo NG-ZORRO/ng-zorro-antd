@@ -1,12 +1,10 @@
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
-import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { NzStatus } from 'ng-zorro-antd/core/types';
@@ -14,11 +12,8 @@ import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
-import { en_GB, NzI18nModule, NzI18nService } from '../i18n';
+import { en_GB, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
-import { NzTimePickerModule } from './time-picker.module';
-
-registerLocaleData(zh);
 
 describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
@@ -26,34 +21,21 @@ describe('time-picker', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BidiModule,
-        NoopAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NzI18nModule,
-        NzTimePickerModule,
-        NzFormModule,
-        NzTestTimePickerComponent,
-        NzTestTimePickerStatusComponent,
-        NzTestTimePickerDirComponent,
-        NzTestTimePickerInFormComponent
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+      providers: [provideNoopAnimations()]
     });
-    TestBed.compileComponents();
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
   }));
 
-  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-    currentOverlayContainer.ngOnDestroy();
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
+  }));
+
+  afterEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    oc.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
 
-  describe('basic time-picker', () => {
+  describe('basic', () => {
     let testComponent: NzTestTimePickerComponent;
     let fixture: ComponentFixture<NzTestTimePickerComponent>;
     let timeElement: DebugElement;
@@ -63,11 +45,13 @@ describe('time-picker', () => {
       fixture.detectChanges();
       timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
     });
+
     it('should init work', () => {
       fixture.detectChanges();
       expect(timeElement.nativeElement.classList).toContain('ant-picker');
       expect(timeElement.nativeElement.classList).not.toContain('ant-picker-disabled');
     });
+
     it('should autofocus work', () => {
       fixture.detectChanges();
       testComponent.autoFocus = true;
@@ -79,6 +63,7 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus')).toBe(null);
     });
+
     it('should focus and blur function work', () => {
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
@@ -89,6 +74,7 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
     });
+
     it('should disabled work', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();
@@ -121,6 +107,7 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
     }));
+
     it('should readOnly work', () => {
       testComponent.nzInputReadOnly = true;
       fixture.detectChanges();
@@ -130,6 +117,7 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).readOnly).not.toBeTruthy();
     });
+
     it('should open and close work', () => {
       testComponent.open = true;
       fixture.detectChanges();
@@ -143,6 +131,7 @@ describe('time-picker', () => {
       expect(testComponent.openChange).toHaveBeenCalledTimes(3);
       expect(testComponent.open).toBe(true);
     });
+
     it('should clear work', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.date = new Date('2018-11-11 11:11:11');
@@ -153,11 +142,13 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(testComponent.date).toBeNull();
     }));
+
     it('should support default nzfomat in 12-hours', () => {
       testComponent.use12Hours = true;
       fixture.detectChanges();
       expect(testComponent.nzTimePickerComponent.nzFormat).toBe('h:mm:ss a');
     });
+
     it('should support ngModelChange', fakeAsync(() => {
       testComponent.date = new Date('2020-03-26 11:33:00');
       fixture.detectChanges();
@@ -183,6 +174,7 @@ describe('time-picker', () => {
       expect(result.getHours()).toBe(0);
       expect(testComponent.nzTimePickerComponent.inputRef.nativeElement.value).toBe('00:33:00');
     }));
+
     it('should support ISO string', fakeAsync(() => {
       testComponent.date = new Date('2020-03-27T13:49:54.917Z');
       fixture.detectChanges();
@@ -202,11 +194,13 @@ describe('time-picker', () => {
           .textContent
       ).toBe(date.getMinutes().toString());
     }));
+
     it('should support custom suffixIcon', fakeAsync(() => {
       testComponent.nzSuffixIcon = 'calendar';
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
     }));
+
     it('should backdrop work', fakeAsync(() => {
       testComponent.nzBackdrop = true;
       testComponent.open = true;
@@ -215,6 +209,7 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
+
     it('should open with click and close with tab', fakeAsync(() => {
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
@@ -229,6 +224,7 @@ describe('time-picker', () => {
 
       expect(getPickerContainer()).toBeNull();
     }));
+
     it('should set default opening time when clicking ok', fakeAsync(() => {
       const onChange = spyOn(testComponent, 'onChange');
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
@@ -248,9 +244,10 @@ describe('time-picker', () => {
       expect(result.getMinutes()).toEqual(0);
       expect(result.getSeconds()).toEqual(0);
     }));
+
     it('should not set time when clicking ok without default opening time', fakeAsync(() => {
       const onChange = spyOn(testComponent, 'onChange');
-      testComponent.defaultOpenValue = null;
+      testComponent.defaultOpenValue = null!;
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
       tick(500);
@@ -267,6 +264,7 @@ describe('time-picker', () => {
       const result = (onChange.calls.allArgs()[0] as Date[])[0];
       expect(result).toBeNull();
     }));
+
     it('should set previous value when tabbing out with invalid input', fakeAsync(() => {
       testComponent.date = new Date('2020-03-27T13:49:54.917');
 
@@ -287,6 +285,7 @@ describe('time-picker', () => {
 
       expect(input.value).not.toEqual('invalid');
     }));
+
     it('should set new value when tabbing out with valid input', fakeAsync(() => {
       const onChange = spyOn(testComponent, 'onChange');
       testComponent.date = new Date('2020-03-27T13:49:54.917');
@@ -310,11 +309,13 @@ describe('time-picker', () => {
       expect(result.getMinutes()).toEqual(10);
       expect(result.getSeconds()).toEqual(30);
     }));
+
     it('should support nzBorderless', fakeAsync(() => {
       fixture.componentInstance.nzBorderless = true;
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
     }));
+
     it('should not trigger blur after close panel', fakeAsync(() => {
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
@@ -331,6 +332,7 @@ describe('time-picker', () => {
 
       expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
     }));
+
     describe('setup I18n service', () => {
       let srv: NzI18nService;
 
@@ -354,7 +356,7 @@ describe('time-picker', () => {
     });
   });
 
-  describe('time-picker status', () => {
+  describe('status', () => {
     let testComponent: NzTestTimePickerStatusComponent;
     let fixture: ComponentFixture<NzTestTimePickerStatusComponent>;
     let timeElement: DebugElement;
@@ -364,6 +366,7 @@ describe('time-picker', () => {
       fixture.detectChanges();
       timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
     });
+
     it('should className correct with nzStatus', () => {
       fixture.detectChanges();
       expect(timeElement.nativeElement.classList).toContain('ant-picker-status-error');
@@ -378,7 +381,7 @@ describe('time-picker', () => {
     });
   });
 
-  describe('time-picker RTL', () => {
+  describe('RTL', () => {
     let testComponent: NzTestTimePickerDirComponent;
     let fixture: ComponentFixture<NzTestTimePickerDirComponent>;
     let timeElement: DebugElement;
@@ -388,6 +391,7 @@ describe('time-picker', () => {
       fixture.detectChanges();
       timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
     });
+
     it('should className correct on dir change', () => {
       expect(timeElement.nativeElement.classList).not.toContain('ant-picker-rtl');
       testComponent.dir = 'rtl';
@@ -396,13 +400,14 @@ describe('time-picker', () => {
     });
   });
 
-  describe('time-picker in form', () => {
+  describe('in form', () => {
     let testComponent: NzTestTimePickerInFormComponent;
     let fixture: ComponentFixture<NzTestTimePickerInFormComponent>;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerInFormComponent);
       testComponent = fixture.debugElement.componentInstance;
     });
+
     it('should disable if the form is disabled initially and nzDisabled set to false', fakeAsync(() => {
       testComponent.disable();
       fixture.detectChanges();
@@ -414,6 +419,7 @@ describe('time-picker', () => {
       expect(timeElement.nativeElement.classList).toContain('ant-picker-disabled');
       expect(inputElement.disabled).toBe(true);
     }));
+
     it('should className correct', () => {
       fixture.detectChanges();
       const timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
@@ -448,6 +454,8 @@ describe('time-picker', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzTimePickerComponent, FormsModule],
   template: `
     <nz-time-picker
       [nzAutoFocus]="autoFocus"
@@ -463,9 +471,7 @@ describe('time-picker', () => {
       [nzDefaultOpenValue]="defaultOpenValue"
       [nzBorderless]="nzBorderless"
     ></nz-time-picker>
-  `,
-  imports: [NzTimePickerComponent, FormsModule],
-  standalone: true
+  `
 })
 export class NzTestTimePickerComponent {
   open = false;
@@ -475,37 +481,39 @@ export class NzTestTimePickerComponent {
   disabled = false;
   nzInputReadOnly = false;
   use12Hours = false;
-  nzSuffixIcon?: string;
+  nzSuffixIcon: string = 'close-circle';
   nzBackdrop = false;
   nzBorderless = true;
-  defaultOpenValue: Date | null = new Date('2020-03-27T00:00:00');
+  defaultOpenValue: Date = new Date('2020-03-27T00:00:00');
   onChange(_: Date | null): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
 }
 
 @Component({
-  template: ` <nz-time-picker [nzStatus]="status"></nz-time-picker> `,
+  standalone: true,
   imports: [NzTimePickerComponent],
-  standalone: true
+  template: `<nz-time-picker [nzStatus]="status"></nz-time-picker>`
 })
 export class NzTestTimePickerStatusComponent {
   status: NzStatus = 'error';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzTimePickerComponent, BidiModule],
   template: `
     <div [dir]="dir">
       <nz-time-picker></nz-time-picker>
     </div>
-  `,
-  imports: [NzTimePickerComponent, BidiModule],
-  standalone: true
+  `
 })
 export class NzTestTimePickerDirComponent {
   dir: Direction = 'ltr';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzFormModule, ReactiveFormsModule, NzTimePickerComponent],
   template: `
     <form nz-form [formGroup]="timePickerForm">
       <nz-form-item>
@@ -514,9 +522,7 @@ export class NzTestTimePickerDirComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `,
-  imports: [NzFormModule, ReactiveFormsModule, NzTimePickerComponent],
-  standalone: true
+  `
 })
 export class NzTestTimePickerInFormComponent {
   timePickerForm = new FormGroup({
@@ -524,7 +530,6 @@ export class NzTestTimePickerInFormComponent {
   });
   status: NzFormControlStatusType = 'error';
   feedback = true;
-
   disabled = false;
 
   disable(): void {

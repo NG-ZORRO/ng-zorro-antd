@@ -64,7 +64,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() nzDropdownMenu: NzDropdownMenuComponent | null = null;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
-  @Input({ transform: booleanAttribute }) @WithConfig<boolean>() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
   @Input({ transform: booleanAttribute }) nzClickHide = true;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzVisible = false;

@@ -24,6 +24,7 @@ import {
 import { Subject, fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
 import { NzTableFilterComponent } from '../addon/filter.component';
@@ -35,6 +36,8 @@ import {
   NzTableSortFn,
   NzTableSortOrder
 } from '../table.types';
+
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
 
 @Component({
   selector:
@@ -82,6 +85,8 @@ import {
   standalone: true
 })
 export class NzThAddOnComponent<T> implements OnChanges, OnInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   manualClickOrder$ = new Subject<NzThAddOnComponent<T>>();
   calcOperatorChange$ = new Subject<void>();
   nzFilterValue: NzTableFilterValue = null;
@@ -94,7 +99,7 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   @Input() nzFilterMultiple = true;
   @Input() nzSortOrder: NzTableSortOrder = null;
   @Input() nzSortPriority: number | boolean = false;
-  @Input() nzSortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
+  @Input() @WithConfig() nzSortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
   @Input() nzFilters: NzTableFilterList = [];
   @Input() nzSortFn: NzTableSortFn<T> | boolean | null = null;
   @Input() nzFilterFn: NzTableFilterFn<T> | boolean | null = null;
@@ -135,6 +140,7 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private host: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,

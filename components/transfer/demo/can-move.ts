@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { TransferCanMove, TransferItem } from 'ng-zorro-antd/transfer';
+import { NzTransferModule, TransferCanMove, TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-can-move',
+  standalone: true,
+  imports: [NzTransferModule],
   template: `
     <nz-transfer
       [nzDataSource]="list"

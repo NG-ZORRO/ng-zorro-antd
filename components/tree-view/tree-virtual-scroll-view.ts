@@ -8,6 +8,7 @@ import { BaseTreeControl, CdkTree, CdkTreeNodeOutletContext } from '@angular/cdk
 import {
   ChangeDetectionStrategy,
   Component,
+  forwardRef,
   Input,
   OnChanges,
   SimpleChanges,
@@ -45,8 +46,8 @@ const DEFAULT_SIZE = 28;
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: NzTreeView, useExisting: NzTreeVirtualScrollViewComponent },
-    { provide: CdkTree, useExisting: NzTreeVirtualScrollViewComponent }
+    { provide: NzTreeView, useExisting: forwardRef(() => NzTreeVirtualScrollViewComponent) },
+    { provide: CdkTree, useExisting: forwardRef(() => NzTreeVirtualScrollViewComponent) }
   ],
   host: {
     class: 'ant-tree',

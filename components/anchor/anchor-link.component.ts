@@ -34,7 +34,7 @@ import { NzAnchorComponent } from './anchor.component';
       #linkTitle
       class="ant-anchor-link-title"
       [href]="nzHref"
-      [title]="titleStr"
+      [attr.title]="titleStr"
       [target]="nzTarget"
       (click)="goToClick($event)"
     >

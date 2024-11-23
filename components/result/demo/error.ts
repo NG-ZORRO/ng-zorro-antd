@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+
 @Component({
   selector: 'nz-demo-result-error',
+  standalone: true,
+  imports: [NzButtonModule, NzIconModule, NzResultModule, NzTypographyModule],
   template: `
     <nz-result
       nzTitle="Submission Failed"

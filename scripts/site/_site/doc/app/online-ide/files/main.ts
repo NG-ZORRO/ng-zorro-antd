@@ -1,14 +1,7 @@
-export default `import './polyfills';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+export default (componentName: string) => `import { bootstrapApplication } from '@angular/platform-browser';
 
-import { AppModule } from './app/app.module';
+import { ${componentName} } from './app/app.component';
+import { appConfig } from './app/app.config';
 
-platformBrowserDynamic().bootstrapModule(AppModule).then(ref => {
-  // Ensure Angular destroys itself on hot reloads.
-  if (window['ngRef']) {
-    window['ngRef'].destroy();
-  }
-  window['ngRef'] = ref;
-
-  // Otherwise, log the boot error
-}).catch(err => console.error(err));`;
+bootstrapApplication(${componentName}, appConfig).catch(err => console.log(err));
+`;

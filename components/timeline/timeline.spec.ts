@@ -1,10 +1,7 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 import { NzDemoTimelineLabelComponent } from './demo/label';
 import { NzTimelineComponent } from './timeline.component';
@@ -12,19 +9,14 @@ import { NzTimelineModule } from './timeline.module';
 
 describe('nz-timeline', () => {
   describe('basic', () => {
-    let testBed: ComponentBed<NzTestTimelineBasicComponent>;
     let fixture: ComponentFixture<NzTestTimelineBasicComponent>;
     let testComponent: NzTestTimelineBasicComponent;
     let timeline: DebugElement;
     let items: HTMLDivElement[] = [];
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestTimelineBasicComponent, {
-        imports: [NzTimelineModule]
-      });
-      fixture = testBed.fixture;
-      testComponent = testBed.component;
-
+      fixture = TestBed.createComponent(NzTestTimelineBasicComponent);
+      testComponent = fixture.componentInstance;
       fixture.detectChanges();
 
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
@@ -110,38 +102,31 @@ describe('nz-timeline', () => {
   });
 
   // add another test component for simplicity
-  it('should custom position work', () => {
-    let testBed: ComponentBed<NzTestTimelineCustomPositionComponent>;
+  describe('custom position', () => {
     let fixture: ComponentFixture<NzTestTimelineCustomPositionComponent>;
     let timeline: DebugElement;
     let items: HTMLDivElement[] = [];
 
-    testBed = createComponentBed(NzTestTimelineCustomPositionComponent, {
-      imports: [NzTimelineModule]
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTimelineCustomPositionComponent);
+      fixture.detectChanges();
+
+      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
     });
-    fixture = testBed.fixture;
 
-    fixture.detectChanges();
-
-    timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
-    items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
-    // console.log(fixture.debugElement.nativeElement.outerHTML);
-
-    expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-alternate');
-    expect(items[0].classList).toContain('ant-timeline-item-right');
+    it('should custom position work', () => {
+      expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-alternate');
+      expect(items[0].classList).toContain('ant-timeline-item-right');
+    });
   });
 
   describe('custom color', () => {
-    let testBed: ComponentBed<NzTestTimelineCustomColorComponent>;
     let fixture: ComponentFixture<NzTestTimelineCustomColorComponent>;
     let items: HTMLLIElement[];
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestTimelineCustomColorComponent, {
-        imports: [NzTimelineModule]
-      });
-      fixture = testBed.fixture;
-
+      fixture = TestBed.createComponent(NzTestTimelineCustomColorComponent);
       fixture.detectChanges();
 
       items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
@@ -161,18 +146,12 @@ describe('nz-timeline', () => {
   });
 
   describe('pending', () => {
-    let testBed: ComponentBed<NzTestTimelinePendingComponent>;
     let fixture: ComponentFixture<NzTestTimelinePendingComponent>;
     let timeline: DebugElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestTimelinePendingComponent, {
-        imports: [NzTimelineModule]
-      });
-      fixture = testBed.fixture;
-
+      fixture = TestBed.createComponent(NzTestTimelinePendingComponent);
       fixture.detectChanges();
-
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
     });
 
@@ -183,17 +162,12 @@ describe('nz-timeline', () => {
   });
 
   describe('label', () => {
-    let testBed: ComponentBed<NzDemoTimelineLabelComponent>;
     let fixture: ComponentFixture<NzDemoTimelineLabelComponent>;
     let timeline: DebugElement;
     let items: HTMLLIElement[];
 
     beforeEach(() => {
-      testBed = createComponentBed(NzDemoTimelineLabelComponent, {
-        imports: [NzTimelineModule, NzRadioModule]
-      });
-      fixture = testBed.fixture;
-
+      fixture = TestBed.createComponent(NzDemoTimelineLabelComponent);
       fixture.detectChanges();
 
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
@@ -215,19 +189,12 @@ describe('nz-timeline', () => {
   });
 
   describe('RTL', () => {
-    let testBed: ComponentBed<NzTestTimelineRtlComponent>;
     let fixture: ComponentFixture<NzTestTimelineRtlComponent>;
     let timeline: DebugElement;
     let items: HTMLDivElement[] = [];
 
     beforeEach(waitForAsync(() => {
-      testBed = createComponentBed(NzTestTimelineRtlComponent, {
-        imports: [BidiModule, NzTimelineModule],
-        declarations: [NzTestTimelineBasicComponent]
-      });
-
-      fixture = testBed.fixture;
-
+      fixture = TestBed.createComponent(NzTestTimelineRtlComponent);
       fixture.detectChanges();
 
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
@@ -245,15 +212,11 @@ describe('nz-timeline', () => {
   });
 
   describe('clear', () => {
-    let testBed: ComponentBed<NzTestTimelineClearItemsComponent>;
     let fixture: ComponentFixture<NzTestTimelineClearItemsComponent>;
     let timeline: NzTimelineComponent;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestTimelineClearItemsComponent, {
-        imports: [NzTimelineModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestTimelineClearItemsComponent);
       fixture.detectChanges();
       timeline = fixture.componentInstance.nzTimeLine;
     });
@@ -267,7 +230,8 @@ describe('nz-timeline', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
+  standalone: true,
+  imports: [NzTimelineModule],
   selector: 'nz-test-basic-timeline',
   template: `
     <ng-template #dotTemplate>template</ng-template>
@@ -292,6 +256,8 @@ export class NzTestTimelineBasicComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzTimelineModule],
   template: `
     <nz-timeline>
       <nz-timeline-item [nzColor]="'cyan'">Create a services site 2015-09-01</nz-timeline-item>
@@ -304,6 +270,8 @@ export class NzTestTimelineBasicComponent {
 export class NzTestTimelineCustomColorComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzTimelineModule],
   template: `
     <ng-template #pendingTemplate>template</ng-template>
     <nz-timeline [nzPending]="pendingTemplate">
@@ -315,16 +283,20 @@ export class NzTestTimelineCustomColorComponent {}
 export class NzTestTimelinePendingComponent {}
 
 @Component({
+  standalone: true,
+  imports: [NzTimelineModule],
   template: `
     <nz-timeline nzMode="custom">
       <nz-timeline-item nzPosition="right">Right</nz-timeline-item>
-      <nz-timelint-item nzPosition="left">Left</nz-timelint-item>
+      <nz-timeline-item nzPosition="left">Left</nz-timeline-item>
     </nz-timeline>
   `
 })
 export class NzTestTimelineCustomPositionComponent {}
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTestTimelineBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-basic-timeline></nz-test-basic-timeline>
@@ -333,10 +305,12 @@ export class NzTestTimelineCustomPositionComponent {}
 })
 export class NzTestTimelineRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
+  standalone: true,
+  imports: [NzTimelineModule],
   template: `
     <nz-timeline nzMode="custom">
       @for (item of data; track item) {

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NzSegmentedOptions } from 'ng-zorro-antd/segmented';
+import { NzSegmentedModule, NzSegmentedOptions } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-segmented-with-icon-only',
+  standalone: true,
+  imports: [NzSegmentedModule],
   template: `<nz-segmented [nzOptions]="options"></nz-segmented>`
 })
 export class NzDemoSegmentedWithIconOnlyComponent {

@@ -97,11 +97,11 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   nzBounds: number = 5;
 
   @Input({ transform: numberAttributeWithZeroFallback })
-  @WithConfig<number>()
+  @WithConfig()
   nzOffsetTop?: number = undefined;
 
   @Input({ transform: numberAttributeWithZeroFallback })
-  @WithConfig<number>()
+  @WithConfig()
   nzTargetOffset?: number = undefined;
 
   @Input() nzContainer?: string | HTMLElement;

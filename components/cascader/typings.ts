@@ -5,11 +5,11 @@
 
 import { Observable } from 'rxjs';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 export type NzCascaderExpandTrigger = 'click' | 'hover';
 export type NzCascaderTriggerType = 'click' | 'hover';
-export type NzCascaderSize = 'small' | 'large' | 'default';
+export type NzCascaderSize = NzSizeLDSType;
 
 export type NzCascaderFilter = (searchValue: string, path: NzCascaderOption[]) => boolean;
 export type NzCascaderSorter = (a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string) => number;

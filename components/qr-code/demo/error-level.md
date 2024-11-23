@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 10
 title:
   zh-CN: 容错等级
   en-US: Error Level

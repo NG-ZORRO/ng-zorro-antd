@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 
-const options = [
+const options: NzCascaderOption[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -46,6 +47,8 @@ const options = [
 
 @Component({
   selector: 'nz-demo-cascader-size',
+  standalone: true,
+  imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader
       [nzSize]="'large'"
@@ -55,7 +58,7 @@ const options = [
     ></nz-cascader>
     <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="value2" (ngModelChange)="onChanges($event)"></nz-cascader>
     <nz-cascader
-      [nzSize]="'small'"
+      nzSize="small"
       [nzOptions]="nzOptions"
       [(ngModel)]="value3"
       (ngModelChange)="onChanges($event)"
