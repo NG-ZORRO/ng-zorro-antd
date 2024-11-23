@@ -29,7 +29,7 @@ import { warn } from 'ng-zorro-antd/core/logger';
 import { NzIconPatchService, NzIconService } from './icon.service';
 
 @Directive({
-  selector: '[nz-icon]',
+  selector: 'nz-icon,[nz-icon]',
   exportAs: 'nzIcon',
   host: {
     '[class.anticon]': 'true'

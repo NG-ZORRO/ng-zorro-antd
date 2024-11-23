@@ -22,6 +22,7 @@ import {
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
+  forwardRef,
   numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -146,7 +147,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     '[class.ant-picker-time-panel-narrow]': `enabledColumns < 3`,
     '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`
   },
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzTimePickerPanelComponent), multi: true }],
   imports: [DecimalPipe, NgTemplateOutlet, NzI18nModule, NzButtonModule],
   standalone: true
 })

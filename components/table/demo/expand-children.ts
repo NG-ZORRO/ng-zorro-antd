@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 export interface TreeNodeInterface {
   key: string;
   name: string;
@@ -13,6 +15,8 @@ export interface TreeNodeInterface {
 
 @Component({
   selector: 'nz-demo-table-expand-children',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table #expandTable [nzData]="listOfMapData" nzTableLayout="fixed">
       <thead>

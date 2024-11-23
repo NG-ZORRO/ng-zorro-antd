@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
   selector: 'color-palette',
   standalone: true,
   template: `
-    <div class="ant-color-picker-palette" style="position: relative">
+    <div class="ant-color-picker-palette">
       <ng-content></ng-content>
     </div>
   `

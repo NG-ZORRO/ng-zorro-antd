@@ -1,4 +1,4 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
@@ -11,19 +11,6 @@ import { NzRateComponent } from './rate.component';
 import { NzRateModule } from './rate.module';
 
 describe('rate', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzRateModule, FormsModule, ReactiveFormsModule],
-      declarations: [
-        NzTestRateBasicComponent,
-        NzTestRateFormComponent,
-        NzTestRateRtlComponent,
-        NzTestRateCharacterComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
-
   describe('basic rate', () => {
     let fixture: ComponentFixture<NzTestRateBasicComponent>;
     let testComponent: NzTestRateBasicComponent;
@@ -317,8 +304,9 @@ describe('rate', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-rate',
+  standalone: true,
+  imports: [FormsModule, NzRateModule],
   template: `
     <nz-rate
       [(ngModel)]="value"
@@ -351,6 +339,8 @@ export class NzTestRateBasicComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, NzRateModule],
   template: `
     <form>
       <nz-rate [formControl]="formControl" [nzDisabled]="disabled"></nz-rate>
@@ -372,6 +362,8 @@ export class NzTestRateFormComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [BidiModule, NzTestRateBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-rate></nz-test-rate>
@@ -380,11 +372,13 @@ export class NzTestRateFormComponent {
 })
 export class NzTestRateRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
   selector: 'nz-test-rate-character',
+  standalone: true,
+  imports: [FormsModule, NzRateModule],
   template: `
     <nz-rate [(ngModel)]="value" [nzCharacter]="characterTpl"></nz-rate>
     <ng-template #characterTpl let-index>

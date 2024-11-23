@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
 
 interface RandomUser {
   gender: string;
@@ -15,37 +15,10 @@ interface RandomUser {
   };
 }
 
-@Injectable({ providedIn: 'root' })
-export class RandomUserService {
-  randomUserUrl = 'https://api.randomuser.me/';
-
-  getUsers(
-    pageIndex: number,
-    pageSize: number,
-    sortField: string | null,
-    sortOrder: string | null,
-    filters: Array<{ key: string; value: string[] }>
-  ): Observable<{ results: RandomUser[] }> {
-    let params = new HttpParams()
-      .append('page', `${pageIndex}`)
-      .append('results', `${pageSize}`)
-      .append('sortField', `${sortField}`)
-      .append('sortOrder', `${sortOrder}`);
-    filters.forEach(filter => {
-      filter.value.forEach(value => {
-        params = params.append(filter.key, value);
-      });
-    });
-    return this.http
-      .get<{ results: RandomUser[] }>(`${this.randomUserUrl}`, { params })
-      .pipe(catchError(() => of({ results: [] })));
-  }
-
-  constructor(private http: HttpClient) {}
-}
-
 @Component({
   selector: 'nz-demo-table-ajax',
+  standalone: true,
+  imports: [NzTableModule],
   template: `
     <nz-table
       nzShowSizeChanger
@@ -95,7 +68,7 @@ export class NzDemoTableAjaxComponent implements OnInit {
     filter: Array<{ key: string; value: string[] }>
   ): void {
     this.loading = true;
-    this.randomUserService.getUsers(pageIndex, pageSize, sortField, sortOrder, filter).subscribe(data => {
+    this.getUsers(pageIndex, pageSize, sortField, sortOrder, filter).subscribe(data => {
       this.loading = false;
       this.total = 200; // mock the total data here
       this.listOfRandomUser = data.results;
@@ -111,9 +84,31 @@ export class NzDemoTableAjaxComponent implements OnInit {
     this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
   }
 
-  constructor(private randomUserService: RandomUserService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);
+  }
+
+  getUsers(
+    pageIndex: number,
+    pageSize: number,
+    sortField: string | null,
+    sortOrder: string | null,
+    filters: Array<{ key: string; value: string[] }>
+  ): Observable<{ results: RandomUser[] }> {
+    let params = new HttpParams()
+      .append('page', `${pageIndex}`)
+      .append('results', `${pageSize}`)
+      .append('sortField', `${sortField}`)
+      .append('sortOrder', `${sortOrder}`);
+    filters.forEach(filter => {
+      filter.value.forEach(value => {
+        params = params.append(filter.key, value);
+      });
+    });
+    return this.http
+      .get<{ results: RandomUser[] }>('https://api.randomuser.me/', { params })
+      .pipe(catchError(() => of({ results: [] })));
   }
 }

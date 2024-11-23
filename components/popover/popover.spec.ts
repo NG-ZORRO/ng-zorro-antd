@@ -1,28 +1,25 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzPopoverDirective } from './popover';
 import { NzPopoverModule } from './popover.module';
 
 describe('NzPopover', () => {
-  let testBed: ComponentBed<NzPopoverTestComponent>;
   let fixture: ComponentFixture<NzPopoverTestComponent>;
   let component: NzPopoverTestComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzPopoverTestComponent, {
-      imports: [NzPopoverModule, NoopAnimationsModule, NzIconTestModule]
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
     });
-    fixture = testBed.fixture;
-    component = testBed.component;
+    fixture = TestBed.createComponent(NzPopoverTestComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   }));
 
@@ -110,6 +107,8 @@ describe('NzPopover', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzPopoverModule],
   template: `
     <a #stringPopover nz-popover nzPopoverTitle="title-string" nzPopoverContent="content-string">Show</a>
 
@@ -147,9 +146,4 @@ export class NzPopoverTestComponent {
 
   content = 'content';
   visible = false;
-  visibilityTogglingCount = 0;
-
-  onVisibleChange(): void {
-    this.visibilityTogglingCount += 1;
-  }
 }

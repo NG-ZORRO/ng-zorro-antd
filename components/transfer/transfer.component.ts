@@ -75,19 +75,21 @@ import { NzTransferListComponent } from './transfer-list.component';
     ></nz-transfer-list>
     @if (dir !== 'rtl') {
       <div class="ant-transfer-operation">
-        <button
-          nz-button
-          type="button"
-          (click)="moveToLeft()"
-          [disabled]="nzDisabled || !leftActive"
-          [nzType]="'primary'"
-          [nzSize]="'small'"
-        >
-          <span nz-icon nzType="left"></span>
-          @if (nzOperations[1]) {
-            <span>{{ nzOperations[1] }}</span>
-          }
-        </button>
+        @if (!nzOneWay) {
+          <button
+            nz-button
+            type="button"
+            (click)="moveToLeft()"
+            [disabled]="nzDisabled || !leftActive"
+            [nzType]="'primary'"
+            [nzSize]="'small'"
+          >
+            <span nz-icon nzType="left"></span>
+            @if (nzOperations[1]) {
+              <span>{{ nzOperations[1] }}</span>
+            }
+          </button>
+        }
         <button
           nz-button
           type="button"
@@ -117,19 +119,21 @@ import { NzTransferListComponent } from './transfer-list.component';
             <span>{{ nzOperations[0] }}</span>
           }
         </button>
-        <button
-          nz-button
-          type="button"
-          (click)="moveToLeft()"
-          [disabled]="nzDisabled || !leftActive"
-          [nzType]="'primary'"
-          [nzSize]="'small'"
-        >
-          <span nz-icon nzType="right"></span>
-          @if (nzOperations[1]) {
-            <span>{{ nzOperations[1] }}</span>
-          }
-        </button>
+        @if (!nzOneWay) {
+          <button
+            nz-button
+            type="button"
+            (click)="moveToLeft()"
+            [disabled]="nzDisabled || !leftActive"
+            [nzType]="'primary'"
+            [nzSize]="'small'"
+          >
+            <span nz-icon nzType="right"></span>
+            @if (nzOperations[1]) {
+              <span>{{ nzOperations[1] }}</span>
+            }
+          </button>
+        }
       </div>
     }
     <nz-transfer-list
@@ -152,6 +156,8 @@ import { NzTransferListComponent } from './transfer-list.component';
       [itemUnit]="nzItemUnit || locale?.itemUnit"
       [itemsUnit]="nzItemsUnit || locale?.itemsUnit"
       [footer]="nzFooter"
+      [oneWay]="nzOneWay"
+      (moveToLeft)="moveToLeft()"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"
     ></nz-transfer-list>
@@ -203,6 +209,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzTargetKeys: string[] = [];
   @Input() nzSelectedKeys: string[] = [];
   @Input() nzStatus: NzStatus = '';
+  @Input({ transform: booleanAttribute }) nzOneWay: boolean = false;
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();
@@ -245,10 +252,8 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   handleSelect(direction: TransferDirection, checked: boolean, item?: TransferItem): void {
     const list = this.getCheckedData(direction);
-    if (list.every(i => i.disabled)) {
-      return;
-    }
-    this.updateOperationStatus(direction, list.length);
+    const count = list.filter(i => !i.disabled).length;
+    this.updateOperationStatus(direction, count);
     this.nzSelectChange.emit({ direction, checked, list, item });
   }
 

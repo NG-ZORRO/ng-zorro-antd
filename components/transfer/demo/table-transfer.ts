@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { TransferChange, TransferItem, TransferSelectChange } from 'ng-zorro-antd/transfer';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTransferModule, TransferChange, TransferItem, TransferSelectChange } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-table-transfer',
+  standalone: true,
+  imports: [FormsModule, NzSwitchModule, NzTableModule, NzTagModule, NzTransferModule],
   template: `
     <nz-transfer
       [nzDataSource]="list"

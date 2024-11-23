@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-tabs-centered',
+  standalone: true,
+  imports: [NzTabsModule],
   template: `
     <nz-tabset nzCentered>
       <nz-tab nzTitle="Tab 1">Content of Tab Pane 1</nz-tab>

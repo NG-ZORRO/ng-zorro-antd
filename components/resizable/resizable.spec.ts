@@ -3,16 +3,15 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 
 import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
+import { NzResizableModule } from 'ng-zorro-antd/resizable/resizable.module';
 
 import { NzDemoResizableBasicComponent } from './demo/basic';
 import { NzDemoResizableCustomizeComponent } from './demo/customize';
 import { NzDemoResizableGridComponent } from './demo/grid';
 import { NzDemoResizableLockAspectRatioComponent } from './demo/lock-aspect-ratio';
 import { NzDemoResizablePreviewComponent } from './demo/preview';
-import { NzResizableDirective } from './resizable.directive';
-import { NzResizableModule } from './resizable.module';
+import { NzResizableDirective, NzResizeEvent } from './resizable.directive';
 import { DEFAULT_RESIZE_DIRECTION } from './resize-handles.component';
 
 describe('resizable', () => {
@@ -20,16 +19,8 @@ describe('resizable', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzResizableModule, NzIconTestModule, NzGridModule],
-      declarations: [
-        NzDemoResizableBasicComponent,
-        NzDemoResizableCustomizeComponent,
-        NzDemoResizableLockAspectRatioComponent,
-        NzDemoResizablePreviewComponent,
-        NzDemoResizableGridComponent,
-        NzTestResizableBoundsComponent
-      ],
       providers: [
+        provideNzIconsTesting(),
         {
           provide: NgZone,
           useFactory: () => {
@@ -38,7 +29,7 @@ describe('resizable', () => {
           }
         }
       ]
-    }).compileComponents();
+    });
   }));
 
   describe('basic', () => {
@@ -130,7 +121,7 @@ describe('resizable', () => {
     }));
 
     describe('should resize work', () => {
-      let rect: ClientRect | DOMRect;
+      let rect: DOMRect;
 
       beforeEach(() => {
         testComponent.height = 200;
@@ -709,6 +700,8 @@ function touchMoveTrigger(el: HTMLElement, from: { x: number; y: number }, to: {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzResizableModule],
   template: `
     <div class="box-ref" #boxRef>
       <div class="parent">
@@ -745,18 +738,18 @@ function touchMoveTrigger(el: HTMLElement, from: { x: number; y: number }, to: {
 })
 class NzTestResizableBoundsComponent {
   @ViewChild('boxRef', { static: false }) boxRef!: ElementRef<HTMLDivElement>;
-  bounds: string | ElementRef = 'parent';
+  bounds: 'window' | 'parent' | ElementRef = 'parent';
   maxWidth = 300;
   maxHeight = 300;
   width = 100;
   height = 100;
   id = -1;
 
-  onResize({ width, height }: { width: number; height: number }): void {
+  onResize({ width, height }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
-      this.width = width;
-      this.height = height;
+      this.width = width!;
+      this.height = height!;
     });
   }
 }

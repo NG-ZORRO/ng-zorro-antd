@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 interface ParentItemData {
   key: number;
   name: string;
@@ -20,6 +26,8 @@ interface ChildrenItemData {
 
 @Component({
   selector: 'nz-demo-table-nested-table',
+  standalone: true,
+  imports: [NzBadgeModule, NzDividerModule, NzDropDownModule, NzIconModule, NzTableModule],
   template: `
     <nz-table #nestedTable [nzData]="listOfParentData" [nzPageSize]="10">
       <thead>
@@ -108,7 +116,7 @@ export class NzDemoTableNestedTableComponent implements OnInit {
     for (let i = 0; i < 3; ++i) {
       this.listOfParentData.push({
         key: i,
-        name: 'Screem',
+        name: 'Screen',
         platform: 'iOS',
         version: '10.3.4.5654',
         upgradeNum: 500,

@@ -4,6 +4,8 @@ import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testi
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzCheckBoxOptionInterface, NzCheckboxGroupComponent } from './checkbox-group.component';
 import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
 import { NzCheckboxComponent } from './checkbox.component';
@@ -529,3 +531,75 @@ export class NzTestCheckboxGroupRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction: Direction = 'rtl';
 }
+
+describe('checkbox component', () => {
+  let fixture: ComponentFixture<NzCheckboxComponent>;
+  let component: NzCheckboxComponent;
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzCheckboxComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('focus should be called in afterViewInit if nzAutoFocus is set', () => {
+    spyOn(component, 'focus');
+    component.nzAutoFocus = false;
+    component.ngAfterViewInit();
+    expect(component.focus).not.toHaveBeenCalled();
+
+    spyOn(component, 'focus');
+    component.nzAutoFocus = true;
+    component.ngAfterViewInit();
+    expect(component.focus).toHaveBeenCalled();
+  });
+
+  describe('checkbox wrapper component', () => {
+    let fixture: ComponentFixture<NzCheckboxWrapperComponent>;
+    let component: NzCheckboxWrapperComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzCheckboxWrapperComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should emit correct value', () => {
+      (component as NzSafeAny)['checkboxList'] = [
+        {
+          nzChecked: true,
+          nzValue: 'value 1'
+        },
+        {
+          nzChecked: true,
+          nzValue: 'value 2'
+        },
+        {
+          nzChecked: false,
+          nzValue: 'value 3'
+        }
+      ];
+      spyOn(component.nzOnChange, 'emit');
+      component.onChange();
+      expect(component.nzOnChange.emit).toHaveBeenCalledWith(['value 1', 'value 2']);
+    });
+  });
+
+  describe('checkbox group component', () => {
+    let fixture: ComponentFixture<NzCheckboxGroupComponent>;
+    let component: NzCheckboxGroupComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzCheckboxGroupComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should have correct initial value', () => {
+      expect(component.onChange).toBeDefined();
+      expect(component.onChange).toEqual(jasmine.any(Function));
+      expect(component.onChange({})).toBeUndefined();
+
+      expect(component.onTouched).toBeDefined();
+      expect(component.onTouched).toEqual(jasmine.any(Function));
+      expect(component.onTouched()).toBeUndefined();
+    });
+  });
+});

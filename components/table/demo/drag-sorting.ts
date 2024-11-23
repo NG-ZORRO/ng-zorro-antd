@@ -1,8 +1,12 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
+
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'nz-demo-table-drag-sorting',
+  standalone: true,
+  imports: [CdkDropList, CdkDrag, NzTableModule],
   template: `
     <nz-table [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false">
       <thead>

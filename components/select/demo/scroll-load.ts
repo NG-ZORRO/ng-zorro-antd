@@ -1,10 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+
+interface MockUser {
+  name: {
+    first: string;
+  };
+}
+
 @Component({
   selector: 'nz-demo-select-scroll-load',
+  standalone: true,
+  imports: [FormsModule, NzSelectModule, NzSpinModule],
   template: `
     <nz-select
       [(ngModel)]="selectedUser"
@@ -13,8 +25,8 @@ import { catchError, map } from 'rxjs/operators';
       nzAllowClear
       [nzDropdownRender]="renderTemplate"
     >
-      @for (o of optionList; track o) {
-        <nz-option [nzValue]="o" [nzLabel]="o"></nz-option>
+      @for (item of optionList; track item) {
+        <nz-option [nzValue]="item" [nzLabel]="item"></nz-option>
       }
     </nz-select>
     <ng-template #renderTemplate>
@@ -32,30 +44,32 @@ import { catchError, map } from 'rxjs/operators';
   ]
 })
 export class NzDemoSelectScrollLoadComponent implements OnInit {
-  randomUserUrl = 'https://api.randomuser.me/?results=10';
+  readonly randomUserUrl: string = 'https://api.randomuser.me/?results=10';
   optionList: string[] = [];
-  selectedUser = null;
+  selectedUser: string | null = null;
   isLoading = false;
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  getRandomNameList: Observable<string[]> = this.http
-    .get(`${this.randomUserUrl}`)
-    .pipe(
-      catchError(() => of({ results: [] })),
-      map((res: any) => res.results)
-    )
-    .pipe(map((list: any) => list.map((item: any) => `${item.name.first}`)));
-
-  loadMore(): void {
-    this.isLoading = true;
-    this.getRandomNameList.subscribe(data => {
-      this.isLoading = false;
-      this.optionList = [...this.optionList, ...data];
-    });
-  }
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadMore();
+  }
+
+  getRandomNameList(): Observable<string[]> {
+    return this.http
+      .get<{ results: MockUser[] }>(`${this.randomUserUrl}`)
+      .pipe(
+        map(res => res.results),
+        catchError(() => of<MockUser[]>([]))
+      )
+      .pipe(map(list => list.map(item => `${item.name.first}`)));
+  }
+
+  loadMore(): void {
+    this.isLoading = true;
+    this.getRandomNameList().subscribe(data => {
+      this.isLoading = false;
+      this.optionList = [...this.optionList, ...data];
+    });
   }
 }

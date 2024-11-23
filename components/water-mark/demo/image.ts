@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
+
 @Component({
   selector: 'nz-demo-water-mark-image',
+  standalone: true,
+  imports: [NzWaterMarkModule],
   template: `
     <nz-water-mark
       [nzWidth]="212"

@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzSelectPlacementType } from 'ng-zorro-antd/select';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSelectModule, NzSelectPlacementType } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-placement',
+  standalone: true,
+  imports: [FormsModule, NzRadioModule, NzSelectModule],
   template: `
     <nz-radio-group [(ngModel)]="placement">
       <label nz-radio-button nzValue="topLeft">topLeft</label>

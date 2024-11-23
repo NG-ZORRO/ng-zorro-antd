@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
 
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+
 @Component({
   selector: 'nz-demo-select-custom-dropdown-menu',
+  standalone: true,
+  imports: [NzDividerModule, NzIconModule, NzInputModule, NzSelectModule],
   template: `
     <nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="custom dropdown render">
       @for (item of listOfItem; track item) {
@@ -43,6 +50,7 @@ import { Component } from '@angular/core';
 export class NzDemoSelectCustomDropdownMenuComponent {
   listOfItem = ['jack', 'lucy'];
   index = 0;
+
   addItem(input: HTMLInputElement): void {
     const value = input.value;
     if (this.listOfItem.indexOf(value) === -1) {

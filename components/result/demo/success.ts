@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzResultModule } from 'ng-zorro-antd/result';
+
 @Component({
   selector: 'nz-demo-result-success',
+  standalone: true,
+  imports: [NzButtonModule, NzResultModule],
   template: `
     <nz-result
       nzStatus="success"
