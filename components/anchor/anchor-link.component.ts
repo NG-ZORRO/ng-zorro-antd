@@ -6,6 +6,7 @@
 import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   ContentChild,
@@ -34,7 +35,7 @@ import { NzAnchorComponent } from './anchor.component';
       #linkTitle
       class="ant-anchor-link-title"
       [href]="nzHref"
-      [title]="titleStr"
+      [attr.title]="titleStr"
       [target]="nzTarget"
       (click)="goToClick($event)"
     >
@@ -57,7 +58,7 @@ import { NzAnchorComponent } from './anchor.component';
 export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
   @Input() nzTarget?: string;
-  @Input() nzReplace: boolean = false;
+  @Input({ transform: booleanAttribute }) nzReplace: boolean = false;
 
   titleStr: string | null = '';
   titleTpl?: TemplateRef<NzSafeAny>;
@@ -100,11 +101,11 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     this.renderer.removeClass(this.elementRef.nativeElement, 'ant-anchor-link-active');
   }
 
-  async goToClick(e: Event): Promise<void> {
+  goToClick(e: Event): void {
     e.preventDefault();
     e.stopPropagation();
     if (this.platform.isBrowser) {
-      await this.anchorComp.handleScrollTo(this);
+      this.anchorComp.handleScrollTo(this).then();
     }
   }
 
