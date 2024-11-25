@@ -30,7 +30,7 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
       <span
         class="ant-slider-mark-text"
         [class.ant-slider-mark-active]="attr.active"
-        [ngStyle]="attr.style!"
+        [ngStyle]="attr.style"
         [innerHTML]="attr.label"
       ></span>
     }
