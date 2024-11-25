@@ -21,9 +21,11 @@ import {
 import { FormsModule } from '@angular/forms';
 
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzRadioComponent, NzRadioGroupComponent } from 'ng-zorro-antd/radio';
 
 import { NzRowExpandButtonDirective } from '../addon/row-expand-button.directive';
 import { NzRowIndentDirective } from '../addon/row-indent.directive';
+import { NzRowSelectionType } from '../table.types';
 
 @Component({
   selector:
@@ -54,24 +56,42 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
         [attr.aria-label]="nzLabel"
         (ngModelChange)="onCheckedChange($event)"
       ></label>
+    } @else if (nzShowRadio) {
+      <label
+        nz-radio
+        [nzDisabled]="nzDisabled"
+        [ngModel]="nzChecked"
+        [attr.aria-label]="nzLabel"
+        (ngModelChange)="onCheckedChange($event)"
+      ></label>
     }
     <ng-content></ng-content>
   `,
   host: {
     '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,
-    '[class.ant-table-selection-column]': `nzShowCheckbox`
+    '[class.ant-table-selection-column]': `nzShowCheckbox || nzShowRadio`
   },
-  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NgTemplateOutlet, NzCheckboxModule, FormsModule],
+  imports: [
+    NzRowIndentDirective,
+    NzRowExpandButtonDirective,
+    NgTemplateOutlet,
+    NzCheckboxModule,
+    FormsModule,
+    NzRadioComponent,
+    NzRadioGroupComponent
+  ],
   standalone: true
 })
 export class NzTdAddOnComponent implements OnChanges {
   @Input() nzChecked = false;
+  @Input() nzRowSelectionType: NzRowSelectionType = 'checkbox';
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
   @Input() nzLabel: string | null = null;
   @Input() nzIndentSize = 0;
   @Input({ transform: booleanAttribute }) nzShowExpand = false;
   @Input({ transform: booleanAttribute }) nzShowCheckbox = false;
+  @Input({ transform: booleanAttribute }) nzShowRadio = false;
   @Input({ transform: booleanAttribute }) nzExpand = false;
   @Input() nzExpandIcon: TemplateRef<void> | null = null;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
@@ -102,7 +122,11 @@ export class NzTdAddOnComponent implements OnChanges {
       this.nzShowExpand = true;
     }
     if (isFirstChange(nzChecked) && !this.isNzShowCheckboxChanged) {
-      this.nzShowCheckbox = true;
+      if (this.nzRowSelectionType === 'checkbox') {
+        this.nzShowCheckbox = true;
+      } else {
+        this.nzShowRadio = true;
+      }
     }
   }
 }

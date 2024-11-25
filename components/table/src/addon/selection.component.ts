@@ -10,6 +10,9 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzRadioComponent, NzRadioGroupComponent } from 'ng-zorro-antd/radio';
+
+import { NzRowSelectionType } from '../table.types';
 
 @Component({
   selector: 'nz-table-selection',
@@ -17,7 +20,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    @if (showCheckbox) {
+    @if (showCheckbox && nzRowSelectionType === 'checkbox') {
       <label
         nz-checkbox
         [class.ant-table-selection-select-all-custom]="showRowSelection"
@@ -28,7 +31,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         (ngModelChange)="onCheckedChange($event)"
       ></label>
     }
-    @if (showRowSelection) {
+    @if (showRowSelection && nzRowSelectionType === 'checkbox') {
       <div class="ant-table-selection-extra">
         <span nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
           <span nz-icon nzType="down"></span>
@@ -46,10 +49,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     }
   `,
   host: { class: 'ant-table-selection' },
-  imports: [FormsModule, NzCheckboxModule, NzDropDownModule, NzIconModule],
+  imports: [FormsModule, NzCheckboxModule, NzDropDownModule, NzIconModule, NzRadioComponent, NzRadioGroupComponent],
   standalone: true
 })
 export class NzTableSelectionComponent {
+  @Input() nzRowSelectionType: NzRowSelectionType = 'checkbox';
   @Input() listOfSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];
   @Input() checked = false;
   @Input() disabled = false;

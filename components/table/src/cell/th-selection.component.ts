@@ -20,6 +20,7 @@ import {
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTableSelectionComponent } from '../addon/selection.component';
+import { NzRowSelectionType } from '../table.types';
 
 @Component({
   selector: 'th[nzSelections],th[nzChecked],th[nzShowCheckbox],th[nzShowRowSelection]',
@@ -31,6 +32,7 @@ import { NzTableSelectionComponent } from '../addon/selection.component';
       [checked]="nzChecked"
       [disabled]="nzDisabled"
       [indeterminate]="nzIndeterminate"
+      [nzRowSelectionType]="nzRowSelectionType"
       [label]="nzLabel"
       [listOfSelections]="nzSelections"
       [showCheckbox]="nzShowCheckbox"
@@ -51,6 +53,7 @@ export class NzThSelectionComponent implements OnChanges {
   @Input() nzLabel: string | null = null;
   @Input({ transform: booleanAttribute }) nzShowCheckbox = false;
   @Input({ transform: booleanAttribute }) nzShowRowSelection = false;
+  @Input() nzRowSelectionType: NzRowSelectionType = 'checkbox';
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
 
   private isNzShowExpandChanged = false;

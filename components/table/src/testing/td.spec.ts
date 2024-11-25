@@ -4,6 +4,8 @@ import { By } from '@angular/platform-browser';
 
 import { NzTdAddOnComponent, NzTableModule } from 'ng-zorro-antd/table';
 
+import { NzRowSelectionType } from '../table.types';
+
 describe('nz-td', () => {
   let fixture: ComponentFixture<NzTestTdComponent>;
   let testComponent: NzTestTdComponent;
@@ -16,11 +18,23 @@ describe('nz-td', () => {
     td = fixture.debugElement.query(By.directive(NzTdAddOnComponent));
   });
 
+  it('should default value for selection type be checkbox', () => {
+    fixture.detectChanges();
+    expect(td.nativeElement.querySelector('.ant-checkbox-wrapper')).toBeDefined();
+    expect(td.nativeElement.classList).toContain('ant-table-selection-column');
+  });
+
   it('should checkbox work', () => {
     fixture.detectChanges();
     expect(td.nativeElement.querySelector('.ant-checkbox-wrapper')).toBeDefined();
     expect(td.nativeElement.classList).toContain('ant-table-selection-column');
   });
+
+  it('should radio work', fakeAsync(() => {
+    testComponent.selectionType = 'radio';
+    flush();
+    expect(td.nativeElement.querySelector('.ant-radio-wrapper')).toBeDefined();
+  }));
 
   it('should checked work', fakeAsync(() => {
     fixture.detectChanges();
@@ -159,6 +173,7 @@ describe('nz-td', () => {
       (nzCheckedChange)="checkedChange($event)"
       [nzDisabled]="disabled"
       [(nzExpand)]="expand"
+      [nzRowSelectionType]="selectionType"
       (nzExpandChange)="expandChange($event)"
       [nzIndentSize]="indentSize"
       [nzLeft]="left"
@@ -167,6 +182,7 @@ describe('nz-td', () => {
   `
 })
 export class NzTestTdComponent {
+  selectionType: NzRowSelectionType = 'checkbox';
   checked = false;
   checkedChange = jasmine.createSpy('show change');
   indeterminate = false;

@@ -9,6 +9,7 @@ export type NzTableLayout = 'fixed' | 'auto';
 export type NzTablePaginationPosition = 'top' | 'bottom' | 'both';
 export type NzTablePaginationType = 'default' | 'small';
 export type NzTableSize = 'middle' | 'default' | 'small';
+export type NzRowSelectionType = 'checkbox' | 'radio';
 export type NzTableFilterList = Array<{ text: string; value: NzSafeAny; byDefault?: boolean }>;
 export type NzTableSortOrder = string | 'ascend' | 'descend' | null;
 export type NzTableSortFn<T = unknown> = (a: T, b: T, sortOrder?: NzTableSortOrder) => number;
