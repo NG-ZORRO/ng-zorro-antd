@@ -10,3 +10,4 @@ export * from './input-group-slot.component';
 export * from './input.directive';
 export * from './autosize.directive';
 export * from './textarea-count.component';
+export * from './input-otp.component';
