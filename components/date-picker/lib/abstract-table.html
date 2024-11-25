@@ -14,7 +14,7 @@
 
   <tbody>
     @for (row of bodyRows; track row.trackByIndex) {
-      <tr [ngClass]="row.classMap!" role="row">
+      <tr [class]="row.classMap!" role="row">
         @if (row.weekNum) {
           <td role="gridcell" class="{{ prefixCls }}-cell-week"> {{ row.weekNum }}</td>
         }
@@ -22,7 +22,7 @@
           <td
             [title]="cell.title"
             role="gridcell"
-            [ngClass]="cell.classMap!"
+            [class]="cell.classMap!"
             (click)="cell.isDisabled ? null : cell.onClick()"
             (mouseenter)="cell.onMouseEnter()">
             @switch (prefixCls) {

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -39,7 +38,7 @@ import { NzMessageData } from './typings';
       (mouseleave)="onLeave()"
     >
       <div class="ant-message-notice-content">
-        <div class="ant-message-custom-content" [ngClass]="'ant-message-' + instance.type">
+        <div class="ant-message-custom-content" [class]="'ant-message-' + instance.type">
           @switch (instance.type) {
             @case ('success') {
               <span nz-icon nzType="check-circle"></span>
@@ -64,7 +63,7 @@ import { NzMessageData } from './typings';
       </div>
     </div>
   `,
-  imports: [NgClass, NzIconModule, NzOutletModule],
+  imports: [NzIconModule, NzOutletModule],
   standalone: true
 })
 export class NzMessageComponent extends NzMNComponent implements OnInit, OnDestroy {

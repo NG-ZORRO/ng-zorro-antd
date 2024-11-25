@@ -1,4 +1,3 @@
-import { NgStyle } from '@angular/common';
 import { Component } from '@angular/core';
 
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
@@ -14,7 +13,7 @@ interface Panel {
 @Component({
   selector: 'nz-demo-collapse-custom',
   standalone: true,
-  imports: [NgStyle, NzIconModule, NzCollapseModule],
+  imports: [NzIconModule, NzCollapseModule],
   template: `
     <nz-collapse [nzBordered]="false">
       @for (panel of panels; track panel) {
@@ -22,7 +21,7 @@ interface Panel {
           #p
           [nzHeader]="panel.name"
           [nzActive]="panel.active"
-          [ngStyle]="customStyle"
+          [style]="customStyle"
           [nzExpandedIcon]="!$first ? panel.icon || expandedIcon : undefined"
         >
           <p>{{ panel.name }} content</p>

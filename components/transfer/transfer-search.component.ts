@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -33,7 +32,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       [disabled]="disabled"
       [placeholder]="placeholder"
       class="ant-input"
-      [ngClass]="{ 'ant-input-disabled': disabled }"
+      [class]="{ 'ant-input-disabled': disabled }"
     />
     @if (value && value.length > 0) {
       <span class="ant-input-suffix" (click)="_clear()">
@@ -43,7 +42,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NzIconModule, NgClass],
+  imports: [FormsModule, NzIconModule],
   standalone: true
 })
 export class NzTransferSearchComponent implements OnChanges {

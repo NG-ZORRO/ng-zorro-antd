@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -65,7 +65,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
     </div>
     <div
       class="{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}"
-      [ngClass]="{ 'ant-transfer__nodata': stat.shownCount === 0 }"
+      [class]="{ 'ant-transfer__nodata': stat.shownCount === 0 }"
     >
       @if (showSearch) {
         <div class="ant-transfer-list-body-search-wrapper">
@@ -103,7 +103,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
               <li
                 (click)="!oneWay ? onItemSelect(item) : null"
                 class="ant-transfer-list-content-item"
-                [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
+                [class]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
               >
                 @if (!oneWay) {
                   <label
@@ -129,7 +129,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
                     </span>
                     <div
                       class="ant-transfer-list-content-item-remove"
-                      [ngClass]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
+                      [class]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
                       (click)="!(disabled || item.disabled) ? deleteItem(item) : null"
                     >
                       <span nz-icon nzType="delete" nzTheme="outline"></span>
@@ -163,15 +163,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
     class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
   },
-  imports: [
-    NgClass,
-    NzCheckboxModule,
-    NgTemplateOutlet,
-    NzEmptyModule,
-    NzTransferSearchComponent,
-    NzIconModule,
-    NzButtonModule
-  ],
+  imports: [NzCheckboxModule, NgTemplateOutlet, NzEmptyModule, NzTransferSearchComponent, NzIconModule, NzButtonModule],
   standalone: true
 })
 export class NzTransferListComponent implements AfterViewInit {

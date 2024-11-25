@@ -8,7 +8,7 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -74,7 +74,7 @@ let nextId = 0;
   template: `
     @if (tabs.length || addable) {
       <nz-tabs-nav
-        [ngStyle]="nzTabBarStyle"
+        [style]="nzTabBarStyle"
         [selectedIndex]="nzSelectedIndex || 0"
         [inkBarAnimated]="inkBarAnimated"
         [addable]="addable"
@@ -183,7 +183,6 @@ let nextId = 0;
   },
   imports: [
     NzTabNavBarComponent,
-    NgStyle,
     NgTemplateOutlet,
     NzTabNavItemDirective,
     A11yModule,

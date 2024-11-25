@@ -5,7 +5,7 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -49,7 +49,7 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   selector: 'nz-input-number-group',
   exportAs: 'nzInputNumberGroup',
   standalone: true,
-  imports: [NzInputNumberGroupSlotComponent, NgClass, NgTemplateOutlet, NzFormPatchModule],
+  imports: [NzInputNumberGroupSlotComponent, NgTemplateOutlet, NzFormPatchModule],
   template: `
     @if (isAddOn) {
       <span class="ant-input-number-wrapper ant-input-number-group">
@@ -64,7 +64,7 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
             [class.ant-input-number-affix-wrapper-sm]="isSmall"
             [class.ant-input-number-affix-wrapper-lg]="isLarge"
             [class.ant-input-number-affix-wrapper-focused]="focused"
-            [ngClass]="affixInGroupStatusCls"
+            [class]="affixInGroupStatusCls"
           >
             <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
           </div>

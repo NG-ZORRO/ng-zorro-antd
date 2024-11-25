@@ -4,7 +4,7 @@
  */
 
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -53,7 +53,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   exportAs: 'nzAnchor',
   preserveWhitespaces: false,
   standalone: true,
-  imports: [NgClass, NgIf, NgStyle, NgTemplateOutlet, NzAffixModule],
+  imports: [NgTemplateOutlet, NzAffixModule],
   template: `
     @if (nzAffix) {
       <nz-affix [nzOffsetTop]="nzOffsetTop" [nzTarget]="container">
@@ -66,10 +66,10 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
     <ng-template #content>
       <div
         class="ant-anchor-wrapper"
-        [ngClass]="{ 'ant-anchor-wrapper-horizontal': nzDirection === 'horizontal' }"
-        [ngStyle]="wrapperStyle"
+        [class]="{ 'ant-anchor-wrapper-horizontal': nzDirection === 'horizontal' }"
+        [style]="wrapperStyle"
       >
-        <div class="ant-anchor" [ngClass]="{ 'ant-anchor-fixed': !nzAffix && !nzShowInkInFixed }">
+        <div class="ant-anchor" [class]="{ 'ant-anchor-fixed': !nzAffix && !nzShowInkInFixed }">
           <div class="ant-anchor-ink">
             <div class="ant-anchor-ink-ball" #ink></div>
           </div>

@@ -5,7 +5,6 @@
 
 import { CdkScrollable } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
-import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -36,8 +35,8 @@ import { BaseModalContainerComponent } from './modal-container.directive';
       #modalElement
       role="document"
       class="ant-modal"
-      [ngClass]="config.nzClassName!"
-      [ngStyle]="config.nzStyle!"
+      [class]="config.nzClassName!"
+      [style]="config.nzStyle!"
       [style.width]="config?.nzWidth! | nzToCssUnit"
     >
       <div class="ant-modal-content">
@@ -45,7 +44,7 @@ import { BaseModalContainerComponent } from './modal-container.directive';
           <button nz-modal-close (click)="onCloseClick()"></button>
         }
 
-        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
+        <div class="ant-modal-body" [style]="config.nzBodyStyle!">
           <div class="ant-modal-confirm-body-wrapper">
             <div class="ant-modal-confirm-body">
               <span nz-icon [nzType]="config.nzIconType!"></span>
@@ -109,16 +108,7 @@ import { BaseModalContainerComponent } from './modal-container.directive';
     '(@modalContainer.done)': 'onAnimationDone($event)',
     '(click)': 'onContainerClick($event)'
   },
-  imports: [
-    NgClass,
-    NgStyle,
-    NzPipesModule,
-    NzIconModule,
-    NzModalCloseComponent,
-    NzOutletModule,
-    PortalModule,
-    NzButtonModule
-  ],
+  imports: [NzPipesModule, NzIconModule, NzModalCloseComponent, NzOutletModule, PortalModule, NzButtonModule],
   standalone: true
 })
 export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {

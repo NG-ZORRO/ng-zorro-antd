@@ -7,11 +7,10 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 
+import { NzDateMode } from '../standard-types';
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
 import { transCompatFormat } from './util';
-import { NgClass, NgForOf, NgIf } from '@angular/common';
-import { NzDateMode } from '../standard-types';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -20,7 +19,6 @@ import { NzDateMode } from '../standard-types';
   exportAs: 'monthHeader',
   templateUrl: './abstract-panel-header.html',
   standalone: true,
-  imports: [NgForOf, NgIf, NgClass]
 })
 export class MonthHeaderComponent extends AbstractPanelHeader {
   override mode: NzDateMode = 'month';

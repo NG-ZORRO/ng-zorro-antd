@@ -6,7 +6,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -65,7 +65,7 @@ interface UploadListFile extends NzUploadFile {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzToolTipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NgStyle, NzProgressModule],
+  imports: [NzToolTipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NzProgressModule],
   standalone: true
 })
 export class NzUploadListComponent implements OnChanges, OnDestroy {

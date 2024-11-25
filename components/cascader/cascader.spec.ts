@@ -2159,7 +2159,7 @@ const options5: NzSafeAny[] = [];
     ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      @for (label of labels; track labels) {
+      @for (label of labels; track label) {
         {{ label }}{{ $last ? '' : ' | ' }}
       }
     </ng-template>

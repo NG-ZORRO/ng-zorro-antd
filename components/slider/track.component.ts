@@ -4,7 +4,6 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -30,8 +29,7 @@ export interface NzSliderTrackStyle {
   selector: 'nz-slider-track',
   exportAs: 'nzSliderTrack',
   preserveWhitespaces: false,
-  template: ` <div class="ant-slider-track" [ngStyle]="style"></div> `,
-  imports: [NgStyle],
+  template: ` <div class="ant-slider-track" [style]="style"></div> `,
   standalone: true
 })
 export class NzSliderTrackComponent implements OnChanges {

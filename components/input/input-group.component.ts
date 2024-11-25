@@ -5,7 +5,7 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -49,7 +49,7 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
   selector: 'nz-input-group',
   exportAs: 'nzInputGroup',
   standalone: true,
-  imports: [NzInputGroupSlotComponent, NgClass, NgTemplateOutlet, NzFormPatchModule],
+  imports: [NzInputGroupSlotComponent, NgTemplateOutlet, NzFormPatchModule],
   encapsulation: ViewEncapsulation.None,
   providers: [NzFormNoStatusService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }],
   template: `
@@ -66,7 +66,7 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
             [class.ant-input-affix-wrapper-sm]="isSmall"
             [class.ant-input-affix-wrapper-lg]="isLarge"
             [class.ant-input-affix-wrapper-focused]="focused"
-            [ngClass]="affixInGroupStatusCls"
+            [class]="affixInGroupStatusCls"
           >
             <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
           </span>

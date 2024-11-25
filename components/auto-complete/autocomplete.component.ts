@@ -5,7 +5,7 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -66,7 +66,7 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [NgClass, NgStyle, NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],
+  imports: [NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],
   template: `
     <ng-template>
       <div
@@ -74,8 +74,8 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
         class="ant-select-dropdown ant-select-dropdown-placement-bottomLeft"
         [class.ant-select-dropdown-hidden]="!showPanel"
         [class.ant-select-dropdown-rtl]="dir === 'rtl'"
-        [ngClass]="nzOverlayClassName"
-        [ngStyle]="nzOverlayStyle"
+        [class]="nzOverlayClassName"
+        [style]="nzOverlayStyle"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         @slideMotion
         (@slideMotion.done)="onAnimationEvent($event)"

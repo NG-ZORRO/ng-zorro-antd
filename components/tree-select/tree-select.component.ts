@@ -13,7 +13,7 @@ import {
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import { _getEventTarget } from '@angular/cdk/platform';
-import { NgClass, NgStyle, SlicePipe } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -88,9 +88,7 @@ const listOfPositions = [
   imports: [
     NzOverlayModule,
     CdkConnectedOverlay,
-    NgClass,
     NzNoAnimationDirective,
-    NgStyle,
     NzTreeModule,
     NzEmptyModule,
     CdkOverlayOrigin,
@@ -116,14 +114,14 @@ const listOfPositions = [
     >
       <div
         [@slideMotion]="'enter'"
-        [ngClass]="dropdownClassName"
+        [class]="dropdownClassName"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
         [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
         [dir]="dir"
-        [ngStyle]="nzDropdownStyle"
+        [style]="nzDropdownStyle"
       >
         <nz-tree
           #treeRef

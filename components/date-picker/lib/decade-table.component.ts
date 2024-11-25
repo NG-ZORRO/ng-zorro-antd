@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnChanges, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -21,7 +20,7 @@ const MAX_COL = 3;
   exportAs: 'decadeTable',
   templateUrl: 'abstract-table.html',
   standalone: true,
-  imports: [NgClass, NzStringTemplateOutletDirective]
+  imports: [NzStringTemplateOutletDirective]
 })
 export class DecadeTableComponent extends AbstractTable implements OnChanges {
   get startYear(): number {

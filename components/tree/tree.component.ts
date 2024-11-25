@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -62,9 +62,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
   animations: [treeCollapseMotion],
   template: `
     <div>
-      <input [ngStyle]="HIDDEN_STYLE" />
+      <input [style]="HIDDEN_STYLE" />
     </div>
-    <div class="ant-tree-treenode" [ngStyle]="HIDDEN_NODE_STYLE">
+    <div class="ant-tree-treenode" [style]="HIDDEN_NODE_STYLE">
       <div class="ant-tree-indent">
         <div class="ant-tree-indent-unit"></div>
       </div>
@@ -174,7 +174,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     '[class.draggable-tree]': `nzDraggable`
   },
   imports: [
-    NgStyle,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
     CdkVirtualForOf,

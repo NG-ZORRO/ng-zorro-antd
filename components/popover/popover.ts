@@ -4,7 +4,6 @@
  */
 
 import { OverlayModule } from '@angular/cdk/overlay';
-import { NgClass, NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -99,8 +98,8 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       <div
         class="ant-popover"
         [class.ant-popover-rtl]="dir === 'rtl'"
-        [ngClass]="_classMap"
-        [ngStyle]="nzOverlayStyle"
+        [class]="_classMap"
+        [style]="nzOverlayStyle"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@zoomBigMotion]="'active'"
@@ -125,7 +124,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  imports: [OverlayModule, NzOverlayModule, NgClass, NgStyle, NzNoAnimationDirective, NzOutletModule],
+  imports: [OverlayModule, NzOverlayModule, NzNoAnimationDirective, NzOutletModule],
   standalone: true
 })
 export class NzPopoverComponent extends NzToolTipComponent {

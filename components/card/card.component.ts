@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -65,7 +65,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
       </div>
     }
 
-    <div class="ant-card-body" [ngStyle]="nzBodyStyle">
+    <div class="ant-card-body" [style]="nzBodyStyle">
       @if (nzLoading) {
         <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
       } @else {
@@ -93,7 +93,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
     '[class.ant-card-rtl]': `dir === 'rtl'`
   },
-  imports: [NzOutletModule, NgTemplateOutlet, NgStyle, NzSkeletonModule],
+  imports: [NzOutletModule, NgTemplateOutlet, NzSkeletonModule],
   standalone: true
 })
 export class NzCardComponent implements OnDestroy, OnInit {

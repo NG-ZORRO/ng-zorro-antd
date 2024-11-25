@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT, NgClass } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -42,14 +42,14 @@ function getPosition(e: EventType): { pageX: number; pageY: number } {
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'color-slider',
   standalone: true,
-  imports: [PaletteComponent, GradientComponent, HandlerComponent, NgClass],
+  imports: [PaletteComponent, GradientComponent, HandlerComponent],
   template: `
     <div
       #slider
       (mousedown)="dragStartHandle($event)"
       (touchstart)="dragStartHandle($event)"
       class="ant-color-picker-slider"
-      [ngClass]="'ant-color-picker-slider-' + type"
+      [class]="'ant-color-picker-slider-' + type"
     >
       <color-palette>
         <div

@@ -9,7 +9,6 @@ import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 
-import { NgClass } from '@angular/common';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, YearCell } from './interface';
@@ -21,7 +20,7 @@ import { DateBodyRow, DateCell, YearCell } from './interface';
   selector: 'year-table',
   exportAs: 'yearTable',
   templateUrl: 'abstract-table.html',
-  imports: [NgClass, NzStringTemplateOutletDirective],
+  imports: [NzStringTemplateOutletDirective],
   standalone: true
 })
 export class YearTableComponent extends AbstractTable {

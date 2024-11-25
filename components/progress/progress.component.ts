@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -61,7 +61,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   exportAs: 'nzProgress',
   preserveWhitespaces: false,
   standalone: true,
-  imports: [NzIconModule, NzOutletModule, NgClass, NgTemplateOutlet, NgStyle],
+  imports: [NzIconModule, NzOutletModule, NgTemplateOutlet],
   template: `
     <ng-template #progressInfoTemplate>
       @if (nzShowInfo) {
@@ -78,7 +78,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
     </ng-template>
 
     <div
-      [ngClass]="'ant-progress ant-progress-status-' + status"
+      [class]="'ant-progress ant-progress-status-' + status"
       [class.ant-progress-line]="nzType === 'line'"
       [class.ant-progress-small]="nzSize === 'small'"
       [class.ant-progress-default]="nzSize === 'default'"
@@ -93,7 +93,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
           @if (isSteps) {
             <div class="ant-progress-steps-outer">
               @for (step of steps; track step) {
-                <div class="ant-progress-steps-item" [ngStyle]="step"></div>
+                <div class="ant-progress-steps-item" [style]="step"></div>
               }
               <ng-template [ngTemplateOutlet]="progressInfoTemplate" />
             </div>
@@ -151,7 +151,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
               fill-opacity="0"
               [attr.stroke-width]="strokeWidth"
               [attr.d]="pathString"
-              [ngStyle]="trailPathStyle"
+              [style]="trailPathStyle"
             ></path>
             @for (p of progressCirclePath; track p) {
               <path
@@ -161,7 +161,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
                 [attr.stroke-linecap]="nzStrokeLinecap"
                 [attr.stroke]="p.stroke"
                 [attr.stroke-width]="nzPercent ? strokeWidth : 0"
-                [ngStyle]="p.strokePathStyle"
+                [style]="p.strokePathStyle"
               ></path>
             }
           </svg>

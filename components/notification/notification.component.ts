@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } from '@angular/core';
 
 import { notificationMotion } from 'ng-zorro-antd/core/animation';
@@ -22,8 +22,8 @@ import { NzNotificationData } from './typings';
   template: `
     <div
       class="ant-notification-notice ant-notification-notice-closable"
-      [ngStyle]="instance.options?.nzStyle || null"
-      [ngClass]="instance.options?.nzClass || ''"
+      [style]="instance.options?.nzStyle || null"
+      [class]="instance.options?.nzClass || ''"
       [@notificationMotion]="state"
       (@notificationMotion.done)="animationStateChanged.next($event)"
       (click)="onClick($event)"
@@ -101,7 +101,7 @@ import { NzNotificationData } from './typings';
       </a>
     </div>
   `,
-  imports: [NgStyle, NgClass, NzIconModule, NzOutletModule, NgTemplateOutlet],
+  imports: [NzIconModule, NzOutletModule, NgTemplateOutlet],
   standalone: true
 })
 export class NzNotificationComponent extends NzMNComponent implements OnDestroy {

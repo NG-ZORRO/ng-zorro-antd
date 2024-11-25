@@ -14,7 +14,7 @@ import {
   VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -166,7 +166,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
     <!-- Right operator icons -->
     <ng-template #tplRightRest>
-      <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
+      <div class="{{ prefixCls }}-active-bar" [style]="activeBarStyle"></div>
       @if (showClear) {
         <span class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
           <span nz-icon nzType="close-circle" nzTheme="fill"></span>
@@ -194,7 +194,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
         [class.ant-picker-dropdown-range]="isRange"
         [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
         [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
-        [ngStyle]="nzPopupStyle"
+        [style]="nzPopupStyle"
       >
         <date-range-popup
           [isRange]="isRange"
@@ -270,7 +270,6 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     NgTemplateOutlet,
     NzOutletModule,
     NzIconModule,
-    NgStyle,
     NzFormPatchModule,
     DateRangePopupComponent,
     CdkConnectedOverlay,

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,10 +24,9 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
   preserveWhitespaces: false,
   template: `
     @for (step of steps; track step.value) {
-      <span class="ant-slider-dot" [class.ant-slider-dot-active]="step.active" [ngStyle]="step.style!"></span>
+      <span class="ant-slider-dot" [class.ant-slider-dot-active]="step.active" [style]="step.style!"></span>
     }
   `,
-  imports: [NgStyle],
   standalone: true,
   host: {
     class: 'ant-slider-step'

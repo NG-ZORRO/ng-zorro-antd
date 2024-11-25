@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
@@ -23,7 +22,7 @@ import { transCompatFormat } from './util';
   exportAs: 'dateTable',
   templateUrl: './abstract-table.html',
   standalone: true,
-  imports: [NgClass, NzStringTemplateOutletDirective]
+  imports: [NzStringTemplateOutletDirective]
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
   @Input() override locale!: NzCalendarI18nInterface;

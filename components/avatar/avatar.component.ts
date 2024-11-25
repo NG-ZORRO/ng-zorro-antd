@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgClassInterface, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
@@ -72,7 +72,6 @@ export class NzAvatarComponent implements OnChanges {
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
-  classMap: NgClassInterface = {};
   customSize: string | null = null;
 
   @ViewChild('textEl', { static: false }) textEl?: ElementRef<HTMLSpanElement>;

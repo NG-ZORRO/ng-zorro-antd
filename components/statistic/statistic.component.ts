@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -39,7 +38,7 @@ import { NzStatisticValueType } from './typings';
     @if (nzLoading) {
       <nz-skeleton class="ant-statistic-skeleton" [nzParagraph]="false" />
     } @else {
-      <div class="ant-statistic-content" [ngStyle]="nzValueStyle">
+      <div class="ant-statistic-content" [style]="nzValueStyle">
         @if (nzPrefix) {
           <span class="ant-statistic-content-prefix">
             <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
@@ -58,7 +57,7 @@ import { NzStatisticValueType } from './typings';
     class: 'ant-statistic',
     '[class.ant-statistic-rtl]': `dir === 'rtl'`
   },
-  imports: [NzSkeletonModule, NzStatisticNumberComponent, NzOutletModule, NgStyle],
+  imports: [NzSkeletonModule, NzStatisticNumberComponent, NzOutletModule],
   standalone: true
 })
 export class NzStatisticComponent implements OnDestroy, OnInit {

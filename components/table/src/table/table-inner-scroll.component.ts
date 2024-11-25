@@ -5,7 +5,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -38,7 +38,7 @@ import { NzTbodyComponent } from './tbody.component';
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (scrollY) {
-      <div #tableHeaderElement [ngStyle]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
+      <div #tableHeaderElement [style]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
         <table
           nz-table-content
           tableLayout="fixed"
@@ -49,7 +49,7 @@ import { NzTbodyComponent } from './tbody.component';
         ></table>
       </div>
       @if (!virtualTemplate) {
-        <div #tableBodyElement class="ant-table-body" [ngStyle]="bodyStyleMap">
+        <div #tableBodyElement class="ant-table-body" [style]="bodyStyleMap">
           <table
             nz-table-content
             tableLayout="fixed"
@@ -79,7 +79,7 @@ import { NzTbodyComponent } from './tbody.component';
         </cdk-virtual-scroll-viewport>
       }
       @if (tfootFixed === 'bottom') {
-        <div #tableFootElement class="ant-table-summary" [ngStyle]="headerStyleMap">
+        <div #tableFootElement class="ant-table-summary" [style]="headerStyleMap">
           <table
             nz-table-content
             tableLayout="fixed"
@@ -90,7 +90,7 @@ import { NzTbodyComponent } from './tbody.component';
         </div>
       }
     } @else {
-      <div class="ant-table-content" #tableBodyElement [ngStyle]="bodyStyleMap">
+      <div class="ant-table-content" #tableBodyElement [style]="bodyStyleMap">
         <table
           nz-table-content
           tableLayout="fixed"
@@ -104,7 +104,7 @@ import { NzTbodyComponent } from './tbody.component';
     }
   `,
   host: { class: 'ant-table-container' },
-  imports: [NzTableContentComponent, NgStyle, ScrollingModule, NgTemplateOutlet, NzTbodyComponent],
+  imports: [NzTableContentComponent, ScrollingModule, NgTemplateOutlet, NzTbodyComponent],
   standalone: true
 })
 export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {
