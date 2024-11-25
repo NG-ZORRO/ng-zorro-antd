@@ -522,6 +522,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     // We need the extra check, because IE can set the `activeElement` to null in some cases.
     if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.focus === 'function') {
       this.previouslyFocusedElement.focus();
+      this.previouslyFocusedElement = undefined;
     }
     if (this.focusTrap) {
       this.focusTrap.destroy();
