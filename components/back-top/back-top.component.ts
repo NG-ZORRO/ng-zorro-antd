@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform, normalizePassiveListenerOptions } from '@angular/cdk/platform';
-import { DOCUMENT, NgIf, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -43,7 +43,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
   standalone: true,
-  imports: [NgIf, NgTemplateOutlet, NzIconModule],
+  imports: [NgTemplateOutlet, NzIconModule],
   template: `
     @if (visible) {
       <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion>
