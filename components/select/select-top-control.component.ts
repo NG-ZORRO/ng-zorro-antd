@@ -22,11 +22,12 @@ import {
   inject,
   numberAttribute
 } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzSelectItemComponent } from './select-item.component';
 import { NzSelectPlaceholderComponent } from './select-placeholder.component';
@@ -233,35 +234,28 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent<MouseEvent>(this.elementRef.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          // `HTMLElement.focus()` is a native DOM API which doesn't require Angular to run change detection.
-          if (event.target !== this.nzSelectSearchComponent.inputElement.nativeElement) {
-            this.nzSelectSearchComponent.focus();
-          }
-        });
+    fromEventOutsideAngular<MouseEvent>(this.elementRef.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        // `HTMLElement.focus()` is a native DOM API which doesn't require Angular to run change detection.
+        if (event.target !== this.nzSelectSearchComponent.inputElement.nativeElement) {
+          this.nzSelectSearchComponent.focus();
+        }
+      });
 
-      fromEvent<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          if (event.target instanceof HTMLInputElement) {
-            const inputValue = event.target.value;
+    fromEventOutsideAngular<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        if (event.target instanceof HTMLInputElement) {
+          const inputValue = event.target.value;
 
-            if (
-              event.keyCode === BACKSPACE &&
-              this.mode !== 'default' &&
-              !inputValue &&
-              this.listOfTopItem.length > 0
-            ) {
-              event.preventDefault();
-              // Run change detection only if the user has pressed the `Backspace` key and the following condition is met.
-              this.ngZone.run(() => this.onDeleteItem(this.listOfTopItem[this.listOfTopItem.length - 1]));
-            }
+          if (event.keyCode === BACKSPACE && this.mode !== 'default' && !inputValue && this.listOfTopItem.length > 0) {
+            event.preventDefault();
+            // Run change detection only if the user has pressed the `Backspace` key and the following condition is met.
+            this.ngZone.run(() => this.onDeleteItem(this.listOfTopItem[this.listOfTopItem.length - 1]));
           }
-        });
-    });
+        }
+      });
   }
 
   ngOnDestroy(): void {

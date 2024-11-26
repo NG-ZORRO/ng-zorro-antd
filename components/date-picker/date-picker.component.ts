@@ -27,7 +27,6 @@ import {
   forwardRef,
   inject,
   Input,
-  NgZone,
   OnChanges,
   OnInit,
   Output,
@@ -41,7 +40,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -64,7 +63,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -402,17 +401,15 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     });
 
     if (this.platform.isBrowser) {
-      this.ngZone.runOutsideAngular(() =>
-        // prevent mousedown event to trigger focusout event when click in date picker
-        // see: https://github.com/NG-ZORRO/ng-zorro-antd/issues/7450
-        fromEvent(this.elementRef.nativeElement, 'mousedown')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(event => {
-            if ((event.target as HTMLInputElement).tagName.toLowerCase() !== 'input') {
-              event.preventDefault();
-            }
-          })
-      );
+      // prevent mousedown event to trigger focusout event when click in date picker
+      // see: https://github.com/NG-ZORRO/ng-zorro-antd/issues/7450
+      fromEventOutsideAngular(this.elementRef.nativeElement, 'mousedown')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(event => {
+          if ((event.target as HTMLInputElement).tagName.toLowerCase() !== 'input') {
+            event.preventDefault();
+          }
+        });
     }
   }
 
@@ -634,7 +631,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     protected i18n: NzI18nService,
     protected cdr: ChangeDetectorRef,
     private renderer: Renderer2,
-    private ngZone: NgZone,
     private elementRef: ElementRef<HTMLElement>,
     private dateHelper: DateHelperService,
     private nzResizeObserver: NzResizeObserver,

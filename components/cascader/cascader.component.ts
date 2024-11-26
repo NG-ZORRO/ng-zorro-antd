@@ -36,7 +36,7 @@ import {
   signal
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, EMPTY, Observable, fromEvent, of as observableOf } from 'rxjs';
+import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -54,7 +54,7 @@ import {
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -901,72 +901,64 @@ export class NzCascaderComponent
   private setupChangeListener(): void {
     this.input$
       .pipe(
-        switchMap(input =>
-          input
-            ? new Observable<Event>(subscriber =>
-                this.ngZone.runOutsideAngular(() => fromEvent(input.nativeElement, 'change').subscribe(subscriber))
-              )
-            : EMPTY
-        ),
+        switchMap(input => fromEventOutsideAngular(input?.nativeElement, 'change')),
         takeUntil(this.destroy$)
       )
       .subscribe(event => event.stopPropagation());
   }
 
   private setupKeydownListener(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent<KeyboardEvent>(this.el, 'keydown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          const keyCode = event.keyCode;
+    fromEventOutsideAngular<KeyboardEvent>(this.el, 'keydown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        const keyCode = event.keyCode;
 
-          if (
-            keyCode !== DOWN_ARROW &&
-            keyCode !== UP_ARROW &&
-            keyCode !== LEFT_ARROW &&
-            keyCode !== RIGHT_ARROW &&
-            keyCode !== ENTER &&
-            keyCode !== BACKSPACE &&
-            keyCode !== ESCAPE
-          ) {
-            return;
+        if (
+          keyCode !== DOWN_ARROW &&
+          keyCode !== UP_ARROW &&
+          keyCode !== LEFT_ARROW &&
+          keyCode !== RIGHT_ARROW &&
+          keyCode !== ENTER &&
+          keyCode !== BACKSPACE &&
+          keyCode !== ESCAPE
+        ) {
+          return;
+        }
+
+        // Press any keys above to reopen menu.
+        if (!this.menuVisible && keyCode !== BACKSPACE && keyCode !== ESCAPE) {
+          // The `setMenuVisible` runs `detectChanges()`, so we don't need to run `markForCheck()` additionally.
+          return this.ngZone.run(() => this.setMenuVisible(true));
+        }
+
+        // Make these keys work as default in searching mode.
+        if (this.inSearchingMode && (keyCode === BACKSPACE || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW)) {
+          return;
+        }
+
+        if (!this.menuVisible) {
+          return;
+        }
+
+        event.preventDefault();
+
+        this.ngZone.run(() => {
+          // Interact with the component.
+          if (keyCode === DOWN_ARROW) {
+            this.moveUpOrDown(false);
+          } else if (keyCode === UP_ARROW) {
+            this.moveUpOrDown(true);
+          } else if (keyCode === LEFT_ARROW) {
+            this.moveLeft();
+          } else if (keyCode === RIGHT_ARROW) {
+            this.moveRight();
+          } else if (keyCode === ENTER) {
+            this.onEnter();
           }
-
-          // Press any keys above to reopen menu.
-          if (!this.menuVisible && keyCode !== BACKSPACE && keyCode !== ESCAPE) {
-            // The `setMenuVisible` runs `detectChanges()`, so we don't need to run `markForCheck()` additionally.
-            return this.ngZone.run(() => this.setMenuVisible(true));
-          }
-
-          // Make these keys work as default in searching mode.
-          if (this.inSearchingMode && (keyCode === BACKSPACE || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW)) {
-            return;
-          }
-
-          if (!this.menuVisible) {
-            return;
-          }
-
-          event.preventDefault();
-
-          this.ngZone.run(() => {
-            // Interact with the component.
-            if (keyCode === DOWN_ARROW) {
-              this.moveUpOrDown(false);
-            } else if (keyCode === UP_ARROW) {
-              this.moveUpOrDown(true);
-            } else if (keyCode === LEFT_ARROW) {
-              this.moveLeft();
-            } else if (keyCode === RIGHT_ARROW) {
-              this.moveRight();
-            } else if (keyCode === ENTER) {
-              this.onEnter();
-            }
-            // `@HostListener`s run `markForCheck()` internally before calling the actual handler so
-            // we call `markForCheck()` to be backwards-compatible.
-            this.cdr.markForCheck();
-          });
+          // `@HostListener`s run `markForCheck()` internally before calling the actual handler so
+          // we call `markForCheck()` to be backwards-compatible.
+          this.cdr.markForCheck();
         });
-    });
+      });
   }
 }

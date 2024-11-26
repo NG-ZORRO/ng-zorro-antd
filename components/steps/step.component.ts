@@ -10,19 +10,19 @@ import {
   Component,
   ElementRef,
   Input,
-  NgZone,
   OnInit,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
   booleanAttribute
 } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
 
@@ -197,21 +197,18 @@ export class NzStepComponent implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() =>
-      fromEvent(this.itemContainer.nativeElement, 'click')
-        .pipe(
-          filter(() => this.clickable && this.currentIndex !== this.index && !this.nzDisabled),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(() => {
-          this.clickOutsideAngular$.next(this.index);
-        })
-    );
+    fromEventOutsideAngular(this.itemContainer.nativeElement, 'click')
+      .pipe(
+        filter(() => this.clickable && this.currentIndex !== this.index && !this.nzDisabled),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.clickOutsideAngular$.next(this.index);
+      });
   }
 
   enable(): void {

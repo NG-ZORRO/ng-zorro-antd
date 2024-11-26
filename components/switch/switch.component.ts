@@ -23,12 +23,13 @@ import {
   forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -132,49 +133,47 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
 
     this.dir = this.directionality.value;
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.host.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          event.preventDefault();
+    fromEventOutsideAngular(this.host.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        event.preventDefault();
 
-          if (this.nzControl || this.nzDisabled || this.nzLoading) {
-            return;
-          }
+        if (this.nzControl || this.nzDisabled || this.nzLoading) {
+          return;
+        }
 
-          this.ngZone.run(() => {
+        this.ngZone.run(() => {
+          this.updateValue(!this.isChecked);
+          this.cdr.markForCheck();
+        });
+      });
+
+    fromEventOutsideAngular<KeyboardEvent>(this.switchElement.nativeElement, 'keydown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        if (this.nzControl || this.nzDisabled || this.nzLoading) {
+          return;
+        }
+
+        const { keyCode } = event;
+        if (keyCode !== LEFT_ARROW && keyCode !== RIGHT_ARROW && keyCode !== SPACE && keyCode !== ENTER) {
+          return;
+        }
+
+        event.preventDefault();
+
+        this.ngZone.run(() => {
+          if (keyCode === LEFT_ARROW) {
+            this.updateValue(false);
+          } else if (keyCode === RIGHT_ARROW) {
+            this.updateValue(true);
+          } else if (keyCode === SPACE || keyCode === ENTER) {
             this.updateValue(!this.isChecked);
-            this.cdr.markForCheck();
-          });
-        });
-
-      fromEvent<KeyboardEvent>(this.switchElement.nativeElement, 'keydown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          if (this.nzControl || this.nzDisabled || this.nzLoading) {
-            return;
           }
 
-          const { keyCode } = event;
-          if (keyCode !== LEFT_ARROW && keyCode !== RIGHT_ARROW && keyCode !== SPACE && keyCode !== ENTER) {
-            return;
-          }
-
-          event.preventDefault();
-
-          this.ngZone.run(() => {
-            if (keyCode === LEFT_ARROW) {
-              this.updateValue(false);
-            } else if (keyCode === RIGHT_ARROW) {
-              this.updateValue(true);
-            } else if (keyCode === SPACE || keyCode === ENTER) {
-              this.updateValue(!this.isChecked);
-            }
-
-            this.cdr.markForCheck();
-          });
+          this.cdr.markForCheck();
         });
-    });
+      });
   }
 
   ngAfterViewInit(): void {

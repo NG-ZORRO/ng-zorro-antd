@@ -6,10 +6,11 @@
 import { ConnectionPositionPair, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { EmbeddedViewRef, Injectable, NgZone } from '@angular/core';
-import { fromEvent, merge, Subscription } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzContextMenuServiceModule } from './context-menu.service.module';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
@@ -58,18 +59,16 @@ export class NzContextMenuService {
     this.closeSubscription.add(nzDropdownMenuComponent.descendantMenuItemClick$.subscribe(() => this.close()));
 
     this.closeSubscription.add(
-      this.ngZone.runOutsideAngular(() =>
-        merge(
-          fromEvent<MouseEvent>(document, 'click').pipe(
-            filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
-            /** handle firefox contextmenu event **/
-            filter(event => event.button !== 2)
-          ),
-          fromEvent<KeyboardEvent>(document, 'keydown').pipe(filter(event => event.key === 'Escape'))
-        )
-          .pipe(first())
-          .subscribe(() => this.ngZone.run(() => this.close()))
+      merge(
+        fromEventOutsideAngular<MouseEvent>(document, 'click').pipe(
+          filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
+          /** handle firefox contextmenu event **/
+          filter(event => event.button !== 2)
+        ),
+        fromEventOutsideAngular<KeyboardEvent>(document, 'keydown').pipe(filter(event => event.key === 'Escape'))
       )
+        .pipe(first())
+        .subscribe(() => this.ngZone.run(() => this.close()))
     );
 
     return this.overlayRef.attach(

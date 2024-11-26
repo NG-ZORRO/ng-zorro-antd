@@ -41,7 +41,7 @@ import {
   signal
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, combineLatest, fromEvent, merge, of as observableOf } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -60,7 +60,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 import { NzOptionContainerComponent } from './option-container.component';
@@ -758,17 +758,15 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
     this.dir = this.directionality.value;
 
-    this.ngZone.runOutsideAngular(() =>
-      fromEvent(this.host.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          if ((this.nzOpen && this.nzShowSearch) || this.nzDisabled) {
-            return;
-          }
+    fromEventOutsideAngular(this.host.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if ((this.nzOpen && this.nzShowSearch) || this.nzDisabled) {
+          return;
+        }
 
-          this.ngZone.run(() => this.setOpenState(!this.nzOpen));
-        })
-    );
+        this.ngZone.run(() => this.setOpenState(!this.nzOpen));
+      });
 
     // Caretaker note: we could've added this listener within the template `(overlayKeydown)="..."`,
     // but with this approach, it'll run change detection on each keyboard click, and also it'll run

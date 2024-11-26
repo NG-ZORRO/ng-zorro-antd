@@ -13,7 +13,6 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -22,7 +21,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
@@ -34,6 +33,7 @@ import {
   wrongSortOrder
 } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { CalendarFooterComponent } from './calendar-footer.component';
@@ -193,7 +193,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     public datePickerService: DatePickerService,
     public cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private host: ElementRef<HTMLElement>
   ) {}
 
@@ -205,11 +204,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         this.cdr.markForCheck();
       });
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.host.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => event.preventDefault());
-    });
+    fromEventOutsideAngular(this.host.nativeElement, 'mousedown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => event.preventDefault());
   }
 
   ngOnChanges(changes: SimpleChanges): void {

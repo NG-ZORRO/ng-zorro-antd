@@ -21,7 +21,7 @@ import {
   booleanAttribute,
   inject
 } from '@angular/core';
-import { Observable, Subject, fromEvent } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -32,6 +32,7 @@ import {
   NzTreeNode,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzTreeIndentComponent } from './tree-indent.component';
 import { NzTreeNodeBuiltinCheckboxComponent } from './tree-node-checkbox.component';
@@ -372,33 +373,31 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
    * Listening to dragging events.
    */
   handDragEvent(): void {
-    this.ngZone.runOutsideAngular(() => {
-      if (this.nzDraggable) {
-        const nativeElement = this.elementRef.nativeElement;
-        this.destroy$ = new Subject();
-        fromEvent<DragEvent>(nativeElement, 'dragstart')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((e: DragEvent) => this.handleDragStart(e));
-        fromEvent<DragEvent>(nativeElement, 'dragenter')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((e: DragEvent) => this.handleDragEnter(e));
-        fromEvent<DragEvent>(nativeElement, 'dragover')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((e: DragEvent) => this.handleDragOver(e));
-        fromEvent<DragEvent>(nativeElement, 'dragleave')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((e: DragEvent) => this.handleDragLeave(e));
-        fromEvent<DragEvent>(nativeElement, 'drop')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((e: DragEvent) => this.handleDragDrop(e));
-        fromEvent<DragEvent>(nativeElement, 'dragend')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((e: DragEvent) => this.handleDragEnd(e));
-      } else {
-        this.destroy$.next(true);
-        this.destroy$.complete();
-      }
-    });
+    if (this.nzDraggable) {
+      const nativeElement = this.elementRef.nativeElement;
+      this.destroy$ = new Subject();
+      fromEventOutsideAngular<DragEvent>(nativeElement, 'dragstart')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((e: DragEvent) => this.handleDragStart(e));
+      fromEventOutsideAngular<DragEvent>(nativeElement, 'dragenter')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((e: DragEvent) => this.handleDragEnter(e));
+      fromEventOutsideAngular<DragEvent>(nativeElement, 'dragover')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((e: DragEvent) => this.handleDragOver(e));
+      fromEventOutsideAngular<DragEvent>(nativeElement, 'dragleave')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((e: DragEvent) => this.handleDragLeave(e));
+      fromEventOutsideAngular<DragEvent>(nativeElement, 'drop')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((e: DragEvent) => this.handleDragDrop(e));
+      fromEventOutsideAngular<DragEvent>(nativeElement, 'dragend')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((e: DragEvent) => this.handleDragEnd(e));
+    } else {
+      this.destroy$.next(true);
+      this.destroy$.complete();
+    }
   }
 
   markForCheck(): void {
@@ -418,15 +417,13 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   ngOnInit(): void {
     this.nzTreeNode.component = this;
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.elementRef.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          if (this.nzSelectMode) {
-            event.preventDefault();
-          }
-        });
-    });
+    fromEventOutsideAngular(this.elementRef.nativeElement, 'mousedown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        if (this.nzSelectMode) {
+          event.preventDefault();
+        }
+      });
   }
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {

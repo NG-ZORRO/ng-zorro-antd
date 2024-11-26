@@ -22,13 +22,13 @@ import {
   Renderer2,
   inject
 } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
 import { NzModalRef } from './modal-ref';
@@ -328,22 +328,20 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   }
 
   protected setupMouseListeners(modalContainer: ElementRef<HTMLElement>): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.host.nativeElement, 'mouseup')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          if (this.mouseDown) {
-            setTimeout(() => {
-              this.mouseDown = false;
-            });
-          }
-        });
+    fromEventOutsideAngular(this.host.nativeElement, 'mouseup')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (this.mouseDown) {
+          setTimeout(() => {
+            this.mouseDown = false;
+          });
+        }
+      });
 
-      fromEvent(modalContainer.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.mouseDown = true;
-        });
-    });
+    fromEventOutsideAngular(modalContainer.nativeElement, 'mousedown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.mouseDown = true;
+      });
   }
 }
