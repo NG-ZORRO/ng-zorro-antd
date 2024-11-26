@@ -249,8 +249,9 @@ describe('nz-anchor', () => {
       it('should emit nzChange when scrolling to the anchor', (done: () => void) => {
         spyOn(context, '_change');
         expect(context._change).not.toHaveBeenCalled();
-        page.scrollTo('#API');
+        page.scrollTo();
         setTimeout(() => {
+          fixture.detectChanges();
           const inkNode = page.getEl('.ant-anchor-ink-ball');
           expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
           expect(context._change).toHaveBeenCalled();
