@@ -251,7 +251,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
   }
 
-  async handleScrollTo(linkComp: NzAnchorLinkComponent): Promise<void> {
+  handleScrollTo(linkComp: NzAnchorLinkComponent): void {
     const el = this.doc.querySelector<HTMLElement>(linkComp.nzHref);
     if (!el) {
       return;
@@ -269,7 +269,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
       }
     });
     this.nzClick.emit(linkComp.nzHref);
-    return this.updateUrlFragment(linkComp.nzHref, linkComp.nzReplace);
+    this.updateUrlFragment(linkComp.nzHref, linkComp.nzReplace);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -289,14 +289,13 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     }
   }
 
-  async updateUrlFragment(nzHref: string, replace?: boolean): Promise<void> {
+  updateUrlFragment(nzHref: string, replace?: boolean): void {
     if (!this.router || !this.activatedRoute) {
       return;
     }
 
     let urlWithoutFragment = nzHref.split('#')[1] ?? nzHref;
-
-    return this.router
+    this.router
       .navigate([], {
         relativeTo: this.activatedRoute,
         fragment: urlWithoutFragment,
