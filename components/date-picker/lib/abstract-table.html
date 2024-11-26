@@ -6,7 +6,7 @@
           <th role="columnheader"></th>
         }
         @for (cell of headRow; track $index) {
-          <th role="columnheader" title="{{ cell.title }}"> {{ cell.content }}</th>
+          <th role="columnheader" [title]="cell.title"> {{ cell.content }}</th>
         }
       </tr>
     </thead>
@@ -20,24 +20,24 @@
         }
         @for (cell of row.dateCells; track cell.trackByIndex) {
           <td
-            title="{{ cell.title }}"
+            [title]="cell.title"
             role="gridcell"
             [ngClass]="cell.classMap!"
             (click)="cell.isDisabled ? null : cell.onClick()"
-            (mouseenter)="cell.onMouseEnter()"
-          >
+            (mouseenter)="cell.onMouseEnter()">
             @switch (prefixCls) {
               @case ('ant-picker') {
-                @if (cell.isTemplateRef) {
-                  <ng-container *ngTemplateOutlet="$any(cell.cellRender); context: { $implicit: cell.value }" />
-                } @else if (cell.isNonEmptyString) {
-                  <span [innerHTML]="cell.cellRender"></span>
+                @if (cell.cellRender) {
+                  <ng-template
+                    [nzStringTemplateOutlet]="cell.cellRender"
+                    [nzStringTemplateOutletContext]="{ $implicit: cell.value }">
+                    {{ cell.cellRender }}
+                  </ng-template>
                 } @else {
                   <div
                     class="{{ prefixCls }}-cell-inner"
                     [attr.aria-selected]="cell.isSelected"
-                    [attr.aria-disabled]="cell.isDisabled"
-                  >
+                    [attr.aria-disabled]="cell.isDisabled">
                     {{ cell.content }}
                   </div>
                 }
@@ -45,14 +45,16 @@
               @case ('ant-picker-calendar') {
                 <div
                   class="{{ prefixCls }}-date ant-picker-cell-inner"
-                  [class.ant-picker-calendar-date-today]="cell.isToday"
-                >
+                  [class.ant-picker-calendar-date-today]="cell.isToday">
                   @if (cell.fullCellRender) {
-                    <ng-container *ngTemplateOutlet="$any(cell.fullCellRender); context: { $implicit: cell.value }" />
+                    <ng-container *nzStringTemplateOutlet="cell.fullCellRender; context: { $implicit: cell.value }">
+                      {{ cell.fullCellRender }}
+                    </ng-container>
                   } @else {
                     <div class="{{ prefixCls }}-date-value">{{ cell.content }}</div>
                     <div class="{{ prefixCls }}-date-content">
-                      <ng-container *ngTemplateOutlet="$any(cell.cellRender); context: { $implicit: cell.value }">
+                      <ng-container *nzStringTemplateOutlet="cell.cellRender; context: { $implicit: cell.value }">
+                        {{ cell.cellRender }}
                       </ng-container>
                     </div>
                   }
@@ -61,7 +63,6 @@
             }
           </td>
         }
-
       </tr>
     }
   </tbody>

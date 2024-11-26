@@ -31,7 +31,7 @@ import {
   signal
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, fromEvent, merge } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
@@ -44,7 +44,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
@@ -460,37 +460,35 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
     this.setupHandlersListeners();
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.inputElement.nativeElement, 'keyup')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => this.stop());
+    fromEventOutsideAngular(this.inputElement.nativeElement, 'keyup')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.stop());
 
-      fromEvent<KeyboardEvent>(this.inputElement.nativeElement, 'keydown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          const { keyCode } = event;
+    fromEventOutsideAngular<KeyboardEvent>(this.inputElement.nativeElement, 'keydown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        const { keyCode } = event;
 
-          if (keyCode !== UP_ARROW && keyCode !== DOWN_ARROW && keyCode !== ENTER) {
-            return;
+        if (keyCode !== UP_ARROW && keyCode !== DOWN_ARROW && keyCode !== ENTER) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          if (keyCode === UP_ARROW) {
+            const ratio = this.getRatio(event);
+            this.up(event, ratio);
+            this.stop();
+          } else if (keyCode === DOWN_ARROW) {
+            const ratio = this.getRatio(event);
+            this.down(event, ratio);
+            this.stop();
+          } else {
+            this.updateDisplayValue(this.value!);
           }
 
-          this.ngZone.run(() => {
-            if (keyCode === UP_ARROW) {
-              const ratio = this.getRatio(event);
-              this.up(event, ratio);
-              this.stop();
-            } else if (keyCode === DOWN_ARROW) {
-              const ratio = this.getRatio(event);
-              this.down(event, ratio);
-              this.stop();
-            } else {
-              this.updateDisplayValue(this.value!);
-            }
-
-            this.cdr.markForCheck();
-          });
+          this.cdr.markForCheck();
         });
-    });
+      });
   }
 
   ngOnChanges({ nzStatus, nzDisabled, nzFormatter, nzSize }: SimpleChanges): void {
@@ -521,16 +519,14 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   private setupHandlersListeners(): void {
-    this.ngZone.runOutsideAngular(() => {
-      merge(
-        fromEvent(this.upHandler.nativeElement, 'mouseup'),
-        fromEvent(this.upHandler.nativeElement, 'mouseleave'),
-        fromEvent(this.downHandler.nativeElement, 'mouseup'),
-        fromEvent(this.downHandler.nativeElement, 'mouseleave')
-      )
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => this.stop());
-    });
+    merge(
+      fromEventOutsideAngular(this.upHandler.nativeElement, 'mouseup'),
+      fromEventOutsideAngular(this.upHandler.nativeElement, 'mouseleave'),
+      fromEventOutsideAngular(this.downHandler.nativeElement, 'mouseup'),
+      fromEventOutsideAngular(this.downHandler.nativeElement, 'mouseleave')
+    )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.stop());
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {

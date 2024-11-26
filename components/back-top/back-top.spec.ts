@@ -3,7 +3,7 @@ import { Platform } from '@angular/cdk/platform';
 import { ApplicationRef, Component, DebugElement, SimpleChanges, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import { NzScrollService } from 'ng-zorro-antd/core/services';
@@ -12,7 +12,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzBackTopComponent } from './back-top.component';
 import { NzBackTopModule } from './back-top.module';
 
-describe('Component:nz-back-top', () => {
+describe('nz-back-top', () => {
   let scrollService: MockNzScrollService;
   let fixture: ComponentFixture<TestBackTopComponent>;
   let debugElement: DebugElement;
@@ -37,15 +37,14 @@ describe('Component:nz-back-top', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzBackTopModule, NoopAnimationsModule],
-      declarations: [TestBackTopComponent, TestBackTopTemplateComponent],
       providers: [
+        provideNoopAnimations(),
         {
           provide: NzScrollService,
           useClass: MockNzScrollService
         }
       ]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TestBackTopComponent);
     component = fixture.componentInstance.nzBackTopComponent;
@@ -167,11 +166,11 @@ describe('Component:nz-back-top', () => {
 
   describe('[nzTarget]', () => {
     let fakeTarget: HTMLElement;
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fakeTarget = debugElement.query(By.css('#fakeTarget')).nativeElement;
       fixture.componentInstance.setTarget(fakeTarget);
       fixture.detectChanges();
-    }));
+    });
 
     it('window scroll does not show the button', fakeAsync(() => {
       componentObject.scrollTo(window, defaultVisibilityHeight + 1);
@@ -181,27 +180,27 @@ describe('Component:nz-back-top', () => {
       expect(componentObject.backTopButton() === null).toBe(true);
     }));
 
-    it('element scroll shows the button', fakeAsync(() => {
-      const time = 50;
-
+    it('element scroll shows the button', (done: () => void) => {
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(time + 1);
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(false);
-    }));
+      setTimeout(() => {
+        expect(componentObject.backTopButton() === null).toBe(false);
+        done();
+      }, 50);
+    });
 
-    it('element (use string id) scroll shows the button', fakeAsync(() => {
+    it('element (use string id) scroll shows the button', (done: () => void) => {
       component.nzTarget = '#fakeTarget';
 
-      const time = 50;
-
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(time + 1);
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(false);
-    }));
+      setTimeout(() => {
+        expect(componentObject.backTopButton() === null).toBe(false);
+        done();
+      }, 50);
+    });
   });
 
   describe('#nzTemplate', () => {
@@ -218,6 +217,8 @@ describe('Component:nz-back-top', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzBackTopModule],
   template: `
     <nz-back-top [nzTarget]="target"></nz-back-top>
     <div id="fakeTarget"></div>
@@ -227,7 +228,7 @@ class TestBackTopComponent {
   @ViewChild(NzBackTopComponent, { static: true })
   nzBackTopComponent!: NzBackTopComponent;
 
-  target: HTMLElement | null = null;
+  target: HTMLElement | undefined = undefined;
 
   setTarget(target: HTMLElement): void {
     this.target = target;
@@ -235,6 +236,8 @@ class TestBackTopComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzBackTopModule],
   template: `
     my comp
     <nz-back-top [nzTemplate]="tpl">
@@ -273,7 +276,6 @@ describe('back-to-top', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzBackTopModule],
       providers: [
         {
           provide: Directionality,
@@ -282,7 +284,7 @@ describe('back-to-top', () => {
         { provide: Platform, useValue: { isBrowser: false } },
         { provide: Document, useValue: document }
       ]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(NzBackTopComponent);
     component = fixture.componentInstance;

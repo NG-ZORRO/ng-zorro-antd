@@ -32,13 +32,14 @@ import {
   inject,
   numberAttribute
 } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
@@ -64,6 +65,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     <div
       class="slick-initialized slick-slider"
       [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'"
+      [dir]="'ltr'"
     >
       <div
         #slickList
@@ -196,28 +198,26 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.cdr.detectChanges();
     });
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent<KeyboardEvent>(this.slickListEl, 'keydown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          const { keyCode } = event;
+    fromEventOutsideAngular<KeyboardEvent>(this.slickListEl, 'keydown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        const { keyCode } = event;
 
-          if (keyCode !== LEFT_ARROW && keyCode !== RIGHT_ARROW) {
-            return;
+        if (keyCode !== LEFT_ARROW && keyCode !== RIGHT_ARROW) {
+          return;
+        }
+
+        event.preventDefault();
+
+        this.ngZone.run(() => {
+          if (keyCode === LEFT_ARROW) {
+            this.pre();
+          } else {
+            this.next();
           }
-
-          event.preventDefault();
-
-          this.ngZone.run(() => {
-            if (keyCode === LEFT_ARROW) {
-              this.pre();
-            } else {
-              this.next();
-            }
-            this.cdr.markForCheck();
-          });
+          this.cdr.markForCheck();
         });
-    });
+      });
 
     this.nzResizeObserver
       .observe(this.el)

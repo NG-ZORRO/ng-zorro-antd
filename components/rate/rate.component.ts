@@ -27,12 +27,12 @@ import {
   numberAttribute
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NgClassType } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzRateItemComponent } from './rate-item.component';
@@ -171,25 +171,23 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
 
     this.dir = this.directionality.value;
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent<FocusEvent>(this.ulElement.nativeElement, 'focus')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          this.isFocused = true;
-          if (this.nzOnFocus.observers.length) {
-            this.ngZone.run(() => this.nzOnFocus.emit(event));
-          }
-        });
+    fromEventOutsideAngular<FocusEvent>(this.ulElement.nativeElement, 'focus')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        this.isFocused = true;
+        if (this.nzOnFocus.observers.length) {
+          this.ngZone.run(() => this.nzOnFocus.emit(event));
+        }
+      });
 
-      fromEvent<FocusEvent>(this.ulElement.nativeElement, 'blur')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          this.isFocused = false;
-          if (this.nzOnBlur.observers.length) {
-            this.ngZone.run(() => this.nzOnBlur.emit(event));
-          }
-        });
-    });
+    fromEventOutsideAngular<FocusEvent>(this.ulElement.nativeElement, 'blur')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        this.isFocused = false;
+        if (this.nzOnBlur.observers.length) {
+          this.ngZone.run(() => this.nzOnBlur.emit(event));
+        }
+      });
   }
 
   onItemClick(index: number, isHalf: boolean): void {

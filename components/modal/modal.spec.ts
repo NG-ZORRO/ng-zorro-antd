@@ -415,24 +415,21 @@ describe('NzModal', () => {
     expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
   }));
 
-  it('should close when clicking on the modal wrap', fakeAsync(() => {
+  it('should close when clicking on the modal wrap', (done: () => void) => {
     modalService.create({
       nzContent: TestWithModalContentComponent
     });
 
     fixture.detectChanges();
-
     const modalWrapElement = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
-    const modalElement = overlayContainerElement.querySelector('nz-modal-container .ant-modal') as HTMLElement;
-    dispatchMouseEvent(modalElement, 'mousedown');
-    fixture.detectChanges();
-    dispatchMouseEvent(modalWrapElement, 'mouseup');
-    flush();
     modalWrapElement.click();
-    fixture.detectChanges();
-    flush();
-    expect(overlayContainerElement.querySelector('nz-modal-container')).toBeFalsy();
-  }));
+
+    setTimeout(() => {
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-modal-container')).toBeFalsy();
+      done();
+    }, 16);
+  });
 
   it("should close when clicking on the modal's close button", fakeAsync(() => {
     modalService.create({
@@ -520,10 +517,9 @@ describe('NzModal', () => {
     configService.set('modal', { nzMask: true });
     fixture.detectChanges();
 
-    expect(modalRef.getBackdropElement()?.classList).toContain(
-      'ant-modal-mask',
-      'should add class when global config changed'
-    );
+    expect(modalRef.getBackdropElement()?.classList)
+      .withContext('should add class when global config changed')
+      .toContain('ant-modal-mask');
 
     modalRef.close();
     fixture.detectChanges();

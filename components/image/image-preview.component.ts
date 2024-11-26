@@ -20,14 +20,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isNotNil } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NZ_CONFIG_MODULE_NAME } from './image-config';
@@ -265,30 +264,29 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.imagePreviewWrapper.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.isDragging = true;
-        });
+    fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mousedown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.isDragging = true;
+      });
 
-      fromEvent<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          this.ngZone.run(() => this.wheelZoomEventHandler(event));
-        });
+    fromEventOutsideAngular<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        this.ngZone.run(() => this.wheelZoomEventHandler(event));
+      });
 
-      fromEvent<KeyboardEvent>(this.document, 'keydown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          this.ngZone.run(() => {
-            if (event.keyCode === ESCAPE) {
-              this.onClose();
-              this.markForCheck();
-            }
-          });
+    fromEventOutsideAngular<KeyboardEvent>(this.document, 'keydown')
+      .pipe(
+        filter(event => event.keyCode === ESCAPE),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.ngZone.run(() => {
+          this.onClose();
+          this.markForCheck();
         });
-    });
+      });
   }
 
   setImages(images: NzImage[], scaleStepMap?: Map<string, number>): void {

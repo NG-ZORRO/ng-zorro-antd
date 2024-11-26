@@ -17,11 +17,10 @@ import {
   Output,
   Renderer2
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { ensureInBounds } from 'ng-zorro-antd/core/util';
+import { ensureInBounds, fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
 import { NzResizableService } from './resizable.service';
@@ -287,19 +286,17 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     this.el = this.elementRef.nativeElement;
     this.setPosition();
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.el, 'mouseenter')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.nzResizableService.mouseEnteredOutsideAngular$.next(true);
-        });
+    fromEventOutsideAngular(this.el, 'mouseenter')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.nzResizableService.mouseEnteredOutsideAngular$.next(true);
+      });
 
-      fromEvent(this.el, 'mouseleave')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.nzResizableService.mouseEnteredOutsideAngular$.next(false);
-        });
-    });
+    fromEventOutsideAngular(this.el, 'mouseleave')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.nzResizableService.mouseEnteredOutsideAngular$.next(false);
+      });
   }
 
   ngOnDestroy(): void {

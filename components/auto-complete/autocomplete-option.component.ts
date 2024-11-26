@@ -18,11 +18,11 @@ import {
   booleanAttribute,
   inject
 } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { scrollIntoView } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, scrollIntoView } from 'ng-zorro-antd/core/util';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 
@@ -77,20 +77,18 @@ export class NzAutocompleteOptionComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.element.nativeElement, 'mouseenter')
-        .pipe(
-          filter(() => this.mouseEntered.observers.length > 0),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(() => {
-          this.ngZone.run(() => this.mouseEntered.emit(this));
-        });
+    fromEventOutsideAngular(this.element.nativeElement, 'mouseenter')
+      .pipe(
+        filter(() => this.mouseEntered.observers.length > 0),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.ngZone.run(() => this.mouseEntered.emit(this));
+      });
 
-      fromEvent(this.element.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => event.preventDefault());
-    });
+    fromEventOutsideAngular(this.element.nativeElement, 'mousedown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => event.preventDefault());
   }
 
   ngOnDestroy(): void {

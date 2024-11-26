@@ -1,14 +1,14 @@
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 
 import { NzFloatButtonTopComponent } from './float-button-top.component';
 import { NzFloatButtonModule } from './float-button.module';
 
-describe('Component:nz-float-button-top', () => {
+describe('nz-float-button-top', () => {
   let scrollService: MockNzScrollService;
   let fixture: ComponentFixture<TestBackTopComponent>;
   let debugElement: DebugElement;
@@ -33,15 +33,14 @@ describe('Component:nz-float-button-top', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzFloatButtonModule, NoopAnimationsModule],
-      declarations: [TestBackTopComponent, TestBackTopTemplateComponent],
       providers: [
+        provideNoopAnimations(),
         {
           provide: NzScrollService,
           useClass: MockNzScrollService
         }
       ]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TestBackTopComponent);
     component = fixture.componentInstance.nzBackTopComponent;
@@ -177,27 +176,28 @@ describe('Component:nz-float-button-top', () => {
       expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
     }));
 
-    it('element scroll shows the button', fakeAsync(() => {
-      const time = 50;
-
+    it('element scroll shows the button', (done: () => void) => {
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(time + 1);
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
-    }));
+      setTimeout(() => {
+        fixture.detectChanges();
+        expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
+        done();
+      }, 50);
+    });
 
-    it('element (use string id) scroll shows the button', fakeAsync(() => {
+    it('element (use string id) scroll shows the button', (done: () => void) => {
       component.nzTarget = '#fakeTarget';
-
-      const time = 50;
-
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(time + 1);
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
-    }));
+      setTimeout(() => {
+        fixture.detectChanges();
+        expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
+        done();
+      }, 50);
+    });
   });
 
   describe('#nzTemplate', () => {
@@ -214,6 +214,8 @@ describe('Component:nz-float-button-top', () => {
 });
 
 @Component({
+  standalone: true,
+  imports: [NzFloatButtonModule],
   template: `
     <nz-float-button-top [nzTarget]="target"></nz-float-button-top>
     <div id="fakeTarget"></div>
@@ -231,6 +233,8 @@ class TestBackTopComponent {
 }
 
 @Component({
+  standalone: true,
+  imports: [NzFloatButtonModule],
   template: `
     my comp
     <nz-float-button-top [nzIcon]="tpl">
