@@ -31,6 +31,7 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 | `[nzEffect]`        | Transition effect                                                           | `'scrollx'\|'fade'`                         | `'scrollx'` | ✅            |
 | `[nzEnableSwipe]`   | Whether to support swipe gesture                                            | `boolean`                                   | `true`      | ✅            |
 | `[nzLoop]`          | Whether to enable the carousel to go in a loop                              | `boolean`                                   | `true`      | ✅            |
+| `[nzArrows]`        | Whether to show switch arrows                                               | `boolean`                                   | `false`     | ✅            |
 | `(nzAfterChange)`   | Callback function called after the current index changes                    | `EventEmitter<number>`                      | -           |
 | `(nzBeforeChange)`  | Callback function called before the current index changes                   | `EventEmitter{ from: number; to: number }>` | -           |
 
