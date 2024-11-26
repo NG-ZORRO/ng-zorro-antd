@@ -110,6 +110,13 @@ describe('Basics', () => {
     fixture.detectChanges();
     expect(image.src).toBe(SECOND_SRC);
   }));
+
+  it('should the loading attribute be auto at default', fakeAsync(() => {
+    const image = debugElement.nativeElement.querySelector('img');
+    context.nzImage.backLoadImage.dispatchEvent(new Event('load'));
+    fixture.detectChanges();
+    expect(image.loading).toBe('auto');
+  }));
 });
 
 describe('Placeholder', () => {
@@ -732,12 +739,13 @@ describe('Preview', () => {
 });
 
 @Component({
-  template: ` <img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" /> `
+  template: ` <img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzLoading]="loading" /> `
 })
 export class TestImageBasicsComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
   src = '';
   placeholder: string | null = '';
+  loading: 'eager' | 'lazy' = 'eager';
 }
 
 @Component({
