@@ -29,7 +29,7 @@ function provideActivatedRouteStub(): Provider {
   };
 }
 
-describe('anchor', () => {
+describe('nz-anchor', () => {
   let fixture: ComponentFixture<TestComponent>;
   let dl: DebugElement;
   let context: TestComponent;
@@ -249,13 +249,13 @@ describe('anchor', () => {
       it('should emit nzChange when scrolling to the anchor', (done: () => void) => {
         spyOn(context, '_change');
         expect(context._change).not.toHaveBeenCalled();
-        page.scrollTo();
+        page.scrollTo('#API');
         setTimeout(() => {
           const inkNode = page.getEl('.ant-anchor-ink-ball');
           expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
           expect(context._change).toHaveBeenCalled();
           done();
-        }, throttleTime * 20);
+        }, throttleTime);
       });
     });
 
