@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,7 +23,7 @@ import { NzModeType } from './typings';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgStyle, NzIconModule, NzStringTemplateOutletDirective],
+  imports: [NzIconModule, NzStringTemplateOutletDirective],
   selector: 'nz-hash-code',
   exportAs: 'nzHashCode',
   template: `
@@ -53,7 +52,7 @@ import { NzModeType } from './typings';
     >
       <div
         class="ant-hashCode-code-value"
-        [ngStyle]="{ height: nzMode === 'rect' ? '70px' : nzMode === 'single' ? '18px' : '35px' }"
+        [style]="{ height: nzMode === 'rect' ? '70px' : nzMode === 'single' ? '18px' : '35px' }"
       >
         @if (nzMode === 'double') {
           @if (hashDataList.length > 8) {

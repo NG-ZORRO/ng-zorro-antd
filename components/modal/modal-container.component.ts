@@ -6,7 +6,6 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { CdkScrollable } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
-import { NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
@@ -29,8 +28,8 @@ import { NzModalTitleComponent } from './modal-title.component';
       [cdkDragDisabled]="!config.nzDraggable"
       role="document"
       class="ant-modal"
-      [ngClass]="config.nzClassName!"
-      [ngStyle]="config.nzStyle!"
+      [class]="config.nzClassName!"
+      [style]="config.nzStyle!"
       [style.width]="config?.nzWidth! | nzToCssUnit"
     >
       <div class="ant-modal-content">
@@ -41,7 +40,7 @@ import { NzModalTitleComponent } from './modal-title.component';
           <div nz-modal-title cdkDragHandle [style.cursor]="config.nzDraggable ? 'move' : 'auto'"></div>
         }
 
-        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
+        <div class="ant-modal-body" [style]="config.nzBodyStyle!">
           <ng-template cdkPortalOutlet />
           @if (isStringContent) {
             <div [innerHTML]="config.nzContent"></div>
@@ -75,8 +74,6 @@ import { NzModalTitleComponent } from './modal-title.component';
     '(click)': 'onContainerClick($event)'
   },
   imports: [
-    NgClass,
-    NgStyle,
     NzModalCloseComponent,
     NzModalTitleComponent,
     PortalModule,

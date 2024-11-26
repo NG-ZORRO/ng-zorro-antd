@@ -8,7 +8,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { CdkScrollable, Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -79,7 +79,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         [style.zIndex]="nzZIndex"
       >
         @if (nzMask && isOpen) {
-          <div @drawerMaskMotion class="ant-drawer-mask" (click)="maskClick()" [ngStyle]="nzMaskStyle"></div>
+          <div @drawerMaskMotion class="ant-drawer-mask" (click)="maskClick()" [style]="nzMaskStyle"></div>
         }
         <div
           class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
@@ -114,7 +114,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                   }
                 </div>
               }
-              <div class="ant-drawer-body" [ngStyle]="nzBodyStyle" cdkScrollable>
+              <div class="ant-drawer-body" [style]="nzBodyStyle" cdkScrollable>
                 <ng-template cdkPortalOutlet />
                 @if (nzContent) {
                   @if (isNzContentTemplateRef) {
@@ -140,15 +140,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [drawerMaskMotion],
-  imports: [
-    NzNoAnimationDirective,
-    NgStyle,
-    NzOutletModule,
-    NzIconModule,
-    PortalModule,
-    NgTemplateOutlet,
-    CdkScrollable
-  ],
+  imports: [NzNoAnimationDirective, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet, CdkScrollable],
   standalone: true
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -49,7 +48,7 @@ import { NzFormDirective } from './form.directive';
     </div>
     @if (innerTip) {
       <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected">
-        <div role="alert" [ngClass]="['ant-form-item-explain-' + status]">
+        <div role="alert" [class]="['ant-form-item-explain-' + status]">
           <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
             innerTip
           }}</ng-container>
@@ -67,7 +66,7 @@ import { NzFormDirective } from './form.directive';
   host: {
     class: 'ant-form-item-control'
   },
-  imports: [NgClass, NzOutletModule],
+  imports: [NzOutletModule],
   standalone: true
 })
 export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {

@@ -4,7 +4,6 @@
  */
 
 import { OverlayModule } from '@angular/cdk/overlay';
-import { NgClass, NgStyle } from '@angular/common';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -95,17 +94,17 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       <div
         class="ant-tooltip"
         [class.ant-tooltip-rtl]="dir === 'rtl'"
-        [ngClass]="_classMap"
-        [ngStyle]="nzOverlayStyle"
+        [class]="_classMap"
+        [style]="nzOverlayStyle"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-tooltip-content">
           <div class="ant-tooltip-arrow">
-            <span class="ant-tooltip-arrow-content" [ngStyle]="_contentStyleMap"></span>
+            <span class="ant-tooltip-arrow-content" [style]="_contentStyleMap"></span>
           </div>
-          <div class="ant-tooltip-inner" [ngStyle]="_contentStyleMap">
+          <div class="ant-tooltip-inner" [style]="_contentStyleMap">
             <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">{{ nzTitle }}</ng-container>
           </div>
         </div>
@@ -113,7 +112,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
     </ng-template>
   `,
   preserveWhitespaces: false,
-  imports: [OverlayModule, NgClass, NgStyle, NzNoAnimationDirective, NzOutletModule, NzOverlayModule],
+  imports: [OverlayModule, NzNoAnimationDirective, NzOutletModule, NzOverlayModule],
   standalone: true
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {

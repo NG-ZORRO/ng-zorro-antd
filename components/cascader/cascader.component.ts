@@ -7,7 +7,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { _getEventTarget } from '@angular/cdk/platform';
-import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -47,7 +47,6 @@ import { DEFAULT_CASCADER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   NgClassInterface,
-  NgClassType,
   NgStyleInterface,
   NzSafeAny,
   NzSizeLDSType,
@@ -166,8 +165,8 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
             [class.ant-cascader-rtl]="dir === 'rtl'"
             [class.ant-cascader-menus-hidden]="!menuVisible"
             [class.ant-cascader-menu-empty]="shouldShowEmpty"
-            [ngClass]="menuCls"
-            [ngStyle]="nzMenuStyle"
+            [class]="nzMenuClassName"
+            [style]="nzMenuStyle"
           >
             @if (shouldShowEmpty) {
               <ul class="ant-cascader-menu" [style.width]="dropdownWidthStyle" [style.height]="dropdownHeightStyle">
@@ -184,7 +183,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                 <ul
                   class="ant-cascader-menu"
                   role="menuitemcheckbox"
-                  [ngClass]="menuColumnCls"
+                  [class]="nzColumnClassName"
                   [style.height]="dropdownHeightStyle"
                   [style.width]="dropdownWidthStyle"
                 >
@@ -247,8 +246,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     NzFormPatchModule,
     NzOverlayModule,
     NzNoAnimationDirective,
-    NgClass,
-    NgStyle,
     NzEmptyModule,
     NzCascaderOptionComponent
   ],
@@ -377,14 +374,6 @@ export class NzCascaderComponent
 
   get inputValue(): string {
     return this.inputString;
-  }
-
-  get menuCls(): NgClassType {
-    return { [`${this.nzMenuClassName}`]: !!this.nzMenuClassName };
-  }
-
-  get menuColumnCls(): NgClassType {
-    return { [`${this.nzColumnClassName}`]: !!this.nzColumnClassName };
   }
 
   private get hasInput(): boolean {

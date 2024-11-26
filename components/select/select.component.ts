@@ -13,7 +13,6 @@ import {
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import { Platform, _getEventTarget } from '@angular/cdk/platform';
-import { NgStyle } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -167,7 +166,7 @@ export type NzSelectSizeType = NzSizeLDSType;
       (positionChange)="onPositionChange($event)"
     >
       <nz-option-container
-        [ngStyle]="nzDropdownStyle"
+        [style]="nzDropdownStyle"
         [itemSize]="nzOptionHeightPx"
         [maxItemLength]="nzOptionOverflowSize"
         [matchWidth]="nzDropdownMatchSelectWidth"
@@ -219,8 +218,7 @@ export type NzSelectSizeType = NzSizeLDSType;
     NzSelectClearComponent,
     CdkConnectedOverlay,
     NzOverlayModule,
-    NzOptionContainerComponent,
-    NgStyle
+    NzOptionContainerComponent
   ],
   standalone: true
 })

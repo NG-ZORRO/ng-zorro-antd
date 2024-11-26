@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -69,10 +68,9 @@ export class NzSkeletonElementButtonComponent {
       [class.ant-skeleton-avatar-circle]="nzShape === 'circle'"
       [class.ant-skeleton-avatar-lg]="nzSize === 'large'"
       [class.ant-skeleton-avatar-sm]="nzSize === 'small'"
-      [ngStyle]="styleMap"
+      [style]="styleMap"
     ></span>
   `,
-  imports: [NgStyle],
   standalone: true
 })
 export class NzSkeletonElementAvatarComponent implements OnChanges {

@@ -1,4 +1,3 @@
-import { NgStyle } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -12,7 +11,7 @@ const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 @Component({
   standalone: true,
   selector: 'nz-demo-avatar-dynamic',
-  imports: [FormsModule, NgStyle, NzAvatarModule, NzButtonModule, NzInputNumberModule],
+  imports: [FormsModule, NzAvatarModule, NzButtonModule, NzInputNumberModule],
   template: `
     <div>
       <label>
@@ -26,7 +25,7 @@ const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 
     <nz-avatar
       [nzGap]="gap"
-      [ngStyle]="{ 'background-color': color }"
+      [style]="{ 'background-color': color }"
       [nzText]="text"
       nzSize="large"
       style="vertical-align: middle;"

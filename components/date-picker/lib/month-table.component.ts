@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
@@ -22,7 +21,7 @@ import { DateBodyRow, DateCell } from './interface';
   exportAs: 'monthTable',
   templateUrl: 'abstract-table.html',
   standalone: true,
-  imports: [NgClass, NzStringTemplateOutletDirective]
+  imports: [NzStringTemplateOutletDirective]
 })
 export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
   override MAX_ROW = 4;

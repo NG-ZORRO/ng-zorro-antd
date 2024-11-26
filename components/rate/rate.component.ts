@@ -5,7 +5,6 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -51,7 +50,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       class="ant-rate"
       [class.ant-rate-disabled]="nzDisabled"
       [class.ant-rate-rtl]="dir === 'rtl'"
-      [ngClass]="classMap"
+      [class]="classMap"
       (keydown)="onKeyDown($event); $event.preventDefault()"
       (mouseleave)="onRateLeave(); $event.stopPropagation()"
       [tabindex]="nzDisabled ? -1 : 1"
@@ -59,7 +58,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       @for (star of starArray; track star) {
         <li
           class="ant-rate-star"
-          [ngClass]="starStyleArray[$index] || ''"
+          [class]="starStyleArray[$index] || ''"
           nz-tooltip
           [nzTooltipTitle]="nzTooltips[$index]"
         >
@@ -83,7 +82,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       multi: true
     }
   ],
-  imports: [NgClass, NzToolTipModule, NzRateItemComponent, NzToolTipModule],
+  imports: [NzToolTipModule, NzRateItemComponent, NzToolTipModule],
   standalone: true
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges {

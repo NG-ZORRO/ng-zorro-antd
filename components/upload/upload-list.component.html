@@ -143,7 +143,7 @@
               target="_blank"
               rel="noopener noreferrer"
               [attr.title]="locale.previewFile"
-              [ngStyle]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
+              [style]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
               (click)="handlePreview(file, $event)"
             >
               <span nz-icon nzType="eye"></span>

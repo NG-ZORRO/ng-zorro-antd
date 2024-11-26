@@ -5,7 +5,7 @@
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -145,9 +145,9 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         cdkTrapFocus
         [cdkTrapFocusAutoCapture]="nzAutoFocus !== null"
         class="ant-popover"
-        [ngClass]="_classMap"
+        [class]="_classMap"
         [class.ant-popover-rtl]="dir === 'rtl'"
-        [ngStyle]="nzOverlayStyle"
+        [style]="nzOverlayStyle"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@zoomBigMotion]="'active'"
@@ -214,8 +214,6 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     OverlayModule,
     NzOverlayModule,
     A11yModule,
-    NgClass,
-    NgStyle,
     NzNoAnimationDirective,
     NzOutletModule,
     NzIconModule,

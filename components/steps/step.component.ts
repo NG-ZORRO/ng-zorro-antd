@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -69,7 +69,7 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
           @if (nzIcon) {
             <span class="ant-steps-icon">
               <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
-                <span nz-icon [nzType]="!oldAPIIcon && icon" [ngClass]="oldAPIIcon && icon"></span>
+                <span nz-icon [nzType]="icon"></span>
               </ng-container>
             </span>
           }
@@ -117,7 +117,7 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
     '[class.ant-steps-next-error]': '(outStatus === "error") && (currentIndex === index + 1)'
   },
   providers: [NzDestroyService],
-  imports: [NzProgressModule, NzIconModule, NzOutletModule, NgClass, NgTemplateOutlet],
+  imports: [NzProgressModule, NzIconModule, NzOutletModule, NgTemplateOutlet],
   standalone: true
 })
 export class NzStepComponent implements OnInit {

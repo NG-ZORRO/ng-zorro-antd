@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -52,7 +51,7 @@ import { NzTransferListComponent } from './transfer-list.component';
   template: `
     <nz-transfer-list
       class="ant-transfer-list"
-      [ngStyle]="nzListStyle"
+      [style]="nzListStyle"
       data-direction="left"
       direction="left"
       [titleText]="nzTitles[0]"
@@ -138,7 +137,7 @@ import { NzTransferListComponent } from './transfer-list.component';
     }
     <nz-transfer-list
       class="ant-transfer-list"
-      [ngStyle]="nzListStyle"
+      [style]="nzListStyle"
       data-direction="right"
       direction="right"
       [titleText]="nzTitles[1]"
@@ -170,7 +169,7 @@ import { NzTransferListComponent } from './transfer-list.component';
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzTransferListComponent, NgStyle, NzIconModule, NzButtonModule],
+  imports: [NzTransferListComponent, NzIconModule, NzButtonModule],
   standalone: true
 })
 export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {

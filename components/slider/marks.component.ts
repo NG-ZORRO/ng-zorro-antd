@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgStyle } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -30,12 +29,11 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
       <span
         class="ant-slider-mark-text"
         [class.ant-slider-mark-active]="attr.active"
-        [ngStyle]="attr.style"
+        [style]="attr.style"
         [innerHTML]="attr.label"
       ></span>
     }
   `,
-  imports: [NgStyle],
   standalone: true,
   host: {
     class: 'ant-slider-mark'

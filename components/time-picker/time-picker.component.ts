@@ -6,7 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { Platform, _getEventTarget } from '@angular/cdk/platform';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -111,7 +111,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         <div class="ant-picker-panel-container">
           <div tabindex="-1" class="ant-picker-panel">
             <nz-time-picker-panel
-              [ngClass]="nzPopupClassName"
+              [class]="nzPopupClassName"
               [format]="nzFormat"
               [nzHourStep]="nzHourStep"
               [nzMinuteStep]="nzMinuteStep"
@@ -161,7 +161,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     NzIconModule,
     NzFormPatchModule,
     NzTimePickerPanelComponent,
-    NgClass,
     NzOverlayModule,
     OverlayModule
   ],

@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -41,7 +41,7 @@ import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types'
       [class.ant-dropdown-menu-sub]="isMenuInsideDropDown"
       [class.ant-menu-sub]="!isMenuInsideDropDown"
       [class.ant-menu-rtl]="dir === 'rtl'"
-      [ngClass]="menuClass"
+      [class]="menuClass"
     >
       <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
     </div>
@@ -59,7 +59,7 @@ import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types'
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
   },
-  imports: [NgClass, NgTemplateOutlet],
+  imports: [NgTemplateOutlet],
   standalone: true
 })
 export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnChanges {
