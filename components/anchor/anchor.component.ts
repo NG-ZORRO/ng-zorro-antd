@@ -4,7 +4,7 @@
  */
 
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -24,11 +24,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface, NzDirectionVHType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
@@ -52,7 +53,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   exportAs: 'nzAnchor',
   preserveWhitespaces: false,
   standalone: true,
-  imports: [NgClass, NgIf, NgStyle, NgTemplateOutlet, NzAffixModule],
+  imports: [NgStyle, NgTemplateOutlet, NzAffixModule],
   template: `
     @if (nzAffix) {
       <nz-affix [nzOffsetTop]="nzOffsetTop" [nzTarget]="container">
@@ -65,10 +66,10 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
     <ng-template #content>
       <div
         class="ant-anchor-wrapper"
-        [ngClass]="{ 'ant-anchor-wrapper-horizontal': nzDirection === 'horizontal' }"
+        [class.ant-anchor-wrapper-horizontal]="nzDirection === 'horizontal'"
         [ngStyle]="wrapperStyle"
       >
-        <div class="ant-anchor" [ngClass]="{ 'ant-anchor-fixed': !nzAffix && !nzShowInkInFixed }">
+        <div class="ant-anchor" [class.ant-anchor-fixed]="!nzAffix && !nzShowInkInFixed">
           <div class="ant-anchor-ink">
             <div class="ant-anchor-ink-ball" #ink></div>
           </div>
@@ -106,6 +107,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   @Input() nzContainer?: string | HTMLElement;
   @Input() nzCurrentAnchor?: string;
   @Input() nzDirection: NzDirectionVHType = 'vertical';
+  @Input({ transform: booleanAttribute }) nzReplace: boolean = false;
 
   @Output() readonly nzClick = new EventEmitter<string>();
   @Output() readonly nzChange = new EventEmitter<string>();
@@ -123,8 +125,11 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   private handleScrollTimeoutID?: ReturnType<typeof setTimeout>;
   private doc: Document = inject(DOCUMENT);
 
+  // router module is optional for some projects, so these should be injected as optional.
+  private router = inject(Router, { optional: true });
+  private activatedRoute = inject(ActivatedRoute, { optional: true });
+
   constructor(
-    public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
@@ -163,7 +168,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
       .pipe(throttleTime(50), takeUntil(this.destroy$))
       .subscribe(() => this.handleScroll());
     // Browser would maintain the scrolling position when refreshing.
-    // So we have to delay calculation in avoid of getting a incorrect result.
+    // So we have to delay calculation in avoid of getting an incorrect result.
     this.handleScrollTimeoutID = setTimeout(() => this.handleScroll());
   }
 
@@ -264,6 +269,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
       }
     });
     this.nzClick.emit(linkComp.nzHref);
+    this.updateUrlFragment(linkComp.nzHref, linkComp.nzReplace);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -281,5 +287,20 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     if (nzCurrentAnchor) {
       this.setActive();
     }
+  }
+
+  updateUrlFragment(nzHref: string, replace?: boolean): void {
+    if (!this.router || !this.activatedRoute) {
+      return;
+    }
+
+    let urlWithoutFragment = nzHref.split('#')[1] ?? nzHref;
+    this.router
+      .navigate([], {
+        relativeTo: this.activatedRoute,
+        fragment: urlWithoutFragment,
+        replaceUrl: replace ? replace : this.nzReplace
+      })
+      .then();
   }
 }

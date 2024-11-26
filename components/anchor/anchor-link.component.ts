@@ -6,6 +6,7 @@
 import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   ContentChild,
@@ -57,6 +58,7 @@ import { NzAnchorComponent } from './anchor.component';
 export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
   @Input() nzTarget?: string;
+  @Input({ transform: booleanAttribute }) nzReplace: boolean = false;
 
   titleStr: string | null = '';
   titleTpl?: TemplateRef<NzSafeAny>;
