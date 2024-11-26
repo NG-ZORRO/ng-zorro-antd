@@ -17,7 +17,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 ## API
 
-### nz-input-number:standalone
+### nz-input-number
 
 | property            | description                                                                                                                                                                 | type                                                                              | default                                                                         |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
@@ -41,7 +41,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `(nzFocus)`         | focus callback                                                                                                                                                              | `EventEmitter<void>`                                                              | -                                                                               |
 | `(nzBlur)`          | blur callback                                                                                                                                                               | `EventEmitter<void>`                                                              | -                                                                               |
 
-### nz-input-number-group:standalone
+### nz-input-number-group
 
 | Property          | Description                                                                                                 | Type                              | Default     |
 | ----------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |

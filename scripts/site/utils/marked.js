@@ -110,7 +110,7 @@ renderer.link = function (href, title, text) {
 };
 
 /**
- * @param {'component' | 'directive' | 'standalone' | 'service'} label
+ * @param {'component' | 'directive' | 'service'} label
  * @returns {string}
  */
 function createLabel(label) {
@@ -118,21 +118,6 @@ function createLabel(label) {
 }
 
 const DIRECTIVE_REGEX = /^\[[a-zA-Z-]+\]/;
-const STANDALONE_SUFFIX_REGEX = /:standalone$/;
-
-/**
- * Clean up special tags such as suffixes.
- *
- * Currently we have the following tags:
- *
- * Suffix:
- * - `:standalone`: Indicates that the target is a standalone component, directive or pipe.
- *
- * @param {string} text
- */
-function normalizeHead(text) {
-  return text.replace(STANDALONE_SUFFIX_REGEX, '');
-}
 
 /**
  * @param {string} text
@@ -144,9 +129,8 @@ renderer.heading = function (text, level) {
   const isMarkedLabel = level === 3 && text.indexOf('nz-') === 0;
   const isDirective = DIRECTIVE_REGEX.test(text);
   const isComponent = isMarkedLabel && !isDirective;
-  const isStandalone = STANDALONE_SUFFIX_REGEX.test(text);
   const isService = text.indexOf('Nz') === 0 && text.indexOf('Service') > -1;
-  const head = `<h${level} id="${lowerText}"><span>${normalizeHead(text)}</span>`;
+  const head = `<h${level} id="${lowerText}"><span>${text}</span>`;
   const link = `<a onclick="window.location.hash = '${lowerText}'" class="anchor">#</a></h${level}>`;
 
   let heading = head;
@@ -157,10 +141,6 @@ renderer.heading = function (text, level) {
     heading += createLabel('directive');
   } else if (isService) {
     heading += createLabel('service');
-  }
-
-  if (isStandalone) {
-    heading += createLabel('standalone');
   }
 
   heading += link;

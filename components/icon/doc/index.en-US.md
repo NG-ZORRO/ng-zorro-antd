@@ -18,7 +18,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 ## API
 
-### nz-icon, [nz-icon]:standalone
+### nz-icon, [nz-icon]
 
 | Property           | Description                                                 | Type                           | Default     | Global Config |
 | ------------------ | ----------------------------------------------------------- | ------------------------------ | ----------- | ------------- |

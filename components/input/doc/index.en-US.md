@@ -19,7 +19,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 ## API
 
-### [nz-input]:standalone
+### [nz-input]
 
 All props of input supported by [w3c standards](https://www.w3schools.com/tags/tag_input.asp) and Angular can used in `nz-input`.
 
@@ -31,7 +31,7 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 | `[nzStatus]`      | Set validation status                                                                                                | `'error' \| 'warning'`                            | -           |
 | `[nzStepperless]` | Whether hide stepper when input type is number                                                                       | `'boolean' \| 'true'`                             | -           |
 
-### nz-input-group:standalone
+### nz-input-group
 
 | Property          | Description                                                                                          | Type                              | Default     |
 | ----------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
@@ -43,7 +43,7 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 | `[nzSize]`        | The size of `nz-input-group` specifies the size of the included `nz-input` fields                    | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzStatus]`      | Set validation status                                                                                | `'error' \| 'warning'`            | -           |
 
-### nz-textarea-count:standalone
+### nz-textarea-count
 
 | Property                    | Description                                      | Type                    | Default         |
 | --------------------------- | ------------------------------------------------ | ----------------------- | --------------- |

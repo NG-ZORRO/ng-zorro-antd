@@ -21,10 +21,10 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 <nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
 ```
 
-### nz-time-picker:standalone
+### nz-time-picker
 
 | Property                  | Description                                                                            | Type                                                | Default           | Global Config |
-|---------------------------|----------------------------------------------------------------------------------------|-----------------------------------------------------|-------------------|---------------|
+| ------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------- | ----------------- | ------------- |
 | `[nzId]`                  | input id attribute inside the component                                                | `string`                                            | -                 |
 | `[ngModel]`               | to set time                                                                            | `Date`                                              | -                 |
 | `[nzAddOn]`               | called from timepicker panel to render some addon to its bottom                        | `TemplateRef<void>`                                 | -                 |
@@ -59,6 +59,6 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 #### Methods
 
 | Name      | Description  |
-|-----------|--------------|
+| --------- | ------------ |
 | `blur()`  | remove focus |
 | `focus()` | get focus    |

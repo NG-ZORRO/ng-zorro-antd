@@ -34,7 +34,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 </ul>
 ```
 
-### [nz-menu]:standalone
+### [nz-menu]
 
 | Param                 | Description                                                                   | Type                                     | Default value |
 | --------------------- | ----------------------------------------------------------------------------- | ---------------------------------------- | ------------- |
@@ -45,17 +45,17 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 | `[nzTheme]`           | color theme of the menu                                                       | `'light' \| 'dark'`                      | `'light'`     |
 | `(nzClick)`           | the Output when click `nz-menu-item` inside nz-menu                           | `EventEmitter<NzMenuItemDirective>`      |               |
 
-### [nz-menu-item]:standalone
+### [nz-menu-item]
 
-| Param                  | Description                                                                                                                           | Type      | Default value |
-| ---------------------- |---------------------------------------------------------------------------------------------------------------------------------------| --------- | ------------- |
-| `[nzDisabled]`         | whether menu item is disabled or not                                                                                                  | `boolean` | `false`       |
-| `[nzSelected]`         | whether menu item is selected or not                                                                                                  | `boolean` | `false`       |
-| `[nzMatchRouter]`      | whether auto set `nzSelected` according to [routerLink](https://www.angular.io/api/router/RouterLink)                                 | `boolean` | `false`       |
+| Param                  | Description                                                                                                                                                  | Type      | Default value |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------------- |
+| `[nzDisabled]`         | whether menu item is disabled or not                                                                                                                         | `boolean` | `false`       |
+| `[nzSelected]`         | whether menu item is selected or not                                                                                                                         | `boolean` | `false`       |
+| `[nzMatchRouter]`      | whether auto set `nzSelected` according to [routerLink](https://www.angular.io/api/router/RouterLink)                                                        | `boolean` | `false`       |
 | `[nzMatchRouterExact]` | only match when the url matches the link exactly, same as [routerLinkActiveOptions](https://angular.dev/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false`       |
-| `[nzDanger]`           | display the danger style                                                                                                              | `boolean` | `false`       |
+| `[nzDanger]`           | display the danger style                                                                                                                                     | `boolean` | `false`       |
 
-### [nz-submenu]:standalone
+### [nz-submenu]
 
 You can set the title of `[nz-submenu]` in the following ways.
 
@@ -81,7 +81,7 @@ You can set the title of `[nz-submenu]` in the following ways.
 | `[nzTriggerSubMenuAction]` | Which action can trigger submenu open/close     | `'hover' \| 'click'`                                                                        | `'hover'`      |
 | `(nzOpenChange)`           | nzOpen callback                                 | `EventEmitter<boolean>`                                                                     | -              |
 
-### [nz-menu-group]:standalone
+### [nz-menu-group]
 
 You can set the title of `[nz-menu-group]` in the following ways.
 
@@ -100,6 +100,6 @@ You can set the title of `[nz-menu-group]` in the following ways.
 | ----------- | -------------------- | ----------------------------- | ------------- |
 | `[nzTitle]` | set menu group title | `string \| TemplateRef<void>` | -             |
 
-### [nz-menu-divider]:standalone
+### [nz-menu-divider]
 
 Divider line in between menu items, only used in vertical popup Menu or Dropdown Menu.

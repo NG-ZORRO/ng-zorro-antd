@@ -20,10 +20,10 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 
 ## API
 
-### nz-transfer:standalone
+### nz-transfer
 
 | Property                | Description                                                                                                                       | Type                                                   | Default               |
-|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------------ |-----------------------|
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | --------------------- |
 | `[nzDataSource]`        | Used for setting the data source. Except for the elements whose keys are `direction: 'right'` prop, or using `nzTargetKeys` prop. | `TransferItem[]`                                       | `[]`                  |
 | `[nzDisabled]`          | Whether the transfer is disabled                                                                                                  | `boolean`                                              | `false`               |
 | `[nzTitles]`            | A set of titles that are sorted from left to right.                                                                               | `string[]`                                             | `['', '']`            |

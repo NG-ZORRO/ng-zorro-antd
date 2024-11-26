@@ -23,7 +23,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 > You can consult [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload/wiki) about how to implement server-side upload interface.
 
-### nz-upload:standalone
+### nz-upload
 
 | Property                    | Description                                                                                                                                                                                                       | Type                                                                                             | Default         |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------- |

@@ -35,7 +35,7 @@ import { NzResizableModule } from 'ng-zorro-antd/resizable';
 
 ## API
 
-### [nz-resizable]:standalone
+### [nz-resizable]
 
 Resizable element the `position` attribute must be one of `'relative' | 'absolute' | 'fixed' |'sticky'`，default is `'relative'`.
 
@@ -66,7 +66,7 @@ interface NzResizeEvent {
 | (nzResizeStart)     | Calls when resize start                         | `EventEmitter<NzResizeEvent>`                     | -        |
 | (nzResizeEnd)       | Calls when resize end                           | `EventEmitter<NzResizeEvent>`                     | -        |
 
-### nz-resize-handle:standalone
+### nz-resize-handle
 
 Define handles and directions.
 
@@ -80,7 +80,7 @@ type NzCursorType = 'window' | 'grid';
 | [nzDirection]  | Set the direction of resizable | `NzResizeDirection` | `'bottomRight'` |
 | [nzCursorType] | Cursor type for handle         | `NzCursorType`      | `'window'`      |
 
-### nz-resize-handles:standalone
+### nz-resize-handles
 
 Simpler way to define handles.
 

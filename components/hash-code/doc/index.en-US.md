@@ -27,10 +27,10 @@ import { NzHashCodeComponent } from 'ng-zorro-antd/hash-code';
 
 ## API
 
-### nz-hashCode:standalone
+### nz-hashCode
 
 | Property     | Description                                         | Type                                | Default    |
-|--------------|-----------------------------------------------------|-------------------------------------|------------|
+| ------------ | --------------------------------------------------- | ----------------------------------- | ---------- |
 | `[nzValue]`  | The value of the hash code                          | `string`                            | -          |
 | `[nzTitle]`  | Description of the content in the upper left corner | `string`                            | `HashCode` |
 | `[nzLogo]`   | Display in the upper right corner                   | `TemplateRef<void> \| string`       | -          |

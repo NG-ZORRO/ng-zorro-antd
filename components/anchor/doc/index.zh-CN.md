@@ -18,14 +18,14 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 ## API
 
-### nz-anchor:standalone
+### nz-anchor
 
 | 成员                 | 说明                                                                                | 类型                                  | 默认值       | 全局配置 |
 | -------------------- | ----------------------------------------------------------------------------------- | ------------------------------------- | ------------ | -------- |
 | `[nzAffix]`          | 固定模式                                                                            | `boolean`                             | `true`       |
-| `[nzBounds]`         | 锚点区域边界，单位：px                                                              | `number`                              | `5`          | ✅       |
-| `[nzOffsetTop]`      | 距离窗口顶部达到指定偏移量后触发                                                    | `number`                              | -            | ✅       |
-| `[nzShowInkInFixed]` | 固定模式是否显示小圆点                                                              | `boolean`                             | `false`      | ✅       |
+| `[nzBounds]`         | 锚点区域边界，单位：px                                                              | `number`                              | `5`          | ✅        |
+| `[nzOffsetTop]`      | 距离窗口顶部达到指定偏移量后触发                                                    | `number`                              | -            | ✅        |
+| `[nzShowInkInFixed]` | 固定模式是否显示小圆点                                                              | `boolean`                             | `false`      | ✅        |
 | `[nzTargetOffset]`   | 锚点滚动偏移量，默认与 offsetTop 相同，[例子](#components-anchor-demo-targetOffset) | number                                | -            |          |
 | `[nzContainer]`      | 指定滚动的容器                                                                      | `string \| HTMLElement`               | `window`     |
 | `[nzCurrentAnchor]`  | 自定义高亮的锚点                                                                    | string                                | -            |          |
@@ -34,7 +34,7 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 | `(nzChange)`         | 监听锚点链接改变                                                                    | `EventEmitter<string>`                | -            |          |
 | `(nzScroll)`         | 滚动至某锚点时触发                                                                  | `EventEmitter<NzAnchorLinkComponent>` | -            |
 
-### nz-link:standalone
+### nz-link
 
 | 成员         | 说明                             | 类型                          |
 | ------------ | -------------------------------- | ----------------------------- |

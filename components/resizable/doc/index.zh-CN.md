@@ -36,7 +36,7 @@ import { NzResizableModule } from 'ng-zorro-antd/resizable';
 
 ## API
 
-### [nz-resizable]:standalone
+### [nz-resizable]
 
 声明在需要调整尺寸的元素上，元素 `position` 属性必须为 `'relative' | 'absolute' | 'fixed' |'sticky'` 之一，默认会自动设置为 `'relative'`。
 
@@ -67,7 +67,7 @@ interface NzResizeEvent {
 | (nzResizeStart)     | 开始调整尺寸时的事件       | `EventEmitter<NzResizeEvent>`                     | -        |
 | (nzResizeEnd)       | 结束调整尺寸时的事件       | `EventEmitter<NzResizeEvent>`                     | -        |
 
-### nz-resize-handle:standalone
+### nz-resize-handle
 
 定义调整手柄及方向。
 
@@ -81,7 +81,7 @@ type NzCursorType = 'window' | 'grid';
 | [nzDirection]  | 调整方向       | `NzResizeDirection` | `'bottomRight'` |
 | [nzCursorType] | 手柄的光标类型 | `NzCursorType`      | `'window'`      |
 
-### nz-resize-handles:standalone
+### nz-resize-handles
 
 定义调整手柄的快捷组件。
 

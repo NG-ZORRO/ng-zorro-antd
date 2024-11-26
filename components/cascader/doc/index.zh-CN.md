@@ -24,7 +24,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 <nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
 ```
 
-### nz-cascader:standalone
+### nz-cascader
 
 | 参数                  | 说明                                                                                       | 类型                                                                  | 默认值      | 支持全局配置 |
 | --------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- | ----------- | ------------ |
@@ -50,7 +50,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzShowArrow]`       | 是否显示箭头                                                                               | `boolean`                                                             | `true`      |
 | `[nzShowInput]`       | 显示输入框                                                                                 | `boolean`                                                             | `true`      |
 | `[nzShowSearch]`      | 是否支持搜索，默认情况下对 `label` 进行全匹配搜索，不能和 `[nzLoadData]` 同时使用          | `boolean\|NzShowSearchOptions`                                        | `false`     |
-| `[nzSize]`            | 输入框大小，可选 `large` `default` `small`                                                 | `'large'\|'small'\|'default'`                                         | `'default'` | ✅           |
+| `[nzSize]`            | 输入框大小，可选 `large` `default` `small`                                                 | `'large'\|'small'\|'default'`                                         | `'default'` | ✅            |
 | `[nzStatus]`          | 设置校验状态                                                                               | `'error' \| 'warning'`                                                | -           |
 | `[nzSuffixIcon]`      | 自定义的选择框后缀图标                                                                     | `string\|TemplateRef<void>`                                           | -           |
 | `[nzValueProperty]`   | 选项的实际值的属性名                                                                       | `string`                                                              | `'value'`   |

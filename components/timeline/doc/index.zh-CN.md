@@ -28,7 +28,7 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 </nz-timeline>
 ```
 
-### nz-timeline:standalone
+### nz-timeline
 
 时间轴。
 
@@ -39,7 +39,7 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 | `[nzReverse]`    | 节点排序                                 | `boolean`                                      | `false`                                  |
 | `[nzMode]`       | 可以改变时间轴和内容的相对位置           | `'left' \| 'alternate' \| 'right' \| 'custom'` | -                                        |
 
-### nz-timeline-item:standalone
+### nz-timeline-item
 
 时间轴的每一个节点。
 

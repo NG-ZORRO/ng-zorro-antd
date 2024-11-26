@@ -18,7 +18,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
 ## API
 
-### nz-statistic:standalone
+### nz-statistic
 
 | Property            | Description                        | Type                                           | Default |
 | ------------------- | ---------------------------------- | ---------------------------------------------- | ------- |
@@ -30,7 +30,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 | `[nzValueTemplate]` | Custom template to render a number | `TemplateRef<{ $implicit: string \| number }>` | -       |
 | `[nzLoading]`       | Loading status of Statistic        | `boolean`                                      | `false` |
 
-### nz-countdown:standalone
+### nz-countdown
 
 | Property              | Description                      | Type                                 | Default      |
 | --------------------- | -------------------------------- | ------------------------------------ | ------------ |

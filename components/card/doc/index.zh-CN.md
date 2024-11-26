@@ -23,7 +23,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 <nz-card nzTitle="卡片标题">卡片内容</nz-card>
 ```
 
-### nz-card:standalone
+### nz-card
 
 | 参数            | 说明                                                | 类型                        | 默认值      | 支持全局配置 |
 | --------------- | --------------------------------------------------- | --------------------------- | ----------- | ------------ |
@@ -38,7 +38,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 | `[nzType]`      | 卡片类型，可设置为 `inner` 或 不设置                | `'inner'`                   | -           |
 | `[nzSize]`      | 卡片的尺寸                                          | `'default'\|'small'`        | `'default'` | ✅            |
 
-### nz-card-meta:standalone
+### nz-card-meta
 
 | 参数              | 说明      | 类型                          | 默认值 |
 | ----------------- | --------- | ----------------------------- | ------ |
@@ -46,7 +46,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 | `[nzDescription]` | 描述内容  | `string \| TemplateRef<void>` | -      |
 | `[nzTitle]`       | 标题内容  | `string \| TemplateRef<void>` | -      |
 
-### [nz-card-grid]:standalone
+### [nz-card-grid]
 
 | 参数            | 说明             | 类型      | 默认值 | 支持全局配置 |
 | --------------- | ---------------- | --------- | ------ | ------------ |
@@ -54,6 +54,6 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 
 分隔卡片内容区域
 
-### nz-card-tab:standalone
+### nz-card-tab
 
 分隔页签标题区域

@@ -38,7 +38,7 @@ with [date-fns](https://date-fns.org/).
 The following APIs are shared by nz-date-picker, nz-range-picker.
 
 | Property                 | Description                                                                                                                        | Type                                                       | Default                                                                                                    | Global Config |
-|--------------------------|------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|---------------|
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------- |
 | `[nzId]`                 | input id attribute inside the component                                                                                            | `string`                                                   | -                                                                                                          |
 | `[nzAllowClear]`         | Whether to show clear button                                                                                                       | `boolean`                                                  | `true`                                                                                                     | -             |
 | `[nzAutoFocus]`          | get focus when component mounted                                                                                                   | `boolean`                                                  | `false`                                                                                                    | -             |
@@ -66,20 +66,20 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 ### Common Methods
 
 | Name      | Description          |
-|-----------|----------------------|
+| --------- | -------------------- |
 | `open()`  | open calendar panel  |
 | `close()` | close calendar panel |
 
-### nz-date-picker:standalone
+### nz-date-picker
 
 | Property      | Description | Type   | Default |
-|---------------|-------------|--------|---------|
+| ------------- | ----------- | ------ | ------- |
 | `[(ngModel)]` | Date        | `Date` | -       |
 
-### nz-date-picker[nzMode="date"]:standalone
+### nz-date-picker[nzMode="date"]
 
 | Property             | Description                                                                                                        | Type                                                                           | Default                                                                     |
-|----------------------|--------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| -------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
 | `[nzDateRender]`     | custom rendering function for date cells (Not support by month-picker/year-picker)                                 | -                                                                              | `TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` |
 | `[nzDisabledTime]`   | to specify the time that cannot be selected                                                                        | `(current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | -                                                                           |
 | `[nzShowTime]`       | to provide an additional time selection                                                                            | `object \| boolean`                                                            | [TimePicker Options](/components/time-picker/en#api)                        |
@@ -88,19 +88,19 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `[nzShowWeekNumber]` | whether to show the week number on each row (Only supported by date picker. Week picker always shows week numbers) | `boolean`                                                                      | `false`                                                                     |
 | `(nzOnOk)`           | callback when click ok button                                                                                      | `EventEmitter<Date>`                                                           | -                                                                           |
 
-### nz-range-picker:standalone
+### nz-range-picker
 
 | Property               | Description                                                 | Type                                                               | Default |
-|------------------------|-------------------------------------------------------------|--------------------------------------------------------------------|---------|
+| ---------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------ | ------- |
 | `[(ngModel)]`          | Date                                                        | `Date[]`                                                           | -       |
 | `[nzRanges]`           | preseted ranges for quick selection                         | `{ [ key: string ]: Date[] } \| { [ key: string ]: () => Date[] }` | -       |
 | `[nzSeparator]`        | separator                                                   | `string \| TemplateRef`                                            | `'~'`   |
 | `(nzOnCalendarChange)` | The start time or the end time of the range change callback | `EventEmitter<Date[]>`                                             | -       |
 
-### nz-range-picker[nzMode="date"]:standalone
+### nz-range-picker[nzMode="date"]
 
 | Property             | Description                                                                                                        | Type                                                                                                      | Default                                              |
-|----------------------|--------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| -------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | `[nzShowTime]`       | to provide an additional time selection                                                                            | `object \| boolean`                                                                                       | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzDisabledTime]`   | to specify the time that cannot be selected                                                                        | `(current: Date, partial: 'start' \| 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | -                                                    |
 | `[nzShowWeekNumber]` | whether to show the week number on each row (Only supported by date picker. Week picker always shows week numbers) | `boolean`                                                                                                 | `false`                                              |

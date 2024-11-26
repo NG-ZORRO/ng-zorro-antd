@@ -37,7 +37,7 @@ Dependencies:
 npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
-### nz-graph:standalone
+### nz-graph
 
 | Parameter               | Description                                                                      | Type                                 | Default |
 | ----------------------- | -------------------------------------------------------------------------------- | ------------------------------------ | ------- |
@@ -52,7 +52,7 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 | ------------- | ----------------------------------------------------------------------- |
 | `fitCenter()` | Move graph to center(use `nz-graph-zoom` instead if zooming is enabled) |
 
-### [nz-graph-zoom]:standalone
+### [nz-graph-zoom]
 
 | Parameter            | Description                | Type                                         | Default |
 | -------------------- | -------------------------- | -------------------------------------------- | ------- |

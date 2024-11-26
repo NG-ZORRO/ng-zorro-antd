@@ -35,7 +35,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 </ul>
 ```
 
-### [nz-menu]:standalone
+### [nz-menu]
 
 | 参数                  | 说明                                         | 类型                                     | 默认值       |
 | --------------------- | -------------------------------------------- | ---------------------------------------- | ------------ |
@@ -46,17 +46,17 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 | `[nzTheme]`           | 主题颜色                                     | `'light' \| 'dark'`                      | `'light'`    |
 | `(nzClick)`           | 点击 `nz-menu-item` 输出属性                 | `EventEmitter<NzMenuItemDirective>`      |              |
 
-### [nz-menu-item]:standalone
+### [nz-menu-item]
 
-| 参数                   | 说明                                                                                                               | 类型      | 默认值  |
-| ---------------------- |------------------------------------------------------------------------------------------------------------------| --------- | ------- |
-| `[nzDisabled]`         | 是否禁用                                                                                                             | `boolean` | `false` |
-| `[nzSelected]`         | 是否被选中                                                                                                            | `boolean` | `false` |
-| `[nzMatchRouter]`      | 是否根据 [routerLink](https://www.angular.cn/api/router/RouterLink) 自动设定 `nzSelected`                                | `boolean` | `false` |
+| 参数                   | 说明                                                                                                                         | 类型      | 默认值  |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| `[nzDisabled]`         | 是否禁用                                                                                                                     | `boolean` | `false` |
+| `[nzSelected]`         | 是否被选中                                                                                                                   | `boolean` | `false` |
+| `[nzMatchRouter]`      | 是否根据 [routerLink](https://www.angular.cn/api/router/RouterLink) 自动设定 `nzSelected`                                    | `boolean` | `false` |
 | `[nzMatchRouterExact]` | 是否路由完整精确匹配, 详见 [routerLinkActiveOptions](https://angular.cn/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false` |
-| `[nzDanger]`           | 展示错误状态样式                                                                                                         | `boolean` | `false` |
+| `[nzDanger]`           | 展示错误状态样式                                                                                                             | `boolean` | `false` |
 
-### [nz-submenu]:standalone
+### [nz-submenu]
 
 你可以使用以下三种方式来定义 `nz-submenu` 的标题
 
@@ -82,7 +82,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 | `[nzTriggerSubMenuAction]` | SubMenu 展开/关闭的触发行为 | `'hover' \| 'click'`                                                                        | `'hover'`      |
 | `(nzOpenChange)`           | 展开回调                    | `EventEmitter<boolean>`                                                                     | -              |
 
-### [nz-menu-group]:standalone
+### [nz-menu-group]
 
 你可以使用以下三种方式来定义 `nz-menu-group` 的标题
 
@@ -101,6 +101,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 | ----------- | -------- | ----------------------------- | ------ |
 | `[nzTitle]` | 标题内容 | `string \| TemplateRef<void>` | -      |
 
-### [nz-menu-divider]:standalone
+### [nz-menu-divider]
 
 菜单项分割线，只用在弹出菜单内。

@@ -25,7 +25,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 ## API
 
-### nz-tabset:standalone
+### nz-tabset
 
 | 参数                         | 说明                                                               | 类型                                                | 默认值                                | 全局配置 |
 | ---------------------------- | ------------------------------------------------------------------ | --------------------------------------------------- | ------------------------------------- | -------- |
@@ -46,7 +46,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzSelectedIndexChange)`    | 当前激活 tab 面板的 序列号变更回调函数                             | `EventEmitter<number>`                              | -                                     |
 | `(nzSelectChange)`           | 当前激活 tab 面板变更回调函数                                      | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                     |
 
-### nz-tabset[nzType="editable-card"]:standalone
+### nz-tabset[nzType="editable-card"]
 
 | 参数          | 说明                 | 类型                              | 默认值  | 全局配置 |
 | ------------- | -------------------- | --------------------------------- | ------- | -------- |
@@ -55,7 +55,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzAdd)`     | 点击添加按钮时的事件 | `EventEmitter<>`                  | -       |
 | `(nzClose)`   | 点击删除按钮时的事件 | `EventEmitter<{ index: number }>` | -       |
 
-### nz-tab:standalone
+### nz-tab
 
 | 参数              | 说明                      | 类型                                        | 默认值  |
 | ----------------- | ------------------------- | ------------------------------------------- | ------- |
@@ -67,7 +67,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzSelect)`      | tab 被选中的回调函数      | `EventEmitter<void>`                        | -       |
 | `(nzDeselect)`    | tab 被取消选中的回调函数  | `EventEmitter<void>`                        | -       |
 
-### nz-tabset[nzType="editable-card"] > nz-tab:standalone
+### nz-tabset[nzType="editable-card"] > nz-tab
 
 | 参数            | 说明         | 类型                          | 默认值  | 全局配置 |
 | --------------- | ------------ | ----------------------------- | ------- | -------- |

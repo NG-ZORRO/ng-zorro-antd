@@ -43,7 +43,7 @@ registerLocaleData(en);
 <ng-template #dateCellTpl let-date><span>{{ date | date:'d'}}</span></ng-template>
 ```
 
-### nz-calendar:standalone
+### nz-calendar
 
 | Property            | Description                                                                                              | Type                                                    | Default      |
 | ------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | ------------ |

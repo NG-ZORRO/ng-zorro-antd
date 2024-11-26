@@ -18,7 +18,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 ## API
 
-### nz-switch:standalone
+### nz-switch
 
 | Property                | Description                                                             | Type                          | Default     | Global Config |
 | ----------------------- | ----------------------------------------------------------------------- | ----------------------------- | ----------- | ------------- |
@@ -27,7 +27,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 | `[nzCheckedChildren]`   | content to be shown when the state is checked                           | `string \| TemplateRef<void>` | -           |
 | `[nzUnCheckedChildren]` | content to be shown when the state is unchecked                         | `string \| TemplateRef<void>` | -           |
 | `[nzDisabled]`          | Disable switch                                                          | `boolean`                     | `false`     |
-| `[nzSize]`              | the size of the `nz-switch`, options: `default` `small`                 | `'small' \| 'default'`        | `'default'` | ✅            |
+| `[nzSize]`              | the size of the `nz-switch`, options: `default` `small`                 | `'small' \| 'default'`        | `'default'` | ✅             |
 | `[nzLoading]`           | loading state of switch                                                 | `boolean`                     | `false`     |
 | `[nzControl]`           | determine whether fully control state by user                           | `boolean`                     | `false`     |
 | `(ngModelChange)`       | a callback function, can be executed when the checked state is changing | `EventEmitter<boolean>`       | -           |

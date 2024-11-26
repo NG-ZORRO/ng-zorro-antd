@@ -19,7 +19,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 ## API
 
-### nz-divider:standalone
+### nz-divider
 
 | 参数              | 说明                       | 类型                              | 默认值         |
 | ----------------- | -------------------------- | --------------------------------- | -------------- |

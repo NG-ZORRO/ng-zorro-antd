@@ -26,7 +26,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 </nz-steps>
 ```
 
-### nz-steps:standalone
+### nz-steps
 
 The whole of the step bar.
 
@@ -42,7 +42,7 @@ The whole of the step bar.
 | `[nzStartIndex]`     | To specify the starting number                                                                                      | `number`                                                                                  | `0`          |
 | `(nzIndexChange)`    | Trigger event when step click                                                                                       | `number`                                                                                  | -            |
 
-### nz-step:standalone
+### nz-step
 
 A single step in the step bar.
 

@@ -23,7 +23,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 <nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
 ```
 
-### nz-cascader:standalone
+### nz-cascader
 
 | Property              | Description                                                                                                                            | Type                                                                  | Default           | Global Config |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------- | ------------- |
@@ -49,7 +49,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzShowArrow]`       | whether show arrow                                                                                                                     | `boolean`                                                             | `true`            |
 | `[nzShowInput]`       | whether show input                                                                                                                     | `boolean`                                                             | `true`            |
 | `[nzShowSearch]`      | whether support search. Cannot be used with `[nzLoadData]` at the same time                                                            | `boolean\|NzShowSearchOptions`                                        | `false`           |
-| `[nzSize]`            | input size, one of `large` `default` `small`                                                                                           | `'large'\|'small'\|'default'`                                         | `'default'`       | ✅            |
+| `[nzSize]`            | input size, one of `large` `default` `small`                                                                                           | `'large'\|'small'\|'default'`                                         | `'default'`       | ✅             |
 | `[nzStatus]`          | set validation status                                                                                                                  | `'error' \| 'warning'`                                                | -                 |
 | `[nzSuffixIcon]`      | custom suffix icon                                                                                                                     | `string\|TemplateRef<void>`                                           | -                 |
 | `[nzValueProperty]`   | value property name of options                                                                                                         | `string`                                                              | `'value'`         |

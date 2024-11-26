@@ -17,7 +17,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 ## API
 
-### [nz-dropdown]:standalone
+### [nz-dropdown]
 
 | Property               | Description                                                                                       | Type                                                                                        | Default        |
 | ---------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
@@ -37,7 +37,7 @@ You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items a
 >
 > The `nzMode` of `[nz-menu]` inside `nz-dropdown-menu` can only be the default value `vertical`.
 
-### nz-dropdown-menu:standalone
+### nz-dropdown-menu
 
 Wrap Dropdown Menu and pass to `[nz-dropdown]` and `NzContextMenuService`, you can export it via Template Syntax `nzDropdownMenu`
 

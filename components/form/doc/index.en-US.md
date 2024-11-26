@@ -20,15 +20,15 @@ You can align the controls of a `form` using the `layout` prop：
 - `vertical`：to vertically align the `label`s and controls of the fields.
 - `inline`：to render form fields in one line.
 
-### nz-form-item:standalone
+### nz-form-item
 
 Used to separate the item in forms, contains label(optional) and control field.
 
-### nz-form-label:standalone
+### nz-form-label
 
 The label of the form item, optional.
 
-### nz-form-control:standalone
+### nz-form-control
 
 A form consists of one or more form fields whose type includes input, textarea, checkbox, radio, select, tag, and more.
 
@@ -49,25 +49,25 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 
 ## API
 
-### [nz-form]:standalone
+### [nz-form]
 
 | Property              | Description                                                                                             | Type                                           | Default Value                                   | Global Config |
 | --------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- | ------------- |
 | `[nzLayout]`          | Form layout                                                                                             | `'horizontal' \| 'vertical' \| 'inline'`       | `'horizontal'`                                  |
-| `[nzAutoTips]`        | Set default props `[nzAutoTips]` value of `nz-form-control`, please refer to the example: **Auto tips** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅            |
-| `[nzDisableAutoTips]` | Set default props `[nzDisableAutoTip]` value of `nz-form-control`                                       | `boolean`                                      | `false`                                         | ✅            |
-| `[nzNoColon]`         | Set default props `[nzNoColon]` value of `nz-form-label`                                                | `boolean`                                      | `false`                                         | ✅            |
-| `[nzTooltipIcon]`     | Set default props `[nzTooltipIcon]` value of `nz-form-label`                                            | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅            |
+| `[nzAutoTips]`        | Set default props `[nzAutoTips]` value of `nz-form-control`, please refer to the example: **Auto tips** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅             |
+| `[nzDisableAutoTips]` | Set default props `[nzDisableAutoTip]` value of `nz-form-control`                                       | `boolean`                                      | `false`                                         | ✅             |
+| `[nzNoColon]`         | Set default props `[nzNoColon]` value of `nz-form-label`                                                | `boolean`                                      | `false`                                         | ✅             |
+| `[nzTooltipIcon]`     | Set default props `[nzTooltipIcon]` value of `nz-form-label`                                            | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅             |
 | `[nzLabelAlign]`      | Set default props `[nzLabelAlign]` value of `nz-form-label`                                             | `'left' \| 'right'`                            | `'right'`                                       |
 | `[nzLabelWrap]`       | Set default props `[nzLabelWrap]` value of `nz-form-label`                                              | `boolean`                                      | `false`                                         |
 
-### nz-form-item:standalone
+### nz-form-item
 
 Used to separate the item in forms, contains label(optional) and control field.
 
 > All api in [nz-row](/components/grid/zh) can be used in `nz-form-item`.
 
-### nz-form-label:standalone
+### nz-form-label
 
 The label of the form item, optional.
 
@@ -83,7 +83,7 @@ The label of the form item, optional.
 | `[nzLabelAlign]`   | The text align of label                      | `'left' \| 'right'`           | `'right'`     |
 | `[nzLabelWrap]`    | whether label can be wrap                    | `boolean`                     | `false`       |
 
-### nz-form-control:standalone
+### nz-form-control
 
 > Note：Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you have to notify `nz-form-control` to update its status with `updateValueAndValidity` when you update form status using methods like `markAsDirty`.
 
@@ -91,7 +91,7 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 > All api in [nz-col](/components/grid/zh) can be used in `nz-form-control`.
 
-| Property              | Description                                                                                                                                                | Type                                                                          | Default Value  |
+| Property              | Description                                                                                                                                                | Type                                                                          | Default Value                                         |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------- |
 | `[nzValidateStatus]`  | Will generate status based on the input `FormControl`, `NgModel` or string, the default value is the first `FormControl` or `NgModel` in `nz-form-control` | `'success' \| 'warning' \| 'error' \| 'validating' \| FormControl \| NgModel` | first `FormControl` or `NgModel` in `nz-form-control` |
 | `[nzHasFeedback]`     | Used with `nzValidateStatus`, this option specifies the validation status icon. Recommended to be used only with `Input`.                                  | `boolean`                                                                     | `false`                                               |
@@ -103,10 +103,10 @@ A form consists of one or more form fields whose type includes input, textarea, 
 | `[nzAutoTips]`        | The object of the tips, please refer to the example: **Auto tips**                                                                                         | `Record<string, string \| Record<string, string>>`                            | -                                                     |
 | `[nzDisableAutoTips]` | Disable Auto Tips                                                                                                                                          | `boolean`                                                                     | -                                                     |
 
-### nz-form-split:standalone
+### nz-form-split
 
 The split icon of `-`
 
-### nz-form-text:standalone
+### nz-form-text
 
 Text in `nz-form-control`

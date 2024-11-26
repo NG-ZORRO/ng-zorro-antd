@@ -18,10 +18,10 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 
 ## API
 
-### nz-rate:standalone
+### nz-rate
 
 | Property            | Description                             | type                          | Default                               | Global Config |
-|---------------------|-----------------------------------------|-------------------------------|---------------------------------------|---------------|
+| ------------------- | --------------------------------------- | ----------------------------- | ------------------------------------- | ------------- |
 | `[nzAllowClear]`    | whether to allow clear when click again | `boolean`                     | `true`                                | ✅             |
 | `[nzAllowHalf]`     | whether to allow semi selection         | `boolean`                     | `false`                               | ✅             |
 | `[nzAutoFocus]`     | get focus when component mounted        | `boolean`                     | `false`                               |
@@ -39,6 +39,6 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 #### Methods
 
 | Name    | Description  |
-|---------|--------------|
+| ------- | ------------ |
 | blur()  | remove focus |
 | focus() | get focus    |

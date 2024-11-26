@@ -17,7 +17,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 ## API
 
-### nz-segmented:standalone
+### nz-segmented
 
 | 参数              | 说明                         | 类型                                                                                                           | 默认值 | 全局配置 |
 | ----------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------- | ------ | -------- |
@@ -29,7 +29,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 | `(nzValueChange)` | 当前选中项目变化时触发回调   | `EventEmitter<string \| number>`                                                                               | -      |          |
 | `(ngModelChange)` | 当前选中项目变化时触发回调   | `EventEmitter<string \| number>`                                                                               | -      |          |
 
-### label[nz-segmented-item]:standalone
+### label[nz-segmented-item]
 
 | 参数           | 说明     | 类型               | 默认值 | 全局配置 |
 | -------------- | -------- | ------------------ | ------ | -------- |

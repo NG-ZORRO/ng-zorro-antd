@@ -19,7 +19,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 ## API
 
-### [nz-input]:standalone
+### [nz-input]
 
 nz-input 可以使用所有的 W3C 标准下的所有 [使用方式](https://www.w3schools.com/tags/tag_input.asp) 和 Angular 对 input 的全部额外功能支持。
 
@@ -30,7 +30,7 @@ nz-input 可以使用所有的 W3C 标准下的所有 [使用方式](https://www
 | `[nzBorderless]` | 是否隐藏边框                                                                                   | `boolean`                                         | `false`     |
 | `[nzStatus]`     | 设置校验状态                                                                                   | `'error' \| 'warning'`                            | -           |
 
-### nz-input-group:standalone
+### nz-input-group
 
 | 参数              | 说明                                                          | 类型                              | 默认值      |
 | ----------------- | ------------------------------------------------------------- | --------------------------------- | ----------- |
@@ -43,7 +43,7 @@ nz-input 可以使用所有的 W3C 标准下的所有 [使用方式](https://www
 | `[nzSize]`        | `nz-input-group` 中所有的 `nz-input` 的大小                   | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzStatus]`      | 设置校验状态                                                  | `'error' \| 'warning'`            | -           |
 
-### nz-textarea-count:standalone
+### nz-textarea-count
 
 | 参数                        | 说明                               | 类型                    | 默认值          |
 | --------------------------- | ---------------------------------- | ----------------------- | --------------- |

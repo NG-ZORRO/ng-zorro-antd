@@ -20,7 +20,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 ## API
 
 
-### [nz-popconfirm]:standalone
+### [nz-popconfirm]
 
 | Param                              | Description                                                         | Type                                                                                                                                                                              | Default value |
 | ---------------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -45,10 +45,10 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzOkText]`        | Text of the Confirm button                                                                                                                            | `string`                                                             | `'Confirm'`   | -             |
 | `[nzOkType]`        | Button `type` of the Confirm button                                                                                                                   | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'`          | `'primary'`   | -             |
 | `[nzOkDanger]`      | Danger status of the OK button. <i>Consistent with the `nzDanger` of the `nz-button`.</i>                                                             | `boolean`                                                            | `false`       | -             |
-| `[nzOkDisabled]`    | prevents a user from interacting with the OK button. <i>Consistent with the `disabled` of the `nz-button`.</i>                                                             | `boolean`                                                            | `false`       | -             |
+| `[nzOkDisabled]`    | prevents a user from interacting with the OK button. <i>Consistent with the `disabled` of the `nz-button`.</i>                                        | `boolean`                                                            | `false`       | -             |
 | `[nzCondition]`     | Whether to directly emit `onConfirm` without showing Popconfirm                                                                                       | `boolean`                                                            | `false`       | -             |
 | `[nzIcon]`          | Customize icon of confirmation                                                                                                                        | `string \| TemplateRef<void>`                                        | -             | -             |
-| `[nzAutoFocus]`     | Autofocus a button                                                                                                                                    | `null \| 'ok' \| 'cancel'`                                           | `null`        | ✅            |
+| `[nzAutoFocus]`     | Autofocus a button                                                                                                                                    | `null \| 'ok' \| 'cancel'`                                           | `null`        | ✅             |
 | `[nzBeforeConfirm]` | The hook before the confirmation operation, decides whether to continue responding to the `nzOnConfirm` callback, supports asynchronous verification. | `(() => Observable<boolean> \| Promise<boolean> \| boolean) \| null` | `null`        | -             |
 | `(nzOnCancel)`      | Callback of cancel                                                                                                                                    | `EventEmitter<void>`                                                 | -             | -             |
 | `(nzOnConfirm)`     | Callback of confirmation                                                                                                                              | `EventEmitter<void>`                                                 | -             | -             |
