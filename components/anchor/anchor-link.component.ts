@@ -105,7 +105,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     e.preventDefault();
     e.stopPropagation();
     if (this.platform.isBrowser) {
-      this.anchorComp.handleScrollTo(this).then();
+      this.anchorComp.handleScrollTo(this);
     }
   }
 
