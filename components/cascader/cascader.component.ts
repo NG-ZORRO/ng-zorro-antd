@@ -77,7 +77,7 @@ import {
   NzCascaderTriggerType,
   NzShowSearchOptions
 } from './typings';
-import { getOptionKey } from './utils';
+import { getOptionKey, isDisabledOption } from './utils';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
 const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
@@ -730,14 +730,14 @@ export class NzCascaderComponent
   }
 
   onOptionCheck(option: NzCascaderOption, columnIndex: number): void {
-    if (!this.nzMultiple || (option && option.disabled)) {
+    if (!this.nzMultiple || (option && isDisabledOption(option))) {
       return;
     }
 
     const key = getOptionKey(option);
     if (this.cascaderService.checkedOptionsKeySet.has(key)) {
       // uncheck
-      this.cascaderService.removeSelectedOption(option, columnIndex, this.nzMultiple);
+      this.cascaderService.removeSelectedOption(option);
     } else {
       // check
       this.inSearchingMode
@@ -747,8 +747,7 @@ export class NzCascaderComponent
   }
 
   removeSelectedItem(node: NzCascaderOption[]): void {
-    const columnIndex = node.length - 1;
-    this.cascaderService.removeSelectedOption(node[columnIndex], columnIndex, true);
+    this.cascaderService.removeSelectedOption(node[node.length - 1]);
   }
 
   onClickOutside(event: MouseEvent): void {

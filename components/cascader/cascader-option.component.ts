@@ -130,6 +130,7 @@ export class NzCascaderOptionComponent implements OnInit {
 
   onCheckboxClick(event: MouseEvent): void {
     event.preventDefault();
+    event.stopPropagation();
     if (!this.checkable) {
       return;
     }

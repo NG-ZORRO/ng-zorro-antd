@@ -243,7 +243,7 @@ export class NzCascaderService implements OnDestroy {
       if (this.checkedOptionsKeySet.has(key)) {
         return;
       }
-      this.addCheckedOptions(option);
+      this.addCheckedOption(option);
       this.conduct(option, index);
       this.activatedOptions = [];
       this.checkedLeafOptionsKeySet.forEach(leafValue => {
@@ -273,19 +273,20 @@ export class NzCascaderService implements OnDestroy {
    * Remove item from selectedOptions
    *
    * @param option
-   * @param index
    * @param multiple
    */
-  removeSelectedOption(option: NzCascaderOption, index: number, multiple: boolean): void {
+  removeSelectedOption(option: NzCascaderOption, multiple: boolean = true): void {
     if (this.isMultipleSelections(this.selectedOptions, multiple)) {
+      const index = this.getOptionColumnIndexWithKey(option);
       this.selectedOptions = this.selectedOptions.filter(
-        options => !options.some(o => this.getOptionValue(o) === this.getOptionValue(option))
+        // compare with option key, because value would be null if searchingMode
+        options => !options.some(o => getOptionKey(o) === getOptionKey(option))
       );
-      this.removeCheckedOptions(option);
+      this.removeCheckedOption(option);
       this.conduct(option, index);
       this.prepareEmitValue(multiple);
       this.$redraw.next();
-      this.$optionSelected.next({ option, index: index });
+      this.$optionSelected.next({ option, index });
     }
   }
 
@@ -350,6 +351,8 @@ export class NzCascaderService implements OnDestroy {
           path: cPath,
           [this.cascaderComponent.nzLabelProperty]: cPath.map(p => this.getOptionLabel(p)).join(' / ')
         };
+        // extend node's parent
+        option.parent = node.parent;
         setOptionKey(option, toPathKey(cPath.map(o => this.getOptionValue(o))));
         results.push(option);
       }
@@ -400,7 +403,9 @@ export class NzCascaderService implements OnDestroy {
     if (toSearching) {
       this.activatedOptionsSnapshot = [...this.activatedOptions];
       this.activatedOptions = [];
-      this.selectedOptions = [];
+      if (!multiple) {
+        this.selectedOptions = [];
+      }
       this.$redraw.next();
     } else {
       // User quit searching mode without selecting an option.
@@ -433,6 +438,11 @@ export class NzCascaderService implements OnDestroy {
 
   getOptionValue(o: NzCascaderOption): NzSafeAny {
     return o[this.cascaderComponent.nzValueProperty || 'value'];
+  }
+
+  private getOptionColumnIndexWithKey(option: NzCascaderOption): number {
+    const length = toPathArray(getOptionKey(option) || '').length;
+    return Math.max(0, length - 1);
   }
 
   /**
@@ -646,10 +656,10 @@ export class NzCascaderService implements OnDestroy {
 
       // if all the siblings are checked (or disabled), set the parent checked
       if (allSiblingChecked) {
-        this.addCheckedOptions(parentNode);
+        this.addCheckedOption(parentNode);
         this.halfCheckedOptionsKeySet.delete(parentKey);
       } else {
-        this.removeCheckedOptions(parentNode);
+        this.removeCheckedOption(parentNode);
         // if there is any sibling checked or half checked, set the parent half checked
         if (someSiblingChecked) {
           this.halfCheckedOptionsKeySet.add(parentKey);
@@ -679,10 +689,10 @@ export class NzCascaderService implements OnDestroy {
     if (!isDisabledOption(option)) {
       const key = getOptionKey(option);
       if (value) {
-        this.addCheckedOptions(option);
+        this.addCheckedOption(option);
         this.halfCheckedOptionsKeySet.delete(key);
       } else {
-        this.removeCheckedOptions(option);
+        this.removeCheckedOption(option);
       }
     }
     // conduct children
@@ -703,17 +713,19 @@ export class NzCascaderService implements OnDestroy {
       const shownOptions: NzCascaderOption[][] = [];
       selectedOptions.forEach(options => {
         const index = options.findIndex(o => this.checkedOptionsKeySet.has(getOptionKey(o)));
-        const key = getOptionKey(options[index]);
-        if (index !== -1 && !shownOptionsKeySet.has(key)) {
-          shownOptionsKeySet.add(key);
-          shownOptions.push(options.slice(0, index + 1));
+        if (index !== -1) {
+          const key = getOptionKey(options[index]);
+          if (!shownOptionsKeySet.has(key)) {
+            shownOptionsKeySet.add(key);
+            shownOptions.push(options.slice(0, index + 1));
+          }
         }
       });
       return shownOptions;
     }
   }
 
-  addCheckedOptions(option: NzCascaderOption): void {
+  addCheckedOption(option: NzCascaderOption): void {
     const key = getOptionKey(option);
     this.checkedOptionsKeySet.add(key);
     if (option.isLeaf) {
@@ -721,7 +733,7 @@ export class NzCascaderService implements OnDestroy {
     }
   }
 
-  removeCheckedOptions(option: NzCascaderOption): void {
+  removeCheckedOption(option: NzCascaderOption): void {
     const key = getOptionKey(option);
     this.checkedOptionsKeySet.delete(key);
     this.checkedLeafOptionsKeySet.delete(key);
