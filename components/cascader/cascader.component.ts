@@ -72,10 +72,12 @@ import {
   NzCascaderExpandTrigger,
   NzCascaderOption,
   NzCascaderSearchOption,
+  NzCascaderShowCheckedStrategy,
   NzCascaderSize,
   NzCascaderTriggerType,
   NzShowSearchOptions
 } from './typings';
+import { getOptionKey } from './utils';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
 const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
@@ -96,7 +98,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                 [deletable]="true"
                 [disabled]="nzDisabled"
                 [label]="nzDisplayWith(node)"
-                (delete)="cascaderService.removeSelectedOption(node[node.length - 1], node.length - 1, true)"
+                (delete)="removeSelectedItem(node)"
               ></nz-select-item>
             }
             @if (multipleSelectedOptions.length > nzMaxTagCount) {
@@ -204,7 +206,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                   [style.height]="dropdownHeightStyle"
                   [style.width]="dropdownWidthStyle"
                 >
-                  @for (option of options; track option.value) {
+                  @for (option of options; track option[nzValueProperty]) {
                     <li
                       nz-cascader-option
                       [expandIcon]="nzExpandIcon"
@@ -262,6 +264,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     OverlayModule,
     FormsModule,
     NzIconModule,
+    NzEmptyModule,
     NzFormPatchModule,
     NzOverlayModule,
     NzNoAnimationDirective,
@@ -269,7 +272,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     NzSelectItemComponent,
     NzSelectPlaceholderComponent,
     NzSelectSearchComponent,
-    NzEmptyModule,
     NzCascaderOptionComponent
   ],
   standalone: true
@@ -319,6 +321,7 @@ export class NzCascaderComponent
   @Input() nzStatus: NzStatus = '';
   @Input({ transform: booleanAttribute }) nzMultiple?: boolean = false;
   @Input() nzMaxTagCount: number = Infinity;
+  @Input() nzShowCheckedStrategy?: NzCascaderShowCheckedStrategy = 'parent';
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
@@ -392,7 +395,10 @@ export class NzCascaderComponent
   private isNzDisableFirstChange: boolean = true;
 
   get multipleSelectedOptions(): NzCascaderOption[][] {
-    return this.cascaderService.selectedOptions as NzCascaderOption[][];
+    return this.cascaderService.getShownCheckedOptions(
+      this.cascaderService.selectedOptions as NzCascaderOption[][],
+      this.nzShowCheckedStrategy
+    );
   }
 
   get inSearchingMode(): boolean {
@@ -728,7 +734,8 @@ export class NzCascaderComponent
       return;
     }
 
-    if (this.cascaderService.checkedOptionsKeySet.has(option.value)) {
+    const key = getOptionKey(option);
+    if (this.cascaderService.checkedOptionsKeySet.has(key)) {
       // uncheck
       this.cascaderService.removeSelectedOption(option, columnIndex, this.nzMultiple);
     } else {
@@ -737,6 +744,11 @@ export class NzCascaderComponent
         ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
         : this.cascaderService.setOptionActivated(option, columnIndex, true, true);
     }
+  }
+
+  removeSelectedItem(node: NzCascaderOption[]): void {
+    const columnIndex = node.length - 1;
+    this.cascaderService.removeSelectedOption(node[columnIndex], columnIndex, true);
   }
 
   onClickOutside(event: MouseEvent): void {

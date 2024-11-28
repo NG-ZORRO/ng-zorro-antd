@@ -17,7 +17,8 @@ import {
   numberAttribute,
   inject,
   Output,
-  EventEmitter
+  EventEmitter,
+  booleanAttribute
 } from '@angular/core';
 
 import { NzCascaderService } from 'ng-zorro-antd/cascader/cascader.service';
@@ -26,6 +27,7 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCascaderOption } from './typings';
+import { getOptionKey } from './utils';
 
 @Component({
   standalone: true,
@@ -88,13 +90,13 @@ export class NzCascaderOptionComponent implements OnInit {
   @Input({ transform: numberAttribute }) columnIndex!: number;
   @Input() expandIcon: string | TemplateRef<void> = '';
   @Input() dir: Direction = 'ltr';
-  @Input() checkable?: boolean = false;
+  @Input({ transform: booleanAttribute }) checkable?: boolean = false;
 
-  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() readonly check = new EventEmitter<void>();
 
-  readonly nativeElement: HTMLElement = inject(ElementRef).nativeElement;
-  public cascaderService = inject(NzCascaderService);
+  // public key!: string;
+  public readonly nativeElement: HTMLElement = inject(ElementRef).nativeElement;
+  private cascaderService = inject(NzCascaderService);
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -106,12 +108,20 @@ export class NzCascaderOptionComponent implements OnInit {
     }
   }
 
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   const { option, prevValuePath } = changes;
+  //   if ((option || prevValuePath) && option?.currentValue && prevValuePath?.currentValue) {
+  //     const fullPath = [...prevValuePath.currentValue, this.cascaderService.getOptionValue(option.currentValue)];
+  //     this.key = toPathKey(fullPath);
+  //   }
+  // }
+
   get checked(): boolean {
-    return this.cascaderService.checkedOptionsKeySet.has(this.option.value);
+    return this.cascaderService.checkedOptionsKeySet.has(getOptionKey(this.option));
   }
 
   get halfChecked(): boolean {
-    return this.cascaderService.halfCheckedOptionsKeySet.has(this.option.value);
+    return this.cascaderService.halfCheckedOptionsKeySet.has(getOptionKey(this.option));
   }
 
   get disabled(): boolean {
