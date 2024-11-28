@@ -725,7 +725,7 @@ export class NzCascaderComponent
 
     this.el.focus();
     this.inSearchingMode
-      ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
+      ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption, this.nzMultiple)
       : this.cascaderService.setOptionActivated(option, columnIndex, !this.nzMultiple);
   }
 
@@ -741,7 +741,7 @@ export class NzCascaderComponent
     } else {
       // check
       this.inSearchingMode
-        ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
+        ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption, true)
         : this.cascaderService.setOptionActivated(option, columnIndex, true, true);
     }
   }

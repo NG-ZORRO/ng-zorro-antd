@@ -34,6 +34,13 @@ export function toPathKey(value: NzSafeAny[]): string {
   return value.join(VALUE_SPLIT);
 }
 
+/**
+ * Will split key to array, and convert to number
+ */
+export function toPathArray(key: string): string[] {
+  return key.split(VALUE_SPLIT);
+}
+
 export function getOptionKey(option: NzCascaderOption): string {
   return option[KEY_PROPERTY];
 }

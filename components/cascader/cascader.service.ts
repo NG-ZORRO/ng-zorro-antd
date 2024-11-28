@@ -18,7 +18,15 @@ import {
   NzCascaderSearchOption,
   NzCascaderShowCheckedStrategy
 } from './typings';
-import { getOptionKey, isChildOption, isDisabledOption, isParentOption, setOptionKey, toPathKey } from './utils';
+import {
+  getOptionKey,
+  isChildOption,
+  isDisabledOption,
+  isParentOption,
+  setOptionKey,
+  toPathArray,
+  toPathKey
+} from './utils';
 
 /**
  * All data is stored and parsed in NzCascaderService.
@@ -71,9 +79,6 @@ export class NzCascaderService implements OnDestroy {
 
   /** To hold columns before entering searching mode. */
   private columnsSnapshot: NzCascaderOption[][] = [[]];
-
-  /** To hold columns for full options */
-  private columnsFull: NzCascaderOption[][] = [[]];
 
   /** To hold activated options before entering searching mode. */
   private activatedOptionsSnapshot: NzCascaderOption[] = [];
@@ -269,16 +274,16 @@ export class NzCascaderService implements OnDestroy {
    *
    * @param option
    * @param index
-   * @param multipleMode
+   * @param multiple
    */
-  removeSelectedOption(option: NzCascaderOption, index: number, multipleMode: boolean): void {
-    if (this.isMultipleSelections(this.selectedOptions, multipleMode)) {
+  removeSelectedOption(option: NzCascaderOption, index: number, multiple: boolean): void {
+    if (this.isMultipleSelections(this.selectedOptions, multiple)) {
       this.selectedOptions = this.selectedOptions.filter(
         options => !options.some(o => this.getOptionValue(o) === this.getOptionValue(option))
       );
       this.removeCheckedOptions(option);
       this.conduct(option, index);
-      this.prepareEmitValue(multipleMode);
+      this.prepareEmitValue(multiple);
       this.$redraw.next();
       this.$optionSelected.next({ option, index: index });
     }
@@ -288,22 +293,28 @@ export class NzCascaderService implements OnDestroy {
    * Set a searching option as selected, finishing up things.
    *
    * @param option
+   * @param multiple
    */
-  setSearchOptionSelected(option: NzCascaderSearchOption): void {
-    this.activatedOptions = [option];
-    this.selectedOptions = [...option.path];
-    this.prepareEmitValue();
-    this.$redraw.next();
-    this.$optionSelected.next({ option, index: 0 });
-
-    setTimeout(() => {
-      // Reset data and tell UI only to remove input and reset dropdown width style.
-      this.$quitSearching.next();
+  setSearchOptionSelected(option: NzCascaderSearchOption, multiple = false): void {
+    if (multiple) {
+      const columnIndex = toPathArray(getOptionKey(option)).length - 1;
+      this.setOptionSelected(option, columnIndex, multiple);
+    } else {
+      this.activatedOptions = [option];
+      this.selectedOptions = [...option.path];
+      this.prepareEmitValue();
       this.$redraw.next();
-      this.inSearchingMode = false;
-      this.columns = [...this.columnsSnapshot];
-      this.activatedOptions = [...this.selectedOptions];
-    }, 200);
+      this.$optionSelected.next({ option, index: 0 });
+
+      setTimeout(() => {
+        // Reset data and tell UI only to remove input and reset dropdown width style.
+        this.$quitSearching.next();
+        this.$redraw.next();
+        this.inSearchingMode = false;
+        this.columns = [...this.columnsSnapshot];
+        this.activatedOptions = [...this.selectedOptions];
+      }, 200);
+    }
   }
 
   private setOptionParent(option: NzCascaderOption, parent: NzCascaderOption): void {
@@ -339,6 +350,7 @@ export class NzCascaderService implements OnDestroy {
           path: cPath,
           [this.cascaderComponent.nzLabelProperty]: cPath.map(p => this.getOptionLabel(p)).join(' / ')
         };
+        setOptionKey(option, toPathKey(cPath.map(o => this.getOptionValue(o))));
         results.push(option);
       }
       path.pop();
@@ -431,33 +443,12 @@ export class NzCascaderService implements OnDestroy {
    * @param parent Parent option
    */
   private setColumnData(options: NzCascaderOption[], columnIndex: number, parent: NzCascaderOption): void {
-    this.setColumnsFullData(options, columnIndex, parent);
     const existingOptions = this.columns[columnIndex];
     if (!arraysEqual(existingOptions, options)) {
       options.forEach(o => this.setOptionParent(o, parent));
       this.columns[columnIndex] = options;
     }
     this.dropBehindColumns(columnIndex);
-  }
-
-  /**
-   * Try to insert options into a column.
-   *
-   * @param options Options to insert
-   * @param columnIndex Position
-   * @param parent Parent option
-   */
-  private setColumnsFullData(options: NzCascaderOption[], columnIndex: number, parent: NzCascaderOption): void {
-    const existingOptions = this.columnsFull[columnIndex];
-    if (!arraysEqual(existingOptions, options)) {
-      options.forEach(o => this.setOptionParent(o, parent));
-      this.columnsFull[columnIndex] = this.columnsFull[columnIndex] ?? [];
-      for (let option of options) {
-        if (!this.columnsFull[columnIndex].some(o => this.getOptionValue(o) === this.getOptionValue(option))) {
-          this.columnsFull[columnIndex].push(option);
-        }
-      }
-    }
   }
 
   /**
@@ -560,12 +551,27 @@ export class NzCascaderService implements OnDestroy {
    * Find the first option with given key in all column
    */
   private findOptionWithKey(key: string): NzCascaderOption | null {
+    if (!this.columnsSnapshot.length) {
+      return null;
+    }
     let option: NzCascaderOption | null = null;
-    for (let i = 0; i < this.columnsFull.length; ++i) {
-      option = this.columnsFull[i].find(o => getOptionKey(o) === key) || null;
-      if (option) {
-        return option;
+    let column = this.columnsSnapshot[0];
+    let columnIndex = 0;
+    const cPath = toPathArray(key);
+    while (column) {
+      const current = column.find(o => cPath[columnIndex] === `${this.getOptionValue(o)}`) || null;
+      if (current) {
+        if (getOptionKey(current) === key) {
+          // hit
+          option = current;
+        } else if (isParentOption(current)) {
+          // not hit, go on
+          column = current.children!;
+          columnIndex++;
+          continue;
+        }
       }
+      break;
     }
     return option;
   }
