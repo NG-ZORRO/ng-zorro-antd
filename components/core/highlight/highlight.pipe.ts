@@ -38,7 +38,7 @@ export class NzHighlightPipe implements PipeTransform {
 
   transform(value: string, highlightValue: string, flags?: string, klass?: string): string | null {
     if (!highlightValue) {
-      return value;
+      return encodeEntities(value);
     }
 
     // Escapes regex keyword to interpret these characters literally
