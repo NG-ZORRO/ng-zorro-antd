@@ -14,9 +14,13 @@ import {
   OnInit,
   TemplateRef,
   ViewEncapsulation,
-  numberAttribute
+  numberAttribute,
+  inject,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
+import { NzCascaderService } from 'ng-zorro-antd/cascader/cascader.service';
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -24,11 +28,23 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzCascaderOption } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+  standalone: true,
   selector: '[nz-cascader-option]',
   exportAs: 'nzCascaderOption',
+  imports: [NgTemplateOutlet, NzHighlightModule, NzIconModule, NzOutletModule],
   template: `
+    @if (checkable) {
+      <span
+        class="ant-cascader-checkbox"
+        [class.ant-cascader-checkbox-checked]="checked"
+        [class.ant-cascader-checkbox-indeterminate]="halfChecked"
+        [class.ant-cascader-checkbox-disabled]="disabled"
+        (click)="onCheckboxClick($event)"
+      >
+        <span class="ant-cascader-checkbox-inner"></span>
+      </span>
+    }
+
     @if (optionTemplate) {
       <ng-template
         [ngTemplateOutlet]="optionTemplate"
@@ -60,8 +76,8 @@ import { NzCascaderOption } from './typings';
     '[class.ant-cascader-menu-item-expand]': '!option.isLeaf',
     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
   },
-  imports: [NgTemplateOutlet, NzHighlightModule, NzIconModule, NzOutletModule],
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzCascaderOptionComponent implements OnInit {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
@@ -72,15 +88,16 @@ export class NzCascaderOptionComponent implements OnInit {
   @Input({ transform: numberAttribute }) columnIndex!: number;
   @Input() expandIcon: string | TemplateRef<void> = '';
   @Input() dir: Direction = 'ltr';
+  @Input() checkable?: boolean = false;
 
-  readonly nativeElement: HTMLElement;
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
+  @Output() readonly onCheckboxChange = new EventEmitter<void>();
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    elementRef: ElementRef
-  ) {
-    this.nativeElement = elementRef.nativeElement;
-  }
+  readonly nativeElement: HTMLElement = inject(ElementRef).nativeElement;
+  public cascaderService = inject(NzCascaderService);
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
   ngOnInit(): void {
     if (this.expandIcon === '' && this.dir === 'rtl') {
       this.expandIcon = 'left';
@@ -89,11 +106,31 @@ export class NzCascaderOptionComponent implements OnInit {
     }
   }
 
+  get checked(): boolean {
+    return this.cascaderService.checkedOptionsKeySet.has(this.option.value);
+  }
+
+  get halfChecked(): boolean {
+    return this.cascaderService.halfCheckedOptionsKeySet.has(this.option.value);
+  }
+
+  get disabled(): boolean {
+    return false;
+  }
+
   get optionLabel(): string {
     return this.option[this.nzLabelProperty];
   }
 
   markForCheck(): void {
     this.cdr.markForCheck();
+  }
+
+  onCheckboxClick(event: MouseEvent): void {
+    event.preventDefault();
+    if (!this.checkable) {
+      return;
+    }
+    this.onCheckboxChange.emit();
   }
 }

@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -220,7 +220,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   ]
 })
 export class NzDemoSpaceCompactComponent {
-  cascaderOptions = [
+  cascaderOptions: NzCascaderOption[] = [
     {
       value: 'zhejiang',
       label: 'Zhejiang',
@@ -231,7 +231,8 @@ export class NzDemoSpaceCompactComponent {
           children: [
             {
               value: 'xihu',
-              label: 'West Lake'
+              label: 'West Lake',
+              isLeaf: true
             }
           ]
         }
@@ -247,7 +248,8 @@ export class NzDemoSpaceCompactComponent {
           children: [
             {
               value: 'zhonghuamen',
-              label: 'Zhong Hua Men'
+              label: 'Zhong Hua Men',
+              isLeaf: true
             }
           ]
         }

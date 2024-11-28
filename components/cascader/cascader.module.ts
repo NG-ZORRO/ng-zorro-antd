@@ -5,7 +5,7 @@
 
 import { NgModule } from '@angular/core';
 
-import { NzCascaderOptionComponent } from './cascader-li.component';
+import { NzCascaderOptionComponent } from './cascader-option.component';
 import { NzCascaderComponent } from './cascader.component';
 
 @NgModule({

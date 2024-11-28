@@ -7,7 +7,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { _getEventTarget } from '@angular/cdk/platform';
-import { NgTemplateOutlet } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -36,7 +36,7 @@ import {
   signal
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -57,9 +57,15 @@ import { fromEventOutsideAngular, getStatusClassNames, toArray } from 'ng-zorro-
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import {
+  NzSelectClearComponent,
+  NzSelectItemComponent,
+  NzSelectPlaceholderComponent,
+  NzSelectSearchComponent
+} from 'ng-zorro-antd/select';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
-import { NzCascaderOptionComponent } from './cascader-li.component';
+import { NzCascaderOptionComponent } from './cascader-option.component';
 import { NzCascaderService } from './cascader.service';
 import {
   NzCascaderComponentAsSource,
@@ -81,63 +87,94 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   exportAs: 'nzCascader',
   preserveWhitespaces: false,
   template: `
-    @if (nzShowInput) {
-      <div #selectContainer #origin="cdkOverlayOrigin" cdkOverlayOrigin class="ant-select-selector">
-        <span class="ant-select-selection-search">
-          <input
-            #input
-            type="search"
-            class="ant-select-selection-search-input"
-            [style.opacity]="nzShowSearch ? '' : '0'"
-            [attr.autoComplete]="'off'"
-            [attr.expanded]="menuVisible"
-            [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
-            [readonly]="!nzShowSearch"
-            [disabled]="nzDisabled"
-            [(ngModel)]="inputValue"
-            (blur)="handleInputBlur()"
-            (focus)="handleInputFocus()"
-            (compositionstart)="handleInputCompositionstart()"
-            (compositionend)="handleInputCompositionend()"
-          />
-        </span>
-        @if (showLabelRender) {
-          <span class="ant-select-selection-item" [title]="labelRenderText">
-            @if (!isLabelRenderTemplate) {
-              <ng-container>{{ labelRenderText }}</ng-container>
-            } @else {
-              <ng-template
-                [ngTemplateOutlet]="nzLabelRender"
-                [ngTemplateOutletContext]="labelRenderContext"
-              ></ng-template>
+    <div #origin="cdkOverlayOrigin" cdkOverlayOrigin #trigger>
+      @if (nzShowInput) {
+        <div #selectContainer class="ant-select-selector">
+          @if (nzMultiple) {
+            @for (node of multipleSelectedOptions | slice: 0 : nzMaxTagCount; track $index) {
+              <nz-select-item
+                [deletable]="true"
+                [disabled]="nzDisabled"
+                [label]="nzDisplayWith(node)"
+                (delete)="cascaderService.removeSelectedOption(node[node.length - 1], node.length - 1, true)"
+              ></nz-select-item>
             }
-          </span>
-        } @else {
-          <span
-            class="ant-select-selection-placeholder"
-            [style.visibility]="isComposing || inputValue ? 'hidden' : 'visible'"
-            >{{ showPlaceholder ? nzPlaceHolder || locale?.placeholder : null }}</span
-          >
-        }
-      </div>
-      @if (nzShowArrow) {
-        <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
-          @if (!isLoading) {
-            <span nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible"></span>
-          } @else {
-            <span nz-icon nzType="loading"></span>
+            @if (multipleSelectedOptions.length > nzMaxTagCount) {
+              <nz-select-item
+                [deletable]="false"
+                [disabled]="false"
+                [label]="'+ ' + (multipleSelectedOptions.length - nzMaxTagCount) + ' ...'"
+              ></nz-select-item>
+            }
           }
 
-          @if (hasFeedback && !!status) {
-            <nz-form-item-feedback-icon [status]="status" />
+          <nz-select-search
+            [showInput]="!!nzShowSearch"
+            (isComposingChange)="isComposingChange($event)"
+            [value]="inputValue"
+            (valueChange)="inputValue = $event"
+            [mirrorSync]="!!nzMultiple"
+            [disabled]="nzDisabled"
+            [autofocus]="nzAutoFocus"
+            [focusTrigger]="menuVisible"
+          ></nz-select-search>
+
+          @if (showPlaceholder) {
+            <nz-select-placeholder
+              [placeholder]="nzPlaceHolder || locale?.placeholder!"
+              [style.display]="inputValue || isComposing ? 'none' : 'block'"
+            ></nz-select-placeholder>
           }
-        </span>
+
+          @if (!nzMultiple && showLabelRender) {
+            <nz-select-item
+              [deletable]="false"
+              [disabled]="false"
+              [label]="labelRenderText"
+              [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
+              [contentTemplateOutletContext]="labelRenderContext"
+            ></nz-select-item>
+          }
+
+          <!--        <div #selectContainer #origin="cdkOverlayOrigin" cdkOverlayOrigin class="ant-select-selector">-->
+          <!--          <span class="ant-select-selection-search">-->
+          <!--            <input-->
+          <!--              #input-->
+          <!--              type="search"-->
+          <!--              class="ant-select-selection-search-input"-->
+          <!--              [style.opacity]="nzShowSearch ? '' : '0'"-->
+          <!--              [attr.autoComplete]="'off'"-->
+          <!--              [attr.expanded]="menuVisible"-->
+          <!--              [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"-->
+          <!--              [readonly]="!nzShowSearch"-->
+          <!--              [disabled]="nzDisabled"-->
+          <!--              [(ngModel)]="inputValue"-->
+          <!--              (blur)="handleInputBlur()"-->
+          <!--              (focus)="handleInputFocus()"-->
+          <!--              (compositionstart)="handleInputCompositionstart()"-->
+          <!--              (compositionend)="handleInputCompositionend()"-->
+          <!--            />-->
+          <!--          </span>-->
+        </div>
+
+        @if (nzShowArrow) {
+          <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
+            @if (!isLoading) {
+              <span nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible"></span>
+            } @else {
+              <span nz-icon nzType="loading"></span>
+            }
+
+            @if (hasFeedback && !!status) {
+              <nz-form-item-feedback-icon [status]="status" />
+            }
+          </span>
+        }
+        @if (clearIconVisible) {
+          <nz-select-clear (clear)="clearSelection($event)"></nz-select-clear>
+        }
       }
-      @if (clearIconVisible) {
-        <span class="ant-select-clear">
-          <span nz-icon nzType="close-circle" nzTheme="fill" (click)="clearSelection($event)"></span>
-        </span>
-      }
+      <ng-content></ng-content>
 
       <ng-template
         cdkConnectedOverlay
@@ -198,9 +235,11 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                       [highlightText]="inSearchingMode ? inputValue : ''"
                       [option]="option"
                       [dir]="dir"
+                      [checkable]="nzMultiple"
                       (mouseenter)="onOptionMouseEnter(option, i, $event)"
                       (mouseleave)="onOptionMouseLeave(option, i, $event)"
                       (click)="onOptionClick(option, i, $event)"
+                      (onCheckboxChange)="onOptionCheck(option, i)"
                     ></li>
                   }
                 </ul>
@@ -209,8 +248,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           </div>
         </div>
       </ng-template>
-    }
-    <ng-content></ng-content>
+    </div>
   `,
   animations: [slideMotion],
   providers: [
@@ -234,18 +272,23 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-open]': 'menuVisible',
     '[class.ant-select-focused]': 'isFocused',
-    '[class.ant-select-single]': 'true',
+    '[class.ant-select-multiple]': 'nzMultiple',
+    '[class.ant-select-single]': '!nzMultiple',
     '[class.ant-select-rtl]': `dir === 'rtl'`
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   imports: [
+    SlicePipe,
     OverlayModule,
     FormsModule,
-    NgTemplateOutlet,
     NzIconModule,
     NzFormPatchModule,
     NzOverlayModule,
     NzNoAnimationDirective,
+    NzSelectClearComponent,
+    NzSelectItemComponent,
+    NzSelectPlaceholderComponent,
+    NzSelectSearchComponent,
     NzEmptyModule,
     NzCascaderOptionComponent
   ],
@@ -258,9 +301,9 @@ export class NzCascaderComponent
 
   @ViewChild('selectContainer', { static: false }) selectContainer!: ElementRef;
 
-  @ViewChild('input', { static: false })
-  set input(input: ElementRef<HTMLInputElement> | undefined) {
-    this.input$.next(input);
+  @ViewChild(NzSelectSearchComponent)
+  set input(inputComponent: NzSelectSearchComponent | undefined) {
+    this.input$.next(inputComponent?.inputElement);
   }
   get input(): ElementRef<HTMLInputElement> | undefined {
     return this.input$.getValue();
@@ -294,10 +337,15 @@ export class NzCascaderComponent
   @Input({ transform: numberAttribute }) nzMouseEnterDelay: number = 150; // ms
   @Input({ transform: numberAttribute }) nzMouseLeaveDelay: number = 150; // ms
   @Input() nzStatus: NzStatus = '';
+  @Input({ transform: booleanAttribute }) nzMultiple?: boolean = false;
+  @Input() nzMaxTagCount: number = Infinity;
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny> | Observable<NzSafeAny>;
+  @Input() nzDisplayWith: (nodes: NzCascaderOption[]) => string | undefined = (nodes: NzCascaderOption[]) => {
+    return defaultDisplayRender(nodes.map(n => this.cascaderService.getOptionLabel(n!)));
+  };
   // TODO: RTL
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
   @Input() nzExpandIcon: string | TemplateRef<void> = '';
@@ -337,7 +385,7 @@ export class NzCascaderComponent
   positions: ConnectionPositionPair[] = [...DEFAULT_CASCADER_POSITIONS];
 
   /**
-   * Dropdown's with in pixel.
+   * Dropdown width in pixel.
    */
   dropdownWidthStyle?: string;
   dropdownHeightStyle: 'auto' | '' = '';
@@ -362,6 +410,10 @@ export class NzCascaderComponent
   private delayMenuTimer?: ReturnType<typeof setTimeout>;
   private delaySelectTimer?: ReturnType<typeof setTimeout>;
   private isNzDisableFirstChange: boolean = true;
+
+  get multipleSelectedOptions(): NzCascaderOption[][] {
+    return this.cascaderService.selectedOptions as NzCascaderOption[][];
+  }
 
   get inSearchingMode(): boolean {
     return this.cascaderService.inSearchingMode;
@@ -403,10 +455,10 @@ export class NzCascaderComponent
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+  private nzConfigService = inject(NzConfigService);
+  public cascaderService = inject(NzCascaderService);
 
   constructor(
-    public cascaderService: NzCascaderService,
-    public nzConfigService: NzConfigService,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     private i18nService: NzI18nService,
@@ -424,10 +476,8 @@ export class NzCascaderComponent
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
       .pipe(
-        distinctUntilChanged((pre, cur) => {
-          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
-        }),
-        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        distinctUntilChanged((pre, cur) => pre.status === cur.status && pre.hasFeedback === cur.hasFeedback),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : of(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntil(this.destroy$)
       )
@@ -457,7 +507,9 @@ export class NzCascaderComponent
         this.nzSelectionChange.emit([]);
       } else {
         const { option, index } = data;
-        const shouldClose = option.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover');
+        const shouldClose =
+          // keep menu opened if multiple mode
+          !this.nzMultiple && (option.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover'));
         if (shouldClose) {
           this.delaySetMenuVisible(false);
         }
@@ -494,14 +546,19 @@ export class NzCascaderComponent
 
     this.setupChangeListener();
     this.setupKeydownListener();
+    this.setupFocusListener();
   }
 
-  ngOnChanges({ nzStatus, nzSize }: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzStatus, nzSize, nzMultiple } = changes;
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
     if (nzSize) {
       this.size.set(nzSize.currentValue);
+    }
+    if (nzMultiple) {
+      this.cascaderService.syncOptions(this.nzMultiple);
     }
   }
 
@@ -520,7 +577,7 @@ export class NzCascaderComponent
 
   writeValue(value: NzSafeAny): void {
     this.cascaderService.values = toArray(value);
-    this.cascaderService.syncOptions(true);
+    this.cascaderService.syncOptions(this.nzMultiple, true);
   }
 
   delaySetMenuVisible(visible: boolean, delay: number = 100, setOpening: boolean = false): void {
@@ -549,7 +606,7 @@ export class NzCascaderComponent
       return;
     }
     if (visible) {
-      this.cascaderService.syncOptions();
+      this.cascaderService.syncOptions(this.nzMultiple);
       this.scrollToActivatedOptions();
     }
 
@@ -583,6 +640,9 @@ export class NzCascaderComponent
     this.nzClear.emit();
   }
 
+  /**
+   * @internal
+   */
   getSubmitValue(): NzSafeAny[] {
     return this.cascaderService.selectedOptions.map(o => this.cascaderService.getOptionValue(o));
   }
@@ -609,12 +669,8 @@ export class NzCascaderComponent
     this.focus();
   }
 
-  handleInputCompositionstart(): void {
-    this.isComposing = true;
-  }
-
-  handleInputCompositionend(): void {
-    this.isComposing = false;
+  isComposingChange(isComposing: boolean): void {
+    this.isComposing = isComposing;
   }
 
   @HostListener('click')
@@ -684,7 +740,27 @@ export class NzCascaderComponent
     this.el.focus();
     this.inSearchingMode
       ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
-      : this.cascaderService.setOptionActivated(option, columnIndex, true);
+      : this.cascaderService.setOptionActivated(option, columnIndex, !this.nzMultiple);
+  }
+
+  onOptionCheck(option: NzCascaderOption, columnIndex: number): void {
+    if (!this.nzMultiple || (option && option.disabled)) {
+      return;
+    }
+
+    console.log('onOptionCheck');
+    if (this.cascaderService.checkedOptionsKeySet.has(option.value)) {
+      console.log(`uncheck ${option.value}`);
+      // uncheck
+      this.cascaderService.removeSelectedOption(option, columnIndex, this.nzMultiple);
+      this.cascaderService.checkedOptionsKeySet.delete(option.value);
+    } else {
+      console.log(`check ${option.value}`);
+      // check
+      this.inSearchingMode
+        ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
+        : this.cascaderService.setOptionActivated(option, columnIndex, true, true);
+    }
   }
 
   onClickOutside(event: MouseEvent): void {
@@ -766,14 +842,14 @@ export class NzCascaderComponent
   private delaySetOptionActivated(option: NzCascaderOption, columnIndex: number, performSelect: boolean): void {
     this.clearDelaySelectTimer();
     this.delaySelectTimer = setTimeout(() => {
-      this.cascaderService.setOptionActivated(option, columnIndex, performSelect);
+      this.cascaderService.setOptionActivated(option, columnIndex, performSelect, this.nzMultiple);
       this.delaySelectTimer = undefined;
     }, 150);
   }
 
   private toggleSearchingMode(toSearching: boolean): void {
     if (this.inSearchingMode !== toSearching) {
-      this.cascaderService.toggleSearchingMode(toSearching);
+      this.cascaderService.toggleSearchingMode(toSearching, this.nzMultiple);
     }
 
     if (this.inSearchingMode) {
@@ -894,6 +970,22 @@ export class NzCascaderComponent
         takeUntil(this.destroy$)
       )
       .subscribe(event => event.stopPropagation());
+  }
+
+  private setupFocusListener(): void {
+    this.input$
+      .pipe(
+        switchMap(input => fromEventOutsideAngular(input?.nativeElement, 'focus')),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => this.handleInputFocus());
+
+    this.input$
+      .pipe(
+        switchMap(input => fromEventOutsideAngular(input?.nativeElement, 'blur')),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => this.handleInputBlur());
   }
 
   private setupKeydownListener(): void {

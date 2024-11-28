@@ -23,6 +23,7 @@ export interface NzCascaderOption {
   isLeaf?: boolean;
   parent?: NzCascaderOption;
   children?: NzCascaderOption[];
+  disableCheckbox?: boolean;
 
   [key: string]: NzSafeAny;
 }

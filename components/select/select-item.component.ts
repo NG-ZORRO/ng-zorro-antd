@@ -23,7 +23,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *nzStringTemplateOutlet="contentTemplateOutlet; context: { $implicit: contentTemplateOutletContext }">
+    <ng-container *nzStringTemplateOutlet="contentTemplateOutlet; context: templateOutletContext">
       @if (deletable) {
         <div class="ant-select-selection-item-content">{{ label }}</div>
       } @else {
@@ -57,7 +57,12 @@ export class NzSelectItemComponent {
   @Input() contentTemplateOutlet: string | TemplateRef<NzSafeAny> | null = null;
   @Output() readonly delete = new EventEmitter<MouseEvent>();
 
-  constructor() {}
+  protected get templateOutletContext(): NzSafeAny {
+    return {
+      $implicit: this.contentTemplateOutletContext,
+      ...this.contentTemplateOutletContext
+    };
+  }
 
   onDelete(e: MouseEvent): void {
     e.preventDefault();

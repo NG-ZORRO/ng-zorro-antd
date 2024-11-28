@@ -595,7 +595,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   constructor(

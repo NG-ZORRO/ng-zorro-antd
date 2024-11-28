@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 9
 title:
   zh-CN: 自定义已选项
   en-US: Custom render
