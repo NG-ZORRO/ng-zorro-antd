@@ -91,7 +91,7 @@ export class NzCascaderOptionComponent implements OnInit {
   @Input() checkable?: boolean = false;
 
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onCheckboxChange = new EventEmitter<void>();
+  @Output() readonly check = new EventEmitter<void>();
 
   readonly nativeElement: HTMLElement = inject(ElementRef).nativeElement;
   public cascaderService = inject(NzCascaderService);
@@ -131,6 +131,6 @@ export class NzCascaderOptionComponent implements OnInit {
     if (!this.checkable) {
       return;
     }
-    this.onCheckboxChange.emit();
+    this.check.emit();
   }
 }

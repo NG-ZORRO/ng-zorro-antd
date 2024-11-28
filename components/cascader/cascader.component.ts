@@ -135,26 +135,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               [contentTemplateOutletContext]="labelRenderContext"
             ></nz-select-item>
           }
-
-          <!--        <div #selectContainer #origin="cdkOverlayOrigin" cdkOverlayOrigin class="ant-select-selector">-->
-          <!--          <span class="ant-select-selection-search">-->
-          <!--            <input-->
-          <!--              #input-->
-          <!--              type="search"-->
-          <!--              class="ant-select-selection-search-input"-->
-          <!--              [style.opacity]="nzShowSearch ? '' : '0'"-->
-          <!--              [attr.autoComplete]="'off'"-->
-          <!--              [attr.expanded]="menuVisible"-->
-          <!--              [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"-->
-          <!--              [readonly]="!nzShowSearch"-->
-          <!--              [disabled]="nzDisabled"-->
-          <!--              [(ngModel)]="inputValue"-->
-          <!--              (blur)="handleInputBlur()"-->
-          <!--              (focus)="handleInputFocus()"-->
-          <!--              (compositionstart)="handleInputCompositionstart()"-->
-          <!--              (compositionend)="handleInputCompositionend()"-->
-          <!--            />-->
-          <!--          </span>-->
         </div>
 
         @if (nzShowArrow) {
@@ -239,7 +219,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                       (mouseenter)="onOptionMouseEnter(option, i, $event)"
                       (mouseleave)="onOptionMouseLeave(option, i, $event)"
                       (click)="onOptionClick(option, i, $event)"
-                      (onCheckboxChange)="onOptionCheck(option, i)"
+                      (check)="onOptionCheck(option, i)"
                     ></li>
                   }
                 </ul>
@@ -748,14 +728,10 @@ export class NzCascaderComponent
       return;
     }
 
-    console.log('onOptionCheck');
     if (this.cascaderService.checkedOptionsKeySet.has(option.value)) {
-      console.log(`uncheck ${option.value}`);
       // uncheck
       this.cascaderService.removeSelectedOption(option, columnIndex, this.nzMultiple);
-      this.cascaderService.checkedOptionsKeySet.delete(option.value);
     } else {
-      console.log(`check ${option.value}`);
       // check
       this.inSearchingMode
         ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)

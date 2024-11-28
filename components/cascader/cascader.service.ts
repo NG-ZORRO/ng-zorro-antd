@@ -623,13 +623,6 @@ export class NzCascaderService implements OnDestroy {
     if (!parentNode || index < 0) {
       return;
     }
-    console.log(
-      'ConductUp',
-      parentNode.value,
-      index,
-      this.checkedOptionsKeySet.has(parentNode.value),
-      this.halfCheckedOptionsKeySet.has(parentNode.value)
-    );
 
     if (!parentNode.disabled) {
       let allSiblingChecked = true;
@@ -640,16 +633,9 @@ export class NzCascaderService implements OnDestroy {
         const checked = this.checkedOptionsKeySet.has(child.value);
         const halfChecked = this.halfCheckedOptionsKeySet.has(child.value);
 
-        console.log(this.checkedOptionsKeySet);
-        console.log(this.halfCheckedOptionsKeySet);
-        console.log(this.checkedLeafOptionsKeySet);
-        console.log('ConductUp', child.value, disabled, checked, halfChecked);
-
         allSiblingChecked = allSiblingChecked && (disabled || (!halfChecked && checked));
         someSiblingChecked = someSiblingChecked || checked || halfChecked;
       });
-
-      console.log('ConductUp', parentNode.value, allSiblingChecked, someSiblingChecked);
 
       // if all the siblings are checked (or disabled), set the parent checked
       if (allSiblingChecked) {
@@ -696,7 +682,6 @@ export class NzCascaderService implements OnDestroy {
   }
 
   addCheckedOptions(option: NzCascaderOption): void {
-    console.log('check', option.value);
     this.checkedOptionsKeySet.add(option.value);
     if (option.isLeaf) {
       this.checkedLeafOptionsKeySet.add(option.value);
