@@ -18,7 +18,7 @@ import {
   NzCascaderSearchOption,
   NzCascaderShowCheckedStrategy
 } from './typings';
-import { getOptionKey, isChildOption, isParentOption, setOptionKey, toPathKey } from './utils';
+import { getOptionKey, isChildOption, isDisabledOption, isParentOption, setOptionKey, toPathKey } from './utils';
 
 /**
  * All data is stored and parsed in NzCascaderService.
@@ -173,7 +173,7 @@ export class NzCascaderService implements OnDestroy {
     this.columnsSnapshot = this.columns = options && options.length ? [options] : [];
 
     if (this.inSearchingMode) {
-      this.prepareSearchOptions(this.cascaderComponent.inputValue);
+      this.prepareSearchOptions(this.cascaderComponent.inputValue, multiple);
     } else if (this.columns.length) {
       this.syncOptions(multiple);
     }
@@ -195,7 +195,7 @@ export class NzCascaderService implements OnDestroy {
     multiple: boolean = false,
     loadingChildren: boolean = true
   ): void {
-    if (option.disabled) {
+    if (isDisabledOption(option, multiple)) {
       return;
     }
     this.activatedOptions[columnIndex] = option;
@@ -315,8 +315,9 @@ export class NzCascaderService implements OnDestroy {
    * Filter cascader options to reset `columns`.
    *
    * @param searchValue The string user wants to search.
+   * @param multiple Multiple mode
    */
-  prepareSearchOptions(searchValue: string): void {
+  prepareSearchOptions(searchValue: string, multiple = false): void {
     const results: NzCascaderOption[] = []; // Search results only have one layer.
     const path: NzCascaderOption[] = [];
     const defaultFilter: NzCascaderFilter = (i, p) =>
@@ -331,7 +332,7 @@ export class NzCascaderService implements OnDestroy {
       path.push(node);
       const cPath = Array.from(path);
       if (filter(searchValue, cPath)) {
-        const disabled = forceDisabled || node.disabled;
+        const disabled = forceDisabled || isDisabledOption(node, multiple);
         const option: NzCascaderSearchOption = {
           disabled,
           isLeaf: true,
@@ -343,7 +344,7 @@ export class NzCascaderService implements OnDestroy {
       path.pop();
     };
     const loopParent = (node: NzCascaderOption, forceDisabled = false): void => {
-      const disabled = forceDisabled || node.disabled;
+      const disabled = forceDisabled || isDisabledOption(node, multiple);
       path.push(node);
       node.children!.forEach(sNode => {
         if (!sNode.parent) {
@@ -622,14 +623,14 @@ export class NzCascaderService implements OnDestroy {
       return;
     }
 
-    if (!parentNode.disabled) {
+    if (!isDisabledOption(parentNode)) {
       let allSiblingChecked = true;
       let someSiblingChecked = false;
       const parentKey = getOptionKey(parentNode);
 
       parentNode?.children?.forEach(child => {
         const key = getOptionKey(child);
-        const disabled = child.disabled;
+        const disabled = isDisabledOption(child);
         const checked = this.checkedOptionsKeySet.has(key);
         const halfChecked = this.halfCheckedOptionsKeySet.has(key);
 
@@ -669,7 +670,7 @@ export class NzCascaderService implements OnDestroy {
     if (isParentOption(option)) {
       this.setColumnData(option?.children!, index, option);
     }
-    if (!option.disabled) {
+    if (!isDisabledOption(option)) {
       const key = getOptionKey(option);
       if (value) {
         this.addCheckedOptions(option);

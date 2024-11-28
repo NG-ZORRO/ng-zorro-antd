@@ -27,7 +27,7 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCascaderOption } from './typings';
-import { getOptionKey } from './utils';
+import { getOptionKey, isDisabledOption } from './utils';
 
 @Component({
   standalone: true,
@@ -108,14 +108,6 @@ export class NzCascaderOptionComponent implements OnInit {
     }
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   const { option, prevValuePath } = changes;
-  //   if ((option || prevValuePath) && option?.currentValue && prevValuePath?.currentValue) {
-  //     const fullPath = [...prevValuePath.currentValue, this.cascaderService.getOptionValue(option.currentValue)];
-  //     this.key = toPathKey(fullPath);
-  //   }
-  // }
-
   get checked(): boolean {
     return this.cascaderService.checkedOptionsKeySet.has(getOptionKey(this.option));
   }
@@ -125,7 +117,7 @@ export class NzCascaderOptionComponent implements OnInit {
   }
 
   get disabled(): boolean {
-    return false;
+    return isDisabledOption(this.option);
   }
 
   get optionLabel(): string {

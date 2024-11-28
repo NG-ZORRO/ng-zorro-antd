@@ -15,6 +15,15 @@ export function isParentOption(o: NzCascaderOption): boolean {
   return !!o.children && !!o.children.length && !o.isLeaf;
 }
 
+/**
+ * Whether an option is disabled in multiple mode.
+ * @param o option
+ * @param multiple whether multiple mode
+ */
+export function isDisabledOption(o: NzCascaderOption, multiple = true): boolean {
+  return o.disabled || (multiple && !!o.disableCheckbox);
+}
+
 const VALUE_SPLIT = '__CASCADER_SPLIT__';
 const KEY_PROPERTY = '__cascader_key';
 
@@ -23,13 +32,6 @@ const KEY_PROPERTY = '__cascader_key';
  */
 export function toPathKey(value: NzSafeAny[]): string {
   return value.join(VALUE_SPLIT);
-}
-
-/**
- * Convert string to value array, split by `VALUE_SPLIT`
- */
-export function toKeyValues(value: string): string[] {
-  return value.split(VALUE_SPLIT);
 }
 
 export function getOptionKey(option: NzCascaderOption): string {

@@ -841,7 +841,7 @@ export class NzCascaderComponent
     }
 
     if (this.inSearchingMode) {
-      this.cascaderService.prepareSearchOptions(this.inputValue);
+      this.cascaderService.prepareSearchOptions(this.inputValue, this.nzMultiple);
     }
   }
 
