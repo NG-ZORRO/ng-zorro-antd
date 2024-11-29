@@ -21,13 +21,12 @@ import {
   booleanAttribute
 } from '@angular/core';
 
-import { NzCascaderService } from 'ng-zorro-antd/cascader/cascader.service';
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzTreeNode } from 'ng-zorro-antd/core/tree';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzCascaderOption } from './typings';
-import { getOptionKey, isDisabledOption } from './utils';
 
 @Component({
   standalone: true,
@@ -50,7 +49,7 @@ import { getOptionKey, isDisabledOption } from './utils';
     @if (optionTemplate) {
       <ng-template
         [ngTemplateOutlet]="optionTemplate"
-        [ngTemplateOutletContext]="{ $implicit: option, index: columnIndex }"
+        [ngTemplateOutletContext]="{ $implicit: node.origin, index: columnIndex }"
       />
     } @else {
       <div
@@ -59,9 +58,9 @@ import { getOptionKey, isDisabledOption } from './utils';
       ></div>
     }
 
-    @if (!option.isLeaf || option.children?.length || option.loading) {
+    @if (!node.isLeaf || node.children?.length || node.isLoading) {
       <div class="ant-cascader-menu-item-expand-icon">
-        @if (option.loading) {
+        @if (node.isLoading) {
           <span nz-icon nzType="loading"></span>
         } @else {
           <ng-container *nzStringTemplateOutlet="expandIcon">
@@ -73,16 +72,17 @@ import { getOptionKey, isDisabledOption } from './utils';
   `,
   host: {
     class: 'ant-cascader-menu-item ant-cascader-menu-item-expanded',
-    '[attr.title]': 'option.title || optionLabel',
+    '[attr.title]': 'node',
     '[class.ant-cascader-menu-item-active]': 'activated',
-    '[class.ant-cascader-menu-item-expand]': '!option.isLeaf',
-    '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
+    '[class.ant-cascader-menu-item-expand]': '!node.isLeaf',
+    '[class.ant-cascader-menu-item-disabled]': 'node.isDisabled'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzCascaderOptionComponent implements OnInit {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
+  @Input() node!: NzTreeNode;
   @Input() option!: NzCascaderOption;
   @Input() activated = false;
   @Input() highlightText!: string;
@@ -94,9 +94,7 @@ export class NzCascaderOptionComponent implements OnInit {
 
   @Output() readonly check = new EventEmitter<void>();
 
-  // public key!: string;
   public readonly nativeElement: HTMLElement = inject(ElementRef).nativeElement;
-  private cascaderService = inject(NzCascaderService);
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -109,15 +107,15 @@ export class NzCascaderOptionComponent implements OnInit {
   }
 
   get checked(): boolean {
-    return this.cascaderService.checkedOptionsKeySet.has(getOptionKey(this.option));
+    return this.node.isChecked;
   }
 
   get halfChecked(): boolean {
-    return this.cascaderService.halfCheckedOptionsKeySet.has(getOptionKey(this.option));
+    return this.node.isHalfChecked;
   }
 
   get disabled(): boolean {
-    return isDisabledOption(this.option);
+    return this.node.isDisabled || this.node.isDisableCheckbox;
   }
 
   get optionLabel(): string {

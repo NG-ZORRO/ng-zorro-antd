@@ -3,12 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NzTreeNode } from 'ng-zorro-antd/core/tree';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzCascaderOption } from './typings';
 
 export function isChildOption(o: NzCascaderOption): boolean {
   return o.isLeaf || !o.children || !o.children.length;
+}
+
+export function isChildNode(node: NzTreeNode): boolean {
+  return node.isLeaf || !node.children || !node.children.length;
+}
+
+export function isParentNode(node: NzTreeNode): boolean {
+  return !!node.children && !!node.children.length && !node.isLeaf;
 }
 
 export function isParentOption(o: NzCascaderOption): boolean {

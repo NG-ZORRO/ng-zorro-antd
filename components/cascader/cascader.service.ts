@@ -7,8 +7,9 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
+import { NzTreeNode } from 'ng-zorro-antd/core/tree';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { arraysEqual, isNotNil } from 'ng-zorro-antd/core/util';
+import { arraysEqual } from 'ng-zorro-antd/core/util';
 
 import {
   isShowSearchObject,
@@ -22,6 +23,7 @@ import {
   getOptionKey,
   isChildOption,
   isDisabledOption,
+  isParentNode,
   isParentOption,
   setOptionKey,
   toPathArray,
@@ -35,6 +37,10 @@ import {
 export class NzCascaderService implements OnDestroy {
   /** Activated options in each column. */
   activatedOptions: NzCascaderOption[] = [];
+
+  activatedNodes: NzTreeNode[] = [];
+
+  column: NzTreeNode[][] = [];
 
   /** An array to store cascader items arranged in different layers. */
   columns: NzCascaderOption[][] = [];
@@ -71,6 +77,11 @@ export class NzCascaderService implements OnDestroy {
     index: number;
   } | null>();
 
+  readonly $nodeSelected = new Subject<{
+    node: NzTreeNode;
+    index: number;
+  } | null>();
+
   /**
    * Emit an event to notify cascader it needs to quit searching mode.
    * Only emit when user do select a searching option.
@@ -87,13 +98,14 @@ export class NzCascaderService implements OnDestroy {
 
   /** Return cascader options in the first layer. */
   get nzOptions(): NzCascaderOption[] {
-    return this.columns[0];
+    return this.column[0];
   }
 
   ngOnDestroy(): void {
     this.$redraw.complete();
     this.$quitSearching.complete();
     this.$optionSelected.complete();
+    this.$nodeSelected.complete();
     this.$loading.complete();
   }
 
@@ -102,67 +114,67 @@ export class NzCascaderService implements OnDestroy {
    *
    * If on multiple mode show last selected value
    */
-  syncOptions(multiple: boolean = false, first: boolean = false): void {
-    let values = this.values;
-    const hasValue = values && values.length;
-    const lastColumnIndex = values.length - 1;
-    const initColumnWithIndex = (value: NzSafeAny, columnIndex: number, length: number = lastColumnIndex): void => {
-      const activatedOptionSetter = (): void => {
-        const currentValue = value[columnIndex];
-
-        if (!isNotNil(currentValue)) {
-          this.$redraw.next();
-          return;
-        }
-
-        const option =
-          this.findOptionWithValue(columnIndex, value[columnIndex]) ||
-          (typeof currentValue === 'object'
-            ? currentValue
-            : {
-                [`${this.cascaderComponent.nzValueProperty}`]: currentValue,
-                [`${this.cascaderComponent.nzLabelProperty}`]: currentValue
-              });
-        this.setOptionActivated(option, columnIndex, false, multiple, false);
-
-        if (columnIndex < length) {
-          initColumnWithIndex(value, columnIndex + 1, length);
-        } else {
-          this.dropBehindColumns(columnIndex);
-          this.selectedOptions = multiple
-            ? [...this.selectedOptions, [...this.activatedOptions]]
-            : [...this.selectedOptions, ...this.activatedOptions];
-          this.$redraw.next();
-        }
-      };
-
-      if (this.isLoaded(columnIndex) || !this.cascaderComponent.nzLoadData) {
-        activatedOptionSetter();
-      } else {
-        const option = this.activatedOptions[columnIndex - 1] || {};
-        this.loadChildren(option, columnIndex - 1, activatedOptionSetter);
-      }
-    };
-
-    this.activatedOptions = [];
-    this.selectedOptions = [];
-
-    if (this.isLoaded(0)) {
-      this.columns[0].forEach(option => setOptionKey(option, this.getOptionValue(option)));
-    }
-
-    if (first && this.cascaderComponent.nzLoadData && !hasValue) {
-      // Should also notify the component that value changes. Fix #3480.
-      this.$redraw.next();
-      return;
-    } else {
-      if (multiple) {
-        values.forEach(value => initColumnWithIndex(value, 0, value.length - 1));
-      } else {
-        initColumnWithIndex(values, 0);
-      }
-    }
-  }
+  // syncOptions(multiple: boolean = false, first: boolean = false): void {
+  //   let values = this.values;
+  //   const hasValue = values && values.length;
+  //   const lastColumnIndex = values.length - 1;
+  //   const initColumnWithIndex = (value: NzSafeAny, columnIndex: number, length: number = lastColumnIndex): void => {
+  //     const activatedOptionSetter = (): void => {
+  //       const currentValue = value[columnIndex];
+  //
+  //       if (!isNotNil(currentValue)) {
+  //         this.$redraw.next();
+  //         return;
+  //       }
+  //
+  //       const option =
+  //         this.findOptionWithValue(columnIndex, value[columnIndex]) ||
+  //         (typeof currentValue === 'object'
+  //           ? currentValue
+  //           : {
+  //               [`${this.cascaderComponent.nzValueProperty}`]: currentValue,
+  //               [`${this.cascaderComponent.nzLabelProperty}`]: currentValue
+  //             });
+  //       this.setOptionActivated(option, columnIndex, false, multiple, false);
+  //
+  //       if (columnIndex < length) {
+  //         initColumnWithIndex(value, columnIndex + 1, length);
+  //       } else {
+  //         this.dropBehindColumns(columnIndex);
+  //         this.selectedOptions = multiple
+  //           ? [...this.selectedOptions, [...this.activatedOptions]]
+  //           : [...this.selectedOptions, ...this.activatedOptions];
+  //         this.$redraw.next();
+  //       }
+  //     };
+  //
+  //     if (this.isLoaded(columnIndex) || !this.cascaderComponent.nzLoadData) {
+  //       activatedOptionSetter();
+  //     } else {
+  //       const option = this.activatedOptions[columnIndex - 1] || {};
+  //       this.loadChildren(option, columnIndex - 1, activatedOptionSetter);
+  //     }
+  //   };
+  //
+  //   this.activatedOptions = [];
+  //   this.selectedOptions = [];
+  //
+  //   if (this.isLoaded(0)) {
+  //     this.columns[0].forEach(option => setOptionKey(option, this.getOptionValue(option)));
+  //   }
+  //
+  //   if (first && this.cascaderComponent.nzLoadData && !hasValue) {
+  //     // Should also notify the component that value changes. Fix #3480.
+  //     this.$redraw.next();
+  //     return;
+  //   } else {
+  //     if (multiple) {
+  //       values.forEach(value => initColumnWithIndex(value, 0, value.length - 1));
+  //     } else {
+  //       initColumnWithIndex(values, 0);
+  //     }
+  //   }
+  // }
 
   /**
    * Bind cascader component so this service could use inputs.
@@ -174,14 +186,38 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Reset all options. Rebuild searching options if in searching mode.
    */
-  withOptions(options: NzCascaderOption[] | null, multiple: boolean = false): void {
-    this.columnsSnapshot = this.columns = options && options.length ? [options] : [];
+  // withOptions(options: NzCascaderOption[] | null, multiple: boolean = false): void {
+  //   this.columnsSnapshot = this.columns = options && options.length ? [options] : [];
+  //
+  //   if (this.inSearchingMode) {
+  //     this.prepareSearchOptions(this.cascaderComponent.inputValue, multiple);
+  //   } else if (this.columns.length) {
+  //     this.syncOptions(multiple);
+  //   }
+  // }
 
-    if (this.inSearchingMode) {
-      this.prepareSearchOptions(this.cascaderComponent.inputValue, multiple);
-    } else if (this.columns.length) {
-      this.syncOptions(multiple);
+  setNodeActivated(
+    node: NzTreeNode,
+    columnIndex: number,
+    performSelect: boolean = false,
+    multiple: boolean = false,
+    loadingChildren: boolean = true
+  ): void {
+    this.activatedNodes[columnIndex] = node;
+
+    if (isParentNode(node)) {
+      this.setColumnData2(node.children!, columnIndex + 1);
+    } else if (!node.isLeaf && loadingChildren) {
+      this.loadChildren(node, columnIndex);
+    } else if (node.isLeaf) {
+      this.dropBehindColumns2(columnIndex);
     }
+
+    if (performSelect && node.isSelectable) {
+      this.setNodeSelected(node, columnIndex, multiple);
+    }
+
+    this.$redraw.next();
   }
 
   /**
@@ -263,31 +299,29 @@ export class NzCascaderService implements OnDestroy {
     }
   }
 
+  setNodeSelected(node: NzTreeNode, index: number, multiple: boolean = false): void {
+    const changeOn = this.cascaderComponent.nzChangeOn;
+    const shouldPerformSelection = (o: NzCascaderOption, i: number): boolean =>
+      typeof changeOn === 'function' ? changeOn(o, i) : false;
+
+    if (
+      multiple ||
+      node.isLeaf ||
+      this.cascaderComponent.nzChangeOnSelect ||
+      shouldPerformSelection(node.origin, index)
+    ) {
+      node.isSelected = true;
+      this.cascaderComponent.treeService.setSelectedNodeList(node, multiple);
+      this.cascaderComponent.updateSelectedNodes();
+      this.$redraw.next();
+      this.$nodeSelected.next({ node, index });
+    }
+  }
+
   setOptionDeactivatedSinceColumn(column: number): void {
     this.dropBehindActivatedOptions(column - 1);
     this.dropBehindColumns(column);
     this.$redraw.next();
-  }
-
-  /**
-   * Remove item from selectedOptions
-   *
-   * @param option
-   * @param multiple
-   */
-  removeSelectedOption(option: NzCascaderOption, multiple: boolean = true): void {
-    if (this.isMultipleSelections(this.selectedOptions, multiple)) {
-      const index = this.getOptionColumnIndexWithKey(option);
-      this.selectedOptions = this.selectedOptions.filter(
-        // compare with option key, because value would be null if searchingMode
-        options => !options.some(o => getOptionKey(o) === getOptionKey(option))
-      );
-      this.removeCheckedOption(option);
-      this.conduct(option, index);
-      this.prepareEmitValue(multiple);
-      this.$redraw.next();
-      this.$optionSelected.next({ option, index });
-    }
   }
 
   /**
@@ -412,7 +446,7 @@ export class NzCascaderService implements OnDestroy {
       this.activatedOptions = [...this.activatedOptionsSnapshot];
       this.selectedOptions = [...this.activatedOptions];
       this.columns = [...this.columnsSnapshot];
-      this.syncOptions(multiple);
+      // this.syncOptions(multiple);
       this.$redraw.next();
     }
   }
@@ -427,6 +461,7 @@ export class NzCascaderService implements OnDestroy {
     this.halfCheckedOptionsKeySet.clear();
     this.checkedLeafOptionsKeySet.clear();
     this.activatedOptions = [];
+    this.activatedNodes = [];
     this.dropBehindColumns(0);
     this.$redraw.next();
     this.$optionSelected.next(null);
@@ -440,9 +475,9 @@ export class NzCascaderService implements OnDestroy {
     return o[this.cascaderComponent.nzValueProperty || 'value'];
   }
 
-  private getOptionColumnIndexWithKey(option: NzCascaderOption): number {
-    const length = toPathArray(getOptionKey(option) || '').length;
-    return Math.max(0, length - 1);
+  private setColumnData2(nodes: NzTreeNode[], columnIndex: number): void {
+    this.column[columnIndex] = nodes;
+    this.dropBehindColumns2(columnIndex);
   }
 
   /**
@@ -495,6 +530,12 @@ export class NzCascaderService implements OnDestroy {
     }
   }
 
+  dropBehindColumns2(lastReserveIndex: number): void {
+    if (lastReserveIndex < this.column.length - 1) {
+      this.column = this.column.slice(0, lastReserveIndex + 1);
+    }
+  }
+
   /**
    * Load children of an option asynchronously.
    */
@@ -537,25 +578,25 @@ export class NzCascaderService implements OnDestroy {
     }
   }
 
-  private isLoaded(index: number): boolean {
-    return this.columns[index] && this.columns[index].length > 0;
-  }
-
-  /**
-   * Find an option that has a given value in a given column.
-   */
-  private findOptionWithValue(
-    columnIndex: number,
-    value: NzCascaderOption | NzSafeAny,
-    columns: NzCascaderOption[][] = this.columns
-  ): NzCascaderOption | null {
-    const targetColumn = columns[columnIndex];
-    if (targetColumn) {
-      const v = typeof value === 'object' ? this.getOptionValue(value) : value;
-      return targetColumn.find(o => v === this.getOptionValue(o))!;
-    }
-    return null;
-  }
+  // private isLoaded(index: number): boolean {
+  //   return this.columns[index] && this.columns[index].length > 0;
+  // }
+  //
+  // /**
+  //  * Find an option that has a given value in a given column.
+  //  */
+  // private findOptionWithValue(
+  //   columnIndex: number,
+  //   value: NzCascaderOption | NzSafeAny,
+  //   columns: NzCascaderOption[][] = this.columns
+  // ): NzCascaderOption | null {
+  //   const targetColumn = columns[columnIndex];
+  //   if (targetColumn) {
+  //     const v = typeof value === 'object' ? this.getOptionValue(value) : value;
+  //     return targetColumn.find(o => v === this.getOptionValue(o))!;
+  //   }
+  //   return null;
+  // }
 
   /**
    * Find the first option with given key in all column

@@ -27,7 +27,6 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { NzDemoCascaderMultipleComponent } from 'ng-zorro-antd/cascader/demo/multiple';
 import {
   createFakeEvent,
-  createMouseEvent,
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   dispatchMouseEvent
@@ -291,9 +290,9 @@ describe('cascader', () => {
     }));
 
     it('should clear timer on option mouseenter and mouseleave', fakeAsync(() => {
-      const mouseenter = createMouseEvent('mouseenter');
-      const mouseleave = createMouseEvent('mouseleave');
-      const option = options1[0]; // zhejiang
+      // const mouseenter = createMouseEvent('mouseenter');
+      // const mouseleave = createMouseEvent('mouseleave');
+      // const option = options1[0]; // zhejiang
 
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
@@ -306,18 +305,21 @@ describe('cascader', () => {
       const optionEl = getItemAtColumnAndRow(1, 1)!;
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
 
-      testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
+      dispatchMouseEvent(optionEl, 'mouseenter');
+      // testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
       fixture.detectChanges();
       tick(10);
       fixture.detectChanges();
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
-      testComponent.cascader.onOptionMouseLeave(option, 0, mouseleave);
+      dispatchMouseEvent(optionEl, 'mouseleave');
+      // testComponent.cascader.onOptionMouseLeave(option, 0, mouseleave);
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
 
-      testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
+      dispatchMouseEvent(optionEl, 'mouseenter');
+      // testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();

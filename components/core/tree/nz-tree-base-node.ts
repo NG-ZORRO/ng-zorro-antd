@@ -70,9 +70,9 @@ export class NzTreeNode {
   /**
    * Init nzTreeNode
    *
-   * @param option: user's input
-   * @param parent
-   * @param service: base nzTreeService
+   * @param option option user's input
+   * @param parent parent node
+   * @param service base nzTreeService
    */
   constructor(
     option: NzTreeNodeOptions | NzTreeNode,
@@ -109,9 +109,21 @@ export class NzTreeNode {
     } else {
       this.level = 0;
     }
+
+    const s = this.treeService;
+
+    /**
+     * post process of current treeNode
+     */
+    if (s && s.treeNodePostProcessor) {
+      s.treeNodePostProcessor(this);
+    }
+
+    /**
+     * instantiate children tree nodes
+     */
     if (typeof option.children !== 'undefined' && option.children !== null) {
       option.children.forEach(nodeOptions => {
-        const s = this.treeService;
         if (
           s &&
           !s.isCheckStrictly &&
