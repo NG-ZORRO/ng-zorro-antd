@@ -7,16 +7,8 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
   selector: 'nz-demo-input-number-digit',
   standalone: true,
   imports: [FormsModule, NzInputNumberModule],
-  template: `
-    <nz-input-number
-      [(ngModel)]="value"
-      [nzMin]="1"
-      [nzMax]="10"
-      [nzStep]="0.1"
-      [nzPlaceHolder]="'Digital'"
-    ></nz-input-number>
-  `
+  template: ` <nz-input-number [(ngModel)]="value" nzMin="0" nzMax="10" nzStep="0.1" nzPlaceHolder="Digital" /> `
 })
 export class NzDemoInputNumberDigitComponent {
-  value = 0;
+  value = 0.1;
 }

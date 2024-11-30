@@ -9,6 +9,8 @@ tag: deprecated
 
 通过鼠标或键盘，输入范围内的数值。
 
+> ⚠️ `InputNumberLegacy` 已在 `v19.0.0` 中废弃，请使用新版 `InputNumber` 组件。
+
 ## 何时使用
 
 当需要获取标准数值时。
