@@ -162,7 +162,7 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
   }>;
 
   formatterPercent = (value: number): string => `${value} %`;
-  parserPercent = (value: string): string => value.replace(' %', '');
+  parserPercent = (value: string): number => +value.replace(' %', '');
 
   constructor(private formBuilder: FormBuilder) {
     this.validateForm = this.formBuilder.nonNullable.group({
