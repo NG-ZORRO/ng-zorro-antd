@@ -32,11 +32,14 @@ import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } 
 import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
-import { NZ_SPACE_COMPACT_ITEM_TYPE } from 'ng-zorro-antd/space';
+import { NZ_SPACE_COMPACT_ITEM_TYPE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 import { NzInputNumberGroupSlotComponent } from './input-number-group-slot.component';
-import { NzInputNumberComponent } from './input-number.component';
+import { NzInputNumberLegacyComponent } from './input-number.component';
 
+/**
+ * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
+ */
 @Directive({
   selector: `nz-input-number-group[nzSuffix], nz-input-number-group[nzPrefix]`,
   standalone: true
@@ -45,6 +48,9 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   constructor(public elementRef: ElementRef) {}
 }
 
+/**
+ * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
+ */
 @Component({
   selector: 'nz-input-number-group',
   exportAs: 'nzInputNumberGroup',
@@ -111,6 +117,9 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
       }
     </ng-template>
   `,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzFormNoStatusService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input-number' }],
   host: {
     '[class.ant-input-number-group]': 'nzCompact',
     '[class.ant-input-number-group-compact]': 'nzCompact',
@@ -125,13 +134,11 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
     '[class.ant-input-number-affix-wrapper-lg]': `!isAddOn && isAffix && isLarge`,
     '[class.ant-input-number-affix-wrapper-sm]': `!isAddOn && isAffix && isSmall`
   },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzFormNoStatusService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input-number' }]
+  hostDirectives: [NzSpaceCompactItemDirective]
 })
 export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
-  @ContentChildren(NzInputNumberComponent, { descendants: true })
-  listOfNzInputNumberComponent!: QueryList<NzInputNumberComponent>;
+  @ContentChildren(NzInputNumberLegacyComponent, { descendants: true })
+  listOfNzInputNumberComponent!: QueryList<NzInputNumberLegacyComponent>;
   @Input() nzAddOnBeforeIcon?: string | null = null;
   @Input() nzAddOnAfterIcon?: string | null = null;
   @Input() nzPrefixIcon?: string | null = null;
@@ -213,10 +220,10 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
     listOfInputChange$
       .pipe(
         switchMap(list =>
-          merge(...[listOfInputChange$, ...list.map((input: NzInputNumberComponent) => input.disabled$)])
+          merge(...[listOfInputChange$, ...list.map((input: NzInputNumberLegacyComponent) => input.disabled$)])
         ),
         mergeMap(() => listOfInputChange$),
-        map(list => list.some((input: NzInputNumberComponent) => input.nzDisabled)),
+        map(list => list.some((input: NzInputNumberLegacyComponent) => input.nzDisabled)),
         takeUntil(this.destroy$)
       )
       .subscribe(disabled => {

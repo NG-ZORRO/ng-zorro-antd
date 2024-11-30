@@ -2,8 +2,9 @@
 category: Components
 subtitle: 数字输入框
 type: 数据录入
-title: InputNumber
+title: InputNumberLegacy
 cover: https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg
+tag: deprecated
 ---
 
 通过鼠标或键盘，输入范围内的数值。
@@ -13,12 +14,12 @@ cover: https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg
 当需要获取标准数值时。
 
 ```ts
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
 ```
 
 ## API
 
-### nz-input-number
+### nz-input-number-legacy
 
 | 成员                | 说明                                                                                                                                             | 类型                                                                              | 默认值                                                                          |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |

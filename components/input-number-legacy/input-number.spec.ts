@@ -9,8 +9,8 @@ import { createKeyboardEvent, createMouseEvent, dispatchEvent, dispatchFakeEvent
 import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
-import { NzInputNumberComponent } from './input-number.component';
-import { NzInputNumberModule } from './input-number.module';
+import { NzInputNumberLegacyComponent } from './input-number.component';
+import { NzInputNumberLegacyModule } from './input-number.module';
 
 describe('input number', () => {
   describe('input number basic', () => {
@@ -32,7 +32,7 @@ describe('input number', () => {
       fixture = TestBed.createComponent(NzTestInputNumberBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberLegacyComponent));
       inputElement = inputNumber.nativeElement.querySelector('input');
       upArrowEvent = createKeyboardEvent('keydown', UP_ARROW, inputElement, 'ArrowUp');
       downArrowEvent = createKeyboardEvent('keydown', DOWN_ARROW, inputElement, 'ArrowDown');
@@ -459,7 +459,7 @@ describe('input number', () => {
     it('should be in pristine, untouched, and valid states and be enable initially', fakeAsync(() => {
       fixture.detectChanges();
       flush();
-      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberLegacyComponent));
       const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-disabled');
       expect(inputElement.disabled).toBeFalsy();
@@ -471,7 +471,7 @@ describe('input number', () => {
       testComponent.disable();
       fixture.detectChanges();
       flush();
-      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberLegacyComponent));
       const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-disabled');
       expect(inputElement.disabled).toBeTruthy();
@@ -480,7 +480,7 @@ describe('input number', () => {
       testComponent.disabled = true;
       fixture.detectChanges();
       flush();
-      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      const inputNumber = fixture.debugElement.query(By.directive(NzInputNumberLegacyComponent));
       const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
       const upHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-up');
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-disabled');
@@ -525,7 +525,7 @@ describe('input number', () => {
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
 
-      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberLegacyComponent));
       inputElement = inputNumber.nativeElement.querySelector('input');
     }));
     it('should readOnly work', () => {
@@ -553,7 +553,7 @@ describe('input number', () => {
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
 
-      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberLegacyComponent));
     }));
     it('should status work', () => {
       fixture.detectChanges();
@@ -581,7 +581,7 @@ describe('input number', () => {
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
 
-      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
+      inputNumber = fixture.debugElement.query(By.directive(NzInputNumberLegacyComponent));
     }));
     it('should className correct', () => {
       const feedbackElement = fixture.nativeElement.querySelector('nz-form-item-feedback-icon');
@@ -612,9 +612,9 @@ describe('input number', () => {
 });
 @Component({
   standalone: true,
-  imports: [FormsModule, NzInputNumberModule],
+  imports: [FormsModule, NzInputNumberLegacyModule],
   template: `
-    <nz-input-number
+    <nz-input-number-legacy
       [(ngModel)]="value"
       (ngModelChange)="modelChange($event)"
       [nzDisabled]="disabled"
@@ -629,11 +629,11 @@ describe('input number', () => {
       [nzPrecision]="precision"
       [nzPrecisionMode]="precisionMode"
       [nzBorderless]="!bordered"
-    ></nz-input-number>
+    ></nz-input-number-legacy>
   `
 })
 export class NzTestInputNumberBasicComponent {
-  @ViewChild(NzInputNumberComponent, { static: false }) nzInputNumberComponent!: NzInputNumberComponent;
+  @ViewChild(NzInputNumberLegacyComponent, { static: false }) nzInputNumberComponent!: NzInputNumberLegacyComponent;
   value?: number | string;
   autofocus = false;
   disabled = false;
@@ -644,7 +644,7 @@ export class NzTestInputNumberBasicComponent {
   step = 1;
   bordered = true;
   precision?: number = 2;
-  precisionMode!: NzInputNumberComponent['nzPrecisionMode'];
+  precisionMode!: NzInputNumberLegacyComponent['nzPrecisionMode'];
   formatter = (value: number): string => (value !== null ? `${value}` : '');
   parser = (value: string): string => value;
   modelChange = jasmine.createSpy('change callback');
@@ -652,20 +652,25 @@ export class NzTestInputNumberBasicComponent {
 
 @Component({
   standalone: true,
-  imports: [NzInputNumberModule],
-  template: `<nz-input-number [nzReadOnly]="readonly"></nz-input-number>`
+  imports: [NzInputNumberLegacyModule],
+  template: `<nz-input-number-legacy [nzReadOnly]="readonly"></nz-input-number-legacy>`
 })
 export class NzTestReadOnlyInputNumberBasicComponent {
-  @ViewChild(NzInputNumberComponent, { static: false }) nzInputNumberComponent!: NzInputNumberComponent;
+  @ViewChild(NzInputNumberLegacyComponent, { static: false }) nzInputNumberComponent!: NzInputNumberLegacyComponent;
   readonly = false;
 }
 
 @Component({
   standalone: true,
-  imports: [ReactiveFormsModule, NzInputNumberModule],
+  imports: [ReactiveFormsModule, NzInputNumberLegacyModule],
   template: `
     <form>
-      <nz-input-number [formControl]="formControl" nzMax="10" nzMin="-10" [nzDisabled]="disabled"></nz-input-number>
+      <nz-input-number-legacy
+        [formControl]="formControl"
+        nzMax="10"
+        nzMin="-10"
+        [nzDisabled]="disabled"
+      ></nz-input-number-legacy>
     </form>
   `
 })
@@ -684,8 +689,8 @@ export class NzTestInputNumberFormComponent {
 
 @Component({
   standalone: true,
-  imports: [NzInputNumberModule],
-  template: `<nz-input-number [nzStatus]="status"></nz-input-number>`
+  imports: [NzInputNumberLegacyModule],
+  template: `<nz-input-number-legacy [nzStatus]="status"></nz-input-number-legacy>`
 })
 export class NzTestInputNumberStatusComponent {
   status: NzStatus = 'error';
@@ -693,12 +698,12 @@ export class NzTestInputNumberStatusComponent {
 
 @Component({
   standalone: true,
-  imports: [NzFormModule, NzInputNumberModule],
+  imports: [NzFormModule, NzInputNumberLegacyModule],
   template: `
     <form nz-form>
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
-          <nz-input-number></nz-input-number>
+          <nz-input-number-legacy></nz-input-number-legacy>
         </nz-form-control>
       </nz-form-item>
     </form>

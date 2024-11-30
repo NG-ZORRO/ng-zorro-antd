@@ -9,10 +9,10 @@ import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
-import { NzInputNumberGroupComponent } from 'ng-zorro-antd/input-number/input-number-group.component';
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number/input-number.module';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
+import { NzInputNumberGroupComponent } from './input-number-group.component';
+import { NzInputNumberLegacyModule } from './input-number.module';
 
 describe('input-number-group', () => {
   beforeEach(waitForAsync(() => {
@@ -199,7 +199,9 @@ describe('input-number-group', () => {
         inputNumberGroupElement = fixture.debugElement.query(By.directive(NzInputNumberGroupComponent)).nativeElement;
       });
       it('should size work', () => {
-        expect(inputNumberGroupElement.querySelector('nz-input-number')!.classList).toContain('ant-input-number-lg');
+        expect(inputNumberGroupElement.querySelector('nz-input-number-legacy')!.classList).toContain(
+          'ant-input-number-lg'
+        );
       });
     });
     describe('mix', () => {
@@ -337,10 +339,10 @@ describe('input-number-group', () => {
 
 @Component({
   standalone: true,
-  imports: [NzInputNumberModule],
+  imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group [nzAddOnBefore]="beforeContent" [nzAddOnAfter]="afterContent" [nzSize]="size">
-      <nz-input-number></nz-input-number>
+      <nz-input-number-legacy></nz-input-number-legacy>
     </nz-input-number-group>
     <ng-template #beforeTemplate>beforeTemplate</ng-template>
     <ng-template #afterTemplate>afterTemplate</ng-template>
@@ -356,10 +358,10 @@ export class NzTestInputNumberGroupAddonComponent {
 
 @Component({
   standalone: true,
-  imports: [NzInputNumberModule],
+  imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
-      <nz-input-number [nzDisabled]="disabled"></nz-input-number>
+      <nz-input-number-legacy [nzDisabled]="disabled"></nz-input-number-legacy>
     </nz-input-number-group>
     <ng-template #beforeTemplate>beforeTemplate</ng-template>
     <ng-template #afterTemplate>afterTemplate</ng-template>
@@ -376,11 +378,11 @@ export class NzTestInputNumberGroupAffixComponent {
 
 @Component({
   standalone: true,
-  imports: [NzInputNumberModule],
+  imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group [nzCompact]="compact" [nzSize]="size">
-      <nz-input-number></nz-input-number>
-      <nz-input-number></nz-input-number>
+      <nz-input-number-legacy></nz-input-number-legacy>
+      <nz-input-number-legacy></nz-input-number-legacy>
     </nz-input-number-group>
   `
 })
@@ -391,14 +393,14 @@ export class NzTestInputNumberGroupMultipleComponent {
 
 @Component({
   standalone: true,
-  imports: [FormsModule, NzGridModule, NzInputNumberModule],
+  imports: [FormsModule, NzGridModule, NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group nz-row nzSize="large">
       <div nz-col nzSpan="8">
-        <nz-input-number [ngModel]="1234" [nzStep]="1"></nz-input-number>
+        <nz-input-number-legacy [ngModel]="1234" [nzStep]="1"></nz-input-number-legacy>
       </div>
       <div nz-col nzSpan="8">
-        <nz-input-number [ngModel]="5678" [nzStep]="1"></nz-input-number>
+        <nz-input-number-legacy [ngModel]="5678" [nzStep]="1"></nz-input-number-legacy>
       </div>
     </nz-input-number-group>
   `
@@ -407,10 +409,10 @@ export class NzTestInputNumberGroupColComponent {}
 
 @Component({
   standalone: true,
-  imports: [NzInputNumberModule],
+  imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group nzPrefixIcon="user" nzAddOnAfter="@example.com">
-      <nz-input-number></nz-input-number>
+      <nz-input-number-legacy></nz-input-number-legacy>
     </nz-input-number-group>
   `
 })
@@ -418,18 +420,18 @@ export class NzTestInputNumberGroupMixComponent {}
 
 @Component({
   standalone: true,
-  imports: [NzIconModule, NzInputNumberModule],
+  imports: [NzIconModule, NzInputNumberLegacyModule],
   template: `
     @if (!isAddon) {
       <nz-input-number-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
-        <nz-input-number />
+        <nz-input-number-legacy />
       </nz-input-number-group>
       <ng-template #prefixTemplateClock>
         <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
       </ng-template>
     } @else {
       <nz-input-number-group nzAddOnAfterIcon="setting" [nzStatus]="status">
-        <nz-input-number />
+        <nz-input-number-legacy />
       </nz-input-number-group>
     }
   `
@@ -441,11 +443,11 @@ export class NzTestInputNumberGroupWithStatusComponent {
 
 @Component({
   standalone: true,
-  imports: [BidiModule, NzInputNumberModule],
+  imports: [BidiModule, NzInputNumberLegacyModule],
   template: `
     <div [dir]="dir">
       <nz-input-number-group nzAddOnAfterIcon="setting">
-        <nz-input-number></nz-input-number>
+        <nz-input-number-legacy></nz-input-number-legacy>
       </nz-input-number-group>
     </div>
   `
@@ -456,13 +458,13 @@ export class NzTestInputNumberGroupWithDirComponent {
 
 @Component({
   standalone: true,
-  imports: [NzFormModule, NzInputNumberModule],
+  imports: [NzFormModule, NzInputNumberLegacyModule],
   template: `
     <form nz-form>
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
           <nz-input-number-group [nzAddOnBefore]="addon">
-            <nz-input-number></nz-input-number>
+            <nz-input-number-legacy></nz-input-number-legacy>
           </nz-input-number-group>
         </nz-form-control>
       </nz-form-item>

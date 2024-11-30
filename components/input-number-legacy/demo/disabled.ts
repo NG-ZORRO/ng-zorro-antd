@@ -2,20 +2,20 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
 
 @Component({
-  selector: 'nz-demo-input-number-disabled',
+  selector: 'nz-demo-input-number-legacy-disabled',
   standalone: true,
-  imports: [FormsModule, NzButtonModule, NzInputNumberModule],
+  imports: [FormsModule, NzButtonModule, NzInputNumberLegacyModule],
   template: `
-    <nz-input-number
+    <nz-input-number-legacy
       [(ngModel)]="value"
       [nzMin]="1"
       [nzMax]="10"
       [nzStep]="1"
       [nzDisabled]="isDisabled"
-    ></nz-input-number>
+    ></nz-input-number-legacy>
     <br />
     <br />
     <button nz-button [nzType]="'primary'" (click)="toggleDisabled()">
@@ -23,7 +23,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
     </button>
   `
 })
-export class NzDemoInputNumberDisabledComponent {
+export class NzDemoInputNumberLegacyDisabledComponent {
   value = 3;
   isDisabled = false;
 

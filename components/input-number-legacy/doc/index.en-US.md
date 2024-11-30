@@ -1,8 +1,9 @@
 ---
 category: Components
 type: Data Entry
-title: InputNumber
+title: InputNumberLegacy
 cover: https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg
+tag: deprecated
 ---
 
 Enter a number within certain range with the mouse or keyboard.
@@ -12,12 +13,12 @@ Enter a number within certain range with the mouse or keyboard.
 When a numeric value needs to be provided.
 
 ```ts
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
 ```
 
 ## API
 
-### nz-input-number
+### nz-input-number-legacy
 
 | property            | description                                                                                                                                                                 | type                                                                              | default                                                                         |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |

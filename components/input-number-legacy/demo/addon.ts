@@ -2,21 +2,21 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
-  selector: 'nz-demo-input-number-addon',
+  selector: 'nz-demo-input-number-legacy-addon',
   standalone: true,
-  imports: [FormsModule, NzCascaderModule, NzInputNumberModule, NzSelectModule, NzSpaceModule],
+  imports: [FormsModule, NzCascaderModule, NzInputNumberLegacyModule, NzSelectModule, NzSpaceModule],
   template: `
     <nz-space nzDirection="vertical" style="width: 100%">
       <nz-input-number-group *nzSpaceItem nzAddOnBefore="+" nzAddOnAfter="$">
-        <nz-input-number [(ngModel)]="value" [nzStep]="1"></nz-input-number>
+        <nz-input-number-legacy [(ngModel)]="value" [nzStep]="1"></nz-input-number-legacy>
       </nz-input-number-group>
       <nz-input-number-group *nzSpaceItem [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate">
-        <nz-input-number [(ngModel)]="value" [nzStep]="1"></nz-input-number>
+        <nz-input-number-legacy [(ngModel)]="value" [nzStep]="1"></nz-input-number-legacy>
       </nz-input-number-group>
       <ng-template #addOnBeforeTemplate>
         <nz-select [ngModel]="'add'" style="width: 60px">
@@ -33,10 +33,10 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
         </nz-select>
       </ng-template>
       <nz-input-number-group *nzSpaceItem nzAddOnAfterIcon="setting">
-        <nz-input-number [(ngModel)]="value" [nzStep]="1"></nz-input-number>
+        <nz-input-number-legacy [(ngModel)]="value" [nzStep]="1"></nz-input-number-legacy>
       </nz-input-number-group>
       <nz-input-number-group *nzSpaceItem [nzAddOnBefore]="addOnBeforeCascaderTemplate">
-        <nz-input-number [(ngModel)]="value" [nzStep]="1"></nz-input-number>
+        <nz-input-number-legacy [(ngModel)]="value" [nzStep]="1"></nz-input-number-legacy>
       </nz-input-number-group>
       <ng-template #addOnBeforeCascaderTemplate>
         <nz-cascader [nzOptions]="[]" nzPlaceHolder="cascader" style="width: 150px"></nz-cascader>
@@ -44,6 +44,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
     </nz-space>
   `
 })
-export class NzDemoInputNumberAddonComponent {
+export class NzDemoInputNumberLegacyAddonComponent {
   value = 100;
 }

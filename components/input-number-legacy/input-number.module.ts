@@ -10,15 +10,18 @@ import {
   NzInputNumberGroupComponent,
   NzInputNumberGroupWhitSuffixOrPrefixDirective
 } from './input-number-group.component';
-import { NzInputNumberComponent } from './input-number.component';
+import { NzInputNumberLegacyComponent } from './input-number.component';
 
+/**
+ * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
+ */
 @NgModule({
   imports: [
-    NzInputNumberComponent,
+    NzInputNumberLegacyComponent,
     NzInputNumberGroupComponent,
     NzInputNumberGroupWhitSuffixOrPrefixDirective,
     NzInputNumberGroupSlotComponent
   ],
-  exports: [NzInputNumberComponent, NzInputNumberGroupComponent, NzInputNumberGroupWhitSuffixOrPrefixDirective]
+  exports: [NzInputNumberLegacyComponent, NzInputNumberGroupComponent, NzInputNumberGroupWhitSuffixOrPrefixDirective]
 })
-export class NzInputNumberModule {}
+export class NzInputNumberLegacyModule {}
