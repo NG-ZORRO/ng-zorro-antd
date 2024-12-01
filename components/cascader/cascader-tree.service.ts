@@ -7,9 +7,13 @@ import { Injectable } from '@angular/core';
 
 import { NzCascaderOption } from 'ng-zorro-antd/cascader/typings';
 import { NzTreeBaseService, NzTreeNode, NzTreeNodeKey } from 'ng-zorro-antd/core/tree';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { arraysEqual } from 'ng-zorro-antd/core/util';
 
-interface InternalFieldNames extends Required<Pick<NzCascaderOption, 'label' | 'value'>> {}
+interface InternalFieldNames {
+  label: string;
+  value: string;
+}
 
 @Injectable()
 export class NzCascaderTreeService extends NzTreeBaseService {
@@ -19,14 +23,17 @@ export class NzCascaderTreeService extends NzTreeBaseService {
   };
 
   override treeNodePostProcessor = (node: NzTreeNode): void => {
-    // if (node.parentNode) {
-    //   // node.key = toPathKey([node.parentNode.key, node.origin[this.fieldNames.value]]);
-    // } else {
-    //   node.key = toPathKey([node.origin[this.fieldNames.value]]);
-    // }
     node.key = node.origin[this.fieldNames.value];
     node.title = node.origin[this.fieldNames.label];
   };
+
+  get children(): NzTreeNode[] {
+    return this.rootNodes;
+  }
+
+  set children(value: Array<NzTreeNode | NzSafeAny>) {
+    this.rootNodes = value.map(v => (v instanceof NzTreeNode ? v : new NzTreeNode(v, null)));
+  }
 
   constructor() {
     super();

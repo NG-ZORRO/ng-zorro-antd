@@ -74,7 +74,6 @@ import {
   NzCascaderExpandTrigger,
   NzCascaderOption,
   NzCascaderSearchOption,
-  NzCascaderShowCheckedStrategy,
   NzCascaderSize,
   NzCascaderTriggerType,
   NzShowSearchOptions
@@ -310,9 +309,9 @@ export class NzCascaderComponent
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzColumnClassName?: string;
   @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
-  @Input() nzValueProperty = 'value';
+  @Input() nzValueProperty: string = 'value';
+  @Input() nzLabelProperty: string = 'label';
   @Input() nzLabelRender: TemplateRef<typeof this.labelRenderContext> | null = null;
-  @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig() nzSize: NzCascaderSize = 'default';
   @Input() @WithConfig() nzBackdrop = false;
@@ -325,7 +324,6 @@ export class NzCascaderComponent
   @Input() nzStatus: NzStatus = '';
   @Input({ transform: booleanAttribute }) nzMultiple: boolean = false;
   @Input() nzMaxTagCount: number = Infinity;
-  @Input() nzShowCheckedStrategy?: NzCascaderShowCheckedStrategy = 'parent';
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
@@ -349,9 +347,8 @@ export class NzCascaderComponent
   set nzOptions(options: NzCascaderOption[] | null) {
     const nodes = this.coerceTreeNodes(options || []);
     this.treeService.initTree(nodes);
-    this.updateSelectedNodes(true);
+    this.updateSelectedNodes();
     this.cascaderService.column = [nodes];
-    // this.cascaderService.withOptions(options);
     this.cascaderService.$redraw.next();
   }
 
@@ -428,10 +425,6 @@ export class NzCascaderComponent
 
   private get hasValue(): boolean {
     return this.cascaderService.values && this.cascaderService.values.length > 0;
-  }
-
-  get showLabelRender(): boolean {
-    return this.hasValue;
   }
 
   get showPlaceholder(): boolean {
@@ -563,8 +556,7 @@ export class NzCascaderComponent
       this.size.set(nzSize.currentValue);
     }
     if (nzMultiple) {
-      console.log('isMultiple', nzMultiple.currentValue);
-      //   this.cascaderService.syncOptions(this.nzMultiple);
+      console.log('nzMultiple', nzMultiple.currentValue);
     }
   }
 
@@ -637,6 +629,7 @@ export class NzCascaderComponent
     if (visible) {
       this.cascaderService.$redraw.next();
       // this.cascaderService.syncOptions(this.nzMultiple);
+      this.updateSelectedNodes(!!this.nzLoadData);
       this.scrollToActivatedOptions();
     }
 
@@ -768,22 +761,34 @@ export class NzCascaderComponent
 
   updateSelectedNodes(init: boolean = false): void {
     const value = this.cascaderService.values;
+    const multiple = this.nzMultiple;
     if (init) {
-      if (value?.length) {
-        console.log('init with default value', value);
-      }
       this.treeService.fieldNames = {
         value: this.nzValueProperty,
         label: this.nzLabelProperty
       };
-      const nodes = this.coerceTreeNodes(this.nzOptions || []);
-      this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.isCheckStrictly = false;
-      this.nzTreeService.initTree(nodes);
-      if (this.nzMultiple) {
-        this.treeService.conductCheckPaths(value, this.nzTreeService.isCheckStrictly);
-      } else {
-        this.treeService.conductSelectedPaths(value, this.nzMultiple);
+      this.treeService.isMultiple = multiple;
+      this.treeService.isCheckStrictly = false;
+
+      const initialize = (options: Array<NzTreeNode | NzCascaderOption> | null): void => {
+        const nodes = this.coerceTreeNodes(options || []);
+        this.treeService.initTree(nodes);
+        this.cascaderService.column = [nodes];
+        this.cascaderService.$redraw.next();
+        if (multiple) {
+          this.treeService.conductCheckPaths(value, this.treeService.isCheckStrictly);
+        } else {
+          this.treeService.conductSelectedPaths(value, multiple);
+        }
+      };
+
+      if (!this.cascaderService.column.length) {
+        // if nzLoadData set, load first level data asynchronously
+        if (this.nzLoadData) {
+          this.cascaderService.loadChildren(null, -1, initialize);
+        } else {
+          initialize(this.nzOptions);
+        }
       }
     }
 
@@ -884,26 +889,26 @@ export class NzCascaderComponent
   }
 
   private onEnter(): void {
-    const columnIndex = Math.max(this.cascaderService.activatedOptions.length - 1, 0);
-    const option = this.cascaderService.activatedOptions[columnIndex];
-    if (option && !option.disabled) {
+    const columnIndex = Math.max(this.cascaderService.activatedNodes.length - 1, 0);
+    const node = this.cascaderService.activatedNodes[columnIndex];
+    if (node && !node.isDisabled) {
       this.inSearchingMode
-        ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
-        : this.cascaderService.setOptionActivated(option, columnIndex, true);
+        ? this.cascaderService.setSearchOptionSelected(node.origin as unknown as NzCascaderSearchOption)
+        : this.cascaderService.setNodeActivated(node, columnIndex, true);
     }
   }
 
   private moveUpOrDown(isUp: boolean): void {
     const columnIndex = Math.max(this.cascaderService.activatedNodes.length - 1, 0);
-    const activeOption = this.cascaderService.activatedNodes[columnIndex];
+    const activatedNode = this.cascaderService.activatedNodes[columnIndex];
     const options = this.cascaderService.column[columnIndex] || [];
     const length = options.length;
     let nextIndex = -1;
-    if (!activeOption) {
+    if (!activatedNode) {
       // Not selected options in this column
       nextIndex = isUp ? length : -1;
     } else {
-      nextIndex = options.indexOf(activeOption);
+      nextIndex = options.indexOf(activatedNode);
     }
 
     while (true) {
@@ -915,13 +920,13 @@ export class NzCascaderComponent
       if (!nextOption || nextOption.isDisabled) {
         continue;
       }
-      this.cascaderService.setOptionActivated(nextOption, columnIndex);
+      this.cascaderService.setNodeActivated(nextOption, columnIndex);
       break;
     }
   }
 
   private moveLeft(): void {
-    const options = this.cascaderService.activatedOptions;
+    const options = this.cascaderService.activatedNodes;
     if (options.length) {
       options.pop(); // Remove the last one
       this.cascaderService.setOptionDeactivatedSinceColumn(options.length); // collapse menu
@@ -934,7 +939,7 @@ export class NzCascaderComponent
     if (options && options.length) {
       const nextOpt = options.find(o => !o.isDisabled);
       if (nextOpt) {
-        this.cascaderService.setOptionActivated(nextOpt, length);
+        this.cascaderService.setNodeActivated(nextOpt, length);
       }
     }
   }
@@ -982,7 +987,7 @@ export class NzCascaderComponent
     this.setMenuVisible(false);
     // if select none, clear previous state
     if (!this.hasValue && this.cascaderService.column.length) {
-      this.cascaderService.dropBehindColumns2(0);
+      this.cascaderService.dropBehindColumns(0);
     }
   }
 

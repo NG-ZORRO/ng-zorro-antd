@@ -11,7 +11,6 @@ import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 export type NzCascaderExpandTrigger = 'click' | 'hover';
 export type NzCascaderTriggerType = 'click' | 'hover';
 export type NzCascaderSize = NzSizeLDSType;
-export type NzCascaderShowCheckedStrategy = 'parent' | 'child';
 
 export type NzCascaderFilter = (searchValue: string, path: NzCascaderOption[]) => boolean;
 export type NzCascaderSorter = (a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string) => number;
