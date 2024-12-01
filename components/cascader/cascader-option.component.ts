@@ -54,7 +54,7 @@ import { NzCascaderOption } from './typings';
     } @else {
       <div
         class="ant-cascader-menu-item-content"
-        [innerHTML]="optionLabel | nzHighlight: highlightText : 'g' : 'ant-cascader-menu-item-keyword'"
+        [innerHTML]="node.title | nzHighlight: highlightText : 'g' : 'ant-cascader-menu-item-keyword'"
       ></div>
     }
 
@@ -72,7 +72,7 @@ import { NzCascaderOption } from './typings';
   `,
   host: {
     class: 'ant-cascader-menu-item ant-cascader-menu-item-expanded',
-    '[attr.title]': 'node',
+    '[attr.title]': 'node.title',
     '[class.ant-cascader-menu-item-active]': 'activated',
     '[class.ant-cascader-menu-item-expand]': '!node.isLeaf',
     '[class.ant-cascader-menu-item-disabled]': 'node.isDisabled'
@@ -116,10 +116,6 @@ export class NzCascaderOptionComponent implements OnInit {
 
   get disabled(): boolean {
     return this.node.isDisabled || this.node.isDisableCheckbox;
-  }
-
-  get optionLabel(): string {
-    return this.option[this.nzLabelProperty];
   }
 
   markForCheck(): void {

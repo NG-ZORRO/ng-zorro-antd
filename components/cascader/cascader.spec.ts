@@ -1556,7 +1556,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
-      expect(testComponent.cascader.cascaderService.columns[0][0].disabled).toBe(true);
+      expect(testComponent.cascader.cascaderService.columns[0][0].isDisabled).toBe(true);
 
       itemEl1.click();
       tick(300);
@@ -1573,9 +1573,9 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(testComponent.cascader.cascaderService.columns[0][0].disabled).toBe(true);
-      expect(testComponent.cascader.cascaderService.columns[0][1].disabled).toBe(undefined);
-      expect(testComponent.cascader.cascaderService.columns[0][2].disabled).toBe(true);
+      expect(testComponent.cascader.cascaderService.columns[0][0].isDisabled).toBe(true);
+      expect(testComponent.cascader.cascaderService.columns[0][1].isDisabled).toBe(false);
+      expect(testComponent.cascader.cascaderService.columns[0][2].isDisabled).toBe(true);
     });
 
     it('should support arrow in search mode', done => {

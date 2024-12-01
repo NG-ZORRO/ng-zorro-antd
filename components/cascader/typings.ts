@@ -53,6 +53,7 @@ export interface NzCascaderComponentAsSource {
   nzLabelProperty: string;
   nzValueProperty: string;
   nzChangeOnSelect: boolean;
+  selectedNodes: NzTreeNode[];
 
   get treeService(): NzCascaderTreeService;
 
