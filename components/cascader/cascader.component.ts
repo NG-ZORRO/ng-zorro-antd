@@ -347,9 +347,8 @@ export class NzCascaderComponent
   set nzOptions(options: NzCascaderOption[] | null) {
     const nodes = this.coerceTreeNodes(options || []);
     this.treeService.initTree(nodes);
-    this.updateSelectedNodes();
     this.cascaderService.column = [nodes];
-    this.cascaderService.$redraw.next();
+    this.updateSelectedNodes(true);
   }
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
@@ -484,7 +483,6 @@ export class NzCascaderComponent
     srv.$redraw.pipe(takeUntil(this.destroy$)).subscribe(() => {
       // These operations would not mutate data.
       this.checkChildren();
-      console.log('redraw');
       this.setDisplayLabel();
       this.cdr.detectChanges();
       this.reposition();
@@ -502,7 +500,6 @@ export class NzCascaderComponent
         this.emitValue([]);
         this.nzSelect.emit(null);
         this.nzSelectionChange.emit([]);
-        console.log('nodeSelected');
       } else {
         const { node, index } = data;
         const shouldClose =
@@ -548,15 +545,12 @@ export class NzCascaderComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzStatus, nzSize, nzMultiple } = changes;
+    const { nzStatus, nzSize } = changes;
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
     if (nzSize) {
       this.size.set(nzSize.currentValue);
-    }
-    if (nzMultiple) {
-      console.log('nzMultiple', nzMultiple.currentValue);
     }
   }
 
@@ -582,7 +576,7 @@ export class NzCascaderComponent
       }
       // need clear selected nodes when user set value before updating
       this.clearSelectedNodes();
-      this.updateSelectedNodes(true);
+      this.updateSelectedNodes(true, false);
     } else {
       this.cascaderService.values = [];
       this.clearSelectedNodes();
@@ -759,10 +753,38 @@ export class NzCascaderComponent
     }
   }
 
-  updateSelectedNodes(init: boolean = false): void {
+  updateSelectedNodes(init: boolean = false, updateValue = true): void {
     const value = this.cascaderService.values;
     const multiple = this.nzMultiple;
+
+    const updateNodesAndValue = (shouldUpdateValue: boolean): void => {
+      this.selectedNodes = [...(this.nzMultiple ? this.getCheckedNodeList() : this.getSelectedNodeList())].sort(
+        (a, b) => {
+          const indexA = value.indexOf(a.key);
+          const indexB = value.indexOf(b.key);
+          if (indexA !== -1 && indexB !== -1) {
+            return indexA - indexB;
+          }
+          if (indexA !== -1) {
+            return -1;
+          }
+          if (indexB !== -1) {
+            return 1;
+          }
+          return 0;
+        }
+      );
+      if (shouldUpdateValue) {
+        this.cascaderService.values = this.selectedNodes.map(node =>
+          this.getAncestorOptionList(node).map(o => this.cascaderService.getOptionValue(o))
+        );
+      }
+      this.cascaderService.$redraw.next();
+    };
+
     if (init) {
+      const defaultValue = value[0];
+      const lastColumnIndex = defaultValue?.length;
       this.treeService.fieldNames = {
         value: this.nzValueProperty,
         label: this.nzLabelProperty
@@ -770,11 +792,7 @@ export class NzCascaderComponent
       this.treeService.isMultiple = multiple;
       this.treeService.isCheckStrictly = false;
 
-      const initialize = (options: Array<NzTreeNode | NzCascaderOption> | null): void => {
-        const nodes = this.coerceTreeNodes(options || []);
-        this.treeService.initTree(nodes);
-        this.cascaderService.column = [nodes];
-        this.cascaderService.$redraw.next();
+      const checkNodeStates = (): void => {
         if (multiple) {
           this.treeService.conductCheckPaths(value, this.treeService.isCheckStrictly);
         } else {
@@ -782,36 +800,53 @@ export class NzCascaderComponent
         }
       };
 
-      if (!this.cascaderService.column.length) {
-        // if nzLoadData set, load first level data asynchronously
-        if (this.nzLoadData) {
-          this.cascaderService.loadChildren(null, -1, initialize);
+      const initColumnWithIndex = (columnIndex = 0): void => {
+        const activatedOptionSetter = (): void => {
+          const currentValue = defaultValue?.[columnIndex];
+
+          if (!isNotNil(currentValue)) {
+            this.cascaderService.$redraw.next();
+            return;
+          }
+
+          const node =
+            this.cascaderService.column[columnIndex].find(
+              n => this.cascaderService.getOptionValue(n.origin) === currentValue
+            ) || null;
+
+          if (isNotNil(node)) {
+            this.cascaderService.setNodeActivated(node, columnIndex);
+
+            // Load next level options till leaf node
+            if (columnIndex < lastColumnIndex) {
+              initColumnWithIndex(columnIndex + 1);
+            }
+          }
+
+          checkNodeStates();
+          updateNodesAndValue(false);
+        };
+
+        if (this.cascaderService.isLoaded(columnIndex)) {
+          activatedOptionSetter();
         } else {
-          initialize(this.nzOptions);
+          const node = this.cascaderService.activatedNodes[columnIndex - 1];
+          this.cascaderService.loadChildren(node, columnIndex - 1, activatedOptionSetter);
         }
+      };
+
+      // if nzLoadData set, load first level data asynchronously
+      if (this.nzLoadData) {
+        initColumnWithIndex();
+      } else {
+        const nodes = this.coerceTreeNodes(this.nzOptions || []);
+        this.treeService.initTree(nodes);
+        this.cascaderService.setColumnData(nodes, 0);
+        checkNodeStates();
       }
     }
 
-    this.selectedNodes = [...(this.nzMultiple ? this.getCheckedNodeList() : this.getSelectedNodeList())].sort(
-      (a, b) => {
-        const indexA = value.indexOf(a.key);
-        const indexB = value.indexOf(b.key);
-        if (indexA !== -1 && indexB !== -1) {
-          return indexA - indexB;
-        }
-        if (indexA !== -1) {
-          return -1;
-        }
-        if (indexB !== -1) {
-          return 1;
-        }
-        return 0;
-      }
-    );
-    this.cascaderService.values = this.selectedNodes.map(node =>
-      this.getAncestorOptionList(node).map(o => this.cascaderService.getOptionValue(o))
-    );
-    this.cascaderService.$redraw.next();
+    updateNodesAndValue(updateValue);
   }
 
   emitValue(values: NzSafeAny[] | null): void {
@@ -843,8 +878,6 @@ export class NzCascaderComponent
     if (!this.nzMultiple || node.isDisabled || node.isDisableCheckbox) {
       return;
     }
-
-    console.log('check');
 
     node.isChecked = !node.isChecked;
     node.isHalfChecked = false;

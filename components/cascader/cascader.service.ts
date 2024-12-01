@@ -407,7 +407,7 @@ export class NzCascaderService implements OnDestroy {
    * @param nodes Options to insert
    * @param columnIndex Position
    */
-  private setColumnData(nodes: NzTreeNode[], columnIndex: number): void {
+  setColumnData(nodes: NzTreeNode[], columnIndex: number): void {
     this.column[columnIndex] = nodes;
     this.dropBehindColumns(columnIndex);
   }
@@ -464,6 +464,10 @@ export class NzCascaderService implements OnDestroy {
                 const nodes = option.children.map(o => new NzTreeNode(o as NzTreeNodeOptions, node));
                 node.children = nodes;
                 this.setColumnData(nodes, columnIndex + 1);
+              } else {
+                const nodes = this.cascaderComponent.coerceTreeNodes(option.children);
+                this.cascaderComponent.treeService.initTree(nodes);
+                this.setColumnData(nodes, 0);
               }
               onLoaded?.(option.children);
             }
@@ -475,7 +479,7 @@ export class NzCascaderService implements OnDestroy {
     }
   }
 
-  // private isLoaded(index: number): boolean {
-  //   return this.columns[index] && this.columns[index].length > 0;
-  // }
+  isLoaded(index: number): boolean {
+    return this.column[index] && this.column[index].length > 0;
+  }
 }

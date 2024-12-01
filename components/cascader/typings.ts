@@ -6,6 +6,7 @@
 import { Observable } from 'rxjs';
 
 import { NzCascaderTreeService } from 'ng-zorro-antd/cascader/cascader-tree.service';
+import { NzTreeNode } from 'ng-zorro-antd/core/tree';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 export type NzCascaderExpandTrigger = 'click' | 'hover';
@@ -54,6 +55,8 @@ export interface NzCascaderComponentAsSource {
   nzChangeOnSelect: boolean;
 
   get treeService(): NzCascaderTreeService;
+
+  coerceTreeNodes(value: NzSafeAny[]): NzTreeNode[];
 
   updateSelectedNodes(): void;
 
