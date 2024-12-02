@@ -8,7 +8,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-flex-gap',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzFlexModule, NzSegmentedModule, NzSliderModule],
   template: `
     <div class="segment-wrapper">

@@ -5,7 +5,6 @@ import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 @Component({
   selector: 'nz-demo-cascader-status',
-  standalone: true,
   imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader [nzOptions]="nzOptions" nzStatus="error"></nz-cascader>

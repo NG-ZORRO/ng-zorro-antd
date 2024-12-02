@@ -61,7 +61,6 @@ describe('nz-countdown', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzStatisticModule],
   template: `
     <nz-countdown

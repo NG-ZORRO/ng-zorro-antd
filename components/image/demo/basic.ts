@@ -4,7 +4,6 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 @Component({
   selector: 'nz-demo-image-basic',
-  standalone: true,
   imports: [NzImageModule],
   template: `
     <img

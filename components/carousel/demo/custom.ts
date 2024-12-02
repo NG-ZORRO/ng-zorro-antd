@@ -11,7 +11,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-carousel-custom',
-  standalone: true,
   imports: [FormsModule, NzCarouselModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="strategy">

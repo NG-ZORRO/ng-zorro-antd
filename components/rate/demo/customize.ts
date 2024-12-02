@@ -6,7 +6,6 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 
 @Component({
   selector: 'nz-demo-rate-customize',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzRateModule],
   template: `
     <nz-rate [ngModel]="2" [nzCharacter]="characterNumber"></nz-rate>

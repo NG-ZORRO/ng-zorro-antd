@@ -118,8 +118,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       }
     </div>
   `,
-  imports: [NzNotificationComponent],
-  standalone: true
+  imports: [NzNotificationComponent]
 })
 export class NzNotificationContainerComponent extends NzMNContainerComponent {
   dir: Direction = 'ltr';

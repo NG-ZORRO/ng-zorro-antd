@@ -9,7 +9,6 @@ import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
 
 @Component({
   selector: 'nz-demo-cron-expression-semantic',
-  standalone: true,
   imports: [FormsModule, NzCronExpressionModule, DatePipe],
   template: `
     <nz-cron-expression

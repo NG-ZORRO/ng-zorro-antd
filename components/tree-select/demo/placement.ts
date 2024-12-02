@@ -6,7 +6,6 @@ import { NzTreeSelectModule, NzPlacementType } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-placement',
-  standalone: true,
   imports: [FormsModule, NzRadioModule, NzTreeSelectModule],
   template: `
     <nz-radio-group [(ngModel)]="placement">

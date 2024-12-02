@@ -60,8 +60,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   providers: [NzDestroyService],
-  imports: [NzInputModule, NzTransButtonModule, NzIconModule, NzToolTipModule, NzOutletModule],
-  standalone: true
+  imports: [NzInputModule, NzTransButtonModule, NzIconModule, NzToolTipModule, NzOutletModule]
 })
 export class NzTextEditComponent implements OnInit {
   editing = false;

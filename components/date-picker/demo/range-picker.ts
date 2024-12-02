@@ -7,7 +7,6 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'nz-demo-date-picker-range-picker',
-  standalone: true,
   imports: [FormsModule, NzDatePickerModule],
   template: `
     <nz-range-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>

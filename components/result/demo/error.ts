@@ -7,7 +7,6 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-result-error',
-  standalone: true,
   imports: [NzButtonModule, NzIconModule, NzResultModule, NzTypographyModule],
   template: `
     <nz-result

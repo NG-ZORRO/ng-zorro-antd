@@ -40,8 +40,7 @@ import { NzStatisticValueType } from './typings';
       }
     </span>
   `,
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzStatisticNumberComponent implements OnChanges {
   @Input() nzValue?: NzStatisticValueType;

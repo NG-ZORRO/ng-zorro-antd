@@ -214,7 +214,6 @@ describe('nz-float-button-top', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzFloatButtonModule],
   template: `
     <nz-float-button-top [nzTarget]="target"></nz-float-button-top>
@@ -233,7 +232,6 @@ class TestBackTopComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzFloatButtonModule],
   template: `
     my comp

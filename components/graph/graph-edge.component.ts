@@ -40,8 +40,7 @@ import { NzGraphEdge, NzGraphEdgeType } from './interface';
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzGraphEdgeComponent implements OnInit, OnChanges {
   @Input() edge!: NzGraphEdge;

@@ -124,8 +124,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  imports: [OverlayModule, NzOverlayModule, NzNoAnimationDirective, NzOutletModule],
-  standalone: true
+  imports: [OverlayModule, NzOverlayModule, NzNoAnimationDirective, NzOutletModule]
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   override _prefix = 'ant-popover';

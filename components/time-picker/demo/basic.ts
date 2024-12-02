@@ -5,7 +5,6 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 @Component({
   selector: 'nz-demo-time-picker-basic',
-  standalone: true,
   imports: [FormsModule, NzTimePickerModule],
   template: `<nz-time-picker [(ngModel)]="time" [nzDefaultOpenValue]="defaultOpenValue"></nz-time-picker>`
 })

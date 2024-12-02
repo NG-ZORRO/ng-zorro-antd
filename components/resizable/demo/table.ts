@@ -5,7 +5,6 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'nz-demo-resizable-table',
-  standalone: true,
   imports: [NzResizableModule, NzTableModule],
   template: `
     <nz-table #basicTable [nzData]="listOfData">

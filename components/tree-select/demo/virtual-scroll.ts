@@ -28,7 +28,6 @@ function dig(path = '0', level = 3): NzTreeNodeOptions[] {
 
 @Component({
   selector: 'nz-demo-tree-select-virtual-scroll',
-  standalone: true,
   imports: [NzTreeSelectModule],
   template: `
     <nz-tree-select

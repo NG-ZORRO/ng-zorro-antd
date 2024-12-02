@@ -27,7 +27,6 @@ import { NzAnchorComponent } from './anchor.component';
   selector: 'nz-link',
   exportAs: 'nzLink',
   preserveWhitespaces: false,
-  standalone: true,
   imports: [NgTemplateOutlet],
   template: `
     <a

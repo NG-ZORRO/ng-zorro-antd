@@ -48,8 +48,7 @@ import { NzTableSortOrder } from '../table.types';
     </span>
   `,
   host: { class: 'ant-table-column-sorters' },
-  imports: [NzIconModule, NgTemplateOutlet],
-  standalone: true
+  imports: [NzIconModule, NgTemplateOutlet]
 })
 export class NzTableSortersComponent implements OnChanges {
   @Input() sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];

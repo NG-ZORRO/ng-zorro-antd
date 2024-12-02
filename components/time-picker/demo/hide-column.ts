@@ -5,7 +5,6 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 @Component({
   selector: 'nz-demo-time-picker-hide-column',
-  standalone: true,
   imports: [FormsModule, NzTimePickerModule],
   template: `<nz-time-picker [(ngModel)]="time" nzFormat="HH:mm"></nz-time-picker>`
 })

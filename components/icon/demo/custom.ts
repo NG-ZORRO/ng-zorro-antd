@@ -4,7 +4,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-icon-custom',
-  standalone: true,
   imports: [NzIconModule],
   template: `
     <nz-icon style="color: hotpink">

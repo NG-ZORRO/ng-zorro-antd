@@ -109,8 +109,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     '[class.ant-carousel-vertical]': 'vertical',
     '[class.ant-carousel-rtl]': `dir === 'rtl'`
   },
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

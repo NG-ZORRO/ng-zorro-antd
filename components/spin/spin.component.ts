@@ -66,8 +66,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
   host: {
     '[class.ant-spin-nested-loading]': '!nzSimple'
   },
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

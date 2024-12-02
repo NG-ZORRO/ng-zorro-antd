@@ -26,7 +26,6 @@ describe('nz-form-split', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzFormModule],
   template: `<nz-form-split></nz-form-split>`
 })

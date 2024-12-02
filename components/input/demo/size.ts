@@ -4,7 +4,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-size',
-  standalone: true,
   imports: [NzInputModule],
   template: `
     <input nz-input placeholder="large size" nzSize="large" />

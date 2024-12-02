@@ -54,7 +54,6 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
 @Component({
   selector: 'nz-input-number-group',
   exportAs: 'nzInputNumberGroup',
-  standalone: true,
   imports: [NzInputNumberGroupSlotComponent, NgTemplateOutlet, NzFormPatchModule],
   template: `
     @if (isAddOn) {

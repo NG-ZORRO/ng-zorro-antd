@@ -163,8 +163,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
     class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
   },
-  imports: [NzCheckboxModule, NgTemplateOutlet, NzEmptyModule, NzTransferSearchComponent, NzIconModule, NzButtonModule],
-  standalone: true
+  imports: [NzCheckboxModule, NgTemplateOutlet, NzEmptyModule, NzTransferSearchComponent, NzIconModule, NzButtonModule]
 })
 export class NzTransferListComponent implements AfterViewInit {
   // #region fields

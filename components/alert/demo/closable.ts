@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-alert-closable',
   imports: [NzAlertModule],
   template: `

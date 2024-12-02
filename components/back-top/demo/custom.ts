@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-back-top-custom',
   imports: [NzBackTopModule],
   template: `

@@ -5,7 +5,6 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 
 @Component({
   selector: 'nz-demo-experimental-image-preloading',
-  standalone: true,
   imports: [NzImageModule, NzExperimentalImageModule],
   template: `<nz-image [nzSrc]="src" nzWidth="200" nzHeight="200" nzPriority></nz-image>`
 })

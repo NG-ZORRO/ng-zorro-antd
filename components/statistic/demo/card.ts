@@ -8,7 +8,6 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
 @Component({
   selector: 'nz-demo-statistic-card',
-  standalone: true,
   imports: [DecimalPipe, NzCardModule, NzGridModule, NzIconModule, NzStatisticModule],
   template: `
     <div style="background: #ECECEC; padding: 30px;">

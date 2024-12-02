@@ -11,7 +11,6 @@ import { NzResultModule } from './result.module';
 
 @Component({
   selector: 'nz-test-basic-result',
-  standalone: true,
   imports: [NzIconModule, NzResultModule],
   template: `
     <nz-result [nzIcon]="icon" [nzStatus]="status" [nzTitle]="title" [nzSubTitle]="subtitle" [nzExtra]="extra">
@@ -32,7 +31,6 @@ export class NzTestResultBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestResultBasicComponent],
   template: `
     <div [dir]="direction">

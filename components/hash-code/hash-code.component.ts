@@ -22,7 +22,6 @@ import { NzModeType } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [NzIconModule, NzStringTemplateOutletDirective],
   selector: 'nz-hash-code',
   exportAs: 'nzHashCode',

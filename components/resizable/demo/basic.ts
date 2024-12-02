@@ -4,7 +4,6 @@ import { NzResizableModule, NzResizeDirection, NzResizeEvent } from 'ng-zorro-an
 
 @Component({
   selector: 'nz-demo-resizable-basic',
-  standalone: true,
   imports: [NzResizableModule],
   template: `
     <div

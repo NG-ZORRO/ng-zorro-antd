@@ -159,7 +159,6 @@ describe('NzCommentComponent', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzDemoCommentBasicComponent],
   template: `
     <div [dir]="direction">

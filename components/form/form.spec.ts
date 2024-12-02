@@ -116,7 +116,6 @@ describe('nz-form', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzFormModule],
   template: `<form nz-form [nzLayout]="layout"></form>`
 })
@@ -125,7 +124,6 @@ export class NzTestFormDirectiveComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzFormModule],
   template: `
     <form nz-form [nzNoColon]="defaultNoColon">

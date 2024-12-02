@@ -48,8 +48,7 @@ import { NzSliderShowTooltip } from './typings';
     '(mouseenter)': 'enterHandle()',
     '(mouseleave)': 'leaveHandle()'
   },
-  imports: [NzToolTipModule],
-  standalone: true
+  imports: [NzToolTipModule]
 })
 export class NzSliderHandleComponent implements OnChanges {
   @ViewChild('handle', { static: false }) handleEl?: ElementRef;

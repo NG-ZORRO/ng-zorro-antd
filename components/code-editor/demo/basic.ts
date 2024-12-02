@@ -5,7 +5,6 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 
 @Component({
   selector: 'nz-demo-code-editor-basic',
-  standalone: true,
   imports: [FormsModule, NzCodeEditorModule],
   template: `
     <nz-code-editor class="editor" [ngModel]="code" [nzEditorOption]="{ language: 'typescript' }"></nz-code-editor>

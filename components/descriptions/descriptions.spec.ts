@@ -138,7 +138,6 @@ describe('nz descriptions', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzDescriptionsModule],
   selector: 'nz-test-descriptions',
   template: `
@@ -158,7 +157,6 @@ export class NzTestDescriptionsComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestDescriptionsComponent],
   template: `
     <div [dir]="direction">

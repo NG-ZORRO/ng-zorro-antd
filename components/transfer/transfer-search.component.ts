@@ -42,8 +42,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NzIconModule],
-  standalone: true
+  imports: [FormsModule, NzIconModule]
 })
 export class NzTransferSearchComponent implements OnChanges {
   // region: fields

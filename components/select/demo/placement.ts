@@ -6,7 +6,6 @@ import { NzSelectModule, NzSelectPlacementType } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-placement',
-  standalone: true,
   imports: [FormsModule, NzRadioModule, NzSelectModule],
   template: `
     <nz-radio-group [(ngModel)]="placement">

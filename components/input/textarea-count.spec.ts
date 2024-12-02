@@ -55,7 +55,6 @@ describe('textarea-count', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputModule],
   template: `
     <nz-textarea-count>
@@ -68,7 +67,6 @@ export class NzTestInputTextareaCountWithoutMaxComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputModule],
   template: `
     <nz-textarea-count [nzMaxCharacterCount]="100">

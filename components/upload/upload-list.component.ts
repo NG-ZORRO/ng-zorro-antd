@@ -65,8 +65,7 @@ interface UploadListFile extends NzUploadFile {
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzToolTipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NzProgressModule],
-  standalone: true
+  imports: [NzToolTipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NzProgressModule]
 })
 export class NzUploadListComponent implements OnChanges, OnDestroy {
   list: UploadListFile[] = [];

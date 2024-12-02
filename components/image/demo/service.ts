@@ -5,7 +5,6 @@ import { NzImageModule, NzImageService } from 'ng-zorro-antd/image';
 
 @Component({
   selector: 'nz-demo-image-service',
-  standalone: true,
   imports: [NzButtonModule, NzImageModule],
   template: `<button nz-button nzType="primary" (click)="onClick()">Preview</button>`
 })

@@ -6,7 +6,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-search-box',
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select

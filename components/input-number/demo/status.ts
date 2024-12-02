@@ -6,7 +6,6 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
   selector: 'nz-demo-input-number-status',
-  standalone: true,
   imports: [FormsModule, NzInputNumberModule, NzIconModule],
   template: `
     <nz-input-number nzStatus="error" [style.width.%]="100"></nz-input-number>

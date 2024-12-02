@@ -3,14 +3,14 @@ import { provideHttpClient, withFetch, withJsonpSupport } from '@angular/common/
 import { APP_ID, ApplicationConfig, EnvironmentProviders, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 
 import { IconDefinition } from '@ant-design/icons-angular';
 import { EditOutline, LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
 import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
-import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
+// import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
@@ -26,7 +26,7 @@ const nzConfig: NzConfig = {
 
 const environmentProviders: EnvironmentProviders = importProvidersFrom(
   BidiModule,
-  QuicklinkModule
+  // QuicklinkModule
 );
 
 export const appConfig: ApplicationConfig = {
@@ -37,7 +37,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
-      withPreloading(QuicklinkStrategy),
+      // withPreloading(QuicklinkStrategy),
       withInMemoryScrolling({ scrollPositionRestoration: environment.production ? 'enabled' : 'disabled' })
     ),
     provideClientHydration(),

@@ -5,7 +5,6 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 @Component({
   selector: 'nz-demo-list-basic',
-  standalone: true,
   imports: [NzButtonModule, NzListModule],
   template: `
     <div style="margin-bottom: 8px;">

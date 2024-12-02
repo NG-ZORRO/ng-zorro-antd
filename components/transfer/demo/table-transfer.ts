@@ -8,7 +8,6 @@ import { NzTransferModule, TransferChange, TransferItem, TransferSelectChange } 
 
 @Component({
   selector: 'nz-demo-transfer-table-transfer',
-  standalone: true,
   imports: [FormsModule, NzSwitchModule, NzTableModule, NzTagModule, NzTransferModule],
   template: `
     <nz-transfer

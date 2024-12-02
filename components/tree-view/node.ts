@@ -61,8 +61,7 @@ export interface NzTreeVirtualNodeData<T> {
     '[class.ant-tree-treenode-switcher-open]': 'isExpanded',
     '[class.ant-tree-treenode-switcher-close]': '!isExpanded'
   },
-  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective],
-  standalone: true
+  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective]
 })
 export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {
   indents: boolean[] = [];

@@ -13,7 +13,6 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-list-vertical',
-  standalone: true,
   imports: [NzIconModule, NzListModule],
   template: `
     <nz-list nzItemLayout="vertical">

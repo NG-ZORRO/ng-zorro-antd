@@ -6,7 +6,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 @Component({
   selector: 'nz-demo-layout-responsive',
-  standalone: true,
   imports: [NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout class="layout">

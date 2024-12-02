@@ -29,7 +29,6 @@ function fixedAttribute(value: NzTableSummaryFixedType | boolean | unknown): NzT
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
-  standalone: true,
   selector: 'tfoot[nzSummary]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

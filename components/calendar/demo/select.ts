@@ -7,7 +7,6 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 
 @Component({
   selector: 'nz-demo-calendar-select',
-  standalone: true,
   imports: [DatePipe, FormsModule, NzAlertModule, NzCalendarModule],
   template: `
     <nz-alert nzMessage="Your selected date: {{ selectedValue | date: 'yyyy-MM-dd' }}"></nz-alert>

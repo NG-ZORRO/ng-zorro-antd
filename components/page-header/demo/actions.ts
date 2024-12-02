@@ -10,7 +10,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-page-header-actions',
-  standalone: true,
   imports: [
     NzButtonModule,
     NzDescriptionsModule,

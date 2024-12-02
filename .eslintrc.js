@@ -67,28 +67,8 @@ module.exports = {
             default: 'array-simple'
           }
         ],
-        '@typescript-eslint/ban-types': [
-          'error',
-          {
-            types: {
-              Object: {
-                message: 'Use {} instead.'
-              },
-              String: {
-                message: 'Use string instead.'
-              },
-              Number: {
-                message: 'Use number instead.'
-              },
-              Boolean: {
-                message: 'Use boolean instead.'
-              },
-              Function: {
-                message: 'Use specific callable interface instead.'
-              }
-            }
-          }
-        ],
+        '@typescript-eslint/no-unsafe-function-type': 'error',
+        '@typescript-eslint/no-wrapper-object-types': 'error',
         '@typescript-eslint/consistent-type-definitions': 'error',
         '@typescript-eslint/explicit-member-accessibility': [
           'off',

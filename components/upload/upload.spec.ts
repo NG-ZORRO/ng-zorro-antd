@@ -1339,7 +1339,6 @@ describe('upload', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule, NzIconModule, NzUploadModule],
   template: `
     @if (show) {
@@ -1445,7 +1444,6 @@ class TestUploadComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzUploadListComponent],
   template: `
     <nz-upload-list
@@ -1502,7 +1500,6 @@ class TestUploadListComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzUploadBtnComponent],
   template: `<div nz-upload-btn #btn [options]="options" class="test">UPLOAD</div>`
 })

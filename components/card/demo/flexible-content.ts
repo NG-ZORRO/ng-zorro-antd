@@ -4,7 +4,6 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 
 @Component({
   selector: 'nz-demo-card-flexible-content',
-  standalone: true,
   imports: [NzCardModule],
   template: `
     <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">

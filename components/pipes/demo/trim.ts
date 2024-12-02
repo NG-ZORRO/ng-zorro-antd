@@ -6,7 +6,6 @@ import { NzTrimPipe } from 'ng-zorro-antd/pipes';
 
 @Component({
   selector: 'nz-demo-pipes-trim',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzTrimPipe],
   template: `
     <input type="text" nz-input [(ngModel)]="str" />

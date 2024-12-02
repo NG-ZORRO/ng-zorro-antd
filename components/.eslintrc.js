@@ -17,28 +17,8 @@ module.exports = {
         '@angular-eslint/no-input-rename': 'off',
         'prefer-const': 'off',
         'max-len': 'off',
-        '@typescript-eslint/ban-types': [
-          'off',
-          {
-            types: {
-              Object: {
-                message: 'Use {} instead.'
-              },
-              String: {
-                message: 'Use string instead.'
-              },
-              Number: {
-                message: 'Use number instead.'
-              },
-              Boolean: {
-                message: 'Use boolean instead.'
-              },
-              Function: {
-                message: 'Use specific callable interface instead.'
-              }
-            }
-          }
-        ]
+        '@typescript-eslint/no-unsafe-function-type': 'error',
+        '@typescript-eslint/no-wrapper-object-types': 'error',
       }
     },
     {

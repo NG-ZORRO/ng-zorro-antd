@@ -8,7 +8,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-dynamic-form-item',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzIconModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
@@ -55,7 +54,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       </nz-form-item>
     </form>
   `,
-
   styles: [
     `
       .dynamic-delete-button {

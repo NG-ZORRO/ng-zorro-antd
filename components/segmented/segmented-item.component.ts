@@ -24,7 +24,6 @@ import { NzSegmentedService } from './segmented.service';
   selector: 'label[nz-segmented-item],label[nzSegmentedItem]',
   exportAs: 'nzSegmentedItem',
   imports: [NzIconModule, NgTemplateOutlet],
-  standalone: true,
   template: `
     <input class="ant-segmented-item-input" type="radio" [checked]="isChecked" (click)="$event.stopPropagation()" />
     <div class="ant-segmented-item-label">

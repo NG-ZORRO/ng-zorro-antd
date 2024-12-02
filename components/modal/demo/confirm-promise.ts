@@ -5,7 +5,6 @@ import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-confirm-promise',
-  standalone: true,
   imports: [NzButtonModule, NzModalModule],
   template: `<button nz-button nzType="primary" (click)="showConfirm()">Confirm</button>`
 })

@@ -189,8 +189,7 @@ let nextId = 0;
     NzOutletModule,
     NzTabCloseButtonComponent,
     NzTabBodyComponent
-  ],
-  standalone: true
+  ]
 })
 export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

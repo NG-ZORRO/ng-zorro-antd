@@ -274,8 +274,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     CdkConnectedOverlay,
     NzOverlayModule,
     NzNoAnimationDirective
-  ],
-  standalone: true
+  ]
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

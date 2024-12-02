@@ -15,7 +15,6 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-grouping-columns',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table #groupingTable [nzData]="listOfData" nzBordered nzSize="middle" [nzScroll]="{ x: '1200px', y: '240px' }">

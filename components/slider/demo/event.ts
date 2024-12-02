@@ -5,7 +5,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-event',
-  standalone: true,
   imports: [FormsModule, NzSliderModule],
   template: `
     <nz-slider

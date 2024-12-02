@@ -47,8 +47,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     class: 'ant-select-arrow',
     '[class.ant-select-arrow-loading]': 'loading'
   },
-  imports: [NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule]
 })
 export class NzSelectArrowComponent {
   @Input() listOfValue: NzSafeAny[] = [];

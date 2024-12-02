@@ -21,7 +21,6 @@ describe('nz-tr', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <table>

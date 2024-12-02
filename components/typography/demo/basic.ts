@@ -5,7 +5,6 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-typography-basic',
-  standalone: true,
   imports: [NzDividerModule, NzTypographyModule],
   template: `
     <article nz-typography>

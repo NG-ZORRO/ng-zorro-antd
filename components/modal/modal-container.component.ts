@@ -81,8 +81,7 @@ import { NzModalTitleComponent } from './modal-title.component';
     NzPipesModule,
     CdkDrag,
     CdkDragHandle
-  ],
-  standalone: true
+  ]
 })
 export class NzModalContainerComponent extends BaseModalContainerComponent implements OnInit {
   @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;

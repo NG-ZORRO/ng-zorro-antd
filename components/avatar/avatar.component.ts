@@ -28,7 +28,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
 @Component({
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
-  standalone: true,
   imports: [NzIconModule, PlatformModule],
   template: `
     @if (nzIcon && hasIcon) {

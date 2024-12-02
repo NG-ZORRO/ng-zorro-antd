@@ -22,11 +22,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
 
 @Component({
-  selector: 'li[nz-pagination-item]',
-  preserveWhitespaces: false,
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
+    selector: 'li[nz-pagination-item]',
+    preserveWhitespaces: false,
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
     <ng-template #renderItemTemplate let-type let-page="page">
       @switch (type) {
         @case ('page') {
@@ -85,21 +85,20 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
       [ngTemplateOutletContext]="{ $implicit: type, page: index }"
     />
   `,
-  host: {
-    '[class.ant-pagination-prev]': `type === 'prev'`,
-    '[class.ant-pagination-next]': `type === 'next'`,
-    '[class.ant-pagination-item]': `type === 'page'`,
-    '[class.ant-pagination-jump-prev]': `type === 'prev_5'`,
-    '[class.ant-pagination-jump-prev-custom-icon]': `type === 'prev_5'`,
-    '[class.ant-pagination-jump-next]': `type === 'next_5'`,
-    '[class.ant-pagination-jump-next-custom-icon]': `type === 'next_5'`,
-    '[class.ant-pagination-disabled]': 'disabled',
-    '[class.ant-pagination-item-active]': 'active',
-    '[attr.title]': 'title',
-    '(click)': 'clickItem()'
-  },
-  imports: [NzIconModule, NgTemplateOutlet],
-  standalone: true
+    host: {
+        '[class.ant-pagination-prev]': `type === 'prev'`,
+        '[class.ant-pagination-next]': `type === 'next'`,
+        '[class.ant-pagination-item]': `type === 'page'`,
+        '[class.ant-pagination-jump-prev]': `type === 'prev_5'`,
+        '[class.ant-pagination-jump-prev-custom-icon]': `type === 'prev_5'`,
+        '[class.ant-pagination-jump-next]': `type === 'next_5'`,
+        '[class.ant-pagination-jump-next-custom-icon]': `type === 'next_5'`,
+        '[class.ant-pagination-disabled]': 'disabled',
+        '[class.ant-pagination-item-active]': 'active',
+        '[attr.title]': 'title',
+        '(click)': 'clickItem()'
+    },
+    imports: [NzIconModule, NgTemplateOutlet]
 })
 export class NzPaginationItemComponent implements OnChanges {
   @Input() active = false;

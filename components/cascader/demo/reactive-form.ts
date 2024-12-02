@@ -49,7 +49,6 @@ const options: NzCascaderOption[] = [
 
 @Component({
   selector: 'nz-demo-cascader-reactive-form',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzCascaderModule],
   template: `
     <form [formGroup]="form" novalidate>

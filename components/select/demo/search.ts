@@ -5,7 +5,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-search',
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectedValue">

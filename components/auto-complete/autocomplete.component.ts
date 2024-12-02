@@ -65,7 +65,6 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],
   template: `
     <ng-template>

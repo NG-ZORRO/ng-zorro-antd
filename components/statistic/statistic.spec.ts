@@ -58,7 +58,6 @@ describe('nz-statistic', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzStatisticModule],
   template: `
     <nz-statistic
@@ -78,7 +77,6 @@ export class NzTestStatisticComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzStatisticModule],
   template: `
     <div [dir]="direction">

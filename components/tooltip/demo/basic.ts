@@ -4,7 +4,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-tooltip-basic',
-  standalone: true,
   imports: [NzToolTipModule],
   template: `<span nz-tooltip nzTooltipTitle="prompt text">Tooltip will show when mouse enter.</span>`
 })

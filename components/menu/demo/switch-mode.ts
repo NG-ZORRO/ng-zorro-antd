@@ -7,7 +7,6 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-menu-switch-mode',
-  standalone: true,
   imports: [FormsModule, NzDividerModule, NzMenuModule, NzSwitchModule],
   template: `
     <nz-switch [(ngModel)]="mode"></nz-switch>

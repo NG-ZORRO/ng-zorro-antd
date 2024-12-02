@@ -169,8 +169,7 @@ import { NzTransferListComponent } from './transfer-list.component';
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzTransferListComponent, NzIconModule, NzButtonModule],
-  standalone: true
+  imports: [NzTransferListComponent, NzIconModule, NzButtonModule]
 })
 export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<void>();

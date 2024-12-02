@@ -4,7 +4,6 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
   selector: 'nz-demo-grid-offset',
-  standalone: true,
   imports: [NzGridModule],
   template: `
     <div nz-row>

@@ -85,8 +85,7 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
     NzDropdownMenuComponent,
     NzMenuModule,
     NzDropDownDirective
-  ],
-  standalone: true
+  ]
 })
 export class NzTabNavOperationComponent implements OnDestroy {
   @Input() items: NzTabNavItemDirective[] = [];

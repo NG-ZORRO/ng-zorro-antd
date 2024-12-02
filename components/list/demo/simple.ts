@@ -6,7 +6,6 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-list-simple',
-  standalone: true,
   imports: [NzListModule, NzTypographyModule],
   template: `
     <h3>Default Size</h3>

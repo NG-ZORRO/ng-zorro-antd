@@ -101,8 +101,7 @@ import { NzNotificationData } from './typings';
       </a>
     </div>
   `,
-  imports: [NzIconModule, NzOutletModule, NgTemplateOutlet],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule, NgTemplateOutlet]
 })
 export class NzNotificationComponent extends NzMNComponent implements OnDestroy {
   @Input() override instance!: Required<NzNotificationData>;

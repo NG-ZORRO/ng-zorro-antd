@@ -13,7 +13,6 @@ function alphabet(): string[] {
 
 @Component({
   selector: 'nz-demo-select-automatic-tokenization',
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select

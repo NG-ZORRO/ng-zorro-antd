@@ -151,7 +151,6 @@ describe('spin', () => {
 
 @Component({
   selector: 'nz-test-basic-spin',
-  standalone: true,
   imports: [NzIconModule, NzSpinModule],
   template: `
     <ng-template #indicatorTemplate><span nz-icon nzType="loading" style="font-size: 24px;"></span></ng-template>
@@ -181,7 +180,6 @@ export class NzTestSpinBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestSpinBasicComponent],
   template: `
     <div [dir]="direction">

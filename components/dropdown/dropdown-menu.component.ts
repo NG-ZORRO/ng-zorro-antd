@@ -64,8 +64,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzNoAnimationDirective],
-  standalone: true
+  imports: [NzNoAnimationDirective]
 })
 export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnInit {
   mouseState$ = new BehaviorSubject<boolean>(false);

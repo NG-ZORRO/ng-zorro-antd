@@ -4,7 +4,6 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'nz-demo-table-ellipsis',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table #fixedTable [nzData]="listOfData" nzTableLayout="fixed">

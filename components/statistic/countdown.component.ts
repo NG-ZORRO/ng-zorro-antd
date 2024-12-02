@@ -42,8 +42,7 @@ const REFRESH_INTERVAL = 1000 / 30;
 
     <ng-template #countDownTpl>{{ diff | nzTimeRange: nzFormat }}</ng-template>
   `,
-  imports: [NzStatisticComponent, NzPipesModule],
-  standalone: true
+  imports: [NzStatisticComponent, NzPipesModule]
 })
 export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzFormat: string = 'HH:mm:ss';

@@ -6,7 +6,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-validate-template',
-  standalone: true,
   imports: [FormsModule, NzFormModule, NzInputModule, NzInputModule],
   template: `
     <form nz-form>

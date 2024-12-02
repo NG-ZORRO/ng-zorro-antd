@@ -14,7 +14,6 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
 
 @Component({
   selector: 'nz-demo-upload-picture-card',
-  standalone: true,
   imports: [NzIconModule, NzModalModule, NzUploadModule],
   template: `
     <nz-upload

@@ -63,8 +63,7 @@ export class NzListItemActionComponent {
     class: 'ant-list-item-action'
   },
   providers: [NzDestroyService],
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzListItemActionsComponent implements OnChanges, AfterContentInit {
   @Input() nzActions: Array<TemplateRef<void>> = [];

@@ -4,7 +4,6 @@ import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
 
 @Component({
   selector: 'nz-demo-cron-expression-basic',
-  standalone: true,
   imports: [NzCronExpressionModule],
   template: `
     <nz-cron-expression></nz-cron-expression>

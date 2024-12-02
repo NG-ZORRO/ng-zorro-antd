@@ -116,7 +116,6 @@ describe('string template outlet', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzOutletModule],
   template: `
     TargetText

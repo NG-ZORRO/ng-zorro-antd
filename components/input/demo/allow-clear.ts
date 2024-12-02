@@ -6,7 +6,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-allow-clear',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzIconModule],
   template: `
     <nz-input-group [nzSuffix]="inputClearTpl">

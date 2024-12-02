@@ -86,7 +86,6 @@ describe('nz-hash-code', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzHashCodeModule],
   template: `
     <nz-hash-code

@@ -17,7 +17,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-form-register',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzCheckboxModule, NzFormModule, NzInputModule, NzSelectModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">

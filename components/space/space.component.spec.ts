@@ -216,7 +216,6 @@ describe('Space', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzSpaceModule],
   template: `
     <nz-space [nzSplit]="showSplit ? spaceSplit : null" [nzSize]="size" [nzDirection]="direction" [nzAlign]="align">

@@ -1,11 +1,9 @@
-/* declarations: NzDemoTabContentLazyComponent,NzDemoTabContentEagerlyComponent */
 import { Component, OnInit } from '@angular/core';
 
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tab-content-lazy',
-  standalone: true,
   template: `lazy`
 })
 export class NzDemoTabContentLazyComponent implements OnInit {
@@ -16,7 +14,6 @@ export class NzDemoTabContentLazyComponent implements OnInit {
 
 @Component({
   selector: 'nz-demo-tab-content-eagerly',
-  standalone: true,
   template: `eagerly`
 })
 export class NzDemoTabContentEagerlyComponent implements OnInit {
@@ -27,7 +24,6 @@ export class NzDemoTabContentEagerlyComponent implements OnInit {
 
 @Component({
   selector: 'nz-demo-tabs-lazy',
-  standalone: true,
   imports: [NzTabsModule, NzDemoTabContentEagerlyComponent, NzDemoTabContentLazyComponent],
   template: `
     <nz-tabset>

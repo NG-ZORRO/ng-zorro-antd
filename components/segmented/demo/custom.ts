@@ -5,7 +5,6 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-segmented-custom',
-  standalone: true,
   imports: [NzAvatarModule, NzSegmentedModule],
   template: `
     <nz-segmented>

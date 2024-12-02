@@ -32,8 +32,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     class: 'ant-select-clear',
     '(click)': 'onClick($event)'
   },
-  imports: [NgTemplateOutlet, NzIconModule],
-  standalone: true
+  imports: [NgTemplateOutlet, NzIconModule]
 })
 export class NzSelectClearComponent {
   @Input() clearIcon: TemplateRef<NzSafeAny> | null = null;

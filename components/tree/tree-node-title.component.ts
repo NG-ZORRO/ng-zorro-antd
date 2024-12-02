@@ -69,8 +69,7 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
     '[class.ant-tree-node-content-wrapper-close]': `!selectMode && isSwitcherClose`,
     '[class.ant-tree-node-selected]': `!selectMode && isSelected`
   },
-  imports: [NgTemplateOutlet, NzIconModule, NzHighlightModule, NzTreeDropIndicatorComponent],
-  standalone: true
+  imports: [NgTemplateOutlet, NzIconModule, NzHighlightModule, NzTreeDropIndicatorComponent]
 })
 export class NzTreeNodeTitleComponent implements OnChanges {
   @Input() searchValue!: string;

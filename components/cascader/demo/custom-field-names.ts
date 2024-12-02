@@ -53,7 +53,6 @@ const options = [
 
 @Component({
   selector: 'nz-demo-cascader-custom-field-names',
-  standalone: true,
   imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader

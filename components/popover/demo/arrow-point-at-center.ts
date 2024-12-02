@@ -6,7 +6,6 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 @Component({
   selector: 'nz-demo-popover-arrow-point-at-center',
-  standalone: true,
   imports: [NzButtonModule, NzPopoverModule, NzNoAnimationModule],
   template: `
     <button nz-button nzPopoverTitle="Title" nzPopoverContent="Content" nzPopoverPlacement="topLeft" nz-popover>

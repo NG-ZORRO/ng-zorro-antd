@@ -8,7 +8,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-mention-preview',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzMentionModule, NzTabsModule],
   template: `
     <nz-tabset>

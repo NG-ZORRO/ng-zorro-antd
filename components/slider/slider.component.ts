@@ -114,7 +114,6 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
     }
   `,
   imports: [NzSliderTrackComponent, NzSliderStepComponent, NzSliderHandleComponent, NzSliderMarksComponent],
-  standalone: true,
   host: {
     class: 'ant-slider',
     '[class.ant-slider-rtl]': `dir === 'rtl'`,

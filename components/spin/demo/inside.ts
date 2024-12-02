@@ -4,7 +4,6 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @Component({
   selector: 'nz-demo-spin-inside',
-  standalone: true,
   imports: [NzSpinModule],
   template: `
     <div class="container">

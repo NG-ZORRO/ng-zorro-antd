@@ -5,7 +5,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-custom-add-trigger',
-  standalone: true,
   imports: [NzButtonModule, NzTabsModule],
   template: `
     <div style="margin-bottom: 16px;">

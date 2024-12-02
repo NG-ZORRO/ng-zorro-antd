@@ -5,7 +5,6 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 
 @Component({
   selector: 'nz-demo-timeline-right',
-  standalone: true,
   imports: [NzIconModule, NzTimelineModule],
   template: `
     <nz-timeline nzMode="right">

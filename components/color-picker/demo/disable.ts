@@ -4,7 +4,6 @@ import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 
 @Component({
   selector: 'nz-demo-color-picker-disable',
-  standalone: true,
   imports: [NzColorPickerModule],
   template: `<nz-color-picker nzDisabled nzShowText></nz-color-picker>`
 })

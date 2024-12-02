@@ -5,7 +5,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-vertical',
-  standalone: true,
   imports: [FormsModule, NzSliderModule],
   template: `
     <div [style]="{ height: '300px' }">

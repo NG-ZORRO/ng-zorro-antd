@@ -55,7 +55,6 @@ const NZ_DEFAULT_ROTATE = 0;
   selector: 'nz-image-preview',
   exportAs: 'nzImagePreview',
   animations: [fadeMotion],
-  standalone: true,
   template: `
     <div class="ant-image-preview-mask"></div>
 

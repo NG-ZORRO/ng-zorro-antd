@@ -4,7 +4,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-icon-basic',
-  standalone: true,
   imports: [NzIconModule],
   template: `
     <div class="icons-list">

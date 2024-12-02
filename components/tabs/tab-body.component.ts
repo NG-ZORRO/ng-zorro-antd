@@ -26,7 +26,6 @@ import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
     '[@.disabled]': `!animated`
   },
   imports: [NgTemplateOutlet],
-  standalone: true,
   animations: [tabSwitchMotion]
 })
 export class NzTabBodyComponent {

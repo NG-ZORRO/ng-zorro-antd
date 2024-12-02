@@ -73,8 +73,7 @@ const SPACE_SIZE: {
     '[class.ant-space-align-baseline]': 'mergedAlign === "baseline"',
     '[style.flex-wrap]': 'nzWrap ? "wrap" : null'
   },
-  imports: [NgTemplateOutlet, NzStringTemplateOutletDirective],
-  standalone: true
+  imports: [NgTemplateOutlet, NzStringTemplateOutletDirective]
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

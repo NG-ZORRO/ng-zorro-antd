@@ -8,7 +8,6 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 @Component({
   selector: 'nz-demo-drawer-user-profile',
-  standalone: true,
   imports: [NzButtonModule, NzDescriptionsModule, NzDividerModule, NzDrawerModule, NzListModule],
   template: `
     <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">

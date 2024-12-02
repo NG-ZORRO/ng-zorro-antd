@@ -9,7 +9,6 @@ const userList = ['Lucy', 'U', 'Tom', 'Edward'];
 const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-avatar-dynamic',
   imports: [FormsModule, NzAvatarModule, NzButtonModule, NzInputNumberModule],
   template: `

@@ -574,7 +574,6 @@ interface AbstractTestTransferComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTransferModule],
   selector: 'nz-test-transfer',
   template: `
@@ -664,7 +663,6 @@ class TestTransferComponent implements OnInit, AbstractTestTransferComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzTransferModule],
   template: `
     <nz-transfer #comp nzShowSearch [nzRender]="render" [nzDataSource]="nzDataSource">
@@ -708,7 +706,6 @@ class TestTransferCustomRenderComponent implements OnInit, AbstractTestTransferC
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/996
 @Component({
-  standalone: true,
   imports: [NzTransferModule],
   template: `<nz-transfer [nzDataSource]="list"></nz-transfer>`
 })
@@ -730,7 +727,6 @@ class Test996Component implements OnInit {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, TestTransferComponent],
   template: `
     <div [dir]="direction">
@@ -744,7 +740,6 @@ export class NzTestTransferRtlComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTransferModule],
   template: `<nz-transfer [nzDataSource]="[]" [nzStatus]="status"></nz-transfer>`
 })
@@ -753,7 +748,6 @@ export class NzTestTransferStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzFormModule, NzTransferModule],
   template: `
     <form nz-form>

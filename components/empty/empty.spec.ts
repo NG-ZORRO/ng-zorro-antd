@@ -262,7 +262,6 @@ describe('nz-empty', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzEmptyModule],
   template: `
     <nz-empty [nzNotFoundImage]="image" [nzNotFoundContent]="content" [nzNotFoundFooter]="footer">
@@ -283,7 +282,6 @@ export class NzEmptyTestBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzListModule],
   template: `
     <nz-list [nzDataSource]="[]" [nzNoResult]="noResult"></nz-list>

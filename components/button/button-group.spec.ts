@@ -37,7 +37,6 @@ describe('button-group', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzButtonGroupComponent],
   template: `<nz-button-group [nzSize]="nzSize"></nz-button-group>`
 })
@@ -46,7 +45,6 @@ export class TestButtonGroupComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzButtonGroupComponent],
   template: `
     <div [dir]="direction">

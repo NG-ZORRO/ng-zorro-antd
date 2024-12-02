@@ -5,7 +5,6 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-auto-complete-options',
   imports: [FormsModule, NzAutocompleteModule, NzInputModule],
   encapsulation: ViewEncapsulation.None,

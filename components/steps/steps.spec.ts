@@ -509,7 +509,6 @@ describe('steps', () => {
 
 @Component({
   selector: 'nz-test-outer-steps',
-  standalone: true,
   imports: [NgTemplateOutlet, NzStepsModule],
   template: `
     <nz-steps
@@ -546,7 +545,6 @@ export class NzTestOuterStepsComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
@@ -571,7 +569,6 @@ export class NzTestInnerStepStringComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1">
@@ -587,7 +584,6 @@ export class NzTestInnerStepStringComponent {
 export class NzTestInnerStepTemplateComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzStepsModule],
   template: `
     <nz-steps>
@@ -605,7 +601,6 @@ export class NzTestStepForComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1">
@@ -626,7 +621,6 @@ export class NzTestStepAsyncComponent implements OnInit {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestOuterStepsComponent],
   template: `<nz-test-outer-steps [dir]="direction"></nz-test-outer-steps>`
 })

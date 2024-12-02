@@ -26,7 +26,6 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
-  standalone: true,
   imports: [NzNoAnimationDirective],
   template: `
     @if (count <= nzOverflowCount) {

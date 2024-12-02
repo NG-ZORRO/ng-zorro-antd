@@ -70,8 +70,7 @@ import { NzListComponent } from './list.component';
   host: {
     class: 'ant-list-item'
   },
-  imports: [NzListItemActionsComponent, NzOutletModule, NgTemplateOutlet, NzListItemExtraComponent],
-  standalone: true
+  imports: [NzListItemActionsComponent, NzOutletModule, NgTemplateOutlet, NzListItemExtraComponent]
 })
 export class NzListItemComponent implements OnDestroy, AfterViewInit {
   @Input() nzActions: Array<TemplateRef<void>> = [];

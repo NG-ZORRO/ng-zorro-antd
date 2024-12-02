@@ -84,7 +84,6 @@ const listOfPositions = [
 @Component({
   selector: 'nz-tree-select',
   exportAs: 'nzTreeSelect',
-  standalone: true,
   imports: [
     NzOverlayModule,
     CdkConnectedOverlay,

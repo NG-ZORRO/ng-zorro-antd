@@ -6,7 +6,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-input-presuffix',
-  standalone: true,
   imports: [NzInputModule, NzIconModule, NzToolTipModule],
   template: `
     <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">

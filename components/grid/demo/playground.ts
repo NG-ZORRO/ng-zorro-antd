@@ -6,7 +6,6 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-grid-playground',
-  standalone: true,
   imports: [FormsModule, NzGridModule, NzSliderModule],
   template: `
     <div class="slider-container">

@@ -38,7 +38,6 @@ describe('nz-tbody', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <table>
@@ -49,7 +48,6 @@ describe('nz-tbody', () => {
 export class NzTbodyTestTableComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table>

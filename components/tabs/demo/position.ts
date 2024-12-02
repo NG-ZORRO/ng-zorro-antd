@@ -6,7 +6,6 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-position',
-  standalone: true,
   imports: [FormsModule, NzSelectModule, NzTabsModule],
   template: `
     <div style="margin-bottom: 16px;">

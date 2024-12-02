@@ -5,7 +5,6 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 
 @Component({
   selector: 'nz-demo-timeline-pending',
-  standalone: true,
   imports: [NzButtonModule, NzTimelineModule],
   template: `
     <nz-timeline nzPending="Recording..." [nzReverse]="reverse">

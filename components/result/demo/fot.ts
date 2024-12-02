@@ -5,7 +5,6 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 
 @Component({
   selector: 'nz-demo-result-fot',
-  standalone: true,
   imports: [NzButtonModule, NzResultModule],
   template: `
     <nz-result nzStatus="403" nzTitle="403" nzSubTitle="Sorry, you are not authorized to access this page.">

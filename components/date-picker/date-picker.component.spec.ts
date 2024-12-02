@@ -1456,7 +1456,6 @@ describe('in form', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, FormsModule, NzDatePickerModule],
   template: `
     @switch (useSuite) {
@@ -1577,7 +1576,6 @@ class NzTestDatePickerComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzDatePickerModule],
   template: `<nz-date-picker [nzStatus]="status"></nz-date-picker>`
 })
@@ -1586,7 +1584,6 @@ class NzTestDatePickerStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzFormModule, NzDatePickerModule],
   template: `
     <form nz-form [formGroup]="validateForm">

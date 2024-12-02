@@ -91,8 +91,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     '[class.ant-page-header-compact]': 'compact',
     '[class.ant-page-header-rtl]': `dir === 'rtl'`
   },
-  imports: [NzOutletModule, NzIconModule],
-  standalone: true
+  imports: [NzOutletModule, NzIconModule]
 })
 export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

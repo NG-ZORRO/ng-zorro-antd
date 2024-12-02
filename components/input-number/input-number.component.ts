@@ -45,7 +45,6 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
 @Component({
   selector: 'nz-input-number',
   exportAs: 'nzInputNumber',
-  standalone: true,
   imports: [NzIconModule, NzFormItemFeedbackIconComponent, NgTemplateOutlet],
   template: `
     @if (hasAddon()) {

@@ -127,8 +127,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     '[class.nz-graph]': 'true',
     '[class.nz-graph-auto-size]': 'nzAutoSize'
   },
-  imports: [NgTemplateOutlet, NzGraphEdgeComponent, NzGraphNodeComponent, NzGraphDefsComponent],
-  standalone: true
+  imports: [NgTemplateOutlet, NzGraphEdgeComponent, NzGraphNodeComponent, NzGraphDefsComponent]
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy, NzGraph {
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;

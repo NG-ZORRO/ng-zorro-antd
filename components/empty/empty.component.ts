@@ -65,8 +65,7 @@ type NzEmptyNotFoundImageType = (typeof NzEmptyDefaultImages)[number] | null | s
   host: {
     class: 'ant-empty'
   },
-  imports: [NzOutletModule, NzEmptyDefaultComponent, NzEmptySimpleComponent],
-  standalone: true
+  imports: [NzOutletModule, NzEmptyDefaultComponent, NzEmptySimpleComponent]
 })
 export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzNotFoundImage: NzEmptyNotFoundImageType = 'default';

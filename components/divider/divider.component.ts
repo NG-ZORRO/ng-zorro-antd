@@ -39,8 +39,7 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
     '[class.ant-divider-dashed]': `nzDashed || nzVariant === 'dashed'`,
     '[class.ant-divider-dotted]': `nzVariant === 'dotted'`
   },
-  imports: [NzOutletModule],
-  standalone: true
+  imports: [NzOutletModule]
 })
 export class NzDividerComponent {
   @Input() nzText?: string | TemplateRef<void>;

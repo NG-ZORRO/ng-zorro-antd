@@ -16,7 +16,6 @@ import { NzMentionComponent, NzMentionModule } from 'ng-zorro-antd/mention';
 
 @Component({
   selector: 'nz-demo-mention-form',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzInputModule, NzMentionModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">

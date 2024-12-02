@@ -6,7 +6,6 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 @Component({
   selector: 'nz-demo-progress-dynamic',
-  standalone: true,
   imports: [NzButtonModule, NzIconModule, NzProgressModule],
   template: `
     <nz-progress [nzPercent]="percent"></nz-progress>

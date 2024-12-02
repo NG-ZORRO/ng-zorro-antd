@@ -5,7 +5,6 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
   selector: 'nz-demo-card-in-column',
-  standalone: true,
   imports: [NzCardModule, NzGridModule],
   template: `
     <div style="background: #ECECEC; padding:30px;">

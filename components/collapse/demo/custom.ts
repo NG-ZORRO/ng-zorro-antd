@@ -12,7 +12,6 @@ interface Panel {
 
 @Component({
   selector: 'nz-demo-collapse-custom',
-  standalone: true,
   imports: [NzIconModule, NzCollapseModule],
   template: `
     <nz-collapse [nzBordered]="false">

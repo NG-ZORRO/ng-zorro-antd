@@ -152,7 +152,6 @@ describe('context-menu', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzDropDownModule, NzMenuModule],
   template: `
     <nz-dropdown-menu>

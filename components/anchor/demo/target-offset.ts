@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-anchor-target-offset',
   imports: [NzAnchorModule],
   template: `

@@ -9,7 +9,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-drawer-from-drawer',
-  standalone: true,
   imports: [NzButtonModule, NzDrawerModule, NzDatePickerModule, NzFormModule, NzInputModule, NzSelectModule],
   template: `
     <button nz-button nzType="primary" (click)="open()">Create</button>

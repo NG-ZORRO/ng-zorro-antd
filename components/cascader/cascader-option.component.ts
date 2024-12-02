@@ -29,7 +29,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzCascaderOption } from './typings';
 
 @Component({
-  standalone: true,
   selector: '[nz-cascader-option]',
   exportAs: 'nzCascaderOption',
   imports: [NgTemplateOutlet, NzHighlightModule, NzIconModule, NzOutletModule],

@@ -7,7 +7,6 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-popconfirm-dynamic-trigger',
-  standalone: true,
   imports: [FormsModule, NzPopconfirmModule, NzSwitchModule],
   template: `
     <a

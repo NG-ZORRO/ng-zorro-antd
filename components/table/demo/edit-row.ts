@@ -14,7 +14,6 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-edit-row',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzPopconfirmModule, NzTableModule],
   template: `
     <nz-table #editRowTable nzBordered [nzData]="listOfData" nzTableLayout="fixed">

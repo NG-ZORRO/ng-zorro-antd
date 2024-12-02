@@ -7,7 +7,6 @@ import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree'
 
 @Component({
   selector: 'nz-demo-tree-directory',
-  standalone: true,
   imports: [NzDropDownModule, NzIconModule, NzTreeModule, LowerCasePipe],
   template: `
     <nz-tree

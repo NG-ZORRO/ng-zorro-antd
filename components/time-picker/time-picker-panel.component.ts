@@ -148,8 +148,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`
   },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzTimePickerPanelComponent), multi: true }],
-  imports: [DecimalPipe, NgTemplateOutlet, NzI18nModule, NzButtonModule],
-  standalone: true
+  imports: [DecimalPipe, NgTemplateOutlet, NzI18nModule, NzButtonModule]
 })
 export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   private _nzHourStep = 1;

@@ -6,7 +6,6 @@ import { NzEllipsisPipe } from 'ng-zorro-antd/pipes';
 
 @Component({
   selector: 'nz-demo-pipes-ellipsis',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzEllipsisPipe],
   template: `
     <input type="text" nz-input [(ngModel)]="str" />

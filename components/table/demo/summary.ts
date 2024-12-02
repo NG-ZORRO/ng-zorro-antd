@@ -5,7 +5,6 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-table-summary',
-  standalone: true,
   imports: [NzTableModule, NzTypographyModule],
   template: `
     <nz-table #middleTable nzBordered [nzData]="data" [nzShowPagination]="false">

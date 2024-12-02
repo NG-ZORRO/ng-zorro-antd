@@ -42,7 +42,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
 @Component({
   selector: 'button[nz-button], a[nz-button]',
   exportAs: 'nzButton',
-  standalone: true,
   imports: [NzIconModule],
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,

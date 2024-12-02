@@ -48,8 +48,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     }
   `,
   host: { class: 'ant-pagination-options' },
-  imports: [NzSelectModule, FormsModule],
-  standalone: true
+  imports: [NzSelectModule, FormsModule]
 })
 export class NzPaginationOptionsComponent implements OnChanges {
   @Input() nzSize: 'default' | 'small' = 'default';

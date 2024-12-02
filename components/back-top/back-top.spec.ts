@@ -217,7 +217,6 @@ describe('nz-back-top', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzBackTopModule],
   template: `
     <nz-back-top [nzTarget]="target"></nz-back-top>
@@ -236,7 +235,6 @@ class TestBackTopComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzBackTopModule],
   template: `
     my comp

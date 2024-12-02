@@ -5,7 +5,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-tooltip-arrow-point-at-center',
-  standalone: true,
   imports: [NzButtonModule, NzToolTipModule],
   template: `
     <button nz-button nzTooltipTitle="prompt text" nzTooltipPlacement="topLeft" nz-tooltip>

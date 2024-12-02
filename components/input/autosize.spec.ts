@@ -209,7 +209,6 @@ describe('autoresize', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputModule],
   template: `<textarea nz-input nzAutosize [ngModel]="value"></textarea>`
 })
@@ -218,7 +217,6 @@ export class NzTestInputWithTextAreaAutoSizeStringComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputModule],
   template: `<textarea nz-input ngModel [nzAutosize]="{ minRows, maxRows }"></textarea>`
 })
@@ -228,7 +226,6 @@ export class NzTestInputWithTextAreaAutoSizeObjectComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputModule],
   template: `<textarea nz-input [nzAutosize]="true" [ngModel]="value"></textarea>`
 })

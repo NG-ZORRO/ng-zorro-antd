@@ -126,8 +126,7 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
     NzCronExpressionLabelComponent,
     NzCronExpressionPreviewComponent,
     NgTemplateOutlet
-  ],
-  standalone: true
+  ]
 })
 export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValueAccessor, AsyncValidator {
   @Input() nzSize: NzCronExpressionSize = 'default';

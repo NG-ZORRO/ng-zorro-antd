@@ -205,7 +205,6 @@ describe('Space compact direction', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [
     NzSpaceModule,
     NzButtonModule,
@@ -246,7 +245,6 @@ class SpaceCompactTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzSpaceModule, NzButtonModule],
   template: `
     <nz-space-compact [nzDirection]="direction">

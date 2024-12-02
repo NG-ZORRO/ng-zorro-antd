@@ -8,7 +8,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-advanced-search',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzIconModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">

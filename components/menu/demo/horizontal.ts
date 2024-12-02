@@ -5,7 +5,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 @Component({
   selector: 'nz-demo-menu-horizontal',
-  standalone: true,
   imports: [NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu nzMode="horizontal">

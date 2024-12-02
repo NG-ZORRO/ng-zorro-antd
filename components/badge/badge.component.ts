@@ -42,7 +42,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
-  standalone: true,
   imports: [NzBadgeSupComponent, NzOutletModule],
   template: `
     @if (nzStatus || nzColor) {

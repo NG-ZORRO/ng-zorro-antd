@@ -46,8 +46,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     }
   `,
   host: { class: 'ant-table-selection' },
-  imports: [FormsModule, NzCheckboxModule, NzDropDownModule, NzIconModule],
-  standalone: true
+  imports: [FormsModule, NzCheckboxModule, NzDropDownModule, NzIconModule]
 })
 export class NzTableSelectionComponent {
   @Input() listOfSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];

@@ -11,7 +11,6 @@ interface Option {
 
 @Component({
   selector: 'nz-demo-select-label-in-value',
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <p>The selected option's age is {{ selectedValue?.age }}</p>

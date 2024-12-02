@@ -23,7 +23,6 @@ interface Name {
 
 @Component({
   selector: 'nz-demo-list-infinite-load',
-  standalone: true,
   imports: [CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf, NzListModule, NzSkeletonModule],
   template: `
     <div>

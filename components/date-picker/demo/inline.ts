@@ -8,7 +8,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-date-picker-inline',
-  standalone: true,
   imports: [FormsModule, NzDatePickerModule, NzTabsModule],
   template: `
     <nz-tabset>

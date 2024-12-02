@@ -5,7 +5,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-tag-icon',
-  standalone: true,
   imports: [NzIconModule, NzTagModule],
   template: `
     <nz-tag nzColor="#55acee">

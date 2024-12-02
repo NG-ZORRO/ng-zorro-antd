@@ -4,7 +4,6 @@ import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-basic-controlled',
-  standalone: true,
   imports: [NzTreeModule],
   template: `
     <nz-tree

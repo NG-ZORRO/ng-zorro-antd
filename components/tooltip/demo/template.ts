@@ -5,7 +5,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-tooltip-template',
-  standalone: true,
   imports: [NzIconModule, NzToolTipModule],
   template: `
     <a nz-tooltip [nzTooltipTitle]="titleTemplate" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"

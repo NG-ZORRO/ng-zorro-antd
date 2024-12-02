@@ -153,7 +153,6 @@ describe('NzPageHeaderComponent', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzDemoPageHeaderBasicComponent],
   template: `
     <div [dir]="direction">

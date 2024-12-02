@@ -5,7 +5,6 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-reverse',
-  standalone: true,
   imports: [FormsModule, NzSliderModule],
   template: `
     <nz-slider [ngModel]="30" [nzReverse]="reverse"></nz-slider>

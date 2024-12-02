@@ -5,7 +5,6 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
   selector: 'nz-demo-input-number-size',
-  standalone: true,
   imports: [FormsModule, NzInputNumberModule],
   template: `
     <nz-input-number [(ngModel)]="value" nzSize="large" nzMin="1" nzMax="10" />

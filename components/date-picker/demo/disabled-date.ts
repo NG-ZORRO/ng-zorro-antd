@@ -6,7 +6,6 @@ import { DisabledTimeFn, DisabledTimePartial, NzDatePickerModule } from 'ng-zorr
 
 @Component({
   selector: 'nz-demo-date-picker-disabled-date',
-  standalone: true,
   imports: [NzDatePickerModule],
   template: `
     <nz-date-picker

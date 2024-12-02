@@ -286,7 +286,7 @@ describe('anchor', () => {
 });
 
 @Component({
-  template: `
+    template: `
     <nz-anchor
       [nzAffix]="nzAffix"
       [nzBounds]="nzBounds"
@@ -344,10 +344,11 @@ describe('anchor', () => {
       <h2 id="basic-target"></h2>
     </div>
   `,
-  styles: `
+    styles: `
     @import '../style/testing.less';
     @import './style/patch.less';
-  `
+  `,
+    standalone: false
 })
 export class TestComponent {
   @ViewChild(NzAnchorComponent, { static: false }) comp!: NzAnchorComponent;

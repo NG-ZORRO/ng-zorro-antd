@@ -13,7 +13,6 @@ function alphabet(size: number): string[] {
 
 @Component({
   selector: 'nz-demo-select-big-data',
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select

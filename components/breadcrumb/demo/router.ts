@@ -5,7 +5,6 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 @Component({
   selector: 'nz-demo-breadcrumb-router',
-  standalone: true,
   imports: [RouterLink, NzBreadCrumbModule],
   template: `
     <nz-breadcrumb>

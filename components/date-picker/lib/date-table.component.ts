@@ -15,14 +15,13 @@ import { DateBodyRow, DateCell } from './interface';
 import { transCompatFormat } from './util';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'date-table',
-  exportAs: 'dateTable',
-  templateUrl: './abstract-table.html',
-  standalone: true,
-  imports: [NzStringTemplateOutletDirective]
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: 'date-table',
+    exportAs: 'dateTable',
+    templateUrl: './abstract-table.html',
+    imports: [NzStringTemplateOutletDirective]
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
   @Input() override locale!: NzCalendarI18nInterface;

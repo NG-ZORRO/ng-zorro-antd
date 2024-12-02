@@ -6,7 +6,6 @@ import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 
 @Component({
   selector: 'nz-demo-color-picker-flip-flop',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzColorPickerModule],
   template: `
     <nz-color-picker [nzFlipFlop]="flipFlop" [(ngModel)]="color"></nz-color-picker>

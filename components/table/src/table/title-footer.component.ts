@@ -20,8 +20,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     '[class.ant-table-title]': `title !== null`,
     '[class.ant-table-footer]': `footer !== null`
   },
-  imports: [NzOutletModule],
-  standalone: true
+  imports: [NzOutletModule]
 })
 export class NzTableTitleFooterComponent {
   @Input() title: string | TemplateRef<NzSafeAny> | null = null;

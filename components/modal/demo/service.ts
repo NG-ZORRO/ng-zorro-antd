@@ -1,5 +1,3 @@
-/* declarations: NzModalCustomComponent */
-
 import { Component, inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -12,7 +10,6 @@ interface IModalData {
 
 @Component({
   selector: 'nz-demo-modal-service',
-  standalone: true,
   imports: [NzButtonModule, NzModalModule],
   template: `
     <button nz-button nzType="primary" (click)="createModal()">
@@ -186,7 +183,6 @@ export class NzDemoModalServiceComponent {
 
 @Component({
   selector: 'nz-modal-custom-component',
-  standalone: true,
   imports: [NzButtonModule],
   template: `
     <div>

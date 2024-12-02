@@ -454,7 +454,6 @@ describe('time-picker', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerComponent, FormsModule],
   template: `
     <nz-time-picker
@@ -490,7 +489,6 @@ export class NzTestTimePickerComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerComponent],
   template: `<nz-time-picker [nzStatus]="status"></nz-time-picker>`
 })
@@ -499,7 +497,6 @@ export class NzTestTimePickerStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerComponent, BidiModule],
   template: `
     <div [dir]="dir">
@@ -512,7 +509,6 @@ export class NzTestTimePickerDirComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzFormModule, ReactiveFormsModule, NzTimePickerComponent],
   template: `
     <form nz-form [formGroup]="timePickerForm">

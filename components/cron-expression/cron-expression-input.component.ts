@@ -36,8 +36,7 @@ import { CronChangeType, TimeType } from './typings';
       />
     </div>
   `,
-  imports: [NzInputModule, FormsModule],
-  standalone: true
+  imports: [NzInputModule, FormsModule]
 })
 export class NzCronExpressionInputComponent {
   @Input() value: string = '0';

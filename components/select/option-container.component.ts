@@ -62,13 +62,13 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
         >
           @switch (item.type) {
             @case ('group') {
-              <nz-option-item-group [nzLabel]="item.groupLabel"></nz-option-item-group>
+              <nz-option-item-group [nzLabel]="item.groupLabel ?? null"></nz-option-item-group>
             }
             @case ('item') {
               <nz-option-item
                 [icon]="menuItemSelectedIcon"
                 [customContent]="item.nzCustomContent"
-                [template]="item.template"
+                [template]="item.template ?? null"
                 [grouped]="!!item.groupLabel"
                 [disabled]="item.nzDisabled || (isMaxLimitReached && !listOfSelectedValue.includes(item['nzValue']))"
                 [showState]="mode === 'tags' || mode === 'multiple'"
@@ -96,8 +96,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
     NgTemplateOutlet,
     OverlayModule,
     NzOverlayModule
-  ],
-  standalone: true
+  ]
 })
 export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() notFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;

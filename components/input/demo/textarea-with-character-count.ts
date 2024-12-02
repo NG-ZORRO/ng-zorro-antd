@@ -6,7 +6,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-textarea-with-character-count',
-  standalone: true,
   imports: [ReactiveFormsModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="form" nzLayout="vertical">

@@ -1,5 +1,3 @@
-/* declarations: NzModalCustomFooterComponent */
-
 import { Component } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -7,7 +5,6 @@ import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-footer2',
-  standalone: true,
   imports: [NzButtonModule, NzModalModule],
   template: `
     <button nz-button nzType="primary" (click)="showModal1()">
@@ -67,7 +64,6 @@ export class NzDemoModalFooter2Component {
 
 @Component({
   selector: 'nz-modal-custom-footer-component',
-  standalone: true,
   imports: [NzButtonModule, NzModalModule],
   template: `
     <div>

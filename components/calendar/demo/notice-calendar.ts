@@ -5,7 +5,6 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 
 @Component({
   selector: 'nz-demo-calendar-notice-calendar',
-  standalone: true,
   imports: [NzBadgeModule, NzCalendarModule],
   template: `
     <nz-calendar>

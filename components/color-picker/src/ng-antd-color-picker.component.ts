@@ -27,7 +27,6 @@ import { defaultColor, generateColor } from './util/util';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-antd-color-picker',
-  standalone: true,
   imports: [PickerComponent, SliderComponent, NgAntdColorBlockComponent, NgTemplateOutlet],
   template: `
     <div class="ant-color-picker-panel" [class.ant-color-picker-panel-disabled]="disabled">

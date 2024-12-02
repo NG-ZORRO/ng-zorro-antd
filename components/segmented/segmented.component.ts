@@ -76,8 +76,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzSegmentedComponent), multi: true }
   ],
   animations: [thumbMotion],
-  imports: [NzIconModule, NzOutletModule, NzSegmentedItemComponent],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule, NzSegmentedItemComponent]
 })
 export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

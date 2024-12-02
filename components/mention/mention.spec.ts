@@ -564,7 +564,6 @@ describe('mention', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="suggestions">
@@ -590,7 +589,6 @@ class NzTestSimpleMentionComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention
@@ -648,7 +646,6 @@ class NzTestPropertyMentionComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzInputModule, NzMentionModule],
   template: `
     <div [dir]="direction">
@@ -663,7 +660,6 @@ class NzTestDirMentionComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="[]" [nzStatus]="status">
@@ -676,7 +672,6 @@ class NzTestStatusMentionComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzFormModule, NzMentionModule],
   template: `
     <form nz-form>

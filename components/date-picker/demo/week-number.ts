@@ -6,7 +6,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-date-picker-week-number',
-  standalone: true,
   imports: [FormsModule, NzDatePickerModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="showWeekNumber">

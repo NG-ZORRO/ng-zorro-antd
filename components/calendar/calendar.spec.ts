@@ -416,7 +416,6 @@ describe('Calendar', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzCalendarModule],
   template: `
     <nz-calendar></nz-calendar>
@@ -428,7 +427,6 @@ class NzTestCalendarModeComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzCalendarModule],
   template: `
     <nz-calendar></nz-calendar>
@@ -445,7 +443,6 @@ class NzTestCalendarValueComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzCalendarModule],
   template: `
     <nz-calendar></nz-calendar>
@@ -458,7 +455,6 @@ class NzTestCalendarFullscreenComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzCalendarModule],
   template: `
     <nz-calendar [nzDateCell]="tpl"></nz-calendar>
@@ -471,7 +467,6 @@ class NzTestCalendarFullscreenComponent {
 class NzTestCalendarDateCellComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzCalendarModule],
   template: `
     <nz-calendar [nzDateFullCell]="tpl"></nz-calendar>
@@ -484,7 +479,6 @@ class NzTestCalendarDateCellComponent {}
 class NzTestCalendarDateFullCellComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzCalendarModule],
   template: `
     <nz-calendar nzMode="year" [nzMonthCell]="tpl"></nz-calendar>
@@ -497,7 +491,6 @@ class NzTestCalendarDateFullCellComponent {}
 class NzTestCalendarMonthCellComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzCalendarModule],
   template: `
     <nz-calendar nzMode="year" [nzMonthFullCell]="tpl"></nz-calendar>
@@ -510,7 +503,6 @@ class NzTestCalendarMonthCellComponent {}
 class NzTestCalendarMonthFullCellComponent {}
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzCalendarModule],
   template: `
     <nz-calendar
@@ -529,7 +521,6 @@ class NzTestCalendarChangesComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzCalendarModule],
   template: `
     <div [dir]="direction">

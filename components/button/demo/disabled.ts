@@ -4,7 +4,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'nz-demo-button-disabled',
-  standalone: true,
   imports: [NzButtonModule],
   template: `
     <button nz-button nzType="primary">Primary</button>

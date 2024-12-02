@@ -63,8 +63,7 @@ import { NzMessageData } from './typings';
       </div>
     </div>
   `,
-  imports: [NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule]
 })
 export class NzMessageComponent extends NzMNComponent implements OnInit, OnDestroy {
   @Input() override instance!: Required<NzMessageData>;

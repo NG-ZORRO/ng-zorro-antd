@@ -16,14 +16,13 @@ import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'quarter-table',
-  exportAs: 'quarterTable',
-  templateUrl: 'abstract-table.html',
-  standalone: true,
-  imports: [NzStringTemplateOutletDirective]
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: 'quarter-table',
+    exportAs: 'quarterTable',
+    templateUrl: 'abstract-table.html',
+    imports: [NzStringTemplateOutletDirective]
 })
 export class QuarterTableComponent extends AbstractTable implements OnChanges, OnInit {
   override MAX_ROW = 1;

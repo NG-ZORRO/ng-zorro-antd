@@ -66,8 +66,7 @@ import { NzFormDirective } from './form.directive';
   host: {
     class: 'ant-form-item-control'
   },
-  imports: [NzOutletModule],
-  standalone: true
+  imports: [NzOutletModule]
 })
 export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {
   private _hasFeedback = false;

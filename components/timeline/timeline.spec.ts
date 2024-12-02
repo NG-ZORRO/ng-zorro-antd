@@ -230,7 +230,6 @@ describe('nz-timeline', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTimelineModule],
   selector: 'nz-test-basic-timeline',
   template: `
@@ -256,7 +255,6 @@ export class NzTestTimelineBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTimelineModule],
   template: `
     <nz-timeline>
@@ -270,7 +268,6 @@ export class NzTestTimelineBasicComponent {
 export class NzTestTimelineCustomColorComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzTimelineModule],
   template: `
     <ng-template #pendingTemplate>template</ng-template>
@@ -283,7 +280,6 @@ export class NzTestTimelineCustomColorComponent {}
 export class NzTestTimelinePendingComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzTimelineModule],
   template: `
     <nz-timeline nzMode="custom">
@@ -295,7 +291,6 @@ export class NzTestTimelinePendingComponent {}
 export class NzTestTimelineCustomPositionComponent {}
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestTimelineBasicComponent],
   template: `
     <div [dir]="direction">
@@ -309,7 +304,6 @@ export class NzTestTimelineRtlComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTimelineModule],
   template: `
     <nz-timeline nzMode="custom">

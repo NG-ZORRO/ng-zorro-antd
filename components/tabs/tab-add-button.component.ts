@@ -21,8 +21,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     'aria-label': 'Add tab',
     type: 'button'
   },
-  imports: [NzOutletModule, NzIconModule],
-  standalone: true
+  imports: [NzOutletModule, NzIconModule]
 })
 export class NzTabAddButtonComponent {
   @Input() addIcon: string | TemplateRef<NzSafeAny> = 'plus';

@@ -33,7 +33,6 @@ function mockAsyncStep(): Observable<number> {
 
 @Component({
   selector: 'nz-demo-steps-progress',
-  standalone: true,
   imports: [NzButtonModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">

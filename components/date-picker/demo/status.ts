@@ -5,7 +5,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-date-picker-status',
-  standalone: true,
   imports: [NzDatePickerModule, NzSpaceModule],
   template: `
     <nz-space nzDirection="vertical" style="width: 100%">

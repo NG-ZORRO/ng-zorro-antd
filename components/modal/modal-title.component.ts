@@ -23,8 +23,7 @@ import { ModalOptions } from './modal-types';
     class: 'ant-modal-header'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzOutletModule],
-  standalone: true
+  imports: [NzOutletModule]
 })
 export class NzModalTitleComponent {
   constructor(public config: ModalOptions) {}

@@ -41,7 +41,6 @@ interface ExampleFlatNode {
 
 @Component({
   selector: 'nz-demo-tree-view-directory',
-  standalone: true,
   imports: [NzIconModule, NzTreeViewModule],
   template: `
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource" [nzDirectoryTree]="true">

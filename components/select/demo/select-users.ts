@@ -15,7 +15,6 @@ interface MockUser {
 
 @Component({
   selector: 'nz-demo-select-select-users',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzSelectModule],
   template: `
     <nz-select

@@ -244,7 +244,6 @@ describe('NzPopconfirm', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzPopconfirmModule],
   template: `
     <a

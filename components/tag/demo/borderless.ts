@@ -5,7 +5,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-tag-borderless',
-  standalone: true,
   imports: [NzTagModule],
   template: `
     @for (color of tagColors; track color) {

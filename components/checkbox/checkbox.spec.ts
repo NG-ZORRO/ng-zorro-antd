@@ -392,7 +392,6 @@ describe('checkbox', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzCheckboxModule],
   selector: 'nz-test-single-checkbox',
   template: `
@@ -418,7 +417,6 @@ export class NzTestCheckboxSingleComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzCheckboxModule],
   selector: 'nz-test-group-checkbox',
   template: `
@@ -440,7 +438,6 @@ export class NzTestCheckboxGroupComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzCheckboxModule],
   template: `
     <nz-checkbox-wrapper (nzOnChange)="onChange($event)">
@@ -457,7 +454,6 @@ export class NzTestCheckboxWrapperComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzCheckboxModule],
   template: `
     <form>
@@ -479,7 +475,6 @@ export class NzTestCheckboxFormComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzCheckboxModule],
   template: `
     <form>
@@ -505,7 +500,6 @@ export class NzTestCheckboxGroupFormComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestCheckboxSingleComponent],
   template: `
     <div [dir]="direction">
@@ -519,7 +513,6 @@ export class NzTestCheckboxSingleRtlComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestCheckboxGroupComponent],
   template: `
     <div [dir]="direction">

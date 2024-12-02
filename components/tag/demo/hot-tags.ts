@@ -6,7 +6,6 @@ const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
 
 @Component({
   selector: 'nz-demo-tag-hot-tags',
-  standalone: true,
   imports: [NzTagModule],
   template: `
     <strong>Categories:</strong>

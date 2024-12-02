@@ -8,7 +8,6 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 @Component({
   selector: 'nz-demo-form-time-related-controls',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzDatePickerModule, NzFormModule, NzTimePickerModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">

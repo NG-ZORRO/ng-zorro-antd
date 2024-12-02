@@ -24,7 +24,6 @@ interface CustomColumn extends NzCustomColumn {
 
 @Component({
   selector: 'nz-demo-table-custom-column',
-  standalone: true,
   imports: [
     NzButtonModule,
     NzDividerModule,

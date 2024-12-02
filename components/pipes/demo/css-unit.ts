@@ -6,7 +6,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-pipes-css-unit',
-  standalone: true,
   imports: [FormsModule, NzSliderModule, NzToCssUnitPipe],
   template: `
     <nz-slider [(ngModel)]="radiusValue" [nzMax]="100" [nzMin]="0"></nz-slider>

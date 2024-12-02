@@ -7,7 +7,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-auto-complete-uncertain-category',
   imports: [FormsModule, NzAutocompleteModule, NzButtonModule, NzIconModule, NzInputModule],
   encapsulation: ViewEncapsulation.None,

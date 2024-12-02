@@ -228,7 +228,6 @@ describe('grid', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzGridModule],
   template: `
     <div nz-row [nzGutter]="gutter" [nzJustify]="justify" [nzAlign]="align">
@@ -250,7 +249,6 @@ export class TestGridComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzGridModule],
   template: `
     <div nz-row>
@@ -288,7 +286,6 @@ export class TestColComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzGridModule],
   template: `
     <div [dir]="direction">

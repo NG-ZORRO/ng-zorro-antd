@@ -5,7 +5,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-tooltip-placement',
-  standalone: true,
   imports: [NzButtonModule, NzToolTipModule],
   template: `
     <div style="margin-left:60px;">

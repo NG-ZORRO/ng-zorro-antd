@@ -42,7 +42,6 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   selector: 'nz-back-top',
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
-  standalone: true,
   imports: [NgTemplateOutlet, NzIconModule],
   template: `
     @if (visible) {

@@ -41,7 +41,6 @@ export interface BreadcrumbOption {
   exportAs: 'nzBreadcrumb',
   preserveWhitespaces: false,
   providers: [{ provide: NzBreadcrumb, useExisting: forwardRef(() => NzBreadCrumbComponent) }],
-  standalone: true,
   imports: [NzBreadCrumbItemComponent],
   template: `
     <ng-content />

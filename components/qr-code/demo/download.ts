@@ -5,7 +5,6 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 
 @Component({
   selector: 'nz-demo-qr-code-download',
-  standalone: true,
   imports: [NzButtonModule, NzQRCodeModule],
   template: `
     <div id="download">

@@ -310,7 +310,6 @@ describe('switch', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzSwitchModule],
   template: `
     <ng-template #checkedChildrenTemplate><span nz-icon nzType="check"></span></ng-template>
@@ -342,7 +341,6 @@ export class NzTestSwitchBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzSwitchModule],
   template: `
     <ng-template #checkedChildrenTemplate><span nz-icon nzType="check"></span></ng-template>
@@ -356,7 +354,6 @@ export class NzTestSwitchBasicComponent {
 export class NzTestSwitchTemplateComponent {}
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzSwitchModule],
   template: `
     <form>
@@ -379,7 +376,6 @@ export class NzTestSwitchFormComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, FormsModule, NzSwitchModule],
   template: `
     <div [dir]="direction">

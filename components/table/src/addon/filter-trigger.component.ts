@@ -49,8 +49,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
     </span>
   `,
   providers: [NzDestroyService],
-  imports: [NzDropDownModule],
-  standalone: true
+  imports: [NzDropDownModule]
 })
 export class NzFilterTriggerComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

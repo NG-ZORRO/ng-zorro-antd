@@ -7,7 +7,6 @@ import { NzSpaceModule, NzSpaceSize } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-space-size',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzRadioModule, NzSpaceModule],
   template: `
     <nz-radio-group [(ngModel)]="size">

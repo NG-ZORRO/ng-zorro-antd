@@ -24,7 +24,6 @@ describe('nz-form-item', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzFormModule],
   template: `<nz-form-item></nz-form-item>`
 })

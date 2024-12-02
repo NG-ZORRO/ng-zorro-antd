@@ -9,7 +9,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-drawer-service',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzDrawerModule, NzFormModule, NzInputModule],
   template: `
     <ng-template #drawerTemplate let-data let-drawerRef="drawerRef">
@@ -86,7 +85,6 @@ export class NzDemoDrawerServiceComponent {
 
 @Component({
   selector: 'nz-drawer-custom-component',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzDividerModule, NzInputModule],
   template: `
     <div>

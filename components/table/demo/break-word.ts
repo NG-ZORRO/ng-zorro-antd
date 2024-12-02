@@ -4,7 +4,6 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'nz-demo-table-break-word',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1000px', y: '240px' }">

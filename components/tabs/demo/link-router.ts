@@ -5,7 +5,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-link-router',
-  standalone: true,
   imports: [RouterLink, NzTabsModule],
   template: `
     <nz-tabset nzLinkRouter>

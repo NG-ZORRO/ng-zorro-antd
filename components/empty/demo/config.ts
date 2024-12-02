@@ -15,7 +15,6 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-empty-config',
-  standalone: true,
   imports: [
     FormsModule,
     NzCascaderModule,

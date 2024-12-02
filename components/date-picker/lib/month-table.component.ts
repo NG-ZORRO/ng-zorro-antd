@@ -14,14 +14,13 @@ import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'month-table',
-  exportAs: 'monthTable',
-  templateUrl: 'abstract-table.html',
-  standalone: true,
-  imports: [NzStringTemplateOutletDirective]
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: 'month-table',
+    exportAs: 'monthTable',
+    templateUrl: 'abstract-table.html',
+    imports: [NzStringTemplateOutletDirective]
 })
 export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
   override MAX_ROW = 4;

@@ -226,7 +226,6 @@ describe('nz-color-picker', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule, NzColorPickerModule],
   template: `
     <nz-color-picker
@@ -317,7 +316,6 @@ describe('nz-color-picker form', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzColorPickerModule, NzFormModule, ReactiveFormsModule],
   template: `
     <form nz-form [formGroup]="validateForm">

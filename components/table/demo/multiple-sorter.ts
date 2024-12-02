@@ -11,7 +11,6 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-multiple-sorter',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table #sortTable [nzData]="listOfData" nzTableLayout="fixed">

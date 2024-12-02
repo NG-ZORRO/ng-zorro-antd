@@ -6,7 +6,6 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 @Component({
   selector: 'nz-demo-steps-customized-progress-dot',
-  standalone: true,
   imports: [NgTemplateOutlet, NzStepsModule, NzPopoverModule],
   template: `
     <nz-steps [nzCurrent]="1" [nzProgressDot]="progressTemplate">

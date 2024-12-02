@@ -41,7 +41,6 @@ function getPosition(e: EventType): { pageX: number; pageY: number } {
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'color-slider',
-  standalone: true,
   imports: [PaletteComponent, GradientComponent, HandlerComponent],
   template: `
     <div

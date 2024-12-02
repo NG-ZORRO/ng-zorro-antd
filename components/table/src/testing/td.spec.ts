@@ -149,7 +149,6 @@ describe('nz-td', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <td
@@ -180,7 +179,6 @@ export class NzTestTdComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `<td class="nz-disable-td" [nzChecked]="true"></td>`
 })

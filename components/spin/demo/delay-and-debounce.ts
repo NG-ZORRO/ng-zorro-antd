@@ -7,7 +7,6 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-spin-delay-and-debounce',
-  standalone: true,
   imports: [FormsModule, NzAlertModule, NzSpinModule, NzSwitchModule],
   template: `
     <nz-spin [nzSpinning]="isSpinning" [nzDelay]="500">

@@ -45,8 +45,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[attr.title]': 'label',
     '[class.ant-select-selection-item-disabled]': 'disabled'
   },
-  imports: [NgTemplateOutlet, NzOutletModule, NzIconModule],
-  standalone: true
+  imports: [NgTemplateOutlet, NzOutletModule, NzIconModule]
 })
 export class NzSelectItemComponent {
   @Input() disabled = false;

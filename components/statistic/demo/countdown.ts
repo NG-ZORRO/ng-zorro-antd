@@ -5,7 +5,6 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
 @Component({
   selector: 'nz-demo-statistic-countdown',
-  standalone: true,
   imports: [NzGridModule, NzStatisticModule],
   template: `
     <nz-row [nzGutter]="16">

@@ -5,7 +5,6 @@ import { NzDropDownModule, NzPlacementType } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'nz-demo-dropdown-placement',
-  standalone: true,
   imports: [NzDropDownModule, NzButtonModule],
   template: `
     <div>

@@ -5,7 +5,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-space-vertical',
-  standalone: true,
   imports: [NzCardModule, NzSpaceModule],
   template: `
     <nz-space nzDirection="vertical">

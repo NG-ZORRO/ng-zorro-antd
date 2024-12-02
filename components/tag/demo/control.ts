@@ -8,7 +8,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-tag-control',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzInputModule, NzTagModule, NzNoAnimationDirective],
   template: `
     @for (tag of tags; track tag) {

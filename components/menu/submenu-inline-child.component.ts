@@ -38,8 +38,7 @@ import { NzMenuModeType } from './menu.types';
     '[class.ant-menu-rtl]': `dir === 'rtl'`,
     '[@collapseMotion]': 'expandState'
   },
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;

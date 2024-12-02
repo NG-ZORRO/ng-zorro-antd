@@ -7,7 +7,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-date-picker-switch',
-  standalone: true,
   imports: [FormsModule, NzDatePickerModule, NzSelectModule, NzSpaceModule],
   template: `
     <nz-space>

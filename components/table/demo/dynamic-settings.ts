@@ -48,7 +48,6 @@ interface Setting {
 
 @Component({
   selector: 'nz-demo-table-dynamic-settings',
-  standalone: true,
   imports: [ReactiveFormsModule, NzDividerModule, NzFormModule, NzRadioModule, NzSwitchModule, NzTableModule],
   template: `
     <div class="components-table-demo-control-bar">

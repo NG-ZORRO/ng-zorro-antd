@@ -6,7 +6,6 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-switch-disabled',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzSwitchModule],
   template: `
     <nz-switch [(ngModel)]="switchValue" [nzDisabled]="isDisabled"></nz-switch>

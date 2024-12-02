@@ -140,8 +140,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [drawerMaskMotion],
-  imports: [NzNoAnimationDirective, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet, CdkScrollable],
-  standalone: true
+  imports: [NzNoAnimationDirective, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet, CdkScrollable]
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
   extends NzDrawerRef<T, R>

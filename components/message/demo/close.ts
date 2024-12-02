@@ -6,7 +6,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'nz-demo-message-close',
-  standalone: true,
   imports: [NzButtonModule],
   template: `<button nz-button nzType="default" (click)="startShowMessages()">Display a sequence of messages</button>`
 })

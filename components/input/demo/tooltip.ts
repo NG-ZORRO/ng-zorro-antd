@@ -6,7 +6,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-input-tooltip',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzToolTipModule],
   template: `
     <input

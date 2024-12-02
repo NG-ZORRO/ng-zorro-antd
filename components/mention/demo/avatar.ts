@@ -7,7 +7,6 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 
 @Component({
   selector: 'nz-demo-mention-avatar',
-  standalone: true,
   imports: [FormsModule, NzAvatarModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="webFrameworks" [nzValueWith]="valueWith" (nzOnSelect)="onSelect($event)">

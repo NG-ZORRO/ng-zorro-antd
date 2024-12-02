@@ -10,7 +10,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-dynamic-rule',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzCheckboxModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">

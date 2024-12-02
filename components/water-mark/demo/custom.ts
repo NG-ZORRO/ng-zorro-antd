@@ -12,7 +12,6 @@ import { FontType, NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
 
 @Component({
   selector: 'nz-demo-water-mark-custom',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     NzColorPickerModule,

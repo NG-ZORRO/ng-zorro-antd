@@ -5,7 +5,6 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'nz-demo-table-drag-sorting',
-  standalone: true,
   imports: [CdkDropList, CdkDrag, NzTableModule],
   template: `
     <nz-table [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false">

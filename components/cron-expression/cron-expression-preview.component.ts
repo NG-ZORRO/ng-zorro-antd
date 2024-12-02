@@ -57,8 +57,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       }
     </ul>
   </div>`,
-  imports: [NgTemplateOutlet, DatePipe, NzIconModule],
-  standalone: true
+  imports: [NgTemplateOutlet, DatePipe, NzIconModule]
 })
 export class NzCronExpressionPreviewComponent {
   @Input() TimeList: Date[] = [];

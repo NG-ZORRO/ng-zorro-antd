@@ -6,7 +6,6 @@ import { NzTransferModule, TransferCanMove, TransferItem } from 'ng-zorro-antd/t
 
 @Component({
   selector: 'nz-demo-transfer-can-move',
-  standalone: true,
   imports: [NzTransferModule],
   template: `
     <nz-transfer

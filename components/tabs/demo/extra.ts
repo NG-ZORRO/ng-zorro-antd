@@ -5,7 +5,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-extra',
-  standalone: true,
   imports: [NzButtonModule, NzTabsModule],
   template: `
     <nz-tabset [nzTabBarExtraContent]="extraTemplate">

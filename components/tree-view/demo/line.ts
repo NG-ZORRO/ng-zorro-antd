@@ -46,7 +46,6 @@ interface FlatNode {
 
 @Component({
   selector: 'nz-demo-tree-view-line',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzSwitchModule, NzTreeViewModule],
   template: `
     Show Leaf Icon:

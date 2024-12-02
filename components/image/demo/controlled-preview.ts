@@ -7,7 +7,6 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
   selector: 'nz-demo-image-controlled-preview',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzImageModule, NzInputNumberModule],
   template: `
     <div>

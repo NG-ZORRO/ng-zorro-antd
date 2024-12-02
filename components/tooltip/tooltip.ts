@@ -41,7 +41,7 @@ import {
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipTitle') override title?: NzTSType | null;
-  @Input('nzTooltipTitleContext') titleContext?: Object | null = null;
+  @Input('nzTooltipTitleContext') titleContext?: object | null = null;
   @Input('nz-tooltip') override directiveTitle?: NzTSType | null;
   @Input('nzTooltipTrigger') override trigger?: NzTooltipTrigger = 'hover';
   @Input('nzTooltipPlacement') override placement?: string | string[] = 'top';
@@ -112,12 +112,11 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
     </ng-template>
   `,
   preserveWhitespaces: false,
-  imports: [OverlayModule, NzNoAnimationDirective, NzOutletModule, NzOverlayModule],
-  standalone: true
+  imports: [OverlayModule, NzNoAnimationDirective, NzOutletModule, NzOverlayModule]
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
   override nzTitle: NzTSType | null = null;
-  nzTitleContext: Object | null = null;
+  nzTitleContext: object | null = null;
 
   nzColor?: string | NzPresetColor;
 

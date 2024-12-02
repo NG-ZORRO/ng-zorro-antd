@@ -128,8 +128,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
     '[class.ant-typography-ellipsis-multiple-line]': 'canCssEllipsis && nzEllipsisRows > 1',
     '[style.-webkit-line-clamp]': '(canCssEllipsis && nzEllipsisRows > 1) ? nzEllipsisRows : null'
   },
-  imports: [NgTemplateOutlet, NzTextEditComponent, NzTextCopyComponent],
-  standalone: true
+  imports: [NgTemplateOutlet, NzTextEditComponent, NzTextCopyComponent]
 })
 export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

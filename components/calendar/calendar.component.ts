@@ -90,8 +90,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     '[class.ant-picker-calendar-rtl]': `dir === 'rtl'`
   },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }],
-  imports: [NzCalendarHeaderComponent, LibPackerModule],
-  standalone: true
+  imports: [NzCalendarHeaderComponent, LibPackerModule]
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
   activeDate: CandyDate = new CandyDate();

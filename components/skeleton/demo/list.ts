@@ -8,7 +8,6 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-skeleton-list',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzListModule, NzSkeletonModule, NzSwitchModule],
   template: `
     <nz-switch [(ngModel)]="loading"></nz-switch>

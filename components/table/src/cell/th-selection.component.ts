@@ -40,8 +40,7 @@ import { NzTableSelectionComponent } from '../addon/selection.component';
     <ng-content></ng-content>
   `,
   host: { class: 'ant-table-selection-column' },
-  imports: [NzTableSelectionComponent],
-  standalone: true
+  imports: [NzTableSelectionComponent]
 })
 export class NzThSelectionComponent implements OnChanges {
   @Input() nzSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];

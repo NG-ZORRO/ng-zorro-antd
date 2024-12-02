@@ -48,7 +48,6 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
 @Component({
   selector: 'nz-input-group',
   exportAs: 'nzInputGroup',
-  standalone: true,
   imports: [NzInputGroupSlotComponent, NgTemplateOutlet, NzFormPatchModule],
   encapsulation: ViewEncapsulation.None,
   providers: [NzFormNoStatusService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }],

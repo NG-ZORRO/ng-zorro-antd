@@ -74,7 +74,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
       </div>
     </div>
   `,
-
   host: {
     class: 'ant-collapse-item',
     '[class.ant-collapse-no-arrow]': '!nzShowArrow',
@@ -82,8 +81,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
     '[class.ant-collapse-item-disabled]': 'nzDisabled'
   },
   providers: [NzDestroyService],
-  imports: [NzOutletModule, NzIconModule],
-  standalone: true
+  imports: [NzOutletModule, NzIconModule]
 })
 export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

@@ -15,7 +15,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-validate-reactive',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
@@ -83,7 +82,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       </nz-form-item>
     </form>
   `,
-
   styles: [
     `
       [nz-form] {

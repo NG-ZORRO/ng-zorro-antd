@@ -7,7 +7,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-custom-dropdown-menu',
-  standalone: true,
   imports: [NzDividerModule, NzIconModule, NzInputModule, NzSelectModule],
   template: `
     <nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="custom dropdown render">

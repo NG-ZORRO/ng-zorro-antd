@@ -745,7 +745,6 @@ function afterNextFrameRender(callbackFn: () => void): void {
 }
 
 @Component({
-  standalone: true,
   imports: [NzResizableModule],
   template: `
     <div class="box-ref" #boxRef>

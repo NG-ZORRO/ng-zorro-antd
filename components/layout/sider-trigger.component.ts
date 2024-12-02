@@ -49,8 +49,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-layout-sider-zero-width-trigger-right]': 'isZeroTrigger && nzReverseArrow',
     '[class.ant-layout-sider-zero-width-trigger-left]': 'isZeroTrigger && !nzReverseArrow'
   },
-  imports: [NgTemplateOutlet, NzIconModule],
-  standalone: true
+  imports: [NgTemplateOutlet, NzIconModule]
 })
 export class NzSiderTriggerComponent implements OnChanges, OnInit {
   @Input() nzCollapsed = false;

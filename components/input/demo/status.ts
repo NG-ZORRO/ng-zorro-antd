@@ -7,7 +7,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-input-status',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzInputModule, NzSpaceModule],
   template: `
     <nz-space nzDirection="vertical" style="width: 100%">

@@ -4,7 +4,6 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule, NzTreeNodeOptions } f
 
 @Component({
   selector: 'nz-demo-tree-basic',
-  standalone: true,
   imports: [NzTreeModule],
   template: `
     <nz-tree

@@ -4,15 +4,14 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "downlevelIteration": true,
     "module": "es2020",
     "importHelpers": true,
+    "esModuleInterop": true,
     "rootDir": ".",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
     "target": "ES2022",
     "lib": [
       "es2020",

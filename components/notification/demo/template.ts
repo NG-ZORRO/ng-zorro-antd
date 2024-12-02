@@ -6,7 +6,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-notification-template',
-  standalone: true,
   imports: [NzButtonModule, NzTagModule],
   template: `
     <button nz-button nzType="primary" (click)="createNotification()">Open the notification box</button>

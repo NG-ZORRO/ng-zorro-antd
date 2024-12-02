@@ -87,7 +87,7 @@ describe('nz-float-button RTL', () => {
 
 @Component({
   // eslint-disable-next-line
-  selector: 'nz-test-basic-float-button',
+    selector: 'nz-test-basic-float-button',
   template: `
     <nz-float-button
       [nzIcon]="nzIcon"

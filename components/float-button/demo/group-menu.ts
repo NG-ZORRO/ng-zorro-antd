@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: 'nz-demo-float-button-group-menu',
+  imports: [NzFloatButtonModule, NzIconModule],
   template: `
     <div class="menu">
       <nz-float-button-group
@@ -26,10 +30,10 @@ import { Component } from '@angular/core';
       </nz-float-button-group>
     </div>
     <ng-template #icon>
-      <span nz-icon nzType="customer-service" nzTheme="outline"></span>
+      <nz-icon nzType="customer-service" nzTheme="outline"></nz-icon>
     </ng-template>
     <ng-template #inner>
-      <span nz-icon nzType="comment" nzTheme="outline"></span>
+      <nz-icon nzType="comment" nzTheme="outline"></nz-icon>
     </ng-template>
   `,
   styles: [

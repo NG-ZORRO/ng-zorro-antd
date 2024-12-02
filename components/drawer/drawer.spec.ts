@@ -802,7 +802,6 @@ describe('NzDrawerService', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzDrawerModule, NzIconModule, NzNoAnimationDirective],
   template: `
     <button (click)="open()">Open</button>
@@ -912,7 +911,6 @@ class NzTestDrawerWithServiceComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule],
   template: `
     <div>
@@ -933,7 +931,6 @@ export class NzDrawerCustomComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzDrawerModule],
   template: `
     <div [dir]="direction">

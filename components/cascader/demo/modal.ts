@@ -49,7 +49,6 @@ const options: NzCascaderOption[] = [
 
 @Component({
   selector: 'nz-demo-cascader-modal',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzModalModule, NzCascaderModule],
   template: `
     <nz-modal

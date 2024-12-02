@@ -85,7 +85,6 @@ describe('nz-form-label', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzFormModule],
   template: `
     <nz-form-label

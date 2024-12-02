@@ -5,7 +5,6 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 
 @Component({
   selector: 'nz-demo-result-warning',
-  standalone: true,
   imports: [NzButtonModule, NzResultModule],
   template: `
     <nz-result nzStatus="warning" nzTitle="There are some problems with your operation">

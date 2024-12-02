@@ -1761,7 +1761,6 @@ class TestWithViewContainerDirective {
 }
 
 @Component({
-  standalone: true,
   imports: [TestWithViewContainerDirective],
   template: ` <test-with-view-container></test-with-view-container> `
 })
@@ -1809,7 +1808,6 @@ class TestWithServiceComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzModalModule],
   template: `
     <div class="modal-content">Hello {{ value }}</div>
@@ -1830,7 +1828,6 @@ class TestWithModalContentComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzModalModule],
   template: `
     <nz-modal

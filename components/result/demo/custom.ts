@@ -5,7 +5,6 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 
 @Component({
   selector: 'nz-demo-result-custom',
-  standalone: true,
   imports: [NzButtonModule, NzResultModule],
   template: `
     <nz-result nzIcon="smile-twotone" nzTitle="Great, we have done all the operators!">

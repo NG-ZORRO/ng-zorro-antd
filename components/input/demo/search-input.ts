@@ -7,7 +7,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-search-input',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzInputModule, NzIconModule],
   template: `
     <nz-input-group [nzSuffix]="suffixIconSearch">

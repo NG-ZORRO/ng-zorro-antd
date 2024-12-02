@@ -131,7 +131,6 @@ describe('card', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzCardModule],
   template: `
     <nz-card [nzSize]="size">
@@ -146,7 +145,6 @@ class TestCardSizeComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzCardModule],
   template: `
     <div [dir]="direction">

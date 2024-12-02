@@ -25,8 +25,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-input-prefix]': `type === 'prefix'`,
     '[class.ant-input-suffix]': `type === 'suffix'`
   },
-  imports: [NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule]
 })
 export class NzInputGroupSlotComponent {
   @Input() icon?: string | null = null;

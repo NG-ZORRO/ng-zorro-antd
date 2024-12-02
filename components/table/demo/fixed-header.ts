@@ -10,7 +10,6 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-fixed-header',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table #headerTable [nzData]="listOfData" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">

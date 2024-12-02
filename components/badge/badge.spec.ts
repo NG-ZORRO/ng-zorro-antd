@@ -255,7 +255,6 @@ describe('nz-badge', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzNoAnimationDirective, NzBadgeModule],
   template: `
     <nz-badge
@@ -294,7 +293,6 @@ export class NzTestBadgeBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzBadgeModule],
   template: `
     <div [dir]="direction">

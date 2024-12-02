@@ -46,8 +46,7 @@ export class NzListItemMetaDescriptionComponent {}
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzAvatarModule],
-  standalone: true
+  imports: [NzAvatarModule]
 })
 export class NzListItemMetaAvatarComponent {
   @Input() nzSrc?: string;

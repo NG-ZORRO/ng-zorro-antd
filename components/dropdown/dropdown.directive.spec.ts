@@ -179,7 +179,6 @@ describe('dropdown', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzDropDownModule, NzMenuModule],
   template: `
     <a
@@ -213,7 +212,6 @@ export class NzTestDropdownComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzDropDownModule, NzMenuModule],
   template: `
     <a

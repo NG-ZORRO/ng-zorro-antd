@@ -2261,7 +2261,6 @@ const options4 = [
 const options5: NzSafeAny[] = [];
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzCascaderModule],
   selector: 'nz-test-cascader-default',
   template: `
@@ -2341,7 +2340,6 @@ export class NzDemoCascaderDefaultComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader
@@ -2401,7 +2399,6 @@ export class NzDemoCascaderLoadDataComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzCascaderModule],
   template: `
     <div [dir]="direction">
@@ -2417,7 +2414,6 @@ export class NzDemoCascaderRtlComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzCascaderModule],
   template: `<nz-cascader [nzOptions]="nzOptions" [nzStatus]="status"></nz-cascader>`
 })
@@ -2427,7 +2423,6 @@ export class NzDemoCascaderStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzFormModule, NzCascaderModule],
   template: `
     <form nz-form [formGroup]="validateForm">

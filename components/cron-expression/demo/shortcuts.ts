@@ -8,7 +8,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-cron-expression-shortcuts',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzCronExpressionModule, NzDropDownModule, NzIconModule],
   template: `
     <nz-cron-expression

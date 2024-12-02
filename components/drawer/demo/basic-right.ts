@@ -5,7 +5,6 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 @Component({
   selector: 'nz-demo-drawer-basic-right',
-  standalone: true,
   imports: [NzButtonModule, NzDrawerModule],
   template: `
     <button nz-button nzType="primary" (click)="open()">Open</button>

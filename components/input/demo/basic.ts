@@ -5,7 +5,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-basic',
-  standalone: true,
   imports: [FormsModule, NzInputModule],
   template: `
     <input nz-input placeholder="Basic usage" [(ngModel)]="value" type="number" />

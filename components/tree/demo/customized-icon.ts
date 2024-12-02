@@ -5,7 +5,6 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-customized-icon',
-  standalone: true,
   imports: [NzIconModule, NzTreeModule],
   template: `
     <nz-tree [nzData]="nodes" nzShowIcon></nz-tree>

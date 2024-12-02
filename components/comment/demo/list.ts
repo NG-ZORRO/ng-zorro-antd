@@ -8,7 +8,6 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 @Component({
   selector: 'nz-demo-comment-list',
-  standalone: true,
   imports: [NzAvatarModule, NzCommentModule, NzListModule],
   template: `
     <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">

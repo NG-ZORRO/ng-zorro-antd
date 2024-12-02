@@ -4,7 +4,6 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-segmented-block',
-  standalone: true,
   imports: [NzSegmentedModule],
   template: `<nz-segmented [nzOptions]="options" [nzBlock]="true"></nz-segmented>`
 })

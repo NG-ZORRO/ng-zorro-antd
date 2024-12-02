@@ -4,7 +4,6 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 @Component({
   selector: 'nz-demo-collapse-basic',
-  standalone: true,
   imports: [NzCollapseModule],
   template: `
     <nz-collapse>

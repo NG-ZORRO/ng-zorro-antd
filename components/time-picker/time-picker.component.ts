@@ -163,8 +163,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     NzTimePickerPanelComponent,
     NzOverlayModule,
     OverlayModule
-  ],
-  standalone: true
+  ]
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

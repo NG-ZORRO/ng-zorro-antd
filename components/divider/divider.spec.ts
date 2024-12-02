@@ -89,7 +89,6 @@ describe('divider', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzDividerModule],
   template: `
     <nz-divider
@@ -110,7 +109,6 @@ class TestDividerComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzDividerModule, NzIconModule],
   template: `
     <nz-divider nzDashed [nzText]="text">

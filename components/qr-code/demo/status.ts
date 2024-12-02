@@ -4,7 +4,6 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 
 @Component({
   selector: 'nz-demo-qr-code-status',
-  standalone: true,
   imports: [NzQRCodeModule],
   template: `
     <nz-qrcode nzValue="https://ng.ant.design/" nzStatus="loading"></nz-qrcode>

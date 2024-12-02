@@ -4,7 +4,6 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-status',
-  standalone: true,
   imports: [NzTransferModule],
   template: `
     <nz-transfer [nzDataSource]="[]" nzStatus="error"></nz-transfer>

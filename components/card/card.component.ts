@@ -93,8 +93,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
     '[class.ant-card-rtl]': `dir === 'rtl'`
   },
-  imports: [NzOutletModule, NgTemplateOutlet, NzSkeletonModule],
-  standalone: true
+  imports: [NzOutletModule, NgTemplateOutlet, NzSkeletonModule]
 })
 export class NzCardComponent implements OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

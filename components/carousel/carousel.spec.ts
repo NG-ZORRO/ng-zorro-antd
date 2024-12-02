@@ -444,7 +444,6 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
 
 @Component({
   selector: 'nz-test-carousel',
-  standalone: true,
   imports: [NzCarouselModule],
   template: `
     <nz-carousel
@@ -483,7 +482,6 @@ export class NzTestCarouselBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzCarouselModule],
   template: `
     <nz-carousel (nzAfterChange)="afterChange($event)">

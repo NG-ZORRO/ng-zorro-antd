@@ -8,7 +8,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-color-picker-use',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzColorPickerModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">

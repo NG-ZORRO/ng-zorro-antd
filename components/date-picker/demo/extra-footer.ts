@@ -4,7 +4,6 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'nz-demo-date-picker-extra-footer',
-  standalone: true,
   imports: [NzDatePickerModule],
   template: `
     <nz-date-picker [nzRenderExtraFooter]="footerRender"></nz-date-picker>

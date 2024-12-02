@@ -6,7 +6,6 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-custom-icon',
-  standalone: true,
   imports: [NzIconModule, NzButtonModule],
   template: `
     <ng-template #template>

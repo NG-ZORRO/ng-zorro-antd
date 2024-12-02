@@ -23,11 +23,11 @@ export class MockNgZone extends NgZone {
     super({ enableLongStackTrace: false });
   }
 
-  override run(fn: Function): NzSafeAny {
+  override run(fn: () => NzSafeAny): NzSafeAny {
     return fn();
   }
 
-  override runOutsideAngular(fn: Function): NzSafeAny {
+  override runOutsideAngular(fn: () => NzSafeAny): NzSafeAny {
     return fn();
   }
 

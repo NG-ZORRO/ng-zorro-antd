@@ -5,7 +5,6 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-update',
-  standalone: true,
   imports: [NzButtonModule],
   template: ` <button nz-button nzType="primary" (click)="createNotification()"> Open the notification box </button> `
 })

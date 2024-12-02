@@ -6,7 +6,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-input-addon',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzSelectModule],
   template: `
     <nz-input-group nzAddOnBefore="Http://" nzAddOnAfter=".com">

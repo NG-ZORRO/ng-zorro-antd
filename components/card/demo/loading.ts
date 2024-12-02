@@ -9,7 +9,6 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-card-loading',
-  standalone: true,
   imports: [FormsModule, NzAvatarModule, NzCardModule, NzIconModule, NzSwitchModule, NzSkeletonModule],
   template: `
     <nz-switch [(ngModel)]="loading"></nz-switch>

@@ -25,8 +25,7 @@ import { ModalOptions } from './modal-types';
     'aria-label': 'Close'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule]
 })
 export class NzModalCloseComponent {
   constructor(public config: ModalOptions) {}

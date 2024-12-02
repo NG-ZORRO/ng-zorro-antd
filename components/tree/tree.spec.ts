@@ -610,7 +610,6 @@ describe('tree', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzTreeModule],
   template: `
     <button (click)="changeIcon(expandedIconTpl)">Custom expand icon</button>
@@ -703,7 +702,6 @@ export class NzTestTreeBasicControlledComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTreeModule],
   template: `
     <nz-tree
@@ -772,7 +770,6 @@ export class NzTestTreeDraggableComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTreeModule],
   template: `
     <nz-tree

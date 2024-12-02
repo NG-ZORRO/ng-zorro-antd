@@ -49,8 +49,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  imports: [NzToolTipModule, NzTransButtonModule, NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzToolTipModule, NzTransButtonModule, NzIconModule, NzOutletModule]
 })
 export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
   copied = false;

@@ -15,8 +15,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
   host: {
     class: 'ant-list-empty-text'
   },
-  imports: [NzEmptyModule],
-  standalone: true
+  imports: [NzEmptyModule]
 })
 export class NzListEmptyComponent {
   @Input() nzNoResult?: string | TemplateRef<void>;
