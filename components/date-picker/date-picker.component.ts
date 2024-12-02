@@ -7,7 +7,6 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
-  CdkOverlayOrigin,
   ConnectedOverlayPositionChange,
   ConnectionPositionPair,
   HorizontalConnectionPos,
@@ -349,7 +348,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
   @ViewChildren('rangePickerInput') rangePickerInputs?: QueryList<ElementRef<HTMLInputElement>>;
 
-  origin: CdkOverlayOrigin;
+  get origin(): ElementRef {
+    return this.elementRef;
+  }
+
   inputSize: number = 12;
   inputWidth?: number;
   prefixCls = PREFIX_CLASS;
@@ -635,9 +637,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     private platform: Platform,
     private destroy$: NzDestroyService,
     private directionality: Directionality
-  ) {
-    this.origin = new CdkOverlayOrigin(this.elementRef);
-  }
+  ) {}
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges

@@ -17,7 +17,7 @@ describe('input-group', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
   }));
   describe('input group', () => {
     describe('addon', () => {

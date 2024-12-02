@@ -9,8 +9,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Directive({
   selector: '[nzDrawerContent]',
-  exportAs: 'nzDrawerContent',
-  standalone: true
+  exportAs: 'nzDrawerContent'
 })
 export class NzDrawerContentDirective {
   constructor(public templateRef: TemplateRef<NzSafeAny>) {}

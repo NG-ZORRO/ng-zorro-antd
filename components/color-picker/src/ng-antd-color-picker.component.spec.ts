@@ -1,8 +1,7 @@
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { PickerComponent } from './components/picker.component';
 import { Color } from './interfaces/color';
 import { HsbaColorType } from './interfaces/type';
 import { NgAntdColorPickerComponent } from './ng-antd-color-picker.component';
@@ -11,13 +10,6 @@ describe('NgxColorPickerComponent', () => {
   let component: NzxTestColorPickerComponent;
   let fixture: ComponentFixture<NzxTestColorPickerComponent>;
   let resultEl: DebugElement;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [NzxTestColorPickerComponent],
-      imports: [NgAntdColorPickerComponent, PickerComponent]
-    }).compileComponents();
-  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NzxTestColorPickerComponent);
@@ -153,6 +145,7 @@ describe('NgxColorPickerComponent', () => {
 });
 
 @Component({
+  imports: [NgAntdColorPickerComponent],
   template: `
     <ng-antd-color-picker
       [value]="value"

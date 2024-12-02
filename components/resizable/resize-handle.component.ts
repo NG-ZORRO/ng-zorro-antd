@@ -62,8 +62,7 @@ const passiveEventListenerOptions = <AddEventListenerOptions>normalizePassiveLis
     '[class.nz-resizable-handle-cursor-type-grid]': `nzCursorType === 'grid'`,
     '[class.nz-resizable-handle-cursor-type-window]': `nzCursorType === 'window'`
   },
-  providers: [NzDestroyService],
-  standalone: true
+  providers: [NzDestroyService]
 })
 export class NzResizeHandleComponent implements OnInit {
   @Input() nzDirection: NzResizeDirection = 'bottomRight';

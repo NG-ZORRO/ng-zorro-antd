@@ -273,8 +273,6 @@ export class NzDemoGraphCustomizedComponent {
   rankDirection: NzRankDirection = 'TB';
   graphData = new NzGraphData(this.testDef);
 
-  constructor() {}
-
   expand(name: string): void {
     this.graphData.expand(name);
   }

@@ -10,7 +10,6 @@ import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzNotificationService } from './notification.service';
 
 @Component({
-  standalone: true,
   template: `<ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>`
 })
 export class NzTestNotificationComponent {
@@ -38,7 +37,7 @@ describe('NzNotification', () => {
         provideNoopAnimations(),
         NzNotificationService
       ]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(NzTestNotificationComponent);
   }));

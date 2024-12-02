@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  standalone: true,
-  selector: 'app-logo',
+    selector: 'app-logo',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a href="/" id="logo">

@@ -33,8 +33,7 @@ import { NzOptionGroupComponent } from './option-group.component';
     <ng-template>
       <ng-content></ng-content>
     </ng-template>
-  `,
-  standalone: true
+  `
 })
 export class NzOptionComponent implements OnChanges, OnInit {
   changes = new Subject<void>();

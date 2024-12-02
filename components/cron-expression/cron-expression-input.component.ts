@@ -46,8 +46,6 @@ export class NzCronExpressionInputComponent {
   @Output() readonly blurEffect = new EventEmitter<void>();
   @Output() readonly getValue = new EventEmitter<CronChangeType>();
 
-  constructor() {}
-
   focusInputEffect(event: FocusEvent): void {
     this.focusEffect.emit(this.label);
     (event.target as HTMLInputElement).select();

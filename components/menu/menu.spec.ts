@@ -22,7 +22,7 @@ describe('menu', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting(), provideNoopAnimations()]
-    }).compileComponents();
+    });
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;

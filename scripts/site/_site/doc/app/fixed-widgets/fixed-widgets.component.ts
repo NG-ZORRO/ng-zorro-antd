@@ -6,8 +6,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { ThemingIcon } from './theming-icon';
 
 @Component({
-  standalone: true,
-  selector: 'app-fixed-widgets',
+    selector: 'app-fixed-widgets',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzAvatarModule, NzDropDownModule, ThemingIcon],
   template: `

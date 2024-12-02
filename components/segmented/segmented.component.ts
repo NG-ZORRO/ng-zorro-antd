@@ -136,6 +136,10 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
     effect(() => {
       const itemCmps = this.viewItemCmps().concat(this.contentItemCmps());
 
+      if (!itemCmps.length) {
+        return;
+      }
+
       if (
         this.value === null ||
         this.value === undefined ||

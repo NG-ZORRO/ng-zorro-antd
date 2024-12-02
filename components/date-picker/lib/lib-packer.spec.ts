@@ -21,7 +21,7 @@ describe('Coverage supplements', () => {
       imports: [LibPackerModule]
     });
 
-    TestBed.compileComponents();
+    TestBed;
   }));
 
   beforeEach(inject(

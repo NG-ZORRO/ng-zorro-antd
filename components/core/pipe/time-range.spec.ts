@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 
 @Component({
+  imports: [NzPipesModule],
   template: ` {{ diff | nzTimeRange: format }} `
 })
 export class NzTestTimeRangeComponent {
@@ -16,13 +16,6 @@ describe('nz time range pipeline', () => {
   let fixture: ComponentFixture<NzTestTimeRangeComponent>;
   let testComponent: NzTestTimeRangeComponent;
   let element: HTMLElement;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzPipesModule],
-      declarations: [NzTestTimeRangeComponent]
-    }).compileComponents();
-  });
 
   describe('basic', () => {
     beforeEach(() => {

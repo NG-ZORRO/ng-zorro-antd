@@ -19,7 +19,7 @@ describe('pagination', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations()]
-    }).compileComponents();
+    });
   }));
 
   describe('pagination complex', () => {

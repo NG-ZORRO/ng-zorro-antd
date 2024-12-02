@@ -46,7 +46,7 @@ describe('mention', () => {
           }
         }
       ]
-    }).compileComponents();
+    });
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;

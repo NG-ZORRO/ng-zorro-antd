@@ -53,8 +53,7 @@ import { NzSubmenuService } from './submenu.service';
     '[style.paddingLeft.px]': `dir === 'rtl' ? null : nzPaddingLeft || inlinePaddingLeft`,
     '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : null`,
     '(click)': 'clickMenuItem($event)'
-  },
-  standalone: true
+  }
 })
 export class NzMenuItemComponent implements OnInit, OnChanges, OnDestroy, AfterContentInit {
   private destroy$ = new Subject<boolean>();

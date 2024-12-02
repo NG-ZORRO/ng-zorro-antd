@@ -30,8 +30,7 @@ const BUILD_INDENTS_SCHEDULER = typeof requestAnimationFrame !== 'undefined' ? a
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-tree-indent'
-  },
-  standalone: true
+  }
 })
 export class NzTreeNodeIndentsComponent {
   @Input() indents: boolean[] = [];
@@ -42,8 +41,7 @@ export class NzTreeNodeIndentsComponent {
   host: {
     class: 'ant-tree-show-line',
     '[class.ant-tree-treenode-leaf-last]': 'isLast && isLeaf'
-  },
-  standalone: true
+  }
 })
 export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   isLast: boolean | 'unset' = 'unset';

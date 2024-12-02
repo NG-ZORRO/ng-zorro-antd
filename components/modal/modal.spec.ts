@@ -48,7 +48,7 @@ describe('Animation', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       providers: [NzModalService, provideAnimations()]
-    }).compileComponents();
+    });
   }));
 
   beforeEach(
@@ -101,7 +101,7 @@ describe('NzModal', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       providers: [NzModalService, provideNoopAnimations(), { provide: Location, useClass: SpyLocation }]
-    }).compileComponents();
+    });
   }));
 
   beforeEach(
@@ -1753,7 +1753,6 @@ describe('NzModal', () => {
 });
 
 @Directive({
-  standalone: true,
   selector: 'test-with-view-container'
 })
 class TestWithViewContainerDirective {
@@ -1773,7 +1772,6 @@ class TestWithChildViewContainerComponent {
 }
 
 @Component({
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: 'hello'
 })
@@ -1782,7 +1780,6 @@ class TestWithOnPushViewContainerComponent {
 }
 
 @Component({
-  standalone: true,
   template: `
     <ng-template let-modalRef="modalRef" let-data>
       <span class="modal-template-content">Hello {{ value }}</span>
@@ -1864,7 +1861,6 @@ class TestModalComponent {
 }
 
 @Component({
-  standalone: true,
   template: '<p>Modal</p>'
 })
 class TestModalWithoutFocusableElementsComponent {}

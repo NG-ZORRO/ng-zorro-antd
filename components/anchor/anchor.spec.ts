@@ -1,13 +1,14 @@
-/* eslint-disable */
+import { Platform } from '@angular/cdk/platform';
+import { DOCUMENT } from '@angular/common';
 import { Component, DebugElement, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzAnchorComponent } from './anchor.component';
 import { NzAnchorModule } from './anchor.module';
-import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
 
 const throttleTime = 51;
 
@@ -18,10 +19,6 @@ describe('anchor', () => {
   let page: PageObject;
   let srv: NzScrollService;
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzAnchorModule],
-      declarations: [TestComponent]
-    });
     fixture = TestBed.createComponent(TestComponent);
     dl = fixture.debugElement;
     context = fixture.componentInstance;
@@ -70,7 +67,7 @@ describe('anchor', () => {
     });
 
     it('should clean activated when leaving all anchor', fakeAsync(() => {
-      spyOn(context.comp, 'clearActive' as any);
+      spyOn(context.comp, 'clearActive' as NzSafeAny);
       page.scrollTo();
       tick(throttleTime);
       fixture.detectChanges();
@@ -251,11 +248,11 @@ describe('anchor', () => {
   describe('**boundary**', () => {
     it('#getOffsetTop', (done: () => void) => {
       const el1 = document.getElementById('何时使用')!;
-      spyOn(el1, 'getClientRects').and.returnValue([] as any);
+      spyOn(el1, 'getClientRects').and.returnValue([] as NzSafeAny);
       const el2 = document.getElementById('parallel1')!;
       spyOn(el2, 'getBoundingClientRect').and.returnValue({
         top: 0
-      } as any);
+      } as NzSafeAny);
       expect(context._scroll).not.toHaveBeenCalled();
       page.scrollTo();
       setTimeout(() => {
@@ -286,7 +283,8 @@ describe('anchor', () => {
 });
 
 @Component({
-    template: `
+  imports: [NzAnchorModule],
+  template: `
     <nz-anchor
       [nzAffix]="nzAffix"
       [nzBounds]="nzBounds"
@@ -344,11 +342,10 @@ describe('anchor', () => {
       <h2 id="basic-target"></h2>
     </div>
   `,
-    styles: `
+  styles: `
     @import '../style/testing.less';
     @import './style/patch.less';
-  `,
-    standalone: false
+  `
 })
 export class TestComponent {
   @ViewChild(NzAnchorComponent, { static: false }) comp!: NzAnchorComponent;
@@ -357,12 +354,12 @@ export class TestComponent {
   nzOffsetTop = 0;
   nzTargetOffset?: number;
   nzShowInkInFixed = false;
-  nzContainer: any = null;
+  nzContainer: NzSafeAny = null;
   nzCurrentAnchor?: string;
   nzDirection: NzDirectionVHType = 'vertical';
-  _click() {}
-  _change() {}
-  _scroll() {}
+  _click(): void {}
+  _change(): void {}
+  _scroll(): void {}
 }
 
 describe('NzAnchor', () => {
@@ -380,7 +377,7 @@ describe('NzAnchor', () => {
         NzScrollService,
         { provide: ElementRef, useValue: new ElementRef(document.createElement('div')) }
       ]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(NzAnchorComponent);
     component = fixture.componentInstance;
@@ -420,7 +417,7 @@ describe('NzAnchor', () => {
       nzHref: '#test',
       setActive: jasmine.createSpy('setActive'),
       getLinkTitleElement: () => document.createElement('a')
-    } as any;
+    } as NzSafeAny;
 
     const scrollToSpy = spyOn(scrollService, 'scrollTo').and.callThrough();
 

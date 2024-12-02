@@ -31,14 +31,6 @@ describe('drag service', () => {
   let drag_: Subscription;
   let complete_: Subscription;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [NzTestDragServiceComponent]
-    });
-
-    TestBed.compileComponents();
-  });
-
   describe('basics', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDragServiceComponent);

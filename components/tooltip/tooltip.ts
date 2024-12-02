@@ -36,8 +36,7 @@ import {
   exportAs: 'nzTooltip',
   host: {
     '[class.ant-tooltip-open]': 'visible'
-  },
-  standalone: true
+  }
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipTitle') override title?: NzTSType | null;

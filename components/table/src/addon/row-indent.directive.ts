@@ -10,11 +10,8 @@ import { Directive, Input } from '@angular/core';
   host: {
     class: 'ant-table-row-indent',
     '[style.padding-left.px]': 'indentSize'
-  },
-  standalone: true
+  }
 })
 export class NzRowIndentDirective {
   @Input() indentSize = 0;
-
-  constructor() {}
 }

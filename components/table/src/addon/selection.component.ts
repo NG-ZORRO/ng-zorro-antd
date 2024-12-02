@@ -58,8 +58,6 @@ export class NzTableSelectionComponent {
   @Input() showRowSelection = false;
   @Output() readonly checkedChange = new EventEmitter<boolean>();
 
-  constructor() {}
-
   onCheckedChange(checked: boolean): void {
     this.checked = checked;
     this.checkedChange.emit(checked);

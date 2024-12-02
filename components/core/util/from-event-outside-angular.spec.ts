@@ -8,8 +8,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from './from-event-outside-angular';
 
 @Component({
-  template: ``,
-  standalone: true
+  template: ``
 })
 class TestComponent {
   readonly recorder: NzSafeAny[] = [];

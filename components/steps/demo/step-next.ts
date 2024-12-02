@@ -92,6 +92,4 @@ export class NzDemoStepsStepNextComponent {
       }
     }
   }
-
-  constructor() {}
 }

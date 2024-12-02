@@ -20,6 +20,4 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 })
 export class NzOptionItemGroupComponent {
   @Input() nzLabel: string | number | TemplateRef<NzSafeAny> | null = null;
-
-  constructor() {}
 }

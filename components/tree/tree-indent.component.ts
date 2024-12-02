@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
   selector: 'nz-tree-indent',
   exportAs: 'nzTreeIndent',
   template: `
-    @for (_ of listOfUnit; track $index; let i = $index) {
+    @for (_ of listOfUnit; track i; let i = $index) {
       <span
         [class.ant-tree-indent-unit]="!nzSelectMode"
         [class.ant-select-tree-indent-unit]="nzSelectMode"
@@ -26,8 +26,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
     '[attr.aria-hidden]': 'true',
     '[class.ant-tree-indent]': '!nzSelectMode',
     '[class.ant-select-tree-indent]': 'nzSelectMode'
-  },
-  standalone: true
+  }
 })
 export class NzTreeIndentComponent implements OnChanges {
   @Input() nzTreeLevel = 0;

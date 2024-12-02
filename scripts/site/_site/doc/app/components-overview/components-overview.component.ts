@@ -24,8 +24,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { ROUTER_LIST } from '../router';
 
 @Component({
-  standalone: true,
-  selector: 'app-components-overview',
+    selector: 'app-components-overview',
   imports: [
     RouterLink,
     NzAffixModule,

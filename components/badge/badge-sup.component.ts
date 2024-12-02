@@ -77,8 +77,6 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   count: number = 0;
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  constructor() {}
-
   generateMaxNumberArray(): void {
     this.maxNumberArray = this.nzOverflowCount
       .toString()

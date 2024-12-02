@@ -34,7 +34,6 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
       ></span>
     }
   `,
-  standalone: true,
   host: {
     class: 'ant-slider-mark'
   }

@@ -64,8 +64,6 @@ export class NzPaginationOptionsComponent implements OnChanges {
   @Output() readonly pageSizeChange = new EventEmitter<number>();
   listOfPageSizeOption: Array<{ value: number; label: string }> = [];
 
-  constructor() {}
-
   onPageSizeChange(size: number): void {
     if (this.pageSize !== size) {
       this.pageSizeChange.next(size);

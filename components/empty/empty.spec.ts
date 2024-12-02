@@ -122,7 +122,6 @@ describe('nz-empty', () => {
 
     describe('service method', () => {
       beforeEach(() => {
-        TestBed.configureTestingModule({}).compileComponents();
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
         testComponent = fixture.debugElement.componentInstance;
       });
@@ -232,7 +231,7 @@ describe('nz-empty', () => {
               }
             }
           ]
-        }).compileComponents();
+        });
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
         testComponent = fixture.debugElement.componentInstance;
       });
@@ -307,7 +306,6 @@ export class NzEmptyTestServiceComponent {
 }
 
 @Component({
-  standalone: true,
   selector: 'nz-empty-test-custom',
   template: `<div>I'm in component {{ name }}</div>`
 })

@@ -58,6 +58,4 @@ export class NzSelectArrowComponent {
   @Input() suffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() feedbackIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input({ transform: numberAttribute }) nzMaxMultipleCount: number = Infinity;
-
-  constructor() {}
 }

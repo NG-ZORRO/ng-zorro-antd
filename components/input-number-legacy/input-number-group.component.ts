@@ -41,8 +41,7 @@ import { NzInputNumberLegacyComponent } from './input-number.component';
  * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
  */
 @Directive({
-  selector: `nz-input-number-group[nzSuffix], nz-input-number-group[nzPrefix]`,
-  standalone: true
+  selector: `nz-input-number-group[nzSuffix], nz-input-number-group[nzPrefix]`
 })
 export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   constructor(public elementRef: ElementRef) {}

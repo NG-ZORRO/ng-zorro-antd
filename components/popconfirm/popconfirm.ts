@@ -46,8 +46,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popconfirm';
   exportAs: 'nzPopconfirm',
   host: {
     '[class.ant-popover-open]': 'visible'
-  },
-  standalone: true
+  }
 })
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

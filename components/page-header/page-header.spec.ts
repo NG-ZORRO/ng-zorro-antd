@@ -20,7 +20,7 @@ describe('NzPageHeaderComponent', () => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
     location = TestBed.inject(Location);
   }));
 

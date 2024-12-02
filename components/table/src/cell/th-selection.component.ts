@@ -55,8 +55,6 @@ export class NzThSelectionComponent implements OnChanges {
   private isNzShowExpandChanged = false;
   private isNzShowCheckboxChanged = false;
 
-  constructor() {}
-
   onCheckedChange(checked: boolean): void {
     this.nzChecked = checked;
     this.nzCheckedChange.emit(checked);

@@ -8,8 +8,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
-  standalone: true,
-  selector: 'nz-contributors-list',
+    selector: 'nz-contributors-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzAvatarModule, NzAvatarModule, NzToolTipModule],
   template: `

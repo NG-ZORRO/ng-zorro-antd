@@ -8,11 +8,10 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 @Component({
   selector: 'nz-footer',
   exportAs: 'nzFooter',
+  template: `<ng-content></ng-content>`,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzFooterComponent {
   constructor(

@@ -26,6 +26,4 @@ export class NzColorBlockComponent {
   @Input() nzColor: string = defaultColor.toHexString();
   @Input() nzSize: NzSizeLDSType = 'default';
   @Output() readonly nzOnClick = new EventEmitter<boolean>();
-
-  constructor() {}
 }

@@ -21,7 +21,7 @@ describe('Calendar', () => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
       providers: [{ provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
-    }).compileComponents();
+    });
   }));
 
   describe('mode', () => {

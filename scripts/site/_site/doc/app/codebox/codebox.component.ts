@@ -23,8 +23,7 @@ import { OnlineIdeService } from '../online-ide/online-ide.service';
 import { NzHighlightComponent } from './highlight.component';
 
 @Component({
-  standalone: true,
-  selector: 'nz-code-box',
+    selector: 'nz-code-box',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzIconModule, NzToolTipModule, NzHighlightComponent],

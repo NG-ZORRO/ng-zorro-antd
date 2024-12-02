@@ -6,7 +6,7 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import differenceInDays from 'date-fns/differenceInDays';
 import isSameDay from 'date-fns/isSameDay';
@@ -43,12 +43,8 @@ describe('NzRangePickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule],
-      providers: [],
-      declarations: [NzTestRangePickerComponent, NzTestRangePickerStatusComponent]
+      providers: [provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -1258,6 +1254,7 @@ describe('NzRangePickerComponent', () => {
 });
 
 @Component({
+  imports: [FormsModule, NzDatePickerModule],
   template: `
     <ng-template #tplDateRender let-current>
       <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1364,7 +1361,8 @@ class NzTestRangePickerComponent {
 }
 
 @Component({
-  template: ` <nz-range-picker [nzStatus]="status"></nz-range-picker> `
+  imports: [NzDatePickerModule],
+  template: `<nz-range-picker [nzStatus]="status"></nz-range-picker>`
 })
 class NzTestRangePickerStatusComponent {
   status: NzStatus = 'error';

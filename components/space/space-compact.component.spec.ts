@@ -23,7 +23,7 @@ describe('Space compact', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations()]
-    }).compileComponents();
+    });
     fixture = TestBed.createComponent(SpaceCompactTestComponent);
     component = fixture.componentInstance;
     fixture.autoDetectChanges();
@@ -156,7 +156,7 @@ describe('Space compact direction', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations()]
-    }).compileComponents();
+    });
     fixture = TestBed.createComponent(SpaceCompactDirectionTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

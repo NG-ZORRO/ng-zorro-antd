@@ -6,8 +6,7 @@ import { RouterLink } from '@angular/router';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 @Component({
-  standalone: true,
-  selector: 'ul[nz-menu][app-navigation]',
+    selector: 'ul[nz-menu][app-navigation]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, NgTemplateOutlet, NzMenuModule],
   template: `

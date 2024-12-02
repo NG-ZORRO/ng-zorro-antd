@@ -22,7 +22,7 @@ describe('autoresize', () => {
           }
         }
       ]
-    }).compileComponents();
+    });
   }));
 
   describe('single input', () => {

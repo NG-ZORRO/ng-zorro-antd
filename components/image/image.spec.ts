@@ -5,25 +5,14 @@
 
 import { ESCAPE, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, NgModule, NgZone, ViewChild } from '@angular/core';
+import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import {
-  CloseCircleOutline,
-  LeftCircleOutline,
-  RightCircleOutline,
-  RotateLeftOutline,
-  RotateRightOutline,
-  SwapOutline,
-  ZoomInOutline,
-  ZoomOutOutline
-} from '@ant-design/icons-angular/icons';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import {
   getFitContentPosition,
   NzImage,
@@ -50,8 +39,8 @@ describe('Basics', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzImageModule, TestImageModule, NoopAnimationsModule],
       providers: [
+        provideNoopAnimations(),
         { provide: Overlay, useClass: Overlay },
         {
           provide: NgZone,
@@ -62,7 +51,6 @@ describe('Basics', () => {
         }
       ]
     });
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -119,10 +107,8 @@ describe('Placeholder', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzImageModule, TestImageModule, NoopAnimationsModule],
-      providers: [{ provide: Overlay, useClass: Overlay }]
+      providers: [provideNoopAnimations(), { provide: Overlay, useClass: Overlay }]
     });
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -163,10 +149,8 @@ describe('Fallback', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzImageModule, TestImageModule, NoopAnimationsModule],
-      providers: [{ provide: Overlay, useClass: Overlay }]
+      providers: [provideNoopAnimations(), { provide: Overlay, useClass: Overlay }]
     });
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -199,25 +183,8 @@ describe('Preview', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzImageModule, TestImageModule, NoopAnimationsModule, NzIconModule],
-      providers: [
-        { provide: Overlay, useClass: Overlay },
-        {
-          provide: NZ_ICONS,
-          useValue: [
-            ZoomInOutline,
-            ZoomOutOutline,
-            RightCircleOutline,
-            LeftCircleOutline,
-            RotateLeftOutline,
-            RotateRightOutline,
-            CloseCircleOutline,
-            SwapOutline
-          ]
-        }
-      ]
+      providers: [provideNoopAnimations(), provideNzIconsTesting(), { provide: Overlay, useClass: Overlay }]
     });
-    TestBed.compileComponents();
   }));
 
   beforeEach(inject([OverlayContainer, NzConfigService], (oc: OverlayContainer, cs: NzConfigService) => {
@@ -732,6 +699,7 @@ describe('Preview', () => {
 });
 
 @Component({
+  imports: [NzImageModule],
   template: ` <img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" /> `
 })
 export class TestImageBasicsComponent {
@@ -741,6 +709,7 @@ export class TestImageBasicsComponent {
 }
 
 @Component({
+  imports: [NzImageModule],
   template: ` <img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" /> `
 })
 export class TestImagePlaceholderComponent {
@@ -751,7 +720,8 @@ export class TestImagePlaceholderComponent {
 }
 
 @Component({
-  template: ` <img nz-image [nzSrc]="src" [nzFallback]="fallback" /> `
+  imports: [NzImageModule],
+  template: `<img nz-image [nzSrc]="src" [nzFallback]="fallback" />`
 })
 export class TestImageFallbackComponent {
   @ViewChild(NzImageDirective) image!: NzImageDirective;
@@ -760,6 +730,7 @@ export class TestImageFallbackComponent {
 }
 
 @Component({
+  imports: [NzImageModule],
   template: `
     <nz-image-group [nzScaleStep]="groupZoomStep">
       <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
@@ -787,17 +758,3 @@ export class TestImagePreviewGroupComponent {
     this.previewRef = this.nzImageService.preview(this.images, { nzZoom: 1.5, nzRotate: 0 });
   }
 }
-
-const TEST_COMPONENTS = [
-  TestImageBasicsComponent,
-  TestImageFallbackComponent,
-  TestImagePlaceholderComponent,
-  TestImagePreviewGroupComponent
-];
-
-@NgModule({
-  imports: [NzImageModule],
-  declarations: [...TEST_COMPONENTS],
-  exports: [...TEST_COMPONENTS]
-})
-export class TestImageModule {}

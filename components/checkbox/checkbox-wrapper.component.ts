@@ -12,14 +12,13 @@ import { NzCheckboxComponent } from './checkbox.component';
 @Component({
   selector: 'nz-checkbox-wrapper',
   exportAs: 'nzCheckboxWrapper',
+  template: `<ng-content></ng-content>`,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-checkbox-group'
-  },
-  standalone: true
+  }
 })
 export class NzCheckboxWrapperComponent {
   @Output() readonly nzOnChange = new EventEmitter<NzSafeAny[]>();

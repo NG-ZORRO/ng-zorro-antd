@@ -24,13 +24,12 @@ export interface NzSliderTrackStyle {
 }
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-track',
   exportAs: 'nzSliderTrack',
+  template: `<div class="ant-slider-track" [style]="style"></div>`,
   preserveWhitespaces: false,
-  template: ` <div class="ant-slider-track" [style]="style"></div> `,
-  standalone: true
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzSliderTrackComponent implements OnChanges {
   @Input({ transform: numberAttribute }) offset: number = 0;

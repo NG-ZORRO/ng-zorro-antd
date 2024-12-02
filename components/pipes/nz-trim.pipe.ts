@@ -6,8 +6,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'nzTrim',
-  standalone: true
+  name: 'nzTrim'
 })
 export class NzTrimPipe implements PipeTransform {
   // TODO(chensimeng) trimEnd, trimStart

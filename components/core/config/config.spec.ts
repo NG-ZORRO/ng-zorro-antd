@@ -8,7 +8,8 @@ import { provideNzConfig } from './config';
 import { NzConfigService } from './config.service';
 
 @Component({
-  template: ` <button nz-button nzType="primary" [nzSize]="size">Global Config</button> `
+  imports: [NzButtonModule],
+  template: `<button nz-button nzType="primary" [nzSize]="size">Global Config</button>`
 })
 export class NzGlobalConfigTestBasicComponent {
   size?: 'large' | 'default' | 'small';
@@ -23,13 +24,6 @@ describe('nz global config', () => {
   let buttonEl: HTMLButtonElement;
 
   describe('without config', () => {
-    beforeEach(waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzButtonModule],
-        declarations: [NzGlobalConfigTestBasicComponent]
-      }).compileComponents();
-    }));
-
     beforeEach(() => {
       fixture = TestBed.createComponent(NzGlobalConfigTestBasicComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -50,8 +44,6 @@ describe('nz global config', () => {
   describe('with config', () => {
     beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NzButtonModule],
-        declarations: [NzGlobalConfigTestBasicComponent],
         providers: [
           provideNzConfig({
             button: {
@@ -59,7 +51,7 @@ describe('nz global config', () => {
             }
           })
         ]
-      }).compileComponents();
+      });
     }));
 
     beforeEach(() => {

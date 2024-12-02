@@ -42,8 +42,7 @@ export interface NzResizeEvent {
     class: 'nz-resizable',
     '[class.nz-resizable-resizing]': 'resizing',
     '[class.nz-resizable-disabled]': 'nzDisabled'
-  },
-  standalone: true
+  }
 })
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';

@@ -127,16 +127,14 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
 
 @Directive({
   selector: '[nzTreeNodeDef]',
-  providers: [{ provide: CdkTreeNodeDef, useExisting: forwardRef(() => NzTreeNodeDefDirective) }],
-  standalone: true
+  providers: [{ provide: CdkTreeNodeDef, useExisting: forwardRef(() => NzTreeNodeDefDirective) }]
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
   @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
 }
 
 @Directive({
-  selector: '[nzTreeVirtualScrollNodeOutlet]',
-  standalone: true
+  selector: '[nzTreeVirtualScrollNodeOutlet]'
 })
 export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
   private _viewRef: EmbeddedViewRef<NzSafeAny> | null = null;

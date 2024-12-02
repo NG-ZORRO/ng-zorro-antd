@@ -16,7 +16,7 @@ describe('NzCommentComponent', () => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()],
       schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
+    });
   }));
 
   describe('default', () => {

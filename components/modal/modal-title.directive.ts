@@ -9,8 +9,7 @@ import { NzModalRef } from './modal-ref';
 
 @Directive({
   selector: '[nzModalTitle]',
-  exportAs: 'nzModalTitle',
-  standalone: true
+  exportAs: 'nzModalTitle'
 })
 export class NzModalTitleDirective {
   private nzModalRef = inject(NzModalRef, { optional: true });

@@ -9,8 +9,7 @@ import { Directive, Input, booleanAttribute } from '@angular/core';
   selector: 'th[nzEllipsis],td[nzEllipsis]',
   host: {
     '[class.ant-table-cell-ellipsis]': 'nzEllipsis'
-  },
-  standalone: true
+  }
 })
 export class NzCellEllipsisDirective {
   @Input({ transform: booleanAttribute }) nzEllipsis = true;

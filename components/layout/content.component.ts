@@ -8,11 +8,10 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 @Component({
   selector: 'nz-content',
   exportAs: 'nzContent',
+  template: `<ng-content></ng-content>`,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  template: ` <ng-content></ng-content> `,
-  standalone: true
+  encapsulation: ViewEncapsulation.None
 })
 export class NzContentComponent {
   constructor(

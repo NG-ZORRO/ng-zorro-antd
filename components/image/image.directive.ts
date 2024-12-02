@@ -37,8 +37,7 @@ export type NzImageScaleStep = number;
   exportAs: 'nzImage',
   host: {
     '(click)': 'onPreview()'
-  },
-  standalone: true
+  }
 })
 export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

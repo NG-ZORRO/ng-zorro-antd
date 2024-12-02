@@ -8,8 +8,7 @@ import { AfterViewInit, Directive, ElementRef, Renderer2, inject } from '@angula
 import { NzButtonGroupComponent } from 'ng-zorro-antd/button';
 
 @Directive({
-  selector: '[nz-button][nz-dropdown]',
-  standalone: true
+  selector: '[nz-button][nz-dropdown]'
 })
 export class NzDropdownButtonDirective implements AfterViewInit {
   private nzButtonGroupComponent = inject(NzButtonGroupComponent, { host: true, optional: true });

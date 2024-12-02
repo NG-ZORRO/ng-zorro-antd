@@ -4,7 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkOverlayOrigin, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
+import { ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { Platform, _getEventTarget } from '@angular/cdk/platform';
 import { AsyncPipe } from '@angular/common';
 import {
@@ -177,7 +177,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   inputValue: string = '';
   value: Date | null = null;
   preValue: Date | null = null;
-  origin!: CdkOverlayOrigin;
   inputSize?: number;
   i18nPlaceHolder$: Observable<string | undefined> = of(undefined);
   overlayPositions: ConnectionPositionPair[] = [
@@ -216,6 +215,10 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   statusCls: NgClassInterface = {};
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
+
+  get origin(): ElementRef {
+    return this.element;
+  }
 
   @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
   @Input() nzId: string | null = null;
@@ -402,8 +405,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       });
 
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
-    this.origin = new CdkOverlayOrigin(this.element);
-
     this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(
       map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder)
     );

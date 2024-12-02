@@ -37,8 +37,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
   exportAs: 'nzPopover',
   host: {
     '[class.ant-popover-open]': 'visible'
-  },
-  standalone: true
+  }
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

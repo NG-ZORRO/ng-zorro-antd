@@ -39,7 +39,7 @@ describe('code editor', () => {
   //     TestBed.configureTestingModule({
   //       imports: [FormsModule, NzCodeEditorModule],
   //       declarations: [NzDemoCodeEditorBasicComponent]
-  //     }).compileComponents();
+  //     });
   //   }));
 
   //   beforeEach(() => {

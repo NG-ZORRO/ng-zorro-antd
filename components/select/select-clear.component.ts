@@ -38,8 +38,6 @@ export class NzSelectClearComponent {
   @Input() clearIcon: TemplateRef<NzSafeAny> | null = null;
   @Output() readonly clear = new EventEmitter<MouseEvent>();
 
-  constructor() {}
-
   onClick(e: MouseEvent): void {
     e.preventDefault();
     e.stopPropagation();

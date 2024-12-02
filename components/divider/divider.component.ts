@@ -48,6 +48,4 @@ export class NzDividerComponent {
   @Input() nzVariant: 'dashed' | 'dotted' | 'solid' = 'solid';
   @Input({ transform: booleanAttribute }) nzDashed = false;
   @Input({ transform: booleanAttribute }) nzPlain = false;
-
-  constructor() {}
 }

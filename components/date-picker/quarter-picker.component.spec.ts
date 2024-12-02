@@ -2,7 +2,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import isBefore from 'date-fns/isBefore';
 
@@ -21,11 +21,8 @@ describe('NzQuarterPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NzDatePickerModule, FormsModule],
-      declarations: [NzTestQuarterPickerComponent]
+      providers: [provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
   }));
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -231,6 +228,7 @@ describe('NzQuarterPickerComponent', () => {
 });
 
 @Component({
+  imports: [NzDatePickerModule, FormsModule],
   template: `
     @switch (useSuite) {
       @case (1) {

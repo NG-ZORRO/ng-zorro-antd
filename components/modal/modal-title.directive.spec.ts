@@ -1,7 +1,7 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -19,16 +19,8 @@ describe('modal title directive', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzModalModule, NoopAnimationsModule],
-      declarations: [
-        TestDirectiveTitleComponent,
-        TestDirectiveTitleInServiceComponent,
-        TestDirectiveTitleWithInitOpenedComponent
-      ],
-      providers: [NzModalService]
+      providers: [NzModalService, provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -81,6 +73,7 @@ describe('modal title directive', () => {
 });
 
 @Component({
+  imports: [NzModalModule],
   template: `
     <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()">
       <div>
@@ -95,8 +88,6 @@ class TestDirectiveTitleComponent {
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
   @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) nzModalTitleDirective!: TemplateRef<NzSafeAny>;
 
-  constructor() {}
-
   handleCancel(): void {
     this.isVisible = false;
   }
@@ -107,6 +98,7 @@ class TestDirectiveTitleComponent {
 }
 
 @Component({
+  imports: [NzModalModule],
   template: `
     <nz-modal [(nzVisible)]="isVisible">
       <div>
@@ -120,12 +112,11 @@ class TestDirectiveTitleWithInitOpenedComponent {
   isVisible = true;
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
   @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) nzModalTitleDirective!: TemplateRef<NzSafeAny>;
-
-  constructor() {}
 }
 
 @Component({
-  template: ` <div *nzModalTitle>Custom Modal Title</div> `
+  imports: [NzModalModule],
+  template: `<div *nzModalTitle>Custom Modal Title</div>`
 })
 class TestDirectiveTitleInServiceComponent {
   @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) NzModalTitleDirective!: TemplateRef<NzSafeAny>;

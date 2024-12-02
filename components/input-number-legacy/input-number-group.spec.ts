@@ -18,7 +18,7 @@ describe('input-number-group', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
   }));
   describe('input number group', () => {
     describe('addon', () => {

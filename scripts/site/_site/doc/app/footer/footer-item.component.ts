@@ -3,8 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
-  standalone: true,
-  selector: 'app-footer-item',
+    selector: 'app-footer-item',
   imports: [NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

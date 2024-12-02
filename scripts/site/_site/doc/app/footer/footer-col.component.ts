@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  standalone: true,
-  selector: 'div[app-footer-col]',
+    selector: 'div[app-footer-col]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h2>

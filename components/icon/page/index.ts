@@ -733,7 +733,6 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
 @Component({
   selector: 'nz-page-demo-icon-copied-code',
-  standalone: true,
   template: `
     <ng-template #templateRef>
       <span>

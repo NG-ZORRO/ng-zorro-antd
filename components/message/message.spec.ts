@@ -19,7 +19,7 @@ describe('message', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations(), provideNzConfig({ message: { nzMaxStack: 2, nzTop: 24 } }), NzMessageService]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(NzTestMessageComponent);
     testComponent = fixture.componentInstance;
@@ -207,7 +207,6 @@ describe('message', () => {
 });
 
 @Component({
-  standalone: true,
   template: `<ng-template #contentTemplate>Content in template</ng-template>`
 })
 export class NzTestMessageComponent {

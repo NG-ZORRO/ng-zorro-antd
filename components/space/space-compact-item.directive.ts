@@ -12,7 +12,6 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_ITEMS } from './space-comp
 
 @Directive({
   exportAs: 'nzSpaceCompactItem',
-  standalone: true,
   host: {
     '[class]': 'class()'
   }

@@ -57,8 +57,6 @@ export class NzTableSortersComponent implements OnChanges {
   isUp = false;
   isDown = false;
 
-  constructor() {}
-
   ngOnChanges(changes: SimpleChanges): void {
     const { sortDirections } = changes;
     if (sortDirections) {

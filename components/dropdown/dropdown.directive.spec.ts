@@ -19,7 +19,7 @@ describe('dropdown', () => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
       providers
-    }).compileComponents();
+    });
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;

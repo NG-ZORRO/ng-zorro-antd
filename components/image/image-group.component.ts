@@ -13,8 +13,7 @@ import { NzImageDirective } from './image.directive';
   template: '<ng-content></ng-content>',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  standalone: true
+  encapsulation: ViewEncapsulation.None
 })
 export class NzImageGroupComponent {
   @Input() nzScaleStep: number | null = null;

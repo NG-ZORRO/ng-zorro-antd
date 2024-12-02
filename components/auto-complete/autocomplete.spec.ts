@@ -27,7 +27,7 @@ import {
 } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import {
@@ -57,19 +57,8 @@ describe('auto-complete', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzInputModule],
-      declarations: [
-        NzTestSimpleAutocompleteComponent,
-        NzTestAutocompletePropertyComponent,
-        NzTestAutocompleteWithoutPanelComponent,
-        NzTestAutocompleteGroupComponent,
-        NzTestAutocompleteWithOnPushDelayComponent,
-        NzTestAutocompleteWithFormComponent,
-        NzTestAutocompleteWithObjectOptionComponent,
-        NzTestAutocompleteDifferentValueWithFormComponent,
-        NzTestAutocompleteWithGroupInputComponent
-      ],
       providers: [
+        provideNoopAnimations(),
         { provide: Directionality, useClass: MockDirectionality },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
@@ -81,8 +70,6 @@ describe('auto-complete', () => {
         }
       ]
     });
-
-    TestBed.compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
@@ -972,6 +959,7 @@ describe('auto-complete', () => {
 });
 
 @Component({
+  imports: [ReactiveFormsModule, NzAutocompleteModule, NzInputModule],
   template: `
     <div>
       <input
@@ -1009,6 +997,7 @@ class NzTestSimpleAutocompleteComponent {
 }
 
 @Component({
+  imports: [FormsModule, NzAutocompleteModule],
   template: `
     <div>
       <input [(ngModel)]="inputValue" [nzAutocomplete]="auto" />
@@ -1032,18 +1021,18 @@ class NzTestAutocompletePropertyComponent {
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
   @ViewChild(NzAutocompleteComponent, { static: false }) panel!: NzAutocompleteComponent;
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-
-  constructor() {}
 }
 
 @Component({
-  template: ` <input [nzAutocomplete]="auto" /> `
+  imports: [NzAutocompleteModule],
+  template: `<input [nzAutocomplete]="auto" />`
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
 }
 
 @Component({
+  imports: [NzAutocompleteModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div>
@@ -1067,6 +1056,7 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
 }
 
 @Component({
+  imports: [FormsModule, NzAutocompleteModule],
   template: `
     <input [nzAutocomplete]="auto" [(ngModel)]="inputValue" />
     <nz-autocomplete #auto>
@@ -1134,6 +1124,7 @@ class NzTestAutocompleteGroupComponent {
 }
 
 @Component({
+  imports: [ReactiveFormsModule, NzAutocompleteModule],
   template: `
     <form>
       <input [formControl]="formControl" [nzAutocomplete]="auto" />
@@ -1152,6 +1143,7 @@ class NzTestAutocompleteWithFormComponent {
 }
 
 @Component({
+  imports: [ReactiveFormsModule, NzAutocompleteModule],
   template: `
     <input [formControl]="formControl" [nzAutocomplete]="auto" />
     <nz-autocomplete #auto>
@@ -1173,6 +1165,7 @@ class NzTestAutocompleteDifferentValueWithFormComponent {
 }
 
 @Component({
+  imports: [ReactiveFormsModule, NzAutocompleteModule],
   template: `
     <input [formControl]="formControl" [nzAutocomplete]="auto" />
     <nz-autocomplete #auto [compareWith]="compareFun">
@@ -1192,8 +1185,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
   ];
   @ViewChild(NzAutocompleteTriggerDirective) trigger!: NzAutocompleteTriggerDirective;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  compareFun = (o1: any, o2: any): boolean => {
+  compareFun = (o1: NzSafeAny, o2: NzSafeAny): boolean => {
     if (o1) {
       return typeof o1 === 'string' ? o1 === o2.label : o1.value === o2.value;
     } else {
@@ -1203,6 +1195,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
 }
 
 @Component({
+  imports: [NzAutocompleteModule, NzInputModule],
   template: `
     <nz-input-group #inputGroupComponent nzSize="large" [nzSuffix]="suffixIcon">
       <input placeholder="input here" nz-input [nzAutocomplete]="auto" />
@@ -1225,9 +1218,8 @@ describe('auto-complete', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzAutocompleteModule],
       providers: [{ provide: Directionality, useClass: MockDirectionality }]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(NzAutocompleteComponent);
     component = fixture.componentInstance;

@@ -16,7 +16,7 @@ describe('input', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
   }));
   describe('single input', () => {
     describe('input with input element', () => {

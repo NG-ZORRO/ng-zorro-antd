@@ -20,7 +20,7 @@ describe('list', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
     fixture = TestBed.createComponent(TestListComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;

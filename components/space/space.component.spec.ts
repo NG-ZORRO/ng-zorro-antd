@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize } from 'ng-zorro-antd/space';
@@ -10,10 +10,6 @@ import { NzSpaceModule } from './space.module';
 describe('Space', () => {
   let component: SpaceTestComponent;
   let fixture: ComponentFixture<SpaceTestComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({}).compileComponents();
-  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SpaceTestComponent);

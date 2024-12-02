@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
@@ -14,13 +14,6 @@ const EXTRA_NODE_CLASS_NAME = '.ant-click-animating-node';
 describe('nz-wave base', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveTarget: HTMLElement;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzWaveModule],
-      declarations: [WaveContainerWithButtonComponent]
-    });
-  });
 
   describe('basic wave', () => {
     beforeEach(() => {
@@ -58,6 +51,8 @@ describe('nz-wave base', () => {
       fixture.componentInstance.disabled = true;
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
+      fixture.detectChanges();
+      console.log(waveTarget);
       expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
       expect(document.body.querySelector('style') !== null).toBe(false);
     });
@@ -109,13 +104,6 @@ describe('nz-wave base', () => {
 describe('nz-wave extra', () => {
   let fixture: ComponentFixture<WaveContainerWithExtraNodeComponent>;
   let waveTarget: HTMLElement;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzWaveModule],
-      declarations: [WaveContainerWithExtraNodeComponent]
-    });
-  });
 
   describe('extra node wave', () => {
     beforeEach(() => {
@@ -190,10 +178,10 @@ describe('nz-wave extra', () => {
 describe('nz-wave NoopAnimationsModule', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveRef: NzWaveDirective;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzWaveModule, NoopAnimationsModule],
-      declarations: [WaveContainerWithButtonComponent]
+      providers: [provideNoopAnimations()]
     });
   });
 
@@ -221,12 +209,6 @@ describe('nz-wave disable/enable', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveTarget: HTMLElement;
   let waveRef: NzWaveDirective;
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzWaveModule],
-      declarations: [WaveContainerWithButtonComponent]
-    });
-  });
 
   describe('disable/enable', () => {
     beforeEach(() => {
@@ -256,12 +238,13 @@ describe('nz-wave disable/enable', () => {
 });
 
 @Component({
+  imports: [NzWaveModule],
   template: `
     @if (!isDestroyed) {
       <button
         #trigger
         nz-wave
-        [disabled]="disabled"
+        [attr.disabled]="disabled || null"
         [class.disabled]="disabledClass"
         [style.border-color]="borderColor"
         [style.background-color]="backgroundColor"
@@ -282,6 +265,7 @@ class WaveContainerWithButtonComponent {
 }
 
 @Component({
+  imports: [NzWaveModule],
   template: `
     @if (!isDestroyed) {
       <div

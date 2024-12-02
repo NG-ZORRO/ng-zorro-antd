@@ -10,8 +10,7 @@ import { Directive, Input } from '@angular/core';
   host: {
     class: 'ant-table-expanded-row',
     '[hidden]': `!nzExpand`
-  },
-  standalone: true
+  }
 })
 export class NzTrExpandDirective {
   @Input() nzExpand = true;

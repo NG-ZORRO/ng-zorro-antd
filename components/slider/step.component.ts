@@ -27,7 +27,6 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
       <span class="ant-slider-dot" [class.ant-slider-dot-active]="step.active" [style]="step.style!"></span>
     }
   `,
-  standalone: true,
   host: {
     class: 'ant-slider-step'
   }

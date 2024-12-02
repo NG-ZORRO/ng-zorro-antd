@@ -10,7 +10,6 @@ import { defaultColor } from './util/util';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-antd-color-block',
-  standalone: true,
   template: `
     <div class="ant-color-picker-color-block" (click)="nzOnClick.emit(true)">
       <div class="ant-color-picker-color-block-inner" [style.background-color]="color"></div>

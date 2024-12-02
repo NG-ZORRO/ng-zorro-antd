@@ -10,11 +10,6 @@ describe('NgxColorBlockComponent', () => {
   let resultEl: DebugElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [NzxTestColorBlockComponent],
-      imports: [NgAntdColorBlockComponent]
-    }).compileComponents();
-
     fixture = TestBed.createComponent(NzxTestColorBlockComponent);
     fixture.detectChanges();
     component = fixture.componentInstance;
@@ -37,7 +32,8 @@ describe('NgxColorBlockComponent', () => {
 });
 
 @Component({
-  template: ` <ng-antd-color-block [color]="color" (nzOnClick)="clickHandle($event)"></ng-antd-color-block> `
+  imports: [NgAntdColorBlockComponent],
+  template: `<ng-antd-color-block [color]="color" (nzOnClick)="clickHandle($event)"></ng-antd-color-block>`
 })
 export class NzxTestColorBlockComponent {
   color = '#1677ff';

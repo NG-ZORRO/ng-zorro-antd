@@ -2,7 +2,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
@@ -17,11 +17,8 @@ describe('NzWeekPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NzDatePickerModule, FormsModule],
-      declarations: [NzTestWeekPickerComponent]
+      providers: [provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
   }));
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -99,6 +96,7 @@ describe('NzWeekPickerComponent', () => {
 });
 
 @Component({
+  imports: [NzDatePickerModule, FormsModule],
   template: `
     @switch (useSuite) {
       @case (1) {
