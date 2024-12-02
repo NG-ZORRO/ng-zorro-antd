@@ -39,7 +39,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -536,7 +536,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.currentPositionX = position.connectionPair.originX;
     this.currentPositionY = position.connectionPair.originY;
-    this.cdr.detectChanges(); // Take side-effects to position styles
+    this.cdr.detectChanges(); // Take side effects to position styles
   }
 
   onClickClear(event: MouseEvent): void {
@@ -564,7 +564,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   onInputChange(value: string, isEnter: boolean = false): void {
     /**
      * in IE11 focus/blur will trigger ngModelChange if placeholder changes,
-     * so we forbidden IE11 to open panel through input change
+     * so we forbid IE11 to open panel through input change
      */
     if (
       !this.platform.TRIDENT &&
@@ -645,7 +645,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),
-        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
+        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : of(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntil(this.destroy$)
       )
@@ -662,26 +662,26 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     this.datePickerService.isRange = this.isRange;
     this.datePickerService.initValue(true);
     this.datePickerService.emitValue$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      const granularityComparaison = this.showTime ? 'second' : 'day';
+      const granularityComparison = this.showTime ? 'second' : 'day';
       const value = this.datePickerService.value;
       const datePickerPreviousValue = this.datePickerService.initialValue;
 
-      // Check if the value has change for a simple datepicker, let us to avoid notify the control for nothing
+      // Check if the value has change for a simple datepicker, let us avoid notify the control for nothing
       if (
         !this.isRange &&
-        (value as CandyDate)?.isSame((datePickerPreviousValue as CandyDate)?.nativeDate, granularityComparaison)
+        (value as CandyDate)?.isSame((datePickerPreviousValue as CandyDate)?.nativeDate, granularityComparison)
       ) {
         this.onTouchedFn();
         return this.close();
       }
 
-      // check if the value has change for a range picker, let us to avoid notify the control for nothing
+      // check if the value has change for a range picker, let us avoid notify the control for nothing
       if (this.isRange) {
         const [previousStartDate, previousEndDate] = datePickerPreviousValue as CandyDate[];
         const [currentStartDate, currentEndDate] = value as CandyDate[];
         if (
-          previousStartDate?.isSame(currentStartDate?.nativeDate, granularityComparaison) &&
-          previousEndDate?.isSame(currentEndDate?.nativeDate, granularityComparaison)
+          previousStartDate?.isSame(currentStartDate?.nativeDate, granularityComparison) &&
+          previousEndDate?.isSame(currentEndDate?.nativeDate, granularityComparison)
         ) {
           this.onTouchedFn();
           return this.close();

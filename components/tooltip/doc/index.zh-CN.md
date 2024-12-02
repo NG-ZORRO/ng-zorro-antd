@@ -50,7 +50,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 ## 非 body 滚轴事件需要更新 CDK 的位置
 
-在 tooltip 相关(包括 popconfirm popover) 的组件使用中，body 的滚轴事件会刷新 tooltip 的位置。如果是自定义容器的滚轴事件则不会刷新，你可以在自定义容器上添加 `cdkScrollable` 指令以达到该目的。注意，这里需要导入相关的包 `import {ScrollingModule} from '@angular/cdk/scrolling';`，更多信息请参考 [scrolling/api](https://material.angular.io/cdk/scrolling/api)。
+在 tooltip 相关(包括 popconfirm popover) 的组件使用中，body 的滚轴事件会刷新 tooltip 的位置。如果是自定义容器的滚轴事件则不会刷新，你可以在自定义容器上添加 `cdkScrollable` 指令以达到该目的。注意，这里需要导入相关的包 `import { ScrollingModule } from '@angular/cdk/scrolling';`，更多信息请参考 [scrolling/api](https://material.angular.io/cdk/scrolling/api)。
 
 ## 注意
 

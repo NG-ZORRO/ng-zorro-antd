@@ -18,7 +18,7 @@ title: 文字方向
 引入 Angular CDK bidi 模块
 
 ```typescript
-import {BidiModule} from '@angular/cdk/bidi';
+import { BidiModule } from '@angular/cdk/bidi';
 ```
 
 在模版中为应用或其后代设置方向。
