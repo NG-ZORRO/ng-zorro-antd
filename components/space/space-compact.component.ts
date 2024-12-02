@@ -21,7 +21,7 @@ import { NZ_SPACE_COMPACT_ITEMS, NZ_SPACE_COMPACT_SIZE } from './space-compact.t
   },
   providers: [
     { provide: NZ_SPACE_COMPACT_SIZE, useFactory: () => inject(NzSpaceCompactComponent).nzSize },
-    { provide: NZ_SPACE_COMPACT_ITEMS, useValue: signal([]) }
+    { provide: NZ_SPACE_COMPACT_ITEMS, useFactory: () => signal([]) }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
