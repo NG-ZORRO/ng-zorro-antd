@@ -268,8 +268,8 @@ describe('avatar', () => {
       // childrenWidth = 86
       // offset = 8
       // avatarWidth = 0
-      // scale = (0 - 8) / 98
-      expect(scale).toBe(-0.0816327);
+      // scale = (0 - 8) / 86
+      expect(scale).toBe(-0.0930233);
     }));
   });
 
