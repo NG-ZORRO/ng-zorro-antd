@@ -56,7 +56,6 @@ describe('auto-complete', () => {
   let zone: MockNgZone;
 
   beforeEach(waitForAsync(() => {
-    const dir = 'ltr';
     TestBed.configureTestingModule({
       imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzInputModule],
       declarations: [
@@ -71,7 +70,7 @@ describe('auto-complete', () => {
         NzTestAutocompleteWithGroupInputComponent
       ],
       providers: [
-        { provide: Directionality, useFactory: () => ({ value: dir }) },
+        { provide: Directionality, useClass: MockDirectionality },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
@@ -1219,11 +1218,6 @@ class NzTestAutocompleteWithGroupInputComponent {
   @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent!: ElementRef;
 }
 
-class MockDirectionality {
-  value = 'ltr';
-  change = new Subject();
-}
-
 describe('auto-complete', () => {
   let component: NzAutocompleteComponent;
   let fixture: ComponentFixture<NzAutocompleteComponent>;
@@ -1333,3 +1327,8 @@ describe('auto-complete', () => {
     expect(nzOptionSelectionChange.isUserInput).toBeFalsy();
   });
 });
+
+class MockDirectionality {
+  value = 'ltr';
+  change = new Subject();
+}
