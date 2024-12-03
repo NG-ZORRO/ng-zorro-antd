@@ -8,9 +8,9 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
   standalone: true,
   imports: [FormsModule, NzInputNumberModule],
   template: `
-    <nz-input-number [(ngModel)]="value" [nzSize]="'large'" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
-    <nz-input-number [(ngModel)]="value" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
-    <nz-input-number [(ngModel)]="value" [nzSize]="'small'" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
+    <nz-input-number [(ngModel)]="value" nzSize="large" nzMin="1" nzMax="10" />
+    <nz-input-number [(ngModel)]="value" nzMin="1" nzMax="10" />
+    <nz-input-number [(ngModel)]="value" nzSize="small" nzMin="1" nzMax="10" />
   `,
   styles: [
     `

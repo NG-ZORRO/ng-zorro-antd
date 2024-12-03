@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 4
 title:
     zh-CN: 小数
     en-US: Decimals
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 A numeric-only input box whose values can be increased or decreased using a decimal step. The number of decimals (also known as precision) is determined by the `nzStep` prop.
-

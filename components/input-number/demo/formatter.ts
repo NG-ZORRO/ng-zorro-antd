@@ -10,20 +10,18 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
   template: `
     <nz-input-number
       [(ngModel)]="demoValue"
-      [nzMin]="1"
-      [nzMax]="100"
-      [nzStep]="1"
+      nzMin="1"
+      nzMax="100"
       [nzFormatter]="formatterDollar"
       [nzParser]="parserDollar"
-    ></nz-input-number>
+    />
     <nz-input-number
       [(ngModel)]="demoValue"
-      [nzMin]="1"
-      [nzMax]="100"
-      [nzStep]="1"
+      nzMin="1"
+      nzMax="100"
       [nzFormatter]="formatterPercent"
       [nzParser]="parserPercent"
-    ></nz-input-number>
+    />
   `,
   styles: [
     `
@@ -36,7 +34,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 export class NzDemoInputNumberFormatterComponent {
   demoValue = 100;
   formatterPercent = (value: number): string => `${value} %`;
-  parserPercent = (value: string): string => value.replace(' %', '');
+  parserPercent = (value: string): number => +value.replace(' %', '');
   formatterDollar = (value: number): string => `$ ${value}`;
-  parserDollar = (value: string): string => value.replace('$ ', '');
+  parserDollar = (value: string): number => +value.replace('$ ', '');
 }

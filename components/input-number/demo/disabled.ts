@@ -9,25 +9,13 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
   standalone: true,
   imports: [FormsModule, NzButtonModule, NzInputNumberModule],
   template: `
-    <nz-input-number
-      [(ngModel)]="value"
-      [nzMin]="1"
-      [nzMax]="10"
-      [nzStep]="1"
-      [nzDisabled]="isDisabled"
-    ></nz-input-number>
+    <nz-input-number [(ngModel)]="value" nzMin="1" nzMax="10" [nzDisabled]="isDisabled" />
     <br />
     <br />
-    <button nz-button [nzType]="'primary'" (click)="toggleDisabled()">
-      <span>Toggle Disabled</span>
-    </button>
+    <button nz-button nzType="primary" (click)="isDisabled = !isDisabled">Toggle Disabled</button>
   `
 })
 export class NzDemoInputNumberDisabledComponent {
   value = 3;
   isDisabled = false;
-
-  toggleDisabled(): void {
-    this.isDisabled = !this.isDisabled;
-  }
 }

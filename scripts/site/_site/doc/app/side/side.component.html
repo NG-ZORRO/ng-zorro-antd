@@ -1,4 +1,10 @@
-<ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" [nzInlineIndent]="40" [class.ant-menu-rtl]="direction === 'rtl'">
+<ul
+  nz-menu
+  [nzMode]="'inline'"
+  class="aside-container menu-site"
+  [nzInlineIndent]="40"
+  [class.ant-menu-rtl]="direction === 'rtl'"
+>
   @if (page === 'docs') {
     @for (intro of routerList.intro; track $index) {
       <li nz-menu-item nzMatchRouter [hidden]="intro.language !== language || intro.hidden">
@@ -24,12 +30,18 @@
           @for (component of group.children; track $index) {
             <li nz-menu-item nzMatchRouter>
               <a class="menu-title-content-link" [routerLink]="component.path">
-                    <span>
-                      {{ component.label }}
-                      <span class="chinese">{{ component.zh }}</span>
-                    </span>
-                @if (!!component.tag) {
-                  <span class="ant-tag ant-tag-success ant-tag-borderless">{{ component.tag }}</span>
+                <span>
+                  {{ component.label }}
+                  <span class="chinese">{{ component.zh }}</span>
+                </span>
+                @if (component.tag) {
+                  @if (component.tag === 'deprecated') {
+                    <nz-tag nzColor="warning" [nzBordered]="false">
+                      {{ language === 'zh' ? '弃用' : 'Deprecated' }}
+                    </nz-tag>
+                  } @else {
+                    <nz-tag nzColor="success" [nzBordered]="false">{{ component.tag }}</nz-tag>
+                  }
                 }
               </a>
             </li>
@@ -48,10 +60,10 @@
           @for (component of group.experimentalChildren; track $index) {
             <li nz-menu-item nzMatchRouter>
               <a class="menu-title-content-link" [routerLink]="component.path">
-                    <span>
-                      {{ component.label }}
-                      <span class="chinese">{{ component.zh }}</span>
-                    </span>
+                <span>
+                  {{ component.label }}
+                  <span class="chinese">{{ component.zh }}</span>
+                </span>
                 @if (!!component.tag) {
                   <span class="ant-tag ant-tag-warning ant-tag-borderless">{{ component.tag }}</span>
                 }
