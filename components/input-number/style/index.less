@@ -238,6 +238,8 @@
 
   // ===================== Compact Item Styles =====================
   .compact-item(@input-number-prefix-cls, null, ~'@{input-number-prefix-cls}-focused');
+  .compact-item(~'@{input-number-prefix-cls}-affix-wrapper', null, ~'@{input-number-prefix-cls}-focused');
+  .compact-item(~'@{input-number-prefix-cls}-group-wrapper', ~'@{input-number-prefix-cls}-group-addon', ~'@{input-number-prefix-cls}-focused');
 }
 
 @import './rtl';

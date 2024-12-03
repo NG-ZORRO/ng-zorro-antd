@@ -3,7 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import { afterNextRender, computed, Directive, ElementRef, inject, OnDestroy } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { NzSpaceCompactComponent } from './space-compact.component';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_ITEMS } from './space-compact.token';
@@ -16,17 +18,30 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_ITEMS } from './space-comp
   }
 })
 export class NzSpaceCompactItemDirective implements OnDestroy {
+  /**
+   * Ancestor component injected from the parent.
+   * Note that it is not necessarily the direct parent component.
+   */
   private readonly spaceCompactCmp = inject(NzSpaceCompactComponent, { host: true, optional: true });
   private readonly items = inject(NZ_SPACE_COMPACT_ITEMS, { host: true, optional: true });
   private readonly type = inject(NZ_SPACE_COMPACT_ITEM_TYPE);
+  private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
+  private readonly directionality = inject(Directionality);
+  private readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
+
+  private get parentElement(): HTMLElement | null {
+    return this.elementRef.nativeElement?.parentElement;
+  }
 
   protected class = computed(() => {
     // Only handle when the parent is space compact component
     if (!this.spaceCompactCmp || !this.items) return null;
+    // Ensure that the injected ancestor component's elements are parent elements
+    if (this.parentElement !== this.spaceCompactCmp!.elementRef.nativeElement) return null;
 
     const items = this.items();
     const direction = this.spaceCompactCmp.nzDirection();
-    const classes = [compactItemClassOf(this.type, direction)];
+    const classes = [compactItemClassOf(this.type, direction, this.dir() === 'rtl')];
     const index = items.indexOf(this);
     const firstIndex = items.findIndex(element => element);
     // Array [empty, item]
@@ -44,11 +59,10 @@ export class NzSpaceCompactItemDirective implements OnDestroy {
   constructor() {
     if (!this.spaceCompactCmp || !this.items) return;
 
-    const { nativeElement }: ElementRef<HTMLElement> = inject(ElementRef);
-
     afterNextRender(() => {
-      if (nativeElement.parentElement) {
-        const index = Array.from(nativeElement.parentElement.children).indexOf(nativeElement);
+      // Ensure that the injected ancestor component's elements are parent elements
+      if (this.parentElement === this.spaceCompactCmp!.elementRef.nativeElement) {
+        const index = Array.from(this.parentElement.children).indexOf(this.elementRef.nativeElement);
         this.items!.update(value => {
           const newValue = value.slice();
           newValue.splice(index, 0, this);
@@ -72,8 +86,9 @@ function generateCompactClass(
   return `ant-${type}-compact-${directionPrefix}${position}`;
 }
 
-function compactItemClassOf(type: string, direction: 'vertical' | 'horizontal'): string {
-  return generateCompactClass(type, direction, 'item');
+function compactItemClassOf(type: string, direction: 'vertical' | 'horizontal', rtl?: boolean): string {
+  const rtlSuffix = rtl ? '-rtl' : '';
+  return `${generateCompactClass(type, direction, 'item')}${rtlSuffix}`;
 }
 
 function compactFirstItemClassOf(type: string, direction: 'vertical' | 'horizontal'): string {

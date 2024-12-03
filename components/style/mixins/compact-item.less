@@ -30,28 +30,28 @@
 
   & when (not (@bordered-item-cls = null)) {
     // border-radius
-    &-item:not(&-first-item):not(&-last-item).@{prefix-cls} > .@{bordered-item-cls} {
+    &-item:not(&-first-item):not(&-last-item).@{prefix-cls} .@{bordered-item-cls} {
       border-radius: 0;
     }
 
-    &-item&-first-item.@{prefix-cls}:not(&-last-item):not(&-item-rtl) > .@{bordered-item-cls} {
+    &-item&-first-item.@{prefix-cls}:not(&-last-item):not(&-item-rtl) .@{bordered-item-cls} {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
 
-    &-item&-last-item.@{prefix-cls}:not(&-first-item):not(&-item-rtl) > .@{bordered-item-cls} {
+    &-item&-last-item.@{prefix-cls}:not(&-first-item):not(&-item-rtl) .@{bordered-item-cls} {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
     // ----------rtl for first item----------
-    &-item.@{prefix-cls}&-first-item&-item-rtl:not(&-last-item) > .@{bordered-item-cls} {
+    &-item.@{prefix-cls}&-first-item&-item-rtl:not(&-last-item) .@{bordered-item-cls} {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
 
     // ----------rtl for last item----------
-    &-item.@{prefix-cls}&-last-item&-item-rtl:not(&-first-item) > .@{bordered-item-cls} {
+    &-item.@{prefix-cls}&-last-item&-item-rtl:not(&-first-item) .@{bordered-item-cls} {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }

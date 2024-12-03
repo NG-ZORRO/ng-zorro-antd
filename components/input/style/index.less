@@ -81,6 +81,8 @@
 
   // ===================== Compact Item Styles =====================
   .compact-item(@input-prefix-cls);
+  .compact-item(~'@{input-prefix-cls}-affix-wrapper');
+  .compact-item(~'@{input-prefix-cls}-group-wrapper', ~'@{input-prefix-cls}-group-addon');
 }
 
 @import './search-input';
