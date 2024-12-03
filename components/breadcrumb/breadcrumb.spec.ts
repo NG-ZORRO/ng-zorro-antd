@@ -231,10 +231,7 @@ describe('breadcrumb', () => {
     }));
 
     it('should raise error when RouterModule is not included', fakeAsync(() => {
-      TestBed.configureTestingModule({});
-
       expect(() => {
-        TestBed;
         fixture = TestBed.createComponent(NzBreadcrumbAutoGenerateErrorDemoComponent);
         fixture.detectChanges();
       }).toThrowError();

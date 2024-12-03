@@ -1,12 +1,11 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Injector, LOCALE_ID } from '@angular/core';
+import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { NgTimeParser, TimeResult } from './time-parser';
 
 describe('Parse time with angular format', () => {
-  let injector: Injector;
   let localeId: string;
   let parser: NgTimeParser;
   let result: TimeResult | null;
@@ -14,8 +13,7 @@ describe('Parse time with angular format', () => {
 
   describe('default locale', () => {
     beforeEach(() => {
-      injector = TestBed.configureTestingModule({});
-      localeId = injector.get(LOCALE_ID);
+      localeId = TestBed.inject(LOCALE_ID);
     });
 
     it('should parse hh:mm:ss a', () => {
@@ -74,10 +72,10 @@ describe('Parse time with angular format', () => {
   describe('zh locale', () => {
     registerLocaleData(zh);
     beforeEach(() => {
-      injector = TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         providers: [{ provide: LOCALE_ID, useValue: 'zh-CN' }]
       });
-      localeId = injector.get(LOCALE_ID);
+      localeId = TestBed.inject(LOCALE_ID);
     });
 
     it('should parse hh:mm:ss a', () => {

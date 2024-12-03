@@ -52,7 +52,6 @@ describe('nz-wave base', () => {
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
       fixture.detectChanges();
-      console.log(waveTarget);
       expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
       expect(document.body.querySelector('style') !== null).toBe(false);
     });

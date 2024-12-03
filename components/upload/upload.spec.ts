@@ -1241,7 +1241,6 @@ describe('upload', () => {
           imports: [NzUploadBtnComponent],
           providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
         });
-        injector as TestBed;
         fixture = TestBed.createComponent(NzUploadBtnComponent);
         comp = fixture.debugElement.componentInstance;
         comp.options = {
