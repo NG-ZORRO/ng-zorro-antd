@@ -67,19 +67,25 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       <nz-input-group nzSearch [nzAddOnAfter]="addonTmpl" [style.width.%]="30">
         <input nz-input value="0571" />
         <ng-template #addonTmpl>
-          <button nz-button><span nz-icon nzType="search"></span></button>
+          <button nz-button class="ant-input-search-button">
+            <span nz-icon nzType="search"></span>
+          </button>
         </ng-template>
       </nz-input-group>
       <nz-input-group nzSearch [nzAddOnAfter]="addonTmpl" [style.width.%]="50">
         <input nz-input value="26888888" />
         <ng-template #addonTmpl>
-          <button nz-button><span nz-icon nzType="search"></span></button>
+          <button nz-button class="ant-input-search-button">
+            <span nz-icon nzType="search"></span>
+          </button>
         </ng-template>
       </nz-input-group>
       <nz-input-group nzSearch [nzAddOnAfter]="addonTmpl" [style.width.%]="20">
         <input nz-input value="+1" />
         <ng-template #addonTmpl>
-          <button nz-button><span nz-icon nzType="search"></span></button>
+          <button nz-button class="ant-input-search-button">
+            <span nz-icon nzType="search"></span>
+          </button>
         </ng-template>
       </nz-input-group>
     </nz-space-compact>
@@ -173,6 +179,18 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
         [style.width.%]="60"
       ></nz-tree-select>
       <button nz-button nzType="primary">Submit</button>
+    </nz-space-compact>
+    <br />
+    <nz-space-compact nzBlock>
+      <nz-input-group nzAddOnBefore="Http://" nzAddOnAfter=".com" [style.width.%]="50">
+        <input nz-input placeholder="input here" />
+      </nz-input-group>
+      <nz-input-number>
+        <span nzInputPrefix>$</span>
+      </nz-input-number>
+      <nz-input-number>
+        <span nzInputAddonBefore>$</span>
+      </nz-input-number>
     </nz-space-compact>
   `,
   styles: [

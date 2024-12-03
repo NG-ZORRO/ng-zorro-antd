@@ -32,12 +32,11 @@ describe('mention', () => {
   let zone: MockNgZone;
 
   beforeEach(waitForAsync(() => {
-    const dir = 'ltr';
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
       providers: [
         provideNzIconsTesting(),
-        { provide: Directionality, useFactory: () => ({ value: dir }) },
+        { provide: Directionality, useClass: MockDirectionality },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
@@ -694,4 +693,9 @@ class NzTestStatusMentionComponent {
 class NzTestMentionInFormComponent {
   status: NzFormControlStatusType = 'error';
   feedback = true;
+}
+
+class MockDirectionality {
+  value = 'ltr';
+  change = new Subject();
 }
