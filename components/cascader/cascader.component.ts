@@ -747,20 +747,20 @@ export class NzCascaderComponent
     this.delaySetMenuVisible(false, this.nzMouseLeaveDelay);
   }
 
-  onOptionMouseEnter(option: NzTreeNode, columnIndex: number, event: Event): void {
+  onOptionMouseEnter(node: NzTreeNode, columnIndex: number, event: Event): void {
     event.preventDefault();
     if (this.nzExpandTrigger === 'hover') {
-      if (!option.isLeaf) {
-        this.delaySetOptionActivated(option, columnIndex, false);
+      if (!node.isLeaf) {
+        this.delaySetOptionActivated(node, columnIndex, false);
       } else {
         this.cascaderService.setOptionDeactivatedSinceColumn(columnIndex);
       }
     }
   }
 
-  onOptionMouseLeave(option: NzTreeNode, _columnIndex: number, event: Event): void {
+  onOptionMouseLeave(node: NzTreeNode, _columnIndex: number, event: Event): void {
     event.preventDefault();
-    if (this.nzExpandTrigger === 'hover' && !option.isLeaf) {
+    if (this.nzExpandTrigger === 'hover' && !node.isLeaf) {
       this.clearDelaySelectTimer();
     }
   }
@@ -877,21 +877,27 @@ export class NzCascaderComponent
     updateNodesAndValue(updateValue);
   }
 
-  onOptionClick(option: NzTreeNode, columnIndex: number, event: Event): void {
+  onOptionClick(node: NzTreeNode, columnIndex: number, event: Event): void {
     if (event) {
       event.preventDefault();
     }
-    if (option && option.isDisabled) {
+    if (node && node.isDisabled) {
       return;
     }
 
     this.el.focus();
-    this.inSearchingMode
-      ? this.cascaderService.setSearchOptionSelected(option, this.nzMultiple)
-      : this.cascaderService.setNodeActivated(option, columnIndex, !this.nzMultiple);
+
+    // for multiple mode, click the leaf node can be seen as check action
+    if (this.nzMultiple && node.isLeaf) {
+      this.onOptionCheck(node, columnIndex, true);
+    } else {
+      this.inSearchingMode
+        ? this.cascaderService.setSearchOptionSelected(node, this.nzMultiple)
+        : this.cascaderService.setNodeActivated(node, columnIndex, !this.nzMultiple);
+    }
   }
 
-  onOptionCheck(node: NzTreeNode, columnIndex: number): void {
+  onOptionCheck(node: NzTreeNode, columnIndex: number, performActivate = false): void {
     if (!this.nzMultiple || node.isDisabled || node.isDisableCheckbox) {
       return;
     }
@@ -901,9 +907,14 @@ export class NzCascaderComponent
     this.treeService.setCheckedNodeList(node);
     this.treeService.conduct(node, this.treeService.isCheckStrictly);
 
-    this.inSearchingMode
-      ? this.cascaderService.setSearchOptionSelected(node, true)
-      : this.cascaderService.setNodeActivated(node, columnIndex, true, true);
+    if (this.inSearchingMode) {
+      this.cascaderService.setSearchOptionSelected(node, true);
+    } else if (performActivate) {
+      this.cascaderService.setNodeActivated(node, columnIndex, true, true);
+    } else {
+      // only update selected nodes and not set node activated by default
+      this.updateSelectedNodes();
+    }
   }
 
   removeSelected(node: NzTreeNode, emitEvent = true): void {
@@ -994,10 +1005,10 @@ export class NzCascaderComponent
     }
   }
 
-  private delaySetOptionActivated(option: NzTreeNode, columnIndex: number, performSelect: boolean): void {
+  private delaySetOptionActivated(node: NzTreeNode, columnIndex: number, performSelect: boolean): void {
     this.clearDelaySelectTimer();
     this.delaySelectTimer = setTimeout(() => {
-      this.cascaderService.setNodeActivated(option, columnIndex, performSelect, this.nzMultiple);
+      this.cascaderService.setNodeActivated(node, columnIndex, performSelect, this.nzMultiple);
       this.delaySelectTimer = undefined;
     }, 150);
   }

@@ -1709,7 +1709,7 @@ describe('cascader', () => {
       tick(600);
       fixture.detectChanges();
 
-      // first expand all columns (for convenience)
+      // firstly, expand all columns (for convenience)
       getItemAtColumnAndRow(1, 2)!.click();
       fixture.detectChanges();
       getItemAtColumnAndRow(2, 1)!.click();
@@ -1752,6 +1752,52 @@ describe('cascader', () => {
       expect(children.every(c => !c.classList.contains('ant-cascader-checkbox-checked'))).toBe(true);
       // Conduct Up: and its parent should be unchecked too
       expect(rootEl.classList).not.toContain('ant-cascader-checkbox-checked');
+    }));
+
+    it('should click checkbox not set option activated', fakeAsync(() => {
+      cascader.componentInstance.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+
+      const option = getItemAtColumnAndRow(1, 1)!;
+      const checkbox = getCheckboxAtColumnAndRow(1, 1)!;
+      expect(option.classList).not.toContain('ant-cascader-menu-item-active');
+
+      checkbox.click();
+      fixture.detectChanges();
+
+      expect(option.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(checkbox.classList).toContain('ant-cascader-checkbox-checked');
+    }));
+
+    it('should change check state when click leaf node', fakeAsync(() => {
+      cascader.componentInstance.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+
+      // firstly, expand all columns (for convenience)
+      getItemAtColumnAndRow(1, 2)!.click();
+      fixture.detectChanges();
+      getItemAtColumnAndRow(2, 1)!.click();
+      fixture.detectChanges();
+
+      const leaf = getItemAtColumnAndRow(3, 2)!;
+      const checkbox = getCheckboxAtColumnAndRow(3, 2)!;
+      // click leaf node
+      expect(leaf.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(checkbox.classList).not.toContain('ant-cascader-checkbox-checked');
+
+      leaf.click();
+      fixture.detectChanges();
+      expect(leaf.classList).toContain('ant-cascader-menu-item-active');
+      expect(checkbox.classList).toContain('ant-cascader-checkbox-checked');
+
+      leaf.click();
+      fixture.detectChanges();
+      expect(leaf.classList).toContain('ant-cascader-menu-item-active');
+      expect(checkbox.classList).not.toContain('ant-cascader-checkbox-checked');
     }));
   });
 

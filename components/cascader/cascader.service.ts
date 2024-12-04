@@ -87,7 +87,7 @@ export class NzCascaderService implements OnDestroy {
    * @param node Cascader option node
    * @param columnIndex Of which column this option is in
    * @param performSelect Select
-   * @param multiple Multiple Select
+   * @param multiple Multiple mode
    * @param loadingChildren Try to load children asynchronously.
    */
   setNodeActivated(
@@ -162,7 +162,6 @@ export class NzCascaderService implements OnDestroy {
    * @param multiple
    */
   setSearchOptionSelected(node: NzTreeNode, multiple = false): void {
-    this.activatedNodes = [node];
     this.setNodeSelected(node, node.level, multiple);
 
     setTimeout(() => {
