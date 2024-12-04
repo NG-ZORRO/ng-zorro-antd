@@ -5,11 +5,10 @@
 
 import { NgModule } from '@angular/core';
 
-import { NzCascaderOptionComponent } from './cascader-option.component';
 import { NzCascaderComponent } from './cascader.component';
 
 @NgModule({
-  imports: [NzCascaderComponent, NzCascaderOptionComponent],
+  imports: [NzCascaderComponent],
   exports: [NzCascaderComponent]
 })
 export class NzCascaderModule {}

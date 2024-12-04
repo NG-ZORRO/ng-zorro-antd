@@ -5,9 +5,10 @@
 
 import { Observable } from 'rxjs';
 
-import { NzCascaderTreeService } from 'ng-zorro-antd/cascader/cascader-tree.service';
 import { NzTreeNode } from 'ng-zorro-antd/core/tree';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+
+import { NzCascaderTreeService } from './cascader-tree.service';
 
 export type NzCascaderExpandTrigger = 'click' | 'hover';
 export type NzCascaderTriggerType = 'click' | 'hover';
@@ -23,15 +24,10 @@ export interface NzCascaderOption {
   disabled?: boolean;
   loading?: boolean;
   isLeaf?: boolean;
-  parent?: NzCascaderOption;
   children?: NzCascaderOption[];
   disableCheckbox?: boolean;
 
   [key: string]: NzSafeAny;
-}
-
-export interface NzCascaderSearchOption extends NzCascaderOption {
-  path: NzCascaderOption[];
 }
 
 export interface NzShowSearchOptions {

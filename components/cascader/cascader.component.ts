@@ -39,10 +39,9 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
-import { NzCascaderTreeService } from 'ng-zorro-antd/cascader/cascader-tree.service';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -55,7 +54,7 @@ import {
   NzStatus,
   NzValidateStatus
 } from 'ng-zorro-antd/core/types';
-import { fromEventOutsideAngular, getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, getStatusClassNames, isNotNil, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -68,6 +67,7 @@ import {
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 import { NzCascaderOptionComponent } from './cascader-option.component';
+import { NzCascaderTreeService } from './cascader-tree.service';
 import { NzCascaderService } from './cascader.service';
 import {
   NzCascaderComponentAsSource,
@@ -92,7 +92,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       @if (nzShowInput) {
         <div #selectContainer class="ant-select-selector">
           @if (nzMultiple) {
-            @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track $index) {
+            @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node) {
               <nz-select-item
                 [deletable]="true"
                 [disabled]="nzDisabled"
@@ -205,7 +205,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                   [style.height]="dropdownHeightStyle"
                   [style.width]="dropdownWidthStyle"
                 >
-                  @for (option of options; track option.key) {
+                  @for (option of options; track option) {
                     <li
                       nz-cascader-option
                       [expandIcon]="nzExpandIcon"
@@ -215,7 +215,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                       [activated]="isOptionActivated(option, i)"
                       [highlightText]="inSearchingMode ? inputValue : ''"
                       [node]="option"
-                      [option]="option.origin"
                       [dir]="dir"
                       [checkable]="nzMultiple"
                       (mouseenter)="onOptionMouseEnter(option, i, $event)"
@@ -266,7 +265,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     FormsModule,
     NzIconModule,
     NzEmptyModule,
-    NzFormPatchModule,
+    NzFormItemFeedbackIconComponent,
     NzOverlayModule,
     NzNoAnimationDirective,
     NzSelectClearComponent,
@@ -318,8 +317,16 @@ export class NzCascaderComponent
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;
   @Input() nzMenuStyle: NgStyleInterface | null = null;
-  @Input({ transform: numberAttribute }) nzMouseEnterDelay: number = 150; // ms
-  @Input({ transform: numberAttribute }) nzMouseLeaveDelay: number = 150; // ms
+  /**
+   * Duration in milliseconds before opening the menu when the mouse enters the trigger.
+   * @default 150
+   */
+  @Input({ transform: numberAttribute }) nzMouseLeaveDelay: number = 150;
+  /**
+   * Duration in milliseconds before closing the menu when the mouse leaves the trigger.
+   * @default 150
+   */
+  @Input({ transform: numberAttribute }) nzMouseEnterDelay: number = 150;
   @Input() nzStatus: NzStatus = '';
   @Input({ transform: booleanAttribute }) nzMultiple: boolean = false;
   @Input() nzMaxTagCount: number = Infinity;
@@ -348,12 +355,17 @@ export class NzCascaderComponent
     this.treeService.initTree(nodes);
     this.cascaderService.columns = [nodes];
     this.updateSelectedNodes(true);
+
+    if (this.inSearchingMode) {
+      this.cascaderService.setSearchingMode(this.inSearchingMode);
+      this.cascaderService.prepareSearchOptions(this.inputValue);
+    }
   }
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
   @Output() readonly nzSelectionChange = new EventEmitter<NzCascaderOption[]>();
   @Output() readonly nzSelect = new EventEmitter<{ option: NzCascaderOption; index: number } | null>();
-  @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
+  @Output() readonly nzRemoved = new EventEmitter<NzCascaderOption>();
   @Output() readonly nzClear = new EventEmitter<void>();
 
   prefixCls: string = 'ant-select';
@@ -437,11 +449,6 @@ export class NzCascaderComponent
     return !!this.nzLabelRender;
   }
 
-  getAncestorOptionList(node: NzTreeNode | null): NzCascaderOption[] {
-    const ancestors = this.treeService.getAncestorNodeList(node);
-    return this.treeService.toOptions(ancestors);
-  }
-
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
@@ -492,15 +499,11 @@ export class NzCascaderComponent
       this.isLoading = loading;
     });
 
-    this.subscribeSelectionChange();
-
-    srv.$nodeSelected.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      if (!data) {
+    srv.$nodeSelected.pipe(takeUntil(this.destroy$)).subscribe(node => {
+      if (!node) {
         this.emitValue([]);
-        this.nzSelect.emit(null);
         this.nzSelectionChange.emit([]);
       } else {
-        const { node, index } = data;
         const shouldClose =
           // keep menu opened if multiple mode
           !this.nzMultiple && (node.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover'));
@@ -509,7 +512,6 @@ export class NzCascaderComponent
         }
         this.emitValue(this.cascaderService.values);
         this.nzSelectionChange.emit(this.getAncestorOptionList(node));
-        this.nzSelect.emit({ option: node.origin, index });
         this.cdr.markForCheck();
       }
     });
@@ -538,6 +540,7 @@ export class NzCascaderComponent
       srv.$redraw.next();
     });
 
+    this.setupSelectionChangeListener();
     this.setupChangeListener();
     this.setupKeydownListener();
     this.setupFocusListener();
@@ -568,10 +571,10 @@ export class NzCascaderComponent
 
   writeValue(value: NzSafeAny): void {
     if (isNotNil(value)) {
-      if (this.nzMultiple && Array.isArray(value)) {
-        this.cascaderService.values = value;
+      if (this.nzMultiple) {
+        this.cascaderService.values = toArray(value);
       } else {
-        this.cascaderService.values = [value];
+        this.cascaderService.values = [toArray(value)];
       }
       // need clear selected nodes when user set value before updating
       this.clearSelectedNodes();
@@ -584,8 +587,8 @@ export class NzCascaderComponent
     }
   }
 
-  subscribeSelectionChange(): void {
-    merge(this.nzSelect, this.nzRemoved, this.nzClear)
+  private setupSelectionChangeListener(): void {
+    merge(this.nzSelectionChange, this.nzRemoved, this.nzClear)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateSelectedNodes();
@@ -660,11 +663,23 @@ export class NzCascaderComponent
     });
   }
 
+  emitValue(values: NzSafeAny[] | null): void {
+    if (this.nzMultiple) {
+      this.onChange(values);
+    } else {
+      this.onChange(values?.length ? values[0] : []);
+    }
+  }
+
   /**
    * @internal
    */
   getSubmitValue(): NzSafeAny[] {
-    return this.cascaderService.values;
+    if (this.nzMultiple) {
+      return this.cascaderService.values;
+    } else {
+      return this.cascaderService.values?.length ? this.cascaderService.values[0] : [];
+    }
   }
 
   focus(): void {
@@ -749,27 +764,40 @@ export class NzCascaderComponent
     }
   }
 
+  /**
+   * Get ancestor options of a node
+   */
+  protected getAncestorOptionList(node: NzTreeNode | null): NzCascaderOption[] {
+    const ancestors = this.treeService.getAncestorNodeList(node);
+    return this.treeService.toOptions(ancestors);
+  }
+
   updateSelectedNodes(init: boolean = false, updateValue = true): void {
     const value = this.cascaderService.values;
     const multiple = this.nzMultiple;
 
+    /**
+     * Update selected nodes and emit value
+     * @param shouldUpdateValue if false, only update selected nodes
+     */
     const updateNodesAndValue = (shouldUpdateValue: boolean): void => {
-      this.selectedNodes = [...(this.nzMultiple ? this.getCheckedNodeList() : this.getSelectedNodeList())].sort(
-        (a, b) => {
-          const indexA = value.indexOf(a.key);
-          const indexB = value.indexOf(b.key);
-          if (indexA !== -1 && indexB !== -1) {
-            return indexA - indexB;
-          }
-          if (indexA !== -1) {
-            return -1;
-          }
-          if (indexB !== -1) {
-            return 1;
-          }
-          return 0;
+      this.selectedNodes = [
+        ...this.treeService.missingNodeList,
+        ...(this.nzMultiple ? this.getCheckedNodeList() : this.getSelectedNodeList())
+      ].sort((a, b) => {
+        const indexA = value.indexOf(a.key);
+        const indexB = value.indexOf(b.key);
+        if (indexA !== -1 && indexB !== -1) {
+          return indexA - indexB;
         }
-      );
+        if (indexA !== -1) {
+          return -1;
+        }
+        if (indexB !== -1) {
+          return 1;
+        }
+        return 0;
+      });
       if (shouldUpdateValue) {
         this.cascaderService.values = this.selectedNodes.map(node =>
           this.getAncestorOptionList(node).map(o => this.cascaderService.getOptionValue(o))
@@ -780,7 +808,7 @@ export class NzCascaderComponent
 
     if (init) {
       const defaultValue = value[0];
-      const lastColumnIndex = defaultValue?.length;
+      const lastColumnIndex = defaultValue?.length ? defaultValue.length - 1 : 0;
       this.treeService.fieldNames = {
         value: this.nzValueProperty,
         label: this.nzLabelProperty
@@ -788,6 +816,9 @@ export class NzCascaderComponent
       this.treeService.isMultiple = multiple;
       this.treeService.isCheckStrictly = false;
 
+      /**
+       * check whether the node is checked or selected according to the value
+       */
       const checkNodeStates = (): void => {
         if (multiple) {
           this.treeService.conductCheckPaths(value, this.treeService.isCheckStrictly);
@@ -811,7 +842,7 @@ export class NzCascaderComponent
             ) || null;
 
           if (isNotNil(node)) {
-            this.cascaderService.setNodeActivated(node, columnIndex);
+            this.cascaderService.setNodeActivated(node, columnIndex, false, multiple, false);
 
             // Load next level options till leaf node
             if (columnIndex < lastColumnIndex) {
@@ -823,7 +854,7 @@ export class NzCascaderComponent
           updateNodesAndValue(false);
         };
 
-        if (this.cascaderService.isLoaded(columnIndex)) {
+        if (this.cascaderService.isLoaded(columnIndex) || !this.nzLoadData) {
           activatedOptionSetter();
         } else {
           const node = this.cascaderService.activatedNodes[columnIndex - 1];
@@ -838,19 +869,11 @@ export class NzCascaderComponent
         const nodes = this.coerceTreeNodes(this.nzOptions || []);
         this.treeService.initTree(nodes);
         this.cascaderService.setColumnData(nodes, 0);
-        checkNodeStates();
+        initColumnWithIndex();
       }
     }
 
     updateNodesAndValue(updateValue);
-  }
-
-  emitValue(values: NzSafeAny[] | null): void {
-    if (this.nzMultiple) {
-      this.onChange(values);
-    } else {
-      this.onChange(values?.length ? values[0] : null);
-    }
   }
 
   onOptionClick(option: NzTreeNode, columnIndex: number, event: Event): void {
@@ -890,7 +913,7 @@ export class NzCascaderComponent
     }
     this.treeService.setSelectedNodeList(node, this.nzMultiple);
     if (emitEvent) {
-      this.nzRemoved.emit(node);
+      this.nzRemoved.emit(node.origin);
     }
   }
 
@@ -980,7 +1003,7 @@ export class NzCascaderComponent
 
   private toggleSearchingMode(toSearching: boolean): void {
     if (this.inSearchingMode !== toSearching) {
-      this.cascaderService.toggleSearchingMode(toSearching);
+      this.cascaderService.setSearchingMode(toSearching);
     }
 
     if (this.inSearchingMode) {

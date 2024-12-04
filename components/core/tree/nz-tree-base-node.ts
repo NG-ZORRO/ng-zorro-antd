@@ -115,9 +115,7 @@ export class NzTreeNode {
     /**
      * post process of current treeNode
      */
-    if (s && s.treeNodePostProcessor) {
-      s.treeNodePostProcessor(this);
-    }
+    s?.treeNodePostProcessor?.(this);
 
     /**
      * instantiate children tree nodes

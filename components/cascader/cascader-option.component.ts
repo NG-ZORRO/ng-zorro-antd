@@ -83,7 +83,6 @@ import { NzCascaderOption } from './typings';
 export class NzCascaderOptionComponent implements OnInit {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
   @Input() node!: NzTreeNode;
-  @Input() option!: NzCascaderOption;
   @Input() activated = false;
   @Input() highlightText!: string;
   @Input() nzLabelProperty = 'label';

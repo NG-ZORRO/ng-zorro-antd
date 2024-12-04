@@ -5,10 +5,11 @@
 
 import { Injectable } from '@angular/core';
 
-import { NzCascaderOption } from 'ng-zorro-antd/cascader/typings';
 import { NzTreeBaseService, NzTreeNode, NzTreeNodeKey } from 'ng-zorro-antd/core/tree';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { arraysEqual } from 'ng-zorro-antd/core/util';
+import { arraysEqual, isNotNil } from 'ng-zorro-antd/core/util';
+
+import { NzCascaderOption } from './typings';
 
 interface InternalFieldNames {
   label: string;
@@ -21,11 +22,20 @@ export class NzCascaderTreeService extends NzTreeBaseService {
     label: 'label',
     value: 'value'
   };
+  missingNodeList: NzTreeNode[] = [];
 
   override treeNodePostProcessor = (node: NzTreeNode): void => {
-    node.key = node.origin[this.fieldNames.value];
-    node.title = node.origin[this.fieldNames.label];
+    node.key = this.getOptionValue(node);
+    node.title = this.getOptionLabel(node);
   };
+
+  getOptionValue(node: NzTreeNode): NzSafeAny {
+    return node.origin[this.fieldNames.value || 'value'];
+  }
+
+  getOptionLabel(node: NzTreeNode): string {
+    return node.origin[this.fieldNames.label || 'label'];
+  }
 
   get children(): NzTreeNode[] {
     return this.rootNodes;
@@ -39,12 +49,11 @@ export class NzCascaderTreeService extends NzTreeBaseService {
     super();
   }
 
-  toOption(option: NzTreeNode): NzCascaderOption {
-    return option.origin;
-  }
-
-  toOptions(options: NzTreeNode[]): NzCascaderOption[] {
-    return options.map(option => this.toOption(option));
+  /**
+   * Map list of nodes to list of option
+   */
+  toOptions(nodes: NzTreeNode[]): NzCascaderOption[] {
+    return nodes.map(node => node.origin);
   }
 
   getAncestorNodeList(node: NzTreeNode | null): NzTreeNode[] {
@@ -67,6 +76,8 @@ export class NzCascaderTreeService extends NzTreeBaseService {
   conductCheckPaths(paths: NzTreeNodeKey[][] | null, checkStrictly: boolean): void {
     this.checkedNodeList = [];
     this.halfCheckedNodeList = [];
+    this.missingNodeList = [];
+    const existsPathList: NzTreeNodeKey[][] = [];
     const calc = (nodes: NzTreeNode[]): void => {
       nodes.forEach(node => {
         if (paths === null) {
@@ -74,10 +85,11 @@ export class NzCascaderTreeService extends NzTreeBaseService {
           node.isChecked = !!node.origin.checked;
         } else {
           // if node is in checked path
-          const nodePath = this.getAncestorNodeList(node).map(n => n.key);
+          const nodePath = this.getAncestorNodeList(node).map(n => this.getOptionValue(n));
           if (paths.some(keys => arraysEqual(nodePath, keys))) {
             node.isChecked = true;
             node.isHalfChecked = false;
+            existsPathList.push(nodePath);
           } else {
             node.isChecked = false;
             node.isHalfChecked = false;
@@ -90,18 +102,22 @@ export class NzCascaderTreeService extends NzTreeBaseService {
     };
     calc(this.rootNodes);
     this.refreshCheckState(checkStrictly);
+    this.missingNodeList = this.getMissingNodeList(paths, existsPathList);
   }
 
   conductSelectedPaths(paths: NzTreeNodeKey[][], isMulti: boolean): void {
     this.selectedNodeList.forEach(node => (node.isSelected = false));
     this.selectedNodeList = [];
+    this.missingNodeList = [];
+    const existsPathList: NzTreeNodeKey[][] = [];
     const calc = (nodes: NzTreeNode[]): boolean =>
       nodes.every(node => {
         // if node is in selected path
-        const nodePath = this.getAncestorNodeList(node).map(n => n.key);
+        const nodePath = this.getAncestorNodeList(node).map(n => this.getOptionValue(n));
         if (paths.some(keys => arraysEqual(nodePath, keys))) {
           node.isSelected = true;
           this.setSelectedNodeList(node);
+          existsPathList.push(nodePath);
           if (!isMulti) {
             // if not support multi select
             return false;
@@ -116,5 +132,39 @@ export class NzCascaderTreeService extends NzTreeBaseService {
         return true;
       });
     calc(this.rootNodes);
+    this.missingNodeList = this.getMissingNodeList(paths, existsPathList);
+  }
+
+  private getMissingNodeList(paths: NzTreeNodeKey[][] | null, existsPathList: NzTreeNodeKey[][]): NzTreeNode[] {
+    if (!paths) {
+      return [];
+    }
+    return paths
+      .filter(path => !existsPathList.some(keys => arraysEqual(path, keys)))
+      .map(path => this.createMissingNode(path))
+      .filter(isNotNil);
+  }
+
+  private createMissingNode(path: NzTreeNodeKey[]): NzTreeNode | null {
+    if (!path?.length) {
+      return null;
+    }
+
+    const createOption = (key: NzTreeNodeKey): NzSafeAny => {
+      return {
+        [this.fieldNames.value || 'value']: key,
+        [this.fieldNames.label || 'label']: key
+      };
+    };
+
+    let node = new NzTreeNode(createOption(path[0]), null, this);
+
+    for (let i = 1; i < path.length; i++) {
+      const childNode = new NzTreeNode(createOption(path[i]));
+      node.addChildren([childNode]);
+      node = childNode;
+    }
+
+    return node;
   }
 }
