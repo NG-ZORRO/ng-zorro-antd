@@ -88,148 +88,146 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   exportAs: 'nzCascader',
   preserveWhitespaces: false,
   template: `
-    <div #origin="cdkOverlayOrigin" cdkOverlayOrigin #trigger>
-      @if (nzShowInput) {
-        <div #selectContainer class="ant-select-selector">
-          @if (nzMultiple) {
-            @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node) {
-              <nz-select-item
-                [deletable]="true"
-                [disabled]="nzDisabled"
-                [label]="nzDisplayWith(getAncestorOptionList(node))"
-                (delete)="removeSelected(node)"
-              ></nz-select-item>
-            }
-            @if (selectedNodes.length > nzMaxTagCount) {
-              <nz-select-item
-                [deletable]="false"
-                [disabled]="false"
-                [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
-              ></nz-select-item>
-            }
-          }
-
-          <nz-select-search
-            [showInput]="!!nzShowSearch"
-            (isComposingChange)="isComposingChange($event)"
-            [value]="inputValue"
-            (valueChange)="inputValue = $event"
-            [mirrorSync]="nzMultiple"
-            [disabled]="nzDisabled"
-            [autofocus]="nzAutoFocus"
-            [focusTrigger]="menuVisible"
-          ></nz-select-search>
-
-          @if (showPlaceholder) {
-            <nz-select-placeholder
-              [placeholder]="nzPlaceHolder || locale?.placeholder!"
-              [style.display]="inputValue || isComposing ? 'none' : 'block'"
-            ></nz-select-placeholder>
-          }
-
-          @if (!nzMultiple && selectedNodes.length) {
+    @if (nzShowInput) {
+      <div #selectContainer class="ant-select-selector">
+        @if (nzMultiple) {
+          @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node) {
             <nz-select-item
-              [deletable]="false"
+              [deletable]="true"
               [disabled]="nzDisabled"
-              [label]="labelRenderText"
-              [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
-              [contentTemplateOutletContext]="labelRenderContext"
+              [label]="nzDisplayWith(getAncestorOptionList(node))"
+              (delete)="removeSelected(node)"
             ></nz-select-item>
           }
-        </div>
-
-        @if (nzShowArrow) {
-          <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
-            @if (!isLoading) {
-              <span nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible"></span>
-            } @else {
-              <span nz-icon nzType="loading"></span>
-            }
-
-            @if (hasFeedback && !!status) {
-              <nz-form-item-feedback-icon [status]="status" />
-            }
-          </span>
+          @if (selectedNodes.length > nzMaxTagCount) {
+            <nz-select-item
+              [deletable]="false"
+              [disabled]="false"
+              [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
+            ></nz-select-item>
+          }
         }
-        @if (clearIconVisible) {
-          <nz-select-clear (clear)="clearSelection($event)"></nz-select-clear>
+
+        <nz-select-search
+          [showInput]="!!nzShowSearch"
+          (isComposingChange)="isComposingChange($event)"
+          [value]="inputValue"
+          (valueChange)="inputValue = $event"
+          [mirrorSync]="nzMultiple"
+          [disabled]="nzDisabled"
+          [autofocus]="nzAutoFocus"
+          [focusTrigger]="menuVisible"
+        ></nz-select-search>
+
+        @if (showPlaceholder) {
+          <nz-select-placeholder
+            [placeholder]="nzPlaceHolder || locale?.placeholder!"
+            [style.display]="inputValue || isComposing ? 'none' : 'block'"
+          ></nz-select-placeholder>
         }
+
+        @if (!nzMultiple && selectedNodes.length) {
+          <nz-select-item
+            [deletable]="false"
+            [disabled]="nzDisabled"
+            [label]="labelRenderText"
+            [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
+            [contentTemplateOutletContext]="labelRenderContext"
+          ></nz-select-item>
+        }
+      </div>
+
+      @if (nzShowArrow) {
+        <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
+          @if (!isLoading) {
+            <span nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible"></span>
+          } @else {
+            <span nz-icon nzType="loading"></span>
+          }
+
+          @if (hasFeedback && !!status) {
+            <nz-form-item-feedback-icon [status]="status" />
+          }
+        </span>
       }
-      <ng-content></ng-content>
+      @if (clearIconVisible) {
+        <nz-select-clear (clear)="clearSelection($event)"></nz-select-clear>
+      }
+    }
+    <ng-content></ng-content>
 
-      <ng-template
-        cdkConnectedOverlay
-        nzConnectedOverlay
-        [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
-        [cdkConnectedOverlayOrigin]="origin"
-        [cdkConnectedOverlayPositions]="positions"
-        [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-dropdown'"
-        [cdkConnectedOverlayOpen]="menuVisible"
-        (overlayOutsideClick)="onClickOutside($event)"
-        (detach)="closeMenu()"
+    <ng-template
+      cdkConnectedOverlay
+      nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
+      [cdkConnectedOverlayOrigin]="overlayOrigin"
+      [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-dropdown'"
+      [cdkConnectedOverlayOpen]="menuVisible"
+      (overlayOutsideClick)="onClickOutside($event)"
+      (detach)="closeMenu()"
+    >
+      <div
+        class="ant-select-dropdown ant-cascader-dropdown ant-select-dropdown-placement-bottomLeft"
+        [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
+        [@slideMotion]="'enter'"
+        [@.disabled]="!!noAnimation?.nzNoAnimation"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        (mouseenter)="onTriggerMouseEnter()"
+        (mouseleave)="onTriggerMouseLeave($event)"
       >
         <div
-          class="ant-select-dropdown ant-cascader-dropdown ant-select-dropdown-placement-bottomLeft"
-          [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
-          [@slideMotion]="'enter'"
-          [@.disabled]="!!noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
-          (mouseenter)="onTriggerMouseEnter()"
-          (mouseleave)="onTriggerMouseLeave($event)"
+          #menu
+          class="ant-cascader-menus"
+          [class.ant-cascader-rtl]="dir === 'rtl'"
+          [class.ant-cascader-menus-hidden]="!menuVisible"
+          [class.ant-cascader-menu-empty]="shouldShowEmpty"
+          [class]="nzMenuClassName"
+          [style]="nzMenuStyle"
         >
-          <div
-            #menu
-            class="ant-cascader-menus"
-            [class.ant-cascader-rtl]="dir === 'rtl'"
-            [class.ant-cascader-menus-hidden]="!menuVisible"
-            [class.ant-cascader-menu-empty]="shouldShowEmpty"
-            [class]="nzMenuClassName"
-            [style]="nzMenuStyle"
-          >
-            @if (shouldShowEmpty) {
-              <ul class="ant-cascader-menu" [style.width]="dropdownWidthStyle" [style.height]="dropdownHeightStyle">
-                <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
-                  <nz-embed-empty
-                    class="ant-cascader-menu-item-content"
-                    [nzComponentName]="'cascader'"
-                    [specificContent]="nzNotFoundContent"
-                  />
-                </li>
+          @if (shouldShowEmpty) {
+            <ul class="ant-cascader-menu" [style.width]="dropdownWidthStyle" [style.height]="dropdownHeightStyle">
+              <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
+                <nz-embed-empty
+                  class="ant-cascader-menu-item-content"
+                  [nzComponentName]="'cascader'"
+                  [specificContent]="nzNotFoundContent"
+                />
+              </li>
+            </ul>
+          } @else {
+            @for (options of cascaderService.columns; track options; let i = $index) {
+              <ul
+                class="ant-cascader-menu"
+                role="menuitemcheckbox"
+                [class]="nzColumnClassName"
+                [style.height]="dropdownHeightStyle"
+                [style.width]="dropdownWidthStyle"
+              >
+                @for (option of options; track option) {
+                  <li
+                    nz-cascader-option
+                    [expandIcon]="nzExpandIcon"
+                    [columnIndex]="i"
+                    [nzLabelProperty]="nzLabelProperty"
+                    [optionTemplate]="nzOptionRender"
+                    [activated]="isOptionActivated(option, i)"
+                    [highlightText]="inSearchingMode ? inputValue : ''"
+                    [node]="option"
+                    [dir]="dir"
+                    [checkable]="nzMultiple"
+                    (mouseenter)="onOptionMouseEnter(option, i, $event)"
+                    (mouseleave)="onOptionMouseLeave(option, i, $event)"
+                    (click)="onOptionClick(option, i, $event)"
+                    (check)="onOptionCheck(option, i)"
+                  ></li>
+                }
               </ul>
-            } @else {
-              @for (options of cascaderService.columns; track options; let i = $index) {
-                <ul
-                  class="ant-cascader-menu"
-                  role="menuitemcheckbox"
-                  [class]="nzColumnClassName"
-                  [style.height]="dropdownHeightStyle"
-                  [style.width]="dropdownWidthStyle"
-                >
-                  @for (option of options; track option) {
-                    <li
-                      nz-cascader-option
-                      [expandIcon]="nzExpandIcon"
-                      [columnIndex]="i"
-                      [nzLabelProperty]="nzLabelProperty"
-                      [optionTemplate]="nzOptionRender"
-                      [activated]="isOptionActivated(option, i)"
-                      [highlightText]="inSearchingMode ? inputValue : ''"
-                      [node]="option"
-                      [dir]="dir"
-                      [checkable]="nzMultiple"
-                      (mouseenter)="onOptionMouseEnter(option, i, $event)"
-                      (mouseleave)="onOptionMouseLeave(option, i, $event)"
-                      (click)="onOptionClick(option, i, $event)"
-                      (check)="onOptionCheck(option, i)"
-                    ></li>
-                  }
-                </ul>
-              }
             }
-          </div>
+          }
         </div>
-      </ng-template>
-    </div>
+      </div>
+    </ng-template>
   `,
   animations: [slideMotion],
   providers: [
@@ -399,6 +397,10 @@ export class NzCascaderComponent
   dir: Direction = 'ltr';
 
   isComposing = false;
+
+  protected get overlayOrigin(): ElementRef {
+    return this.elementRef;
+  }
 
   protected finalSize = computed(() => {
     if (this.compactSize) {
