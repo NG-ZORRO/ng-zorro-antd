@@ -542,7 +542,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(getLabelText().trim()).toBe('Zhejiang | Hangzhou | West Lake');
       // fix clear
-      testComponent.clearSelection();
+      testComponent.cascader.clearSelection();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       testComponent.nzLabelRender = testComponent.renderTpl;
       fixture.detectChanges();
@@ -2247,7 +2247,6 @@ const options5: NzSafeAny[] = [];
       [nzBackdrop]="nzBackdrop"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
-      (nzSelect)="onSelect($event)"
       (nzClear)="onClear()"
     ></nz-cascader>
 
@@ -2291,15 +2290,8 @@ export class NzDemoCascaderDefaultComponent {
 
   onVisibleChange = jasmine.createSpy<(visible: boolean) => void>('open change');
   onValueChanges = jasmine.createSpy('value change');
-
-  fakeChangeOn = (node: NzSafeAny, _index: number): boolean => node.value === 'zhejiang';
-
-  clearSelection(): void {
-    this.cascader.clearSelection();
-  }
-
-  onSelect(_d: { option: NzCascaderOption; index: number } | null): void {}
   onClear(): void {}
+  fakeChangeOn = (node: NzSafeAny, _index: number): boolean => node.value === 'zhejiang';
 }
 
 @Component({

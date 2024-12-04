@@ -362,7 +362,6 @@ export class NzCascaderComponent
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
   @Output() readonly nzSelectionChange = new EventEmitter<NzCascaderOption[]>();
-  @Output() readonly nzSelect = new EventEmitter<{ option: NzCascaderOption; index: number } | null>();
   @Output() readonly nzRemoved = new EventEmitter<NzCascaderOption>();
   @Output() readonly nzClear = new EventEmitter<void>();
 
