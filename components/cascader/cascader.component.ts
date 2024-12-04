@@ -522,7 +522,7 @@ export class NzCascaderComponent
     });
 
     srv.$quitSearching.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.inputString = '';
+      this.inputValue = '';
       this.dropdownWidthStyle = '';
     });
 
@@ -757,7 +757,7 @@ export class NzCascaderComponent
       if (!node.isLeaf) {
         this.delaySetOptionActivated(node, columnIndex, false);
       } else {
-        this.cascaderService.setOptionDeactivatedSinceColumn(columnIndex);
+        this.cascaderService.setNodeDeactivatedSinceColumn(columnIndex);
       }
     }
   }
@@ -987,7 +987,7 @@ export class NzCascaderComponent
     const options = this.cascaderService.activatedNodes;
     if (options.length) {
       options.pop(); // Remove the last one
-      this.cascaderService.setOptionDeactivatedSinceColumn(options.length); // collapse menu
+      this.cascaderService.setNodeDeactivatedSinceColumn(options.length); // collapse menu
     }
   }
 

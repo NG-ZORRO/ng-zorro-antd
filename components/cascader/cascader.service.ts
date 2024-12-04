@@ -149,7 +149,7 @@ export class NzCascaderService implements OnDestroy {
     }
   }
 
-  setOptionDeactivatedSinceColumn(column: number): void {
+  setNodeDeactivatedSinceColumn(column: number): void {
     this.dropBehindActivatedNodes(column - 1);
     this.dropBehindColumns(column);
     this.$redraw.next();
