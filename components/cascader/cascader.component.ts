@@ -126,7 +126,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           ></nz-select-placeholder>
         }
 
-        @if (!nzMultiple && selectedNodes.length) {
+        @if (showLabelRender) {
           <nz-select-item
             [deletable]="false"
             [disabled]="nzDisabled"
@@ -436,6 +436,10 @@ export class NzCascaderComponent
 
   private get hasValue(): boolean {
     return this.cascaderService.values && this.cascaderService.values.length > 0;
+  }
+
+  get showLabelRender(): boolean {
+    return !this.hasInput && !this.nzMultiple && !!this.selectedNodes.length;
   }
 
   get showPlaceholder(): boolean {
