@@ -24,9 +24,9 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzDemoCascaderMultipleComponent } from 'ng-zorro-antd/cascader/demo/multiple';
 import {
   createFakeEvent,
-  createMouseEvent,
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   dispatchMouseEvent
@@ -34,6 +34,7 @@ import {
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
+import { NzSelectItemComponent } from 'ng-zorro-antd/select';
 
 import { NzCascaderComponent } from './cascader.component';
 import { NzCascaderModule } from './cascader.module';
@@ -86,12 +87,16 @@ describe('cascader', () => {
     let cascader: DebugElement;
     let testComponent: NzDemoCascaderDefaultComponent;
 
+    function getLabelElement(): HTMLElement | null {
+      return cascader.nativeElement.querySelector('.ant-select-selection-item');
+    }
+
     function getLabelText(): string {
-      return cascader.nativeElement.querySelector('.ant-select-selection-item').innerText;
+      return cascader.nativeElement.querySelector('.ant-select-selection-item').innerText.trim();
     }
 
     function getPlaceholder(): string {
-      return cascader.nativeElement.querySelector('.ant-select-selection-placeholder').innerText;
+      return cascader.nativeElement.querySelector('.ant-select-selection-placeholder').innerText.trim();
     }
 
     function getInputEl(): HTMLElement {
@@ -145,12 +150,12 @@ describe('cascader', () => {
       const fakeCompositionstartEvent = createFakeEvent('compositionstart', true, true);
       getInputEl().dispatchEvent(fakeCompositionstartEvent);
       fixture.detectChanges();
-      expect(placeholderElement.style.visibility).toBe('hidden');
+      expect(placeholderElement.style.display).toBe('none');
 
       const fakeCompositionendEvent = createFakeEvent('compositionend', true, true);
       getInputEl().dispatchEvent(fakeCompositionendEvent);
       fixture.detectChanges();
-      expect(placeholderElement.style.visibility).toBe('visible');
+      expect(placeholderElement.style.display).toBe('block');
     });
 
     it('should size work', () => {
@@ -168,8 +173,7 @@ describe('cascader', () => {
       testComponent.nzLabelProperty = 'name';
       fixture.detectChanges();
       // label will not show if no item selected
-      const label: HTMLElement = cascader.nativeElement.querySelector('.ant-select-selection-item');
-      expect(label).toBeNull();
+      expect(getLabelElement()).toBeNull();
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
       testComponent.values = [1, 2, 3];
       fixture.detectChanges();
@@ -183,8 +187,7 @@ describe('cascader', () => {
       testComponent.nzValueProperty = null!;
       testComponent.nzLabelProperty = null!;
       fixture.detectChanges();
-      const label: HTMLElement = cascader.nativeElement.querySelector('.ant-select-selection-item');
-      expect(label).toBeNull();
+      expect(getLabelElement()).toBeNull();
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       fixture.detectChanges();
@@ -221,7 +224,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-open');
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
-      expect(testComponent.cascader.nzOptions).toBe(options1);
+      expect(testComponent.cascader.nzOptions).toEqual(options1);
     });
 
     it('should click toggle open', fakeAsync(() => {
@@ -289,10 +292,6 @@ describe('cascader', () => {
     }));
 
     it('should clear timer on option mouseenter and mouseleave', fakeAsync(() => {
-      const mouseenter = createMouseEvent('mouseenter');
-      const mouseleave = createMouseEvent('mouseleave');
-      const option = options1[0]; // zhejiang
-
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(false);
@@ -304,18 +303,18 @@ describe('cascader', () => {
       const optionEl = getItemAtColumnAndRow(1, 1)!;
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
 
-      testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
+      dispatchMouseEvent(optionEl, 'mouseenter');
       fixture.detectChanges();
       tick(10);
       fixture.detectChanges();
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
-      testComponent.cascader.onOptionMouseLeave(option, 0, mouseleave);
+      dispatchMouseEvent(optionEl, 'mouseleave');
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
 
-      testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
+      dispatchMouseEvent(optionEl, 'mouseenter');
       fixture.detectChanges();
       tick(400);
       fixture.detectChanges();
@@ -517,7 +516,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.nzOptions).toBe(options1);
+      expect(testComponent.cascader.nzOptions).toEqual(options1);
       expect(cascader.nativeElement.querySelector('.ant-select-selection-search-input')).toBeNull();
       expect(cascader.nativeElement.querySelector('.ant-select-clear')).toBeNull();
       expect(cascader.nativeElement.querySelector('.ant-select-selection-item')).toBeNull();
@@ -543,7 +542,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(getLabelText().trim()).toBe('Zhejiang | Hangzhou | West Lake');
       // fix clear
-      testComponent.clearSelection();
+      testComponent.cascader.clearSelection();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       testComponent.nzLabelRender = testComponent.renderTpl;
       fixture.detectChanges();
@@ -583,18 +582,6 @@ describe('cascader', () => {
       expect(values![0]).toBe('zhejiang');
       expect(values![1]).toBe('hangzhou');
       expect(values![2]).toBe('xihu');
-      control.writeValue([
-        { value: 'zhejiang', text: 'Zj' },
-        { value: 'hangzhou', text: 'Hz' },
-        { value: 'xihu', text: 'Xh' }
-      ]);
-      fixture.detectChanges();
-      expect(control.getSubmitValue().length).toBe(3);
-      const values2 = control.getSubmitValue();
-      expect(values2[0]).toBe('zhejiang');
-      expect(values2[1]).toBe('hangzhou');
-      expect(values2[2]).toBe('xihu');
-      expect(control.labelRenderText).toBe('Zhejiang / Hangzhou / West Lake');
 
       testComponent.nzOptions = []; // empty collection
       fixture.detectChanges();
@@ -606,19 +593,6 @@ describe('cascader', () => {
       expect(values3[1]).toBe('hangzhou');
       expect(values3[2]).toBe('xihu');
       expect(control.labelRenderText).toBe('zhejiang / hangzhou / xihu');
-
-      control.writeValue([
-        { value: 'zhejiang', label: 'ZJ' },
-        { value: 'hangzhou', label: 'HZ' },
-        { value: 'xihu', label: 'XH' }
-      ]); // so these values are not match
-      fixture.detectChanges();
-      expect(control.getSubmitValue().length).toBe(3);
-      const values4 = control.getSubmitValue();
-      expect(values4[0]).toBe('zhejiang');
-      expect(values4[1]).toBe('hangzhou');
-      expect(values4[2]).toBe('xihu');
-      expect(control.labelRenderText).toBe('ZJ / HZ / XH');
     }));
 
     it('should write value work on setting `nzOptions` async', fakeAsync(() => {
@@ -1434,14 +1408,18 @@ describe('cascader', () => {
       testComponent.nzShowSearch = true;
       fixture.detectChanges();
       cascader.nativeElement.click();
-      testComponent.cascader.inputValue = 'o';
-      fixture.detectChanges();
       flush();
+      fixture.detectChanges();
+
+      // input search value
+      testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(testComponent.cascader.inSearchingMode).toBe(true);
       let itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+
+      // clear search value
       testComponent.cascader.inputValue = '';
       fixture.detectChanges();
       flush();
@@ -1552,7 +1530,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
-      expect(testComponent.cascader.cascaderService.columns[0][0].disabled).toBe(true);
+      expect(testComponent.cascader.cascaderService.columns[0][0].isDisabled).toBe(true);
 
       itemEl1.click();
       tick(300);
@@ -1569,9 +1547,9 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(testComponent.cascader.cascaderService.columns[0][0].disabled).toBe(true);
-      expect(testComponent.cascader.cascaderService.columns[0][1].disabled).toBe(undefined);
-      expect(testComponent.cascader.cascaderService.columns[0][2].disabled).toBe(true);
+      expect(testComponent.cascader.cascaderService.columns[0][0].isDisabled).toBe(true);
+      expect(testComponent.cascader.cascaderService.columns[0][1].isDisabled).toBe(false);
+      expect(testComponent.cascader.cascaderService.columns[0][2].isDisabled).toBe(true);
     });
 
     it('should support arrow in search mode', done => {
@@ -1661,6 +1639,168 @@ describe('cascader', () => {
     });
   });
 
+  describe('multiple', () => {
+    let fixture: ComponentFixture<NzDemoCascaderMultipleComponent>;
+    let cascader: DebugElement;
+    let testComponent: NzDemoCascaderMultipleComponent;
+
+    function setValues(len = 10): void {
+      testComponent.values = testComponent.nzOptions[0]
+        .children!.slice(0, len)
+        .map(o => [testComponent.nzOptions[0].value, o.value]);
+      fixture.detectChanges();
+    }
+
+    function getCheckboxAtColumnAndRow(column: number, row: number): HTMLElement | null {
+      return overlayContainerElement.querySelector(
+        `.ant-cascader-menu:nth-of-type(${column}) .ant-cascader-menu-item:nth-child(${row}) .ant-cascader-checkbox`
+      );
+    }
+
+    function getCheckboxesAtColumn(column: number): HTMLElement[] {
+      return Array.from(
+        overlayContainerElement.querySelectorAll(
+          `.ant-cascader-menu:nth-of-type(${column}) .ant-cascader-menu-item .ant-cascader-checkbox`
+        )
+      );
+    }
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoCascaderMultipleComponent);
+      testComponent = fixture.componentInstance;
+      cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+    });
+
+    it('should have correct classes', () => {
+      fixture.detectChanges();
+      expect(cascader.nativeElement.classList).toContain('ant-select-multiple');
+    });
+
+    it('should maxTagCount work', fakeAsync(() => {
+      // not exceed
+      setValues(3);
+      tick();
+      fixture.detectChanges();
+      let tags = cascader.queryAll(By.directive(NzSelectItemComponent));
+      expect(tags.length).toBe(3);
+
+      // exceed maxTagCount
+      setValues(10);
+      tick();
+      fixture.detectChanges();
+      tags = cascader.queryAll(By.directive(NzSelectItemComponent));
+      expect(tags.length).toBe(4); // maxTagCount + 1
+    }));
+
+    it('should remove item work', fakeAsync(() => {
+      setValues(4);
+      tick();
+      fixture.detectChanges();
+      const removeBtn = cascader.queryAll(By.css('.ant-select-selection-item-remove'))[2];
+      removeBtn.nativeElement.click();
+      fixture.detectChanges();
+      const tags = cascader.queryAll(By.directive(NzSelectItemComponent));
+      expect(tags.length).toBe(3);
+    }));
+
+    it('should check state conduct up and down', fakeAsync(() => {
+      cascader.componentInstance.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+
+      // firstly, expand all columns (for convenience)
+      getItemAtColumnAndRow(1, 2)!.click();
+      fixture.detectChanges();
+      getItemAtColumnAndRow(2, 1)!.click();
+      fixture.detectChanges();
+
+      const rootEl = getCheckboxAtColumnAndRow(1, 2)!;
+      const parentEl = getCheckboxAtColumnAndRow(2, 1)!;
+      const children = getCheckboxesAtColumn(3).filter(c => !c.classList.contains('ant-cascader-checkbox-disabled'));
+
+      // check parent option
+      parentEl.click();
+      fixture.detectChanges();
+      expect(parentEl.classList).toContain('ant-cascader-checkbox-checked');
+      // Conduct Down: then all children should be checked
+      expect(children.every(c => c.classList.contains('ant-cascader-checkbox-checked'))).toBe(true);
+      // Conduct Up: and its parent should be checked too
+      expect(rootEl.classList).toContain('ant-cascader-checkbox-checked');
+
+      // uncheck a child option
+      children[0]!.click();
+      fixture.detectChanges();
+      // Conduct Up: then parent should be half checked
+      expect(parentEl.classList).toContain('ant-cascader-checkbox-indeterminate');
+      // Conduct Up: and root should be half checked
+      expect(rootEl.classList).toContain('ant-cascader-checkbox-indeterminate');
+
+      // check the half checked parent option
+      parentEl.click();
+      fixture.detectChanges();
+      expect(parentEl.classList).toContain('ant-cascader-checkbox-checked');
+      // Conduct Down: then all children should be checked
+      expect(children.every(c => c.classList.contains('ant-cascader-checkbox-checked'))).toBe(true);
+      // Conduct Up: and its parent should be checked too
+      expect(rootEl.classList).toContain('ant-cascader-checkbox-checked');
+
+      // uncheck the parent option
+      parentEl.click();
+      fixture.detectChanges();
+      // Conduct Down: then all children should be unchecked
+      expect(children.every(c => !c.classList.contains('ant-cascader-checkbox-checked'))).toBe(true);
+      // Conduct Up: and its parent should be unchecked too
+      expect(rootEl.classList).not.toContain('ant-cascader-checkbox-checked');
+    }));
+
+    it('should click checkbox not set option activated', fakeAsync(() => {
+      cascader.componentInstance.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+
+      const option = getItemAtColumnAndRow(1, 1)!;
+      const checkbox = getCheckboxAtColumnAndRow(1, 1)!;
+      expect(option.classList).not.toContain('ant-cascader-menu-item-active');
+
+      checkbox.click();
+      fixture.detectChanges();
+
+      expect(option.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(checkbox.classList).toContain('ant-cascader-checkbox-checked');
+    }));
+
+    it('should change check state when click leaf node', fakeAsync(() => {
+      cascader.componentInstance.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+
+      // firstly, expand all columns (for convenience)
+      getItemAtColumnAndRow(1, 2)!.click();
+      fixture.detectChanges();
+      getItemAtColumnAndRow(2, 1)!.click();
+      fixture.detectChanges();
+
+      const leaf = getItemAtColumnAndRow(3, 2)!;
+      const checkbox = getCheckboxAtColumnAndRow(3, 2)!;
+      // click leaf node
+      expect(leaf.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(checkbox.classList).not.toContain('ant-cascader-checkbox-checked');
+
+      leaf.click();
+      fixture.detectChanges();
+      expect(leaf.classList).toContain('ant-cascader-menu-item-active');
+      expect(checkbox.classList).toContain('ant-cascader-checkbox-checked');
+
+      leaf.click();
+      fixture.detectChanges();
+      expect(leaf.classList).toContain('ant-cascader-menu-item-active');
+      expect(checkbox.classList).not.toContain('ant-cascader-checkbox-checked');
+    }));
+  });
+
   describe('load data lazily', () => {
     let fixture: ComponentFixture<NzDemoCascaderLoadDataComponent>;
     let cascader: DebugElement;
@@ -1677,7 +1817,7 @@ describe('cascader', () => {
       cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
     });
 
-    it('should LOAD DATA work', fakeAsync(() => {
+    it('should nzLoadData work', fakeAsync(() => {
       spyOn(testComponent, 'addCallTimes');
 
       fixture.detectChanges();
@@ -1689,7 +1829,6 @@ describe('cascader', () => {
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(1);
-      expect(getAllColumns().length).toBe(0); // 0列
       tick(1000); // wait for first row to load finish
       fixture.detectChanges();
 
@@ -1747,7 +1886,7 @@ describe('cascader', () => {
       expect(testComponent.values![2]).toBe('xihu');
     }));
 
-    it('should LOAD DATA work when specifies default value', fakeAsync(() => {
+    it('should nzLoadData work when specifies default value', fakeAsync(() => {
       spyOn(testComponent, 'addCallTimes');
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       fixture.detectChanges();
@@ -2154,12 +2293,11 @@ const options5: NzSafeAny[] = [];
       [nzBackdrop]="nzBackdrop"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
-      (nzSelect)="onSelect($event)"
       (nzClear)="onClear()"
     ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      @for (label of labels; track label) {
+      @for (label of labels; track $index) {
         {{ label }}{{ $last ? '' : ' | ' }}
       }
     </ng-template>
@@ -2196,17 +2334,10 @@ export class NzDemoCascaderDefaultComponent {
   nzExpandIcon = 'right';
   nzBackdrop = false;
 
-  onVisibleChange = jasmine.createSpy('open change');
+  onVisibleChange = jasmine.createSpy<(visible: boolean) => void>('open change');
   onValueChanges = jasmine.createSpy('value change');
-
-  fakeChangeOn = (node: NzSafeAny, _index: number): boolean => node.value === 'zhejiang';
-
-  clearSelection(): void {
-    this.cascader.clearSelection();
-  }
-
-  onSelect(_d: { option: NzCascaderOption; index: number } | null): void {}
   onClear(): void {}
+  fakeChangeOn = (node: NzSafeAny, _index: number): boolean => node.value === 'zhejiang';
 }
 
 @Component({
@@ -2220,14 +2351,7 @@ export class NzDemoCascaderDefaultComponent {
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
     ></nz-cascader>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderLoadDataComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
@@ -2272,8 +2396,7 @@ export class NzDemoCascaderLoadDataComponent {
   };
 
   addCallTimes(): void {}
-
-  onVisibleChange = jasmine.createSpy('open change');
+  onVisibleChange = jasmine.createSpy<(visible: boolean) => void>('open change');
   onValueChanges = jasmine.createSpy('value change');
 }
 

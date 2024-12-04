@@ -101,7 +101,7 @@ const otherOptions = [
       .change-options {
         display: inline-block;
         font-size: 12px;
-        margin-top: 8px;
+        margin-left: 8px;
       }
     `
   ]

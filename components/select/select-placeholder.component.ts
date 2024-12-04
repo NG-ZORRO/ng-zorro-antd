@@ -23,6 +23,4 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 })
 export class NzSelectPlaceholderComponent {
   @Input() placeholder: TemplateRef<NzSafeAny> | string | null = null;
-
-  constructor() {}
 }

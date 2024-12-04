@@ -22,7 +22,7 @@ components/tabs/**                        @hsuanxyz
 components/breadcrumb/**                  @simplejason
 components/empty/**                       @simplejason
 components/carousel/**                    @simplejason
-components/cascader/**                    @simplejason
+components/cascader/**                    @laffery
 components/descriptions/**                @simplejason
 components/icon/**                        @simplejason
 components/message/**                     @simplejason
@@ -86,7 +86,7 @@ components/core/outlet/**                 @vthinkxie
 components/core/time/**                   @wenqi73
 components/core/trans-button/**           @hsuanxyz
 components/core/transition-patch/**       @vthinkxie
-components/core/tree/**                   @simplejason @hsuanxyz
+components/core/tree/**                   @simplejason @laffery
 components/core/wave/**                   @hsuanxyz
 
 # Misc

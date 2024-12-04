@@ -27,6 +27,10 @@ export class NzTreeBaseService {
   checkedNodeList: NzTreeNode[] = [];
   halfCheckedNodeList: NzTreeNode[] = [];
   matchedNodeList: NzTreeNode[] = [];
+  /**
+   * handle to post process a tree node when it's instantiating, note that its children haven't been initiated yet
+   */
+  treeNodePostProcessor?: (node: NzTreeNode) => void;
 
   /**
    * reset tree nodes will clear default node list

@@ -26,7 +26,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 ### nz-cascader
 
 | Property              | Description                                                                                                                            | Type                                                                  | Default           | Global Config |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------- | ------------- |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|-------------------|---------------|
 | `[ngModel]`           | selected value                                                                                                                         | `any[]`                                                               | -                 |
 | `[nzAllowClear]`      | whether allow clear                                                                                                                    | `boolean`                                                             | `true`            |
 | `[nzAutoFocus]`       | whether auto focus the input box                                                                                                       | `boolean`                                                             | `false`           |
@@ -41,7 +41,10 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzLabelRender]`     | render template of displaying selected options                                                                                         | `TemplateRef<any>`                                                    | -                 |
 | `[nzLoadData]`        | to load option lazily. Lazy load will be called immediately if the setting is `ngModel` with an array value and `nzOptions` is not set | `(option: any, index?: index) => PromiseLike<any> \| Observable<any>` | -                 |
 | `[nzMenuClassName]`   | additional className of popup overlay                                                                                                  | `string`                                                              | -                 |
+| `[nzMouseEnterDelay]` | duration in milliseconds before opening the popup overlay when the mouse enters the trigger                                            | `number`                                                              | 150               |
+| `[nzMouseLeaveDelay]` | duration in milliseconds before closing the popup overlay when the mouse leaves the trigger                                            | `number`                                                              | 150               |
 | `[nzMenuStyle]`       | additional css style of popup overlay                                                                                                  | `object`                                                              | -                 |
+| `[nzMultiple]`        | support multiple or not                                                                                                                | `boolean`                                                             | `false`           |
 | `[nzNotFoundContent]` | specify content to show when no result matches                                                                                         | `string\|TemplateRef<void>`                                           | -                 |
 | `[nzOptionRender]`    | render template of cascader options                                                                                                    | `TemplateRef<{ $implicit: NzCascaderOption, index: number }>`         |                   |
 | `[nzOptions]`         | data options of cascade                                                                                                                | `object[]`                                                            | -                 |
@@ -56,12 +59,34 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `(ngModelChange)`     | emit on values change                                                                                                                  | `EventEmitter<any[]>`                                                 | -                 |
 | `(nzClear)`           | emit on clear values                                                                                                                   | `EventEmitter<void>`                                                  | -                 |
 | `(nzVisibleChange)`   | emit on popup menu visible or hide                                                                                                     | `EventEmitter<boolean>`                                               | -                 |
+| `(nzRemoved)`         | emit on selected item removed when `nzMultiple` is `true`                                                                              | `EventEmitter<NzCascaderOption>`                                      | -                 |
 | `(nzSelectionChange)` | emit on values change                                                                                                                  | `EventEmitter<NzCascaderOption[]>`                                    | -                 |
 
-When `nzShowSearch` is an object it should implements `NzShowSearchOptions`：
+### Interfaces
+
+#### NzCascaderOption
+
+```ts
+export interface NzCascaderOption {
+  value?: any;
+  label?: string;
+  title?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  isLeaf?: boolean;
+  children?: NzCascaderOption[];
+  disableCheckbox?: boolean;
+
+  [key: string]: any;
+}
+```
+
+#### NzShowSearchOptions
+
+When `nzShowSearch` is an object it should implement `NzShowSearchOptions`:
 
 | Params   | Explanation                                                            | Type                                                                         | Default |
-| -------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------- |
+|----------|------------------------------------------------------------------------|------------------------------------------------------------------------------|---------|
 | `filter` | Optional. Be aware that all non-leaf CascaderOptions would be filtered | `(inputValue: string, path: NzCascaderOption[]): boolean`                    | -       |
 | `sorter` | Optional                                                               | `(a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string): number` | -       |
 
@@ -89,14 +114,16 @@ const filter: NzCascaderFilter = (i, p) => {
 
 #### Methods
 
-| Name        | Description   |
-| ----------- | ------------- |
-| blur()      | remove focus  |
-| focus()     | get focus     |
-| closeMenu() | hide the menu |
+| Name          | Description   |
+|---------------|---------------|
+| `blur()`      | remove focus  |
+| `focus()`     | get focus     |
+| `closeMenu()` | hide the menu |
 
 ## FAQ
 
 ### Q: An error is thrown when `nzLoadData` is used.
 
-When you pass a function to `nzLoadData`, the function becomes a `NzCascaderComponent` property. When the component calls the `nzLoadData` function, `this` is bound to nothing. You have to pass an arrow function or use `Function.bind` to bind `this` to the parent component; [see example](https://stackoverflow.com/questions/60320913/ng-zorro-cascader-lazy-load-data-nzloaddata-function-got-this-undefined/60928983#60928983).
+When you pass a function to `nzLoadData`, the function becomes a `NzCascaderComponent` property.
+When the component calls the `nzLoadData` function, `this` is bound to nothing. You have to pass an arrow function or use `Function.bind` to bind `this` to the parent component.
+[see example](https://stackoverflow.com/questions/60320913/ng-zorro-cascader-lazy-load-data-nzloaddata-function-got-this-undefined/60928983#60928983).
