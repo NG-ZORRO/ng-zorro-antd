@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: '<%= prefix %>-root',
+  standalone: false,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.<%= style %>']
+  styleUrl: './app.component.<%= style %>'
 })
-export class AppComponent {
-
-}
+export class AppComponent {}
