@@ -614,7 +614,7 @@ describe('input number', () => {
   standalone: true,
   imports: [FormsModule, NzInputNumberLegacyModule],
   template: `
-    <nz-input-number-legacy
+    <nz-input-number
       [(ngModel)]="value"
       (ngModelChange)="modelChange($event)"
       [nzDisabled]="disabled"
@@ -629,7 +629,7 @@ describe('input number', () => {
       [nzPrecision]="precision"
       [nzPrecisionMode]="precisionMode"
       [nzBorderless]="!bordered"
-    ></nz-input-number-legacy>
+    ></nz-input-number>
   `
 })
 export class NzTestInputNumberBasicComponent {
@@ -653,7 +653,7 @@ export class NzTestInputNumberBasicComponent {
 @Component({
   standalone: true,
   imports: [NzInputNumberLegacyModule],
-  template: `<nz-input-number-legacy [nzReadOnly]="readonly"></nz-input-number-legacy>`
+  template: `<nz-input-number [nzReadOnly]="readonly"></nz-input-number>`
 })
 export class NzTestReadOnlyInputNumberBasicComponent {
   @ViewChild(NzInputNumberLegacyComponent, { static: false }) nzInputNumberComponent!: NzInputNumberLegacyComponent;
@@ -665,12 +665,7 @@ export class NzTestReadOnlyInputNumberBasicComponent {
   imports: [ReactiveFormsModule, NzInputNumberLegacyModule],
   template: `
     <form>
-      <nz-input-number-legacy
-        [formControl]="formControl"
-        nzMax="10"
-        nzMin="-10"
-        [nzDisabled]="disabled"
-      ></nz-input-number-legacy>
+      <nz-input-number [formControl]="formControl" nzMax="10" nzMin="-10" [nzDisabled]="disabled"></nz-input-number>
     </form>
   `
 })
@@ -690,7 +685,7 @@ export class NzTestInputNumberFormComponent {
 @Component({
   standalone: true,
   imports: [NzInputNumberLegacyModule],
-  template: `<nz-input-number-legacy [nzStatus]="status"></nz-input-number-legacy>`
+  template: `<nz-input-number [nzStatus]="status"></nz-input-number>`
 })
 export class NzTestInputNumberStatusComponent {
   status: NzStatus = 'error';
@@ -703,7 +698,7 @@ export class NzTestInputNumberStatusComponent {
     <form nz-form>
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
-          <nz-input-number-legacy></nz-input-number-legacy>
+          <nz-input-number></nz-input-number>
         </nz-form-control>
       </nz-form-item>
     </form>

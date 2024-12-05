@@ -8,27 +8,23 @@ import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
   standalone: true,
   imports: [FormsModule, NzInputNumberLegacyModule],
   template: `
-    <nz-input-number-legacy
-      [(ngModel)]="toFixedValue"
-      [nzPrecision]="precision"
-      nzPlaceHolder="toFixed"
-    ></nz-input-number-legacy>
-    <nz-input-number-legacy
+    <nz-input-number [(ngModel)]="toFixedValue" [nzPrecision]="precision" nzPlaceHolder="toFixed"></nz-input-number>
+    <nz-input-number
       [(ngModel)]="cutValue"
       [nzPrecision]="precision"
       nzPrecisionMode="cut"
       nzPlaceHolder="cut off"
-    ></nz-input-number-legacy>
-    <nz-input-number-legacy
+    ></nz-input-number>
+    <nz-input-number
       [(ngModel)]="customFnValue"
       [nzPrecision]="precision"
       [nzPrecisionMode]="customPrecisionFn"
       nzPlaceHolder="cut off"
-    ></nz-input-number-legacy>
+    ></nz-input-number>
   `,
   styles: [
     `
-      nz-input-number-legacy {
+      nz-input-number {
         margin-right: 8px;
       }
     `

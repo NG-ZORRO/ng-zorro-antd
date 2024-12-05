@@ -199,9 +199,7 @@ describe('input-number-group', () => {
         inputNumberGroupElement = fixture.debugElement.query(By.directive(NzInputNumberGroupComponent)).nativeElement;
       });
       it('should size work', () => {
-        expect(inputNumberGroupElement.querySelector('nz-input-number-legacy')!.classList).toContain(
-          'ant-input-number-lg'
-        );
+        expect(inputNumberGroupElement.querySelector('nz-input-number')!.classList).toContain('ant-input-number-lg');
       });
     });
     describe('mix', () => {
@@ -342,7 +340,7 @@ describe('input-number-group', () => {
   imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group [nzAddOnBefore]="beforeContent" [nzAddOnAfter]="afterContent" [nzSize]="size">
-      <nz-input-number-legacy></nz-input-number-legacy>
+      <nz-input-number></nz-input-number>
     </nz-input-number-group>
     <ng-template #beforeTemplate>beforeTemplate</ng-template>
     <ng-template #afterTemplate>afterTemplate</ng-template>
@@ -361,7 +359,7 @@ export class NzTestInputNumberGroupAddonComponent {
   imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
-      <nz-input-number-legacy [nzDisabled]="disabled"></nz-input-number-legacy>
+      <nz-input-number [nzDisabled]="disabled"></nz-input-number>
     </nz-input-number-group>
     <ng-template #beforeTemplate>beforeTemplate</ng-template>
     <ng-template #afterTemplate>afterTemplate</ng-template>
@@ -381,8 +379,8 @@ export class NzTestInputNumberGroupAffixComponent {
   imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group [nzCompact]="compact" [nzSize]="size">
-      <nz-input-number-legacy></nz-input-number-legacy>
-      <nz-input-number-legacy></nz-input-number-legacy>
+      <nz-input-number></nz-input-number>
+      <nz-input-number></nz-input-number>
     </nz-input-number-group>
   `
 })
@@ -397,10 +395,10 @@ export class NzTestInputNumberGroupMultipleComponent {
   template: `
     <nz-input-number-group nz-row nzSize="large">
       <div nz-col nzSpan="8">
-        <nz-input-number-legacy [ngModel]="1234" [nzStep]="1"></nz-input-number-legacy>
+        <nz-input-number [ngModel]="1234" [nzStep]="1"></nz-input-number>
       </div>
       <div nz-col nzSpan="8">
-        <nz-input-number-legacy [ngModel]="5678" [nzStep]="1"></nz-input-number-legacy>
+        <nz-input-number [ngModel]="5678" [nzStep]="1"></nz-input-number>
       </div>
     </nz-input-number-group>
   `
@@ -412,7 +410,7 @@ export class NzTestInputNumberGroupColComponent {}
   imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group nzPrefixIcon="user" nzAddOnAfter="@example.com">
-      <nz-input-number-legacy></nz-input-number-legacy>
+      <nz-input-number></nz-input-number>
     </nz-input-number-group>
   `
 })
@@ -424,14 +422,14 @@ export class NzTestInputNumberGroupMixComponent {}
   template: `
     @if (!isAddon) {
       <nz-input-number-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
-        <nz-input-number-legacy />
+        <nz-input-number />
       </nz-input-number-group>
       <ng-template #prefixTemplateClock>
         <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
       </ng-template>
     } @else {
       <nz-input-number-group nzAddOnAfterIcon="setting" [nzStatus]="status">
-        <nz-input-number-legacy />
+        <nz-input-number />
       </nz-input-number-group>
     }
   `
@@ -447,7 +445,7 @@ export class NzTestInputNumberGroupWithStatusComponent {
   template: `
     <div [dir]="dir">
       <nz-input-number-group nzAddOnAfterIcon="setting">
-        <nz-input-number-legacy></nz-input-number-legacy>
+        <nz-input-number></nz-input-number>
       </nz-input-number-group>
     </div>
   `
@@ -464,7 +462,7 @@ export class NzTestInputNumberGroupWithDirComponent {
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
           <nz-input-number-group [nzAddOnBefore]="addon">
-            <nz-input-number-legacy></nz-input-number-legacy>
+            <nz-input-number></nz-input-number>
           </nz-input-number-group>
         </nz-form-control>
       </nz-form-item>
