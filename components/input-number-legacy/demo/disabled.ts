@@ -6,7 +6,6 @@ import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
 
 @Component({
   selector: 'nz-demo-input-number-legacy-disabled',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzInputNumberLegacyModule],
   template: `
     <nz-input-number

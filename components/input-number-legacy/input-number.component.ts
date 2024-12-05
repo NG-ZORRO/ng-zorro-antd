@@ -120,7 +120,6 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     '[class.ant-input-number-borderless]': `nzBorderless`
   },
   imports: [NzIconModule, FormsModule, NzFormPatchModule],
-  standalone: true,
   hostDirectives: [NzSpaceCompactItemDirective]
 })
 export class NzInputNumberLegacyComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {

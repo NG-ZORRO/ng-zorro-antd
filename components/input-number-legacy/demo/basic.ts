@@ -5,7 +5,6 @@ import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
 
 @Component({
   selector: 'nz-demo-input-number-legacy-basic',
-  standalone: true,
   imports: [FormsModule, NzInputNumberLegacyModule],
   template: `<nz-input-number [(ngModel)]="value" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>`
 })

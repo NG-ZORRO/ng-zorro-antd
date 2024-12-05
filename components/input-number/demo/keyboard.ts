@@ -6,7 +6,6 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
   selector: 'nz-demo-input-number-keyboard',
-  standalone: true,
   imports: [FormsModule, NzInputNumberModule, NzCheckboxModule],
   template: `
     <nz-input-number [(ngModel)]="value" [nzKeyboard]="keyboard" nzMin="1" nzMax="10" />
