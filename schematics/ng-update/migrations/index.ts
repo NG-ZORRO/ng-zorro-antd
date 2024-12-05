@@ -7,8 +7,10 @@ import { NullableDevkitMigration } from '@angular/cdk/schematics';
 
 import { ClassNamesMigration } from './class-names';
 import { ImportSpecifiersMigration } from './import-specifiers';
+import { InputNamesMigration } from './input-names';
 
 export const nzMigrations: NullableDevkitMigration[] = [
   ClassNamesMigration,
-  ImportSpecifiersMigration
+  ImportSpecifiersMigration,
+  InputNamesMigration
 ];
