@@ -17,7 +17,7 @@ describe('input-group', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
   }));
   describe('input group', () => {
     describe('addon', () => {
@@ -313,7 +313,6 @@ describe('input-group', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzInputModule],
   template: `
     <nz-input-group [nzAddOnBefore]="beforeContent" [nzAddOnAfter]="afterContent" [nzSize]="size">
@@ -332,7 +331,6 @@ export class NzTestInputGroupAddonComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputModule],
   template: `
     <nz-input-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
@@ -352,7 +350,6 @@ export class NzTestInputGroupAffixComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputModule],
   template: `
     <nz-input-group [nzCompact]="compact" [nzSearch]="search" [nzSize]="size">
@@ -369,7 +366,6 @@ export class NzTestInputGroupMultipleComponent {
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1795 **/
 @Component({
-  standalone: true,
   imports: [NzInputModule],
   template: `
     <nz-input-group nzPrefixIcon="user" nzAddOnAfter="@example.com">
@@ -380,7 +376,6 @@ export class NzTestInputGroupMultipleComponent {
 export class NzTestInputGroupMixComponent {}
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzGridModule, NzInputModule],
   template: `
     <nz-input-group>
@@ -396,7 +391,6 @@ export class NzTestInputGroupMixComponent {}
 export class NzTestInputGroupColComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzInputModule, NzIconModule],
   template: `
     @if (!isAddon) {
@@ -419,7 +413,6 @@ export class NzTestInputGroupWithStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form>

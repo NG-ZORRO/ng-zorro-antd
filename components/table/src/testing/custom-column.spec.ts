@@ -68,7 +68,6 @@ interface Person {
 }
 
 @Component({
-  standalone: true,
   imports: [NzDividerModule, NzTableModule],
   template: `
     <nz-table #basicTable [nzData]="listOfData" [nzCustomColumn]="customColumn">

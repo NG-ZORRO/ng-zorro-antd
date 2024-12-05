@@ -7,7 +7,6 @@ import { Directive } from '@angular/core';
 
 @Directive({
   selector: '[nzMentionSuggestion]',
-  exportAs: 'nzMentionSuggestion',
-  standalone: true
+  exportAs: 'nzMentionSuggestion'
 })
 export class NzMentionSuggestionDirective {}

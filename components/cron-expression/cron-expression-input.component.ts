@@ -36,8 +36,7 @@ import { CronChangeType, TimeType } from './typings';
       />
     </div>
   `,
-  imports: [NzInputModule, FormsModule],
-  standalone: true
+  imports: [NzInputModule, FormsModule]
 })
 export class NzCronExpressionInputComponent {
   @Input() value: string = '0';
@@ -46,8 +45,6 @@ export class NzCronExpressionInputComponent {
   @Output() readonly focusEffect = new EventEmitter<TimeType>();
   @Output() readonly blurEffect = new EventEmitter<void>();
   @Output() readonly getValue = new EventEmitter<CronChangeType>();
-
-  constructor() {}
 
   focusInputEffect(event: FocusEvent): void {
     this.focusEffect.emit(this.label);

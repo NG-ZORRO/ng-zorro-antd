@@ -5,7 +5,6 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'nz-demo-skeleton-children',
-  standalone: true,
   imports: [NzButtonModule, NzSkeletonModule],
   template: `
     <div class="article">

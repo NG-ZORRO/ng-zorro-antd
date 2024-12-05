@@ -155,8 +155,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     NzTableInnerScrollComponent,
     NzTableInnerDefaultComponent,
     NzPaginationModule
-  ],
-  standalone: true
+  ]
 })
 export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

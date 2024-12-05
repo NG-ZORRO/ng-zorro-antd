@@ -41,7 +41,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: true });
 
 @Component({
-  standalone: true,
   selector: 'nz-float-button-top',
   exportAs: 'nzFloatButtonTop',
   imports: [NzFloatButtonComponent, NzIconModule],

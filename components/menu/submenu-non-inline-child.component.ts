@@ -59,8 +59,7 @@ import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types'
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
   },
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() menuClass: string = '';

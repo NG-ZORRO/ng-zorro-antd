@@ -18,7 +18,7 @@ describe('input-number-group', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
   }));
   describe('input number group', () => {
     describe('addon', () => {
@@ -336,7 +336,6 @@ describe('input-number-group', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group [nzAddOnBefore]="beforeContent" [nzAddOnAfter]="afterContent" [nzSize]="size">
@@ -355,7 +354,6 @@ export class NzTestInputNumberGroupAddonComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
@@ -375,7 +373,6 @@ export class NzTestInputNumberGroupAffixComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group [nzCompact]="compact" [nzSize]="size">
@@ -390,7 +387,6 @@ export class NzTestInputNumberGroupMultipleComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzGridModule, NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group nz-row nzSize="large">
@@ -406,7 +402,6 @@ export class NzTestInputNumberGroupMultipleComponent {
 export class NzTestInputNumberGroupColComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzInputNumberLegacyModule],
   template: `
     <nz-input-number-group nzPrefixIcon="user" nzAddOnAfter="@example.com">
@@ -417,7 +412,6 @@ export class NzTestInputNumberGroupColComponent {}
 export class NzTestInputNumberGroupMixComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzInputNumberLegacyModule],
   template: `
     @if (!isAddon) {
@@ -440,7 +434,6 @@ export class NzTestInputNumberGroupWithStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzInputNumberLegacyModule],
   template: `
     <div [dir]="dir">
@@ -455,7 +448,6 @@ export class NzTestInputNumberGroupWithDirComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzFormModule, NzInputNumberLegacyModule],
   template: `
     <form nz-form>

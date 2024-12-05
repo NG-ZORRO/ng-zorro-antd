@@ -56,8 +56,7 @@ import { NzUploadListComponent } from './upload-list.component';
   host: {
     '[class.ant-upload-picture-card-wrapper]': 'nzListType === "picture-card"'
   },
-  imports: [NzUploadListComponent, NgTemplateOutlet, NzUploadBtnComponent],
-  standalone: true
+  imports: [NzUploadListComponent, NgTemplateOutlet, NzUploadBtnComponent]
 })
 export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList;

@@ -12,7 +12,6 @@ interface Person {
 
 @Component({
   selector: 'nz-demo-table-basic',
-  standalone: true,
   imports: [NzDividerModule, NzTableModule],
   template: `
     <nz-table #basicTable [nzData]="listOfData">

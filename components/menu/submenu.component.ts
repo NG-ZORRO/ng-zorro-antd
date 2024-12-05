@@ -152,8 +152,7 @@ const listOfHorizontalPositions = [
     NzNoAnimationDirective,
     NzSubmenuNoneInlineChildComponent,
     OverlayModule
-  ],
-  standalone: true
+  ]
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
   @Input() nzMenuClassName: string = '';

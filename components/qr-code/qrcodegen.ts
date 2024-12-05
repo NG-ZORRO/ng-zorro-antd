@@ -70,7 +70,7 @@ namespace qrcodegen {
     // This function always encodes using the binary segment mode, not any text mode. The maximum number of
     // bytes allowed is 2953. The smallest possible QR Code version is automatically chosen for the output.
     // The ECC level of the result may be higher than the ecl argument if it can be done without increasing the version.
-    public static encodeBinary(data: Readonly<byte[]>, ecl: QrCode.Ecc): QrCode {
+    public static encodeBinary(data: readonly byte[], ecl: QrCode.Ecc): QrCode {
       const seg: QrSegment = qrcodegen.QrSegment.makeBytes(data);
       return QrCode.encodeSegments([seg], ecl);
     }
@@ -87,7 +87,7 @@ namespace qrcodegen {
     // between modes (such as alphanumeric and byte) to encode text in less space.
     // This is a mid-level API; the high-level API is encodeText() and encodeBinary().
     public static encodeSegments(
-      segs: Readonly<QrSegment[]>,
+      segs: readonly QrSegment[],
       ecl: QrCode.Ecc,
       minVersion: int = 1,
       maxVersion: int = 40,
@@ -182,7 +182,7 @@ namespace qrcodegen {
       // The error correction level used in this QR Code.
       public readonly errorCorrectionLevel: QrCode.Ecc,
 
-      dataCodewords: Readonly<byte[]>,
+      dataCodewords: readonly byte[],
 
       msk: int
     ) {
@@ -352,7 +352,7 @@ namespace qrcodegen {
 
     // Returns a new byte string representing the given data with the appropriate error correction
     // codewords appended to it, based on this object's version and error correction level.
-    private addEccAndInterleave(data: Readonly<byte[]>): byte[] {
+    private addEccAndInterleave(data: readonly byte[]): byte[] {
       const ver: int = this.version;
       const ecl: QrCode.Ecc = this.errorCorrectionLevel;
       if (data.length != QrCode.getNumDataCodewords(ver, ecl)) throw new RangeError('Invalid argument');
@@ -389,7 +389,7 @@ namespace qrcodegen {
 
     // Draws the given sequence of 8-bit codewords (data and error correction) onto the entire
     // data area of this QR Code. Function modules need to be marked off before this is called.
-    private drawCodewords(data: Readonly<byte[]>): void {
+    private drawCodewords(data: readonly byte[]): void {
       if (data.length != Math.floor(QrCode.getNumRawDataModules(this.version) / 8))
         throw new RangeError('Invalid argument');
       let i: int = 0; // Bit index into the data
@@ -590,7 +590,7 @@ namespace qrcodegen {
     }
 
     // Returns the Reed-Solomon error correction codeword for the given data and divisor polynomials.
-    private static reedSolomonComputeRemainder(data: Readonly<byte[]>, divisor: Readonly<byte[]>): byte[] {
+    private static reedSolomonComputeRemainder(data: readonly byte[], divisor: readonly byte[]): byte[] {
       let result: byte[] = divisor.map(_ => 0);
       for (const b of data) {
         // Polynomial division
@@ -617,7 +617,7 @@ namespace qrcodegen {
 
     // Can only be called immediately after a light run is added, and
     // returns either 0, 1, or 2. A helper function for getPenaltyScore().
-    private finderPenaltyCountPatterns(runHistory: Readonly<int[]>): int {
+    private finderPenaltyCountPatterns(runHistory: readonly int[]): int {
       const n: int = runHistory[1];
       assert(n <= this.size * 3);
       const core: boolean =
@@ -744,7 +744,7 @@ namespace qrcodegen {
     // Returns a segment representing the given binary data encoded in
     // byte mode. All input byte arrays are acceptable. Any text string
     // can be converted to UTF-8 bytes and encoded as a byte mode segment.
-    public static makeBytes(data: Readonly<byte[]>): QrSegment {
+    public static makeBytes(data: readonly byte[]): QrSegment {
       let bb: bit[] = [];
       for (const b of data) appendBits(b, 8, bb);
       return new QrSegment(QrSegment.Mode.BYTE, data.length, bb);
@@ -852,7 +852,7 @@ namespace qrcodegen {
 
     // (Package-private) Calculates and returns the number of bits needed to encode the given segments at
     // the given version. The result is infinity if a segment has too many characters to fit its length field.
-    public static getTotalBits(segs: Readonly<QrSegment[]>, version: int): number {
+    public static getTotalBits(segs: readonly QrSegment[], version: int): number {
       let result = 0;
       for (const seg of segs) {
         const ccbits: int = seg.mode.numCharCountBits(version);

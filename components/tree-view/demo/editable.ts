@@ -49,7 +49,6 @@ interface FlatNode {
 
 @Component({
   selector: 'nz-demo-tree-view-editable',
-  standalone: true,
   imports: [NzButtonModule, NzInputModule, NzIconModule, NzTreeViewModule],
   template: `
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource" [trackBy]="trackBy">

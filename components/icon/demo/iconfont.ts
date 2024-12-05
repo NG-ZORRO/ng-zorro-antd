@@ -4,7 +4,6 @@ import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-icon-iconfont',
-  standalone: true,
   imports: [NzIconModule],
   template: `
     <nz-icon nzIconfont="icon-tuichu" />

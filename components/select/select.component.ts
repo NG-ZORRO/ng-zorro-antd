@@ -219,8 +219,7 @@ export type NzSelectSizeType = NzSizeLDSType;
     CdkConnectedOverlay,
     NzOverlayModule,
     NzOptionContainerComponent
-  ],
-  standalone: true
+  ]
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

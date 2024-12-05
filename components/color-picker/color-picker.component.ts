@@ -37,7 +37,6 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
   selector: 'nz-color-picker',
   exportAs: 'NzColorPicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
     NgAntdColorPickerModule,
     NzPopoverDirective,

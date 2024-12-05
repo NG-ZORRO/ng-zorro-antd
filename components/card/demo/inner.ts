@@ -4,7 +4,6 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 
 @Component({
   selector: 'nz-demo-card-inner',
-  standalone: true,
   imports: [NzCardModule],
   template: `
     <nz-card nzTitle="Card Title">

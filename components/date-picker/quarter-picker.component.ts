@@ -9,8 +9,7 @@ import { NzDatePickerComponent } from './date-picker.component';
 
 @Directive({
   selector: 'nz-quarter-picker',
-  exportAs: 'nzQuarterPicker',
-  standalone: true
+  exportAs: 'nzQuarterPicker'
 })
 export class NzQuarterPickerComponent {
   datePicker = inject(NzDatePickerComponent, { host: true });

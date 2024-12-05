@@ -5,7 +5,6 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 
 @Component({
   selector: 'nz-demo-result-info',
-  standalone: true,
   imports: [NzButtonModule, NzResultModule],
   template: `
     <nz-result nzStatus="info" nzTitle="Your operation has been executed">

@@ -37,8 +37,7 @@ import { NzTableLayout } from '../table.types';
     '[style.width]': 'scrollX',
     '[style.min-width]': `scrollX ? '100%' : null`
   },
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzTableContentComponent {
   @Input() tableLayout: NzTableLayout = 'auto';

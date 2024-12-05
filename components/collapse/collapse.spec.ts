@@ -16,7 +16,7 @@ describe('collapse', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting(), provideNoopAnimations()]
-    }).compileComponents();
+    });
   }));
   describe('collapse basic', () => {
     let fixture: ComponentFixture<NzTestCollapseBasicComponent>;
@@ -189,7 +189,6 @@ describe('collapse', () => {
 
 @Component({
   selector: 'nz-test-basic-collapse',
-  standalone: true,
   imports: [NzCollapseModule],
   template: `
     <ng-template #headerTemplate>template</ng-template>
@@ -224,7 +223,6 @@ export class NzTestCollapseBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzCollapseModule],
   template: `
     <ng-template #headerTemplate>template</ng-template>
@@ -238,7 +236,6 @@ export class NzTestCollapseBasicComponent {
 export class NzTestCollapseTemplateComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzCollapseModule],
   template: `
     <nz-collapse>
@@ -260,7 +257,6 @@ export class NzTestCollapseTemplateComponent {}
 export class NzTestCollapseIconComponent {}
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestCollapseBasicComponent],
   template: `
     <div [dir]="direction">

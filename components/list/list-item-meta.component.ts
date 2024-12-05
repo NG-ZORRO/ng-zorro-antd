@@ -77,8 +77,7 @@ import {
     NzListItemMetaTitleComponent,
     NzOutletModule,
     NzListItemMetaDescriptionComponent
-  ],
-  standalone: true
+  ]
 })
 export class NzListItemMetaComponent {
   avatarStr = '';

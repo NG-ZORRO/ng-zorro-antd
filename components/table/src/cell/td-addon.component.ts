@@ -61,8 +61,7 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
     '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,
     '[class.ant-table-selection-column]': `nzShowCheckbox`
   },
-  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NgTemplateOutlet, NzCheckboxModule, FormsModule],
-  standalone: true
+  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NgTemplateOutlet, NzCheckboxModule, FormsModule]
 })
 export class NzTdAddOnComponent implements OnChanges {
   @Input() nzChecked = false;

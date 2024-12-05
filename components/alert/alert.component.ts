@@ -33,7 +33,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
   selector: 'nz-alert',
   exportAs: 'nzAlert',
   animations: [slideAlertMotion],
-  standalone: true,
   imports: [NzIconModule, NzOutletModule],
   template: `
     @if (!closed) {

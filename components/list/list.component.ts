@@ -135,8 +135,7 @@ import {
     NzListEmptyComponent,
     NzListFooterComponent,
     NzListPaginationComponent
-  ],
-  standalone: true
+  ]
 })
 export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
   @Input() nzDataSource?: NzSafeAny[];

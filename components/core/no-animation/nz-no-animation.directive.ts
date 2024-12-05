@@ -9,7 +9,6 @@ import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 @Directive({
   selector: '[nzNoAnimation]',
   exportAs: 'nzNoAnimation',
-  standalone: true,
   host: {
     '[class.nz-animate-disabled]': `nzNoAnimation || animationType === 'NoopAnimations'`
   }

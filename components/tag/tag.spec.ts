@@ -148,7 +148,6 @@ describe('tag', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTagModule],
   selector: 'nz-test-basic-tag',
   template: `
@@ -175,7 +174,6 @@ export class NzTestTagBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTagModule],
   template: `<nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>`
 })
@@ -186,7 +184,6 @@ export class NzTestTagPreventComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestTagBasicComponent],
   template: `
     <div [dir]="direction">

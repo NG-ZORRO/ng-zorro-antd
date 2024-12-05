@@ -5,7 +5,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-tag-colorful',
-  standalone: true,
   imports: [NzTagModule],
   template: `
     <h4 style="margin-bottom: 16px">Presets:</h4>

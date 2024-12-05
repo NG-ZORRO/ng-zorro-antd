@@ -83,8 +83,7 @@ import { PaginationItemRenderContext } from './pagination.types';
       </ul>
     </ng-template>
   `,
-  imports: [NgTemplateOutlet, NzPaginationItemComponent, NzPaginationOptionsComponent],
-  standalone: true
+  imports: [NgTemplateOutlet, NzPaginationItemComponent, NzPaginationOptionsComponent]
 })
 export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;

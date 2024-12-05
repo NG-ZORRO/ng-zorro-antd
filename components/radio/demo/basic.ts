@@ -5,7 +5,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-radio-basic',
-  standalone: true,
   imports: [FormsModule, NzRadioModule],
   template: `<label nz-radio ngModel>Radio</label>`
 })

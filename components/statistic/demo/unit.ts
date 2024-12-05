@@ -7,7 +7,6 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
 @Component({
   selector: 'nz-demo-statistic-unit',
-  standalone: true,
   imports: [DecimalPipe, NzGridModule, NzIconModule, NzStatisticModule],
   template: `
     <nz-row [nzGutter]="16">

@@ -6,7 +6,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-tooltip-origin',
-  standalone: true,
   imports: [NzButtonModule, NzToolTipModule, NzElementPatchDirective],
   template: `
     <button nz-button nz-element #button="nzElement">Action</button>

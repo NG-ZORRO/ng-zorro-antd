@@ -4,7 +4,6 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 @Component({
   selector: 'nz-demo-steps-simple',
-  standalone: true,
   imports: [NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1">

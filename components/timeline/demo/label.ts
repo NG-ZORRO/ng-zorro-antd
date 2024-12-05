@@ -6,7 +6,6 @@ import { NzTimelineMode, NzTimelineModule } from 'ng-zorro-antd/timeline';
 
 @Component({
   selector: 'nz-demo-timeline-label',
-  standalone: true,
   imports: [FormsModule, NzRadioModule, NzTimelineModule],
   template: `
     <nz-radio-group [(ngModel)]="mode">

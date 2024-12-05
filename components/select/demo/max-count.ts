@@ -13,7 +13,6 @@ function alphabet(): string[] {
 
 @Component({
   selector: 'nz-demo-select-max-count',
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select

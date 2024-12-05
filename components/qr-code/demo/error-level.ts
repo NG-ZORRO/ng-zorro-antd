@@ -6,7 +6,6 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-qr-code-error-level',
-  standalone: true,
   imports: [NzQRCodeModule, NzSegmentedModule, FormsModule],
   template: `
     <nz-qrcode nzValue="https://github.com/NG-ZORRO/ng-zorro-antd/issues" [nzLevel]="errorLevel"></nz-qrcode>

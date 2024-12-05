@@ -67,8 +67,7 @@ import { NzSiderTriggerComponent } from './sider-trigger.component';
     '[style.minWidth]': 'widthSetting',
     '[style.width]': 'widthSetting'
   },
-  imports: [NzSiderTriggerComponent],
-  standalone: true
+  imports: [NzSiderTriggerComponent]
 })
 export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   private destroy$ = new Subject<boolean>();

@@ -7,7 +7,6 @@ const ngZorroIconLiteral =
 
 @Component({
   selector: 'nz-demo-icon-namespace',
-  standalone: true,
   imports: [NzIconModule],
   template: `<nz-icon nzType="ng-zorro:antd" />`,
   styles: [

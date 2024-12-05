@@ -5,7 +5,6 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-avatar-group',
   imports: [NzAvatarModule, NzDividerModule, NzToolTipModule],
   template: `

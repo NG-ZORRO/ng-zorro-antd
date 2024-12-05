@@ -15,7 +15,6 @@ interface MockUser {
 
 @Component({
   selector: 'nz-demo-select-scroll-load',
-  standalone: true,
   imports: [FormsModule, NzSelectModule, NzSpinModule],
   template: `
     <nz-select

@@ -47,7 +47,6 @@ const options: NzCascaderOption[] = [
 
 @Component({
   selector: 'nz-demo-cascader-hover',
-  standalone: true,
   imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader

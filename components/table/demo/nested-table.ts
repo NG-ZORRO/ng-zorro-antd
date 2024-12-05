@@ -26,7 +26,6 @@ interface ChildrenItemData {
 
 @Component({
   selector: 'nz-demo-table-nested-table',
-  standalone: true,
   imports: [NzBadgeModule, NzDividerModule, NzDropDownModule, NzIconModule, NzTableModule],
   template: `
     <nz-table #nestedTable [nzData]="listOfParentData" [nzPageSize]="10">

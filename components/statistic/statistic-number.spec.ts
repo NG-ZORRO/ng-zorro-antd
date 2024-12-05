@@ -45,7 +45,6 @@ describe('nz-number', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [DecimalPipe, NzStatisticModule],
   template: `
     <nz-statistic-number [nzValue]="(value | number)!" [nzValueTemplate]="template"></nz-statistic-number>

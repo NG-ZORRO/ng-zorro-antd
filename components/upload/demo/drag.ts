@@ -7,7 +7,6 @@ import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-drag',
-  standalone: true,
   imports: [NzButtonModule, NzIconModule, NzUploadModule],
   template: `
     <nz-upload

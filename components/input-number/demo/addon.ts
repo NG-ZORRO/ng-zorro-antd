@@ -8,7 +8,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-input-number-addon',
-  standalone: true,
   imports: [FormsModule, NzSelectModule, NzCascaderModule, NzInputNumberModule, NzIconModule],
   template: `
     <nz-input-number [(ngModel)]="value">

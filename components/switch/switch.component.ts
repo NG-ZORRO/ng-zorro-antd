@@ -78,8 +78,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       <div class="ant-click-animating-node"></div>
     </button>
   `,
-  imports: [NzWaveModule, NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzWaveModule, NzIconModule, NzOutletModule]
 })
 export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

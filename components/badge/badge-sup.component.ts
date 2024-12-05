@@ -26,7 +26,6 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
-  standalone: true,
   imports: [NzNoAnimationDirective],
   template: `
     @if (count <= nzOverflowCount) {
@@ -77,8 +76,6 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   countArray: number[] = [];
   count: number = 0;
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-  constructor() {}
 
   generateMaxNumberArray(): void {
     this.maxNumberArray = this.nzOverflowCount

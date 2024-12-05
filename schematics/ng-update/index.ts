@@ -49,7 +49,7 @@ const migrations: NullableDevkitMigration[] = [
 ];
 
 export function updateToV18(): Rule {
-  return createMigrationSchematicRule(TargetVersion.V18, migrations, ruleUpgradeData, postUpdate);
+  return createMigrationSchematicRule(TargetVersion.V19, migrations, ruleUpgradeData, postUpdate);
 }
 
 /** Post-update schematic to be called when update is finished. */

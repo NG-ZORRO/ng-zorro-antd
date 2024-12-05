@@ -10,7 +10,6 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-code-editor-complex',
-  standalone: true,
   imports: [FormsModule, NzCodeEditorModule, NzIconModule, NzTypographyModule, NzSwitchModule, NzToolTipModule],
   template: `
     <p nz-paragraph style="margin-bottom: 8px;">

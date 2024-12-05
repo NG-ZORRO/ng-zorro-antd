@@ -4,7 +4,6 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-segmented-disabled',
-  standalone: true,
   imports: [NzSegmentedModule],
   template: `
     <nz-segmented [nzOptions]="['Map', 'Transit', 'Satellite']" nzDisabled></nz-segmented>

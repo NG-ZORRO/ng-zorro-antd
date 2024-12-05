@@ -9,7 +9,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-drawer-multi-level-drawer',
-  standalone: true,
   imports: [NzButtonModule, NzDrawerModule, NzFormModule, NzInputModule, NzListModule, NzTagModule],
   template: `
     <button nz-button nzType="primary" (click)="open()">New Cookbook</button>

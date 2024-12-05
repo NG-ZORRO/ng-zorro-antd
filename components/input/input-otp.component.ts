@@ -70,8 +70,7 @@ import { NzInputDirective } from './input.directive';
     },
     NzDestroyService
   ],
-  imports: [NzInputDirective, ReactiveFormsModule],
-  standalone: true
+  imports: [NzInputDirective, ReactiveFormsModule]
 })
 export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;

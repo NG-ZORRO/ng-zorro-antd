@@ -57,8 +57,7 @@ import { NzStatisticValueType } from './typings';
     class: 'ant-statistic',
     '[class.ant-statistic-rtl]': `dir === 'rtl'`
   },
-  imports: [NzSkeletonModule, NzStatisticNumberComponent, NzOutletModule],
-  standalone: true
+  imports: [NzSkeletonModule, NzStatisticNumberComponent, NzOutletModule]
 })
 export class NzStatisticComponent implements OnDestroy, OnInit {
   @Input() nzPrefix?: string | TemplateRef<void>;

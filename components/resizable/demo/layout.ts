@@ -5,7 +5,6 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-layout',
-  standalone: true,
   imports: [NzLayoutModule, NzResizableModule],
   template: `
     <nz-layout>

@@ -19,7 +19,7 @@ describe('pagination', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations()]
-    }).compileComponents();
+    });
   }));
 
   describe('pagination complex', () => {
@@ -410,7 +410,6 @@ describe('pagination', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzPaginationModule],
   template: `
     <nz-pagination
@@ -446,7 +445,6 @@ export class NzTestPaginationComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzPaginationModule],
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate"></nz-pagination>
@@ -468,7 +466,6 @@ export class NzTestPaginationComponent {
 export class NzTestPaginationRenderComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzPaginationModule],
   template: `
     <nz-pagination
@@ -487,14 +484,12 @@ export class NzTestPaginationTotalComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzPaginationModule],
   template: `<nz-pagination nzResponsive></nz-pagination>`
 })
 export class NzTestPaginationAutoResizeComponent {}
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzPaginationModule],
   template: `
     <div [dir]="direction">

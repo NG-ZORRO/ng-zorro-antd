@@ -6,7 +6,6 @@ import { NzTabsCanDeactivateFn, NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-guard',
-  standalone: true,
   imports: [NzTabsModule, NzModalModule],
   template: `
     <nz-tabset [nzCanDeactivate]="canDeactivate">

@@ -11,8 +11,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 type DomSanitizerType = 'html' | 'style' | 'url' | 'resourceUrl';
 
 @Pipe({
-  name: 'nzSanitizer',
-  standalone: true
+  name: 'nzSanitizer'
 })
 export class NzSanitizerPipe implements PipeTransform {
   constructor(protected sanitizer: DomSanitizer) {}

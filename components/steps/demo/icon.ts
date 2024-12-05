@@ -5,7 +5,6 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 @Component({
   selector: 'nz-demo-steps-icon',
-  standalone: true,
   imports: [NzIconModule, NzStepsModule],
   template: `
     <nz-steps>

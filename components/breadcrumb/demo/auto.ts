@@ -4,7 +4,6 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 @Component({
   selector: 'nz-demo-breadcrumb-auto',
-  standalone: true,
   imports: [NzBreadCrumbModule],
   template: `
     <nz-breadcrumb [nzAutoGenerate]="true">

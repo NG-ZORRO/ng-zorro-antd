@@ -83,8 +83,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
     '[class.ant-pagination-mini]': `!nzSimple && size === 'small'`,
     '[class.ant-pagination-rtl]': `dir === 'rtl'`
   },
-  imports: [NgTemplateOutlet, NzPaginationSimpleComponent, NzPaginationDefaultComponent],
-  standalone: true
+  imports: [NgTemplateOutlet, NzPaginationSimpleComponent, NzPaginationDefaultComponent]
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

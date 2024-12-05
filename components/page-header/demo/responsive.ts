@@ -9,7 +9,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-page-header-responsive',
-  standalone: true,
   imports: [NzButtonModule, NzDescriptionsModule, NzPageHeaderModule, NzSpaceModule, NzStatisticModule, NzTabsModule],
   template: `
     <nz-page-header nzBackIcon>

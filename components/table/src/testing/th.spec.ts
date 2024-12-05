@@ -117,7 +117,6 @@ describe('nz-th', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     @if (!destroy) {
@@ -159,7 +158,6 @@ interface ItemData {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table #filterTable [nzData]="displayData">
@@ -264,7 +262,6 @@ export class NzThTestTableDefaultFilterComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `<th class="nz-disable-th"></th>`
 })

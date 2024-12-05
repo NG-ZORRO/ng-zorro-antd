@@ -6,7 +6,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-radio-disable',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzRadioModule],
   template: `
     <div>

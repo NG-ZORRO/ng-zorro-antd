@@ -42,7 +42,6 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     '[class.ant-input-rtl]': `dir=== 'rtl'`,
     '[class.ant-input-stepperless]': `nzStepperless`
   },
-  standalone: true,
   hostDirectives: [NzSpaceCompactItemDirective],
   providers: [NzDestroyService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
 })

@@ -97,8 +97,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     }
   `,
   host: { class: 'ant-select-selector' },
-  imports: [NzSelectSearchComponent, NzSelectItemComponent, NzSelectPlaceholderComponent],
-  standalone: true
+  imports: [NzSelectSearchComponent, NzSelectItemComponent, NzSelectPlaceholderComponent]
 })
 export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzId: string | null = null;

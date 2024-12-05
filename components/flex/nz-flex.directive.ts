@@ -10,7 +10,6 @@ import { NzAlign, NzFlex, NzGap, NzJustify, NzWrap } from './typings';
 @Directive({
   selector: '[nz-flex],nz-flex',
   exportAs: 'nzFlex',
-  standalone: true,
   host: {
     class: 'ant-flex',
     '[class.ant-flex-vertical]': `nzVertical`,

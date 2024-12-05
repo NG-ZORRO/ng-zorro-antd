@@ -46,8 +46,7 @@ import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
   `,
   host: { class: 'ant-select-selection-search' },
   providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }],
-  imports: [FormsModule],
-  standalone: true
+  imports: [FormsModule]
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   @Input() nzId: string | null = null;

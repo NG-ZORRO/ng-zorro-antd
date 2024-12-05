@@ -14,7 +14,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-graph-customized',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzGraphModule, NzRadioModule],
   template: `
     <button nz-button nzType="default" (click)="expandAll()">ExpandAll</button>
@@ -273,8 +272,6 @@ export class NzDemoGraphCustomizedComponent {
   };
   rankDirection: NzRankDirection = 'TB';
   graphData = new NzGraphData(this.testDef);
-
-  constructor() {}
 
   expand(name: string): void {
     this.graphData.expand(name);

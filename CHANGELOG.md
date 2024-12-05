@@ -1220,7 +1220,7 @@ Set the dir attribute on the document body or html tag.
 Or use Angular CDK bidi module for bi-directional.
 
 ```typescript
-import {BidiModule} from '@angular/cdk/bidi';
+import { BidiModule } from '@angular/cdk/bidi';
 ```
 
 Super thanks to [@saeedrahimi](https://github.com/saeedrahimi) [@hdm91](https://github.com/hdm91) [@HDaghash](https://github.com/HDaghash) [@hmdnikoo](https://github.com/hmdnikoo) for contributing this!

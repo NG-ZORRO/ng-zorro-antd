@@ -27,8 +27,7 @@ import { NzTableContentComponent } from './table-content.component';
     </div>
   `,
   host: { class: 'ant-table-container' },
-  imports: [NzTableContentComponent],
-  standalone: true
+  imports: [NzTableContentComponent]
 })
 export class NzTableInnerDefaultComponent {
   @Input() tableLayout: NzTableLayout = 'auto';

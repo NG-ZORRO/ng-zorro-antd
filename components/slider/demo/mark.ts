@@ -6,7 +6,6 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-mark',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzSliderModule],
   template: `
     <h4>included=true</h4>

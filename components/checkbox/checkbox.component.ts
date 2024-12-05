@@ -74,8 +74,7 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
     '[class.ant-checkbox-rtl]': `dir === 'rtl'`
   },
-  imports: [FormsModule],
-  standalone: true
+  imports: [FormsModule]
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDestroy, AfterViewInit {
   dir: Direction = 'ltr';

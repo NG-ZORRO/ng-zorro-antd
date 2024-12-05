@@ -6,7 +6,6 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
   selector: 'nz-demo-checkbox-layout',
-  standalone: true,
   imports: [FormsModule, NzCheckboxModule, NzGridModule],
   template: `
     <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">

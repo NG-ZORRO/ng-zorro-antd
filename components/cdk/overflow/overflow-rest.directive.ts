@@ -12,8 +12,7 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
   selector: '[nzOverflowRest]',
   host: {
     '[style]': 'restStyle'
-  },
-  standalone: true
+  }
 })
 export class NzOverflowRestDirective {
   restStyle: { [key: string]: string | number | undefined } | undefined = undefined;

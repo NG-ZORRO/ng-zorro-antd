@@ -6,7 +6,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-custom-content',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzSelectModule],
   template: `
     <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select OS" [(ngModel)]="selectedValue">

@@ -5,7 +5,6 @@ import { NzResizableModule, NzResizeEvent, NzResizeHandleOption } from 'ng-zorro
 
 @Component({
   selector: 'nz-demo-resizable-grid',
-  standalone: true,
   imports: [NzGridModule, NzResizableModule],
   template: `
     <div nz-row>

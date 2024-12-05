@@ -74,7 +74,6 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
 
 @Component({
   selector: 'nz-demo-tree-view-search',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzIconModule, NzTreeViewModule, NzNoAnimationDirective, NzHighlightPipe],
   template: `
     <nz-input-group [nzSuffix]="suffixIcon">

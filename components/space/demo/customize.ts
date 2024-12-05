@@ -7,7 +7,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-space-customize',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzSpaceModule, NzSliderModule],
   template: `
     <nz-slider [(ngModel)]="size"></nz-slider>

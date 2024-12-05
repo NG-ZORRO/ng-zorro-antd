@@ -5,7 +5,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-button-loading',
-  standalone: true,
   imports: [NzButtonModule, NzIconModule],
   template: `
     <button nz-button nzType="primary" nzLoading>

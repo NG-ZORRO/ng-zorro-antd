@@ -4,7 +4,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-tag-basic',
-  standalone: true,
   imports: [NzTagModule],
   template: `
     <nz-tag>Tag 1</nz-tag>

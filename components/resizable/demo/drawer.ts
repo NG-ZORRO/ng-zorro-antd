@@ -6,7 +6,6 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-drawer',
-  standalone: true,
   imports: [NzButtonModule, NzDrawerModule, NzResizableModule],
   template: `
     <button nz-button nzType="primary" (click)="open()">Open</button>

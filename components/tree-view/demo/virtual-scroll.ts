@@ -37,7 +37,6 @@ interface ExampleFlatNode {
 
 @Component({
   selector: 'nz-demo-tree-view-virtual-scroll',
-  standalone: true,
   imports: [NzIconModule, NzTreeViewModule],
   template: `
     <nz-tree-virtual-scroll-view class="virtual-scroll-tree" [nzTreeControl]="treeControl" [nzDataSource]="dataSource">

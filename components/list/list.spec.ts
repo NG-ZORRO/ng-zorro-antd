@@ -20,7 +20,7 @@ describe('list', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
     fixture = TestBed.createComponent(TestListComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -241,7 +241,6 @@ describe('list RTL', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzListModule, AsyncPipe],
   selector: 'nz-test-list',
   template: `
@@ -307,7 +306,6 @@ class TestListComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzListModule],
   template: `
     <button (click)="footer = nzFooter" id="change">change</button>
@@ -324,7 +322,6 @@ class TestListWithTemplateComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzListModule],
   template: `
     <nz-list id="item-string">
@@ -365,7 +362,6 @@ class TestListItemComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, TestListComponent],
   template: `
     <div [dir]="direction">

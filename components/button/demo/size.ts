@@ -7,7 +7,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-button-size',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzIconModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="size">

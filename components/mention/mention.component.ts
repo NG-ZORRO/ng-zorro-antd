@@ -124,8 +124,7 @@ export type MentionPlacement = 'top' | 'bottom';
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir === 'rtl'`
   },
-  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormPatchModule],
-  standalone: true
+  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormPatchModule]
 })
 export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   @Input() nzValueWith: (value: NzSafeAny) => string = value => value;

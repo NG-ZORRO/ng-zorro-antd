@@ -4,7 +4,6 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 @Component({
   selector: 'nz-demo-divider-orientation',
-  standalone: true,
   imports: [NzDividerModule],
   template: `
     <div>

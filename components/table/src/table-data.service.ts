@@ -132,7 +132,6 @@ export class NzTableDataService<T> implements OnDestroy {
   updateListOfCustomColumn(list: NzCustomColumn[]): void {
     this.listOfCustomColumn$.next(list);
   }
-  constructor() {}
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();

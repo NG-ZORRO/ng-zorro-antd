@@ -6,7 +6,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 @Component({
   selector: 'nz-demo-layout-fixed-sider',
-  standalone: true,
   imports: [NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout class="layout">

@@ -10,7 +10,6 @@ import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
-  standalone: true,
   selector: 'nz-float-button-content',
   exportAs: 'nzFloatButtonContent',
   imports: [NzIconModule, NgTemplateOutlet, NzStringTemplateOutletDirective],

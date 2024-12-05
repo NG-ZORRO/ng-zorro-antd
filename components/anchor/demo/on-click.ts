@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-anchor-on-click',
   imports: [NzAnchorModule],
   template: `

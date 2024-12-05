@@ -7,7 +7,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-badge-change',
   imports: [FormsModule, NzBadgeModule, NzButtonModule, NzIconModule, NzSwitchModule],
   template: `

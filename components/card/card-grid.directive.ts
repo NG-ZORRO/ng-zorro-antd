@@ -11,8 +11,7 @@ import { Directive, Input, booleanAttribute } from '@angular/core';
   host: {
     class: 'ant-card-grid',
     '[class.ant-card-hoverable]': 'nzHoverable'
-  },
-  standalone: true
+  }
 })
 export class NzCardGridDirective {
   @Input({ transform: booleanAttribute }) nzHoverable = true;

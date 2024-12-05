@@ -5,7 +5,6 @@ import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
 
 @Component({
   selector: 'nz-demo-input-number-legacy-precision',
-  standalone: true,
   imports: [FormsModule, NzInputNumberLegacyModule],
   template: `
     <nz-input-number [(ngModel)]="toFixedValue" [nzPrecision]="precision" nzPlaceHolder="toFixed"></nz-input-number>

@@ -4,7 +4,6 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 
 @Component({
   selector: 'nz-demo-layout-basic',
-  standalone: true,
   imports: [NzLayoutModule],
   template: `
     <nz-layout>

@@ -6,7 +6,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 @Component({
   selector: 'nz-demo-menu-recursive',
-  standalone: true,
   imports: [NgTemplateOutlet, NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu nzMode="inline" style="width: 240px;">

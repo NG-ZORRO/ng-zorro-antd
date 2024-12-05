@@ -8,8 +8,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Pipe({
-  name: 'nzEllipsis',
-  standalone: true
+  name: 'nzEllipsis'
 })
 export class NzEllipsisPipe implements PipeTransform {
   transform(value: NzSafeAny, length?: number, suffix: string = ''): NzSafeAny {

@@ -39,8 +39,7 @@ import { getConfigFromComponent } from './utils';
   selector: 'nz-modal',
   exportAs: 'nzModal',
   template: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy

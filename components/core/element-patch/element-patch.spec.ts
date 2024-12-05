@@ -18,7 +18,6 @@ describe('nz-element', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzElementPatchDirective],
   template: `<button nz-element>Action</button> `
 })

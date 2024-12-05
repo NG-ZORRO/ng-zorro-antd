@@ -63,8 +63,7 @@ import {
       <ng-content></ng-content>
     }
   `,
-  imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent],
-  standalone: true
+  imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent]
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzActive = false;

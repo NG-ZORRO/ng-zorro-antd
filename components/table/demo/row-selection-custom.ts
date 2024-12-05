@@ -11,7 +11,6 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-row-selection-custom',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table

@@ -5,6 +5,7 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -56,14 +57,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-select-item-option-active]': 'activated && !disabled'
   },
   providers: [NzDestroyService],
-  imports: [NgTemplateOutlet, NzIconModule],
-  standalone: true
+  imports: [NgTemplateOutlet, NzIconModule]
 })
 export class NzOptionItemComponent implements OnChanges, OnInit {
   selected = false;
   activated = false;
   @Input() grouped = false;
-  @Input() customContent = false;
+  @Input({ transform: booleanAttribute }) customContent = false;
   @Input() template: TemplateRef<NzSafeAny> | null = null;
   @Input() disabled = false;
   @Input() showState = false;

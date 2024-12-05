@@ -5,7 +5,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-space-split',
-  standalone: true,
   imports: [NzDividerModule, NzSpaceModule],
   template: `
     <nz-space [nzSplit]="spaceSplit">

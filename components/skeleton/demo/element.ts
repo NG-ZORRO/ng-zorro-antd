@@ -15,7 +15,6 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-skeleton-element',
-  standalone: true,
   imports: [FormsModule, NzDividerModule, NzGridModule, NzSkeletonModule, NzRadioModule, NzSpaceModule, NzSwitchModule],
   template: `
     <nz-space nzSize="middle">

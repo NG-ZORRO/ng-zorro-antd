@@ -4,7 +4,6 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'nz-demo-skeleton-complex',
-  standalone: true,
   imports: [NzSkeletonModule],
   template: `<nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>`
 })

@@ -7,7 +7,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-tooltip-color',
-  standalone: true,
   imports: [NzButtonModule, NzDividerModule, NzToolTipModule],
   template: `
     <nz-divider nzText="Preset" nzOrientation="left"></nz-divider>

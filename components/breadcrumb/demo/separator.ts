@@ -5,7 +5,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-breadcrumb-separator',
-  standalone: true,
   imports: [NzBreadCrumbModule, NzIconModule],
   template: `
     <h4>String</h4>

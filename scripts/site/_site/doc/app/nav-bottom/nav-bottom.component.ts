@@ -7,8 +7,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { ROUTER_LIST } from '../router';
 
 @Component({
-  standalone: true,
-  selector: 'nz-nav-bottom',
+    selector: 'nz-nav-bottom',
   imports: [RouterLink, NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

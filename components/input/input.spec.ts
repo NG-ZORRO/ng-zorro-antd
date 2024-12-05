@@ -16,7 +16,7 @@ describe('input', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
   }));
   describe('single input', () => {
     describe('input with input element', () => {
@@ -186,7 +186,6 @@ describe('input', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzInputModule],
   template: `
     <div [dir]="dir">
@@ -202,7 +201,6 @@ export class NzTestInputWithDirComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputModule],
   template: `<input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="stepperless" />`
 })
@@ -213,14 +211,12 @@ export class NzTestInputWithInputComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputModule],
   template: `<textarea nz-input></textarea>`
 })
 export class NzTestInputWithTextAreaComponent {}
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzInputModule],
   template: `
     <form>
@@ -238,7 +234,6 @@ export class NzTestInputFormComponent {
 
 // status
 @Component({
-  standalone: true,
   imports: [NzInputModule],
   template: `<input nz-input [nzStatus]="status" />`
 })
@@ -247,7 +242,6 @@ export class NzTestInputWithStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzFormModule, NzInputModule],
   template: `
     <form nz-form>

@@ -75,8 +75,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
     class: 'ant-modal-footer'
   },
   changeDetection: ChangeDetectionStrategy.Default,
-  imports: [NzOutletModule, NzButtonModule],
-  standalone: true
+  imports: [NzOutletModule, NzButtonModule]
 })
 export class NzModalFooterComponent implements OnDestroy {
   buttonsFooter = false;

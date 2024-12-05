@@ -7,7 +7,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-drawer-placement',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzDrawerModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="placement">

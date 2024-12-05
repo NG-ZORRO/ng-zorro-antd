@@ -6,7 +6,6 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
   selector: 'nz-demo-input-number-disabled',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzInputNumberModule],
   template: `
     <nz-input-number [(ngModel)]="value" nzMin="1" nzMax="10" [nzDisabled]="isDisabled" />

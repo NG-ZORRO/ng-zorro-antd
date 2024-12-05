@@ -5,7 +5,6 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 @Component({
   selector: 'nz-demo-steps-step-next',
-  standalone: true,
   imports: [NzButtonModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
@@ -93,6 +92,4 @@ export class NzDemoStepsStepNextComponent {
       }
     }
   }
-
-  constructor() {}
 }

@@ -6,7 +6,6 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 @Component({
   selector: 'nz-demo-list-responsive',
-  standalone: true,
   imports: [NzCardModule, NzGridModule, NzListModule],
   template: `
     <nz-list nzGrid>

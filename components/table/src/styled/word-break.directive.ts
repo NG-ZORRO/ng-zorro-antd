@@ -9,8 +9,7 @@ import { Directive, Input, booleanAttribute } from '@angular/core';
   selector: 'th[nzBreakWord],td[nzBreakWord]',
   host: {
     '[style.word-break]': `nzBreakWord ? 'break-all' : ''`
-  },
-  standalone: true
+  }
 })
 export class NzCellBreakWordDirective {
   @Input({ transform: booleanAttribute }) nzBreakWord = true;

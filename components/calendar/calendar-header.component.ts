@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -77,8 +76,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
   },
-  imports: [NzSelectModule, FormsModule, NzRadioModule, NgTemplateOutlet, NzStringTemplateOutletDirective],
-  standalone: true
+  imports: [NzSelectModule, FormsModule, NzRadioModule, NzStringTemplateOutletDirective]
 })
 export class NzCalendarHeaderComponent implements OnInit, OnChanges {
   @Input() mode: 'month' | 'year' = 'month';

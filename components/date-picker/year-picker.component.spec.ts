@@ -3,7 +3,7 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
@@ -23,12 +23,8 @@ describe('NzYearPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzInputModule],
-      providers: [],
-      declarations: [NzTestYearPickerComponent]
+      providers: [provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -356,6 +352,7 @@ describe('NzYearPickerComponent', () => {
 });
 
 @Component({
+  imports: [FormsModule, NzDatePickerModule, NzInputModule],
   template: `
     <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
     @switch (useSuite) {

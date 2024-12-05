@@ -181,8 +181,7 @@ import { PREFIX_CLASS } from './util';
       }
     </div>
   `,
-  imports: [LibPackerModule, NzTimePickerModule, FormsModule],
-  standalone: true
+  imports: [LibPackerModule, NzTimePickerModule, FormsModule]
 })
 export class InnerPopupComponent implements OnChanges {
   @Input() activeDate!: CandyDate;

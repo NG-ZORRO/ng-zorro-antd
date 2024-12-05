@@ -106,8 +106,7 @@ const CSS_TRANSFORM_TIME = 150;
     NzTabsInkBarDirective,
     NzTabNavOperationComponent,
     NgTemplateOutlet
-  ],
-  standalone: true
+  ]
 })
 export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
   @Output() readonly indexFocused: EventEmitter<number> = new EventEmitter<number>();

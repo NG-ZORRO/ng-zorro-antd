@@ -5,7 +5,6 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @Component({
   selector: 'nz-demo-checkbox-group',
-  standalone: true,
   imports: [FormsModule, NzCheckboxModule],
   template: `
     <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="log(checkOptionsOne)"></nz-checkbox-group>

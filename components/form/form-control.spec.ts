@@ -368,7 +368,6 @@ describe('nz-form-control', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzFormModule],
   template: `
     <nz-form-item>
@@ -382,7 +381,6 @@ export class NzTestStaticFormControlComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzFormModule],
   template: `
     <form [formGroup]="formGroup">
@@ -417,7 +415,6 @@ export class NzTestReactiveFormControlComponent {
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1170 **/
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzFormModule],
   template: `
     <form [formGroup]="formGroup">
@@ -440,7 +437,6 @@ export class NzTestReactiveFormControlInitStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzFormModule, NzInputModule],
   template: `
     <form [formGroup]="formGroup" nz-form [nzAutoTips]="formAutoTips" [nzDisableAutoTips]="formDisableAutoTips">

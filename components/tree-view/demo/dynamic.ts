@@ -125,7 +125,6 @@ class DynamicDatasource implements DataSource<FlatNode> {
 
 @Component({
   selector: 'nz-demo-tree-view-dynamic',
-  standalone: true,
   imports: [NzIconModule, NzTreeViewModule],
   template: `
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
@@ -155,8 +154,6 @@ export class NzDemoTreeViewDynamicComponent {
   );
 
   dataSource = new DynamicDatasource(this.treeControl, TREE_DATA);
-
-  constructor() {}
 
   hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }

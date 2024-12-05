@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Platform } from '@angular/cdk/platform';
 import {
   CSP_NONCE,
   Directive,
@@ -13,7 +14,6 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  PLATFORM_ID,
   inject,
   makeEnvironmentProviders
 } from '@angular/core';
@@ -37,8 +37,7 @@ export function provideNzWave(config: NzWaveConfig): EnvironmentProviders {
 
 @Directive({
   selector: '[nz-wave],button[nz-button]:not([nzType="link"]):not([nzType="text"])',
-  exportAs: 'nzWave',
-  standalone: true
+  exportAs: 'nzWave'
 })
 export class NzWaveDirective implements OnInit, OnDestroy {
   @Input() nzWaveExtraNode = false;
@@ -55,7 +54,7 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   }
 
   private cspNonce = inject(CSP_NONCE, { optional: true });
-  private platformId = inject(PLATFORM_ID);
+  private platform = inject(Platform);
   private config = inject(NZ_WAVE_GLOBAL_CONFIG, { optional: true });
   private animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
 
@@ -93,7 +92,7 @@ export class NzWaveDirective implements OnInit, OnDestroy {
         this.elementRef.nativeElement,
         this.ngZone,
         this.nzWaveExtraNode,
-        this.platformId,
+        this.platform,
         this.cspNonce
       );
     }

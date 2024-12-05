@@ -55,8 +55,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-tag-borderless]': `!nzBordered`,
     '(click)': 'updateCheckedStatus()'
   },
-  imports: [NzIconModule],
-  standalone: true
+  imports: [NzIconModule]
 })
 export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
   isPresetColor = false;

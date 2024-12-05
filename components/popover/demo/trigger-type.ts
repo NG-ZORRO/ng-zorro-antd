@@ -5,7 +5,6 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 @Component({
   selector: 'nz-demo-popover-trigger-type',
-  standalone: true,
   imports: [NzButtonModule, NzPopoverModule],
   template: `
     <ng-template #contentTemplate>

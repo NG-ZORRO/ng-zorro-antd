@@ -5,7 +5,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-options',
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select ngModel="lucy" [nzOptions]="listOfOption"></nz-select>

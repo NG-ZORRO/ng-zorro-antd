@@ -23,7 +23,6 @@ interface Data extends User {
 
 @Component({
   selector: 'nz-demo-comment-editor',
-  standalone: true,
   imports: [FormsModule, NzAvatarModule, NzButtonModule, NzCommentModule, NzFormModule, NzInputModule, NzListModule],
   template: `
     @if (data.length) {

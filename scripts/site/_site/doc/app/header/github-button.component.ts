@@ -3,8 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  standalone: true,
-  selector: 'app-github-btn',
+    selector: 'app-github-btn',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a class="gh-btn" tabindex="-1" [href]="'https://github.com/' + repo" target="_blank" rel="noopener" aria-hidden="true">

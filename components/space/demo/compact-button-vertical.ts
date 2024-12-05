@@ -5,7 +5,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-space-compact-button-vertical',
-  standalone: true,
   imports: [NzSpaceModule, NzButtonModule],
   template: `
     <nz-space>

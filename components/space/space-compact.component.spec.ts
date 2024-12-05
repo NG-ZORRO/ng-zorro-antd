@@ -22,7 +22,7 @@ describe('Space compact', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations()]
-    }).compileComponents();
+    });
     fixture = TestBed.createComponent(SpaceCompactTestComponent);
     component = fixture.componentInstance;
     fixture.autoDetectChanges();
@@ -149,7 +149,7 @@ describe('Space compact direction', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations()]
-    }).compileComponents();
+    });
     fixture = TestBed.createComponent(SpaceCompactDirectionTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -198,7 +198,6 @@ describe('Space compact direction', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [
     NzSpaceModule,
     NzButtonModule,
@@ -237,7 +236,6 @@ class SpaceCompactTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzSpaceModule, NzButtonModule],
   template: `
     <nz-space-compact [nzDirection]="direction">

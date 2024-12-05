@@ -8,7 +8,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-space-compact-buttons',
-  standalone: true,
   imports: [NzSpaceModule, NzButtonModule, NzIconModule, NzDropDownModule, NzToolTipModule],
   template: `
     <nz-space-compact nzBlock>

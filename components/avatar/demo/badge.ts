@@ -4,7 +4,6 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-avatar-badge',
   imports: [NzBadgeModule, NzAvatarModule],
   template: `

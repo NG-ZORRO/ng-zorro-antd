@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -7,9 +7,6 @@ import { NzInputModule } from 'ng-zorro-antd/input/input.module';
 import { NzTextareaCountComponent } from 'ng-zorro-antd/input/textarea-count.component';
 
 describe('textarea-count', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({}).compileComponents();
-  }));
   describe('without-max-length', () => {
     let fixture: ComponentFixture<NzTestInputTextareaCountWithoutMaxComponent>;
     let testComponent: NzTestInputTextareaCountWithoutMaxComponent;
@@ -55,7 +52,6 @@ describe('textarea-count', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputModule],
   template: `
     <nz-textarea-count>
@@ -68,7 +64,6 @@ export class NzTestInputTextareaCountWithoutMaxComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputModule],
   template: `
     <nz-textarea-count [nzMaxCharacterCount]="100">

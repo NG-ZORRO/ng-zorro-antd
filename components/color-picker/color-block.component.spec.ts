@@ -56,7 +56,6 @@ describe('nz-color-block', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzColorPickerModule],
   template: `
     <nz-color-block [nzColor]="nzColor" [nzSize]="nzSize" (nzOnClick)="clickHandle($event)"></nz-color-block>

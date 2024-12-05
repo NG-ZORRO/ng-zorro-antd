@@ -6,7 +6,6 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @Component({
   selector: 'nz-demo-checkbox-controller',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzCheckboxModule],
   template: `
     <label nz-checkbox [(ngModel)]="isCheckedButton" [nzDisabled]="isDisabledButton">

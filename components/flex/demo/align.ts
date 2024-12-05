@@ -7,7 +7,6 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-flex-align',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzFlexModule, NzSegmentedModule],
   template: `
     <div class="segment-wrapper">

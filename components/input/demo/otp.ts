@@ -29,8 +29,7 @@ import { NzTypographyComponent } from 'ng-zorro-antd/typography';
       </nz-flex>
     </nz-flex>
   `,
-  imports: [NzFlexDirective, NzTypographyComponent, NzInputOtpComponent],
-  standalone: true
+  imports: [NzFlexDirective, NzTypographyComponent, NzInputOtpComponent]
 })
 export class NzDemoInputOtpComponent {
   formatter: (value: string) => string = value => value.toUpperCase();

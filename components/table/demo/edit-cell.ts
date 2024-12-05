@@ -15,7 +15,6 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-edit-cell',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzInputModule, NzPopconfirmModule, NzTableModule],
   template: `
     <button nz-button (click)="addRow()" nzType="primary">Add</button>

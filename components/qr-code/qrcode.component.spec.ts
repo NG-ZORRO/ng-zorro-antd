@@ -68,7 +68,6 @@ describe('nz-qrcode', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzQRCodeModule],
   template: `<nz-qrcode
     [nzValue]="value"

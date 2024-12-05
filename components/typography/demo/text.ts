@@ -4,7 +4,6 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-typography-text',
-  standalone: true,
   imports: [NzTypographyModule],
   template: `
     <span nz-typography>Ant Design (default)</span>

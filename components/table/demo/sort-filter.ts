@@ -26,7 +26,6 @@ interface ColumnItem {
 
 @Component({
   selector: 'nz-demo-table-sort-filter',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">

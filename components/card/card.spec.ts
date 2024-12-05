@@ -2,7 +2,7 @@ import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -25,11 +25,9 @@ import { NzDemoCardTabsComponent } from './demo/tabs';
 describe('card', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()],
-      imports: [BidiModule, NzCardModule, NoopAnimationsModule],
+      providers: [provideNoopAnimations(), provideNzIconsTesting()],
       schemas: [NO_ERRORS_SCHEMA]
     });
-    TestBed.compileComponents();
   }));
   it('should basic work', () => {
     const fixture = TestBed.createComponent(NzDemoCardBasicComponent);
@@ -131,7 +129,6 @@ describe('card', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzCardModule],
   template: `
     <nz-card [nzSize]="size">
@@ -146,8 +143,7 @@ class TestCardSizeComponent {
 }
 
 @Component({
-  standalone: true,
-  imports: [NzCardModule],
+  imports: [BidiModule, NzCardModule],
   template: `
     <div [dir]="direction">
       <nz-card>
@@ -178,7 +174,7 @@ describe('card component', () => {
     TestBed.configureTestingModule({
       imports: [NzCardModule, NzCardModule],
       providers: [{ provide: NzConfigService, useValue: nzConfigServiceSpy }]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(NzCardComponent);
     component = fixture.componentInstance;

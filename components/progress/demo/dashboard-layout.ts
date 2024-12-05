@@ -4,7 +4,6 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 @Component({
   selector: 'nz-demo-progress-dashboard-layout',
-  standalone: true,
   imports: [NzProgressModule],
   template: `
     <nz-progress [nzPercent]="1" nzType="dashboard" [nzGapDegree]="90"></nz-progress>

@@ -110,7 +110,6 @@ describe('nz-segmented', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzSegmentedModule],
   template: `
     <nz-segmented

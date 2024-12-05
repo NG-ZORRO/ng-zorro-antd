@@ -18,8 +18,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Directive({
   selector: '[nzStringTemplateOutlet]',
-  exportAs: 'nzStringTemplateOutlet',
-  standalone: true
+  exportAs: 'nzStringTemplateOutlet'
 })
 export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges {
   private embeddedViewRef: EmbeddedViewRef<NzSafeAny> | null = null;

@@ -25,8 +25,7 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
-  template: '',
-  standalone: true
+  template: ''
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {

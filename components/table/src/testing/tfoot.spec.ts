@@ -49,7 +49,6 @@ describe('tfoot', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table [nzScroll]="{ x: scrollX, y: scrollY }">

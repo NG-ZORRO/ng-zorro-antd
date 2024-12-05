@@ -7,7 +7,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-menu-inline-collapsed',
-  standalone: true,
   imports: [NzButtonModule, NzIconModule, NzMenuModule, NzToolTipModule],
   template: `
     <div class="wrapper">

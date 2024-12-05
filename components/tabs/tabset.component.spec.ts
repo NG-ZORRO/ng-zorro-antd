@@ -877,7 +877,6 @@ describe('NzTabSet', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTabsModule],
   template: `
     <nz-tabset
@@ -927,7 +926,6 @@ class SimpleTabsTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTabsModule],
   template: `
     <nz-tabset [(nzSelectedIndex)]="selectedIndex" [nzDestroyInactiveTabPane]="destroyInactiveTabPane">
@@ -944,7 +942,6 @@ class SimpleTabsRenderingComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTabsModule],
   template: `
     <nz-tabset nzType="editable-card" [(nzSelectedIndex)]="selectedIndex" [nzAddIcon]="addTemplate">
@@ -972,7 +969,6 @@ class TemplateTabsTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTabsModule],
   template: `
     <nz-tabset
@@ -997,7 +993,6 @@ class DisableTabsTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTabsModule],
   template: `
     <nz-tabset
@@ -1027,7 +1022,6 @@ class DynamicTabsTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTabsModule],
   template: `
     <div style="width: 200px; height: 200px">
@@ -1065,7 +1059,6 @@ class ScrollableTabsTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [AsyncPipe, NzTabsModule],
   template: `
     <nz-tabset>
@@ -1094,7 +1087,6 @@ class AsyncTabsTestComponent implements OnInit {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTabsModule],
   template: `
     <nz-tabset>
@@ -1114,7 +1106,6 @@ class NestedTabsTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTabsModule],
   template: `
     <nz-tabset>
@@ -1136,7 +1127,6 @@ class TabSetWithIndirectDescendantTabsTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [RouterLink, RouterOutlet, NzTabsModule],
   template: `
     <nz-tabset nzLinkRouter (nzSelectedIndexChange)="handleSelection($event)">

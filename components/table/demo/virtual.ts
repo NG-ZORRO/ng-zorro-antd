@@ -14,7 +14,6 @@ export interface VirtualDataInterface {
 
 @Component({
   selector: 'nz-demo-table-virtual',
-  standalone: true,
   imports: [NzButtonModule, NzTableModule],
   template: `
     <button nz-button (click)="scrollToIndex(200)">Scroll To Index 200</button>

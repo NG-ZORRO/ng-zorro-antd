@@ -10,7 +10,6 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 @Component({
   selector: 'nz-demo-form-validate-static',
-  standalone: true,
   imports: [
     FormsModule,
     NzDatePickerModule,

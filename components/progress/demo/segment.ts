@@ -5,7 +5,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-progress-segment',
-  standalone: true,
   imports: [NzProgressModule, NzToolTipModule],
   template: `
     <nz-progress

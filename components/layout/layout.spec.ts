@@ -235,7 +235,6 @@ describe('nz-layout', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzLayoutModule],
   template: `
     <nz-layout>
@@ -272,7 +271,6 @@ export class NzLayoutCustomTriggerComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzLayoutModule],
   template: `
     <nz-layout>
@@ -299,7 +297,6 @@ export class NzLayoutSideComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzLayoutModule],
   template: `
     <nz-layout>
@@ -328,7 +325,6 @@ export class NzLayoutResponsiveComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzLayoutModule],
   selector: 'nz-test-layout-basic',
   template: `
@@ -369,7 +365,6 @@ export class NzLayoutResponsiveComponent {
 export class NzLayoutBasicComponent {}
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzLayoutBasicComponent],
   template: `
     <div [dir]="direction">

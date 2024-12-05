@@ -6,7 +6,6 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-customized-icon',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzTreeSelectModule],
   template: `
     <nz-tree-select

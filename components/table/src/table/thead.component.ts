@@ -45,8 +45,7 @@ import { NzTrDirective } from './tr.directive';
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     }
   `,
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {
   private destroy$ = new Subject<void>();

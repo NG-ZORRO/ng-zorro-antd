@@ -8,7 +8,6 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-space-basic',
-  standalone: true,
   imports: [NzButtonModule, NzIconModule, NzSpaceModule, NzPopconfirmModule, NzUploadModule],
   template: `
     <nz-space>

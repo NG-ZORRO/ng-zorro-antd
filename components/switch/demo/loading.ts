@@ -5,7 +5,6 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-switch-loading',
-  standalone: true,
   imports: [FormsModule, NzSwitchModule],
   template: `
     <nz-switch [ngModel]="true" nzLoading></nz-switch>

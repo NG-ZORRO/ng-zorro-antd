@@ -44,7 +44,6 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 @Component({
   selector: 'nz-affix',
   exportAs: 'nzAffix',
-  standalone: true,
   imports: [BidiModule, PlatformModule],
   template: `
     <div #fixedEl>

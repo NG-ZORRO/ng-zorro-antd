@@ -10,14 +10,14 @@ import {
   tick,
   waitForAsync
 } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NZ_DRAWER_DATA, NzDrawerPlacement } from 'ng-zorro-antd/drawer/drawer-options';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';
@@ -27,9 +27,10 @@ import { NzDrawerService } from './drawer.service';
 describe('NzDrawerComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NzIconTestModule]
-    }).compileComponents();
+      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+    });
   }));
+
   describe('default', () => {
     let component: NzTestDrawerComponent;
     let fixture: ComponentFixture<NzTestDrawerComponent>;
@@ -554,12 +555,10 @@ describe('NzDrawerComponent', () => {
       expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('');
       component.placement = 'top';
       fixture.detectChanges();
-      expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe(
-        'none 0s ease 0s'
-      );
+      expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('none');
       expect(
         (overlayContainerElement.querySelector('.ant-drawer-content-wrapper') as HTMLElement).style.transition
-      ).toBe('none 0s ease 0s');
+      ).toBe('none');
       component.placement = 'right';
       fixture.detectChanges();
       component.close();
@@ -683,8 +682,7 @@ describe('NzDrawerService', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      providers: [NzDrawerService]
+      providers: [NzDrawerService, provideNoopAnimations()]
     });
   }));
 
@@ -802,7 +800,6 @@ describe('NzDrawerService', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzDrawerModule, NzIconModule, NzNoAnimationDirective],
   template: `
     <button (click)="open()">Open</button>
@@ -882,7 +879,6 @@ class NzTestDrawerComponent {
 }
 
 @Component({
-  standalone: true,
   template: `
     <ng-template #drawerTemplate>
       <span>Template</span>
@@ -912,7 +908,6 @@ class NzTestDrawerWithServiceComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule],
   template: `
     <div>
@@ -933,7 +928,6 @@ export class NzDrawerCustomComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzDrawerModule],
   template: `
     <div [dir]="direction">

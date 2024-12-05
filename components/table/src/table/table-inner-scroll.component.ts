@@ -105,8 +105,7 @@ import { NzTbodyComponent } from './tbody.component';
     }
   `,
   host: { class: 'ant-table-container' },
-  imports: [NzTableContentComponent, ScrollingModule, NgTemplateOutlet, NzTbodyComponent],
-  standalone: true
+  imports: [NzTableContentComponent, ScrollingModule, NgTemplateOutlet, NzTbodyComponent]
 })
 export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {
   @Input() data: readonly T[] = [];

@@ -37,8 +37,7 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
       }
     </div>
   `,
-  imports: [NzMessageComponent],
-  standalone: true
+  imports: [NzMessageComponent]
 })
 export class NzMessageContainerComponent extends NzMNContainerComponent {
   dir: Direction = 'ltr';

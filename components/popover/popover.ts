@@ -37,8 +37,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popover';
   exportAs: 'nzPopover',
   host: {
     '[class.ant-popover-open]': 'visible'
-  },
-  standalone: true
+  }
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -124,8 +123,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  imports: [OverlayModule, NzOverlayModule, NzNoAnimationDirective, NzOutletModule],
-  standalone: true
+  imports: [OverlayModule, NzOverlayModule, NzNoAnimationDirective, NzOutletModule]
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   override _prefix = 'ant-popover';

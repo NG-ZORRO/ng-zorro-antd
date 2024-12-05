@@ -5,7 +5,6 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-locale',
-  standalone: true,
   imports: [NzButtonModule, NzModalModule],
   template: `
     <div>

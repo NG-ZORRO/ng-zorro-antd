@@ -9,7 +9,6 @@ import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
 
 @Component({
   selector: 'nz-demo-date-picker-basic',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzDatePickerModule],
   template: `
     <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>

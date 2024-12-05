@@ -8,7 +8,6 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 declare const monaco: any;
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzCodeEditorModule],
   template: `
     <nz-code-editor
@@ -40,7 +39,7 @@ describe('code editor', () => {
   //     TestBed.configureTestingModule({
   //       imports: [FormsModule, NzCodeEditorModule],
   //       declarations: [NzDemoCodeEditorBasicComponent]
-  //     }).compileComponents();
+  //     });
   //   }));
 
   //   beforeEach(() => {

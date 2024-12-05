@@ -117,8 +117,7 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
     '[class.ant-steps-next-error]': '(outStatus === "error") && (currentIndex === index + 1)'
   },
   providers: [NzDestroyService],
-  imports: [NzProgressModule, NzIconModule, NzOutletModule, NgTemplateOutlet],
-  standalone: true
+  imports: [NzProgressModule, NzIconModule, NzOutletModule, NgTemplateOutlet]
 })
 export class NzStepComponent implements OnInit {
   @ViewChild('processDotTemplate', { static: false }) processDotTemplate?: TemplateRef<void>;

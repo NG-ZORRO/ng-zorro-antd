@@ -6,7 +6,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-auto-complete-status',
   imports: [FormsModule, NzAutocompleteModule, NzInputModule, NzSpaceModule],
   encapsulation: ViewEncapsulation.None,

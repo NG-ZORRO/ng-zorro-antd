@@ -81,7 +81,6 @@ describe('water-mark', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzWaterMarkModule],
   template: `
     <nz-water-mark

@@ -5,7 +5,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'nz-demo-message-loading',
-  standalone: true,
   imports: [NzButtonModule],
   template: `<button nz-button nzType="default" (click)="createBasicMessage()">Display a loading indicator</button>`
 })

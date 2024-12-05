@@ -4,7 +4,6 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'nz-demo-table-bordered',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table #borderedTable nzBordered nzFooter="Footer" nzTitle="Header" [nzData]="dataSet">

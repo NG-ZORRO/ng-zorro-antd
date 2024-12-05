@@ -4,7 +4,6 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 @Component({
   selector: 'nz-demo-progress-step',
-  standalone: true,
   imports: [NzProgressModule],
   template: `
     <nz-progress [nzPercent]="50" [nzSteps]="3" nzStrokeColor="#1890ff"></nz-progress>

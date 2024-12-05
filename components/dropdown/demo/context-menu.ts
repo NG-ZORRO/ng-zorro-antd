@@ -4,7 +4,6 @@ import { NzContextMenuService, NzDropdownMenuComponent, NzDropDownModule } from 
 
 @Component({
   selector: 'nz-demo-dropdown-context-menu',
-  standalone: true,
   imports: [NzDropDownModule],
   template: `
     <div class="context-area" (contextmenu)="contextMenu($event, menu)">Right Click on here</div>

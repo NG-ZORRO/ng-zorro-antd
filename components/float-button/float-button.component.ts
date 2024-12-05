@@ -23,7 +23,6 @@ import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzFloatButtonContentComponent } from './float-button-content.component';
 
 @Component({
-  standalone: true,
   selector: 'nz-float-button',
   exportAs: 'nzFloatButton',
   imports: [NzButtonModule, NzFloatButtonContentComponent],

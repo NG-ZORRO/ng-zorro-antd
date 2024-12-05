@@ -180,8 +180,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     NgTemplateOutlet,
     NzNoAnimationDirective,
     NzTreeNodeBuiltinComponent
-  ],
-  standalone: true
+  ]
 })
 export class NzTreeComponent
   extends NzTreeBase

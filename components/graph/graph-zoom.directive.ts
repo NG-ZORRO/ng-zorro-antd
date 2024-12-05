@@ -27,8 +27,7 @@ import { NzZoomTransform, RelativePositionInfo } from './interface';
 
 @Directive({
   selector: '[nz-graph-zoom]',
-  exportAs: 'nzGraphZoom',
-  standalone: true
+  exportAs: 'nzGraphZoom'
 })
 export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
   @Input({ transform: numberAttributeWithOneFallback }) nzZoom?: number;

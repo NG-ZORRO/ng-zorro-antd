@@ -20,8 +20,6 @@ describe('Coverage supplements', () => {
     TestBed.configureTestingModule({
       imports: [LibPackerModule]
     });
-
-    TestBed.compileComponents();
   }));
 
   beforeEach(inject(

@@ -30,8 +30,7 @@ const RESPONSIVE_XS = 1120;
 const RESPONSIVE_SM = 1200;
 
 @Component({
-  standalone: true,
-  selector: 'app-header',
+    selector: 'app-header',
   templateUrl: './header.component.html',
   imports: [
     CommonModule,

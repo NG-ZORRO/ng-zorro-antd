@@ -6,7 +6,6 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
 @Component({
   selector: 'nz-demo-pipes-aggregate',
-  standalone: true,
   imports: [NzGridModule, NzStatisticModule, NzAggregatePipe],
   template: `
     <nz-row [nzGutter]="16">

@@ -305,7 +305,6 @@ describe('rate', () => {
 
 @Component({
   selector: 'nz-test-rate',
-  standalone: true,
   imports: [FormsModule, NzRateModule],
   template: `
     <nz-rate
@@ -339,7 +338,6 @@ export class NzTestRateBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzRateModule],
   template: `
     <form>
@@ -362,7 +360,6 @@ export class NzTestRateFormComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTestRateBasicComponent],
   template: `
     <div [dir]="direction">
@@ -377,7 +374,6 @@ export class NzTestRateRtlComponent {
 
 @Component({
   selector: 'nz-test-rate-character',
-  standalone: true,
   imports: [FormsModule, NzRateModule],
   template: `
     <nz-rate [(ngModel)]="value" [nzCharacter]="characterTpl"></nz-rate>

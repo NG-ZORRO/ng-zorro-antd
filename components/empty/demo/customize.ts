@@ -5,7 +5,6 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 @Component({
   selector: 'nz-demo-empty-customize',
-  standalone: true,
   imports: [NzButtonModule, NzEmptyModule],
   template: `
     <nz-empty

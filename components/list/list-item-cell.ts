@@ -29,8 +29,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   template: `<ng-content></ng-content>`,
   host: {
     class: 'ant-list-item-extra'
-  },
-  standalone: true
+  }
 })
 export class NzListItemExtraComponent {}
 
@@ -38,8 +37,7 @@ export class NzListItemExtraComponent {}
   selector: 'nz-list-item-action',
   exportAs: 'nzListItemAction',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-template><ng-content></ng-content></ng-template>`,
-  standalone: true
+  template: `<ng-template><ng-content></ng-content></ng-template>`
 })
 export class NzListItemActionComponent {
   @ViewChild(TemplateRef, { static: true }) templateRef?: TemplateRef<void>;
@@ -63,8 +61,7 @@ export class NzListItemActionComponent {
     class: 'ant-list-item-action'
   },
   providers: [NzDestroyService],
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzListItemActionsComponent implements OnChanges, AfterContentInit {
   @Input() nzActions: Array<TemplateRef<void>> = [];

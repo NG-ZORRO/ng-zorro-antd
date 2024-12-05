@@ -9,8 +9,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Directive({
   selector: '[nz-virtual-scroll]',
-  exportAs: 'nzVirtualScroll',
-  standalone: true
+  exportAs: 'nzVirtualScroll'
 })
 export class NzTableVirtualScrollDirective<T> {
   constructor(public templateRef: TemplateRef<{ $implicit: T; index: number }>) {}

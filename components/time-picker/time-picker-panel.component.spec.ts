@@ -339,7 +339,6 @@ describe('time-picker-panel', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerPanelComponent, FormsModule],
   template: `
     <nz-time-picker-panel
@@ -363,7 +362,6 @@ export class NzTestTimePanelComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerPanelComponent, FormsModule],
   template: `
     <nz-time-picker-panel
@@ -414,7 +412,6 @@ export class NzTestTimePanelDisabledComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerPanelComponent, FormsModule],
   template: `
     <nz-time-picker-panel
@@ -435,7 +432,6 @@ export class NzTest12HourTimePanelComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerPanelComponent, FormsModule],
   template: `
     <nz-time-picker-panel

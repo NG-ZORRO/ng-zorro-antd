@@ -5,7 +5,7 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import isBefore from 'date-fns/isBefore';
 
@@ -28,12 +28,8 @@ describe('NzMonthPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzInputModule],
-      providers: [],
-      declarations: [NzTestMonthPickerComponent]
+      providers: [provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -45,10 +41,6 @@ describe('NzMonthPickerComponent', () => {
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainerElement = oc.getContainerElement();
   }));
-
-  afterEach(() => {
-    // overlayContainer.ngOnDestroy();
-  });
 
   describe('general api testing', () => {
     beforeEach(() => (fixtureInstance.useSuite = 1));
@@ -413,6 +405,7 @@ describe('NzMonthPickerComponent', () => {
 });
 
 @Component({
+  imports: [FormsModule, NzDatePickerModule, NzInputModule],
   template: `
     <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
     @switch (useSuite) {

@@ -31,8 +31,7 @@ import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
     '[class.ant-tree-checkbox-indeterminate]': `nzIndeterminate`,
     '[class.ant-tree-checkbox-disabled]': `nzDisabled`
   },
-  providers: [NzDestroyService],
-  standalone: true
+  providers: [NzDestroyService]
 })
 export class NzTreeNodeCheckboxComponent implements OnInit {
   @Input({ transform: booleanAttribute }) nzChecked?: boolean;

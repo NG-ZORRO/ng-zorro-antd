@@ -5,7 +5,6 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-no-data',
-  standalone: true,
   imports: [NzSpinModule, NzTreeSelectModule],
   template: `
     <nz-tree-select

@@ -32,8 +32,7 @@ import { NzTreeNodeComponent } from './node';
     '[class.ant-tree-node-content-wrapper-open]': 'isExpanded',
     '[class.ant-tree-node-selected]': 'nzSelected'
   },
-  providers: [NzDestroyService],
-  standalone: true
+  providers: [NzDestroyService]
 })
 export class NzTreeNodeOptionComponent<T> implements OnChanges, OnInit {
   @Input({ transform: booleanAttribute }) nzSelected = false;

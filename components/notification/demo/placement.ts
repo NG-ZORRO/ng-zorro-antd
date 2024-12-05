@@ -7,7 +7,6 @@ import { NzNotificationPlacement, NzNotificationService } from 'ng-zorro-antd/no
 
 @Component({
   selector: 'nz-demo-notification-placement',
-  standalone: true,
   imports: [NzButtonModule, NzDividerModule, NzIconModule],
   template: `
     <button nz-button (click)="createNotification('top')" nzType="primary">

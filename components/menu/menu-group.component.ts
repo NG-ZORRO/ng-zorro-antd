@@ -50,8 +50,7 @@ export function MenuGroupFactory(): boolean {
     <ng-content></ng-content>
   `,
   preserveWhitespaces: false,
-  imports: [NzOutletModule],
-  standalone: true
+  imports: [NzOutletModule]
 })
 export class NzMenuGroupComponent implements AfterViewInit {
   @Input() nzTitle?: string | TemplateRef<void>;

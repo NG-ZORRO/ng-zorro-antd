@@ -24,8 +24,7 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
     '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
     '[class.ant-form-item-with-help]': 'withHelpClass'
   },
-  template: ` <ng-content></ng-content> `,
-  standalone: true
+  template: `<ng-content></ng-content>`
 })
 export class NzFormItemComponent implements OnDestroy, OnDestroy {
   status: NzFormControlStatusType = '';

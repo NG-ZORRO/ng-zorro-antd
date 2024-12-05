@@ -6,7 +6,6 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-menu-theme',
-  standalone: true,
   imports: [FormsModule, NzMenuModule, NzSwitchModule],
   template: `
     <nz-switch [(ngModel)]="theme">

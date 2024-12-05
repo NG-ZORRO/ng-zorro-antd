@@ -122,8 +122,7 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
     NzTreeNodeSwitcherComponent,
     NzTreeNodeBuiltinCheckboxComponent,
     NzTreeNodeTitleComponent
-  ],
-  standalone: true
+  ]
 })
 export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy {
   /**

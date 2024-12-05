@@ -4,7 +4,6 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 
 @Component({
   selector: 'nz-demo-timeline-color',
-  standalone: true,
   imports: [NzTimelineModule],
   template: `
     <nz-timeline>

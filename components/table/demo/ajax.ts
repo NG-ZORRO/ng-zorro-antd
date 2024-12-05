@@ -17,7 +17,6 @@ interface RandomUser {
 
 @Component({
   selector: 'nz-demo-table-ajax',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table

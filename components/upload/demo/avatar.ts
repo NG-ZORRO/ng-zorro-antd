@@ -7,7 +7,6 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-avatar',
-  standalone: true,
   imports: [NzIconModule, NzUploadModule],
   template: `
     <nz-upload

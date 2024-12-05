@@ -107,7 +107,6 @@ describe('NzPopover', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzPopoverModule],
   template: `
     <a #stringPopover nz-popover nzPopoverTitle="title-string" nzPopoverContent="content-string">Show</a>

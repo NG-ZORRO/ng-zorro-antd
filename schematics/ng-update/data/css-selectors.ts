@@ -6,5 +6,5 @@
 import { TargetVersion, VersionChanges, CssSelectorUpgradeData } from '@angular/cdk/schematics';
 
 export const cssSelectors: VersionChanges<CssSelectorUpgradeData> = {
-  [TargetVersion.V18]: []
+  [TargetVersion.V19]: []
 };

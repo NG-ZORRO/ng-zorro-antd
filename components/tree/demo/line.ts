@@ -4,7 +4,6 @@ import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-line',
-  standalone: true,
   imports: [NzTreeModule],
   template: `<nz-tree [nzData]="nodes" nzShowLine (nzClick)="nzEvent($event)"></nz-tree>`
 })

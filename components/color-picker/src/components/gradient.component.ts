@@ -12,7 +12,6 @@ import { generateColor } from '../util/util';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'color-gradient',
-  standalone: true,
   template: `
     <div
       class="ant-color-picker-gradient"
@@ -28,8 +27,6 @@ export class GradientComponent implements OnInit, OnChanges {
   @Input() type: HsbaColorType = 'hue';
 
   gradientColors: string = '';
-
-  constructor() {}
 
   ngOnInit(): void {
     this.useMemo();

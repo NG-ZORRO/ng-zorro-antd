@@ -422,7 +422,6 @@ describe('progress', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzProgressModule],
   template: `
     <nz-progress
@@ -455,7 +454,6 @@ export class NzTestProgressLineComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzProgressModule],
   template: `
     <nz-progress
@@ -481,7 +479,6 @@ export class NzTestProgressDashBoardComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzProgressModule],
   template: `
     <nz-progress
@@ -502,14 +499,12 @@ export class NzTestProgressCircleComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzProgressModule],
   template: ` <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>`
 })
 export class NzTestProgressCircleSuccessComponent {}
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzProgressModule],
   template: `
     <div [dir]="direction">

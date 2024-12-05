@@ -13,7 +13,6 @@ function alphabet(): string[] {
 
 @Component({
   selector: 'nz-demo-select-tags',
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select nzMode="tags" nzPlaceHolder="Tag Mode" [(ngModel)]="listOfTagOptions">

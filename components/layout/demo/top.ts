@@ -7,7 +7,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 @Component({
   selector: 'nz-demo-layout-top',
-  standalone: true,
   imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout>

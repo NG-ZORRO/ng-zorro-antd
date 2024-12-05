@@ -61,8 +61,7 @@ export interface NzTreeVirtualNodeData<T> {
     '[class.ant-tree-treenode-switcher-open]': 'isExpanded',
     '[class.ant-tree-treenode-switcher-close]': '!isExpanded'
   },
-  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective],
-  standalone: true
+  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective]
 })
 export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {
   indents: boolean[] = [];
@@ -128,16 +127,14 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
 
 @Directive({
   selector: '[nzTreeNodeDef]',
-  providers: [{ provide: CdkTreeNodeDef, useExisting: forwardRef(() => NzTreeNodeDefDirective) }],
-  standalone: true
+  providers: [{ provide: CdkTreeNodeDef, useExisting: forwardRef(() => NzTreeNodeDefDirective) }]
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
   @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
 }
 
 @Directive({
-  selector: '[nzTreeVirtualScrollNodeOutlet]',
-  standalone: true
+  selector: '[nzTreeVirtualScrollNodeOutlet]'
 })
 export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
   private _viewRef: EmbeddedViewRef<NzSafeAny> | null = null;

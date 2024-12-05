@@ -159,8 +159,7 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
     '[class.ant-descriptions-small]': 'nzSize === "small"',
     '[class.ant-descriptions-rtl]': 'dir === "rtl"'
   },
-  imports: [NzOutletModule, NgTemplateOutlet],
-  standalone: true
+  imports: [NzOutletModule, NgTemplateOutlet]
 })
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

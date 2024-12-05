@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
-  standalone: true,
-  selector: 'nz-highlight',
+    selector: 'nz-highlight',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <pre class="language-angular">

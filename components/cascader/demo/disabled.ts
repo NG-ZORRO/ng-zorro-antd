@@ -48,7 +48,6 @@ const options: NzCascaderOption[] = [
 
 @Component({
   selector: 'nz-demo-cascader-disabled',
-  standalone: true,
   imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)"></nz-cascader>

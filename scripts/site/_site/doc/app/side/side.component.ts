@@ -7,7 +7,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { RouterList } from '../types';
 
 @Component({
-  standalone: true,
   selector: 'app-side',
   imports: [RouterLink, NzMenuModule, NzTagModule],
   templateUrl: './side.component.html',

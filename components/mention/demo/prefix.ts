@@ -6,7 +6,6 @@ import { MentionOnSearchTypes, NzMentionModule } from 'ng-zorro-antd/mention';
 
 @Component({
   selector: 'nz-demo-mention-prefix',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="suggestions" (nzOnSearchChange)="onSearchChange($event)" [nzPrefix]="['#', '@']">

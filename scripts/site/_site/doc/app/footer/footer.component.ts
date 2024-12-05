@@ -5,8 +5,7 @@ import { FooterColComponent } from './footer-col.component';
 import { FooterItemComponent } from './footer-item.component';
 
 @Component({
-  standalone: true,
-  selector: 'app-footer',
+    selector: 'app-footer',
   imports: [NzColorPickerModule, FooterColComponent, FooterItemComponent],
   template: `
     <footer class="rc-footer rc-footer-dark">

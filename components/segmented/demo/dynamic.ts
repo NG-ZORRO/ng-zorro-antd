@@ -7,7 +7,6 @@ const defaultOptions = ['Daily', 'Weekly', 'Monthly'];
 
 @Component({
   selector: 'nz-demo-segmented-dynamic',
-  standalone: true,
   imports: [NzButtonModule, NzSegmentedModule],
   template: `
     <nz-segmented [nzOptions]="options"></nz-segmented>

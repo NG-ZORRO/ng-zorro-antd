@@ -5,7 +5,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-autosize-textarea',
-  standalone: true,
   imports: [FormsModule, NzInputModule],
   template: `
     <textarea nz-input placeholder="Autosize height based on content lines" nzAutosize></textarea>

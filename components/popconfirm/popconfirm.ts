@@ -46,8 +46,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popconfirm';
   exportAs: 'nzPopconfirm',
   host: {
     '[class.ant-popover-open]': 'visible'
-  },
-  standalone: true
+  }
 })
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -55,7 +54,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input({ alias: 'nzPopconfirmArrowPointAtCenter', transform: booleanAttribute })
   override arrowPointAtCenter?: boolean;
   @Input('nzPopconfirmTitle') override title?: NzTSType;
-  @Input('nzPopconfirmTitleContext') titleContext?: Object | null = null;
+  @Input('nzPopconfirmTitleContext') titleContext?: object | null = null;
   @Input('nz-popconfirm') override directiveTitle?: NzTSType | null;
   @Input('nzPopconfirmTrigger') override trigger?: NzTooltipTrigger = 'click';
   @Input('nzPopconfirmPlacement') override placement?: string | string[] = 'top';
@@ -219,8 +218,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     NzIconModule,
     NzButtonModule,
     NzI18nModule
-  ],
-  standalone: true
+  ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
   @ViewChildren('okBtn', { read: ElementRef }) okBtn!: QueryList<ElementRef>;

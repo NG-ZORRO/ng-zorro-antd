@@ -1686,7 +1686,6 @@ describe('select', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
@@ -1787,7 +1786,6 @@ export class TestSelectTemplateDefaultComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
@@ -1831,7 +1829,6 @@ export class TestSelectTemplateMultipleComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
@@ -1867,7 +1864,6 @@ export class TestSelectTemplateTagsComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
@@ -1937,7 +1933,6 @@ export class TestSelectReactiveDefaultComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
@@ -1973,7 +1968,6 @@ export class TestSelectReactiveMultipleComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
@@ -2001,7 +1995,6 @@ export class TestSelectReactiveTagsComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzSelectModule],
   template: `<nz-select [nzStatus]="status"></nz-select>`
 })
@@ -2010,7 +2003,6 @@ export class TestSelectStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzFormModule, NzSelectModule],
   template: `
     <form nz-form [formGroup]="selectForm">

@@ -271,8 +271,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     NzSelectPlaceholderComponent,
     NzSelectSearchComponent,
     NzCascaderOptionComponent
-  ],
-  standalone: true
+  ]
 })
 export class NzCascaderComponent
   extends NzTreeBase

@@ -8,7 +8,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-normal-login',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzCheckboxModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">

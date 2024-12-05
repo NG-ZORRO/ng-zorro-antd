@@ -15,8 +15,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
       <ng-content></ng-content>
     </h4>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzListItemMetaTitleComponent {}
 
@@ -28,8 +27,7 @@ export class NzListItemMetaTitleComponent {}
       <ng-content></ng-content>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzListItemMetaDescriptionComponent {}
 
@@ -46,8 +44,7 @@ export class NzListItemMetaDescriptionComponent {}
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzAvatarModule],
-  standalone: true
+  imports: [NzAvatarModule]
 })
 export class NzListItemMetaAvatarComponent {
   @Input() nzSrc?: string;

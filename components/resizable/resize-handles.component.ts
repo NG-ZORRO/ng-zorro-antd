@@ -45,8 +45,7 @@ function normalizeResizeHandleOptions(value: Array<NzResizeDirection | NzResizeH
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzResizeHandleComponent],
-  standalone: true
+  imports: [NzResizeHandleComponent]
 })
 export class NzResizeHandlesComponent implements OnChanges {
   @Input() nzDirections: Array<NzResizeDirection | NzResizeHandleOption> = DEFAULT_RESIZE_DIRECTION;

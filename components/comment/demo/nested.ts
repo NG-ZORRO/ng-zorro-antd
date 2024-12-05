@@ -6,7 +6,6 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
 
 @Component({
   selector: 'nz-demo-comment-nested',
-  standalone: true,
   imports: [NgTemplateOutlet, NzAvatarModule, NzCommentModule],
   template: `
     <ng-template #commentTemplateRef let-comment="comment">

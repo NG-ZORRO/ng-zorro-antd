@@ -4,7 +4,6 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
   selector: 'nz-demo-grid-responsive-more',
-  standalone: true,
   imports: [NzGridModule],
   template: `
     <div nz-row>

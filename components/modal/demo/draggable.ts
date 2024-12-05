@@ -5,7 +5,6 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-draggable',
-  standalone: true,
   imports: [NzButtonModule, NzModalModule],
   template: `
     <button nz-button nzType="default" (click)="showModal()">

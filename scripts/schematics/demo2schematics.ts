@@ -39,6 +39,7 @@ describe('<%= classify(name) %>Component', () => {
       declarations: [ <%= classify(name) %>Component ]
     })
     .compileComponents();
+    ;
 
     fixture = TestBed.createComponent(<%= classify(name) %>Component);
     component = fixture.componentInstance;

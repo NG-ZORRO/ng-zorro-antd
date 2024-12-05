@@ -15,7 +15,6 @@ export interface TreeNodeInterface {
 
 @Component({
   selector: 'nz-demo-table-expand-children',
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table #expandTable [nzData]="listOfMapData" nzTableLayout="fixed">

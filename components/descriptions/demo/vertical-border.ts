@@ -5,7 +5,6 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 @Component({
   selector: 'nz-demo-descriptions-vertical-border',
-  standalone: true,
   imports: [NzBadgeModule, NzDescriptionsModule],
   template: `
     <nz-descriptions nzTitle="User Info" nzBordered nzLayout="vertical">

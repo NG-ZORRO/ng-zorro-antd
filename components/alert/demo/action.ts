@@ -5,7 +5,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-alert-action',
   imports: [NzAlertModule, NzButtonModule, NzSpaceModule],
   template: `

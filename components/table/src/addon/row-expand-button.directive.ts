@@ -14,15 +14,12 @@ import { Directive, EventEmitter, Input, Output } from '@angular/core';
     '[class.ant-table-row-expand-icon-collapsed]': `!spaceMode && expand === false`,
     '[class.ant-table-row-expand-icon-spaced]': 'spaceMode',
     '(click)': 'onHostClick()'
-  },
-  standalone: true
+  }
 })
 export class NzRowExpandButtonDirective {
   @Input() expand = false;
   @Input() spaceMode = false;
   @Output() readonly expandChange = new EventEmitter();
-
-  constructor() {}
 
   onHostClick(): void {
     if (!this.spaceMode) {

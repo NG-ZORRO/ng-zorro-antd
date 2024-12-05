@@ -7,7 +7,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-collapse-extra',
-  standalone: true,
   imports: [FormsModule, NzCollapseModule, NzIconModule, NzSelectModule],
   template: `
     <nz-collapse [nzExpandIconPosition]="expandIconPosition">

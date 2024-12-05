@@ -611,7 +611,6 @@ describe('input number', () => {
   });
 });
 @Component({
-  standalone: true,
   imports: [FormsModule, NzInputNumberLegacyModule],
   template: `
     <nz-input-number
@@ -651,7 +650,6 @@ export class NzTestInputNumberBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputNumberLegacyModule],
   template: `<nz-input-number [nzReadOnly]="readonly"></nz-input-number>`
 })
@@ -661,7 +659,6 @@ export class NzTestReadOnlyInputNumberBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzInputNumberLegacyModule],
   template: `
     <form>
@@ -683,7 +680,6 @@ export class NzTestInputNumberFormComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputNumberLegacyModule],
   template: `<nz-input-number [nzStatus]="status"></nz-input-number>`
 })
@@ -692,7 +688,6 @@ export class NzTestInputNumberStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzFormModule, NzInputNumberLegacyModule],
   template: `
     <form nz-form>

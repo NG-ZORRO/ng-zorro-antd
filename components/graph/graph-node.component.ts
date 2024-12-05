@@ -50,8 +50,7 @@ interface Info {
     '[class.nz-graph-group-node]': 'node.type===0',
     '[class.nz-graph-base-node]': 'node.type===1'
   },
-  imports: [NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzGraphNodeComponent implements OnInit, OnDestroy {
   @Input() node!: NzGraphNode | NzGraphGroupNode;

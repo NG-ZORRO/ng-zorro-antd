@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: 'nz-demo-float-button-description',
+  imports: [NzFloatButtonModule, NzIconModule],
   template: `
     <div class="description">
       <nz-float-button
@@ -15,7 +19,7 @@ import { Component } from '@angular/core';
     <ng-template #description>HELP</ng-template>
 
     <ng-template #icon>
-      <span nz-icon nzType="file-text" nzTheme="outline"></span>
+      <nz-icon nzType="file-text" nzTheme="outline"></nz-icon>
     </ng-template>
   `,
   styles: [

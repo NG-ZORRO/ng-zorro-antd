@@ -12,7 +12,6 @@ interface AutocompleteOptionGroups {
 }
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-auto-complete-certain-category',
   imports: [FormsModule, NzAutocompleteModule, NzIconModule, NzInputModule],
   encapsulation: ViewEncapsulation.None,

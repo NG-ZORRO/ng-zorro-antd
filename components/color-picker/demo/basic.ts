@@ -4,7 +4,6 @@ import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 
 @Component({
   selector: 'nz-demo-color-picker-basic',
-  standalone: true,
   imports: [NzColorPickerModule],
   template: `<nz-color-picker></nz-color-picker>`
 })

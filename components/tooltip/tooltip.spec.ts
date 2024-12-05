@@ -359,7 +359,6 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
 }
 
 @Component({
-  standalone: true,
   imports: [NzToolTipModule],
   template: `
     <a
@@ -443,7 +442,6 @@ export class NzTooltipTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzElementPatchModule, NzToolTipModule],
   template: `
     <button nz-element #button="nzElement">Action</button>
@@ -455,7 +453,6 @@ export class NzTestTooltipTargetComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzToolTipModule],
   template: `
     <a

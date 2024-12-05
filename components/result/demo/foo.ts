@@ -5,7 +5,6 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 
 @Component({
   selector: 'nz-demo-result-foo',
-  standalone: true,
   imports: [NzButtonModule, NzResultModule],
   template: `
     <nz-result nzStatus="500" nzTitle="500" nzSubTitle="Sorry, there is an error on server.">

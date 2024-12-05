@@ -22,8 +22,7 @@ import { loadScript } from '../utils/load-script';
 declare const docsearch: any;
 
 @Component({
-  standalone: true,
-  selector: 'div[app-searchbar]',
+    selector: 'div[app-searchbar]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzIconModule, NzInputModule],
   template: `

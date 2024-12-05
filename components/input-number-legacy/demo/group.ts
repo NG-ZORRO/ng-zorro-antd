@@ -11,7 +11,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-input-number-legacy-group',
-  standalone: true,
   imports: [
     FormsModule,
     NzButtonModule,

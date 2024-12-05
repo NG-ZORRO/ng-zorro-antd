@@ -21,8 +21,7 @@ import { ChangeDetectionStrategy, Component, Input, booleanAttribute } from '@an
     '[class.ant-tree-checkbox-checked]': `!nzSelectMode && isChecked`,
     '[class.ant-tree-checkbox-indeterminate]': `!nzSelectMode && isHalfChecked`,
     '[class.ant-tree-checkbox-disabled]': `!nzSelectMode && (isDisabled || isDisableCheckbox)`
-  },
-  standalone: true
+  }
 })
 export class NzTreeNodeBuiltinCheckboxComponent {
   @Input() nzSelectMode = false;

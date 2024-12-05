@@ -16,7 +16,6 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-space-compact',
-  standalone: true,
   imports: [
     NzSpaceModule,
     NzButtonModule,

@@ -10,7 +10,6 @@ type HandlerSize = 'default' | 'small';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'color-handler',
-  standalone: true,
   template: `
     <div
       class="ant-color-picker-handler"

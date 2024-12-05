@@ -20,7 +20,7 @@ describe('NzPageHeaderComponent', () => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
       providers: [provideNzIconsTesting()]
-    }).compileComponents();
+    });
     location = TestBed.inject(Location);
   }));
 
@@ -153,7 +153,6 @@ describe('NzPageHeaderComponent', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzDemoPageHeaderBasicComponent],
   template: `
     <div [dir]="direction">

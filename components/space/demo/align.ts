@@ -5,7 +5,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-space-align',
-  standalone: true,
   imports: [NzButtonModule, NzSpaceModule],
   template: `
     <div class="space-align-container">

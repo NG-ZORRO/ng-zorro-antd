@@ -10,7 +10,6 @@ import en_US from './languages/en_US';
 import ka_GE from './languages/ka_GE';
 import zh_CN from './languages/zh_CN';
 import { NzI18nInterface } from './nz-i18n.interface';
-import { NzI18nModule } from './nz-i18n.module';
 import { NzI18nService } from './nz-i18n.service';
 
 describe('i18n service', () => {
@@ -21,10 +20,8 @@ describe('i18n service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [NzI18nTestComponent],
-      imports: [NzI18nModule],
       providers: [provideNzI18n(DEFAULT_LAN)]
-    }).compileComponents();
+    });
   });
 
   describe('#setLocale', () => {

@@ -12,7 +12,6 @@ import { Directive } from '@angular/core';
     '[style.background]': '"transparent"',
     '[style.padding]': '"0"',
     '[style.line-height]': '"inherit"'
-  },
-  standalone: true
+  }
 })
 export class NzTransButtonDirective {}

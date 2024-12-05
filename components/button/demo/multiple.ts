@@ -6,7 +6,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-button-multiple',
-  standalone: true,
   imports: [NzButtonModule, NzDropDownModule, NzIconModule],
   template: `
     <button nz-button nzType="primary">primary</button>

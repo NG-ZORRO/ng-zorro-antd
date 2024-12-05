@@ -288,7 +288,6 @@ describe('anchor', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule],
   template: `
     <button
@@ -319,7 +318,6 @@ export class TestButtonComponent {
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading">
@@ -338,7 +336,6 @@ export class TestButtonBindingComponent {
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/3079
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button>
@@ -355,7 +352,6 @@ export class TestButtonWithIconComponent implements OnInit {
 }
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button>
@@ -366,7 +362,6 @@ export class TestButtonWithIconComponent implements OnInit {
 export class TestButtonIconOnlyComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button>
@@ -377,7 +372,6 @@ export class TestButtonIconOnlyComponent {}
 export class TestButtonIconOnlyWithAnyTagComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button>
@@ -389,7 +383,6 @@ export class TestButtonIconOnlyWithAnyTagComponent {}
 export class TestButtonIconOnlyWithCommentComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button>
@@ -401,7 +394,6 @@ export class TestButtonIconOnlyWithCommentComponent {}
 export class TestButtonIconOnlyWithTextComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule],
   template: `
     <button nz-button>
@@ -412,7 +404,6 @@ export class TestButtonIconOnlyWithTextComponent {}
 export class TestButtonIconOnlyWithoutIconComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button nzLoading>
@@ -423,7 +414,6 @@ export class TestButtonIconOnlyWithoutIconComponent {}
 export class TestButtonIconOnlyLoadingComponent {}
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzButtonModule],
   template: `
     <div [dir]="direction">
@@ -449,7 +439,6 @@ export class TestButtonRtlComponent extends TestButtonComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule],
   template: '<a nz-button [disabled]="disabled">anchor</a>'
 })

@@ -7,7 +7,6 @@ import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-search',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzInputModule, NzTreeModule],
   template: `
     <nz-input-group [nzSuffix]="suffixIcon">

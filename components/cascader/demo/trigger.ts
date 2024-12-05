@@ -47,7 +47,6 @@ const options: NzCascaderOption[] = [
 
 @Component({
   selector: 'nz-demo-cascader-trigger',
-  standalone: true,
   imports: [FormsModule, NzCascaderModule],
   template: `
     {{ text }}

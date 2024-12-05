@@ -6,7 +6,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-drawer-size',
-  standalone: true,
   imports: [NzButtonModule, NzDrawerModule, NzSpaceModule],
   template: `
     <nz-space>

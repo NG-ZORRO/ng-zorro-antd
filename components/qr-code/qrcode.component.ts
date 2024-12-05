@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -76,8 +76,7 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
     class: 'ant-qrcode',
     '[class.ant-qrcode-border]': `nzBordered`
   },
-  imports: [NzSpinModule, NzButtonModule, NzIconModule, NgTemplateOutlet, NzStringTemplateOutletDirective],
-  standalone: true
+  imports: [NzSpinModule, NzButtonModule, NzIconModule, NzStringTemplateOutletDirective]
 })
 export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;

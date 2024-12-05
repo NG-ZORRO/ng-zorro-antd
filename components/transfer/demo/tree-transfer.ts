@@ -6,7 +6,6 @@ import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-transfer-tree-transfer',
-  standalone: true,
   imports: [NzTransferModule, NzTreeModule],
   template: `
     <nz-transfer

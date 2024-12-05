@@ -5,7 +5,6 @@ import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-custom-item',
-  standalone: true,
   imports: [NzIconModule, NzTransferModule],
   template: `
     <nz-transfer

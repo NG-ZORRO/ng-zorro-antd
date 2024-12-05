@@ -7,7 +7,6 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-slide',
-  standalone: true,
   imports: [FormsModule, NzInputNumberModule, NzRadioModule, NzTabsModule],
   template: `
     <nz-radio-group [(ngModel)]="nzTabPosition" style="margin-bottom: 8px;">

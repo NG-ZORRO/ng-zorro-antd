@@ -6,7 +6,6 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 
 @Component({
   selector: 'nz-demo-mention-readonly',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="suggestions" style="margin-bottom: 8px">

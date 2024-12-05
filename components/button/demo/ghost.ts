@@ -4,7 +4,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'nz-demo-button-ghost',
-  standalone: true,
   imports: [NzButtonModule],
   template: `
     <div class="ghost-background">

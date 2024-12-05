@@ -145,8 +145,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
       }
     </ng-template>
   `,
-  imports: [InnerPopupComponent, NgTemplateOutlet, CalendarFooterComponent],
-  standalone: true
+  imports: [InnerPopupComponent, NgTemplateOutlet, CalendarFooterComponent]
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input({ transform: booleanAttribute }) isRange!: boolean;

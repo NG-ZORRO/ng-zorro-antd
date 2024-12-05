@@ -7,7 +7,6 @@ import {
   AfterContentChecked,
   ChangeDetectorRef,
   Directive,
-  ElementRef,
   Input,
   NgZone,
   OnChanges,
@@ -33,8 +32,7 @@ import { NzIconPatchService, NzIconService } from './icon.service';
   exportAs: 'nzIcon',
   host: {
     '[class.anticon]': 'true'
-  },
-  standalone: true
+  }
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
   cacheClassName: string | null = null;
@@ -76,18 +74,17 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   constructor(
     private readonly ngZone: NgZone,
     private readonly changeDetectorRef: ChangeDetectorRef,
-    elementRef: ElementRef,
     public readonly iconService: NzIconService,
     public readonly renderer: Renderer2
   ) {
-    super(iconService, elementRef, renderer);
+    super(iconService);
 
     const iconPatch = inject(NzIconPatchService, { optional: true });
     if (iconPatch) {
       iconPatch.doPatch();
     }
 
-    this.el = elementRef.nativeElement;
+    this.el = this._elementRef.nativeElement;
   }
 
   override ngOnChanges(changes: SimpleChanges): void {

@@ -53,8 +53,8 @@ declare global {
 }
 
 interface AntdIconClassifier {
-  load: Function;
-  predict: Function;
+  load: () => Promise<void>;
+  predict: (element: HTMLElement) => Result[];
 }
 
 interface Result {
@@ -314,7 +314,6 @@ declare const locale: NzSafeAny;
 
 @Component({
   selector: 'nz-page-demo-icon',
-  standalone: true,
   imports: [
     FormsModule,
     NzBadgeModule,
@@ -734,7 +733,6 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
 @Component({
   selector: 'nz-page-demo-icon-copied-code',
-  standalone: true,
   template: `
     <ng-template #templateRef>
       <span>

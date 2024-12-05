@@ -4,7 +4,6 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-affix-basic',
   imports: [NzAffixModule, NzButtonModule],
   template: `

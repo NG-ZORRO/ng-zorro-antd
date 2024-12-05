@@ -4,7 +4,6 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 @Component({
   selector: 'nz-demo-pagination-jump',
-  standalone: true,
   imports: [NzPaginationModule],
   template: `
     <nz-pagination [nzPageIndex]="2" [nzTotal]="500" nzShowQuickJumper></nz-pagination>

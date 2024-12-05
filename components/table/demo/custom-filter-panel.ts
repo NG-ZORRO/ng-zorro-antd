@@ -14,7 +14,6 @@ interface DataItem {
 }
 @Component({
   selector: 'nz-demo-table-custom-filter-panel',
-  standalone: true,
   imports: [FormsModule, NzButtonModule, NzDropDownModule, NzIconModule, NzInputModule, NzTableModule],
   template: `
     <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">

@@ -25,7 +25,6 @@ interface ColumnItem {
 
 @Component({
   selector: 'nz-demo-table-reset-filter',
-  standalone: true,
   imports: [NzButtonModule, NzTableModule],
   template: `
     <div class="table-operations">

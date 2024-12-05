@@ -5,7 +5,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-border-less',
-  standalone: true,
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select ngModel="lucy" nzBorderless>

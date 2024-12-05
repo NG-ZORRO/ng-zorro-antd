@@ -5,7 +5,6 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 
 @Component({
   selector: 'nz-demo-page-header-breadcrumb',
-  standalone: true,
   imports: [NzBreadCrumbModule, NzPageHeaderModule],
   template: `
     <nz-page-header nzTitle="Title" nzSubtitle="This is a subtitle">

@@ -9,7 +9,6 @@ declare const monaco: any;
 
 @Component({
   selector: 'nz-demo-code-editor-full-control',
-  standalone: true,
   imports: [NzCodeEditorModule],
   template: `
     <nz-code-editor class="editor" [nzFullControl]="true" (nzEditorInitialized)="onEditorInit($event)"></nz-code-editor>

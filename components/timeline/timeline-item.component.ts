@@ -61,8 +61,7 @@ function isDefaultColor(color?: string): boolean {
       </li>
     </ng-template>
   `,
-  imports: [NzOutletModule],
-  standalone: true
+  imports: [NzOutletModule]
 })
 export class NzTimelineItemComponent implements OnChanges {
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;

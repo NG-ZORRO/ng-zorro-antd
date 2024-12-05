@@ -42,8 +42,7 @@ import { NzTableStyleService } from '../table-style.service';
       <ng-content></ng-content>
     </ng-template>
   `,
-  imports: [AsyncPipe, NgTemplateOutlet],
-  standalone: true
+  imports: [AsyncPipe, NgTemplateOutlet]
 })
 export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('tdElement', { static: true }) tdElement!: ElementRef;

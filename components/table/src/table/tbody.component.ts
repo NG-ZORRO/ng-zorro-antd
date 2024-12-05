@@ -42,8 +42,7 @@ import { NzTrMeasureComponent } from './tr-measure.component';
   host: {
     '[class.ant-table-tbody]': 'isInsideTable'
   },
-  imports: [AsyncPipe, NzTrMeasureComponent, NzTableFixedRowComponent, NzEmptyModule],
-  standalone: true
+  imports: [AsyncPipe, NzTrMeasureComponent, NzTableFixedRowComponent, NzEmptyModule]
 })
 export class NzTbodyComponent implements OnDestroy {
   isInsideTable = false;

@@ -25,8 +25,7 @@ export type NzButtonGroupSize = 'large' | 'default' | 'small';
     '[class.ant-btn-group-rtl]': `dir === 'rtl'`
   },
   preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `,
-  standalone: true
+  template: `<ng-content></ng-content>`
 })
 export class NzButtonGroupComponent implements OnDestroy, OnInit {
   @Input() nzSize: NzButtonGroupSize = 'default';
@@ -36,6 +35,7 @@ export class NzButtonGroupComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject<void>();
 
   constructor(private directionality: Directionality) {}
+
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

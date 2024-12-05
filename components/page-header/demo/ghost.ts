@@ -7,7 +7,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-page-header-ghost',
-  standalone: true,
   imports: [NzButtonModule, NzDescriptionsModule, NzPageHeaderModule, NzSpaceModule],
   template: `
     <nz-page-header nzBackIcon [nzGhost]="false">

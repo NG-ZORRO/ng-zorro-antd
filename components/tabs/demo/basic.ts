@@ -4,7 +4,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-basic',
-  standalone: true,
   imports: [NzTabsModule],
   template: `
     <nz-tabset>

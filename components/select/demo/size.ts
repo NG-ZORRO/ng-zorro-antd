@@ -14,7 +14,6 @@ function alphabet(): string[] {
 
 @Component({
   selector: 'nz-demo-select-size',
-  standalone: true,
   imports: [FormsModule, NzSelectModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="size">

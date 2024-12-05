@@ -82,8 +82,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     '[class.ant-table-column-sort]': `sortOrder === 'descend' || sortOrder === 'ascend'`
   },
   providers: [NzDestroyService],
-  imports: [NzTableFilterComponent, NgTemplateOutlet, NzTableSortersComponent],
-  standalone: true
+  imports: [NzTableFilterComponent, NgTemplateOutlet, NzTableSortersComponent]
 })
 export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

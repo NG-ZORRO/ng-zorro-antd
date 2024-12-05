@@ -15,8 +15,7 @@ import { PanelSelector } from './interface';
   selector: 'decade-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'decadeHeader',
   templateUrl: './abstract-panel-header.html',
-  standalone: true
-})
+  })
 export class DecadeHeaderComponent extends AbstractPanelHeader {
   override previous(): void {
   }

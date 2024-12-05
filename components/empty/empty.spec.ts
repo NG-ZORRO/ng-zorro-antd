@@ -122,7 +122,6 @@ describe('nz-empty', () => {
 
     describe('service method', () => {
       beforeEach(() => {
-        TestBed.configureTestingModule({}).compileComponents();
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
         testComponent = fixture.debugElement.componentInstance;
       });
@@ -232,7 +231,7 @@ describe('nz-empty', () => {
               }
             }
           ]
-        }).compileComponents();
+        });
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
         testComponent = fixture.debugElement.componentInstance;
       });
@@ -262,7 +261,6 @@ describe('nz-empty', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzEmptyModule],
   template: `
     <nz-empty [nzNotFoundImage]="image" [nzNotFoundContent]="content" [nzNotFoundFooter]="footer">
@@ -283,7 +281,6 @@ export class NzEmptyTestBasicComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzListModule],
   template: `
     <nz-list [nzDataSource]="[]" [nzNoResult]="noResult"></nz-list>
@@ -309,7 +306,6 @@ export class NzEmptyTestServiceComponent {
 }
 
 @Component({
-  standalone: true,
   selector: 'nz-empty-test-custom',
   template: `<div>I'm in component {{ name }}</div>`
 })

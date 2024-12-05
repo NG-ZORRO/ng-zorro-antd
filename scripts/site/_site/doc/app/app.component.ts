@@ -43,8 +43,7 @@ const defaultKeywords =
   'angular, ant design, ant, angular ant design, web, ui, components, ng, zorro, responsive, typescript, css, mobile web, open source, 组件库, 组件, UI 框架';
 
 @Component({
-  standalone: true,
-  selector: 'app-root',
+    selector: 'app-root',
   imports: [
     CommonModule,
     RouterModule,

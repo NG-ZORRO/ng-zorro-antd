@@ -104,8 +104,7 @@ const ExceptionStatus = ['404', '500', '403'];
     NzResultNotFoundComponent,
     NzResultServerErrorComponent,
     NzResultUnauthorizedComponent
-  ],
-  standalone: true
+  ]
 })
 export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzIcon?: string | TemplateRef<void>;

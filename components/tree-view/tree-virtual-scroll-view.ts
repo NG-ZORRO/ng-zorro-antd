@@ -61,8 +61,7 @@ const DEFAULT_SIZE = 28;
     NzTreeNodeOutletDirective,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll
-  ],
-  standalone: true
+  ]
 })
 export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implements OnChanges {
   @ViewChild(NzTreeNodeOutletDirective, { static: true }) readonly nodeOutlet!: NzTreeNodeOutletDirective;

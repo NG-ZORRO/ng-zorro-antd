@@ -10,8 +10,7 @@ import { Directive, ElementRef } from '@angular/core';
   exportAs: 'nzMenuDivider',
   host: {
     class: 'ant-dropdown-menu-item-divider'
-  },
-  standalone: true
+  }
 })
 export class NzMenuDividerDirective {
   constructor(public elementRef: ElementRef) {}

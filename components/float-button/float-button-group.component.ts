@@ -27,7 +27,6 @@ import { NzFloatButtonTopComponent } from './float-button-top.component';
 import { NzFloatButtonComponent } from './float-button.component';
 
 @Component({
-  standalone: true,
   selector: 'nz-float-button-group',
   exportAs: 'nzFloatButtonGroup',
   imports: [NzFloatButtonComponent, NzIconModule],

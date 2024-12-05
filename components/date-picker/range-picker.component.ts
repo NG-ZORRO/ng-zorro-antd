@@ -9,8 +9,7 @@ import { NzDatePickerComponent } from './date-picker.component';
 
 @Directive({
   selector: 'nz-range-picker',
-  exportAs: 'nzRangePicker',
-  standalone: true
+  exportAs: 'nzRangePicker'
 })
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class NzRangePickerComponent {

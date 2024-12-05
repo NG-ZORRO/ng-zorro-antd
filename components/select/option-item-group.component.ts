@@ -16,11 +16,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   host: {
     class: 'ant-select-item ant-select-item-group'
   },
-  imports: [NzOutletModule],
-  standalone: true
+  imports: [NzOutletModule]
 })
 export class NzOptionItemGroupComponent {
   @Input() nzLabel: string | number | TemplateRef<NzSafeAny> | null = null;
-
-  constructor() {}
 }

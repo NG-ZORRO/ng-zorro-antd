@@ -12,8 +12,7 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
   selector: '[nzOverflowItem]',
   host: {
     '[style]': 'overflowStyle'
-  },
-  standalone: true
+  }
 })
 export class NzOverflowItemDirective {
   overflowStyle: { [key: string]: string | number | undefined } | undefined = undefined;

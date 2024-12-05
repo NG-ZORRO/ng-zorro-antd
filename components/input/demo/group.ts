@@ -10,7 +10,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-input-group',
-  standalone: true,
   imports: [
     FormsModule,
     NzCascaderModule,

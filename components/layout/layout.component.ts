@@ -21,16 +21,15 @@ import { NzSiderComponent } from './sider.component';
 @Component({
   selector: 'nz-layout',
   exportAs: 'nzLayout',
+  template: `<ng-content></ng-content>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-layout',
     '[class.ant-layout-rtl]': `dir === 'rtl'`,
     '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0'
-  },
-  standalone: true
+  }
 })
 export class NzLayoutComponent implements OnDestroy, OnInit {
   @ContentChildren(NzSiderComponent) listOfNzSiderComponent!: QueryList<NzSiderComponent>;

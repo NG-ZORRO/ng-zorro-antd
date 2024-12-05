@@ -6,7 +6,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-image-placeholder',
-  standalone: true,
   imports: [NzButtonModule, NzImageModule, NzSpaceModule],
   template: `
     <nz-space [nzSize]="12">

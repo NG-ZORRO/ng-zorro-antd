@@ -538,7 +538,6 @@ describe('change detection behavior', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTypographyModule],
   template: `
     <h1 nz-typography>h1. Ant Design</h1>
@@ -563,7 +562,6 @@ describe('change detection behavior', () => {
 export class NzTestTypographyComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzTypographyModule],
   template: `
     <h4 nz-title nzCopyable class="test-copy-h4" nzContent="Ant Design-0" (nzCopy)="onCopy($event)"></h4>
@@ -590,7 +588,6 @@ export class NzTestTypographyCopyComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTypographyModule],
   template: `
     <p
@@ -615,7 +612,6 @@ export class NzTestTypographyEditComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTypographyModule],
   template: `
     <p nz-paragraph nzEllipsis [nzExpandable]="expandable" (nzExpandChange)="onExpand()" class="single">

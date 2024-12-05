@@ -12,7 +12,6 @@ import { NZ_SPACE_COMPACT_ITEMS, NZ_SPACE_COMPACT_SIZE } from './space-compact.t
 @Component({
   selector: 'nz-space-compact',
   exportAs: 'nzSpaceCompact',
-  standalone: true,
   template: `<ng-content></ng-content>`,
   host: {
     class: 'ant-space-compact',

@@ -5,7 +5,6 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 @Component({
   selector: 'nz-demo-steps-progress-dot',
-  standalone: true,
   imports: [NzDividerModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1" nzProgressDot>

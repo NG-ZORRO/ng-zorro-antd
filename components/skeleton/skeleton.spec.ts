@@ -213,7 +213,6 @@ describe('skeleton element', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzSkeletonModule],
   template: `
     <nz-skeleton
@@ -234,7 +233,6 @@ export class NzTestSkeletonComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzSkeletonModule],
   template: `
     @switch (useSuite) {

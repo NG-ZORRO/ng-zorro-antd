@@ -4,7 +4,6 @@ import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
 
 @Component({
   selector: 'nz-demo-hash-code-copy',
-  standalone: true,
   imports: [NzHashCodeModule],
   template: `<nz-hash-code [nzValue]="value" (nzOnCopy)="getCopy($event)"></nz-hash-code>`
 })

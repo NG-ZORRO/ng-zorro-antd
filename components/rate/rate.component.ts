@@ -82,8 +82,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       multi: true
     }
   ],
-  imports: [NzToolTipModule, NzRateItemComponent, NzToolTipModule],
-  standalone: true
+  imports: [NzToolTipModule, NzRateItemComponent, NzToolTipModule]
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;

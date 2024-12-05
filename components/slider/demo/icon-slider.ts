@@ -6,7 +6,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-icon-slider',
-  standalone: true,
   imports: [FormsModule, NzIconModule, NzSliderModule],
   template: `
     <div class="icon-wrapper test-class">

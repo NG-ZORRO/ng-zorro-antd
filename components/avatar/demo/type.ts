@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-avatar-type',
   imports: [NzAvatarModule],
   template: `

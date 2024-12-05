@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzDividerComponent } from './divider.component';
 import { NzDividerModule } from './divider.module';
@@ -15,8 +15,8 @@ describe('divider', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzIconTestModule]
-    }).compileComponents();
+      providers: [provideNzIconsTesting()]
+    });
     fixture = TestBed.createComponent(TestDividerComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -89,7 +89,6 @@ describe('divider', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzDividerModule],
   template: `
     <nz-divider
@@ -110,7 +109,6 @@ class TestDividerComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzDividerModule, NzIconModule],
   template: `
     <nz-divider nzDashed [nzText]="text">

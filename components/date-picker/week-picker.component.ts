@@ -9,8 +9,7 @@ import { NzDatePickerComponent } from './date-picker.component';
 
 @Directive({
   selector: 'nz-week-picker',
-  exportAs: 'nzWeekPicker',
-  standalone: true
+  exportAs: 'nzWeekPicker'
 })
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class NzWeekPickerComponent {

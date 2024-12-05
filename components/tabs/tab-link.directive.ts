@@ -13,8 +13,7 @@ import { TabTemplateContext } from './interfaces';
  */
 @Directive({
   selector: 'ng-template[nzTabLink]',
-  exportAs: 'nzTabLinkTemplate',
-  standalone: true
+  exportAs: 'nzTabLinkTemplate'
 })
 export class NzTabLinkTemplateDirective {
   templateRef: TemplateRef<TabTemplateContext> = inject(TemplateRef, { host: true });
@@ -25,8 +24,7 @@ export class NzTabLinkTemplateDirective {
  */
 @Directive({
   selector: 'a[nz-tab-link]',
-  exportAs: 'nzTabLink',
-  standalone: true
+  exportAs: 'nzTabLink'
 })
 export class NzTabLinkDirective {
   routerLink = inject(RouterLink, { self: true, optional: true });

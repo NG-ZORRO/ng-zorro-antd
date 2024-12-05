@@ -9,7 +9,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-comment-basic',
-  standalone: true,
   imports: [NzAvatarModule, NzCommentModule, NzIconModule, NzToolTipModule],
   template: `
     <nz-comment nzAuthor="Han Solo" [nzDatetime]="time">

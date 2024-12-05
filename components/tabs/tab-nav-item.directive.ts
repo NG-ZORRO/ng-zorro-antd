@@ -9,8 +9,7 @@ import { Directive, ElementRef, Input, booleanAttribute } from '@angular/core';
 import { NzTabComponent } from './tab.component';
 
 @Directive({
-  selector: '[nzTabNavItem]',
-  standalone: true
+  selector: '[nzTabNavItem]'
 })
 export class NzTabNavItemDirective implements FocusableOption {
   @Input({ transform: booleanAttribute }) disabled: boolean = false;

@@ -14,7 +14,6 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-page-header-content',
-  standalone: true,
   imports: [
     NzAvatarModule,
     NzBreadCrumbModule,

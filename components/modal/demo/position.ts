@@ -5,7 +5,6 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-position',
-  standalone: true,
   imports: [NzButtonModule, NzModalModule],
   template: `
     <button nz-button nzType="primary" (click)="showModalTop()">Display a modal dialog at 20px to Top</button>

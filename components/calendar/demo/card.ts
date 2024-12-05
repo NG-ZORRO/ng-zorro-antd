@@ -4,7 +4,6 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 
 @Component({
   selector: 'nz-demo-calendar-card',
-  standalone: true,
   imports: [NzCalendarModule],
   template: `
     <div class="card">

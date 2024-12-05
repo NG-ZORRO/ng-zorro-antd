@@ -48,8 +48,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     }
   `,
   host: { class: 'ant-pagination-options' },
-  imports: [NzSelectModule, FormsModule],
-  standalone: true
+  imports: [NzSelectModule, FormsModule]
 })
 export class NzPaginationOptionsComponent implements OnChanges {
   @Input() nzSize: 'default' | 'small' = 'default';
@@ -64,8 +63,6 @@ export class NzPaginationOptionsComponent implements OnChanges {
   @Output() readonly pageIndexChange = new EventEmitter<number>();
   @Output() readonly pageSizeChange = new EventEmitter<number>();
   listOfPageSizeOption: Array<{ value: number; label: string }> = [];
-
-  constructor() {}
 
   onPageSizeChange(size: number): void {
     if (this.pageSize !== size) {

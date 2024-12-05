@@ -123,7 +123,6 @@ describe('cron-expression', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule, NzCronExpressionModule],
   template: `
     <nz-cron-expression
@@ -148,7 +147,6 @@ export class NzTestCronExpressionComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzCronExpressionModule],
   template: `<nz-cron-expression [nzType]="nzType"></nz-cron-expression>`
 })
@@ -157,7 +155,6 @@ export class NzTestCronExpressionTypeComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [ReactiveFormsModule, NzCronExpressionModule],
   template: `<nz-cron-expression [formControl]="formControl"></nz-cron-expression>`
 })

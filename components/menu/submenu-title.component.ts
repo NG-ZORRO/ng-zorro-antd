@@ -61,8 +61,7 @@ import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
   },
-  imports: [NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule]
 })
 export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
   @Input() nzIcon: string | null = null;

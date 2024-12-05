@@ -4,7 +4,6 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 @Component({
   selector: 'nz-demo-descriptions-responsive',
-  standalone: true,
   imports: [NzDescriptionsModule],
   template: `
     <nz-descriptions

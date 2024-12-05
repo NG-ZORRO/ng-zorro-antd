@@ -30,7 +30,6 @@ import { PREFIX_CLASS } from './util';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'calendar-footer',
   exportAs: 'calendarFooter',
-  standalone: true,
   imports: [NgTemplateOutlet, NzButtonModule, NzStringTemplateOutletDirective],
   template: `
     <div class="{{ prefixCls }}-footer">

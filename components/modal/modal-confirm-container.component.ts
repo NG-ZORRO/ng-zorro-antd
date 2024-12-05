@@ -108,8 +108,7 @@ import { BaseModalContainerComponent } from './modal-container.directive';
     '(@modalContainer.done)': 'onAnimationDone($event)',
     '(click)': 'onContainerClick($event)'
   },
-  imports: [NzPipesModule, NzIconModule, NzModalCloseComponent, NzOutletModule, PortalModule, NzButtonModule],
-  standalone: true
+  imports: [NzPipesModule, NzIconModule, NzModalCloseComponent, NzOutletModule, PortalModule, NzButtonModule]
 })
 export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {
   @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;

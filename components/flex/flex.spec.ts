@@ -148,7 +148,6 @@ describe('flex', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzFlexModule],
   template: `
     <div

@@ -14,7 +14,6 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
 
 @Component({
   selector: 'nz-demo-list-loadmore',
-  standalone: true,
   imports: [NzButtonModule, NzListModule, NzSkeletonModule],
   template: `
     <nz-list class="demo-loadmore-list" [nzLoading]="initLoading">

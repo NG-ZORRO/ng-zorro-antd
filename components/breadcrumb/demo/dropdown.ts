@@ -5,7 +5,6 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'nz-demo-breadcrumb-dropdown',
-  standalone: true,
   imports: [NzBreadCrumbModule, NzDropDownModule],
   template: `
     <nz-breadcrumb>

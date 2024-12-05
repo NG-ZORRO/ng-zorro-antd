@@ -38,8 +38,7 @@ import { NzZoomTransform } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.nz-graph-minimap]': 'true'
-  },
-  standalone: true
+  }
 })
 export class NzGraphMinimapComponent implements OnDestroy {
   minimap?: Minimap;

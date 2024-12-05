@@ -40,7 +40,6 @@ function getPosition(e: EventType): { pageX: number; pageY: number } {
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'color-picker',
-  standalone: true,
   imports: [HandlerComponent, PaletteComponent],
   template: `
     <div

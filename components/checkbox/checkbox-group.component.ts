@@ -60,8 +60,7 @@ export interface NzCheckBoxOptionInterface {
     class: 'ant-checkbox-group',
     '[class.ant-checkbox-group-rtl]': `dir === 'rtl'`
   },
-  imports: [NzCheckboxComponent],
-  standalone: true
+  imports: [NzCheckboxComponent]
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
   onChange: OnChangeType = () => {};

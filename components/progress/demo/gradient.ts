@@ -4,7 +4,6 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 @Component({
   selector: 'nz-demo-progress-gradient',
-  standalone: true,
   imports: [NzProgressModule],
   template: `
     <nz-progress [nzPercent]="99.9" [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }"></nz-progress>

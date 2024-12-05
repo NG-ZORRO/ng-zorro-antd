@@ -13,8 +13,7 @@ import { Directive, ViewContainerRef, forwardRef, inject } from '@angular/core';
       provide: CdkTreeNodeOutlet,
       useExisting: forwardRef(() => NzTreeNodeOutletDirective)
     }
-  ],
-  standalone: true
+  ]
 })
 export class NzTreeNodeOutletDirective implements CdkTreeNodeOutlet {
   _node = inject(CDK_TREE_NODE_OUTLET_NODE, { optional: true });

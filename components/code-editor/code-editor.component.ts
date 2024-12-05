@@ -4,7 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -65,8 +65,7 @@ declare const monaco: NzSafeAny;
       multi: true
     }
   ],
-  imports: [NgIf, NzSpinComponent, NgTemplateOutlet],
-  standalone: true
+  imports: [NzSpinComponent, NgTemplateOutlet]
 })
 export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   @Input() nzEditorMode: NzEditorMode = 'normal';

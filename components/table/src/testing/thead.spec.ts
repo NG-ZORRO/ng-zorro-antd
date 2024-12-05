@@ -53,7 +53,6 @@ describe('nz-thead', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table>

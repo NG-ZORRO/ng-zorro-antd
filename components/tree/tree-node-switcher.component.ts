@@ -56,8 +56,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-tree-switcher_open]': '!nzSelectMode && isSwitcherOpen',
     '[class.ant-tree-switcher_close]': '!nzSelectMode && isSwitcherClose'
   },
-  imports: [NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule]
 })
 export class NzTreeNodeSwitcherComponent {
   @Input({ transform: booleanAttribute }) nzShowExpand?: boolean;

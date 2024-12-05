@@ -4,7 +4,6 @@ import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
 
 @Component({
   selector: 'nz-demo-hash-code-basic',
-  standalone: true,
   imports: [NzHashCodeModule],
   template: `<nz-hash-code [nzValue]="value"></nz-hash-code>`
 })

@@ -7,7 +7,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-input-number',
-  standalone: true,
   imports: [FormsModule, NzGridModule, NzInputNumberModule, NzSliderModule],
   template: `
     <nz-row nzGutter="8">

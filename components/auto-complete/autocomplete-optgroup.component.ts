@@ -13,7 +13,6 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [NzOutletModule],
   template: `
     <div class="ant-select-item ant-select-item-group">
@@ -24,6 +23,4 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 })
 export class NzAutocompleteOptgroupComponent {
   @Input() nzLabel?: string | TemplateRef<void>;
-
-  constructor() {}
 }

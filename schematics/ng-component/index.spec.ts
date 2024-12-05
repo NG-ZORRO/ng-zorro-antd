@@ -25,8 +25,7 @@ const defaultOptions = {
   skipTests: false,
   module: undefined,
   export: false,
-  standalone: true,
-  project: 'ng-zorro'
+    project: 'ng-zorro'
 };
 
 describe('ng-component schematic', () => {

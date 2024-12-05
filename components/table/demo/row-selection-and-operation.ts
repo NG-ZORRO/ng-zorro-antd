@@ -13,7 +13,6 @@ export interface Data {
 
 @Component({
   selector: 'nz-demo-table-row-selection-and-operation',
-  standalone: true,
   imports: [NzButtonModule, NzTableModule],
   template: `
     <div class="send-request">
@@ -65,7 +64,6 @@ export interface Data {
       </tbody>
     </nz-table>
   `,
-
   styles: [
     `
       .send-request {

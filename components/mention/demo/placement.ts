@@ -6,7 +6,6 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 
 @Component({
   selector: 'nz-demo-mention-placement',
-  standalone: true,
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention nzPlacement="top" [nzSuggestions]="suggestions" (nzOnSelect)="onSelect($event)">

@@ -94,8 +94,7 @@ interface NzThItemInterface {
     NzCheckboxModule,
     FormsModule,
     NzButtonModule
-  ],
-  standalone: true
+  ]
 })
 export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;

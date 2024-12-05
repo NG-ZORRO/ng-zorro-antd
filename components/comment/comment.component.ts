@@ -4,7 +4,6 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -67,8 +66,7 @@ import { NzCommentActionComponent as CommentAction, NzCommentActionHostDirective
     '[class.ant-comment]': `true`,
     '[class.ant-comment-rtl]': `dir === "rtl"`
   },
-  imports: [NgIf, NzOutletModule, NgForOf, NzCommentActionHostDirective],
-  standalone: true
+  imports: [NzOutletModule, NzCommentActionHostDirective]
 })
 export class NzCommentComponent implements OnDestroy, OnInit {
   @Input() nzAuthor?: string | TemplateRef<void>;

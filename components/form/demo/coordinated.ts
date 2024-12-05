@@ -12,7 +12,6 @@ type Gender = 'male' | 'female';
 
 @Component({
   selector: 'nz-demo-form-coordinated',
-  standalone: true,
   imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzInputModule, NzSelectModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">

@@ -303,7 +303,6 @@ interface NzPageSizeChangeFn {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table
@@ -398,7 +397,6 @@ interface ScrollTestDataItem {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <div style="display: block;" [style.width.px]="width">
@@ -464,7 +462,6 @@ export class NzTestTableScrollComponent implements OnInit {
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3004 **/
 @Component({
-  standalone: true,
   imports: [NzTableModule],
   template: `
     <nz-table
@@ -517,7 +514,6 @@ interface RtlTestDataItem {
 }
 
 @Component({
-  standalone: true,
   imports: [BidiModule, NzTableModule],
   template: `
     <div [dir]="direction">

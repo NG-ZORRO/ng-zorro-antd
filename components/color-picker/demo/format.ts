@@ -5,7 +5,6 @@ import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 
 @Component({
   selector: 'nz-demo-color-picker-format',
-  standalone: true,
   imports: [FormsModule, NzColorPickerModule],
   template: `
     <div class="format"> <nz-color-picker nzFormat="hex" [(ngModel)]="hex"></nz-color-picker> HEX: {{ hex }} </div>

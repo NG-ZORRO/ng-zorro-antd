@@ -11,7 +11,6 @@ interface Option {
 }
 
 @Component({
-  standalone: true,
   selector: 'nz-demo-auto-complete-object-value',
   imports: [FormsModule, NzAutocompleteModule, NzInputModule],
   encapsulation: ViewEncapsulation.None,

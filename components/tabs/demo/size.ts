@@ -6,7 +6,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-size',
-  standalone: true,
   imports: [FormsModule, NzRadioModule, NzTabsModule],
   template: `
     <nz-radio-group [(ngModel)]="size">

@@ -54,28 +54,24 @@ describe('transition-patch', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule, NzTransitionPatchModule],
   template: `<button nz-button></button>`
 })
 export class TestTransitionPatchComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule, NzTransitionPatchModule],
   template: `<button nz-button hidden></button>`
 })
 export class TestTransitionPatchHiddenComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule, NzTransitionPatchModule],
   template: `<button nz-button hidden="abc"></button>`
 })
 export class TestTransitionPatchRestoreComponent {}
 
 @Component({
-  standalone: true,
   imports: [NzButtonModule, NzTransitionPatchModule],
   template: `<button nz-button [hidden]="hidden"></button>`
 })

@@ -1,5 +1,7 @@
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,6 +16,8 @@ import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
 import { en_GB, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
+
+registerLocaleData(zh);
 
 describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
@@ -454,7 +458,6 @@ describe('time-picker', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerComponent, FormsModule],
   template: `
     <nz-time-picker
@@ -490,7 +493,6 @@ export class NzTestTimePickerComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerComponent],
   template: `<nz-time-picker [nzStatus]="status"></nz-time-picker>`
 })
@@ -499,7 +501,6 @@ export class NzTestTimePickerStatusComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzTimePickerComponent, BidiModule],
   template: `
     <div [dir]="dir">
@@ -512,7 +513,6 @@ export class NzTestTimePickerDirComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzFormModule, ReactiveFormsModule, NzTimePickerComponent],
   template: `
     <form nz-form [formGroup]="timePickerForm">

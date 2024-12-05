@@ -6,7 +6,6 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 @Component({
   selector: 'nz-demo-popconfirm-promise',
-  standalone: true,
   imports: [NzButtonModule, NzPopconfirmModule],
   template: `
     <button

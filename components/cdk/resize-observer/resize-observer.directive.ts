@@ -21,7 +21,6 @@ import { NzResizeObserver, NzResizeObserverFactory } from './resize-observer.ser
 
 @Directive({
   selector: '[nzResizeObserver]',
-  standalone: true,
   providers: [NzResizeObserverFactory]
 })
 export class NzResizeObserverDirective implements AfterContentInit, OnDestroy, OnChanges {
