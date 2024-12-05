@@ -52,8 +52,8 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
  * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
  */
 @Component({
-  selector: 'nz-input-number-legacy',
-  exportAs: 'nzInputNumberLegacy',
+  selector: 'nz-input-number',
+  exportAs: 'nzInputNumber',
   template: `
     <div class="ant-input-number-handler-wrap">
       <span

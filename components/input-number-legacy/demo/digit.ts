@@ -8,13 +8,13 @@ import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
   standalone: true,
   imports: [FormsModule, NzInputNumberLegacyModule],
   template: `
-    <nz-input-number-legacy
+    <nz-input-number
       [(ngModel)]="value"
       [nzMin]="1"
       [nzMax]="10"
       [nzStep]="0.1"
       [nzPlaceHolder]="'Digital'"
-    ></nz-input-number-legacy>
+    ></nz-input-number>
   `
 })
 export class NzDemoInputNumberLegacyDigitComponent {

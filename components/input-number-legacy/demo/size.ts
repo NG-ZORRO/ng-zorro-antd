@@ -8,25 +8,13 @@ import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
   standalone: true,
   imports: [FormsModule, NzInputNumberLegacyModule],
   template: `
-    <nz-input-number-legacy
-      [(ngModel)]="value"
-      [nzSize]="'large'"
-      [nzMin]="1"
-      [nzMax]="10"
-      [nzStep]="1"
-    ></nz-input-number-legacy>
-    <nz-input-number-legacy [(ngModel)]="value" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number-legacy>
-    <nz-input-number-legacy
-      [(ngModel)]="value"
-      [nzSize]="'small'"
-      [nzMin]="1"
-      [nzMax]="10"
-      [nzStep]="1"
-    ></nz-input-number-legacy>
+    <nz-input-number [(ngModel)]="value" [nzSize]="'large'" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
+    <nz-input-number [(ngModel)]="value" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
+    <nz-input-number [(ngModel)]="value" [nzSize]="'small'" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number>
   `,
   styles: [
     `
-      nz-input-number-legacy {
+      nz-input-number {
         margin-right: 8px;
       }
     `

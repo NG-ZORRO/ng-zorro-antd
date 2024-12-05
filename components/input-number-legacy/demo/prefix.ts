@@ -11,13 +11,13 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   template: `
     <nz-space nzDirection="vertical" style="width: 100%">
       <nz-input-number-group *nzSpaceItem nzPrefix="￥" style="width: 100%">
-        <nz-input-number-legacy [nzStep]="1"></nz-input-number-legacy>
+        <nz-input-number [nzStep]="1"></nz-input-number>
       </nz-input-number-group>
       <nz-input-number-group *nzSpaceItem nzAddOnBeforeIcon="user" nzPrefix="￥" style="width: 100%">
-        <nz-input-number-legacy [nzStep]="1"></nz-input-number-legacy>
+        <nz-input-number [nzStep]="1"></nz-input-number>
       </nz-input-number-group>
       <nz-input-number-group *nzSpaceItem nzPrefix="￥" style="width: 100%">
-        <nz-input-number-legacy nzDisabled [nzStep]="1"></nz-input-number-legacy>
+        <nz-input-number nzDisabled [nzStep]="1"></nz-input-number>
       </nz-input-number-group>
     </nz-space>
   `

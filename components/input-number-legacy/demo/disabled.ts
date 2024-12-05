@@ -9,13 +9,13 @@ import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
   standalone: true,
   imports: [FormsModule, NzButtonModule, NzInputNumberLegacyModule],
   template: `
-    <nz-input-number-legacy
+    <nz-input-number
       [(ngModel)]="value"
       [nzMin]="1"
       [nzMax]="10"
       [nzStep]="1"
       [nzDisabled]="isDisabled"
-    ></nz-input-number-legacy>
+    ></nz-input-number>
     <br />
     <br />
     <button nz-button [nzType]="'primary'" (click)="toggleDisabled()">

@@ -8,7 +8,6 @@ import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
@@ -34,7 +33,6 @@ describe('Space compact', () => {
     const nzInput = spaceCompactElement.querySelector('input[nz-input]');
     const nzInputGroup = spaceCompactElement.querySelector('nz-input-group');
     const nzInputNumber = spaceCompactElement.querySelector('nz-input-number');
-    const nzInputNumberLegacy = spaceCompactElement.querySelector('nz-input-number-legacy');
     const nzDatePicker = spaceCompactElement.querySelector('nz-date-picker');
     const nzRangePicker = spaceCompactElement.querySelector('nz-range-picker');
     const nzTimePicker = spaceCompactElement.querySelector('nz-time-picker');
@@ -45,7 +43,6 @@ describe('Space compact', () => {
 
     expect(nzInput).toBeTruthy();
     expect(nzInputNumber).toBeTruthy();
-    expect(nzInputNumberLegacy).toBeTruthy();
     expect(nzInputGroup).toBeTruthy();
     expect(nzDatePicker).toBeTruthy();
     expect(nzRangePicker).toBeTruthy();
@@ -59,7 +56,6 @@ describe('Space compact', () => {
     expect(nzInputGroup!.classList).toContain('ant-input-compact-item');
 
     expect(nzInputNumber!.classList).toContain('ant-input-number-compact-item');
-    expect(nzInputNumberLegacy!.classList).toContain('ant-input-number-compact-item');
 
     expect(nzDatePicker!.classList).toContain('ant-picker-compact-item');
     expect(nzRangePicker!.classList).toContain('ant-picker-compact-item');
@@ -100,7 +96,6 @@ describe('Space compact', () => {
     const spaceCompactElement: HTMLElement = fixture.nativeElement;
     const nzInput = spaceCompactElement.querySelector('input[nz-input]');
     const nzInputNumber = spaceCompactElement.querySelector('nz-input-number');
-    const nzInputNumberLegacy = spaceCompactElement.querySelector('nz-input-number-legacy');
     const nzDatePicker = spaceCompactElement.querySelector('nz-date-picker');
     const nzRangePicker = spaceCompactElement.querySelector('nz-range-picker');
     const nzTimePicker = spaceCompactElement.querySelector('nz-time-picker');
@@ -114,7 +109,6 @@ describe('Space compact', () => {
 
     expect(nzInput!.classList).toContain('ant-input-sm');
     expect(nzInputNumber!.classList).toContain('ant-input-number-sm');
-    expect(nzInputNumberLegacy!.classList).toContain('ant-input-number-sm');
     expect(nzDatePicker!.classList).toContain('ant-picker-small');
     expect(nzRangePicker!.classList).toContain('ant-picker-small');
     expect(nzTimePicker!.classList).toContain('ant-picker-small');
@@ -128,7 +122,6 @@ describe('Space compact', () => {
 
     expect(nzInput!.classList).toContain('ant-input-lg');
     expect(nzInputNumber!.classList).toContain('ant-input-number-lg');
-    expect(nzInputNumberLegacy!.classList).toContain('ant-input-number-lg');
     expect(nzDatePicker!.classList).toContain('ant-picker-large');
     expect(nzRangePicker!.classList).toContain('ant-picker-large');
     expect(nzTimePicker!.classList).toContain('ant-picker-large');
@@ -211,7 +204,6 @@ describe('Space compact direction', () => {
     NzButtonModule,
     NzInputModule,
     NzInputNumberModule,
-    NzInputNumberLegacyModule,
     NzSelectModule,
     NzCascaderModule,
     NzTreeSelectModule,
@@ -225,7 +217,6 @@ describe('Space compact direction', () => {
       }
       <nz-input-group><input nz-input /></nz-input-group>
       <nz-input-number />
-      <nz-input-number-legacy />
       <nz-date-picker />
       <nz-range-picker />
       <nz-time-picker />
