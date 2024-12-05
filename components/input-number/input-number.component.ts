@@ -20,6 +20,7 @@ import {
   inject,
   Injector,
   input,
+  linkedSignal,
   numberAttribute,
   OnInit,
   output,
@@ -93,8 +94,8 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
       @if (suffix() || hasFeedback()) {
         <span class="ant-input-number-suffix">
           <ng-content select="[nzInputSuffix]"></ng-content>
-          @if (hasFeedback() && finalStatus().signal()) {
-            <nz-form-item-feedback-icon [status]="finalStatus().signal()" />
+          @if (hasFeedback() && finalStatus()) {
+            <nz-form-item-feedback-icon [status]="finalStatus()" />
           }
         </span>
       }
@@ -148,7 +149,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
           [value]="displayValue()"
           [attr.step]="nzStep()"
           [placeholder]="nzPlaceHolder() ?? ''"
-          [disabled]="finalDisabled().signal()"
+          [disabled]="finalDisabled()"
           [readOnly]="nzReadOnly()"
           (input)="displayValue.set(input.value)"
           (change)="onInputChange($event)"
@@ -223,14 +224,8 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   protected dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
   protected focused = signal(false);
   protected hasFeedback = signal(false);
-  // TODO: migrate to linkedSignal
-  protected finalStatus = computed(() => ({
-    signal: signal<NzValidateStatus>(this.nzStatus())
-  }));
-  // TODO: migrate to linkedSignal
-  protected finalDisabled = computed(() => ({
-    signal: signal(this.nzDisabled())
-  }));
+  protected finalStatus = linkedSignal<NzValidateStatus>(() => this.nzStatus());
+  protected finalDisabled = linkedSignal(() => this.nzDisabled());
 
   protected prefix = contentChild(NzInputPrefixDirective);
   protected suffix = contentChild(NzInputSuffixDirective);
@@ -253,32 +248,32 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number': true,
       'ant-input-number-lg': this.finalSize() === 'large',
       'ant-input-number-sm': this.finalSize() === 'small',
-      'ant-input-number-disabled': this.finalDisabled().signal(),
+      'ant-input-number-disabled': this.finalDisabled(),
       'ant-input-number-readonly': this.nzReadOnly(),
       'ant-input-number-borderless': !this.nzBordered(),
       'ant-input-number-focused': this.focused(),
       'ant-input-number-rtl': this.dir() === 'rtl',
       'ant-input-number-in-form-item': !!this.nzFormStatusService,
       'ant-input-number-out-of-range': this.value() !== null && !isInRange(this.value()!, this.nzMin(), this.nzMax()),
-      ...getStatusClassNames('ant-input-number', this.finalStatus().signal(), this.hasFeedback())
+      ...getStatusClassNames('ant-input-number', this.finalStatus(), this.hasFeedback())
     };
   });
   protected affixWrapperClass = computed(() => {
     return {
       'ant-input-number-affix-wrapper': true,
-      'ant-input-number-affix-wrapper-disabled': this.finalDisabled().signal(),
+      'ant-input-number-affix-wrapper-disabled': this.finalDisabled(),
       'ant-input-number-affix-wrapper-readonly': this.nzReadOnly(),
       'ant-input-number-affix-wrapper-borderless': !this.nzBordered(),
       'ant-input-number-affix-wrapper-focused': this.focused(),
       'ant-input-number-affix-wrapper-rtl': this.dir() === 'rtl',
-      ...getStatusClassNames('ant-input-number-affix-wrapper', this.finalStatus().signal(), this.hasFeedback())
+      ...getStatusClassNames('ant-input-number-affix-wrapper', this.finalStatus(), this.hasFeedback())
     };
   });
   protected groupWrapperClass = computed(() => {
     return {
       'ant-input-number-group-wrapper': true,
       'ant-input-number-group-wrapper-rtl': this.dir() === 'rtl',
-      ...getStatusClassNames('ant-input-number-group-wrapper', this.finalStatus().signal(), this.hasFeedback())
+      ...getStatusClassNames('ant-input-number-group-wrapper', this.finalStatus(), this.hasFeedback())
     };
   });
 
@@ -320,7 +315,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     });
 
     this.nzFormStatusService?.formStatusChanges.pipe(takeUntilDestroyed()).subscribe(({ status, hasFeedback }) => {
-      this.finalStatus().signal.set(status);
+      this.finalStatus.set(status);
       this.hasFeedback.set(hasFeedback);
     });
   }
@@ -344,7 +339,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   setDisabledState(disabled: boolean): void {
-    this.finalDisabled().signal.set(disabled);
+    this.finalDisabled.set(disabled);
   }
 
   focus(): void {
