@@ -91,9 +91,12 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
         </span>
       }
       <ng-template [ngTemplateOutlet]="inputNumber" />
-      @if (suffix()) {
+      @if (suffix() || hasFeedback()) {
         <span class="ant-input-number-suffix">
           <ng-content select="[nzInputSuffix]"></ng-content>
+          @if (hasFeedback() && finalStatus().signal()) {
+            <nz-form-item-feedback-icon [status]="finalStatus().signal()" />
+          }
         </span>
       }
     </ng-template>
@@ -152,9 +155,6 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
           (change)="onInputChange($event)"
         />
       </div>
-      @if (hasFeedback() && finalStatus().signal()) {
-        <nz-form-item-feedback-icon class="ant-input-number-suffix" [status]="finalStatus().signal()" />
-      }
     </ng-template>
   `,
   providers: [
@@ -237,7 +237,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   protected suffix = contentChild(NzInputSuffixDirective);
   protected addonBefore = contentChild(NzInputAddonBeforeDirective);
   protected addonAfter = contentChild(NzInputAddonAfterDirective);
-  protected hasAffix = computed(() => !!this.prefix() || !!this.suffix());
+  protected hasAffix = computed(() => !!this.prefix() || !!this.suffix() || this.hasFeedback());
   protected hasAddon = computed(() => !!this.addonBefore() || !!this.addonAfter());
 
   protected class = computed(() => {
