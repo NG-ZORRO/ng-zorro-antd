@@ -311,7 +311,6 @@ describe('Input number with affixes or addons', () => {
 });
 
 @Component({
-  standalone: true,
   imports: [NzInputNumberModule, FormsModule],
   template: `
     <nz-input-number
@@ -352,7 +351,6 @@ class InputNumberTestComponent {
 }
 
 @Component({
-  standalone: true,
   imports: [NzInputNumberModule],
   template: `
     <nz-input-number #withAffixes [nzDisabled]="disabled" [nzReadOnly]="readonly" [nzBordered]="bordered">

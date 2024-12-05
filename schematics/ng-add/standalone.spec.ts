@@ -94,7 +94,7 @@ describe('[standalone] ng-add schematic', () => {
   it('should add custom theme', async () => {
     const options = { ...defaultOptions, theme: true };
 
-    appTree = await createTestApp(runner, { style: 'less', standalone: true });
+    appTree = await createTestApp(runner, { style: 'less' });
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const workspace = await getWorkspace(tree);
     const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
