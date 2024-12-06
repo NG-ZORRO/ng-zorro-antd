@@ -9,14 +9,14 @@ import { getFileContent } from '../../utils/get-file-content';
 
 describe('top-nav schematic', () => {
   const defaultOptions: NzOptions = {
-    project: 'ng-zorro-top-nav',
+    project: 'ng-zorro-top-nav'
   };
   let runner: SchematicTestRunner;
   let appTree: Tree;
 
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../../collection.json'));
-    appTree = await createTestApp(runner, {name: 'ng-zorro-top-nav', standalone: false});
+    appTree = await createTestApp(runner, { name: 'ng-zorro-top-nav', standalone: false });
   });
 
   it('should create top-nav files', async () => {
@@ -40,7 +40,6 @@ describe('top-nav schematic', () => {
 
   it('should set the style preprocessor correctly', async () => {
     const options = {...defaultOptions, style: Style.Less};
-
     const tree = await runner.runSchematic('topnav', options, appTree);
     const files = tree.files;
     const appContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
@@ -65,5 +64,14 @@ describe('top-nav schematic', () => {
 
     expect(appContent).toContain(`selector: 'nz-root'`);
     expect(welcomeContent).toContain(`selector: 'nz-welcome'`);
+  });
+
+  it('should set standalone to be false', async () => {
+    const tree = await runner.runSchematic('topnav', defaultOptions, appTree);
+    const appContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
+    const welcomeContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts');
+
+    expect(appContent).toContain('standalone: false');
+    expect(welcomeContent).toContain('standalone: false');
   });
 });

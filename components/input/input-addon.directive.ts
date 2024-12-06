@@ -6,13 +6,11 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[nzInputAddonBefore]',
-  standalone: true
+  selector: '[nzInputAddonBefore]'
 })
 export class NzInputAddonBeforeDirective {}
 
 @Directive({
-  selector: '[nzInputAddonAfter]',
-  standalone: true
+  selector: '[nzInputAddonAfter]'
 })
 export class NzInputAddonAfterDirective {}

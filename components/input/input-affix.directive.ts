@@ -6,13 +6,11 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[nzInputPrefix]',
-  standalone: true
+  selector: '[nzInputPrefix]'
 })
 export class NzInputPrefixDirective {}
 
 @Directive({
-  selector: '[nzInputSuffix]',
-  standalone: true
+  selector: '[nzInputSuffix]'
 })
 export class NzInputSuffixDirective {}

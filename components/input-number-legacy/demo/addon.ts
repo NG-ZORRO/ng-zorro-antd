@@ -8,7 +8,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-input-number-legacy-addon',
-  standalone: true,
   imports: [FormsModule, NzCascaderModule, NzInputNumberLegacyModule, NzSelectModule, NzSpaceModule],
   template: `
     <nz-space nzDirection="vertical" style="width: 100%">

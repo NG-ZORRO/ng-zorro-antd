@@ -5,16 +5,18 @@
 
 import {
   ClassNameUpgradeData,
-  getVersionUpgradeData, isExportSpecifierNode, isImportSpecifierNode,
+  isExportSpecifierNode,
+  isImportSpecifierNode,
   isNamespaceImportNode,
-  Migration, UpgradeData
+  Migration
 } from '@angular/cdk/schematics';
 
 import * as ts from 'typescript';
 
-import { isNgZorroExportDeclaration, isNgZorroImportDeclaration } from '../../../utils/ng-update/module-specifiers';
+import { isNgZorroExportDeclaration, isNgZorroImportDeclaration } from '../../utils/ng-update/module-specifiers';
+import { getVersionUpgradeData, NzUpgradeData } from '../upgrade-data';
 
-export class ClassNamesMigration extends Migration<UpgradeData> {
+export class ClassNamesMigration extends Migration<NzUpgradeData> {
   /** Change data that upgrades to the specified target version. */
   data: ClassNameUpgradeData[] = getVersionUpgradeData(this, 'classNames');
 
@@ -28,7 +30,7 @@ export class ClassNamesMigration extends Migration<UpgradeData> {
   trustedNamespaces: Set<string> = new Set();
 
   // Only enable the migration rule if there is upgrade data.
-  enabled = this.data.length !== 0;
+  enabled: boolean = this.data.length !== 0;
 
   visitNode(node: ts.Node): void {
     if (ts.isIdentifier(node)) {
@@ -54,7 +56,6 @@ export class ClassNamesMigration extends Migration<UpgradeData> {
 
     if (isImportSpecifierNode(identifier) && isNgZorroImportDeclaration(identifier)) {
       this.trustedIdentifiers.add(identifier.text);
-
       return this._createFailureWithReplacement(identifier);
     }
 

@@ -37,7 +37,7 @@ $ ng add ng-zorro-antd [--locale=zh-CN] [--theme] [--skipPackageJson]
 ### 调试
 
 1. `schematic:build` 修改代码后编译
-2 `cd schematic-debug` 切换到 ng 项目
+2. `cd schematic-debug` 切换到 ng 项目
 3. `git checkout . && git clean -fd` 还原更改
 4. `ng g ng-zorro-antd:[schematic]` 运行 schematic
 
