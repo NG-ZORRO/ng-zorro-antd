@@ -6,14 +6,5 @@
 import { InputNameUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const inputNames: VersionChanges<InputNameUpgradeData> = {
-  [TargetVersion.V19]: [{
-    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/8741',
-    changes: [{
-      replace: 'nzBorderless',
-      replaceWith: 'nzBordered',
-      limitedTo: {
-        elements: ['nz-card']
-      }
-    }]
-  }]
+  [TargetVersion.V19]: []
 };
