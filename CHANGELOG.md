@@ -48,7 +48,7 @@
 
 * **input-number:** Redesign the input-number so that it will be much simpler and more flexible.
 
-  Now you can use write affixes or addons as follows, no ng-template is needed:
+  Now you can use affixes or addons as follows, no need for `ng-template` and `nz-input-number-group`:
 
   ```html
   <!-- Custom handler icons -->
