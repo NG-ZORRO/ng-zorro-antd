@@ -64,7 +64,7 @@ timeline: true
 
 * **input-number:** 重新设计 input-number 组件，使其更加简单灵活
 
-  现在为 input-number 添加前缀或后缀的写法如下，不再需要使用 ng-template：
+  现在为新的 input-number 添加前缀或后缀的写法如下，不再需要使用 `nz-input-number-group` 与 `ng-template`：
 
   ```html
   <!-- Custom handler icons -->
