@@ -107,14 +107,14 @@
 The following APIs are marked as **deprecated** in v19 and will be removed in the next major version.
 Please refer to related documentation for better alternatives.
 
-| Module                              | API                      |
-|-------------------------------------|--------------------------|
-| `ng-zorro-antd/button`              | `NzButtonGroupComponent` |
-| `ng-zorro-antd/core/form`           | `NzFormPatchModule`      |
-| `ng-zorro-antd/input`               | `NzInputGroupComponent`  |
-| `ng-zorro-antd/input-number-legacy` | `*`                      |
-| `ng-zorro-antd/message`             | `NzMessageModule`        |
-| `ng-zorro-antd/notification`        | `NzNotificationModule`   |
+| Module                              | API                                                      |
+|-------------------------------------|----------------------------------------------------------|
+| `ng-zorro-antd/button`              | `NzButtonGroupComponent`                                 |
+| `ng-zorro-antd/core/form`           | `NzFormPatchModule`                                      |
+| `ng-zorro-antd/input`               | `NzInputGroupComponent#nzCompact`                        |
+| `ng-zorro-antd/input-number-legacy` | `*`                                                      |
+| `ng-zorro-antd/message`             | `NzMessageModule`                                        |
+| `ng-zorro-antd/notification`        | `NzNotificationModule`<br/>`NzNotificationServiceModule` |
 
 
 
