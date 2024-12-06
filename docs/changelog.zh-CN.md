@@ -122,14 +122,14 @@ timeline: true
 
 在 v19 中，以下 API 被标记为 **deprecated**，并将在下一个主要版本中移除。 请参考相关文档以获取更好的替代方案。
 
-| Module                              | API                      |
-|-------------------------------------|--------------------------|
-| `ng-zorro-antd/button`              | `NzButtonGroupComponent` |
-| `ng-zorro-antd/core/form`           | `NzFormPatchModule`      |
-| `ng-zorro-antd/input`               | `NzInputGroupComponent`  |
-| `ng-zorro-antd/input-number-legacy` | `*`                      |
-| `ng-zorro-antd/message`             | `NzMessageModule`        |
-| `ng-zorro-antd/notification`        | `NzNotificationModule`   |
+| Module                              | API                                                      |
+|-------------------------------------|----------------------------------------------------------|
+| `ng-zorro-antd/button`              | `NzButtonGroupComponent`                                 |
+| `ng-zorro-antd/core/form`           | `NzFormPatchModule`                                      |
+| `ng-zorro-antd/input`               | `NzInputGroupComponent#nzCompact`                        |
+| `ng-zorro-antd/input-number-legacy` | `*`                                                      |
+| `ng-zorro-antd/message`             | `NzMessageModule`                                        |
+| `ng-zorro-antd/notification`        | `NzNotificationModule`<br/>`NzNotificationServiceModule` |
 
 
 ## 18.2.1
