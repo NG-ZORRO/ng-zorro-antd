@@ -11,6 +11,5 @@ import { InputNamesMigration } from './input-names';
 
 export const nzMigrations: NullableDevkitMigration[] = [
   ClassNamesMigration,
-  ImportSpecifiersMigration,
-  InputNamesMigration
+  ImportSpecifiersMigration
 ];

@@ -8,7 +8,7 @@ import { NgModule } from '@angular/core';
 import { NzFormItemFeedbackIconComponent } from './nz-form-item-feedback-icon.component';
 
 /**
- * @deprecated Will be removed in v20. Use NzFormItemFeedbackIconComponent directly
+ * @deprecated Will be removed in v20. Use `NzFormItemFeedbackIconComponent` directly
  */
 @NgModule({
   imports: [NzFormItemFeedbackIconComponent],

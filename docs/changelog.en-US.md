@@ -13,6 +13,126 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 19.0.0
+
+`2024-12-06`
+
+### Bug Fixes
+
+* **autocomplete:** remove inline style (CSP compliant) ([#8875](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8875)) ([30c25f0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/30c25f0201130ccb00c8d2ba2e709763d7bcfd6e))
+* **avatar:** calculate size at the right time ([#8754](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8754)) ([3a5ba37](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3a5ba37de6553c5973ac1741a250dff957ca7ec5))
+* **card:** remove `nzBorderless` input ([#8741](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8741)) ([22ce17c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/22ce17c8a4bb7345cf026fd570bc8d3984722815))
+* **carousel:** carousel not working correctly in rtl mode ([#8770](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8770)) ([0202a19](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0202a191b3259e3dc454272b53feb3687a32cf0a))
+* **cascader:** correct menu display level ([#8866](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8866)) ([5fec53e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5fec53e597d50a26a1083bb1e726af885ba807ae))
+* **drawer:** should clear previously focused element ([#8893](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8893)) ([4498af0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4498af0f1a8c700099e82f4027bec30086f6d29a))
+* **i18n:** add missing translations to `vi_VN` ([#8894](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8894)) ([f08ad1c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f08ad1cb0728d19655c8143658e6a44f8843cb4a))
+
+
+### Code Refactoring
+
+* cancel support for HTML string rendering ([#8831](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8831)) ([5fae01a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5fae01ad4120841390f7ebb6267a043774ea2266))
+* remove `ngClass` and `ngStyle` ([#8895](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8895)) ([c3ab3ba](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c3ab3ba6ad50dc4a8f23b43872b3f235ee316f4c))
+* **image:** remove deprecated `FADE_CLASS_NAME_MAP` and `IMAGE_PREVIEW_MASK_CLASS_NAME` ([#8912](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8912)) ([65223d9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/65223d9a595e78f8c73347c5d1b12a807389c434))
+
+
+### Features
+
+* **cascader:** support multiple selection ([#8903](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8903)) ([e5dfb49](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e5dfb495dc4f9e5493e425aeab3802a13a0f5e28))
+* **divider:** add `nzVariant` option ([#8827](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8827)) ([2c63c87](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2c63c87f557e2400224566342a0185d212055004))
+* **float-button:** add float-button component ([#7884](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7884)) ([dab4d66](https://github.com/NG-ZORRO/ng-zorro-antd/commit/dab4d669b3ef746d1761fbb2199c1b0ae704cda5))
+* **icon:** support `nz-icon` tag selector ([#8778](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8778)) ([1406241](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1406241f2e636bb3bf11515b0ad68cbe0535d5e1))
+* **image:** close image preview when escape key pressed ([#8809](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8809)) ([d587615](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d587615c7dd8d911af06551181f1bffb6eb67149))
+* **input:** support one time password (OTP) ([#8715](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8715)) ([cdbaf4d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cdbaf4de291f380cfcfdf6788d24da3e344175a9))
+* **menu:** add `nzTriggerSubMenuAction` to support click trigger for submenu ([#8461](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8461)) ([860df87](https://github.com/NG-ZORRO/ng-zorro-antd/commit/860df87a1be62f462ac3ea136d53948ccd69213a))
+* **qrcode:** add `nzStatusRender` to support customize state rendering ([#8714](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8714)) ([6f36d75](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6f36d75741e301bc3e7634a93c106c48a02c0a1b))
+* **segmented:** redesign the segmented component ([#8753](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8753)) ([4dc866c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4dc866cb2fcc7afb4cc309f433c216d1b7cba2e1))
+* **space:** add space compact component ([#8755](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8755)) ([b9c511d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b9c511db0b1b28521e23148a6fce5b1f169f99a2))
+* **table:** add `nzSortDirections` to global config ([#6613](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6613)) ([#8721](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8721)) ([eb1fdc5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/eb1fdc5037d9122a237e317e5b93857deb51e5d5))
+* **transfer:** add `nzOneWay` to support one way style ([#8717](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8717)) ([99fd4de](https://github.com/NG-ZORRO/ng-zorro-antd/commit/99fd4de95b2a5a44a2837af38d31ddcabf0a60bf))
+* **input-number:** redesign the input-number ([#8901](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8901)) ([df55d88](https://github.com/NG-ZORRO/ng-zorro-antd/commit/df55d8882c9f36bc6a0cd8a4d752e03070658ff7))
+* **schematics:** add v19 ng update migration ([#8911](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8911)) ([1a20de2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1a20de223bc6e214b54f741f42ed8260611b9b67))
+
+
+### BREAKING CHANGES
+
+* **All**
+  * `nzClass` / `nzStyle` input properties no longer support the following features:
+    - `Set()`: use arrays instead
+    - Keys which multiple styles/classes separated with keys: split a key with spaces into multiple keys
+  * Cancel support for HTML string rendering
+  * Migrate `@WithConfig` to standard decorator. If you're using `@WithConfig` in your library, please turn `experimentalDecorators` off in `tsconfig.json`
+
+* **input-number:** Redesign the input-number so that it will be much simpler and more flexible.
+
+  Now you can use affixes or addons as follows, no need for `ng-template` and `nz-input-number-group`:
+
+  ```html
+  <!-- Custom handler icons -->
+  <nz-input-number>
+    <nz-icon nzInputNumberUpIcon />
+    <nz-icon nzInputNumberDownIcon />
+  </nz-input-number>
+
+  <!-- With affixes -->
+  <nz-input-number>
+    <span nzInputPrefix>Prefix</span>
+    <span nzInputSuffix>Suffix</span>
+  </nz-input-number>
+
+  <!-- With addons -->
+  <nz-input-number>
+    <span nzInputAddonBefore>Before</span>
+    <span nzInputAddonAfter>After</span>
+  </nz-input-number>
+  ```
+
+  The old input-number component is marked as **deprecated**, and its entrypoint had changed to `ng-zorro-antd/input-number-legacy`.
+  `NzInputNumberComponent` is now `NzInputNumberLegacyComponent`, and `NzInputNumberModule` is now `NzInputNumberLegacyModule`.
+
+  Don't worry, `ng update ng-zorro-antd` will automatically do the migration.
+
+* **cascader:** Cancel support for writing value with `NzCascaderOption[]` type.
+
+  In the past, the cascader component kept a trick that if you wrote value with `NzCascaderOption[]` type, it extracted value by mapping each item to its value property, for example:
+
+  ```ts
+  @Component({
+    template: `<nz-cascader [nzOptions]="options" [ngModel]="value"></nz-cascader>`
+  })
+  export class ExampleComponent {
+    value = [{ label: 'NG ZORRO', value: 'ng-zorro-antd' }]
+  }
+  ```
+  then the value of cascader would be `'ng-zorro-antd'`.
+  It's strange that the input and output values don't match when we haven't changed the values, and it's hard to maintain. We expect that the value passed in should be the value in the list of options.
+
+  In v19, this trick is removed and if you're already using this trick in your code, please consider the add a `map` function to pass the actual value.
+
+* **card:** Remove redundant `nzBorderless` input property. Use `nzBordered` instead.
+* **image:** Remove deprecated `FADE_CLASS_NAME_MAP` and `IMAGE_PREVIEW_MASK_CLASS_NAME`
+* **pipes:** Remove deprecated `NzSafeNullPipe`
+* **segmented:** Redesign the segmented component.
+  - Value of `ngModel` is changed from `index` to option's value
+  - Change emission type of `nzValueChange` from `number` to option's value type (`string | number`)
+  - Remove `nzLabelTemplate`, use `nz-segmented-item` directive instead
+* **space:** Rename `exportAs` of `NzSpaceComponent` from `NzSpace` to standard `nzSpace`
+
+
+### Deprecations
+
+The following APIs are marked as **deprecated** in v19 and will be removed in the next major version.
+Please refer to related documentation for better alternatives.
+
+| Module                              | API                      |
+|-------------------------------------|--------------------------|
+| `ng-zorro-antd/button`              | `NzButtonGroupComponent` |
+| `ng-zorro-antd/core/form`           | `NzFormPatchModule`      |
+| `ng-zorro-antd/input`               | `NzInputGroupComponent`  |
+| `ng-zorro-antd/input-number-legacy` | `*`                      |
+| `ng-zorro-antd/message`             | `NzMessageModule`        |
+| `ng-zorro-antd/notification`        | `NzNotificationModule`   |
+
+
 ## 18.2.1
 
 `2024-11-15`

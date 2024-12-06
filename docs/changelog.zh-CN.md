@@ -13,6 +13,125 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 19.0.0
+
+`2024-12-06`
+
+### Bug Fixes
+
+* **autocomplete:** 修复 CSP 问题 ([#8875](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8875)) ([30c25f0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/30c25f0201130ccb00c8d2ba2e709763d7bcfd6e))
+* **avatar:** 修复 overlay 中尺寸计算问题 ([#8754](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8754)) ([3a5ba37](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3a5ba37de6553c5973ac1741a250dff957ca7ec5))
+* **card:** 移除 `nzBorderless` input 属性 ([#8741](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8741)) ([22ce17c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/22ce17c8a4bb7345cf026fd570bc8d3984722815))
+* **carousel:** 修复 rtl 模式下轮播切换顺序问题 ([#8770](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8770)) ([0202a19](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0202a191b3259e3dc454272b53feb3687a32cf0a))
+* **cascader:** 取消选择时收起子选项列 ([#8866](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8866)) ([5fec53e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5fec53e597d50a26a1083bb1e726af885ba807ae))
+* **drawer:** 打开时清除之前 focus 的元素 ([#8893](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8893)) ([4498af0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4498af0f1a8c700099e82f4027bec30086f6d29a))
+* **i18n:** 更新 `vi_VN` 国际化文案 ([#8894](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8894)) ([f08ad1c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f08ad1cb0728d19655c8143658e6a44f8843cb4a))
+
+
+### Code Refactoring
+
+* 取消支持渲染 HTML 字符串 ([#8831](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8831)) ([5fae01a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5fae01ad4120841390f7ebb6267a043774ea2266))
+* 移除 `ngClass` and `ngStyle` ([#8895](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8895)) ([c3ab3ba](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c3ab3ba6ad50dc4a8f23b43872b3f235ee316f4c))
+* **image:** 移除废弃的 `FADE_CLASS_NAME_MAP` 和 `IMAGE_PREVIEW_MASK_CLASS_NAME` ([#8912](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8912)) ([65223d9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/65223d9a595e78f8c73347c5d1b12a807389c434))
+
+
+### Features
+
+* **cascader:** 支持多选 ([#8903](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8903)) ([e5dfb49](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e5dfb495dc4f9e5493e425aeab3802a13a0f5e28))
+* **divider:** 新增 `nzVariant` 选项 ([#8827](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8827)) ([2c63c87](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2c63c87f557e2400224566342a0185d212055004))
+* **float-button:** 新增 float-button 组件 ([#7884](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7884)) ([dab4d66](https://github.com/NG-ZORRO/ng-zorro-antd/commit/dab4d669b3ef746d1761fbb2199c1b0ae704cda5))
+* **icon:** 新增 `nz-icon` selector ([#8778](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8778)) ([1406241](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1406241f2e636bb3bf11515b0ad68cbe0535d5e1))
+* **image:** 支持通过 `esc` 按键关闭预览 ([#8809](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8809)) ([d587615](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d587615c7dd8d911af06551181f1bffb6eb67149))
+* **input:** 新增一次性密码框组件 ([#8715](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8715)) ([cdbaf4d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cdbaf4de291f380cfcfdf6788d24da3e344175a9))
+* **menu:** 新增 `nzTriggerSubMenuAction` 支持点击触发子菜单 ([#8461](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8461)) ([860df87](https://github.com/NG-ZORRO/ng-zorro-antd/commit/860df87a1be62f462ac3ea136d53948ccd69213a))
+* **qrcode:** 新增 `nzStatusRender` 支持自定义状态渲染 ([#8714](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8714)) ([6f36d75](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6f36d75741e301bc3e7634a93c106c48a02c0a1b))
+* **segmented:** 重新设计 segmented 组件 ([#8753](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8753)) ([4dc866c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4dc866cb2fcc7afb4cc309f433c216d1b7cba2e1))
+* **space:** 新增 `nz-space-compact` 组件 ([#8755](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8755)) ([b9c511d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b9c511db0b1b28521e23148a6fce5b1f169f99a2))
+* **table:** 支持在全局配置中设置 `nzSortDirections` ([#6613](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6613)) ([#8721](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8721)) ([eb1fdc5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/eb1fdc5037d9122a237e317e5b93857deb51e5d5))
+* **transfer:** 新增 `nzOneWay` 属性支持单向样式 ([#8717](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8717)) ([99fd4de](https://github.com/NG-ZORRO/ng-zorro-antd/commit/99fd4de95b2a5a44a2837af38d31ddcabf0a60bf))
+* **input-number:** 重新设计 input-number 组件 ([#8901](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8901)) ([df55d88](https://github.com/NG-ZORRO/ng-zorro-antd/commit/df55d8882c9f36bc6a0cd8a4d752e03070658ff7))
+* **schematics:** 支持 v19 ng update 迁移 ([#8911](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8911)) ([1a20de2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1a20de223bc6e214b54f741f42ed8260611b9b67))
+
+
+### BREAKING CHANGES
+
+* **All**
+  * `nzClass` / `nzStyle` 属性不再支持下列值：
+    - `Set()`： 使用数组代替
+    - 键分隔的多个类名或样式：使用空格分隔的多个键代替
+  * 移除一些组件内部支持渲染 HTML 字符串的功能，因为这是非良好的模式。message，notification，modal 组件除外，因为这些组件可以通过 service 方式创建，渲染 html 字符串的用例会比较多。
+  * 使用标准装饰器重写 `@WithConfig`。如果在库中使用了 `@WithConfig`，请在 `tsconfig.json` 中关闭 `experimentalDecorators` 选项
+
+* **input-number:** 重新设计 input-number 组件，使其更加简单灵活
+
+  现在为新的 input-number 添加前缀或后缀的写法如下，不再需要使用 `nz-input-number-group` 与 `ng-template`：
+
+  ```html
+  <!-- Custom handler icons -->
+  <nz-input-number>
+    <nz-icon nzInputNumberUpIcon />
+    <nz-icon nzInputNumberDownIcon />
+  </nz-input-number>
+
+  <!-- With affixes -->
+  <nz-input-number>
+    <span nzInputPrefix>Prefix</span>
+    <span nzInputSuffix>Suffix</span>
+  </nz-input-number>
+
+  <!-- With addons -->
+  <nz-input-number>
+    <span nzInputAddonBefore>Before</span>
+    <span nzInputAddonAfter>After</span>
+  </nz-input-number>
+  ```
+
+  旧的 input-number 组件被标记为 **deprecated**，其入口已更改为 `ng-zorro-antd/input-number-legacy`。
+  `NzInputNumberComponent` 更名为 `NzInputNumberLegacyComponent`，`NzInputNumberModule` 更名为 `NzInputNumberLegacyModule`。
+
+  不用担心，`ng update ng-zorro-antd` 会自动迁移你的代码。
+
+* **cascader:** `ngModel` 取消支持 `NzCascaderOption[]` 类型
+
+  旧版本中，在表单中为 Cascader 组件赋值为 `NzCascaderOption[]` 类型时，Cascader 组件会根据提供的 `nzValueProperty` 映射成实际的值并写入，例如：
+
+  ```ts
+  @Component({
+    template: `<nz-cascader [nzOptions]="options" [ngModel]="value"></nz-cascader>`
+  })
+  export class ExampleComponent {
+    value = [{ label: 'NG ZORRO', value: 'ng-zorro-antd' }]
+  }
+  ```
+
+  此时 Cascader 组件输出的值将为 `'ng-zorro-antd'`。这就导致输入与输出的值不一致，可能存在潜在的数据问题。
+
+  在 v19 中，我们将移除该特性，如果您已经在代码中运用了该特性，请考虑增加一个 `map` 方法将其映射到实际的值。
+
+* **card:** 移除冗余的 `nzBorderless` 属性，使用 `nzBordered` 替代
+* **image:** 移除废弃的 `FADE_CLASS_NAME_MAP` 和 `IMAGE_PREVIEW_MASK_CLASS_NAME`
+* **pipes:** 移除废弃的 `NzSafeNullPipe`
+* **segmented:** 重新设计 segmented 组件
+  - `ngModel` 的值从索引值 `index` 改为选项值
+  - `nzValueChange` 发出值的类型从 `number` 改为选项值的类型 （`string | number`）
+  - 移除 `nzLabelTemplate`， 使用 `nz-segmented-item` 指令替代
+* **space:** `NzSpaceComponent` 的` exportAs` 属性重命名为标准 `nzSpace`
+
+
+### Deprecations
+
+在 v19 中，以下 API 被标记为 **deprecated**，并将在下一个主要版本中移除。 请参考相关文档以获取更好的替代方案。
+
+| Module                              | API                      |
+|-------------------------------------|--------------------------|
+| `ng-zorro-antd/button`              | `NzButtonGroupComponent` |
+| `ng-zorro-antd/core/form`           | `NzFormPatchModule`      |
+| `ng-zorro-antd/input`               | `NzInputGroupComponent`  |
+| `ng-zorro-antd/input-number-legacy` | `*`                      |
+| `ng-zorro-antd/message`             | `NzMessageModule`        |
+| `ng-zorro-antd/notification`        | `NzNotificationModule`   |
+
+
 ## 18.2.1
 
 `2024-11-15`

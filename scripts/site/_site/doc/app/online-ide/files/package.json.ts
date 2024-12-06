@@ -26,7 +26,7 @@ export default (nzVersion: string, ngVersion: string) => {
       rxjs: '~7.8.1',
       'date-fns': '^2.16.1',
       tslib: '^2.0.0',
-      'zone.js': '~0.14.2',
+      'zone.js': '~0.15.0',
       'ng-zorro-antd': nzVersion,
       // demo needs
       d3: '^6.3.1',
