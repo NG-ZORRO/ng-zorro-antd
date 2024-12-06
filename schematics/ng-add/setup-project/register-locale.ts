@@ -50,7 +50,7 @@ function registerLocaleInAppModule(mainFile: string, options: Schema): Rule {
     const localePrefix = locale.split('_')[0];
 
     applyChangesToFile(host, appModulePath, [
-      insertImport(moduleSource, appModulePath, 'NZ_I18N',
+      insertImport(moduleSource, appModulePath, 'provideNzI18n',
         'ng-zorro-antd/i18n'),
       insertImport(moduleSource, appModulePath, locale,
         'ng-zorro-antd/i18n'),
@@ -61,7 +61,7 @@ function registerLocaleInAppModule(mainFile: string, options: Schema): Rule {
       registerLocaleData(moduleSource, appModulePath, localePrefix),
       ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
     ]);
-  }
+  };
 }
 
 function registerLocaleInStandaloneApp(mainFile: string, options: Schema): Rule {
@@ -82,7 +82,7 @@ function registerLocaleInStandaloneApp(mainFile: string, options: Schema): Rule 
         registerLocaleData(appConfigSource, appConfigFile, localePrefix)
       ]);
     },
-    addRootProvider(options.project, ({code, external}) => {
+    addRootProvider(options.project, ({ code, external }) => {
       return code`${external('provideNzI18n', 'ng-zorro-antd/i18n')}(${locale})`;
     })
   ]);
@@ -113,8 +113,13 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
 function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change[] {
   const metadataField = 'providers';
   const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
-  const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers',
-    `{ provide: NZ_I18N, useValue: ${locale} }`, null);
+  const addProvide = addSymbolToNgModuleMetadata(
+      moduleSource,
+      modulePath,
+      'providers',
+      `provideNzI18n(${locale})`,
+      null
+    );
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let node: any = nodes[0];
 
@@ -150,17 +155,21 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
     if (arrLiteral.elements.length === 0) {
       return addProvide;
     } else {
-      node = arrLiteral.elements.filter(e => e.getText?.().includes('NZ_I18N'));
-      if (node.length === 0) {
+      const provideWithToken = arrLiteral.elements.some(e => e.getText?.().includes('NZ_I18N'));
+      const provideWithFunc = arrLiteral.elements.some(e => e.getText?.().includes('provideNzI18n'));
+
+      if (!provideWithFunc && !provideWithToken) {
         return addProvide;
-      } else {
-        console.log();
-        console.log(yellow(`Could not provide the locale token to file (${blue(modulePath)}).` +
-          `because there is already a locale token in provides.`));
-        console.log(yellow(`Please manually add the following code to your provides:`));
-        console.log(cyan(`{ provide: NZ_I18N, useValue: ${locale} }`));
-        return [];
       }
+
+      console.log();
+      console.log(yellow(`Could not provide the locale token to file (${blue(modulePath)}), because there is already a locale token in providers.`));
+
+      if (provideWithToken) {
+        console.log(yellow(`Please manually add the following code to your providers:`));
+        console.log(cyan(`provideNzI18n(${locale})`));
+      }
+      return [];
     }
   } else {
     return addProvide;

@@ -7,7 +7,7 @@ import { NZ_DATE_CONFIG } from './date-config';
 import { DateHelperByDatePipe, DateHelperService } from './date-helper.service';
 import en_US from './languages/en_US';
 import { NzI18nModule } from './nz-i18n.module';
-import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
+import { NZ_DATE_LOCALE, provideNzI18n } from './nz-i18n.token';
 
 describe('DateHelperService', () => {
   let injector: Injector;
@@ -17,7 +17,7 @@ describe('DateHelperService', () => {
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
         imports: [NzI18nModule],
-        providers: [{ provide: NZ_I18N, useValue: en_US }]
+        providers: [provideNzI18n(en_US)]
       });
 
       dateHelper = injector.get(DateHelperService);

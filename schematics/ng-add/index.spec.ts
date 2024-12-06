@@ -153,7 +153,8 @@ describe('ng-add schematic', () => {
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
 
-    expect(fileContent).toContain('{ provide: NZ_I18N, useValue: en_US }');
+    expect(fileContent).not.toContain('NZ_I18N');
+    expect(fileContent).toContain('provideNzI18n(en_US)');
     expect(fileContent).toContain('registerLocaleData(en)');
   });
 
@@ -162,7 +163,8 @@ describe('ng-add schematic', () => {
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
 
-    expect(fileContent).toContain('{ provide: NZ_I18N, useValue: zh_CN }');
+    expect(fileContent).not.toContain('NZ_I18N');
+    expect(fileContent).toContain('provideNzI18n(zh_CN)');
     expect(fileContent).toContain('registerLocaleData(zh)');
   });
 
@@ -179,9 +181,10 @@ describe('ng-add schematic', () => {
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
 
-    expect(fileContent).toContain('{ provide: NZ_I18N, useValue: en_US }');
+    expect(fileContent).toContain('provideNzI18n(en_US)');
     expect(fileContent).toContain('registerLocaleData(en)');
-    expect(fileContent).not.toContain('{ provide: NZ_I18N, useValue: zh_CN }');
+    expect(fileContent).not.toContain('NZ_I18N');
+    expect(fileContent).not.toContain('provideNzI18n(zh_CN)');
     expect(fileContent).not.toContain('registerLocaleData(zh)');
 
     expect(console.log).toHaveBeenCalledWith(jasmine.stringMatching(/Could not add the registerLocaleData to file/));
