@@ -212,6 +212,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
           [extraFooter]="extraFooter"
           [ranges]="nzRanges"
           [dir]="dir"
+          [format]="nzFormat"
           (resultOk)="onResultOk()"
         />
       </div>
