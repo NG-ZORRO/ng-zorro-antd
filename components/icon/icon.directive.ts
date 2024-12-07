@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentChecked,
   ChangeDetectorRef,
@@ -10,16 +11,19 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Renderer2,
   SimpleChanges,
   booleanAttribute,
+  numberAttribute,
+  ExperimentalPendingTasks,
   inject,
-  numberAttribute
+  DestroyRef,
+  PLATFORM_ID
 } from '@angular/core';
-import { Subject, from } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { animationFrameScheduler, asapScheduler, from } from 'rxjs';
+import { debounceTime, finalize } from 'rxjs/operators';
 
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 
@@ -34,7 +38,7 @@ import { NzIconPatchService, NzIconService } from './icon.service';
     '[class.anticon]': 'true'
   }
 })
-export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
+export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked {
   cacheClassName: string | null = null;
   @Input({ transform: booleanAttribute })
   set nzSpin(value: boolean) {
@@ -69,7 +73,9 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   private iconfont?: string;
   private spin: boolean = false;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
+  private pendingTasks = inject(ExperimentalPendingTasks);
+  private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   constructor(
     private readonly ngZone: NgZone,
@@ -91,7 +97,9 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     const { nzType, nzTwotoneColor, nzSpin, nzTheme, nzRotate } = changes;
 
     if (nzType || nzTwotoneColor || nzSpin || nzTheme) {
-      this.changeIcon2();
+      // This is used to reduce the number of change detections
+      // while the icon is being loaded asynchronously.
+      this.ngZone.runOutsideAngular(() => this.changeIcon2());
     } else if (nzRotate) {
       this.handleRotate(this.el.firstChild as SVGElement);
     } else {
@@ -121,46 +129,47 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-  }
-
   /**
    * Replacement of `changeIcon` for more modifications.
    */
   private changeIcon2(): void {
     this.setClassName();
 
-    // The Angular zone is left deliberately before the SVG is set
-    // since `_changeIcon` spawns asynchronous tasks as promise and
-    // HTTP calls. This is used to reduce the number of change detections
-    // while the icon is being loaded dynamically.
-    this.ngZone.runOutsideAngular(() => {
-      from(this._changeIcon())
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: svgOrRemove => {
-            // Get back into the Angular zone after completing all the tasks.
-            // Since we manually run change detection locally, we have to re-enter
-            // the zone because the change detection might also be run on other local
-            // components, leading them to handle template functions outside of the Angular zone.
-            this.ngZone.run(() => {
-              // The _changeIcon method would call Renderer to remove the element of the old icon,
-              // which would call `markElementAsRemoved` eventually,
-              // so we should call `detectChanges` to tell Angular remove the DOM node.
-              // #7186
-              this.changeDetectorRef.detectChanges();
+    // It is used to hydrate the icon component property when
+    // zoneless change detection is used in conjunction with server-side rendering.
+    const removeTask = this.pendingTasks.add();
 
-              if (svgOrRemove) {
-                this.setSVGData(svgOrRemove);
-                this.handleSpin(svgOrRemove);
-                this.handleRotate(svgOrRemove);
-              }
-            });
-          },
-          error: warn
-        });
-    });
+    from(this._changeIcon())
+      .pipe(
+        // We need to individually debounce the icon rendering on each animation
+        // frame to prevent frame drops when many icons are being rendered on the
+        // page, such as in a `@for` loop.
+        debounceTime(0, this.isBrowser ? animationFrameScheduler : asapScheduler),
+        takeUntilDestroyed(this.destroyRef),
+        finalize(removeTask)
+      )
+      .subscribe({
+        next: svgOrRemove => {
+          // Get back into the Angular zone after completing all the tasks.
+          // Since we manually run change detection locally, we have to re-enter
+          // the zone because the change detection might also be run on other local
+          // components, leading them to handle template functions outside of the Angular zone.
+          this.ngZone.run(() => {
+            // The _changeIcon method would call Renderer to remove the element of the old icon,
+            // which would call `markElementAsRemoved` eventually,
+            // so we should call `detectChanges` to tell Angular remove the DOM node.
+            // #7186
+            this.changeDetectorRef.detectChanges();
+
+            if (svgOrRemove) {
+              this.setSVGData(svgOrRemove);
+              this.handleSpin(svgOrRemove);
+              this.handleRotate(svgOrRemove);
+            }
+          });
+        },
+        error: warn
+      });
   }
 
   private handleSpin(svg: SVGElement): void {
