@@ -103,7 +103,7 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
    * @note
    * angular/cdk v18.2.0 breaking changes: https://github.com/angular/components/pull/29062
    * Temporary workaround: revert to old method of getting level
-   * TODO: refactor tree-view, remove #treeControl instead of #levelAccessor or #childrenAccessor
+   * TODO: refactor tree-view, remove #treeControl and adopt #levelAccessor and #childrenAccessor
    * */
   override _getLevel(nodeData: T): number | undefined {
     if (this.treeControl.getLevel) {
