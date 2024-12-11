@@ -54,6 +54,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverMouseLeaveDelay') override mouseLeaveDelay?: number;
   @Input('nzPopoverOverlayClassName') override overlayClassName?: string;
   @Input('nzPopoverOverlayStyle') override overlayStyle?: NgStyleInterface;
+  @Input('nzPopoverOverlayClickable') override overlayClickable?: boolean;
 
   @Input() @WithConfig() nzPopoverBackdrop?: boolean = false;
 
