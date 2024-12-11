@@ -99,6 +99,19 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
     this.changeDetectorRef.markForCheck();
   }
 
+  /**
+   * @note
+   * angular/cdk v18.2.0 breaking changes: https://github.com/angular/components/pull/29062
+   * Temporary workaround: revert to old method of getting level
+   * TODO: refactor tree-view, remove #treeControl instead of #levelAccessor or #childrenAccessor
+   * */
+  override _getLevel(nodeData: T): number | undefined {
+    if (this.treeControl.getLevel) {
+      return this.treeControl.getLevel(nodeData);
+    }
+    return;
+  }
+
   private createNode(nodeData: T, index: number): NzTreeVirtualNodeData<T> {
     const node = this._getNodeDef(nodeData, index);
     const context = new CdkTreeNodeOutletContext<T>(nodeData);
