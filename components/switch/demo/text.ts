@@ -19,8 +19,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       [nzCheckedChildren]="checkedTemplate"
       [nzUnCheckedChildren]="unCheckedTemplate"
     ></nz-switch>
-    <ng-template #checkedTemplate><span nz-icon nzType="check"></span></ng-template>
-    <ng-template #unCheckedTemplate><span nz-icon nzType="close"></span></ng-template>
+    <ng-template #checkedTemplate><nz-icon nzType="check" /></ng-template>
+    <ng-template #unCheckedTemplate><nz-icon nzType="close" /></ng-template>
   `
 })
 export class NzDemoSwitchTextComponent {}

@@ -28,7 +28,7 @@ import { NzSegmentedService } from './segmented.service';
     <input class="ant-segmented-item-input" type="radio" [checked]="isChecked" (click)="$event.stopPropagation()" />
     <div class="ant-segmented-item-label">
       @if (nzIcon) {
-        <span class="ant-segmented-item-icon"><span nz-icon [nzType]="nzIcon"></span></span>
+        <span class="ant-segmented-item-icon"><nz-icon [nzType]="nzIcon" /></span>
         <span>
           <ng-template [ngTemplateOutlet]="content" />
         </span>

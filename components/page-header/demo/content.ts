@@ -67,7 +67,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
             nzPlacement="bottomRight"
             style="border: none; padding: 0"
           >
-            <span nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></span>
+            <nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;" />
           </button>
         </nz-space>
         <nz-dropdown-menu #menu="nzDropdownMenu">

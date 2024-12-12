@@ -102,7 +102,7 @@ export type MentionPlacement = 'top' | 'bottom';
           @if (filteredSuggestions.length === 0) {
             <li class="ant-mentions-dropdown-menu-item ant-mentions-dropdown-menu-item-disabled">
               @if (nzLoading) {
-                <span><span nz-icon nzType="loading"></span></span>
+                <span><nz-icon nzType="loading" /></span>
               } @else {
                 <span>
                   <nz-embed-empty nzComponentName="select" [specificContent]="nzNotFoundContent!" />

@@ -9,31 +9,31 @@ import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@ang
 import { _getEventTarget } from '@angular/cdk/platform';
 import { SlicePipe } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   ElementRef,
   EventEmitter,
+  forwardRef,
   HostListener,
+  inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
   Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewEncapsulation,
-  booleanAttribute,
-  computed,
-  forwardRef,
-  inject,
-  numberAttribute,
-  signal
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
@@ -140,9 +140,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       @if (nzShowArrow) {
         <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
           @if (!isLoading) {
-            <span nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible"></span>
+            <nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible" />
           } @else {
-            <span nz-icon nzType="loading"></span>
+            <nz-icon nzType="loading" />
           }
 
           @if (hasFeedback && !!status) {

@@ -130,7 +130,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
               @if (nzSeparator) {
                 {{ nzSeparator }}
               } @else {
-                <span nz-icon nzType="swap-right" nzTheme="outline"></span>
+                <nz-icon nzType="swap-right" nzTheme="outline" />
               }
             </ng-container>
           </span>
@@ -167,13 +167,13 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
       <div class="{{ prefixCls }}-active-bar" [style]="activeBarStyle"></div>
       @if (showClear) {
         <span class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
-          <span nz-icon nzType="close-circle" nzTheme="fill"></span>
+          <nz-icon nzType="close-circle" nzTheme="fill" />
         </span>
       }
 
       <span class="{{ prefixCls }}-suffix">
         <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
-          <span nz-icon [nzType]="suffixIcon"></span>
+          <nz-icon [nzType]="suffixIcon" />
         </ng-container>
         @if (hasFeedback && !!status) {
           <nz-form-item-feedback-icon [status]="status" />

@@ -8,29 +8,29 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   imports: [NzButtonModule, NzIconModule],
   template: `
     <button nz-button nzType="primary" nzShape="circle">
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
     </button>
     <button nz-button nzType="primary" nzShape="circle">A</button>
     <button nz-button nzType="primary">
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
       Search
     </button>
     <button nz-button nzType="default" nzShape="circle">
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
     </button>
     <button nz-button nzType="default">
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
       Search
     </button>
     <br />
-    <button nz-button nzType="default" nzShape="circle"><span nz-icon nzType="search"></span></button>
+    <button nz-button nzType="default" nzShape="circle"><nz-icon nzType="search" /></button>
     <button nz-button nzType="default">
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
       Search
     </button>
-    <button nz-button nzType="dashed" nzShape="circle"><span nz-icon nzType="search"></span></button>
+    <button nz-button nzType="dashed" nzShape="circle"><nz-icon nzType="search" /></button>
     <button nz-button nzType="dashed">
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
       Search
     </button>
   `,

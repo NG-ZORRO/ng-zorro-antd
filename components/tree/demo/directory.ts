@@ -20,13 +20,13 @@ import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree'
       <span class="custom-node">
         @if (!node.isLeaf) {
           <span (contextmenu)="contextMenu($event, menu)">
-            <span nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></span>
+            <nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)" />
             <span class="folder-name">{{ node.title }}</span>
             <span class="folder-desc">created by {{ origin.author | lowercase }}</span>
           </span>
         } @else {
           <span (contextmenu)="contextMenu($event, menu)">
-            <span nz-icon nzType="file"></span>
+            <nz-icon nzType="file" />
             <span class="file-name">{{ node.title }}</span>
             <span class="file-desc">modified by {{ origin.author | lowercase }}</span>
           </span>

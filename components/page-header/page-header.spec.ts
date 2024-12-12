@@ -98,7 +98,7 @@ describe('NzPageHeaderComponent', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
-    expect(pageHeader.nativeElement.querySelector('.ant-page-header-back span.anticon-arrow-left')).toBeTruthy();
+    expect(pageHeader.nativeElement.querySelector('.ant-page-header-back .anticon-arrow-left')).toBeTruthy();
   });
 
   it('should does not have an default back icon', () => {
@@ -147,7 +147,7 @@ describe('NzPageHeaderComponent', () => {
 
     it('should have an default back icon', () => {
       fixture.detectChanges();
-      expect(pageHeader.nativeElement.querySelector('.ant-page-header-back span.anticon-arrow-right')).toBeTruthy();
+      expect(pageHeader.nativeElement.querySelector('.ant-page-header-back .anticon-arrow-right')).toBeTruthy();
     });
   });
 });

@@ -3,12 +3,13 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 @Component({
-    selector: 'ul[nz-menu][app-navigation]',
+  selector: 'ul[nz-menu][app-navigation]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, NgTemplateOutlet, NzMenuModule],
+  imports: [RouterLink, NgTemplateOutlet, NzMenuModule, NzIconModule],
   template: `
     <li nz-menu-item [nzSelected]="page === 'docs'">
       <a [routerLink]="['docs', 'introduce', language]">
@@ -32,7 +33,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
     }
     @if (!isMobile && responsive === 'crowded') {
       <li nz-submenu [nzTitle]="additionalTitle" nzMenuClassName="top-menu-additional">
-        <ng-template #additionalTitle><span nz-icon nzType="unordered-list" nzTheme="outline"></span></ng-template>
+        <ng-template #additionalTitle><nz-icon nzType="unordered-list" nzTheme="outline" /></ng-template>
         <ul>
           <ng-container [ngTemplateOutlet]="additionalItems"></ng-container>
         </ul>

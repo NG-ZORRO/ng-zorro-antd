@@ -30,7 +30,7 @@ import { NzModeType } from './typings';
       <div class="ant-hashCode-header">
         <div class="ant-hashCode-header-title">{{ nzTitle }}</div>
         <div class="ant-hashCode-header-copy" (click)="copyHandle()">
-          <span nz-icon nzType="copy" nzTheme="outline"></span>
+          <nz-icon nzType="copy" nzTheme="outline" />
         </div>
         <div class="ant-hashCode-header-logo">
           <ng-template [nzStringTemplateOutlet]="nzLogo">{{ nzLogo }}</ng-template>
@@ -40,7 +40,7 @@ import { NzModeType } from './typings';
 
     @if (nzMode === 'single' || nzMode === 'rect') {
       <div class="ant-hashCode-header-copy" (click)="copyHandle()">
-        <span nz-icon nzType="copy" nzTheme="outline"></span>
+        <nz-icon nzType="copy" nzTheme="outline" />
       </div>
     }
 

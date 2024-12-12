@@ -13,7 +13,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   selector: 'nz-tab-add-button, button[nz-tab-add-button]',
   template: `
     <ng-container *nzStringTemplateOutlet="addIcon; let icon">
-      <span nz-icon [nzType]="icon" nzTheme="outline"></span>
+      <nz-icon [nzType]="icon" nzTheme="outline" />
     </ng-container>
   `,
   host: {

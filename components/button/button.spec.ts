@@ -321,7 +321,7 @@ export class TestButtonComponent {
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading">
-      <span nz-icon nzType="poweroff"></span>
+      <nz-icon nzType="poweroff" />
       {{ 'Click me!' }}
     </button>
   `
@@ -340,7 +340,7 @@ export class TestButtonBindingComponent {
   template: `
     <button nz-button>
       {{ title }}
-      <span nz-icon nzType="caret-down"></span>
+      <nz-icon nzType="caret-down" />
     </button>
   `
 })
@@ -355,7 +355,7 @@ export class TestButtonWithIconComponent implements OnInit {
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button>
-      <span nz-icon nzType="caret-down"></span>
+      <nz-icon nzType="caret-down" />
     </button>
   `
 })
@@ -407,7 +407,7 @@ export class TestButtonIconOnlyWithoutIconComponent {}
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button nzLoading>
-      <span nz-icon nzType="caret-down"></span>
+      <nz-icon nzType="caret-down" />
     </button>
   `
 })

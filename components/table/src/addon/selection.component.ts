@@ -31,7 +31,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     @if (showRowSelection) {
       <div class="ant-table-selection-extra">
         <span nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
-          <span nz-icon nzType="down"></span>
+          <nz-icon nzType="down" />
         </span>
         <nz-dropdown-menu #selectionMenu="nzDropdownMenu">
           <ul nz-menu class="ant-table-selection-menu">

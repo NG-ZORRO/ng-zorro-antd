@@ -20,15 +20,15 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
         >
           <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzAvatar]="true">
             <ng-template #starAction>
-              <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
+              <nz-icon nzType="star-o" style="margin-right: 8px;" />
               156
             </ng-template>
             <ng-template #likeAction>
-              <span nz-icon nzType="like-o" style="margin-right: 8px;"></span>
+              <nz-icon nzType="like-o" style="margin-right: 8px;" />
               156
             </ng-template>
             <ng-template #msgAction>
-              <span nz-icon nzType="message" style="margin-right: 8px;"></span>
+              <nz-icon nzType="message" style="margin-right: 8px;" />
               2
             </ng-template>
             <nz-list-item-meta [nzAvatar]="item.avatar" [nzTitle]="nzTitle" [nzDescription]="item.description">

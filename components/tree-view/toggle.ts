@@ -32,7 +32,7 @@ export class NzTreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
 }
 
 @Directive({
-  selector: '[nz-icon][nzTreeNodeToggleRotateIcon]',
+  selector: '[nzTreeNodeToggleRotateIcon]',
   host: {
     class: 'ant-tree-switcher-icon'
   }
@@ -40,7 +40,7 @@ export class NzTreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
 export class NzTreeNodeToggleRotateIconDirective {}
 
 @Directive({
-  selector: '[nz-icon][nzTreeNodeToggleActiveIcon]',
+  selector: '[nzTreeNodeToggleActiveIcon]',
   host: {
     class: 'ant-tree-switcher-loading-icon'
   }

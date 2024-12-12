@@ -22,13 +22,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
     </ng-template>
     <ng-template #actionSetting>
-      <span nz-icon nzType="setting"></span>
+      <nz-icon nzType="setting" />
     </ng-template>
     <ng-template #actionEdit>
-      <span nz-icon nzType="edit"></span>
+      <nz-icon nzType="edit" />
     </ng-template>
     <ng-template #actionEllipsis>
-      <span nz-icon nzType="ellipsis"></span>
+      <nz-icon nzType="ellipsis" />
     </ng-template>
   `
 })

@@ -10,8 +10,8 @@
     } @else {
       <p>
         <span><code>ng-zorro-antd</code></span>
-        is an Angular UI lib, follow Ant Design specification, to provide high quantity UI components
-        for web development.
+        is an Angular UI lib, follow Ant Design specification, to provide high quantity UI components for web
+        development.
       </p>
     }
   </section>
@@ -28,11 +28,11 @@
           placeholder="{{ language === 'en' ? 'Search in components' : '搜索组件' }}"
           nzSize="large"
           (input)="onSearch(searchBox.value)"
-          />
+        />
       </nz-input-group>
     </nz-affix>
     <ng-template #suffixIconSearch>
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
     </ng-template>
 
     <nz-divider></nz-divider>
@@ -47,21 +47,9 @@
 
           <div nz-row>
             @for (component of group.children; track $index) {
-              <div
-                nz-col
-                nzXs="24"
-                nzSm="12"
-                nzMd="12"
-                nzLg="8"
-                nzXl="6"
-                nzXXl="6"
-                class="components-overview-card"
-              >
+              <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="8" nzXl="6" nzXXl="6" class="components-overview-card">
                 <a routerLink="/{{ component.path }}">
-                  <nz-card
-                    nzHoverable
-                    nzTitle="{{ component.label }} {{ language === 'zh' ? component.zh : '' }}"
-                  >
+                  <nz-card nzHoverable nzTitle="{{ component.label }} {{ language === 'zh' ? component.zh : '' }}">
                     <div class="components-overview-img">
                       <img [alt]="component.label" [src]="component.cover" />
                     </div>

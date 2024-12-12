@@ -24,7 +24,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   preserveWhitespaces: false,
   template: `
     <span class="ant-input-prefix">
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
     </span>
     <input
       [(ngModel)]="value"
@@ -36,7 +36,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     />
     @if (value && value.length > 0) {
       <span class="ant-input-suffix" (click)="_clear()">
-        <span nz-icon nzType="close-circle" nzTheme="fill" class="ant-input-clear-icon"></span>
+        <nz-icon nzType="close-circle" nzTheme="fill" class="ant-input-clear-icon" />
       </span>
     }
   `,

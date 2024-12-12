@@ -34,7 +34,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
           <button nz-button (click)="resetForm()">Clear</button>
           <a class="collapse" (click)="toggleCollapse()">
             Collapse
-            <span nz-icon [nzType]="isCollapse ? 'down' : 'up'"></span>
+            <nz-icon [nzType]="isCollapse ? 'down' : 'up'" />
           </a>
         </div>
       </div>

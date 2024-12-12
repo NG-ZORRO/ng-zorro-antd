@@ -255,7 +255,7 @@ describe('nz-layout', () => {
       </nz-layout>
     </nz-layout>
     <ng-template #trigger>
-      <span nz-icon nzType="up"></span>
+      <nz-icon nzType="up" />
     </ng-template>
   `
 })
@@ -316,7 +316,7 @@ export class NzLayoutSideComponent {
       </nz-layout>
     </nz-layout>
     <ng-template #zeroTrigger>
-      <span nz-icon nzType="menu-fold" nzTheme="outline"></span>
+      <nz-icon nzType="menu-fold" nzTheme="outline" />
     </ng-template>
   `
 })

@@ -128,7 +128,7 @@ describe('nz-float-button-group RTL', () => {
     >
     </nz-float-button-group>
     <ng-template #icon>
-      <span nz-icon nzType="question-circle" nzTheme="outline"></span>
+      <nz-icon nzType="question-circle" nzTheme="outline" />
     </ng-template>
   `
 })

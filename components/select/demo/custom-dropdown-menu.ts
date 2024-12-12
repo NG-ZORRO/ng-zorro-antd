@@ -19,7 +19,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       <div class="container">
         <input type="text" nz-input #inputElement />
         <a class="add-item" (click)="addItem(inputElement)">
-          <span nz-icon nzType="plus"></span>
+          <nz-icon nzType="plus" />
           Add item
         </a>
       </div>

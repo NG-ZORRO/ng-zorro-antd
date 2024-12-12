@@ -22,11 +22,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
 
 @Component({
-    selector: 'li[nz-pagination-item]',
-    preserveWhitespaces: false,
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    template: `
+  selector: 'li[nz-pagination-item]',
+  preserveWhitespaces: false,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
     <ng-template #renderItemTemplate let-type let-page="page">
       @switch (type) {
         @case ('page') {
@@ -35,18 +35,18 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
         @case ('prev') {
           <button type="button" [disabled]="disabled" [attr.title]="locale.prev_page" class="ant-pagination-item-link">
             @if (direction === 'rtl') {
-              <span nz-icon nzType="right"></span>
+              <nz-icon nzType="right" />
             } @else {
-              <span nz-icon nzType="left"></span>
+              <nz-icon nzType="left" />
             }
           </button>
         }
         @case ('next') {
           <button type="button" [disabled]="disabled" [attr.title]="locale.next_page" class="ant-pagination-item-link">
             @if (direction === 'rtl') {
-              <span nz-icon nzType="left"></span>
+              <nz-icon nzType="left" />
             } @else {
-              <span nz-icon nzType="right"></span>
+              <nz-icon nzType="right" />
             }
           </button>
         }
@@ -62,7 +62,7 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
                       class="ant-pagination-item-link-icon"
                     ></span>
                   } @else {
-                    <span nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></span>
+                    <nz-icon nzType="double-left" class="ant-pagination-item-link-icon" />
                   }
                 }
                 @case ('next_5') {
@@ -70,7 +70,7 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
                     <span nz-icon nzType="double-left"
                           class="ant-pagination-item-link-icon"></span>
                   } @else {
-                    <span nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></span>
+                    <nz-icon nzType="double-right" class="ant-pagination-item-link-icon" />
                   }
                 }
               }
@@ -85,20 +85,20 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
       [ngTemplateOutletContext]="{ $implicit: type, page: index }"
     />
   `,
-    host: {
-        '[class.ant-pagination-prev]': `type === 'prev'`,
-        '[class.ant-pagination-next]': `type === 'next'`,
-        '[class.ant-pagination-item]': `type === 'page'`,
-        '[class.ant-pagination-jump-prev]': `type === 'prev_5'`,
-        '[class.ant-pagination-jump-prev-custom-icon]': `type === 'prev_5'`,
-        '[class.ant-pagination-jump-next]': `type === 'next_5'`,
-        '[class.ant-pagination-jump-next-custom-icon]': `type === 'next_5'`,
-        '[class.ant-pagination-disabled]': 'disabled',
-        '[class.ant-pagination-item-active]': 'active',
-        '[attr.title]': 'title',
-        '(click)': 'clickItem()'
-    },
-    imports: [NzIconModule, NgTemplateOutlet]
+  host: {
+    '[class.ant-pagination-prev]': `type === 'prev'`,
+    '[class.ant-pagination-next]': `type === 'next'`,
+    '[class.ant-pagination-item]': `type === 'page'`,
+    '[class.ant-pagination-jump-prev]': `type === 'prev_5'`,
+    '[class.ant-pagination-jump-prev-custom-icon]': `type === 'prev_5'`,
+    '[class.ant-pagination-jump-next]': `type === 'next_5'`,
+    '[class.ant-pagination-jump-next-custom-icon]': `type === 'next_5'`,
+    '[class.ant-pagination-disabled]': 'disabled',
+    '[class.ant-pagination-item-active]': 'active',
+    '[attr.title]': 'title',
+    '(click)': 'clickItem()'
+  },
+  imports: [NzIconModule, NgTemplateOutlet]
 })
 export class NzPaginationItemComponent implements OnChanges {
   @Input() active = false;

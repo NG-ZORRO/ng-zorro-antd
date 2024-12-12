@@ -26,7 +26,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     </nz-collapse>
     <ng-template #extraTpl>
       <!-- You can use stopPropagation if you don't want the panel to toggle -->
-      <span nz-icon nzType="setting" (click)="$event.stopPropagation()"></span>
+      <nz-icon nzType="setting" (click)="$event.stopPropagation()" />
     </ng-template>
     <br />
     <span>Expand Icon Position: </span>

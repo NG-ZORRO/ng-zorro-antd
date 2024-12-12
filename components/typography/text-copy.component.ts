@@ -42,7 +42,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
       (click)="onClick()"
     >
       <ng-container *nzStringTemplateOutlet="copied ? copedIcon : copyIcon; let icon">
-        <span nz-icon [nzType]="icon"></span>
+        <nz-icon [nzType]="icon" />
       </ng-container>
     </button>
   `,

@@ -11,7 +11,6 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
-  OnInit,
   Renderer2,
   SimpleChanges,
   booleanAttribute,
@@ -31,10 +30,10 @@ import { NzIconPatchService, NzIconService } from './icon.service';
   selector: 'nz-icon,[nz-icon]',
   exportAs: 'nzIcon',
   host: {
-    '[class.anticon]': 'true'
+    class: 'anticon'
   }
 })
-export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
+export class NzIconDirective extends IconDirective implements OnChanges, AfterContentChecked, OnDestroy {
   cacheClassName: string | null = null;
   @Input({ transform: booleanAttribute })
   set nzSpin(value: boolean) {
@@ -97,10 +96,6 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     } else {
       this._setSVGElement(this.iconService.createIconfontIcon(`#${this.iconfont}`));
     }
-  }
-
-  ngOnInit(): void {
-    this.renderer.setAttribute(this.el, 'class', `anticon ${this.el.className}`.trim());
   }
 
   /**

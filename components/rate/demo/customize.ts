@@ -18,19 +18,19 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
     <ng-template #characterIcon let-index>
       @switch (index) {
         @case (0) {
-          <span nz-icon nzType="frown"></span>
+          <nz-icon nzType="frown" />
         }
         @case (1) {
-          <span nz-icon nzType="frown"></span>
+          <nz-icon nzType="frown" />
         }
         @case (2) {
-          <span nz-icon nzType="meh"></span>
+          <nz-icon nzType="meh" />
         }
         @case (3) {
-          <span nz-icon nzType="smile"></span>
+          <nz-icon nzType="smile" />
         }
         @case (4) {
-          <span nz-icon nzType="smile"></span>
+          <nz-icon nzType="smile" />
         }
       }
     </ng-template>

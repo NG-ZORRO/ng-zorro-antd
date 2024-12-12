@@ -43,7 +43,7 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
             [class.ant-tree-iconEle]="!selectMode"
             [class.ant-tree-icon__customize]="!selectMode"
           >
-            <span nz-icon [nzType]="icon"></span>
+            <nz-icon [nzType]="icon" />
           </span>
         </span>
       }

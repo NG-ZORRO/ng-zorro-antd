@@ -19,7 +19,7 @@
     <div class="code-box-title">
       <a (click)="navigateToFragment()">{{ nzTitle }}</a>
       <a class="edit-button" [attr.href]="nzHref" target="_blank" rel="noopener noreferrer">
-        <span nz-icon nzType="edit"></span>
+        <nz-icon nzType="edit" />
       </a>
     </div>
     <div class="code-box-description">
@@ -27,9 +27,15 @@
     </div>
     <div class="code-box-actions">
       <span
-        [nzTooltipTitle]="!onlineIDELoading ?
-        language==='zh' ? '在 StackBlitz 上打开':'Edit On StackBlitz':
-        language==='zh'? '加载中...' : 'Loading...'"
+        [nzTooltipTitle]="
+          !onlineIDELoading
+            ? language === 'zh'
+              ? '在 StackBlitz 上打开'
+              : 'Edit On StackBlitz'
+            : language === 'zh'
+              ? '加载中...'
+              : 'Loading...'
+        "
         nz-tooltip
         nz-icon
         nzType="thunderbolt"
@@ -38,9 +44,9 @@
         (click)="openOnlineIDE()"
       ></span>
       <span
-        [nzTooltipTitle]="!copyLoading ?
-        language==='zh'? '复制代码' : 'Copy Code' :
-        language==='zh'? '加载中...' : 'Loading...'"
+        [nzTooltipTitle]="
+          !copyLoading ? (language === 'zh' ? '复制代码' : 'Copy Code') : language === 'zh' ? '加载中...' : 'Loading...'
+        "
         nz-tooltip
         nz-icon
         [nzType]="copied ? 'check' : 'snippets'"
@@ -50,7 +56,7 @@
       ></span>
       @if (nzGenerateCommand) {
         <span
-          [nzTooltipTitle]="language==='zh'? '复制生成代码命令' : 'Copy Generate Command'"
+          [nzTooltipTitle]="language === 'zh' ? '复制生成代码命令' : 'Copy Generate Command'"
           nz-tooltip
           nz-icon
           [nzType]="commandCopied ? 'check' : 'code'"
@@ -59,11 +65,12 @@
           (click)="copyGenerateCommand(nzGenerateCommand)"
         ></span>
       }
-      <span class="code-expand-icon"
+      <span
+        class="code-expand-icon"
         nz-tooltip
-        [nzTooltipTitle]="nzExpanded ?
-        (language==='zh'? '收起代码' : 'Hide Code') :
-        (language==='zh'? '显示代码' : 'Show Code')"
+        [nzTooltipTitle]="
+          nzExpanded ? (language === 'zh' ? '收起代码' : 'Hide Code') : language === 'zh' ? '显示代码' : 'Show Code'
+        "
         (click)="expandCode(!nzExpanded)"
       >
         @switch (theme) {

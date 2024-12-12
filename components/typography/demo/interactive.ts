@@ -26,7 +26,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       [nzCopyIcons]="['meh', 'smile']"
     ></p>
     <ng-template #copedIcon>
-      <span nz-icon nzType="smile" nzTheme="fill"></span>
+      <nz-icon nzType="smile" nzTheme="fill" />
       you clicked!!
     </ng-template>
     <p nz-typography nzCopyable [nzCopyTooltips]="null" nzContent="Hide copy tooltips."></p>

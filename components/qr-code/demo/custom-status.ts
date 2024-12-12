@@ -11,7 +11,7 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
     <nz-qrcode nzValue="https://ng.ant.design/" [nzStatusRender]="customTemplate"></nz-qrcode>
     <ng-template #customTemplate>
       <div>
-        <span nz-icon nzType="check-circle" nzTheme="outline" style="color: red"></span>
+        <nz-icon nzType="check-circle" nzTheme="outline" style="color: red" />
         success
       </div>
     </ng-template>

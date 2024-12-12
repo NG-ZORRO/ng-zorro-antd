@@ -42,7 +42,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <nz-form-item>
         <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20, offset: 4 }">
           <button nz-button nzType="dashed" class="add-button" (click)="addField($event)">
-            <span nz-icon nzType="plus"></span>
+            <nz-icon nzType="plus" />
             Add field
           </button>
         </nz-form-control>

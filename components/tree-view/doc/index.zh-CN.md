@@ -79,11 +79,11 @@ import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 不做任何操作的切换部分，可用于占位或者显示图标。
 
-### [nz-icon][nztreenodetogglerotateicon]
+### [nztreenodetogglerotateicon]
 
 定义切换部分中的图标，会随着展开收起状态自动旋转。
 
-### [nz-icon][nztreenodetoggleactiveicon]
+### [nztreenodetoggleactiveicon]
 
 定义切换部分中的图标，使其具有激活状态的样式，可用于 loading 图标。
 

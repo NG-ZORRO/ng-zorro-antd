@@ -56,7 +56,7 @@ import { NzFloatButtonComponent } from './float-button.component';
       }
     }
     <ng-template #close>
-      <span nz-icon nzType="close" nzTheme="outline"></span>
+      <nz-icon nzType="close" nzTheme="outline" />
     </ng-template>
   `,
   host: {

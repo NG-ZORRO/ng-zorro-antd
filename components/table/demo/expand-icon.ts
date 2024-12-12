@@ -29,9 +29,9 @@ import { NzTableModule } from 'ng-zorro-antd/table';
           </tr>
           <ng-template #expandIcon>
             @if (!expandSet.has(data.id)) {
-              <span nz-icon nzType="plus-circle" nzTheme="outline" (click)="onExpandChange(data.id, true)"></span>
+              <nz-icon nzType="plus-circle" nzTheme="outline" (click)="onExpandChange(data.id, true)" />
             } @else {
-              <span nz-icon nzType="minus-circle" nzTheme="outline" (click)="onExpandChange(data.id, false)"></span>
+              <nz-icon nzType="minus-circle" nzTheme="outline" (click)="onExpandChange(data.id, false)" />
             }
           </ng-template>
         }

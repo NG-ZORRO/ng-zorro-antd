@@ -554,7 +554,7 @@ export class NzTestOuterStepsComponent {
     </nz-steps>
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
-    <ng-template #iconTemplate><span nz-icon nzType="smile-o"></span></ng-template>
+    <ng-template #iconTemplate><nz-icon nzType="smile-o" /></ng-template>
   `
 })
 export class NzTestInnerStepStringComponent {
@@ -578,7 +578,7 @@ export class NzTestInnerStepStringComponent {
     </nz-steps>
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
-    <ng-template #iconTemplate><span nz-icon nzType="smile-o"></span></ng-template>
+    <ng-template #iconTemplate><nz-icon nzType="smile-o" /></ng-template>
   `
 })
 export class NzTestInnerStepTemplateComponent {}

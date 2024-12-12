@@ -11,7 +11,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
       >This Tooltip has an Icon</a
     >
     <ng-template #titleTemplate let-thing>
-      <span nz-icon nzType="file"></span>
+      <nz-icon nzType="file" />
       <span>Tooltip With {{ thing }}</span>
     </ng-template>
   `,

@@ -56,10 +56,10 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
             </div>
           }
           @if (nzStatus === 'finish' && !nzIcon) {
-            <span class="ant-steps-icon"><span nz-icon nzType="check"></span></span>
+            <span class="ant-steps-icon"><nz-icon nzType="check" /></span>
           }
           @if (nzStatus === 'error') {
-            <span class="ant-steps-icon"><span nz-icon nzType="close"></span></span>
+            <span class="ant-steps-icon"><nz-icon nzType="close" /></span>
           }
           @if ((nzStatus === 'process' || nzStatus === 'wait') && !nzIcon) {
             <span class="ant-steps-icon">
@@ -69,7 +69,7 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
           @if (nzIcon) {
             <span class="ant-steps-icon">
               <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
-                <span nz-icon [nzType]="icon"></span>
+                <nz-icon [nzType]="icon" />
               </ng-container>
             </span>
           }

@@ -13,7 +13,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   selector: 'nz-tab-close-button, button[nz-tab-close-button]',
   template: `
     <ng-container *nzStringTemplateOutlet="closeIcon; let icon">
-      <span nz-icon [nzType]="icon" nzTheme="outline"></span>
+      <nz-icon [nzType]="icon" nzTheme="outline" />
     </ng-container>
   `,
   host: {

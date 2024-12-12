@@ -31,7 +31,7 @@ import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (nzIcon) {
-      <span nz-icon [nzType]="nzIcon"></span>
+      <nz-icon [nzType]="nzIcon" />
     }
     <ng-container *nzStringTemplateOutlet="nzTitle">
       <span class="ant-menu-title-content">{{ nzTitle }}</span>
@@ -41,10 +41,10 @@ import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
       <span class="ant-dropdown-menu-submenu-expand-icon">
         @switch (dir) {
           @case ('rtl') {
-            <span nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon"></span>
+            <nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon" />
           }
           @default {
-            <span nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></span>
+            <nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon" />
           }
         }
       </span>

@@ -135,11 +135,11 @@ class DynamicDatasource implements DataSource<FlatNode> {
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         @if (!node.loading) {
           <nz-tree-node-toggle>
-            <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
+            <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
           </nz-tree-node-toggle>
         } @else {
           <nz-tree-node-toggle nzTreeNodeNoopToggle>
-            <span nz-icon nzType="loading" nzTreeNodeToggleActiveIcon></span>
+            <nz-icon nzType="loading" nzTreeNodeToggleActiveIcon />
           </nz-tree-node-toggle>
         }
         {{ node.label }}

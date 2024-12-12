@@ -56,7 +56,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
             @if (nzIcon) {
               <ng-container *nzStringTemplateOutlet="nzIcon"></ng-container>
             } @else {
-              <span nz-icon [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></span>
+              <nz-icon [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme" />
             }
           </div>
         }
@@ -89,7 +89,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
                 <span class="ant-alert-close-text">{{ nzCloseText }}</span>
               </ng-container>
             } @else {
-              <span nz-icon nzType="close"></span>
+              <nz-icon nzType="close" />
             }
           </button>
         }

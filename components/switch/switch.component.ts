@@ -65,7 +65,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
     >
       <span class="ant-switch-handle">
         @if (nzLoading) {
-          <span nz-icon nzType="loading" class="ant-switch-loading-icon"></span>
+          <nz-icon nzType="loading" class="ant-switch-loading-icon" />
         }
       </span>
       <span class="ant-switch-inner">

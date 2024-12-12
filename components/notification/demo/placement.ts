@@ -10,29 +10,29 @@ import { NzNotificationPlacement, NzNotificationService } from 'ng-zorro-antd/no
   imports: [NzButtonModule, NzDividerModule, NzIconModule],
   template: `
     <button nz-button (click)="createNotification('top')" nzType="primary">
-      <span nz-icon nzType="border-top" nzTheme="outline"></span>
+      <nz-icon nzType="border-top" nzTheme="outline" />
       top
     </button>
     <button nz-button (click)="createNotification('bottom')" nzType="primary">
-      <span nz-icon nzType="border-bottom" nzTheme="outline"></span>
+      <nz-icon nzType="border-bottom" nzTheme="outline" />
       bottom
     </button>
     <nz-divider></nz-divider>
     <button nz-button (click)="createNotification('topLeft')" nzType="primary">
-      <span nz-icon nzType="radius-upleft"></span>
+      <nz-icon nzType="radius-upleft" />
       topLeft
     </button>
     <button nz-button (click)="createNotification('topRight')" nzType="primary">
-      <span nz-icon nzType="radius-upright"></span>
+      <nz-icon nzType="radius-upright" />
       topRight
     </button>
     <nz-divider></nz-divider>
     <button nz-button (click)="createNotification('bottomLeft')" nzType="primary">
-      <span nz-icon nzType="radius-bottomleft"></span>
+      <nz-icon nzType="radius-bottomleft" />
       bottomLeft
     </button>
     <button nz-button (click)="createNotification('bottomRight')" nzType="primary">
-      <span nz-icon nzType="radius-bottomright"></span>
+      <nz-icon nzType="radius-bottomright" />
       bottomRight
     </button>
   `,

@@ -31,7 +31,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   imports: [NzIconModule, PlatformModule],
   template: `
     @if (nzIcon && hasIcon) {
-      <span nz-icon [nzType]="nzIcon"></span>
+      <nz-icon [nzType]="nzIcon" />
     } @else if (nzSrc && hasSrc) {
       <img [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
     } @else if (nzText && hasText) {

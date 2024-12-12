@@ -398,7 +398,7 @@ export class NzTestInputGroupColComponent {}
         <input type="text" nz-input />
       </nz-input-group>
       <ng-template #prefixTemplateClock>
-        <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
+        <nz-icon nzType="clock-circle" nzTheme="outline" />
       </ng-template>
     } @else {
       <nz-input-group nzAddOnAfterIcon="setting" [nzStatus]="status">

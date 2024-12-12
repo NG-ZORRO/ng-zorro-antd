@@ -11,7 +11,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="titleTemplate">
           <ng-template #titleTemplate>
-            <span nz-icon [nzType]="tab.icon"></span>
+            <nz-icon [nzType]="tab.icon" />
             {{ tab.name }}
           </ng-template>
           {{ tab.name }}

@@ -605,7 +605,7 @@ describe('tree-select component', () => {
       treeSelect.nativeElement.click();
       flush();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('span.anticon.anticon-frown-o')).toBeTruthy();
+      expect(overlayContainerElement.querySelector('.anticon.anticon-frown-o')).toBeTruthy();
     }));
   });
 

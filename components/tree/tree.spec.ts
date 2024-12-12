@@ -640,7 +640,7 @@ describe('tree', () => {
       (nzCheckBoxChange)="nzEvent($event)"
     ></nz-tree>
     <ng-template #expandedIconTpl let-node>
-      <span nz-icon nzType="smile" class="ant-tree-switcher-icon"></span>
+      <nz-icon nzType="smile" class="ant-tree-switcher-icon" />
     </ng-template>
   `
 })

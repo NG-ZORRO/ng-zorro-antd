@@ -70,7 +70,7 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
             <ng-container *nzStringTemplateOutlet="nzPendingDot">
               {{ nzPendingDot }}
               @if (!nzPendingDot) {
-                <span nz-icon nzType="loading"></span>
+                <nz-icon nzType="loading" />
               }
             </ng-container>
           </div>

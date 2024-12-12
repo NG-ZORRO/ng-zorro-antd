@@ -24,7 +24,7 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
       [nzPreview]="handlePreview"
     >
       <div>
-        <span nz-icon nzType="plus"></span>
+        <nz-icon nzType="plus" />
         <div style="margin-top: 8px">Upload</div>
       </div>
     </nz-upload>

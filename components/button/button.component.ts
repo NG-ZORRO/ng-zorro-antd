@@ -48,7 +48,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzLoading) {
-      <span nz-icon nzType="loading"></span>
+      <nz-icon nzType="loading" />
     }
     <ng-content></ng-content>
   `,
@@ -121,7 +121,7 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
     // ignore icon and comment
     const noSpan =
       listOfNode.filter(node => {
-        return !(node.nodeName === '#comment' || !!(node as HTMLElement)?.attributes?.getNamedItem('nz-icon'));
+        return !(node.nodeName === '#comment' || !!(node as HTMLElement)?.classList?.contains('anticon'));
       }).length == 0;
     return !!this.nzIconDirectiveElement && noSpan && noText;
   }

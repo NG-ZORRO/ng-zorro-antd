@@ -36,7 +36,7 @@ interface CustomColumn extends NzCustomColumn {
   ],
   template: `
     <button nz-button nzType="primary" nzSize="small" (click)="showModal()" style="margin-bottom: 8px;">
-      <span nz-icon nzType="setting" nzTheme="outline"></span>
+      <nz-icon nzType="setting" nzTheme="outline" />
     </button>
     <nz-table #basicTable [nzData]="listOfData" [nzCustomColumn]="customColumn">
       <thead>
@@ -87,7 +87,7 @@ interface CustomColumn extends NzCustomColumn {
                 @for (item of fix; track item; let i = $index) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
-                    <span nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, i)"></span>
+                    <nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, i)" />
                   </div>
                 }
               </div>
@@ -112,7 +112,7 @@ interface CustomColumn extends NzCustomColumn {
                 @for (item of notFix; track item; let i = $index) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
-                    <span nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, i)"></span>
+                    <nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, i)" />
                   </div>
                 }
               </div>

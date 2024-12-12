@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
-    selector: 'app-footer-item',
+  selector: 'app-footer-item',
   imports: [NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -11,7 +11,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       @if (icon || imgSrc) {
         <span class="rc-footer-item-icon">
           @if (icon) {
-            <span nz-icon [nzType]="icon"></span>
+            <nz-icon [nzType]="icon" />
           } @else {
             <img [src]="imgSrc" [attr.alt]="imgAlt" />
           }

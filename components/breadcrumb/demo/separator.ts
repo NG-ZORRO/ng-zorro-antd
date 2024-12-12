@@ -24,7 +24,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>An Application</nz-breadcrumb-item>
     </nz-breadcrumb>
-    <ng-template #iconTemplate><span nz-icon nzType="arrow-right"></span></ng-template>
+    <ng-template #iconTemplate><nz-icon nzType="arrow-right" /></ng-template>
   `,
   styles: [
     `

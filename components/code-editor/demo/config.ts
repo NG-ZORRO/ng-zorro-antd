@@ -21,10 +21,10 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       ></nz-switch>
     </p>
     <ng-template #unchecked>
-      <span nz-icon nzType="bulb"></span>
+      <nz-icon nzType="bulb" />
     </ng-template>
     <ng-template #checked>
-      <span nz-icon nzType="poweroff"></span>
+      <nz-icon nzType="poweroff" />
     </ng-template>
     <nz-code-editor style="height: 200px" [ngModel]="code" [nzEditorOption]="{ language: 'markdown' }"></nz-code-editor>
   `

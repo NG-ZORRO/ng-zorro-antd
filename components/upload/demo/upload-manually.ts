@@ -13,7 +13,7 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
   template: `
     <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
       <button nz-button>
-        <span nz-icon nzType="upload"></span>
+        <nz-icon nzType="upload" />
         Select File
       </button>
     </nz-upload>

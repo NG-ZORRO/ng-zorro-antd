@@ -153,7 +153,7 @@ describe('spin', () => {
   selector: 'nz-test-basic-spin',
   imports: [NzIconModule, NzSpinModule],
   template: `
-    <ng-template #indicatorTemplate><span nz-icon nzType="loading" style="font-size: 24px;"></span></ng-template>
+    <ng-template #indicatorTemplate><nz-icon nzType="loading" style="font-size: 24px;" /></ng-template>
     <nz-spin
       [nzTip]="tip"
       [nzSize]="size"

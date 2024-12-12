@@ -25,7 +25,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     @if (clearIcon) {
       <ng-template [ngTemplateOutlet]="clearIcon"></ng-template>
     } @else {
-      <span nz-icon nzType="close-circle" nzTheme="fill" class="ant-select-close-icon"></span>
+      <nz-icon nzType="close-circle" nzTheme="fill" class="ant-select-close-icon" />
     }
   `,
   host: {

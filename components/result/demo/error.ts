@@ -18,12 +18,12 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
         <div class="desc">
           <h4 nz-title>The content you submitted has the following error:</h4>
           <p nz-paragraph>
-            <span nz-icon nzType="close-circle"></span>
+            <nz-icon nzType="close-circle" />
             Your account has been frozen
             <a>Thaw immediately &gt;</a>
           </p>
           <p nz-paragraph>
-            <span nz-icon nzType="close-circle"></span>
+            <nz-icon nzType="close-circle" />
             Your account is not yet eligible to apply
             <a>Apply immediately &gt;</a>
           </p>

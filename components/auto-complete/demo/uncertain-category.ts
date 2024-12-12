@@ -22,7 +22,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     </nz-input-group>
     <ng-template #suffixIconButton>
       <button nz-button nzType="primary" nzSize="large" nzSearch>
-        <span nz-icon nzType="search" nzTheme="outline"></span>
+        <nz-icon nzType="search" nzTheme="outline" />
       </button>
     </ng-template>
     <nz-autocomplete #auto>
