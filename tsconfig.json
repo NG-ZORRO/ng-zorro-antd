@@ -33,6 +33,7 @@
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
+    "strictStandalone": true,
     "extendedDiagnostics": {
       "checks": {
         "optionalChainNotNullable": "suppress"
