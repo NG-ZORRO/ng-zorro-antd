@@ -29,7 +29,7 @@ import {
 import { Subject, merge } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
@@ -53,7 +53,7 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
 @Component({
   selector: 'nz-input-number-group',
   exportAs: 'nzInputNumberGroup',
-  imports: [NzInputNumberGroupSlotComponent, NgTemplateOutlet, NzFormPatchModule],
+  imports: [NzInputNumberGroupSlotComponent, NgTemplateOutlet, NzFormItemFeedbackIconComponent],
   template: `
     @if (isAddOn) {
       <span class="ant-input-number-wrapper ant-input-number-group">

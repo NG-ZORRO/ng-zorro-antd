@@ -42,7 +42,7 @@ import { distinctUntilChanged, filter, map, startWith, takeUntil, tap, withLates
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
@@ -93,7 +93,7 @@ const listOfPositions = [
     CdkOverlayOrigin,
     SlicePipe,
     NzSelectModule,
-    NzFormPatchModule
+    NzFormItemFeedbackIconComponent
   ],
   animations: [slideMotion],
   template: `

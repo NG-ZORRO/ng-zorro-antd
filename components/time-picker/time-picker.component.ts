@@ -37,7 +37,7 @@ import { isValid } from 'date-fns';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -159,7 +159,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     FormsModule,
     NzOutletModule,
     NzIconModule,
-    NzFormPatchModule,
+    NzFormItemFeedbackIconComponent,
     NzTimePickerPanelComponent,
     NzOverlayModule,
     OverlayModule

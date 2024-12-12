@@ -42,7 +42,7 @@ import {
 import { Subscription, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
-import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
@@ -124,7 +124,7 @@ export type MentionPlacement = 'top' | 'bottom';
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir === 'rtl'`
   },
-  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormPatchModule]
+  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
 })
 export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
   @Input() nzValueWith: (value: NzSafeAny) => string = value => value;

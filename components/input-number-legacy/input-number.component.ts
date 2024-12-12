@@ -34,7 +34,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { Subject, merge } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
-import { NzFormNoStatusService, NzFormPatchModule, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   NgClassInterface,
@@ -119,7 +119,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     '[class.ant-input-number-rtl]': `dir === 'rtl'`,
     '[class.ant-input-number-borderless]': `nzBorderless`
   },
-  imports: [NzIconModule, FormsModule, NzFormPatchModule],
+  imports: [NzIconModule, FormsModule, NzFormItemFeedbackIconComponent],
   hostDirectives: [NzSpaceCompactItemDirective]
 })
 export class NzInputNumberLegacyComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
