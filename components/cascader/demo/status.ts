@@ -8,16 +8,10 @@ import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
   imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader [nzOptions]="nzOptions" nzStatus="error"></nz-cascader>
+    <br />
+    <br />
     <nz-cascader [nzOptions]="nzOptions" nzStatus="warning"></nz-cascader>
-  `,
-  styles: [
-    `
-      .ant-cascader {
-        width: 100%;
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderStatusComponent {
   nzOptions: NzCascaderOption[] = [];

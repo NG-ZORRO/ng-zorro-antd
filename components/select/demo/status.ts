@@ -9,6 +9,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   template: `
     <nz-select nzStatus="error"></nz-select>
     <br />
+    <br />
     <nz-select nzStatus="warning"></nz-select>
   `,
   styles: [
