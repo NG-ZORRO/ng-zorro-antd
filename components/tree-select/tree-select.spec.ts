@@ -2,7 +2,7 @@ import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
-import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
+import { Component, DebugElement, NgZone, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -16,7 +16,7 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
-import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
 import { NzTreeSelectComponent } from './tree-select.component';
@@ -349,6 +349,22 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.isComposing).toBe(true);
       expect(treeSelectComponent.inputValue).toBe('');
     }));
+
+    it('should nzSelectedTemplate works', fakeAsync(() => {
+      testComponent.setNull();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(treeSelect.nativeElement.querySelector('nz-select-item')).toBeFalsy();
+      testComponent.value = '100012';
+      testComponent.nzSelectedTemplate = testComponent.selectedTemplate;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(treeSelect.nativeElement.querySelector('nz-select-item')!.textContent?.trim()).toBe(`selected: child1.2`);
+    }));
   });
 
   describe('checkable', () => {
@@ -678,18 +694,22 @@ describe('tree-select component', () => {
       [nzMaxTagCount]="maxTagCount"
       [nzDropdownStyle]="{ height: '120px' }"
       [nzBackdrop]="hasBackdrop"
+      [nzSelectedTemplate]="nzSelectedTemplate ?? null"
       nzDropdownClassName="class1 class2"
     ></nz-tree-select>
+    <ng-template #selectedTemplate let-selected>selected: {{ selected.title }}</ng-template>
   `
 })
 export class NzTestTreeSelectBasicComponent {
   @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent!: NzTreeSelectComponent;
+  @ViewChild('selectedTemplate') selectedTemplate!: TemplateRef<NzSafeAny>;
   expandKeys = ['1001', '10001'];
   value: string | string[] | null = '10001';
   size = 'default';
   allowClear = false;
   disabled = false;
   showSearch = false;
+  nzSelectedTemplate?: TemplateRef<{ $implicit: NzTreeNode }>;
   dropdownMatchSelectWidth = true;
   multiple = false;
   maxTagCount = Infinity;

@@ -170,6 +170,8 @@ const listOfPositions = [
             [deletable]="true"
             [disabled]="node.isDisabled || nzDisabled"
             [label]="nzDisplayWith(node)"
+            [contentTemplateOutlet]="selectedItemTemplate"
+            [contentTemplateOutletContext]="node"
             (delete)="removeSelected(node, true)"
           ></nz-select-item>
         }
@@ -208,6 +210,8 @@ const listOfPositions = [
           [deletable]="false"
           [disabled]="false"
           [label]="nzDisplayWith(selectedNodes[0])"
+          [contentTemplateOutlet]="selectedItemTemplate"
+          [contentTemplateOutletContext]="selectedNodes[0]"
         ></nz-select-item>
       }
 
@@ -323,6 +327,15 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }>;
   get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> {
     return this.nzTreeTemplate || this.nzTreeTemplateChild;
+  }
+
+  @Input() nzSelectedTemplate!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @ContentChild('nzSelectedTemplate', { static: true }) nzSelectedTemplateChild!: TemplateRef<{
+    $implicit: NzTreeNode;
+    origin: NzTreeNodeOptions;
+  }>;
+  get selectedItemTemplate(): TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> {
+    return this.nzSelectedTemplate || this.nzSelectedTemplateChild;
   }
 
   prefixCls: string = 'ant-select';
