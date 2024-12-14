@@ -5,13 +5,13 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
-  selector: 'nz-demo-checkbox-layout',
+  selector: 'nz-demo-checkbox-layout-legacy',
   imports: [FormsModule, NzCheckboxModule, NzGridModule],
   template: `
-    <nz-checkbox-group [(ngModel)]="value" [style.width.%]="100" (ngModelChange)="log($event)">
+    <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">
       <nz-row>
         <nz-col nzSpan="8">
-          <label nz-checkbox nzValue="A">A</label>
+          <label nz-checkbox nzValue="A" [ngModel]="true">A</label>
         </nz-col>
         <nz-col nzSpan="8">
           <label nz-checkbox nzValue="B">B</label>
@@ -26,10 +26,10 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
           <label nz-checkbox nzValue="E">E</label>
         </nz-col>
       </nz-row>
-    </nz-checkbox-group>
+    </nz-checkbox-wrapper>
   `
 })
-export class NzDemoCheckboxLayoutComponent {
+export class NzDemoCheckboxLayoutLegacyComponent {
   value = ['A'];
 
   log(value: string[]): void {

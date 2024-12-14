@@ -4,114 +4,115 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
-  ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
   ViewEncapsulation,
+  afterNextRender,
   booleanAttribute,
-  forwardRef
+  computed,
+  forwardRef,
+  inject,
+  input,
+  linkedSignal,
+  signal
 } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzCheckboxComponent } from './checkbox.component';
+import { NZ_CHECKBOX_GROUP } from './tokens';
 
-export interface NzCheckBoxOptionInterface {
+export interface NzCheckboxOption {
   label: string;
-  value: string;
-  checked?: boolean;
+  value: string | number;
   disabled?: boolean;
 }
+
+/**
+ * @deprecated Deprecated in v19.0.0. Please use {@link NzCheckboxOption} to instead.
+ */
+export type NzCheckBoxOptionInterface = NzCheckboxOption;
 
 @Component({
   selector: 'nz-checkbox-group',
   exportAs: 'nzCheckboxGroup',
-  preserveWhitespaces: false,
-  encapsulation: ViewEncapsulation.None,
+  imports: [NzCheckboxComponent],
   template: `
-    @for (option of options; track option.value) {
-      <label
-        nz-checkbox
-        class="ant-checkbox-group-item"
-        [nzDisabled]="option.disabled || nzDisabled"
-        [nzChecked]="option.checked!"
-        (nzCheckedChange)="onCheckedChange(option, $event)"
-      >
-        <span>{{ option.label }}</span>
-      </label>
-    }
+    <ng-content>
+      @for (option of normalizedOptions(); track option.value) {
+        <label
+          nz-checkbox
+          [nzValue]="option.value"
+          [nzName]="nzName()"
+          [nzDisabled]="option.disabled || finalDisabled()"
+        >
+          {{ option.label }}
+        </label>
+      }
+    </ng-content>
   `,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzCheckboxGroupComponent),
       multi: true
+    },
+    {
+      provide: NZ_CHECKBOX_GROUP,
+      useExisting: forwardRef(() => NzCheckboxGroupComponent)
     }
   ],
   host: {
     class: 'ant-checkbox-group',
-    '[class.ant-checkbox-group-rtl]': `dir === 'rtl'`
+    '[class.ant-checkbox-group-rtl]': `dir() === 'rtl'`
   },
-  imports: [NzCheckboxComponent]
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
-  onChange: OnChangeType = () => {};
-  onTouched: OnTouchedType = () => {};
-  options: NzCheckBoxOptionInterface[] = [];
-  @Input({ transform: booleanAttribute }) nzDisabled = false;
+export class NzCheckboxGroupComponent implements ControlValueAccessor {
+  private onChange: OnChangeType = () => {};
+  private onTouched: OnTouchedType = () => {};
+  private isDisabledFirstChange = true;
+  private readonly directionality = inject(Directionality);
 
-  dir: Direction = 'ltr';
+  readonly nzName = input<string | null>(null);
+  readonly nzDisabled = input(false, { transform: booleanAttribute });
+  readonly nzOptions = input<NzCheckboxOption[]>([]);
+  readonly value = signal<Array<NzCheckboxOption['value']> | null>(null);
+  readonly finalDisabled = linkedSignal(() => this.nzDisabled());
 
-  private destroy$ = new Subject<void>();
-  private isNzDisableFirstChange: boolean = true;
+  protected readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
+  protected readonly normalizedOptions = computed(() => normalizeOptions(this.nzOptions()));
 
-  onCheckedChange(option: NzCheckBoxOptionInterface, checked: boolean): void {
-    option.checked = checked;
-    this.onChange(this.options);
-  }
+  constructor() {
+    const elementRef = inject(ElementRef);
+    const focusMonitor = inject(FocusMonitor);
+    const destroyRef = inject(DestroyRef);
 
-  constructor(
-    private elementRef: ElementRef,
-    private focusMonitor: FocusMonitor,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
+    afterNextRender(() => {
+      focusMonitor
+        .monitor(elementRef, true)
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe(focusOrigin => {
+          if (!focusOrigin) {
+            this.onTouched();
+          }
+        });
 
-  ngOnInit(): void {
-    this.focusMonitor
-      .monitor(this.elementRef, true)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(focusOrigin => {
-        if (!focusOrigin) {
-          Promise.resolve().then(() => this.onTouched());
-        }
+      destroyRef.onDestroy(() => {
+        focusMonitor.stopMonitoring(elementRef);
       });
-
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
     });
-
-    this.dir = this.directionality.value;
   }
 
-  ngOnDestroy(): void {
-    this.focusMonitor.stopMonitoring(this.elementRef);
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  writeValue(value: NzCheckBoxOptionInterface[]): void {
-    this.options = value;
-    this.cdr.markForCheck();
+  writeValue(value: Array<string | number> | null): void {
+    this.value.set(value);
   }
 
   registerOnChange(fn: OnChangeType): void {
@@ -123,8 +124,36 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
   }
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
-    this.isNzDisableFirstChange = false;
-    this.cdr.markForCheck();
+    if (!this.isDisabledFirstChange) {
+      this.finalDisabled.set(disabled);
+    }
+    this.isDisabledFirstChange = false;
   }
+
+  onCheckedChange(optionValue: NzCheckboxOption['value'], checked: boolean): void {
+    if (this.finalDisabled()) return;
+
+    this.value.update(value => {
+      if (checked) {
+        return value?.concat(optionValue) || [optionValue];
+      } else {
+        return value?.filter(val => val !== optionValue) || [];
+      }
+    });
+
+    this.onChange(this.value());
+  }
+}
+
+function normalizeOptions(value: string[] | number[] | NzCheckboxOption[]): NzCheckboxOption[] {
+  return value.map(item => {
+    if (typeof item === 'string' || typeof item === 'number') {
+      return {
+        label: `${item}`,
+        value: item
+      };
+    }
+
+    return item;
+  });
 }
