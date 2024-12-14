@@ -20,10 +20,10 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 > Tips: According to the current data structure design, you need to ensure that `nzData` is set first, otherwise other attributes will not take effect. After the asynchronous operation returns data, re-assign other attributes to trigger rendering(including `nzExpandAll` `nzExpandedKeys` `nzCheckedKeys` `nzSelectedKeys` `nzSearchValue`). Please refer to [#5152](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5152) to track the optimization progress.
 
 | Property                 | Description                                                                                                                                           | Type                                                        | Default | Global Config |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------- | ------------- |
+|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|---------|---------------|
 | `[nzData]`               | Tree data (Reference NzTreeNode)                                                                                                                      | `NzTreeNodeOptions[] \| NzTreeNode[]`                       | `[]`    |
 | `[nzBlockNode]`          | Whether treeNode fill remaining horizontal space                                                                                                      | `boolean`                                                   | `false` | ✅             |
-| `[nzCheckable]`          | Adds a Checkbox before the treeNodes                                                                                                                  | `boolean`                                                   | `false` |
+| `[nzCheckable]`          | Add a checkbox before the treeNodes                                                                                                                   | `boolean`                                                   | `false` |
 | `[nzShowExpand]`         | Show a Expand Icon before the treeNodes                                                                                                               | `boolean`                                                   | `true`  |               |
 | `[nzShowLine]`           | Shows a connecting line                                                                                                                               | `boolean`                                                   | `false` |               |
 | `[nzExpandedIcon]`       | Customize an expand icon                                                                                                                              | `TemplateRef<{ $implicit: NzTreeNode }>`                    | -       |
@@ -39,7 +39,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `[nzCheckedKeys]`        | Specifies the keys of the default checked treeNodes                                                                                                   | `string[]`                                                  | `[]`    |
 | `[nzSelectedKeys]`       | Specifies the keys of the default selected treeNodes                                                                                                  | `string[]`                                                  | `[]`    |
 | `[nzSearchValue]`        | Filter (highlight) treeNodes (see demo `Searchable`), two-way binding                                                                                 | `string`                                                    | `null`  |
-| `[nzSearchFunc]`         | Custom matching method, used with nzSearchValue                                                                                                       | `(node: NzTreeNodeOptions) => boolean`                      | `null`  |
+| `[nzSearchFunc]`         | Custom matching method, used with `nzSearchValue`                                                                                                     | `(node: NzTreeNodeOptions) => boolean`                      | `null`  |
 | `[nzBeforeDrop]`         | Drop before the second check, allowing the user to decide whether to allow placement                                                                  | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | -       |
 | `[nzVirtualHeight]`      | The height of virtual scroll                                                                                                                          | `string`                                                    | `-`     |
 | `[nzVirtualItemSize]`    | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api)                                              | `number`                                                    | `28`    |
@@ -48,9 +48,9 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `(nzClick)`              | Callback function for when the user clicks a treeNode                                                                                                 | `EventEmitter<NzFormatEmitEvent>`                           | -       |
 | `(nzDblClick)`           | Callback function for when the user double clicks a treeNode                                                                                          | `EventEmitter<NzFormatEmitEvent>`                           | -       |
 | `(nzContextMenu)`        | Callback function for when the user right clicks a treeNode                                                                                           | `EventEmitter<NzFormatEmitEvent>`                           | -       |
-| `(nzCheckBoxChange)`     | Callback function for when user clicks the Checkbox                                                                                                   | `EventEmitter<NzFormatEmitEvent>`                           | -       |
+| `(nzCheckboxChange)`     | Callback function for when user clicks the checkbox                                                                                                   | `EventEmitter<NzFormatEmitEvent>`                           | -       |
 | `(nzExpandChange)`       | Callback function for when a treeNode is expanded or collapsed                                                                                        | `EventEmitter<NzFormatEmitEvent>`                           | -       |
-| `(nzSearchValueChange)`  | Callback function for when filter treeNodes(used with nzSearchValue)                                                                                  | `EventEmitter<NzFormatEmitEvent>`                           | -       |
+| `(nzSearchValueChange)`  | Callback function for when filter treeNodes(used with `nzSearchValue`)                                                                                | `EventEmitter<NzFormatEmitEvent>`                           | -       |
 | `(nzOnDragStart)`        | Callback function for when the onDragStart event occurs                                                                                               | `EventEmitter<NzFormatEmitEvent>`                           | -       |
 | `(nzOnDragEnter)`        | Callback function for when the onDragEnter event occurs                                                                                               | `EventEmitter<NzFormatEmitEvent>`                           | -       |
 | `(nzOnDragOver)`         | Callback function for when the onDragOver event occurs                                                                                                | `EventEmitter<NzFormatEmitEvent>`                           | -       |
@@ -61,7 +61,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 #### Methods
 
 | Property               | Description                                     | Type           |
-| ---------------------- | ----------------------------------------------- | -------------- |
+|------------------------|-------------------------------------------------|----------------|
 | getTreeNodes           | get all nodes(NzTreeNode)                       | `NzTreeNode[]` |
 | getTreeNodeByKey       | get NzTreeNode with key                         | `NzTreeNode`   |
 | getCheckedNodeList     | get checked nodes(merged)                       | `NzTreeNode[]` |
@@ -73,10 +73,10 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 #### NzTreeNodeOptions props
 
 | Property        | Description                                              | Type                  | Default |
-| --------------- | -------------------------------------------------------- | --------------------- | ------- |
+|-----------------|----------------------------------------------------------|-----------------------|---------|
 | title           | Title                                                    | `string`              | `'---'` |
-| key             | Must be unique！                                         | `string`              | `null`  |
-| icon            | icon before the treeNode，used with `nzShowIcon`         | `string`              | `null`  |
+| key             | Must be unique！                                          | `string`              | `null`  |
+| icon            | icon before the treeNode，used with `nzShowIcon`          | `string`              | `null`  |
 | children        | TreeNode's children                                      | `NzTreeNodeOptions[]` | `[]`    |
 | isLeaf          | Determines if this is a leaf node(can not be dropped to) | `boolean`             | `false` |
 | checked         | Set the treeNode be checked                              | `boolean`             | `false` |
@@ -90,7 +90,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 #### NzFormatEmitEvent props
 
 | Property      | Description                                                                 | Type                                                                                                                               | Default |
-| ------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------- |
+|---------------|-----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|---------|
 | eventName     | Event Name                                                                  | enum: `click` `dblclick` `contextmenu` `check` `expand` `search` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | -       |
 | node          | The current operation node (such as the target node to drop while dragging) | `NzTreeNode`                                                                                                                       | `null`  |
 | event         | MouseEvent or DragEvent                                                     | `'MouseEvent' \| 'DragEvent'`                                                                                                      | `null`  |
@@ -98,13 +98,13 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | selectedKeys? | Selected nodes list                                                         | `NzTreeNode[]`                                                                                                                     | `[]`    |
 | checkedKeys?  | Checked nodes list                                                          | `NzTreeNode[]`                                                                                                                     | `[]`    |
 | matchedKeys?  | Matched keys list while searching                                           | `NzTreeNode[]`                                                                                                                     | `[]`    |
-| keys?         | All nodes's keys list related event(except drag events)                     | `string[]`                                                                                                                         | `[]`    |
+| keys?         | All nodes' keys list related event(except drag events)                      | `string[]`                                                                                                                         | `[]`    |
 | nodes?        | All nodes related event(except drag events)                                 | `NzTreeNode[]`                                                                                                                     | `[]`    |
 
 #### NzFormatBeforeDropEvent props
 
 | Property | Description                                                                                        | Type         | Default |
-| -------- | -------------------------------------------------------------------------------------------------- | ------------ | ------- |
+|----------|----------------------------------------------------------------------------------------------------|--------------|---------|
 | dragNode | Current drag node (existing when dragged)                                                          | `NzTreeNode` | -       |
 | node     | The current operation node (such as the target node to drop while dragging)                        | `NzTreeNode` | -       |
 | pos      | position to drop(-1: before the target node, 0: inside the target node, 1: behind the target node) | `number`     | -       |
@@ -112,7 +112,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 #### NzTreeNode props
 
 | Property          | Description                                                                                                         | Type                                   | Default                 |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ----------------------- |
+|-------------------|---------------------------------------------------------------------------------------------------------------------|----------------------------------------|-------------------------|
 | title             | Title                                                                                                               | `string`                               | NzTreeNodeOptions.title |
 | key               | Key                                                                                                                 | `string`                               | NzTreeNodeOptions.key   |
 | level             | TreeNode's level relative to the root node                                                                          | `number`                               | `number`                |
@@ -129,7 +129,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | isSelected        | Whether treeNode is selected                                                                                        | `boolean`                              | `false`                 |
 | isLoading         | Whether treeNode is loading(when nzAsyncData is true)                                                               | `boolean`                              | `false`                 |
 | isMatched         | Whether treeNode's title contains nzSearchValue                                                                     | `boolean`                              | `false`                 |
-| setSyncChecked    | set isChecked value and sync other nodes' state of checkBox                                                         | function                               | -                       |
+| setSyncChecked    | set isChecked value and sync other nodes' state of checkbox                                                         | function                               | -                       |
 | getChildren       | Get all children                                                                                                    | function                               | -                       |
 | addChildren       | Add child nodes, receive NzTreeNode or NzTreeNodeOptions array, the second parameter is the inserted index position | (children: array, index?: number )=>{} | -                       |
 | clearChildren     | Clear the treeNode's children                                                                                       | function                               | -                       |
@@ -137,7 +137,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 ## Note
 
-- Please make sure `nzData` is set before the above mentioned properties:
+- Please make sure `nzData` is set before the mentioned properties above:
 
 ```typescript
 // Demo
@@ -151,6 +151,6 @@ this.nzCheckedKeys = [...this.nzCheckedKeys];
 this.nzSelectedKeys = [...this.nzSelectedKeys];
 ```
 
-- `NzTreeNodeOptions` accepts your customized properties，use NzTreeNode.origin to get them.
-- If Tree Methods used with ViewChild, should be used in ngAfterViewInit.
-- Setting NzData with NzTreeNodeOptions[] is better，if you set nzData with NzTreeNode[], it will be deprecated in next major version(8.x).
+- `NzTreeNodeOptions` accepts your custom properties，use NzTreeNode.origin to get them.
+- If Tree Methods are used with ViewChild, should be used in ngAfterViewInit.
+- Setting `nzData` with NzTreeNodeOptions[] is better，if you set nzData with NzTreeNode[], it will be deprecated in next major version(8.x).

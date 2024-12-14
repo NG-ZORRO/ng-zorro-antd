@@ -21,7 +21,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 ### nz-tree-select
 
 | Property                       | Description                                                                                                                                           | Type                                            | Default                            | Global Config |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ---------------------------------- | ------------- |
+|--------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|------------------------------------|---------------|
 | `[nzId]`                       | input id attribute inside the component                                                                                                               | `string`                                        | -                                  |
 | `[nzAllowClear]`               | Whether allow clear                                                                                                                                   | `boolean`                                       | `false`                            |
 | `[nzPlaceHolder]`              | Placeholder of the select input                                                                                                                       | `string`                                        | -                                  |
@@ -58,12 +58,12 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 #### Methods
 
-| Property               | Description                                     | Type           |
-| ---------------------- | ----------------------------------------------- | -------------- |
-| getTreeNodes           | get all nodes(NzTreeNode)                       | `NzTreeNode[]` |
-| getTreeNodeByKey       | get NzTreeNode with key                         | `NzTreeNode`   |
-| getCheckedNodeList     | get checked nodes(merged)                       | `NzTreeNode[]` |
-| getSelectedNodeList    | get selected nodes                              | `NzTreeNode[]` |
-| getHalfCheckedNodeList | get half checked nodes                          | `NzTreeNode[]` |
-| getExpandedNodeList    | get expanded nodes                              | `NzTreeNode[]` |
-| getMatchedNodeList     | get matched nodes(if nzSearchValue is not null) | `NzTreeNode[]` |
+| Property               | Description                                       | Type           |
+|------------------------|---------------------------------------------------|----------------|
+| getTreeNodes           | get all nodes(NzTreeNode)                         | `NzTreeNode[]` |
+| getTreeNodeByKey       | get NzTreeNode with key                           | `NzTreeNode`   |
+| getCheckedNodeList     | get checked nodes(merged)                         | `NzTreeNode[]` |
+| getSelectedNodeList    | get selected nodes                                | `NzTreeNode[]` |
+| getHalfCheckedNodeList | get half checked nodes                            | `NzTreeNode[]` |
+| getExpandedNodeList    | get expanded nodes                                | `NzTreeNode[]` |
+| getMatchedNodeList     | get matched nodes(if `nzSearchValue` is not null) | `NzTreeNode[]` |
