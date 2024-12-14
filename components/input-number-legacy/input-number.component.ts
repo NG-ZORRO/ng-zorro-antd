@@ -63,7 +63,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
         (mousedown)="up($event)"
         [class.ant-input-number-handler-up-disabled]="disabledUp"
       >
-        <span nz-icon nzType="up" class="ant-input-number-handler-up-inner"></span>
+        <nz-icon nzType="up" class="ant-input-number-handler-up-inner" />
       </span>
       <span
         #downHandler
@@ -72,7 +72,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
         (mousedown)="down($event)"
         [class.ant-input-number-handler-down-disabled]="disabledDown"
       >
-        <span nz-icon nzType="down" class="ant-input-number-handler-down-inner"></span>
+        <nz-icon nzType="down" class="ant-input-number-handler-down-inner" />
       </span>
     </div>
     <div class="ant-input-number-input-wrap">

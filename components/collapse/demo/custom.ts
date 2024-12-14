@@ -26,7 +26,7 @@ interface Panel {
           <p>{{ panel.name }} content</p>
           <ng-template #expandedIcon let-active>
             {{ active }}
-            <span nz-icon nzType="caret-right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : -90"></span>
+            <nz-icon nzType="caret-right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : -90" />
           </ng-template>
         </nz-collapse-panel>
       }

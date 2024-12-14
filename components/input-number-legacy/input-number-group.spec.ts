@@ -419,7 +419,7 @@ export class NzTestInputNumberGroupMixComponent {}
         <nz-input-number />
       </nz-input-number-group>
       <ng-template #prefixTemplateClock>
-        <span nz-icon nzType="clock-circle" nzTheme="outline"></span>
+        <nz-icon nzType="clock-circle" nzTheme="outline" />
       </ng-template>
     } @else {
       <nz-input-number-group nzAddOnAfterIcon="setting" [nzStatus]="status">

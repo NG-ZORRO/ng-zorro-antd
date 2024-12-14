@@ -50,7 +50,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
     <nz-space-compact nzBlock>
       <input nz-input value="git@github.com:NG-ZORRO/ng-zorro-antd.git" [style.width]="'calc(100% - 200px)'" />
       <button nz-button nz-tooltip nzTooltipTitle="copy git url">
-        <span nz-icon nzType="copy"></span>
+        <nz-icon nzType="copy" />
       </button>
     </nz-space-compact>
     <br />
@@ -67,7 +67,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
         <input nz-input value="0571" />
         <ng-template #addonTmpl>
           <button nz-button class="ant-input-search-button">
-            <span nz-icon nzType="search"></span>
+            <nz-icon nzType="search" />
           </button>
         </ng-template>
       </nz-input-group>
@@ -75,7 +75,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
         <input nz-input value="26888888" />
         <ng-template #addonTmpl>
           <button nz-button class="ant-input-search-button">
-            <span nz-icon nzType="search"></span>
+            <nz-icon nzType="search" />
           </button>
         </ng-template>
       </nz-input-group>
@@ -83,7 +83,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
         <input nz-input value="+1" />
         <ng-template #addonTmpl>
           <button nz-button class="ant-input-search-button">
-            <span nz-icon nzType="search"></span>
+            <nz-icon nzType="search" />
           </button>
         </ng-template>
       </nz-input-group>

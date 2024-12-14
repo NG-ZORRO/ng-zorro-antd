@@ -30,15 +30,15 @@ interface ItemData {
           {{ item.content }}
           <ul nz-list-item-actions>
             <nz-list-item-action>
-              <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
+              <nz-icon nzType="star-o" style="margin-right: 8px;" />
               156
             </nz-list-item-action>
             <nz-list-item-action>
-              <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
+              <nz-icon nzType="star-o" style="margin-right: 8px;" />
               156
             </nz-list-item-action>
             <nz-list-item-action>
-              <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
+              <nz-icon nzType="star-o" style="margin-right: 8px;" />
               2
             </nz-list-item-action>
           </ul>

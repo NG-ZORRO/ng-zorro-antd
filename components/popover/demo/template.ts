@@ -12,11 +12,11 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
       Render Template
     </button>
     <ng-template #titleTemplate>
-      <span nz-icon nzType="close"></span>
+      <nz-icon nzType="close" />
       Title
     </ng-template>
     <ng-template #contentTemplate>
-      <span nz-icon nzType="check"></span>
+      <nz-icon nzType="check" />
       Content
     </ng-template>
   `

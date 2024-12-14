@@ -79,7 +79,7 @@ interface ChildrenItemData {
                       <span class="table-operation">
                         <a nz-dropdown class="operation" [nzDropdownMenu]="menu">
                           Pause
-                          <span nz-icon nzType="down"></span>
+                          <nz-icon nzType="down" />
                         </a>
                         <nz-dropdown-menu #menu="nzDropdownMenu">
                           <ul nz-menu>

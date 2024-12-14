@@ -18,7 +18,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (icon) {
-      <span nz-icon [nzType]="icon"></span>
+      <nz-icon [nzType]="icon" />
     }
     <ng-container *nzStringTemplateOutlet="template">{{ template }}</ng-container>
     <ng-content></ng-content>

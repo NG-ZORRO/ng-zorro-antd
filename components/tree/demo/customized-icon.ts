@@ -17,7 +17,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
             class="ant-tree-switcher-line-icon"
           ></span>
         } @else {
-          <span nz-icon nzType="file" class="ant-tree-switcher-line-icon"></span>
+          <nz-icon nzType="file" class="ant-tree-switcher-line-icon" />
         }
       </ng-template>
     </nz-tree>

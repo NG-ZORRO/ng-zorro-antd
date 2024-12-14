@@ -25,18 +25,18 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <span>{{ listOfValue.length }} / {{ nzMaxMultipleCount }}</span>
     }
     @if (loading) {
-      <span nz-icon nzType="loading"></span>
+      <nz-icon nzType="loading" />
     } @else {
       @if (showArrow && !suffixIcon) {
         @if (search) {
-          <span nz-icon nzType="search"></span>
+          <nz-icon nzType="search" />
         } @else {
-          <span nz-icon nzType="down"></span>
+          <nz-icon nzType="down" />
         }
       } @else {
         <ng-container *nzStringTemplateOutlet="suffixIcon; let suffixIcon">
           @if (suffixIcon) {
-            <span nz-icon [nzType]="suffixIcon"></span>
+            <nz-icon [nzType]="suffixIcon" />
           }
         </ng-container>
       }

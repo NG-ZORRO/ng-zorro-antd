@@ -26,17 +26,17 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     <h4>With Icon</h4>
     <nz-button-group>
       <button nz-button nzType="primary">
-        <span nz-icon nzType="left"></span>
+        <nz-icon nzType="left" />
         Go back
       </button>
       <button nz-button nzType="primary">
         Go forward
-        <span nz-icon nzType="right"></span>
+        <nz-icon nzType="right" />
       </button>
     </nz-button-group>
     <nz-button-group>
-      <button nz-button nzType="primary"><span nz-icon nzType="cloud"></span></button>
-      <button nz-button nzType="primary"><span nz-icon nzType="cloud-download"></span></button>
+      <button nz-button nzType="primary"><nz-icon nzType="cloud" /></button>
+      <button nz-button nzType="primary"><nz-icon nzType="cloud-download" /></button>
     </nz-button-group>
   `,
   styles: [

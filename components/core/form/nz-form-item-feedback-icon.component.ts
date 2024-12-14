@@ -32,7 +32,7 @@ const iconTypeMap = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (iconType) {
-      <span nz-icon [nzType]="iconType"></span>
+      <nz-icon [nzType]="iconType" />
     }
   `,
   host: {

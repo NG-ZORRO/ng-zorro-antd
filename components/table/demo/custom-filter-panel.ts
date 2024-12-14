@@ -22,7 +22,7 @@ interface DataItem {
           <th nzCustomFilter>
             Name
             <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
-              <span nz-icon nzType="search"></span>
+              <nz-icon nzType="search" />
             </nz-filter-trigger>
           </th>
           <th>Age</th>

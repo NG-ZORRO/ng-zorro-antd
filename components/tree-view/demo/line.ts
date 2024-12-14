@@ -55,7 +55,7 @@ interface FlatNode {
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodeIndentLine>
         @if (showLeafIcon) {
           <nz-tree-node-toggle nzTreeNodeNoopToggle>
-            <span nz-icon nzType="file" nzTheme="outline"></span>
+            <nz-icon nzType="file" nzTheme="outline" />
           </nz-tree-node-toggle>
         }
         <nz-tree-node-option>

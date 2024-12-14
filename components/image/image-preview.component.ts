@@ -65,14 +65,14 @@ const NZ_DEFAULT_ROTATE = 0;
           [class.ant-image-preview-switch-left-disabled]="index <= 0"
           (click)="onSwitchLeft($event)"
         >
-          <span nz-icon nzType="left" nzTheme="outline"></span>
+          <nz-icon nzType="left" nzTheme="outline" />
         </div>
         <div
           class="ant-image-preview-switch-right"
           [class.ant-image-preview-switch-right-disabled]="index >= images.length - 1"
           (click)="onSwitchRight($event)"
         >
-          <span nz-icon nzType="right" nzTheme="outline"></span>
+          <nz-icon nzType="right" nzTheme="outline" />
         </div>
       }
 

@@ -18,7 +18,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     <ng-template #shortcuts>
       <button nz-button nz-dropdown [nzDropdownMenu]="menu">
         Shortcuts
-        <span nz-icon nzType="down"></span>
+        <nz-icon nzType="down" />
       </button>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu nzSelectable>

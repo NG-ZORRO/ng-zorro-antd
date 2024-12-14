@@ -10,15 +10,15 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   TemplateRef,
   ViewEncapsulation,
-  numberAttribute,
+  booleanAttribute,
   inject,
-  Output,
-  EventEmitter,
-  booleanAttribute
+  numberAttribute
 } from '@angular/core';
 
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
@@ -60,10 +60,10 @@ import { NzCascaderOption } from './typings';
     @if (!node.isLeaf || node.children?.length || node.isLoading) {
       <div class="ant-cascader-menu-item-expand-icon">
         @if (node.isLoading) {
-          <span nz-icon nzType="loading"></span>
+          <nz-icon nzType="loading" />
         } @else {
           <ng-container *nzStringTemplateOutlet="expandIcon">
-            <span nz-icon [nzType]="$any(expandIcon)"></span>
+            <nz-icon [nzType]="$any(expandIcon)" />
           </ng-container>
         }
       </div>

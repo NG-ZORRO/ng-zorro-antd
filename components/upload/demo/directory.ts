@@ -10,7 +10,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
   template: `
     <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzDirectory>
       <button nz-button>
-        <span nz-icon nzType="upload"></span>
+        <nz-icon nzType="upload" />
         Upload Directory
       </button>
     </nz-upload>

@@ -33,7 +33,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     @if (deletable && !disabled) {
       <span class="ant-select-selection-item-remove" (click)="onDelete($event)">
         @if (!removeIcon) {
-          <span nz-icon nzType="close"></span>
+          <nz-icon nzType="close" />
         } @else {
           <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
         }

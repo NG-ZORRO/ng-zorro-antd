@@ -11,9 +11,9 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">
       <input type="text" nz-input placeholder="Enter your username" />
     </nz-input-group>
-    <ng-template #prefixTemplateUser><span nz-icon nzType="user"></span></ng-template>
+    <ng-template #prefixTemplateUser><nz-icon nzType="user" /></ng-template>
     <ng-template #suffixTemplateInfo>
-      <span nz-icon nz-tooltip nzTooltipTitle="Extra information" nzType="info-circle"></span>
+      <nz-icon nz-tooltip nzTooltipTitle="Extra information" nzType="info-circle" />
     </ng-template>
     <br />
     <br />

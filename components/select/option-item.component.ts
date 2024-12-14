@@ -39,7 +39,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     @if (showState && selected) {
       <div class="ant-select-item-option-state" unselectable="on">
         @if (!icon) {
-          <span nz-icon nzType="check" class="ant-select-selected-icon"></span>
+          <nz-icon nzType="check" class="ant-select-selected-icon" />
         } @else {
           <ng-template [ngTemplateOutlet]="icon"></ng-template>
         }

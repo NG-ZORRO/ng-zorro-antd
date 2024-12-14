@@ -66,7 +66,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
     <ng-template #customTpl let-name>
       <div style="text-align: center;">
-        <span nz-icon nzType="smile" style="font-size: 20px;"></span>
+        <nz-icon nzType="smile" style="font-size: 20px;" />
         <p>Data Not Found in {{ name }}</p>
       </div>
     </ng-template>

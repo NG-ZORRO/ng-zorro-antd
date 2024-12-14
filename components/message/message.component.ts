@@ -41,19 +41,19 @@ import { NzMessageData } from './typings';
         <div class="ant-message-custom-content" [class]="'ant-message-' + instance.type">
           @switch (instance.type) {
             @case ('success') {
-              <span nz-icon nzType="check-circle"></span>
+              <nz-icon nzType="check-circle" />
             }
             @case ('info') {
-              <span nz-icon nzType="info-circle"></span>
+              <nz-icon nzType="info-circle" />
             }
             @case ('warning') {
-              <span nz-icon nzType="exclamation-circle"></span>
+              <nz-icon nzType="exclamation-circle" />
             }
             @case ('error') {
-              <span nz-icon nzType="close-circle"></span>
+              <nz-icon nzType="close-circle" />
             }
             @case ('loading') {
-              <span nz-icon nzType="loading"></span>
+              <nz-icon nzType="loading" />
             }
           }
           <ng-container *nzStringTemplateOutlet="instance.content">

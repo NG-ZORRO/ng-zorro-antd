@@ -46,20 +46,20 @@
           @switch (listType) {
             @case ('picture') {
               @if (file.isUploading) {
-                <span nz-icon nzType="loading"></span>
+                <nz-icon nzType="loading" />
               } @else {
-                <span nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone"></span>
+                <nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone" />
               }
             }
             @case ('picture-card') {
               @if (file.isUploading) {
                 {{ locale.uploading }}
               } @else {
-                <span nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone"></span>
+                <nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone" />
               }
             }
             @default {
-              <span nz-icon [nzType]="file.isUploading ? 'loading' : 'paper-clip'"></span>
+              <nz-icon [nzType]="file.isUploading ? 'loading' : 'paper-clip'" />
             }
           }
         } @else {
@@ -78,7 +78,7 @@
             [attr.title]="locale.removeFile"
             class="ant-upload-list-item-card-actions-btn"
           >
-            <span nz-icon nzType="delete"></span>
+            <nz-icon nzType="delete" />
           </button>
         }
       </ng-template>
@@ -94,7 +94,7 @@
             [attr.title]="locale.downloadFile"
             class="ant-upload-list-item-card-actions-btn"
           >
-            <span nz-icon nzType="download"></span>
+            <nz-icon nzType="download" />
           </button>
         }
       </ng-template>
@@ -146,7 +146,7 @@
               [style]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
               (click)="handlePreview(file, $event)"
             >
-              <span nz-icon nzType="eye"></span>
+              <nz-icon nzType="eye" />
             </a>
           }
           @if (file.status === 'done') {

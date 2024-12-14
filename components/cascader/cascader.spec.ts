@@ -407,7 +407,7 @@ describe('cascader', () => {
       expect(testComponent.values!.length).toBe(3);
       fixture.detectChanges();
       spyOn(testComponent, 'onClear');
-      cascader.nativeElement.querySelector('.ant-select-clear span[nz-icon]').click();
+      cascader.nativeElement.querySelector('.ant-select-clear nz-icon').click();
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
       expect(testComponent.onClear).toHaveBeenCalled();

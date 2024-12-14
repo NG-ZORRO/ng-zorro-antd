@@ -40,7 +40,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     @if (editing) {
       <textarea #textarea nz-input nzAutosize (blur)="confirm()"></textarea>
       <button nz-trans-button class="ant-typography-edit-content-confirm" (click)="confirm()">
-        <span nz-icon nzType="enter"></span>
+        <nz-icon nzType="enter" />
       </button>
     } @else {
       <button
@@ -51,7 +51,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
         (click)="onClick()"
       >
         <ng-container *nzStringTemplateOutlet="icon; let icon">
-          <span nz-icon [nzType]="icon"></span>
+          <nz-icon [nzType]="icon" />
         </ng-container>
       </button>
     }

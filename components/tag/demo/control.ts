@@ -18,7 +18,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
     @if (!inputVisible) {
       <nz-tag class="editable-tag" nzNoAnimation (click)="showInput()">
-        <span nz-icon nzType="plus"></span>
+        <nz-icon nzType="plus" />
         New Tag
       </nz-tag>
     } @else {

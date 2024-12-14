@@ -54,7 +54,7 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
             <div>
               <p class="ant-qrcode-expired">{{ locale.expired }}</p>
               <button nz-button nzType="link" (click)="reloadQRCode()">
-                <span nz-icon nzType="reload" nzTheme="outline"></span>
+                <nz-icon nzType="reload" nzTheme="outline" />
                 <span>{{ locale.refresh }}</span>
               </button>
             </div>

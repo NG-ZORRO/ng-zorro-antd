@@ -13,19 +13,19 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-menu-item>
-            <span nz-icon nzType="user"></span>
+            <nz-icon nzType="user" />
             <span>nav 1</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="video-camera"></span>
+            <nz-icon nzType="video-camera" />
             <span>nav 2</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="upload"></span>
+            <nz-icon nzType="upload" />
             <span>nav 3</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="user"></span>
+            <nz-icon nzType="user" />
             <span>nav 4</span>
           </li>
         </ul>

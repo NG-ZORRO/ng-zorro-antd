@@ -13,7 +13,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <input type="text" nz-input placeholder="input search text" />
     </nz-input-group>
     <ng-template #suffixIconSearch>
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
     </ng-template>
     <br />
     <br />
@@ -21,7 +21,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <input type="text" nz-input placeholder="input search text" />
     </nz-input-group>
     <ng-template #suffixIconButton>
-      <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+      <button nz-button nzType="primary" nzSearch><nz-icon nzType="search" /></button>
     </ng-template>
     <br />
     <br />

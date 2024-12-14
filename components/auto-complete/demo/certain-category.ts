@@ -27,7 +27,7 @@ interface AutocompleteOptionGroups {
         />
       </nz-input-group>
       <ng-template #suffixIcon>
-        <span nz-icon nzType="search"></span>
+        <nz-icon nzType="search" />
       </ng-template>
       <nz-autocomplete #auto>
         @for (group of optionGroups; track group.title) {

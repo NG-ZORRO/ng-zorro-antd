@@ -27,7 +27,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
             </ul>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="file"></span>
+            <nz-icon nzType="file" />
             <span>File</span>
           </li>
         </ul>

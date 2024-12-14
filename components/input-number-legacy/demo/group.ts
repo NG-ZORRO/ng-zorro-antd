@@ -42,7 +42,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
       <nz-input-number-group *nzSpaceItem nzCompact>
         <nz-input-number [ngModel]="1234" [nzStep]="1" style="width: calc(100% - 200px)"></nz-input-number>
         <button nz-button>
-          <span nz-icon nzType="copy" nzTheme="outline"></span>
+          <nz-icon nzType="copy" nzTheme="outline" />
         </button>
       </nz-input-number-group>
       <nz-input-number-group *nzSpaceItem nzCompact>

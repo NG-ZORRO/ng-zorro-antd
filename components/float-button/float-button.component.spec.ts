@@ -97,7 +97,7 @@ describe('nz-float-button RTL', () => {
       (nzOnClick)="onClick($event)"
     ></nz-float-button>
     <ng-template #icon>
-      <span nz-icon nzType="question-circle" nzTheme="outline"></span>
+      <nz-icon nzType="question-circle" nzTheme="outline" />
     </ng-template>
     <ng-template #description>HELP</ng-template>
   `

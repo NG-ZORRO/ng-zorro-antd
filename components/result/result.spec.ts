@@ -14,7 +14,7 @@ import { NzResultModule } from './result.module';
   imports: [NzIconModule, NzResultModule],
   template: `
     <nz-result [nzIcon]="icon" [nzStatus]="status" [nzTitle]="title" [nzSubTitle]="subtitle" [nzExtra]="extra">
-      <span nz-icon nz-result-icon nzType="up" nzTheme="outline"></span>
+      <nz-icon nz-result-icon nzType="up" nzTheme="outline" />
       <div nz-result-title>Content Title</div>
       <div nz-result-subtitle>Content SubTitle</div>
       <div nz-result-content>Content</div>

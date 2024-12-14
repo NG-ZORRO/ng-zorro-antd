@@ -132,7 +132,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
                       [class]="{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }"
                       (click)="!(disabled || item.disabled) ? deleteItem(item) : null"
                     >
-                      <span nz-icon nzType="delete" nzTheme="outline"></span>
+                      <nz-icon nzType="delete" nzTheme="outline" />
                     </div>
                   } @else {
                     <ng-template

@@ -20,7 +20,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
               [nzSelected]="menu.selected"
             >
               @if (menu.icon) {
-                <span nz-icon [nzType]="menu.icon"></span>
+                <nz-icon [nzType]="menu.icon" />
               }
               <span>{{ menu.title }}</span>
             </li>

@@ -32,7 +32,7 @@ interface MockUser {
         }
       } @else {
         <nz-option nzDisabled nzCustomContent>
-          <span nz-icon nzType="loading" class="loading-icon"></span>
+          <nz-icon nzType="loading" class="loading-icon" />
           Loading Data...
         </nz-option>
       }

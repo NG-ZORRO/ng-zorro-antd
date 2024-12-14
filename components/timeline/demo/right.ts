@@ -14,7 +14,7 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
       <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
     </nz-timeline>
     <ng-template #dotTemplate>
-      <span nz-icon nzType="clock-circle-o" style="font-size: 16px;"></span>
+      <nz-icon nzType="clock-circle-o" style="font-size: 16px;" />
     </ng-template>
   `
 })

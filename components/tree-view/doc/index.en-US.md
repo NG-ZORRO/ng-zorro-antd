@@ -81,11 +81,11 @@ A toggle which is used to expand / collapse the node.
 
 A toggle that does no actions. This can be used for placeholders or displays icons.
 
-### [nz-icon][nztreenodetogglerotateicon]
+### [nzTreeNodeToggleRotateIcon]
 
 Define an icon in the toggle, which it will automatically rotate depending on the collapse/expand state.
 
-### [nz-icon][nztreenodetoggleactiveicon]
+### [nzTreeNodeToggleActiveIcon]
 
 Define an icon in the toggle for an active style, which it can be used for the loading state.
 

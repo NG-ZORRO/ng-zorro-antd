@@ -55,7 +55,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
         [nzShape]="nzShape"
       ></nz-float-button>
       <ng-template #top>
-        <span nz-icon nzType="vertical-align-top" nzTheme="outline"></span>
+        <nz-icon nzType="vertical-align-top" nzTheme="outline" />
       </ng-template>
     </div>
   `,

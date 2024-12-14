@@ -32,7 +32,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
           }
         } @else {
           <div class="ant-float-btn-icon">
-            <span nz-icon nzType="file-text" nzTheme="outline"></span>
+            <nz-icon nzType="file-text" nzTheme="outline" />
           </div>
         }
       </div>

@@ -23,7 +23,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
           ></span>
         </ng-container>
       } @else {
-        <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
+        <nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon" />
       }
     }
     @if (nzShowLine) {
@@ -36,11 +36,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
               class="ant-tree-switcher-line-icon"
             ></span>
           } @else {
-            <span nz-icon nzType="file" class="ant-tree-switcher-line-icon"></span>
+            <nz-icon nzType="file" class="ant-tree-switcher-line-icon" />
           }
         </ng-container>
       } @else {
-        <span nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></span>
+        <nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon" />
       }
     }
   `,

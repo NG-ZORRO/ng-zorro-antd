@@ -83,7 +83,7 @@ import { NzTransferListComponent } from './transfer-list.component';
             [nzType]="'primary'"
             [nzSize]="'small'"
           >
-            <span nz-icon nzType="left"></span>
+            <nz-icon nzType="left" />
             @if (nzOperations[1]) {
               <span>{{ nzOperations[1] }}</span>
             }
@@ -97,7 +97,7 @@ import { NzTransferListComponent } from './transfer-list.component';
           [nzType]="'primary'"
           [nzSize]="'small'"
         >
-          <span nz-icon nzType="right"></span>
+          <nz-icon nzType="right" />
           @if (nzOperations[0]) {
             <span>{{ nzOperations[0] }}</span>
           }
@@ -113,7 +113,7 @@ import { NzTransferListComponent } from './transfer-list.component';
           [nzType]="'primary'"
           [nzSize]="'small'"
         >
-          <span nz-icon nzType="left"></span>
+          <nz-icon nzType="left" />
           @if (nzOperations[0]) {
             <span>{{ nzOperations[0] }}</span>
           }
@@ -127,7 +127,7 @@ import { NzTransferListComponent } from './transfer-list.component';
             [nzType]="'primary'"
             [nzSize]="'small'"
           >
-            <span nz-icon nzType="right"></span>
+            <nz-icon nzType="right" />
             @if (nzOperations[1]) {
               <span>{{ nzOperations[1] }}</span>
             }

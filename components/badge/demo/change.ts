@@ -15,8 +15,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
         <a class="head-example"></a>
       </nz-badge>
       <nz-button-group>
-        <button nz-button (click)="minusCount()"><span nz-icon nzType="minus"></span></button>
-        <button nz-button (click)="addCount()"><span nz-icon nzType="plus"></span></button>
+        <button nz-button (click)="minusCount()"><nz-icon nzType="minus" /></button>
+        <button nz-button (click)="addCount()"><nz-icon nzType="plus" /></button>
       </nz-button-group>
     </div>
     <br />

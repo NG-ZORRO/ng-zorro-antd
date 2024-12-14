@@ -9,7 +9,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
   template: `
     <a nz-popconfirm nzPopconfirmTitle="Are you sure?" [nzIcon]="iconTpl">Delete</a>
     <ng-template #iconTpl>
-      <span nz-icon nzType="question-circle-o" style="color: red;"></span>
+      <nz-icon nzType="question-circle-o" style="color: red;" />
     </ng-template>
   `
 })

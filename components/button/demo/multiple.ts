@@ -12,7 +12,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     <button nz-button nzType="default">secondary</button>
     <button nz-button nz-dropdown [nzDropdownMenu]="menu">
       Actions
-      <span nz-icon nzType="down"></span>
+      <nz-icon nzType="down" />
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>

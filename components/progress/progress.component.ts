@@ -66,7 +66,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
       @if (nzShowInfo) {
         <span class="ant-progress-text">
           @if ((status === 'exception' || status === 'success') && !nzFormat) {
-            <span nz-icon [nzType]="icon"></span>
+            <nz-icon [nzType]="icon" />
           } @else {
             <ng-container *nzStringTemplateOutlet="formatter; context: { $implicit: nzPercent }; let formatter">
               {{ formatter(nzPercent) }}

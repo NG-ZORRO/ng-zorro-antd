@@ -14,11 +14,11 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-menu-item>
-            <span nz-icon nzType="pie-chart"></span>
+            <nz-icon nzType="pie-chart" />
             <span>Option 1</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="desktop"></span>
+            <nz-icon nzType="desktop" />
             <span>Option 2</span>
           </li>
           <li nz-submenu nzTitle="User" nzIcon="user">
@@ -35,7 +35,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
             </ul>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="file"></span>
+            <nz-icon nzType="file" />
             <span>File</span>
           </li>
         </ul>
