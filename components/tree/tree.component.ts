@@ -278,7 +278,7 @@ export class NzTreeComponent
   /**
    * Render all properties of nzTree
    *
-   * @param changes: all changes from @Input
+   * @param changes all changes from @Input
    */
   renderTreeProperties(changes: { [propertyName: string]: SimpleChange }): void {
     let useDefaultExpandedKeys = false;
@@ -380,7 +380,7 @@ export class NzTreeComponent
       if (searchFunc) {
         return searchFunc(node.origin);
       }
-      return !value || !node.title.toLowerCase().includes(value.toLowerCase()) ? false : true;
+      return !!value && node.title.toLowerCase().includes(value.toLowerCase());
     };
     dataList.forEach(v => {
       v.isMatched = checkIfMatched(v);
