@@ -208,6 +208,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
 
   private onChange: OnChangeType = () => {};
   private onTouched: OnTouchedType = () => {};
+  private isDisabledFirstChange = true;
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private inputRef = viewChild.required<ElementRef<HTMLInputElement>>('input');
   private hostRef = viewChild<ElementRef<HTMLDivElement>>('inputNumberHost');
@@ -339,7 +340,10 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   setDisabledState(disabled: boolean): void {
-    this.finalDisabled.set(disabled);
+    if (!this.isDisabledFirstChange) {
+      this.finalDisabled.set(disabled);
+    }
+    this.isDisabledFirstChange = false;
   }
 
   focus(): void {
