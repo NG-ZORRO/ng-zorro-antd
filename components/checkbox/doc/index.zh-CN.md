@@ -23,7 +23,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 | 参数                | 说明                                          | 类型                    | 默认值  |
 | ------------------- | --------------------------------------------- | ----------------------- | ------- |
-| `[nzId]`            | 组件内部 input 的 id 值                       | `string`                | -       |
+| `[nzId]`            | 组件内部 input 的 `id` 值                     | `string`                | -       |
+| `[nzName]`          | 组件内部 input 的 `name` 值                   | `string`                | -       |
 | `[nzAutoFocus]`     | 自动获取焦点                                  | `boolean`               | `false` |
 | `[nzDisabled]`      | 设定 disable 状态                             | `boolean`               | `false` |
 | `[ngModel]`         | 指定当前是否选中，可双向绑定                  | `boolean`               | `false` |
@@ -33,11 +34,13 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 ### nz-checkbox-group
 
-| 参数              | 说明                           | 类型                                                                        | 默认值  |
-| ----------------- | ------------------------------ | --------------------------------------------------------------------------- | ------- |
-| `[ngModel]`       | 指定可选项，可双向绑定         | `Array<{ label: string; value: string; checked?: boolean; }>`               | `[]`    |
-| `[nzDisabled]`    | 设定全部 checkbox disable 状态 | `boolean`                                                                   | `false` |
-| `(ngModelChange)` | 选中数据变化时的回调           | `EventEmitter<Array<{ label: string; value: string; checked?: boolean; }>>` | -       |
+| 参数              | 说明                                      | 类型                                                                   | 默认值  |
+| ----------------- | ----------------------------------------- | ---------------------------------------------------------------------- | ------- |
+| `[ngModel]`       | 指定可选项，可双向绑定                    | `{ label: string; value: string; checked?: boolean; }[]`               | `[]`    |
+| `[nzName]`        | CheckboxGroup 下所有 input 的 `name` 属性 | `string`                                                               | -       |
+| `[nzOptions]`     | 指定可选项                                | `string[] \| number[] \| NzCheckboxOption[]`                           | `[]`    |
+| `[nzDisabled]`    | 设定全部 checkbox disable 状态            | `boolean`                                                              | `false` |
+| `(ngModelChange)` | 选中数据变化时的回调                      | `EventEmitter<{ label: string; value: string; checked?: boolean; }[]>` | -       |
 
 ### nz-checkbox-wrapper
 
@@ -55,3 +58,15 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | ------- | -------- |
 | focus() | 获取焦点 |
 | blur()  | 移除焦点 |
+
+## Interfaces
+
+### NzCheckboxOption
+
+```ts
+export interface NzCheckboxOption {
+  label: string;
+  value: string | number;
+  disabled?: boolean;
+}
+```

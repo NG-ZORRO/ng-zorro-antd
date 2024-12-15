@@ -23,6 +23,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | Property            | Description                                                     | Type                    | Default |
 | ------------------- | --------------------------------------------------------------- | ----------------------- | ------- |
 | `[nzId]`            | input id attribute inside the component                         | `string`                | -       |
+| `[nzName]`          | input name attribute inside the component                       | `string`                | -       |
 | `[nzAutoFocus]`     | get focus when component mounted                                | `boolean`               | `false` |
 | `[nzDisabled]`      | Disable checkbox                                                | `boolean`               | `false` |
 | `[ngModel]`         | Specifies whether the checkbox is selected, double binding      | `boolean`               | `false` |
@@ -35,6 +36,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | Property          | Description                                                     | Type                                                                        | Default |
 | ----------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------- | ------- |
 | `[ngModel]`       | Specifies options, double binding                               | `Array<{ label: string; value: string; checked?: boolean; }>`               | `[]`    |
+| `[nzName]`        | The `name` property of all input children                       | `string`                                                                    | -       |
+| `[nzOptions]`     | Specifies options                                               | `string[] \| number[] \| NzCheckboxOption[]`                                | `[]`    |
 | `[nzDisabled]`    | Disable all checkboxes                                          | `boolean`                                                                   | `false` |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<Array<{ label: string; value: string; checked?: boolean; }>>` | -       |
 
@@ -52,3 +55,15 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | ------- | ------------ |
 | focus() | get focus    |
 | blur()  | remove focus |
+
+## Interfaces
+
+### NzCheckboxOption
+
+```ts
+export interface NzCheckboxOption {
+  label: string;
+  value: string | number;
+  disabled?: boolean;
+}
+```

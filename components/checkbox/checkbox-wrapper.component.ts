@@ -9,6 +9,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzCheckboxComponent } from './checkbox.component';
 
+/**
+ * @deprecated Deprecated in v19.0.0. It is recommended to use `<nz-checkbox-group>`.
+ */
 @Component({
   selector: 'nz-checkbox-wrapper',
   exportAs: 'nzCheckboxWrapper',
