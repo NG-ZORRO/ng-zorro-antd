@@ -1639,7 +1639,47 @@ describe('cascader', () => {
       expect(cascader.nativeElement.querySelector('.ant-select-arrow .anticon')!.classList).toContain('anticon-home');
     });
 
-    it('should nzPlacement works', () => {});
+    it('should nzPlacement works', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      let element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(true);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
+
+      const setNzPlacement = (placement: NzCascaderPlacement): void => {
+        testComponent.cascader.setMenuVisible(false);
+        fixture.detectChanges();
+        testComponent.nzPlacement = placement;
+        testComponent.cascader.setMenuVisible(true);
+        fixture.detectChanges();
+        tick();
+        fixture.detectChanges();
+      };
+
+      setNzPlacement('bottomRight');
+      element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(true);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
+
+      setNzPlacement('topLeft');
+      element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(true);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
+
+      setNzPlacement('topRight');
+      element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(true);
+    }));
   });
 
   describe('multiple', () => {
