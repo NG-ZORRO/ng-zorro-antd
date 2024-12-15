@@ -116,8 +116,8 @@ const listOfPositions = [
         [class]="dropdownClassName"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
-        [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
-        [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+        [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottom'"
+        [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'top'"
         [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
         [dir]="dir"
         [style]="nzDropdownStyle"
@@ -337,7 +337,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   isNotFound = false;
   focused = false;
   inputValue = '';
-  dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
+  dropdownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
@@ -700,7 +700,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.dropDownPosition = position.connectionPair.originY;
+    this.dropdownPosition = position.connectionPair.originY;
   }
 
   onClearSelection(): void {

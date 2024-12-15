@@ -16,6 +16,7 @@ export type NzCascaderSize = NzSizeLDSType;
 
 export type NzCascaderFilter = (searchValue: string, path: NzCascaderOption[]) => boolean;
 export type NzCascaderSorter = (a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string) => number;
+export type NzCascaderPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
 export interface NzCascaderOption {
   value?: NzSafeAny;

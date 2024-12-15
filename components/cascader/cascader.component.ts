@@ -5,7 +5,12 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { CdkConnectedOverlay, ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
+import {
+  CdkConnectedOverlay,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair,
+  OverlayModule
+} from '@angular/cdk/overlay';
 import { _getEventTarget } from '@angular/cdk/platform';
 import { SlicePipe } from '@angular/common';
 import {
@@ -43,7 +48,13 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DEFAULT_CASCADER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
+import {
+  DEFAULT_CASCADER_POSITIONS,
+  getPlacementName,
+  NzOverlayModule,
+  POSITION_MAP,
+  POSITION_TYPE
+} from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzTreeBase, NzTreeNode } from 'ng-zorro-antd/core/tree';
 import {
@@ -62,6 +73,7 @@ import {
   NzSelectClearComponent,
   NzSelectItemComponent,
   NzSelectPlaceholderComponent,
+  NzSelectPlacementType,
   NzSelectSearchComponent
 } from 'ng-zorro-antd/select';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
@@ -73,6 +85,7 @@ import {
   NzCascaderComponentAsSource,
   NzCascaderExpandTrigger,
   NzCascaderOption,
+  NzCascaderPlacement,
   NzCascaderSize,
   NzCascaderTriggerType,
   NzShowSearchOptions
@@ -166,9 +179,14 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       [cdkConnectedOverlayOpen]="menuVisible"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="closeMenu()"
+      (positionChange)="onPositionChange($event)"
     >
       <div
-        class="ant-select-dropdown ant-cascader-dropdown ant-select-dropdown-placement-bottomLeft"
+        class="ant-select-dropdown ant-cascader-dropdown"
+        [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottomLeft'"
+        [class.ant-select-dropdown-placement-bottomRight]="dropdownPosition === 'bottomRight'"
+        [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'topLeft'"
+        [class.ant-select-dropdown-placement-topRight]="dropdownPosition === 'topRight'"
         [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
         [@slideMotion]="'enter'"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
@@ -285,9 +303,11 @@ export class NzCascaderComponent
   set input(inputComponent: NzSelectSearchComponent | undefined) {
     this.input$.next(inputComponent?.inputElement);
   }
+
   get input(): ElementRef<HTMLInputElement> | undefined {
     return this.input$.getValue();
   }
+
   /** Used to store the native `<input type="search" />` element since it might be set asynchronously. */
   private input$ = new BehaviorSubject<ElementRef<HTMLInputElement> | undefined>(undefined);
 
@@ -327,6 +347,7 @@ export class NzCascaderComponent
   @Input() nzStatus: NzStatus = '';
   @Input({ transform: booleanAttribute }) nzMultiple: boolean = false;
   @Input() nzMaxTagCount: number = Infinity;
+  @Input() nzPlacement: NzCascaderPlacement = 'bottomLeft';
 
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
@@ -389,6 +410,7 @@ export class NzCascaderComponent
    */
   dropdownWidthStyle?: string;
   dropdownHeightStyle: 'auto' | '' = '';
+  dropdownPosition: NzCascaderPlacement = 'bottomLeft';
   isFocused = false;
 
   locale!: NzCascaderI18nInterface;
@@ -551,12 +573,22 @@ export class NzCascaderComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzStatus, nzSize } = changes;
+    const { nzStatus, nzSize, nzPlacement } = changes;
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
     if (nzSize) {
       this.size.set(nzSize.currentValue);
+    }
+    if (nzPlacement) {
+      const { currentValue } = nzPlacement;
+      this.dropdownPosition = currentValue as NzCascaderPlacement;
+      const listOfPlacement = ['bottomLeft', 'topLeft', 'bottomRight', 'topRight'];
+      if (currentValue && listOfPlacement.includes(currentValue)) {
+        this.positions = [POSITION_MAP[currentValue as POSITION_TYPE]];
+      } else {
+        this.positions = listOfPlacement.map(e => POSITION_MAP[e as POSITION_TYPE]);
+      }
     }
   }
 
@@ -937,6 +969,11 @@ export class NzCascaderComponent
     if (!this.el.contains(target as Node)) {
       this.closeMenu();
     }
+  }
+
+  onPositionChange(position: ConnectedOverlayPositionChange): void {
+    const placement = getPlacementName(position);
+    this.dropdownPosition = placement as NzSelectPlacementType;
   }
 
   private isActionTrigger(action: 'click' | 'hover'): boolean {

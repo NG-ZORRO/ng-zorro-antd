@@ -41,6 +41,7 @@ import { NzCascaderModule } from './cascader.module';
 import {
   NzCascaderExpandTrigger,
   NzCascaderOption,
+  NzCascaderPlacement,
   NzCascaderSize,
   NzCascaderTriggerType,
   NzShowSearchOptions
@@ -1637,6 +1638,8 @@ describe('cascader', () => {
       expect(itemEl1?.querySelector('.anticon-home')).toBeTruthy();
       expect(cascader.nativeElement.querySelector('.ant-select-arrow .anticon')!.classList).toContain('anticon-home');
     });
+
+    it('should nzPlacement works', () => {});
   });
 
   describe('multiple', () => {
@@ -2290,6 +2293,7 @@ const options5: NzSafeAny[] = [];
       [nzSuffixIcon]="nzSuffixIcon"
       [nzValueProperty]="nzValueProperty"
       [nzBackdrop]="nzBackdrop"
+      [nzPlacement]="nzPlacement"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
       (nzClear)="onClear()"
@@ -2332,6 +2336,7 @@ export class NzDemoCascaderDefaultComponent {
   nzSuffixIcon = 'down';
   nzExpandIcon = 'right';
   nzBackdrop = false;
+  nzPlacement: NzCascaderPlacement = 'bottomLeft';
 
   onVisibleChange = jasmine.createSpy<(visible: boolean) => void>('open change');
   onValueChanges = jasmine.createSpy('value change');

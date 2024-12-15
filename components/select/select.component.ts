@@ -170,10 +170,10 @@ export type NzSelectSizeType = NzSizeLDSType;
         [itemSize]="nzOptionHeightPx"
         [maxItemLength]="nzOptionOverflowSize"
         [matchWidth]="nzDropdownMatchSelectWidth"
-        [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottomLeft'"
-        [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'topLeft'"
-        [class.ant-select-dropdown-placement-bottomRight]="dropDownPosition === 'bottomRight'"
-        [class.ant-select-dropdown-placement-topRight]="dropDownPosition === 'topRight'"
+        [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottomLeft'"
+        [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'topLeft'"
+        [class.ant-select-dropdown-placement-bottomRight]="dropdownPosition === 'bottomRight'"
+        [class.ant-select-dropdown-placement-topRight]="dropdownPosition === 'topRight'"
         [@slideMotion]="'enter'"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
@@ -311,7 +311,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  dropDownPosition: NzSelectPlacementType = 'bottomLeft';
+  dropdownPosition: NzSelectPlacementType = 'bottomLeft';
   triggerWidth: number | null = null;
   listOfContainerItem: NzSelectItemInterface[] = [];
   listOfTopItem: NzSelectItemInterface[] = [];
@@ -566,7 +566,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     const placement = getPlacementName(position);
-    this.dropDownPosition = placement as NzSelectPlacementType;
+    this.dropdownPosition = placement as NzSelectPlacementType;
   }
 
   updateCdkConnectedOverlayStatus(): void {
@@ -677,7 +677,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     }
     if (nzPlacement) {
       const { currentValue } = nzPlacement;
-      this.dropDownPosition = currentValue as NzSelectPlacementType;
+      this.dropdownPosition = currentValue as NzSelectPlacementType;
       const listOfPlacement = ['bottomLeft', 'topLeft', 'bottomRight', 'topRight'];
       if (currentValue && listOfPlacement.includes(currentValue)) {
         this.positions = [POSITION_MAP[currentValue as POSITION_TYPE]];
