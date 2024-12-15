@@ -41,6 +41,7 @@ import { NzCascaderModule } from './cascader.module';
 import {
   NzCascaderExpandTrigger,
   NzCascaderOption,
+  NzCascaderPlacement,
   NzCascaderSize,
   NzCascaderTriggerType,
   NzShowSearchOptions
@@ -1637,6 +1638,48 @@ describe('cascader', () => {
       expect(itemEl1?.querySelector('.anticon-home')).toBeTruthy();
       expect(cascader.nativeElement.querySelector('.ant-select-arrow .anticon')!.classList).toContain('anticon-home');
     });
+
+    it('should nzPlacement works', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      let element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(true);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
+
+      const setNzPlacement = (placement: NzCascaderPlacement): void => {
+        testComponent.cascader.setMenuVisible(false);
+        fixture.detectChanges();
+        testComponent.nzPlacement = placement;
+        testComponent.cascader.setMenuVisible(true);
+        fixture.detectChanges();
+        tick();
+        fixture.detectChanges();
+      };
+
+      setNzPlacement('bottomRight');
+      element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(true);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
+
+      setNzPlacement('topLeft');
+      element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(true);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
+
+      setNzPlacement('topRight');
+      element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
+      expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(true);
+    }));
   });
 
   describe('multiple', () => {
@@ -2290,6 +2333,7 @@ const options5: NzSafeAny[] = [];
       [nzSuffixIcon]="nzSuffixIcon"
       [nzValueProperty]="nzValueProperty"
       [nzBackdrop]="nzBackdrop"
+      [nzPlacement]="nzPlacement"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
       (nzClear)="onClear()"
@@ -2332,6 +2376,7 @@ export class NzDemoCascaderDefaultComponent {
   nzSuffixIcon = 'down';
   nzExpandIcon = 'right';
   nzBackdrop = false;
+  nzPlacement: NzCascaderPlacement = 'bottomLeft';
 
   onVisibleChange = jasmine.createSpy<(visible: boolean) => void>('open change');
   onValueChanges = jasmine.createSpy('value change');
