@@ -354,7 +354,7 @@ describe('tree', () => {
         expect(component.treeComponent.getExpandedNodeList().length).toEqual(1);
       }));
 
-      it('should check node when clicking checkBox', fakeAsync(() => {
+      it('should check node when clicking checkbox', fakeAsync(() => {
         const spy = spyOn(component, 'nzEvent');
         // get first node 0-0
         const node = nativeElement.querySelector('.ant-tree-checkbox')!;
@@ -637,7 +637,7 @@ describe('tree', () => {
       (nzDblClick)="nzEvent($event)"
       (nzContextMenu)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
-      (nzCheckBoxChange)="nzEvent($event)"
+      (nzCheckboxChange)="nzEvent($event)"
     ></nz-tree>
     <ng-template #expandedIconTpl let-node>
       <nz-icon nzType="smile" class="ant-tree-switcher-icon" />

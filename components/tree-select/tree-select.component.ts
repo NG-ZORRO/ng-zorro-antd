@@ -152,7 +152,7 @@ const listOfPositions = [
           (nzClick)="nzTreeClick.emit($event)"
           (nzCheckedKeysChange)="updateSelectedNodes()"
           (nzSelectedKeysChange)="updateSelectedNodes()"
-          (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
+          (nzCheckboxChange)="nzTreeCheckboxChange.emit($event)"
           (nzSearchValueChange)="setSearchValues($event)"
         ></nz-tree>
         @if (nzNodes.length === 0 || isNotFound) {
@@ -309,7 +309,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
   @Output() readonly nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
-  @Output() readonly nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzTreeCheckboxChange = new EventEmitter<NzFormatEmitEvent>();
 
   @ViewChild(NzSelectSearchComponent, { static: false }) nzSelectSearchComponent!: NzSelectSearchComponent;
   @ViewChild('treeRef', { static: false }) treeRef!: NzTreeComponent;
@@ -638,7 +638,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
           return this.nzCheckable ? !node.isDisabled && !node.isDisableCheckbox : !node.isDisabled && node.isSelectable;
         })
       ),
-      this.nzCheckable ? this.nzTreeCheckBoxChange.asObservable() : observableOf(),
+      this.nzCheckable ? this.nzTreeCheckboxChange.asObservable() : observableOf(),
       this.nzCleared,
       this.nzRemoved
     )

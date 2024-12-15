@@ -65,7 +65,7 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
     @if (nzCheckable) {
       <nz-tree-node-checkbox
         builtin
-        (click)="clickCheckBox($event)"
+        (click)="clickCheckbox($event)"
         [nzSelectMode]="nzSelectMode"
         [isChecked]="isChecked"
         [isHalfChecked]="isHalfChecked"
@@ -160,7 +160,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzContextMenu = new EventEmitter<NzFormatEmitEvent>();
-  @Output() readonly nzCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzCheckboxChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzOnDragStart = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzOnDragEnter = new EventEmitter<NzFormatEmitEvent>();
@@ -245,7 +245,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
    *
    * @param event
    */
-  clickCheckBox(event: MouseEvent): void {
+  clickCheckbox(event: MouseEvent): void {
     event.preventDefault();
     // return if node is disabled
     if (this.isDisabled || this.isDisableCheckbox) {
@@ -255,7 +255,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
     this.nzTreeNode.isHalfChecked = false;
     this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
     const eventNext = this.nzTreeService.formatEvent('check', this.nzTreeNode, event);
-    this.nzCheckBoxChange.emit(eventNext);
+    this.nzCheckboxChange.emit(eventNext);
   }
 
   clearDragClass(): void {

@@ -22,11 +22,11 @@ import { NzTreeComponent, NzTreeModule } from 'ng-zorro-antd/tree';
           nzBlockNode
           nzCheckable
           nzCheckStrictly
-          (nzCheckBoxChange)="treeCheckBoxChange($event, onItemSelect)"
+          (nzCheckboxChange)="treeCheckboxChange($event, onItemSelect)"
         >
           <ng-template #nzTreeTemplate let-node>
             <span
-              (click)="checkBoxChange(node, onItemSelect)"
+              (click)="checkboxChange(node, onItemSelect)"
               class="ant-tree-node-content-wrapper ant-tree-node-content-wrapper-open"
             >
               {{ node.title }}
@@ -74,11 +74,11 @@ export class NzDemoTransferTreeTransferComponent {
     return tree;
   }
 
-  treeCheckBoxChange(event: NzFormatEmitEvent, onItemSelect: (item: NzTreeNodeOptions) => void): void {
-    this.checkBoxChange(event.node!, onItemSelect);
+  treeCheckboxChange(event: NzFormatEmitEvent, onItemSelect: (item: NzTreeNodeOptions) => void): void {
+    this.checkboxChange(event.node!, onItemSelect);
   }
 
-  checkBoxChange(node: NzTreeNode, onItemSelect: (item: NzTreeNodeOptions) => void): void {
+  checkboxChange(node: NzTreeNode, onItemSelect: (item: NzTreeNodeOptions) => void): void {
     if (node.isDisabled) {
       return;
     }

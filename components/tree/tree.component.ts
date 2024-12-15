@@ -138,7 +138,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
         (nzClick)="eventTriggerChanged($event)"
         (nzDblClick)="eventTriggerChanged($event)"
         (nzContextMenu)="eventTriggerChanged($event)"
-        (nzCheckBoxChange)="eventTriggerChanged($event)"
+        (nzCheckboxChange)="eventTriggerChanged($event)"
         (nzOnDragStart)="eventTriggerChanged($event)"
         (nzOnDragEnter)="eventTriggerChanged($event)"
         (nzOnDragOver)="eventTriggerChanged($event)"
@@ -230,7 +230,7 @@ export class NzTreeComponent
   @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzContextMenu = new EventEmitter<NzFormatEmitEvent>();
-  @Output() readonly nzCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzCheckboxChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzOnDragStart = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzOnDragEnter = new EventEmitter<NzFormatEmitEvent>();
@@ -278,7 +278,7 @@ export class NzTreeComponent
   /**
    * Render all properties of nzTree
    *
-   * @param changes: all changes from @Input
+   * @param changes all changes from @Input
    */
   renderTreeProperties(changes: { [propertyName: string]: SimpleChange }): void {
     let useDefaultExpandedKeys = false;
@@ -380,7 +380,7 @@ export class NzTreeComponent
       if (searchFunc) {
         return searchFunc(node.origin);
       }
-      return !value || !node.title.toLowerCase().includes(value.toLowerCase()) ? false : true;
+      return !!value && node.title.toLowerCase().includes(value.toLowerCase());
     };
     dataList.forEach(v => {
       v.isMatched = checkIfMatched(v);
@@ -426,7 +426,7 @@ export class NzTreeComponent
         }
         // Cause check method will rerender list, so we need recover it and next the new event to user
         const eventNext = this.nzTreeService.formatEvent('check', node, event.event!);
-        this.nzCheckBoxChange.emit(eventNext);
+        this.nzCheckboxChange.emit(eventNext);
         const checkedKeys = this.nzTreeService.getCheckedNodeKeys();
         this.nzCheckedKeysChange.emit(checkedKeys);
         break;

@@ -15,7 +15,7 @@ import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
       [nzSelectedKeys]="defaultSelectedKeys"
       (nzClick)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
-      (nzCheckBoxChange)="nzEvent($event)"
+      (nzCheckboxChange)="nzEvent($event)"
     ></nz-tree>
   `
 })
