@@ -220,7 +220,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                 role="menuitemcheckbox"
                 [class]="nzColumnClassName"
                 [style.height]="dropdownHeightStyle"
-                [style.width]="dropdownWidthStyle"
               >
                 @for (option of options; track option) {
                   <li
