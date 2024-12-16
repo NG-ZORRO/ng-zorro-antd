@@ -13,7 +13,7 @@ Enter a number within certain range with the mouse or keyboard.
 When a numeric value needs to be provided.
 
 ```ts
-import { NzInputNumberLegacy } from 'ng-zorro-antd/input-number';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 ```
 
 ## API
