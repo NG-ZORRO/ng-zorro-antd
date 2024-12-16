@@ -368,7 +368,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     const places = getDecimalPlaces(step);
     const multiple = Math.pow(10, places);
     // Convert floating point numbers to integers to avoid floating point math errors
-    this.setValue((Math.round((this.value() || 0) * multiple) + Math.round(step * multiple)) / multiple);
+    this.setValue((Math.round((this.value() || 0) * multiple) + Math.round(step * multiple)) / multiple, true);
 
     this.nzOnStep.emit({
       type: up ? 'up' : 'down',

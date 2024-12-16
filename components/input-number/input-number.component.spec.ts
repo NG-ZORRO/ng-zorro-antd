@@ -99,15 +99,34 @@ describe('Input number', () => {
     expect(component.value).toBe(0);
   });
 
-  it('should be update value through the handler with hold shift key', () => {
-    upStepByHandler({ shiftKey: true });
-    expect(component.value).toBe(10);
-    upStepByHandler({ shiftKey: true });
-    expect(component.value).toBe(20);
-    downStepByHandler({ shiftKey: true });
-    expect(component.value).toBe(10);
-    downStepByHandler({ shiftKey: true });
-    expect(component.value).toBe(0);
+  describe('should be update value through the handler with hold shift key', () => {
+    it('normal', () => {
+      upStepByHandler({ shiftKey: true });
+      expect(component.value).toBe(10);
+      upStepByHandler({ shiftKey: true });
+      expect(component.value).toBe(20);
+
+      downStepByHandler({ shiftKey: true });
+      expect(component.value).toBe(10);
+      downStepByHandler({ shiftKey: true });
+      expect(component.value).toBe(0);
+    });
+
+    it('with min & max', () => {
+      component.min = -5;
+      component.max = 5;
+      fixture.detectChanges();
+
+      for (let index = 0; index < 10; index++) {
+        upStepByHandler({ shiftKey: true });
+      }
+      expect(component.value).toBe(component.max);
+
+      for (let index = 0; index < 10; index++) {
+        downStepByHandler({ shiftKey: true });
+      }
+      expect(component.value).toBe(component.min);
+    });
   });
 
   it('should be update value through user typing', () => {
