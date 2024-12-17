@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-const options: NzCascaderOption[] = [
+const getOptions = (): NzCascaderOption[] => [
   {
     label: 'Light',
     value: 'light',
@@ -55,7 +55,7 @@ const options: NzCascaderOption[] = [
   `
 })
 export class NzDemoCascaderMultipleComponent {
-  nzOptions: NzCascaderOption[] = options;
+  nzOptions: NzCascaderOption[] = getOptions();
   values: NzSafeAny[][] | null = null;
 
   onChanges(values: NzSafeAny[][]): void {

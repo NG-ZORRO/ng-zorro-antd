@@ -535,7 +535,6 @@ export class NzCascaderComponent
         if (shouldClose) {
           this.delaySetMenuVisible(false);
         }
-        this.emitValue(this.cascaderService.values);
         this.nzSelectionChange.emit(this.getAncestorOptionList(node));
         this.cdr.markForCheck();
       }
@@ -947,7 +946,7 @@ export class NzCascaderComponent
       this.cascaderService.setNodeActivated(node, columnIndex, true, true);
     } else {
       // only update selected nodes and not set node activated by default
-      this.updateSelectedNodes();
+      this.cascaderService.setNodeSelected(node, columnIndex, true);
     }
   }
 
