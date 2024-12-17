@@ -1842,6 +1842,21 @@ describe('cascader', () => {
       expect(leaf.classList).toContain('ant-cascader-menu-item-active');
       expect(checkbox.classList).not.toContain('ant-cascader-checkbox-checked');
     }));
+
+    it('should change check state trigger ngModelChange', fakeAsync(() => {
+      spyOn(testComponent, 'onChanges');
+      expect(testComponent.onChanges).not.toHaveBeenCalled();
+      cascader.componentInstance.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      expect(testComponent.onChanges).not.toHaveBeenCalled();
+
+      const checkbox = getCheckboxAtColumnAndRow(1, 1)!;
+      checkbox.click();
+      fixture.detectChanges();
+      expect(testComponent.onChanges).toHaveBeenCalledWith([['light']]);
+    }));
   });
 
   describe('load data lazily', () => {
