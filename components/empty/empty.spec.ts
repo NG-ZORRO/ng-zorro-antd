@@ -260,6 +260,79 @@ describe('nz-empty', () => {
   });
 });
 
+describe('nz-embed-empty', () => {
+  let fixture: ComponentFixture<NzEmptyTestEmbedComponent>;
+  let component: NzEmptyTestEmbedComponent;
+  let embedComponent: NzEmbedEmptyComponent;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzEmptyModule],
+      declarations: [NzEmptyTestEmbedComponent]
+    });
+    fixture = TestBed.createComponent(NzEmptyTestEmbedComponent);
+    component = fixture.componentInstance;
+    embedComponent = fixture.debugElement.query(By.directive(NzEmbedEmptyComponent)).componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+    expect(embedComponent).toBeTruthy();
+  });
+
+  it('should handle string content correctly', () => {
+    embedComponent.content = 'test content';
+    embedComponent.contentType = 'string';
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement.querySelector('nz-embed-empty');
+    expect(element.textContent.trim()).toBe('test content');
+  });
+
+  it('should handle template content correctly', () => {
+    const template = component.templateRef;
+    embedComponent.content = template;
+    embedComponent.renderEmpty();
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement.querySelector('.template-content');
+    expect(element).toBeTruthy();
+    expect(element.textContent.trim()).toBe('Template Content');
+  });
+
+  it('should destroy embedded content when component is destroyed', fakeAsync(() => {
+    const template = component.templateRef;
+    embedComponent.content = template;
+    embedComponent.renderEmpty();
+    fixture.detectChanges();
+
+    spyOn(embedComponent['embeddedContentRef'], 'destroy');
+    embedComponent.ngOnDestroy();
+    tick(1000); // 等待动画完成
+    
+    expect(embedComponent['embeddedContentRef'].destroy).toHaveBeenCalled();
+  }));
+
+  it('should handle different component sizes correctly', () => {
+    // 测试 normal 尺寸
+    embedComponent.nzComponentName = 'table';
+    embedComponent.ngOnChanges({
+      nzComponentName: new SimpleChange(null, 'table', true)
+    });
+    fixture.detectChanges();
+    expect(embedComponent.size).toBe('normal');
+
+    // 测试 small 尺寸
+    embedComponent.nzComponentName = 'select';
+    embedComponent.ngOnChanges({
+      nzComponentName: new SimpleChange('table', 'select', false)
+    });
+    fixture.detectChanges();
+    expect(embedComponent.size).toBe('small');
+  });
+});
+
 @Component({
   imports: [NzEmptyModule],
   template: `
@@ -311,4 +384,17 @@ export class NzEmptyTestServiceComponent {
 })
 export class NzEmptyTestCustomComponent {
   name = inject(NZ_EMPTY_COMPONENT_NAME);
+}
+
+@Component({
+  template: `
+    <nz-embed-empty>
+      <ng-template #tpl>
+        <div class="template-content">Template Content</div>
+      </ng-template>
+    </nz-embed-empty>
+  `
+})
+class NzEmptyTestEmbedComponent {
+  @ViewChild('tpl', { static: true }) templateRef!: TemplateRef<void>;
 }
