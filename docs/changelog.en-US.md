@@ -26,6 +26,7 @@ timeline: true
 * **cascader:** correct menu display level ([#8866](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8866)) ([5fec53e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5fec53e597d50a26a1083bb1e726af885ba807ae))
 * **drawer:** should clear previously focused element ([#8893](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8893)) ([4498af0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4498af0f1a8c700099e82f4027bec30086f6d29a))
 * **i18n:** add missing translations to `vi_VN` ([#8894](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8894)) ([f08ad1c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f08ad1cb0728d19655c8143658e6a44f8843cb4a))
+* **tree-view:** `nzTreeNodePadding` not works in virtual scroll ([#8920](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8920)) ([82b660a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/82b660ac55539e9cb2c39b399884f8bec4d028d4))
 
 
 ### Code Refactoring
@@ -33,11 +34,14 @@ timeline: true
 * cancel support for HTML string rendering ([#8831](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8831)) ([5fae01a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5fae01ad4120841390f7ebb6267a043774ea2266))
 * remove `ngClass` and `ngStyle` ([#8895](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8895)) ([c3ab3ba](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c3ab3ba6ad50dc4a8f23b43872b3f235ee316f4c))
 * **image:** remove deprecated `FADE_CLASS_NAME_MAP` and `IMAGE_PREVIEW_MASK_CLASS_NAME` ([#8912](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8912)) ([65223d9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/65223d9a595e78f8c73347c5d1b12a807389c434))
+* **transfer,tree,tree-select** rename `CheckBox` to `Checkbox` ([#8934](https://github.com/NG-ZORRO/ng-zorro-antd/pull/8934)) ([c76433d5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c76433d5533f6d5c0467ee99c61877a0ec4d35ac))
 
 
 ### Features
 
 * **cascader:** support multiple selection ([#8903](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8903)) ([e5dfb49](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e5dfb495dc4f9e5493e425aeab3802a13a0f5e28))
+* **cascader:** support `nzPlacement` ([#8935](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8935)) ([6fbd22c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6fbd22c5b38b78cc991bb61446acbea635f30797))
+* **checkbox:** redesign the checkbox group component ([#8932](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8932)) ([489e0de](https://github.com/NG-ZORRO/ng-zorro-antd/commit/489e0defbfeeb03c29562d139614451575f8ed8d))
 * **divider:** add `nzVariant` option ([#8827](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8827)) ([2c63c87](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2c63c87f557e2400224566342a0185d212055004))
 * **float-button:** add float-button component ([#7884](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7884)) ([dab4d66](https://github.com/NG-ZORRO/ng-zorro-antd/commit/dab4d669b3ef746d1761fbb2199c1b0ae704cda5))
 * **icon:** support `nz-icon` tag selector ([#8778](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8778)) ([1406241](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1406241f2e636bb3bf11515b0ad68cbe0535d5e1))
@@ -61,6 +65,7 @@ timeline: true
     - Keys which multiple styles/classes separated with keys: split a key with spaces into multiple keys
   * Cancel support for HTML string rendering
   * Migrate `@WithConfig` to standard decorator. If you're using `@WithConfig` in your library, please turn `experimentalDecorators` off in `tsconfig.json`
+  * Migrate `[nz-icon]` to `nz-icon` tag. If you're using `[nz-icon]` selector in stylesheet to select icon **inside** zorro component, please use `nz-icon` instead
 
 * **input-number:** Redesign the input-number so that it will be much simpler and more flexible.
 
@@ -108,6 +113,10 @@ timeline: true
 
   In v19, this trick is removed and if you're already using this trick in your code, please consider the add a `map` function to pass the actual value.
 
+* **checkbox** Redesign the checkbox group component.
+  - Remove `NzCheckBoxOptionInterface['checked]` field. By the way, `NzCheckBoxOptionInterface` is marked as deprecated, use `NzCheckboxOption` instead
+  - `nz-checkbox-group`: Type of `ngModel` is changed from `NzCheckBoxOptionInterface[]` to `NzCheckboxOption['value'][]`
+
 * **card:** Remove redundant `nzBorderless` input property. Use `nzBordered` instead.
 * **image:** Remove deprecated `FADE_CLASS_NAME_MAP` and `IMAGE_PREVIEW_MASK_CLASS_NAME`
 * **pipes:** Remove deprecated `NzSafeNullPipe`
@@ -116,6 +125,8 @@ timeline: true
   - Change emission type of `nzValueChange` from `number` to option's value type (`string | number`)
   - Remove `nzLabelTemplate`, use `nz-segmented-item` directive instead
 * **space:** Rename `exportAs` of `NzSpaceComponent` from `NzSpace` to standard `nzSpace`
+* **transfer:** Rename `nzTreeCheckBoxChange` to `nzTreeCheckboxChange`
+* **tree,tree-select:** Rename `nzCheckBoxChange` to `nzCheckboxChange`
 
 
 ### Deprecations
@@ -127,6 +138,7 @@ Please refer to related documentation for better alternatives.
 |-------------------------------------|----------------------------------------------------------|
 | `ng-zorro-antd/button`              | `NzButtonGroupComponent`                                 |
 | `ng-zorro-antd/core/form`           | `NzFormPatchModule`                                      |
+| `ng-zorro-antd/checkbox`            | `NzCheckboxWrapperComponent`                             |
 | `ng-zorro-antd/input`               | `NzInputGroupComponent#nzCompact`                        |
 | `ng-zorro-antd/input-number-legacy` | `*`                                                      |
 | `ng-zorro-antd/message`             | `NzMessageModule`                                        |

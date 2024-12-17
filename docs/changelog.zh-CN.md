@@ -26,6 +26,7 @@ timeline: true
 * **cascader:** 取消选择时收起子选项列 ([#8866](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8866)) ([5fec53e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5fec53e597d50a26a1083bb1e726af885ba807ae))
 * **drawer:** 打开时清除之前 focus 的元素 ([#8893](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8893)) ([4498af0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4498af0f1a8c700099e82f4027bec30086f6d29a))
 * **i18n:** 更新 `vi_VN` 国际化文案 ([#8894](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8894)) ([f08ad1c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f08ad1cb0728d19655c8143658e6a44f8843cb4a))
+* **tree-view:** 修复 `nzTreeNodePadding` 在虚拟滚动中不生效问题 ([#8920](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8920)) ([82b660a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/82b660ac55539e9cb2c39b399884f8bec4d028d4))
 
 
 ### Code Refactoring
@@ -33,11 +34,14 @@ timeline: true
 * 取消支持渲染 HTML 字符串 ([#8831](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8831)) ([5fae01a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5fae01ad4120841390f7ebb6267a043774ea2266))
 * 移除 `ngClass` and `ngStyle` ([#8895](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8895)) ([c3ab3ba](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c3ab3ba6ad50dc4a8f23b43872b3f235ee316f4c))
 * **image:** 移除废弃的 `FADE_CLASS_NAME_MAP` 和 `IMAGE_PREVIEW_MASK_CLASS_NAME` ([#8912](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8912)) ([65223d9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/65223d9a595e78f8c73347c5d1b12a807389c434))
+* **transfer,tree,tree-select** 相关 Output 属性中的 `CheckBox` 重命名为 `Checkbox` ([#8934](https://github.com/NG-ZORRO/ng-zorro-antd/pull/8934)) ([c76433d5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c76433d5533f6d5c0467ee99c61877a0ec4d35ac))
 
 
 ### Features
 
 * **cascader:** 支持多选 ([#8903](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8903)) ([e5dfb49](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e5dfb495dc4f9e5493e425aeab3802a13a0f5e28))
+* **cascader:** 支持 `nzPlacement` 自定义浮层弹出位置 ([#8935](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8935)) ([6fbd22c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6fbd22c5b38b78cc991bb61446acbea635f30797))
+* **checkbox:** 重新设计 `nz-checkbox-group` 组件，支持自定义布局 ([#8932](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8932)) ([489e0de](https://github.com/NG-ZORRO/ng-zorro-antd/commit/489e0defbfeeb03c29562d139614451575f8ed8d))
 * **divider:** 新增 `nzVariant` 选项 ([#8827](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8827)) ([2c63c87](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2c63c87f557e2400224566342a0185d212055004))
 * **float-button:** 新增 float-button 组件 ([#7884](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7884)) ([dab4d66](https://github.com/NG-ZORRO/ng-zorro-antd/commit/dab4d669b3ef746d1761fbb2199c1b0ae704cda5))
 * **icon:** 新增 `nz-icon` selector ([#8778](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8778)) ([1406241](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1406241f2e636bb3bf11515b0ad68cbe0535d5e1))
@@ -61,6 +65,7 @@ timeline: true
     - 键分隔的多个类名或样式：使用空格分隔的多个键代替
   * 移除一些组件内部支持渲染 HTML 字符串的功能，因为这是非良好的模式。message，notification，modal 组件除外，因为这些组件可以通过 service 方式创建，渲染 html 字符串的用例会比较多。
   * 使用标准装饰器重写 `@WithConfig`。如果在库中使用了 `@WithConfig`，请在 `tsconfig.json` 中关闭 `experimentalDecorators` 选项
+  * 组件内部写法从 `[nz-icon]` 迁移到新的 `nz-icon` 标签。如果在 CSS 中使用了 `[nz-icon]` 选择器来选择**组件内部**的图标，请使用为 `nz-icon` 替代
 
 * **input-number:** 重新设计 input-number 组件，使其更加简单灵活
 
@@ -108,6 +113,10 @@ timeline: true
 
   在 v19 中，我们将移除该特性，如果您已经在代码中运用了该特性，请考虑增加一个 `map` 方法将其映射到实际的值。
 
+* **checkbox** Redesign the checkbox group component.
+  - 移除 `NzCheckBoxOptionInterface['checked]` 字段，另外 `NzCheckBoxOptionInterface` 被标记为弃用，请使用 `NzCheckboxOption` 替代
+  - `nz-checkbox-group`: `ngModel` 类型从 `NzCheckBoxOptionInterface[]` 改为选项值的类型 `NzCheckboxOption['value'][]`
+
 * **card:** 移除冗余的 `nzBorderless` 属性，使用 `nzBordered` 替代
 * **image:** 移除废弃的 `FADE_CLASS_NAME_MAP` 和 `IMAGE_PREVIEW_MASK_CLASS_NAME`
 * **pipes:** 移除废弃的 `NzSafeNullPipe`
@@ -116,6 +125,8 @@ timeline: true
   - `nzValueChange` 发出值的类型从 `number` 改为选项值的类型 （`string | number`）
   - 移除 `nzLabelTemplate`， 使用 `nz-segmented-item` 指令替代
 * **space:** `NzSpaceComponent` 的` exportAs` 属性重命名为标准 `nzSpace`
+* **transfer:** 属性 `nzTreeCheckBoxChange` 重命名为 `nzTreeCheckboxChange`
+* **tree,tree-select:** 属性 `nzCheckBoxChange` 重命名为 `nzCheckboxChange`
 
 
 ### Deprecations
@@ -126,6 +137,7 @@ timeline: true
 |-------------------------------------|----------------------------------------------------------|
 | `ng-zorro-antd/button`              | `NzButtonGroupComponent`                                 |
 | `ng-zorro-antd/core/form`           | `NzFormPatchModule`                                      |
+| `ng-zorro-antd/checkbox`            | `NzCheckboxWrapperComponent`                             |
 | `ng-zorro-antd/input`               | `NzInputGroupComponent#nzCompact`                        |
 | `ng-zorro-antd/input-number-legacy` | `*`                                                      |
 | `ng-zorro-antd/message`             | `NzMessageModule`                                        |
