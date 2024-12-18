@@ -60,7 +60,8 @@ export function getNzAutocompleteMissingPanelError(): Error {
     '(focusin)': 'handleFocus()',
     '(blur)': 'handleBlur()',
     '(input)': 'handleInput($event)',
-    '(keydown)': 'handleKeydown($event)'
+    '(keydown)': 'handleKeydown($event)',
+    '(click)': 'handleClick($event)'
   }
 })
 export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor, OnDestroy {
@@ -213,6 +214,12 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
   handleFocus(): void {
     if (this.canOpen()) {
+      this.openPanel();
+    }
+  }
+
+  handleClick(): void {
+    if (this.canOpen() && !this.panelOpen) {
       this.openPanel();
     }
   }
