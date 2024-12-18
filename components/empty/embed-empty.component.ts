@@ -74,7 +74,7 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
       }
     }
   `,
-  imports: [NzEmptyComponent, PortalModule]
+  imports: [NzEmptyComponent]
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzComponentName?: string;
