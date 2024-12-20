@@ -29,7 +29,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 | `[nzWrap]`      | Auto wrap line, when `horizontal` effective | `boolean`                                    | `false`      |               |
 | `[nzSplit]`     | Set split                                   | `TemplateRef \| string`                      | -            |               |
 
-### nz-space-compact:standalone
+### nz-space-compact
 
 Use `<nz-space-compact>` when child form components are compactly connected and the border is collapsed. The supported components are：
 

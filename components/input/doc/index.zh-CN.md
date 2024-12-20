@@ -50,7 +50,7 @@ nz-input 可以使用所有的 W3C 标准下的所有 [使用方式](https://www
 | `[nzMaxCharacterCount]`     | `textarea` 数字提示显示的最大值    | `number`                | -               |
 | `[nzComputeCharacterCount]` | 自定义计算 `characterCount` 的函数 | `(v: string) => number` | `v => v.length` |
 
-### nz-input-otp:standalone
+### nz-input-otp
 
 | Property        | Description                                       | Type                              | Default   |
 | --------------- | ------------------------------------------------- | --------------------------------- | --------- |

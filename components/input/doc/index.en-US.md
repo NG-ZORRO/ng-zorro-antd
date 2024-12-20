@@ -50,7 +50,7 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 | `[nzMaxCharacterCount]`     | `textarea` maximum character count displayed     | `number`                | -               |
 | `[nzComputeCharacterCount]` | customized `characterCount` computation function | `(v: string) => number` | `v => v.length` |
 
-### nz-input-otp:standalone
+### nz-input-otp
 
 | Property        | Description                                             | Type                              | Default   |
 | --------------- | ------------------------------------------------------- | --------------------------------- | --------- |
