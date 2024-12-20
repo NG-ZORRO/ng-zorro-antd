@@ -15,8 +15,12 @@ import { NzTableLayout } from '../table.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    @for (width of listOfColWidth; track $index) {
-      <col [style.width]="width" [style.minWidth]="width" />
+    @if (listOfColWidth.length > 0) {
+      <colgroup>
+        @for (width of listOfColWidth; track $index) {
+          <col [style.width]="width" [style.minWidth]="width" />
+        }
+      </colgroup>
     }
     @if (theadTemplate) {
       <thead class="ant-table-thead">
