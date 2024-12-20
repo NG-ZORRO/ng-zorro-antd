@@ -79,7 +79,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
       for (let day = 0; day < 7; day++) {
         const date = weekStart.addDays(day);
-        const dateFormat = transCompatFormat(this.format ?? 'YYYY-MM-DD');
+        const dateFormat = transCompatFormat(this.format ?? this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD'));
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
         const label = this.dateHelper.format(date.nativeDate, 'dd');
         const cell: DateCell = {
