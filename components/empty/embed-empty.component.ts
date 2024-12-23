@@ -17,17 +17,20 @@ import {
   Type,
   ViewChild,
   ViewContainerRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  EmbeddedViewRef,
+  ComponentRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
+import { AnimationDuration } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize } from './config';
 import { NzEmptyComponent } from './empty.component';
-import { AnimationDuration } from 'ng-zorro-antd/core/animation';
 
 function getEmptySize(componentName: string): NzEmptySize {
   switch (componentName) {
@@ -88,13 +91,13 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   size: NzEmptySize = '';
 
   private destroy$ = new Subject<void>();
-  private embeddedContentRef: any;
+  private embeddedContentRef: EmbeddedViewRef<any> | ComponentRef<any> | null;
 
   constructor(
     private configService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private injector: Injector
-  ) {}
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzComponentName) {
@@ -169,7 +172,9 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
         setTimeout(() => {
           this.embeddedContentRef.destroy();
           this.embeddedContentRef = null;
-        }, (parseFloat(AnimationDuration.SLOW) || 0) * 1000);
+        },
+          (parseFloat(AnimationDuration.SLOW) || 0) * 1000
+        );
       }
     }
   }
