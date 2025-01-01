@@ -312,3 +312,16 @@ export class NzEmptyTestServiceComponent {
 export class NzEmptyTestCustomComponent {
   name = inject(NZ_EMPTY_COMPONENT_NAME);
 }
+
+@Component({
+  template: `
+    <nz-embed-empty>
+      <ng-template #tpl>
+        <div class="template-content">Template Content</div>
+      </ng-template>
+    </nz-embed-empty>
+  `
+})
+class NzEmptyTestEmbedComponent {
+  @ViewChild('tpl', { static: true }) templateRef!: TemplateRef<void>;
+}
