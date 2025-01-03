@@ -13,6 +13,18 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 19.0.1
+
+`2025-01-03`
+
+### Bug Fixes
+
+* **date-picker:** 原生 title 属性遵循 `nzFormat` 格式 ([#8744](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8744)) ([1b7ab5a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1b7ab5adb5af783e3a6a47ffc4916961993f4d6f))
+* **i18n:** 更新 `zh_TW` 国际化文案 ([#8950](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8950)) ([9607e11](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9607e1161244b441badb2c37093c4f44a2d63695))
+* **input-number:** 修复 `NG0600` 错误 ([#8955](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8955)) ([8d6135e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8d6135e65a6aa716678b9485e3e7790182d160b1))
+* **table:** 修复水合节点不匹配问题 ([#8948](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8948)) ([0a73deb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0a73deb053d2d9ab8d8194038355fad898b60759))
+
+
 ## 19.0.0
 
 `2024-12-06`
