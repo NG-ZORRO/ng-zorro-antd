@@ -25,6 +25,7 @@ import {
   OnInit,
   output,
   signal,
+  untracked,
   viewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -328,7 +329,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(value: number | null): void {
-    this.setValue(value);
+    untracked(() => this.setValue(value));
   }
 
   registerOnChange(fn: OnChangeType): void {
