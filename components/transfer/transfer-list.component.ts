@@ -63,10 +63,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
         <span class="ant-transfer-list-header-title">{{ titleText }}</span>
       }
     </div>
-    <div
-      class="{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}"
-      [class]="{ 'ant-transfer__nodata': stat.shownCount === 0 }"
-    >
+    <div class="ant-transfer-list-body" [class.ant-transfer-list-body-with-search]="showSearch">
       @if (showSearch) {
         <div class="ant-transfer-list-body-search-wrapper">
           <span
