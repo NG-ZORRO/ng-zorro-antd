@@ -10,6 +10,7 @@
     "angular",
     "date-fns",
     "@ant-design/icons-angular",
+    "@ctrl/tinycolor",
     "monaco-editor",
     "cron-parser",
     "dagre-compound",
