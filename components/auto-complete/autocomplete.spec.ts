@@ -227,7 +227,7 @@ describe('auto-complete', () => {
       expect(overlayContainerElement.textContent).toEqual('');
     }));
 
-    it('should open the panel when click the input that has been focused', fakeAsync(() => {
+    it('should open the panel when the input that has already been focused is clicked', fakeAsync(() => {
       dispatchFakeEvent(input, 'focusin');
       fixture.detectChanges();
       flush();
