@@ -213,6 +213,23 @@ describe('auto-complete', () => {
       expect(overlayContainerElement.textContent).toEqual('');
     }));
 
+    it('should open the panel when the input that has already been focused is clicked', fakeAsync(() => {
+      dispatchFakeEvent(input, 'focusin');
+      fixture.detectChanges();
+      flush();
+
+      const option = overlayContainerElement.querySelector('nz-auto-option') as HTMLElement;
+      option.click();
+      fixture.detectChanges();
+
+      tick(500);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
+
+      dispatchFakeEvent(input, 'click');
+      fixture.detectChanges();
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
+    }));
+
     it('should close the panel when an option is tap', fakeAsync(() => {
       dispatchFakeEvent(input, 'focusin');
       fixture.detectChanges();
