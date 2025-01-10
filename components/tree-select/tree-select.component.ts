@@ -148,6 +148,7 @@ const listOfPositions = [
           [nzVirtualMaxBufferPx]="nzVirtualMaxBufferPx"
           [nzVirtualMinBufferPx]="nzVirtualMinBufferPx"
           [nzVirtualHeight]="nzVirtualHeight"
+          [nzSearchFunc]="nzTreeSelectSearchFunc"
           (nzExpandChange)="onExpandedKeysChange($event)"
           (nzClick)="nzTreeClick.emit($event)"
           (nzCheckedKeysChange)="updateSelectedNodes()"
@@ -304,6 +305,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
   @Input({ transform: numberAttribute }) nzMaxTagCount!: number;
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }> | null = null;
+  @Input() nzSearchFunc?: (inputValue: string, node: NzTreeNodeOptions) => boolean;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
   @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
@@ -360,6 +362,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   onChange: OnChangeType = _value => {};
   onTouched: OnTouchedType = () => {};
+  nzTreeSelectSearchFunc: ((node: NzTreeNodeOptions) => boolean) | undefined;
 
   get placeHolderDisplay(): string {
     return this.inputValue || this.isComposing || this.selectedNodes.length ? 'none' : 'block';
@@ -443,6 +446,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
           this.updatePosition();
         }
       });
+    const wrapNzSearchFunc = (node: NzTreeNodeOptions): boolean => {
+      return this.nzSearchFunc ? this.nzSearchFunc(this.inputValue, node) : false;
+    };
+    this.nzTreeSelectSearchFunc = this.nzSearchFunc ? wrapNzSearchFunc : undefined;
   }
 
   ngOnDestroy(): void {
