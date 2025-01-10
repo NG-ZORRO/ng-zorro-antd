@@ -13,6 +13,17 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 19.0.2
+
+`2025-01-10`
+
+### Bug Fixes
+
+* **auto-complete:** 点击聚焦的输入框时应弹出浮层 ([#8900](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8900)) ([79cc2f8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/79cc2f830133dfe0ee99eaabdb7b5b5f1eca2e02))
+* **progress:** 修复 `NG0956` 错误 ([#8962](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8962)) ([c4d2f81](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c4d2f81f125feca0ce5ad90e12997875b4465230))
+* **transfer:** 修复 body 样式异常 ([#8960](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8960)) ([a3546a9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a3546a9032dcc8fbbd72088e4a431e83b99b32f1))
+
+
 ## 19.0.1
 
 `2025-01-03`
