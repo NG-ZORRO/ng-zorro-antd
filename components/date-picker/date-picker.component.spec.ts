@@ -1,7 +1,7 @@
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, DebugElement, inject, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -47,11 +47,13 @@ describe('NzDatePickerComponent', () => {
     debugElement = fixture.debugElement;
   });
 
-  beforeEach(inject([OverlayContainer, NzI18nService], (oc: OverlayContainer, i18n: NzI18nService) => {
-    overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
-    i18nService = i18n;
-  }));
+  beforeEach(
+    testingInject([OverlayContainer, NzI18nService], (oc: OverlayContainer, i18n: NzI18nService) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+      i18nService = i18n;
+    })
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -1598,9 +1600,8 @@ class NzTestDatePickerStatusComponent {
   `
 })
 class NzTestDatePickerInFormComponent {
+  private fb = inject(FormBuilder);
   validateForm = this.fb.group({
     demo: this.fb.control<Date | null>(null, Validators.required)
   });
-
-  constructor(private fb: FormBuilder) {}
 }
