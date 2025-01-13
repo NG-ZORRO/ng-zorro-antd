@@ -11,6 +11,7 @@ import {
   Component,
   EventEmitter,
   forwardRef,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -131,16 +132,14 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   @Output() readonly nzOnClear = new EventEmitter<boolean>();
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
+  private formBuilder = inject(FormBuilder);
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
   blockColor: string = '';
   clearColor: boolean = false;
   showText: string = defaultColor.toHexString();
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   formControl = this.formBuilder.control('');
 

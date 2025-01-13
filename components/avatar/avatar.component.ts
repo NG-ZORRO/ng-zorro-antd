@@ -16,6 +16,7 @@ import {
   ViewChild,
   ViewEncapsulation,
   afterRender,
+  inject,
   numberAttribute
 } from '@angular/core';
 
@@ -75,11 +76,10 @@ export class NzAvatarComponent implements OnChanges {
 
   @ViewChild('textEl', { static: false }) textEl?: ElementRef<HTMLSpanElement>;
 
-  private el: HTMLElement = this.elementRef.nativeElement;
+  private el: HTMLElement = inject(ElementRef).nativeElement;
 
   constructor(
     public nzConfigService: NzConfigService,
-    private elementRef: ElementRef,
     private cdr: ChangeDetectorRef
   ) {
     afterRender(() => this.calcStringSize());

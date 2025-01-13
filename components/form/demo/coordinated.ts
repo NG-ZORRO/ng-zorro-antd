@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -46,13 +46,12 @@ type Gender = 'male' | 'female';
   ]
 })
 export class NzDemoFormCoordinatedComponent implements OnInit, OnDestroy {
+  private fb = inject(FormBuilder);
   private destroy$ = new Subject<void>();
   validateForm = this.fb.group({
     note: this.fb.control<string | null>(null, Validators.required),
     gender: this.fb.control<Gender | null>(null, Validators.required)
   });
-
-  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm.controls.gender.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {

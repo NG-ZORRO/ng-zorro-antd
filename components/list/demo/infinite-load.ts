@@ -1,7 +1,8 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
@@ -61,27 +62,20 @@ interface Name {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
-  ds = new MyDataSource(this.http);
+export class NzDemoListInfiniteLoadComponent implements OnInit {
+  private http = inject(HttpClient);
+  private nzMessage = inject(NzMessageService);
+  private destroyRef = inject(DestroyRef);
 
-  private destroy$ = new Subject<boolean>();
-  constructor(
-    private http: HttpClient,
-    private nzMessage: NzMessageService
-  ) {}
+  ds = new MyDataSource(this.http);
 
   ngOnInit(): void {
     this.ds
       .completed()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.nzMessage.warning('Infinite List loaded all');
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }
 

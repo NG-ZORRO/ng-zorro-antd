@@ -13,7 +13,8 @@ import {
   AfterContentInit,
   OnDestroy,
   ContentChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  inject
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
 import { filter, map, pairwise, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -41,6 +42,9 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
   @ContentChild(NzOverflowRestDirective) overflowRest: NzOverflowRestDirective | undefined = undefined;
   overflowItems$ = new ReplaySubject<QueryList<NzOverflowItemDirective>>(1);
   destroy$ = new Subject<void>();
+
+  private nzResizeObserver = inject(NzResizeObserver);
+  private elementRef = inject(ElementRef);
   containerWidth$ = this.nzResizeObserver
     .observe(this.elementRef.nativeElement)
     .pipe(map(([item]) => item.target.clientWidth || 0));
@@ -68,11 +72,7 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
     }
   }
 
-  constructor(
-    private nzResizeObserver: NzResizeObserver,
-    private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     const overflowItemsWidth$ = this.overflowItems$.pipe(

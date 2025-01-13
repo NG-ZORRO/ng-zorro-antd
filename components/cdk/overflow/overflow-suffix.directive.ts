@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectorRef, Directive, ElementRef } from '@angular/core';
+import { ChangeDetectorRef, Directive, ElementRef, inject } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -15,17 +15,16 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
   }
 })
 export class NzOverflowSuffixDirective {
+  private nzResizeObserver = inject(NzResizeObserver);
+  private elementRef = inject(ElementRef);
+
   suffixStyle = {};
   suffixWidth$ = this.nzResizeObserver.observe(this.elementRef.nativeElement).pipe(
     map(([item]) => (item.target as HTMLElement).offsetWidth),
     tap(width => (this.suffixWidth = width))
   );
   suffixWidth = 0;
-  constructor(
-    private nzResizeObserver: NzResizeObserver,
-    private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   setSuffixStyle(start: number | null, order: number): void {
     if (start !== null) {

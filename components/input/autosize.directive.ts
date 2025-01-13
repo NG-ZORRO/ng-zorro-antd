@@ -4,7 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { AfterViewInit, Directive, DoCheck, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
+import { AfterViewInit, Directive, DoCheck, ElementRef, inject, Input, NgZone, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -27,7 +27,7 @@ export interface AutoSizeType {
 })
 export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   private autosize: boolean = false;
-  private el: HTMLTextAreaElement | HTMLInputElement = this.elementRef.nativeElement;
+  private el: HTMLTextAreaElement | HTMLInputElement = inject(ElementRef).nativeElement;
   private cachedLineHeight!: number;
   private previousValue!: string;
   private previousMinRows: number | undefined;
@@ -176,7 +176,6 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   }
 
   constructor(
-    private elementRef: ElementRef,
     private ngZone: NgZone,
     private platform: Platform,
     private resizeService: NzResizeService

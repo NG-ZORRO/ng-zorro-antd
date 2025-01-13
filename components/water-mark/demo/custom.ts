@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { NzColor, NzColorPickerModule } from 'ng-zorro-antd/color-picker';
@@ -130,6 +130,8 @@ import { FontType, NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
   ]
 })
 export class NzDemoWaterMarkCustomComponent implements OnInit {
+  private fb = inject(NonNullableFormBuilder);
+
   form = this.fb.group({
     content: 'NG Ant Design',
     fontSize: 16,
@@ -148,10 +150,7 @@ export class NzDemoWaterMarkCustomComponent implements OnInit {
   gap: [number, number] = [100, 100];
   offset: [number, number] = [50, 50];
 
-  constructor(
-    private fb: NonNullableFormBuilder,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe(item => {

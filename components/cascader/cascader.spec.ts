@@ -18,8 +18,8 @@ import {
   ZERO
 } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, inject, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -73,15 +73,19 @@ describe('cascader', () => {
     });
   });
 
-  beforeEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-    overlayContainer = currentOverlayContainer;
-    overlayContainerElement = currentOverlayContainer.getContainerElement();
-  }));
+  beforeEach(
+    testingInject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+      overlayContainer = currentOverlayContainer;
+      overlayContainerElement = currentOverlayContainer.getContainerElement();
+    })
+  );
 
-  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-    currentOverlayContainer.ngOnDestroy();
-    overlayContainer.ngOnDestroy();
-  }));
+  afterEach(
+    testingInject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+      currentOverlayContainer.ngOnDestroy();
+      overlayContainer.ngOnDestroy();
+    })
+  );
 
   describe('default', () => {
     let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
@@ -1864,10 +1868,12 @@ describe('cascader', () => {
     let cascader: DebugElement;
     let testComponent: NzDemoCascaderLoadDataComponent;
 
-    afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-      currentOverlayContainer.ngOnDestroy();
-      overlayContainer.ngOnDestroy();
-    }));
+    afterEach(
+      testingInject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+        currentOverlayContainer.ngOnDestroy();
+        overlayContainer.ngOnDestroy();
+      })
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoCascaderLoadDataComponent);
@@ -2495,9 +2501,9 @@ export class NzDemoCascaderStatusComponent {
   `
 })
 export class NzDemoCascaderInFormComponent {
+  private fb = inject(FormBuilder);
   validateForm = this.fb.group({
     demo: this.fb.control<string[] | null>(null, Validators.required)
   });
   nzOptions: NzSafeAny[] | null = options1;
-  constructor(private fb: FormBuilder) {}
 }

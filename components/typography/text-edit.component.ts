@@ -79,7 +79,7 @@ export class NzTextEditComponent implements OnInit {
 
   beforeText?: string;
   currentText?: string;
-  nativeElement = this.host.nativeElement;
+  nativeElement: HTMLElement = inject(ElementRef).nativeElement;
 
   // We could've saved the textarea within some private property (e.g. `_textarea`) and have a getter,
   // but having subject makes the code more reactive and cancellable (e.g. event listeners will be
@@ -90,7 +90,6 @@ export class NzTextEditComponent implements OnInit {
 
   constructor(
     private ngZone: NgZone,
-    private host: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private i18n: NzI18nService,
     private destroy$: NzDestroyService
