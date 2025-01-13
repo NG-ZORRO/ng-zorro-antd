@@ -73,7 +73,11 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   }
 
   private getIndents(): boolean[] {
-    const indents = [];
+    const indents: boolean[] = [];
+    if (!this.tree.treeControl) {
+      return indents;
+    }
+
     const nodes = this.tree.treeControl.dataNodes;
     const getLevel = this.tree.treeControl.getLevel;
     let parent = getParent(nodes, this.treeNode.data, getLevel);
@@ -105,7 +109,7 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
    * this result can also be affected when the adjacent nodes are changed.
    */
   private checkAdjacent(): void {
-    const nodes = this.tree.treeControl.dataNodes;
+    const nodes = this.tree.treeControl?.dataNodes || [];
     const index = nodes.indexOf(this.treeNode.data);
     const preNode = nodes[index - 1] || null;
     const nextNode = nodes[index + 1] || null;
@@ -117,9 +121,10 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   }
 
   private checkLast(index?: number): void {
-    const nodes = this.tree.treeControl.dataNodes;
+    const nodes = this.tree.treeControl?.dataNodes || [];
     this.isLeaf = this.treeNode.isLeaf;
-    this.isLast = !getNextSibling(nodes, this.treeNode.data, this.tree.treeControl.getLevel, index);
+    this.isLast =
+      !!this.tree.treeControl && !getNextSibling(nodes, this.treeNode.data, this.tree.treeControl.getLevel, index);
   }
 
   ngOnDestroy(): void {
