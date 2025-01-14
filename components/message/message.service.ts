@@ -4,50 +4,45 @@
  */
 
 import { Overlay } from '@angular/cdk/overlay';
-import { Injectable, Injector, TemplateRef } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 
-import { NzSingletonService } from 'ng-zorro-antd/core/services';
+import { NzTSType } from 'ng-zorro-antd/core/types';
 
 import { NzMNService } from './base';
 import { NzMessageContainerComponent } from './message-container.component';
-import { NzMessageData, NzMessageDataOptions, NzMessageRef } from './typings';
+import { NzMessageData, NzMessageDataOptions, NzMessageRef, NzMessageType } from './typings';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NzMessageService extends NzMNService {
-  protected override container?: NzMessageContainerComponent;
+export class NzMessageService extends NzMNService<NzMessageContainerComponent> {
   protected componentPrefix = 'message-';
 
-  constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {
-    super(nzSingletonService, overlay, injector);
+  constructor(overlay: Overlay, injector: Injector) {
+    super(overlay, injector);
   }
 
-  success(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageRef {
+  success(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'success', content }, options);
   }
 
-  error(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageRef {
+  error(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'error', content }, options);
   }
 
-  info(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageRef {
+  info(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'info', content }, options);
   }
 
-  warning(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageRef {
+  warning(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'warning', content }, options);
   }
 
-  loading(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageRef {
+  loading(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'loading', content }, options);
   }
 
-  create(
-    type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string,
-    content: string | TemplateRef<void>,
-    options?: NzMessageDataOptions
-  ): NzMessageRef {
+  create(type: NzMessageType | string, content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type, content }, options);
   }
 

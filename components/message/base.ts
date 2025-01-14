@@ -6,7 +6,7 @@
 import { AnimationEvent } from '@angular/animations';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
@@ -17,12 +17,12 @@ import { NzMessageData, NzMessageDataOptions } from './typings';
 
 let globalCounter = 0;
 
-export abstract class NzMNService {
+export abstract class NzMNService<T extends NzMNContainerComponent> {
   protected abstract componentPrefix: string;
-  protected container?: NzMNContainerComponent;
+  protected container?: T;
+  protected nzSingletonService = inject(NzSingletonService);
 
-  constructor(
-    protected nzSingletonService: NzSingletonService,
+  protected constructor(
     protected overlay: Overlay,
     private injector: Injector
   ) {}
@@ -41,7 +41,7 @@ export abstract class NzMNService {
     return `${this.componentPrefix}-${globalCounter++}`;
   }
 
-  protected withContainer<T extends NzMNContainerComponent>(ctor: ComponentType<T>): T {
+  protected withContainer(ctor: ComponentType<T>): T {
     let containerInstance = this.nzSingletonService.getSingletonWithKey(this.componentPrefix);
     if (containerInstance) {
       return containerInstance as T;
@@ -72,22 +72,22 @@ export abstract class NzMNService {
 }
 
 @Directive()
-export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
-  config?: Required<MessageConfig>;
-  instances: Array<Required<NzMessageData>> = [];
+export abstract class NzMNContainerComponent<
+    C extends MessageConfig = MessageConfig,
+    D extends NzMessageData = NzMessageData
+  >
+  implements OnInit, OnDestroy
+{
+  config?: Required<C>;
+  instances: Array<Required<D>> = [];
 
   private readonly _afterAllInstancesRemoved = new Subject<void>();
 
   readonly afterAllInstancesRemoved = this._afterAllInstancesRemoved.asObservable();
 
+  protected cdr = inject(ChangeDetectorRef);
+  protected nzConfigService = inject(NzConfigService);
   protected readonly destroy$ = new Subject<void>();
-
-  constructor(
-    protected cdr: ChangeDetectorRef,
-    protected nzConfigService: NzConfigService
-  ) {
-    this.updateConfig();
-  }
 
   ngOnInit(): void {
     this.subscribeConfigChange();
@@ -98,10 +98,10 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  create(data: NzMessageData): Required<NzMessageData> {
+  create(data: D): Required<D> {
     const instance = this.onCreate(data);
 
-    if (this.instances.length >= this.config!.nzMaxStack) {
+    if (this.instances.length >= this.config!.nzMaxStack!) {
       this.instances = this.instances.slice(1);
     }
 
@@ -136,15 +136,15 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
     this.onAllInstancesRemoved();
   }
 
-  protected onCreate(instance: NzMessageData): Required<NzMessageData> {
+  protected onCreate(instance: D): Required<D> {
     instance.options = this.mergeOptions(instance.options);
     instance.onClose = new Subject<boolean>();
-    return instance as Required<NzMessageData>;
+    return instance as Required<D>;
   }
 
-  protected onRemove(instance: Required<NzMessageData>, userAction: boolean): void {
-    instance.onClose.next(userAction);
-    instance.onClose.complete();
+  protected onRemove(instance: Required<D>, userAction: boolean): void {
+    instance.onClose!.next(userAction);
+    instance.onClose!.complete();
   }
 
   private onAllInstancesRemoved(): void {
@@ -156,11 +156,9 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  protected abstract updateConfig(): void;
-
   protected abstract subscribeConfigChange(): void;
 
-  protected mergeOptions(options?: NzMessageDataOptions): NzMessageDataOptions {
+  protected mergeOptions(options?: D['options']): D['options'] {
     const { nzDuration, nzAnimate, nzPauseOnHover } = this.config!;
     return { nzDuration, nzAnimate, nzPauseOnHover, ...options };
   }
@@ -168,10 +166,11 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
 
 @Directive()
 export abstract class NzMNComponent implements OnInit, OnDestroy {
-  instance!: Required<NzMessageData>;
-  index?: number;
+  abstract instance: Required<NzMessageData>;
+  abstract index?: number;
+  abstract destroyed: EventEmitter<{ id: string; userAction: boolean }>;
 
-  readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+  protected cdr = inject(ChangeDetectorRef);
   readonly animationStateChanged: Subject<AnimationEvent> = new Subject<AnimationEvent>();
 
   protected options!: Required<NzMessageDataOptions>;
@@ -181,8 +180,6 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   protected eraseTimer?: ReturnType<typeof setTimeout>;
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
-
-  protected constructor(protected cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.options = this.instance.options as Required<NzMessageDataOptions>;

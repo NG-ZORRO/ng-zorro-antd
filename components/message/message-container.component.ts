@@ -4,10 +4,10 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { MessageConfig } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzMNContainerComponent } from './base';
@@ -40,13 +40,12 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   imports: [NzMessageComponent]
 })
 export class NzMessageContainerComponent extends NzMNContainerComponent {
-  dir: Direction = 'ltr';
+  dir: Direction = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)?.nzDirection || 'ltr';
   top?: string | null;
 
-  constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {
-    super(cdr, nzConfigService);
-    const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
-    this.dir = config?.nzDirection || 'ltr';
+  constructor() {
+    super();
+    this.updateConfig();
   }
 
   protected subscribeConfigChange(): void {
@@ -55,11 +54,7 @@ export class NzMessageContainerComponent extends NzMNContainerComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateConfig();
-        const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
-        if (config) {
-          const { nzDirection } = config;
-          this.dir = nzDirection || this.dir;
-        }
+        this.dir = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)?.nzDirection || this.dir;
       });
   }
 
@@ -71,6 +66,7 @@ export class NzMessageContainerComponent extends NzMNContainerComponent {
     };
 
     this.top = toCssPixel(this.config.nzTop);
+    console.log(this.config, this.top);
     this.cdr.markForCheck();
   }
 }

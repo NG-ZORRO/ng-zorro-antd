@@ -4,7 +4,7 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } from '@angular/core';
 
 import { notificationMotion } from 'ng-zorro-antd/core/animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -104,15 +104,10 @@ import { NzNotificationData } from './typings';
   imports: [NzIconModule, NzOutletModule, NgTemplateOutlet]
 })
 export class NzNotificationComponent extends NzMNComponent implements OnDestroy {
-  @Input() override instance!: Required<NzNotificationData>;
-  @Input() override index!: number;
+  @Input() instance!: Required<NzNotificationData>;
+  @Input() index!: number;
   @Input() placement?: string;
-
-  @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
-
-  constructor(cdr: ChangeDetectorRef) {
-    super(cdr);
-  }
+  @Output() readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
   override ngOnDestroy(): void {
     super.ngOnDestroy();

@@ -111,8 +111,12 @@ import { BaseModalContainerComponent } from './modal-container.directive';
   imports: [NzPipesModule, NzIconModule, NzModalCloseComponent, NzOutletModule, PortalModule, NzButtonModule]
 })
 export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {
-  @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) override modalElementRef!: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkPortalOutlet, { static: true }) set _portalOutlet(portalOutlet: CdkPortalOutlet) {
+    this.portalOutlet = portalOutlet;
+  }
+  @ViewChild('modalElement', { static: true }) set _modalElementRef(elementRef: ElementRef<HTMLDivElement>) {
+    this.modalElementRef = elementRef;
+  }
   @Output() override readonly cancelTriggered = new EventEmitter<void>();
   @Output() override readonly okTriggered = new EventEmitter<void>();
   locale!: NzModalI18nInterface;
