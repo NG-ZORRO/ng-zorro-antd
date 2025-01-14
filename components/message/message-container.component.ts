@@ -66,7 +66,6 @@ export class NzMessageContainerComponent extends NzMNContainerComponent {
     };
 
     this.top = toCssPixel(this.config.nzTop);
-    console.log(this.config, this.top);
     this.cdr.markForCheck();
   }
 }

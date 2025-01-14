@@ -189,7 +189,6 @@ describe('message', () => {
 
     overlayContainerElement = overlayContainer.getContainerElement();
     const messageContainerElement = overlayContainerElement.querySelector('.ant-message') as HTMLElement;
-    console.log(messageContainerElement);
     expect(messageContainerElement.style.top).toBe('24px');
   }));
 
