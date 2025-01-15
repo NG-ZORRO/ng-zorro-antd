@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-`nzPopoverTrigger="click",[nzPopoverOverlayClickable]="fales"` Disable closing popover through mask.
+Set `nzPopoverOverlayClickable` to be `false` to disable closing popover by clicking the mask when `nzPopoverTrigger` is `'click'`.
