@@ -11,4 +11,5 @@ export * from './tree.service';
 export * from './tree-node-switcher.component';
 export * from './tree-node-checkbox.component';
 export * from './tree-node-title.component';
-export { NzTreeNodeOptions, NzFormatEmitEvent, NzFormatBeforeDropEvent, NzTreeNode } from 'ng-zorro-antd/core/tree';
+export type { NzTreeNodeOptions, NzFormatEmitEvent, NzFormatBeforeDropEvent } from 'ng-zorro-antd/core/tree';
+export { NzTreeNode } from 'ng-zorro-antd/core/tree';
