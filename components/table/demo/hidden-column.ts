@@ -13,7 +13,7 @@ interface Person {
 }
 
 @Component({
-  selector: 'nz-demo-table-custom-column',
+  selector: 'nz-demo-table-hidden-column',
   standalone: true,
   imports: [NzCheckboxModule, NzTableModule, FormsModule],
   template: `
@@ -42,7 +42,7 @@ interface Person {
     </ng-template>
   `
 })
-export class NzDemoTableCustomColumnComponent {
+export class NzDemoTableHiddenColumnComponent {
   listOfData: Person[] = [
     {
       key: '1',
@@ -81,7 +81,12 @@ export class NzDemoTableCustomColumnComponent {
         }
       ];
     } else {
-      this.customColumn = [];
+      this.customColumn = [
+        {
+          value: 'age',
+          hidden: false
+        }
+      ];
     }
   }
 }
