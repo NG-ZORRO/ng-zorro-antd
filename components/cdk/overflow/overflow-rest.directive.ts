@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectorRef, Directive, ElementRef } from '@angular/core';
+import { ChangeDetectorRef, Directive, ElementRef, inject } from '@angular/core';
 import { map, startWith, tap } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -15,6 +15,9 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
   }
 })
 export class NzOverflowRestDirective {
+  private nzResizeObserver = inject(NzResizeObserver);
+  private elementRef = inject(ElementRef);
+
   restStyle: { [key: string]: string | number | undefined } | undefined = undefined;
   restWidth$ = this.nzResizeObserver.observe(this.elementRef.nativeElement).pipe(
     map(([item]) => (item.target as HTMLElement).offsetWidth),
@@ -22,11 +25,7 @@ export class NzOverflowRestDirective {
     tap(width => (this.restWidth = width))
   );
   restWidth = 0;
-  constructor(
-    private nzResizeObserver: NzResizeObserver,
-    private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   setRestStyle(display: boolean, order: number): void {
     const mergedHidden = !display;

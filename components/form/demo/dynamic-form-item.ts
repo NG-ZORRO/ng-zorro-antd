@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormRecord, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -85,6 +85,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   ]
 })
 export class NzDemoFormDynamicFormItemComponent implements OnInit {
+  private fb = inject(NonNullableFormBuilder);
   validateForm: FormRecord<FormControl<string>> = this.fb.record({});
   listOfControl: Array<{ id: number; controlInstance: string }> = [];
 
@@ -127,8 +128,6 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
       });
     }
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 
   ngOnInit(): void {
     this.addField();

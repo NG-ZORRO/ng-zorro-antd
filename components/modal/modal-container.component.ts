@@ -84,8 +84,12 @@ import { NzModalTitleComponent } from './modal-title.component';
   ]
 })
 export class NzModalContainerComponent extends BaseModalContainerComponent implements OnInit {
-  @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) override modalElementRef!: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkPortalOutlet, { static: true }) set _portalOutlet(portalOutlet: CdkPortalOutlet) {
+    this.portalOutlet = portalOutlet;
+  }
+  @ViewChild('modalElement', { static: true }) set _modalElementRef(elementRef: ElementRef<HTMLDivElement>) {
+    this.modalElementRef = elementRef;
+  }
 
   ngOnInit(): void {
     this.setupMouseListeners(this.modalElementRef);

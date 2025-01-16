@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -14,7 +14,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <nz-form-item>
         <nz-form-label [nzSpan]="4">name</nz-form-label>
         <nz-form-control [nzSpan]="16">
-          <input nz-input formControlName="userName" />
+          <input nz-input formControlName="username" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -32,12 +32,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   `
 })
 export class NzDemoColorPickerUseComponent {
+  private formBuilder = inject(FormBuilder);
   validateForm = this.formBuilder.group({
-    userName: ['color-picker', [Validators.required]],
+    username: ['color-picker', [Validators.required]],
     colorPicker: ['#1677ff']
   });
-
-  constructor(private formBuilder: FormBuilder) {}
 
   submitForm(): void {
     console.log(this.validateForm.value);

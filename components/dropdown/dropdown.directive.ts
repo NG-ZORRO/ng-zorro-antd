@@ -19,7 +19,8 @@ import {
   Renderer2,
   SimpleChanges,
   ViewContainerRef,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { BehaviorSubject, EMPTY, Subject, combineLatest, fromEvent, merge } from 'rxjs';
 import { auditTime, distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
@@ -48,6 +49,8 @@ const listOfPositions = [
 })
 export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+  public elementRef = inject(ElementRef);
+  private overlay = inject(Overlay);
 
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
@@ -80,8 +83,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
 
   constructor(
     public readonly nzConfigService: NzConfigService,
-    public elementRef: ElementRef,
-    private overlay: Overlay,
     private renderer: Renderer2,
     private viewContainerRef: ViewContainerRef,
     private platform: Platform

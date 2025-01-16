@@ -171,6 +171,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   listOfNzSubMenuComponent: QueryList<NzSubMenuComponent> | null = null;
   @ContentChildren(NzMenuItemComponent, { descendants: true })
   listOfNzMenuItemDirective: QueryList<NzMenuItemComponent> | null = null;
+
+  public nzSubmenuService = inject(NzSubmenuService);
   private level = this.nzSubmenuService.level;
   private destroy$ = new Subject<void>();
   position = 'right';
@@ -226,7 +228,6 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   constructor(
     public nzMenuService: MenuService,
     private cdr: ChangeDetectorRef,
-    public nzSubmenuService: NzSubmenuService,
     private platform: Platform
   ) {}
 

@@ -6,7 +6,6 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { Injectable, Injector, TemplateRef } from '@angular/core';
 
-import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { NzMNService } from 'ng-zorro-antd/message';
 
 import { NzNotificationContainerComponent } from './notification-container.component';
@@ -17,12 +16,11 @@ let notificationId = 0;
 @Injectable({
   providedIn: 'root'
 })
-export class NzNotificationService extends NzMNService {
-  protected override container!: NzNotificationContainerComponent;
+export class NzNotificationService extends NzMNService<NzNotificationContainerComponent> {
   protected componentPrefix = 'notification-';
 
-  constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {
-    super(nzSingletonService, overlay, injector);
+  constructor(overlay: Overlay, injector: Injector) {
+    super(overlay, injector);
   }
 
   success(

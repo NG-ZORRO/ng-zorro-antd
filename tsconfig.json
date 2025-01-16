@@ -29,8 +29,7 @@
     "skipLibCheck": true,
     "types": [
       "jasmine"
-    ],
-    "useDefineForClassFields": false
+    ]
   },
   "angularCompilerOptions": {
     "strictStandalone": true,

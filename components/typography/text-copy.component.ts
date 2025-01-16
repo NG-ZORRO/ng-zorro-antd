@@ -10,6 +10,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -55,7 +56,7 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
   copied = false;
   copyId?: ReturnType<typeof setTimeout>;
   locale!: NzTextI18nInterface;
-  nativeElement = this.host.nativeElement;
+  nativeElement = inject(ElementRef).nativeElement;
   copyTooltip: NzTSType | null = null;
   copedTooltip: NzTSType | null = null;
   copyIcon: NzTSType = 'copy';
@@ -69,7 +70,6 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
   @Output() readonly textCopy = new EventEmitter<string>();
 
   constructor(
-    private host: ElementRef,
     private cdr: ChangeDetectorRef,
     private clipboard: Clipboard,
     private i18n: NzI18nService

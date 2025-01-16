@@ -70,13 +70,13 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
   @Input() nzItemSize = DEFAULT_SIZE;
   @Input() nzMinBufferPx = DEFAULT_SIZE * 5;
   @Input() nzMaxBufferPx = DEFAULT_SIZE * 10;
-  @Input() override trackBy!: TrackByFunction<T>;
+  @Input() override trackBy: TrackByFunction<T> = null!;
   nodes: Array<NzTreeVirtualNodeData<T>> = [];
   innerTrackBy: TrackByFunction<NzTreeVirtualNodeData<T>> = i => i;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.trackBy) {
-      if (typeof changes.trackBy.currentValue === 'function') {
+  ngOnChanges({ trackBy }: SimpleChanges): void {
+    if (trackBy) {
+      if (typeof trackBy.currentValue === 'function') {
         this.innerTrackBy = (index: number, n) => this.trackBy(index, n.data);
       } else {
         this.innerTrackBy = i => i;
@@ -106,7 +106,7 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
    * TODO: refactor tree-view, remove #treeControl and adopt #levelAccessor and #childrenAccessor
    * */
   override _getLevel(nodeData: T): number | undefined {
-    if (this.treeControl.getLevel) {
+    if (this.treeControl?.getLevel) {
       return this.treeControl.getLevel(nodeData);
     }
     return;
@@ -115,7 +115,7 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
   private createNode(nodeData: T, index: number): NzTreeVirtualNodeData<T> {
     const node = this._getNodeDef(nodeData, index);
     const context = new CdkTreeNodeOutletContext<T>(nodeData);
-    if (this.treeControl.getLevel) {
+    if (this.treeControl?.getLevel) {
       context.level = this.treeControl.getLevel(nodeData);
     } else {
       context.level = 0;

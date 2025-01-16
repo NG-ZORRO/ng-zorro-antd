@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   NonNullableFormBuilder,
@@ -146,6 +146,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   ]
 })
 export class NzDemoFormRegisterComponent implements OnInit, OnDestroy {
+  private fb = inject(NonNullableFormBuilder);
   private destroy$ = new Subject<void>();
   validateForm = this.fb.group({
     email: this.fb.control('', [Validators.email, Validators.required]),
@@ -162,8 +163,6 @@ export class NzDemoFormRegisterComponent implements OnInit, OnDestroy {
     type: 'info-circle',
     theme: 'twotone'
   };
-
-  constructor(private fb: NonNullableFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm.controls.password.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {

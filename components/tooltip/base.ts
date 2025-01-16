@@ -42,21 +42,21 @@ export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
 @Directive()
 export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges, OnDestroy {
-  arrowPointAtCenter?: boolean;
   config?: Required<PopoverConfig | PopConfirmConfig>;
-  directiveTitle?: NzTSType | null;
-  directiveContent?: NzTSType | null;
-  title?: NzTSType | null;
-  content?: NzTSType | null;
-  trigger?: NzTooltipTrigger;
-  placement?: string | string[];
-  origin?: ElementRef<HTMLElement>;
-  visible?: boolean;
-  mouseEnterDelay?: number;
-  mouseLeaveDelay?: number;
-  overlayClassName?: string;
-  overlayStyle?: NgStyleInterface;
-  overlayClickable?: boolean;
+  abstract arrowPointAtCenter?: boolean;
+  abstract directiveTitle?: NzTSType | null;
+  abstract directiveContent?: NzTSType | null;
+  abstract title?: NzTSType | null;
+  abstract content?: NzTSType | null;
+  abstract trigger?: NzTooltipTrigger;
+  abstract placement?: string | string[];
+  abstract origin?: ElementRef<HTMLElement>;
+  abstract visible?: boolean;
+  abstract mouseEnterDelay?: number;
+  abstract mouseLeaveDelay?: number;
+  abstract overlayClassName?: string;
+  abstract overlayStyle?: NgStyleInterface;
+  abstract overlayClickable?: boolean;
   cdkConnectedOverlayPush?: boolean;
   visibleChange = new EventEmitter<boolean>();
 

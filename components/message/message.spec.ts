@@ -190,8 +190,6 @@ describe('message', () => {
     overlayContainerElement = overlayContainer.getContainerElement();
     const messageContainerElement = overlayContainerElement.querySelector('.ant-message') as HTMLElement;
     expect(messageContainerElement.style.top).toBe('24px');
-
-    tick(50000);
   }));
 
   describe('RTL', () => {

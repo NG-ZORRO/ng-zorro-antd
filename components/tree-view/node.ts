@@ -12,6 +12,7 @@ import {
   ElementRef,
   EmbeddedViewRef,
   forwardRef,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -69,18 +70,19 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
   selected = false;
   isLeaf = false;
 
+  private renderer = inject(Renderer2);
+  private cdr = inject(ChangeDetectorRef);
+
   constructor(
     protected elementRef: ElementRef<HTMLElement>,
-    protected tree: NzTreeView<T>,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef
+    protected tree: NzTreeView<T>
   ) {
     super(elementRef, tree);
     this._elementRef.nativeElement.classList.add('ant-tree-treenode');
   }
 
   override ngOnInit(): void {
-    this.isLeaf = !this.tree.treeControl.isExpandable(this.data);
+    this.isLeaf = !this.tree.treeControl?.isExpandable(this.data);
   }
 
   disable(): void {
@@ -127,10 +129,15 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
 
 @Directive({
   selector: '[nzTreeNodeDef]',
-  providers: [{ provide: CdkTreeNodeDef, useExisting: forwardRef(() => NzTreeNodeDefDirective) }]
+  providers: [
+    {
+      provide: CdkTreeNodeDef,
+      useExisting: forwardRef(() => NzTreeNodeDefDirective)
+    }
+  ]
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
-  @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
+  @Input('nzTreeNodeDefWhen') override when: (index: number, nodeData: T) => boolean = null!;
 }
 
 @Directive({

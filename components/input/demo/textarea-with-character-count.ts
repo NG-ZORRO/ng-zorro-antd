@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -20,7 +20,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   `
 })
 export class NzDemoInputTextareaWithCharacterCountComponent {
+  private fb = inject(FormBuilder);
   form = this.fb.group({ comment: this.fb.control('', [Validators.maxLength(100)]) });
-
-  constructor(private fb: FormBuilder) {}
 }

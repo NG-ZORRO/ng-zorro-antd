@@ -3,33 +3,31 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
-
-import { CandyDate } from 'ng-zorro-antd/core/time';
-import { valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
+import { CandyDate } from 'ng-zorro-antd/core/time';
+import { valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 import { transCompatFormat } from './util';
 
 @Component({
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    // eslint-disable-next-line @angular-eslint/component-selector
-    selector: 'date-table',
-    exportAs: 'dateTable',
-    templateUrl: './abstract-table.html',
-    imports: [NzStringTemplateOutletDirective]
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'date-table',
+  exportAs: 'dateTable',
+  templateUrl: './abstract-table.html',
+  imports: [NzStringTemplateOutletDirective]
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
-  @Input() override locale!: NzCalendarI18nInterface;
   @Input() format?: string;
 
-  constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {
-    super();
-  }
+  private i18n = inject(NzI18nService);
+  private dateHelper = inject(DateHelperService);
 
   private changeValueFromInside(value: CandyDate): void {
     // Only change date not change time
@@ -53,8 +51,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         content: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
         isSelected: false,
         isDisabled: false,
-        onClick(): void { },
-        onMouseEnter(): void { }
+        onClick(): void {},
+        onMouseEnter(): void {}
       });
     }
     return weekDays;
@@ -78,7 +76,9 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
       for (let day = 0; day < 7; day++) {
         const date = weekStart.addDays(day);
-        const dateFormat = transCompatFormat(this.format ?? this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD'));
+        const dateFormat = transCompatFormat(
+          this.format ?? this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD')
+        );
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
         const label = this.dateHelper.format(date.nativeDate, 'dd');
         const cell: DateCell = {
@@ -93,7 +93,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
           fullCellRender: valueFunctionProp(this.fullCellRender!, date),
           content: `${date.getDate()}`,
           onClick: () => this.changeValueFromInside(date),
-          onMouseEnter: () => this.cellHover.emit(date),
+          onMouseEnter: () => this.cellHover.emit(date)
         };
 
         this.addCellProperty(cell, date);

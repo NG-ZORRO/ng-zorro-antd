@@ -4,11 +4,11 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NotificationConfig } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 
@@ -120,12 +120,10 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   `,
   imports: [NzNotificationComponent]
 })
-export class NzNotificationContainerComponent extends NzMNContainerComponent {
-  dir: Direction = 'ltr';
+export class NzNotificationContainerComponent extends NzMNContainerComponent<NotificationConfig, NzNotificationData> {
+  dir: Direction = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME)?.nzDirection || 'ltr';
   bottom?: string | null;
   top?: string | null;
-  override config!: Required<NotificationConfig>; // initialized by parent class constructor
-  override instances: Array<Required<NzNotificationData>> = [];
   topLeftInstances: Array<Required<NzNotificationData>> = [];
   topRightInstances: Array<Required<NzNotificationData>> = [];
   bottomLeftInstances: Array<Required<NzNotificationData>> = [];
@@ -133,30 +131,29 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
   topInstances: Array<Required<NzNotificationData>> = [];
   bottomInstances: Array<Required<NzNotificationData>> = [];
 
-  constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {
-    super(cdr, nzConfigService);
-    const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
-    this.dir = config?.nzDirection || 'ltr';
+  constructor() {
+    super();
+    this.updateConfig();
   }
 
   override create(notification: NzNotificationData): Required<NzNotificationData> {
-    const noti = this.onCreate(notification);
-    const key = noti.options.nzKey;
+    const instance = this.onCreate(notification);
+    const key = instance.options.nzKey;
     const notificationWithSameKey = this.instances.find(
       msg => msg.options.nzKey === (notification.options as Required<NzNotificationDataOptions>).nzKey
     );
     if (key && notificationWithSameKey) {
-      this.replaceNotification(notificationWithSameKey, noti);
+      this.replaceNotification(notificationWithSameKey, instance);
     } else {
-      if (this.instances.length >= this.config.nzMaxStack) {
+      if (this.instances.length >= this.config!.nzMaxStack) {
         this.instances = this.instances.slice(1);
       }
-      this.instances = [...this.instances, noti];
+      this.instances = [...this.instances, instance];
     }
 
     this.readyInstances();
 
-    return noti;
+    return instance;
   }
 
   protected override onCreate(instance: NzNotificationData): Required<NzNotificationData> {
@@ -172,11 +169,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateConfig();
-        const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
-        if (config) {
-          const { nzDirection } = config;
-          this.dir = nzDirection || this.dir;
-        }
+        this.dir = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME)?.nzDirection || this.dir;
       });
   }
 
@@ -246,7 +239,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
   }
 
   protected override mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
-    const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config;
+    const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config!;
     return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement, ...options };
   }
 }

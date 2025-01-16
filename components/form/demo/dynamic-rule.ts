@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -41,14 +41,13 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   `
 })
 export class NzDemoFormDynamicRuleComponent implements OnInit, OnDestroy {
+  private fb = inject(NonNullableFormBuilder);
   private destroy$ = new Subject<void>();
   validateForm = this.fb.group({
     name: this.fb.control('', [Validators.required]),
     nickname: this.fb.control(''),
     required: this.fb.control(false)
   });
-
-  constructor(private fb: NonNullableFormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm.controls.required.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
