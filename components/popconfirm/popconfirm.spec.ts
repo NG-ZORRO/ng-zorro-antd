@@ -241,6 +241,29 @@ describe('NzPopconfirm', () => {
     fixture.detectChanges();
     expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
   }));
+
+  it('should change overlayClass when the nzPopconfirmOverlayClassName is changed', fakeAsync(() => {
+    const triggerElement = component.stringTemplate.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'click');
+    waitingForTooltipToggling();
+
+    component.class = 'testClass2';
+    fixture.detectChanges();
+
+    expect(overlayContainerElement.querySelector<HTMLElement>('.testClass')).toBeNull();
+    expect(overlayContainerElement.querySelector<HTMLElement>('.testClass2')).not.toBeNull();
+  }));
+
+  it('should nzPopconfirmOverlayClassName support classes listed in the string (space delimited)', fakeAsync(() => {
+    const triggerElement = component.stringTemplate.nativeElement;
+    component.class = 'testClass1 testClass2';
+
+    dispatchMouseEvent(triggerElement, 'click');
+    waitingForTooltipToggling();
+
+    expect(overlayContainerElement.querySelector('.testClass1.testClass2')).not.toBeNull();
+  }));
 });
 
 @Component({
@@ -259,6 +282,7 @@ describe('NzPopconfirm', () => {
       [nzBeforeConfirm]="beforeConfirm"
       [nzPopconfirmShowArrow]="nzPopconfirmShowArrow"
       [nzPopconfirmBackdrop]="nzPopconfirmBackdrop"
+      [nzPopconfirmOverlayClassName]="class"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
     >
@@ -297,4 +321,5 @@ export class NzPopconfirmTestNewComponent {
   @ViewChild('iconTemplate', { static: false }) iconTemplate!: ElementRef;
 
   visible = false;
+  class = 'testClass';
 }

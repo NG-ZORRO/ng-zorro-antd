@@ -105,7 +105,7 @@ describe('NzPopover', () => {
     expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
   }));
 
-  it('nzPopoverOverlayClickable: false is to prohibit hiding', fakeAsync(() => {
+  it('should prohibit hiding popover when nzPopoverOverlayClickable is false', fakeAsync(() => {
     const triggerElement = component.hideTemplate.nativeElement;
 
     dispatchMouseEvent(triggerElement, 'click');
@@ -116,12 +116,42 @@ describe('NzPopover', () => {
     waitingForTooltipToggling();
     expect(overlayContainerElement.textContent).toContain('content-string');
   }));
+
+  it('should change overlayClass when the nzPopoverOverlayClassName is changed', fakeAsync(() => {
+    const triggerElement = component.stringPopover.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'mouseenter');
+    waitingForTooltipToggling();
+
+    component.class = 'testClass2';
+    fixture.detectChanges();
+
+    expect(overlayContainerElement.querySelector<HTMLElement>('.testClass')).toBeNull();
+    expect(overlayContainerElement.querySelector<HTMLElement>('.testClass2')).not.toBeNull();
+  }));
+
+  it('should nzPopoverOverlayClassName support classes listed in the string (space delimited)', fakeAsync(() => {
+    const triggerElement = component.stringPopover.nativeElement;
+    component.class = 'testClass1 testClass2';
+
+    dispatchMouseEvent(triggerElement, 'mouseenter');
+    waitingForTooltipToggling();
+
+    expect(overlayContainerElement.querySelector('.testClass1.testClass2')).not.toBeNull();
+  }));
 });
 
 @Component({
   imports: [NzPopoverModule],
   template: `
-    <a #stringPopover nz-popover nzPopoverTitle="title-string" nzPopoverContent="content-string">Show</a>
+    <a
+      #stringPopover
+      nz-popover
+      nzPopoverTitle="title-string"
+      nzPopoverContent="content-string"
+      [nzPopoverOverlayClassName]="class"
+      >Show</a
+    >
 
     <a #templatePopover nz-popover [nzPopoverTitle]="templateTitle" [nzPopoverContent]="templateContent">Show</a>
 
@@ -172,4 +202,5 @@ export class NzPopoverTestComponent {
 
   content = 'content';
   visible = false;
+  class = 'testClass';
 }
