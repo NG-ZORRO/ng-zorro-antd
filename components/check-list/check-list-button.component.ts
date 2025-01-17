@@ -18,17 +18,15 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     @if (!!triggerRender) {
       <ng-container *nzStringTemplateOutlet="triggerRender">{{ triggerRender }}</ng-container>
     } @else {
-      <span nz-icon nzType="check-circle" nzTheme="outline" class="ant-checklist-icon"></span>
-      <div class="ant-checklist-description">{{ locale.checkList }}</div>
+      <span nz-icon nzType="check-circle" nzTheme="outline" class="ant-check-list-icon"></span>
+      <div class="ant-check-list-description">{{ locale.checkList }}</div>
     }
   `,
   host: {
-    class: 'ant-btn ant-btn-primary ant-checklist-button'
+    class: 'ant-btn ant-btn-primary ant-check-list-button'
   }
 })
 export class NzCheckListButtonComponent {
   @Input() triggerRender: TemplateRef<void> | string | null = '';
   @Input() locale!: NzCheckListI18nInterface;
-
-  constructor() {}
 }

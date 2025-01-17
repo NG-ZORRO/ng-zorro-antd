@@ -17,13 +17,13 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzItemProps } from 'ng-zorro-antd/check-list/typings';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzCheckListI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 import { NzCheckListButtonComponent } from './check-list-button.component';
 import { NzCheckListContentComponent } from './check-list-content.component';
+import { NzItemProps } from './typings';
 
 @Component({
   selector: 'nz-check-list',
@@ -57,8 +57,8 @@ import { NzCheckListContentComponent } from './check-list-content.component';
     </ng-template>
   `,
   host: {
-    class: 'ant-checklist',
-    '[class.ant-checklist-hide]': `!nzShow`
+    class: 'ant-check-list',
+    '[class.ant-check-list-hide]': `!nzShow`
   }
 })
 export class NzCheckListComponent implements OnInit {

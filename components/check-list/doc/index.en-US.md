@@ -1,17 +1,17 @@
 ---
 category: Components
-type: Data Display
+type: Featured Components
 title: CheckList
 cols: 1
 tag: 19.1.0
 cover: https://img.alicdn.com/imgextra/i2/O1CN01E9BUpE1TCyZry8ETC_!!6000000002347-2-tps-386-453.png
 ---
 
-用于在项目中梳理任务流程。
+Used to organize the flow of tasks in a project.
 
-## 何时使用
+## When To Use
 
-- 如果当前页面业务逻辑过于复杂，且带有较为强制的顺序流控制，那么你可以采用这个组件来帮你简化流程。
+- If the current page business logic is too complex, and with a more mandatory sequential flow control, then you can use this component to help you simplify the process.
 
 ```ts
 import { NzCheckListModule } from 'ng-zorro-antd/check-list';
@@ -19,19 +19,19 @@ import { NzCheckListModule } from 'ng-zorro-antd/check-list';
 
 ## API
 
-### nz-check-list:standalone
+### nz-check-list
 
-| Property            | Description                                                                  | Type                    | Default | Global Config |
-| ------------------- | ---------------------------------------------------------------------------- | ----------------------- | ------- | ------------- |
-| `[nzShow]`          | show check list                                                              | `boolean`               | `true`  | -             |
-| `[nzItems]`         | check list elements                                                          | `NzItemProps`           | `[]`    | -             |
-| `[nzVisible]`       | show/hide check list                                                         | `boolean`               | `false` | -             |
-| `[nzIndex]`         | Current location                                                             | `number`                | `1`     | -             |
-| `[nzProgress]`      | show/hide Progress Bar                                                       | `boolean`               | `true`  | -             |
-| `[nzTriggerRender]` | Rendering template for list floating button                                  | `TemplateRef<void>`     | -       | -             |
-| `[nzTitle]`         | Rendering template for the inventory panel title                             | `TemplateRef<void>`     | -       | -             |
-| `[nzFooter]`        | Rendering template at the bottom of the inventory panel                      | `TemplateRef<void>`     | -       | -             |
-| `(nzHideCallback)`  | Callback for hiding the list, return value: value that is no longer operated | `EventEmitter<boolean>` | `false` | -             |
+| Property            | Description                                                                  | Type                             | Default | Global Config |
+| ------------------- | ---------------------------------------------------------------------------- |----------------------------------| ------- | ------------- |
+| `[nzShow]`          | show check list                                                              | `boolean`                        | `true`  | -             |
+| `[nzItems]`         | check list elements                                                          | `NzItemProps`                    | `[]`    | -             |
+| `[nzVisible]`       | show/hide check list                                                         | `boolean`                        | `false` | -             |
+| `[nzIndex]`         | Current location                                                             | `number`                         | `1`     | -             |
+| `[nzProgress]`      | show/hide Progress Bar                                                       | `boolean`                        | `true`  | -             |
+| `[nzTriggerRender]` | Rendering template for list floating button                                  | `TemplateRef<void> \| string`    | -       | -             |
+| `[nzTitle]`         | Rendering template for the inventory panel title                             | `TemplateRef<void> \| string`    | -       | -             |
+| `[nzFooter]`        | Rendering template at the bottom of the inventory panel                      | `TemplateRef<void> \| string`    | -       | -             |
+| `(nzHideCallback)`  | Callback for hiding the list, return value: value that is no longer operated | `EventEmitter<boolean>`          | `false` | -             |
 
 ### NzItemProps
 

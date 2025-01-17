@@ -1,6 +1,6 @@
 ---
 category: Components
-type: 数据展示
+type: 特色组件
 title: CheckList
 subtitle: 任务清单
 cols: 1
@@ -20,19 +20,19 @@ import { NzCheckListModule } from 'ng-zorro-antd/check-list';
 
 ## API
 
-### nz-check-list:standalone
+### nz-check-list
 
-| 参数                | 说明                                 | 类型                    | 默认值  | 全局配置 |
-| ------------------- | ------------------------------------ | ----------------------- | ------- | -------- |
-| `[nzShow]`          | 显示任务清单                         | `boolean`               | `true`  | -        |
-| `[nzItems]`         | 任务清单元素                         | `NzItemProps`           | `[]`    | -        |
-| `[nzVisible]`       | 显示隐藏任务面板                     | `boolean`               | `false` | -        |
-| `[nzIndex]`         | 当前所属位置                         | `number`                | `1`     | -        |
-| `[nzProgress]`      | 显示隐藏进度条                       | `boolean`               | `true`  | -        |
-| `[nzTriggerRender]` | 清单悬浮按钮的渲染模板               | `TemplateRef<void>`     | -       | -        |
-| `[nzTitle]`         | 清单面板标题的渲染模板               | `TemplateRef<void>`     | -       | -        |
-| `[nzFooter]`        | 清单面板底部的渲染模板               | `TemplateRef<void>`     | -       | -        |
-| `(nzHideCallback)`  | 隐藏清单的回调，返回值：不再操作的值 | `EventEmitter<boolean>` | `false` | -        |
+| 参数                | 说明                                 | 类型                              | 默认值  | 全局配置 |
+| ------------------- | ------------------------------------ |---------------------------------| ------- | -------- |
+| `[nzShow]`          | 显示任务清单                         | `boolean`                       | `true`  | -        |
+| `[nzItems]`         | 任务清单元素                         | `NzItemProps`                   | `[]`    | -        |
+| `[nzVisible]`       | 显示隐藏任务面板                     | `boolean`                       | `false` | -        |
+| `[nzIndex]`         | 当前所属位置                         | `number`                        | `1`     | -        |
+| `[nzProgress]`      | 显示隐藏进度条                       | `boolean`                       | `true`  | -        |
+| `[nzTriggerRender]` | 清单悬浮按钮的渲染模板               | `TemplateRef<void> \| string`   | -       | -        |
+| `[nzTitle]`         | 清单面板标题的渲染模板               | `TemplateRef<void> \| string`   | -       | -        |
+| `[nzFooter]`        | 清单面板底部的渲染模板               | `TemplateRef<void> \| string`   | -       | -        |
+| `(nzHideCallback)`  | 隐藏清单的回调，返回值：不再操作的值 | `EventEmitter<boolean>`         | `false` | -        |
 
 ### NzItemProps
 

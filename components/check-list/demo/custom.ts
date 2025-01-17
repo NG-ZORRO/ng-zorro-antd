@@ -23,43 +23,43 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
     <div style="position: relative;">
       <form nz-form nzLayout="vertical" [formGroup]="form">
         <nz-form-item>
-          <nz-form-label>悬浮按钮</nz-form-label>
+          <nz-form-label>nzShow</nz-form-label>
           <nz-form-control>
-            <label nz-checkbox formControlName="nzShow">Checkbox</label>
+            <label nz-checkbox formControlName="nzShow"></label>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>任务面板</nz-form-label>
+          <nz-form-label>nzVisible</nz-form-label>
           <nz-form-control>
-            <label nz-checkbox formControlName="nzVisible">Checkbox</label>
+            <label nz-checkbox formControlName="nzVisible"></label>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>进度条</nz-form-label>
+          <nz-form-label>nzProgress</nz-form-label>
           <nz-form-control>
-            <label nz-checkbox formControlName="nzProgress">Checkbox</label>
+            <label nz-checkbox formControlName="nzProgress"></label>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>步骤控制</nz-form-label>
+          <nz-form-label>nzIndex</nz-form-label>
           <nz-form-control>
             <nz-segmented [nzOptions]="options" (nzValueChange)="handleIndexChange($event)"></nz-segmented>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>悬浮按钮的渲染模</nz-form-label>
+          <nz-form-label>nzTriggerRender</nz-form-label>
           <nz-form-control>
             <input nz-input formControlName="nzTriggerRender" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>面板标题</nz-form-label>
+          <nz-form-label>nzTitle</nz-form-label>
           <nz-form-control>
             <input nz-input formControlName="nzTitle" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>面板底部</nz-form-label>
+          <nz-form-label>nzFooter</nz-form-label>
           <nz-form-control>
             <input nz-input formControlName="nzFooter" />
           </nz-form-control>
