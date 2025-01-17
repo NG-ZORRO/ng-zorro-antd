@@ -133,7 +133,7 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
     const isColorPreset = this.nzColor && isPresetColor(this.nzColor);
 
     this._classMap = {
-      [this.nzOverlayClassName]: true,
+      ...this.transformClassListToMap(this.nzOverlayClassName),
       [`${this._prefix}-placement-${this.preferredPlacement}`]: true,
       [`${this._prefix}-${this.nzColor}`]: isColorPreset
     };

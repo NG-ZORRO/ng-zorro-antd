@@ -494,9 +494,19 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   protected updateStyles(): void {
     this._classMap = {
-      [this.nzOverlayClassName]: true,
+      ...this.transformClassListToMap(this.nzOverlayClassName),
       [`${this._prefix}-placement-${this.preferredPlacement}`]: true
     };
+  }
+
+  protected transformClassListToMap(klass: string): Record<string, boolean> {
+    const result: Record<string, boolean> = {};
+    /**
+     * @see https://github.com/angular/angular/blob/f6e97763cfab9fa2bea6e6b1303b64f1b499c3ef/packages/common/src/directives/ng_class.ts#L92
+     */
+    const classes = klass !== null ? klass.split(/\s+/) : [];
+    classes.forEach(className => (result[className] = true));
+    return result;
   }
 
   /**
