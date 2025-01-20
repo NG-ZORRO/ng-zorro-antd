@@ -341,9 +341,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   setDisabledState(disabled: boolean): void {
-    if (!this.isDisabledFirstChange) {
-      this.finalDisabled.set(disabled);
-    }
+    this.finalDisabled.set((this.isDisabledFirstChange && this.nzDisabled()) || disabled);
     this.isDisabledFirstChange = false;
   }
 
