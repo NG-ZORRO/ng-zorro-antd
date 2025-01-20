@@ -53,7 +53,7 @@ async function serveSite(): Promise<void> {
   });
 }
 
-type SiteBuildConfiguration = 'production' | 'pre-production' | 'preview';
+type SiteBuildConfiguration = 'production' | 'preview';
 
 /** Run `ng build ng-zorro-antd-doc` */
 async function buildSite(configuration: SiteBuildConfiguration = 'production'): Promise<void> {
