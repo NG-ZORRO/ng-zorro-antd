@@ -53,6 +53,15 @@ describe('checkbox group', () => {
     }
   });
 
+  it('should be set disabled by ng control', async () => {
+    component.controlDisabled = true;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    for (const element of getOptionElements()) {
+      expect(element.classList).toContain('ant-checkbox-wrapper-disabled');
+    }
+  });
+
   it('should be change value', async () => {
     component.value = ['A'];
     fixture.detectChanges();
@@ -150,7 +159,15 @@ describe('checkbox group with custom layout', () => {
 
 @Component({
   imports: [NzCheckboxModule, FormsModule],
-  template: ` <nz-checkbox-group [nzOptions]="options" [nzName]="name" [nzDisabled]="disabled" [(ngModel)]="value" /> `
+  template: `
+    <nz-checkbox-group
+      [nzOptions]="options"
+      [nzName]="name"
+      [nzDisabled]="disabled"
+      [(ngModel)]="value"
+      [disabled]="controlDisabled"
+    />
+  `
 })
 class CheckboxGroupTestComponent {
   options: string[] | number[] | NzCheckboxOption[] = [
@@ -160,6 +177,7 @@ class CheckboxGroupTestComponent {
   ];
   value: string[] = [];
   disabled = false;
+  controlDisabled = false;
   name: string | null = null;
 }
 
