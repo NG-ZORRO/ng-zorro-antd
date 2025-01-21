@@ -444,7 +444,6 @@ export class NzInputNumberLegacyComponent implements ControlValueAccessor, After
       .monitor(this.elementRef, true)
       .pipe(takeUntil(this.destroy$))
       .subscribe(focusOrigin => {
-        console.log(focusOrigin);
         if (!focusOrigin) {
           this.isFocused = false;
           this.updateDisplayValue(this.value!);

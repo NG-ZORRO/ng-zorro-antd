@@ -5,7 +5,7 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
-import { DOWN_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   afterNextRender,
@@ -34,7 +34,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NzFormItemFeedbackIconComponent, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType, NzStatus, NzValidateStatus, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, isNil } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, isNil, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {
   NzInputAddonAfterDirective,
@@ -147,13 +147,13 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
           [attr.aria-valuemin]="nzMin()"
           [attr.aria-valuemax]="nzMax()"
           [attr.id]="nzId()"
-          [value]="displayValue()"
           [attr.step]="nzStep()"
+          [attr.value]="displayValue()"
+          [value]="displayValue()"
           [placeholder]="nzPlaceHolder() ?? ''"
           [disabled]="finalDisabled()"
           [readOnly]="nzReadOnly()"
-          (input)="displayValue.set(input.value)"
-          (change)="onInputChange($event)"
+          (input)="onInput(input.value)"
         />
       </div>
     </ng-template>
@@ -183,21 +183,8 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzMin = input(Number.MIN_SAFE_INTEGER, { transform: numberAttribute });
   readonly nzMax = input(Number.MAX_SAFE_INTEGER, { transform: numberAttribute });
   readonly nzPrecision = input<number | null>(null);
-  readonly nzParser = input<(value: string) => number>(value => {
-    const parsedValue = defaultParser(value);
-    const precision = this.nzPrecision();
-    if (!isNil(precision)) {
-      return +parsedValue.toFixed(precision);
-    }
-    return parsedValue;
-  });
-  readonly nzFormatter = input<(value: number) => string>(value => {
-    const precision = this.nzPrecision();
-    if (!isNil(precision)) {
-      return value.toFixed(precision);
-    }
-    return value.toString();
-  });
+  readonly nzParser = input<((value: string) => number) | null>();
+  readonly nzFormatter = input<((value: number) => string) | null>();
   readonly nzDisabled = input(false, { transform: booleanAttribute });
   readonly nzReadOnly = input(false, { transform: booleanAttribute });
   readonly nzAutoFocus = input(false, { transform: booleanAttribute });
@@ -219,6 +206,13 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   private directionality = inject(Directionality);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private autoStepTimer: ReturnType<typeof setTimeout> | null = null;
+  private defaultFormater = (value: number): string => {
+    const precision = this.nzPrecision();
+    if (isNotNil(precision)) {
+      return value.toFixed(precision);
+    }
+    return value.toString();
+  };
 
   protected value = signal<number | null>(null);
   protected displayValue = signal('');
@@ -307,6 +301,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
           this.focused.set(!!origin);
 
           if (!origin) {
+            this.fixValue();
             this.onTouched();
           }
         });
@@ -329,7 +324,10 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(value: number | null): void {
-    untracked(() => this.setValue(value));
+    untracked(() => {
+      this.value.set(value);
+      this.setValue(value);
+    });
   }
 
   registerOnChange(fn: OnChangeType): void {
@@ -364,10 +362,17 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     if (!up) {
       step = -step;
     }
+
     const places = getDecimalPlaces(step);
-    const multiple = Math.pow(10, places);
-    // Convert floating point numbers to integers to avoid floating point math errors
-    this.setValue((Math.round((this.value() || 0) * multiple) + Math.round(step * multiple)) / multiple, true);
+    const multiple = 10 ** places;
+    const nextValue = getRangeValue(
+      // Convert floating point numbers to integers to avoid floating point math errors
+      (Math.round((this.value() || 0) * multiple) + Math.round(step * multiple)) / multiple,
+      this.nzMin(),
+      this.nzMax(),
+      this.nzPrecision()
+    );
+    this.setValue(nextValue);
 
     this.nzOnStep.emit({
       type: up ? 'up' : 'down',
@@ -378,27 +383,78 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     this.focus();
   }
 
-  private setValue(value: number | string | null, userTyping?: boolean): void {
-    let parsedValue: number | null = null;
+  private setValue(value: number | null): void {
+    const formatter = this.nzFormatter() ?? this.defaultFormater;
+    const precision = this.nzPrecision();
 
-    if (!isNil(value)) {
-      parsedValue = this.nzParser()(value.toString());
+    if (isNotNil(precision)) {
+      value &&= +value.toFixed(precision);
+    }
 
-      // If the user is typing, we need to make sure the value is in the range.
-      // Instead, we allow values to be set out of range programmatically,
-      // and display out-of-range values as errors.
-      if (userTyping) {
-        if (Number.isNaN(parsedValue)) {
-          parsedValue = null;
-        } else {
-          parsedValue = getRangeValueWithPrecision(parsedValue, this.nzMin(), this.nzMax(), this.nzPrecision());
-        }
+    const formatedValue = value === null ? '' : formatter(value);
+    this.displayValue.set(formatedValue);
+    this.updateValue(value);
+  }
+
+  private setValueByTyping(value: string): void {
+    if (value === '') {
+      this.displayValue.set('');
+      this.updateValue(null);
+      return;
+    }
+
+    const parser = this.nzParser() ?? defaultParser;
+    const parsedValue = parser(value);
+
+    if (isNotCompleteNumber(value) || Number.isNaN(parsedValue)) {
+      this.displayValue.set(value);
+      return;
+    }
+
+    const formattedValue = this.nzFormatter()?.(parsedValue) ?? parsedValue.toString();
+    this.displayValue.set(formattedValue);
+
+    if (!isInRange(parsedValue, this.nzMin(), this.nzMax())) {
+      return;
+    }
+
+    this.updateValue(parsedValue);
+  }
+
+  private updateValue(value: number | null): void {
+    if (this.value() !== value) {
+      this.value.set(value);
+      this.onChange(value);
+    }
+  }
+
+  private fixValue(): void {
+    const displayValue = this.displayValue();
+
+    if (displayValue === '') {
+      return;
+    }
+
+    const parser = this.nzParser() ?? defaultParser;
+    let fixedValue: number | null = parser(displayValue);
+
+    // If parsing fails, revert to the previous value
+    if (Number.isNaN(fixedValue)) {
+      fixedValue = this.value();
+    } else {
+      const precision = this.nzPrecision();
+      // fix precision
+      if (isNotNil(precision) && getDecimalPlaces(fixedValue) !== precision) {
+        fixedValue = +fixedValue.toFixed(precision);
+      }
+
+      // fix range
+      if (!isInRange(fixedValue, this.nzMin(), this.nzMax())) {
+        fixedValue = getRangeValue(fixedValue, this.nzMin(), this.nzMax(), precision);
       }
     }
 
-    this.value.set(parsedValue);
-    this.displayValue.set(parsedValue === null ? '' : this.nzFormatter()(parsedValue));
-    this.onChange(parsedValue);
+    this.setValue(fixedValue);
   }
 
   protected stopAutoStep(): void {
@@ -434,12 +490,14 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
         event.preventDefault();
         this.nzKeyboard() && this.step(event, false);
         break;
+      case ENTER:
+        this.fixValue();
+        break;
     }
   }
 
-  protected onInputChange(value: Event): void {
-    const target = value.target as HTMLInputElement;
-    this.setValue(target.value, true);
+  protected onInput(value: string): void {
+    this.setValueByTyping(value);
   }
 }
 
@@ -455,35 +513,29 @@ const STEP_DELAY = 600;
 
 function defaultParser(value: string): number {
   return +value.trim().replace(/。/g, '.');
-  // [Legacy] We still support auto convert `$ 123,456` to `123456`
-  // .replace(/[^\w.-]+/g, '');
 }
 
 function isInRange(value: number, min: number, max: number): boolean {
   return value >= min && value <= max;
 }
 
-function getRangeValue(value: number, min: number, max: number): number {
-  if (value < min) {
-    return min;
-  }
-
-  if (value > max) {
-    return max;
-  }
-
-  return value;
-}
-
 /**
  * if max > 0, round down with precision. Example: input= 3.5, max= 3.5, precision=0; output= 3
- * if max < 0, round up with precision.   Example: input=-3.5, max=-3.5, precision=0; output=-4
- * if min > 0, round up with precision.   Example: input= 3.5, min= 3.5, precision=0; output= 4
+ * if max < 0, round up   with precision. Example: input=-3.5, max=-3.5, precision=0; output=-4
+ * if min > 0, round up   with precision. Example: input= 3.5, min= 3.5, precision=0; output= 4
  * if min < 0, round down with precision. Example: input=-3.5, min=-3.5, precision=0; output=-3
  */
-function getRangeValueWithPrecision(value: number, min: number, max: number, precision: number | null): number {
+function getRangeValue(value: number, min: number, max: number, precision: number | null = null): number {
   if (precision === null) {
-    return getRangeValue(value, min, max);
+    if (value < min) {
+      return min;
+    }
+
+    if (value > max) {
+      return max;
+    }
+
+    return value;
   }
 
   const fixedValue = +value.toFixed(precision);
@@ -502,4 +554,8 @@ function getRangeValueWithPrecision(value: number, min: number, max: number, pre
 
 function getDecimalPlaces(num: number): number {
   return num.toString().split('.')[1]?.length || 0;
+}
+
+function isNotCompleteNumber(value: string | number): boolean {
+  return /[.。]$/.test(value.toString());
 }

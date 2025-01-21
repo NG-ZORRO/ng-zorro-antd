@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOWN_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import { Component, ElementRef, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -134,19 +134,93 @@ describe('Input number', () => {
     });
   });
 
-  it('should be update value through user typing', () => {
-    component.min = 1;
-    component.max = 2;
-    fixture.detectChanges();
+  describe('should be update value through user typing', () => {
+    it('normal', () => {
+      input('123');
+      expect(component.value).toBe(123);
+      enter();
+      expect(component.value).toBe(123);
+      blur();
+      expect(component.value).toBe(123);
 
-    userTypingInput('3');
-    expect(component.value).toBe(2);
-    userTypingInput('0');
-    expect(component.value).toBe(1);
-    userTypingInput('1');
-    expect(component.value).toBe(1);
-    userTypingInput('abc');
-    expect(component.value).toBe(null);
+      input('NonNumber');
+      expect(component.value).toBe(123);
+      enter();
+      expect(component.value).toBe(123);
+      blur();
+      expect(component.value).toBe(123);
+
+      input('');
+      expect(component.value).toBe(null);
+      enter();
+      expect(component.value).toBe(null);
+      blur();
+      expect(component.value).toBe(null);
+    });
+
+    it('with range', () => {
+      component.min = 1;
+      component.max = 10;
+      fixture.detectChanges();
+
+      input('1');
+      expect(component.value).toBe(1);
+
+      input('99');
+      expect(component.value).toBe(1);
+      blur();
+      expect(component.value).toBe(10);
+
+      input('-99');
+      expect(component.value).toBe(10);
+      blur();
+      expect(component.value).toBe(1);
+
+      input('10');
+      expect(component.value).toBe(10);
+      blur();
+      expect(component.value).toBe(10);
+
+      input('');
+      expect(component.value).toBe(null);
+      blur();
+      expect(component.value).toBe(null);
+    });
+
+    it('with formatter', () => {
+      component.formatter = (value: number): string => `${value}%`;
+      component.parser = (value: string): number => parseFloat(value?.replace('%', ''));
+      fixture.detectChanges();
+
+      const inputElement = getInputElement();
+
+      input('123');
+      fixture.detectChanges();
+      expect(component.value).toBe(123);
+      expect(inputElement.value).toBe('123%');
+      blur();
+      fixture.detectChanges();
+      expect(component.value).toBe(123);
+      expect(inputElement.value).toBe('123%');
+
+      input('NonNumber');
+      fixture.detectChanges();
+      expect(component.value).toBe(123);
+      expect(inputElement.value).toBe('NonNumber');
+      blur();
+      fixture.detectChanges();
+      expect(component.value).toBe(123);
+      expect(inputElement.value).toBe('123%');
+
+      input('');
+      fixture.detectChanges();
+      expect(component.value).toBe(null);
+      expect(inputElement.value).toBe('');
+      blur();
+      fixture.detectChanges();
+      expect(component.value).toBe(null);
+      expect(inputElement.value).toBe('');
+    });
   });
 
   it('should be apply out-of-range class', async () => {
@@ -163,56 +237,85 @@ describe('Input number', () => {
     expect(hostElement.classList).toContain('ant-input-number-out-of-range');
   });
 
-  it('should be set min and max with precision', () => {
-    component.precision = 0;
+  describe('should be set min and max with precision', () => {
+    beforeEach(() => {
+      component.precision = 0;
+      component.value = null;
+    });
 
-    // max > 0
-    component.min = Number.MIN_SAFE_INTEGER;
-    component.max = 1.5;
-    fixture.detectChanges();
-    userTypingInput('1.1');
-    expect(component.value).toBe(1);
-    userTypingInput('1.5');
-    expect(component.value).toBe(1);
+    it('max > 0', () => {
+      component.min = Number.MIN_SAFE_INTEGER;
+      component.max = 1.5;
+      fixture.detectChanges();
 
-    // max < 0
-    component.min = Number.MIN_SAFE_INTEGER;
-    component.max = -1.5;
-    fixture.detectChanges();
-    userTypingInput('-1.1');
-    expect(component.value).toBe(-2);
-    userTypingInput('-1.5');
-    expect(component.value).toBe(-2);
+      input('1.1');
+      expect(component.value).toBe(1.1);
+      blur();
+      expect(component.value).toBe(1);
+      input('1.5');
+      expect(component.value).toBe(1.5);
+      blur();
+      expect(component.value).toBe(1);
+    });
 
-    // min > 0
-    component.min = 1.5;
-    component.max = Number.MAX_SAFE_INTEGER;
-    fixture.detectChanges();
-    userTypingInput('1.1');
-    expect(component.value).toBe(2);
-    userTypingInput('1.5');
-    expect(component.value).toBe(2);
+    it('max < 0', () => {
+      component.min = Number.MIN_SAFE_INTEGER;
+      component.max = -1.5;
+      fixture.detectChanges();
 
-    // min < 0
-    component.min = -1.5;
-    component.max = Number.MAX_SAFE_INTEGER;
-    fixture.detectChanges();
-    userTypingInput('-1.1');
-    expect(component.value).toBe(-1);
-    userTypingInput('-1.5');
-    expect(component.value).toBe(-1);
+      input('-1.1');
+      expect(component.value).toBe(null);
+      blur();
+      expect(component.value).toBe(-2);
+      input('-1.5');
+      expect(component.value).toBe(-1.5);
+      blur();
+      expect(component.value).toBe(-2);
+    });
+
+    it('min > 0', () => {
+      component.min = 1.5;
+      component.max = Number.MAX_SAFE_INTEGER;
+      fixture.detectChanges();
+
+      input('1.1');
+      expect(component.value).toBe(null);
+      blur();
+      expect(component.value).toBe(2);
+      input('1.5');
+      expect(component.value).toBe(1.5);
+      blur();
+      expect(component.value).toBe(2);
+    });
+
+    it('min < 0', () => {
+      component.min = -1.5;
+      component.max = Number.MAX_SAFE_INTEGER;
+      fixture.detectChanges();
+
+      input('-1.1');
+      expect(component.value).toBe(-1.1);
+      blur();
+      expect(component.value).toBe(-1);
+      input('-1.5');
+      expect(component.value).toBe(-1.5);
+      blur();
+      expect(component.value).toBe(-1);
+    });
   });
 
-  it('should set precision', async () => {
+  it('should set value with precision', async () => {
     component.precision = 1;
-    component.value = 1.23;
     fixture.detectChanges();
-    await fixture.whenStable();
+
+    input('1.23');
+    expect(component.value).toBe(1.23);
+    blur();
     expect(component.value).toBe(1.2);
 
-    component.value = 1.25;
-    fixture.detectChanges();
-    await fixture.whenStable();
+    input('1.25');
+    expect(component.value).toBe(1.25);
+    blur();
     expect(component.value).toBe(1.3);
   });
 
@@ -284,16 +387,23 @@ describe('Input number', () => {
   function upStepByKeyboard(): void {
     hostElement.dispatchEvent(new KeyboardEvent('keydown', { keyCode: UP_ARROW }));
   }
-
   function downStepByKeyboard(): void {
     hostElement.dispatchEvent(new KeyboardEvent('keydown', { keyCode: DOWN_ARROW }));
   }
+  function enter(): void {
+    hostElement.dispatchEvent(new KeyboardEvent('keydown', { keyCode: ENTER }));
+  }
 
-  function userTypingInput(text: string): void {
-    const input = hostElement.querySelector('input')!;
-    input.value = text;
-    input.dispatchEvent(new Event('input'));
-    input.dispatchEvent(new Event('change'));
+  function getInputElement(): HTMLInputElement {
+    return fixture.nativeElement.querySelector('input')!;
+  }
+  function input(text: string): void {
+    const element = getInputElement();
+    element.value = text;
+    element.dispatchEvent(new Event('input'));
+  }
+  function blur(): void {
+    getInputElement().dispatchEvent(new Event('blur'));
   }
 });
 
@@ -359,6 +469,8 @@ describe('Input number with affixes or addons', () => {
       [nzBordered]="bordered"
       [nzKeyboard]="keyboard"
       [nzControls]="controls"
+      [nzParser]="parser"
+      [nzFormatter]="formatter"
       [(ngModel)]="value"
       [disabled]="controlDisabled"
     />
@@ -378,6 +490,8 @@ class InputNumberTestComponent {
   bordered = true;
   keyboard = true;
   controls = true;
+  parser: ((value: string) => number) | undefined = undefined;
+  formatter: ((value: number) => string) | undefined = undefined;
 
   value: number | null = null;
   controlDisabled = false;
