@@ -34,7 +34,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideClientHydration(),
     provideHttpClient(withJsonpSupport(), withFetch()),
-    provideServiceWorker('ngsw-worker.js', { enabled: environment.production && !environment.preProduction }),
+    provideServiceWorker('ngsw-worker.js', { enabled: environment.production }),
     provideAnimationsAsync()
   ]
 };

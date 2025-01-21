@@ -3,10 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { task } from 'gulp';
-
 import { buildConfig } from '../../build-config';
-import { cleanTask } from '../util/task-helpers';
+import { cleanTask } from '../utils/task-helpers';
 
 /** Deletes the dist/ publish/ directory. */
-task('clean', cleanTask([buildConfig.outputDir, buildConfig.publishDir]));
+export async function clean(): Promise<string[]> {
+  return cleanTask([buildConfig.outputDir, buildConfig.publishDir]);
+}
