@@ -218,6 +218,14 @@ describe('Input number', () => {
     expect(hostElement.classList).toContain('ant-input-number-disabled');
   });
 
+  it('should be set disabled by ng control', async () => {
+    component.controlDisabled = true;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(hostElement.querySelector('input')!.disabled).toBeTruthy();
+    expect(hostElement.classList).toContain('ant-input-number-disabled');
+  });
+
   it('should be set readonly', () => {
     component.readonly = true;
     fixture.detectChanges();
@@ -347,6 +355,7 @@ describe('Input number with affixes or addons', () => {
       [nzKeyboard]="keyboard"
       [nzControls]="controls"
       [(ngModel)]="value"
+      [disabled]="controlDisabled"
     />
   `
 })
@@ -366,6 +375,7 @@ class InputNumberTestComponent {
   controls = true;
 
   value: number | null = null;
+  controlDisabled = false;
   inputNumber = viewChild.required(NzInputNumberComponent);
 }
 
