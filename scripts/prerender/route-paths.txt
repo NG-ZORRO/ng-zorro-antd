@@ -103,6 +103,8 @@
 /components/space/zh
 /components/spin/en
 /components/spin/zh
+/components/splitter/en
+/components/splitter/zh
 /components/statistic/en
 /components/statistic/zh
 /components/steps/en
