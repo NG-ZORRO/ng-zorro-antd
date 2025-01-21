@@ -5,10 +5,11 @@
 
 import { NgModule } from '@angular/core';
 
+import { NzSplitterPanelComponent } from './splitter-panel.component';
 import { NzSplitterComponent } from './splitter.component';
 
 @NgModule({
-  imports: [NzSplitterComponent],
-  exports: [NzSplitterComponent]
+  imports: [NzSplitterComponent, NzSplitterPanelComponent],
+  exports: [NzSplitterComponent, NzSplitterPanelComponent]
 })
 export class NzSplitterModule {}
