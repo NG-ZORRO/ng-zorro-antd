@@ -1,0 +1,34 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@splitter-prefix-cls: ~'@{ant-prefix}-splitter';
+
+.@{splitter-prefix-cls} {
+  .reset-component();
+  display: flex;
+  align-items: stretch;
+
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: @text-color;
+  font-size: @font-size-base;
+  font-family: @font-family;
+  line-height: @line-height-base;
+  list-style: none;
+
+  &-horizontal {
+    flex-direction: row;
+  }
+
+  &-panel {
+    box-sizing: border-box;
+    padding: 0 1px;
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+}
+
+@import './rtl';
