@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { detect } from 'detect-port';
 import * as fs from 'fs-extra';
 import { parallel, series, task, watch } from 'gulp';
 import { debounce } from 'lodash';
@@ -13,8 +14,6 @@ import { buildConfig } from '../../build-config';
 import { generate } from '../../prerender/ngsw-config';
 import { generateSitemap } from '../../prerender/sitemap';
 import { execNodeTask, execTask } from '../util/task-helpers';
-
-const detectPort = require('detect-port');
 
 const siteGenerate = require('../../site/generate-site');
 const themeGenerate = require('../../site/generate-theme');
@@ -55,15 +54,9 @@ task('init:site', async done => {
 });
 
 /** Run `ng serve` */
-task('serve:site', done => {
-  detectPort(4200).then((port: number) => {
-    execNodeTask('@angular/cli', 'ng', [
-      'serve',
-      '--port',
-      port === 4200 ? '4200' : '0',
-      '--project=ng-zorro-antd-doc'
-    ])(done);
-  });
+task('serve:site', async done => {
+  const port = await detect(4200);
+  execNodeTask('@angular/cli', 'ng', ['serve', 'ng-zorro-antd-doc', '--port', port === 4200 ? '4200' : '0'])(done);
 });
 
 /** Run `ng build ng-zorro-antd-doc --configuration=production` */
