@@ -27,72 +27,72 @@ import { NzModeType } from './typings';
   exportAs: 'nzHashCode',
   template: `
     @if (nzMode !== 'single' && nzMode !== 'rect') {
-      <div class="ant-hashCode-header">
-        <div class="ant-hashCode-header-title">{{ nzTitle }}</div>
-        <div class="ant-hashCode-header-copy" (click)="copyHandle()">
+      <div class="ant-hash-code-header">
+        <div class="ant-hash-code-header-title">{{ nzTitle }}</div>
+        <div class="ant-hash-code-header-copy" (click)="copyHandle()">
           <nz-icon nzType="copy" nzTheme="outline" />
         </div>
-        <div class="ant-hashCode-header-logo">
+        <div class="ant-hash-code-header-logo">
           <ng-template [nzStringTemplateOutlet]="nzLogo">{{ nzLogo }}</ng-template>
         </div>
       </div>
     }
 
     @if (nzMode === 'single' || nzMode === 'rect') {
-      <div class="ant-hashCode-header-copy" (click)="copyHandle()">
+      <div class="ant-hash-code-header-copy" (click)="copyHandle()">
         <nz-icon nzType="copy" nzTheme="outline" />
       </div>
     }
 
     <div
-      class="ant-hashCode-contant"
-      [class.ant-hashCode-value-default]="nzType === 'default'"
-      [class.ant-hashCode-value-primary]="nzType === 'primary'"
+      class="ant-hash-code-contant"
+      [class.ant-hash-code-value-default]="nzType === 'default'"
+      [class.ant-hash-code-value-primary]="nzType === 'primary'"
     >
       <div
-        class="ant-hashCode-code-value"
+        class="ant-hash-code-code-value"
         [style]="{ height: nzMode === 'rect' ? '70px' : nzMode === 'single' ? '18px' : '35px' }"
       >
         @if (nzMode === 'double') {
           @if (hashDataList.length > 8) {
             @for (v of hashDataList.slice(0, 6); track v) {
-              <div class="ant-hashCode-code-value-block">{{ v }}</div>
+              <div class="ant-hash-code-code-value-block">{{ v }}</div>
             }
-            <div class="ant-hashCode-code-value-block">····</div>
-            <div class="ant-hashCode-code-value-block">{{ hashDataList[hashDataList.length - 1] }}</div>
+            <div class="ant-hash-code-code-value-block">····</div>
+            <div class="ant-hash-code-code-value-block">{{ hashDataList[hashDataList.length - 1] }}</div>
           } @else {
             @for (v of hashDataList; track v) {
-              <div class="ant-hashCode-code-value-block">{{ v }}</div>
+              <div class="ant-hash-code-code-value-block">{{ v }}</div>
             }
           }
         }
 
         @if (nzMode === 'single') {
-          <div class="ant-hashCode-code-value-block">{{ hashDataList[0] }}</div>
-          <div class="ant-hashCode-code-value-block">····</div>
-          <div class="ant-hashCode-code-value-block">{{ hashDataList[hashDataList.length - 1] }}</div>
+          <div class="ant-hash-code-code-value-block">{{ hashDataList[0] }}</div>
+          <div class="ant-hash-code-code-value-block">····</div>
+          <div class="ant-hash-code-code-value-block">{{ hashDataList[hashDataList.length - 1] }}</div>
         }
 
         @if (nzMode === 'rect' || nzMode === 'strip') {
           @if (hashDataList.length > 16) {
             @for (v of hashDataList.slice(0, 14); track v) {
-              <div class="ant-hashCode-code-value-block">{{ v }}</div>
+              <div class="ant-hash-code-code-value-block">{{ v }}</div>
             }
-            <div class="ant-hashCode-code-value-block">····</div>
-            <div class="ant-hashCode-code-value-block">{{ hashDataList[hashDataList.length - 1] }}</div>
+            <div class="ant-hash-code-code-value-block">····</div>
+            <div class="ant-hash-code-code-value-block">{{ hashDataList[hashDataList.length - 1] }}</div>
           } @else {
             @for (v of hashDataList; track v) {
-              <div class="ant-hashCode-code-value-block">{{ v }}</div>
+              <div class="ant-hash-code-code-value-block">{{ v }}</div>
             }
           }
         }
       </div>
       <div
-        class="ant-hashCode-texaure"
-        [class.ant-hashCode-texaure-double]="nzMode === 'double'"
-        [class.ant-hashCode-texaure-single]="nzMode === 'single'"
-        [class.ant-hashCode-texaure-strip]="nzMode === 'strip'"
-        [class.ant-hashCode-texaure-rect]="nzMode === 'rect'"
+        class="ant-hash-code-texaure"
+        [class.ant-hash-code-texaure-double]="nzMode === 'double'"
+        [class.ant-hash-code-texaure-single]="nzMode === 'single'"
+        [class.ant-hash-code-texaure-strip]="nzMode === 'strip'"
+        [class.ant-hash-code-texaure-rect]="nzMode === 'rect'"
       >
         <svg width="545px" height="111px" viewBox="0 0 545 111" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -201,13 +201,13 @@ import { NzModeType } from './typings';
     </div>
   `,
   host: {
-    class: 'ant-hashCode',
-    '[class.ant-hashCode-default]': `nzType === 'default'`,
-    '[class.ant-hashCode-primary]': `nzType === 'primary'`,
-    '[class.ant-hashCode-double]': `nzMode === 'double'`,
-    '[class.ant-hashCode-single]': `nzMode === 'single'`,
-    '[class.ant-hashCode-strip]': `nzMode === 'strip'`,
-    '[class.ant-hashCode-rect]': `nzMode === 'rect'`
+    class: 'ant-hash-code',
+    '[class.ant-hash-code-default]': `nzType === 'default'`,
+    '[class.ant-hash-code-primary]': `nzType === 'primary'`,
+    '[class.ant-hash-code-double]': `nzMode === 'double'`,
+    '[class.ant-hash-code-single]': `nzMode === 'single'`,
+    '[class.ant-hash-code-strip]': `nzMode === 'strip'`,
+    '[class.ant-hash-code-rect]': `nzMode === 'rect'`
   }
 })
 export class NzHashCodeComponent implements OnChanges {

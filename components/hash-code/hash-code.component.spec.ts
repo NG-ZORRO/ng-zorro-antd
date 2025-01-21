@@ -29,56 +29,56 @@ describe('nz-hash-code', () => {
   it('basic', () => {
     fixture.detectChanges();
     const dom = resultEl.nativeElement;
-    expect(dom.querySelector('.ant-hashCode-header-title').innerText).toBe('HashCode');
-    expect(dom.querySelectorAll('.ant-hashCode-code-value-block').length).toBe(8);
-    expect(dom.querySelector('.ant-hashCode-header-logo').innerText).toBe('Antd');
-    expect(!!dom.querySelector('.ant-hashCode-texaure')).toBeTrue();
+    expect(dom.querySelector('.ant-hash-code-header-title').innerText).toBe('HashCode');
+    expect(dom.querySelectorAll('.ant-hash-code-code-value-block').length).toBe(8);
+    expect(dom.querySelector('.ant-hash-code-header-logo').innerText).toBe('Antd');
+    expect(!!dom.querySelector('.ant-hash-code-texaure')).toBeTrue();
   });
 
   it('should value length work', () => {
     testComponent.value =
       '683109f0f40ca72a15e05cc20931f8e6683109f0f40ca72a15e05cc20931f8e6683109f0f40ca72a15e05cc20931f8e6683109f0f40ca72a15e05cc20931f8e6';
     fixture.detectChanges();
-    expect(resultEl.nativeElement.querySelectorAll('.ant-hashCode-code-value-block').length).toBe(8);
+    expect(resultEl.nativeElement.querySelectorAll('.ant-hash-code-code-value-block').length).toBe(8);
     testComponent.value = '683109f0f40ca72a15e05cc20931f8e6';
     fixture.detectChanges();
-    expect(resultEl.nativeElement.querySelectorAll('.ant-hashCode-code-value-block').length).toBe(8);
+    expect(resultEl.nativeElement.querySelectorAll('.ant-hash-code-code-value-block').length).toBe(8);
     testComponent.value = '683109f0f40ca72a';
     fixture.detectChanges();
-    expect(resultEl.nativeElement.querySelectorAll('.ant-hashCode-code-value-block').length).toBe(4);
+    expect(resultEl.nativeElement.querySelectorAll('.ant-hash-code-code-value-block').length).toBe(4);
   });
 
   it('should mode single work', () => {
     testComponent.mode = 'single';
     fixture.detectChanges();
-    expect(!!resultEl.nativeElement.querySelector('.ant-hashCode-header')).toBeFalse();
-    expect(!!resultEl.nativeElement.querySelector('.ant-hashCode-header-copy')).toBeTrue();
-    expect(resultEl.nativeElement.classList).toContain('ant-hashCode-single');
+    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header')).toBeFalse();
+    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header-copy')).toBeTrue();
+    expect(resultEl.nativeElement.classList).toContain('ant-hash-code-single');
   });
 
   it('should mode strip work', () => {
     testComponent.mode = 'strip';
     fixture.detectChanges();
-    expect(resultEl.nativeElement.classList).toContain('ant-hashCode-strip');
+    expect(resultEl.nativeElement.classList).toContain('ant-hash-code-strip');
   });
 
   it('should rect mode work', () => {
     testComponent.mode = 'rect';
     fixture.detectChanges();
-    expect(!!resultEl.nativeElement.querySelector('.ant-hashCode-header')).toBeFalse();
-    expect(!!resultEl.nativeElement.querySelector('.ant-hashCode-header-copy')).toBeTrue();
-    expect(resultEl.nativeElement.classList).toContain('ant-hashCode-rect');
+    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header')).toBeFalse();
+    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header-copy')).toBeTrue();
+    expect(resultEl.nativeElement.classList).toContain('ant-hash-code-rect');
   });
 
   it('should type work', () => {
     testComponent.type = 'primary';
     fixture.detectChanges();
-    expect(resultEl.nativeElement.classList).toContain('ant-hashCode-primary');
+    expect(resultEl.nativeElement.classList).toContain('ant-hash-code-primary');
   });
 
   it('should copy work', fakeAsync(() => {
     fixture.detectChanges();
-    const copy = resultEl.nativeElement.querySelector('.ant-hashCode-header-copy');
+    const copy = resultEl.nativeElement.querySelector('.ant-hash-code-header-copy');
     dispatchMouseEvent(copy, 'click');
     waitingForTooltipToggling();
     expect(testComponent.copyValue).toBe(testComponent.value);
