@@ -35,7 +35,7 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
 在想关闭动画的组件上添加 `nzNoAnimation` 指令。
 
-```HTML
+```html
 <nz-modal nzNoAnimation></nz-modal>
 <ul nz-menu nzNoAnimation></ul>
 ```

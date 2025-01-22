@@ -33,6 +33,7 @@ function findNodeByName(fragment, name, result = []) {
  * @property {boolean} [hidden=false] - whether the documentation is hidden
  * @property {boolean} [experimental=false] - whether the component is experimental
  * @property {boolean} [hasDemoPage=false] - whether the demo page exists
+ * @property {string} __content - content of the component
  */
 
 /**
@@ -43,7 +44,7 @@ function findNodeByName(fragment, name, result = []) {
 module.exports = function getMeta(file) {
   /** @type ComponentIndexDocMeta */
   const meta = YFM.loadFront(file);
-  const content = parse(meta.__content);
+  const content = parse(meta.__content, { async: false });
   const fragment = parseFragment(content);
   /** @type DocumentFragment[] */
   const paragraphs = [];

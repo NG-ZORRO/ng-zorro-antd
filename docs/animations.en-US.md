@@ -37,7 +37,7 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
 Add the `nzNoAnimation` directive to the component.
 
-```HTML
+```html
 <nz-modal nzNoAnimation></nz-modal>
 <ul nz-menu nzNoAnimation></ul>
 ```

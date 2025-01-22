@@ -23,6 +23,7 @@ const angularNonBindAble = require('./angular-nonbindable');
  * @property {I18nTitle} title - title of the demo
  * @property {IframeMeta} [iframe] - iframe configuration
  * @property {boolean} [debug] - whether the demo is debugging
+ * @property {string} __content - content of the demo
  */
 
 /**
@@ -65,9 +66,9 @@ module.exports = function parseDemoMd(file) {
     }
     if (!(child.type === 'heading' && child.depth === 2)) {
       if (!isAfterENHeading) {
-        zhPart += parse(remark.stringify(child));
+        zhPart += parse(remark.stringify(child), { async: false });
       } else {
-        enPart += parse(remark.stringify(child));
+        enPart += parse(remark.stringify(child), { async: false });
       }
     }
   }

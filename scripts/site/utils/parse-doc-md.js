@@ -36,15 +36,15 @@ module.exports = function parseDocMd(file, path) {
       isAfterAPIHeading = true;
     }
     if (!isAfterAPIHeading) {
-      firstPart += parse(remark.stringify(child));
+      firstPart += parse(remark.stringify(child), { async: false });
     } else {
-      secondPart += parse(remark.stringify(child));
+      secondPart += parse(remark.stringify(child), { async: false });
     }
   }
   return {
-    meta     : meta,
-    path     : path,
+    meta: meta,
+    path: path,
     whenToUse: angularNonBindAble(firstPart),
-    api      : angularNonBindAble(secondPart),
-  }
+    api: angularNonBindAble(secondPart)
+  };
 };

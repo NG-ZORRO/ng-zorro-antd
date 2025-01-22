@@ -32,7 +32,7 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 **注意：**`nz-affix` 内的元素不要使用绝对定位，如需要绝对定位的效果，可以直接设置 `nz-affix` 为绝对定位：
 
-```jsx
+```html
 <nz-affix style="position: absolute; top: 10px, left: 10px">
   ...
 </nz-affix>

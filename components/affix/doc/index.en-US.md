@@ -30,7 +30,7 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 **Note:** Children of `nz-affix` can not be `position: absolute`, but you can set `nz-affix` as `position: absolute`:
 
-```jsx
+```html
 <nz-affix style="position: absolute; top: 10px, left: 10px">
   ...
 </nz-affix>
