@@ -23,7 +23,7 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 ## API
 
-### **nzBytes**
+### nzBytes
 
 | 参数      | 说明               | 类型     | 默认值 |
 | --------- | ------------------ | -------- | ------ |
@@ -31,26 +31,26 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 | `from`    | 当前值的单位       | `string` | 'B'    |
 | `to`      | 转换到目标值的单位 | `string` | ''     |
 
-### **nzToCssUnit**
+### nzToCssUnit
 
 | 参数          | 说明     | 类型     | 默认值 |
 | ------------- | -------- | -------- | ------ |
 | `defaultUnit` | 默认单位 | `string` | 'px'   |
 
-### **nzEllipsis**
+### nzEllipsis
 
 | 参数     | 说明     | 类型     | 默认值 |
 | -------- | -------- | -------- | ------ |
 | `length` | 截取长度 | `number` | ''     |
 | `suffix` | 替换字符 | `string` | ''     |
 
-### **nzAggregate**
+### nzAggregate
 
 | 参数     | 说明     | 类型                               | 默认值 |
 | -------- | -------- | ---------------------------------- | ------ |
 | `method` | 聚合方式 | `'sum' \| 'max' \| 'min' \| 'avg'` | ''     |
 
-### **nzSanitizer**
+### nzSanitizer
 
 | 参数   | 说明           | 类型     | 默认值 |
 | ------ | -------------- | -------- | ------ |

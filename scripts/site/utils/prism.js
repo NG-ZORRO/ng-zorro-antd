@@ -88,7 +88,7 @@ prism.languages.bash = {
 /**
  * Extend Angular
  */
-prism.languages.angular = Prism.languages.extend('typescript', {});
+prism.languages.angular = prism.languages.extend('typescript', {});
 
 prism.languages.insertBefore('angular', 'string', {
   'template-string': {

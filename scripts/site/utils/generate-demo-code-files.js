@@ -7,7 +7,7 @@ module.exports = function generateDemoCodeFiles(content, sitePath) {
   const demoMap = content.demoMap;
   for (const key in demoMap) {
     const rawCode = demoMap[key].ts;
-    const highlightCode = prism.highlight(rawCode, Prism.languages[lang], lang);
+    const highlightCode = prism.highlight(rawCode, prism.languages[lang], lang);
     const targetPath = path.join(sitePath, 'doc/assets/codes', `${content.name}-demo-${key}.json`);
 
     fs.ensureFileSync(targetPath);

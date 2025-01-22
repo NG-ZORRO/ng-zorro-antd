@@ -44,7 +44,7 @@ function findNodeByName(fragment, name, result = []) {
 module.exports = function getMeta(file) {
   /** @type ComponentIndexDocMeta */
   const meta = YFM.loadFront(file);
-  const content = parse(meta.__content);
+  const content = parse(meta.__content, { async: false });
   const fragment = parseFragment(content);
   /** @type DocumentFragment[] */
   const paragraphs = [];

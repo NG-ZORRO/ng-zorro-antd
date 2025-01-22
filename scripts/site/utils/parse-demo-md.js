@@ -66,9 +66,9 @@ module.exports = function parseDemoMd(file) {
     }
     if (!(child.type === 'heading' && child.depth === 2)) {
       if (!isAfterENHeading) {
-        zhPart += parse(remark.stringify(child));
+        zhPart += parse(remark.stringify(child), { async: false });
       } else {
-        enPart += parse(remark.stringify(child));
+        enPart += parse(remark.stringify(child), { async: false });
       }
     }
   }
