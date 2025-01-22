@@ -4,20 +4,19 @@
  */
 
 import * as fs from 'fs-extra';
-import { minify as jsMinifier } from 'terser';
+import { minify as htmlMinifier } from 'html-minifier-terser';
+import { minify as jsMinifier, MinifyOptions } from 'terser';
 
-const htmlMinifier = require('html-minifier-terser').minify;
-
-const minifyJsOptions = {
+const minifyJsOptions: MinifyOptions = {
   keep_classnames: true,
   keep_fnames: true,
-  output: {
+  format: {
     comments: false
   }
 };
 
 async function minifyJs(content: string): Promise<string> {
-  return (await jsMinifier(content, minifyJsOptions)).code || '';
+  return jsMinifier(content, minifyJsOptions).then(({ code }) => code || '');
 }
 
 async function minifyHtml(content: string): Promise<string> {
