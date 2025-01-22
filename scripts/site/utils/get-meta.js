@@ -33,6 +33,7 @@ function findNodeByName(fragment, name, result = []) {
  * @property {boolean} [hidden=false] - whether the documentation is hidden
  * @property {boolean} [experimental=false] - whether the component is experimental
  * @property {boolean} [hasDemoPage=false] - whether the demo page exists
+ * @property {string} __content - content of the component
  */
 
 /**

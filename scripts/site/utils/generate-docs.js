@@ -1,4 +1,4 @@
-const { parse } = require('marked');
+const { parse } = require('./marked');
 const getMeta = require('./get-meta');
 const angularNonBindAble = require('./angular-nonbindable');
 const fs = require('fs');
@@ -35,14 +35,14 @@ module.exports = function generateDocs(rootPath, docsMap) {
 function generateDoc(file, docsPath, name, language) {
   const filePath = `docs/${name}.${language === 'en' ? 'en-US' : 'zh-CN'}.md`;
   const meta = getMeta(file);
-  const row = meta.__content;
+  const raw = meta.__content;
   delete meta.__content;
-  const content = parse(row);
+  const content = parse(raw, { async: false });
 
   // template.html
   fs.writeFileSync(
     path.join(docsPath, `${name}-${language}.html`),
-    wrapperDocs(generateToc(meta, row), generateTitle(meta, filePath), angularNonBindAble(content))
+    wrapperDocs(generateToc(meta, raw), generateTitle(meta, filePath), angularNonBindAble(content))
   );
   // component.ts
   const component = componentTemplate
@@ -74,9 +74,9 @@ function generateToc(meta, raw) {
   }
   return `
 <nz-affix class="toc-affix" [nzOffsetTop]="16">
-    <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
-        ${links}
-    </nz-anchor>
+  <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
+    ${links}
+  </nz-anchor>
 </nz-affix>`;
 }
 
