@@ -189,7 +189,7 @@ describe('auto-complete', () => {
 
       trigger.openPanel();
       fixture.detectChanges();
-      // @ts-expect-error: invoke private method
+      // @ts-ignore
       trigger.destroyPanel();
 
       expect(() => trigger.closePanel()).not.toThrow();

@@ -33,6 +33,7 @@ function getRequestAnimationFrame(): typeof requestAnimationFrame {
 
   return prefix ? (window as NzSafeAny)[`${prefix}RequestAnimationFrame`] : requestAnimationFramePolyfill();
 }
+
 export function cancelRequestAnimationFrame(id: number): NzSafeAny {
   if (typeof window === 'undefined') {
     return null;
@@ -49,7 +50,7 @@ export function cancelRequestAnimationFrame(id: number): NzSafeAny {
         ((window as NzSafeAny)[`${prefix}CancelAnimationFrame`] as typeof cancelAnimationFrame) ||
         ((window as NzSafeAny)[`${prefix}CancelRequestAnimationFrame`] as typeof cancelRequestAnimationFrame)
       )
-        // @ts-expect-error: this
+        // @ts-ignore
         .call(this, id)
     : clearTimeout(id);
 }

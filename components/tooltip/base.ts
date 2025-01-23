@@ -301,7 +301,7 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 
   private updateComponentValue(key: string, value: NzSafeAny): void {
     if (typeof value !== 'undefined') {
-      // @ts-expect-error TODO: safe type
+      // @ts-ignore
       this.component[key] = value;
     }
   }

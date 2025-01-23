@@ -44,7 +44,7 @@
                 "output": "/assets/vs/"
               }
             ],
-            "styles": [components/checkbox/checkbox.component.ts,
+            "styles": [
               "site/doc/styles.less"
             ],
             "allowedCommonJsDependencies": [

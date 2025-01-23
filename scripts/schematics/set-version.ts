@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import * as fs from 'fs-extra';
+
+import * as path from 'path';
+
 import { buildConfig } from '../build-config';
-
-const fs = require('fs-extra');
-
-const path = require('path');
 
 
 export function setVersion(): void {

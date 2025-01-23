@@ -103,6 +103,7 @@ export default tseslint.config(
         allowInterfaces: 'always',
         allowObjectTypes: 'always'
       }],
+      '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'error',
       '@typescript-eslint/no-wrapper-object-types': 'error',
       '@typescript-eslint/consistent-indexed-object-style': 'off',

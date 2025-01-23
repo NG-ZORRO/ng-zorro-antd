@@ -26,7 +26,7 @@ export function measureScrollbar(direction: 'vertical' | 'horizontal' = 'vertica
   }
   const scrollDiv = document.createElement('div');
   Object.keys(scrollbarMeasure).forEach(scrollProp => {
-    // @ts-expect-error TODO: safe type
+    // @ts-ignore
     scrollDiv.style[scrollProp] = scrollbarMeasure[scrollProp];
   });
   // apply hide scrollbar className ahead
