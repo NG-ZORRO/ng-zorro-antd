@@ -9,6 +9,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  isMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+
 stages:
 - stage: env
   jobs:
@@ -30,14 +33,25 @@ stages:
         - task: Npm@1
           inputs:
             command: 'ci'
+          displayName: 'Install dependencies'
         - script: |
             npm run build
-            export DEPLOY_DOMAIN=https://preview-${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER}-ng-zorro-antd.surge.sh
-            echo 'version' >> dist/browser/.surgeignore
-            echo 'issue-helper' >> dist/browser/.surgeignore
-            npx surge --project ./dist/browser --domain $DEPLOY_DOMAIN
-            tar --transform='flags=r;s|browser|dist|' -cvzf build.tgz lib -C dist browser
+          displayName: 'Build'
 
+        - script: |
+            npx surge --project ./dist/browser --domain https://preview-${PullRequestNumber}-ng-zorro-antd.surge.sh
+          condition: add(succeeded(), eq(variables['Build.Reason'], 'PullRequest'), eq(variables['isMaster'], false))
+          displayName: 'Deploy to preview'
+          env:
+            PullRequestNumber: $(System.PullRequest.PullRequestNumber)
+        - script: |
+            npx surge --project ./dist/browser --domain https://nightly-ng-zorro-antd.surge.sh
+          condition: and(succeeded(), eq(variables['Build.Reason'], 'Push'), eq(variables['isMaster'], true))
+          displayName: 'Deploy to nightly'
+
+        - script: |
+            tar --transform='flags=r;s|browser|dist|' -cvzf build.tgz lib -C dist browser
+          displayName: 'Compress build artifacts'
         - task: CopyFiles@2
           inputs:
             contents: build.tgz
@@ -57,9 +71,11 @@ stages:
         - task: Npm@1
           inputs:
             command: 'ci'
+          displayName: 'Install dependencies'
         - script: |
             npm run test
             cat ./coverage-report/lcov.info | ./node_modules/.bin/codecov
+          displayName: 'Test'
 
         - task: PublishCodeCoverageResults@1
           displayName: 'publish code coverage results'
@@ -85,7 +101,9 @@ stages:
         - task: Npm@1
           inputs:
             command: 'ci'
+          displayName: 'Install dependencies'
         - script: npm run test:schematics
+          displayName: 'Test'
 
   dependsOn: env
 
@@ -96,5 +114,7 @@ stages:
         - task: Npm@1
           inputs:
             command: 'ci'
+          displayName: 'Install dependencies'
         - script: npm run lint
+          displayName: 'Lint'
   dependsOn: env
