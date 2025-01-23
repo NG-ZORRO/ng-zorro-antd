@@ -7,6 +7,10 @@ import { NzSafeAny } from './any';
 
 export type NgClassType = string | string[] | NgClassInterface;
 
-export type NgClassInterface = Record<string, NzSafeAny>;
+export interface NgClassInterface {
+  [klass: string]: NzSafeAny;
+}
 
-export type NgStyleInterface = Record<string, NzSafeAny>;
+export interface NgStyleInterface {
+  [klass: string]: NzSafeAny;
+}

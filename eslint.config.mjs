@@ -144,7 +144,7 @@ export default tseslint.config(
           allowConciseArrowFunctionExpressionsStartingWithVoid: true
         }
       ],
-      '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-require-imports': 'warn',
       'prefer-arrow/prefer-arrow-functions': 'off',
       'import/no-duplicates': 'error',
       'import/no-unused-modules': 'error',

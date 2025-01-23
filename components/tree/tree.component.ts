@@ -18,7 +18,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChange,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   booleanAttribute,
@@ -280,7 +280,7 @@ export class NzTreeComponent
    *
    * @param changes all changes from @Input
    */
-  renderTreeProperties(changes: Record<string, SimpleChange>): void {
+  renderTreeProperties(changes: SimpleChanges): void {
     let useDefaultExpandedKeys = false;
     let expandAll = false;
     const {
@@ -503,7 +503,7 @@ export class NzTreeComponent
     });
   }
 
-  ngOnChanges(changes: Record<string, SimpleChange>): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.renderTreeProperties(changes);
   }
 

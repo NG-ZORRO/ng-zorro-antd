@@ -34,7 +34,9 @@ import { DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP, POSITION_TYPE, getPlacementNam
 import { NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 
-export type PropertyMapping = Record<string, [string, () => unknown]>;
+export interface PropertyMapping {
+  [key: string]: [string, () => unknown];
+}
 
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 

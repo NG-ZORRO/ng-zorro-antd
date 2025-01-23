@@ -15,7 +15,9 @@ export type NzProgressTypeType = 'line' | 'circle' | 'dashboard';
 
 export type NzProgressStrokeLinecapType = 'round' | 'square';
 
-export type NzProgressGradientProgress = Record<string, string>;
+export interface NzProgressGradientProgress {
+  [percent: string]: string;
+}
 
 export interface NzProgressGradientFromTo {
   from: string;

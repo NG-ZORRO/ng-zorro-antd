@@ -5,4 +5,6 @@
 
 import { NzSafeAny } from './any';
 
-export type IndexableObject = Record<string, NzSafeAny>;
+export interface IndexableObject {
+  [key: string]: NzSafeAny;
+}

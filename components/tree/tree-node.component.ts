@@ -16,7 +16,7 @@ import {
   OnInit,
   Output,
   Renderer2,
-  SimpleChange,
+  SimpleChanges,
   TemplateRef,
   booleanAttribute,
   inject
@@ -275,7 +275,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
       // ie throw error
       // firefox-need-it
       e.dataTransfer!.setData('text/plain', this.nzTreeNode.key!);
-    } catch (_error) {
+    } catch {
       // noop
     }
     this.nzTreeService.setSelectedNode(this.nzTreeNode);
@@ -425,7 +425,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
       });
   }
 
-  ngOnChanges(changes: Record<string, SimpleChange>): void {
+  ngOnChanges(changes: SimpleChanges): void {
     const { nzDraggable } = changes;
     if (nzDraggable) {
       this.handDragEvent();

@@ -47,6 +47,7 @@ import { NzRadioService } from './radio.service';
       <input
         #inputElement
         type="radio"
+        [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
         [class.ant-radio-input]="!isRadioButton"
         [class.ant-radio-button-input]="isRadioButton"
         [disabled]="nzDisabled"

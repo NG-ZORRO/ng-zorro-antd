@@ -7,17 +7,17 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
+import { NzButtonComponent, NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 
 import { provideNzConfig } from './config';
 import { NzConfigService } from './config.service';
 
 @Component({
   imports: [NzButtonModule],
-  template: `<button nz-button nzType="primary" [nzSize]="size">Global Config</button>`
+  template: `<button nz-button nzType="primary" [nzSize]="size || 'default'">Global Config</button>`
 })
 export class NzGlobalConfigTestBasicComponent {
-  size?: 'large' | 'default' | 'small';
+  size?: NzButtonSize;
 
   constructor(public nzConfigService: NzConfigService) {}
 }
@@ -111,7 +111,6 @@ describe('nz global config', () => {
     // It would fail silently. User cannot input a component name wrong - TypeScript comes to help!
     // it('should raise error when the component with given name is not defined', () => {
     //   expect(() => {
-
     //   }).toThrowError();
     // });
   });
