@@ -26,10 +26,6 @@ stages:
   jobs:
     - job: build_site
       steps:
-        - task: NodeTool@0
-          displayName: 'Install Node.js'
-          inputs:
-            versionSpec: '20.9.0' # The version we're installing
         - task: Npm@1
           inputs:
             command: 'ci'
@@ -40,7 +36,7 @@ stages:
 
         - script: |
             npx surge --project ./dist/browser --domain https://preview-${PullRequestNumber}-ng-zorro-antd.surge.sh
-          condition: add(succeeded(), eq(variables['Build.Reason'], 'PullRequest'), eq(variables['isMaster'], false))
+          condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'), eq(variables['isMaster'], false))
           displayName: 'Deploy to preview'
           env:
             PullRequestNumber: $(System.PullRequest.PullRequestNumber)
