@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -202,8 +207,7 @@ describe('nz-float-button-top', () => {
 
   describe('#nzTemplate', () => {
     it(`should show custom template`, fakeAsync(() => {
-      let fixtureTemplate: ComponentFixture<TestBackTopTemplateComponent>;
-      fixtureTemplate = TestBed.createComponent(TestBackTopTemplateComponent);
+      const fixtureTemplate = TestBed.createComponent(TestBackTopTemplateComponent);
 
       componentObject.scrollTo(window, defaultVisibilityHeight + 1);
       tick();

@@ -335,7 +335,6 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 }
 
 @Directive()
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 

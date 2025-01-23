@@ -65,7 +65,7 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzOffset?: [number, number];
   @Input() nzTitle?: string | null | undefined;
-  @Input() nzStyle: { [key: string]: string } | null = null;
+  @Input() nzStyle: Record<string, string> | null = null;
   @Input() nzDot = false;
   @Input({ transform: numberAttribute }) nzOverflowCount: number = 99;
   @Input() disableAnimation = false;

@@ -163,7 +163,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @Input({ transform: booleanAttribute }) nzOpen = false;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzPlacement: POSITION_TYPE_HORIZONTAL = 'bottomLeft';
-  @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @ViewChild(CdkOverlayOrigin, { static: true, read: ElementRef }) cdkOverlayOrigin: ElementRef | null = null;
   // fix errors about circular dependency
   // Can't construct a query for the property ... since the query selector wasn't defined"

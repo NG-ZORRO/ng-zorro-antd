@@ -194,7 +194,7 @@ function indentTextContent(text: string, numSpaces: number): string {
  * This allows inlining the external template or stylesheet files in EJS without having
  * to manually duplicate the file content.
  */
-export function buildComponent(options: ZorroComponentOptions, additionalFiles: { [key: string]: string } = {}): Rule {
+export function buildComponent(options: ZorroComponentOptions, additionalFiles: Record<string, string> = {}): Rule {
   return async (host: Tree, context: FileSystemSchematicContext) => {
     const workspace = await getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);

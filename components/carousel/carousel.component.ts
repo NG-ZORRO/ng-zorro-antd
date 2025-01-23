@@ -138,11 +138,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @WithConfig()
   set nzDotPosition(value: NzCarouselDotPosition) {
     this._dotPosition = value;
-    if (value === 'left' || value === 'right') {
-      this.vertical = true;
-    } else {
-      this.vertical = false;
-    }
+    this.vertical = value === 'left' || value === 'right';
   }
 
   get nzDotPosition(): NzCarouselDotPosition {

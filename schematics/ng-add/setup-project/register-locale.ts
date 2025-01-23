@@ -121,7 +121,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
       null
     );
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let node: any = nodes[0];
+  const node: any = nodes[0];
 
   if (!node) {
     return [];

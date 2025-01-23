@@ -19,8 +19,8 @@ export enum NzBreakpointEnum {
   xs = 'xs'
 }
 
-export type BreakpointMap = { [key in NzBreakpointEnum]: string };
-export type BreakpointBooleanMap = { [key in NzBreakpointEnum]: boolean };
+export type BreakpointMap = Record<NzBreakpointEnum, string>;
+export type BreakpointBooleanMap = Record<NzBreakpointEnum, boolean>;
 export type NzBreakpointKey = keyof typeof NzBreakpointEnum;
 
 export const gridResponsiveMap: BreakpointMap = {

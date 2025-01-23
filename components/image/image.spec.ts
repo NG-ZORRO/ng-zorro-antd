@@ -61,8 +61,7 @@ describe('Basics', () => {
   });
 
   it('should only latest src work', fakeAsync(() => {
-    const ERROR_SRC = 'error.png';
-    context.src = ERROR_SRC;
+    context.src = 'error.png';
     context.placeholder = null;
     const image = debugElement.nativeElement.querySelector('img');
     fixture.detectChanges();
@@ -304,11 +303,11 @@ describe('Preview', () => {
       context.firstSrc = QUICK_SRC;
       context.zoomStep = 2;
       fixture.detectChanges();
-      let image = debugElement.nativeElement.querySelectorAll('img');
+      const image = debugElement.nativeElement.querySelectorAll('img');
       image[2].click();
       tickChanges();
       previewElement = getPreviewRootElement();
-      let imageElement = getPreviewImageElement();
+      const imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
       const zoomOut = operations[2];
@@ -326,11 +325,11 @@ describe('Preview', () => {
       context.firstSrc = QUICK_SRC;
       context.zoomStep = null;
       fixture.detectChanges();
-      let image = debugElement.nativeElement.querySelector('img');
+      const image = debugElement.nativeElement.querySelector('img');
       image.click();
       tickChanges();
       previewElement = getPreviewRootElement();
-      let imageElement = getPreviewImageElement();
+      const imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
       dispatchFakeEvent(zoomIn, 'click');
@@ -344,11 +343,11 @@ describe('Preview', () => {
       context.firstSrc = QUICK_SRC;
       context.groupZoomStep = 5;
       fixture.detectChanges();
-      let image = debugElement.nativeElement.querySelectorAll('img');
+      const image = debugElement.nativeElement.querySelectorAll('img');
       image[0].click();
       tickChanges();
       previewElement = getPreviewRootElement();
-      let imageElement = getPreviewImageElement();
+      const imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
       dispatchFakeEvent(zoomIn, 'click');
@@ -363,13 +362,13 @@ describe('Preview', () => {
       context.groupZoomStep = 5;
       context.zoomStep = 3;
       fixture.detectChanges();
-      let image = debugElement.nativeElement.querySelectorAll('img');
+      const image = debugElement.nativeElement.querySelectorAll('img');
       image[2].click();
       tickChanges();
       previewElement = getPreviewRootElement();
-      let imageElement = getPreviewImageElement();
-      let operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
-      let zoomIn = operations[1];
+      const imageElement = getPreviewImageElement();
+      const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
+      const zoomIn = operations[1];
       dispatchFakeEvent(zoomIn, 'click');
       tickChanges();
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(4, 4, 1) rotate(0deg)');
@@ -382,13 +381,13 @@ describe('Preview', () => {
       context.firstSrc = QUICK_SRC;
       fixture.detectChanges();
       tickChanges();
-      let image = debugElement.nativeElement.querySelectorAll('img');
+      const image = debugElement.nativeElement.querySelectorAll('img');
       image[3].click();
       tickChanges();
       previewElement = getPreviewRootElement();
-      let imageElement = getPreviewImageElement();
-      let operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
-      let zoomIn = operations[1];
+      const imageElement = getPreviewImageElement();
+      const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
+      const zoomIn = operations[1];
       dispatchFakeEvent(zoomIn, 'click');
       tickChanges();
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(11, 11, 1) rotate(0deg)');
@@ -399,7 +398,7 @@ describe('Preview', () => {
     it('should detect mouse zoom direction correctly', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
-      const previewInstance = context.previewRef?.previewInstance!;
+      const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
       previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
       expect(previewInstance.isDragging).toEqual(true);
@@ -412,7 +411,7 @@ describe('Preview', () => {
     it('should call correct methods when zooming in or out', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
-      const previewInstance = context.previewRef?.previewInstance!;
+      const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
       previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
       previewInstance['zoom'] = 5;
@@ -433,7 +432,7 @@ describe('Preview', () => {
     it('should close image preview when escape is pressed', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
-      const previewInstance = context.previewRef?.previewInstance!;
+      const previewInstance = context.previewRef!.previewInstance;
       previewInstance.ngOnInit();
       tickChanges();
       spyOn(previewInstance, 'onClose');
@@ -548,7 +547,7 @@ describe('Preview', () => {
     it('should drag released work', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
-      const previewInstance = context.previewRef?.previewInstance!;
+      const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
       previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
       expect(previewInstance.isDragging).toEqual(true);
@@ -561,7 +560,7 @@ describe('Preview', () => {
     it('should onDragEnd be called after drag is ended', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
-      const previewInstance = context.previewRef?.previewInstance!;
+      const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
       previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
       spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
@@ -575,7 +574,7 @@ describe('Preview', () => {
     it('should zoom to center when zoom is <= 1', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
-      const previewInstance = context.previewRef?.previewInstance!;
+      const previewInstance = context.previewRef!.previewInstance;
       spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
       tickChanges();
       context.zoomStep = 0.25;
@@ -678,7 +677,7 @@ describe('Preview', () => {
     it('should call proper methods', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
-      const previewInstance = context.previewRef?.previewInstance!;
+      const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
       const e = jasmine.createSpyObj('e', ['preventDefault', 'stopPropagation']);
       spyOn<NzSafeAny>(previewInstance, 'handlerImageTransformationWhileZoomingWithMouse');

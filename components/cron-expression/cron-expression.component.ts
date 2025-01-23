@@ -248,7 +248,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
         this.interval.next().toDate(),
         this.interval.next().toDate()
       ];
-    } catch (err: NzSafeAny) {
+    } catch {
       return;
     }
   }
@@ -290,7 +290,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
           cron.push(control.value[label]);
         });
         parseExpression(cron.join(' '));
-      } catch (err: unknown) {
+      } catch {
         return { error: true };
       }
     }

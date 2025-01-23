@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BidiModule, Dir, Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
@@ -367,8 +372,8 @@ describe('affix', () => {
   });
 
   class NzAffixPageObject {
-    offsets: { [key: string]: Offset };
-    scrolls: { [key: string]: Scroll };
+    offsets: Record<string, Offset>;
+    scrolls: Record<string, Scroll>;
 
     constructor() {
       spyOn(component, 'getOffset').and.callFake(this.getOffset.bind(this));

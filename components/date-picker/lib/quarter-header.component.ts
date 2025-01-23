@@ -17,8 +17,8 @@ import { transCompatFormat } from './util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'quarter-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'quarterHeader',
-  templateUrl: './abstract-panel-header.html',
-  })
+  templateUrl: './abstract-panel-header.html'
+})
 export class QuarterHeaderComponent extends AbstractPanelHeader {
   override mode: NzDateMode = 'quarter';
 

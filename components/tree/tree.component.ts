@@ -18,7 +18,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChange,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   booleanAttribute,
@@ -280,7 +280,7 @@ export class NzTreeComponent
    *
    * @param changes all changes from @Input
    */
-  renderTreeProperties(changes: { [propertyName: string]: SimpleChange }): void {
+  renderTreeProperties(changes: SimpleChanges): void {
     let useDefaultExpandedKeys = false;
     let expandAll = false;
     const {
@@ -418,7 +418,7 @@ export class NzTreeComponent
       case 'contextmenu':
         this.nzContextMenu.emit(event);
         break;
-      case 'check':
+      case 'check': {
         // Render checked state with nodes' property `isChecked`
         this.nzTreeService.setCheckedNodeList(node);
         if (!this.nzCheckStrictly) {
@@ -430,6 +430,7 @@ export class NzTreeComponent
         const checkedKeys = this.nzTreeService.getCheckedNodeKeys();
         this.nzCheckedKeysChange.emit(checkedKeys);
         break;
+      }
       case 'dragstart':
         // if node is expanded
         if (node.isExpanded) {
@@ -438,7 +439,7 @@ export class NzTreeComponent
         }
         this.nzOnDragStart.emit(event);
         break;
-      case 'dragenter':
+      case 'dragenter': {
         const selectedNode = this.nzTreeService.getSelectedNode();
         if (selectedNode && selectedNode.key !== node.key && !node.isExpanded && !node.isLeaf) {
           node.setExpanded(true);
@@ -446,6 +447,7 @@ export class NzTreeComponent
         }
         this.nzOnDragEnter.emit(event);
         break;
+      }
       case 'dragover':
         this.nzOnDragOver.emit(event);
         break;
@@ -501,7 +503,7 @@ export class NzTreeComponent
     });
   }
 
-  ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.renderTreeProperties(changes);
   }
 

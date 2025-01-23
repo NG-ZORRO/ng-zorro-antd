@@ -109,7 +109,7 @@ export class Minimap {
         // There is no scene anymore. We have been detached from the dom.
         return;
       }
-    } catch (e) {
+    } catch {
       // Firefox produced NS_ERROR_FAILURE if we have been
       // detached from the dom.
       return;

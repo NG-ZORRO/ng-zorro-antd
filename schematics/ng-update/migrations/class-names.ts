@@ -24,10 +24,10 @@ export class ClassNamesMigration extends Migration<NzUpgradeData> {
    * List of identifier names that have been imported from `@ng-zorro-antd`
    * in the current source file and therefore can be considered trusted.
    */
-  trustedIdentifiers: Set<string> = new Set();
+  trustedIdentifiers = new Set<string>();
 
   /** List of namespaces that have been imported from `@ng-zorro-antd`. */
-  trustedNamespaces: Set<string> = new Set();
+  trustedNamespaces = new Set<string>();
 
   // Only enable the migration rule if there is upgrade data.
   enabled: boolean = this.data.length !== 0;

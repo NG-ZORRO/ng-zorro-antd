@@ -28,9 +28,7 @@ import { NzSpaceItemDirective } from './space-item.directive';
 import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize, NzSpaceType } from './types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'space';
-const SPACE_SIZE: {
-  [sizeKey in NzSpaceType]: number;
-} = {
+const SPACE_SIZE: Record<NzSpaceType, number> = {
   small: 8,
   middle: 16,
   large: 24

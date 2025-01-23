@@ -152,7 +152,7 @@ export class NzInputNumberLegacyComponent implements ControlValueAccessor, After
     value
       .trim()
       .replace(/。/g, '.')
-      .replace(/[^\w\.-]+/g, '');
+      .replace(/[^\w.-]+/g, '');
   @Input() nzPrecision?: number;
   @Input() nzPrecisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number) = 'toFixed';
   @Input() nzPlaceHolder = '';

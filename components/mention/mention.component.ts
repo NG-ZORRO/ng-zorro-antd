@@ -134,8 +134,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
   @Input() nzStatus: NzStatus = '';
-  @Output() readonly nzOnSelect: EventEmitter<NzSafeAny> = new EventEmitter();
-  @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
+  @Output() readonly nzOnSelect = new EventEmitter<NzSafeAny>();
+  @Output() readonly nzOnSearchChange = new EventEmitter<MentionOnSearchTypes>();
 
   trigger!: NzMentionTriggerDirective;
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;

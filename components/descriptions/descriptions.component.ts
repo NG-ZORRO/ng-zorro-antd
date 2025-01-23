@@ -33,7 +33,7 @@ import { NzDescriptionsItemComponent } from './descriptions-item.component';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'descriptions';
-const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
+const defaultColumnMap: Record<NzBreakpointEnum, number> = {
   xxl: 3,
   xl: 3,
   lg: 3,
@@ -168,7 +168,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
   @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = false;
   @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
-  @Input() @WithConfig() nzColumn: number | { [key in NzBreakpointEnum]: number } = defaultColumnMap;
+  @Input() @WithConfig() nzColumn: number | Record<NzBreakpointEnum, number> = defaultColumnMap;
   @Input() @WithConfig() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
   @Input() nzExtra?: string | TemplateRef<void>;

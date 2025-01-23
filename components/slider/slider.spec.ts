@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -1055,7 +1060,7 @@ class SliderWithValueComponent {}
   template: `<nz-slider [nzMarks]="marks"></nz-slider>`
 })
 class SliderWithMarksComponent {
-  marks: { [mark: number]: string } = { 100: '(100%)', 0: '(0%)' };
+  marks: Record<number, string> = { 100: '(100%)', 0: '(0%)' };
 }
 
 @Component({
@@ -1104,7 +1109,7 @@ class VerticalSliderComponent {}
   `
 })
 class ReverseSliderComponent {
-  marks: { [mark: number]: string } = { 100: '(100%)', 0: '(0%)' };
+  marks: Record<number, string> = { 100: '(100%)', 0: '(0%)' };
 }
 
 @Component({
@@ -1133,7 +1138,7 @@ class ReverseSliderWithMinAndMaxComponent {}
 class MixedSliderComponent {
   dots = false;
   included = true;
-  marks: { [mark: number]: string } = { 22: '(22%)', 36: '(36%)' };
+  marks: Record<number, string> = { 22: '(22%)', 36: '(36%)' };
   max = 100;
   min = 0;
   range = false;

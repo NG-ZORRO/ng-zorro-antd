@@ -205,7 +205,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Input() nzTabBarExtraContent?: TemplateRef<void>;
   @Input() nzCanDeactivate: NzTabsCanDeactivateFn | null = null;
   @Input() nzAddIcon: string | TemplateRef<NzSafeAny> = 'plus';
-  @Input() nzTabBarStyle: { [key: string]: string } | null = null;
+  @Input() nzTabBarStyle: Record<string, string> | null = null;
   @Input() @WithConfig() nzType: NzTabType = 'line';
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
   @Input() @WithConfig() nzAnimated: NzAnimatedInterface | boolean = true;

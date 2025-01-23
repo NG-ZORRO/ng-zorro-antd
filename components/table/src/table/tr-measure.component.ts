@@ -3,8 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-/* eslint-disable @angular-eslint/component-selector */
-
 import {
   AfterViewInit,
   ChangeDetectionStrategy,

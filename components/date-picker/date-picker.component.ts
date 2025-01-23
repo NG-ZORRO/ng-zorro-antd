@@ -462,7 +462,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   onFocusout(event: FocusEvent): void {
     event.preventDefault();
     this.onTouchedFn();
-    if (!this.elementRef.nativeElement.contains(<Node>event.relatedTarget)) {
+    if (!this.elementRef.nativeElement.contains(event.relatedTarget as Node)) {
       this.checkAndClose();
     }
     this.renderClass(false);
@@ -775,7 +775,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   }
 
   setModeAndFormat(): void {
-    const inputFormats: { [key in NzDateMode]?: string } = {
+    const inputFormats: Partial<Record<NzDateMode, string>> = {
       year: 'yyyy',
       quarter: 'yyyy-[Q]Q',
       month: 'yyyy-MM',
@@ -847,7 +847,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {
-      const defaultPlaceholder: { [key in NzDateMode]?: string } = {
+      const defaultPlaceholder: Partial<Record<NzDateMode, string>> = {
         year: this.getPropertyOfLocale('yearPlaceholder'),
         quarter: this.getPropertyOfLocale('quarterPlaceholder'),
         month: this.getPropertyOfLocale('monthPlaceholder'),
@@ -855,7 +855,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
         date: this.getPropertyOfLocale('placeholder')
       };
 
-      const defaultRangePlaceholder: { [key in NzDateMode]?: string[] } = {
+      const defaultRangePlaceholder: Partial<Record<NzDateMode, string[]>> = {
         year: this.getPropertyOfLocale('rangeYearPlaceholder'),
         quarter: this.getPropertyOfLocale('rangeQuarterPlaceholder'),
         month: this.getPropertyOfLocale('rangeMonthPlaceholder'),

@@ -90,7 +90,7 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
   @Input({ transform: booleanAttribute }) nzDot = false;
   @Input() @WithConfig() nzOverflowCount: number = 99;
   @Input() @WithConfig() nzColor?: string = undefined;
-  @Input() nzStyle: { [key: string]: string } | null = null;
+  @Input() nzStyle: Record<string, string> | null = null;
   @Input() nzText?: string | TemplateRef<void> | null = null;
   @Input() nzTitle?: string | null | undefined;
   @Input() nzStatus?: NzBadgeStatusType | string;

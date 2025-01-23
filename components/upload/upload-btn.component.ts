@@ -31,7 +31,7 @@ import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
   encapsulation: ViewEncapsulation.None
 })
 export class NzUploadBtnComponent implements OnInit, OnDestroy {
-  reqs: { [key: string]: Subscription } = {};
+  reqs: Record<string, Subscription> = {};
   private destroy = false;
   private destroy$ = new Subject<void>();
   @ViewChild('file', { static: true }) file!: ElementRef<HTMLInputElement>;

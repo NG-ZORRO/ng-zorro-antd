@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -56,10 +61,9 @@ describe('divider', () => {
     }
 
     it('should be custom template', () => {
-      let fixtureTemplate: ComponentFixture<TestDividerTextTemplateComponent>;
-      fixtureTemplate = TestBed.createComponent(TestDividerTextTemplateComponent);
-      fixtureTemplate.detectChanges();
-      expect(fixtureTemplate.debugElement.query(By.css('.anticon-plus')) != null).toBe(true);
+      const fixture = TestBed.createComponent(TestDividerTextTemplateComponent);
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.anticon-plus')) != null).toBe(true);
     });
   });
 

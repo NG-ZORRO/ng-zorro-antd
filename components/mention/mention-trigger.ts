@@ -45,15 +45,15 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
   onTouched: OnTouchedType = () => {};
 
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onFocusin: EventEmitter<FocusEvent> = new EventEmitter();
+  @Output() readonly onFocusin = new EventEmitter<FocusEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onBlur: EventEmitter<FocusEvent> = new EventEmitter();
+  @Output() readonly onBlur = new EventEmitter<FocusEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onInput: EventEmitter<KeyboardEvent> = new EventEmitter();
+  @Output() readonly onInput = new EventEmitter<KeyboardEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onKeydown: EventEmitter<KeyboardEvent> = new EventEmitter();
+  @Output() readonly onKeydown = new EventEmitter<KeyboardEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onClick: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() readonly onClick = new EventEmitter<MouseEvent>();
   value?: string;
 
   constructor(

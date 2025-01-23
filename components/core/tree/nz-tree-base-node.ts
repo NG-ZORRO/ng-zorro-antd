@@ -307,7 +307,9 @@ export class NzTreeNode {
         try {
           childPos === -1 ? this.children.push(child) : this.children.splice(childPos, 0, child);
           // flush origin
-        } catch (e) {}
+        } catch {
+          // noop
+        }
       });
       this.origin.children = this.getChildren().map(v => v.origin);
       // remove loading state

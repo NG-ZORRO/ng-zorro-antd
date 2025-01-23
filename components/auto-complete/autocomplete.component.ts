@@ -103,7 +103,7 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
 export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit, OnChanges {
   @Input({ transform: numberAttributeWithZeroFallback }) nzWidth?: number;
   @Input() nzOverlayClassName = '';
-  @Input() nzOverlayStyle: { [key: string]: string } = {};
+  @Input() nzOverlayStyle: Record<string, string> = {};
   @Input({ transform: booleanAttribute }) nzDefaultActiveFirstOption = true;
   @Input({ transform: booleanAttribute }) nzBackfill = false;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;

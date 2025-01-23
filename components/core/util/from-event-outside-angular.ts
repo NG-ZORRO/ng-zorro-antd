@@ -43,7 +43,7 @@ export function fromEventOutsideAngular<TEvent extends Event>(
     // that `addEventListener` is also called outside of Angular when there's a subscriber.
     return runOutsideAngular(() =>
       // Casting because the inferred overload is incorrect :(
-      fromEvent<TEvent>(target, name, <AddEventListenerOptions>options).subscribe(subscriber)
+      fromEvent<TEvent>(target, name, options as AddEventListenerOptions).subscribe(subscriber)
     );
   });
 }

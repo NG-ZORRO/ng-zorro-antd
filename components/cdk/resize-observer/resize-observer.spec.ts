@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, EventEmitter, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
@@ -83,6 +88,7 @@ describe('resize observer', () => {
   });
 
   it('should return correct resizeObserver if it is supported', () => {
+    // eslint-disable-next-line no-global-assign
     ResizeObserver = undefined as NzSafeAny;
     const result = directive['nzResizeObserver']['nzResizeObserverFactory'].create(jasmine.createSpy('callback'));
     expect(result).toEqual(null);

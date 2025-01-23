@@ -57,7 +57,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   private elementFocusedBeforeModalWasOpened: HTMLElement | null = null;
   private focusTrap!: FocusTrap;
   private mouseDown = false;
-  private oldMaskStyle: { [key: string]: string } | null = null;
+  private oldMaskStyle: Record<string, string> | null = null;
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   config: ModalOptions = inject(ModalOptions);
   protected destroy$ = new Subject<boolean>();
@@ -266,7 +266,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     const backdropElement = this.overlayRef.backdropElement;
     if (backdropElement) {
       if (this.oldMaskStyle) {
-        const styles = this.oldMaskStyle as { [key: string]: string };
+        const styles = this.oldMaskStyle as Record<string, string>;
         Object.keys(styles).forEach(key => {
           this.render.removeStyle(backdropElement, key);
         });
@@ -276,7 +276,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
       this.setZIndexForBackdrop();
 
       if (typeof this.config.nzMaskStyle === 'object' && Object.keys(this.config.nzMaskStyle).length) {
-        const styles: { [key: string]: string } = { ...this.config.nzMaskStyle };
+        const styles: Record<string, string> = { ...this.config.nzMaskStyle };
         Object.keys(styles).forEach(key => {
           this.render.setStyle(backdropElement, key, styles[key]);
         });

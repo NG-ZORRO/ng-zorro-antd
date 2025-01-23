@@ -16,7 +16,7 @@ import {
   OnInit,
   Output,
   Renderer2,
-  SimpleChange,
+  SimpleChanges,
   TemplateRef,
   booleanAttribute,
   inject
@@ -174,7 +174,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
    */
   destroy$ = new Subject<boolean>();
   dragPos = 2;
-  dragPosClass: { [key: string]: string } = {
+  dragPosClass: Record<string, string> = {
     0: 'drag-over',
     1: 'drag-over-gap-bottom',
     '-1': 'drag-over-gap-top'
@@ -275,8 +275,8 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
       // ie throw error
       // firefox-need-it
       e.dataTransfer!.setData('text/plain', this.nzTreeNode.key!);
-    } catch (error) {
-      // empty
+    } catch {
+      // noop
     }
     this.nzTreeService.setSelectedNode(this.nzTreeNode);
     this.draggingKey = this.nzTreeNode.key;
@@ -425,7 +425,7 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
       });
   }
 
-  ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
+  ngOnChanges(changes: SimpleChanges): void {
     const { nzDraggable } = changes;
     if (nzDraggable) {
       this.handDragEvent();

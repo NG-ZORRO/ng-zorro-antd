@@ -51,6 +51,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'popconfirm';
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
+  /* eslint-disable @angular-eslint/no-input-rename, @angular-eslint/no-output-rename */
   @Input({ alias: 'nzPopconfirmArrowPointAtCenter', transform: booleanAttribute })
   override arrowPointAtCenter?: boolean;
   @Input('nzPopconfirmTitle') override title?: NzTSType;
@@ -80,7 +81,6 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   override content?: NzTSType | null = null;
   override overlayClickable?: boolean;
 
-  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzPopconfirmVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();

@@ -230,12 +230,6 @@
     },
     "@schematics/angular:directive": {
       "prefix": "app"
-    },
-    "@angular-eslint/schematics:application": {
-      "setParserOptionsProject": true
-    },
-    "@angular-eslint/schematics:library": {
-      "setParserOptionsProject": true
     }
   },
   "cli": {

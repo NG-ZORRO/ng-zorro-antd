@@ -52,7 +52,7 @@ export class DateHelperByDateFns extends DateHelperService {
     let defaultWeekStartsOn: WeekDayIndex;
     try {
       defaultWeekStartsOn = this.i18n.getDateLocale().options!.weekStartsOn!;
-    } catch (e) {
+    } catch {
       defaultWeekStartsOn = 1;
     }
     return this.config.firstDayOfWeek == null ? defaultWeekStartsOn : this.config.firstDayOfWeek;
@@ -121,7 +121,7 @@ export class DateHelperByDatePipe extends DateHelperService {
     return (
       dateStr
         // Match Q+ outside of brackets, then replace it with the specified quarterly format
-        .replace(/Q+(?![^\[]*])/g, match => record[match] ?? quarter)
+        .replace(/Q+(?![^[]*])/g, match => record[match] ?? quarter)
         // Match the Q+ surrounded by bracket, then remove bracket.
         .replace(/\[(Q+)]/g, '$1')
     );

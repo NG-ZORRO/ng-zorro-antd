@@ -363,10 +363,6 @@ export class NzCascaderComponent
     return this.cascaderService.nzOptions;
   }
 
-  get treeService(): NzCascaderTreeService {
-    return <NzCascaderTreeService>this.nzTreeService;
-  }
-
   set nzOptions(options: NzCascaderOption[] | null) {
     const nodes = this.coerceTreeNodes(options || []);
     this.treeService.initTree(nodes);
@@ -377,6 +373,10 @@ export class NzCascaderComponent
       this.cascaderService.setSearchingMode(this.inSearchingMode);
       this.cascaderService.prepareSearchOptions(this.inputValue);
     }
+  }
+
+  get treeService(): NzCascaderTreeService {
+    return this.nzTreeService as NzCascaderTreeService;
   }
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();

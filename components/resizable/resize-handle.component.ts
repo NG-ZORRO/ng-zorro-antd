@@ -42,7 +42,7 @@ export class NzResizeHandleMouseDownEvent {
   ) {}
 }
 
-const passiveEventListenerOptions = <AddEventListenerOptions>normalizePassiveListenerOptions({ passive: true });
+const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: true }) as AddEventListenerOptions;
 
 @Component({
   selector: 'nz-resize-handle, [nz-resize-handle]',

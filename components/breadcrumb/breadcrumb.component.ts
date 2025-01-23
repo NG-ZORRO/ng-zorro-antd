@@ -115,7 +115,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
           this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root);
           this.cdr.markForCheck();
         });
-    } catch (e) {
+    } catch {
       throw new Error(`${PREFIX} You should import RouterModule if you want to use 'NzAutoGenerate'.`);
     }
   }

@@ -175,7 +175,7 @@ export class NzCascaderService implements OnDestroy {
    * Reset node's `title` and `disabled` status and clear `searchOptionPathMap`.
    */
   private clearSearchOptions(): void {
-    for (let node of this.searchOptionPathMap.keys()) {
+    for (const node of this.searchOptionPathMap.keys()) {
       node.isDisabled = node.origin.disabled || false;
       node.title = this.getOptionLabel(node.origin);
     }

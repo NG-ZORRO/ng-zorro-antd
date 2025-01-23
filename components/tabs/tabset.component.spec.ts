@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { AsyncPipe } from '@angular/common';
@@ -912,17 +917,11 @@ class SimpleTabsTestComponent {
   centered = false;
   canDeactivate = null;
 
-  handleSelection(_event: number): void {
-    // noop
-  }
+  handleSelection(_event: number): void {}
 
-  handleClose(_event: { index: number }): void {
-    // noop
-  }
+  handleClose(_event: { index: number }): void {}
 
-  handleAdd(): void {
-    // noop
-  }
+  handleAdd(): void {}
 }
 
 @Component({
@@ -987,9 +986,7 @@ class DisableTabsTestComponent {
   disabled = false;
   @ViewChildren(NzTabComponent) tabs!: QueryList<NzTabComponent>;
 
-  handleSelection(_event: number): void {
-    // noop
-  }
+  handleSelection(_event: number): void {}
 }
 
 @Component({
@@ -1016,9 +1013,7 @@ class DynamicTabsTestComponent {
     { title: 'Tab 2', content: 'Content of Tab Pane 2' }
   ];
 
-  handleSelection(_event: number): void {
-    // noop
-  }
+  handleSelection(_event: number): void {}
 }
 
 @Component({
@@ -1053,9 +1048,7 @@ class ScrollableTabsTestComponent {
   tabs: NzSafeAny[] = Array(30).fill(null);
   @ViewChild(NzTabSetComponent, { static: true }) tabSet!: NzTabSetComponent;
 
-  handleSelection(_event: number): void {
-    // noop
-  }
+  handleSelection(_event: number): void {}
 }
 
 @Component({
@@ -1143,9 +1136,7 @@ class TabSetWithIndirectDescendantTabsTestComponent {
   `
 })
 export class RouterTabsTestComponent {
-  handleSelection(_event: number): void {
-    // noop
-  }
+  handleSelection(_event: number): void {}
 }
 
 const routes: Routes = [

@@ -90,7 +90,7 @@ export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
   @Input({ transform: numberAttribute }) @WithConfig() nzVisibilityHeight: number = 400;
   @Input() nzTarget?: string | HTMLElement;
   @Input({ transform: numberAttribute }) nzDuration: number = 450;
-  @Output() readonly nzOnClick: EventEmitter<boolean> = new EventEmitter();
+  @Output() readonly nzOnClick = new EventEmitter<boolean>();
 
   @ViewChild('backTop', { static: false })
   set backTop(backTop: ElementRef<HTMLElement> | undefined) {
@@ -152,7 +152,7 @@ export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.scrollListenerDestroy$.next();
     this.handleScroll();
-    fromEventOutsideAngular(this.getTarget(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
+    fromEventOutsideAngular(this.getTarget(), 'scroll', passiveEventListenerOptions as AddEventListenerOptions)
       .pipe(debounceTime(50), takeUntil(this.scrollListenerDestroy$))
       .subscribe(() => this.handleScroll());
   }

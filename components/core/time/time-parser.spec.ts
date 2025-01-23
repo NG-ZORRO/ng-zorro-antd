@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { LOCALE_ID } from '@angular/core';

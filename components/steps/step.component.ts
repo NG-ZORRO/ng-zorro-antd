@@ -151,7 +151,6 @@ export class NzStepComponent implements OnInit {
   set nzIcon(value: NgClassType | TemplateRef<void> | undefined) {
     if (!(value instanceof TemplateRef)) {
       this.oldAPIIcon = typeof value === 'string' && value.indexOf('anticon') > -1;
-    } else {
     }
     this._icon = value;
   }

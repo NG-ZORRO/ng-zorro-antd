@@ -105,10 +105,10 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
   @Input() nzValue?: Date;
   @Input() nzDisabledDate?: (date: Date) => boolean;
 
-  @Output() readonly nzModeChange: EventEmitter<NzCalendarMode> = new EventEmitter();
-  @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: NzCalendarMode }> = new EventEmitter();
-  @Output() readonly nzSelectChange: EventEmitter<Date> = new EventEmitter();
-  @Output() readonly nzValueChange: EventEmitter<Date> = new EventEmitter();
+  @Output() readonly nzModeChange = new EventEmitter<NzCalendarMode>();
+  @Output() readonly nzPanelChange = new EventEmitter<{ date: Date; mode: NzCalendarMode }>();
+  @Output() readonly nzSelectChange = new EventEmitter<Date>();
+  @Output() readonly nzValueChange = new EventEmitter<Date>();
 
   /**
    * Cannot use @Input and @ContentChild on one variable

@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, SimpleChange, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -166,8 +171,8 @@ describe('nz-badge', () => {
 
     it('should set presetColor of nzColor change', fakeAsync(() => {
       let color: string | undefined;
-      let fixture = TestBed.createComponent(NzBadgeComponent);
-      let component = fixture.componentInstance;
+      const fixture = TestBed.createComponent(NzBadgeComponent);
+      const component = fixture.componentInstance;
       fixture.detectChanges();
 
       color = badgePresetColors[0];

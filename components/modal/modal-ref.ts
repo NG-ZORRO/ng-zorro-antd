@@ -32,8 +32,8 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   componentRef: ComponentRef<T> | null = null;
   result?: R;
   state: NzModalState = NzModalState.OPEN;
-  afterClose: Subject<R | undefined> = new Subject();
-  afterOpen: Subject<void> = new Subject();
+  afterClose = new Subject<R | undefined>();
+  afterOpen = new Subject<void>();
 
   private closeTimeout?: ReturnType<typeof setTimeout>;
 

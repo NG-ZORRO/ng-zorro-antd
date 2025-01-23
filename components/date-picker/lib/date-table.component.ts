@@ -150,7 +150,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
     cell.classMap = this.getClassMap(cell);
   }
 
-  override getClassMap(cell: DateCell): { [key: string]: boolean } {
+  override getClassMap(cell: DateCell): Record<string, boolean> {
     const date = new CandyDate(cell.value);
     return {
       ...super.getClassMap(cell),

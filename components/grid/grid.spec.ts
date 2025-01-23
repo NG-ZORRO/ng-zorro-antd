@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -241,8 +246,8 @@ export class TestGridComponent {
     | number
     | null
     | [number, number]
-    | { [key: string]: number }
-    | [{ [key: string]: number }, { [key: string]: number }] = null;
+    | Record<string, number>
+    | [Record<string, number>, Record<string, number>] = null;
   flex: string | null = null;
   justify: NzJustify | null = null;
   align: NzAlign | null = null;

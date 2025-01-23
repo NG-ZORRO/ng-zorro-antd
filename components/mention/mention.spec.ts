@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -625,9 +630,7 @@ class NzTestPropertyMentionComponent {
     this.prefix = ['@', '#'];
   }
 
-  onSearchChange(): void {
-    // noop
-  }
+  onSearchChange(): void {}
 
   fetchSuggestions(): void {
     this.webFrameworks = [];

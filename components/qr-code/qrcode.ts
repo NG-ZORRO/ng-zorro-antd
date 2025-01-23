@@ -5,7 +5,7 @@
 
 import qrcodegen from './qrcodegen';
 
-export const ERROR_LEVEL_MAP: { [index in 'L' | 'M' | 'Q' | 'H']: qrcodegen.QrCode.Ecc } = {
+export const ERROR_LEVEL_MAP: Record<'L' | 'M' | 'Q' | 'H', qrcodegen.QrCode.Ecc> = {
   L: qrcodegen.QrCode.Ecc.LOW,
   M: qrcodegen.QrCode.Ecc.MEDIUM,
   Q: qrcodegen.QrCode.Ecc.QUARTILE,

@@ -85,11 +85,13 @@ function getUpstreamRemoteName(): string | null {
     encoding: 'utf-8'
   });
   const names: string[] = (output.stdout as string).split('\n').map((e: string) => e.trim());
-  for (let i = 0; i < names.length; i++) {
+  let i = 0;
+  while (i < names.length) {
     const url = getRemoteUrl(names[i]);
     if (url.search(/github\.com(\/|:)NG-ZORRO\/ng-zorro-antd/) !== -1) {
       return names[i];
     }
+    i++;
   }
   return null;
 }

@@ -31,9 +31,9 @@ import { findAppConfig } from '@schematics/angular/utility/standalone/app_config
 import { findBootstrapApplicationCall } from '@schematics/angular/utility/standalone/util';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 
+import { Schema } from './schema';
 import { applyChangesToFile } from '../../utils/apply-changes';
 import { addModule } from '../../utils/root-module';
-import { Schema } from './schema';
 
 export default function (options: Schema): Rule {
   return async (host: Tree) => {

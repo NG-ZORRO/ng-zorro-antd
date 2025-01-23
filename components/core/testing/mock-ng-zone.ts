@@ -17,7 +17,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
  */
 @Injectable()
 export class MockNgZone extends NgZone {
-  override onStable: EventEmitter<NzSafeAny> = new EventEmitter(false);
+  override onStable = new EventEmitter<NzSafeAny>(false);
 
   constructor() {
     super({ enableLongStackTrace: false });

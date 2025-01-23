@@ -123,7 +123,7 @@ export class NzWaveRenderer {
   }
 
   private isNotGrey(color: string): boolean {
-    const match = color.match(/rgba?\((\d*), (\d*), (\d*)(, [\.\d]*)?\)/);
+    const match = color.match(/rgba?\((\d*), (\d*), (\d*)(, [.\d]*)?\)/);
     if (match && match[1] && match[2] && match[3]) {
       return !(match[1] === match[2] && match[2] === match[3]);
     }
