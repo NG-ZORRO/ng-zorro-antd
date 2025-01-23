@@ -206,7 +206,7 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
               a: Number(value.roundA) / 100
             }).toRgbString();
             break;
-          default:
+          default: {
             const hex = generateColor(value.hex as NzColorPickerFormatType);
             const hexColor = generateColor({
               r: hex.r,
@@ -216,6 +216,7 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
             });
             color = hexColor.getAlpha() < 1 ? hexColor.toHex8String() : hexColor.toHexString();
             break;
+          }
         }
         this.formatChange.emit({ color, format: value.isFormat || this.format || 'hex' });
       });

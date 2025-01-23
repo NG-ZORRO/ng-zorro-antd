@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { ApplicationRef, Component, DebugElement, SimpleChanges, ViewChild } from '@angular/core';
@@ -205,13 +210,12 @@ describe('nz-back-top', () => {
 
   describe('#nzTemplate', () => {
     it(`should show custom template`, fakeAsync(() => {
-      let fixtureTemplate: ComponentFixture<TestBackTopTemplateComponent>;
-      fixtureTemplate = TestBed.createComponent(TestBackTopTemplateComponent);
+      const fixture = TestBed.createComponent(TestBackTopTemplateComponent);
 
       componentObject.scrollTo(window, defaultVisibilityHeight + 1);
       tick();
-      fixtureTemplate.detectChanges();
-      expect(fixtureTemplate.debugElement.query(By.css('.this-is-my-template')) === null).toBe(false);
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.this-is-my-template')) === null).toBe(false);
     }));
   });
 });
@@ -311,10 +315,9 @@ describe('back-to-top', () => {
   it('should set correct value for target', fakeAsync(() => {
     spyOn<NzSafeAny>(component, 'registerScrollEvent');
     spyOn(document, 'querySelector').and.returnValue({} as HTMLElement);
-    let mockTarget: NzSafeAny = 'mockTarget';
+    const mockTarget: NzSafeAny = 'mockTarget';
     component.nzTarget = mockTarget;
-    let change: SimpleChanges;
-    change = {
+    const change: SimpleChanges = {
       nzTarget: {
         currentValue: mockTarget,
         previousValue: undefined,

@@ -73,7 +73,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
-  @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   setDropdownMenuValue<T extends keyof NzDropdownMenuComponent>(key: T, value: NzDropdownMenuComponent[T]): void {
     if (this.nzDropdownMenu) {

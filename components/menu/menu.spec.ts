@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
@@ -937,7 +942,7 @@ export class NzTestMenuInlineCollapsedComponent {
   `
 })
 export class NzTestMenuSiderCurrentComponent {
-  openMap: { [name: string]: boolean } = {
+  openMap: Record<string, boolean> = {
     sub1: true,
     sub2: false,
     sub3: false

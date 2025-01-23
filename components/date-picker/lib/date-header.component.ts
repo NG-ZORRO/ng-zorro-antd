@@ -17,8 +17,8 @@ import { transCompatFormat } from './util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'date-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'dateHeader',
-  templateUrl: './abstract-panel-header.html',
-  })
+  templateUrl: './abstract-panel-header.html'
+})
 export class DateHeaderComponent extends AbstractPanelHeader {
   override mode: NzDateMode = 'date';
 

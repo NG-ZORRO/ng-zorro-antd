@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
@@ -298,9 +303,7 @@ interface BasicTestDataItem {
   expand?: boolean;
 }
 
-interface NzPageSizeChangeFn {
-  (pageSize: number): void;
-}
+type NzPageSizeChangeFn = (pageSize: number) => void;
 
 @Component({
   imports: [NzTableModule],

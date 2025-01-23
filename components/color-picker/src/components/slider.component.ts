@@ -20,12 +20,12 @@ import {
   inject
 } from '@angular/core';
 
-import { Color } from '../interfaces/color';
-import { HsbaColorType, TransformOffset } from '../interfaces/type';
-import { calculateColor, calculateOffset } from '../util/util';
 import { GradientComponent } from './gradient.component';
 import { HandlerComponent } from './handler.component';
 import { PaletteComponent } from './palette.component';
+import { Color } from '../interfaces/color';
+import { HsbaColorType, TransformOffset } from '../interfaces/type';
+import { calculateColor, calculateOffset } from '../util/util';
 
 type EventType = MouseEvent | TouchEvent;
 

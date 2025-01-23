@@ -34,9 +34,7 @@ import { DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP, POSITION_TYPE, getPlacementNam
 import { NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 
-export interface PropertyMapping {
-  [key: string]: [string, () => unknown];
-}
+export type PropertyMapping = Record<string, [string, () => unknown]>;
 
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
@@ -301,7 +299,7 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 
   private updateComponentValue(key: string, value: NzSafeAny): void {
     if (typeof value !== 'undefined') {
-      // @ts-ignore
+      // @ts-expect-error TODO: safe type
       this.component[key] = value;
     }
   }
@@ -335,7 +333,6 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 }
 
 @Directive()
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 

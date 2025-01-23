@@ -48,7 +48,7 @@ export class DatePickerService implements OnDestroy {
   }
 
   setActiveDate(value: CompatibleValue, hasTimePicker: boolean = false, mode: NormalizedMode = 'month'): void {
-    const parentPanels: { [key in NzDateMode]?: NormalizedMode } = {
+    const parentPanels: Partial<Record<NzDateMode, NormalizedMode>> = {
       date: 'month',
       month: 'year',
       quarter: 'year',

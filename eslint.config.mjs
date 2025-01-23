@@ -14,7 +14,17 @@ header.rules.header.meta.schema = false;
 
 export default tseslint.config(
   {
-    ignores: ['site/', 'publish/', 'lib/', 'dist/', 'scripts/site/{_site,template}/**/*']
+    ignores: [
+      '.*/',
+      'site/',
+      'publish/',
+      'lib/',
+      'dist/',
+      'scripts/site/{_site,template}/**/*',
+      'junit/',
+      'coverage-report/',
+      'components/**/demo/**/*'
+    ]
   },
   {
     files: ['**/*.ts'],
@@ -73,6 +83,7 @@ export default tseslint.config(
           prefix: ['nz']
         }
       ],
+      '@angular-eslint/no-rename-input': 'off',
       '@angular-eslint/no-attribute-decorator': 'error',
       '@angular-eslint/no-conflicting-lifecycle': 'off',
       '@angular-eslint/no-forward-ref': 'off',
@@ -88,8 +99,13 @@ export default tseslint.config(
           default: 'array-simple'
         }
       ],
+      '@typescript-eslint/no-empty-object-type': ['error', {
+        allowInterfaces: 'always',
+        allowObjectTypes: 'always'
+      }],
       '@typescript-eslint/no-unsafe-function-type': 'error',
       '@typescript-eslint/no-wrapper-object-types': 'error',
+      '@typescript-eslint/consistent-indexed-object-style': 'off',
       '@typescript-eslint/consistent-type-definitions': 'error',
       '@typescript-eslint/explicit-member-accessibility': [
         'off',
@@ -97,6 +113,7 @@ export default tseslint.config(
           accessibility: 'explicit'
         }
       ],
+      '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/no-for-in-array': 'error',
@@ -111,7 +128,15 @@ export default tseslint.config(
       '@typescript-eslint/no-this-alias': 'error',
       '@typescript-eslint/naming-convention': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_'
+        }
+      ],
       '@typescript-eslint/explicit-function-return-type': [
         'error',
         {
@@ -119,7 +144,7 @@ export default tseslint.config(
           allowConciseArrowFunctionExpressionsStartingWithVoid: true
         }
       ],
-      '@typescript-eslint/no-require-imports': 'warn',
+      '@typescript-eslint/no-require-imports': 'off',
       'prefer-arrow/prefer-arrow-functions': 'off',
       'import/no-duplicates': 'error',
       'import/no-unused-modules': 'error',
@@ -145,6 +170,7 @@ export default tseslint.config(
           pathGroupsExcludedImportTypes: []
         }
       ],
+      'no-prototype-builtins': 'off',
       'no-bitwise': 'off',
       'no-duplicate-imports': 'error',
       'no-invalid-this': 'off',
@@ -161,9 +187,12 @@ export default tseslint.config(
     }
   },
   {
-    files: ['**/demo/*.ts', '*.spec.ts'],
-    rules: {
-      'header/header': 'off'
-    }
+    files: ['**/*.html'],
+    extends: [
+      ...angular.configs.templateRecommended
+      // todo(a11y)
+      // ...angular.configs.templateAccessibility,
+    ],
+    rules: {}
   }
 );

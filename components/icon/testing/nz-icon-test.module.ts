@@ -10,9 +10,7 @@ import * as AllIcons from '@ant-design/icons-angular/icons';
 
 import { NZ_ICONS, NzIconModule, provideNzIcons } from 'ng-zorro-antd/icon';
 
-const antDesignIcons = AllIcons as {
-  [key: string]: IconDefinition;
-};
+const antDesignIcons = AllIcons as Record<string, IconDefinition>;
 
 const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => {
   const i = antDesignIcons[key];

@@ -18,7 +18,7 @@ export class NzOverflowItemDirective {
   private nzResizeObserver = inject(NzResizeObserver);
   private elementRef = inject(ElementRef);
 
-  overflowStyle: { [key: string]: string | number | undefined } | undefined = undefined;
+  overflowStyle: Record<string, string | number | undefined> | undefined = undefined;
   itemWidth$ = this.nzResizeObserver.observe(this.elementRef.nativeElement).pipe(
     map(([item]) => (item.target as HTMLElement).offsetWidth),
     distinctUntilChanged(),

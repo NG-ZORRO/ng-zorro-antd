@@ -187,9 +187,9 @@ export class NzTransferListComponent implements AfterViewInit {
 
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
-  @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
-  @Output() readonly moveToLeft: EventEmitter<void> = new EventEmitter();
+  @Output() readonly handleSelect = new EventEmitter<TransferItem>();
+  @Output() readonly filterChange = new EventEmitter<{ direction: TransferDirection; value: string }>();
+  @Output() readonly moveToLeft = new EventEmitter<void>();
 
   @ViewChild('headerCheckbox', { read: NzCheckboxComponent }) headerCheckbox?: NzCheckboxComponent;
 

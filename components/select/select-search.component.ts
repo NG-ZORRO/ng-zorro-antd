@@ -33,7 +33,6 @@ import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
       autocomplete="off"
       class="ant-select-selection-search-input"
       [ngModel]="value"
-      [attr.autofocus]="autofocus ? 'autofocus' : null"
       [disabled]="disabled"
       [style.opacity]="showInput ? null : 0"
       (ngModelChange)="onValueChange($event)"

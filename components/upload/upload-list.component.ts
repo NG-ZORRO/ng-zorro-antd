@@ -171,7 +171,9 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
 
         try {
           ctx!.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-        } catch {}
+        } catch {
+          // noop
+        }
         const dataURL = canvas.toDataURL();
         this.document.body.removeChild(canvas);
 

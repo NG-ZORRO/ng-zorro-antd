@@ -166,7 +166,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   ngOnInit(): void {
     this.getBlockColor();
     this.formControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
-      if (!!value) {
+      if (value) {
         let color = value;
         if (this.nzFormat === 'hex') {
           color =
@@ -199,9 +199,9 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   }
 
   getBlockColor(): void {
-    if (!!this.nzValue) {
+    if (this.nzValue) {
       this.blockColor = generateColor(this.nzValue).toRgbString();
-    } else if (!!this.nzDefaultValue) {
+    } else if (this.nzDefaultValue) {
       this.blockColor = generateColor(this.nzDefaultValue).toRgbString();
     } else {
       this.blockColor = defaultColor.toHexString();

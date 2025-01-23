@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
@@ -168,7 +173,7 @@ describe('nz-color-picker', () => {
     dispatchMouseEvent(dom, 'click');
     waitingForTooltipToggling();
     const clear = overlayContainerElement.querySelector('.ant-color-picker-clear');
-    if (!!clear) {
+    if (clear) {
       dispatchMouseEvent(clear, 'click');
       fixture.detectChanges();
       waitingForTooltipToggling();
@@ -218,7 +223,7 @@ describe('nz-color-picker', () => {
     items.forEach(item => {
       dispatchMouseEvent(item, 'click');
       waitingForTooltipToggling();
-      let alphaInputElement = overlayContainerElement.querySelector('.ant-color-picker-alpha-input') as Element;
+      const alphaInputElement = overlayContainerElement.querySelector('.ant-color-picker-alpha-input') as Element;
       expect(alphaInputElement).toBeFalsy();
     });
     discardPeriodicTasks();

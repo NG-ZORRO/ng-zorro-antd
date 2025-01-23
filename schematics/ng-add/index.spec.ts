@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
 
 import { normalize } from '@angular-devkit/core';
@@ -9,10 +14,10 @@ import { getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { join } from 'path';
 
+import { Schema as NzOptions } from './schema';
 import { createTestApp } from '../testing/test-app';
 import { createCustomTheme } from '../utils/create-custom-theme';
 import { getFileContent } from '../utils/get-file-content';
-import { Schema as NzOptions } from './schema';
 
 describe('ng-add schematic', () => {
   const defaultOptions: NzOptions = {

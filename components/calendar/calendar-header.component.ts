@@ -84,9 +84,9 @@ export class NzCalendarHeaderComponent implements OnInit, OnChanges {
   @Input() activeDate: CandyDate = new CandyDate();
   @Input() nzCustomHeader?: string | TemplateRef<void>;
 
-  @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
-  @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();
-  @Output() readonly monthChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly modeChange = new EventEmitter<'month' | 'year'>();
+  @Output() readonly yearChange = new EventEmitter<number>();
+  @Output() readonly monthChange = new EventEmitter<number>();
   // @Output() readonly valueChange: EventEmitter<CandyDate> = new EventEmitter();
 
   yearOffset: number = 10;

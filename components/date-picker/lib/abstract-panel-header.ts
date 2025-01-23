@@ -21,7 +21,6 @@ import { NzDateMode, NzPanelChangeType } from '../standard-types';
 import { PanelSelector } from './interface';
 
 @Directive()
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   prefixCls: string = `ant-picker-header`;
   selectors: PanelSelector[] = [];
@@ -29,10 +28,10 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
 
   @Input() value!: CandyDate;
   @Input() locale!: NzCalendarI18nInterface;
-  @Input({transform: booleanAttribute}) showSuperPreBtn: boolean = true;
-  @Input({transform: booleanAttribute}) showSuperNextBtn: boolean = true;
-  @Input({transform: booleanAttribute}) showPreBtn: boolean = true;
-  @Input({transform: booleanAttribute}) showNextBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showSuperPreBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showSuperNextBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showPreBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showNextBtn: boolean = true;
 
   @Output() readonly panelChange = new EventEmitter<NzPanelChangeType>();
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
@@ -81,7 +80,7 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   }
 
   changeMode(mode: NzDateMode): void {
-    this.panelChange.emit({mode, date: this.value.nativeDate});
+    this.panelChange.emit({ mode, date: this.value.nativeDate });
   }
 
   private render(): void {

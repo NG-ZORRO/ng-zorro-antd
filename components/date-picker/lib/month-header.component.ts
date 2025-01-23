@@ -17,7 +17,7 @@ import { transCompatFormat } from './util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'month-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'monthHeader',
-  templateUrl: './abstract-panel-header.html',
+  templateUrl: './abstract-panel-header.html'
 })
 export class MonthHeaderComponent extends AbstractPanelHeader {
   override mode: NzDateMode = 'month';

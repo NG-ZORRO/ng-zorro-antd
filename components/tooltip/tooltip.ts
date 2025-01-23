@@ -39,6 +39,7 @@ import {
   }
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
+  /* eslint-disable @angular-eslint/no-input-rename, @angular-eslint/no-output-rename */
   @Input('nzTooltipTitle') override title?: NzTSType | null;
   @Input('nzTooltipTitleContext') titleContext?: object | null = null;
   @Input('nz-tooltip') override directiveTitle?: NzTSType | null;
@@ -58,7 +59,6 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   override content?: NzTSType | null = null;
   override overlayClickable?: boolean;
 
-  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('nzTooltipVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
 
   constructor() {

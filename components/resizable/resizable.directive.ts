@@ -141,6 +141,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     }
 
     maxWidth = ensureInBounds(this.nzMaxWidth!, boundWidth);
+    // eslint-disable-next-line prefer-const
     maxHeight = ensureInBounds(this.nzMaxHeight!, boundHeight);
 
     if (this.nzGridColumnCount !== -1) {

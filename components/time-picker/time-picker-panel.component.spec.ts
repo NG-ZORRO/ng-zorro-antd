@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -67,7 +72,7 @@ describe('time-picker-panel', () => {
     //   expect(listOfSelectedLi[2].innerText).toBe('10');
     // }));
     it('should select default open value on list click', fakeAsync(() => {
-      let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
+      const listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
       expect(listOfSelectedLi[0].innerText).toBe('10');
       expect(listOfSelectedLi[1].innerText).toBe('11');
       expect(listOfSelectedLi[2].innerText).toBe('12');

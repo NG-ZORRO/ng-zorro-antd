@@ -55,7 +55,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
     return this.selectedValue?.length > 0 || this.hoverValue?.length > 0;
   }
 
-  getClassMap(cell: DateCell): { [key: string]: boolean } {
+  getClassMap(cell: DateCell): Record<string, boolean> {
     return {
       [`ant-picker-cell`]: true,
       [`ant-picker-cell-in-view`]: true,

@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
@@ -918,9 +923,7 @@ describe('NzRangePickerComponent', () => {
       openPickerByClickTrigger();
       expect(queryFromOverlay('.ant-picker-ranges .ant-picker-preset')).toBeDefined();
 
-      let selector: HTMLElement;
-
-      selector = queryFromOverlay('.ant-picker-ranges li.ant-picker-preset:first-child');
+      const selector = queryFromOverlay('.ant-picker-ranges li.ant-picker-preset:first-child');
       dispatchMouseEvent(selector, 'mouseenter');
       fixture.detectChanges();
       expect(

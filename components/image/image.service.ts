@@ -16,11 +16,13 @@ import { NzImagePreviewRef } from './image-preview-ref';
 import { NzImagePreviewComponent } from './image-preview.component';
 import { NzImageScaleStep, NzImageUrl } from './image.directive';
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface NzImageService {
   preview(images: NzImage[], option?: NzImagePreviewOptions): NzImagePreviewRef;
 }
 
 @Injectable()
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class NzImageService {
   constructor(
     private overlay: Overlay,

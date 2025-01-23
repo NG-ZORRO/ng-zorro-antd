@@ -52,7 +52,6 @@ import { NZ_CHECKBOX_GROUP } from './tokens';
         #inputElement
         type="checkbox"
         class="ant-checkbox-input"
-        [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
         [attr.id]="nzId"
         [attr.name]="nzName || checkboxGroupComponent?.nzName()"
         [checked]="nzChecked"

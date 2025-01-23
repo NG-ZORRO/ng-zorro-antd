@@ -19,7 +19,7 @@
     "stage-release": "ts-node --project scripts/release/tsconfig.json scripts/release/release.ts",
     "gulp": "gulp",
     "lint": "npm run lint:script && npm run lint:style",
-    "lint:script": "eslint --cache -c eslint.config.mjs",
+    "lint:script": "eslint --cache",
     "lint:style": "stylelint components/**/*.less",
     "lint:fix": "npm run lint-fix:script && npm run lint-fix:style",
     "lint-fix:script": "npm run lint:script -- --fix",

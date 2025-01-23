@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, inject, OnDestroy } from '@angular/core';
 import { ComponentFixture, TestBed, inject as testingInject } from '@angular/core/testing';
 import { Subscription } from 'rxjs';

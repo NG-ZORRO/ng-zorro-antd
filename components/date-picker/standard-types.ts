@@ -50,6 +50,4 @@ export interface SupportTimeOptions {
   nzUse12Hours?: boolean;
 }
 
-export interface PresetRanges {
-  [key: string]: Date[] | (() => Date[]);
-}
+export type PresetRanges = Record<string, Date[] | (() => Date[])>;

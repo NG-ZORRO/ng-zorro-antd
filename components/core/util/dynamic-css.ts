@@ -84,7 +84,7 @@ export function updateCSS(css: string, key: string, options: Options = {}): HTML
   // Get real parent
   if (!containerCache.has(container)) {
     const placeholderStyle = injectCSS('', options);
-    // @ts-ignore
+    // @ts-expect-error TODO: safe type
     const { parentNode } = placeholderStyle;
     containerCache.set(container, parentNode);
     parentNode.removeChild(placeholderStyle);

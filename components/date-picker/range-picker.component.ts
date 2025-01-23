@@ -11,7 +11,6 @@ import { NzDatePickerComponent } from './date-picker.component';
   selector: 'nz-range-picker',
   exportAs: 'nzRangePicker'
 })
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class NzRangePickerComponent {
   datePicker = inject(NzDatePickerComponent, { host: true });
 

@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
@@ -9,9 +14,9 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
 import { NzRadioGroupComponent as RadioGroup } from '../radio/index';
 import { NzSelectComponent as Select } from '../select/select.component';
-import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
 
 registerLocaleData(zh);
 

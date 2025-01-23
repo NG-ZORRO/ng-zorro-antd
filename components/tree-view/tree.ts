@@ -32,6 +32,7 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
   dir: Direction = 'ltr';
   _dataSourceChanged = new Subject<void>();
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('nzTreeControl') override treeControl?: TreeControl<T, NzSafeAny> = undefined;
   @Input('nzDataSource')
   override get dataSource(): DataSource<T> | Observable<T[]> | T[] {

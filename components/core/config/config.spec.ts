@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -106,7 +111,7 @@ describe('nz global config', () => {
     // It would fail silently. User cannot input a component name wrong - TypeScript comes to help!
     // it('should raise error when the component with given name is not defined', () => {
     //   expect(() => {
-    // eslint-disable-line  @typescript-eslint/no-explicit-any
+
     //   }).toThrowError();
     // });
   });

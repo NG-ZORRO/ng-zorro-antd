@@ -40,7 +40,7 @@ export interface EmbeddedProperty {
   }
 })
 export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  private classMap: { [key: string]: boolean } = {};
+  private classMap: Record<string, boolean> = {};
   private destroy$ = new Subject<boolean>();
   hostFlexStyle: string | null = null;
   dir: Direction = 'ltr';

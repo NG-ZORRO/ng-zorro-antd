@@ -88,8 +88,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
-  @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly nzPageSizeChange = new EventEmitter<number>();
+  @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';

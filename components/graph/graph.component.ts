@@ -153,14 +153,14 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
 
   @Output() readonly nzGraphInitialized = new EventEmitter<NzGraphComponent>();
   @Output() readonly nzGraphRendered = new EventEmitter<NzGraphComponent>();
-  @Output() readonly nzNodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
+  @Output() readonly nzNodeClick = new EventEmitter<NzGraphNode | NzGraphGroupNode>();
 
   requestId: number = -1;
   transformStyle = '';
   graphRenderedSubject$ = new ReplaySubject<void>(1);
   renderInfo: NzGraphGroupNode = { labelHeight: 0 } as NzGraphGroupNode;
-  mapOfNodeAttr: { [key: string]: NzGraphNodeDef } = {};
-  mapOfEdgeAttr: { [key: string]: NzGraphEdgeDef } = {};
+  mapOfNodeAttr: Record<string, NzGraphNodeDef> = {};
+  mapOfEdgeAttr: Record<string, NzGraphEdgeDef> = {};
   zoom = 1;
 
   public readonly typedNodes = nzTypeDefinition<Array<NzGraphNode | NzGraphGroupNode>>();

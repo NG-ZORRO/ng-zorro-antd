@@ -11,7 +11,6 @@ import { NzDatePickerComponent } from './date-picker.component';
   selector: 'nz-week-picker',
   exportAs: 'nzWeekPicker'
 })
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class NzWeekPickerComponent {
   datePicker = inject(NzDatePickerComponent, { host: true });
 

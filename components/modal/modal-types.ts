@@ -15,9 +15,7 @@ export type ModalTypes = 'default' | 'confirm'; // Different modal styles we hav
 
 export type ConfirmType = 'confirm' | 'info' | 'success' | 'error' | 'warning'; // Subtypes of Confirm Modal
 
-export interface StyleObjectLike {
-  [key: string]: string;
-}
+export type StyleObjectLike = Record<string, string>;
 
 const noopFun = () => void 0;
 

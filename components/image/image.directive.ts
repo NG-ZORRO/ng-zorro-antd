@@ -52,8 +52,8 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   dir?: Direction;
   backLoadImage!: HTMLImageElement;
   status: ImageStatusType = 'normal';
-  private backLoadDestroy$: Subject<void> = new Subject();
-  private destroy$: Subject<void> = new Subject();
+  private backLoadDestroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
   private document: Document = inject(DOCUMENT);
   private parentGroup = inject(NzImageGroupComponent, { optional: true });
 

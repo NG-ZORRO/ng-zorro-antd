@@ -514,7 +514,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   displayedNames: Array<{ name: string; icons: string[] }> = [];
   categoryNames: string[] = [];
   currentTheme: ThemeType = 'outline';
-  localeObj: { [key: string]: string } = locale;
+  localeObj: Record<string, string> = locale;
   searchingString = '';
 
   error = false;
@@ -641,11 +641,13 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     const items = event.clipboardData && event.clipboardData.items;
     let file = null;
     if (items && items.length) {
-      for (let i = 0; i < items.length; i += 1) {
+      let i = 0;
+      while (i < items.length) {
         if (items[i].type.indexOf('image') !== -1) {
           file = items[i].getAsFile();
           break;
         }
+        i++;
       }
     }
     if (file) this.uploadFile(file);
@@ -688,7 +690,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       }));
       this.loading = false;
       this.error = false;
-    } catch (err) {
+    } catch {
       this.loading = false;
       this.error = true;
     }

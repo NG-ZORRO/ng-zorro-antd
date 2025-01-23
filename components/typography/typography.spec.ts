@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
@@ -582,9 +587,7 @@ export class NzTestTypographyComponent {}
 export class NzTestTypographyCopyComponent {
   tooltips: [string, string] | null = ['click here', 'coped'];
   icons: [string, string] = ['meh', 'smile'];
-  onCopy(_text: string): void {
-    // noop
-  }
+  onCopy(_text: string): void {}
 }
 
 @Component({

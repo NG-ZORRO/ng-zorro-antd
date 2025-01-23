@@ -47,7 +47,7 @@ export class Color extends TinyColor {
       }
     }
 
-    const { v, ...resets } = hsv;
+    const { v: _, ...resets } = hsv;
     return {
       ...resets,
       b: hsv.v

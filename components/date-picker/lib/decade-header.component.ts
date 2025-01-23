@@ -14,14 +14,12 @@ import { PanelSelector } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'decade-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'decadeHeader',
-  templateUrl: './abstract-panel-header.html',
-  })
+  templateUrl: './abstract-panel-header.html'
+})
 export class DecadeHeaderComponent extends AbstractPanelHeader {
-  override previous(): void {
-  }
+  override previous(): void {}
 
-  override next(): void {
-  }
+  override next(): void {}
 
   override mode: NzDateMode = 'decade';
 
@@ -46,9 +44,7 @@ export class DecadeHeaderComponent extends AbstractPanelHeader {
       {
         className: `${this.prefixCls}-decade-btn`,
         title: '',
-        onClick: () => {
-          // noop
-        },
+        onClick: () => {},
         label: `${this.startYear}-${this.endYear}`
       }
     ];

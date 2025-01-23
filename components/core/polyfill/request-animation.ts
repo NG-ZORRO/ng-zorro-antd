@@ -5,7 +5,6 @@
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-/* eslint-disable no-invalid-this */
 const availablePrefixes = ['moz', 'ms', 'webkit'];
 
 function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
@@ -47,10 +46,10 @@ export function cancelRequestAnimationFrame(id: number): NzSafeAny {
 
   return prefix
     ? (
-        (window as NzSafeAny)[`${prefix}CancelAnimationFrame`] ||
-        (window as NzSafeAny)[`${prefix}CancelRequestAnimationFrame`]
+        ((window as NzSafeAny)[`${prefix}CancelAnimationFrame`] as typeof cancelAnimationFrame) ||
+        ((window as NzSafeAny)[`${prefix}CancelRequestAnimationFrame`] as typeof cancelRequestAnimationFrame)
       )
-        // @ts-ignore
+        // @ts-expect-error: this
         .call(this, id)
     : clearTimeout(id);
 }

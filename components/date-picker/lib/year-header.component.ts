@@ -14,8 +14,8 @@ import { PanelSelector } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'year-header', // eslint-disable-line @angular-eslint/component-selector
   exportAs: 'yearHeader',
-  templateUrl: './abstract-panel-header.html',
-  })
+  templateUrl: './abstract-panel-header.html'
+})
 export class YearHeaderComponent extends AbstractPanelHeader {
   override mode: NzDateMode = 'year';
 

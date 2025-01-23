@@ -109,7 +109,7 @@ export function getCaretCoordinates(
       // Special case for <input>s because text is rendered centered and line height may be != height
       style.lineHeight = computed.height;
     } else {
-      // @ts-ignore
+      // @ts-expect-error TODO: safe type
       style[prop] = computed[prop];
     }
   });
