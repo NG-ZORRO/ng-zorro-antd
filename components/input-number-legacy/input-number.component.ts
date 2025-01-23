@@ -81,6 +81,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
         autocomplete="off"
         class="ant-input-number-input"
         [attr.id]="nzId"
+        [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
         [disabled]="nzDisabled"
         [attr.min]="nzMin"
         [attr.max]="nzMax"

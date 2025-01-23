@@ -14,10 +14,10 @@ import { NzConfigService } from './config.service';
 
 @Component({
   imports: [NzButtonModule],
-  template: `<button nz-button nzType="primary" [nzSize]="size || 'default'">Global Config</button>`
+  template: `<button nz-button nzType="primary" [nzSize]="size">Global Config</button>`
 })
 export class NzGlobalConfigTestBasicComponent {
-  size?: NzButtonSize;
+  size!: NzButtonSize;
 
   constructor(public nzConfigService: NzConfigService) {}
 }
