@@ -20,11 +20,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { fromEvent, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -156,7 +157,7 @@ export class NzUploadListComponent implements OnChanges {
     const img = new Image();
     const objectUrl = URL.createObjectURL(file);
     img.src = objectUrl;
-    return fromEvent(img, 'load').pipe(
+    return fromEventOutsideAngular(img, 'load').pipe(
       map(() => {
         const { width, height } = img;
 
@@ -252,7 +253,6 @@ export class NzUploadListComponent implements OnChanges {
     if (this.onRemove) {
       this.onRemove(file);
     }
-    return;
   }
 
   handleDownload(file: NzUploadFile): void {

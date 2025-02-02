@@ -164,12 +164,14 @@ export class NzTabScrollListDirective implements OnInit {
   };
 
   onOffset(x: number, y: number, event: Event): void {
-    this.ngZone.run(() => {
-      this.offsetChange.emit({
-        x,
-        y,
-        event
+    if (this.offsetChange.observers.length) {
+      this.ngZone.run(() => {
+        this.offsetChange.emit({
+          x,
+          y,
+          event
+        });
       });
-    });
+    }
   }
 }
