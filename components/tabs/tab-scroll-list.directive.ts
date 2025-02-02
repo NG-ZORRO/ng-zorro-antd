@@ -3,8 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
-import { fromEvent, Observable, Subscription } from 'rxjs';
+import { DestroyRef, Directive, ElementRef, EventEmitter, inject, NgZone, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
+
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import {
   NzTabScrollEvent,
@@ -21,7 +24,7 @@ const SPEED_OFF_MULTIPLE = 0.995 ** REFRESH_INTERVAL;
 @Directive({
   selector: '[nzTabScrollList]'
 })
-export class NzTabScrollListDirective implements OnInit, OnDestroy {
+export class NzTabScrollListDirective implements OnInit {
   lastWheelDirection: 'x' | 'y' | null = null;
   lastWheelTimestamp = 0;
   lastTimestamp = 0;
@@ -32,10 +35,10 @@ export class NzTabScrollListDirective implements OnInit, OnDestroy {
   lastOffset: NzTabScrollListOffset | null = null;
   motion = -1;
 
-  unsubscribe: () => void = () => void 0;
-
   @Output() readonly offsetChange = new EventEmitter<NzTabScrollListOffsetEvent>();
   @Output() readonly tabScroll = new EventEmitter<NzTabScrollEvent>();
+
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private ngZone: NgZone,
@@ -43,32 +46,25 @@ export class NzTabScrollListDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.unsubscribe = this.ngZone.runOutsideAngular(() => {
-      const el = this.elementRef.nativeElement;
+    const el = this.elementRef.nativeElement;
 
-      const wheel$ = fromEvent<WheelEvent>(el, 'wheel');
-      const touchstart$ = fromEvent<TouchEvent>(el, 'touchstart');
-      const touchmove$ = fromEvent<TouchEvent>(el, 'touchmove');
-      const touchend$ = fromEvent<TouchEvent>(el, 'touchend');
+    const wheel$ = fromEventOutsideAngular<WheelEvent>(el, 'wheel');
+    const touchstart$ = fromEventOutsideAngular<TouchEvent>(el, 'touchstart');
+    const touchmove$ = fromEventOutsideAngular<TouchEvent>(el, 'touchmove');
+    const touchend$ = fromEventOutsideAngular<TouchEvent>(el, 'touchend');
 
-      const subscription = new Subscription();
-      subscription.add(this.subscribeWrap('wheel', wheel$, this.onWheel));
-      subscription.add(this.subscribeWrap('touchstart', touchstart$, this.onTouchStart));
-      subscription.add(this.subscribeWrap('touchmove', touchmove$, this.onTouchMove));
-      subscription.add(this.subscribeWrap('touchend', touchend$, this.onTouchEnd));
-
-      return () => {
-        subscription.unsubscribe();
-      };
-    });
+    this.subscribeWrap('wheel', wheel$, this.onWheel);
+    this.subscribeWrap('touchstart', touchstart$, this.onTouchStart);
+    this.subscribeWrap('touchmove', touchmove$, this.onTouchMove);
+    this.subscribeWrap('touchend', touchend$, this.onTouchEnd);
   }
 
   subscribeWrap<T extends NzTabScrollEvent['event']>(
     type: NzTabScrollEvent['type'],
     observable: Observable<T>,
     handler: NzTabScrollEventHandlerFun<T>
-  ): Subscription {
-    return observable.subscribe(event => {
+  ): void {
+    observable.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
       this.tabScroll.emit({
         type,
         event
@@ -173,16 +169,14 @@ export class NzTabScrollListDirective implements OnInit, OnDestroy {
   };
 
   onOffset(x: number, y: number, event: Event): void {
-    this.ngZone.run(() => {
-      this.offsetChange.emit({
-        x,
-        y,
-        event
+    if (this.offsetChange.observed) {
+      this.ngZone.run(() => {
+        this.offsetChange.emit({
+          x,
+          y,
+          event
+        });
       });
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe();
+    }
   }
 }
