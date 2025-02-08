@@ -1,7 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { type NzNotificationComponent, NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
@@ -24,7 +24,10 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
   ]
 })
 export class NzDemoNotificationTemplateComponent {
-  @ViewChild(TemplateRef, { static: false }) template?: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: false }) template?: TemplateRef<{
+    $implicit: NzNotificationComponent;
+    data: Array<{ name: string; color: string }>;
+  }>;
 
   constructor(private notificationService: NzNotificationService) {}
 

@@ -75,7 +75,12 @@ import { NzNotificationData } from './typings';
                 </ng-container>
               </div>
               <div class="ant-notification-notice-description">
-                <ng-container *nzStringTemplateOutlet="instance.content">
+                <ng-container
+                  *nzStringTemplateOutlet="
+                    instance.content;
+                    context: { $implicit: this, data: instance.options?.nzData }
+                  "
+                >
                   <div [innerHTML]="instance.content"></div>
                 </ng-container>
               </div>

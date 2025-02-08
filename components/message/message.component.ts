@@ -55,7 +55,9 @@ import { NzMessageData } from './typings';
               <nz-icon nzType="loading" />
             }
           }
-          <ng-container *nzStringTemplateOutlet="instance.content">
+          <ng-container
+            *nzStringTemplateOutlet="instance.content; context: { $implicit: this, data: instance.options?.nzData }"
+          >
             <span [innerHTML]="instance.content"></span>
           </ng-container>
         </div>

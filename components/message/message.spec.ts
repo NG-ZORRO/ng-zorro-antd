@@ -11,6 +11,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { NzConfigService, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
+import { NzMessageComponent } from './message.component';
 import { NzMessageService } from './message.service';
 
 describe('message', () => {
@@ -91,11 +92,11 @@ describe('message', () => {
   });
 
   it('should support template', fakeAsync(() => {
-    messageService.info(testComponent.template);
+    messageService.info(testComponent.template, { nzData: 'from template' });
     fixture.detectChanges();
     overlayContainerElement = overlayContainer.getContainerElement();
 
-    expect(overlayContainerElement.textContent).toContain('Content in template');
+    expect(overlayContainerElement.textContent).toContain('Content in templatefrom template');
     tick(10000);
   }));
 
@@ -210,8 +211,11 @@ describe('message', () => {
 });
 
 @Component({
-  template: `<ng-template #contentTemplate>Content in template</ng-template>`
+  template: ` <ng-template #contentTemplate let-data="data">Content in template{{ data }}</ng-template>`
 })
 export class NzTestMessageComponent {
-  @ViewChild('contentTemplate', { static: true }) template!: TemplateRef<void>;
+  @ViewChild('contentTemplate', { static: true }) template!: TemplateRef<{
+    $implicit: NzMessageComponent;
+    data: string;
+  }>;
 }

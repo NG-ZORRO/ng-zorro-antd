@@ -12,13 +12,17 @@ import { NzConfigService, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
+import { NzNotificationComponent } from './notification.component';
 import { NzNotificationService } from './notification.service';
 
 @Component({
   template: `<ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>`
 })
 export class NzTestNotificationComponent {
-  @ViewChild(TemplateRef, { static: true }) demoTemplateRef!: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: true }) demoTemplateRef!: TemplateRef<{
+    $implicit: NzNotificationComponent;
+    data: string;
+  }>;
 }
 
 describe('NzNotification', () => {
@@ -69,8 +73,28 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-success')).not.toBeNull();
   });
 
+  it('should open a message box success with custom template and data', () => {
+    const template = fixture.componentInstance.demoTemplateRef;
+    notificationService.success('test-title', template, { nzData: 'SUCCESS' });
+    fixture.detectChanges();
+
+    overlayContainerElement = overlayContainer.getContainerElement();
+    expect(overlayContainerElement.textContent).toContain('SUCCESS');
+    expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-success')).not.toBeNull();
+  });
+
   it('should open a message box with error', () => {
     notificationService.error('test-title', 'ERROR');
+    fixture.detectChanges();
+
+    overlayContainerElement = overlayContainer.getContainerElement();
+    expect(overlayContainerElement.textContent).toContain('ERROR');
+    expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-error')).not.toBeNull();
+  });
+
+  it('should open a message box error with custom template and data', () => {
+    const template = fixture.componentInstance.demoTemplateRef;
+    notificationService.error('test-title', template, { nzData: 'ERROR' });
     fixture.detectChanges();
 
     overlayContainerElement = overlayContainer.getContainerElement();
@@ -87,6 +111,16 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-warning')).not.toBeNull();
   });
 
+  it('should open a message box warning with custom template and data', () => {
+    const template = fixture.componentInstance.demoTemplateRef;
+    notificationService.warning('test-title', template, { nzData: 'WARNING' });
+    fixture.detectChanges();
+
+    overlayContainerElement = overlayContainer.getContainerElement();
+    expect(overlayContainerElement.textContent).toContain('WARNING');
+    expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-warning')).not.toBeNull();
+  });
+
   it('should open a message box with info', () => {
     notificationService.info('test-title', 'INFO');
     fixture.detectChanges();
@@ -96,8 +130,28 @@ describe('NzNotification', () => {
     expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-info')).not.toBeNull();
   });
 
+  it('should open a message box info with custom template and data', () => {
+    const template = fixture.componentInstance.demoTemplateRef;
+    notificationService.info('test-title', template, { nzData: 'INFO' });
+    fixture.detectChanges();
+
+    overlayContainerElement = overlayContainer.getContainerElement();
+    expect(overlayContainerElement.textContent).toContain('INFO');
+    expect(overlayContainerElement.querySelector('.ant-notification-notice-icon-info')).not.toBeNull();
+  });
+
   it('should open a message box with blank', () => {
     notificationService.blank('test-title', 'BLANK');
+    fixture.detectChanges();
+
+    overlayContainerElement = overlayContainer.getContainerElement();
+    expect(overlayContainerElement.textContent).toContain('BLANK');
+    expect(overlayContainerElement.querySelector('.ant-notification-notice-icon')).toBeNull();
+  });
+
+  it('should open a message box blank with custom template and data', () => {
+    const template = fixture.componentInstance.demoTemplateRef;
+    notificationService.blank('test-title', template, { nzData: 'BLANK' });
     fixture.detectChanges();
 
     overlayContainerElement = overlayContainer.getContainerElement();

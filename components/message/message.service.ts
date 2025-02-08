@@ -6,11 +6,9 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { Injectable, Injector } from '@angular/core';
 
-import { NzTSType } from 'ng-zorro-antd/core/types';
-
 import { NzMNService } from './base';
 import { NzMessageContainerComponent } from './message-container.component';
-import { NzMessageData, NzMessageDataOptions, NzMessageRef, NzMessageType } from './typings';
+import { NzMessageContentType, NzMessageData, NzMessageDataOptions, NzMessageRef, NzMessageType } from './typings';
 
 @Injectable({
   providedIn: 'root'
@@ -22,27 +20,27 @@ export class NzMessageService extends NzMNService<NzMessageContainerComponent> {
     super(overlay, injector);
   }
 
-  success(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
+  success(content: NzMessageContentType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'success', content }, options);
   }
 
-  error(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
+  error(content: NzMessageContentType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'error', content }, options);
   }
 
-  info(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
+  info(content: NzMessageContentType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'info', content }, options);
   }
 
-  warning(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
+  warning(content: NzMessageContentType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'warning', content }, options);
   }
 
-  loading(content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
+  loading(content: NzMessageContentType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'loading', content }, options);
   }
 
-  create(type: NzMessageType | string, content: NzTSType, options?: NzMessageDataOptions): NzMessageRef {
+  create(type: NzMessageType | string, content: NzMessageContentType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type, content }, options);
   }
 
