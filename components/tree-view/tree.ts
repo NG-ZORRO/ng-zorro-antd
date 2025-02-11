@@ -27,13 +27,18 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 @Component({
   template: ''
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
-export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
+/* eslint-disable @angular-eslint/no-input-rename, @angular-eslint/component-class-suffix */
+export class NzTreeView<T, K = T> extends CdkTree<T, K> implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
   dir: Direction = 'ltr';
   _dataSourceChanged = new Subject<void>();
-  // eslint-disable-next-line @angular-eslint/no-input-rename
+  dataNodes: T[] = [];
+  /**
+   * @deprecated use `nzLevelAccessor` or `nzChildrenAccessor` instead
+   */
   @Input('nzTreeControl') override treeControl?: TreeControl<T, NzSafeAny> = undefined;
+  @Input('nzLevelAccessor') override levelAccessor?: (dataNode: T) => number = undefined;
+  @Input('nzChildrenAccessor') override childrenAccessor?: (dataNode: T) => T[] = undefined;
   @Input('nzDataSource')
   override get dataSource(): DataSource<T> | Observable<T[]> | T[] {
     return super.dataSource;
