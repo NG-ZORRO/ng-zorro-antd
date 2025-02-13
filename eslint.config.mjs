@@ -22,8 +22,7 @@ export default tseslint.config(
       'dist/',
       'scripts/site/{_site,template}/**/*',
       'junit/',
-      'coverage-report/',
-      'components/**/demo/**/*'
+      'coverage-report/'
     ]
   },
   {
@@ -185,6 +184,12 @@ export default tseslint.config(
       'prefer-object-spread': 'error',
       'prefer-template': 'error',
       yoda: 'error'
+    }
+  },
+  {
+    files: ['components/**/demo/*.ts'],
+    rules: {
+      'header/header': 'off'
     }
   },
   {

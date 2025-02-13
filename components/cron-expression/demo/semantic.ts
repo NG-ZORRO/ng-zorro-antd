@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 import { parseExpression } from 'cron-parser';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
 
 @Component({
@@ -27,7 +26,7 @@ export class NzDemoCronExpressionSemanticComponent {
     try {
       const interval = parseExpression(value);
       this.semantic = interval.next().toDate();
-    } catch (err: NzSafeAny) {
+    } catch {
       return;
     }
   }
