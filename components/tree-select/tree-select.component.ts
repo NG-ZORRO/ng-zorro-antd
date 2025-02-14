@@ -566,9 +566,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   closeDropDown(): void {
-    if (!this.isDestroy) {
+    Promise.resolve().then(() => {
       this.onTouched();
-    }
+    });
     this.nzOpen = false;
     this.inputValue = '';
     this.isNotFound = false;
