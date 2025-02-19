@@ -6,10 +6,12 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { Injectable, Injector, TemplateRef } from '@angular/core';
 
+import type { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzMNService } from 'ng-zorro-antd/message';
 
 import { NzNotificationContainerComponent } from './notification-container.component';
-import { NzNotificationData, NzNotificationDataOptions, NzNotificationRef } from './typings';
+import type { NzNotificationComponent } from './notification.component';
+import { NzNotificationContentType, NzNotificationData, NzNotificationDataOptions, NzNotificationRef } from './typings';
 
 let notificationId = 0;
 
@@ -25,7 +27,7 @@ export class NzNotificationService extends NzMNService<NzNotificationContainerCo
 
   success(
     title: string | TemplateRef<void>,
-    content: string | TemplateRef<void>,
+    content: NzNotificationContentType,
     options?: NzNotificationDataOptions
   ): NzNotificationRef {
     return this.create('success', title, content, options);
@@ -33,7 +35,7 @@ export class NzNotificationService extends NzMNService<NzNotificationContainerCo
 
   error(
     title: string | TemplateRef<void>,
-    content: string | TemplateRef<void>,
+    content: NzNotificationContentType,
     options?: NzNotificationDataOptions
   ): NzNotificationRef {
     return this.create('error', title, content, options);
@@ -41,7 +43,7 @@ export class NzNotificationService extends NzMNService<NzNotificationContainerCo
 
   info(
     title: string | TemplateRef<void>,
-    content: string | TemplateRef<void>,
+    content: NzNotificationContentType,
     options?: NzNotificationDataOptions
   ): NzNotificationRef {
     return this.create('info', title, content, options);
@@ -49,7 +51,7 @@ export class NzNotificationService extends NzMNService<NzNotificationContainerCo
 
   warning(
     title: string | TemplateRef<void>,
-    content: string | TemplateRef<void>,
+    content: NzNotificationContentType,
     options?: NzNotificationDataOptions
   ): NzNotificationRef {
     return this.create('warning', title, content, options);
@@ -57,7 +59,7 @@ export class NzNotificationService extends NzMNService<NzNotificationContainerCo
 
   blank(
     title: string | TemplateRef<void>,
-    content: string | TemplateRef<void>,
+    content: NzNotificationContentType,
     options?: NzNotificationDataOptions
   ): NzNotificationRef {
     return this.create('blank', title, content, options);
@@ -66,13 +68,19 @@ export class NzNotificationService extends NzMNService<NzNotificationContainerCo
   create(
     type: 'success' | 'info' | 'warning' | 'error' | 'blank' | string,
     title: string | TemplateRef<void>,
-    content: string | TemplateRef<void>,
+    content: NzNotificationContentType,
     options?: NzNotificationDataOptions
   ): NzNotificationRef {
     return this.createInstance({ type, title, content }, options);
   }
 
-  template(template: TemplateRef<{}>, options?: NzNotificationDataOptions): NzNotificationRef {
+  template(
+    template: TemplateRef<{
+      $implicit: NzNotificationComponent;
+      data: NzSafeAny;
+    }>,
+    options?: NzNotificationDataOptions
+  ): NzNotificationRef {
     return this.createInstance({ template }, options);
   }
 

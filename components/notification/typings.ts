@@ -6,11 +6,18 @@
 import { TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NgClassInterface, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import type { NzNotificationComponent } from './notification.component';
 
 export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'top' | 'bottom';
+
+export type NzNotificationContentType =
+  | string
+  | TemplateRef<void | {
+      $implicit: NzNotificationComponent;
+      data: NzSafeAny;
+    }>;
 
 export interface NzNotificationDataOptions<T = {}> {
   nzKey?: string;
@@ -27,7 +34,7 @@ export interface NzNotificationDataOptions<T = {}> {
 
 export interface NzNotificationData {
   title?: string | TemplateRef<void>;
-  content?: string | TemplateRef<void>;
+  content?: NzNotificationContentType;
   createdAt?: Date;
   messageId?: string;
   options?: NzNotificationDataOptions;
