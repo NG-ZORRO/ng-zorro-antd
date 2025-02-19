@@ -1,11 +1,16 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, DebugElement, TemplateRef } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzCheckListComponent } from './check-list.component';
 import { NzCheckListModule } from './check-list.module';
@@ -26,7 +31,7 @@ describe('check-list', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideHttpClientTesting()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting()]
     });
     fixture = TestBed.createComponent(NzTestCheckListBasicComponent);
     fixture.detectChanges();
@@ -47,12 +52,6 @@ describe('check-list', () => {
     expect(resultEl.nativeElement.classList).toContain('ant-check-list');
     expect(!!resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-icon')).toBeTrue();
     expect(!!resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-description')).toBeTrue();
-  });
-
-  it('nzShow', () => {
-    testComponent.show = false;
-    fixture.detectChanges();
-    expect(resultEl.nativeElement.classList).toContain('ant-check-list-hide');
   });
 
   it('nzVisible', fakeAsync(() => {
@@ -152,7 +151,7 @@ describe('check-list', () => {
     fixture.detectChanges();
     waitingForTooltipToggling();
     const dom = overlayContainerElement.querySelector('.ant-check-list-header-finish .ant-btn');
-    if (!!dom) {
+    if (dom) {
       dispatchMouseEvent(dom, 'click');
       waitingForTooltipToggling();
       expect(!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
@@ -164,7 +163,7 @@ describe('check-list', () => {
     fixture.detectChanges();
     waitingForTooltipToggling();
     const dom = overlayContainerElement.querySelector('.ant-check-list-header-extra .anticon');
-    if (!!dom) {
+    if (dom) {
       dispatchMouseEvent(dom, 'click');
       waitingForTooltipToggling();
       expect(!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
@@ -176,7 +175,7 @@ describe('check-list', () => {
     fixture.detectChanges();
     waitingForTooltipToggling();
     const dom = overlayContainerElement.querySelector('.ant-check-list-footer');
-    if (!!dom) {
+    if (dom) {
       dispatchMouseEvent(dom, 'click');
       waitingForTooltipToggling();
       expect(!!overlayContainerElement.querySelector('.ant-check-list-close-check')).toBeTrue();
@@ -193,35 +192,35 @@ describe('check-list', () => {
     testComponent.visible = true;
     fixture.detectChanges();
     waitingForTooltipToggling();
-    const dom = overlayContainerElement.querySelector('.ant-check-list-footer');
-    if (!!dom) {
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      expect(!!overlayContainerElement.querySelector('.ant-check-list-close-check')).toBeTrue();
-      expect(
-        !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-title')
-      ).toBeTrue();
-      expect(
-        !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-action')
-      ).toBeTrue();
-      expect(
-        !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-other')
-      ).toBeTrue();
-      const btnDom = overlayContainerElement.querySelector('.ant-check-list-close-check-action .ant-btn');
-      const labelDom = overlayContainerElement.querySelector('.ant-check-list-close-check-other .ant-checkbox-wrapper');
-      if (btnDom && labelDom) {
-        dispatchMouseEvent(labelDom, 'click');
-        waitingForTooltipToggling();
-        dispatchMouseEvent(btnDom, 'click');
-        waitingForTooltipToggling();
-        expect(!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
-        expect(!overlayContainerElement.querySelector('.ant-check-list')).toBeTrue();
-      }
-    }
+    const footer = overlayContainerElement.querySelector('.ant-check-list-footer');
+    expect(footer).not.toBeNull();
+    dispatchMouseEvent(footer!, 'click');
+    waitingForTooltipToggling();
+
+    expect(!!overlayContainerElement.querySelector('.ant-check-list-close-check')).toBeTrue();
+    expect(
+      !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-title')
+    ).toBeTrue();
+    expect(
+      !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-action')
+    ).toBeTrue();
+    expect(
+      !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-other')
+    ).toBeTrue();
+
+    // close manually
+    const labelEl = overlayContainerElement.querySelector('.ant-check-list-close-check-other .ant-checkbox-wrapper');
+    expect(labelEl).not.toBeNull();
+    dispatchMouseEvent(labelEl!, 'click');
+    waitingForTooltipToggling();
+    const btnEl = overlayContainerElement.querySelector('.ant-check-list-close-check-action .ant-btn-primary');
+    expect(btnEl).not.toBeNull();
+    dispatchMouseEvent(btnEl!, 'click');
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.querySelector('.ant-check-list')).toBeNull();
   }));
 
   it('nzTriggerRender ', () => {
-    testComponent.show = true;
     testComponent.triggerRender = 'Check List';
     fixture.detectChanges();
     expect((resultEl.nativeElement.querySelector('.ant-check-list-button') as HTMLElement).innerText).toBe(
@@ -255,7 +254,6 @@ describe('check-list', () => {
   imports: [NzCheckListModule],
   template: `
     <nz-check-list
-      [nzShow]="show"
       [nzVisible]="visible"
       [nzItems]="items"
       [nzIndex]="index"
@@ -268,7 +266,6 @@ describe('check-list', () => {
   `
 })
 export class NzTestCheckListBasicComponent {
-  show: boolean = true;
   visible: boolean = false;
   items: NzItemProps[] = [];
   index: number = 1;

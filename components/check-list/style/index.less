@@ -31,10 +31,6 @@
   }
 }
 
-.@{check-list-prefix-cls}-hide {
-  display: none;
-}
-
 .@{check-list-prefix-cls}-content {
   display: block;
   width: 303px;
@@ -76,7 +72,8 @@
   .@{check-list-prefix-cls}-progressBar {
     display: flex;
     justify-content: space-between;
-    margin: 0 @margin-sm @margin-md;
+    margin: @margin-sm @margin-md;
+    margin-top: 0;
 
     .@{check-list-prefix-cls}-progressBar-progress {
       flex: auto;
@@ -93,7 +90,8 @@
     align-items: center;
     justify-content: space-between;
     height: 52px;
-    padding: 0 @padding-sm;
+    padding-right: @padding-sm;
+    padding-left: @padding-sm;
     border-radius: 6px;
     cursor: pointer;
 
@@ -199,8 +197,7 @@
     .@{check-list-prefix-cls}-close-check-action {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
-      width: 160px;
+      gap: @margin-xs;
       margin-bottom: @margin-md;
     }
 

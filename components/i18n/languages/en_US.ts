@@ -195,12 +195,12 @@ export default {
   },
   CheckList: {
     checkList: 'Check List',
-    checkListFinish: 'You have successfully completed your to-do list!',
+    checkListFinish: 'You have successfully completed the list!',
     checkListClose: 'Close',
-    checkListFooter: 'No operating instructions required',
-    checkListCheck: 'Do you want to close the action list?',
+    checkListFooter: 'Check list is no longer required',
+    checkListCheck: 'Do you want to close the list?',
     ok: 'OK',
     cancel: 'Cancel',
-    checkListCheckOther: 'No more action checklists needed'
+    checkListCheckOther: 'No longer required to show'
   }
 };
