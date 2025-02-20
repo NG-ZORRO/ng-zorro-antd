@@ -188,5 +188,15 @@ export default {
     expired: '二维码过期',
     refresh: '点击刷新',
     scanned: '已扫描'
+  },
+  CheckList: {
+    checkList: '任务清单',
+    checkListFinish: '你已成功完成任务清单！',
+    checkListClose: '关闭',
+    checkListFooter: '不需要操作指引',
+    checkListCheck: '你要关闭操作清单吗',
+    ok: '确定',
+    cancel: '取消',
+    checkListCheckOther: '以后不再需要操作清单'
   }
 };

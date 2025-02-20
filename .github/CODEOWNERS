@@ -74,6 +74,7 @@ components/color-picker/**                @OriginRing
 components/hash-code/**                   @OriginRing
 components/flex/**                        @ParsaArvanehPA
 components/float-button/**                @OriginRing
+components/check-list/**                  @OriginRing
 
 # The `components/core/*` owners
 components/core/config/**                 @simplejason

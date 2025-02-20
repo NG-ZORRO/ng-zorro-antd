@@ -153,6 +153,17 @@ export interface NzQRCodeI18nInterface {
   scanned: string;
 }
 
+export interface NzCheckListI18nInterface {
+  checkList: string;
+  checkListFinish: string;
+  checkListClose: string;
+  checkListFooter: string;
+  checkListCheck: string;
+  ok: string;
+  cancel: string;
+  checkListCheckOther: string;
+}
+
 export interface NzI18nInterface {
   locale: string;
   Pagination: NzPaginationI18nInterface;
@@ -169,6 +180,7 @@ export interface NzI18nInterface {
   Text?: NzTextI18nInterface;
   CronExpression?: NzCronExpressionI18nInterface;
   QRCode?: NzQRCodeI18nInterface;
+  CheckList?: NzCheckListI18nInterface;
 }
 
 export type DateLocale = Locale;

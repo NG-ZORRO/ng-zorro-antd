@@ -133,6 +133,8 @@
 /components/upload/zh
 /components/water-mark/en
 /components/water-mark/zh
+/components/check-list/en
+/components/check-list/zh
 /components/color-picker/en
 /components/color-picker/zh
 /components/hash-code/en
