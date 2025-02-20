@@ -1,8 +1,8 @@
 ---
 order: 0
 title:
-  zh-CN: 任务清单
-  en-US: CheckList
+  zh-CN: 基本
+  en-US: Basic
 ---
 
 ## zh-CN

@@ -11,7 +11,7 @@ Used to organize the flow of tasks in a project.
 
 ## When To Use
 
-- If the current page business logic is too complex, and with a more mandatory sequential flow control, then you can use this component to help you simplify the process.
+If the current page business logic is too complex, and with a more mandatory sequential flow control, then you can use this component to help you simplify the process.
 
 ```ts
 import { NzCheckListModule } from 'ng-zorro-antd/check-list';
@@ -21,22 +21,28 @@ import { NzCheckListModule } from 'ng-zorro-antd/check-list';
 
 ### nz-check-list
 
-| Property            | Description                                                                  | Type                             | Default | Global Config |
-| ------------------- | ---------------------------------------------------------------------------- |----------------------------------| ------- | ------------- |
-| `[nzShow]`          | show check list                                                              | `boolean`                        | `true`  | -             |
-| `[nzItems]`         | check list elements                                                          | `NzItemProps`                    | `[]`    | -             |
-| `[nzVisible]`       | show/hide check list                                                         | `boolean`                        | `false` | -             |
-| `[nzIndex]`         | Current location                                                             | `number`                         | `1`     | -             |
-| `[nzProgress]`      | show/hide Progress Bar                                                       | `boolean`                        | `true`  | -             |
-| `[nzTriggerRender]` | Rendering template for list floating button                                  | `TemplateRef<void> \| string`    | -       | -             |
-| `[nzTitle]`         | Rendering template for the inventory panel title                             | `TemplateRef<void> \| string`    | -       | -             |
-| `[nzFooter]`        | Rendering template at the bottom of the inventory panel                      | `TemplateRef<void> \| string`    | -       | -             |
-| `(nzHideCallback)`  | Callback for hiding the list, return value: value that is no longer operated | `EventEmitter<boolean>`          | `false` | -             |
+| Property            | Description                                        | Type                          | Default | Global Config |
+|---------------------|----------------------------------------------------|-------------------------------|---------|---------------|
+| `[nzItems]`         | check list elements                                | `NzItemProps`                 | `[]`    | -             |
+| `[nzVisible]`       | show check-list                                    | `boolean`                     | `false` | -             |
+| `[nzIndex]`         | current index                                      | `number`                      | `1`     | -             |
+| `[nzProgress]`      | show progress                                      | `boolean`                     | `true`  | -             |
+| `[nzTriggerRender]` | rendering template for float button                | `TemplateRef<void> \| string` | -       | -             |
+| `[nzTitle]`         | rendering template for the check-list panel title  | `TemplateRef<void> \| string` | -       | -             |
+| `[nzFooter]`        | rendering template for the check-list panel footer | `TemplateRef<void> \| string` | -       | -             |
+| `(nzHide)`          | callback for hiding the check list                 | `EventEmitter<boolean>`       | `false` | -             |
 
-### NzItemProps
+> Value of `(nzHide)` is whether not show the check-list anymore.
+> If the value is `true`, you can store a data in `LocalStorage` to avoid showing the check-list again.
 
-| Property        | Description                                                                                           | Type        | Default |
-| --------------- | ----------------------------------------------------------------------------------------------------- | ----------- | ------- |
-| `[key]`         | The unique key of the current item (if not filled in, description will be used as the key by default) | `string`    | -       |
-| `[description]` | current element description content                                                                   | `string`    | -       |
-| `[onClick]`     | click on the method triggered by the step                                                             | `()=> void` | -       |
+### Interfaces
+
+#### NzItemProps
+
+| Property      | Description                           | Type         | Default |
+|---------------|---------------------------------------|--------------|---------|
+| `key`         | unique identifier                     | `string`     | -       |
+| `description` | description content                   | `string`     | -       |
+| `onClick`     | method triggered by clicking the step | `() => void` | -       |
+
+> `key` is the unique identifier of the current item. If not set, `description` will be used as the key.
