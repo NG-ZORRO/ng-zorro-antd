@@ -37,7 +37,7 @@ import { NzItemProps } from './typings';
         <div class="ant-check-list-header-finish">
           <nz-icon nzType="check-circle" nzTheme="outline" class="ant-check-list-header-finish-icon" />
           <h3 class="ant-check-list-header-finish-title">{{ i18n.checkListFinish }}</h3>
-          <button nz-button nzType="primary" style="margin: 24px" (click)="closePopover.emit(false)">
+          <button nz-button nzType="primary" [style.margin.px]="24" (click)="closePopover.emit(false)">
             {{ i18n.checkListClose }}
           </button>
         </div>
