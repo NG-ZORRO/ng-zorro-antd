@@ -16,7 +16,9 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzCheckListI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 import { NzCheckListButtonComponent } from './check-list-button.component';
@@ -27,11 +29,9 @@ import { NzItemProps } from './typings';
   selector: 'nz-check-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [NzPopoverModule, NzCheckListButtonComponent, NzCheckListContentComponent],
+  imports: [NzPopoverModule, NzIconModule, NzOutletModule, NzCheckListButtonComponent, NzCheckListContentComponent],
   template: `
     <nz-check-list-button
-      [locale]="locale()"
-      [triggerRender]="nzTriggerRender()"
       nz-popover
       [nzPopoverContent]="checklistTemplate"
       nzPopoverTrigger="click"
@@ -39,7 +39,14 @@ import { NzItemProps } from './typings';
       [nzPopoverOverlayClickable]="false"
       [nzPopoverVisible]="visible()"
       (nzPopoverVisibleChange)="visible.set($event)"
-    ></nz-check-list-button>
+    >
+      @if (!!nzTriggerRender()) {
+        <ng-container *nzStringTemplateOutlet="nzTriggerRender()">{{ nzTriggerRender() }}</ng-container>
+      } @else {
+        <nz-icon nzType="check-circle" nzTheme="outline" class="ant-check-list-icon" />
+        <div class="ant-check-list-description">{{ locale().checkList }}</div>
+      }
+    </nz-check-list-button>
     <ng-template #checklistTemplate>
       <nz-check-list-content
         [locale]="locale()"
