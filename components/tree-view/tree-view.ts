@@ -47,8 +47,8 @@ import { NzTreeView } from './tree';
   animations: [treeCollapseMotion],
   imports: [NzTreeNodeOutletDirective]
 })
-export class NzTreeViewComponent<T> extends NzTreeView<T> implements AfterViewInit {
-  @ViewChild(NzTreeNodeOutletDirective, { static: true }) nodeOutlet!: NzTreeNodeOutletDirective;
+export class NzTreeViewComponent<T, K = T> extends NzTreeView<T, K> implements AfterViewInit {
+  @ViewChild(NzTreeNodeOutletDirective, { static: true }) override _nodeOutlet: NzTreeNodeOutletDirective = undefined!;
   _afterViewInit = false;
   override ngAfterViewInit(): void {
     Promise.resolve().then(() => {

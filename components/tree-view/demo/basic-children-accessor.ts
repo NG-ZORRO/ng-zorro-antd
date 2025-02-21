@@ -1,12 +1,12 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzTreeViewComponent, NzTreeViewModule, NzTreeViewNestedDataSource } from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
+  disabled?: boolean;
   children?: TreeNode[];
 }
 
@@ -16,65 +16,55 @@ const TREE_DATA: TreeNode[] = [
     children: [
       {
         name: 'parent 1-0',
+        disabled: true,
         children: [{ name: 'leaf' }, { name: 'leaf' }]
       },
       {
         name: 'parent 1-1',
-        children: [
-          { name: 'leaf' },
-          {
-            name: 'parent 1-1-0',
-            children: [{ name: 'leaf' }, { name: 'leaf' }]
-          },
-          { name: 'leaf' }
-        ]
+        children: [{ name: 'leaf' }]
       }
     ]
-  },
-  {
-    name: 'parent 2',
-    children: [{ name: 'leaf' }, { name: 'leaf' }]
   }
 ];
 
 @Component({
-  selector: 'nz-demo-tree-view-line',
-  imports: [FormsModule, NzIconModule, NzSwitchModule, NzTreeViewModule],
+  imports: [NzIconModule, NzTreeViewModule],
+  selector: 'nz-demo-tree-view-basic-children-accessor',
   template: `
-    Show Leaf Icon:
-    <nz-switch [(ngModel)]="showLeafIcon"></nz-switch>
-
     <nz-tree-view [nzDataSource]="dataSource" [nzChildrenAccessor]="childrenAccessor">
-      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodeIndentLine [nzExpandable]="false">
-        @if (showLeafIcon) {
-          <nz-tree-node-toggle nzTreeNodeNoopToggle>
-            <nz-icon nzType="file" nzTheme="outline" />
-          </nz-tree-node-toggle>
-        }
-        <nz-tree-node-option>
+      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
+        <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
+        <nz-tree-node-option
+          [nzDisabled]="node.disabled"
+          [nzSelected]="selectListSelection.isSelected(node)"
+          (nzClick)="selectListSelection.toggle(node)"
+        >
           {{ node.name }}
         </nz-tree-node-option>
       </nz-tree-node>
 
-      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodeIndentLine [nzExpandable]="true">
+      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding [nzExpandable]="true">
         <nz-tree-node-toggle>
-          <span nz-icon [nzType]="tree.isExpanded(node) ? 'minus-square' : 'plus-square'" nzTheme="outline"></span>
+          <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
-        <nz-tree-node-option>
+        <nz-tree-node-option
+          [nzDisabled]="node.disabled"
+          [nzSelected]="selectListSelection.isSelected(node)"
+          (nzClick)="selectListSelection.toggle(node)"
+        >
           {{ node.name }}
         </nz-tree-node-option>
       </nz-tree-node>
     </nz-tree-view>
   `
 })
-export class NzDemoTreeViewLineComponent implements AfterViewInit, OnInit {
+export class NzDemoTreeViewBasicChildrenAccessorComponent implements OnInit, AfterViewInit {
   @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<TreeNode>;
-
   readonly childrenAccessor = (dataNode: TreeNode): TreeNode[] => dataNode.children ?? [];
 
   readonly hasChild = (_: number, node: TreeNode): boolean => !!node.children?.length;
 
-  showLeafIcon = false;
+  selectListSelection = new SelectionModel<TreeNode>(true);
 
   dataSource!: NzTreeViewNestedDataSource<TreeNode>;
 
