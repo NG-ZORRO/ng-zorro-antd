@@ -1,3 +1,27 @@
+## [19.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.0.2...19.1.0) (2025-02-21)
+
+### Features
+
+* **check-list:** add check-list component ([#8969](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8969)) ([4cd298b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4cd298bfdce3c96e47c91e689fbad16c36d72b60))
+* **message,notification:** display `nzData` when content is a template ([#9001](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9001)) ([5157470](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5157470dd7d890703e4b3a8db9909891da4932c0))
+* **popover,popconfirm,tooltip:** `overlayClassName` supports space delimited classes string ([#8972](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8972)) ([3fcec91](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3fcec916b81a284fc8934846aab26d5b8ce99a1b))
+* **popover:** add `nzPopoverOverlayClickable` to disable click on mask ([#8878](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8878)) ([5898da7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5898da718f2568cdb2a6dcc63b6e7e18ccb217aa))
+
+### Bug Fixes
+
+* **input-number,checkbox:** accept the disabled change from ng control ([#8979](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8979)) ([2d8968d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2d8968d4709aee858634274d22196ecbbfbe8764))
+* **input-number:** use input event instead of change event ([#8989](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8989)) ([6d8d915](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d8d91521a6d4315b6a01fc173e3ed8df8bdecf0))
+* **tree-select:** fix error when judging multiple instances condition ([#9008](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9008)) ([5006ea6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5006ea695430c3c0f127f04c3a9bcf6dfd6c1a29))
+
+### Code Refactoring
+
+* use ECMAScript standard class field ([#8718](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8718)) ([f1d8d92](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f1d8d926b48a798489f54d4f3da6eec0f90f9955))
+* enable `isolatedModules` compiler option ([#8970](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8970)) ([0d42aa7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0d42aa7d4605c881c242e245b8127629e9657e39))
+
+Now feel free to use `isolatedModules` compiler option in your project.
+
+
+
 ## [19.0.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.0.1...19.0.2) (2025-01-10)
 
 

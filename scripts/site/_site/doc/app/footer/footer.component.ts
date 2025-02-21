@@ -5,7 +5,7 @@ import { FooterColComponent } from './footer-col.component';
 import { FooterItemComponent } from './footer-item.component';
 
 @Component({
-    selector: 'app-footer',
+  selector: 'app-footer',
   imports: [NzColorPickerModule, FooterColComponent, FooterItemComponent],
   template: `
     <footer class="rc-footer rc-footer-dark">
@@ -39,7 +39,7 @@ import { FooterItemComponent } from './footer-item.component';
               link="https://github.com/websemantics/awesome-ant-design"
             ></app-footer-item>
             <app-footer-item icon="global" title="Blog" link="https://ng.ant.design/blog"></app-footer-item>
-            <app-footer-item icon="twitter" title="Twitter" link="https://twitter.com/ng_zorro"></app-footer-item>
+            <app-footer-item icon="x" title="X" link="https://x.com/ng_zorro"></app-footer-item>
             @if (language === 'zh') {
               <app-footer-item
                 icon="zhihu"
