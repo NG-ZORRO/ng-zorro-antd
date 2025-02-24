@@ -56,19 +56,14 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
               @switch (type) {
                 @case ('prev_5') {
                   @if (direction === 'rtl') {
-                    <span
-                      nz-icon
-                      nzType="double-right"
-                      class="ant-pagination-item-link-icon"
-                    ></span>
+                    <nz-icon nzType="double-right" class="ant-pagination-item-link-icon" />
                   } @else {
                     <nz-icon nzType="double-left" class="ant-pagination-item-link-icon" />
                   }
                 }
                 @case ('next_5') {
                   @if (direction === 'rtl') {
-                    <span nz-icon nzType="double-left"
-                          class="ant-pagination-item-link-icon"></span>
+                    <nz-icon nzType="double-left" class="ant-pagination-item-link-icon" />
                   } @else {
                     <nz-icon nzType="double-right" class="ant-pagination-item-link-icon" />
                   }

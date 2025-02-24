@@ -24,25 +24,23 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
         </p>
       </nz-comment-content>
       <nz-comment-action>
-        <span
+        <nz-icon
           nz-tooltip
           nzTooltipTitle="Like"
-          nz-icon
           nzType="like"
           [nzTheme]="likes > 0 ? 'twotone' : 'outline'"
           (click)="like()"
-        ></span>
+        />
         <span class="count like">{{ likes }}</span>
       </nz-comment-action>
       <nz-comment-action>
-        <span
+        <nz-icon
           nz-tooltip
           nzTooltipTitle="Dislike"
-          nz-icon
           nzType="dislike"
           [nzTheme]="dislikes > 0 ? 'twotone' : 'outline'"
           (click)="dislike()"
-        ></span>
+        />
         <span class="count dislike">{{ dislikes }}</span>
       </nz-comment-action>
       <nz-comment-action>Reply to</nz-comment-action>

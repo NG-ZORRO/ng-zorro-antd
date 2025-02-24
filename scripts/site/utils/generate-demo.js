@@ -204,9 +204,9 @@ function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
   }
 	<h2>
 		<span>${language === 'zh' ? '代码演示' : 'Examples'}</span>
-		<span nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
+		<nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
       language === 'zh' ? '展开全部代码' : 'Expand All Code'
-    }" (click)="expandAllCode()"></span>
+    }" (click)="expandAllCode()" />
 	</h2>
 </section>
 ${example}`;

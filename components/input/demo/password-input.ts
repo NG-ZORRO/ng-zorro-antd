@@ -17,12 +17,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       />
     </nz-input-group>
     <ng-template #suffixTemplate>
-      <span
-        nz-icon
+      <nz-icon
         class="ant-input-password-icon"
         [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
         (click)="passwordVisible = !passwordVisible"
-      ></span>
+      />
     </ng-template>
   `
 })

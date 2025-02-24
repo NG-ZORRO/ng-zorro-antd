@@ -26,7 +26,7 @@
       <ng-content select="[intro]"></ng-content>
     </div>
     <div class="code-box-actions">
-      <span
+      <nz-icon
         [nzTooltipTitle]="
           !onlineIDELoading
             ? language === 'zh'
@@ -37,33 +37,30 @@
               : 'Loading...'
         "
         nz-tooltip
-        nz-icon
         nzType="thunderbolt"
         nzTheme="fill"
         class="code-box-code-copy"
         (click)="openOnlineIDE()"
-      ></span>
-      <span
+      />
+      <nz-icon
         [nzTooltipTitle]="
           !copyLoading ? (language === 'zh' ? '复制代码' : 'Copy Code') : language === 'zh' ? '加载中...' : 'Loading...'
         "
         nz-tooltip
-        nz-icon
         [nzType]="copied ? 'check' : 'snippets'"
         class="code-box-code-copy"
         [class.ant-tooltip-open]="copied"
         (click)="copyCode()"
-      ></span>
+      />
       @if (nzGenerateCommand) {
-        <span
+        <nz-icon
           [nzTooltipTitle]="language === 'zh' ? '复制生成代码命令' : 'Copy Generate Command'"
           nz-tooltip
-          nz-icon
           [nzType]="commandCopied ? 'check' : 'code'"
           class="code-box-code-copy"
           [class.ant-tooltip-open]="commandCopied"
           (click)="copyGenerateCommand(nzGenerateCommand)"
-        ></span>
+        />
       }
       <span
         class="code-expand-icon"

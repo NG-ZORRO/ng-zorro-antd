@@ -34,12 +34,11 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       </nz-sider>
       <nz-layout>
         <nz-header>
-          <span
+          <nz-icon
             class="trigger"
-            nz-icon
             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
             (click)="isCollapsed = !isCollapsed"
-          ></span>
+          />
         </nz-header>
         <nz-content>
           <nz-breadcrumb>

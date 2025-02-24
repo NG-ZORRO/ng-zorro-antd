@@ -21,7 +21,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 ### nz-icon, [nz-icon]
 
 | Property           | Description                                                 | Type                           | Default     | Global Config |
-| ------------------ | ----------------------------------------------------------- | ------------------------------ | ----------- | ------------- |
+|--------------------|-------------------------------------------------------------|--------------------------------|-------------|---------------|
 | `[nzType]`         | Type of the ant design icon                                 | `string`                       | -           |
 | `[nzTheme]`        | Type of the ant design icon                                 | `'fill'\|'outline'\|'twotone'` | `'outline'` | ✅             |
 | `[nzSpin]`         | Rotate icon with animation                                  | `boolean`                      | `false`     |
@@ -32,10 +32,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 ### NzIconService
 
 | Methods/Properties     | Description                                                                                      | Parameters               |
-| ---------------------- | ------------------------------------------------------------------------------------------------ | ------------------------ |
+|------------------------|--------------------------------------------------------------------------------------------------|--------------------------|
 | `addIcon()`            | To import icons statically                                                                       | `IconDefinition`         |
 | `addIconLiteral()`     | To statically import custom icons                                                                | `string`, `string (SVG)` |
-| `fetchFromIconfont()`  | To get icon assets from fonticon                                                                 | `NzIconfontOption`       |
+| `fetchFromIconfont()`  | To get icon assets from iconfont                                                                 | `NzIconfontOption`       |
 | `changeAssetsSource()` | To change the location of your icon assets, so that you can deploy these icons wherever you want | `string`                 |
 
 ### SVG icons
@@ -49,16 +49,18 @@ We synced to Ant Design and replaced font icons with svg icons which bring benef
 
 You can join in [this discussion of Ant Design](https://github.com/ant-design/ant-design/issues/10353).
 
-NG-ZORRO hadn't provided an icon component. Instead, icon based on font files was provided. We make this new directive compatible to old API. If you make no changes to your existing code, old icons would be dynamically loaded as `outline`icons. But the best practice is always to use `nz-icon` directive and specify the `theme` prop.
+NG-ZORRO hadn't provided an icon component at the beginning. Instead, icon based on font files was provided.
+We make this new directive compatible to old API. If you make no changes to your existing code, old icons would be dynamically loaded as `outline`icons.
+But the best practice is always to use `nz-icon` component and specify the `theme` prop.
 
 ```html
-<span nz-icon [nzType]="'star'" [nzTheme]="'fill'"></span>
+<nz-icon nzType="star" nzTheme="fill" />
 ```
 
 All the icons will be rendered to `<svg>`, and styles and classes applied to `<i>` would work.
 
 ```html
-<span nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></span>
+<nz-icon nzType="message" style="font-size: 16px; color: #08c;" />
 ```
 
 ### Static loading and dynamic loading
@@ -102,11 +104,15 @@ export const appConfig = {
 }
 ```
 
-Actually this calls `addIcon` of `NzIconService`. Icons imported would be bundled into your `.js` files. Static loading would increase your bundle's size so we recommend use dynamic importing as much as you can.
+Actually this calls `addIcon` of `NzIconService`. Icons imported would be bundled into your `.js` files. Static loading
+would increase your bundle's size so we recommend use dynamic importing as much as you can.
 
-> Icons used by `NG-ZORRO` itself are imported statically to increase loading speed. However, icons demonstrated on the official website are loaded dynamically.
+> Icons used by `NG-ZORRO` itself are imported statically to increase loading speed. However, icons demonstrated on the
+> official website are loaded dynamically.
 
-Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO detects that the icon you want to render hasn't been registered, it would fire a HTTP request to load it. All you have to do is to config your `angular.json` like this:
+Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO detects that the icon you want to
+render hasn't been registered, it would fire a HTTP request to load it. All you have to do is to config your
+`angular.json` like this:
 
 ```json
 {
@@ -120,9 +126,11 @@ Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO
 }
 ```
 
-You can call `changeAssetsSource()` of `NzIconService` to change the location of your icon assets, so that you can deploy these icon assets to cdn. The parameter you passed would be add in front of `assets/`.
+You can call `changeAssetsSource()` of `NzIconService` to change the location of your icon assets, so that you can
+deploy these icon assets to cdn. The parameter you passed would be add in front of `assets/`.
 
-Let's assume that you deploy static assets under `https://mycdn.somecdn.com/icons/assets`. You can call `changeAssetsSource('https://mycdn.somecdn.com/icons')` to tell NG-ZORRO that all your resources are located there.
+Let's assume that you deploy static assets under `https://mycdn.somecdn.com/icons/assets`. You can call
+`changeAssetsSource('https://mycdn.somecdn.com/icons')` to tell NG-ZORRO that all your resources are located there.
 
 Please call this in component's constructor or `AppInitService`.
 
@@ -134,7 +142,7 @@ Sometimes, you want to import icons in lazy modules to avoid increasing the size
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
-  imports: [CommonModule, NzIconModule.forChild([QuestionOutline])]
+  imports: [NzIconModule.forChild([QuestionOutline])]
 })
 class ChildModule {}
 ```
@@ -178,7 +186,7 @@ this._iconService.fetchFromIconfont({
 ```
 
 ```html
-<span nz-icon [nzIconfont]="'icon-tuichu'"></span>
+<nz-icon nzIconfont="icon-tuichu" />
 ```
 
 It creates a component that uses SVG sprites in essence.
@@ -186,7 +194,7 @@ It creates a component that uses SVG sprites in essence.
 The following option are available:
 
 | Property    | Description                               | Type     | Default |
-| ----------- | ----------------------------------------- | -------- | ------- |
+|-------------|-------------------------------------------|----------|---------|
 | `scriptUrl` | The URL generated by iconfont.cn project. | `string` | -       |
 
 The property scriptUrl should be set to import the svg sprite symbols.

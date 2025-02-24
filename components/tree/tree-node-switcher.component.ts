@@ -15,12 +15,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     @if (isShowSwitchIcon) {
       @if (!isLoading) {
         <ng-container *nzStringTemplateOutlet="nzExpandedIcon; context: { $implicit: context, origin: context.origin }">
-          <span
-            nz-icon
+          <nz-icon
             nzType="caret-down"
             [class.ant-select-tree-switcher-icon]="nzSelectMode"
             [class.ant-tree-switcher-icon]="!nzSelectMode"
-          ></span>
+          />
         </ng-container>
       } @else {
         <nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon" />
@@ -30,11 +29,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       @if (!isLoading) {
         <ng-container *nzStringTemplateOutlet="nzExpandedIcon; context: { $implicit: context, origin: context.origin }">
           @if (isShowLineIcon) {
-            <span
-              nz-icon
-              [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'"
-              class="ant-tree-switcher-line-icon"
-            ></span>
+            <nz-icon [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'" class="ant-tree-switcher-line-icon" />
           } @else {
             <nz-icon nzType="file" class="ant-tree-switcher-line-icon" />
           }

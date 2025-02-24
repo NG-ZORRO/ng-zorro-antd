@@ -65,11 +65,7 @@ interface FlatNode {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodeIndentLine>
         <nz-tree-node-toggle>
-          <span
-            nz-icon
-            [nzType]="treeControl.isExpanded(node) ? 'minus-square' : 'plus-square'"
-            nzTheme="outline"
-          ></span>
+          <nz-icon [nzType]="treeControl.isExpanded(node) ? 'minus-square' : 'plus-square'" nzTheme="outline" />
         </nz-tree-node-toggle>
         <nz-tree-node-option>
           {{ node.name }}

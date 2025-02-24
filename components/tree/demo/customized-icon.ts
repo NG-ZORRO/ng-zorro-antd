@@ -11,11 +11,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
     <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="multiExpandedIconTpl">
       <ng-template #multiExpandedIconTpl let-node let-origin="origin">
         @if (!origin.isLeaf) {
-          <span
-            nz-icon
-            [nzType]="node.isExpanded ? 'folder-open' : 'folder'"
-            class="ant-tree-switcher-line-icon"
-          ></span>
+          <nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" class="ant-tree-switcher-line-icon" />
         } @else {
           <nz-icon nzType="file" class="ant-tree-switcher-line-icon" />
         }

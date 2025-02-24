@@ -29,20 +29,10 @@ import { NzTableSortOrder } from '../table.types';
     <span class="ant-table-column-sorter" [class.ant-table-column-sorter-full]="isDown && isUp">
       <span class="ant-table-column-sorter-inner">
         @if (isUp) {
-          <span
-            nz-icon
-            nzType="caret-up"
-            class="ant-table-column-sorter-up"
-            [class.active]="sortOrder === 'ascend'"
-          ></span>
+          <nz-icon nzType="caret-up" class="ant-table-column-sorter-up" [class.active]="sortOrder === 'ascend'" />
         }
         @if (isDown) {
-          <span
-            nz-icon
-            nzType="caret-down"
-            class="ant-table-column-sorter-down"
-            [class.active]="sortOrder === 'descend'"
-          ></span>
+          <nz-icon nzType="caret-down" class="ant-table-column-sorter-down" [class.active]="sortOrder === 'descend'" />
         }
       </span>
     </span>
