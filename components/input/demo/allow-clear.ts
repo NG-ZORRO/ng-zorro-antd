@@ -13,13 +13,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     </nz-input-group>
     <ng-template #inputClearTpl>
       @if (inputValue) {
-        <span
-          nz-icon
-          class="ant-input-clear-icon"
-          nzTheme="fill"
-          nzType="close-circle"
-          (click)="inputValue = null"
-        ></span>
+        <nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle" (click)="inputValue = null" />
       }
     </ng-template>
     <br />
@@ -29,13 +23,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     </nz-input-group>
     <ng-template #textAreaClearTpl>
       @if (textValue) {
-        <span
-          nz-icon
-          class="ant-input-clear-icon"
-          nzTheme="fill"
-          nzType="close-circle"
-          (click)="textValue = null"
-        ></span>
+        <nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle" (click)="textValue = null" />
       }
     </ng-template>
   `

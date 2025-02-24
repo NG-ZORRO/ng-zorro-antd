@@ -1,14 +1,13 @@
 <header id="header" class="clearfix">
   @if (isMobile) {
-    <span
-      nz-icon
+    <nz-icon
       class="nav-phone-icon"
       nzType="unordered-list"
       nzPopoverOverlayClassName="popover-menu"
       nzPopoverPlacement="bottomLeft"
       nz-popover
       [nzPopoverContent]="menu"
-    ></span>
+    />
   }
 
   <div nz-row style="flex-flow: nowrap">

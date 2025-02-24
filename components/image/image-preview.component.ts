@@ -87,13 +87,12 @@ const NZ_DEFAULT_ROTATE = 0;
             [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
             (click)="option.onClick()"
           >
-            <span
+            <nz-icon
               class="ant-image-preview-operations-icon"
-              nz-icon
               [nzType]="option.icon"
               [nzRotate]="option.rotate ?? 0"
               nzTheme="outline"
-            ></span>
+            />
           </li>
         }
       </ul>

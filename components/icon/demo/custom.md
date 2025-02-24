@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-You can just put a `svg` element inside of a `nz-icon` to render custom content. We would take care of size and color things for you.
+You can just put a `svg` element inside a `nz-icon` to render custom content. We would take care of size and color for you.

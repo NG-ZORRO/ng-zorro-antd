@@ -85,13 +85,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
       </span>
       @if (nzAllowEmpty && !nzDisabled && value) {
         <span class="ant-picker-clear" (click)="onClickClearBtn($event)">
-          <span
-            nz-icon
-            nzType="close-circle"
-            nzTheme="fill"
-            [attr.aria-label]="nzClearText"
-            [attr.title]="nzClearText"
-          ></span>
+          <nz-icon nzType="close-circle" nzTheme="fill" [attr.aria-label]="nzClearText" [attr.title]="nzClearText" />
         </span>
       }
     </div>

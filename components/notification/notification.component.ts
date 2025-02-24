@@ -41,32 +41,28 @@ import { NzNotificationData } from './typings';
             <div [class.ant-notification-notice-with-icon]="instance.type !== 'blank'">
               @switch (instance.type) {
                 @case ('success') {
-                  <span
-                    nz-icon
+                  <nz-icon
                     nzType="check-circle"
                     class="ant-notification-notice-icon ant-notification-notice-icon-success"
-                  ></span>
+                  />
                 }
                 @case ('info') {
-                  <span
-                    nz-icon
+                  <nz-icon
                     nzType="info-circle"
                     class="ant-notification-notice-icon ant-notification-notice-icon-info"
-                  ></span>
+                  />
                 }
                 @case ('warning') {
-                  <span
-                    nz-icon
+                  <nz-icon
                     nzType="exclamation-circle"
                     class="ant-notification-notice-icon ant-notification-notice-icon-warning"
-                  ></span>
+                  />
                 }
                 @case ('error') {
-                  <span
-                    nz-icon
+                  <nz-icon
                     nzType="close-circle"
                     class="ant-notification-notice-icon ant-notification-notice-icon-error"
-                  ></span>
+                  />
                 }
               }
               <div class="ant-notification-notice-message">

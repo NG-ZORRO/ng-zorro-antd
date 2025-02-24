@@ -25,14 +25,13 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       [nzEditorOption]="{ language: 'javascript' }"
     ></nz-code-editor>
     <ng-template #toolkit>
-      <span
-        nz-icon
+      <nz-icon
         [class.active]="fullScreen"
         nz-tooltip
         nzTooltipTitle="Toggle Fullscreen"
         [nzType]="fullScreen ? 'fullscreen-exit' : 'fullscreen'"
         (click)="toggleFullScreen()"
-      ></span>
+      />
     </ng-template>
   `,
   styles: [

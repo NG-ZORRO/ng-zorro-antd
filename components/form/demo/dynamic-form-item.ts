@@ -29,12 +29,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
               [attr.id]="control.id"
               [formControlName]="control.controlInstance"
             />
-            <span
-              nz-icon
-              nzType="minus-circle-o"
-              class="dynamic-delete-button"
-              (click)="removeField(control, $event)"
-            ></span>
+            <nz-icon nzType="minus-circle-o" class="dynamic-delete-button" (click)="removeField(control, $event)" />
           </nz-form-control>
         </nz-form-item>
       }

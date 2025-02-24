@@ -45,12 +45,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
       @if (nzShowArrow) {
         <div>
           <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
-            <span
-              nz-icon
-              [nzType]="expandedIcon || 'right'"
-              class="ant-collapse-arrow"
-              [nzRotate]="nzActive ? 90 : 0"
-            ></span>
+            <nz-icon [nzType]="expandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="nzActive ? 90 : 0" />
           </ng-container>
         </div>
       }
