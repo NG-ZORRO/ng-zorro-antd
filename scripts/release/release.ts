@@ -84,14 +84,14 @@ function getUpstreamRemoteName(): string | null {
   const output = spawnSync('git', ['remote', 'show'], {
     encoding: 'utf-8'
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const names: string[] = (output.stdout as any).split('\n').map((e: string) => e.trim());
-  // eslint-disable-next-line @typescript-eslint/prefer-for-of
-  for (let i = 0; i < names.length; i++) {
+  const names: string[] = (output.stdout as string).split('\n').map((e: string) => e.trim());
+  let i = 0;
+  while (i < names.length) {
     const url = getRemoteUrl(names[i]);
     if (url.search(/github\.com(\/|:)NG-ZORRO\/ng-zorro-antd/) !== -1) {
       return names[i];
     }
+    i++;
   }
   return null;
 }
@@ -115,7 +115,7 @@ function bumpVersion(): void {
   const zorroVersionPath = path.join(buildConfig.componentsDir, 'version', 'version.ts');
   const currentVersion = packageJson.version;
   let versionNumberValid = false;
-  let version;
+  let version: string;
 
   while (!versionNumberValid) {
     version = read.question(`${bgYellow.black('Please input the new version:')}  `);
@@ -123,7 +123,7 @@ function bumpVersion(): void {
       versionNumberValid = true;
     } else {
       log.error(
-        `Your input ${version} is not after the current version ${currentVersion} or is unvalid. Please check it.`
+        `Your input ${version} is not after the current version ${currentVersion} or is invalid. Please check it.`
       );
     }
   }

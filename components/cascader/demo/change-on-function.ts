@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 
-const options = [
+const options: NzCascaderOption[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -52,6 +53,7 @@ const options = [
 
 @Component({
   selector: 'nz-demo-cascader-change-on-function',
+  imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader
       [nzChangeOn]="validate"

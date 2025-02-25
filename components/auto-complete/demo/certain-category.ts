@@ -1,6 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-export interface AutocompleteOptionGroups {
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+
+interface AutocompleteOptionGroups {
   title: string;
   count?: number;
   children?: AutocompleteOptionGroups[];
@@ -8,6 +13,7 @@ export interface AutocompleteOptionGroups {
 
 @Component({
   selector: 'nz-demo-auto-complete-certain-category',
+  imports: [FormsModule, NzAutocompleteModule, NzIconModule, NzInputModule],
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="example-input">
@@ -21,21 +27,25 @@ export interface AutocompleteOptionGroups {
         />
       </nz-input-group>
       <ng-template #suffixIcon>
-        <span nz-icon nzType="search"></span>
+        <nz-icon nzType="search" />
       </ng-template>
       <nz-autocomplete #auto>
-        <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
-          <ng-template #groupTitle>
-            <span>
-              {{ group.title }}
-              <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
-            </span>
-          </ng-template>
-          <nz-auto-option *ngFor="let option of group.children" [nzLabel]="option.title" [nzValue]="option.title">
-            {{ option.title }}
-            <span class="certain-search-item-count">{{ option.count }} 人 关注</span>
-          </nz-auto-option>
-        </nz-auto-optgroup>
+        @for (group of optionGroups; track group.title) {
+          <nz-auto-optgroup [nzLabel]="groupTitle">
+            <ng-template #groupTitle>
+              <span>
+                {{ group.title }}
+                <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
+              </span>
+            </ng-template>
+            @for (option of group.children; track option.title) {
+              <nz-auto-option [nzLabel]="option.title" [nzValue]="option.title">
+                {{ option.title }}
+                <span class="certain-search-item-count">{{ option.count }} 人 关注</span>
+              </nz-auto-option>
+            }
+          </nz-auto-optgroup>
+        }
       </nz-autocomplete>
     </div>
   `,
@@ -56,8 +66,6 @@ export interface AutocompleteOptionGroups {
 export class NzDemoAutoCompleteCertainCategoryComponent implements OnInit {
   inputValue?: string;
   optionGroups: AutocompleteOptionGroups[] = [];
-
-  constructor() {}
 
   onChange(value: string): void {
     console.log(value);

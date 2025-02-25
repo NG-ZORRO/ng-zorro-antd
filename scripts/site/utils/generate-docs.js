@@ -1,31 +1,62 @@
-const { parse } = require('marked');
+const { parse } = require('./marked');
 const getMeta = require('./get-meta');
 const angularNonBindAble = require('./angular-nonbindable');
 const fs = require('fs');
 const path = require('path');
 const generateTitle = require('./generate.title');
 const componentTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/doc-component.template.ts')));
-const moduleTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/doc-module.template.ts')));
+const routesTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/doc-routes.template.ts')));
 const capitalizeFirstLetter = require('./capitalize-first-letter');
 const camelCase = require('./camelcase');
 
+/**
+ * Generate docs in `/docs` folder
+ * @param {string} rootPath
+ * @param {Record.<string, {zh: Buffer, en: Buffer}>} docsMap
+ */
 module.exports = function generateDocs(rootPath, docsMap) {
   const docsPath = `${rootPath}docs`;
   fs.mkdirSync(docsPath);
 
   for (const name in docsMap) {
-    const zh = baseInfo(docsMap[name].zh, `docs/${name}.zh-CN.md`);
-    const en = baseInfo(docsMap[name].en, `docs/${name}.en-US.md`);
-    generateTemplate(docsPath, name, zh, en);
-    generateComponent(docsPath, name);
+    generateDoc(docsMap[name].zh, docsPath, name, 'zh');
+    generateDoc(docsMap[name].en, docsPath, name, 'en');
   }
+
   generateModule(docsPath, docsMap);
 };
 
+/**
+ * @param {Buffer} file
+ * @param {string} docsPath
+ * @param {string} name
+ * @param {'zh'|'en'} language
+ */
+function generateDoc(file, docsPath, name, language) {
+  const filePath = `docs/${name}.${language === 'en' ? 'en-US' : 'zh-CN'}.md`;
+  const meta = getMeta(file);
+  const raw = meta.__content;
+  delete meta.__content;
+  const content = parse(raw, { async: false });
+
+  // template.html
+  fs.writeFileSync(
+    path.join(docsPath, `${name}-${language}.html`),
+    wrapperDocs(generateToc(meta, raw), generateTitle(meta, filePath), angularNonBindAble(content))
+  );
+  // component.ts
+  const component = componentTemplate
+    .replace(/{{component}}/g, name)
+    .replace(/{{language}}/g, language)
+    .replace(/{{componentName}}/g, `${capitalizeFirstLetter(camelCase(name))}${capitalizeFirstLetter(language)}`);
+  fs.writeFileSync(path.join(docsPath, `${name}-${language}.ts`), component);
+}
+
 function wrapperDocs(toc, title, content) {
-  return `<article class="markdown">${title}${toc}
+  return `<article class="markdown">
+  ${title}${toc}
   <section class="markdown" ngNonBindable>${content}</section>
-  </article>`;
+</article>`;
 }
 
 function generateToc(meta, raw) {
@@ -43,66 +74,26 @@ function generateToc(meta, raw) {
   }
   return `
 <nz-affix class="toc-affix" [nzOffsetTop]="16">
-    <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
-        ${links}
-    </nz-anchor>
+  <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
+    ${links}
+  </nz-anchor>
 </nz-affix>`;
-}
-
-function baseInfo(file, path) {
-  const meta = getMeta(file);
-  const content = meta.__content;
-  delete meta.__content;
-  return {
-    meta: meta,
-    path: path,
-    content: parse(content),
-    raw: content
-  };
-}
-
-function generateTemplate(docsPath, name, zh, en) {
-  fs.writeFileSync(
-    path.join(docsPath, `${name}-zh.html`),
-    wrapperDocs(generateToc(zh.meta, zh.raw), generateTitle(zh.meta, zh.path), angularNonBindAble(zh.content))
-  );
-  fs.writeFileSync(
-    path.join(docsPath, `${name}-en.html`),
-    wrapperDocs(generateToc(en.meta, en.raw), generateTitle(en.meta, en.path), angularNonBindAble(en.content))
-  );
-}
-
-function generateComponent(docsPath, name) {
-  const zhComponent = componentTemplate
-    .replace(/{{component}}/g, name)
-    .replace(/{{language}}/g, 'zh')
-    .replace(/{{componentName}}/g, `${capitalizeFirstLetter(camelCase(name))}Zh`);
-  const enComponent = componentTemplate
-    .replace(/{{component}}/g, name)
-    .replace(/{{language}}/g, 'en')
-    .replace(/{{componentName}}/g, `${capitalizeFirstLetter(camelCase(name))}En`);
-  fs.writeFileSync(path.join(docsPath, `${name}-zh.ts`), zhComponent);
-  fs.writeFileSync(path.join(docsPath, `${name}-en.ts`), enComponent);
 }
 
 function generateModule(docsPath, docsMap) {
   let imports = '';
   let router = '';
-  let declarations = '';
   for (const name in docsMap) {
     const componentName = `NzDoc${capitalizeFirstLetter(camelCase(name))}`;
     const enComponentName = `${componentName}EnComponent`;
     const zhComponentName = `${componentName}ZhComponent`;
     imports += `import { ${enComponentName} } from './${name}-en';\n`;
     imports += `import { ${zhComponentName} } from './${name}-zh';\n`;
-    router += `\t\t\t{ path: '${name}/zh', component: ${zhComponentName} },\n`;
-    router += `\t\t\t{ path: '${name}/en', component: ${enComponentName} },\n`;
-    declarations += `\t\t${zhComponentName},\n`;
-    declarations += `\t\t${enComponentName},\n`;
+    router += `\t{ path: '${name}/zh', component: ${zhComponentName} },\n`;
+    router += `\t{ path: '${name}/en', component: ${enComponentName} },\n`;
   }
-  const module = moduleTemplate
+  const module = routesTemplate
     .replace(/{{imports}}/g, imports)
-    .replace(/{{router}}/g, router)
-    .replace(/{{declarations}}/g, declarations);
-  fs.writeFileSync(path.join(docsPath, `index.module.ts`), module);
+    .replace(/{{routes}}/g, router);
+  fs.writeFileSync(path.join(docsPath, `routes.ts`), module);
 }

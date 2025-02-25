@@ -1,0 +1,20 @@
+.simulate-iframe {
+  display: block;
+  transform: translateX(0);
+
+  > * {
+    display: block;
+    height: 100%;
+    overflow: auto;
+    transform: translateX(0);
+
+    > * {
+      height: 100%;
+      overflow: auto;
+    }
+  }
+}
+
+nz-code-box {
+  display: block;
+}

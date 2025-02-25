@@ -13,14 +13,13 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  booleanAttribute
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzTreeNodeComponent } from './node';
 
@@ -36,11 +35,8 @@ import { NzTreeNodeComponent } from './node';
   providers: [NzDestroyService]
 })
 export class NzTreeNodeOptionComponent<T> implements OnChanges, OnInit {
-  static ngAcceptInputType_nzSelected: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
-  @Input() @InputBoolean() nzSelected = false;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzSelected = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Output() readonly nzClick = new EventEmitter<MouseEvent>();
 
   constructor(
@@ -74,15 +70,13 @@ export class NzTreeNodeOptionComponent<T> implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() =>
-      fromEvent<MouseEvent>(this.host.nativeElement, 'click')
-        .pipe(
-          filter(() => !this.nzDisabled && this.nzClick.observers.length > 0),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(event => {
-          this.ngZone.run(() => this.nzClick.emit(event));
-        })
-    );
+    fromEventOutsideAngular<MouseEvent>(this.host.nativeElement, 'click')
+      .pipe(
+        filter(() => !this.nzDisabled && this.nzClick.observers.length > 0),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(event => {
+        this.ngZone.run(() => this.nzClick.emit(event));
+      });
   }
 }

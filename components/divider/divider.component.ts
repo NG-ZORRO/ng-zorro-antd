@@ -3,10 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  TemplateRef,
+  ViewEncapsulation,
+  booleanAttribute
+} from '@angular/core';
 
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 @Component({
   selector: 'nz-divider',
@@ -15,9 +21,11 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span *ngIf="nzText" class="ant-divider-inner-text">
-      <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
-    </span>
+    @if (nzText) {
+      <span class="ant-divider-inner-text">
+        <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
+      </span>
+    }
   `,
   host: {
     class: 'ant-divider',
@@ -28,18 +36,16 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-divider-with-text-left]': `nzText && nzOrientation === 'left'`,
     '[class.ant-divider-with-text-right]': `nzText && nzOrientation === 'right'`,
     '[class.ant-divider-with-text-center]': `nzText && nzOrientation === 'center'`,
-    '[class.ant-divider-dashed]': `nzDashed`
-  }
+    '[class.ant-divider-dashed]': `nzDashed || nzVariant === 'dashed'`,
+    '[class.ant-divider-dotted]': `nzVariant === 'dotted'`
+  },
+  imports: [NzOutletModule]
 })
 export class NzDividerComponent {
-  static ngAcceptInputType_nzDashed: BooleanInput;
-  static ngAcceptInputType_nzPlain: BooleanInput;
-
   @Input() nzText?: string | TemplateRef<void>;
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
   @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';
-  @Input() @InputBoolean() nzDashed = false;
-  @Input() @InputBoolean() nzPlain = false;
-
-  constructor() {}
+  @Input() nzVariant: 'dashed' | 'dotted' | 'solid' = 'solid';
+  @Input({ transform: booleanAttribute }) nzDashed = false;
+  @Input({ transform: booleanAttribute }) nzPlain = false;
 }

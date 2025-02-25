@@ -9,7 +9,7 @@ export type DisabledDateFn = (d: Date) => boolean;
 
 export type DisabledTimePartial = 'start' | 'end';
 
-export type NzDateMode = 'decade' | 'year' | 'month' | 'week' | 'date' | 'time';
+export type NzDateMode = 'decade' | 'year' | 'quarter' | 'month' | 'week' | 'date' | 'time';
 
 export type RangePartType = 'left' | 'right';
 
@@ -17,9 +17,18 @@ export type CompatibleDate = Date | Date[];
 
 export type DisabledTimeFn = (current: Date | Date[], partial?: DisabledTimePartial) => DisabledTimeConfig | undefined;
 
+export type NzPanelChangeType =
+  | { mode: NzDateMode; date: Date }
+  | {
+      mode: [startMode: NzDateMode, endMode: NzDateMode];
+      date: [startDate: Date, endDate: Date];
+    };
+
 export interface DisabledTimeConfig {
   nzDisabledHours(): number[];
+
   nzDisabledMinutes(hour: number): number[];
+
   nzDisabledSeconds(hour: number, minute: number): number[];
 }
 
@@ -28,9 +37,13 @@ export interface SupportTimeOptions {
   nzHourStep?: number;
   nzMinuteStep?: number;
   nzSecondStep?: number;
+
   nzDisabledHours?(): number[];
+
   nzDisabledMinutes?(hour: number): number[];
+
   nzDisabledSeconds?(hour: number, minute: number): number[];
+
   nzHideDisabledOptions?: boolean;
   nzDefaultOpenValue?: Date;
   nzAddOn?: TemplateRef<void>;

@@ -10,41 +10,47 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
-  Self,
   SimpleChanges,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute,
+  computed,
+  inject,
+  signal
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { BooleanInput, NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames } from 'ng-zorro-antd/core/util';
+import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 @Directive({
   selector: 'input[nz-input],textarea[nz-input]',
   exportAs: 'nzInput',
   host: {
+    class: 'ant-input',
     '[class.ant-input-disabled]': 'disabled',
     '[class.ant-input-borderless]': 'nzBorderless',
-    '[class.ant-input-lg]': `nzSize === 'large'`,
-    '[class.ant-input-sm]': `nzSize === 'small'`,
+    '[class.ant-input-lg]': `finalSize() === 'large'`,
+    '[class.ant-input-sm]': `finalSize() === 'small'`,
     '[attr.disabled]': 'disabled || null',
-    '[class.ant-input-rtl]': `dir=== 'rtl'`
-  }
+    '[class.ant-input-rtl]': `dir=== 'rtl'`,
+    '[class.ant-input-stepperless]': `nzStepperless`
+  },
+  hostDirectives: [NzSpaceCompactItemDirective],
+  providers: [NzDestroyService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
 })
-export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
-  static ngAcceptInputType_disabled: BooleanInput;
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  @Input() @InputBoolean() nzBorderless = false;
+export class NzInputDirective implements OnChanges, OnInit {
+  @Input({ transform: booleanAttribute }) nzBorderless = false;
   @Input() nzSize: NzSizeLDSType = 'default';
+  @Input({ transform: booleanAttribute }) nzStepperless: boolean = true;
   @Input() nzStatus: NzStatus = '';
-  @Input()
+  @Input({ transform: booleanAttribute })
   get disabled(): boolean {
     if (this.ngControl && this.ngControl.disabled !== null) {
       return this.ngControl.disabled;
@@ -52,10 +58,11 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     return this._disabled;
   }
   set disabled(value: boolean) {
-    this._disabled = value != null && `${value}` !== 'false';
+    this._disabled = value;
   }
   _disabled = false;
   disabled$ = new Subject<boolean>();
+
   dir: Direction = 'ltr';
   // status
   prefixCls: string = 'ant-input';
@@ -64,19 +71,27 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   hasFeedback: boolean = false;
   feedbackRef: ComponentRef<NzFormItemFeedbackIconComponent> | null = null;
   components: Array<ComponentRef<NzFormItemFeedbackIconComponent>> = [];
-  private destroy$ = new Subject<void>();
+  ngControl = inject(NgControl, { self: true, optional: true });
+
+  protected finalSize = computed(() => {
+    if (this.compactSize) {
+      return this.compactSize();
+    }
+    return this.size();
+  });
+
+  private size = signal<NzSizeLDSType>(this.nzSize);
+  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
+  private destroy$ = inject(NzDestroyService);
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   constructor(
-    @Optional() @Self() public ngControl: NgControl,
     private renderer: Renderer2,
     private elementRef: ElementRef,
     protected hostView: ViewContainerRef,
-    @Optional() private directionality: Directionality,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() public nzFormNoStatusService?: NzFormNoStatusService
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-input');
-  }
+    private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
@@ -93,11 +108,11 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     if (this.ngControl) {
       this.ngControl.statusChanges
         ?.pipe(
-          filter(() => this.ngControl.disabled !== null),
+          filter(() => this.ngControl!.disabled !== null),
           takeUntil(this.destroy$)
         )
         .subscribe(() => {
-          this.disabled$.next(this.ngControl.disabled!);
+          this.disabled$.next(this.ngControl!.disabled!);
         });
     }
 
@@ -107,19 +122,16 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { disabled, nzStatus } = changes;
+  ngOnChanges({ disabled, nzStatus, nzSize }: SimpleChanges): void {
     if (disabled) {
       this.disabled$.next(this.disabled);
     }
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    if (nzSize) {
+      this.size.set(nzSize.currentValue);
+    }
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {

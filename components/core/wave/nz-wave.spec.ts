@@ -1,6 +1,11 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
@@ -14,13 +19,6 @@ const EXTRA_NODE_CLASS_NAME = '.ant-click-animating-node';
 describe('nz-wave base', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveTarget: HTMLElement;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzWaveModule],
-      declarations: [WaveContainerWithButtonComponent]
-    });
-  });
 
   describe('basic wave', () => {
     beforeEach(() => {
@@ -58,6 +56,7 @@ describe('nz-wave base', () => {
       fixture.componentInstance.disabled = true;
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
+      fixture.detectChanges();
       expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
       expect(document.body.querySelector('style') !== null).toBe(false);
     });
@@ -109,13 +108,6 @@ describe('nz-wave base', () => {
 describe('nz-wave extra', () => {
   let fixture: ComponentFixture<WaveContainerWithExtraNodeComponent>;
   let waveTarget: HTMLElement;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzWaveModule],
-      declarations: [WaveContainerWithExtraNodeComponent]
-    });
-  });
 
   describe('extra node wave', () => {
     beforeEach(() => {
@@ -190,10 +182,10 @@ describe('nz-wave extra', () => {
 describe('nz-wave NoopAnimationsModule', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveRef: NzWaveDirective;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzWaveModule, NoopAnimationsModule],
-      declarations: [WaveContainerWithButtonComponent]
+      providers: [provideNoopAnimations()]
     });
   });
 
@@ -221,12 +213,6 @@ describe('nz-wave disable/enable', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveTarget: HTMLElement;
   let waveRef: NzWaveDirective;
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzWaveModule],
-      declarations: [WaveContainerWithButtonComponent]
-    });
-  });
 
   describe('disable/enable', () => {
     beforeEach(() => {
@@ -256,18 +242,20 @@ describe('nz-wave disable/enable', () => {
 });
 
 @Component({
+  imports: [NzWaveModule],
   template: `
-    <button
-      #trigger
-      nz-wave
-      *ngIf="!isDestroyed"
-      [disabled]="disabled"
-      [class.disabled]="disabledClass"
-      [style.border-color]="borderColor"
-      [style.background-color]="backgroundColor"
-    >
-      Button
-    </button>
+    @if (!isDestroyed) {
+      <button
+        #trigger
+        nz-wave
+        [attr.disabled]="disabled || null"
+        [class.disabled]="disabledClass"
+        [style.border-color]="borderColor"
+        [style.background-color]="backgroundColor"
+      >
+        Button
+      </button>
+    }
   `
 })
 class WaveContainerWithButtonComponent {
@@ -281,18 +269,20 @@ class WaveContainerWithButtonComponent {
 }
 
 @Component({
+  imports: [NzWaveModule],
   template: `
-    <div
-      #trigger
-      nz-wave
-      *ngIf="!isDestroyed"
-      [nzWaveExtraNode]="true"
-      [class.disabled]="disabledClass"
-      [style.border-color]="borderColor"
-      [style.background-color]="backgroundColor"
-    >
-      <button>Button</button>
-    </div>
+    @if (!isDestroyed) {
+      <div
+        #trigger
+        nz-wave
+        [nzWaveExtraNode]="true"
+        [class.disabled]="disabledClass"
+        [style.border-color]="borderColor"
+        [style.background-color]="backgroundColor"
+      >
+        <button>Button</button>
+      </div>
+    }
   `
 })
 class WaveContainerWithExtraNodeComponent {

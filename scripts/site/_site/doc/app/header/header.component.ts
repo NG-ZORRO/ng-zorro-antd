@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,104 +9,45 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzGridModule } from "ng-zorro-antd/grid";
+import { NzIconModule } from "ng-zorro-antd/icon";
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { VERSION } from 'ng-zorro-antd/version';
+
+import { GithubButtonComponent } from './github-button.component';
+import { LogoComponent } from './logo.component';
+import { SearchbarComponent } from './searchbar.component';
+import { NavigationComponent } from './navigation.component';
 
 const RESPONSIVE_XS = 1120;
 const RESPONSIVE_SM = 1200;
 
 @Component({
-  selector: 'app-header',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <header id="header" class="clearfix">
-      <span
-        nz-icon
-        class="nav-phone-icon"
-        nzType="unordered-list"
-        *ngIf="isMobile"
-        nzPopoverOverlayClassName="popover-menu"
-        nzPopoverPlacement="bottomLeft"
-        nz-popover
-        [nzPopoverContent]="menu"
-      ></span>
-
-      <div nz-row style="flex-flow: nowrap">
-        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="5" [nzXXl]="4">
-          <app-logo></app-logo>
-        </div>
-        <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="18" [nzLg]="18" [nzXl]="19" [nzXXl]="20" class="menu-row">
-          <div
-            app-searchbar
-            [language]="language"
-            [responsive]="responsive"
-            (focusChange)="onFocusChange($event)"
-          ></div>
-          <ng-container *ngIf="!isMobile" [ngTemplateOutlet]="menu"></ng-container>
-        </div>
-      </div>
-    </header>
-    <ng-template #menu>
-      <ng-container *ngIf="!searching || windowWidth > 1200">
-        <ng-container *ngIf="windowWidth < 1120; else narrowNavigation">
-          <ul
-            nz-menu
-            app-navagation
-            class="menu-site"
-            [responsive]="responsive"
-            [page]="page"
-            [isMobile]="isMobile"
-            [nzMode]="isMobile ? 'inline' : 'horizontal'"
-            [nzSelectable]="false"
-            [(language)]="language"
-            (languageChange)="onChangeLanguage($event)"
-          ></ul>
-        </ng-container>
-        <ng-template #narrowNavigation>
-          <ul
-            nz-menu
-            app-navagation
-            class="menu-site"
-            [responsive]="responsive"
-            [page]="page"
-            [isMobile]="isMobile"
-            [nzMode]="isMobile ? 'inline' : 'horizontal'"
-            [nzSelectable]="false"
-            [(language)]="language"
-            (languageChange)="onChangeLanguage($event)"
-          ></ul>
-          <nz-select
-            nzSize="small"
-            class="version"
-            style="max-width: 126px;"
-            [ngModel]="currentVersion"
-            (ngModelChange)="onChangeVersion($event)"
-          >
-            <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
-            <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
-          </nz-select>
-          <button
-            nz-button
-            nzSize="small"
-            class="header-button header-lang-butto"
-            (click)="onChangeLanguage(language === 'zh' ? 'en' : 'zh')"
-          >
-            {{ language == 'zh' ? 'English' : '中文' }}
-          </button>
-          <button
-            nz-button
-            nzGhost
-            nzSize="small"
-            class="header-button header-direction-button"
-            (click)="toggleDirection()"
-          >
-            {{ nextDirection | uppercase }}
-          </button>
-          <app-github-btn [responsive]="responsive"></app-github-btn>
-        </ng-template>
-      </ng-container>
-    </ng-template>
-  `
+    selector: 'app-header',
+  templateUrl: './header.component.html',
+  imports: [
+    CommonModule,
+    FormsModule,
+    NzGridModule,
+    NzIconModule,
+    NzMenuModule,
+    NzSelectModule,
+    NzButtonModule,
+    NzDropDownModule,
+    NzPopoverModule,
+    GithubButtonComponent,
+    LogoComponent,
+    SearchbarComponent,
+    NavigationComponent
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnChanges {
   @Input() language: 'zh' | 'en' = 'zh';
@@ -120,6 +62,10 @@ export class HeaderComponent implements OnChanges {
   mode = 'horizontal';
   responsive: null | 'narrow' | 'crowded' = null;
   oldVersionList = [
+    '18.2.x',
+    '17.4.x',
+    '16.2.x',
+    '15.1.x',
     '14.3.x',
     '13.4.x',
     '12.1.x',

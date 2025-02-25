@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-checkable',
+  imports: [FormsModule, NzTreeSelectModule],
   template: `
     <nz-tree-select
       style="width: 250px"
@@ -16,7 +20,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoTreeSelectCheckableComponent {
   value: string[] = ['0-0-0'];
-  nodes = [
+  readonly nodes = [
     {
       title: 'Node1',
       value: '0-0',

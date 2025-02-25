@@ -3,17 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { PlatformModule } from '@angular/cdk/platform';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzContextMenuServiceModule } from './context-menu.service.module';
@@ -24,19 +15,12 @@ import { NzDropDownDirective } from './dropdown.directive';
 
 @NgModule({
   imports: [
-    BidiModule,
-    CommonModule,
-    OverlayModule,
-    NzButtonModule,
-    NzMenuModule,
-    NzIconModule,
-    NzNoAnimationModule,
-    PlatformModule,
-    NzOverlayModule,
-    NzContextMenuServiceModule,
-    NzOutletModule
+    NzDropDownDirective,
+    NzDropDownADirective,
+    NzDropdownMenuComponent,
+    NzDropdownButtonDirective,
+    NzContextMenuServiceModule
   ],
-  declarations: [NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective],
   exports: [NzMenuModule, NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective]
 })
 export class NzDropDownModule {}

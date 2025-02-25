@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,7 +13,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
 import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types';
 
 @Component({
   selector: '[nz-submenu-none-inline-child]',
@@ -41,7 +41,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
       [class.ant-dropdown-menu-sub]="isMenuInsideDropDown"
       [class.ant-menu-sub]="!isMenuInsideDropDown"
       [class.ant-menu-rtl]="dir === 'rtl'"
-      [ngClass]="menuClass"
+      [class]="menuClass"
     >
       <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
     </div>
@@ -58,7 +58,8 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     '[@zoomBigMotion]': 'expandState',
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
-  }
+  },
+  imports: [NgTemplateOutlet]
 })
 export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() menuClass: string = '';
@@ -66,15 +67,16 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() isMenuInsideDropDown = false;
   @Input() mode: NzMenuModeType = 'vertical';
+  @Input() nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
   @Input() position = 'right';
   @Input() nzDisabled = false;
   @Input() nzOpen = false;
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
-  constructor(@Optional() private directionality: Directionality) {}
+  constructor(private directionality: Directionality) {}
 
   setMouseState(state: boolean): void {
-    if (!this.nzDisabled) {
+    if (!this.nzDisabled && this.nzTriggerSubMenuAction === 'hover') {
       this.subMenuMouseState.next(state);
     }
   }

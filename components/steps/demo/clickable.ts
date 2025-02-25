@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+
 @Component({
   selector: 'nz-demo-steps-clickable',
+  imports: [NzDividerModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
       <nz-step nzTitle="Finished" [nzDisabled]="disable" nzDescription="This is a description."></nz-step>

@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTableLayout } from '../table.types';
+import { NzTableContentComponent } from './table-content.component';
 
 @Component({
   selector: 'nz-table-inner-default',
@@ -21,16 +22,17 @@ import { NzTableLayout } from '../table.types';
         [tableLayout]="tableLayout"
         [listOfColWidth]="listOfColWidth"
         [theadTemplate]="theadTemplate"
+        [tfootTemplate]="tfootTemplate"
       ></table>
     </div>
   `,
-  host: { class: 'ant-table-container' }
+  host: { class: 'ant-table-container' },
+  imports: [NzTableContentComponent]
 })
 export class NzTableInnerDefaultComponent {
   @Input() tableLayout: NzTableLayout = 'auto';
   @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
-
-  constructor() {}
+  @Input() tfootTemplate: TemplateRef<NzSafeAny> | null = null;
 }

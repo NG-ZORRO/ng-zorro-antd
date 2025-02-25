@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 @Component({
   selector: 'nz-demo-form-time-related-controls',
+  imports: [ReactiveFormsModule, NzButtonModule, NzDatePickerModule, NzFormModule, NzTimePickerModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
@@ -56,23 +62,18 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
     `
   ]
 })
-export class NzDemoFormTimeRelatedControlsComponent implements OnInit {
-  validateForm!: UntypedFormGroup;
+export class NzDemoFormTimeRelatedControlsComponent {
+  private fb = inject(FormBuilder);
+  validateForm = this.fb.group({
+    datePicker: this.fb.control<Date | null>(null),
+    datePickerTime: this.fb.control<Date | null>(null),
+    monthPicker: this.fb.control<Date | null>(null),
+    rangePicker: this.fb.control<[Date, Date] | null>(null),
+    rangePickerTime: this.fb.control<[Date, Date] | null>(null),
+    timePicker: this.fb.control<Date | null>(null)
+  });
 
   submitForm(): void {
     console.log(this.validateForm.value);
-  }
-
-  constructor(private fb: UntypedFormBuilder) {}
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      datePicker: [null],
-      datePickerTime: [null],
-      monthPicker: [null],
-      rangePicker: [[]],
-      rangePickerTime: [[]],
-      timePicker: [null]
-    });
   }
 }

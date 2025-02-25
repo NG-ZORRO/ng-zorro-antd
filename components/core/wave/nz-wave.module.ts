@@ -3,14 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { PlatformModule } from '@angular/cdk/platform';
 import { NgModule } from '@angular/core';
 
-import { NzWaveDirective } from './nz-wave.directive';
+import { NZ_WAVE_GLOBAL_DEFAULT_CONFIG, NzWaveDirective, provideNzWave } from './nz-wave.directive';
 
 @NgModule({
-  imports: [PlatformModule],
+  imports: [NzWaveDirective],
   exports: [NzWaveDirective],
-  declarations: [NzWaveDirective]
+  providers: [provideNzWave(NZ_WAVE_GLOBAL_DEFAULT_CONFIG)]
 })
 export class NzWaveModule {}

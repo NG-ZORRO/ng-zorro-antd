@@ -7,23 +7,23 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnDestroy,
-  Optional,
-  Renderer2,
-  SkipSelf,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { ThemeType } from '@ant-design/icons-angular';
 
-import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzTSType } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
-import { DefaultTooltipIcon, NzFormDirective } from './form.directive';
+import { DefaultTooltipIcon, NzFormDirective, NzLabelAlignType } from './form.directive';
 
 export interface NzFormTooltipIcon {
   type: NzTSType;
@@ -44,26 +44,31 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
   template: `
     <label [attr.for]="nzFor" [class.ant-form-item-no-colon]="nzNoColon" [class.ant-form-item-required]="nzRequired">
       <ng-content></ng-content>
-      <span *ngIf="nzTooltipTitle" class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
-        <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
-          <span nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme"></span>
-        </ng-container>
-      </span>
+      @if (nzTooltipTitle) {
+        <span class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
+          <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
+            <nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme" />
+          </ng-container>
+        </span>
+      }
     </label>
-  `
+  `,
+  host: {
+    class: 'ant-form-item-label',
+    '[class.ant-form-item-label-left]': `nzLabelAlign === 'left'`,
+    '[class.ant-form-item-label-wrap]': `nzLabelWrap`
+  },
+  imports: [NzOutletModule, NzTooltipDirective, NzIconModule]
 })
 export class NzFormLabelComponent implements OnDestroy {
-  static ngAcceptInputType_nzRequired: BooleanInput;
-  static ngAcceptInputType_nzNoColon: BooleanInput;
-
   @Input() nzFor?: string;
-  @Input() @InputBoolean() nzRequired = false;
-  @Input()
+  @Input({ transform: booleanAttribute }) nzRequired = false;
+  @Input({ transform: booleanAttribute })
   set nzNoColon(value: boolean) {
-    this.noColon = toBoolean(value);
+    this.noColon = value;
   }
   get nzNoColon(): boolean {
-    return this.noColon !== 'default' ? this.noColon : this.nzFormDirective?.nzNoColon;
+    return this.noColon !== 'default' ? this.noColon : !!this.nzFormDirective?.nzNoColon;
   }
 
   private noColon: boolean | 'default' = 'default';
@@ -81,16 +86,33 @@ export class NzFormLabelComponent implements OnDestroy {
   }
   private _tooltipIcon: NzFormTooltipIcon | 'default' = 'default';
 
-  private destroy$ = new Subject();
+  @Input()
+  set nzLabelAlign(value: NzLabelAlignType) {
+    this.labelAlign = value;
+  }
 
-  constructor(
-    elementRef: ElementRef,
-    renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    @Optional() @SkipSelf() private nzFormDirective: NzFormDirective
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-item-label');
+  get nzLabelAlign(): NzLabelAlignType {
+    return this.labelAlign !== 'default' ? this.labelAlign : this.nzFormDirective?.nzLabelAlign || 'right';
+  }
 
+  private labelAlign: NzLabelAlignType | 'default' = 'default';
+
+  @Input({ transform: booleanAttribute })
+  set nzLabelWrap(value: boolean) {
+    this.labelWrap = value;
+  }
+
+  get nzLabelWrap(): boolean {
+    return this.labelWrap !== 'default' ? this.labelWrap : !!this.nzFormDirective?.nzLabelWrap;
+  }
+
+  private labelWrap: boolean | 'default' = 'default';
+
+  private destroy$ = new Subject<boolean>();
+
+  private nzFormDirective = inject(NzFormDirective, { skipSelf: true, optional: true });
+
+  constructor(private cdr: ChangeDetectorRef) {
     if (this.nzFormDirective) {
       this.nzFormDirective
         .getInputObservable('nzNoColon')
@@ -107,11 +129,27 @@ export class NzFormLabelComponent implements OnDestroy {
           takeUntil(this.destroy$)
         )
         .subscribe(() => this.cdr.markForCheck());
+
+      this.nzFormDirective
+        .getInputObservable('nzLabelAlign')
+        .pipe(
+          filter(() => this.labelAlign === 'default'),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => this.cdr.markForCheck());
+
+      this.nzFormDirective
+        .getInputObservable('nzLabelWrap')
+        .pipe(
+          filter(() => this.labelWrap === 'default'),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => this.cdr.markForCheck());
     }
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

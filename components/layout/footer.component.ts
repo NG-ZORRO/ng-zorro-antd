@@ -8,13 +8,16 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 @Component({
   selector: 'nz-footer',
   exportAs: 'nzFooter',
+  template: `<ng-content></ng-content>`,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzFooterComponent {
-  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(
+    public elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-layout-footer');
   }
 }

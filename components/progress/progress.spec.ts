@@ -1,27 +1,24 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzProgressComponent } from './progress.component';
 import { NzProgressModule } from './progress.module';
-import { NzProgressFormatter, NzProgressGapPositionType, NzProgressStrokeColorType } from './typings';
+import {
+  NzProgressFormatter,
+  NzProgressGapPositionType,
+  NzProgressStatusType,
+  NzProgressStrokeColorType,
+  NzProgressStrokeLinecapType
+} from './typings';
 
 describe('progress', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzProgressModule],
-      declarations: [
-        NzTestProgressLineComponent,
-        NzTestProgressDashBoardComponent,
-        NzTestProgressCircleComponent,
-        NzTestProgressCircleSuccessComponent,
-        NzTestProgressRtlComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
-
   describe('progress line', () => {
     let fixture: ComponentFixture<NzTestProgressLineComponent>;
     let testComponent: NzTestProgressLineComponent;
@@ -99,7 +96,7 @@ describe('progress', () => {
     it('should status work', () => {
       fixture.detectChanges();
       expect(progress.nativeElement.firstElementChild!.classList).toContain('ant-progress-status-normal');
-      const listOfStatus = ['success', 'exception', 'active', 'normal'];
+      const listOfStatus: NzProgressStatusType[] = ['success', 'exception', 'active', 'normal'];
       testComponent.percent = 100;
       listOfStatus.forEach(status => {
         testComponent.status = status;
@@ -430,6 +427,7 @@ describe('progress', () => {
 });
 
 @Component({
+  imports: [NzProgressModule],
   template: `
     <nz-progress
       [nzSize]="size"
@@ -448,19 +446,20 @@ describe('progress', () => {
 })
 export class NzTestProgressLineComponent {
   @ViewChild('formatterTemplate') formatterTemplate!: TemplateRef<{ $implicit: number }>;
-  size?: string;
-  status?: string;
+  size!: 'default' | 'small';
+  status?: NzProgressStatusType;
   formatter?: NzProgressFormatter;
   strokeWidth?: number;
   percent = 0;
   successPercent = 0;
   showInfo = true;
-  strokeLinecap = 'round';
+  strokeLinecap: NzProgressStrokeLinecapType = 'round';
   steps?: number;
   strokeColor?: NzProgressStrokeColorType;
 }
 
 @Component({
+  imports: [NzProgressModule],
   template: `
     <nz-progress
       nzType="dashboard"
@@ -475,16 +474,17 @@ export class NzTestProgressLineComponent {
   `
 })
 export class NzTestProgressDashBoardComponent {
-  status?: string;
+  status?: NzProgressStatusType;
   format?: NzProgressFormatter;
   strokeWidth?: number;
   percent = 0;
   showInfo = true;
   width = 132;
-  strokeLinecap = 'round';
+  strokeLinecap: NzProgressStrokeLinecapType = 'round';
 }
 
 @Component({
+  imports: [NzProgressModule],
   template: `
     <nz-progress
       nzType="circle"
@@ -498,17 +498,19 @@ export class NzTestProgressDashBoardComponent {
 })
 export class NzTestProgressCircleComponent {
   gapDegree?: number;
-  gapPosition?: NzProgressGapPositionType;
-  strokeLinecap = 'round';
+  gapPosition!: NzProgressGapPositionType;
+  strokeLinecap: NzProgressStrokeLinecapType = 'round';
   strokeColor?: NzProgressStrokeColorType;
 }
 
 @Component({
-  template: ` <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress> `
+  imports: [NzProgressModule],
+  template: ` <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>`
 })
 export class NzTestProgressCircleSuccessComponent {}
 
 @Component({
+  imports: [BidiModule, NzProgressModule],
   template: `
     <div [dir]="direction">
       <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>
@@ -517,5 +519,5 @@ export class NzTestProgressCircleSuccessComponent {}
 })
 export class NzTestProgressRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

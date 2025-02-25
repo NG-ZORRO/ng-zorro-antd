@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+
 @Component({
   selector: 'nz-demo-affix-target',
+  imports: [NzAffixModule, NzButtonModule],
   template: `
     <div class="scrollable-container" #target>
       <div class="background">

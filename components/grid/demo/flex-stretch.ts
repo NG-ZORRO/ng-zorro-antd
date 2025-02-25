@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzGridModule } from 'ng-zorro-antd/grid';
+
 @Component({
   selector: 'nz-demo-grid-flex-stretch',
+  imports: [NzGridModule],
   template: `
     <div>
       <p>Percentage columns</p>

@@ -1,0 +1,210 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@check-list-prefix-cls: ~'@{ant-prefix}-check-list';
+
+.@{check-list-prefix-cls} {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 999;
+  font-size: @font-size-base;
+  cursor: pointer;
+
+  .@{check-list-prefix-cls}-button {
+    display: flex;
+    gap: @margin-xs;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    height: 40px;
+    border-radius: 20px;
+  }
+
+  .@{check-list-prefix-cls}-icon {
+    font-size: @heading-3-size;
+    line-height: 24px;
+  }
+
+  .@{check-list-prefix-cls}-description {
+    font-size: @font-size-base;
+  }
+}
+
+.@{check-list-prefix-cls}-content {
+  display: block;
+  width: 303px;
+
+  .@{check-list-prefix-cls}-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: @padding-sm @padding-sm @padding-md;
+    .@{check-list-prefix-cls}-header-title {
+      font-weight: 500;
+      font-size: @heading-4-size;
+    }
+    .@{check-list-prefix-cls}-header-extra {
+      cursor: pointer;
+    }
+  }
+
+  .@{check-list-prefix-cls}-header-finish {
+    width: 304px;
+    padding-top: @margin-sm;
+    text-align: center;
+
+    .@{check-list-prefix-cls}-header-finish-icon {
+      width: 64px;
+      height: 64px;
+      color: @primary-color;
+      font-size: 64px;
+    }
+
+    .@{check-list-prefix-cls}-header-finish-title {
+      margin-top: @margin-xs;
+      margin-bottom: @margin-xs;
+      font-weight: 500;
+      font-size: @font-size-lg;
+    }
+  }
+
+  .@{check-list-prefix-cls}-progressBar {
+    display: flex;
+    justify-content: space-between;
+    margin: @margin-sm @margin-md;
+    margin-top: 0;
+
+    .@{check-list-prefix-cls}-progressBar-progress {
+      flex: auto;
+    }
+  }
+
+  .@{check-list-prefix-cls}-steps-content {
+    max-height: 250px;
+    overflow-y: scroll;
+  }
+
+  .@{check-list-prefix-cls}-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    padding-right: @padding-sm;
+    padding-left: @padding-sm;
+    border-radius: 6px;
+    cursor: pointer;
+
+    .@{check-list-prefix-cls}-steps-item {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      width: calc(100% - 22px);
+      font-weight: 400;
+
+      .@{check-list-prefix-cls}-steps-item-circle {
+        display: flex;
+        flex: 0 0 28px;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        font-weight: 600;
+        background-color: @component-background;
+        border: @border-width-base solid @border-color-base;
+        border-radius: 50%;
+        user-select: none;
+
+        .@{check-list-prefix-cls}-steps-number {
+          color: @primary-color;
+          font-size: @font-size-lg;
+        }
+
+        .@{check-list-prefix-cls}-steps-checkoutlined {
+          color: @component-background;
+          font-size: @font-size-base;
+        }
+      }
+
+      .@{check-list-prefix-cls}-steps-item-description {
+        flex: 1;
+        overflow: hidden;
+        line-height: 2;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .@{check-list-prefix-cls}-steps-item-arrows {
+      flex: 0 0 22px;
+      width: 38px;
+      height: 38px;
+      color: @primary-color;
+      font-size: 22px;
+    }
+  }
+
+  .@{check-list-prefix-cls}-checked {
+
+    .@{check-list-prefix-cls}-steps-item .@{check-list-prefix-cls}-steps-item-circle {
+      background-color: @primary-color;
+      border: none;
+    }
+
+    .@{check-list-prefix-cls}-steps-item .@{check-list-prefix-cls}-steps-item-description {
+      font-weight: 500;
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: @text-color;
+      opacity: 0.85;
+    }
+  }
+
+  .@{check-list-prefix-cls}-highlight {
+    background-color: @info-color-deprecated-bg;
+
+    .@{check-list-prefix-cls}-steps-item .@{check-list-prefix-cls}-steps-item-circle {
+      border: @border-width-base solid @primary-color;
+
+      .@{check-list-prefix-cls}-steps-number {
+        color: @primary-color;
+      }
+    }
+    .@{check-list-prefix-cls}-steps-item .@{check-list-prefix-cls}-steps-item-description {
+      font-weight: 600;
+    }
+  }
+
+  .@{check-list-prefix-cls}-footer {
+    padding: @padding-sm @padding-sm 0;
+    color: @text-color-secondary;
+    font-size: @font-size-base;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .@{check-list-prefix-cls}-close-check {
+    display: flex;
+    flex-direction: column;
+    padding: @padding-sm;
+    .@{check-list-prefix-cls}-close-check-title {
+      margin-bottom: @margin-lg;
+      font-weight: 500;
+      font-size: @font-size-lg;
+    }
+
+    .@{check-list-prefix-cls}-close-check-action {
+      display: flex;
+      flex-direction: row;
+      gap: @margin-xs;
+      margin-bottom: @margin-md;
+    }
+
+    .@{check-list-prefix-cls}-close-check-other {
+      color: @text-color-secondary;
+      font-size: @font-size-base;
+      cursor: pointer;
+    }
+  }
+}

@@ -24,7 +24,7 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 ### Import Style
 
 ```less
-@import "node_modules/ng-zorro-antd/code-editor/style/entry.less"
+@import 'node_modules/ng-zorro-antd/code-editor/style/entry.less';
 ```
 
 ## API
@@ -67,20 +67,20 @@ If you use static loading, you should not add assets of monaco editor to your pr
 
 ### nz-code-editor
 
-| Parameter | Description | Type | Default |
-| --- | --- | --- | --- |
-| `[nzEditorMode]` | Mode of monaco editor | `normal`\|`diff` | `normal` |
-| `[nzLoading]` | Show the loading spin | `boolean` | `false` |
-| `[nzOriginalText]` | The content of the left editor in `diff` mode | `boolean` | `false` |
-| `[nzFullControl]` | Enable full control mode. User should manage `TextModel` manually in this mode | `boolean` | `false` |
-| `[nzEditorOption]` | [Please refer to the doc of monaco editor](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html) | `IEditorConstructionOptions` | `{}` |
-| `[nzToolkit]` | A placeholder for adding some quick actions | `TemplateRef<void>` | - |
-| `(nzEditorInitialized)` | The event that a code editor is initialized  | `IStandaloneCodeEditor` \| `IStandaloneDiffEditor` | - |
+| Parameter               | Description                                                                                                                                        | Type                                               | Default  |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
+| `[nzEditorMode]`        | Mode of monaco editor                                                                                                                              | `normal`\|`diff`                                   | `normal` |
+| `[nzLoading]`           | Show the loading spin                                                                                                                              | `boolean`                                          | `false`  |
+| `[nzOriginalText]`      | The content of the left editor in `diff` mode                                                                                                      | `boolean`                                          | `false`  |
+| `[nzFullControl]`       | Enable full control mode. User should manage `TextModel` manually in this mode                                                                     | `boolean`                                          | `false`  |
+| `[nzEditorOption]`      | [Please refer to the doc of monaco editor](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html) | `IEditorConstructionOptions`                       | `{}`     |
+| `[nzToolkit]`           | A placeholder for adding some quick actions                                                                                                        | `TemplateRef<void>`                                | -        |
+| `(nzEditorInitialized)` | The event that a code editor is initialized                                                                                                        | `IStandaloneCodeEditor` \| `IStandaloneDiffEditor` | -        |
 
 #### Methods
 
-| Method | Description |
-| --- | --- |
+| Method     | Description                             |
+| ---------- | --------------------------------------- |
 | `layout()` | Force monaco editor to re-render itself |
 
 ### Global Configuration
@@ -89,11 +89,11 @@ You can set the default configuration of the `CodeEditor` component through the 
 
 #### CodeEditorConfig
 
-| Parameter | Description | Type | Default |
-| --- | --- | --- | --- |
-| `assetsRoot` | Where should the component load resource of monaco editor | `string` \| `SageUrl` | - |
-| `defaultEditorOption` | Default options. [Please refer to the doc of monaco editor](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IEditorOptions.html) | `IEditorConstructionOptions` | `{}` |
-| `onLoad` | The hook invoked when the resource of monaco editor is loaded. At this moment and afterwards the global variable `monaco` is usable (`window.MonacoEnvironment = { globalAP: true }` is required if monaco-editor's version is greater or equal to 0.22.0) | `() => void` | - |
-| `onFirstEditorInit` | The hook invoked when the first monaco editor is initialized | `() => void` | - |
-| `onInit` | The hook invoked every time a monaco editor is initialized | `() => void`  | - |
-| `useStaticLoading` | Load monaco editor statically | `boolean` | `false` |
+| Parameter             | Description                                                                                                                                                                                                                                                 | Type                         | Default |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------- |
+| `assetsRoot`          | Where should the component load resource of monaco editor                                                                                                                                                                                                   | `string` \| `SafeUrl`        | -       |
+| `defaultEditorOption` | Default options. [Please refer to the doc of monaco editor](https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IEditorConstructionOptions.html)                                                                                          | `IEditorConstructionOptions` | `{}`    |
+| `onLoad`              | The hook invoked when the resource of monaco editor is loaded. At this moment and afterwards the global variable `monaco` is usable (`window.MonacoEnvironment = { globalAPI: true }` is required if monaco-editor's version is greater or equal to 0.22.0) | `() => void`                 | -       |
+| `onFirstEditorInit`   | The hook invoked when the first monaco editor is initialized                                                                                                                                                                                                | `() => void`                 | -       |
+| `onInit`              | The hook invoked every time a monaco editor is initialized                                                                                                                                                                                                  | `() => void`                 | -       |
+| `useStaticLoading`    | Load monaco editor statically                                                                                                                                                                                                                               | `boolean`                    | `false` |

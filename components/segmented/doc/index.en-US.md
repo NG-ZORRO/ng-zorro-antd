@@ -16,12 +16,22 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 ## API
 
-| Property | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-| `[nzBlock]` | Option to fit width to its parent\'s width | `boolean` | false |  |
-| `[nzDisabled]` | Disable all segments | `boolean` | false |  |
-| `[nzOptions]` |  Set children optional | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean; useTemplate?: boolean }>` | - |  |
-| `[nzSize]` | The size of the Segmented | `large \| default \| small` | - | ✅ |
-| `[ngModel]` | Index of the currently selected option | `number` | - |  |
-| `(nzValueChange)` | Emits when index of the currently selected option changes | `EventEmitter<number>` | - |  |
-| `(ngModelChange)` | Emits when index of the currently selected option changes | `EventEmitter<number>` | - |  |
+### nz-segmented
+
+| Property          | Description                                               | Type                                                                                                          | Default | Global Config |
+| ----------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------- | ------------- |
+| `[nzBlock]`       | Option to fit width to its parent\'s width                | `boolean`                                                                                                     | false   |               |
+| `[nzDisabled]`    | Disable all segments                                      | `boolean`                                                                                                     | false   |               |
+| `[nzOptions]`     | Set children optional                                     | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean }>` | -       |               |
+| `[nzSize]`        | The size of the Segmented                                 | `large \| default \| small`                                                                                   | -       | ✅             |
+| `[ngModel]`       | Value of the currently selected option                    | `string \| number`                                                                                            | -       |               |
+| `(nzValueChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -       |               |
+| `(ngModelChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -       |               |
+
+### label[nz-segmented-item]
+
+| Property       | Description                | Type               | Default | Global Config |
+| -------------- | -------------------------- | ------------------ | ------- | ------------- |
+| `[nzIcon]`     | Icon in segmented item     | `string`           | -       |               |
+| `[nzValue]`    | Value of segmented item    | `string \| number` | -       |               |
+| `[nzDisabled]` | Disable the segmented item | `boolean`          | false   |               |

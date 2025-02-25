@@ -1,28 +1,30 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzPopoverDirective } from './popover';
 import { NzPopoverModule } from './popover.module';
 
 describe('NzPopover', () => {
-  let testBed: ComponentBed<NzPopoverTestComponent>;
   let fixture: ComponentFixture<NzPopoverTestComponent>;
   let component: NzPopoverTestComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzPopoverTestComponent, {
-      imports: [NzPopoverModule, NoopAnimationsModule, NzIconTestModule]
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
     });
-    fixture = testBed.fixture;
-    component = testBed.component;
+    fixture = TestBed.createComponent(NzPopoverTestComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   }));
 
@@ -107,11 +109,54 @@ describe('NzPopover', () => {
     waitingForTooltipToggling();
     expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
   }));
+
+  it('should prohibit hiding popover when nzPopoverOverlayClickable is false', fakeAsync(() => {
+    const triggerElement = component.hideTemplate.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'click');
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.textContent).toContain('content-string');
+
+    dispatchMouseEvent(document.body, 'click');
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.textContent).toContain('content-string');
+  }));
+
+  it('should change overlayClass when the nzPopoverOverlayClassName is changed', fakeAsync(() => {
+    const triggerElement = component.stringPopover.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'mouseenter');
+    waitingForTooltipToggling();
+
+    component.class = 'testClass2';
+    fixture.detectChanges();
+
+    expect(overlayContainerElement.querySelector<HTMLElement>('.testClass')).toBeNull();
+    expect(overlayContainerElement.querySelector<HTMLElement>('.testClass2')).not.toBeNull();
+  }));
+
+  it('should nzPopoverOverlayClassName support classes listed in the string (space delimited)', fakeAsync(() => {
+    const triggerElement = component.stringPopover.nativeElement;
+    component.class = 'testClass1 testClass2';
+
+    dispatchMouseEvent(triggerElement, 'mouseenter');
+    waitingForTooltipToggling();
+
+    expect(overlayContainerElement.querySelector('.testClass1.testClass2')).not.toBeNull();
+  }));
 });
 
 @Component({
+  imports: [NzPopoverModule],
   template: `
-    <a #stringPopover nz-popover nzPopoverTitle="title-string" nzPopoverContent="content-string">Show</a>
+    <a
+      #stringPopover
+      nz-popover
+      nzPopoverTitle="title-string"
+      nzPopoverContent="content-string"
+      [nzPopoverOverlayClassName]="class"
+      >Show</a
+    >
 
     <a #templatePopover nz-popover [nzPopoverTitle]="templateTitle" [nzPopoverContent]="templateContent">Show</a>
 
@@ -124,6 +169,17 @@ describe('NzPopover', () => {
       nzPopoverTrigger="click"
       [nzPopoverBackdrop]="true"
     ></a>
+
+    <a
+      #hideTemplate
+      nz-popover
+      nzPopoverContent="content-string"
+      nzPopoverTrigger="click"
+      [nzPopoverBackdrop]="true"
+      [nzPopoverOverlayClickable]="false"
+    >
+      Click
+    </a>
 
     <ng-template #templateTitle>title-template</ng-template>
 
@@ -143,13 +199,13 @@ export class NzPopoverTestComponent {
   @ViewChild('changePopover', { static: true, read: NzPopoverDirective })
   changePopoverNzPopoverDirective!: NzPopoverDirective;
 
+  @ViewChild('hideTemplate', { static: false }) hideTemplate!: ElementRef;
+  @ViewChild('hideTemplate', { static: false, read: NzPopoverDirective })
+  hideTemplateDirective!: NzPopoverDirective;
+
   @ViewChild('backdropPopover', { static: true }) backdropPopover!: ElementRef;
 
   content = 'content';
   visible = false;
-  visibilityTogglingCount = 0;
-
-  onVisibleChange(): void {
-    this.visibilityTogglingCount += 1;
-  }
+  class = 'testClass';
 }

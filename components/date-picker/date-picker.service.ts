@@ -21,7 +21,7 @@ export class DatePickerService implements OnDestroy {
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
   emitValue$ = new Subject<void>();
-  inputPartChange$ = new Subject<RangePartType>();
+  inputPartChange$ = new Subject<RangePartType | null>();
 
   initValue(reset: boolean = false): void {
     if (reset) {
@@ -48,9 +48,10 @@ export class DatePickerService implements OnDestroy {
   }
 
   setActiveDate(value: CompatibleValue, hasTimePicker: boolean = false, mode: NormalizedMode = 'month'): void {
-    const parentPanels: { [key in NzDateMode]?: NormalizedMode } = {
+    const parentPanels: Partial<Record<NzDateMode, NormalizedMode>> = {
       date: 'month',
       month: 'year',
+      quarter: 'year',
       year: 'decade'
     };
     if (this.isRange) {

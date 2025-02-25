@@ -5,6 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -17,34 +18,39 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
   TrackByFunction,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
-import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { measureScrollbar } from 'ng-zorro-antd/core/util';
+import { NzPaginationModule, PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
+import { NzSpinComponent } from 'ng-zorro-antd/spin';
 
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import {
+  NzCustomColumn,
   NzTableLayout,
   NzTablePaginationPosition,
   NzTablePaginationType,
   NzTableQueryParams,
-  NzTableSize
+  NzTableSize,
+  NzTableSummaryFixedType
 } from '../table.types';
+import { NzTableInnerDefaultComponent } from './table-inner-default.component';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
+import { NzTableTitleFooterComponent } from './title-footer.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
 
@@ -57,9 +63,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading" [nzIndicator]="nzLoadingIndicator">
-      <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'top'">
+      @if (nzPaginationPosition === 'both' || nzPaginationPosition === 'top') {
         <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
-      </ng-container>
+      }
       <div
         #tableMainElement
         class="ant-table"
@@ -73,56 +79,65 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
         [class.ant-table-middle]="nzSize === 'middle'"
         [class.ant-table-small]="nzSize === 'small'"
       >
-        <nz-table-title-footer [title]="nzTitle" *ngIf="nzTitle"></nz-table-title-footer>
-        <nz-table-inner-scroll
-          *ngIf="scrollY || scrollX; else defaultTemplate"
-          [data]="data"
-          [scrollX]="scrollX"
-          [scrollY]="scrollY"
-          [contentTemplate]="contentTemplate"
-          [listOfColWidth]="listOfAutoColWidth"
-          [theadTemplate]="theadTemplate"
-          [verticalScrollBarWidth]="verticalScrollBarWidth"
-          [virtualTemplate]="nzVirtualScrollDirective ? nzVirtualScrollDirective.templateRef : null"
-          [virtualItemSize]="nzVirtualItemSize"
-          [virtualMaxBufferPx]="nzVirtualMaxBufferPx"
-          [virtualMinBufferPx]="nzVirtualMinBufferPx"
-          [tableMainElement]="tableMainElement"
-          [virtualForTrackBy]="nzVirtualForTrackBy"
-        ></nz-table-inner-scroll>
-        <ng-template #defaultTemplate>
+        @if (nzTitle) {
+          <nz-table-title-footer [title]="nzTitle"></nz-table-title-footer>
+        }
+        @if (scrollY || scrollX) {
+          <nz-table-inner-scroll
+            [data]="data"
+            [scrollX]="scrollX"
+            [scrollY]="scrollY"
+            [contentTemplate]="contentTemplate"
+            [listOfColWidth]="listOfAutoColWidth"
+            [theadTemplate]="theadTemplate"
+            [tfootTemplate]="tfootTemplate"
+            [tfootFixed]="tfootFixed"
+            [verticalScrollBarWidth]="verticalScrollBarWidth"
+            [virtualTemplate]="nzVirtualScrollDirective ? nzVirtualScrollDirective.templateRef : null"
+            [virtualItemSize]="nzVirtualItemSize"
+            [virtualMaxBufferPx]="nzVirtualMaxBufferPx"
+            [virtualMinBufferPx]="nzVirtualMinBufferPx"
+            [tableMainElement]="tableMainElement"
+            [virtualForTrackBy]="nzVirtualForTrackBy"
+            [noDataVirtualHeight]="noDataVirtualHeight"
+          ></nz-table-inner-scroll>
+        } @else {
           <nz-table-inner-default
             [tableLayout]="nzTableLayout"
             [listOfColWidth]="listOfManualColWidth"
             [theadTemplate]="theadTemplate"
             [contentTemplate]="contentTemplate"
+            [tfootTemplate]="tfootTemplate"
           ></nz-table-inner-default>
-        </ng-template>
-        <nz-table-title-footer [footer]="nzFooter" *ngIf="nzFooter"></nz-table-title-footer>
+        }
+        @if (nzFooter) {
+          <nz-table-title-footer [footer]="nzFooter"></nz-table-title-footer>
+        }
       </div>
-      <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom'">
+      @if (nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom') {
         <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
-      </ng-container>
+      }
     </nz-spin>
     <ng-template #paginationTemplate>
-      <nz-pagination
-        *ngIf="nzShowPagination && data.length"
-        [hidden]="!showPagination"
-        class="ant-table-pagination ant-table-pagination-right"
-        [nzShowSizeChanger]="nzShowSizeChanger"
-        [nzPageSizeOptions]="nzPageSizeOptions"
-        [nzItemRender]="nzItemRender!"
-        [nzShowQuickJumper]="nzShowQuickJumper"
-        [nzHideOnSinglePage]="nzHideOnSinglePage"
-        [nzShowTotal]="nzShowTotal"
-        [nzSize]="nzPaginationType === 'small' ? 'small' : nzSize === 'default' ? 'default' : 'small'"
-        [nzPageSize]="nzPageSize"
-        [nzTotal]="nzTotal"
-        [nzSimple]="nzSimple"
-        [nzPageIndex]="nzPageIndex"
-        (nzPageSizeChange)="onPageSizeChange($event)"
-        (nzPageIndexChange)="onPageIndexChange($event)"
-      ></nz-pagination>
+      @if (nzShowPagination && data.length) {
+        <nz-pagination
+          [hidden]="!showPagination"
+          class="ant-table-pagination ant-table-pagination-right"
+          [nzShowSizeChanger]="nzShowSizeChanger"
+          [nzPageSizeOptions]="nzPageSizeOptions"
+          [nzItemRender]="nzItemRender!"
+          [nzShowQuickJumper]="nzShowQuickJumper"
+          [nzHideOnSinglePage]="nzHideOnSinglePage"
+          [nzShowTotal]="nzShowTotal"
+          [nzSize]="nzPaginationType === 'small' ? 'small' : nzSize === 'default' ? 'default' : 'small'"
+          [nzPageSize]="nzPageSize"
+          [nzTotal]="nzTotal"
+          [nzSimple]="nzSimple"
+          [nzPageIndex]="nzPageIndex"
+          (nzPageSizeChange)="onPageSizeChange($event)"
+          (nzPageIndexChange)="onPageIndexChange($event)"
+        ></nz-pagination>
+      }
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
@@ -130,22 +145,20 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   `,
   host: {
     class: 'ant-table-wrapper',
-    '[class.ant-table-wrapper-rtl]': 'dir === "rtl"'
-  }
+    '[class.ant-table-wrapper-rtl]': 'dir === "rtl"',
+    '[class.ant-table-custom-column]': `nzCustomColumn.length`
+  },
+  imports: [
+    NzSpinComponent,
+    NgTemplateOutlet,
+    NzTableTitleFooterComponent,
+    NzTableInnerScrollComponent,
+    NzTableInnerDefaultComponent,
+    NzPaginationModule
+  ]
 })
 export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-
-  static ngAcceptInputType_nzFrontPagination: BooleanInput;
-  static ngAcceptInputType_nzTemplateMode: BooleanInput;
-  static ngAcceptInputType_nzShowPagination: BooleanInput;
-  static ngAcceptInputType_nzLoading: BooleanInput;
-  static ngAcceptInputType_nzBordered: BooleanInput;
-  static ngAcceptInputType_nzOuterBordered: BooleanInput;
-  static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
-  static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
-  static ngAcceptInputType_nzShowQuickJumper: BooleanInput;
-  static ngAcceptInputType_nzSimple: BooleanInput;
 
   @Input() nzTableLayout: NzTableLayout = 'auto';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
@@ -164,25 +177,29 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   @Input() nzTotal = 0;
   @Input() nzWidthConfig: ReadonlyArray<string | null> = [];
   @Input() nzData: readonly T[] = [];
+  @Input() nzCustomColumn: NzCustomColumn[] = [];
+
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
+  @Input() noDataVirtualHeight = '182px';
   @Input() nzPaginationType: NzTablePaginationType = 'default';
-  @Input() @InputBoolean() nzFrontPagination = true;
-  @Input() @InputBoolean() nzTemplateMode = false;
-  @Input() @InputBoolean() nzShowPagination = true;
-  @Input() @InputBoolean() nzLoading = false;
-  @Input() @InputBoolean() nzOuterBordered = false;
+  @Input({ transform: booleanAttribute }) nzFrontPagination = true;
+  @Input({ transform: booleanAttribute }) nzTemplateMode = false;
+  @Input({ transform: booleanAttribute }) nzShowPagination = true;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
+  @Input({ transform: booleanAttribute }) nzOuterBordered = false;
   @Input() @WithConfig() nzLoadingIndicator: TemplateRef<NzSafeAny> | null = null;
-  @Input() @WithConfig() @InputBoolean() nzBordered: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = false;
   @Input() @WithConfig() nzSize: NzTableSize = 'default';
-  @Input() @WithConfig() @InputBoolean() nzShowSizeChanger: boolean = false;
-  @Input() @WithConfig() @InputBoolean() nzHideOnSinglePage: boolean = false;
-  @Input() @WithConfig() @InputBoolean() nzShowQuickJumper: boolean = false;
-  @Input() @WithConfig() @InputBoolean() nzSimple: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowSizeChanger: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzHideOnSinglePage: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowQuickJumper: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzSimple: boolean = false;
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
   @Output() readonly nzCurrentPageDataChange = new EventEmitter<readonly T[]>();
+  @Output() readonly nzCustomColumnChange = new EventEmitter<readonly NzCustomColumn[]>();
 
   /** public data for ngFor tr */
   public data: readonly T[] = [];
@@ -190,6 +207,8 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   scrollX: string | null = null;
   scrollY: string | null = null;
   theadTemplate: TemplateRef<NzSafeAny> | null = null;
+  tfootTemplate: TemplateRef<NzSafeAny> | null = null;
+  tfootFixed: NzTableSummaryFixedType | null = null;
   listOfAutoColWidth: ReadonlyArray<string | null> = [];
   listOfManualColWidth: ReadonlyArray<string | null> = [];
   hasFixLeft = false;
@@ -217,7 +236,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     private cdr: ChangeDetectorRef,
     private nzTableStyleService: NzTableStyleService,
     private nzTableDataService: NzTableDataService<T>,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
@@ -228,9 +247,9 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   }
 
   ngOnInit(): void {
-    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } =
+    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$, listOfCustomColumn$ } =
       this.nzTableDataService;
-    const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
+    const { theadTemplate$, tfootTemplate$, tfootFixed$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
 
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -268,10 +287,24 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
       this.cdr.markForCheck();
     });
 
+    listOfCustomColumn$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      this.nzCustomColumn = data;
+      this.nzCustomColumnChange.next(data);
+      this.cdr.markForCheck();
+    });
+
     theadTemplate$.pipe(takeUntil(this.destroy$)).subscribe(theadTemplate => {
       this.theadTemplate = theadTemplate;
       this.cdr.markForCheck();
     });
+
+    combineLatest([tfootTemplate$, tfootFixed$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([tfootTemplate, tfootFixed]) => {
+        this.tfootTemplate = tfootTemplate;
+        this.tfootFixed = tfootFixed;
+        this.cdr.markForCheck();
+      });
 
     hasFixLeft$.pipe(takeUntil(this.destroy$)).subscribe(hasFixLeft => {
       this.hasFixLeft = hasFixLeft;
@@ -304,8 +337,17 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig, nzNoResult, nzTemplateMode } =
-      changes;
+    const {
+      nzScroll,
+      nzPageIndex,
+      nzPageSize,
+      nzFrontPagination,
+      nzData,
+      nzCustomColumn,
+      nzWidthConfig,
+      nzNoResult,
+      nzTemplateMode
+    } = changes;
     if (nzPageIndex) {
       this.nzTableDataService.updatePageIndex(this.nzPageIndex);
     }
@@ -315,6 +357,10 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     if (nzData) {
       this.nzData = this.nzData || [];
       this.nzTableDataService.updateListOfData(this.nzData);
+    }
+    if (nzCustomColumn) {
+      this.nzCustomColumn = this.nzCustomColumn || [];
+      this.nzTableDataService.updateListOfCustomColumn(this.nzCustomColumn);
     }
     if (nzFrontPagination) {
       this.nzTableDataService.updateFrontPagination(this.nzFrontPagination);

@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+
 @Component({
   selector: 'nz-demo-spin-tip',
+  imports: [NzAlertModule, NzSpinModule],
   template: `
     <nz-spin nzTip="Loading...">
       <nz-alert

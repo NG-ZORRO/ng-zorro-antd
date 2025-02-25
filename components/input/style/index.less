@@ -4,7 +4,6 @@
 @import './affix';
 @import './allow-clear';
 @import './status';
-
 @input-prefix-cls: ~'@{ant-prefix}-input';
 
 // Input styles
@@ -79,6 +78,11 @@
     align-items: center;
     margin: auto;
   }
+
+  // ===================== Compact Item Styles =====================
+  .compact-item(@input-prefix-cls);
+  .compact-item(~'@{input-prefix-cls}-affix-wrapper');
+  .compact-item(~'@{input-prefix-cls}-group-wrapper', ~'@{input-prefix-cls}-group-addon');
 }
 
 @import './search-input';

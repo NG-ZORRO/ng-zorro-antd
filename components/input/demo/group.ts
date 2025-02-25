@@ -1,7 +1,24 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-input-group',
+  imports: [
+    FormsModule,
+    NzCascaderModule,
+    NzDatePickerModule,
+    NzGridModule,
+    NzInputModule,
+    NzInputNumberModule,
+    NzSelectModule
+  ],
   template: `
     <nz-input-group [nzSize]="'large'">
       <div nz-row [nzGutter]="8">

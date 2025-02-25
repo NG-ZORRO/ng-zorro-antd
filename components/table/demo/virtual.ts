@@ -2,7 +2,8 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzTableComponent } from 'ng-zorro-antd/table';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzTableComponent, NzTableModule } from 'ng-zorro-antd/table';
 
 export interface VirtualDataInterface {
   index: number;
@@ -13,6 +14,7 @@ export interface VirtualDataInterface {
 
 @Component({
   selector: 'nz-demo-table-virtual',
+  imports: [NzButtonModule, NzTableModule],
   template: `
     <button nz-button (click)="scrollToIndex(200)">Scroll To Index 200</button>
     <br />
@@ -68,7 +70,7 @@ export interface VirtualDataInterface {
 })
 export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('virtualTable', { static: false }) nzTableComponent?: NzTableComponent<VirtualDataInterface>;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   listOfData: VirtualDataInterface[] = [];
 
   scrollToIndex(index: number): void {
@@ -101,7 +103,7 @@ export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

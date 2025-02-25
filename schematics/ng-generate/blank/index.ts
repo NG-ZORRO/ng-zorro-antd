@@ -16,7 +16,7 @@ import { Schema } from './schema';
 
 const bootPageHTML = `<!-- NG-ZORRO -->
 <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
-  <img height="300" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
+  <img height="300" alt="logo" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 </a>`;
 
 export default function(options: Schema): Rule {
@@ -27,7 +27,6 @@ export default function(options: Schema): Rule {
     const buffer = host.read(appHTMLFile);
 
     if (!buffer) {
-
       context.logger.error(
        `Could not find the project ${appHTMLFile} file inside of the ` + `workspace config`
       );

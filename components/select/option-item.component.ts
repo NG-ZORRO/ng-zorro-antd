@@ -3,7 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -17,45 +19,55 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-option-item',
   template: `
     <div class="ant-select-item-option-content">
-      <ng-template [ngIf]="customContent" [ngIfElse]="noCustomContent">
+      @if (customContent) {
         <ng-template [ngTemplateOutlet]="template"></ng-template>
-      </ng-template>
-      <ng-template #noCustomContent>{{ label }}</ng-template>
+      } @else {
+        {{ label }}
+      }
     </div>
-    <div *ngIf="showState && selected" class="ant-select-item-option-state" style="user-select: none" unselectable="on">
-      <span nz-icon nzType="check" class="ant-select-selected-icon" *ngIf="!icon; else icon"></span>
-    </div>
+    @if (showState && selected) {
+      <div class="ant-select-item-option-state" unselectable="on">
+        @if (!icon) {
+          <nz-icon nzType="check" class="ant-select-selected-icon" />
+        } @else {
+          <ng-template [ngTemplateOutlet]="icon"></ng-template>
+        }
+      </div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-select-item ant-select-item-option',
-    '[attr.title]': 'label',
+    '[attr.title]': 'title',
     '[class.ant-select-item-option-grouped]': 'grouped',
     '[class.ant-select-item-option-selected]': 'selected && !disabled',
     '[class.ant-select-item-option-disabled]': 'disabled',
     '[class.ant-select-item-option-active]': 'activated && !disabled'
   },
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NgTemplateOutlet, NzIconModule]
 })
 export class NzOptionItemComponent implements OnChanges, OnInit {
   selected = false;
   activated = false;
   @Input() grouped = false;
-  @Input() customContent = false;
+  @Input({ transform: booleanAttribute }) customContent = false;
   @Input() template: TemplateRef<NzSafeAny> | null = null;
   @Input() disabled = false;
   @Input() showState = false;
+  @Input() title?: string | number | null;
   @Input() label: string | number | null = null;
   @Input() value: NzSafeAny | null = null;
   @Input() activatedValue: NzSafeAny | null = null;
@@ -82,22 +94,20 @@ export class NzOptionItemComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.elementRef.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          if (!this.disabled) {
-            this.ngZone.run(() => this.itemClick.emit(this.value));
-          }
-        });
+    fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (!this.disabled) {
+          this.ngZone.run(() => this.itemClick.emit(this.value));
+        }
+      });
 
-      fromEvent(this.elementRef.nativeElement, 'mouseenter')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          if (!this.disabled) {
-            this.ngZone.run(() => this.itemHover.emit(this.value));
-          }
-        });
-    });
+    fromEventOutsideAngular(this.elementRef.nativeElement, 'mouseenter')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (!this.disabled) {
+          this.ngZone.run(() => this.itemHover.emit(this.value));
+        }
+      });
   }
 }

@@ -6,14 +6,11 @@
 import { Platform } from '@angular/cdk/platform';
 import { NgZone } from '@angular/core';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
 export class NzWaveRenderer {
   private waveTransitionDuration = 400;
   private styleForPseudo: HTMLStyleElement | null = null;
   private extraNode: HTMLDivElement | null = null;
   private lastTime = 0;
-  private platform!: Platform;
   clickHandler: (event: MouseEvent) => void;
   get waveAttributeName(): string {
     return this.insertExtraNode ? 'ant-click-animating' : 'ant-click-animating-without-extra-node';
@@ -23,9 +20,9 @@ export class NzWaveRenderer {
     private triggerElement: HTMLElement,
     private ngZone: NgZone,
     private insertExtraNode: boolean,
-    private platformId: NzSafeAny
+    private platform: Platform,
+    private cspNonce?: string | null
   ) {
-    this.platform = new Platform(this.platformId);
     this.clickHandler = this.onClick.bind(this);
     this.bindTriggerEvent();
   }
@@ -86,6 +83,9 @@ export class NzWaveRenderer {
     if (this.isValidColor(waveColor)) {
       if (!this.styleForPseudo) {
         this.styleForPseudo = document.createElement('style');
+        if (this.cspNonce) {
+          this.styleForPseudo.nonce = this.cspNonce;
+        }
       }
 
       this.styleForPseudo.innerHTML = `
@@ -123,7 +123,7 @@ export class NzWaveRenderer {
   }
 
   private isNotGrey(color: string): boolean {
-    const match = color.match(/rgba?\((\d*), (\d*), (\d*)(, [\.\d]*)?\)/);
+    const match = color.match(/rgba?\((\d*), (\d*), (\d*)(, [.\d]*)?\)/);
     if (match && match[1] && match[2] && match[3]) {
       return !(match[1] === match[2] && match[2] === match[3]);
     }

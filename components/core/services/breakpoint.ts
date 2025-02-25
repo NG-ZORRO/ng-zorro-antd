@@ -19,8 +19,8 @@ export enum NzBreakpointEnum {
   xs = 'xs'
 }
 
-export type BreakpointMap = { [key in NzBreakpointEnum]: string };
-export type BreakpointBooleanMap = { [key in NzBreakpointEnum]: boolean };
+export type BreakpointMap = Record<NzBreakpointEnum, string>;
+export type BreakpointBooleanMap = Record<NzBreakpointEnum, boolean>;
 export type NzBreakpointKey = keyof typeof NzBreakpointEnum;
 
 export const gridResponsiveMap: BreakpointMap = {
@@ -47,7 +47,10 @@ export const siderResponsiveMap: BreakpointMap = {
 export class NzBreakpointService implements OnDestroy {
   private destroy$ = new Subject<void>();
 
-  constructor(private resizeService: NzResizeService, private mediaMatcher: MediaMatcher) {
+  constructor(
+    private resizeService: NzResizeService,
+    private mediaMatcher: MediaMatcher
+  ) {
     this.resizeService
       .subscribe()
       .pipe(takeUntil(this.destroy$))

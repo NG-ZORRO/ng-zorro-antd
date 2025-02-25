@@ -10,7 +10,7 @@ import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@ang
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const __karma__: any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 declare const require: any;
 
 

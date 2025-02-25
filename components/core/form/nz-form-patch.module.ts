@@ -3,16 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzFormItemFeedbackIconComponent } from './nz-form-item-feedback-icon.component';
 
+/**
+ * @deprecated Will be removed in v20. Use `NzFormItemFeedbackIconComponent` directly
+ */
 @NgModule({
-  imports: [CommonModule, NzIconModule],
-  exports: [NzFormItemFeedbackIconComponent],
-  declarations: [NzFormItemFeedbackIconComponent]
+  imports: [NzFormItemFeedbackIconComponent],
+  exports: [NzFormItemFeedbackIconComponent]
 })
 export class NzFormPatchModule {}

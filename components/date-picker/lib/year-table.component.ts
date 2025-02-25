@@ -4,9 +4,12 @@
  */
 
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, YearCell } from './interface';
 
@@ -16,7 +19,8 @@ import { DateBodyRow, DateCell, YearCell } from './interface';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'year-table',
   exportAs: 'yearTable',
-  templateUrl: 'abstract-table.html'
+  templateUrl: 'abstract-table.html',
+  imports: [NzStringTemplateOutletDirective]
 })
 export class YearTableComponent extends AbstractTable {
   override MAX_ROW = 4;
@@ -74,7 +78,7 @@ export class YearTableComponent extends AbstractTable {
     return years;
   }
 
-  override getClassMap(cell: YearCell): { [key: string]: boolean } {
+  override getClassMap(cell: YearCell): Record<string, boolean> {
     return {
       ...super.getClassMap(cell),
       [`ant-picker-cell-in-view`]: !!cell.isSameDecade

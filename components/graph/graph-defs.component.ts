@@ -22,6 +22,4 @@ import { Component } from '@angular/core';
     </svg:marker>
   `
 })
-export class NzGraphDefsComponent {
-  constructor() {}
-}
+export class NzGraphDefsComponent {}

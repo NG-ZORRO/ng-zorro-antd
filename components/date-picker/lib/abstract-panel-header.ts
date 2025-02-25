@@ -3,26 +3,37 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  booleanAttribute,
+  Directive,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { NzDateMode } from '../standard-types';
+
+import { NzDateMode, NzPanelChangeType } from '../standard-types';
 import { PanelSelector } from './interface';
 
 @Directive()
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   prefixCls: string = `ant-picker-header`;
   selectors: PanelSelector[] = [];
+  mode!: NzDateMode;
 
   @Input() value!: CandyDate;
   @Input() locale!: NzCalendarI18nInterface;
-  @Input() showSuperPreBtn: boolean = true;
-  @Input() showSuperNextBtn: boolean = true;
-  @Input() showPreBtn: boolean = true;
-  @Input() showNextBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showSuperPreBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showSuperNextBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showPreBtn: boolean = true;
+  @Input({ transform: booleanAttribute }) showNextBtn: boolean = true;
 
-  @Output() readonly panelModeChange = new EventEmitter<NzDateMode>();
+  @Output() readonly panelChange = new EventEmitter<NzPanelChangeType>();
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   abstract getSelectors(): PanelSelector[];
@@ -63,12 +74,13 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
     if (this.value !== value) {
       this.value = value;
       this.valueChange.emit(this.value);
+      this.changeMode(this.mode);
       this.render();
     }
   }
 
   changeMode(mode: NzDateMode): void {
-    this.panelModeChange.emit(mode);
+    this.panelChange.emit({ mode, date: this.value.nativeDate });
   }
 
   private render(): void {
@@ -88,5 +100,9 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
     if (changes.value || changes.locale) {
       this.render();
     }
+  }
+
+  trackBySelector(selector: PanelSelector): string {
+    return `${selector.title}-${selector.label}`;
   }
 }

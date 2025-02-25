@@ -4,10 +4,15 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
-
-import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
+} from '@angular/core';
 
 export interface NzSliderTrackStyle {
   bottom?: string | null;
@@ -19,26 +24,20 @@ export interface NzSliderTrackStyle {
 }
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-track',
   exportAs: 'nzSliderTrack',
+  template: `<div class="ant-slider-track" [style]="style"></div>`,
   preserveWhitespaces: false,
-  template: ` <div class="ant-slider-track" [ngStyle]="style"></div> `
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzSliderTrackComponent implements OnChanges {
-  static ngAcceptInputType_offset: NumberInput;
-  static ngAcceptInputType_length: NumberInput;
-  static ngAcceptInputType_vertical: BooleanInput;
-  static ngAcceptInputType_included: BooleanInput;
-  static ngAcceptInputType_reverse: BooleanInput;
-
-  @Input() @InputNumber() offset: number = 0;
-  @Input() @InputBoolean() reverse: boolean = false;
+  @Input({ transform: numberAttribute }) offset: number = 0;
+  @Input({ transform: booleanAttribute }) reverse: boolean = false;
   @Input() dir: Direction = 'ltr';
-  @Input() @InputNumber() length: number = 0;
-  @Input() @InputBoolean() vertical = false;
-  @Input() @InputBoolean() included = false;
+  @Input({ transform: numberAttribute }) length: number = 0;
+  @Input({ transform: booleanAttribute }) vertical = false;
+  @Input({ transform: booleanAttribute }) included = false;
 
   style: NzSliderTrackStyle = {};
 

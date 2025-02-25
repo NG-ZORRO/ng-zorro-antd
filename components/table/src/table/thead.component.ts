@@ -4,6 +4,7 @@
  */
 
 /* eslint-disable @angular-eslint/component-selector */
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -14,15 +15,15 @@ import {
   EventEmitter,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
-import { EMPTY, merge, Observable, of, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject, merge, of } from 'rxjs';
 import { delay, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -40,10 +41,11 @@ import { NzTrDirective } from './tr.directive';
     <ng-template #contentTemplate>
       <ng-content></ng-content>
     </ng-template>
-    <ng-container *ngIf="!isInsideTable">
+    @if (!isInsideTable) {
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-    </ng-container>
-  `
+    }
+  `,
+  imports: [NgTemplateOutlet]
 })
 export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {
   private destroy$ = new Subject<void>();
@@ -55,11 +57,12 @@ export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterVi
   >;
   @Output() readonly nzSortOrderChange = new EventEmitter<{ key: NzSafeAny; value: string | null }>();
 
+  private nzTableStyleService = inject(NzTableStyleService, { optional: true });
+  private nzTableDataService: NzTableDataService<T> | null = inject(NzTableDataService, { optional: true });
+
   constructor(
     private elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Optional() private nzTableStyleService: NzTableStyleService,
-    @Optional() private nzTableDataService: NzTableDataService<T>
+    private renderer: Renderer2
   ) {
     this.isInsideTable = !!this.nzTableStyleService;
   }
@@ -80,12 +83,12 @@ export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterVi
         switchMap(firstTableRow => (firstTableRow ? firstTableRow.listOfColumnsChanges$ : EMPTY)),
         takeUntil(this.destroy$)
       );
-      listOfColumnsChanges$.subscribe(data => this.nzTableStyleService.setListOfTh(data));
+      listOfColumnsChanges$.subscribe(data => this.nzTableStyleService!.setListOfTh(data));
       /** TODO: need reset the measure row when scrollX change **/
       this.nzTableStyleService.enableAutoMeasure$
         .pipe(switchMap(enable => (enable ? listOfColumnsChanges$ : of([]))))
         .pipe(takeUntil(this.destroy$))
-        .subscribe(data => this.nzTableStyleService.setListOfMeasureColumn(data));
+        .subscribe(data => this.nzTableStyleService!.setListOfMeasureColumn(data));
       const listOfFixedLeftColumnChanges$ = firstTableRow$.pipe(
         switchMap(firstTr => (firstTr ? firstTr.listOfFixedLeftColumnChanges$ : EMPTY)),
         takeUntil(this.destroy$)
@@ -95,12 +98,13 @@ export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterVi
         takeUntil(this.destroy$)
       );
       listOfFixedLeftColumnChanges$.subscribe(listOfFixedLeftColumn => {
-        this.nzTableStyleService.setHasFixLeft(listOfFixedLeftColumn.length !== 0);
+        this.nzTableStyleService!.setHasFixLeft(listOfFixedLeftColumn.length !== 0);
       });
       listOfFixedRightColumnChanges$.subscribe(listOfFixedRightColumn => {
-        this.nzTableStyleService.setHasFixRight(listOfFixedRightColumn.length !== 0);
+        this.nzTableStyleService!.setHasFixRight(listOfFixedRightColumn.length !== 0);
       });
     }
+
     if (this.nzTableDataService) {
       const listOfColumn$ = this.listOfNzThAddOnComponent.changes.pipe(
         startWith(this.listOfNzThAddOnComponent)
@@ -142,7 +146,7 @@ export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterVi
         takeUntil(this.destroy$)
       );
       listOfCalcOperator$.subscribe(list => {
-        this.nzTableDataService.listOfCalcOperator$.next(list);
+        this.nzTableDataService?.listOfCalcOperator$.next(list);
       });
     }
   }

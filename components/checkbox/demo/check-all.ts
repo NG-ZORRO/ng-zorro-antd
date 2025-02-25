@@ -1,55 +1,49 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzCheckboxModule, NzCheckboxOption } from 'ng-zorro-antd/checkbox';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 @Component({
   selector: 'nz-demo-checkbox-check-all',
+  imports: [FormsModule, NzCheckboxModule, NzDividerModule],
   template: `
-    <div style="border-bottom: 1px solid rgb(233, 233, 233);">
-      <label
-        nz-checkbox
-        [(ngModel)]="allChecked"
-        (ngModelChange)="updateAllChecked()"
-        [nzIndeterminate]="indeterminate"
-      >
-        Check all
-      </label>
-    </div>
-    <br />
-    <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
+    <label
+      nz-checkbox
+      [(ngModel)]="allChecked"
+      (ngModelChange)="updateAllChecked()"
+      [nzIndeterminate]="value.length > 0 && value.length !== options.length"
+    >
+      Check all
+    </label>
+
+    <nz-divider />
+
+    <nz-checkbox-group
+      [nzOptions]="options"
+      [(ngModel)]="value"
+      (ngModelChange)="updateSingleChecked()"
+    ></nz-checkbox-group>
   `
 })
 export class NzDemoCheckboxCheckAllComponent {
+  isAllCheckedFirstChange = true;
   allChecked = false;
-  indeterminate = true;
-  checkOptionsOne = [
-    { label: 'Apple', value: 'Apple', checked: true },
-    { label: 'Pear', value: 'Pear', checked: false },
-    { label: 'Orange', value: 'Orange', checked: false }
+  value: Array<string | number> = ['Apple', 'Orange'];
+  options: NzCheckboxOption[] = [
+    { label: 'Apple', value: 'Apple' },
+    { label: 'Pear', value: 'Pear' },
+    { label: 'Orange', value: 'Orange' }
   ];
 
   updateAllChecked(): void {
-    this.indeterminate = false;
-    if (this.allChecked) {
-      this.checkOptionsOne = this.checkOptionsOne.map(item => ({
-        ...item,
-        checked: true
-      }));
-    } else {
-      this.checkOptionsOne = this.checkOptionsOne.map(item => ({
-        ...item,
-        checked: false
-      }));
+    if (!this.isAllCheckedFirstChange) {
+      this.value = this.allChecked ? this.options.map(item => item.value) : [];
     }
+    this.isAllCheckedFirstChange = false;
   }
 
   updateSingleChecked(): void {
-    if (this.checkOptionsOne.every(item => !item.checked)) {
-      this.allChecked = false;
-      this.indeterminate = false;
-    } else if (this.checkOptionsOne.every(item => item.checked)) {
-      this.allChecked = true;
-      this.indeterminate = false;
-    } else {
-      this.indeterminate = true;
-    }
+    this.allChecked = this.value.length === this.options.length;
   }
 }

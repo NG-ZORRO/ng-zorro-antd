@@ -4,14 +4,15 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NotificationConfig } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 
+import { NzNotificationComponent } from './notification.component';
 import { NzNotificationData, NzNotificationDataOptions, NzNotificationPlacement } from './typings';
 
 const NZ_CONFIG_MODULE_NAME = 'notification';
@@ -21,7 +22,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   nzBottom: '24px',
   nzPlacement: 'topRight',
   nzDuration: 4500,
-  nzMaxStack: 7,
+  nzMaxStack: 8,
   nzPauseOnHover: true,
   nzAnimate: true,
   nzDirection: 'ltr'
@@ -40,12 +41,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.top]="top"
       [style.left]="'0px'"
     >
-      <nz-notification
-        *ngFor="let instance of topLeftInstances"
-        [instance]="instance"
-        [placement]="'topLeft'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of topLeftInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'topLeft'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        />
+      }
     </div>
     <div
       class="ant-notification ant-notification-topRight"
@@ -53,12 +55,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.top]="top"
       [style.right]="'0px'"
     >
-      <nz-notification
-        *ngFor="let instance of topRightInstances"
-        [instance]="instance"
-        [placement]="'topRight'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of topRightInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'topRight'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        />
+      }
     </div>
     <div
       class="ant-notification ant-notification-bottomLeft"
@@ -66,12 +69,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.bottom]="bottom"
       [style.left]="'0px'"
     >
-      <nz-notification
-        *ngFor="let instance of bottomLeftInstances"
-        [instance]="instance"
-        [placement]="'bottomLeft'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of bottomLeftInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'bottomLeft'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        />
+      }
     </div>
     <div
       class="ant-notification ant-notification-bottomRight"
@@ -79,12 +83,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.bottom]="bottom"
       [style.right]="'0px'"
     >
-      <nz-notification
-        *ngFor="let instance of bottomRightInstances"
-        [instance]="instance"
-        [placement]="'bottomRight'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of bottomRightInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'bottomRight'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        />
+      }
     </div>
     <div
       class="ant-notification ant-notification-top"
@@ -93,12 +98,9 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.left]="'50%'"
       [style.transform]="'translateX(-50%)'"
     >
-      <nz-notification
-        *ngFor="let instance of topInstances"
-        [instance]="instance"
-        [placement]="'top'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of topInstances; track instance) {
+        <nz-notification [instance]="instance" [placement]="'top'" (destroyed)="remove($event.id, $event.userAction)" />
+      }
     </div>
     <div
       class="ant-notification ant-notification-bottom"
@@ -107,21 +109,21 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.left]="'50%'"
       [style.transform]="'translateX(-50%)'"
     >
-      <nz-notification
-        *ngFor="let instance of bottomInstances"
-        [instance]="instance"
-        [placement]="'bottom'"
-        (destroyed)="remove($event.id, $event.userAction)"
-      ></nz-notification>
+      @for (instance of bottomInstances; track instance) {
+        <nz-notification
+          [instance]="instance"
+          [placement]="'bottom'"
+          (destroyed)="remove($event.id, $event.userAction)"
+        />
+      }
     </div>
-  `
+  `,
+  imports: [NzNotificationComponent]
 })
-export class NzNotificationContainerComponent extends NzMNContainerComponent {
-  dir: Direction = 'ltr';
+export class NzNotificationContainerComponent extends NzMNContainerComponent<NotificationConfig, NzNotificationData> {
+  dir: Direction = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME)?.nzDirection || 'ltr';
   bottom?: string | null;
   top?: string | null;
-  override config!: Required<NotificationConfig>; // initialized by parent class constructor
-  override instances: Array<Required<NzNotificationData>> = [];
   topLeftInstances: Array<Required<NzNotificationData>> = [];
   topRightInstances: Array<Required<NzNotificationData>> = [];
   bottomLeftInstances: Array<Required<NzNotificationData>> = [];
@@ -129,30 +131,29 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
   topInstances: Array<Required<NzNotificationData>> = [];
   bottomInstances: Array<Required<NzNotificationData>> = [];
 
-  constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {
-    super(cdr, nzConfigService);
-    const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
-    this.dir = config?.nzDirection || 'ltr';
+  constructor() {
+    super();
+    this.updateConfig();
   }
 
   override create(notification: NzNotificationData): Required<NzNotificationData> {
-    const noti = this.onCreate(notification);
-    const key = noti.options.nzKey;
+    const instance = this.onCreate(notification);
+    const key = instance.options.nzKey;
     const notificationWithSameKey = this.instances.find(
       msg => msg.options.nzKey === (notification.options as Required<NzNotificationDataOptions>).nzKey
     );
     if (key && notificationWithSameKey) {
-      this.replaceNotification(notificationWithSameKey, noti);
+      this.replaceNotification(notificationWithSameKey, instance);
     } else {
-      if (this.instances.length >= this.config.nzMaxStack) {
+      if (this.instances.length >= this.config!.nzMaxStack) {
         this.instances = this.instances.slice(1);
       }
-      this.instances = [...this.instances, noti];
+      this.instances = [...this.instances, instance];
     }
 
     this.readyInstances();
 
-    return noti;
+    return instance;
   }
 
   protected override onCreate(instance: NzNotificationData): Required<NzNotificationData> {
@@ -168,11 +169,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateConfig();
-        const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
-        if (config) {
-          const { nzDirection } = config;
-          this.dir = nzDirection || this.dir;
-        }
+        this.dir = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME)?.nzDirection || this.dir;
       });
   }
 
@@ -210,25 +207,25 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
       const placement = m.options.nzPlacement;
       switch (placement) {
         case 'topLeft':
-          instancesMap.topLeft.push(m);
+          instancesMap.topLeft.unshift(m);
           break;
         case 'topRight':
-          instancesMap.topRight.push(m);
+          instancesMap.topRight.unshift(m);
           break;
         case 'bottomLeft':
-          instancesMap.bottomLeft.push(m);
+          instancesMap.bottomLeft.unshift(m);
           break;
         case 'bottomRight':
-          instancesMap.bottomRight.push(m);
+          instancesMap.bottomRight.unshift(m);
           break;
         case 'top':
-          instancesMap.top.push(m);
+          instancesMap.top.unshift(m);
           break;
         case 'bottom':
-          instancesMap.bottom.push(m);
+          instancesMap.bottom.unshift(m);
           break;
         default:
-          instancesMap.topRight.push(m);
+          instancesMap.topRight.unshift(m);
       }
     });
     this.topLeftInstances = instancesMap.topLeft;
@@ -242,7 +239,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
   }
 
   protected override mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
-    const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config;
+    const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config!;
     return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement, ...options };
   }
 }

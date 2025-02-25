@@ -4,7 +4,7 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
 
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -34,11 +34,9 @@ export interface NzScrollToOptions {
   providedIn: 'root'
 })
 export class NzScrollService {
-  private doc: Document;
+  private doc: Document = inject(DOCUMENT);
 
-  constructor(private ngZone: NgZone, @Inject(DOCUMENT) doc: NzSafeAny) {
-    this.doc = doc;
-  }
+  constructor(private ngZone: NgZone) {}
 
   /** Set the position of the scroll bar of `el`. */
   setScrollTop(el: Element | Window, topValue: number = 0): void {

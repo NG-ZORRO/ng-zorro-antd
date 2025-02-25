@@ -21,10 +21,10 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
 
 ### nz-comment
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| [nzAuthor] | 显示评论的作者 | `string \| TemplateRef<void>` | - |
-| [nzDatetime] | 展示时间描述 | `string \| TemplateRef<void>` | - |
+| Property     | Description    | Type                          | Default |
+| ------------ | -------------- | ----------------------------- | ------- |
+| [nzAuthor]   | 显示评论的作者 | `string \| TemplateRef<void>` | -       |
+| [nzDatetime] | 展示时间描述   | `string \| TemplateRef<void>` | -       |
 
 ### [nz-comment-avatar]
 

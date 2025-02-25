@@ -7,17 +7,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   OnInit,
-  Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
+import { NzSkeletonElementAvatarComponent, NzSkeletonElementDirective } from './skeleton-element.component';
 import {
   NzSkeletonAvatar,
   NzSkeletonAvatarShape,
@@ -32,30 +31,39 @@ import {
   selector: 'nz-skeleton',
   exportAs: 'nzSkeleton',
   host: {
+    class: 'ant-skeleton',
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
     '[class.ant-skeleton-active]': 'nzActive',
     '[class.ant-skeleton-round]': '!!nzRound'
   },
   template: `
-    <ng-container *ngIf="nzLoading">
-      <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
-        <nz-skeleton-element
-          nzType="avatar"
-          [nzSize]="avatar.size || 'default'"
-          [nzShape]="avatar.shape || 'circle'"
-        ></nz-skeleton-element>
-      </div>
+    @if (nzLoading) {
+      @if (!!nzAvatar) {
+        <div class="ant-skeleton-header">
+          <nz-skeleton-element
+            nzType="avatar"
+            [nzSize]="avatar.size || 'default'"
+            [nzShape]="avatar.shape || 'circle'"
+          ></nz-skeleton-element>
+        </div>
+      }
       <div class="ant-skeleton-content">
-        <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
-        <ul *ngIf="!!nzParagraph" class="ant-skeleton-paragraph">
-          <li *ngFor="let row of rowsList; let i = index" [style.width]="toCSSUnit(widthList[i])"></li>
-        </ul>
+        @if (!!nzTitle) {
+          <h3 class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
+        }
+        @if (!!nzParagraph) {
+          <ul class="ant-skeleton-paragraph">
+            @for (row of rowsList; track row; let i = $index) {
+              <li [style.width]="toCSSUnit(widthList[i])"></li>
+            }
+          </ul>
+        }
       </div>
-    </ng-container>
-    <ng-container *ngIf="!nzLoading">
+    } @else {
       <ng-content></ng-content>
-    </ng-container>
-  `
+    }
+  `,
+  imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent]
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzActive = false;
@@ -71,9 +79,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   rowsList: number[] = [];
   widthList: Array<number | string> = [];
 
-  constructor(private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-skeleton');
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   toCSSUnit(value: number | string = ''): string {
     return toCssPixel(value);

@@ -172,7 +172,9 @@
     background: @select-clear-background;
     cursor: pointer;
     opacity: 0;
-    transition: color 0.3s ease, opacity 0.15s ease;
+    transition:
+      color 0.3s ease,
+      opacity 0.15s ease;
     text-rendering: auto;
 
     &::before {
@@ -278,6 +280,7 @@
 
       &-state {
         flex: none;
+        user-select: none;
       }
 
       &-active:not(&-disabled) {
@@ -325,6 +328,9 @@
   &&-in-form-item {
     width: 100%;
   }
+
+  // ===================== Compact Item Styles =====================
+  .compact-item(@select-prefix-cls, ~'@{select-prefix-cls}-selector', ~'@{select-prefix-cls}-focused');
 }
 
 @import './rtl';

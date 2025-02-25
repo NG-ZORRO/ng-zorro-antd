@@ -79,24 +79,24 @@ issue:
       Typography: hsuanxyz
       Space: hsuanxyz
       Resizable: hsuanxyz
-      Breadcrumb: hullis
-      Empty: hullis
-      Carousel: hullis
-      Cascader: hullis
-      Descriptions: hullis
-      Icon: hullis
-      Message: hullis
-      Notification: hullis
-      Popconfirm: hullis
-      Popover: hullis
-      Progress: hullis
-      Rate: hullis
-      Result: hullis
-      Slider: hullis
-      Statistic: hullis
-      Timeline: hullis
-      Tooltip: hullis
-      CodeEditor: hullis
+      Breadcrumb: simplejason
+      Empty: simplejason
+      Carousel: simplejason
+      Cascader: simplejason
+      Descriptions: simplejason
+      Icon: simplejason
+      Message: simplejason
+      Notification: simplejason
+      Popconfirm: simplejason
+      Popover: simplejason
+      Progress: simplejason
+      Rate: simplejason
+      Result: simplejason
+      Slider: simplejason
+      Statistic: simplejason
+      Timeline: simplejason
+      Tooltip: simplejason
+      CodeEditor: simplejason
       Calendar: wenqi73
       DatePicker: wenqi73
       Skeleton: wenqi73

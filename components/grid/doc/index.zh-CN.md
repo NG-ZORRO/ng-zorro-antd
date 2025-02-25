@@ -85,27 +85,27 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 
 ### [nz-row]
 
-| 成员 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzAlign]` | 垂直对齐方式 | `'top' \| 'middle' \| 'bottom'` | - |
-| `[nzGutter]` | 栅格间隔，可以写成像素值或支持响应式的对象写法来设置水平间隔 `{ xs: 8, sm: 16, md: 24}`。或者使用数组形式同时设置 `[水平间距, 垂直间距]`。 | `string\|number\|object\|[number, number]\|[object, object]` | - |
-| `[nzJustify]` | 水平排列方式 | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'` | - |
+| 成员          | 说明                                                                                                                                       | 类型                                                                | 默认值 |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- | ------ |
+| `[nzAlign]`   | 垂直对齐方式                                                                                                                               | `'top' \| 'middle' \| 'bottom'`                                     | -      |
+| `[nzGutter]`  | 栅格间隔，可以写成像素值或支持响应式的对象写法来设置水平间隔 `{ xs: 8, sm: 16, md: 24}`。或者使用数组形式同时设置 `[水平间距, 垂直间距]`。 | `string\|number\|object\|[number, number]\|[object, object]`        | -      |
+| `[nzJustify]` | 水平排列方式                                                                                                                               | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'` | -      |
 
 ### [nz-col]
 
-| 成员 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzFlex]` | flex 布局属性 | `string \| number` | - |
-| `[nzOffset]` | 栅格左侧的间隔格数，间隔内不可以有栅格 | `number` | - |
-| `[nzOrder]` | 栅格顺序 | `number` | - |
-| `[nzPull]` | 栅格向左移动格数 | `number` | - |
-| `[nzPush]` | 栅格向右移动格数 | `number` | - |
-| `[nzSpan]` | 栅格占位格数，为 0 时相当于 `display: none` | `number` | - |
-| `[nzXs]` | `<576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
-| `[nzSm]` | `≥576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
-| `[nzMd]` | `≥768px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
-| `[nzLg]` | `≥992px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
-| `[nzXl]` | `≥1200px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
-| `[nzXXl]` | `≥1600px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| 成员         | 说明                                                     | 类型               | 默认值 |
+| ------------ | -------------------------------------------------------- | ------------------ | ------ |
+| `[nzFlex]`   | flex 布局属性                                            | `string \| number` | -      |
+| `[nzOffset]` | 栅格左侧的间隔格数，间隔内不可以有栅格                   | `number`           | -      |
+| `[nzOrder]`  | 栅格顺序                                                 | `number`           | -      |
+| `[nzPull]`   | 栅格向左移动格数                                         | `number`           | -      |
+| `[nzPush]`   | 栅格向右移动格数                                         | `number`           | -      |
+| `[nzSpan]`   | 栅格占位格数，为 0 时相当于 `display: none`              | `number`           | -      |
+| `[nzXs]`     | `<576px` 响应式栅格，可为栅格数或一个包含其他属性的对象  | `number \| object` | -      |
+| `[nzSm]`     | `≥576px` 响应式栅格，可为栅格数或一个包含其他属性的对象  | `number \| object` | -      |
+| `[nzMd]`     | `≥768px` 响应式栅格，可为栅格数或一个包含其他属性的对象  | `number \| object` | -      |
+| `[nzLg]`     | `≥992px` 响应式栅格，可为栅格数或一个包含其他属性的对象  | `number \| object` | -      |
+| `[nzXl]`     | `≥1200px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | -      |
+| `[nzXXl]`    | `≥1600px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | -      |
 
 响应式栅格的断点扩展自 [BootStrap 4 的规则](https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints)（不包含链接里 `occasionally` 的部分)。

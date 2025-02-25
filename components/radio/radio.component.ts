@@ -11,25 +11,24 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  forwardRef,
-  Inject,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
-import { NzRadioButtonDirective } from './radio-button.directive';
 import { NzRadioService } from './radio.service';
 
 @Component({
@@ -81,20 +80,21 @@ import { NzRadioService } from './radio.service';
   }
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-
   private isNgModel = false;
   private destroy$ = new Subject<void>();
+  private isNzDisableFirstChange: boolean = true;
+  private directionality = inject(Directionality);
+  private nzRadioService = inject(NzRadioService, { optional: true });
+  nzFormStatusService = inject(NzFormStatusService, { optional: true });
   isChecked = false;
   name: string | null = null;
-  isRadioButton = !!this.nzRadioButtonDirective;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Input() nzValue: NzSafeAny | null = null;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
+  @Input({ alias: 'nz-radio-button', transform: booleanAttribute }) isRadioButton = false;
 
   dir: Direction = 'ltr';
 
@@ -110,15 +110,12 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     private ngZone: NgZone,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
-    private focusMonitor: FocusMonitor,
-    @Optional() private directionality: Directionality,
-    @Optional() @Inject(NzRadioService) private nzRadioService: NzRadioService | null,
-    @Optional() @Inject(NzRadioButtonDirective) private nzRadioButtonDirective: NzRadioButtonDirective | null,
-    @Optional() public nzFormStatusService?: NzFormStatusService
+    private focusMonitor: FocusMonitor
   ) {}
 
   setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
+    this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+    this.isNzDisableFirstChange = false;
     this.cdr.markForCheck();
   }
 
@@ -143,7 +140,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         this.cdr.markForCheck();
       });
       this.nzRadioService.disabled$.pipe(takeUntil(this.destroy$)).subscribe(disabled => {
-        this.nzDisabled = disabled;
+        this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
+        this.isNzDisableFirstChange = false;
         this.cdr.markForCheck();
       });
       this.nzRadioService.selected$.pipe(takeUntil(this.destroy$)).subscribe(value => {
@@ -200,25 +198,24 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   }
 
   private setupClickListener(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent<MouseEvent>(this.elementRef.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          /** prevent label click triggered twice. **/
-          event.stopPropagation();
-          event.preventDefault();
-          if (this.nzDisabled || this.isChecked) {
-            return;
+    fromEventOutsideAngular<MouseEvent>(this.elementRef.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        /** prevent label click triggered twice. **/
+        event.stopPropagation();
+        event.preventDefault();
+        if (this.nzDisabled || this.isChecked) {
+          return;
+        }
+        this.ngZone.run(() => {
+          this.focus();
+          this.nzRadioService?.select(this.nzValue);
+          if (this.isNgModel) {
+            this.isChecked = true;
+            this.onChange(true);
           }
-          this.ngZone.run(() => {
-            this.nzRadioService?.select(this.nzValue);
-            if (this.isNgModel) {
-              this.isChecked = true;
-              this.onChange(true);
-            }
-            this.cdr.markForCheck();
-          });
+          this.cdr.markForCheck();
         });
-    });
+      });
   }
 }

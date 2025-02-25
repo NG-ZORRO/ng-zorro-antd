@@ -3,10 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
+
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 
@@ -16,15 +19,13 @@ import { DateBodyRow, DateCell } from './interface';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'month-table',
   exportAs: 'monthTable',
-  templateUrl: 'abstract-table.html'
+  templateUrl: 'abstract-table.html',
+  imports: [NzStringTemplateOutletDirective]
 })
 export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
   override MAX_ROW = 4;
   override MAX_COL = 3;
-
-  constructor(private dateHelper: DateHelperService) {
-    super();
-  }
+  private dateHelper = inject(DateHelperService);
 
   makeHeadRow(): DateCell[] {
     return [];

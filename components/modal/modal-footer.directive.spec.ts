@@ -1,8 +1,14 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzModalFooterDirective } from './modal-footer.directive';
@@ -17,21 +23,11 @@ describe('modal footer directive', () => {
   let testComponent: TestDirectiveFooterComponent;
   let modalService: NzModalService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzModalModule, NoopAnimationsModule],
-        declarations: [
-          TestDirectiveFooterComponent,
-          TestDirectiveFooterInServiceComponent,
-          TestDirectiveFooterWithInitOpenedComponent
-        ],
-        providers: [NzModalService]
-      });
-
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [NzModalService, provideNoopAnimations()]
+    });
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestDirectiveFooterComponent);
@@ -85,6 +81,7 @@ describe('modal footer directive', () => {
 });
 
 @Component({
+  imports: [NzModalModule, NzButtonModule],
   template: `
     <nz-modal [(nzVisible)]="isVisible" nzTitle="Custom Modal Title" (nzOnCancel)="handleCancel()">
       <div>
@@ -102,8 +99,6 @@ class TestDirectiveFooterComponent {
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
   nzModalFooterDirective!: TemplateRef<NzSafeAny>;
 
-  constructor() {}
-
   handleCancel(): void {
     this.isVisible = false;
   }
@@ -114,6 +109,7 @@ class TestDirectiveFooterComponent {
 }
 
 @Component({
+  imports: [NzModalModule, NzButtonModule],
   template: `
     <nz-modal [(nzVisible)]="isVisible" nzTitle="Custom Modal Title">
       <div>
@@ -130,11 +126,10 @@ class TestDirectiveFooterWithInitOpenedComponent {
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
   nzModalFooterDirective!: TemplateRef<NzSafeAny>;
-
-  constructor() {}
 }
 
 @Component({
+  imports: [NzModalModule, NzButtonModule],
   template: `
     <div *nzModalFooter>
       <button id="btn-template" nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>

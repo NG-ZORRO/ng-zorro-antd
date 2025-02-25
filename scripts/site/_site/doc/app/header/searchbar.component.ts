@@ -13,16 +13,20 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+
 import { loadScript } from '../utils/load-script';
 
-// tslint:disable-next-line:no-any
 declare const docsearch: any;
 
 @Component({
   selector: 'div[app-searchbar]',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzIconModule, NzInputModule],
   template: `
-    <span nz-icon nzType="search"></span>
+    <nz-icon nzType="search" />
     <input
       nz-input
       #searchInput
@@ -45,7 +49,6 @@ export class SearchbarComponent implements OnChanges {
   @Output() focusChange = new EventEmitter<boolean>();
 
   focused = false;
-  // tslint:disable-next-line:no-any
   docsearch: any = null;
 
   get useDocsearch(): boolean {
@@ -55,7 +58,7 @@ export class SearchbarComponent implements OnChanges {
     return window && window.location.href.indexOf('/version') === -1;
   }
 
-  constructor(private cdr: ChangeDetectorRef, private platform: Platform) {}
+  constructor(private cdr: ChangeDetectorRef, private platform: Platform) { }
 
   triggerFocus(focus: boolean): void {
     if (this.docsearch) {
@@ -84,11 +87,8 @@ export class SearchbarComponent implements OnChanges {
         indexName: 'ng_zorro',
         inputSelector: '#search-box input',
         algoliaOptions: { hitsPerPage: 5, facetFilters: [`tags:${this.language}`] },
-        // tslint:disable-next-line:no-any
         transformData(hits: any): void {
-          // tslint:disable-next-line:no-any
           hits.forEach((hit: any) => {
-            // tslint:disable-line:no-any
             hit.url = hit.url.replace('ng.ant.design', location.host);
             hit.url = hit.url.replace('https:', location.protocol);
           });

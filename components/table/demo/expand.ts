@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 @Component({
   selector: 'nz-demo-table-expand',
+  imports: [NzTableModule],
   template: `
     <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
@@ -13,7 +16,7 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let data of nzTable.data">
+        @for (data of nzTable.data; track data) {
           <tr>
             <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
             <td>{{ data.name }}</td>
@@ -23,7 +26,7 @@ import { Component } from '@angular/core';
           <tr [nzExpand]="expandSet.has(data.id)">
             <span>{{ data.description }}</span>
           </tr>
-        </ng-container>
+        }
       </tbody>
     </nz-table>
   `

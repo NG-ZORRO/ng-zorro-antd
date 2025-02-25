@@ -3,20 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzNotificationContainerComponent } from './notification-container.component';
 import { NzNotificationComponent } from './notification.component';
-import { NzNotificationServiceModule } from './notification.service.module';
 
+/**
+ * @deprecated This module is no longer needed, will be removed in v20, please remove its import.
+ */
 @NgModule({
-  imports: [BidiModule, CommonModule, OverlayModule, NzIconModule, NzOutletModule, NzNotificationServiceModule],
-  declarations: [NzNotificationComponent, NzNotificationContainerComponent]
+  imports: [NzNotificationComponent, NzNotificationContainerComponent]
 })
 export class NzNotificationModule {}

@@ -3,34 +3,29 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { FocusTrapFactory } from '@angular/cdk/a11y';
-import { OverlayRef } from '@angular/cdk/overlay';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
+import { CdkScrollable } from '@angular/cdk/overlay';
+import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
-  NgZone,
   OnInit,
-  Optional,
   Output,
-  Renderer2,
-  ViewChild
+  ViewChild,
+  inject
 } from '@angular/core';
-import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 import { nzModalAnimations } from './modal-animations';
+import { NzModalCloseComponent } from './modal-close.component';
 import { BaseModalContainerComponent } from './modal-container.directive';
-import { ModalOptions } from './modal-types';
 
 @Component({
   selector: 'nz-modal-confirm-container',
@@ -40,16 +35,19 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
-      [ngClass]="config.nzClassName!"
-      [ngStyle]="config.nzStyle!"
+      [class]="config.nzClassName!"
+      [style]="config.nzStyle!"
       [style.width]="config?.nzWidth! | nzToCssUnit"
     >
       <div class="ant-modal-content">
-        <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
-        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
+        @if (config.nzClosable) {
+          <button nz-modal-close (click)="onCloseClick()"></button>
+        }
+
+        <div class="ant-modal-body" [style]="config.nzBodyStyle!">
           <div class="ant-modal-confirm-body-wrapper">
             <div class="ant-modal-confirm-body">
-              <span nz-icon [nzType]="config.nzIconType!"></span>
+              <nz-icon [nzType]="config.nzIconType!" />
               <span class="ant-modal-confirm-title">
                 <ng-container *nzStringTemplateOutlet="config.nzTitle">
                   <span [innerHTML]="config.nzTitle"></span>
@@ -57,38 +55,43 @@ import { ModalOptions } from './modal-types';
               </span>
               <div class="ant-modal-confirm-content">
                 <ng-template cdkPortalOutlet></ng-template>
-                <div *ngIf="isStringContent" [innerHTML]="config.nzContent"></div>
+                @if (isStringContent) {
+                  <div [innerHTML]="config.nzContent"></div>
+                }
               </div>
             </div>
             <div class="ant-modal-confirm-btns">
-              <button
-                *ngIf="config.nzCancelText !== null"
-                [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel' || null"
-                nz-button
-                (click)="onCancel()"
-                [nzLoading]="!!config.nzCancelLoading"
-                [disabled]="config.nzCancelDisabled"
-              >
-                {{ config.nzCancelText || locale.cancelText }}
-              </button>
-              <button
-                *ngIf="config.nzOkText !== null"
-                [attr.cdkFocusInitial]="config.nzAutofocus === 'ok' || null"
-                nz-button
-                [nzType]="config.nzOkType!"
-                (click)="onOk()"
-                [nzLoading]="!!config.nzOkLoading"
-                [disabled]="config.nzOkDisabled"
-                [nzDanger]="config.nzOkDanger"
-              >
-                {{ config.nzOkText || locale.okText }}
-              </button>
+              @if (config.nzCancelText !== null) {
+                <button
+                  [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel' || null"
+                  nz-button
+                  (click)="onCancel()"
+                  [nzLoading]="config.nzCancelLoading"
+                  [disabled]="config.nzCancelDisabled"
+                >
+                  {{ config.nzCancelText || locale.cancelText }}
+                </button>
+              }
+              @if (config.nzOkText !== null) {
+                <button
+                  [attr.cdkFocusInitial]="config.nzAutofocus === 'ok' || null"
+                  nz-button
+                  [nzType]="config.nzOkType!"
+                  (click)="onOk()"
+                  [nzLoading]="config.nzOkLoading"
+                  [disabled]="config.nzOkDisabled"
+                  [nzDanger]="config.nzOkDanger"
+                >
+                  {{ config.nzOkText || locale.okText }}
+                </button>
+              }
             </div>
           </div>
         </div>
       </div>
     </div>
   `,
+  hostDirectives: [CdkScrollable],
   animations: [nzModalAnimations.modalContainer],
   // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
   changeDetection: ChangeDetectionStrategy.Default,
@@ -104,29 +107,23 @@ import { ModalOptions } from './modal-types';
     '(@modalContainer.start)': 'onAnimationStart($event)',
     '(@modalContainer.done)': 'onAnimationDone($event)',
     '(click)': 'onContainerClick($event)'
-  }
+  },
+  imports: [NzPipesModule, NzIconModule, NzModalCloseComponent, NzOutletModule, PortalModule, NzButtonModule]
 })
 export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {
-  @ViewChild(CdkPortalOutlet, { static: true }) override portalOutlet!: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) override modalElementRef!: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkPortalOutlet, { static: true }) set _portalOutlet(portalOutlet: CdkPortalOutlet) {
+    this.portalOutlet = portalOutlet;
+  }
+  @ViewChild('modalElement', { static: true }) set _modalElementRef(elementRef: ElementRef<HTMLDivElement>) {
+    this.modalElementRef = elementRef;
+  }
   @Output() override readonly cancelTriggered = new EventEmitter<void>();
   @Output() override readonly okTriggered = new EventEmitter<void>();
   locale!: NzModalI18nInterface;
+  private i18n = inject(NzI18nService);
 
-  constructor(
-    ngZone: NgZone,
-    private i18n: NzI18nService,
-    host: ElementRef<HTMLElement>,
-    focusTrapFactory: FocusTrapFactory,
-    cdr: ChangeDetectorRef,
-    render: Renderer2,
-    overlayRef: OverlayRef,
-    nzConfigService: NzConfigService,
-    public override config: ModalOptions,
-    @Optional() @Inject(DOCUMENT) document: NzSafeAny,
-    @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
-  ) {
-    super(ngZone, host, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, document, animationType);
+  constructor() {
+    super();
 
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');

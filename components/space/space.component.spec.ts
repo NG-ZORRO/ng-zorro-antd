@@ -1,8 +1,13 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzSpaceAlign } from 'ng-zorro-antd/space';
+import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize } from 'ng-zorro-antd/space';
 import { NzSpaceComponent } from 'ng-zorro-antd/space/space.component';
 
 import { NzSpaceModule } from './space.module';
@@ -10,15 +15,6 @@ import { NzSpaceModule } from './space.module';
 describe('Space', () => {
   let component: SpaceTestComponent;
   let fixture: ComponentFixture<SpaceTestComponent>;
-
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzSpaceModule],
-        declarations: [SpaceTestComponent]
-      }).compileComponents();
-    })
-  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SpaceTestComponent);
@@ -221,21 +217,22 @@ describe('Space', () => {
 });
 
 @Component({
+  imports: [NzSpaceModule],
   template: `
     <nz-space [nzSplit]="showSplit ? spaceSplit : null" [nzSize]="size" [nzDirection]="direction" [nzAlign]="align">
       <div *nzSpaceItem>item</div>
       <div *nzSpaceItem>item</div>
-      <ng-container *ngIf="show">
+      @if (show) {
         <div *nzSpaceItem>item</div>
-      </ng-container>
+      }
     </nz-space>
 
     <ng-template #spaceSplit>|</ng-template>
   `
 })
 class SpaceTestComponent {
-  size: string | number = 'small';
-  direction = 'horizontal';
+  size: NzSpaceSize = 'small';
+  direction: NzSpaceDirection = 'horizontal';
   show = false;
   align?: NzSpaceAlign;
   showSplit = false;

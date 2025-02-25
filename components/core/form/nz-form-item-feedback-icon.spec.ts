@@ -1,54 +1,59 @@
-import { Component, DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { NzFormPatchModule } from 'ng-zorro-antd/core/form/nz-form-patch.module';
-import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { DebugElement, SimpleChange } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
 import { NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzFormItemFeedbackIconComponent } from './nz-form-item-feedback-icon.component';
 
-const testBedOptions = { imports: [NzFormPatchModule, NoopAnimationsModule] };
-
 describe('nz-form-item-feedback-icon', () => {
-  describe('default', () => {
-    let testBed: ComponentBed<NzTestFormItemFeedbackIconComponent>;
-    let fixtureInstance: NzTestFormItemFeedbackIconComponent;
-    let feedback: DebugElement;
-    beforeEach(() => {
-      testBed = createComponentBed(NzTestFormItemFeedbackIconComponent, testBedOptions);
-      fixtureInstance = testBed.fixture.componentInstance;
-      feedback = testBed.fixture.debugElement.query(By.directive(NzFormItemFeedbackIconComponent));
-      testBed.fixture.detectChanges();
+  let fixture: ComponentFixture<NzFormItemFeedbackIconComponent>;
+  let component: NzFormItemFeedbackIconComponent;
+  let feedback: DebugElement;
+  let firstChange = true;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations(), provideNzIconsTesting()]
     });
-    it('should className correct', () => {
-      expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon');
-      fixtureInstance.status = 'success';
-      testBed.fixture.detectChanges();
-      expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-success');
-      expect(feedback.nativeElement.querySelector('.anticon-check-circle-fill')).toBeTruthy();
+    fixture = TestBed.createComponent(NzFormItemFeedbackIconComponent);
+    component = fixture.componentInstance;
+    feedback = fixture.debugElement;
+    fixture.detectChanges();
+  });
 
-      fixtureInstance.status = 'error';
-      testBed.fixture.detectChanges();
-      expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-error');
-      expect(feedback.nativeElement.querySelector('.anticon-close-circle-fill')).toBeTruthy();
+  function changeStatus(status: NzValidateStatus): void {
+    const previousStatus: NzValidateStatus = component.status;
+    component.status = status;
+    component.ngOnChanges({ status: new SimpleChange(previousStatus, status, firstChange) });
+    firstChange = false;
+    fixture.detectChanges();
+  }
 
-      fixtureInstance.status = 'warning';
-      testBed.fixture.detectChanges();
-      expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-warning');
-      expect(feedback.nativeElement.querySelector('.anticon-exclamation-circle-fill')).toBeTruthy();
+  it('should className correct', () => {
+    changeStatus('');
+    expect(fixture.nativeElement.classList).toContain('ant-form-item-feedback-icon');
 
-      fixtureInstance.status = 'validating';
-      testBed.fixture.detectChanges();
-      expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-validating');
-      expect(feedback.nativeElement.querySelector('.anticon-loading')).toBeTruthy();
-    });
+    changeStatus('success');
+    expect(fixture.nativeElement.classList).toContain('ant-form-item-feedback-icon-success');
+    expect(fixture.nativeElement.querySelector('.anticon-check-circle-fill')).toBeTruthy();
+
+    changeStatus('error');
+    expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-error');
+    expect(feedback.nativeElement.querySelector('.anticon-close-circle-fill')).toBeTruthy();
+
+    changeStatus('warning');
+    expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-warning');
+    expect(feedback.nativeElement.querySelector('.anticon-exclamation-circle-fill')).toBeTruthy();
+
+    changeStatus('validating');
+    expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-validating');
+    expect(feedback.nativeElement.querySelector('.anticon-loading')).toBeTruthy();
   });
 });
-
-@Component({
-  template: ` <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon> `
-})
-export class NzTestFormItemFeedbackIconComponent {
-  status: NzValidateStatus = '';
-}

@@ -1,9 +1,14 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { auditTime, map } from 'rxjs/operators';
 
-import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
+import { NzHighlightPipe } from 'ng-zorro-antd/core/highlight';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTreeFlatDataSource, NzTreeFlattener, NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
@@ -37,7 +42,10 @@ interface FlatNode {
 }
 
 class FilteredTreeResult {
-  constructor(public treeData: TreeNode[], public needsToExpanded: TreeNode[] = []) {}
+  constructor(
+    public treeData: TreeNode[],
+    public needsToExpanded: TreeNode[] = []
+  ) {}
 }
 
 /**
@@ -66,25 +74,26 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
 
 @Component({
   selector: 'nz-demo-tree-view-search',
+  imports: [FormsModule, NzInputModule, NzIconModule, NzTreeViewModule, NzNoAnimationDirective, NzHighlightPipe],
   template: `
     <nz-input-group [nzSuffix]="suffixIcon">
       <input type="text" nz-input placeholder="Search" ngModel (ngModelChange)="searchValue$.next($event)" />
     </nz-input-group>
     <ng-template #suffixIcon>
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
     </ng-template>
 
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource" nzNoAnimation>
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
         <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
-        <span [innerHTML]="node.name | nzHighlight: searchValue:'i':'highlight'"></span>
+        <span [innerHTML]="node.name | nzHighlight: searchValue : 'i' : 'highlight'"></span>
       </nz-tree-node>
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
-          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
+          <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
-        <span [innerHTML]="node.name | nzHighlight: searchValue:'i':'highlight'"></span>
+        <span [innerHTML]="node.name | nzHighlight: searchValue : 'i' : 'highlight'"></span>
       </nz-tree-node>
     </nz-tree-view>
   `,
@@ -95,7 +104,7 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
       }
 
       ::ng-deep .highlight {
-        color: red;
+        color: #f50;
       }
     `
   ]

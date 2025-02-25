@@ -1,31 +1,30 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzSwitchComponent } from './switch.component';
 import { NzSwitchModule } from './switch.module';
 
 describe('switch', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-        declarations: [
-          NzTestSwitchBasicComponent,
-          NzTestSwitchFormComponent,
-          NzTestSwitchTemplateComponent,
-          NzTestSwitchRtlComponent
-        ]
-      });
-      TestBed.compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting()]
+    });
+  }));
+
   describe('basic switch', () => {
     let fixture: ComponentFixture<NzTestSwitchBasicComponent>;
     let testComponent: NzTestSwitchBasicComponent;
@@ -242,39 +241,63 @@ describe('switch', () => {
   describe('switch form', () => {
     let fixture: ComponentFixture<NzTestSwitchFormComponent>;
     let testComponent: NzTestSwitchFormComponent;
-    let switchElement: DebugElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSwitchFormComponent);
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
+    });
+    it('should be in pristine, untouched, and valid states and enable initially', fakeAsync(() => {
+      fixture.detectChanges();
+      flush();
+      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
+      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
+      expect(testComponent.formControl.valid).toBe(true);
+      expect(testComponent.formControl.pristine).toBe(true);
+      expect(testComponent.formControl.touched).toBe(false);
+      expect(buttonElement.disabled).toBeFalsy();
+      expect(buttonElement.classList).not.toContain('ant-switch-disabled');
     }));
-    it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
-      flush();
-      expect(testComponent.formGroup.valid).toBe(true);
-      expect(testComponent.formGroup.pristine).toBe(true);
-      expect(testComponent.formGroup.touched).toBe(false);
-    }));
-    it('should set disabled work', fakeAsync(() => {
-      flush();
-      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
-      switchElement.nativeElement.click();
-      fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue')!.value).toBe(false);
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      testComponent.formGroup.get('switchValue')!.setValue(true);
+    it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
       testComponent.disable();
       fixture.detectChanges();
       flush();
+      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
+      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
+      expect(buttonElement.disabled).toBeTruthy();
+      expect(buttonElement.classList).toContain('ant-switch-disabled');
+    }));
+    it('should set disabled work', fakeAsync(() => {
+      testComponent.disabled = true;
       fixture.detectChanges();
+      flush();
+      const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
+      const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
+
+      expect(buttonElement.disabled).toBeTruthy();
+      expect(buttonElement.classList).toContain('ant-switch-disabled');
+      expect(testComponent.formControl.value).toBe(true);
+
       switchElement.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('switchValue')!.value).toBe(true);
+      expect(testComponent.formControl.value).toBe(true);
+
+      testComponent.enable();
+      fixture.detectChanges();
+      flush();
+      expect(buttonElement.disabled).toBeFalsy();
+      expect(buttonElement.classList).not.toContain('ant-switch-disabled');
+      switchElement.nativeElement.click();
+      fixture.detectChanges();
+      expect(testComponent.formControl.value).toBe(false);
+
+      testComponent.disable();
+      fixture.detectChanges();
+      flush();
+      expect(buttonElement.disabled).toBeTruthy();
+      expect(buttonElement.classList).toContain('ant-switch-disabled');
+      switchElement.nativeElement.click();
+      fixture.detectChanges();
+      expect(testComponent.formControl.value).toBe(false);
     }));
   });
   describe('RTL', () => {
@@ -292,9 +315,10 @@ describe('switch', () => {
 });
 
 @Component({
+  imports: [FormsModule, NzIconModule, NzSwitchModule],
   template: `
-    <ng-template #checkedChildrenTemplate><span nz-icon nzType="check"></span></ng-template>
-    <ng-template #unCheckedChildrenTemplate><span nz-icon nzType="closs"></span></ng-template>
+    <ng-template #checkedChildrenTemplate><nz-icon nzType="check" /></ng-template>
+    <ng-template #unCheckedChildrenTemplate><nz-icon nzType="closs" /></ng-template>
     <nz-switch
       [(ngModel)]="value"
       (ngModelChange)="modelChange($event)"
@@ -316,15 +340,16 @@ export class NzTestSwitchBasicComponent {
   value = false;
   control = false;
   disabled = false;
-  size = 'default';
+  size: NzSizeDSType = 'default';
   loading = false;
   modelChange = jasmine.createSpy('model change callback');
 }
 
 @Component({
+  imports: [NzIconModule, NzSwitchModule],
   template: `
-    <ng-template #checkedChildrenTemplate><span nz-icon nzType="check"></span></ng-template>
-    <ng-template #unCheckedChildrenTemplate><span nz-icon nzType="close"></span></ng-template>
+    <ng-template #checkedChildrenTemplate><nz-icon nzType="check" /></ng-template>
+    <ng-template #unCheckedChildrenTemplate><nz-icon nzType="close" /></ng-template>
     <nz-switch
       [nzCheckedChildren]="checkedChildrenTemplate"
       [nzUnCheckedChildren]="unCheckedChildrenTemplate"
@@ -334,27 +359,29 @@ export class NzTestSwitchBasicComponent {
 export class NzTestSwitchTemplateComponent {}
 
 @Component({
+  imports: [ReactiveFormsModule, NzSwitchModule],
   template: `
-    <form [formGroup]="formGroup">
-      <nz-switch formControlName="switchValue"></nz-switch>
+    <form>
+      <nz-switch [formControl]="formControl" [nzDisabled]="disabled"></nz-switch>
     </form>
   `
 })
 export class NzTestSwitchFormComponent {
-  formGroup: UntypedFormGroup;
+  formControl = new FormControl(true);
 
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      switchValue: [true]
-    });
-  }
+  disabled = false;
 
   disable(): void {
-    this.formGroup.disable();
+    this.formControl.disable();
+  }
+
+  enable(): void {
+    this.formControl.enable();
   }
 }
 
 @Component({
+  imports: [BidiModule, FormsModule, NzSwitchModule],
   template: `
     <div [dir]="direction">
       <nz-switch [(ngModel)]="switchValue"></nz-switch>
@@ -363,6 +390,6 @@ export class NzTestSwitchFormComponent {
 })
 export class NzTestSwitchRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
   switchValue = false;
 }

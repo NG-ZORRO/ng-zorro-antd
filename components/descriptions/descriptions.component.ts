@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -14,26 +15,25 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { auditTime, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzBreakpointEnum, NzBreakpointService, gridResponsiveMap } from 'ng-zorro-antd/core/services';
 
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'descriptions';
-const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
+const defaultColumnMap: Record<NzBreakpointEnum, number> = {
   xxl: 3,
   xl: 3,
   lg: 3,
@@ -49,56 +49,61 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
   exportAs: 'nzDescriptions',
   preserveWhitespaces: false,
   template: `
-    <div *ngIf="nzTitle || nzExtra" class="ant-descriptions-header">
-      <div *ngIf="nzTitle" class="ant-descriptions-title">
-        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+    @if (nzTitle || nzExtra) {
+      <div class="ant-descriptions-header">
+        @if (nzTitle) {
+          <div class="ant-descriptions-title">
+            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+          </div>
+        }
+        @if (nzExtra) {
+          <div class="ant-descriptions-extra">
+            <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+          </div>
+        }
       </div>
-      <div *ngIf="nzExtra" class="ant-descriptions-extra">
-        <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
-      </div>
-    </div>
+    }
+
     <div class="ant-descriptions-view">
       <table>
         <tbody>
-          <ng-container *ngIf="nzLayout === 'horizontal'">
-            <tr class="ant-descriptions-row" *ngFor="let row of itemMatrix; let i = index">
-              <ng-container *ngFor="let item of row; let isLast = last">
-                <!-- Horizontal & NOT Bordered -->
-                <ng-container *ngIf="!nzBordered">
-                  <td class="ant-descriptions-item" [colSpan]="item.span">
-                    <div class="ant-descriptions-item-container">
-                      <span class="ant-descriptions-item-label" [class.ant-descriptions-item-no-colon]="!nzColon">
-                        <ng-container *nzStringTemplateOutlet="item.title">
-                          {{ item.title }}
-                        </ng-container>
-                      </span>
-                      <span class="ant-descriptions-item-content">
-                        <ng-template [ngTemplateOutlet]="item.content"></ng-template>
-                      </span>
-                    </div>
-                  </td>
-                </ng-container>
-                <!-- Horizontal & Bordered -->
-                <ng-container *ngIf="nzBordered">
-                  <td class="ant-descriptions-item-label">
-                    <ng-container *nzStringTemplateOutlet="item.title">
-                      {{ item.title }}
-                    </ng-container>
-                  </td>
-                  <td class="ant-descriptions-item-content" [colSpan]="item.span * 2 - 1">
-                    <ng-template [ngTemplateOutlet]="item.content"></ng-template>
-                  </td>
-                </ng-container>
-              </ng-container>
-            </tr>
-          </ng-container>
+          @if (nzLayout === 'horizontal') {
+            @for (row of itemMatrix; track row; let i = $index) {
+              <tr class="ant-descriptions-row">
+                @for (item of row; track item; let isLast = $last) {
+                  @if (!nzBordered) {
+                    <td class="ant-descriptions-item" [colSpan]="item.span">
+                      <div class="ant-descriptions-item-container">
+                        <span class="ant-descriptions-item-label" [class.ant-descriptions-item-no-colon]="!nzColon">
+                          <ng-container *nzStringTemplateOutlet="item.title">
+                            {{ item.title }}
+                          </ng-container>
+                        </span>
+                        <span class="ant-descriptions-item-content">
+                          <ng-template [ngTemplateOutlet]="item.content"></ng-template>
+                        </span>
+                      </div>
+                    </td>
+                  } @else {
+                    <td class="ant-descriptions-item-label">
+                      <ng-container *nzStringTemplateOutlet="item.title">
+                        {{ item.title }}
+                      </ng-container>
+                    </td>
+                    <td class="ant-descriptions-item-content" [colSpan]="item.span * 2 - 1">
+                      <ng-template [ngTemplateOutlet]="item.content"></ng-template>
+                    </td>
+                  }
+                }
+              </tr>
+            }
+          }
 
-          <ng-container *ngIf="nzLayout === 'vertical'">
-            <!-- Vertical & NOT Bordered -->
-            <ng-container *ngIf="!nzBordered">
-              <ng-container *ngFor="let row of itemMatrix; let i = index">
+          @if (nzLayout === 'vertical') {
+            @if (!nzBordered) {
+              @for (row of itemMatrix; track row; let i = $index) {
                 <tr class="ant-descriptions-row">
-                  <ng-container *ngFor="let item of row; let isLast = last">
+                  @for (item of row; track item; let isLast = $last) {
                     <td class="ant-descriptions-item" [colSpan]="item.span">
                       <div class="ant-descriptions-item-container">
                         <span class="ant-descriptions-item-label" [class.ant-descriptions-item-no-colon]="!nzColon">
@@ -108,43 +113,41 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                         </span>
                       </div>
                     </td>
-                  </ng-container>
+                  }
                 </tr>
                 <tr class="ant-descriptions-row">
-                  <ng-container *ngFor="let item of row; let isLast = last">
+                  @for (item of row; track item; let isLast = $last) {
                     <td class="ant-descriptions-item" [colSpan]="item.span">
                       <div class="ant-descriptions-item-container">
                         <span class="ant-descriptions-item-content">
-                          <ng-template [ngTemplateOutlet]="item.content"></ng-template>
+                          <ng-template [ngTemplateOutlet]="item.content" />
                         </span>
                       </div>
                     </td>
-                  </ng-container>
+                  }
                 </tr>
-              </ng-container>
-            </ng-container>
-            <!-- Vertical & Bordered -->
-            <ng-container *ngIf="nzBordered">
-              <ng-container *ngFor="let row of itemMatrix; let i = index">
+              }
+            } @else {
+              @for (row of itemMatrix; track row; let i = $index) {
                 <tr class="ant-descriptions-row">
-                  <ng-container *ngFor="let item of row; let isLast = last">
+                  @for (item of row; track item; let isLast = $last) {
                     <td class="ant-descriptions-item-label" [colSpan]="item.span">
                       <ng-container *nzStringTemplateOutlet="item.title">
                         {{ item.title }}
                       </ng-container>
                     </td>
-                  </ng-container>
+                  }
                 </tr>
                 <tr class="ant-descriptions-row">
-                  <ng-container *ngFor="let item of row; let isLast = last">
+                  @for (item of row; track item; let isLast = $last) {
                     <td class="ant-descriptions-item-content" [colSpan]="item.span">
-                      <ng-template [ngTemplateOutlet]="item.content"></ng-template>
+                      <ng-template [ngTemplateOutlet]="item.content" />
                     </td>
-                  </ng-container>
+                  }
                 </tr>
-              </ng-container>
-            </ng-container>
-          </ng-container>
+              }
+            }
+          }
         </tbody>
       </table>
     </div>
@@ -155,22 +158,21 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
     '[class.ant-descriptions-middle]': 'nzSize === "middle"',
     '[class.ant-descriptions-small]': 'nzSize === "small"',
     '[class.ant-descriptions-rtl]': 'dir === "rtl"'
-  }
+  },
+  imports: [NzOutletModule, NgTemplateOutlet]
 })
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzBordered: BooleanInput;
-  static ngAcceptInputType_nzColon: BooleanInput;
 
   @ContentChildren(NzDescriptionsItemComponent) items!: QueryList<NzDescriptionsItemComponent>;
 
-  @Input() @InputBoolean() @WithConfig() nzBordered: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = false;
   @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
-  @Input() @WithConfig() nzColumn: number | { [key in NzBreakpointEnum]: number } = defaultColumnMap;
+  @Input() @WithConfig() nzColumn: number | Record<NzBreakpointEnum, number> = defaultColumnMap;
   @Input() @WithConfig() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
   @Input() nzExtra?: string | TemplateRef<void>;
-  @Input() @WithConfig() @InputBoolean() nzColon: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzColon: boolean = true;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;
@@ -183,7 +185,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private breakpointService: NzBreakpointService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;

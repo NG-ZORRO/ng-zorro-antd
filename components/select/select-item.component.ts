@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,26 +14,38 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-select-item',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *nzStringTemplateOutlet="contentTemplateOutlet; context: { $implicit: contentTemplateOutletContext }">
-      <div class="ant-select-selection-item-content" *ngIf="deletable; else labelTemplate">{{ label }}</div>
-      <ng-template #labelTemplate>{{ label }}</ng-template>
+    <ng-container *nzStringTemplateOutlet="contentTemplateOutlet; context: templateOutletContext">
+      @if (deletable) {
+        <div class="ant-select-selection-item-content">{{ label }}</div>
+      } @else {
+        {{ label }}
+      }
     </ng-container>
-    <span *ngIf="deletable && !disabled" class="ant-select-selection-item-remove" (click)="onDelete($event)">
-      <span nz-icon nzType="close" *ngIf="!removeIcon; else removeIcon"></span>
-    </span>
+    @if (deletable && !disabled) {
+      <span class="ant-select-selection-item-remove" (click)="onDelete($event)">
+        @if (!removeIcon) {
+          <nz-icon nzType="close" />
+        } @else {
+          <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
+        }
+      </span>
+    }
   `,
   host: {
     class: 'ant-select-selection-item',
     '[attr.title]': 'label',
     '[class.ant-select-selection-item-disabled]': 'disabled'
-  }
+  },
+  imports: [NgTemplateOutlet, NzOutletModule, NzIconModule]
 })
 export class NzSelectItemComponent {
   @Input() disabled = false;
@@ -43,7 +56,12 @@ export class NzSelectItemComponent {
   @Input() contentTemplateOutlet: string | TemplateRef<NzSafeAny> | null = null;
   @Output() readonly delete = new EventEmitter<MouseEvent>();
 
-  constructor() {}
+  protected get templateOutletContext(): NzSafeAny {
+    return {
+      $implicit: this.contentTemplateOutletContext,
+      ...this.contentTemplateOutletContext
+    };
+  }
 
   onDelete(e: MouseEvent): void {
     e.preventDefault();

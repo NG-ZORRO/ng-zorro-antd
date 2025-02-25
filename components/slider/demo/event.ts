@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-event',
+  imports: [FormsModule, NzSliderModule],
   template: `
     <nz-slider
       [(ngModel)]="singleValue"

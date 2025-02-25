@@ -1,12 +1,23 @@
 import { Component } from '@angular/core';
 
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+
 @Component({
   selector: 'nz-demo-select-status',
+  imports: [NzSelectModule, NzSpaceModule],
   template: `
-    <nz-space nzDirection="vertical" style="width: 100%">
-      <nz-select *nzSpaceItem nzStatus="error" style="width: 100%"></nz-select>
-      <nz-select *nzSpaceItem nzStatus="warning" style="width: 100%"></nz-select>
-    </nz-space>
-  `
+    <nz-select nzStatus="error"></nz-select>
+    <br />
+    <br />
+    <nz-select nzStatus="warning"></nz-select>
+  `,
+  styles: [
+    `
+      nz-select {
+        width: 100%;
+      }
+    `
+  ]
 })
 export class NzDemoSelectStatusComponent {}

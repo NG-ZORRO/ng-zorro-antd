@@ -20,25 +20,25 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 ### nz-empty
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzNotFoundImage]` | Customize image. Will tread as image url when string provided | `string \| TemplateRef<void>` | - |
-| `[nzNotFoundContent]` | Custom description | `string \| TemplateRef<void> \| null` | - |
-| `[nzNotFoundFooter]` | Custom Footer | `string \| TemplateRef<void>` | - |
+| Property              | Description                                                   | Type                                  | Default |
+| --------------------- | ------------------------------------------------------------- | ------------------------------------- | ------- |
+| `[nzNotFoundImage]`   | Customize image. Will tread as image url when string provided | `string \| TemplateRef<void>`         | -       |
+| `[nzNotFoundContent]` | Custom description                                            | `string \| TemplateRef<void> \| null` | -       |
+| `[nzNotFoundFooter]`  | Custom Footer                                                 | `string \| TemplateRef<void>`         | -       |
 
 ### `NZ_CONFIG`
 
 The `nzEmpty` interface has properties as follows:
 
-| Properties | Description | Type |
-| ----- | --- | ---- |
+| Properties              | Description                                                                                             | Type                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
 | `nzDefaultEmptyContent` | User default empty component. You can restore the system default empty content by providing `undefined` | `Type<any>\|TemplateRef<string>\|string\|undefined` |
 
 ### InjectionToken
 
-| Token | Description | Parameters |
-| ----- | --- | ---- |
-| `NZ_EMPTY_COMPONENT_NAME` | Would be injected to `NZ_DEFAULT_EMPTY_CONTENT`, telling that component its parent component's name | `string` |
+| Token                     | Description                                                                                         | Parameters |
+| ------------------------- | --------------------------------------------------------------------------------------------------- | ---------- |
+| `NZ_EMPTY_COMPONENT_NAME` | Would be injected to `NZ_DEFAULT_EMPTY_CONTENT`, telling that component its parent component's name | `string`   |
 
 ### Global Customizable Empty Content
 

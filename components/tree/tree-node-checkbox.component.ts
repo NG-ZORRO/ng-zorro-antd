@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, booleanAttribute } from '@angular/core';
 
 @Component({
   selector: 'nz-tree-node-checkbox[builtin]',
@@ -25,8 +25,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class NzTreeNodeBuiltinCheckboxComponent {
   @Input() nzSelectMode = false;
-  @Input() isChecked?: boolean;
-  @Input() isHalfChecked?: boolean;
-  @Input() isDisabled?: boolean;
-  @Input() isDisableCheckbox?: boolean;
+  @Input({ transform: booleanAttribute }) isChecked?: boolean;
+  @Input({ transform: booleanAttribute }) isHalfChecked?: boolean;
+  @Input({ transform: booleanAttribute }) isDisabled?: boolean;
+  @Input({ transform: booleanAttribute }) isDisableCheckbox?: boolean;
 }

@@ -9,15 +9,16 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
   selector: 'nz-tree-indent',
   exportAs: 'nzTreeIndent',
   template: `
-    <span
-      [class.ant-tree-indent-unit]="!nzSelectMode"
-      [class.ant-select-tree-indent-unit]="nzSelectMode"
-      [class.ant-select-tree-indent-unit-start]="nzSelectMode && nzIsStart[i]"
-      [class.ant-tree-indent-unit-start]="!nzSelectMode && nzIsStart[i]"
-      [class.ant-select-tree-indent-unit-end]="nzSelectMode && nzIsEnd[i]"
-      [class.ant-tree-indent-unit-end]="!nzSelectMode && nzIsEnd[i]"
-      *ngFor="let _ of listOfUnit; let i = index"
-    ></span>
+    @for (_ of listOfUnit; track i; let i = $index) {
+      <span
+        [class.ant-tree-indent-unit]="!nzSelectMode"
+        [class.ant-select-tree-indent-unit]="nzSelectMode"
+        [class.ant-select-tree-indent-unit-start]="nzSelectMode && nzIsStart[i]"
+        [class.ant-tree-indent-unit-start]="!nzSelectMode && nzIsStart[i]"
+        [class.ant-select-tree-indent-unit-end]="nzSelectMode && nzIsEnd[i]"
+        [class.ant-tree-indent-unit-end]="!nzSelectMode && nzIsEnd[i]"
+      ></span>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,

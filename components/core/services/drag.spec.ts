@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subject, Subscription } from 'rxjs';
@@ -30,14 +35,6 @@ describe('drag service', () => {
   let dragged = false;
   let drag_: Subscription;
   let complete_: Subscription;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [NzTestDragServiceComponent]
-    });
-
-    TestBed.compileComponents();
-  });
 
   describe('basics', () => {
     beforeEach(() => {

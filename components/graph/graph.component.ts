@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   ChangeDetectionStrategy,
@@ -11,38 +12,41 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
   TemplateRef,
   ViewChildren,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  forwardRef,
+  inject
 } from '@angular/core';
-import { forkJoin, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription, forkJoin } from 'rxjs';
 import { finalize, take, takeUntil } from 'rxjs/operators';
 
 import { buildGraph } from 'dagre-compound';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { calculateTransform } from './core/utils';
 import { NzGraphData } from './data-source/graph-data-source';
 import { NzGraph } from './graph';
+import { NzGraphDefsComponent } from './graph-defs.component';
+import { NzGraphEdgeComponent } from './graph-edge.component';
 import { NzGraphEdgeDirective } from './graph-edge.directive';
 import { NzGraphGroupNodeDirective } from './graph-group-node.directive';
 import { NzGraphNodeComponent } from './graph-node.component';
 import { NzGraphNodeDirective } from './graph-node.directive';
 import { NzGraphZoomDirective } from './graph-zoom.directive';
 import {
+  NZ_GRAPH_LAYOUT_SETTING,
   NzGraphDataDef,
   NzGraphEdge,
   NzGraphEdgeDef,
@@ -53,8 +57,7 @@ import {
   NzGraphOption,
   NzLayoutSetting,
   NzRankDirection,
-  nzTypeDefinition,
-  NZ_GRAPH_LAYOUT_SETTING
+  nzTypeDefinition
 } from './interface';
 
 /** Checks whether an object is a data source. */
@@ -70,7 +73,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-graph',
   exportAs: 'nzGraph',
-  providers: [{ provide: NzGraph, useExisting: NzGraphComponent }],
+  providers: [{ provide: NzGraph, useExisting: forwardRef(() => NzGraphComponent) }],
   template: `
     <ng-content></ng-content>
     <svg width="100%" height="100%">
@@ -87,7 +90,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
           <svg:g class="nz-graph-edges">
-            <ng-container *ngFor="let edge of $asNzGraphEdges(renderNode.edges); trackBy: edgeTrackByFun">
+            @for (edge of $asNzGraphEdges(renderNode.edges); track edgeTrackByFun(edge)) {
               <g
                 class="nz-graph-edge"
                 nz-graph-edge
@@ -95,31 +98,26 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
                 [edgeType]="nzGraphLayoutConfig?.defaultEdge?.type"
                 [customTemplate]="customGraphEdgeTemplate"
               ></g>
-            </ng-container>
+            }
           </svg:g>
 
           <svg:g class="nz-graph-nodes">
-            <ng-container *ngFor="let node of typedNodes(renderNode.nodes); trackBy: nodeTrackByFun">
-              <g
-                *ngIf="node.type === 1"
-                class="nz-graph-node"
-                nz-graph-node
-                [node]="node"
-                [customTemplate]="nodeTemplate"
-              ></g>
-              <g
-                *ngIf="node.type === 0"
-                class="nz-graph-node"
-                nz-graph-node
-                [node]="node"
-                [customTemplate]="groupNodeTemplate"
-              ></g>
-              <ng-container
-                *ngIf="node.expanded"
-                [ngTemplateOutlet]="groupTemplate"
-                [ngTemplateOutletContext]="{ renderNode: node, type: 'sub' }"
-              ></ng-container>
-            </ng-container>
+            @for (node of typedNodes(renderNode.nodes); track node.name) {
+              @if (node.type === 1) {
+                <g class="nz-graph-node" nz-graph-node [node]="node" [customTemplate]="nodeTemplate"></g>
+              }
+
+              @if (node.type === 0) {
+                <g class="nz-graph-node" nz-graph-node [node]="node" [customTemplate]="groupNodeTemplate"></g>
+              }
+
+              @if (node.expanded) {
+                <ng-container
+                  [ngTemplateOutlet]="groupTemplate"
+                  [ngTemplateOutletContext]="{ renderNode: node, type: 'sub' }"
+                />
+              }
+            }
           </svg:g>
         </svg:g>
       </svg:g>
@@ -128,11 +126,10 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   host: {
     '[class.nz-graph]': 'true',
     '[class.nz-graph-auto-size]': 'nzAutoSize'
-  }
+  },
+  imports: [NgTemplateOutlet, NzGraphEdgeComponent, NzGraphNodeComponent, NzGraphDefsComponent]
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy, NzGraph {
-  static ngAcceptInputType_nzAutoSize: BooleanInput;
-
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;
   @ViewChildren(NzGraphNodeComponent) listOfNodeComponent!: QueryList<NzGraphNodeComponent>;
 
@@ -152,18 +149,18 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   @Input() nzGraphData!: NzGraphData;
   @Input() nzRankDirection: NzRankDirection = 'LR';
   @Input() nzGraphLayoutConfig?: NzGraphLayoutConfig;
-  @Input() @InputBoolean() nzAutoSize = false;
+  @Input({ transform: booleanAttribute }) nzAutoSize = false;
 
   @Output() readonly nzGraphInitialized = new EventEmitter<NzGraphComponent>();
   @Output() readonly nzGraphRendered = new EventEmitter<NzGraphComponent>();
-  @Output() readonly nzNodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode> = new EventEmitter();
+  @Output() readonly nzNodeClick = new EventEmitter<NzGraphNode | NzGraphGroupNode>();
 
   requestId: number = -1;
   transformStyle = '';
   graphRenderedSubject$ = new ReplaySubject<void>(1);
   renderInfo: NzGraphGroupNode = { labelHeight: 0 } as NzGraphGroupNode;
-  mapOfNodeAttr: { [key: string]: NzGraphNodeDef } = {};
-  mapOfEdgeAttr: { [key: string]: NzGraphEdgeDef } = {};
+  mapOfNodeAttr: Record<string, NzGraphNodeDef> = {};
+  mapOfEdgeAttr: Record<string, NzGraphEdgeDef> = {};
   zoom = 1;
 
   public readonly typedNodes = nzTypeDefinition<Array<NzGraphNode | NzGraphGroupNode>>();
@@ -173,8 +170,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   private _dataSubscription?: Subscription | null;
   private destroy$ = new Subject<void>();
 
-  nodeTrackByFun = (_: number, node: NzGraphNode | NzGraphGroupNode): string => node.name;
-  edgeTrackByFun = (_: number, edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
+  edgeTrackByFun = (edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
 
   subGraphTransform = (node: NzGraphGroupNode): string => {
     const x = node.x - node.coreBox.width / 2.0;
@@ -186,11 +182,12 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
 
   coreTransform = (node: NzGraphGroupNode): string => `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  nzGraphZoom = inject(NzGraphZoomDirective, { optional: true });
+
   constructor(
     private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() public nzGraphZoom?: NzGraphZoomDirective
+    private elementRef: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -441,8 +438,8 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
    *
    * @private
    */
-  private makeNodesAnimation(): Observable<void> {
-    return forkJoin(...this.listOfNodeComponent.map(node => node.makeAnimation())).pipe(
+  private makeNodesAnimation(): Observable<void[]> {
+    return forkJoin(this.listOfNodeComponent.map(node => node.makeAnimation())).pipe(
       finalize(() => {
         this.cdr.detectChanges();
       })

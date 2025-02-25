@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+
 @Component({
   selector: 'nz-demo-badge-status',
+  imports: [NzBadgeModule],
   template: `
     <nz-badge nzStatus="success"></nz-badge>
     <nz-badge nzStatus="error"></nz-badge>

@@ -2,7 +2,10 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
 
-import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTreeFlatDataSource, NzTreeFlattener, NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
@@ -46,6 +49,7 @@ interface FlatNode {
 
 @Component({
   selector: 'nz-demo-tree-view-editable',
+  imports: [NzButtonModule, NzInputModule, NzIconModule, NzTreeViewModule],
   template: `
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource" [trackBy]="trackBy">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodeIndentLine>
@@ -57,7 +61,7 @@ interface FlatNode {
           {{ node.name }}
         </nz-tree-node-option>
         <button nz-button nzType="text" nzSize="small" (click)="delete(node)">
-          <span nz-icon nzType="minus" nzTheme="outline"></span>
+          <nz-icon nzType="minus" nzTheme="outline" />
         </button>
       </nz-tree-node>
 
@@ -69,11 +73,11 @@ interface FlatNode {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodeIndentLine>
         <nz-tree-node-toggle>
-          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
+          <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
         {{ node.name }}
         <button nz-button nzType="text" nzSize="small" (click)="addNewNode(node)">
-          <span nz-icon nzType="plus" nzTheme="outline"></span>
+          <nz-icon nzType="plus" nzTheme="outline" />
         </button>
       </nz-tree-node>
     </nz-tree-view>

@@ -1,24 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-auto-tips',
+  imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [nzAutoTips]="autoTips" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidatingTip="Validating...">
-          <input nz-input formControlName="userName" placeholder="async validate try to write JasonWood" />
+          <input nz-input formControlName="username" placeholder="async validate try to write JasonWood" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -36,7 +41,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
         <nz-form-control [nzSpan]="12" nzDisableAutoTips nzErrorTip="Please input your password!">
-          <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()" />
+          <input nz-input type="password" formControlName="password" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -44,8 +49,12 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
         <nz-form-control [nzSpan]="12" nzDisableAutoTips [nzErrorTip]="passwordErrorTpl">
           <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
           <ng-template #passwordErrorTpl let-control>
-            <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
-            <ng-container *ngIf="control.hasError('confirm')">Password is inconsistent!</ng-container>
+            @if (control.errors?.['required']) {
+              Please confirm your password!
+            }
+            @if (control.errors?.['confirm']) {
+              Password is inconsistent!
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>
@@ -64,8 +73,20 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     `
   ]
 })
-export class NzDemoFormAutoTipsComponent {
-  validateForm: UntypedFormGroup;
+export class NzDemoFormAutoTipsComponent implements OnInit, OnDestroy {
+  private fb = inject(NonNullableFormBuilder);
+  private destroy$ = new Subject<void>();
+  validateForm = this.fb.group({
+    username: this.fb.control(
+      '',
+      [MyValidators.required, MyValidators.maxLength(12), MyValidators.minLength(6)],
+      [this.usernameAsyncValidator]
+    ),
+    mobile: this.fb.control('', [MyValidators.required, MyValidators.mobile]),
+    email: this.fb.control('', [MyValidators.required, MyValidators.email]),
+    password: this.fb.control('', [MyValidators.required]),
+    confirm: this.fb.control('', [this.confirmValidator])
+  });
 
   // current locale is key of the nzAutoTips
   // if it is not found, it will be searched again with `default`
@@ -81,6 +102,17 @@ export class NzDemoFormAutoTipsComponent {
     }
   };
 
+  ngOnInit(): void {
+    this.validateForm.controls.password.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.validateForm.controls.confirm.updateValueAndValidity();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
@@ -94,13 +126,8 @@ export class NzDemoFormAutoTipsComponent {
     }
   }
 
-  validateConfirmPassword(): void {
-    setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
-  }
-
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  userNameAsyncValidator = (control: UntypedFormControl) =>
-    new Observable((observer: Observer<MyValidationErrors | null>) => {
+  usernameAsyncValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    return new Observable((observer: Observer<MyValidationErrors | null>) => {
       setTimeout(() => {
         if (control.value === 'JasonWood') {
           observer.next({
@@ -112,26 +139,15 @@ export class NzDemoFormAutoTipsComponent {
         observer.complete();
       }, 1000);
     });
+  }
 
-  confirmValidator = (control: UntypedFormControl): { [s: string]: boolean } => {
+  confirmValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) {
       return { error: true, required: true };
     } else if (control.value !== this.validateForm.controls.password.value) {
       return { confirm: true, error: true };
     }
     return {};
-  };
-
-  constructor(private fb: UntypedFormBuilder) {
-    // use `MyValidators`
-    const { required, maxLength, minLength, email, mobile } = MyValidators;
-    this.validateForm = this.fb.group({
-      userName: ['', [required, maxLength(12), minLength(6)], [this.userNameAsyncValidator]],
-      mobile: ['', [required, mobile]],
-      email: ['', [required, email]],
-      password: ['', [required]],
-      confirm: ['', [this.confirmValidator]]
-    });
   }
 }
 

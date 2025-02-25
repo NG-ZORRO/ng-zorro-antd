@@ -3,22 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NumberInput } from '@angular/cdk/coercion';
 import { CdkTreeNodePadding } from '@angular/cdk/tree';
-import { Directive, Input } from '@angular/core';
+import { Directive, forwardRef, Input, numberAttribute } from '@angular/core';
 
 @Directive({
   selector: '[nzTreeNodePadding]',
-  providers: [{ provide: CdkTreeNodePadding, useExisting: NzTreeNodePaddingDirective }]
+  providers: [{ provide: CdkTreeNodePadding, useExisting: forwardRef(() => NzTreeNodePaddingDirective) }]
 })
 export class NzTreeNodePaddingDirective<T> extends CdkTreeNodePadding<T> {
   override _indent = 24;
 
-  @Input('nzTreeNodePadding')
+  @Input({ alias: 'nzTreeNodePadding', transform: numberAttribute })
   override get level(): number {
     return this._level;
   }
-  override set level(value: NumberInput) {
+  override set level(value: number) {
     this._setLevelInput(value);
   }
 

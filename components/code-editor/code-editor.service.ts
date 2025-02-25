@@ -4,8 +4,8 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subscription } from 'rxjs';
+import { Injectable, OnDestroy, inject } from '@angular/core';
+import { BehaviorSubject, Observable, ReplaySubject, Subscription, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { CodeEditorConfig, NzConfigService } from 'ng-zorro-antd/core/config';
@@ -40,7 +40,7 @@ let loadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
   providedIn: 'root'
 })
 export class NzCodeEditorService implements OnDestroy {
-  private document: Document;
+  private document: Document = inject(DOCUMENT);
   private firstEditorInitialized = false;
   private option: JoinedEditorOptions = {};
   private config: CodeEditorConfig;
@@ -48,10 +48,9 @@ export class NzCodeEditorService implements OnDestroy {
 
   option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
 
-  constructor(private readonly nzConfigService: NzConfigService, @Inject(DOCUMENT) _document: NzSafeAny) {
+  constructor(private readonly nzConfigService: NzConfigService) {
     const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
 
-    this.document = _document;
     this.config = { ...globalConfig };
     if (this.config.monacoEnvironment) {
       window.MonacoEnvironment = { ...this.config.monacoEnvironment };

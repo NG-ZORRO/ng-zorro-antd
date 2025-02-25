@@ -1,8 +1,13 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
@@ -17,11 +22,8 @@ describe('NzWeekPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NzDatePickerModule, FormsModule],
-      declarations: [NzTestWeekPickerComponent]
+      providers: [provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
   }));
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -99,11 +101,16 @@ describe('NzWeekPickerComponent', () => {
 });
 
 @Component({
+  imports: [NzDatePickerModule, FormsModule],
   template: `
-    <ng-container [ngSwitch]="useSuite">
-      <nz-date-picker *ngSwitchCase="1" nzMode="week" [nzFormat]="nzFormat" [ngModel]="nzValue"></nz-date-picker>
-      <nz-week-picker *ngSwitchCase="2" [ngModel]="nzValue"></nz-week-picker>
-    </ng-container>
+    @switch (useSuite) {
+      @case (1) {
+        <nz-date-picker nzMode="week" [nzFormat]="nzFormat!" [ngModel]="nzValue" />
+      }
+      @case (2) {
+        <nz-week-picker [ngModel]="nzValue" />
+      }
+    }
   `
 })
 export class NzTestWeekPickerComponent {

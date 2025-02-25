@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-page-header-responsive',
+  imports: [NzButtonModule, NzDescriptionsModule, NzPageHeaderModule, NzSpaceModule, NzStatisticModule, NzTabsModule],
   template: `
-    <nz-page-header class="site-page-header" nzBackIcon>
+    <nz-page-header nzBackIcon>
       <nz-page-header-title>Title</nz-page-header-title>
       <nz-page-header-subtitle>This is a subtitle</nz-page-header-subtitle>
       <nz-page-header-extra>

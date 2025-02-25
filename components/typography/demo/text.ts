@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+
 @Component({
   selector: 'nz-demo-typography-text',
+  imports: [NzTypographyModule],
   template: `
     <span nz-typography>Ant Design (default)</span>
     <span nz-typography nzType="secondary">Ant Design (secondary)</span>
@@ -16,10 +19,7 @@ import { Component } from '@angular/core';
     <span nz-typography><del>Ant Design (delete)</del></span>
     <span nz-typography><strong>Ant Design (strong)</strong></span>
     <span nz-typography>
-      <a href="https://ng.ant.design/" target="_blank">
-        Ant Design
-        <Link />
-      </a>
+      <a href="https://ng.ant.design/" target="_blank">Ant Design</a>
     </span>
   `,
   styles: [

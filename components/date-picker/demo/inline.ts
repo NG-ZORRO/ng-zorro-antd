@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { getISOWeek } from 'date-fns';
 
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-date-picker-inline',
+  imports: [FormsModule, NzDatePickerModule, NzTabsModule],
   template: `
     <nz-tabset>
       <nz-tab nzTitle="Default">
@@ -14,6 +19,14 @@ import { getISOWeek } from 'date-fns';
       </nz-tab>
       <nz-tab nzTitle="Month">
         <nz-date-picker nzInline nzMode="month" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+      </nz-tab>
+      <nz-tab nzTitle="Quarter">
+        <nz-date-picker
+          nzInline
+          nzMode="quarter"
+          [(ngModel)]="date"
+          (ngModelChange)="onChange($event)"
+        ></nz-date-picker>
       </nz-tab>
       <nz-tab nzTitle="Year">
         <nz-date-picker nzInline nzMode="year" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
@@ -41,6 +54,14 @@ import { getISOWeek } from 'date-fns';
         <nz-range-picker
           nzInline
           nzMode="month"
+          [(ngModel)]="rangeDate"
+          (ngModelChange)="onChange($event)"
+        ></nz-range-picker>
+      </nz-tab>
+      <nz-tab nzTitle="Range Quarter">
+        <nz-range-picker
+          nzInline
+          nzMode="quarter"
           [(ngModel)]="rangeDate"
           (ngModelChange)="onChange($event)"
         ></nz-range-picker>

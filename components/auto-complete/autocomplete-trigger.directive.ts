@@ -19,13 +19,12 @@ import {
   Directive,
   ElementRef,
   ExistingProvider,
-  forwardRef,
-  Inject,
   Input,
   NgZone,
   OnDestroy,
-  Optional,
-  ViewContainerRef
+  ViewContainerRef,
+  forwardRef,
+  inject
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
@@ -61,7 +60,8 @@ export function getNzAutocompleteMissingPanelError(): Error {
     '(focusin)': 'handleFocus()',
     '(blur)': 'handleBlur()',
     '(input)': 'handleInput($event)',
-    '(keydown)': 'handleKeydown($event)'
+    '(keydown)': 'handleKeydown($event)',
+    '(click)': 'handleClick($event)'
   }
 })
 export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor, OnDestroy {
@@ -89,14 +89,14 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   private selectionChangeSubscription!: Subscription;
   private optionsChangeSubscription!: Subscription;
   private overlayOutsideClickSubscription!: Subscription;
+  private document: Document = inject(DOCUMENT);
+  private nzInputGroupWhitSuffixOrPrefixDirective = inject(NzInputGroupWhitSuffixOrPrefixDirective, { optional: true });
 
   constructor(
     private ngZone: NgZone,
     private elementRef: ElementRef,
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    @Optional() private nzInputGroupWhitSuffixOrPrefixDirective: NzInputGroupWhitSuffixOrPrefixDirective,
-    @Optional() @Inject(DOCUMENT) private document: NzSafeAny
+    private viewContainerRef: ViewContainerRef
   ) {}
 
   ngAfterViewInit(): void {
@@ -214,6 +214,12 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
   handleFocus(): void {
     if (this.canOpen()) {
+      this.openPanel();
+    }
+  }
+
+  handleClick(): void {
+    if (this.canOpen() && !this.panelOpen) {
       this.openPanel();
     }
   }

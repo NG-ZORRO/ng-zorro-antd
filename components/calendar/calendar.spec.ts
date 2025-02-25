@@ -1,52 +1,42 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
+import { NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n/date-config';
 
-import { NZ_DATE_CONFIG } from '../i18n/date-config';
 import { NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
-import { NzCalendarComponent as Calendar } from './calendar.component';
+import { NzCalendarComponent as Calendar, NzCalendarMode } from './calendar.component';
 import { NzCalendarModule } from './calendar.module';
 
 registerLocaleData(zh);
 
 describe('Calendar', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, FormsModule, NzCalendarModule, NoopAnimationsModule],
-        declarations: [
-          NzTestCalendarModeComponent,
-          NzTestCalendarValueComponent,
-          NzTestCalendarFullscreenComponent,
-          NzTestCalendarDateCellComponent,
-          NzTestCalendarDateFullCellComponent,
-          NzTestCalendarMonthCellComponent,
-          NzTestCalendarMonthFullCellComponent,
-          NzTestCalendarChangesComponent,
-          NzTestCalendarRtlComponent
-        ],
-        providers: [{ provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NoopAnimationsModule],
+      providers: [{ provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
+    });
+  }));
 
   describe('mode', () => {
     let fixture: ComponentFixture<NzTestCalendarModeComponent>;
     let component: NzTestCalendarModeComponent;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarModeComponent);
-        component = fixture.componentInstance;
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarModeComponent);
+      component = fixture.componentInstance;
+    }));
 
     it('should be month by default', () => {
       fixture.detectChanges();
@@ -106,12 +96,10 @@ describe('Calendar', () => {
     let fixture: ComponentFixture<NzTestCalendarValueComponent>;
     let component: NzTestCalendarValueComponent;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarValueComponent);
-        component = fixture.componentInstance;
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarValueComponent);
+      component = fixture.componentInstance;
+    }));
 
     it('should be now by default', () => {
       const now = new Date();
@@ -239,12 +227,10 @@ describe('Calendar', () => {
     let fixture: ComponentFixture<NzTestCalendarFullscreenComponent>;
     let component: NzTestCalendarFullscreenComponent;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarFullscreenComponent);
-        component = fixture.componentInstance;
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarFullscreenComponent);
+      component = fixture.componentInstance;
+    }));
 
     it('should be true by default', () => {
       fixture.detectChanges();
@@ -280,11 +266,9 @@ describe('Calendar', () => {
   describe('dateCell', () => {
     let fixture: ComponentFixture<NzTestCalendarDateCellComponent>;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarDateCellComponent);
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarDateCellComponent);
+    }));
 
     it('should work when passed via property', () => {
       fixture.detectChanges();
@@ -308,11 +292,9 @@ describe('Calendar', () => {
   describe('dateFullCell', () => {
     let fixture: ComponentFixture<NzTestCalendarDateFullCellComponent>;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarDateFullCellComponent);
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarDateFullCellComponent);
+    }));
 
     it('should work when passed via property', () => {
       fixture.detectChanges();
@@ -335,11 +317,9 @@ describe('Calendar', () => {
   describe('monthCell', () => {
     let fixture: ComponentFixture<NzTestCalendarMonthCellComponent>;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarMonthCellComponent);
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarMonthCellComponent);
+    }));
 
     it('should work when passed via property', () => {
       fixture.detectChanges();
@@ -361,11 +341,9 @@ describe('Calendar', () => {
   describe('monthFullCell', () => {
     let fixture: ComponentFixture<NzTestCalendarMonthFullCellComponent>;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarMonthFullCellComponent);
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarMonthFullCellComponent);
+    }));
 
     it('should work when passed via property', () => {
       fixture.detectChanges();
@@ -388,12 +366,10 @@ describe('Calendar', () => {
     let fixture: ComponentFixture<NzTestCalendarChangesComponent>;
     let component: NzTestCalendarChangesComponent;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarChangesComponent);
-        component = fixture.componentInstance;
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarChangesComponent);
+      component = fixture.componentInstance;
+    }));
 
     it('should panelChange work', fakeAsync(() => {
       fixture.detectChanges();
@@ -429,13 +405,11 @@ describe('Calendar', () => {
     let fixture: ComponentFixture<NzTestCalendarRtlComponent>;
     let componentElement: HTMLElement;
 
-    beforeEach(
-      waitForAsync(() => {
-        fixture = TestBed.createComponent(NzTestCalendarRtlComponent);
-        componentElement = fixture.debugElement.query(By.directive(Calendar)).nativeElement;
-        fixture.detectChanges();
-      })
-    );
+    beforeEach(waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestCalendarRtlComponent);
+      componentElement = fixture.debugElement.query(By.directive(Calendar)).nativeElement;
+      fixture.detectChanges();
+    }));
 
     it('should className correct on dir change', fakeAsync(() => {
       expect(componentElement.classList).toContain('ant-picker-calendar-rtl');
@@ -447,6 +421,7 @@ describe('Calendar', () => {
 });
 
 @Component({
+  imports: [NzCalendarModule],
   template: `
     <nz-calendar></nz-calendar>
     <nz-calendar [(nzMode)]="mode"></nz-calendar>
@@ -457,6 +432,7 @@ class NzTestCalendarModeComponent {
 }
 
 @Component({
+  imports: [FormsModule, NzCalendarModule],
   template: `
     <nz-calendar></nz-calendar>
     <nz-calendar [(nzValue)]="date0"></nz-calendar>
@@ -468,10 +444,11 @@ class NzTestCalendarValueComponent {
   date0 = new Date(2001, 1, 3);
   date1 = new Date(2001, 1, 3);
   date2 = new Date();
-  mode = 'year';
+  mode: NzCalendarMode = 'year';
 }
 
 @Component({
+  imports: [NzCalendarModule],
   template: `
     <nz-calendar></nz-calendar>
     <nz-calendar [nzFullscreen]="fullscreen"></nz-calendar>
@@ -483,6 +460,7 @@ class NzTestCalendarFullscreenComponent {
 }
 
 @Component({
+  imports: [NzCalendarModule],
   template: `
     <nz-calendar [nzDateCell]="tpl"></nz-calendar>
     <ng-template #tpl>Foo</ng-template>
@@ -494,6 +472,7 @@ class NzTestCalendarFullscreenComponent {
 class NzTestCalendarDateCellComponent {}
 
 @Component({
+  imports: [NzCalendarModule],
   template: `
     <nz-calendar [nzDateFullCell]="tpl"></nz-calendar>
     <ng-template #tpl>Foo</ng-template>
@@ -505,6 +484,7 @@ class NzTestCalendarDateCellComponent {}
 class NzTestCalendarDateFullCellComponent {}
 
 @Component({
+  imports: [NzCalendarModule],
   template: `
     <nz-calendar nzMode="year" [nzMonthCell]="tpl"></nz-calendar>
     <ng-template #tpl>Foo</ng-template>
@@ -516,6 +496,7 @@ class NzTestCalendarDateFullCellComponent {}
 class NzTestCalendarMonthCellComponent {}
 
 @Component({
+  imports: [NzCalendarModule],
   template: `
     <nz-calendar nzMode="year" [nzMonthFullCell]="tpl"></nz-calendar>
     <ng-template #tpl>Foo</ng-template>
@@ -527,6 +508,7 @@ class NzTestCalendarMonthCellComponent {}
 class NzTestCalendarMonthFullCellComponent {}
 
 @Component({
+  imports: [FormsModule, NzCalendarModule],
   template: `
     <nz-calendar
       [(nzMode)]="mode"
@@ -544,6 +526,7 @@ class NzTestCalendarChangesComponent {
 }
 
 @Component({
+  imports: [BidiModule, NzCalendarModule],
   template: `
     <div [dir]="direction">
       <nz-calendar></nz-calendar>
@@ -552,5 +535,5 @@ class NzTestCalendarChangesComponent {
 })
 export class NzTestCalendarRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

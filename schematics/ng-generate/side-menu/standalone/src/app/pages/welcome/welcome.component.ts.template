@@ -1,0 +1,10 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: '<%= prefix %>-welcome',
+  templateUrl: './welcome.component.html',
+  styleUrl: './welcome.component.<%= style %>'
+})
+export class WelcomeComponent {
+  constructor() {}
+}

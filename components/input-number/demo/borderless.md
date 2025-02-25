@@ -1,5 +1,5 @@
 ---
-order: 0
+order: 7
 title:
     zh-CN: 无边框
     en-US: Borderless
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Borderless input number.
-

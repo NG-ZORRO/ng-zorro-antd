@@ -37,10 +37,9 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
 Add the `nzNoAnimation` directive to the component.
 
-```HTML
+```html
 <nz-modal nzNoAnimation></nz-modal>
 <ul nz-menu nzNoAnimation></ul>
-<nz-form-explain [nzNoAnimation]="true"></nz-form-explain>
 ```
 
 ### Turn Off In Services
@@ -67,19 +66,15 @@ Add the following configuration while invoking components' services.
 
 ### Turn Off The Wave Effect
 
-Some components use dynamic styles to support wave effects, so their styles are unable to be override directly. Instead, you can set the provider `NZ_WAVE_GLOBAL_CONFIG` or use
+Some components use dynamic styles to support wave effects, so their styles are unable to be override directly. Instead, you can use `provideNzWave` or use
  `NoopAnimationsModule` to turn off the wave effects.
 
 ```ts
+import { provideNzWave } from 'ng-zorro-antd/core/wave';
+
 @NgModule({
-  ...
-  providers   : [
-      ...,
-      {
-        provide: NZ_WAVE_GLOBAL_CONFIG, useValue: {
-          disabled: true
-        }
-      }
-   ]
+  providers: [
+    provideNzWave({ disabled: true })
+  ]
 })
 ```

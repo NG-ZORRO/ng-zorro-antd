@@ -11,8 +11,12 @@ import {
   Input,
   OnChanges,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: '[nz-transfer-search]',
@@ -20,7 +24,7 @@ import {
   preserveWhitespaces: false,
   template: `
     <span class="ant-input-prefix">
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
     </span>
     <input
       [(ngModel)]="value"
@@ -28,21 +32,24 @@ import {
       [disabled]="disabled"
       [placeholder]="placeholder"
       class="ant-input"
-      [ngClass]="{ 'ant-input-disabled': disabled }"
+      [class]="{ 'ant-input-disabled': disabled }"
     />
-    <span *ngIf="value && value.length > 0" class="ant-input-suffix" (click)="_clear()">
-      <span nz-icon nzType="close-circle" class="ant-input-clear-icon"></span>
-    </span>
+    @if (value && value.length > 0) {
+      <span class="ant-input-suffix" (click)="_clear()">
+        <nz-icon nzType="close-circle" nzTheme="fill" class="ant-input-clear-icon" />
+      </span>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule, NzIconModule]
 })
 export class NzTransferSearchComponent implements OnChanges {
   // region: fields
 
   @Input() placeholder?: string;
   @Input() value?: string;
-  @Input() disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
 
   @Output() readonly valueChanged = new EventEmitter<string>();
   @Output() readonly valueClear = new EventEmitter<void>();

@@ -14,7 +14,7 @@ import {
   PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -23,13 +23,11 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -37,16 +35,25 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { fromEvent, merge, Observable, of as observableOf, Subscription } from 'rxjs';
+import { Subscription, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
-import { getCaretCoordinates, getMentions, getStatusClassNames, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import {
+  fromEventOutsideAngular,
+  getCaretCoordinates,
+  getMentions,
+  getStatusClassNames
+} from 'ng-zorro-antd/core/util';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
@@ -74,38 +81,41 @@ export type MentionPlacement = 'top' | 'bottom';
     <ng-template #suggestions>
       <div class="ant-mentions-dropdown">
         <ul class="ant-mentions-dropdown-menu" role="menu" tabindex="0">
-          <li
-            #items
-            class="ant-mentions-dropdown-menu-item"
-            role="menuitem"
-            tabindex="-1"
-            *ngFor="let suggestion of filteredSuggestions; let i = index"
-            [class.ant-mentions-dropdown-menu-item-active]="i === activeIndex"
-            [class.ant-mentions-dropdown-menu-item-selected]="i === activeIndex"
-            (click)="selectSuggestion(suggestion)"
-          >
-            <ng-container *ngIf="suggestionTemplate; else defaultSuggestion">
-              <ng-container *ngTemplateOutlet="suggestionTemplate; context: { $implicit: suggestion }"></ng-container>
-            </ng-container>
-            <ng-template #defaultSuggestion>{{ nzValueWith(suggestion) }}</ng-template>
-          </li>
-          <li
-            class="ant-mentions-dropdown-menu-item ant-mentions-dropdown-menu-item-disabled"
-            *ngIf="filteredSuggestions.length === 0"
-          >
-            <span *ngIf="nzLoading"><span nz-icon nzType="loading"></span></span>
-            <span *ngIf="!nzLoading">
-              <nz-embed-empty nzComponentName="select" [specificContent]="nzNotFoundContent!"></nz-embed-empty>
-            </span>
-          </li>
+          @for (suggestion of filteredSuggestions; track suggestion) {
+            <li
+              #items
+              class="ant-mentions-dropdown-menu-item"
+              role="menuitem"
+              tabindex="-1"
+              [class.ant-mentions-dropdown-menu-item-active]="$index === activeIndex"
+              [class.ant-mentions-dropdown-menu-item-selected]="$index === activeIndex"
+              (click)="selectSuggestion(suggestion)"
+            >
+              @if (suggestionTemplate) {
+                <ng-container *ngTemplateOutlet="suggestionTemplate; context: { $implicit: suggestion }" />
+              } @else {
+                {{ nzValueWith(suggestion) }}
+              }
+            </li>
+          }
+
+          @if (filteredSuggestions.length === 0) {
+            <li class="ant-mentions-dropdown-menu-item ant-mentions-dropdown-menu-item-disabled">
+              @if (nzLoading) {
+                <span><nz-icon nzType="loading" /></span>
+              } @else {
+                <span>
+                  <nz-embed-empty nzComponentName="select" [specificContent]="nzNotFoundContent!" />
+                </span>
+              }
+            </li>
+          }
         </ul>
       </div>
     </ng-template>
-    <nz-form-item-feedback-icon
-      class="ant-mentions-suffix"
-      *ngIf="hasFeedback && !!status"
-      [status]="status"
-    ></nz-form-item-feedback-icon>
+    @if (hasFeedback && !!status) {
+      <nz-form-item-feedback-icon class="ant-mentions-suffix" [status]="status" />
+    }
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -113,20 +123,19 @@ export type MentionPlacement = 'top' | 'bottom';
   host: {
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
 })
 export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
-  static ngAcceptInputType_nzLoading: BooleanInput;
-
   @Input() nzValueWith: (value: NzSafeAny) => string = value => value;
   @Input() nzPrefix: string | string[] = '@';
-  @Input() @InputBoolean() nzLoading = false;
+  @Input({ transform: booleanAttribute }) nzLoading = false;
   @Input() nzNotFoundContent: string = '无匹配结果，轻敲空格完成输入';
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
   @Input() nzStatus: NzStatus = '';
-  @Output() readonly nzOnSelect: EventEmitter<NzSafeAny> = new EventEmitter();
-  @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
+  @Output() readonly nzOnSelect = new EventEmitter<NzSafeAny>();
+  @Output() readonly nzOnSearchChange = new EventEmitter<MentionOnSearchTypes>();
 
   trigger!: NzMentionTriggerDirective;
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;
@@ -159,6 +168,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   private portal?: TemplatePortal<void>;
   private positionStrategy!: FlexibleConnectedPositionStrategy;
   private overlayOutsideClickSubscription!: Subscription;
+  private document: Document = inject(DOCUMENT);
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.el.nativeElement;
@@ -172,19 +182,19 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     return null;
   }
 
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   constructor(
     private ngZone: NgZone,
-    @Optional() @Inject(DOCUMENT) private ngDocument: NzSafeAny,
-    @Optional() private directionality: Directionality,
+    private directionality: Directionality,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private nzMentionService: NzMentionService,
-    private destroy$: NzDestroyService,
-    @Optional() private nzFormStatusService?: NzFormStatusService,
-    @Optional() private nzFormNoStatusService?: NzFormNoStatusService
+    private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {
@@ -234,14 +244,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
         startWith(this.items),
         switchMap(() => {
           const items = this.items.toArray();
-          // Caretaker note: we explicitly should call `subscribe()` within the root zone.
-          // `runOutsideAngular(() => fromEvent(...))` will just create an observable within the root zone,
-          // but `addEventListener` is called when the `fromEvent` is subscribed.
-          return new Observable<MouseEvent>(subscriber =>
-            this.ngZone.runOutsideAngular(() =>
-              merge(...items.map(item => fromEvent<MouseEvent>(item.nativeElement, 'mousedown'))).subscribe(subscriber)
-            )
-          );
+          return merge(...items.map(item => fromEventOutsideAngular<MouseEvent>(item.nativeElement, 'mousedown')));
         })
       )
       .subscribe(event => {
@@ -455,10 +458,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     );
 
     subscription.add(
-      this.ngZone.runOutsideAngular(() =>
-        fromEvent<TouchEvent>(this.ngDocument, 'touchend').subscribe(
-          event => canCloseDropdown(event) && this.ngZone.run(() => this.closeDropdown())
-        )
+      fromEventOutsideAngular<TouchEvent>(this.document, 'touchend').subscribe(
+        event => canCloseDropdown(event) && this.ngZone.run(() => this.closeDropdown())
       )
     );
 

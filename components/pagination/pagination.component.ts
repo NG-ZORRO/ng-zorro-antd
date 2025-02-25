@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,21 +14,22 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
 } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
+import { NzBreakpointEnum, NzBreakpointService, gridResponsiveMap } from 'ng-zorro-antd/core/services';
 import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
+import { NzPaginationDefaultComponent } from './pagination-default.component';
+import { NzPaginationSimpleComponent } from './pagination-simple.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
@@ -39,11 +41,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="showPagination">
-      <ng-container *ngIf="nzSimple; else defaultPagination.template">
-        <ng-template [ngTemplateOutlet]="simplePagination.template"></ng-template>
-      </ng-container>
-    </ng-container>
+    @if (showPagination) {
+      @if (nzSimple) {
+        <ng-template [ngTemplateOutlet]="simplePagination.template" />
+      } @else {
+        <ng-template [ngTemplateOutlet]="defaultPagination.template" />
+      }
+    }
+
     <nz-pagination-simple
       #simplePagination
       [disabled]="nzDisabled"
@@ -75,38 +80,29 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
     class: 'ant-pagination',
     '[class.ant-pagination-simple]': 'nzSimple',
     '[class.ant-pagination-disabled]': 'nzDisabled',
-    '[class.mini]': `!nzSimple && size === 'small'`,
+    '[class.ant-pagination-mini]': `!nzSimple && size === 'small'`,
     '[class.ant-pagination-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [NgTemplateOutlet, NzPaginationSimpleComponent, NzPaginationDefaultComponent]
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
-  static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
-  static ngAcceptInputType_nzShowQuickJumper: BooleanInput;
-  static ngAcceptInputType_nzSimple: BooleanInput;
-  static ngAcceptInputType_nzResponsive: BooleanInput;
-  static ngAcceptInputType_nzTotal: NumberInput;
-  static ngAcceptInputType_nzPageIndex: NumberInput;
-  static ngAcceptInputType_nzPageSize: NumberInput;
-
-  @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
-  @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly nzPageSizeChange = new EventEmitter<number>();
+  @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';
   @Input() @WithConfig() nzPageSizeOptions: number[] = [10, 20, 30, 40];
-  @Input() @WithConfig() @InputBoolean() nzShowSizeChanger = false;
-  @Input() @WithConfig() @InputBoolean() nzShowQuickJumper = false;
-  @Input() @WithConfig() @InputBoolean() nzSimple = false;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzResponsive = false;
-  @Input() @InputBoolean() nzHideOnSinglePage = false;
-  @Input() @InputNumber() nzTotal = 0;
-  @Input() @InputNumber() nzPageIndex = 1;
-  @Input() @InputNumber() nzPageSize = 10;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowSizeChanger = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowQuickJumper = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzSimple = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzResponsive = false;
+  @Input({ transform: booleanAttribute }) nzHideOnSinglePage = false;
+  @Input({ transform: numberAttribute }) nzTotal = 0;
+  @Input({ transform: numberAttribute }) nzPageIndex = 1;
+  @Input({ transform: numberAttribute }) nzPageSize = 10;
 
   showPagination = true;
   locale!: NzPaginationI18nInterface;
@@ -163,7 +159,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     private cdr: ChangeDetectorRef,
     private breakpointService: NzBreakpointService,
     protected nzConfigService: NzConfigService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {

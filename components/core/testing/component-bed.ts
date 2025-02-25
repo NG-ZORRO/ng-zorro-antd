@@ -9,6 +9,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 type ComponentBedOptions = Pick<NgModule, 'providers' | 'declarations' | 'imports'>;
+
+/**
+ * @internal
+ * @deprecated Internal use only, do not use directly. Will be removed in v20
+ */
 export interface ComponentBed<T> {
   bed: TestBed;
   fixture: ComponentFixture<T>;
@@ -16,6 +21,11 @@ export interface ComponentBed<T> {
   debugElement: DebugElement;
   component: T;
 }
+
+/**
+ * @internal
+ * @deprecated Internal use only, do not use directly. Will be removed in v20
+ */
 export function createComponentBed<T>(
   component: Type<T>,
   options: ComponentBedOptions = {

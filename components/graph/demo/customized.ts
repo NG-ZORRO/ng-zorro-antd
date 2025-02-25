@@ -1,15 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import {
   NzGraphComponent,
   NzGraphData,
   NzGraphDataDef,
+  NzGraphModule,
   NzGraphZoomDirective,
   NzRankDirection
 } from 'ng-zorro-antd/graph';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-graph-customized',
+  imports: [FormsModule, NzButtonModule, NzGraphModule, NzRadioModule],
   template: `
     <button nz-button nzType="default" (click)="expandAll()">ExpandAll</button>
     <button nz-button nzType="default" (click)="collapseAll()">CollapseAll</button>
@@ -267,8 +272,6 @@ export class NzDemoGraphCustomizedComponent {
   };
   rankDirection: NzRankDirection = 'TB';
   graphData = new NzGraphData(this.testDef);
-
-  constructor() {}
 
   expand(name: string): void {
     this.graphData.expand(name);

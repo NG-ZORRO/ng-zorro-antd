@@ -1,25 +1,30 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement, SimpleChange, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { badgePresetColors } from 'ng-zorro-antd/badge/preset-colors';
+import { NzRibbonComponent } from 'ng-zorro-antd/badge/ribbon.component';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
 
-describe('badge', () => {
-  beforeEach(fakeAsync(() => {
+describe('nz-badge', () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzBadgeModule, NzNoAnimationModule, BrowserAnimationsModule],
-      declarations: [NzTestBadgeBasicComponent, NzTestBadgeRtlComponent]
+      providers: [provideAnimationsAsync()]
     });
-    TestBed.compileComponents();
-  }));
+  });
 
-  describe('basic badge', () => {
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestBadgeBasicComponent>;
     let testComponent: NzTestBadgeBasicComponent;
     let badgeElement: DebugElement;
@@ -163,6 +168,72 @@ describe('badge', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count-sm');
     });
+
+    it('should set presetColor of nzColor change', fakeAsync(() => {
+      let color: string | undefined;
+      const fixture = TestBed.createComponent(NzBadgeComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      color = badgePresetColors[0];
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(color);
+
+      color = undefined;
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(null);
+    }));
+  });
+
+  describe('ribbon', () => {
+    let fixture: ComponentFixture<NzRibbonComponent>;
+    let component: NzRibbonComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzRibbonComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('default value for nzPlacement', () => {
+      expect(component.nzPlacement).toEqual('end');
+    });
+
+    it('default value for nzText', () => {
+      expect(component.nzText).toEqual(null);
+    });
+
+    it('default value for presetColor', () => {
+      expect(component.presetColor).toEqual(null);
+    });
+
+    it('should set presetColor on nzColor change', fakeAsync(() => {
+      let color: string | undefined;
+
+      color = badgePresetColors[1];
+
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(color);
+
+      color = undefined;
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(null);
+    }));
   });
 
   describe('RTL', () => {
@@ -189,6 +260,7 @@ describe('badge', () => {
 });
 
 @Component({
+  imports: [NzNoAnimationDirective, NzBadgeModule],
   template: `
     <nz-badge
       [nzCount]="count"
@@ -204,7 +276,9 @@ describe('badge', () => {
       [nzStandalone]="!inner"
       [nzSize]="size"
     >
-      <a *ngIf="inner"></a>
+      @if (inner) {
+        <a></a>
+      }
     </nz-badge>
   `
 })
@@ -219,11 +293,12 @@ export class NzTestBadgeBasicComponent {
   text!: string;
   title?: string | null;
   offset?: [number, number];
-  size?: NzSizeDSType = 'default';
+  size: NzSizeDSType = 'default';
   noAnimation = true;
 }
 
 @Component({
+  imports: [BidiModule, NzBadgeModule],
   template: `
     <div [dir]="direction">
       <nz-badge [nzCount]="count"></nz-badge>
@@ -232,6 +307,6 @@ export class NzTestBadgeBasicComponent {
 })
 export class NzTestBadgeRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
   count = 5;
 }

@@ -3,9 +3,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { tuple } from './type';
-
 export type NzStatus = '' | 'error' | 'warning';
-
-const ValidateStatuses = tuple('success', 'warning', 'error', 'validating', '');
-export type NzValidateStatus = typeof ValidateStatuses[number];
+export type NzValidateStatus = '' | 'success' | 'warning' | 'error' | 'validating';

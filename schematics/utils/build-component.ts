@@ -3,9 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-
-import { getDefaultComponentOptions, getProjectFromWorkspace } from '@angular/cdk/schematics';
-
+import { getDefaultComponentOptions, getProjectFromWorkspace, isStandaloneSchematic } from '@angular/cdk/schematics';
 
 import { strings, template as interpolateTemplate } from '@angular-devkit/core';
 import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
@@ -26,11 +24,7 @@ import {
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
 import { Schema as ComponentOptions, Style } from '@schematics/angular/component/schema';
 import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
-import {
-  addDeclarationToModule,
-  addExportToModule,
-  getDecoratorMetadata
-} from '@schematics/angular/utility/ast-utils';
+import { addDeclarationToModule, addExportToModule, getDecoratorMetadata } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { buildRelativePath, findModuleFromOptions } from '@schematics/angular/utility/find-module';
 import { parseName } from '@schematics/angular/utility/parse-name';
@@ -41,7 +35,7 @@ import { ProjectType } from '@schematics/angular/utility/workspace-models';
 import { readFileSync, statSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 
-function findClassDeclarationParent(node: ts.Node): ts.ClassDeclaration|undefined {
+function findClassDeclarationParent(node: ts.Node): ts.ClassDeclaration | undefined {
   if (ts.isClassDeclaration(node)) {
     return node;
   }
@@ -49,7 +43,7 @@ function findClassDeclarationParent(node: ts.Node): ts.ClassDeclaration|undefine
   return node.parent && findClassDeclarationParent(node.parent);
 }
 
-function getFirstNgModuleName(source: ts.SourceFile): string|undefined {
+function getFirstNgModuleName(source: ts.SourceFile): string | undefined {
   // First, find the @NgModule decorators.
   const ngModulesMetadata = getDecoratorMetadata(source, 'NgModule', '@angular/core');
   if (ngModulesMetadata.length === 0) {
@@ -77,11 +71,9 @@ export interface ZorroComponentOptions extends ComponentOptions {
  * @param project The project to build the path for.
  */
 function buildDefaultPath(project: ProjectDefinition): string {
-  const root = project.sourceRoot
-    ? `/${project.sourceRoot}/`
-    : `/${project.root}/src/`;
+  const root = project.sourceRoot ? `/${project.sourceRoot}/` : `/${project.root}/src/`;
 
-  const projectDirName = project.extensions.projectType === ProjectType.Application ? 'app' : 'lib';
+  const projectDirName = project.extensions['projectType'] === ProjectType.Application ? 'app' : 'lib';
 
   return `${root}${projectDirName}`;
 }
@@ -90,7 +82,7 @@ function buildDefaultPath(project: ProjectDefinition): string {
  * List of style extensions which are CSS compatible. All supported CLI style extensions can be
  * found here: angular/angular-cli/master/packages/schematics/angular/ng-new/schema.json#L118-L122
  */
-const supportedCssExtensions = [ 'css', 'scss', 'sass', 'less' ];
+const supportedCssExtensions = ['css', 'scss', 'sass', 'less', 'none'];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readIntoSourceFile(host: Tree, modulePath: string): any {
@@ -115,30 +107,27 @@ function getModuleClassnamePrefix(source: any): string {
 
 function addDeclarationToNgModule(options: ZorroComponentOptions): Rule {
   return (host: Tree) => {
-    if (options.skipImport || !options.module) {
+    if (options.skipImport || options.standalone || !options.module) {
       return host;
     }
 
     const modulePath = options.module;
     let source = readIntoSourceFile(host, modulePath);
 
-    const componentPath = `/${options.path}/${options.flat ? '' : `${strings.dasherize(options.name)  }/`}${strings.dasherize(options.name)}.component`;
+    const componentPath = `/${options.path}/${
+      options.flat ? '' : `${strings.dasherize(options.name)}/`
+    }${strings.dasherize(options.name)}.component`;
     const relativePath = buildRelativePath(modulePath, componentPath);
     let classifiedName = strings.classify(`${options.name}Component`);
 
     if (options.classnameWithModule) {
       const modulePrefix = getModuleClassnamePrefix(source);
       if (modulePrefix) {
-        classifiedName = `${modulePrefix}${classifiedName}`
+        classifiedName = `${modulePrefix}${classifiedName}`;
       }
     }
 
-    const declarationChanges = addDeclarationToModule(
-      source,
-      modulePath,
-      classifiedName,
-      relativePath
-    );
+    const declarationChanges = addDeclarationToModule(source, modulePath, classifiedName, relativePath);
 
     const declarationRecorder = host.beginUpdate(modulePath);
     for (const change of declarationChanges) {
@@ -176,7 +165,7 @@ function buildSelector(options: ZorroComponentOptions, projectPrefix: string, mo
   let selector = strings.dasherize(options.name);
   let modulePrefix = '';
   if (modulePrefixName) {
-    modulePrefix = `${strings.dasherize(modulePrefixName)  }-`;
+    modulePrefix = `${strings.dasherize(modulePrefixName)}-`;
   }
   if (options.prefix) {
     selector = `${options.prefix}-${modulePrefix}${selector}`;
@@ -184,12 +173,11 @@ function buildSelector(options: ZorroComponentOptions, projectPrefix: string, mo
     selector = `${projectPrefix}-${modulePrefix}${selector}`;
   }
   return selector;
-
 }
 
 /**
  * Indents the text content with the amount of specified spaces. The spaces will be added after
- * every line-break. This utility function can be used inside of EJS templates to properly
+ * every line-break. This utility function can be used inside EJS templates to properly
  * include the additional files.
  */
 function indentTextContent(text: string, numSpaces: number): string {
@@ -206,9 +194,7 @@ function indentTextContent(text: string, numSpaces: number): string {
  * This allows inlining the external template or stylesheet files in EJS without having
  * to manually duplicate the file content.
  */
-export function buildComponent(options: ZorroComponentOptions,
-                               additionalFiles: { [ key: string ]: string } = {}): Rule {
-
+export function buildComponent(options: ZorroComponentOptions, additionalFiles: Record<string, string> = {}): Rule {
   return async (host: Tree, context: FileSystemSchematicContext) => {
     const workspace = await getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
@@ -218,9 +204,9 @@ export function buildComponent(options: ZorroComponentOptions,
     // This handles an unreported breaking change from the @angular-devkit/schematics. Previously
     // the description path resolved to the factory file, but starting from 6.2.0, it resolves
     // to the factory directory.
-    const schematicPath = statSync(context.schematic.description.path).isDirectory() ?
-      context.schematic.description.path :
-      dirname(context.schematic.description.path);
+    const schematicPath = statSync(context.schematic.description.path).isDirectory()
+      ? context.schematic.description.path
+      : dirname(context.schematic.description.path);
 
     const schematicFilesUrl = './files';
     const schematicFilesPath = resolve(schematicPath, schematicFilesUrl);
@@ -229,17 +215,18 @@ export function buildComponent(options: ZorroComponentOptions,
     // Add the default component option values to the options if an option is not explicitly
     // specified but a default component option is available.
     Object.keys(options)
-    .filter(optionName => options[ optionName ] == null && defaultZorroComponentOptions[ optionName ])
-    .forEach(optionName => options[ optionName ] = defaultZorroComponentOptions[ optionName ]);
+      .filter(optionName => options[optionName] == null && defaultZorroComponentOptions[optionName])
+      .forEach(optionName => (options[optionName] = defaultZorroComponentOptions[optionName]));
 
     if (options.path === undefined) {
-      // TODO(jelbourn): figure out if the need for this `as any` is a bug due to two different
-      // incompatible `WorkspaceProject` classes in @angular-devkit
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      options.path = buildDefaultPath(project as any);
+      options.path = buildDefaultPath(project);
     }
 
-    options.module = findModuleFromOptions(host, options);
+    options.standalone = await isStandaloneSchematic(host, options);
+
+    if (!options.standalone) {
+      options.module = findModuleFromOptions(host, options);
+    }
 
     const parsedPath = parseName(options.path!, options.name);
     if (options.classnameWithModule && !options.skipImport && options.module) {
@@ -253,43 +240,42 @@ export function buildComponent(options: ZorroComponentOptions,
 
     validateHtmlSelector(options.selector!);
 
+    const skipStyleFile = options.inlineStyle || options.style === Style.None;
     // In case the specified style extension is not part of the supported CSS supersets,
     // we generate the stylesheets with the "css" extension. This ensures that we don't
     // accidentally generate invalid stylesheets (e.g. drag-drop-comp.styl) which will
-    // break the Angular CLI project. See: https://github.com/angular/material2/issues/15164
-    if (!supportedCssExtensions.includes(options.style!)) {
-      // TODO: Cast is necessary as we can't use the Style enum which has been introduced
-      // within CLI v7.3.0-rc.0. This would break the schematic for older CLI versions.
+    // break the Angular CLI project. See: https://github.com/angular/components/issues/15164
+    if (!skipStyleFile && !supportedCssExtensions.includes(options.style!)) {
       options.style = Style.Css;
     }
 
     const classifyCovered = (name: string): string => {
-      return `${modulePrefix}${strings.classify(name)}`
+      return `${modulePrefix}${strings.classify(name)}`;
     };
     // Object that will be used as context for the EJS templates.
     const baseTemplateContext = {
       ...strings,
-      'if-flat': (s: string) => options.flat ? '' : s,
+      'if-flat': (s: string) => (options.flat ? '' : s),
       classify: classifyCovered,
       ...options
     };
 
     // Key-value object that includes the specified additional files with their loaded content.
     // The resolved contents can be used inside EJS templates.
-    const resolvedFiles = {};
+    const resolvedFiles: Record<string, string> = {};
 
     for (const key in additionalFiles) {
-      if (additionalFiles[ key ]) {
-        const fileContent = readFileSync(join(schematicFilesPath, additionalFiles[ key ]), 'utf-8');
+      if (additionalFiles[key]) {
+        const fileContent = readFileSync(join(schematicFilesPath, additionalFiles[key]), 'utf-8');
 
         // Interpolate the additional files with the base EJS template context.
-        resolvedFiles[ key ] = interpolateTemplate(fileContent)(baseTemplateContext);
+        resolvedFiles[key] = interpolateTemplate(fileContent)(baseTemplateContext);
       }
     }
 
     const templateSource = apply(url(schematicFilesUrl), [
       options.skipTests ? filter(path => !path.endsWith('.spec.ts.template')) : noop(),
-      options.inlineStyle ? filter(path => !path.endsWith('.__style__.template')) : noop(),
+      skipStyleFile ? filter(path => !path.endsWith('.__style__.template')) : noop(),
       options.inlineTemplate ? filter(path => !path.endsWith('.html.template')) : noop(),
       // Treat the template options as any, because the type definition for the template options
       // is made unnecessarily explicit. Every type of object can be used in the EJS template.
@@ -301,11 +287,7 @@ export function buildComponent(options: ZorroComponentOptions,
       move(null as any, parsedPath.path)
     ]);
 
-    return () => chain([
-      branchAndMerge(chain([
-        addDeclarationToNgModule(options),
-        mergeWith(templateSource)
-      ]))
-    ])(host, context);
+    return () =>
+      chain([branchAndMerge(chain([addDeclarationToNgModule(options), mergeWith(templateSource)]))])(host, context);
   };
 }

@@ -15,40 +15,40 @@
 // -------- Colors -----------
 // >>> Primary
 @primary-color: @blue-6;
-@primary-color-hover: color(~`colorPalette('@{primary-color}', 5) `);
-@primary-color-active: color(~`colorPalette('@{primary-color}', 7) `);
+@primary-color-hover: color(colorPalette('@{primary-color}', 5));
+@primary-color-active: color(colorPalette('@{primary-color}', 7));
 @primary-color-outline: fade(@primary-color, @outline-fade);
 
 @processing-color: @blue-6;
 
 // >>> Info
 @info-color: @primary-color;
-@info-color-deprecated-bg: color(~`colorPalette('@{info-color}', 1) `);
-@info-color-deprecated-border: color(~`colorPalette('@{info-color}', 3) `);
+@info-color-deprecated-bg: color(colorPalette('@{info-color}', 1));
+@info-color-deprecated-border: color(colorPalette('@{info-color}', 3));
 
 // >>> Success
 @success-color: @green-6;
-@success-color-hover: color(~`colorPalette('@{success-color}', 5) `);
-@success-color-active: color(~`colorPalette('@{success-color}', 7) `);
+@success-color-hover: color(colorPalette('@{success-color}', 5));
+@success-color-active: color(colorPalette('@{success-color}', 7));
 @success-color-outline: fade(@success-color, @outline-fade);
-@success-color-deprecated-bg: color(~`colorPalette('@{success-color}', 1) `);
-@success-color-deprecated-border: color(~`colorPalette('@{success-color}', 3) `);
+@success-color-deprecated-bg: color(colorPalette('@{success-color}', 1));
+@success-color-deprecated-border: color(colorPalette('@{success-color}', 3));
 
 // >>> Warning
 @warning-color: @gold-6;
-@warning-color-hover: color(~`colorPalette('@{warning-color}', 5) `);
-@warning-color-active: color(~`colorPalette('@{warning-color}', 7) `);
+@warning-color-hover: color(colorPalette('@{warning-color}', 5));
+@warning-color-active: color(colorPalette('@{warning-color}', 7));
 @warning-color-outline: fade(@warning-color, @outline-fade);
-@warning-color-deprecated-bg: color(~`colorPalette('@{warning-color}', 1) `);
-@warning-color-deprecated-border: color(~`colorPalette('@{warning-color}', 3) `);
+@warning-color-deprecated-bg: color(colorPalette('@{warning-color}', 1));
+@warning-color-deprecated-border: color(colorPalette('@{warning-color}', 3));
 
 // >>> Error
 @error-color: @red-5;
-@error-color-hover: color(~`colorPalette('@{error-color}', 5) `);
-@error-color-active: color(~`colorPalette('@{error-color}', 7) `);
+@error-color-hover: color(colorPalette('@{error-color}', 5));
+@error-color-active: color(colorPalette('@{error-color}', 7));
 @error-color-outline: fade(@error-color, @outline-fade);
-@error-color-deprecated-bg: color(~`colorPalette('@{error-color}', 1) `);
-@error-color-deprecated-border: color(~`colorPalette('@{error-color}', 3) `);
+@error-color-deprecated-bg: color(colorPalette('@{error-color}', 1));
+@error-color-deprecated-border: color(colorPalette('@{error-color}', 3));
 
 @highlight-color: @red-5;
 @normal-color: #d9d9d9;
@@ -57,18 +57,18 @@
 
 // Color used by default to control hover and active backgrounds and for
 // alert info backgrounds.
-@primary-1: color(~`colorPalette('@{primary-color}', 1) `); // replace tint(@primary-color, 90%)
-@primary-2: color(~`colorPalette('@{primary-color}', 2) `); // replace tint(@primary-color, 80%)
-@primary-3: color(~`colorPalette('@{primary-color}', 3) `); // unused
-@primary-4: color(~`colorPalette('@{primary-color}', 4) `); // unused
+@primary-1: color(colorPalette('@{primary-color}', 1)); // replace tint(@primary-color, 90%)
+@primary-2: color(colorPalette('@{primary-color}', 2)); // replace tint(@primary-color, 80%)
+@primary-3: color(colorPalette('@{primary-color}', 3)); // unused
+@primary-4: color(colorPalette('@{primary-color}', 4)); // unused
 @primary-5: color(
-  ~`colorPalette('@{primary-color}', 5) `
+  colorPalette('@{primary-color}', 5)
 ); // color used to control the text color in many active and hover states, replace tint(@primary-color, 20%)
 @primary-6: @primary-color; // color used to control the text color of active buttons, don't use, use @primary-color
-@primary-7: color(~`colorPalette('@{primary-color}', 7) `); // replace shade(@primary-color, 5%)
-@primary-8: color(~`colorPalette('@{primary-color}', 8) `); // unused
-@primary-9: color(~`colorPalette('@{primary-color}', 9) `); // unused
-@primary-10: color(~`colorPalette('@{primary-color}', 10) `); // unused
+@primary-7: color(colorPalette('@{primary-color}', 7)); // replace shade(@primary-color, 5%)
+@primary-8: color(colorPalette('@{primary-color}', 8)); // unused
+@primary-9: color(colorPalette('@{primary-color}', 9)); // unused
+@primary-10: color(colorPalette('@{primary-color}', 10)); // unused
 
 // Base Scaffolding Variables
 // ---
@@ -106,7 +106,7 @@
 // https://github.com/ant-design/ant-design/issues/20210
 @line-height-base: 1.5715;
 @border-radius-base: 2px;
-@border-radius-sm: @border-radius-base;
+@border-radius-sm: 2px;
 
 // control border
 @control-border-radius: @border-radius-base;
@@ -147,8 +147,8 @@
 
 // LINK
 @link-color: @primary-color;
-@link-hover-color: color(~`colorPalette('@{link-color}', 5) `);
-@link-active-color: color(~`colorPalette('@{link-color}', 7) `);
+@link-hover-color: color(colorPalette('@{link-color}', 5));
+@link-active-color: color(colorPalette('@{link-color}', 7));
 @link-decoration: none;
 @link-hover-decoration: none;
 @link-focus-decoration: none;
@@ -270,7 +270,7 @@
 @checkbox-check-color: #fff;
 @checkbox-check-bg: @checkbox-check-color;
 @checkbox-border-width: @border-width-base;
-@checkbox-border-radius: @border-radius-base;
+@checkbox-border-radius: @border-radius-sm;
 @checkbox-group-item-margin-right: 8px;
 
 // Descriptions
@@ -561,7 +561,7 @@
 @modal-header-title-line-height: 22px;
 @modal-header-title-font-size: @font-size-lg;
 @modal-header-border-color-split: @border-color-split;
-@modal-header-close-size: 56px;
+@modal-header-close-size: @modal-header-title-line-height + 2 * @modal-header-padding-vertical;
 @modal-content-bg: @component-background;
 @modal-heading-color: @heading-color;
 @modal-close-color: @text-color-secondary;
@@ -574,6 +574,7 @@
 @modal-mask-bg: fade(@black, 45%);
 @modal-confirm-body-padding: 32px 32px 24px;
 @modal-confirm-title-font-size: @font-size-lg;
+@modal-border-radius: @border-radius-base;
 
 // Progress
 // --
@@ -892,6 +893,7 @@
 @slider-handle-color-tooltip-open: @primary-color;
 @slider-handle-size: 14px;
 @slider-handle-margin-top: -5px;
+@slider-handle-margin-left: -5px;
 @slider-handle-shadow: 0;
 @slider-dot-border-color: @border-color-split;
 @slider-dot-border-color-active: tint(@primary-color, 50%);
@@ -948,22 +950,24 @@
 
 // Alert
 // ---
-@alert-success-border-color: ~`colorPalette('@{success-color}', 3) `;
-@alert-success-bg-color: ~`colorPalette('@{success-color}', 1) `;
+@alert-success-border-color: colorPalette('@{success-color}', 3);
+@alert-success-bg-color: colorPalette('@{success-color}', 1);
 @alert-success-icon-color: @success-color;
-@alert-info-border-color: ~`colorPalette('@{info-color}', 3) `;
-@alert-info-bg-color: ~`colorPalette('@{info-color}', 1) `;
+@alert-info-border-color: colorPalette('@{info-color}', 3);
+@alert-info-bg-color: colorPalette('@{info-color}', 1);
 @alert-info-icon-color: @info-color;
-@alert-warning-border-color: ~`colorPalette('@{warning-color}', 3) `;
-@alert-warning-bg-color: ~`colorPalette('@{warning-color}', 1) `;
+@alert-warning-border-color: colorPalette('@{warning-color}', 3);
+@alert-warning-bg-color: colorPalette('@{warning-color}', 1);
 @alert-warning-icon-color: @warning-color;
-@alert-error-border-color: ~`colorPalette('@{error-color}', 3) `;
-@alert-error-bg-color: ~`colorPalette('@{error-color}', 1) `;
+@alert-error-border-color: colorPalette('@{error-color}', 3);
+@alert-error-bg-color: colorPalette('@{error-color}', 1);
 @alert-error-icon-color: @error-color;
 @alert-message-color: @heading-color;
 @alert-text-color: @text-color;
 @alert-close-color: @text-color-secondary;
 @alert-close-hover-color: @icon-color-hover;
+@alert-padding-vertical: @padding-xs;
+@alert-padding-horizontal: @padding-md - 1px;
 @alert-no-icon-padding-vertical: @padding-xs;
 @alert-with-description-no-icon-padding-vertical: @padding-md - 1px;
 @alert-with-description-padding-vertical: @padding-md - 1px;

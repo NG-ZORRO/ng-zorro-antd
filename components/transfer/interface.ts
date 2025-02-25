@@ -38,3 +38,20 @@ export interface TransferSelectChange {
   list: TransferItem[];
   item?: TransferItem;
 }
+
+export interface TransferStat {
+  checkAll: boolean;
+  checkHalf: boolean;
+  checkCount: number;
+  shownCount: number;
+  availableCount: number;
+}
+
+export interface RenderListContext {
+  $implicit: TransferItem[];
+  direction: TransferDirection;
+  disabled: boolean;
+  onItemSelectAll: (x: boolean) => void;
+  onItemSelect: (x: TransferItem) => void;
+  stat: TransferStat;
+}

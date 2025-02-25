@@ -1,25 +1,26 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { NzStatisticValueType } from 'ng-zorro-antd/statistic/typings';
 
 import { NzCountdownComponent } from './countdown.component';
 import { NzStatisticModule } from './statistic.module';
 
 describe('nz-countdown', () => {
-  let testBed: ComponentBed<NzTestCountdownComponent>;
   let fixture: ComponentFixture<NzTestCountdownComponent>;
   let testComponent: NzTestCountdownComponent;
   let countdownEl: DebugElement;
 
   describe('basic', () => {
     beforeEach(() => {
-      testBed = createComponentBed(NzTestCountdownComponent, {
-        imports: [NzStatisticModule]
-      });
-      fixture = testBed.fixture;
-      testComponent = testBed.component;
+      fixture = TestBed.createComponent(NzTestCountdownComponent);
+      testComponent = fixture.componentInstance;
       countdownEl = fixture.debugElement.query(By.directive(NzCountdownComponent));
     });
 
@@ -55,9 +56,7 @@ describe('nz-countdown', () => {
     }));
 
     it('should stop timer and emit event', fakeAsync(() => {
-      const nearTime = new Date().getTime() + 1000 * 2;
-      testComponent.value = nearTime;
-
+      testComponent.value = new Date().getTime() + 1000 * 2;
       fixture.detectChanges();
       tick(3000);
       fixture.detectChanges();
@@ -67,6 +66,7 @@ describe('nz-countdown', () => {
 });
 
 @Component({
+  imports: [NzStatisticModule],
   template: `
     <nz-countdown
       [nzTitle]="'Countdown'"
@@ -82,11 +82,11 @@ describe('nz-countdown', () => {
 })
 export class NzTestCountdownComponent {
   @ViewChild(NzCountdownComponent, { static: true }) countdown!: NzCountdownComponent;
-  @ViewChild('tpl', { static: true }) tpl!: TemplateRef<number>;
+  @ViewChild('tpl', { static: true }) tpl!: TemplateRef<{ $implicit: NzStatisticValueType }>;
 
-  format?: string;
+  format!: string;
   value?: number;
-  template?: TemplateRef<number>;
+  template?: TemplateRef<{ $implicit: NzStatisticValueType }>;
   finished = 0;
 
   resetTimerWithFormat(format: string): void {

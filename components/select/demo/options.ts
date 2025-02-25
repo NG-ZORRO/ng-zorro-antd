@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-options',
+  imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select ngModel="lucy" [nzOptions]="listOfOption"></nz-select>
     <nz-select
@@ -22,12 +26,12 @@ import { Component } from '@angular/core';
 })
 export class NzDemoSelectOptionsComponent {
   selectedValue = 'lucy';
-  listOfOption = [
+  readonly listOfOption = [
     { label: 'Jack', value: 'jack' },
     { label: 'Lucy', value: 'lucy' },
     { label: 'disabled', value: 'disabled', disabled: true }
   ];
-  listOfGroupOption = [
+  readonly listOfGroupOption = [
     { label: 'Jack', value: 'jack', groupLabel: 'Manager' },
     { label: 'Lucy', value: 'lucy', groupLabel: 'Manager' },
     { label: 'Tom', value: 'tom', groupLabel: 'Engineer' }

@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-cron-expression-shortcuts',
+  imports: [FormsModule, NzButtonModule, NzCronExpressionModule, NzDropDownModule, NzIconModule],
   template: `
     <nz-cron-expression
       [nzExtra]="shortcuts"
@@ -11,13 +18,13 @@ import { Component } from '@angular/core';
     <ng-template #shortcuts>
       <button nz-button nz-dropdown [nzDropdownMenu]="menu">
         Shortcuts
-        <span nz-icon nzType="down"></span>
+        <nz-icon nzType="down" />
       </button>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
-          <li nz-menu-item *ngFor="let item of options" [value]="item.value" (click)="setValue(item.value)">{{
-            item.label
-          }}</li>
+          @for (item of options; track item.value) {
+            <li nz-menu-item [value]="item.value" (click)="setValue(item.value)">{{ item.label }}</li>
+          }
         </ul>
       </nz-dropdown-menu>
     </ng-template>

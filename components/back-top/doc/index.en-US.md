@@ -5,6 +5,8 @@ title: BackTop
 cover: https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg
 ---
 
+* Note: This component will be removed later. Please use `<nz-float-button-top></nz-float-button-top>` in the FloatButton component.
+
 `nz-back-top` makes it easy to go back to the top of the page.
 
 ## When To Use
@@ -23,11 +25,10 @@ import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 > The distance to the bottom is set to `50px` by default, which is overridable.
 > If you decide to use custom styles, please note the size limit: no more than `40px * 40px`.
 
-| Property | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-| `[nzTemplate]` | custom content | `TemplateRef<void>` | - |
-| `[nzVisibilityHeight]` | the `nz-back-top` button will not show until the scroll height reaches this value | `number` | `400` | ✅ |
-| `[nzTarget]` | specifies the scrollable area dom node | `string \| Element` | `window` |
-| `[nzDuration]` | Time to return to top (ms) | `number` | `450` |
-| `(nzClick)` | a callback function, which can be executed when you click the button | `EventEmitter<boolean>` | - |
-
+| Property               | Description                                                                       | Type                    | Default  | Global Config |
+| ---------------------- | --------------------------------------------------------------------------------- | ----------------------- | -------- | ------------- |
+| `[nzTemplate]`         | custom content                                                                    | `TemplateRef<void>`     | -        |
+| `[nzVisibilityHeight]` | the `nz-back-top` button will not show until the scroll height reaches this value | `number`                | `400`    | ✅             |
+| `[nzTarget]`           | specifies the scrollable area dom node                                            | `string \| Element`     | `window` |
+| `[nzDuration]`         | Time to return to top (ms)                                                        | `number`                | `450`    |
+| `(nzClick)`            | a callback function, which can be executed when you click the button              | `EventEmitter<boolean>` | -        |

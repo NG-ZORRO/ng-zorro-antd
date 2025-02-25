@@ -1,9 +1,12 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Component, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { NzDescriptionsComponent } from './descriptions.component';
 import { NzDescriptionsModule } from './descriptions.module';
@@ -13,20 +16,15 @@ declare const viewport: any;
 
 describe('nz descriptions', () => {
   describe('with different spans', () => {
-    let testBed: ComponentBed<NzTestDescriptionsComponent>;
     let testComponent: NzTestDescriptionsComponent;
     let componentElement: HTMLElement;
     let fixture: ComponentFixture<NzTestDescriptionsComponent>;
     let rows;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestDescriptionsComponent, {
-        imports: [NzDescriptionsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestDescriptionsComponent);
       testComponent = fixture.componentInstance;
       componentElement = fixture.debugElement.nativeElement;
-
       fixture.detectChanges();
     });
 
@@ -76,7 +74,7 @@ describe('nz descriptions', () => {
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       const tds = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(1);
-      expect((tds[1] as HTMLTableDataCellElement).colSpan).toBe(4);
+      expect((tds[1] as HTMLTableCellElement).colSpan).toBe(4);
       spyOnWarn.calls.reset();
     });
 
@@ -126,17 +124,12 @@ describe('nz descriptions', () => {
   });
 
   describe('RTL', () => {
-    let testBed: ComponentBed<NzTestDescriptionsRtlComponent>;
     let fixture: ComponentFixture<NzTestDescriptionsRtlComponent>;
     let componentElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestDescriptionsRtlComponent, {
-        declarations: [NzTestDescriptionsComponent],
-        imports: [NzDescriptionsModule, BidiModule]
-      });
-      componentElement = testBed.debugElement.query(By.directive(NzDescriptionsComponent)).nativeElement;
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestDescriptionsRtlComponent);
+      componentElement = fixture.debugElement.query(By.directive(NzDescriptionsComponent)).nativeElement;
       fixture.detectChanges();
     });
 
@@ -150,27 +143,26 @@ describe('nz descriptions', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
+  imports: [NzDescriptionsModule],
   selector: 'nz-test-descriptions',
   template: `
     <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
-      <nz-descriptions-item
-        *ngFor="let col of colspanArray; let i = index"
-        [nzTitle]="itemTitle + i"
-        [nzSpan]="col"
-      ></nz-descriptions-item>
+      @for (col of colspanArray; track i; let i = $index) {
+        <nz-descriptions-item [nzTitle]="itemTitle + i" [nzSpan]="col" />
+      }
     </nz-descriptions>
   `
 })
 export class NzTestDescriptionsComponent {
   bordered = false;
   colspanArray: number[] = [1, 1, 1];
-  column: number | { [key: string]: number } = 3;
+  column: NzDescriptionsComponent['nzColumn'] = 3;
   title = 'Title';
   itemTitle = 'Item Title ';
 }
 
 @Component({
+  imports: [BidiModule, NzTestDescriptionsComponent],
   template: `
     <div [dir]="direction">
       <nz-test-descriptions></nz-test-descriptions>
@@ -179,5 +171,5 @@ export class NzTestDescriptionsComponent {
 })
 export class NzTestDescriptionsRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

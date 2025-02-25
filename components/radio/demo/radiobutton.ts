@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-radio-radiobutton',
+  imports: [FormsModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="radioValue">
       <label nz-radio-button nzValue="A">Hangzhou</label>

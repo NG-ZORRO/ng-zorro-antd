@@ -1,15 +1,21 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 import {
   NzSkeletonAvatarShape,
-  NzSkeletonAvatarSize,
   NzSkeletonButtonShape,
-  NzSkeletonButtonSize,
-  NzSkeletonInputSize
+  NzSkeletonInputSize,
+  NzSkeletonModule
 } from 'ng-zorro-antd/skeleton';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-skeleton-element',
+  imports: [FormsModule, NzDividerModule, NzGridModule, NzSkeletonModule, NzRadioModule, NzSpaceModule, NzSwitchModule],
   template: `
     <nz-space nzSize="middle">
       <nz-skeleton-element
@@ -59,6 +65,7 @@ import {
         Button Shape:
         <nz-radio-group [(ngModel)]="buttonShape">
           <label nz-radio-button nzValue="default">Default</label>
+          <label nz-radio-button nzValue="square">Square</label>
           <label nz-radio-button nzValue="circle">Circle</label>
           <label nz-radio-button nzValue="round">Round</label>
         </nz-radio-group>
@@ -74,13 +81,6 @@ import {
   `
 })
 export class NzDemoSkeletonElementComponent {
-  buttonActive = false;
-  avatarActive = false;
-  inputActive = false;
-  imageActive = false;
-  buttonSize: NzSkeletonButtonSize = 'default';
-  avatarSize: NzSkeletonAvatarSize = 'default';
-  inputSize: NzSkeletonInputSize = 'default';
   elementActive = false;
   buttonShape: NzSkeletonButtonShape = 'default';
   avatarShape: NzSkeletonAvatarShape = 'circle';

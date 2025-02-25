@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-validate-template',
+  imports: [FormsModule, NzFormModule, NzInputModule, NzInputModule],
   template: `
     <form nz-form>
       <nz-form-item>
@@ -46,9 +51,15 @@ import { Component } from '@angular/core';
             required
           />
           <ng-template #combineTpl let-control>
-            <ng-container *ngIf="control.hasError('maxlength')">MaxLength is 12</ng-container>
-            <ng-container *ngIf="control.hasError('minlength')">MinLength is 6</ng-container>
-            <ng-container *ngIf="control.hasError('required')">Input is required</ng-container>
+            @if (control.errors?.['maxlength']) {
+              MaxLength is 12
+            }
+            @if (control.errors?.['minlength']) {
+              MinLength is 6
+            }
+            @if (control.errors?.['required']) {
+              Input is required
+            }
           </ng-template>
         </nz-form-control>
       </nz-form-item>

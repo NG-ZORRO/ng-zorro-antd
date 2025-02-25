@@ -5,13 +5,17 @@
 
 /* eslint-disable @angular-eslint/component-selector */
 
-import { ChangeDetectionStrategy, Component, OnDestroy, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnDestroy, TemplateRef, ViewEncapsulation, inject } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 import { NzTableStyleService } from '../table-style.service';
+import { NzTableFixedRowComponent } from './table-fixed-row.component';
+import { NzTrMeasureComponent } from './tr-measure.component';
 
 @Component({
   selector: 'tbody',
@@ -19,22 +23,26 @@ import { NzTableStyleService } from '../table-style.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-container *ngIf="listOfMeasureColumn$ | async as listOfMeasureColumn">
-      <tr
-        nz-table-measure-row
-        *ngIf="isInsideTable && listOfMeasureColumn.length"
-        [listOfMeasureColumn]="listOfMeasureColumn"
-        (listOfAutoWidth)="onListOfAutoWidthChange($event)"
-      ></tr>
-    </ng-container>
+    @if (listOfMeasureColumn$ | async; as listOfMeasureColumn) {
+      @if (isInsideTable && listOfMeasureColumn.length) {
+        <tr
+          nz-table-measure-row
+          [listOfMeasureColumn]="listOfMeasureColumn"
+          (listOfAutoWidth)="onListOfAutoWidthChange($event)"
+        ></tr>
+      }
+    }
     <ng-content></ng-content>
-    <tr class="ant-table-placeholder" nz-table-fixed-row *ngIf="showEmpty$ | async">
-      <nz-embed-empty nzComponentName="table" [specificContent]="(noResult$ | async)!"></nz-embed-empty>
-    </tr>
+    @if (showEmpty$ | async) {
+      <tr class="ant-table-placeholder" nz-table-fixed-row>
+        <nz-embed-empty nzComponentName="table" [specificContent]="(noResult$ | async)!"></nz-embed-empty>
+      </tr>
+    }
   `,
   host: {
     '[class.ant-table-tbody]': 'isInsideTable'
-  }
+  },
+  imports: [AsyncPipe, NzTrMeasureComponent, NzTableFixedRowComponent, NzEmptyModule]
 })
 export class NzTbodyComponent implements OnDestroy {
   isInsideTable = false;
@@ -42,8 +50,9 @@ export class NzTbodyComponent implements OnDestroy {
   noResult$ = new BehaviorSubject<string | TemplateRef<NzSafeAny> | undefined>(undefined);
   listOfMeasureColumn$ = new BehaviorSubject<readonly string[]>([]);
   private destroy$ = new Subject<void>();
+  private nzTableStyleService = inject(NzTableStyleService, { optional: true });
 
-  constructor(@Optional() private nzTableStyleService: NzTableStyleService) {
+  constructor() {
     this.isInsideTable = !!this.nzTableStyleService;
     if (this.nzTableStyleService) {
       const { showEmpty$, noResult$, listOfMeasureColumn$ } = this.nzTableStyleService;
@@ -54,7 +63,7 @@ export class NzTbodyComponent implements OnDestroy {
   }
 
   onListOfAutoWidthChange(listOfAutoWidth: number[]): void {
-    this.nzTableStyleService.setListOfAutoWidth(listOfAutoWidth);
+    this.nzTableStyleService?.setListOfAutoWidth(listOfAutoWidth);
   }
 
   ngOnDestroy(): void {

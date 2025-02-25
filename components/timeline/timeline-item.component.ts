@@ -15,6 +15,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import { TimelineService } from './timeline.service';
 import { NzTimelineItemColor, NzTimelinePosition, TimelineTimeDefaultColors } from './typings';
 
@@ -36,9 +38,11 @@ function isDefaultColor(color?: string): boolean {
         [class.ant-timeline-item-left]="(nzPosition || position) === 'left'"
         [class.ant-timeline-item-last]="isLast"
       >
-        <div *ngIf="nzLabel" class="ant-timeline-item-label">
-          <ng-container *nzStringTemplateOutlet="nzLabel">{{ nzLabel }}</ng-container>
-        </div>
+        @if (nzLabel) {
+          <div class="ant-timeline-item-label">
+            <ng-container *nzStringTemplateOutlet="nzLabel">{{ nzLabel }}</ng-container>
+          </div>
+        }
         <div class="ant-timeline-item-tail"></div>
         <div
           class="ant-timeline-item-head"
@@ -56,7 +60,8 @@ function isDefaultColor(color?: string): boolean {
         </div>
       </li>
     </ng-template>
-  `
+  `,
+  imports: [NzOutletModule]
 })
 export class NzTimelineItemComponent implements OnChanges {
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;
@@ -70,7 +75,10 @@ export class NzTimelineItemComponent implements OnChanges {
   borderColor: string | null = null;
   position?: NzTimelinePosition;
 
-  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private timelineService: TimelineService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.timelineService.markForCheck();

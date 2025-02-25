@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzMarks } from 'ng-zorro-antd/slider';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-grid-playground',
+  imports: [FormsModule, NzGridModule, NzSliderModule],
   template: `
     <div class="slider-container">
       <span>Horizontal Gutter (px):</span>
@@ -29,12 +32,17 @@ import { NzMarks } from 'ng-zorro-antd/slider';
 
     <div class="gutter-example">
       <div nz-row [nzGutter]="[hGutter, vGutter]">
-        <div nz-col class="gutter-row" [nzSpan]="24 / count" *ngFor="let i of array">
-          <div class="grid-config">Column</div>
-        </div>
-        <div nz-col class="gutter-row" [nzSpan]="24 / count" *ngFor="let i of array">
-          <div class="grid-config">Column</div>
-        </div>
+        @for (i of array; track $index) {
+          <div nz-col class="gutter-row" [nzSpan]="24 / count">
+            <div class="grid-config">Column</div>
+          </div>
+        }
+
+        @for (i of array; track $index) {
+          <div nz-col class="gutter-row" [nzSpan]="24 / count">
+            <div class="grid-config">Column</div>
+          </div>
+        }
       </div>
     </div>
   `,

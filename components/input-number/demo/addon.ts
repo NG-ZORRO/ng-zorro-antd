@@ -1,41 +1,50 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-input-number-addon',
+  imports: [FormsModule, NzSelectModule, NzCascaderModule, NzInputNumberModule, NzIconModule],
   template: `
-    <nz-space nzDirection="vertical" style="width: 100%">
-      <nz-input-number-group *nzSpaceItem nzAddOnBefore="+" nzAddOnAfter="$">
-        <nz-input-number [(ngModel)]="demoValue" [nzStep]="1"></nz-input-number>
-      </nz-input-number-group>
-      <nz-input-number-group *nzSpaceItem [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate">
-        <nz-input-number [(ngModel)]="demoValue" [nzStep]="1"></nz-input-number>
-      </nz-input-number-group>
-      <ng-template #addOnBeforeTemplate>
-        <nz-select [ngModel]="'add'" style="width: 60px">
-          <nz-option nzLabel="+" nzValue="add"></nz-option>
-          <nz-option nzLabel="-" nzValue="minus"></nz-option>
-        </nz-select>
-      </ng-template>
-      <ng-template #addOnAfterTemplate>
-        <nz-select [ngModel]="'USD'" style="width: 60px">
-          <nz-option nzValue="USD" nzLabel="$"></nz-option>
-          <nz-option nzValue="EUR" nzLabel="€"></nz-option>
-          <nz-option nzValue="GBP" nzLabel="£"></nz-option>
-          <nz-option nzValue="CNY" nzLabel="¥"></nz-option>
-        </nz-select>
-      </ng-template>
-      <nz-input-number-group *nzSpaceItem nzAddOnAfterIcon="setting">
-        <nz-input-number [(ngModel)]="demoValue" [nzStep]="1"></nz-input-number>
-      </nz-input-number-group>
-      <nz-input-number-group *nzSpaceItem [nzAddOnBefore]="addOnBeforeCascaderTemplate">
-        <nz-input-number [(ngModel)]="demoValue" [nzStep]="1"></nz-input-number>
-      </nz-input-number-group>
-      <ng-template #addOnBeforeCascaderTemplate>
-        <nz-cascader [nzOptions]="[]" nzPlaceHolder="cascader" style="width: 150px"></nz-cascader>
-      </ng-template>
-    </nz-space>
-  `
+    <nz-input-number [(ngModel)]="value">
+      <span nzInputAddonBefore>+</span>
+      <span nzInputAddonAfter>$</span>
+    </nz-input-number>
+
+    <nz-input-number [(ngModel)]="value">
+      <nz-select nzInputAddonBefore [ngModel]="'add'" [style.width.px]="60">
+        <nz-option nzLabel="+" nzValue="add"></nz-option>
+        <nz-option nzLabel="-" nzValue="minus"></nz-option>
+      </nz-select>
+      <nz-select nzInputAddonAfter [ngModel]="'USD'" [style.width.px]="60">
+        <nz-option nzValue="USD" nzLabel="$"></nz-option>
+        <nz-option nzValue="EUR" nzLabel="€"></nz-option>
+        <nz-option nzValue="GBP" nzLabel="£"></nz-option>
+        <nz-option nzValue="CNY" nzLabel="¥"></nz-option>
+      </nz-select>
+    </nz-input-number>
+
+    <nz-input-number [(ngModel)]="value">
+      <nz-icon nzInputAddonAfter nzType="setting" />
+    </nz-input-number>
+
+    <nz-input-number [(ngModel)]="value">
+      <nz-cascader nzInputAddonBefore [nzOptions]="[]" nzPlaceHolder="cascader" [style.width.px]="150" />
+    </nz-input-number>
+  `,
+  styles: [
+    `
+      nz-input-number {
+        display: block;
+        margin-bottom: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoInputNumberAddonComponent {
-  demoValue = 100;
+  value = 100;
 }

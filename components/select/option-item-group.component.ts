@@ -5,6 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -14,10 +15,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-select-item ant-select-item-group'
-  }
+  },
+  imports: [NzOutletModule]
 })
 export class NzOptionItemGroupComponent {
   @Input() nzLabel: string | number | TemplateRef<NzSafeAny> | null = null;
-
-  constructor() {}
 }

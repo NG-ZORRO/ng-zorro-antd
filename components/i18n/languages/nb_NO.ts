@@ -8,6 +8,7 @@ export default {
   Pagination: {
     items_per_page: '/ side',
     jump_to: 'Gå til side',
+    jump_to_confirm: 'bekreft',
     page: 'Side',
     prev_page: 'Forrige side',
     next_page: 'Neste side',
@@ -26,6 +27,7 @@ export default {
       weekPlaceholder: 'Velg uke',
       rangePlaceholder: ['Startdato', 'Sluttdato'],
       rangeYearPlaceholder: ['Startår', 'Sluttår'],
+      rangeQuarterPlaceholder: ['Startkvartal', 'Sluttkvartal'],
       rangeMonthPlaceholder: ['Startmåned', 'Sluttmåned'],
       rangeWeekPlaceholder: ['Start uke', 'Sluttuke'],
       locale: 'nb_NO',
@@ -117,6 +119,7 @@ export default {
     filterConfirm: 'OK',
     filterReset: 'Nullstill',
     filterEmptyText: 'Ingen filtre',
+    emptyText: 'Ingen data',
     selectAll: 'Velg alle',
     selectInvert: 'Inverter gjeldende side',
     selectionAll: 'Velg all data',
@@ -125,7 +128,10 @@ export default {
     collapse: 'Skjul rad',
     triggerDesc: 'Sorter data i synkende rekkefølge',
     triggerAsc: 'Sorterer data i stigende rekkefølge',
-    cancelSort: 'Klikk for å avbryte sorteringen'
+    cancelSort: 'Klikk for å avbryte sorteringen',
+    filterCheckall: 'Velg alle elementer',
+    filterSearchPlaceholder: 'Søk i filtre',
+    selectNone: 'Tøm alle data'
   },
   Modal: {
     okText: 'OK',
@@ -169,5 +175,22 @@ export default {
   },
   PageHeader: {
     back: 'Tilbake'
+  },
+  Image: {
+    preview: 'Forhåndsvis'
+  },
+  CronExpression: {
+    cronError: 'Ugyldig cron-uttrykk',
+    second: 'sekund',
+    minute: 'minutt',
+    hour: 'time',
+    day: 'dag',
+    month: 'måned',
+    week: 'uke'
+  },
+  QRCode: {
+    expired: 'QR-koden er utløpt',
+    refresh: 'Oppdater',
+    scanned: 'Skannet'
   }
 };

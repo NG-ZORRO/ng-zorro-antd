@@ -3,6 +3,7 @@ category: Components
 type: Data Entry
 title: InputNumber
 cover: https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg
+tag: 19.0.0
 ---
 
 Enter a number within certain range with the mouse or keyboard.
@@ -19,47 +20,38 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 ### nz-input-number
 
-| property | description | type | default |
-| -------- | ----------- | ---- | ------- |
-| `[ngModel]` | current value, double binding | `number \| string`  \|  `string` | - |
-| `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
-| `[nzDisabled]` | disable the input | `boolean` | `false` |
-| `[nzReadOnly]` | If readonly the input | `boolean` | `false` |
-| `[nzMax]` | max value | `number` | `Infinity` |
-| `[nzMin]` | min value | `number` | `-Infinity` |
-| `[nzFormatter]` | Specifies the format of the value presented | `(value: number \| string) => string \| number` | - |
-| `[nzParser]` | Specifies the value extracted from nzFormatter | `(value: string) => string \| number` | `(value: string) => value.trim().replace(/。/g, '.').replace(/[^\w\.-]+/g, '')` |
-| `[nzPrecision]` | precision of input value | `number` | - |
-| `[nzPrecisionMode]` | The method for calculating the precision of input value | `'cut' \| 'toFixed' \| ((value: number \| string, precision?: number) => number)` | `'toFixed'` |
-| `[nzSize]` | width of input box | `'large' \| 'small' \| 'default'` | `'default'` |
-| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
-| `[nzStep]` | The number to which the current value is increased or decreased. It can be an integer or decimal. | `number \| string` | `1` |
-| `[nzInputMode]` | enumerated attribute that hints at the type of data that might be entered by the user, [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode) | `string` | `decimal` |
-| `[nzPlaceHolder]` | Placeholder of select | `string` | - |
-| `[nzId]` | input id attribute inside the component| `string` | - |
-| `(ngModelChange)` | The callback triggered when the value is changed | `EventEmitter<number>` | - |
-| `(nzFocus)` | focus callback | `EventEmitter<void>` | - |
-| `(nzBlur)` | blur callback | `EventEmitter<void>` | - |
-
-### nz-input-number-group
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzAddOnAfter]` | The label text displayed after (on the right side of) the input number field, can work with `nzAddOnBefore` | `string \| TemplateRef<void>` | - |
-| `[nzAddOnBefore]` | The label text displayed before (on the left side of) the input number field, can work with `nzAddOnAfter`   | `string \| TemplateRef<void>` | - |
-| `[nzPrefix]` | The prefix icon for the Input Number, can work with `nzSuffix` | `string \| TemplateRef<void>` | - |
-| `[nzSuffix]` | The suffix icon for the Input Number, can work with `nzPrefix` | `string \| TemplateRef<void>` | - |
-| `[nzPrefixIcon]` | The prefix icon for the Input Number | `string` | - |
-| `[nzSuffixIcon]` | The suffix icon for the Input Number | `string` | - |
-| `[nzCompact]` | Whether use compact style | `boolean` | `false` |
-| `[nzSize]` | The size of `nz-input-number-group` specifies the size of the included `nz-input-number` fields | `'large' \| 'small' \| 'default'` | `'default'` |
-| `[nzStatus]` | Set validation status | `'error' \| 'warning'` | - |
+| property          | description                                                                     | type                                                                    | default                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `[ngModel]`       | current value, two way binding                                                  | `number`                                                                | -                                                                                                                                   |
+| `[nzId]`          | ID of the input box                                                             | `string`                                                                | -                                                                                                                                   |
+| `[nzPlaceHolder]` | placeholder                                                                     | `string`                                                                | -                                                                                                                                   |
+| `[nzAutoFocus]`   | auto focus                                                                      | `boolean`                                                               | `false`                                                                                                                             |
+| `[nzBordered]`    | whether to have border                                                          | `boolean`                                                               | `true`                                                                                                                              |
+| `[nzControls]`    | whether to show up and down buttons                                             | `boolean`                                                               | `true`                                                                                                                              |
+| `[nzDisabled]`    | whether to disable                                                              | `boolean`                                                               | `false`                                                                                                                             |
+| `[nzFormatter]`   | specify the format of the displayed value                                       | `(value: number) => string`                                             | -                                                                                                                                   |
+| `[nzMax]`         | maximum value                                                                   | `number`                                                                | [Number.MAX_SAFE_INTEGER](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER) |
+| `[nzMin]`         | minimum value                                                                   | `number`                                                                | [Number.MIN_SAFE_INTEGER](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/MIN_SAFE_INTEGER) |
+| `[nzParser]`      | specify how to convert back to a number from `formatter`, used with `formatter` | `(value: string) => number`                                             | -                                                                                                                                   |
+| `[nzPrecision]`   | numerical precision, the `formatter` configuration takes precedence             | `number`                                                                | -                                                                                                                                   |
+| `[nzReadOnly]`    | whether to read only                                                            | `boolean`                                                               | `false`                                                                                                                             |
+| `[nzStatus]`      | status, optional `error` `warning`                                              | `string`                                                                | -                                                                                                                                   |
+| `[nzSize]`        | input box size, optional `large` `default` `small`                              | `string`                                                                | `default`                                                                                                                           |
+| `[nzStep]`        | step of each change, can be a decimal                                           | `number`                                                                | `1`                                                                                                                                 |
+| `(nzOnStep)`      | callback when clicking the up and down arrows                                   | `EventEmitter<{ value: number, offset: number, type: 'up' \| 'down' }>` | -                                                                                                                                   |
+| `(ngModelChange)` | callback function when the value changes                                        | `EventEmitter<number>`                                                  | -                                                                                                                                   |
 
 #### Methods
 
 You can get instance by `ViewChild`
 
-| Name | Description |
-| ---- | ----------- |
-| focus() | get focus |
-| blur() | remove focus |
+| Name    | Description  |
+| ------- | ------------ |
+| focus() | get focus    |
+| blur()  | remove focus |
+
+## FAQ
+
+### Why can the `value` exceed the `min` and `max` range in controlled mode?
+
+In controlled mode, developers may store related data by themselves. If the component constrains the data back to the range, it will cause the displayed data to be inconsistent with the actual stored data. This leads to potential data problems in some scenarios such as form fields.

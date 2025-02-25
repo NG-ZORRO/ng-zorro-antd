@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const provinces = [
   {
@@ -52,6 +53,7 @@ const scenicspots: { [key: string]: Array<{ value: string; label: string; isLeaf
 
 @Component({
   selector: 'nz-demo-cascader-lazy',
+  imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader [(ngModel)]="values" [nzLoadData]="loadData" (ngModelChange)="onChanges($event)"></nz-cascader>
   `

@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AfterContentInit, ContentChildren, Directive, OnDestroy, Optional, QueryList } from '@angular/core';
-import { combineLatest, merge, Observable, ReplaySubject, Subject } from 'rxjs';
+import { AfterContentInit, ContentChildren, Directive, OnDestroy, QueryList, inject } from '@angular/core';
+import { Observable, ReplaySubject, Subject, combineLatest, merge } from 'rxjs';
 import { map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzCellFixedDirective } from '../cell/cell-fixed.directive';
@@ -46,11 +46,9 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
     ),
     takeUntil(this.destroy$)
   );
-  isInsideTable = false;
 
-  constructor(@Optional() private nzTableStyleService: NzTableStyleService) {
-    this.isInsideTable = !!nzTableStyleService;
-  }
+  private nzTableStyleService = inject(NzTableStyleService, { optional: true });
+  isInsideTable = !!this.nzTableStyleService;
 
   ngAfterContentInit(): void {
     if (this.nzTableStyleService) {

@@ -39,6 +39,7 @@ export default {
       year: 'Année',
       timeSelect: "Sélectionner l'heure",
       dateSelect: 'Sélectionner la date',
+      weekSelect: 'Choisissez une semaine',
       monthSelect: 'Choisissez un mois',
       yearSelect: 'Choisissez une année',
       decadeSelect: 'Choisissez une décennie',
@@ -173,5 +174,19 @@ export default {
   },
   Image: {
     preview: 'Aperçu'
+  },
+  CronExpression: {
+    cronError: 'Expression CRON invalide',
+    second: 'seconde',
+    minute: 'minute',
+    hour: 'heure',
+    day: 'jour',
+    month: 'mois',
+    week: 'semaine'
+  },
+  QRCode: {
+    expired: 'QR code expiré',
+    refresh: 'Rafraîchir',
+    scanned: 'Scanné'
   }
 };

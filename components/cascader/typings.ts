@@ -3,14 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { Observable } from 'rxjs';
+
+import { NzTreeNode } from 'ng-zorro-antd/core/tree';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+
+import { NzCascaderTreeService } from './cascader-tree.service';
 
 export type NzCascaderExpandTrigger = 'click' | 'hover';
 export type NzCascaderTriggerType = 'click' | 'hover';
-export type NzCascaderSize = 'small' | 'large' | 'default';
+export type NzCascaderSize = NzSizeLDSType;
 
 export type NzCascaderFilter = (searchValue: string, path: NzCascaderOption[]) => boolean;
 export type NzCascaderSorter = (a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string) => number;
+export type NzCascaderPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
 export interface NzCascaderOption {
   value?: NzSafeAny;
@@ -19,14 +25,10 @@ export interface NzCascaderOption {
   disabled?: boolean;
   loading?: boolean;
   isLeaf?: boolean;
-  parent?: NzCascaderOption;
   children?: NzCascaderOption[];
+  disableCheckbox?: boolean;
 
   [key: string]: NzSafeAny;
-}
-
-export interface NzCascaderSearchOption extends NzCascaderOption {
-  path: NzCascaderOption[];
 }
 
 export interface NzShowSearchOptions {
@@ -48,8 +50,15 @@ export interface NzCascaderComponentAsSource {
   nzLabelProperty: string;
   nzValueProperty: string;
   nzChangeOnSelect: boolean;
+  selectedNodes: NzTreeNode[];
+
+  get treeService(): NzCascaderTreeService;
+
+  coerceTreeNodes(value: NzSafeAny[]): NzTreeNode[];
+
+  updateSelectedNodes(): void;
 
   nzChangeOn?(option: NzCascaderOption, level: number): boolean;
 
-  nzLoadData?(node: NzCascaderOption, index: number): PromiseLike<NzSafeAny>;
+  nzLoadData?(node: NzCascaderOption, index: number): PromiseLike<NzSafeAny> | Observable<NzSafeAny>;
 }

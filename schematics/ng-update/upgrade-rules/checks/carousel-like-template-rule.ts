@@ -12,13 +12,13 @@ export class CarouselTemplateRule extends Migration<UpgradeData> {
   visitTemplate(template: ResolvedResource): void {
 
     findInputsOnElementWithTag(template.content, 'nzVertical', ['nz-carousel'])
-    .forEach(offset => {
-      this.failures.push({
-        filePath: template.filePath,
-        position: template.getCharacterAndLineOfPosition(offset),
-        message: `Found deprecated "[nzVertical]" input. Use "[nzDotPosition]" to instead please.`
+      .forEach(offset => {
+        this.failures.push({
+          filePath: template.filePath,
+          position: template.getCharacterAndLineOfPosition(offset),
+          message: `Found deprecated "[nzVertical]" input. Use "[nzDotPosition]" to instead please.`
+        });
       });
-    });
 
   }
 }

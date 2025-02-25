@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+
 @Component({
   selector: 'nz-demo-typography-ellipsis',
+  imports: [NzTypographyModule],
   template: `
     <p
       nz-typography

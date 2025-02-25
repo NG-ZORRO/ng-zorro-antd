@@ -1,11 +1,16 @@
-/* declarations: NzModalCustomComponent */
+import { Component, inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
-import { Component, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzModalRef, NzModalService, NZ_MODAL_DATA, NzModalModule } from 'ng-zorro-antd/modal';
 
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+interface IModalData {
+  favoriteLibrary: string;
+  favoriteFramework: string;
+}
 
 @Component({
   selector: 'nz-demo-modal-service',
+  imports: [NzButtonModule, NzModalModule],
   template: `
     <button nz-button nzType="primary" (click)="createModal()">
       <span>String</span>
@@ -20,7 +25,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
     <ng-template #tplContent let-params>
       <p>some contents...</p>
       <p>some contents...</p>
-      <p>{{ params.value }}</p>
+      <p>{{ params?.value }}</p>
     </ng-template>
     <ng-template #tplFooter let-ref="modalRef">
       <button nz-button (click)="ref.destroy()">Destroy</button>
@@ -55,7 +60,10 @@ export class NzDemoModalServiceComponent {
   tplModalButtonLoading = false;
   disabled = false;
 
-  constructor(private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private modal: NzModalService,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 
   createModal(): void {
     this.modal.create({
@@ -73,9 +81,6 @@ export class NzDemoModalServiceComponent {
       nzFooter: tplFooter,
       nzMaskClosable: false,
       nzClosable: false,
-      nzComponentParams: {
-        value: 'Template Context'
-      },
       nzOnOk: () => console.log('Click ok')
     });
   }
@@ -89,13 +94,13 @@ export class NzDemoModalServiceComponent {
   }
 
   createComponentModal(): void {
-    const modal = this.modal.create({
+    const modal = this.modal.create<NzModalCustomComponent, IModalData>({
       nzTitle: 'Modal Title',
       nzContent: NzModalCustomComponent,
       nzViewContainerRef: this.viewContainerRef,
-      nzComponentParams: {
-        title: 'title in component',
-        subtitle: 'component sub title，will be changed after 2 sec'
+      nzData: {
+        favoriteLibrary: 'angular',
+        favoriteFramework: 'angular'
       },
       nzOnOk: () => new Promise(resolve => setTimeout(resolve, 1000)),
       nzFooter: [
@@ -178,10 +183,15 @@ export class NzDemoModalServiceComponent {
 
 @Component({
   selector: 'nz-modal-custom-component',
+  imports: [NzButtonModule],
   template: `
     <div>
       <h2>{{ title }}</h2>
       <h4>{{ subtitle }}</h4>
+      <p
+        >My favorite framework is {{ nzModalData.favoriteFramework }} and my favorite library is
+        {{ nzModalData.favoriteLibrary }}
+      </p>
       <p>
         <span>Get Modal instance in component</span>
         <button nz-button [nzType]="'primary'" (click)="destroyModal()">destroy modal in the component</button>
@@ -193,9 +203,10 @@ export class NzModalCustomComponent {
   @Input() title?: string;
   @Input() subtitle?: string;
 
-  constructor(private modal: NzModalRef) {}
+  readonly #modal = inject(NzModalRef);
+  readonly nzModalData: IModalData = inject(NZ_MODAL_DATA);
 
   destroyModal(): void {
-    this.modal.destroy({ data: 'this the result data' });
+    this.#modal.destroy({ data: 'this the result data' });
   }
 }

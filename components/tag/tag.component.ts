@@ -5,6 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -14,7 +15,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -31,8 +31,7 @@ import {
   presetColors,
   statusColors
 } from 'ng-zorro-antd/core/color';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-tag',
@@ -40,14 +39,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   preserveWhitespaces: false,
   template: `
     <ng-content></ng-content>
-    <span
-      nz-icon
-      nzType="close"
-      class="ant-tag-close-icon"
-      *ngIf="nzMode === 'closeable'"
-      tabindex="-1"
-      (click)="closeTag($event)"
-    ></span>
+    @if (nzMode === 'closeable') {
+      <nz-icon nzType="close" class="ant-tag-close-icon" tabindex="-1" (click)="closeTag($event)" />
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -58,15 +52,17 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-tag-checkable]': `nzMode === 'checkable'`,
     '[class.ant-tag-checkable-checked]': `nzChecked`,
     '[class.ant-tag-rtl]': `dir === 'rtl'`,
+    '[class.ant-tag-borderless]': `!nzBordered`,
     '(click)': 'updateCheckedStatus()'
-  }
+  },
+  imports: [NzIconModule]
 })
 export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
-  static ngAcceptInputType_nzChecked: BooleanInput;
   isPresetColor = false;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
   @Input() nzColor?: string | NzStatusColor | NzPresetColor;
-  @Input() @InputBoolean() nzChecked = false;
+  @Input({ transform: booleanAttribute }) nzChecked = false;
+  @Input({ transform: booleanAttribute }) nzBordered = true;
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   dir: Direction = 'ltr';
@@ -76,7 +72,7 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   updateCheckedStatus(): void {

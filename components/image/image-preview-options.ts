@@ -13,6 +13,9 @@ export class NzImagePreviewOptions {
   nzZIndex?: number;
   nzZoom?: number;
   nzRotate?: number;
+  nzFlipHorizontally?: boolean;
+  nzFlipVertically?: boolean;
+  nzScaleStep?: number;
   nzDirection?: Direction;
 }
 

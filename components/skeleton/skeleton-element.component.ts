@@ -3,9 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  booleanAttribute
+} from '@angular/core';
 
 import {
   NzSkeletonAvatarShape,
@@ -24,11 +30,9 @@ import {
   }
 })
 export class NzSkeletonElementDirective {
-  @Input() nzActive: boolean = false;
+  @Input({ transform: booleanAttribute }) nzActive: boolean = false;
   @Input() nzType!: 'button' | 'input' | 'avatar' | 'image';
-  @Input() @InputBoolean() nzBlock: boolean = false;
-
-  constructor() {}
+  @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
 }
 
 @Component({
@@ -37,6 +41,7 @@ export class NzSkeletonElementDirective {
   template: `
     <span
       class="ant-skeleton-button"
+      [class.ant-skeleton-button-square]="nzShape === 'square'"
       [class.ant-skeleton-button-round]="nzShape === 'round'"
       [class.ant-skeleton-button-circle]="nzShape === 'circle'"
       [class.ant-skeleton-button-lg]="nzSize === 'large'"
@@ -59,7 +64,7 @@ export class NzSkeletonElementButtonComponent {
       [class.ant-skeleton-avatar-circle]="nzShape === 'circle'"
       [class.ant-skeleton-avatar-lg]="nzSize === 'large'"
       [class.ant-skeleton-avatar-sm]="nzSize === 'small'"
-      [ngStyle]="styleMap"
+      [style]="styleMap"
     ></span>
   `
 })

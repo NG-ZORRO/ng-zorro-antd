@@ -1,21 +1,20 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
-import {
-  AbstractControl,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  FormsModule,
-  ReactiveFormsModule
-} from '@angular/forms';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzSliderComponent } from './slider.component';
 import { NzSliderModule } from './slider.module';
@@ -33,16 +32,18 @@ describe('nz-slider', () => {
     sliderNativeElement = sliderInstance.slider.nativeElement;
   }
 
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+    });
+  });
+
   describe('basic', () => {
-    let testBed: ComponentBed<NzTestSliderComponent>;
     let fixture: ComponentFixture<NzTestSliderComponent>;
     let trackFillElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestSliderComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestSliderComponent);
       fixture.detectChanges();
 
       getReferenceFromFixture(fixture);
@@ -126,14 +127,10 @@ describe('nz-slider', () => {
   });
 
   describe('disabled', () => {
-    let testBed: ComponentBed<NzTestSliderComponent>;
     let fixture: ComponentFixture<NzTestSliderComponent>;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestSliderComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestSliderComponent);
       fixture.componentInstance.disabled = true;
       fixture.detectChanges();
 
@@ -171,17 +168,14 @@ describe('nz-slider', () => {
   });
 
   describe('show tooltip', () => {
-    let testBed: ComponentBed<SliderShowTooltipComponent>;
     let fixture: ComponentFixture<SliderShowTooltipComponent>;
     let testComponent: SliderShowTooltipComponent;
 
     beforeEach(() => {
-      testBed = createComponentBed(SliderShowTooltipComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(SliderShowTooltipComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
+
+      testComponent = fixture.componentInstance;
       sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
       sliderInstance = sliderDebugElement.injector.get<NzSliderComponent>(NzSliderComponent);
       sliderNativeElement = sliderInstance.slider.nativeElement;
@@ -227,15 +221,48 @@ describe('nz-slider', () => {
     }));
   });
 
+  describe('show template tooltip', () => {
+    let fixture: ComponentFixture<SliderShowTemplateTooltipComponent>;
+    let testComponent: SliderShowTemplateTooltipComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(SliderShowTemplateTooltipComponent);
+      fixture.detectChanges();
+
+      testComponent = fixture.componentInstance;
+      sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
+      sliderInstance = sliderDebugElement.injector.get<NzSliderComponent>(NzSliderComponent);
+      sliderNativeElement = sliderInstance.slider.nativeElement;
+    });
+
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
+    it('should preview template tooltip', fakeAsync(() => {
+      testComponent.show = 'always';
+      fixture.detectChanges();
+      tick(400);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 0');
+
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 13');
+
+      // Always show tooltip even when handle is not hovered.
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 13');
+
+      tick(400);
+    }));
+  });
+
   describe('setting value', () => {
-    let testBed: ComponentBed<SliderWithValueComponent>;
     let fixture: ComponentFixture<SliderWithValueComponent>;
 
     beforeEach(() => {
-      testBed = createComponentBed(SliderWithValueComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(SliderWithValueComponent);
       fixture.detectChanges();
 
       sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
@@ -265,15 +292,11 @@ describe('nz-slider', () => {
   });
 
   describe('marks', () => {
-    let testBed: ComponentBed<SliderWithMarksComponent>;
     let fixture: ComponentFixture<SliderWithMarksComponent>;
     let markListElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(SliderWithMarksComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(SliderWithMarksComponent);
       fixture.detectChanges();
 
       getReferenceFromFixture(fixture);
@@ -294,15 +317,11 @@ describe('nz-slider', () => {
   });
 
   describe('step', () => {
-    let testBed: ComponentBed<SliderWithStepComponent>;
     let fixture: ComponentFixture<SliderWithStepComponent>;
     let trackFillElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(SliderWithStepComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(SliderWithStepComponent);
       fixture.detectChanges();
 
       sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
@@ -370,15 +389,11 @@ describe('nz-slider', () => {
   });
 
   describe('min and max', () => {
-    let testBed: ComponentBed<SliderWithMinAndMaxComponent>;
     let fixture: ComponentFixture<SliderWithMinAndMaxComponent>;
     let trackFillElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(SliderWithMinAndMaxComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(SliderWithMinAndMaxComponent);
       fixture.detectChanges();
 
       getReferenceFromFixture(fixture);
@@ -429,15 +444,11 @@ describe('nz-slider', () => {
   });
 
   describe('min and max and a value smaller than min', () => {
-    let testBed: ComponentBed<SliderWithValueSmallerThanMinComponent>;
     let fixture: ComponentFixture<SliderWithValueSmallerThanMinComponent>;
     let trackFillElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(SliderWithValueSmallerThanMinComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(SliderWithValueSmallerThanMinComponent);
       fixture.detectChanges();
 
       getReferenceFromFixture(fixture);
@@ -456,15 +467,11 @@ describe('nz-slider', () => {
   });
 
   describe('min and max and a value greater than max', () => {
-    let testBed: ComponentBed<SliderWithValueGreaterThanMaxComponent>;
     let fixture: ComponentFixture<SliderWithValueGreaterThanMaxComponent>;
     let trackFillElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(SliderWithValueGreaterThanMaxComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(SliderWithValueGreaterThanMaxComponent);
       fixture.detectChanges();
 
       getReferenceFromFixture(fixture);
@@ -488,15 +495,11 @@ describe('nz-slider', () => {
   });
 
   describe('min and max and value is zero', () => {
-    let testBed: ComponentBed<SliderWithValueZeroComponent>;
     let fixture: ComponentFixture<SliderWithValueZeroComponent>;
     let trackFillElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(SliderWithValueZeroComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(SliderWithValueZeroComponent);
       fixture.detectChanges();
 
       getReferenceFromFixture(fixture);
@@ -520,15 +523,11 @@ describe('nz-slider', () => {
   });
 
   describe('vertical', () => {
-    let testBed: ComponentBed<VerticalSliderComponent>;
     let fixture: ComponentFixture<VerticalSliderComponent>;
     let trackFillElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(VerticalSliderComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(VerticalSliderComponent);
       fixture.detectChanges();
 
       sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
@@ -541,7 +540,7 @@ describe('nz-slider', () => {
       dispatchClickEventSequence(sliderNativeElement, 0.3);
       fixture.detectChanges();
 
-      // It behaves differently in CI and local environment (windows 10, chrome).
+      // It behaves differently in CI and local environment (Windows 10, chrome).
       expect(sliderInstance.value).toBeCloseTo(71, -1);
     });
 
@@ -560,15 +559,11 @@ describe('nz-slider', () => {
   });
 
   describe('reverse', () => {
-    let testBed: ComponentBed<ReverseSliderComponent>;
     let fixture: ComponentFixture<ReverseSliderComponent>;
     let sliderDebugElements: DebugElement[];
 
     beforeEach(() => {
-      testBed = createComponentBed(ReverseSliderComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(ReverseSliderComponent);
       fixture.detectChanges();
 
       sliderDebugElements = fixture.debugElement.queryAll(By.directive(NzSliderComponent));
@@ -633,14 +628,10 @@ describe('nz-slider', () => {
   });
 
   describe('reverse and min and max', () => {
-    let testBed: ComponentBed<ReverseSliderWithMinAndMaxComponent>;
     let fixture: ComponentFixture<ReverseSliderWithMinAndMaxComponent>;
 
     beforeEach(() => {
-      testBed = createComponentBed(ReverseSliderWithMinAndMaxComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(ReverseSliderWithMinAndMaxComponent);
       fixture.detectChanges();
 
       getReferenceFromFixture(fixture);
@@ -662,19 +653,15 @@ describe('nz-slider', () => {
   });
 
   describe('mixed usage', () => {
-    let testBed: ComponentBed<MixedSliderComponent>;
     let fixture: ComponentFixture<MixedSliderComponent>;
     let trackFillElement: HTMLElement;
     let testComponent: MixedSliderComponent;
 
     beforeEach(() => {
-      testBed = createComponentBed(MixedSliderComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(MixedSliderComponent);
       fixture.detectChanges();
 
-      testComponent = fixture.debugElement.componentInstance;
+      testComponent = fixture.componentInstance;
       getReferenceFromFixture(fixture);
       trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
     });
@@ -780,80 +767,85 @@ describe('nz-slider', () => {
   });
 
   describe('slider as a custom form control', () => {
-    let testBed: ComponentBed<SliderWithFormControlComponent>;
     let fixture: ComponentFixture<SliderWithFormControlComponent>;
     let testComponent: SliderWithFormControlComponent;
     let sliderControl: AbstractControl;
 
     beforeEach(() => {
-      testBed = createComponentBed(SliderWithFormControlComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(SliderWithFormControlComponent);
       fixture.detectChanges();
 
-      testComponent = fixture.debugElement.componentInstance;
-
+      testComponent = fixture.componentInstance;
+      sliderControl = testComponent.formControl;
       getReferenceFromFixture(fixture);
-      sliderControl = testComponent.form.controls.slider;
     });
 
-    it('should have correct initial value', () => {
+    it('should have correct initial value', fakeAsync(() => {
+      fixture.detectChanges();
+      const firstElementChildSlider = sliderDebugElement.nativeElement.firstElementChild;
       expect(sliderInstance.value).toBe(42);
-    });
+      expect(firstElementChildSlider!.classList).not.toContain('ant-slider-disabled');
+    }));
 
     it('should not update the control when the value is updated', () => {
       expect(sliderControl.value).toBe(42);
 
       sliderInstance.value = 11;
       fixture.detectChanges();
-
       expect(sliderControl.value).toBe(42);
     });
 
-    it('should update the control on click', () => {
+    it('should update the control', () => {
       expect(sliderControl.value).toBe(42);
 
       dispatchClickEventSequence(sliderNativeElement, 0.76);
       fixture.detectChanges();
-
       expect(sliderControl.value).toBe(76);
-    });
-
-    it('should update the control on slide', () => {
-      expect(sliderControl.value).toBe(42);
 
       dispatchSlideEventSequence(sliderNativeElement, 0.42, 0.19);
       fixture.detectChanges();
-
       expect(sliderControl.value).toBe(19);
-    });
-
-    it('should update the value when the control is set', () => {
-      expect(sliderInstance.value).toBe(42);
 
       sliderControl.setValue(7);
       fixture.detectChanges();
-
+      expect(sliderControl.value).toBe(7);
       expect(sliderInstance.value).toBe(7);
     });
-
-    it('should update the disabled state when control is disabled', () => {
-      expect(sliderInstance.nzDisabled).toBe(false);
-
-      sliderControl.disable();
+    it('should be disable initially even if nzDisable is set to false', () => {
+      testComponent.disable();
       fixture.detectChanges();
+      const sliderElement = sliderDebugElement.nativeElement;
 
+      expect(sliderElement!.classList).toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(true);
     });
-
-    it('should update the disabled state when the control is enabled', () => {
-      sliderInstance.nzDisabled = true;
-
-      sliderControl.enable();
+    it('should disable work', () => {
+      testComponent.disabled = true;
       fixture.detectChanges();
+      const sliderElement = sliderDebugElement.nativeElement;
 
+      expect(sliderElement!.classList).toContain('ant-slider-disabled');
+      expect(sliderInstance.nzDisabled).toBe(true);
+      expect(sliderControl.value).toBe(42);
+      dispatchClickEventSequence(sliderNativeElement, 0.76);
+      fixture.detectChanges();
+      expect(sliderControl.value).toBe(42);
+
+      testComponent.enable();
+      fixture.detectChanges();
+      expect(sliderElement!.classList).not.toContain('ant-slider-disabled');
       expect(sliderInstance.nzDisabled).toBe(false);
+      dispatchClickEventSequence(sliderNativeElement, 0.76);
+      fixture.detectChanges();
+      expect(sliderControl.value).toBe(76);
+
+      testComponent.disable();
+      fixture.detectChanges();
+      expect(sliderElement!.classList).toContain('ant-slider-disabled');
+      expect(sliderInstance.nzDisabled).toBe(true);
+      dispatchSlideEventSequence(sliderNativeElement, 0.42, 0.19);
+      fixture.detectChanges();
+      expect(sliderControl.value).toBe(76);
     });
 
     it('should have the correct control state initially and after interaction', () => {
@@ -883,16 +875,12 @@ describe('nz-slider', () => {
   });
 
   describe('support keyboard event', () => {
-    let testBed: ComponentBed<NzTestSliderKeyboardComponent>;
     let fixture: ComponentFixture<NzTestSliderKeyboardComponent>;
     let testComponent: NzTestSliderKeyboardComponent;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestSliderKeyboardComponent, {
-        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
-      testComponent = testBed.component;
+      fixture = TestBed.createComponent(NzTestSliderKeyboardComponent);
+      testComponent = fixture.componentInstance;
       fixture.detectChanges();
 
       getReferenceFromFixture(fixture);
@@ -973,16 +961,12 @@ describe('nz-slider', () => {
   });
 
   describe('RTL', () => {
-    let testBed: ComponentBed<NzTestSliderRtlComponent>;
     let fixture: ComponentFixture<NzTestSliderRtlComponent>;
     let trackFillElement: HTMLElement;
     let trackHandleElement: HTMLElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzTestSliderRtlComponent, {
-        imports: [NzSliderModule, BidiModule, NoopAnimationsModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestSliderRtlComponent);
       fixture.detectChanges();
 
       getReferenceFromFixture(fixture);
@@ -1035,7 +1019,7 @@ describe('nz-slider', () => {
 });
 
 const styles = `
-  ::ng-deep .ant-slider { position: relative; width: 100px; height: 12px; }
+  ::ng-deep .ant-slider { display: block; position: relative; width: 100px; height: 12px; }
   ::ng-deep .ant-slider .ant-slider-rail { position: absolute; width: 100%; height: 4px; }
   ::ng-deep .ant-slider .ant-slider-track { position: absolute; height: 4px; }
   ::ng-deep .ant-slider .ant-slider-handle { position: absolute; margin-left: -7px; margin-top: -5px; width: 14px; height: 14px; }
@@ -1046,14 +1030,17 @@ const styles = `
 `;
 
 @Component({
-  template: ` <nz-slider [nzDisabled]="disabled"></nz-slider> `,
+  imports: [NzSliderModule],
+  template: `<nz-slider [nzDisabled]="disabled"></nz-slider>`,
   styles: [styles]
 })
 class NzTestSliderComponent {
   disabled = false;
 }
+
 @Component({
-  template: ` <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider> `,
+  imports: [NzSliderModule],
+  template: `<nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>`,
   styles: [styles]
 })
 class SliderWithMinAndMaxComponent {
@@ -1062,20 +1049,23 @@ class SliderWithMinAndMaxComponent {
 }
 
 @Component({
-  template: ` <nz-slider [ngModel]="26"></nz-slider> `,
+  imports: [FormsModule, NzSliderModule],
+  template: `<nz-slider [ngModel]="26"></nz-slider>`,
   styles: [styles]
 })
 class SliderWithValueComponent {}
 
 @Component({
-  template: ` <nz-slider [nzMarks]="marks"></nz-slider> `
+  imports: [NzSliderModule],
+  template: `<nz-slider [nzMarks]="marks"></nz-slider>`
 })
 class SliderWithMarksComponent {
-  marks: { [mark: number]: string } = { 100: '(100%)', 0: '(0%)' };
+  marks: Record<number, string> = { 100: '(100%)', 0: '(0%)' };
 }
 
 @Component({
-  template: ` <nz-slider [nzStep]="step"></nz-slider> `,
+  imports: [NzSliderModule],
+  template: `<nz-slider [nzStep]="step"></nz-slider>`,
   styles: [styles]
 })
 class SliderWithStepComponent {
@@ -1083,30 +1073,35 @@ class SliderWithStepComponent {
 }
 
 @Component({
-  template: ` <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider> `,
+  imports: [FormsModule, NzSliderModule],
+  template: `<nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>`,
   styles: [styles]
 })
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
-  template: ` <nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5"></nz-slider> `,
+  imports: [FormsModule, NzSliderModule],
+  template: `<nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5"></nz-slider>`,
   styles: [styles]
 })
 class SliderWithValueZeroComponent {}
 
 @Component({
-  template: ` <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider> `,
+  imports: [FormsModule, NzSliderModule],
+  template: `<nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>`,
   styles: [styles]
 })
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
-  template: ` <nz-slider nzVertical></nz-slider> `,
+  imports: [NzSliderModule],
+  template: `<nz-slider nzVertical></nz-slider>`,
   styles: [styles]
 })
 class VerticalSliderComponent {}
 
 @Component({
+  imports: [NzSliderModule],
   template: `
     <nz-slider nzReverse [nzMarks]="marks"></nz-slider>
     <nz-slider nzReverse nzRange></nz-slider>
@@ -1114,16 +1109,18 @@ class VerticalSliderComponent {}
   `
 })
 class ReverseSliderComponent {
-  marks: { [mark: number]: string } = { 100: '(100%)', 0: '(0%)' };
+  marks: Record<number, string> = { 100: '(100%)', 0: '(0%)' };
 }
 
 @Component({
-  template: ` <nz-slider [nzMin]="4" [nzMax]="6" nzReverse></nz-slider> `,
+  imports: [NzSliderModule],
+  template: `<nz-slider [nzMin]="4" [nzMax]="6" nzReverse></nz-slider>`,
   styles: [styles]
 })
 class ReverseSliderWithMinAndMaxComponent {}
 
 @Component({
+  imports: [NzSliderModule],
   template: `
     <nz-slider
       [nzRange]="range"
@@ -1141,7 +1138,7 @@ class ReverseSliderWithMinAndMaxComponent {}
 class MixedSliderComponent {
   dots = false;
   included = true;
-  marks: { [mark: number]: string } = { 22: '(22%)', 36: '(36%)' };
+  marks: Record<number, string> = { 22: '(22%)', 36: '(36%)' };
   max = 100;
   min = 0;
   range = false;
@@ -1153,39 +1150,59 @@ class MixedSliderComponent {
 }
 
 @Component({
+  imports: [ReactiveFormsModule, NzSliderModule],
   template: `
-    <form [formGroup]="form">
-      <nz-slider formControlName="slider"></nz-slider>
+    <form>
+      <nz-slider [formControl]="formControl" [nzDisabled]="disabled"></nz-slider>
     </form>
   `,
   styles: [styles]
 })
-class SliderWithFormControlComponent implements OnInit {
-  form!: UntypedFormGroup;
+class SliderWithFormControlComponent {
+  formControl = new FormControl(42);
 
-  constructor(private fb: UntypedFormBuilder) {}
+  disabled = false;
 
-  ngOnInit(): void {
-    this.form = this.fb.group({
-      slider: [42]
-    });
+  disable(): void {
+    this.formControl.disable();
+  }
+
+  enable(): void {
+    this.formControl.enable();
   }
 }
 
 @Component({
-  template: ` <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider> `
+  imports: [FormsModule, NzSliderModule],
+  template: `<nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider>`
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
+
   value = 0;
 }
 
 @Component({
-  template: ` <nz-slider [nzRange]="range" [nzDisabled]="disabled"></nz-slider> `
+  imports: [NzSliderModule],
+  template: `<nz-slider [nzRange]="range" [nzDisabled]="disabled"></nz-slider>`
 })
 class NzTestSliderKeyboardComponent {
   range = false;
   disabled = false;
+}
+
+@Component({
+  imports: [FormsModule, NzSliderModule],
+  template: `
+    <nz-slider [nzTooltipVisible]="show" [ngModel]="value" [nzTipFormatter]="titleTemplate"></nz-slider>
+    <ng-template #titleTemplate let-value>
+      <span>Slider value: {{ value }}</span>
+    </ng-template>
+  `
+})
+class SliderShowTemplateTooltipComponent {
+  show: NzSliderShowTooltip = 'default';
+  value = 0;
 }
 
 /**
@@ -1195,6 +1212,7 @@ class NzTestSliderKeyboardComponent {
  * @param sliderElement The sliderDOM element from which the event will be dispatched.
  * @param percentage The percentage of the slider where the click should occur. Used to find the
  * physical location of the click.
+ * @param isRtl Whether or not in RTL direction
  */
 function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: number, isRtl: boolean = false): void {
   const trackElement = sliderElement.querySelector('.ant-slider-rail')!;
@@ -1292,6 +1310,7 @@ function dispatchMouseenterEvent(element: HTMLElement): void {
 }
 
 @Component({
+  imports: [BidiModule, NzSliderModule],
   template: `
     <div [dir]="direction">
       <nz-slider></nz-slider>
@@ -1300,5 +1319,5 @@ function dispatchMouseenterEvent(element: HTMLElement): void {
 })
 export class NzTestSliderRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

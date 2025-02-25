@@ -3,13 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Inject, Injectable, Optional } from '@angular/core';
+import { CSP_NONCE, Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { filter, mapTo } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzConfig, NzConfigKey, NZ_CONFIG } from './config';
+import { NZ_CONFIG, NzConfig, NzConfigKey } from './config';
 import { registerTheme } from './css-variables';
 
 const isDefined = function (value?: NzSafeAny): boolean {
@@ -25,13 +25,14 @@ export class NzConfigService {
   private configUpdated$ = new Subject<keyof NzConfig>();
 
   /** Global config holding property. */
-  private readonly config: NzConfig;
+  private readonly config: NzConfig = inject(NZ_CONFIG, { optional: true }) || {};
 
-  constructor(@Optional() @Inject(NZ_CONFIG) defaultConfig?: NzConfig) {
-    this.config = defaultConfig || {};
+  private readonly cspNonce: string | null = inject(CSP_NONCE, { optional: true });
+
+  constructor() {
     if (this.config.theme) {
       // If theme is set with NZ_CONFIG, register theme to make sure css variables work
-      registerTheme(this.getConfig().prefixCls?.prefixCls || defaultPrefixCls, this.config.theme);
+      registerTheme(this.getConfig().prefixCls?.prefixCls || defaultPrefixCls, this.config.theme, this.cspNonce);
     }
   }
 
@@ -46,64 +47,64 @@ export class NzConfigService {
   getConfigChangeEventForComponent(componentName: NzConfigKey): Observable<void> {
     return this.configUpdated$.pipe(
       filter(n => n === componentName),
-      mapTo(undefined)
+      map(() => undefined)
     );
   }
 
   set<T extends NzConfigKey>(componentName: T, value: NzConfig[T]): void {
     this.config[componentName] = { ...this.config[componentName], ...value };
     if (componentName === 'theme' && this.config.theme) {
-      registerTheme(this.getConfig().prefixCls?.prefixCls || defaultPrefixCls, this.config.theme);
+      registerTheme(this.getConfig().prefixCls?.prefixCls || defaultPrefixCls, this.config.theme, this.cspNonce);
     }
     this.configUpdated$.next(componentName);
   }
 }
 
-/* eslint-disable no-invalid-this */
-
 /**
- * This decorator is used to decorate properties. If a property is decorated, it would try to load default value from
- * config.
+ * This decorator is used to decorate class field. If a class field is decorated and unassigned, it would try to load default value from `NZ_CONFIG`
+ *
+ * @note that the class must have `_nzModuleName`({@link NzConfigKey}) property.
+ * @example
+ * ```ts
+ * class ExampleComponent {
+ *   private readonly _nzModuleName: NzConfigKey = 'button';
+ *   @WithConfig() size: string = 'default';
+ * }
+ * ```
  */
-// eslint-disable-next-line
-export function WithConfig<T>() {
-  return function ConfigDecorator(
-    target: NzSafeAny,
-    propName: NzSafeAny,
-    originalDescriptor?: TypedPropertyDescriptor<T>
-  ): NzSafeAny {
-    const privatePropName = `$$__zorroConfigDecorator__${propName}`;
+export function WithConfig<This, Value>() {
+  return function (_value: undefined, context: ClassFieldDecoratorContext<This, Value>) {
+    context.addInitializer(function () {
+      const nzConfigService = inject(NzConfigService);
+      const originalValue = this[context.name as keyof This];
 
-    Object.defineProperty(target, privatePropName, {
-      configurable: true,
-      writable: true,
-      enumerable: false
-    });
+      let value: Value;
+      let assignedByUser = false;
 
-    return {
-      get(): T | undefined {
-        const originalValue = originalDescriptor?.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
-        const assignedByUser = (this.propertyAssignCounter?.[propName] || 0) > 1;
-        const configValue = this.nzConfigService.getConfigForComponent(this._nzModuleName)?.[propName];
-        if (assignedByUser && isDefined(originalValue)) {
+      Object.defineProperty(this, context.name, {
+        get: () => {
+          const configValue = nzConfigService.getConfigForComponent(
+            this['_nzModuleName' as keyof This] as NzConfigKey
+          )?.[context.name as keyof NzConfig[NzConfigKey]];
+
+          if (assignedByUser) {
+            return value;
+          }
+
+          if (isDefined(configValue)) {
+            return configValue;
+          }
+
           return originalValue;
-        } else {
-          return isDefined(configValue) ? configValue : originalValue;
-        }
-      },
-      set(value?: T): void {
-        // If the value is assigned, we consider the newly assigned value as 'assigned by user'.
-        this.propertyAssignCounter = this.propertyAssignCounter || {};
-        this.propertyAssignCounter[propName] = (this.propertyAssignCounter[propName] || 0) + 1;
-
-        if (originalDescriptor?.set) {
-          originalDescriptor.set.bind(this)(value!);
-        } else {
-          this[privatePropName] = value;
-        }
-      },
-      configurable: true,
-      enumerable: true
-    };
+        },
+        set: (newValue: Value) => {
+          // if the newValue is undefined, we also consider it as not assigned by user
+          assignedByUser = isDefined(newValue);
+          value = newValue;
+        },
+        enumerable: true,
+        configurable: true
+      });
+    });
   };
 }

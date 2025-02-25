@@ -3,7 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 @Component({
   selector: 'nz-card-meta',
@@ -12,24 +15,32 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="ant-card-meta-avatar" *ngIf="nzAvatar">
-      <ng-template [ngTemplateOutlet]="nzAvatar"></ng-template>
-    </div>
-    <div class="ant-card-meta-detail" *ngIf="nzTitle || nzDescription">
-      <div class="ant-card-meta-title" *ngIf="nzTitle">
-        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+    @if (nzAvatar) {
+      <div class="ant-card-meta-avatar">
+        <ng-template [ngTemplateOutlet]="nzAvatar" />
       </div>
-      <div class="ant-card-meta-description" *ngIf="nzDescription">
-        <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+    }
+
+    @if (nzTitle || nzDescription) {
+      <div class="ant-card-meta-detail">
+        @if (nzTitle) {
+          <div class="ant-card-meta-title">
+            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+          </div>
+        }
+        @if (nzDescription) {
+          <div class="ant-card-meta-description">
+            <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+          </div>
+        }
       </div>
-    </div>
+    }
   `,
-  host: { class: 'ant-card-meta' }
+  host: { class: 'ant-card-meta' },
+  imports: [NgTemplateOutlet, NzOutletModule]
 })
 export class NzCardMetaComponent {
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() nzDescription: string | TemplateRef<void> | null = null;
   @Input() nzAvatar: TemplateRef<void> | null = null;
-
-  constructor() {}
 }

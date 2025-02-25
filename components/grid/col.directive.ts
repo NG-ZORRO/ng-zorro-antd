@@ -8,14 +8,13 @@ import {
   AfterViewInit,
   Directive,
   ElementRef,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
-  SimpleChanges
+  SimpleChanges,
+  inject
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -41,8 +40,8 @@ export interface EmbeddedProperty {
   }
 })
 export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  private classMap: { [key: string]: boolean } = {};
-  private destroy$ = new Subject();
+  private classMap: Record<string, boolean> = {};
+  private destroy$ = new Subject<boolean>();
   hostFlexStyle: string | null = null;
   dir: Direction = 'ltr';
   @Input() nzFlex: string | number | null = null;
@@ -119,11 +118,12 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     return listClassMap;
   }
 
+  nzRowDirective = inject(NzRowDirective, { host: true, optional: true });
+
   constructor(
     private elementRef: ElementRef,
-    @Optional() @Host() public nzRowDirective: NzRowDirective,
     public renderer: Renderer2,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
@@ -165,7 +165,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

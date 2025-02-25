@@ -3,26 +3,26 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
   HostBinding,
   Input,
   OnDestroy,
-  Renderer2,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { BooleanInput, NzDirectionVHType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
 
-import { NzListItemExtraComponent } from './list-item-cell';
+import { NzListItemActionsComponent, NzListItemExtraComponent } from './list-item-cell';
 import { NzListComponent } from './list.component';
 
 @Component({
@@ -30,48 +30,53 @@ import { NzListComponent } from './list.component';
   exportAs: 'nzListItem',
   template: `
     <ng-template #actionsTpl>
-      <ul nz-list-item-actions *ngIf="nzActions && nzActions.length > 0" [nzActions]="nzActions"></ul>
-      <ng-content select="nz-list-item-actions, [nz-list-item-actions]"></ng-content>
+      @if (nzActions && nzActions.length > 0) {
+        <ul nz-list-item-actions [nzActions]="nzActions"></ul>
+      }
+      <ng-content select="nz-list-item-actions, [nz-list-item-actions]" />
     </ng-template>
     <ng-template #contentTpl>
-      <ng-content select="nz-list-item-meta, [nz-list-item-meta]"></ng-content>
-      <ng-content></ng-content>
-      <ng-container *ngIf="nzContent">
+      <ng-content select="nz-list-item-meta, [nz-list-item-meta]" />
+      <ng-content />
+      @if (nzContent) {
         <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
-      </ng-container>
+      }
     </ng-template>
     <ng-template #extraTpl>
-      <ng-content select="nz-list-item-extra, [nz-list-item-extra]"></ng-content>
-    </ng-template>
-    <ng-template #simpleTpl>
-      <ng-template [ngTemplateOutlet]="contentTpl"></ng-template>
-      <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
-      <ng-template [ngTemplateOutlet]="extraTpl"></ng-template>
-      <ng-template [ngTemplateOutlet]="actionsTpl"></ng-template>
+      <ng-content select="nz-list-item-extra, [nz-list-item-extra]" />
     </ng-template>
 
-    <ng-container *ngIf="isVerticalAndExtra; else simpleTpl">
+    @if (isVerticalAndExtra) {
       <div class="ant-list-item-main">
-        <ng-template [ngTemplateOutlet]="contentTpl"></ng-template>
-        <ng-template [ngTemplateOutlet]="actionsTpl"></ng-template>
+        <ng-template [ngTemplateOutlet]="contentTpl" />
+        <ng-template [ngTemplateOutlet]="actionsTpl" />
       </div>
-      <nz-list-item-extra *ngIf="nzExtra">
-        <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
-      </nz-list-item-extra>
-      <ng-template [ngTemplateOutlet]="extraTpl"></ng-template>
-    </ng-container>
+      @if (nzExtra) {
+        <nz-list-item-extra>
+          <ng-template [ngTemplateOutlet]="nzExtra" />
+        </nz-list-item-extra>
+      }
+      <ng-template [ngTemplateOutlet]="extraTpl" />
+    } @else {
+      <ng-template [ngTemplateOutlet]="contentTpl" />
+      <ng-template [ngTemplateOutlet]="nzExtra" />
+      <ng-template [ngTemplateOutlet]="extraTpl" />
+      <ng-template [ngTemplateOutlet]="actionsTpl" />
+    }
   `,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'ant-list-item'
+  },
+  imports: [NzListItemActionsComponent, NzOutletModule, NgTemplateOutlet, NzListItemExtraComponent]
 })
 export class NzListItemComponent implements OnDestroy, AfterViewInit {
-  static ngAcceptInputType_nzNoFlex: BooleanInput;
-
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzContent?: string | TemplateRef<void>;
   @Input() nzExtra: TemplateRef<void> | null = null;
-  @Input() @InputBoolean() @HostBinding('class.ant-list-item-no-flex') nzNoFlex: boolean = false;
+  @Input({ transform: booleanAttribute }) @HostBinding('class.ant-list-item-no-flex') nzNoFlex: boolean = false;
 
   @ContentChild(NzListItemExtraComponent) listItemExtraDirective?: NzListItemExtraComponent;
 
@@ -83,13 +88,9 @@ export class NzListItemComponent implements OnDestroy, AfterViewInit {
   }
 
   constructor(
-    elementRef: ElementRef,
-    renderer: Renderer2,
     private parentComp: NzListComponent,
     private cdr: ChangeDetectorRef
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-list-item');
-  }
+  ) {}
 
   ngAfterViewInit(): void {
     this.itemLayout$ = this.parentComp.itemLayoutNotify$.subscribe(val => {

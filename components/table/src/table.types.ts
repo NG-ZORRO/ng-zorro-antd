@@ -21,3 +21,12 @@ export interface NzTableQueryParams {
   sort: Array<{ key: string; value: NzTableSortOrder }>;
   filter: Array<{ key: string; value: NzTableFilterValue }>;
 }
+
+export interface NzCustomColumn {
+  value: string;
+  default: boolean;
+  width: number;
+  fixWidth?: boolean;
+}
+
+export type NzTableSummaryFixedType = 'top' | 'bottom';

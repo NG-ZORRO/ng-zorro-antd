@@ -6,37 +6,51 @@
 import {
   addSymbolToNgModuleMetadata,
   findNodes,
+  getAppModulePath,
   getDecoratorMetadata,
   getProjectFromWorkspace,
   getProjectMainFile,
   insertAfterLastOccurrence,
   insertImport,
+  isStandaloneApp,
   parseSourceFile
 } from '@angular/cdk/schematics';
 
-import { Rule, Tree } from '@angular-devkit/schematics';
+import { chain, Rule, Tree } from '@angular-devkit/schematics';
+import { addRootProvider } from '@schematics/angular/utility';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
-import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
+import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
+import { findBootstrapApplicationCall } from '@schematics/angular/utility/standalone/util';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, cyan, yellow } from 'chalk';
 import * as ts from 'typescript';
 
+import { applyChangesToFile } from '../../utils/apply-changes';
 import { Schema } from '../schema';
 
 export function registerLocale(options: Schema): Rule {
   return async (host: Tree) => {
     const workspace = await getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
-    const appModulePath = getAppModulePath(host, getProjectMainFile(project));
+    const mainFile = getProjectMainFile(project);
+    if (isStandaloneApp(host, mainFile)) {
+      return registerLocaleInStandaloneApp(mainFile, options);
+    } else {
+      return registerLocaleInAppModule(mainFile, options);
+    }
+  };
+}
+
+function registerLocaleInAppModule(mainFile: string, options: Schema): Rule {
+  return async (host: Tree) => {
+    const appModulePath = getAppModulePath(host, mainFile);
     const moduleSource = parseSourceFile(host, appModulePath);
 
     const locale = options.locale || 'en_US';
     const localePrefix = locale.split('_')[0];
 
-    const recorder = host.beginUpdate(appModulePath);
-
-    const changes = [
-      insertImport(moduleSource, appModulePath, 'NZ_I18N',
+    applyChangesToFile(host, appModulePath, [
+      insertImport(moduleSource, appModulePath, 'provideNzI18n',
         'ng-zorro-antd/i18n'),
       insertImport(moduleSource, appModulePath, locale,
         'ng-zorro-antd/i18n'),
@@ -46,18 +60,32 @@ export function registerLocale(options: Schema): Rule {
         `@angular/common/locales/${localePrefix}`, true),
       registerLocaleData(moduleSource, appModulePath, localePrefix),
       ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
-    ];
-
-    changes.forEach((change) => {
-      if (change instanceof InsertChange) {
-        recorder.insertLeft(change.pos, change.toAdd);
-      }
-    });
-
-    host.commitUpdate(recorder);
-
-    return;
+    ]);
   };
+}
+
+function registerLocaleInStandaloneApp(mainFile: string, options: Schema): Rule {
+  const locale = options.locale || 'en_US';
+
+  return chain([
+    async (host: Tree) => {
+      const bootstrapCall = findBootstrapApplicationCall(host, mainFile);
+      const appConfig = findAppConfig(bootstrapCall, host, mainFile);
+      const appConfigFile = appConfig.filePath;
+      const appConfigSource = parseSourceFile(host, appConfig.filePath);
+      const localePrefix = locale.split('_')[0];
+
+      applyChangesToFile(host, appConfigFile, [
+        insertImport(appConfigSource, appConfigFile, locale, 'ng-zorro-antd/i18n'),
+        insertImport(appConfigSource, appConfigFile, 'registerLocaleData', '@angular/common'),
+        insertImport(appConfigSource, appConfigFile, localePrefix, `@angular/common/locales/${localePrefix}`, true),
+        registerLocaleData(appConfigSource, appConfigFile, localePrefix)
+      ]);
+    },
+    addRootProvider(options.project, ({ code, external }) => {
+      return code`${external('provideNzI18n', 'ng-zorro-antd/i18n')}(${locale})`;
+    })
+  ]);
 }
 
 function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change {
@@ -74,9 +102,9 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
       modulePath, 0) as InsertChange;
   } else {
     console.log();
-    console.log(yellow(`Could not add the registerLocaleData to your app.module file (${blue(modulePath)}).` +
+    console.log(yellow(`Could not add the registerLocaleData to file (${blue(modulePath)}).` +
       `because there is already a registerLocaleData function.`));
-    console.log(yellow(`Please manually add the following code to your app.module:`));
+    console.log(yellow(`Please manually add the following code:`));
     console.log(cyan(`registerLocaleData(${locale});`));
     return new NoopChange();
   }
@@ -85,10 +113,15 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
 function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change[] {
   const metadataField = 'providers';
   const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
-  const addProvide = addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers',
-    `{ provide: NZ_I18N, useValue: ${locale} }`, null);
+  const addProvide = addSymbolToNgModuleMetadata(
+      moduleSource,
+      modulePath,
+      'providers',
+      `provideNzI18n(${locale})`,
+      null
+    );
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let node: any = nodes[0];
+  const node: any = nodes[0];
 
   if (!node) {
     return [];
@@ -122,20 +155,23 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
     if (arrLiteral.elements.length === 0) {
       return addProvide;
     } else {
-      node = arrLiteral.elements.filter(e => e.getText?.().includes('NZ_I18N'));
-      if (node.length === 0) {
+      const provideWithToken = arrLiteral.elements.some(e => e.getText?.().includes('NZ_I18N'));
+      const provideWithFunc = arrLiteral.elements.some(e => e.getText?.().includes('provideNzI18n'));
+
+      if (!provideWithFunc && !provideWithToken) {
         return addProvide;
-      } else {
-        console.log();
-        console.log(yellow(`Could not provide the locale token to your app.module file (${blue(modulePath)}).` +
-          `because there is already a locale token in provides.`));
-        console.log(yellow(`Please manually add the following code to your provides:`));
-        console.log(cyan(`{ provide: NZ_I18N, useValue: ${locale} }`));
-        return [];
       }
+
+      console.log();
+      console.log(yellow(`Could not provide the locale token to file (${blue(modulePath)}), because there is already a locale token in providers.`));
+
+      if (provideWithToken) {
+        console.log(yellow(`Please manually add the following code to your providers:`));
+        console.log(cyan(`provideNzI18n(${locale})`));
+      }
+      return [];
     }
   } else {
     return addProvide;
   }
-
 }

@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-carousel-position',
+  imports: [FormsModule, NzCarouselModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="dotPosition">
       <label nz-radio-button nzValue="bottom">Bottom</label>
@@ -10,9 +15,11 @@ import { Component } from '@angular/core';
       <label nz-radio-button nzValue="right">Right</label>
     </nz-radio-group>
     <nz-carousel [nzDotPosition]="dotPosition">
-      <div nz-carousel-content *ngFor="let index of array">
-        <h3>{{ index }}</h3>
-      </div>
+      @for (index of array; track index) {
+        <div nz-carousel-content>
+          <h3>{{ index }}</h3>
+        </div>
+      }
     </nz-carousel>
   `,
   styles: [

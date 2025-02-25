@@ -13,20 +13,24 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular, scrollIntoView } from 'ng-zorro-antd/core/util';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 
 export class NzOptionSelectionChange {
-  constructor(public source: NzAutocompleteOptionComponent, public isUserInput: boolean = false) {}
+  constructor(
+    public source: NzAutocompleteOptionComponent,
+    public isUserInput: boolean = false
+  ) {}
 }
 
 @Component({
@@ -53,42 +57,37 @@ export class NzOptionSelectionChange {
   }
 })
 export class NzAutocompleteOptionComponent implements OnInit, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-
   @Input() nzValue: NzSafeAny;
   @Input() nzLabel?: string;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Output() readonly selectionChange = new EventEmitter<NzOptionSelectionChange>();
   @Output() readonly mouseEntered = new EventEmitter<NzAutocompleteOptionComponent>();
 
   active = false;
   selected = false;
+  nzAutocompleteOptgroupComponent = inject(NzAutocompleteOptgroupComponent, { optional: true });
 
   private destroy$ = new Subject<void>();
 
   constructor(
     private ngZone: NgZone,
     private changeDetectorRef: ChangeDetectorRef,
-    private element: ElementRef<HTMLElement>,
-    @Optional()
-    public nzAutocompleteOptgroupComponent: NzAutocompleteOptgroupComponent
+    private element: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.element.nativeElement, 'mouseenter')
-        .pipe(
-          filter(() => this.mouseEntered.observers.length > 0),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(() => {
-          this.ngZone.run(() => this.mouseEntered.emit(this));
-        });
+    fromEventOutsideAngular(this.element.nativeElement, 'mouseenter')
+      .pipe(
+        filter(() => this.mouseEntered.observers.length > 0),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.ngZone.run(() => this.mouseEntered.emit(this));
+      });
 
-      fromEvent(this.element.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => event.preventDefault());
-    });
+    fromEventOutsideAngular(this.element.nativeElement, 'mousedown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => event.preventDefault());
   }
 
   ngOnDestroy(): void {

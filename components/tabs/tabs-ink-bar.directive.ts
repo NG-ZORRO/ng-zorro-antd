@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Inject, Input, NgZone, Optional } from '@angular/core';
+import { Directive, ElementRef, Input, NgZone, inject } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
@@ -21,14 +21,14 @@ export class NzTabsInkBarDirective {
   @Input() position: NzTabPositionMode = 'horizontal';
   @Input() animated = true;
 
+  animationMode = inject(ANIMATION_MODULE_TYPE, { optional: true });
   get _animated(): boolean {
     return this.animationMode !== 'NoopAnimations' && this.animated;
   }
 
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    private ngZone: NgZone,
-    @Optional() @Inject(ANIMATION_MODULE_TYPE) public animationMode?: string
+    private ngZone: NgZone
   ) {}
 
   alignToElement(element: HTMLElement): void {

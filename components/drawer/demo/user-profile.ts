@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzListModule } from 'ng-zorro-antd/list';
+
 @Component({
   selector: 'nz-demo-drawer-user-profile',
+  imports: [NzButtonModule, NzDescriptionsModule, NzDividerModule, NzDrawerModule, NzListModule],
   template: `
     <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
       <ng-template #item let-item>
@@ -23,10 +30,10 @@ import { Component } from '@angular/core';
     </nz-list>
     <nz-drawer [nzVisible]="visible" [nzWidth]="640" [nzClosable]="false" (nzOnClose)="close()">
       <ng-container *nzDrawerContent>
-        <p class="title" style=" margin-bottom: 24px;">User Profile</p>
+        <p class="title">User Profile</p>
         <nz-descriptions [nzColumn]="2" nzTitle="Personal">
           <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">Lily</nz-descriptions-item>
-          <nz-descriptions-item nzTitle="Account" [nzSpan]="1">AntDesign@example.com</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Account" [nzSpan]="1">AntDesign&#64;example.com</nz-descriptions-item>
           <nz-descriptions-item nzTitle="City" [nzSpan]="1">HangZhou</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Country" [nzSpan]="1">China🇨🇳</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Birthday" [nzSpan]="1">February 2,1900</nz-descriptions-item>
@@ -49,7 +56,7 @@ import { Component } from '@angular/core';
         </nz-descriptions>
         <nz-divider></nz-divider>
         <nz-descriptions [nzColumn]="2" nzTitle="Contacts">
-          <nz-descriptions-item nzTitle="Email" [nzSpan]="1">AntDesign@example.com</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="Email" [nzSpan]="1">AntDesign&#64;example.com</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">+86 181 0000 0000</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Github" [nzSpan]="2">
             <a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank">github.com/NG-ZORRO/ng-zorro-antd</a>
@@ -65,18 +72,7 @@ import { Component } from '@angular/core';
         color: rgba(0, 0, 0, 0.85);
         line-height: 24px;
         display: block;
-        margin-bottom: 16px;
-      }
-      .item-wrap {
-        font-size: 14px;
-        line-height: 22px;
-        margin-bottom: 7px;
-        color: rgba(0, 0, 0, 0.65);
-      }
-      .label {
-        margin-right: 8px;
-        display: inline-block;
-        color: rgba(0, 0, 0, 0.85);
+        margin-bottom: 24px;
       }
     `
   ]

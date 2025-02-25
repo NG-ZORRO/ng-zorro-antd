@@ -30,7 +30,6 @@ export function execTask(binPath: string, args: string[], env = {}): gulp.TaskFu
     });
 
     childProcess.on('close', (code: number) => {
-      // tslint:disable-next-line:triple-equals
       code !== 0 ? done(new Error(`Process failed with code ${code}`)) : done();
     });
   };
@@ -43,9 +42,7 @@ export function execNodeTask(
   env = {}
 ): gulp.TaskFunction {
   if (!args) {
-    // tslint:disable-next-line:no-parameter-reassignment
     args = executable as string[];
-    // tslint:disable-next-line:no-parameter-reassignment
     executable = '';
   }
 
@@ -56,7 +53,7 @@ export function execNodeTask(
       if (err) {
         done(err);
       } else {
-        execTask('node', ['--max_old_space_size=4096', binPath].concat(args!), env)(done);
+        execTask('node', [binPath].concat(args!), env)(done);
       }
     });
   };

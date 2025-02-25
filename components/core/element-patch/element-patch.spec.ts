@@ -1,30 +1,30 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, ViewChild } from '@angular/core';
-import { fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NzButtonModule } from 'ng-zorro-antd/button';
-
-import { ComponentBed, createComponentBed } from '../testing/component-bed';
 import { NzElementPatchDirective } from './element-patch.directive';
-import { NzElementPatchModule } from './element-patch.module';
 
 describe('nz-element', () => {
-  let testBed: ComponentBed<NzTestElementPatchComponent>;
-  let component: NzTestElementPatchComponent;
+  let fixture: ComponentFixture<NzTestElementPatchComponent>;
 
-  beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzTestElementPatchComponent, {
-      imports: [NzElementPatchModule, NzButtonModule]
-    });
-    component = testBed.component;
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestElementPatchComponent);
+    fixture.detectChanges();
+  });
 
   it('should getters work', () => {
-    expect((component.element.nativeElement as HTMLButtonElement).tagName).toBe('BUTTON');
+    const element = fixture.componentInstance.element.nativeElement as HTMLButtonElement;
+    expect(element.tagName).toBe('BUTTON');
   });
 });
 
 @Component({
-  template: ` <button nz-button nz-element>Action</button> `
+  imports: [NzElementPatchDirective],
+  template: `<button nz-element>Action</button> `
 })
 export class NzTestElementPatchComponent {
   @ViewChild(NzElementPatchDirective) element!: NzElementPatchDirective;

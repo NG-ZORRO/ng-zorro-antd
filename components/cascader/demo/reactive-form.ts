@@ -1,10 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 
-const options = [
+const options: NzCascaderOption[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -48,9 +49,10 @@ const options = [
 
 @Component({
   selector: 'nz-demo-cascader-reactive-form',
+  imports: [ReactiveFormsModule, NzButtonModule, NzCascaderModule],
   template: `
     <form [formGroup]="form" novalidate>
-      <nz-cascader [nzOptions]="nzOptions" [formControlName]="'name'"></nz-cascader>
+      <nz-cascader [nzOptions]="nzOptions" formControlName="name"></nz-cascader>
     </form>
     <br />
     <button nz-button (click)="reset()">Reset</button>
@@ -65,20 +67,16 @@ const options = [
   ]
 })
 export class NzDemoCascaderReactiveFormComponent implements OnDestroy {
-  form!: UntypedFormGroup;
+  private fb = inject(FormBuilder);
+  form = this.fb.group({
+    name: this.fb.control<string[] | null>(null, Validators.required)
+  });
   nzOptions: NzCascaderOption[] = options;
   changeSubscription: Subscription;
-  constructor(private fb: UntypedFormBuilder) {
-    this.createForm();
-    const control = this.form.get('name') as UntypedFormControl;
-    this.changeSubscription = control.valueChanges.subscribe(data => {
-      this.onChanges(data);
-    });
-  }
 
-  private createForm(): void {
-    this.form = this.fb.group({
-      name: [null, Validators.required]
+  constructor() {
+    this.changeSubscription = this.form.controls.name.valueChanges.subscribe(data => {
+      this.onChanges(data);
     });
   }
 
@@ -91,7 +89,7 @@ export class NzDemoCascaderReactiveFormComponent implements OnDestroy {
     console.log(this.form.value);
   }
 
-  onChanges(values: string[]): void {
+  onChanges(values: string[] | null): void {
     console.log(values);
   }
 

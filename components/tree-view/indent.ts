@@ -4,7 +4,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, Input, OnDestroy } from '@angular/core';
-import { animationFrameScheduler, asapScheduler, merge, Subscription } from 'rxjs';
+import { Subscription, animationFrameScheduler, asapScheduler, merge } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
 import { NzNodeBase } from './node-base';
@@ -23,7 +23,9 @@ const BUILD_INDENTS_SCHEDULER = typeof requestAnimationFrame !== 'undefined' ? a
 @Component({
   selector: 'nz-tree-node-indents',
   template: `
-    <span class="ant-tree-indent-unit" [class.ant-tree-indent-unit-end]="!isEnd" *ngFor="let isEnd of indents"></span>
+    @for (isEnd of indents; track isEnd) {
+      <span class="ant-tree-indent-unit" [class.ant-tree-indent-unit-end]="!isEnd"></span>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -49,7 +51,11 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   private currentIndents: string = '';
   private changeSubscription: Subscription;
 
-  constructor(private treeNode: NzNodeBase<T>, private tree: NzTreeView<T>, private cdr: ChangeDetectorRef) {
+  constructor(
+    private treeNode: NzNodeBase<T>,
+    private tree: NzTreeView<T>,
+    private cdr: ChangeDetectorRef
+  ) {
     this.buildIndents();
     this.checkLast();
 
@@ -67,7 +73,11 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   }
 
   private getIndents(): boolean[] {
-    const indents = [];
+    const indents: boolean[] = [];
+    if (!this.tree.treeControl) {
+      return indents;
+    }
+
     const nodes = this.tree.treeControl.dataNodes;
     const getLevel = this.tree.treeControl.getLevel;
     let parent = getParent(nodes, this.treeNode.data, getLevel);
@@ -99,7 +109,7 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
    * this result can also be affected when the adjacent nodes are changed.
    */
   private checkAdjacent(): void {
-    const nodes = this.tree.treeControl.dataNodes;
+    const nodes = this.tree.treeControl?.dataNodes || [];
     const index = nodes.indexOf(this.treeNode.data);
     const preNode = nodes[index - 1] || null;
     const nextNode = nodes[index + 1] || null;
@@ -111,9 +121,10 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   }
 
   private checkLast(index?: number): void {
-    const nodes = this.tree.treeControl.dataNodes;
+    const nodes = this.tree.treeControl?.dataNodes || [];
     this.isLeaf = this.treeNode.isLeaf;
-    this.isLast = !getNextSibling(nodes, this.treeNode.data, this.tree.treeControl.getLevel, index);
+    this.isLast =
+      !!this.tree.treeControl && !getNextSibling(nodes, this.treeNode.data, this.tree.treeControl.getLevel, index);
   }
 
   ngOnDestroy(): void {

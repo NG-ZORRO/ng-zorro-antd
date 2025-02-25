@@ -8,13 +8,16 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 @Component({
   selector: 'nz-header',
   exportAs: 'nzHeader',
+  template: `<ng-content></ng-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `
+  preserveWhitespaces: false
 })
 export class NzHeaderComponent {
-  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(
+    public elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-layout-header');
   }
 }

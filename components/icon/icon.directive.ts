@@ -7,45 +7,40 @@ import {
   AfterContentChecked,
   ChangeDetectorRef,
   Directive,
-  ElementRef,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
-  OnInit,
-  Optional,
   Renderer2,
-  SimpleChanges
+  SimpleChanges,
+  booleanAttribute,
+  inject,
+  numberAttribute
 } from '@angular/core';
-import { from, Subject } from 'rxjs';
+import { Subject, from } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 
 import { warn } from 'ng-zorro-antd/core/logger';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzIconPatchService, NzIconService } from './icon.service';
 
 @Directive({
-  selector: '[nz-icon]',
+  selector: 'nz-icon,[nz-icon]',
   exportAs: 'nzIcon',
   host: {
-    '[class.anticon]': 'true'
+    class: 'anticon'
   }
 })
-export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
-  static ngAcceptInputType_nzSpin: BooleanInput;
-
+export class NzIconDirective extends IconDirective implements OnChanges, AfterContentChecked, OnDestroy {
   cacheClassName: string | null = null;
-  @Input()
-  @InputBoolean()
+  @Input({ transform: booleanAttribute })
   set nzSpin(value: boolean) {
     this.spin = value;
   }
 
-  @Input() nzRotate: number = 0;
+  @Input({ transform: numberAttribute }) nzRotate: number = 0;
 
   @Input()
   set nzType(value: string) {
@@ -78,18 +73,17 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   constructor(
     private readonly ngZone: NgZone,
     private readonly changeDetectorRef: ChangeDetectorRef,
-    elementRef: ElementRef,
     public readonly iconService: NzIconService,
-    public readonly renderer: Renderer2,
-    @Optional() iconPatch: NzIconPatchService
+    public readonly renderer: Renderer2
   ) {
-    super(iconService, elementRef, renderer);
+    super(iconService);
 
+    const iconPatch = inject(NzIconPatchService, { optional: true });
     if (iconPatch) {
       iconPatch.doPatch();
     }
 
-    this.el = elementRef.nativeElement;
+    this.el = this._elementRef.nativeElement;
   }
 
   override ngOnChanges(changes: SimpleChanges): void {
@@ -102,10 +96,6 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     } else {
       this._setSVGElement(this.iconService.createIconfontIcon(`#${this.iconfont}`));
     }
-  }
-
-  ngOnInit(): void {
-    this.renderer.setAttribute(this.el, 'class', `anticon ${this.el.className}`.trim());
   }
 
   /**

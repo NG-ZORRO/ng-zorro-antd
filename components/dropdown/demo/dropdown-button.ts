@@ -1,29 +1,34 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: 'nz-demo-dropdown-dropdown-button',
+  imports: [NzButtonModule, NzDropDownModule, NzIconModule],
   template: `
     <nz-button-group>
       <button nz-button (click)="log()">DropDown</button>
       <button nz-button nz-dropdown [nzDropdownMenu]="menu1" nzPlacement="bottomRight">
-        <span nz-icon nzType="ellipsis"></span>
+        <nz-icon nzType="ellipsis" />
       </button>
     </nz-button-group>
     <nz-button-group>
       <button nz-button (click)="log()">DropDown</button>
       <button nz-button nz-dropdown [nzDropdownMenu]="menu2" nzPlacement="bottomRight">
-        <span nz-icon nzType="user"></span>
+        <nz-icon nzType="user" />
       </button>
     </nz-button-group>
     <nz-button-group>
       <button nz-button disabled>DropDown</button>
       <button nz-button disabled nz-dropdown [nzDropdownMenu]="menu3" nzPlacement="bottomRight">
-        <span nz-icon nzType="ellipsis"></span>
+        <nz-icon nzType="ellipsis" />
       </button>
     </nz-button-group>
     <button nz-button nz-dropdown [nzDropdownMenu]="menu4">
       Button
-      <span nz-icon nzType="down"></span>
+      <nz-icon nzType="down" />
     </button>
     <nz-dropdown-menu #menu1="nzDropdownMenu">
       <ul nz-menu>

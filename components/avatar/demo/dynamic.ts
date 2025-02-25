@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 const userList = ['Lucy', 'U', 'Tom', 'Edward'];
 const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 
 @Component({
   selector: 'nz-demo-avatar-dynamic',
+  imports: [FormsModule, NzAvatarModule, NzButtonModule, NzInputNumberModule],
   template: `
     <div>
       <label>
@@ -18,7 +24,7 @@ const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 
     <nz-avatar
       [nzGap]="gap"
-      [ngStyle]="{ 'background-color': color }"
+      [style]="{ 'background-color': color }"
       [nzText]="text"
       nzSize="large"
       style="vertical-align: middle;"

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AfterViewInit, Directive, ElementRef, Host, Optional, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Renderer2, inject } from '@angular/core';
 
 import { NzButtonGroupComponent } from 'ng-zorro-antd/button';
 
@@ -11,9 +11,10 @@ import { NzButtonGroupComponent } from 'ng-zorro-antd/button';
   selector: '[nz-button][nz-dropdown]'
 })
 export class NzDropdownButtonDirective implements AfterViewInit {
+  private nzButtonGroupComponent = inject(NzButtonGroupComponent, { host: true, optional: true });
+
   constructor(
     private renderer: Renderer2,
-    @Host() @Optional() private nzButtonGroupComponent: NzButtonGroupComponent,
     private elementRef: ElementRef
   ) {}
   ngAfterViewInit(): void {

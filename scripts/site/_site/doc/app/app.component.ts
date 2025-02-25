@@ -1,17 +1,34 @@
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, Renderer2 } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { ChangeDetectorRef, Component, NgZone, OnInit, Renderer2, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
+import { NavigationEnd, NavigationStart, Router, RouterModule } from '@angular/router';
+import { NzColor } from 'ng-zorro-antd/color-picker';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzI18nService, en_US, zh_CN } from 'ng-zorro-antd/i18n';
 import { NzMessageRef, NzMessageService } from 'ng-zorro-antd/message';
 import { VERSION } from 'ng-zorro-antd/version';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AppService } from './app.service';
+import { NzContributorsListComponent } from './contributors-list/contributors-list.component';
+import { FixedWidgetsComponent } from './fixed-widgets/fixed-widgets.component';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
+import { NzNavBottomComponent } from './nav-bottom/nav-bottom.component';
 import { ROUTER_LIST } from './router';
-import { loadScript } from './utils/load-script';
+import { SideComponent } from './side/side.component';
+
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 interface DocPageMeta {
   path: string;
@@ -27,6 +44,25 @@ const defaultKeywords =
 
 @Component({
   selector: 'app-root',
+  imports: [
+    CommonModule,
+    RouterModule,
+    NzGridModule,
+    NzAffixModule,
+    NzMenuModule,
+    NzIconModule,
+    NzSelectModule,
+    NzPopoverModule,
+    NzButtonModule,
+    NzInputModule,
+    NzBadgeModule,
+    NzNavBottomComponent,
+    NzContributorsListComponent,
+    HeaderComponent,
+    FooterComponent,
+    SideComponent,
+    FixedWidgetsComponent
+  ],
   templateUrl: './app.component.html',
   styles: [
     `
@@ -40,7 +76,7 @@ const defaultKeywords =
 })
 export class AppComponent implements OnInit {
   /**
-   * When the screen size is smaller that 768 pixel, show the drawer and hide
+   * When the screen size is smaller than 768 pixel, show the drawer and hide
    * the navigation on the side.
    **/
   showDrawer = false;
@@ -52,10 +88,14 @@ export class AppComponent implements OnInit {
   searchComponent = null;
 
   theme: SiteTheme = 'default';
+  // region: color
+  color = `#1890ff`;
 
   language: 'zh' | 'en' = 'en';
   direction: 'ltr' | 'rtl' = 'ltr';
   currentVersion = VERSION.full;
+
+  private document: Document = inject(DOCUMENT);
 
   switchLanguage(language: string): void {
     const url = this.router.url.split('/');
@@ -87,7 +127,9 @@ export class AppComponent implements OnInit {
     }
     let loading: NzMessageRef | null = null;
     if (notification) {
-      loading = this.nzMessageService.loading(this.language === 'en' ? `Switching theme...` : `切换主题中...`, { nzDuration: 0 });
+      loading = this.nzMessageService.loading(this.language === 'en' ? `Switching theme...` : `切换主题中...`, {
+        nzDuration: 0
+      });
     }
     this.renderer.addClass(this.document.activeElement, 'preload');
     const successLoaded = () => {
@@ -116,10 +158,16 @@ export class AppComponent implements OnInit {
       style.rel = 'stylesheet';
       style.id = `site-theme-${theme}`;
       style.href = `assets/${theme}.css`;
+      document.body.append(style);
+
       style.onload = () => {
         successLoaded();
       };
-      document.body.append(style);
+      style.onerror = () => {
+        this.nzMessageService.remove(loading?.messageId);
+        this.nzMessageService.error(this.language === 'en' ? `Switching theme failed` : `切换主题失败`);
+        document.getElementById(style.id)?.remove();
+      };
     } else {
       successLoaded();
     }
@@ -131,20 +179,13 @@ export class AppComponent implements OnInit {
     private title: Title,
     private nzI18nService: NzI18nService,
     private nzMessageService: NzMessageService,
+    private nzConfigService: NzConfigService,
     private ngZone: NgZone,
     private platform: Platform,
     private meta: Meta,
     private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    // tslint:disable-next-line:no-any
-    @Inject(DOCUMENT) private document: any
+    private cdr: ChangeDetectorRef
   ) {}
-
-  navigateToPage(url: string): void {
-    if (url) {
-      this.router.navigateByUrl(url).then();
-    }
-  }
 
   setPage(url: string): void {
     const match = url.match(/\/(\w+)/);
@@ -196,16 +237,23 @@ export class AppComponent implements OnInit {
 
         this.appService.language$.next(this.language);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
-        const currentDemoComponent = this.componentList.find(component => `/${component.path}` === this.router.url);
+        const currentDemoComponent = this.componentList.find(component =>
+          // url may contains hash
+          this.router.url.startsWith(`/${component.path}`)
+        );
 
         if (currentDemoComponent) {
           const path = currentDemoComponent.path.replace(/\/(en|zh)/, '');
           if (this.language === 'en') {
-            this.updateMateTitle(`${currentDemoComponent.label} | NG-ZORRO`);
+            this.updateMetaTitle(`${currentDemoComponent.label} | NG-ZORRO`);
           } else {
-            this.updateMateTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
+            this.updateMetaTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
           }
-          this.updateDocMetaAndLocale(currentDemoComponent.description, `${currentDemoComponent.label}, ${currentDemoComponent.zh}`, path);
+          this.updateDocMetaAndLocale(
+            currentDemoComponent.description,
+            `${currentDemoComponent.label}, ${currentDemoComponent.zh}`,
+            path
+          );
         }
 
         const currentIntroComponent = this.routerList.intro.find(component => `/${component.path}` === this.router.url);
@@ -213,12 +261,12 @@ export class AppComponent implements OnInit {
           const path = currentIntroComponent.path.replace(/\/(en|zh)/, '');
           if (/docs\/introduce/.test(this.router.url)) {
             if (this.language === 'en') {
-              this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
+              this.updateMetaTitle(`NG-ZORRO - Angular UI component library`);
             } else {
-              this.updateMateTitle(`NG-ZORRO - 企业级 UI 设计语言和 Angular 组件库`);
+              this.updateMetaTitle(`NG-ZORRO - 企业级 UI 设计语言和 Angular 组件库`);
             }
           } else {
-            this.updateMateTitle(`${currentIntroComponent.label} | NG-ZORRO`);
+            this.updateMetaTitle(`${currentIntroComponent.label} | NG-ZORRO`);
           }
           this.updateDocMetaAndLocale(currentIntroComponent.description, currentIntroComponent.label, path);
         }
@@ -226,14 +274,14 @@ export class AppComponent implements OnInit {
         if (!currentIntroComponent && !currentDemoComponent) {
           if (/components\/overview/.test(this.router.url)) {
             if (this.language === 'en') {
-              this.updateMateTitle('Components | NG-ZORRO');
+              this.updateMetaTitle('Components | NG-ZORRO');
               this.updateDocMetaAndLocale(
                 'NG-ZORRO provides plenty of UI components to enrich your web applications, and we will improve components experience consistently.',
                 'overview',
                 'components/overview'
               );
             } else {
-              this.updateMateTitle('组件(Components) | NG-ZORRO');
+              this.updateMetaTitle('组件(Components) | NG-ZORRO');
               this.updateDocMetaAndLocale(
                 'NG-ZORRO 为 Web 应用提供了丰富的基础 UI 组件，我们还将持续探索企业级应用的最佳 UI 实践。',
                 'overview, 预览',
@@ -241,7 +289,7 @@ export class AppComponent implements OnInit {
               );
             }
           } else {
-            this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
+            this.updateMetaTitle(`NG-ZORRO - Angular UI component library`);
             this.updateDocMetaAndLocale();
           }
         }
@@ -265,12 +313,11 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.initColor();
     this.initTheme();
     this.detectLanguage();
   }
 
-  updateMateTitle(title: string = 'NG-ZORRO | Angular UI component library'): void {
+  updateMetaTitle(title: string = 'NG-ZORRO | Angular UI component library'): void {
     this.title.setTitle(title);
     this.meta.updateTag({
       property: 'og:title',
@@ -286,7 +333,8 @@ export class AppComponent implements OnInit {
     const isEn = this.language === 'en';
     const enDescription =
       'An enterprise-class UI design language and Angular-based implementation with a set of high-quality Angular components, one of best Angular UI library for enterprises';
-    const zhDescription = 'Ant Design 的 Angular 实现，开发和服务于企业级后台产品，开箱即用的高质量 Angular UI 组件库。';
+    const zhDescription =
+      'Ant Design 的 Angular 实现，开发和服务于企业级后台产品，开箱即用的高质量 Angular UI 组件库。';
     let descriptionContent = isEn ? enDescription : zhDescription;
     if (description) {
       descriptionContent = description;
@@ -300,7 +348,6 @@ export class AppComponent implements OnInit {
       name: 'keywords',
       content: keywords ? `${defaultKeywords}, ${keywords}` : defaultKeywords
     });
-
     this.meta.updateTag({
       name: 'description',
       content: descriptionContent
@@ -347,53 +394,12 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // region: color
-  color = `#1890ff`;
-
-  initColor(): void {
+  changeColor(res: { color: NzColor; format: string }): void {
     if (!this.platform.isBrowser) {
       return;
     }
-    const node = document.createElement('link');
-    node.rel = 'stylesheet/less';
-    node.type = 'text/css';
-    node.href = '/assets/color.less';
-    document.getElementsByTagName('head')[0].appendChild(node);
-  }
 
-  lessLoaded = false;
-
-  changeColor(res: any): void {
-    if (!this.platform.isBrowser) {
-      return;
-    }
-    const loading = this.nzMessageService.loading(this.language === 'en' ? `Switching color...` : `切换主题中...`, { nzDuration: 0 });
-    const changeColor = () => {
-      (window as any).less
-        .modifyVars({
-          '@primary-color': res.color.hex
-        })
-        .then(() => {
-          this.nzMessageService.remove(loading.messageId);
-          this.nzMessageService.success(this.language === 'en' ? `Switching color successfully` : `应用成功`);
-          this.color = res.color.hex;
-          window.scrollTo(0, 0);
-        });
-    };
-
-    const lessUrl = 'https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js';
-
-    if (this.lessLoaded) {
-      changeColor();
-    } else {
-      (window as any).less = {
-        async: true
-      };
-      loadScript(lessUrl).then(() => {
-        this.lessLoaded = true;
-        changeColor();
-      });
-    }
+    this.nzConfigService.set('theme', { primaryColor: res.color.toHexString() });
   }
 
   // endregion
@@ -428,7 +434,7 @@ export class AppComponent implements OnInit {
     const hasLanguage = pathname.match(/(en|zh)(\/?)$/);
     if (language === 'zh-cn' && !hasLanguage) {
       this.nzI18nService.setLocale(zh_CN);
-      this.router.navigate(['docs', 'introduce', 'zh']);
+      this.router.navigate(['docs', 'introduce', 'zh']).then();
     }
   }
 }

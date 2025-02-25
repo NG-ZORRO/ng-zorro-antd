@@ -21,23 +21,23 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 ### nz-list
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzBordered]` | 是否展示边框 | `boolean` | `false` |
-| `[nzFooter]` | 列表底部 | `string \| TemplateRef<void>` | - |
-| `[nzHeader]` | 列表头部 | `string \| TemplateRef<void>` | - |
-| `[nzItemLayout]` | 设置 `nz-list-item` 布局, 设置成 `vertical` 则竖直样式显示, 默认横排 | `'vertical' \| 'horizontal'` | `'horizontal'` |
-| `[nzLoading]` | 当卡片内容还在加载中时，可以用 `loading` 展示一个占位 | `boolean` | `false` |
-| `[nzSize]` | list 的尺寸 | `'large' \| 'small' \| 'default'` | `'default'` |
-| `[nzSplit]` | 是否展示分割线 | `boolean` | `true` |
+| 参数             | 说明                                                                 | 类型                              | 默认值         |
+| ---------------- | -------------------------------------------------------------------- | --------------------------------- | -------------- |
+| `[nzBordered]`   | 是否展示边框                                                         | `boolean`                         | `false`        |
+| `[nzFooter]`     | 列表底部                                                             | `string \| TemplateRef<void>`     | -              |
+| `[nzHeader]`     | 列表头部                                                             | `string \| TemplateRef<void>`     | -              |
+| `[nzItemLayout]` | 设置 `nz-list-item` 布局, 设置成 `vertical` 则竖直样式显示, 默认横排 | `'vertical' \| 'horizontal'`      | `'horizontal'` |
+| `[nzLoading]`    | 当卡片内容还在加载中时，可以用 `loading` 展示一个占位                | `boolean`                         | `false`        |
+| `[nzSize]`       | list 的尺寸                                                          | `'large' \| 'small' \| 'default'` | `'default'`    |
+| `[nzSplit]`      | 是否展示分割线                                                       | `boolean`                         | `true`         |
 
 ### nz-list-empty
 
 列表空内容组件
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzNoResult]` | 空内容显示内容 | `string \| TemplateRef<void>` | - |
+| 参数           | 说明           | 类型                          | 默认值 |
+| -------------- | -------------- | ----------------------------- | ------ |
+| `[nzNoResult]` | 空内容显示内容 | `string \| TemplateRef<void>` | -      |
 
 ### nz-list[nzGrid]
 
@@ -63,8 +63,8 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 ### nz-list-item
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 参数         | 说明                   | 类型      | 默认值  |
+| ------------ | ---------------------- | --------- | ------- |
 | `[nzNoFlex]` | 是否非 `flex` 布局渲染 | `boolean` | `false` |
 
 ### ul[nz-list-item-actions]
@@ -83,11 +83,11 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 ### nz-list-item-meta
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzAvatar]` | 列表元素的图标 | `string \| TemplateRef<void>` | - |
-| `[nzDescription]` | 列表元素的描述内容 | `string \| TemplateRef<void>` | - |
-| `[nzTitle]` | 列表元素的标题 | `string \| TemplateRef<void>` | - |
+| 参数              | 说明               | 类型                          | 默认值 |
+| ----------------- | ------------------ | ----------------------------- | ------ |
+| `[nzAvatar]`      | 列表元素的图标     | `string \| TemplateRef<void>` | -      |
+| `[nzDescription]` | 列表元素的描述内容 | `string \| TemplateRef<void>` | -      |
+| `[nzTitle]`       | 列表元素的标题     | `string \| TemplateRef<void>` | -      |
 
 ### nz-list-item-meta-title
 
@@ -101,6 +101,6 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 列表项元信息头像部分组件
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzSrc]` | 图片类头像的资源地址 | `string` | - |
+| 参数      | 说明                 | 类型     | 默认值 |
+| --------- | -------------------- | -------- | ------ |
+| `[nzSrc]` | 图片类头像的资源地址 | `string` | -      |

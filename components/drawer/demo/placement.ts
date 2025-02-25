@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzDrawerPlacement } from 'ng-zorro-antd/drawer';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDrawerModule, NzDrawerPlacement } from 'ng-zorro-antd/drawer';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-drawer-placement',
+  imports: [FormsModule, NzButtonModule, NzDrawerModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="placement">
       <label nz-radio nzValue="top">top</label>

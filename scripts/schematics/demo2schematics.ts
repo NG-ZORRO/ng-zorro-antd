@@ -4,13 +4,11 @@
  */
 
 import * as fs from 'fs-extra';
+import { sync as glob } from 'glob';
 
 import * as path from 'path';
 
-
 import { buildConfig } from '../build-config';
-
-const glob = require('glob').sync;
 
 interface DemoMeta {
   fileContent: string,
@@ -27,7 +25,7 @@ const demoDirPath = path.join(buildConfig.projectDir, 'schematics/demo');
 const collectionPath = path.join(demoDirPath, 'collection.json');
 
 const TEST_FILE_CONTENT =
-`import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+  `import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { <%= classify(name) %>Component } from './<%= dasherize(name) %>.component';
 
 describe('<%= classify(name) %>Component', () => {
@@ -39,6 +37,7 @@ describe('<%= classify(name) %>Component', () => {
       declarations: [ <%= classify(name) %>Component ]
     })
     .compileComponents();
+    ;
 
     fixture = TestBed.createComponent(<%= classify(name) %>Component);
     component = fixture.componentInstance;
@@ -52,7 +51,7 @@ describe('<%= classify(name) %>Component', () => {
 `;
 
 function getComponentPaths(): string[] {
-  return glob(path.join(componentsPath, '**/demo/*.ts'))
+  return glob(path.join(componentsPath, '**/demo/*.ts'));
 }
 
 function parse(filePath: string): DemoMeta {
@@ -72,7 +71,7 @@ function parse(filePath: string): DemoMeta {
     styles,
     selector,
     className
-  }
+  };
 }
 
 function getTemplate(fileContent: string): string {
@@ -100,7 +99,7 @@ function replaceTemplate(demoComponent: DemoMeta): string {
     .replace(/selector\s*:\s*'(.+?)'\s*/, () => `selector: '<%= selector %>'`)
     .replace(new RegExp(demoComponent.className), () => `<%= classify(name) %>Component`)
     .replace(/styles\s*:\s*\[\s*`([\s\S]*?)`\s*\]/, () => `<% if(inlineStyle) { %>styles: [\`${demoComponent.styles}\`]<% } else { %>styleUrls: ['./<%= dasherize(name) %>.component.<%= style %>']<% } %>`)
-    .replace(/template\s*:\s*`([\s\S]*?)`/, () => `<% if(inlineTemplate) { %>template: \`${demoComponent.template}\`<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>`)
+    .replace(/template\s*:\s*`([\s\S]*?)`/, () => `<% if(inlineTemplate) { %>template: \`${demoComponent.template}\`<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>`);
 }
 
 function createSchematic(demoComponent: DemoMeta): void {
@@ -123,26 +122,26 @@ function createSchematic(demoComponent: DemoMeta): void {
   fs.outputFileSync(`${filesPath}/__name@dasherize__.component.spec.ts.template`, TEST_FILE_CONTENT);
   fs.outputFileSync(`${filesPath}/__name@dasherize__.component.ts.template`, replaceTemplate(demoComponent));
 
-  const collectionJson = fs.readJsonSync(collectionPath, { throws: false }) || {schematics: {}};
+  const collectionJson = fs.readJsonSync(collectionPath, { throws: false }) || { schematics: {} };
   collectionJson.schematics = {
     ...collectionJson.schematics,
     [`${demoComponent.componentName}-${demoComponent.demoName}`]: {
       description: schemaJson.title,
       factory: `./demo/${demoComponent.componentName}-${demoComponent.demoName}`,
       schema: `./demo/${demoComponent.componentName}-${demoComponent.demoName}/schema.json`
-    }};
-  fs.outputJsonSync(collectionPath, collectionJson, {spaces: '  '});
+    }
+  };
+  fs.outputJsonSync(collectionPath, collectionJson, { spaces: '  ' });
 }
 
 export function generate(): void {
   const componentPath = getComponentPaths();
   componentPath.forEach(p => {
     try {
-      createSchematic(parse(p))
+      createSchematic(parse(p));
     } catch (e) {
       console.error(`error ${p}`);
       console.error(e);
     }
   });
-  console.log(`success(${componentPath.length})`)
 }

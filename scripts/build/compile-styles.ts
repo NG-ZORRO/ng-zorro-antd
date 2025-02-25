@@ -10,8 +10,8 @@ import * as path from 'path';
 
 import { buildConfig } from '../build-config';
 
-const lessPluginCleanCSS = require('less-plugin-clean-css');
-const npmImportPlugin = require('less-plugin-npm-import');
+const LessPluginCleanCSS = require('less-plugin-clean-css');
+const NpmImportPlugin = require('less-plugin-npm-import');
 
 async function compileLess(
   content: string,
@@ -20,29 +20,22 @@ async function compileLess(
   sub?: boolean,
   rootPath?: string
 ): Promise<void> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const plugins: any[] = [];
-  const lessOptions: Less.Options = { plugins, javascriptEnabled: true };
+  const plugins: Less.Plugin[] = [];
+  const lessOptions: Less.Options = { plugins };
 
   if (min) {
-    plugins.push(new lessPluginCleanCSS({ advanced: true }));
+    plugins.push(new LessPluginCleanCSS({ advanced: true }));
   }
 
   if (sub) {
     lessOptions.paths = [path.dirname(rootPath as string)];
     lessOptions.filename = rootPath;
-    plugins.push(
-      new npmImportPlugin({
-        prefix: '~'
-      })
-    );
+    plugins.push(new NpmImportPlugin({ prefix: '~' }));
   }
 
   return less
     .render(content, lessOptions)
-    .then(({ css }) => {
-      return fs.writeFile(savePath, css);
-    })
+    .then(({ css }) => fs.writeFile(savePath, css))
     .catch(err => Promise.reject(err));
 }
 
@@ -51,14 +44,14 @@ const targetPath = buildConfig.publishDir;
 
 export async function compile(): Promise<void | void[]> {
   const componentFolders = fs.readdirSync(targetPath);
-  const promiseList = [];
+  const promiseList: Array<Promise<void>> = [];
 
   for (const dir of componentFolders) {
     if (await fs.pathExists(`${sourcePath}/${dir}/style/index.less`)) {
       // Copy style files for each component.
       await fs.copy(`${sourcePath}/${dir}/style`, `${targetPath}/${dir}/style`);
 
-      // Compile less files to CSS and delete the `entry.less` file.
+      // Compile `.less` files to CSS and delete the `entry.less` file.
       const buildFilePath = `${sourcePath}/${dir}/style/entry.less`;
       const componentLess = await fs.readFile(buildFilePath, { encoding: 'utf8' });
       if (await fs.pathExists(buildFilePath)) {
@@ -88,7 +81,7 @@ export async function compile(): Promise<void | void[]> {
     }
   }
 
-  // Copy concentrated less files.
+  // Copy concentrated `.less` files.
   await fs.copy(path.resolve(sourcePath, 'style'), path.resolve(targetPath, 'style'));
   await fs.writeFile(`${targetPath}/components.less`, await fs.readFile(`${sourcePath}/components.less`));
   await fs.writeFile(`${targetPath}/ng-zorro-antd.less`, await fs.readFile(`${sourcePath}/ng-zorro-antd.less`));

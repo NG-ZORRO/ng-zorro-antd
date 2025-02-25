@@ -54,7 +54,10 @@ export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges 
     }
   }
 
-  constructor(private viewContainer: ViewContainerRef, private templateRef: TemplateRef<NzSafeAny>) {}
+  constructor(
+    private viewContainer: ViewContainerRef,
+    private templateRef: TemplateRef<NzSafeAny>
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzStringTemplateOutletContext, nzStringTemplateOutlet } = changes;

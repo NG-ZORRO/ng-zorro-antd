@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+
 @Component({
   selector: 'nz-demo-select-custom-template',
+  imports: [NzIconModule, NzSelectModule],
   template: `
     <nz-select nzAllowClear nzPlaceHolder="Select OS" [nzCustomTemplate]="defaultTemplate">
       <nz-option nzLabel="Windows" nzValue="windows"></nz-option>
@@ -9,7 +13,7 @@ import { Component } from '@angular/core';
       <nz-option nzLabel="Android" nzValue="android"></nz-option>
     </nz-select>
     <ng-template #defaultTemplate let-selected>
-      <span nz-icon [nzType]="selected.nzValue"></span>
+      <nz-icon [nzType]="selected.nzValue" />
       {{ selected.nzLabel }}
     </ng-template>
     <br />
@@ -21,7 +25,7 @@ import { Component } from '@angular/core';
     </nz-select>
     <ng-template #multipleTemplate let-selected>
       <div class="ant-select-selection-item-content">
-        <span nz-icon [nzType]="selected.nzValue"></span>
+        <nz-icon [nzType]="selected.nzValue" />
         {{ selected.nzLabel }}
       </div>
     </ng-template>

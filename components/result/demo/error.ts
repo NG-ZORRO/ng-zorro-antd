@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+
 @Component({
   selector: 'nz-demo-result-error',
+  imports: [NzButtonModule, NzIconModule, NzResultModule, NzTypographyModule],
   template: `
     <nz-result
       nzTitle="Submission Failed"
@@ -12,12 +18,12 @@ import { Component } from '@angular/core';
         <div class="desc">
           <h4 nz-title>The content you submitted has the following error:</h4>
           <p nz-paragraph>
-            <span nz-icon nzType="close-circle"></span>
+            <nz-icon nzType="close-circle" />
             Your account has been frozen
             <a>Thaw immediately &gt;</a>
           </p>
           <p nz-paragraph>
-            <span nz-icon nzType="close-circle"></span>
+            <nz-icon nzType="close-circle" />
             Your account is not yet eligible to apply
             <a>Apply immediately &gt;</a>
           </p>

@@ -3,47 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { coerceElement } from '@angular/cdk/coercion';
-import { AfterViewInit, Directive, ElementRef, Inject, Input, OnChanges, Optional, Renderer2 } from '@angular/core';
+import { Directive, Input, booleanAttribute, inject } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
-
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
-
-const DISABLED_CLASSNAME = 'nz-animate-disabled';
 
 @Directive({
   selector: '[nzNoAnimation]',
-  exportAs: 'nzNoAnimation'
+  exportAs: 'nzNoAnimation',
+  host: {
+    '[class.nz-animate-disabled]': `nzNoAnimation || animationType === 'NoopAnimations'`
+  }
 })
-export class NzNoAnimationDirective implements OnChanges, AfterViewInit {
-  static ngAcceptInputType_nzNoAnimation: BooleanInput;
-
-  @Input() @InputBoolean() nzNoAnimation: boolean = false;
-
-  constructor(
-    private element: ElementRef,
-    private renderer: Renderer2,
-    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
-  ) {}
-
-  ngOnChanges(): void {
-    this.updateClass();
-  }
-
-  ngAfterViewInit(): void {
-    this.updateClass();
-  }
-
-  private updateClass(): void {
-    const element = coerceElement(this.element);
-    if (!element) {
-      return;
-    }
-    if (this.nzNoAnimation || this.animationType === 'NoopAnimations') {
-      this.renderer.addClass(element, DISABLED_CLASSNAME);
-    } else {
-      this.renderer.removeClass(element, DISABLED_CLASSNAME);
-    }
-  }
+export class NzNoAnimationDirective {
+  animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
+  @Input({ transform: booleanAttribute }) nzNoAnimation: boolean = false;
 }

@@ -3,10 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
+} from '@angular/core';
 
-import { BooleanInput, NgStyleInterface } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
 
@@ -17,29 +25,28 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
   selector: 'nz-slider-marks',
   exportAs: 'nzSliderMarks',
   template: `
-    <div class="ant-slider-mark">
+    @for (attr of marks; track attr.value) {
       <span
         class="ant-slider-mark-text"
-        *ngFor="let attr of marks; trackBy: trackById"
         [class.ant-slider-mark-active]="attr.active"
-        [ngStyle]="attr.style!"
+        [style]="attr.style"
         [innerHTML]="attr.label"
       ></span>
-    </div>
-  `
+    }
+  `,
+  host: {
+    class: 'ant-slider-mark'
+  }
 })
 export class NzSliderMarksComponent implements OnChanges {
-  static ngAcceptInputType_vertical: BooleanInput;
-  static ngAcceptInputType_included: BooleanInput;
-
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
   @Input() marksArray: NzExtendedMark[] = [];
-  @Input() min!: number;
-  @Input() max!: number;
-  @Input() @InputBoolean() vertical = false;
-  @Input() @InputBoolean() included = false;
-  @Input() reverse!: boolean;
+  @Input({ transform: numberAttribute }) min!: number;
+  @Input({ transform: numberAttribute }) max!: number;
+  @Input({ transform: booleanAttribute }) vertical = false;
+  @Input({ transform: booleanAttribute }) included = false;
+  @Input({ transform: booleanAttribute }) reverse!: boolean;
 
   marks: NzDisplayedMark[] = [];
 
@@ -53,10 +60,6 @@ export class NzSliderMarksComponent implements OnChanges {
     if (marksArray || lowerBound || upperBound || reverse) {
       this.togglePointActive();
     }
-  }
-
-  trackById(_index: number, mark: NzDisplayedMark): number {
-    return mark.value;
   }
 
   private buildMarks(): void {

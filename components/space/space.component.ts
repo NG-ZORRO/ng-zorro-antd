@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -13,22 +14,21 @@ import {
   OnChanges,
   OnDestroy,
   QueryList,
-  TemplateRef
+  TemplateRef,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzSpaceItemDirective } from './space-item.directive';
 import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize, NzSpaceType } from './types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'space';
-const SPACE_SIZE: {
-  [sizeKey in NzSpaceType]: number;
-} = {
+const SPACE_SIZE: Record<NzSpaceType, number> = {
   small: 8,
   middle: 16,
   large: 24
@@ -36,11 +36,11 @@ const SPACE_SIZE: {
 
 @Component({
   selector: 'nz-space, [nz-space]',
-  exportAs: 'NzSpace',
+  exportAs: 'nzSpace',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-content></ng-content>
-    <ng-template ngFor let-item let-last="last" let-index="index" [ngForOf]="items">
+    @for (item of items; track item; let last = $last; let index = $index) {
       <div
         class="ant-space-item"
         [style.margin-block-end.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
@@ -48,15 +48,18 @@ const SPACE_SIZE: {
       >
         <ng-container [ngTemplateOutlet]="item"></ng-container>
       </div>
-      <span
-        *ngIf="nzSplit && !last"
-        class="ant-space-split"
-        [style.margin-block-end.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-        [style.margin-inline-end.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
-      >
-        <ng-template [ngTemplateOutlet]="nzSplit" [ngTemplateOutletContext]="{ $implicit: index }"></ng-template>
-      </span>
-    </ng-template>
+      @if (nzSplit && !last) {
+        <span
+          class="ant-space-split"
+          [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
+          [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
+        >
+          <ng-template [nzStringTemplateOutlet]="nzSplit" [nzStringTemplateOutletContext]="{ $implicit: index }">{{
+            nzSplit
+          }}</ng-template>
+        </span>
+      }
+    }
   `,
   host: {
     class: 'ant-space',
@@ -67,26 +70,28 @@ const SPACE_SIZE: {
     '[class.ant-space-align-center]': 'mergedAlign === "center"',
     '[class.ant-space-align-baseline]': 'mergedAlign === "baseline"',
     '[style.flex-wrap]': 'nzWrap ? "wrap" : null'
-  }
+  },
+  imports: [NgTemplateOutlet, NzStringTemplateOutletDirective]
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
-  static ngAcceptInputType_nzWrap: BooleanInput;
-
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
   @Input() nzAlign?: NzSpaceAlign;
-  @Input() nzSplit: TemplateRef<{ $implicit: number }> | null = null;
-  @Input() @InputBoolean() nzWrap: boolean = false;
+  @Input() nzSplit: TemplateRef<{ $implicit: number }> | string | null = null;
+  @Input({ transform: booleanAttribute }) nzWrap: boolean = false;
   @Input() @WithConfig() nzSize: NzSpaceSize = 'small';
 
   @ContentChildren(NzSpaceItemDirective, { read: TemplateRef }) items!: QueryList<TemplateRef<NzSafeAny>>;
 
   mergedAlign?: NzSpaceAlign;
   spaceSize: number = SPACE_SIZE.small;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   private updateSpaceItems(): void {
     const numberSize = typeof this.nzSize === 'string' ? SPACE_SIZE[this.nzSize] : this.nzSize;
@@ -100,7 +105,7 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

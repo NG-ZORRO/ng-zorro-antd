@@ -3,25 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
-import { PlatformModule } from '@angular/cdk/platform';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzResizeObserverModule } from 'ng-zorro-antd/cdk/resize-observer';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzI18nModule } from 'ng-zorro-antd/i18n';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzPaginationModule } from 'ng-zorro-antd/pagination';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { NzFilterTriggerComponent } from './addon/filter-trigger.component';
 import { NzTableFilterComponent } from './addon/filter.component';
@@ -31,6 +13,7 @@ import { NzTableSelectionComponent } from './addon/selection.component';
 import { NzTableSortersComponent } from './addon/sorters.component';
 import { NzCellFixedDirective } from './cell/cell-fixed.directive';
 import { NzTableCellDirective } from './cell/cell.directive';
+import { NzCustomColumnDirective } from './cell/custom-column.directive';
 import { NzTdAddOnComponent } from './cell/td-addon.component';
 import { NzThAddOnComponent } from './cell/th-addon.component';
 import { NzThMeasureDirective } from './cell/th-measure.directive';
@@ -45,6 +28,7 @@ import { NzTableInnerScrollComponent } from './table/table-inner-scroll.componen
 import { NzTableVirtualScrollDirective } from './table/table-virtual-scroll.directive';
 import { NzTableComponent } from './table/table.component';
 import { NzTbodyComponent } from './table/tbody.component';
+import { NzTfootSummaryComponent } from './table/tfoot-summary.component';
 import { NzTheadComponent } from './table/thead.component';
 import { NzTableTitleFooterComponent } from './table/title-footer.component';
 import { NzTrExpandDirective } from './table/tr-expand.directive';
@@ -52,7 +36,7 @@ import { NzTrMeasureComponent } from './table/tr-measure.component';
 import { NzTrDirective } from './table/tr.directive';
 
 @NgModule({
-  declarations: [
+  imports: [
     NzTableComponent,
     NzThAddOnComponent,
     NzTableCellDirective,
@@ -62,8 +46,10 @@ import { NzTrDirective } from './table/tr.directive';
     NzTbodyComponent,
     NzTrDirective,
     NzTrExpandDirective,
+    NzTfootSummaryComponent,
     NzTableVirtualScrollDirective,
     NzCellFixedDirective,
+    NzCustomColumnDirective,
     NzTableContentComponent,
     NzTableTitleFooterComponent,
     NzTableInnerDefaultComponent,
@@ -92,32 +78,15 @@ import { NzTrDirective } from './table/tr.directive';
     NzTrDirective,
     NzTableVirtualScrollDirective,
     NzCellFixedDirective,
+    NzCustomColumnDirective,
     NzFilterTriggerComponent,
     NzTrExpandDirective,
+    NzTfootSummaryComponent,
     NzCellBreakWordDirective,
     NzCellAlignDirective,
     NzCellEllipsisDirective,
     NzTableFixedRowComponent,
     NzThSelectionComponent
-  ],
-  imports: [
-    BidiModule,
-    NzMenuModule,
-    FormsModule,
-    NzOutletModule,
-    NzRadioModule,
-    NzCheckboxModule,
-    NzDropDownModule,
-    NzButtonModule,
-    CommonModule,
-    PlatformModule,
-    NzPaginationModule,
-    NzResizeObserverModule,
-    NzSpinModule,
-    NzI18nModule,
-    NzIconModule,
-    NzEmptyModule,
-    ScrollingModule
   ]
 })
 export class NzTableModule {}

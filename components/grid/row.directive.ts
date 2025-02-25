@@ -15,7 +15,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   SimpleChanges
 } from '@angular/core';
@@ -54,7 +53,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   readonly actualGutter$ = new ReplaySubject<[number | null, number | null]>(1);
 
   dir: Direction = 'ltr';
-  private readonly destroy$ = new Subject();
+  private readonly destroy$ = new Subject<boolean>();
 
   getGutter(): [number | null, number | null] {
     const results: [number | null, number | null] = [null, null];
@@ -97,7 +96,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     public ngZone: NgZone,
     public platform: Platform,
     private breakpointService: NzBreakpointService,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
@@ -127,7 +126,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

@@ -8,14 +8,21 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
-  ViewEncapsulation
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
-import { NzSelectSizeType } from 'ng-zorro-antd/select';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -23,52 +30,63 @@ import { NzSelectSizeType } from 'ng-zorro-antd/select';
   selector: 'nz-calendar-header',
   exportAs: 'nzCalendarHeader',
   template: `
-    <div class="ant-picker-calendar-header">
-      <nz-select
-        class="ant-picker-calendar-year-select"
-        [nzSize]="size"
-        [nzDropdownMatchSelectWidth]="false"
-        [ngModel]="activeYear"
-        (ngModelChange)="updateYear($event)"
-      >
-        <nz-option *ngFor="let year of years" [nzLabel]="year.label" [nzValue]="year.value"></nz-option>
-      </nz-select>
+    @if (nzCustomHeader) {
+      <ng-container *nzStringTemplateOutlet="nzCustomHeader">{{ nzCustomHeader }}</ng-container>
+    } @else {
+      <div class="ant-picker-calendar-header">
+        <nz-select
+          class="ant-picker-calendar-year-select"
+          [nzSize]="size"
+          [nzDropdownMatchSelectWidth]="false"
+          [ngModel]="activeYear"
+          (ngModelChange)="updateYear($event)"
+        >
+          @for (year of years; track year.value) {
+            <nz-option [nzLabel]="year.label" [nzValue]="year.value" />
+          }
+        </nz-select>
 
-      <nz-select
-        *ngIf="mode === 'month'"
-        class="ant-picker-calendar-month-select"
-        [nzSize]="size"
-        [nzDropdownMatchSelectWidth]="false"
-        [ngModel]="activeMonth"
-        (ngModelChange)="monthChange.emit($event)"
-      >
-        <nz-option *ngFor="let month of months" [nzLabel]="month.label" [nzValue]="month.value"></nz-option>
-      </nz-select>
+        @if (mode === 'month') {
+          <nz-select
+            class="ant-picker-calendar-month-select"
+            [nzSize]="size"
+            [nzDropdownMatchSelectWidth]="false"
+            [ngModel]="activeMonth"
+            (ngModelChange)="monthChange.emit($event)"
+          >
+            @for (month of months; track month.value) {
+              <nz-option [nzLabel]="month.label" [nzValue]="month.value" />
+            }
+          </nz-select>
+        }
 
-      <nz-radio-group
-        class="ant-picker-calendar-mode-switch"
-        [(ngModel)]="mode"
-        (ngModelChange)="modeChange.emit($event)"
-        [nzSize]="size"
-      >
-        <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
-        <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
-      </nz-radio-group>
-    </div>
+        <nz-radio-group
+          class="ant-picker-calendar-mode-switch"
+          [(ngModel)]="mode"
+          (ngModelChange)="modeChange.emit($event)"
+          [nzSize]="size"
+        >
+          <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
+          <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
+        </nz-radio-group>
+      </div>
+    }
   `,
   host: {
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
-  }
+  },
+  imports: [NzSelectModule, FormsModule, NzRadioModule, NzStringTemplateOutletDirective]
 })
-export class NzCalendarHeaderComponent implements OnInit {
+export class NzCalendarHeaderComponent implements OnInit, OnChanges {
   @Input() mode: 'month' | 'year' = 'month';
-  @Input() fullscreen: boolean = true;
+  @Input({ transform: booleanAttribute }) fullscreen: boolean = true;
   @Input() activeDate: CandyDate = new CandyDate();
+  @Input() nzCustomHeader?: string | TemplateRef<void>;
 
-  @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
-  @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();
-  @Output() readonly monthChange: EventEmitter<number> = new EventEmitter();
+  @Output() readonly modeChange = new EventEmitter<'month' | 'year'>();
+  @Output() readonly yearChange = new EventEmitter<number>();
+  @Output() readonly monthChange = new EventEmitter<number>();
   // @Output() readonly valueChange: EventEmitter<CandyDate> = new EventEmitter();
 
   yearOffset: number = 10;
@@ -96,11 +114,24 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.lang.month;
   }
 
-  constructor(private i18n: I18n, private dateHelper: DateHelperService) {}
+  constructor(
+    private i18n: I18n,
+    private dateHelper: DateHelperService
+  ) {}
 
   ngOnInit(): void {
     this.setUpYears();
     this.setUpMonths();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['activeDate']) {
+      const previousActiveDate = changes['activeDate'].previousValue as CandyDate;
+      const currentActiveDate = changes['activeDate'].currentValue as CandyDate;
+      if (previousActiveDate?.getYear() !== currentActiveDate?.getYear()) {
+        this.setUpYears();
+      }
+    }
   }
 
   updateYear(year: number): void {

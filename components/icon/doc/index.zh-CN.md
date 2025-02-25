@@ -9,36 +9,35 @@ cover: https://gw.alipayobjects.com/zos/alicdn/rrwbSt3FQ/Icon.svg
 
 语义化的矢量图形。
 
-
 ## 图标列表
 
 新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/) 同步保持图标的更新。
 
-```ts
+```typescript
 import { NzIconModule } from 'ng-zorro-antd/icon';
 ```
 
 ## API
 
-### [nz-icon]
+### nz-icon, [nz-icon]
 
-| 参数 | 说明 | 类型 | 默认值 | 支持全局配置 |
-| --- | --- | --- | --- | --- |
-| `[nzType]`| 图标类型，遵循图标的命名规范 | string | - |
-| `[nzTheme]` | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标 | `'fill'丨'outline'丨'twotone'` | `'outline'` | ✅ |
-| `[nzSpin]` | 是否有旋转动画 | `boolean` | `false` |
-| `[nzTwotoneColor]` | 仅适用双色图标，设置双色图标的主要颜色，默认为 Ant Design 蓝色 | `string (十六进制颜色)` | - | ✅ |
-| `[nzIconfont]` | 指定来自 IconFont 的图标类型 | string | - |
-| `[nzRotate]` | 图标旋转角度（7.0.0 开始支持） | `number` | - |
+| 参数                 | 说明                                    | 类型                           | 默认值         | 支持全局配置 |
+|--------------------|---------------------------------------|------------------------------|-------------|--------|
+| `[nzType]`         | 图标类型，遵循图标的命名规范                        | string                       | -           |
+| `[nzTheme]`        | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标        | `'fill'丨'outline'丨'twotone'` | `'outline'` | ✅      |
+| `[nzSpin]`         | 是否有旋转动画                               | `boolean`                    | `false`     |
+| `[nzTwotoneColor]` | 仅适用双色图标，设置双色图标的主要颜色，默认为 Ant Design 蓝色 | `string (十六进制颜色)`            | -           | ✅      |
+| `[nzIconfont]`     | 指定来自 IconFont 的图标类型                   | string                       | -           |
+| `[nzRotate]`       | 图标旋转角度（7.0.0 开始支持）                    | `number`                     | -           |
 
 ### NzIconService
 
-| 方法/属性 | 说明 | 参数 |
-| --- | --- | --- |
-| `addIcon()` | 用于静态引入图标，可传入多个值（或者用数组解构赋值） | `IconDefinition` |
-| `addIconLiteral()` | 用于静态引入用户自定义图标 | `string`, `string (SVG)` |
-| `fetchFromIconfont()` | 用于从 FontIcon 获取图标资源文件 | `NzIconfontOption` |
-| `changeAssetsSource()` | 用于修改动态加载 icon 的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 cdn | `string` |
+| 方法/属性                  | 说明                                              | 参数                       |
+|------------------------|-------------------------------------------------|--------------------------|
+| `addIcon()`            | 用于静态引入图标，可传入多个值（或者用数组解构赋值）                      | `IconDefinition`         |
+| `addIconLiteral()`     | 用于静态引入用户自定义图标                                   | `string`, `string (SVG)` |
+| `fetchFromIconfont()`  | 用于从 IconFont 获取图标资源文件                           | `NzIconfontOption`       |
+| `changeAssetsSource()` | 用于修改动态加载 icon 的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 cdn | `string`                 |
 
 ### SVG 图标
 
@@ -51,16 +50,16 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 可参与 Ant Design 的相关讨论：[#10353](https://github.com/ant-design/ant-design/issues/10353)。
 
-NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解决方案。新版本中我们提供了旧 API 兼容，如果你不修改既有的代码，所有的图标都会被动态加载成 `outline` 主题的图标，而最佳实践是使用新的指令 `nz-icon` 并传入 `theme` 以明确图标的主题风格，例如：
+NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解决方案。新版本中我们提供了旧 API 兼容，如果你不修改既有的代码，所有的图标都会被动态加载成 `outline` 主题的图标，而最佳实践是使用新的组件 `nz-icon` 并传入 `theme` 以明确图标的主题风格，例如：
 
 ```html
-<span nz-icon [nzType]="'star'" [nzTheme]="'fill'"></span>
+<nz-icon nzType="star" nzTheme="fill" />
 ```
 
 所有的图标都会以 `<svg>` 标签渲染，但是你还是可以用之前对 i 标签设置的样式和类来控制 svg 的样式，例如：
 
 ```html
-<span nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></span>
+<nz-icon nzType="message" style="font-size: 16px; color: #08c;" />
 ```
 
 ### 静态加载与动态加载
@@ -69,7 +68,7 @@ NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解�
 
 静态加载，在 `AppModule` 里加入你需要的图标（推荐）或者是全部的图标，例如：
 
-```ts
+```typescript
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -87,15 +86,20 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
 // const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    NzIconModule.forRoot(icons)
-  ]
-  bootstrap: [ AppComponent ]
+  declarations: [AppComponent],
+  imports: [NzIconModule.forRoot(icons)],
+  bootstrap: [AppComponent]
 })
-export class AppModule {
+export class AppModule {}
+```
+
+在 standalone 模式下，你可以在 `app.config.ts` 中使用 `provideNzIcons` 引入这些图标：
+
+```typescript
+import { provideNzIcons } from 'ng-zorro-antd/icon';
+
+export const appConfig = {
+  providers: [provideNzIcons(icons)]
 }
 ```
 
@@ -127,9 +131,9 @@ export class AppModule {
 
 有时候，为了避免增大 main.js 的体积，你可能想要从懒加载模块中引入图标，这时你就可以使用 `NzIconModule.forChild` 来追加图标。
 
-```ts
+```typescript
 @NgModule({
-  imports: [CommonModule, NzIconModule.forChild([QuestionOutline])],
+  imports: [NzIconModule.forChild([QuestionOutline])]
 })
 class ChildModule {}
 ```
@@ -138,13 +142,33 @@ class ChildModule {}
 
 当然，不要忘记在 `NZ_ICONS` 中删除该图标。
 
+在 Standalone 模式下，你可以在懒加载的组件中或路由的 `providers` 中使用 `provideNzIconsPatch` 来补充图标：
+
+```typescript
+import { NzIconModule, provideNzIconsPatch } from 'ng-zorro-antd/icon';
+
+// 在 xxx.component.ts 中
+@Component({
+  standalone: true,
+  imports: [NzIconModule],
+  providers: [provideNzIconsPatch([QuestionOutline])]
+})
+class ChildComponent {}
+
+// 或 在 xxx.routes.ts 中
+const routes: Routes = [{
+  path: '',
+  providers: [provideNzIconsPatch([QuestionOutline])],
+}]
+```
+
 ### 双色图标主色
 
 对于双色图标，可以通过提供全局配置 `{ nzIcon: { nzTwotoneColor: 'xxx' } }` 或 `NzConfigService` 的对应方法修改来全局设置图标主色。
 
 ### 自定义 font 图标
 
-我们提供了一个 `fetchFromIconfont` 方法，方便开发者调用在 iconfont.cn 上自行管理的图标。
+我们提供了一个 `fetchFromIconfont` 方法，方便开发者调用在 [iconfont.cn](http://iconfont.cn/) 上自行管理的图标。
 
 ```typescript
 this._iconService.fetchFromIconfont({
@@ -153,16 +177,16 @@ this._iconService.fetchFromIconfont({
 ```
 
 ```html
-<span nz-icon [nzIconfont]="'icon-tuichu'"></span>
+<nz-icon nzIconfont="icon-tuichu" />
 ```
 
 其本质上是创建了一个使用 `<use>` 标签渲染图标的组件。
 
 `options` 的配置项如下：
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `scriptUrl` | [iconfont.cn](http://iconfont.cn/) 项目在线生成的 `js` 地址，在 `namespace` 也设置的情况下有效 | string | - |
+| 参数          | 说明                                                                         | 类型     | 默认值 |
+|-------------|----------------------------------------------------------------------------|--------|-----|
+| `scriptUrl` | [iconfont.cn](http://iconfont.cn/) 项目在线生成的 `js` 地址，在 `namespace` 也设置的情况下有效 | string | -   |
 
 在 scriptUrl 都设置有效的情况下，组件在渲染前会自动引入 [iconfont.cn](http://iconfont.cn/) 项目中的图标符号集，无需手动引入。
 
@@ -184,15 +208,15 @@ this._iconService.fetchFromIconfont({
 
 ### 我想静态引入全部的图标，该怎么做？
 
-实际上我们已经在 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分演示过了：
+尽管这是不推荐的行为，实际上我们已经在 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分演示过了：
 
-```ts
-// import * as AllIcons from '@ant-design/icons-angular/icons';
+```typescript
+import * as AllIcons from '@ant-design/icons-angular/icons';
 
-// const antDesignIcons = AllIcons as {
-//   [key: string]: IconDefinition;
-// };
-// const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 ```
 
 然后通过 forRoot 或者 `NzIconService` 的 `addIcon` 方法引入。

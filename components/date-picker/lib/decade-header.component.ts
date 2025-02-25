@@ -4,6 +4,8 @@
  */
 
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+
+import { NzDateMode } from '../standard-types';
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
 
@@ -16,7 +18,10 @@ import { PanelSelector } from './interface';
 })
 export class DecadeHeaderComponent extends AbstractPanelHeader {
   override previous(): void {}
+
   override next(): void {}
+
+  override mode: NzDateMode = 'decade';
 
   get startYear(): number {
     return parseInt(`${this.value.getYear() / 100}`, 10) * 100;
@@ -39,9 +44,7 @@ export class DecadeHeaderComponent extends AbstractPanelHeader {
       {
         className: `${this.prefixCls}-decade-btn`,
         title: '',
-        onClick: () => {
-          // noop
-        },
+        onClick: () => {},
         label: `${this.startYear}-${this.endYear}`
       }
     ];

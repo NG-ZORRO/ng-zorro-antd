@@ -38,20 +38,19 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`disabled`.
 
-| Property | Description | Type | Default | Global Config |
-| -------- | ----------- | ---- | ------- | ------------- |
-| `[disabled]` | prevents a user from interacting with the button | `boolean` | `false` |
-| `[nzGhost]` | make background transparent and invert text and border colors | `boolean` | `false` |
-| `[nzLoading]` | set the loading status of button | `boolean` | `false` |
-| `[nzShape]` | can be set to `circle` `round` or omitted | `'circle'\|'round'` | - | |
-| `[nzSize]` | can be set to `small` `large` or omitted | `'large'\|'small'\|'default'` | `'default'` | ✅ |
-| `[nzType]` | can be set to `primary` `dashed` `text` `link` or omitted (meaning `default`) | `'primary'\|'dashed'\|'link'\|'text'` | - |
-| `[nzBlock]` | option to fit button width to its parent width | `boolean` | `false` |
-| `[nzDanger]` | set the danger status of button | boolean | `false` |  |
-
+| Property      | Description                                                                   | Type                                  | Default     | Global Config |
+| ------------- | ----------------------------------------------------------------------------- | ------------------------------------- | ----------- | ------------- |
+| `[disabled]`  | prevents a user from interacting with the button                              | `boolean`                             | `false`     |
+| `[nzGhost]`   | make background transparent and invert text and border colors                 | `boolean`                             | `false`     |
+| `[nzLoading]` | set the loading status of button                                              | `boolean`                             | `false`     |
+| `[nzShape]`   | can be set to `circle` `round` or omitted                                     | `'circle'\|'round'`                   | -           |               |
+| `[nzSize]`    | can be set to `small` `large` or omitted                                      | `'large'\|'small'\|'default'`         | `'default'` | ✅             |
+| `[nzType]`    | can be set to `primary` `dashed` `text` `link` or omitted (meaning `default`) | `'primary'\|'dashed'\|'link'\|'text'` | -           |
+| `[nzBlock]`   | option to fit button width to its parent width                                | `boolean`                             | `false`     |
+| `[nzDanger]`  | set the danger status of button                                               | boolean                               | `false`     |               |
 
 ### nz-button-group
 
-| Property | Description | Type | Default | Global Config |
-| -------- | ----------- | ---- | ------- | ------------- |
-| `[nzSize]` | can be set to `small` `large` or omitted | `'large'\|'small'\|'default'` | `'default'` | - |
+| Property   | Description                              | Type                          | Default     | Global Config |
+| ---------- | ---------------------------------------- | ----------------------------- | ----------- | ------------- |
+| `[nzSize]` | can be set to `small` `large` or omitted | `'large'\|'small'\|'default'` | `'default'` | -             |

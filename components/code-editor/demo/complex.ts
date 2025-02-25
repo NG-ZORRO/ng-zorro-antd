@@ -1,11 +1,16 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Renderer2, ViewChild } from '@angular/core';
+import { Component, Renderer2, ViewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzCodeEditorComponent } from 'ng-zorro-antd/code-editor';
-import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
+import { NzCodeEditorComponent, NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzTooltipDirective, NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-code-editor-complex',
+  imports: [FormsModule, NzCodeEditorModule, NzIconModule, NzTypographyModule, NzSwitchModule, NzToolTipModule],
   template: `
     <p nz-paragraph style="margin-bottom: 8px;">
       Loading
@@ -20,14 +25,13 @@ import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
       [nzEditorOption]="{ language: 'javascript' }"
     ></nz-code-editor>
     <ng-template #toolkit>
-      <span
-        nz-icon
+      <nz-icon
         [class.active]="fullScreen"
         nz-tooltip
         nzTooltipTitle="Toggle Fullscreen"
         [nzType]="fullScreen ? 'fullscreen-exit' : 'fullscreen'"
         (click)="toggleFullScreen()"
-      ></span>
+      />
     </ng-template>
   `,
   styles: [
@@ -75,12 +79,9 @@ export class NzDemoCodeEditorComplexComponent {
 }
 
 console.log(flatten(['1', 2, [[3]]]))`;
-  private document: Document;
+  private document: Document = inject(DOCUMENT);
 
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  constructor(@Inject(DOCUMENT) document: any, private renderer: Renderer2) {
-    this.document = document;
-  }
+  constructor(private renderer: Renderer2) {}
 
   toggleFullScreen(): void {
     this.fullScreen = !this.fullScreen;

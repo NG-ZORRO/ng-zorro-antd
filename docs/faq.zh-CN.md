@@ -19,7 +19,7 @@ Angular 与 angular.js 不是同一种前端框架，angular.js 发布的时间�
 
 ### 我可以在 Angular 其他版本中使用 ng-zorro-antd 吗？
 
-`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，例如 `ng-zorro-antd@8` 支持 `@angular/core@8` 版本，依次类推，为了获得最好的性能，推荐升级至最新版本的 Angular。升级 Angular 可以参考[该文档]( https://update.angular.io)。
+`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，例如 `ng-zorro-antd@8` 支持 `@angular/core@8` 版本，依次类推，为了获得最好的性能，推荐升级至最新版本的 Angular。升级 Angular 可以参考[此文档](https://angular.cn/update-guide)。
 
 ### 我可以只使用 ng-zorro-antd 的部分组件吗？
 
@@ -35,7 +35,7 @@ ng-zorro-antd 本质上是组件库，与用户自己写的 `@Component` 没有�
 
 ### Can't Bind to since it isn't a known property of
 
-如果使用多 Module 管理方式，NG-ZORRO 的模块需要在每个子 Module 中都要 import，或者在 `ShareModule` 中 export，可以参考[官方文档](https://angular.io/guide/sharing-ngmodules)。
+如果使用多 Module 管理方式，NG-ZORRO 的模块需要在每个子 Module 中都要 import，或者在 `ShareModule` 中 export，可以参考[官方文档](https://angular.cn/guide/ngmodules/sharing)。
 
 ### Expression Changed After It Has Been Checked Error 错误
 
@@ -43,7 +43,7 @@ Angular 的数据流是单向数据流，违反数据流走向会引起该问题
 
 ### Can't bind to 'formGroup' since it isn't a known property of 'form'
 
-使用 Reactive Forms 需要额外引入 `ReactiveFormsModule`，可以参考[官方文档](https://angular.io/guide/reactive-forms)。
+使用 Reactive Forms 需要额外引入 `ReactiveFormsModule`，可以参考[官方文档](https://angular.cn/guide/forms/reactive-forms)。
 
 ### 模板中 `[nzValue]="data"` `nzValue="data"` 与 `nzValue="{{data}}"` 有什么区别
 
@@ -51,7 +51,7 @@ Angular 的数据流是单向数据流，违反数据流走向会引起该问题
 
 ### 数据修改后页面为什么没有更新
 
-为了获得更好的性能，NG-ZORRO 所有组件都运行在 [OnPush](https://angular.io/api/core/ChangeDetectionStrategy) 模式下，这意味着对 `@Input()` 数据的 mutate 将不会生效，请使用 immutable 方式操作数组或者对象。
+为了获得更好的性能，NG-ZORRO 所有组件都运行在 [OnPush](https://angular.cn/guide/components/advanced-configuration#changedetectionstrategy) 模式下，这意味着对 `@Input()` 数据的 mutate 将不会生效，请使用 immutable 方式操作数组或者对象。
 
 ```typescript
 // 增加数据
@@ -100,7 +100,7 @@ ISSUE 列表是为了 开发者 和 用户 追踪相关的开发进度而设计�
 
 ### 浏览器兼容性问题
 
-首先请确定浏览器版本得到了 Angular 的[官方支持](https://github.com/angular/angular)，并正确引入了 [polyfill](https://angular.io/guide/browser-support) 文件，另外有些组件的部分使用方式不支持部分浏览器（例如 flex显示方式），如果不是以上问题，请提 ISSUE 给我们。
+首先请确定浏览器版本得到了 Angular 的[官方支持](https://github.com/angular/angular)，并正确引入了 [polyfill](https://angular.cn/reference/versions#polyfills) 文件，另外有些组件的部分使用方式不支持部分浏览器（例如 flex显示方式），如果不是以上问题，请提 ISSUE 给我们。
 
 ### 官网能正常工作，相同的用法本地运行有问题，是组件库的 BUG 吗？
 

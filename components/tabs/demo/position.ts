@@ -1,18 +1,25 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzTabPosition } from 'ng-zorro-antd/tabs';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-position',
+  imports: [FormsModule, NzSelectModule, NzTabsModule],
   template: `
     <div style="margin-bottom: 16px;">
-      Tab position：
+      Tab position:
       <nz-select [(ngModel)]="position" style="width: 80px;">
-        <nz-option *ngFor="let option of options" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        @for (option of options; track option.value) {
+          <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        }
       </nz-select>
     </div>
     <nz-tabset [nzTabPosition]="position">
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
+      }
     </nz-tabset>
   `
 })

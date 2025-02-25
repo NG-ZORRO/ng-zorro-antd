@@ -1,10 +1,14 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
+import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 interface ItemData {
   gender: string;
@@ -20,21 +24,24 @@ interface Name {
 
 @Component({
   selector: 'nz-demo-list-infinite-load',
+  imports: [CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf, NzListModule, NzSkeletonModule],
   template: `
     <div>
       <cdk-virtual-scroll-viewport itemSize="73" class="demo-infinite-container">
         <nz-list>
           <nz-list-item *cdkVirtualFor="let item of ds">
-            <nz-skeleton *ngIf="!item" [nzAvatar]="true" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
-            <nz-list-item-meta
-              *ngIf="item"
-              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              [nzDescription]="item.email"
-            >
-              <nz-list-item-meta-title>
-                <a href="https://ng.ant.design">{{ item.name.last }}</a>
-              </nz-list-item-meta-title>
-            </nz-list-item-meta>
+            @if (item) {
+              <nz-list-item-meta
+                nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                [nzDescription]="item.email"
+              >
+                <nz-list-item-meta-title>
+                  <a href="https://ng.ant.design">{{ item.name.last }}</a>
+                </nz-list-item-meta-title>
+              </nz-list-item-meta>
+            } @else {
+              <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+            }
           </nz-list-item>
         </nz-list>
       </cdk-virtual-scroll-viewport>
@@ -55,24 +62,20 @@ interface Name {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
-  ds = new MyDataSource(this.http);
+export class NzDemoListInfiniteLoadComponent implements OnInit {
+  private http = inject(HttpClient);
+  private nzMessage = inject(NzMessageService);
+  private destroyRef = inject(DestroyRef);
 
-  private destroy$ = new Subject();
-  constructor(private http: HttpClient, private nzMessage: NzMessageService) {}
+  ds = new MyDataSource(this.http);
 
   ngOnInit(): void {
     this.ds
       .completed()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.nzMessage.warning('Infinite List loaded all');
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
 

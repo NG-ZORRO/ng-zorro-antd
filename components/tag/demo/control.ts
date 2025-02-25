@@ -1,30 +1,38 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-tag-control',
+  imports: [FormsModule, NzIconModule, NzInputModule, NzTagModule, NzNoAnimationDirective],
   template: `
-    <nz-tag
-      *ngFor="let tag of tags; let i = index"
-      [nzMode]="i === 0 ? 'default' : 'closeable'"
-      (nzOnClose)="handleClose(tag)"
-    >
-      {{ sliceTagName(tag) }}
-    </nz-tag>
-    <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
-      <span nz-icon nzType="plus"></span>
-      New Tag
-    </nz-tag>
-    <input
-      #inputElement
-      nz-input
-      nzSize="small"
-      *ngIf="inputVisible"
-      type="text"
-      [(ngModel)]="inputValue"
-      style="width: 78px;"
-      (blur)="handleInputConfirm()"
-      (keydown.enter)="handleInputConfirm()"
-    />
+    @for (tag of tags; track tag) {
+      <nz-tag [nzMode]="$index === 0 ? 'default' : 'closeable'" (nzOnClose)="handleClose(tag)">
+        {{ sliceTagName(tag) }}
+      </nz-tag>
+    }
+
+    @if (!inputVisible) {
+      <nz-tag class="editable-tag" nzNoAnimation (click)="showInput()">
+        <nz-icon nzType="plus" />
+        New Tag
+      </nz-tag>
+    } @else {
+      <input
+        #inputElement
+        nz-input
+        nzSize="small"
+        type="text"
+        [(ngModel)]="inputValue"
+        style="width: 78px;"
+        (blur)="handleInputConfirm()"
+        (keydown.enter)="handleInputConfirm()"
+      />
+    }
   `,
   styles: [
     `

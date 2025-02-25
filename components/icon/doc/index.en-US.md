@@ -12,31 +12,31 @@ Semantic vector graphics.
 
 We are still adding icons right now, syncing to [antd](https://ant.design/components/icon/).
 
-```ts
+```typescript
 import { NzIconModule } from 'ng-zorro-antd/icon';
 ```
 
 ## API
 
-### [nz-icon]
+### nz-icon, [nz-icon]
 
-| Property | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-| `[nzType]` | Type of the ant design icon | `string` | - |
-| `[nzTheme]` | Type of the ant design icon | `'fill'\|'outline'\|'twotone'` | `'outline'` | ✅ |
-| `[nzSpin]` | Rotate icon with animation | `boolean` | `false` |
-| `[nzTwotoneColor]` | Only support the two-tone icon. Specific the primary color. | `string (hex color)` | - | ✅ |
-| `[nzIconfont]` | Type of the icon from iconfont | `string` | - |
-| `[nzRotate]` | Rotate degrees | `number` | - |
+| Property           | Description                                                 | Type                           | Default     | Global Config |
+|--------------------|-------------------------------------------------------------|--------------------------------|-------------|---------------|
+| `[nzType]`         | Type of the ant design icon                                 | `string`                       | -           |
+| `[nzTheme]`        | Type of the ant design icon                                 | `'fill'\|'outline'\|'twotone'` | `'outline'` | ✅             |
+| `[nzSpin]`         | Rotate icon with animation                                  | `boolean`                      | `false`     |
+| `[nzTwotoneColor]` | Only support the two-tone icon. Specific the primary color. | `string (hex color)`           | -           | ✅             |
+| `[nzIconfont]`     | Type of the icon from iconfont                              | `string`                       | -           |
+| `[nzRotate]`       | Rotate degrees                                              | `number`                       | -           |
 
 ### NzIconService
 
-| Methods/Properties | Description | Parameters |
-| --- | --- | --- |
-| `addIcon()` | To import icons statically | `IconDefinition` |
-| `addIconLiteral()` | To statically import custom icons | `string`, `string (SVG)` |
-| `fetchFromIconfont()` | To get icon assets from fonticon | `NzIconfontOption` |
-| `changeAssetsSource()` | To change the location of your icon assets, so that you can deploy these icons wherever you want | `string` |
+| Methods/Properties     | Description                                                                                      | Parameters               |
+|------------------------|--------------------------------------------------------------------------------------------------|--------------------------|
+| `addIcon()`            | To import icons statically                                                                       | `IconDefinition`         |
+| `addIconLiteral()`     | To statically import custom icons                                                                | `string`, `string (SVG)` |
+| `fetchFromIconfont()`  | To get icon assets from iconfont                                                                 | `NzIconfontOption`       |
+| `changeAssetsSource()` | To change the location of your icon assets, so that you can deploy these icons wherever you want | `string`                 |
 
 ### SVG icons
 
@@ -47,34 +47,36 @@ We synced to Ant Design and replaced font icons with svg icons which bring benef
 - Support multiple colors for icon.
 - No need to change built-in icons with overriding styles by providing more props in component.
 
-You can join in [this dicussion of Ant Design](https://github.com/ant-design/ant-design/issues/10353).
+You can join in [this discussion of Ant Design](https://github.com/ant-design/ant-design/issues/10353).
 
-NG-ZORRO hadn't provided an icon component. Instead, icon based on font files was provided. We make this new directive compatible to old API. If you make no changes to your existing code, old icons would be dynamically loaded as `outline` icons. But the best pratice is always to use `nz-icon` directive and specify the `theme` prop.
+NG-ZORRO hadn't provided an icon component at the beginning. Instead, icon based on font files was provided.
+We make this new directive compatible to old API. If you make no changes to your existing code, old icons would be dynamically loaded as `outline`icons.
+But the best practice is always to use `nz-icon` component and specify the `theme` prop.
 
 ```html
-<span nz-icon [nzType]="'star'" [nzTheme]="'fill'"></span>
+<nz-icon nzType="star" nzTheme="fill" />
 ```
 
 All the icons will be rendered to `<svg>`, and styles and classes applied to `<i>` would work.
 
 ```html
-<span nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></span>
+<nz-icon nzType="message" style="font-size: 16px; color: #08c;" />
 ```
 
 ### Static loading and dynamic loading
 
 As for icons provided by Ant Design, there are two ways of importing them into your project.
 
-Static loading. By registering icons to `AppModule` you load icons statically.
+Static loading. By registering icons to `AppModule`, you load icons statically.
 
-```ts
+```typescript
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 // Import what you need. RECOMMENDED. ✔️
 import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
 
-const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
+const icons: IconDefinition[] = [AccountBookFill, AlertOutline, AlertFill];
 
 // Import all. NOT RECOMMENDED. ❌
 // import * as AllIcons from '@ant-design/icons-angular/icons';
@@ -85,23 +87,32 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
 // const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    NzIconModule.forRoot(icons),
-  ]
-  bootstrap: [ AppComponent ]
+  declarations: [AppComponent],
+  imports: [NzIconModule.forRoot(icons)],
+  bootstrap: [AppComponent]
 })
-export class AppModule {
+export class AppModule {}
+```
+
+For standalone mode, you can register icons in `app.config.ts` with `provideNzIcons` API:
+
+```typescript
+import { provideNzIcons } from 'ng-zorro-antd/icon';
+
+export const appConfig = {
+  providers: [provideNzIcons(icons)]
 }
 ```
 
-Actually this calls `addIcon` of `NzIconService`. Icons imported would be bundled into your `.js` files. Static loading would increase your bundle's size so we recommend use dynamic importing as much as you can.
+Actually this calls `addIcon` of `NzIconService`. Icons imported would be bundled into your `.js` files. Static loading
+would increase your bundle's size so we recommend use dynamic importing as much as you can.
 
-> Icons used by `NG-ZORRO` itself are imported statically to increase loading speed. However, icons demonstrated on the official website are loaded dynamically.
+> Icons used by `NG-ZORRO` itself are imported statically to increase loading speed. However, icons demonstrated on the
+> official website are loaded dynamically.
 
-Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO detects that the icon you want to render hasn't been registered, it would fire a HTTP request to load it. All you have to do is to config your `angular.json` like this:
+Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO detects that the icon you want to
+render hasn't been registered, it would fire a HTTP request to load it. All you have to do is to config your
+`angular.json` like this:
 
 ```json
 {
@@ -115,9 +126,11 @@ Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO
 }
 ```
 
-You can call `changeAssetsSource()` of `NzIconService` to change the location of your icon assets, so that you can deploy these icon assets to cdn. The parameter you passed would be add in front of `assets/`.
+You can call `changeAssetsSource()` of `NzIconService` to change the location of your icon assets, so that you can
+deploy these icon assets to cdn. The parameter you passed would be add in front of `assets/`.
 
-Let's assume that you deploy static assets under `https://mycdn.somecdn.com/icons/assets`. You can call `changeAssetsSource('https://mycdn.somecdn.com/icons')` to tell NG-ZORRO that all your resources are located there.
+Let's assume that you deploy static assets under `https://mycdn.somecdn.com/icons/assets`. You can call
+`changeAssetsSource('https://mycdn.somecdn.com/icons')` to tell NG-ZORRO that all your resources are located there.
 
 Please call this in component's constructor or `AppInitService`.
 
@@ -125,42 +138,64 @@ Please call this in component's constructor or `AppInitService`.
 
 Sometimes, you want to import icons in lazy modules to avoid increasing the size of the main.js. You can use `NzIconModule.forChild`.
 
-```ts
+```typescript
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @NgModule({
-  imports: [CommonModule, NzIconModule.forChild([QuestionOutline])],
+  imports: [NzIconModule.forChild([QuestionOutline])]
 })
 class ChildModule {}
 ```
 
 When `ChildModule` get loaded, the icon QuestionOutline would be usable across the application.
 
+For standalone mode, you can import icons in `providers` of the standalone component or router with `provideNzIconsPatch` API.
+
+```typescript
+import { NzIconModule, provideNzIconsPatch } from 'ng-zorro-antd/icon';
+
+// in xxx.component.ts
+@Component({
+  standalone: true,
+  imports: [NzIconModule],
+  providers: [provideNzIconsPatch([QuestionOutline])]
+})
+class ChildComponent {}
+
+// or in xxx.routes.ts
+const routes: Routes = [{
+  path: '',
+  providers: [provideNzIconsPatch([QuestionOutline])],
+}]
+```
+
 ### Set Default TwoTone Color
 
-When using the two-tone icons, you provide a global configuration like `{ nzIcon: { nzTwotoneColor: 'xxx' } }` via `NzConfigService` or call corresponding `set` method to change two default twotone color.
+When using the two-tone icons, you provide a global configuration like `{ nzIcon: { nzTwotoneColor: 'xxx' } }`via `NzConfigService` or call corresponding `set` method to change to default twotone color.
 
 ### Custom Font Icon
 
 We added a `fetchFromIconfont` method function to help developer using their own icons deployed at [iconfont.cn](http://iconfont.cn/) in a convenient way.
 
-> This method is specified for iconfont.cn.
+> This method is specified for [iconfont.cn](http://iconfont.cn/).
 
-```ts
+```typescript
 this._iconService.fetchFromIconfont({
   scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
 });
 ```
 
 ```html
-<span nz-icon [nzIconfont]="'icon-tuichu'"></span>
+<nz-icon nzIconfont="icon-tuichu" />
 ```
 
-It create a component that uses SVG sprites in essence.
+It creates a component that uses SVG sprites in essence.
 
 The following option are available:
 
-| Property | Description | Type | Default |
-| --- | --- | --- | --- |
-| `scriptUrl` | The URL generated by iconfont.cn project. | `string` | - |
+| Property    | Description                               | Type     | Default |
+|-------------|-------------------------------------------|----------|---------|
+| `scriptUrl` | The URL generated by iconfont.cn project. | `string` | -       |
 
 The property scriptUrl should be set to import the svg sprite symbols.
 
@@ -168,7 +203,7 @@ See [iconfont.cn](http://iconfont.cn/help/detail?spm=a313x.7781069.1998910419.15
 
 ### Namespace
 
-We introduced namespace so you could add your own icons in a convenient way. When you wan to render an icon, you could assign `type` `namespace:name`. Dynamic importing and static importing are both supported.
+We introduced namespace so you could add your own icons in a convenient way. When you want to render an icon, you could assign `type` `namespace:name`. Dynamic importing and static importing are both supported.
 
 Static importing. Invoke `addIconLiteral` of `NzIconService`.
 
@@ -186,15 +221,15 @@ In older versions of NG-ZORRO, there was a font file which would use `:before` t
 
 ### I want to import all icons statically. What should I do?
 
-Actually we demonstrate it here <a href="/components/icon/en#static-loading-and-dynamic-loading">Static loading and dynamic loading</a>:
+Although this is not recommended usage, actually we demonstrate it here <a href="/components/icon/en#static-loading-and-dynamic-loading">Static loading and dynamic loading</a>:
 
-```ts
-// import * as AllIcons from '@ant-design/icons-angular/icons';
+```typescript
+import * as AllIcons from '@ant-design/icons-angular/icons';
 
-// const antDesignIcons = AllIcons as {
-//   [key: string]: IconDefinition;
-// };
-// const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 ```
 
 ### Does dynamic loading affect web pages' performance?

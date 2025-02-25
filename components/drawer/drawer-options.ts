@@ -4,7 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { TemplateRef, Type } from '@angular/core';
+import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -27,7 +27,9 @@ export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzExtra?: string | TemplateRef<{}>;
   nzFooter?: string | TemplateRef<{}>;
   nzContent?: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef }> | Type<T>;
+  /**@Deprecated**/
   nzContentParams?: Partial<T & D>;
+  nzData?: D;
   nzMaskStyle?: object;
   nzBodyStyle?: object;
   nzWrapClassName?: string;
@@ -43,3 +45,5 @@ export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
 export interface NzDrawerOptions<T = NzSafeAny, D = NzSafeAny> extends NzDrawerOptionsOfComponent<T, D> {
   nzOnCancel?(): Promise<NzSafeAny>;
 }
+
+export const NZ_DRAWER_DATA = new InjectionToken<NzSafeAny>('NZ_DRAWER_DATA');

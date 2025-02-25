@@ -3,10 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewEncapsulation,
+  booleanAttribute,
+  numberAttribute
+} from '@angular/core';
 
 import { NzDisplayedStep, NzExtendedMark } from './typings';
 
@@ -17,28 +23,23 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
   exportAs: 'nzSliderStep',
   preserveWhitespaces: false,
   template: `
-    <div class="ant-slider-step">
-      <span
-        class="ant-slider-dot"
-        *ngFor="let mark of steps; trackBy: trackById"
-        [class.ant-slider-dot-active]="mark.active"
-        [ngStyle]="mark.style!"
-      ></span>
-    </div>
-  `
+    @for (step of steps; track step.value) {
+      <span class="ant-slider-dot" [class.ant-slider-dot-active]="step.active" [style]="step.style!"></span>
+    }
+  `,
+  host: {
+    class: 'ant-slider-step'
+  }
 })
 export class NzSliderStepComponent implements OnChanges {
-  static ngAcceptInputType_vertical: BooleanInput;
-  static ngAcceptInputType_included: BooleanInput;
-
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
   @Input() marksArray: NzExtendedMark[] = [];
-  @Input() min!: number;
-  @Input() max!: number;
-  @Input() @InputBoolean() vertical = false;
-  @Input() @InputBoolean() included = false;
-  @Input() reverse!: boolean;
+  @Input({ transform: numberAttribute }) min!: number;
+  @Input({ transform: numberAttribute }) max!: number;
+  @Input({ transform: booleanAttribute }) vertical = false;
+  @Input({ transform: booleanAttribute }) included = false;
+  @Input({ transform: booleanAttribute }) reverse!: boolean;
 
   steps: NzDisplayedStep[] = [];
 
@@ -51,10 +52,6 @@ export class NzSliderStepComponent implements OnChanges {
     if (marksArray || lowerBound || upperBound || reverse) {
       this.togglePointActive();
     }
-  }
-
-  trackById(_index: number, step: NzDisplayedStep): number {
-    return step.value;
   }
 
   private buildSteps(): void {
@@ -75,7 +72,8 @@ export class NzSliderStepComponent implements OnChanges {
         config,
         active: false,
         style: {
-          [orient]: `${offset}%`
+          [orient]: `${offset}%`,
+          transform: this.vertical ? 'translateY(50%)' : 'translateX(-50%)'
         }
       };
     });

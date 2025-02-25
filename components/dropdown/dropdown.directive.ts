@@ -18,15 +18,16 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, Subject, combineLatest, fromEvent, merge } from 'rxjs';
+import { auditTime, distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { IndexableObject } from 'ng-zorro-antd/core/types';
 
 import { NzDropdownMenuComponent, NzPlacementType } from './dropdown-menu.component';
 
@@ -48,15 +49,12 @@ const listOfPositions = [
 })
 export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-
-  static ngAcceptInputType_nzBackdrop: BooleanInput;
-  static ngAcceptInputType_nzClickHide: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzVisible: BooleanInput;
+  public elementRef = inject(ElementRef);
+  private overlay = inject(Overlay);
 
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   private positionStrategy = this.overlay
     .position()
     .flexibleConnectedTo(this.elementRef.nativeElement)
@@ -68,14 +66,14 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() nzDropdownMenu: NzDropdownMenuComponent | null = null;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
-  @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
-  @Input() @InputBoolean() nzClickHide = true;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzVisible = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) nzClickHide = true;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzVisible = false;
   @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
-  @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   setDropdownMenuValue<T extends keyof NzDropdownMenuComponent>(key: T, value: NzDropdownMenuComponent[T]): void {
     if (this.nzDropdownMenu) {
@@ -85,8 +83,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
 
   constructor(
     public readonly nzConfigService: NzConfigService,
-    public elementRef: ElementRef,
-    private overlay: Overlay,
     private renderer: Renderer2,
     private viewContainerRef: ViewContainerRef,
     private platform: Platform
@@ -97,8 +93,8 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
       const nativeElement: HTMLElement = this.elementRef.nativeElement;
       /** host mouse state **/
       const hostMouseState$ = merge(
-        fromEvent(nativeElement, 'mouseenter').pipe(mapTo(true)),
-        fromEvent(nativeElement, 'mouseleave').pipe(mapTo(false))
+        fromEvent(nativeElement, 'mouseenter').pipe(map(() => true)),
+        fromEvent(nativeElement, 'mouseleave').pipe(map(() => false))
       );
       /** menu mouse state **/
       const menuMouseState$ = this.nzDropdownMenu.mouseState$;
@@ -120,7 +116,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
       );
       const descendantMenuItemClick$ = this.nzDropdownMenu.descendantMenuItemClick$.pipe(
         filter(() => this.nzClickHide),
-        mapTo(false)
+        map(() => false)
       );
       const domTriggerVisible$ = merge(visibleStateByTrigger$, descendantMenuItemClick$, this.overlayClose$).pipe(
         filter(() => !this.nzDisabled)
@@ -196,7 +192,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
     if (this.overlayRef) {
       this.overlayRef.dispose();

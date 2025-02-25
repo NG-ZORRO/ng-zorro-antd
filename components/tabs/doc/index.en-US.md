@@ -24,57 +24,58 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 ### nz-tabset
 
-| Property | Description | Type | Default | Global Config |
-| -------- | ----------- | ---- | ------- | ------------- |
-| `[nzSelectedIndex]` | Current tab's index | `number` | - |
-| `[nzAnimated]` | Whether to change tabs with animation. Only works while `nzTabPosition="top" \| "bottom"` | `boolean \| {inkBar:boolean, tabPane:boolean}` | `true`, `false` when `type="card"` | ✅ |
-| `[nzSize]` | preset tab bar size | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
-| `[nzTabBarExtraContent]` | Extra content in tab bar | `TemplateRef<void>` | - |
-| `[nzTabBarStyle]` | Tab bar style object | `object` | - |
-| `[nzTabPosition]` | Position of tabs | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` | |
-| `[nzType]` | Basic style of tabs | `'line' \| 'card' \| 'editable-card'` | `'line'` | ✅ |
-| `[nzTabBarGutter]` | The gap between tabs | `number` | - | ✅ |
-| `[nzHideAll]` | Whether hide all tabs | `boolean` | `false` |
-| `[nzLinkRouter]` | Link with Angular router. It supports child mode and query param mode | `boolean` | `false` ||
-| `[nzLinkExact]` | Use exact routing matching | `boolean` | `true` |
-| `[nzCanDeactivate]` | Determine if a tab can be deactivated | `NzTabsCanDeactivateFn` | - |
-| `[nzCentered]` | Centers tabs | `boolean` | `false` |
-| `(nzSelectedIndexChange)` | Current tab's index change callback | `EventEmitter<number>` | - |
-| `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{index: number,tab: NzTabComponent}>` | - |
+| Property                     | Description                                                                               | Type                                                | Default                            | Global Config |
+| ---------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------- | ------------- |
+| `[nzSelectedIndex]`          | Current tab's index                                                                       | `number`                                            | -                                  |
+| `[nzAnimated]`               | Whether to change tabs with animation. Only works while `nzTabPosition="top" \| "bottom"` | `boolean \| {inkBar:boolean, tabPane:boolean}`      | `true`, `false` when `type="card"` | ✅             |
+| `[nzSize]`                   | preset tab bar size                                                                       | `'large' \| 'small' \| 'default'`                   | `'default'`                        | ✅             |
+| `[nzTabBarExtraContent]`     | Extra content in tab bar                                                                  | `TemplateRef<void>`                                 | -                                  |
+| `[nzTabBarStyle]`            | Tab bar style object                                                                      | `object`                                            | -                                  |
+| `[nzTabPosition]`            | Position of tabs                                                                          | `'top' \| 'right' \| 'bottom' \| 'left'`            | `'top'`                            |               |
+| `[nzType]`                   | Basic style of tabs                                                                       | `'line' \| 'card' \| 'editable-card'`               | `'line'`                           | ✅             |
+| `[nzTabBarGutter]`           | The gap between tabs                                                                      | `number`                                            | -                                  | ✅             |
+| `[nzHideAll]`                | Whether hide all tabs                                                                     | `boolean`                                           | `false`                            |
+| `[nzLinkRouter]`             | Link with Angular router. It supports child mode and query param mode                     | `boolean`                                           | `false`                            |               |
+| `[nzLinkExact]`              | Use exact routing matching                                                                | `boolean`                                           | `true`                             |
+| `[nzCanDeactivate]`          | Determine if a tab can be deactivated                                                     | `NzTabsCanDeactivateFn`                             | -                                  |
+| `[nzCentered]`               | Centers tabs                                                                              | `boolean`                                           | `false`                            |
+| `[nzDestroyInactiveTabPane]` | Whether destroy inactive TabPane when change tab                                          | `boolean`                                           | `false`                            |
+| `(nzSelectedIndexChange)`    | Current tab's index change callback                                                       | `EventEmitter<number>`                              | -                                  |
+| `(nzSelectChange)`           | Current tab's change callback                                                             | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                  |
 
 ### nz-tabset[nzType="editable-card"]
 
-| Property | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-| `[nzHideAdd]` | Hide plus icon or not | `boolean` | `false` |
-| `[nzAddIcon]` | Add icon | `string \| TemplateRef<void>` | - |
-| `(nzAdd)` | When add button clicked emit | `EventEmitter<>` | - |
-| `(nzClose)` | When close button clicked emit | `EventEmitter<{ index: number }>` | - |
+| Property      | Description                    | Type                              | Default | Global Config |
+| ------------- | ------------------------------ | --------------------------------- | ------- | ------------- |
+| `[nzHideAdd]` | Hide plus icon or not          | `boolean`                         | `false` |
+| `[nzAddIcon]` | Add icon                       | `string \| TemplateRef<void>`     | -       |
+| `(nzAdd)`     | When add button clicked emit   | `EventEmitter<>`                  | -       |
+| `(nzClose)`   | When close button clicked emit | `EventEmitter<{ index: number }>` | -       |
 
 ### nz-tab
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzTitle]` | Show text in tab's head | `string \| TemplateRef<void>` | - |
-| `[nzForceRender]` | Forced render of content in tabs, not lazy render after clicking on tabs | `boolean` | `false` |
-| `[nzDisabled]` | tab disable | `boolean` | - |
-| `(nzClick)` | title click callback | `EventEmitter<void>` | - |
-| `(nzContextmenu)` | title contextmenu callback | `EventEmitter<MouseEvent>` | - |
-| `(nzSelect)` | title select callback | `EventEmitter<void>` | - |
-| `(nzDeselect)` | title deselect callback | `EventEmitter<void>` | - |
+| Property          | Description                                                              | Type                          | Default |
+| ----------------- | ------------------------------------------------------------------------ | ----------------------------- | ------- |
+| `[nzTitle]`       | Show text in tab's head                                                  | `string \| TemplateRef<void>` | -       |
+| `[nzForceRender]` | Forced render of content in tabs, not lazy render after clicking on tabs | `boolean`                     | `false` |
+| `[nzDisabled]`    | tab disable                                                              | `boolean`                     | -       |
+| `(nzClick)`       | title click callback                                                     | `EventEmitter<void>`          | -       |
+| `(nzContextmenu)` | title contextmenu callback                                               | `EventEmitter<MouseEvent>`    | -       |
+| `(nzSelect)`      | title select callback                                                    | `EventEmitter<void>`          | -       |
+| `(nzDeselect)`    | title deselect callback                                                  | `EventEmitter<void>`          | -       |
 
 ### nz-tabset[nzType="editable-card"] > nz-tab
-| Property | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-| `[nzClosable]` | Show close icon or not | `boolean` | `false` |
-| `[nzCloseIcon]` | Close icon | `string \| TemplateRef<void>` | - |
 
+| Property        | Description            | Type                          | Default | Global Config |
+| --------------- | ---------------------- | ----------------------------- | ------- | ------------- |
+| `[nzClosable]`  | Show close icon or not | `boolean`                     | `false` |
+| `[nzCloseIcon]` | Close icon             | `string \| TemplateRef<void>` | -       |
 
 #### Template variable references of `nz-tab[nzTitle]`
 
-| Property | Description | Type |
-| --- | --- | --- |
-| `visible` | Is the title in the visible area, will be rendered to the dropdown menu if `false`. | `boolean`|
+| Property  | Description                                                                         | Type      |
+| --------- | ----------------------------------------------------------------------------------- | --------- |
+| `visible` | Is the title in the visible area, will be rendered to the dropdown menu if `false`. | `boolean` |
 
 Use in `nz-tab[nzTitle]`
 
@@ -92,7 +93,6 @@ Use in `*nzTabLink`
   <a *nzTabLink="let visible = visible" nz-tab-link [routerLink]="['.']">...</a>
 </nz-tab>
 ```
-
 
 ### [nz-tab]
 

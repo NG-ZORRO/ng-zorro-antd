@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
-import { NzResizeEvent } from 'ng-zorro-antd/resizable';
+import { NzResizableModule, NzResizeDirection, NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-basic',
+  imports: [NzResizableModule],
   template: `
     <div
       class="box"
@@ -42,12 +43,14 @@ export class NzDemoResizableBasicComponent {
   height = 200;
   id = -1;
   disabled = false;
+  resizeDirection: NzResizeDirection | null = null;
 
-  onResize({ width, height }: NzResizeEvent): void {
+  onResize({ width, height, direction }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
       this.width = width!;
       this.height = height!;
+      this.resizeDirection = direction!;
     });
   }
 }

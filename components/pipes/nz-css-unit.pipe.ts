@@ -10,14 +10,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NzToCssUnitPipe implements PipeTransform {
   transform(value: number | string, defaultUnit: string = 'px'): string {
-    const absoluteLengthUnit = ['cm', 'mm', 'Q', 'in', 'pc', 'pt', 'px'];
-    const relativeLengthUnit = ['em', 'ex', 'ch', 'rem', '1h', 'vw', 'vh', 'vmin', 'vmax'];
-    const percentagesUnit = ['%'];
-    const listOfUnit = [...absoluteLengthUnit, ...relativeLengthUnit, ...percentagesUnit];
-    let unit = 'px';
-    if (listOfUnit.some(u => u === defaultUnit)) {
-      unit = defaultUnit;
-    }
-    return typeof value === 'number' ? `${value}${unit}` : `${value}`;
+    return typeof value === 'number' ? `${value}${defaultUnit}` : value;
   }
 }

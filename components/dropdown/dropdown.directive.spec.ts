@@ -1,12 +1,17 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, Provider, Type } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { NzPlacementType } from 'ng-zorro-antd/dropdown/dropdown-menu.component';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzDropDownDirective } from './dropdown.directive';
@@ -15,19 +20,11 @@ import { NzDropDownModule } from './dropdown.module';
 describe('dropdown', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  function createComponent<T>(
-    component: Type<T>,
-    providers: Provider[] = [],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    declarations: any[] = []
-  ): ComponentFixture<T> {
+  function createComponent<T>(component: Type<T>, providers: Provider[] = []): ComponentFixture<T> {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NzDropDownModule, NzMenuModule, NoopAnimationsModule],
-      declarations: [component, ...declarations],
+      imports: [NoopAnimationsModule],
       providers
-    })
-      .compileComponents()
-      .then();
+    });
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
@@ -43,7 +40,7 @@ describe('dropdown', () => {
   }));
 
   it('should hover correct', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownComponent, [], []);
+    const fixture = createComponent(NzTestDropdownComponent);
     fixture.componentInstance.trigger = 'hover';
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
@@ -57,7 +54,7 @@ describe('dropdown', () => {
     }).not.toThrowError();
   }));
   it('should click correct', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownComponent, [], []);
+    const fixture = createComponent(NzTestDropdownComponent);
     fixture.componentInstance.trigger = 'click';
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
@@ -71,7 +68,7 @@ describe('dropdown', () => {
     }).not.toThrowError();
   }));
   it('should disabled work', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownComponent, [], []);
+    const fixture = createComponent(NzTestDropdownComponent);
     fixture.componentInstance.disabled = true;
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
@@ -89,7 +86,7 @@ describe('dropdown', () => {
     let fixture: ComponentFixture<NzTestDropdownComponent>;
 
     beforeEach(() => {
-      fixture = createComponent(NzTestDropdownComponent, [], []);
+      fixture = createComponent(NzTestDropdownComponent);
       fixture.componentInstance.backdrop = true;
     });
 
@@ -117,7 +114,7 @@ describe('dropdown', () => {
   });
 
   it('should disappear if Escape pressed', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownComponent, [], []);
+    const fixture = createComponent(NzTestDropdownComponent);
     fixture.componentInstance.trigger = 'click';
     fixture.componentInstance.backdrop = true;
     fixture.detectChanges();
@@ -141,7 +138,7 @@ describe('dropdown', () => {
     }).not.toThrowError();
   }));
   it('should nzOverlayClassName and nzOverlayStyle work', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownComponent, [], []);
+    const fixture = createComponent(NzTestDropdownComponent);
     fixture.detectChanges();
     expect(() => {
       const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
@@ -154,7 +151,7 @@ describe('dropdown', () => {
     }).not.toThrowError();
   }));
   it('should nzVisible & nzClickHide work', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownVisibleComponent, [], []);
+    const fixture = createComponent(NzTestDropdownVisibleComponent);
     fixture.detectChanges();
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(0);
     const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
@@ -187,6 +184,7 @@ describe('dropdown', () => {
 });
 
 @Component({
+  imports: [NzDropDownModule, NzMenuModule],
   template: `
     <a
       nz-dropdown
@@ -211,14 +209,15 @@ describe('dropdown', () => {
 })
 export class NzTestDropdownComponent {
   backdrop = false;
-  trigger = 'hover';
-  placement = 'bottomLeft';
+  trigger: 'click' | 'hover' = 'hover';
+  placement: NzPlacementType = 'bottomLeft';
   disabled = false;
   className = 'custom-class';
   overlayStyle = { color: '#000' };
 }
 
 @Component({
+  imports: [NzDropDownModule, NzMenuModule],
   template: `
     <a
       nz-dropdown

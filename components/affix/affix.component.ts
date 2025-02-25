@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Platform } from '@angular/cdk/platform';
+import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -13,13 +13,12 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
+  inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -32,8 +31,8 @@ import { map, takeUntil, throttleTime } from 'rxjs/operators';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { getStyleAsText, InputNumber, shallowEqual } from 'ng-zorro-antd/core/util';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { getStyleAsText, numberAttributeWithZeroFallback, shallowEqual } from 'ng-zorro-antd/core/util';
 
 import { AffixRespondEvents } from './respond-events';
 import { getTargetRect, SimpleRect } from './utils';
@@ -45,6 +44,7 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 @Component({
   selector: 'nz-affix',
   exportAs: 'nzAffix',
+  imports: [BidiModule, PlatformModule],
   template: `
     <div #fixedEl>
       <ng-content></ng-content>
@@ -55,21 +55,17 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 })
 export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzOffsetTop: NumberInput;
-  static ngAcceptInputType_nzOffsetBottom: NumberInput;
 
   @ViewChild('fixedEl', { static: true }) private fixedEl!: ElementRef<HTMLDivElement>;
 
   @Input() nzTarget?: string | Element | Window;
 
-  @Input()
-  @WithConfig<number | null>()
-  @InputNumber(undefined)
+  @Input({ transform: numberAttributeWithZeroFallback })
+  @WithConfig()
   nzOffsetTop?: null | number;
 
-  @Input()
-  @WithConfig<number | null>()
-  @InputNumber(undefined)
+  @Input({ transform: numberAttributeWithZeroFallback })
+  @WithConfig()
   nzOffsetBottom?: null | number;
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
@@ -81,10 +77,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private affixStyle?: NgStyleInterface;
   private placeholderStyle?: NgStyleInterface;
   private positionChangeSubscription: Subscription = Subscription.EMPTY;
-  private offsetChanged$ = new ReplaySubject(1);
-  private destroy$ = new Subject<void>();
-  private timeout?: number;
-  private document: Document;
+  private offsetChanged$ = new ReplaySubject<void>(1);
+  private destroy$ = new Subject<boolean>();
+  private timeout?: ReturnType<typeof setTimeout>;
+  private document: Document = inject(DOCUMENT);
 
   private get target(): Element | Window {
     const el = this.nzTarget;
@@ -93,7 +89,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
 
   constructor(
     el: ElementRef,
-    @Inject(DOCUMENT) doc: NzSafeAny,
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private ngZone: NgZone,
@@ -101,11 +96,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     private renderer: Renderer2,
     private nzResizeObserver: NzResizeObserver,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {
     // The wrapper would stay at the original position as a placeholder.
     this.placeholderNode = el.nativeElement;
-    this.document = doc;
   }
 
   ngOnInit(): void {
@@ -160,7 +154,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private removeListeners(): void {
     clearTimeout(this.timeout);
     this.positionChangeSubscription.unsubscribe();
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 

@@ -1,10 +1,13 @@
+import { LowerCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 
-import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
+import { NzContextMenuService, NzDropdownMenuComponent, NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-directory',
+  imports: [NzDropDownModule, NzIconModule, NzTreeModule, LowerCasePipe],
   template: `
     <nz-tree
       nzBlockNode
@@ -15,16 +18,19 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
     ></nz-tree>
     <ng-template #nzTreeTemplate let-node let-origin="origin">
       <span class="custom-node">
-        <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, menu)">
-          <span nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></span>
-          <span class="folder-name">{{ node.title }}</span>
-          <span class="folder-desc">created by {{ origin.author | lowercase }}</span>
-        </span>
-        <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, menu)">
-          <span nz-icon nzType="file"></span>
-          <span class="file-name">{{ node.title }}</span>
-          <span class="file-desc">modified by {{ origin.author | lowercase }}</span>
-        </span>
+        @if (!node.isLeaf) {
+          <span (contextmenu)="contextMenu($event, menu)">
+            <nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)" />
+            <span class="folder-name">{{ node.title }}</span>
+            <span class="folder-desc">created by {{ origin.author | lowercase }}</span>
+          </span>
+        } @else {
+          <span (contextmenu)="contextMenu($event, menu)">
+            <nz-icon nzType="file" />
+            <span class="file-name">{{ node.title }}</span>
+            <span class="file-desc">modified by {{ origin.author | lowercase }}</span>
+          </span>
+        }
       </span>
     </ng-template>
     <nz-dropdown-menu #menu="nzDropdownMenu">
@@ -67,9 +73,8 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
   ]
 })
 export class NzDemoTreeDirectoryComponent {
-  // activated node
   activatedNode?: NzTreeNode;
-  nodes = [
+  readonly nodes = [
     {
       title: 'parent 0',
       key: '100',
@@ -90,6 +95,8 @@ export class NzDemoTreeDirectoryComponent {
       ]
     }
   ];
+
+  constructor(private nzContextMenuService: NzContextMenuService) {}
 
   openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
@@ -114,6 +121,4 @@ export class NzDemoTreeDirectoryComponent {
   selectDropdown(): void {
     // do something
   }
-
-  constructor(private nzContextMenuService: NzContextMenuService) {}
 }

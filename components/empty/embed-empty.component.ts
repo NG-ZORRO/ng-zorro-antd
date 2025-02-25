@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ComponentPortal, Portal, TemplatePortal } from '@angular/cdk/portal';
+import { ComponentPortal, Portal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -25,7 +25,8 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzEmptyCustomContent, NzEmptySize, NZ_EMPTY_COMPONENT_NAME } from './config';
+import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize } from './config';
+import { NzEmptyComponent } from './empty.component';
 
 function getEmptySize(componentName: string): NzEmptySize {
   switch (componentName) {
@@ -50,18 +51,29 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
   selector: 'nz-embed-empty',
   exportAs: 'nzEmbedEmpty',
   template: `
-    <ng-container *ngIf="!content && specificContent !== null" [ngSwitch]="size">
-      <nz-empty *ngSwitchCase="'normal'" class="ant-empty-normal" [nzNotFoundImage]="'simple'"></nz-empty>
-      <nz-empty *ngSwitchCase="'small'" class="ant-empty-small" [nzNotFoundImage]="'simple'"></nz-empty>
-      <nz-empty *ngSwitchDefault></nz-empty>
-    </ng-container>
-    <ng-container *ngIf="content">
-      <ng-template *ngIf="contentType !== 'string'" [cdkPortalOutlet]="contentPortal"></ng-template>
-      <ng-container *ngIf="contentType === 'string'">
+    @if (content) {
+      @if (contentType === 'string') {
         {{ content }}
-      </ng-container>
-    </ng-container>
-  `
+      } @else {
+        <ng-template [cdkPortalOutlet]="contentPortal" />
+      }
+    } @else {
+      @if (specificContent !== null) {
+        @switch (size) {
+          @case ('normal') {
+            <nz-empty class="ant-empty-normal" nzNotFoundImage="simple" />
+          }
+          @case ('small') {
+            <nz-empty class="ant-empty-small" nzNotFoundImage="simple" />
+          }
+          @default {
+            <nz-empty />
+          }
+        }
+      }
+    }
+  `,
+  imports: [NzEmptyComponent, PortalModule]
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzComponentName?: string;

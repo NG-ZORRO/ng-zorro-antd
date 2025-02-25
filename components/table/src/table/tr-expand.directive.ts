@@ -14,6 +14,4 @@ import { Directive, Input } from '@angular/core';
 })
 export class NzTrExpandDirective {
   @Input() nzExpand = true;
-
-  constructor() {}
 }

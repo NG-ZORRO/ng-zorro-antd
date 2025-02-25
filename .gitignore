@@ -17,7 +17,6 @@ ng-zorro.github.io/
 # dependencies
 node_modules
 node_modules.*/
-package-lock.json
 integration/**/package-lock.json
 yarn.lock
 
@@ -35,6 +34,8 @@ yarn.lock
 
 # misc
 /.angular/cache
+/.nx-cache
+/.nx
 /.sass-cache
 /connect.lock
 /coverage
@@ -54,3 +55,7 @@ report.*.json
 # System Files
 .DS_Store
 Thumbs.db
+
+monospace.json
+
+.nx

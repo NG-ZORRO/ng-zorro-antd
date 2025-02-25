@@ -1,29 +1,23 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
+
+import { presetColors } from 'ng-zorro-antd/core/color';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @Component({
   selector: 'nz-demo-tag-colorful',
-  encapsulation: ViewEncapsulation.None,
+  imports: [NzTagModule],
   template: `
-    <h4 style="margin-bottom: 16px;">Presets:</h4>
+    <h4 style="margin-bottom: 16px">Presets:</h4>
     <div>
-      <nz-tag [nzColor]="'magenta'">magenta</nz-tag>
-      <nz-tag [nzColor]="'red'">red</nz-tag>
-      <nz-tag [nzColor]="'volcano'">volcano</nz-tag>
-      <nz-tag [nzColor]="'orange'">orange</nz-tag>
-      <nz-tag [nzColor]="'gold'">gold</nz-tag>
-      <nz-tag [nzColor]="'lime'">lime</nz-tag>
-      <nz-tag [nzColor]="'green'">green</nz-tag>
-      <nz-tag [nzColor]="'cyan'">cyan</nz-tag>
-      <nz-tag [nzColor]="'blue'">blue</nz-tag>
-      <nz-tag [nzColor]="'geekblue'">geekblue</nz-tag>
-      <nz-tag [nzColor]="'purple'">purple</nz-tag>
+      @for (color of presetColors; track color) {
+        <nz-tag [nzColor]="color">{{ color }}</nz-tag>
+      }
     </div>
-    <h4 style="margin: 16px 0px;'">Custom:</h4>
+    <h4 style="margin: 16px 0">Custom:</h4>
     <div>
-      <nz-tag [nzColor]="'#f50'">#f50</nz-tag>
-      <nz-tag [nzColor]="'#2db7f5'">#2db7f5</nz-tag>
-      <nz-tag [nzColor]="'#87d068'">#87d068</nz-tag>
-      <nz-tag [nzColor]="'#108ee9'">#108ee9</nz-tag>
+      @for (color of customColors; track color) {
+        <nz-tag [nzColor]="color">{{ color }}</nz-tag>
+      }
     </div>
   `,
   styles: [
@@ -34,4 +28,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
     `
   ]
 })
-export class NzDemoTagColorfulComponent {}
+export class NzDemoTagColorfulComponent {
+  readonly presetColors = presetColors;
+  readonly customColors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
+}

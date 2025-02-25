@@ -18,7 +18,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
+import { COMPOSITION_BUFFER_MODE, FormsModule } from '@angular/forms';
+
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 
 @Component({
   selector: 'nz-select-search',
@@ -38,10 +40,13 @@ import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
       (compositionstart)="setCompositionState(true)"
       (compositionend)="setCompositionState(false)"
     />
-    <span #mirrorElement *ngIf="mirrorSync" class="ant-select-selection-search-mirror"></span>
+    @if (mirrorSync) {
+      <span #mirrorElement class="ant-select-selection-search-mirror"></span>
+    }
   `,
   host: { class: 'ant-select-selection-search' },
-  providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }]
+  providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }],
+  imports: [FormsModule]
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   @Input() nzId: string | null = null;
@@ -75,12 +80,14 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   }
 
   syncMirrorWidth(): void {
-    const mirrorDOM = this.mirrorElement!.nativeElement;
-    const hostDOM = this.elementRef.nativeElement;
-    const inputDOM = this.inputElement.nativeElement;
-    this.renderer.removeStyle(hostDOM, 'width');
-    this.renderer.setProperty(mirrorDOM, 'textContent', `${inputDOM.value}\u00a0`);
-    this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
+    reqAnimFrame(() => {
+      const mirrorDOM = this.mirrorElement!.nativeElement;
+      const hostDOM = this.elementRef.nativeElement;
+      const inputDOM = this.inputElement.nativeElement;
+      this.renderer.removeStyle(hostDOM, 'width');
+      this.renderer.setProperty(mirrorDOM, 'textContent', `${inputDOM.value}\u00a0`);
+      this.renderer.setStyle(hostDOM, 'width', `${mirrorDOM.scrollWidth}px`);
+    });
   }
 
   focus(): void {
@@ -91,7 +98,11 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private focusMonitor: FocusMonitor) {}
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private focusMonitor: FocusMonitor
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const inputDOM = this.inputElement.nativeElement;

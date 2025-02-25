@@ -1,39 +1,38 @@
 import { Component } from '@angular/core';
 
-import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-picture-style',
+  imports: [NzButtonModule, NzIconModule, NzUploadModule],
   template: `
-    <div class="clearfix">
-      <nz-upload
-        nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        nzListType="picture"
-        [(nzFileList)]="fileList1"
-      >
-        <button nz-button>
-          <span nz-icon nzType="upload"></span>
+    <nz-upload
+      nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      nzListType="picture"
+      [(nzFileList)]="fileList1"
+    >
+      <button nz-button>
+        <nz-icon nzType="upload" />
+        Upload
+      </button>
+    </nz-upload>
+    <br />
+    <br />
+    <nz-upload
+      class="upload-list-inline"
+      nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      nzListType="picture"
+      [(nzFileList)]="fileList2"
+    >
+      <button nz-button>
+        <span>
+          <nz-icon nzType="upload" />
           Upload
-        </button>
-      </nz-upload>
-    </div>
-    <br />
-    <br />
-    <div class="clearfix">
-      <nz-upload
-        class="upload-list-inline"
-        nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        nzListType="picture"
-        [(nzFileList)]="fileList2"
-      >
-        <button nz-button>
-          <span>
-            <span nz-icon nzType="upload"></span>
-            Upload
-          </span>
-        </button>
-      </nz-upload>
-    </div>
+        </span>
+      </button>
+    </nz-upload>
   `,
   styles: [
     `

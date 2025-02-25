@@ -11,6 +11,8 @@ import {
   Directive,
   ElementRef,
   EmbeddedViewRef,
+  forwardRef,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -23,7 +25,9 @@ import {
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzTreeNodeIndentsComponent } from './indent';
 import { NzNodeBase } from './node-base';
+import { NzTreeNodeNoopToggleDirective } from './toggle';
 import { NzTreeView } from './tree';
 
 export interface NzTreeVirtualNodeData<T> {
@@ -37,15 +41,19 @@ export interface NzTreeVirtualNodeData<T> {
   exportAs: 'nzTreeNode',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: CdkTreeNode, useExisting: NzTreeNodeComponent },
-    { provide: NzNodeBase, useExisting: NzTreeNodeComponent }
+    { provide: CdkTreeNode, useExisting: forwardRef(() => NzTreeNodeComponent) },
+    { provide: NzNodeBase, useExisting: forwardRef(() => NzTreeNodeComponent) }
   ],
   template: `
-    <nz-tree-node-indents [indents]="indents" *ngIf="indents.length"></nz-tree-node-indents>
+    @if (indents.length) {
+      <nz-tree-node-indents [indents]="indents"></nz-tree-node-indents>
+    }
     <ng-content select="nz-tree-node-toggle, [nz-tree-node-toggle]"></ng-content>
-    <nz-tree-node-toggle class="nz-tree-leaf-line-icon" *ngIf="indents.length && isLeaf" nzTreeNodeNoopToggle>
-      <span class="ant-tree-switcher-leaf-line"></span>
-    </nz-tree-node-toggle>
+    @if (indents.length && isLeaf) {
+      <nz-tree-node-toggle class="nz-tree-leaf-line-icon" nzTreeNodeNoopToggle>
+        <span class="ant-tree-switcher-leaf-line"></span>
+      </nz-tree-node-toggle>
+    }
     <ng-content select="nz-tree-node-checkbox"></ng-content>
     <ng-content select="nz-tree-node-option"></ng-content>
     <ng-content></ng-content>
@@ -53,7 +61,8 @@ export interface NzTreeVirtualNodeData<T> {
   host: {
     '[class.ant-tree-treenode-switcher-open]': 'isExpanded',
     '[class.ant-tree-treenode-switcher-close]': '!isExpanded'
-  }
+  },
+  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective]
 })
 export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {
   indents: boolean[] = [];
@@ -61,18 +70,19 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
   selected = false;
   isLeaf = false;
 
+  private renderer = inject(Renderer2);
+  private cdr = inject(ChangeDetectorRef);
+
   constructor(
     protected elementRef: ElementRef<HTMLElement>,
-    protected tree: NzTreeView<T>,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef
+    protected tree: NzTreeView<T>
   ) {
     super(elementRef, tree);
     this._elementRef.nativeElement.classList.add('ant-tree-treenode');
   }
 
   override ngOnInit(): void {
-    this.isLeaf = !this.tree.treeControl.isExpandable(this.data);
+    this.isLeaf = !this.tree.treeControl?.isExpandable(this.data);
   }
 
   disable(): void {
@@ -119,10 +129,15 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
 
 @Directive({
   selector: '[nzTreeNodeDef]',
-  providers: [{ provide: CdkTreeNodeDef, useExisting: NzTreeNodeDefDirective }]
+  providers: [
+    {
+      provide: CdkTreeNodeDef,
+      useExisting: forwardRef(() => NzTreeNodeDefDirective)
+    }
+  ]
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
-  @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
+  @Input('nzTreeNodeDefWhen') override when: (index: number, nodeData: T) => boolean = null!;
 }
 
 @Directive({
@@ -131,6 +146,7 @@ export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
 export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
   private _viewRef: EmbeddedViewRef<NzSafeAny> | null = null;
   @Input() data!: NzTreeVirtualNodeData<T>;
+  @Input() compareBy?: ((value: T) => T | string | number) | null;
 
   constructor(private _viewContainerRef: ViewContainerRef) {}
 
@@ -170,9 +186,20 @@ export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
           return true;
         }
       }
-      return ctxChange.previousValue?.data !== ctxChange.currentValue?.data;
+      return (
+        this.innerCompareBy(ctxChange.previousValue?.data ?? null) !==
+        this.innerCompareBy(ctxChange.currentValue?.data ?? null)
+      );
     }
     return true;
+  }
+
+  get innerCompareBy(): (value: T | null) => T | string | number | null {
+    return value => {
+      if (value === null) return value;
+      if (this.compareBy) return this.compareBy(value as T);
+      return value;
+    };
   }
 
   private updateExistingContext(ctx: NzSafeAny): void {

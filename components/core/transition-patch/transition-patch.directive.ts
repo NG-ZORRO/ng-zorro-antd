@@ -14,7 +14,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
  */
 @Directive({
   selector:
-    '[nz-button], nz-button-group, [nz-icon], [nz-menu-item], [nz-submenu], nz-select-top-control, nz-select-placeholder, nz-input-group'
+    '[nz-button], nz-button-group, [nz-icon], nz-icon, [nz-menu-item], [nz-submenu], nz-select-top-control, nz-select-placeholder, nz-input-group'
 })
 export class NzTransitionPatchDirective implements AfterViewInit, OnChanges {
   @Input() hidden: NzSafeAny = null;
@@ -30,7 +30,10 @@ export class NzTransitionPatchDirective implements AfterViewInit, OnChanges {
     }
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
     this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', '');
   }
 

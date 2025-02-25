@@ -14,7 +14,8 @@ import {
   OnInit,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,8 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { ImagePreloadService, PreloadDisposeHandle } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzImageDirective } from 'ng-zorro-antd/image';
 
 import { defaultImageSrcLoader } from './image-loader';
 import { NzImageSrcLoader } from './typings';
@@ -52,24 +52,22 @@ const sizeBreakpoints = [16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080,
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  imports: [NzImageDirective]
 })
 export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzAutoSrcset: BooleanInput;
-  static ngAcceptInputType_nzPriority: BooleanInput;
-  static ngAcceptInputType_nzDisablePreview: BooleanInput;
 
   @Input() nzSrc: string = '';
   @Input() nzAlt: string = '';
   @Input() nzWidth: string | number = 'auto';
   @Input() nzHeight: string | number = 'auto';
   @Input() @WithConfig() nzSrcLoader: NzImageSrcLoader = defaultImageSrcLoader;
-  @Input() @InputBoolean() @WithConfig() nzAutoSrcset: boolean = false;
-  @Input() @InputBoolean() nzPriority: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzAutoSrcset: boolean = false;
+  @Input({ transform: booleanAttribute }) nzPriority: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
-  @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzDisablePreview: boolean = false;
   @ViewChild('imageRef') imageRef!: ElementRef<HTMLImageElement>;
 
   src = '';

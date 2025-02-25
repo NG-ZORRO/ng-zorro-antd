@@ -15,7 +15,7 @@ Common Pipe Collections in Projects
 
 ## When To Use
 
-- After introducing Pipe, use it like angular's default Pipe
+- After introducing Pipe, use it like Angular's built-in Pipe
 
 ```ts
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
@@ -23,42 +23,35 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 ## API
 
-### __nzSafeNull__
+### nzBytes
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `replace` | Replace character | `string` | '' |
+| Property  | Description                     | Type     | Default |
+|-----------|---------------------------------|----------|---------|
+| `decimal` | Decimal                         | `number` | '0'     |
+| `from`    | Unit of current value           | `string` | 'B'     |
+| `to`      | Units converted to target value | `string` | ''      |
 
-### __nzBytes__
+### nzToCssUnit
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `decimal` | Decimal | `number` | '0' |
-| `from` | Unit of current value | `string` | 'B' |
-| `to` | Units converted to target value | `string` | '' |
+| Property      | Description  | Type     | Default |
+|---------------|--------------|----------|---------|
+| `defaultUnit` | Default Unit | `string` | 'px'    |
 
-### __nzToCssUnit__
+### nzEllipsis
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `defaultUnit` | Default Unit | `string` | 'px' |
+| Property | Description       | Type     | Default |
+|----------|-------------------|----------|---------|
+| `length` | Truncate length   | `number` | ''      |
+| `suffix` | Replace character | `string` | ''      |
 
-### __nzEllipsis__
+### nzAggregate
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `length` | Truncate length | `number` | '' |
-| `suffix` | Replace character | `string` | '' |
+| Property | Description | Type                               | Default |
+|----------|-------------|------------------------------------|---------|
+| `method` | Aggregation | `'sum' \| 'max' \| 'min' \| 'avg'` | ''      |
 
+### nzSanitizer
 
-### __nzAggregate__
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `method` | Aggregation | `'sum' \| 'max' \| 'min' \| 'avg'` | '' |
-
-### __nzSanitizer__
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `type` | sanitizer type | `string` | 'html' |
+| Property | Description    | Type     | Default |
+|----------|----------------|----------|---------|
+| `type`   | sanitizer type | `string` | 'html'  |

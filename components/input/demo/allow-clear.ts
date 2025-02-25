@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-allow-clear',
+  imports: [FormsModule, NzInputModule, NzIconModule],
   template: `
     <nz-input-group [nzSuffix]="inputClearTpl">
       <input type="text" nz-input [(ngModel)]="inputValue" placeholder="input with clear icon" />
     </nz-input-group>
     <ng-template #inputClearTpl>
-      <span
-        nz-icon
-        class="ant-input-clear-icon"
-        nzTheme="fill"
-        nzType="close-circle"
-        *ngIf="inputValue"
-        (click)="inputValue = null"
-      ></span>
+      @if (inputValue) {
+        <nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle" (click)="inputValue = null" />
+      }
     </ng-template>
     <br />
     <br />
@@ -22,14 +22,9 @@ import { Component } from '@angular/core';
       <textarea nz-input [(ngModel)]="textValue" placeholder="textarea with clear icon"></textarea>
     </nz-input-group>
     <ng-template #textAreaClearTpl>
-      <span
-        nz-icon
-        class="ant-input-clear-icon"
-        nzTheme="fill"
-        nzType="close-circle"
-        *ngIf="textValue"
-        (click)="textValue = null"
-      ></span>
+      @if (textValue) {
+        <nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle" (click)="textValue = null" />
+      }
     </ng-template>
   `
 })

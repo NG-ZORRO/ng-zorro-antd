@@ -8,20 +8,21 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Inject,
+  inject,
   Input,
-  Optional,
   Renderer2,
-  SkipSelf,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 
-export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
-  return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
+export function MenuGroupFactory(): boolean {
+  const isMenuInsideDropDownToken = inject(NzIsMenuInsideDropDownToken, { optional: true, skipSelf: true });
+  return isMenuInsideDropDownToken ?? false;
 }
 @Component({
   selector: '[nz-menu-group]',
@@ -31,8 +32,7 @@ export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
     /** check if menu inside dropdown-menu component **/
     {
       provide: NzIsMenuInsideDropDownToken,
-      useFactory: MenuGroupFactory,
-      deps: [[new SkipSelf(), new Optional(), NzIsMenuInsideDropDownToken]]
+      useFactory: MenuGroupFactory
     }
   ],
   encapsulation: ViewEncapsulation.None,
@@ -43,20 +43,23 @@ export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
       #titleElement
     >
       <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-      <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+      @if (!nzTitle) {
+        <ng-content select="[title]" />
+      }
     </div>
     <ng-content></ng-content>
   `,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  imports: [NzOutletModule]
 })
 export class NzMenuGroupComponent implements AfterViewInit {
   @Input() nzTitle?: string | TemplateRef<void>;
   @ViewChild('titleElement') titleElement?: ElementRef;
+  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
 
   constructor(
     public elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean
+    private renderer: Renderer2
   ) {
     const className = this.isMenuInsideDropDown ? 'ant-dropdown-menu-item-group' : 'ant-menu-item-group';
     this.renderer.addClass(elementRef.nativeElement, className);

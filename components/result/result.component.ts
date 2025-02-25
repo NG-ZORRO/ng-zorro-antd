@@ -12,12 +12,18 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzResultNotFoundComponent } from './partial/not-found';
+import { NzResultServerErrorComponent } from './partial/server-error.component';
+import { NzResultUnauthorizedComponent } from './partial/unauthorized';
 
 export type NzResultIconType = 'success' | 'error' | 'info' | 'warning';
 export type NzExceptionStatusType = '404' | '500' | '403';
@@ -38,42 +44,51 @@ const ExceptionStatus = ['404', '500', '403'];
   exportAs: 'nzResult',
   template: `
     <div class="ant-result-icon">
-      <ng-container *ngIf="!isException; else exceptionTpl">
-        <ng-container *ngIf="icon">
+      @if (!isException) {
+        @if (icon) {
           <ng-container *nzStringTemplateOutlet="icon; let icon">
-            <span nz-icon [nzType]="icon" nzTheme="fill"></span>
+            <nz-icon [nzType]="icon" nzTheme="fill" />
           </ng-container>
-        </ng-container>
-        <ng-content *ngIf="!icon" select="[nz-result-icon]"></ng-content>
-      </ng-container>
+        } @else {
+          <ng-content select="[nz-result-icon]"></ng-content>
+        }
+      } @else {
+        @switch (nzStatus) {
+          @case ('404') {
+            <nz-result-not-found />
+          }
+          @case ('500') {
+            <nz-result-server-error />
+          }
+          @case ('403') {
+            <nz-result-unauthorized />
+          }
+        }
+      }
     </div>
-    <ng-container *ngIf="nzTitle">
+    @if (nzTitle) {
       <div class="ant-result-title" *nzStringTemplateOutlet="nzTitle">
         {{ nzTitle }}
       </div>
-    </ng-container>
-    <ng-content *ngIf="!nzTitle" select="div[nz-result-title]"></ng-content>
-    <ng-container *ngIf="nzSubTitle">
+    } @else {
+      <ng-content select="div[nz-result-title]"></ng-content>
+    }
+
+    @if (nzSubTitle) {
       <div class="ant-result-subtitle" *nzStringTemplateOutlet="nzSubTitle">
         {{ nzSubTitle }}
       </div>
-    </ng-container>
-    <ng-content *ngIf="!nzSubTitle" select="div[nz-result-subtitle]"></ng-content>
+    } @else {
+      <ng-content select="div[nz-result-subtitle]"></ng-content>
+    }
     <ng-content select="nz-result-content, [nz-result-content]"></ng-content>
-    <div class="ant-result-extra" *ngIf="nzExtra">
-      <ng-container *nzStringTemplateOutlet="nzExtra">
+    @if (nzExtra) {
+      <div class="ant-result-extra" *nzStringTemplateOutlet="nzExtra">
         {{ nzExtra }}
-      </ng-container>
-    </div>
-    <ng-content *ngIf="!nzExtra" select="div[nz-result-extra]"></ng-content>
-
-    <ng-template #exceptionTpl>
-      <ng-container [ngSwitch]="nzStatus">
-        <nz-result-not-found *ngSwitchCase="'404'"></nz-result-not-found>
-        <nz-result-server-error *ngSwitchCase="'500'"></nz-result-server-error>
-        <nz-result-unauthorized *ngSwitchCase="'403'"></nz-result-unauthorized>
-      </ng-container>
-    </ng-template>
+      </div>
+    } @else {
+      <ng-content select="div[nz-result-extra]"></ng-content>
+    }
   `,
   host: {
     class: 'ant-result',
@@ -82,7 +97,14 @@ const ExceptionStatus = ['404', '500', '403'];
     '[class.ant-result-info]': `nzStatus === 'info'`,
     '[class.ant-result-warning]': `nzStatus === 'warning'`,
     '[class.ant-result-rtl]': `dir === 'rtl'`
-  }
+  },
+  imports: [
+    NzOutletModule,
+    NzIconModule,
+    NzResultNotFoundComponent,
+    NzResultServerErrorComponent,
+    NzResultUnauthorizedComponent
+  ]
 })
 export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzIcon?: string | TemplateRef<void>;
@@ -97,7 +119,10 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -126,7 +151,7 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
         ? IconMap[icon as NzResultIconType] || icon
         : icon
       : this.isException
-      ? undefined
-      : IconMap[this.nzStatus as NzResultIconType];
+        ? undefined
+        : IconMap[this.nzStatus as NzResultIconType];
   }
 }

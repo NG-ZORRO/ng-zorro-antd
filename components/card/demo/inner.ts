@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzCardModule } from 'ng-zorro-antd/card';
+
 @Component({
   selector: 'nz-demo-card-inner',
+  imports: [NzCardModule],
   template: `
     <nz-card nzTitle="Card Title">
       <p style="font-size:14px;color:rgba(0, 0, 0, 0.85);margin-bottom:16px;font-weight: 500;">Group title</p>

@@ -5,7 +5,6 @@
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-/* eslint-disable no-invalid-this */
 const availablePrefixes = ['moz', 'ms', 'webkit'];
 
 function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
@@ -13,7 +12,7 @@ function requestAnimationFramePolyfill(): typeof requestAnimationFrame {
   return function (callback: FrameRequestCallback): number {
     const currTime = new Date().getTime();
     const timeToCall = Math.max(0, 16 - (currTime - lastTime));
-    const id = setTimeout(() => {
+    const id = window.setTimeout(() => {
       callback(currTime + timeToCall);
     }, timeToCall);
     lastTime = currTime + timeToCall;
@@ -34,6 +33,7 @@ function getRequestAnimationFrame(): typeof requestAnimationFrame {
 
   return prefix ? (window as NzSafeAny)[`${prefix}RequestAnimationFrame`] : requestAnimationFramePolyfill();
 }
+
 export function cancelRequestAnimationFrame(id: number): NzSafeAny {
   if (typeof window === 'undefined') {
     return null;
@@ -47,8 +47,8 @@ export function cancelRequestAnimationFrame(id: number): NzSafeAny {
 
   return prefix
     ? (
-        (window as NzSafeAny)[`${prefix}CancelAnimationFrame`] ||
-        (window as NzSafeAny)[`${prefix}CancelRequestAnimationFrame`]
+        ((window as NzSafeAny)[`${prefix}CancelAnimationFrame`] as typeof cancelAnimationFrame) ||
+        ((window as NzSafeAny)[`${prefix}CancelRequestAnimationFrame`] as typeof cancelRequestAnimationFrame)
       )
         // @ts-ignore
         .call(this, id)

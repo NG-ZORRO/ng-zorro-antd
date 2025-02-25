@@ -1,10 +1,15 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { CommonModule } from '@angular/common';
 import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { take } from 'rxjs';
 
 import {
   createKeyboardEvent,
@@ -15,7 +20,7 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzTextEditComponent } from '.';
 import { NzTypographyComponent } from './typography.component';
@@ -31,15 +36,12 @@ describe('typography', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
-      providers: [{ provide: NgZone, useFactory: () => new MockNgZone() }],
-      declarations: [
-        NzTestTypographyComponent,
-        NzTestTypographyCopyComponent,
-        NzTestTypographyEditComponent,
-        NzTestTypographyEllipsisComponent
+      providers: [
+        provideNzIconsTesting(),
+        provideNoopAnimations(),
+        { provide: NgZone, useFactory: () => new MockNgZone() }
       ]
-    }).compileComponents();
+    });
   });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -279,22 +281,18 @@ describe('typography', () => {
       expect(testComponent.str).toBe('test');
     }));
 
-    it('should edit focus', fakeAsync(() => {
+    it('should edit focus', () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
-      // The zone may be already stable (see `isStable` condition), thus there're no tasks
-      // in the queue that have been scheduled previously.
-      // This will schedule a microtask (except of waiting for `onStable`).
-      flushMicrotasks();
+
+      // `tick()` will handle over after next render hooks.
+      TestBed.inject(ApplicationRef).tick();
 
       const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')! as HTMLTextAreaElement;
 
       expect(document.activeElement === textarea).toBe(true);
-      dispatchFakeEvent(textarea, 'blur');
-      flush();
-      fixture.detectChanges();
-    }));
+    });
 
     it('should apply changes when Enter keydown', fakeAsync(() => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
@@ -492,9 +490,8 @@ describe('change detection behavior', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
-      declarations: [NzTestTypographyEditComponent]
-    }).compileComponents();
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+    });
   });
 
   beforeEach(() => {
@@ -538,7 +535,7 @@ describe('change detection behavior', () => {
 
     dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
 
-    ngZone.onMicrotaskEmpty.subscribe(() => {
+    ngZone.onMicrotaskEmpty.pipe(take(1)).subscribe(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -546,6 +543,7 @@ describe('change detection behavior', () => {
 });
 
 @Component({
+  imports: [NzTypographyModule],
   template: `
     <h1 nz-typography>h1. Ant Design</h1>
     <h2 nz-typography>h2. Ant Design</h2>
@@ -569,6 +567,7 @@ describe('change detection behavior', () => {
 export class NzTestTypographyComponent {}
 
 @Component({
+  imports: [NzTypographyModule],
   template: `
     <h4 nz-title nzCopyable class="test-copy-h4" nzContent="Ant Design-0" (nzCopy)="onCopy($event)"></h4>
     <p nz-paragraph nzCopyable class="test-copy-p" nzContent="Ant Design-1" (nzCopy)="onCopy($event)"></p>
@@ -586,14 +585,13 @@ export class NzTestTypographyComponent {}
   `
 })
 export class NzTestTypographyCopyComponent {
-  tooltips: [string | null, string | null] | null = ['click here', 'coped'];
-  icons: [string, string] | null = ['meh', 'smile'];
-  onCopy(_text: string): void {
-    // noop
-  }
+  tooltips: [string, string] | null = ['click here', 'coped'];
+  icons: [string, string] = ['meh', 'smile'];
+  onCopy(_text: string): void {}
 }
 
 @Component({
+  imports: [NzTypographyModule],
   template: `
     <p
       nz-paragraph
@@ -617,6 +615,7 @@ export class NzTestTypographyEditComponent {
 }
 
 @Component({
+  imports: [NzTypographyModule],
   template: `
     <p nz-paragraph nzEllipsis [nzExpandable]="expandable" (nzExpandChange)="onExpand()" class="single">
       Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
@@ -651,19 +650,12 @@ export class NzTestTypographyEditComponent {
       [nzSuffix]="suffix"
       class="dynamic"
     ></p>
-  `,
-  styles: [
-    `
-      p {
-        line-height: 1.5;
-      }
-    `
-  ]
+  `
 })
 export class NzTestTypographyEllipsisComponent {
   expandable = false;
   onExpand = jasmine.createSpy('expand callback');
-  suffix: string | null = null;
+  suffix?: string;
   onEllipsis = jasmine.createSpy('ellipsis callback');
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
   str = new Array(5)

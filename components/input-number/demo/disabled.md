@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 3
 title:
     zh-CN: 不可用
     en-US: Disabled
@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Click the button to toggle between available and disabled states.
-
-

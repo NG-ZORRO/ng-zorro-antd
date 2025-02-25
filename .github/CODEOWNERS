@@ -19,25 +19,25 @@ components/typography/**                  @hsuanxyz
 components/space/**                       @hsuanxyz
 components/resizable/**                   @hsuanxyz
 components/tabs/**                        @hsuanxyz
-components/breadcrumb/**                  @hullis
-components/empty/**                       @hullis
-components/carousel/**                    @hullis
-components/cascader/**                    @hullis
-components/descriptions/**                @hullis
-components/icon/**                        @hullis
-components/message/**                     @hullis
-components/notification/**                @hullis
-components/popconfirm/**                  @hullis
-components/popover/**                     @hullis
-components/progress/**                    @hullis
-components/rate/**                        @hullis
-components/result/**                      @hullis
-components/slider/**                      @hullis
-components/statistic/**                   @hullis
-components/timeline/**                    @hullis
-components/tooltip/**                     @hullis
-components/code-editor/**                 @hullis
-components/segmented/**                   @hullis
+components/breadcrumb/**                  @simplejason
+components/empty/**                       @simplejason
+components/carousel/**                    @simplejason
+components/cascader/**                    @laffery
+components/descriptions/**                @simplejason
+components/icon/**                        @simplejason
+components/message/**                     @simplejason
+components/notification/**                @simplejason
+components/popconfirm/**                  @simplejason
+components/popover/**                     @simplejason
+components/progress/**                    @simplejason
+components/rate/**                        @simplejason
+components/result/**                      @simplejason
+components/slider/**                      @simplejason
+components/statistic/**                   @simplejason
+components/timeline/**                    @simplejason
+components/tooltip/**                     @simplejason
+components/code-editor/**                 @simplejason
+components/segmented/**                   @simplejason
 components/calendar/**                    @wenqi73
 components/date-picker/**                 @wenqi73
 components/skeleton/**                    @wenqi73
@@ -67,19 +67,27 @@ components/transfer/**                    @Ricbet
 components/i18n/**                        @wenqi73
 components/pipes/**                       @chensimeng
 components/image/**                       @stygian-desolator
+components/qr-code/**                     @OriginRing
+components/cron-expression/**             @OriginRing
+components/water-mark/**                  @OriginRing
+components/color-picker/**                @OriginRing
+components/hash-code/**                   @OriginRing
+components/flex/**                        @ParsaArvanehPA
+components/float-button/**                @OriginRing
+components/check-list/**                  @OriginRing
 
 # The `components/core/*` owners
-components/core/config/**                 @hullis
-components/core/element-patch/**          @hullis
+components/core/config/**                 @simplejason
+components/core/element-patch/**          @simplejason
 components/core/highlight/**              @hsuanxyz
-components/core/resize-observers/**       @hullis
-components/core/logger/**                 @hullis
+components/core/resize-observers/**       @simplejason
+components/core/logger/**                 @simplejason
 components/core/no-animation/**           @hsuanxyz
 components/core/outlet/**                 @vthinkxie
 components/core/time/**                   @wenqi73
 components/core/trans-button/**           @hsuanxyz
 components/core/transition-patch/**       @vthinkxie
-components/core/tree/**                   @simplejason @hsuanxyz
+components/core/tree/**                   @simplejason @laffery
 components/core/wave/**                   @hsuanxyz
 
 # Misc

@@ -1,5 +1,0 @@
-import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-
-export const moduleList = [ NzImageModule, NzButtonModule, NzSpaceModule ];

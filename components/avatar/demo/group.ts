@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
 @Component({
   selector: 'nz-demo-avatar-group',
+  imports: [NzAvatarModule, NzDividerModule, NzToolTipModule],
   template: `
     <nz-avatar-group>
       <nz-avatar nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
@@ -15,7 +20,6 @@ import { Component } from '@angular/core';
       <nz-avatar style="background-color: #f56a00" nzText="U"></nz-avatar>
       <nz-avatar style="background-color: #fde3cf; color: #f56a00" nzText="+2"></nz-avatar>
     </nz-avatar-group>
-  `,
-  styles: [``]
+  `
 })
 export class NzDemoAvatarGroupComponent {}

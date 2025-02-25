@@ -1,33 +1,24 @@
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { fakeAsync, inject, TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { DateHelperService } from '../../i18n/date-helper.service';
-import { NzI18nService } from '../../i18n/nz-i18n.service';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { DateTableComponent } from './date-table.component';
 import { LibPackerModule } from './lib-packer.module';
 import { MonthTableComponent } from './month-table.component';
 
-registerLocaleData(zh);
-
 describe('Coverage supplements', () => {
-  let componentInstance: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  let dateHelper: DateHelperService;
-  let i18n: NzI18nService;
+  let componentInstance: NzSafeAny;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [LibPackerModule]
     });
-
-    TestBed.compileComponents();
-  }));
-
-  beforeEach(inject([NzI18nService, DateHelperService], (i18nService: NzI18nService, dateHelperService: DateHelperService) => {
-    dateHelper = dateHelperService;
-    i18n = i18nService;
   }));
 
   // describe('CalendarHeader', () => {
@@ -79,7 +70,7 @@ describe('Coverage supplements', () => {
   // TODO: Unit test of date-table and month-table
   describe('DateTable', () => {
     beforeEach(() => {
-      componentInstance = new DateTableComponent(i18n, dateHelper);
+      componentInstance = TestBed.createComponent(DateTableComponent).componentInstance;
     });
 
     it('should cover untouched branches', () => {
@@ -92,7 +83,7 @@ describe('Coverage supplements', () => {
 
   describe('MonthTable', () => {
     beforeEach(() => {
-      componentInstance = new MonthTableComponent(dateHelper);
+      componentInstance = TestBed.createComponent(MonthTableComponent).componentInstance;
     });
 
     it('should cover untouched branches', () => {

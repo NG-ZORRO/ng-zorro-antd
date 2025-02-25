@@ -1,31 +1,22 @@
 import { Component } from '@angular/core';
 
+import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
+
 @Component({
   selector: 'nz-demo-tree-select-status',
+  imports: [NzTreeSelectModule],
   template: `
-    <nz-space nzDirection="vertical" style="width:100%;">
-      <nz-tree-select
-        *nzSpaceItem
-        [nzNodes]="nodes"
-        nzStatus="error"
-        nzPlaceHolder="Error"
-        [(ngModel)]="value"
-        style="width:100%;"
-      ></nz-tree-select>
-      <nz-tree-select
-        *nzSpaceItem
-        nzMultiple
-        [nzNodes]="nodes"
-        nzShowSearch
-        nzStatus="warning"
-        nzPlaceHolder="Warning multiple"
-        [(ngModel)]="value"
-        style="width:100%;"
-      ></nz-tree-select>
-    </nz-space>
+    <nz-tree-select [nzNodes]="[]" nzStatus="error" nzPlaceHolder="Error" style="width:100%;"></nz-tree-select>
+    <br />
+    <br />
+    <nz-tree-select
+      nzMultiple
+      [nzNodes]="[]"
+      nzShowSearch
+      nzStatus="warning"
+      nzPlaceHolder="Warning multiple"
+      style="width:100%;"
+    ></nz-tree-select>
   `
 })
-export class NzDemoTreeSelectStatusComponent {
-  value?: string;
-  nodes = [];
-}
+export class NzDemoTreeSelectStatusComponent {}

@@ -1,11 +1,16 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, Provider, Type, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs';
 
-import { createMouseEvent } from 'ng-zorro-antd/core/testing';
+import { createKeyboardEvent, createMouseEvent, dispatchEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzContextMenuService } from './context-menu.service';
@@ -15,19 +20,11 @@ import { NzDropDownModule } from './dropdown.module';
 describe('context-menu', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  function createComponent<T>(
-    component: Type<T>,
-    providers: Provider[] = [],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    declarations: any[] = []
-  ): ComponentFixture<T> {
+  function createComponent<T>(component: Type<T>, providers: Provider[] = []): ComponentFixture<T> {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NzDropDownModule, NzMenuModule, NoopAnimationsModule],
-      declarations: [component, ...declarations],
+      imports: [NoopAnimationsModule],
       providers
-    })
-      .compileComponents()
-      .then();
+    });
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
@@ -36,19 +33,21 @@ describe('context-menu', () => {
 
     return TestBed.createComponent<T>(component);
   }
+
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
   it('should create dropdown', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
     expect(() => {
       const fakeEvent = createMouseEvent('contextmenu', 300, 300);
       const component = fixture.componentInstance;
-      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+      const viewRef = component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+      expect(viewRef).toBeTruthy();
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
@@ -56,7 +55,7 @@ describe('context-menu', () => {
     }).not.toThrowError();
   }));
   it('should only one dropdown exist', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
@@ -77,12 +76,10 @@ describe('context-menu', () => {
     }).not.toThrowError();
   }));
   it('should dropdown close when scroll', fakeAsync(() => {
-    const scrolledSubject = new Subject();
-    const fixture = createComponent(
-      NzTestDropdownContextMenuComponent,
-      [{ provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }],
-      []
-    );
+    const scrolledSubject = new Subject<void>();
+    const fixture = createComponent(NzTestDropdownContextMenuComponent, [
+      { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }
+    ]);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     expect(() => {
@@ -101,7 +98,7 @@ describe('context-menu', () => {
     }).not.toThrowError();
   }));
   it('should backdrop work with click', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
@@ -120,8 +117,29 @@ describe('context-menu', () => {
       expect(overlayContainerElement.textContent).toBe('');
     }).not.toThrowError();
   }));
+  it('should backdrop work with keyboard event ESCAPE', fakeAsync(() => {
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
+    const keyboardEvent = createKeyboardEvent('keydown', ESCAPE, undefined, 'Escape');
+    fixture.detectChanges();
+    expect(overlayContainerElement.textContent).toBe('');
+    fixture.detectChanges();
+    expect(() => {
+      const fakeEvent = createMouseEvent('contextmenu', 300, 300);
+      const component = fixture.componentInstance;
+      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('1st menu item');
+      dispatchEvent(document.body, keyboardEvent);
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toBe('');
+    }).not.toThrowError();
+  }));
   it('should not run change detection if the overlay is clicked inside', async () => {
-    const fixture = createComponent(NzTestDropdownContextMenuComponent, [], []);
+    const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     const fakeEvent = createMouseEvent('contextmenu', 300, 300);
     const component = fixture.componentInstance;
@@ -139,6 +157,7 @@ describe('context-menu', () => {
 });
 
 @Component({
+  imports: [NzDropDownModule, NzMenuModule],
   template: `
     <nz-dropdown-menu>
       <ul nz-menu>

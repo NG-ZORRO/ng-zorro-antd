@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+
 @Component({
   selector: 'nz-demo-button-disabled',
+  imports: [NzButtonModule],
   template: `
     <button nz-button nzType="primary">Primary</button>
     <button nz-button nzType="primary" disabled>Primary(disabled)</button>
@@ -26,7 +29,7 @@ import { Component } from '@angular/core';
     <br />
     <button nz-button nzType="default" nzDanger>Danger Default</button>
     <button nz-button nzType="default" disabled nzDanger>Danger Default(disabled)</button>
-    <div style="padding: 8px 8px 0px; background: rgb(190, 200, 200);">
+    <div class="ghost-background">
       <button nz-button nzGhost>Ghost</button>
       <button nz-button nzGhost disabled>Ghost(disabled)</button>
     </div>
@@ -36,6 +39,16 @@ import { Component } from '@angular/core';
       [nz-button] {
         margin-right: 8px;
         margin-bottom: 12px;
+      }
+
+      .ghost-background {
+        padding: 8px;
+        background: rgb(190, 200, 200);
+      }
+
+      .ghost-background [nz-button] {
+        margin-right: 8px;
+        margin-bottom: 0;
       }
     `
   ]

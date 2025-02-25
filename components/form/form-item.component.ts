@@ -3,15 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  Renderer2,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | '';
@@ -24,6 +16,7 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    class: 'ant-form-item',
     '[class.ant-form-item-has-success]': 'status === "success"',
     '[class.ant-form-item-has-warning]': 'status === "warning"',
     '[class.ant-form-item-has-error]': 'status === "error"',
@@ -31,14 +24,14 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
     '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
     '[class.ant-form-item-with-help]': 'withHelpClass'
   },
-  template: ` <ng-content></ng-content> `
+  template: `<ng-content></ng-content>`
 })
 export class NzFormItemComponent implements OnDestroy, OnDestroy {
   status: NzFormControlStatusType = '';
   hasFeedback = false;
   withHelpClass = false;
 
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
 
   setWithHelpViaTips(value: boolean): void {
     this.withHelpClass = value;
@@ -55,12 +48,10 @@ export class NzFormItemComponent implements OnDestroy, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  constructor(elementRef: ElementRef, renderer: Renderer2, private cdr: ChangeDetectorRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-item');
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

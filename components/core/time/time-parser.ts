@@ -17,7 +17,7 @@ export interface TimeResult {
 
 export class NgTimeParser {
   regex: RegExp = null!;
-  matchMap: { [key: string]: null | number } = {
+  matchMap: Record<string, null | number> = {
     hour: null,
     minute: null,
     second: null,
@@ -26,7 +26,10 @@ export class NgTimeParser {
     periodAbbreviated: null
   };
 
-  constructor(private format: string, private localeId: string) {
+  constructor(
+    private format: string,
+    private localeId: string
+  ) {
     this.genRegexp();
   }
 
@@ -84,7 +87,7 @@ export class NgTimeParser {
   }
 
   genRegexp(): void {
-    let regexStr = this.format.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$&');
+    let regexStr = this.format.replace(/([.*+?^=!:${}()|[\]/\\])/g, '\\$&');
     const hourRegex = /h{1,2}/i;
     const minuteRegex = /m{1,2}/;
     const secondRegex = /s{1,2}/;
@@ -123,17 +126,19 @@ export class NgTimeParser {
           this.matchMap.second = index;
           regexStr = regexStr.replace(secondRegex, '(\\d{1,2})');
           break;
-        case periodNarrowMatch:
+        case periodNarrowMatch: {
           this.matchMap.periodNarrow = index;
           const periodsNarrow = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Narrow).join('|');
           regexStr = regexStr.replace(periodNarrow, `(${periodsNarrow})`);
           break;
-        case periodWideMatch:
+        }
+        case periodWideMatch: {
           this.matchMap.periodWide = index;
           const periodsWide = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Wide).join('|');
           regexStr = regexStr.replace(periodWide, `(${periodsWide})`);
           break;
-        case periodAbbreviatedMatch:
+        }
+        case periodAbbreviatedMatch: {
           this.matchMap.periodAbbreviated = index;
           const periodsAbbreviated = getLocaleDayPeriods(
             this.localeId,
@@ -142,6 +147,7 @@ export class NgTimeParser {
           ).join('|');
           regexStr = regexStr.replace(periodAbbreviated, `(${periodsAbbreviated})`);
           break;
+        }
       }
     });
 

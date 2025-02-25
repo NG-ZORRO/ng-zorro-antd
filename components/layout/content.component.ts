@@ -8,13 +8,16 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
 @Component({
   selector: 'nz-content',
   exportAs: 'nzContent',
+  template: `<ng-content></ng-content>`,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  template: ` <ng-content></ng-content> `
+  encapsulation: ViewEncapsulation.None
 })
 export class NzContentComponent {
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-layout-content');
   }
 }

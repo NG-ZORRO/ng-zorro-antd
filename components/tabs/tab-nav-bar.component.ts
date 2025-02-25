@@ -6,8 +6,9 @@
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { DOWN_ARROW, ENTER, hasModifierKey, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW, hasModifierKey } from '@angular/cdk/keycodes';
 import { ViewportRuler } from '@angular/cdk/overlay';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   AfterViewInit,
@@ -21,25 +22,26 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { animationFrameScheduler, asapScheduler, merge, of, Subject } from 'rxjs';
+import { Subject, animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
 import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
 import { NzTabNavOperationComponent } from './tab-nav-operation.component';
+import { NzTabScrollListDirective } from './tab-scroll-list.directive';
 import { NzTabsInkBarDirective } from './tabs-ink-bar.directive';
 
 const RESIZE_SCHEDULER = typeof requestAnimationFrame !== 'undefined' ? animationFrameScheduler : asapScheduler;
@@ -66,9 +68,18 @@ const CSS_TRANSFORM_TIME = 150;
         nzTabScrollList
         (offsetChange)="onOffsetChange($event)"
         (tabScroll)="tabScroll.emit($event)"
+        role="tablist"
       >
         <ng-content></ng-content>
-        <button *ngIf="showAddButton" nz-tab-add-button [addIcon]="addIcon" (click)="addClicked.emit()"></button>
+        @if (showAddButton) {
+          <button
+            role="tab"
+            [attr.tabindex]="-1"
+            nz-tab-add-button
+            [addIcon]="addIcon"
+            (click)="addClicked.emit()"
+          ></button>
+        }
         <div nz-tabs-ink-bar [hidden]="hideBar" [position]="position" [animated]="inkBarAnimated"></div>
       </div>
     </div>
@@ -79,27 +90,33 @@ const CSS_TRANSFORM_TIME = 150;
       [addable]="addable"
       [items]="hiddenItems"
     ></nz-tab-nav-operation>
-    <div class="ant-tabs-extra-content" *ngIf="extraTemplate">
-      <ng-template [ngTemplateOutlet]="extraTemplate"></ng-template>
-    </div>
+    @if (extraTemplate) {
+      <div class="ant-tabs-extra-content">
+        <ng-template [ngTemplateOutlet]="extraTemplate"></ng-template>
+      </div>
+    }
   `,
   host: {
-    role: 'tablist',
     class: 'ant-tabs-nav',
     '(keydown)': 'handleKeydown($event)'
-  }
+  },
+  imports: [
+    NzTabScrollListDirective,
+    NzTabAddButtonComponent,
+    NzTabsInkBarDirective,
+    NzTabNavOperationComponent,
+    NgTemplateOutlet
+  ]
 })
 export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
-  static ngAcceptInputType_selectedIndex: NumberInput;
-
   @Output() readonly indexFocused: EventEmitter<number> = new EventEmitter<number>();
   @Output() readonly selectFocusedIndex: EventEmitter<number> = new EventEmitter<number>();
   @Output() readonly addClicked = new EventEmitter<void>();
   @Output() readonly tabScroll = new EventEmitter<NzTabScrollEvent>();
 
   @Input() position: NzTabPositionMode = 'horizontal';
-  @Input() addable: boolean = false;
-  @Input() hideBar: boolean = false;
+  @Input({ transform: booleanAttribute }) addable: boolean = false;
+  @Input({ transform: booleanAttribute }) hideBar: boolean = false;
   @Input() addIcon: string | TemplateRef<NzSafeAny> = 'plus';
   @Input() inkBarAnimated = true;
   @Input() extraTemplate?: TemplateRef<void>;
@@ -165,19 +182,19 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   private addButtonWidth = 0;
   private addButtonHeight = 0;
   private selectedIndexChanged = false;
-  private lockAnimationTimeoutId = -1;
-  private cssTransformTimeWaitingId = -1;
+  private lockAnimationTimeoutId?: ReturnType<typeof setTimeout>;
+  private cssTransformTimeWaitingId?: ReturnType<typeof setTimeout>;
 
   constructor(
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
     private viewportRuler: ViewportRuler,
     private nzResizeObserver: NzResizeObserver,
-    @Optional() private dir: Directionality
+    private dir: Directionality
   ) {}
 
   ngAfterViewInit(): void {
-    const dirChange = this.dir ? this.dir.change : of(null);
+    const dirChange = this.dir ? this.dir.change.asObservable() : of(null);
     const resize = this.viewportRuler.change(150);
 
     const realign = (): void => {
@@ -239,7 +256,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
 
   onOffsetChange(e: NzTabScrollListOffsetEvent): void {
     if (this.position === 'horizontal') {
-      if (this.lockAnimationTimeoutId === -1) {
+      if (!this.lockAnimationTimeoutId) {
         if (this.transformX >= 0 && e.x > 0) {
           return;
         }
@@ -251,7 +268,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
       this.transformX = this.clampTransformX(this.transformX + e.x);
       this.setTransform(this.transformX, 0);
     } else {
-      if (this.lockAnimationTimeoutId === -1) {
+      if (!this.lockAnimationTimeoutId) {
         if (this.transformY >= 0 && e.y > 0) {
           return;
         }
@@ -347,12 +364,12 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   private lockAnimation(): void {
-    if (this.lockAnimationTimeoutId === -1) {
+    if (!this.lockAnimationTimeoutId) {
       this.ngZone.runOutsideAngular(() => {
         this.navListRef.nativeElement.style.transition = 'none';
         this.lockAnimationTimeoutId = setTimeout(() => {
           this.navListRef.nativeElement.style.transition = '';
-          this.lockAnimationTimeoutId = -1;
+          this.lockAnimationTimeoutId = undefined;
         }, CSS_TRANSFORM_TIME);
       });
     }

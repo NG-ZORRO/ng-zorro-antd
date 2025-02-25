@@ -18,7 +18,7 @@ export class IconTemplateRule extends Migration<UpgradeData> {
         this.failures.push({
           filePath: template.filePath,
           position: template.getCharacterAndLineOfPosition(offset),
-          message: `Found deprecated css selector "i.anticon" component. Use "i[nz-icon]" to instead please.`
+          message: `Found deprecated css selector "i.anticon" component. Use "<nz-icon>" to instead please.`
         });
       })
 

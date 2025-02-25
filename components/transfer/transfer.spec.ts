@@ -1,64 +1,51 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import {
-  ApplicationRef,
-  Component,
-  DebugElement,
-  Injector,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { ApplicationRef, Component, DebugElement, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-
-import en_US from '../i18n/languages/en_US';
-import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzTransferComponent, NzTransferModule } from './index';
-import { TransferCanMove, TransferDirection, TransferItem } from './interface';
+import en_US from 'ng-zorro-antd/i18n/languages/en_US';
+import { NzI18nService } from 'ng-zorro-antd/i18n/nz-i18n.service';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
+import {
+  NzTransferComponent,
+  NzTransferModule,
+  TransferCanMove,
+  TransferChange,
+  TransferDirection,
+  TransferItem,
+  TransferSearchChange,
+  TransferSelectChange
+} from 'ng-zorro-antd/transfer';
 
 const COUNT = 21;
 const LEFTCOUNT = 2;
 const DISABLED = 1;
 
 describe('transfer', () => {
-  let injector: Injector;
-  let fixture: ComponentFixture<
-    | TestTransferComponent
-    | TestTransferCustomRenderComponent
-    | Test996Component
-    | NzTestTransferRtlComponent
-    | NzTestTransferStatusComponent
-    | NzTestTransferInFormComponent
-  >;
-  let dl: DebugElement;
+  let fixture: ComponentFixture<TestTransferComponent>;
+  let debugElement: DebugElement;
   let instance: TestTransferComponent;
-  let pageObject: TransferPageObject;
+  let pageObject: TransferPageObject<AbstractTestTransferComponent>;
+
   beforeEach(() => {
-    injector = TestBed.configureTestingModule({
-      imports: [BidiModule, NoopAnimationsModule, NzTransferModule, NzIconTestModule, FormsModule, NzFormModule],
-      declarations: [
-        TestTransferComponent,
-        TestTransferCustomRenderComponent,
-        Test996Component,
-        NzTestTransferRtlComponent,
-        NzTestTransferStatusComponent,
-        NzTestTransferInFormComponent
-      ]
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
-    dl = fixture.debugElement;
-    instance = dl.componentInstance;
-    pageObject = new TransferPageObject();
+    debugElement = fixture.debugElement;
+    instance = debugElement.componentInstance;
+    pageObject = new TransferPageObject(fixture);
     fixture.detectChanges();
   });
 
@@ -87,6 +74,24 @@ describe('transfer', () => {
           return !!data?.checked;
         })
       ).toBe(true);
+    });
+
+    it('nzOneWay', () => {
+      instance.nzOneWay = true;
+      fixture.detectChanges();
+      expect(!pageObject.rightList.querySelector('.ant-transfer-list-header .ant-transfer-list-checkbox')).toBeTrue();
+      expect(debugElement.queryAll(By.css('.ant-transfer-operation .ant-btn')).length).toBe(1);
+      expect(
+        debugElement.query(By.css('.ant-transfer-operation .ant-btn .anticon')).nativeElement.getAttribute('nztype')
+      ).toBe('right');
+      expect(
+        pageObject.rightList.querySelector('.ant-transfer-list-content-item .ant-transfer-list-content-item-text')
+          ?.tagName
+      ).toBe('SPAN');
+      expect(
+        pageObject.rightList.querySelector('.ant-transfer-list-content-item .ant-transfer-list-content-item-remove')
+          ?.tagName
+      ).toBe('DIV');
     });
 
     it('should be from left to right', () => {
@@ -132,8 +137,21 @@ describe('transfer', () => {
       expect(instance.comp.rightDataSource.filter(w => !w.hide).length).toBe(COUNT - LEFTCOUNT + 1);
     });
 
+    it('should have correct disable state on moving buttons', () => {
+      const transferOperationButtons: DebugElement[] = debugElement.queryAll(
+        By.css('.ant-transfer-operation > button')
+      );
+      const transferToRightButton: HTMLElement = transferOperationButtons[1].nativeNode;
+      expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(true);
+      pageObject.checkItem('left', 0);
+      expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(false);
+      pageObject.checkItem('left', 0);
+      expect((transferToRightButton as NzSafeAny)['disabled']).toEqual(true);
+    });
+
     it('should be custom filter option', () => {
-      instance.nzFilterOption = (inputValue: string, item: any): boolean => item.description.indexOf(inputValue) > -1;
+      instance.nzFilterOption = (inputValue: string, item: NzSafeAny): boolean =>
+        item.description.indexOf(inputValue) > -1;
       fixture.detectChanges();
       pageObject.expectLeft(LEFTCOUNT).search('left', 'description of content1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
@@ -199,18 +217,21 @@ describe('transfer', () => {
         expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeFalsy();
         expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeFalsy();
       });
+
       it('should be the right list is no data', () => {
         instance.nzDataSource = [{ title: `content0` }, { title: `content1` }];
         fixture.detectChanges();
         expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeTruthy();
         expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeFalsy();
       });
+
       it('should be the left list is no data', () => {
         instance.nzDataSource = [{ title: `content0`, direction: 'right' }];
         fixture.detectChanges();
         expect(pageObject.rightList.querySelector('nz-embed-empty')).toBeFalsy();
         expect(pageObject.leftList.querySelector('nz-embed-empty')).toBeTruthy();
       });
+
       it('should be the left and right list is no data', () => {
         instance.nzDataSource = [];
         fixture.detectChanges();
@@ -223,16 +244,17 @@ describe('transfer', () => {
       it('should working', () => {
         instance.nzDisabled = true;
         fixture.detectChanges();
-        expect(dl.queryAll(By.css('.ant-transfer-disabled')).length).toBe(1);
+        expect(debugElement.queryAll(By.css('.ant-transfer-disabled')).length).toBe(1);
         // All operation buttons muse be disabled
-        expect(dl.queryAll(By.css('.ant-transfer-operation .ant-btn[disabled]')).length).toBe(2);
+        expect(debugElement.queryAll(By.css('.ant-transfer-operation .ant-btn[disabled]')).length).toBe(2);
         // All search input muse be disabled
-        expect(dl.queryAll(By.css('.ant-input-disabled')).length).toBe(2);
+        expect(debugElement.queryAll(By.css('.ant-input-disabled')).length).toBe(2);
         // All item muse be disabled
-        expect(dl.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT);
+        expect(debugElement.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT);
         // All checkbox (include 2 checkall) muse be disabled
-        expect(dl.queryAll(By.css('.ant-checkbox-disabled')).length).toBe(COUNT + 2);
+        expect(debugElement.queryAll(By.css('.ant-checkbox-disabled')).length).toBe(COUNT + 2);
       });
+
       it('should be disabled clear', () => {
         pageObject.expectLeft(LEFTCOUNT).search('left', '1');
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
@@ -242,26 +264,34 @@ describe('transfer', () => {
         fixture.detectChanges();
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       });
+
       it('should be disabled check all when search result is empty', () => {
         pageObject.expectLeft(LEFTCOUNT).search('left', '模拟');
         const selectorPath = '[data-direction="left"] .ant-transfer-list-header .ant-checkbox-disabled';
         expect(pageObject.leftList.querySelectorAll(selectorPath).length).toBe(1);
       });
+
+      it('should be disabled check all when all options are disabled', () => {
+        instance.nzDataSource = [{ title: `content`, disabled: true }];
+        fixture.detectChanges();
+        const cls = '[data-direction="left"] .ant-transfer-list-header .ant-checkbox-disabled';
+        expect(debugElement.queryAll(By.css(cls)).length).toBe(1);
+      });
     });
 
     it('#nzShowSelectAll', () => {
       const cls = `[data-direction="left"] .ant-transfer-list-header .ant-checkbox`;
-      expect(dl.queryAll(By.css(cls)).length).toBe(1);
+      expect(debugElement.queryAll(By.css(cls)).length).toBe(1);
       instance.nzShowSelectAll = false;
       fixture.detectChanges();
-      expect(dl.queryAll(By.css(cls)).length).toBe(0);
+      expect(debugElement.queryAll(By.css(cls)).length).toBe(0);
     });
 
     it('#nzRenderList', () => {
       instance.nzRenderList = [instance.renderListTpl, instance.renderListTpl];
       fixture.detectChanges();
-      expect(dl.queryAll(By.css('.ant-transfer-customize-list')).length).toBe(1);
-      expect(dl.queryAll(By.css('.transfer-renderList')).length).toBe(2);
+      expect(debugElement.queryAll(By.css('.ant-transfer-customize-list')).length).toBe(1);
+      expect(debugElement.queryAll(By.css('.transfer-renderList')).length).toBe(2);
     });
 
     it('should be uncheck all when two verification error', () => {
@@ -293,7 +323,7 @@ describe('transfer', () => {
     it('#i18n', () => {
       const tempFixture = TestBed.createComponent(TestTransferCustomRenderComponent);
       tempFixture.detectChanges();
-      injector.get(NzI18nService).setLocale(en_US);
+      TestBed.inject(NzI18nService).setLocale(en_US);
       tempFixture.detectChanges();
       const searchPhText = (
         tempFixture.debugElement.query(By.css('.ant-transfer-list-search input')).nativeElement as HTMLElement
@@ -339,10 +369,8 @@ describe('transfer', () => {
 
   describe('#canMove', () => {
     it('default', () => {
-      fixture = TestBed.createComponent(TestTransferCustomRenderComponent);
-      dl = fixture.debugElement;
-      instance = dl.componentInstance;
-      pageObject = new TransferPageObject();
+      const fixture = TestBed.createComponent(TestTransferCustomRenderComponent);
+      pageObject = new TransferPageObject(fixture);
       fixture.detectChanges();
       pageObject
         .expectLeft(LEFTCOUNT)
@@ -350,6 +378,7 @@ describe('transfer', () => {
         .expectLeft(LEFTCOUNT - 1)
         .expectRight(COUNT - LEFTCOUNT + 1);
     });
+
     it('should be from left to right when two verification', () => {
       instance.canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
         if (arg.direction === 'right' && arg.list.length > 0) {
@@ -367,11 +396,12 @@ describe('transfer', () => {
   });
 
   describe('#issues', () => {
+    let fixture: ComponentFixture<Test996Component>;
+
+    // https://github.com/NG-ZORRO/ng-zorro-antd/issues/996
     it('#996', fakeAsync(() => {
       fixture = TestBed.createComponent(Test996Component);
-      dl = fixture.debugElement;
-      instance = dl.componentInstance;
-      pageObject = new TransferPageObject();
+      pageObject = new TransferPageObject(fixture);
       fixture.detectChanges();
       expect(
         pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList
@@ -387,6 +417,7 @@ describe('transfer', () => {
 
   describe('RTL', () => {
     let componentElement: HTMLElement;
+    let fixture: ComponentFixture<NzTestTransferRtlComponent>;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTransferRtlComponent);
@@ -403,6 +434,7 @@ describe('transfer', () => {
   });
 
   describe('transfer status', () => {
+    let fixture: ComponentFixture<NzTestTransferStatusComponent>;
     let componentElement: HTMLElement;
     let testComponent: NzTestTransferStatusComponent;
 
@@ -428,6 +460,7 @@ describe('transfer', () => {
   });
 
   describe('transfer in form', () => {
+    let fixture: ComponentFixture<NzTestTransferInFormComponent>;
     let componentElement: HTMLElement;
     let testComponent: NzTestTransferInFormComponent;
 
@@ -456,27 +489,39 @@ describe('transfer', () => {
     });
   });
 
-  class TransferPageObject {
-    [key: string]: any;
+  class TransferPageObject<T extends AbstractTestTransferComponent> {
+    [key: string]: NzSafeAny;
+
+    constructor(public fixture: ComponentFixture<T>) {}
+
+    get debugElement(): DebugElement {
+      return this.fixture.debugElement;
+    }
+
+    get transferElement(): NzTransferComponent {
+      return this.fixture.componentInstance.comp;
+    }
 
     getEl(cls: string): HTMLElement {
-      return dl.query(By.css(cls)).nativeElement as HTMLElement;
+      return this.debugElement.query(By.css(cls)).nativeElement as HTMLElement;
     }
 
     get leftBtn(): HTMLButtonElement {
-      return dl.query(By.css('.ant-transfer-operation .anticon-left')).nativeElement as HTMLButtonElement;
+      return this.debugElement.query(By.css('.ant-transfer-operation .anticon-left'))
+        .nativeElement as HTMLButtonElement;
     }
 
     get rightBtn(): HTMLButtonElement {
-      return dl.query(By.css('.ant-transfer-operation .anticon-right')).nativeElement as HTMLButtonElement;
+      return this.debugElement.query(By.css('.ant-transfer-operation .anticon-right'))
+        .nativeElement as HTMLButtonElement;
     }
 
     get leftList(): HTMLElement {
-      return dl.query(By.css('[data-direction="left"]')).nativeElement as HTMLElement;
+      return this.debugElement.query(By.css('[data-direction="left"]')).nativeElement as HTMLElement;
     }
 
     get rightList(): HTMLElement {
-      return dl.query(By.css('[data-direction="right"]')).nativeElement as HTMLElement;
+      return this.debugElement.query(By.css('[data-direction="right"]')).nativeElement as HTMLElement;
     }
 
     transfer(direction: TransferDirection, index: number | number[]): this {
@@ -485,7 +530,7 @@ describe('transfer', () => {
       }
       this.checkItem(direction === 'left' ? 'right' : 'left', index);
       (direction === 'left' ? this.leftBtn : this.rightBtn).click();
-      fixture.detectChanges();
+      this.fixture.detectChanges();
       return this;
     }
 
@@ -500,9 +545,9 @@ describe('transfer', () => {
       const items = (direction === 'left' ? this.leftList : this.rightList).querySelectorAll(cls);
       for (const idx of index) {
         (items[idx] as HTMLElement).click();
-        fixture.detectChanges();
+        this.fixture.detectChanges();
       }
-      fixture.detectChanges();
+      this.fixture.detectChanges();
       return this;
     }
 
@@ -513,24 +558,28 @@ describe('transfer', () => {
       ) as HTMLInputElement;
       ipt.value = value;
       ipt.dispatchEvent(new Event('input'));
-      fixture.detectChanges();
+      this.fixture.detectChanges();
       return this;
     }
 
     expectLeft(count: number): this {
-      expect(instance.comp.leftDataSource.length).toBe(count);
+      expect(this.transferElement.leftDataSource.length).toBe(count);
       return this;
     }
 
     expectRight(count: number): this {
-      expect(instance.comp.rightDataSource.length).toBe(count);
+      expect(this.transferElement.rightDataSource.length).toBe(count);
       return this;
     }
   }
 });
 
+interface AbstractTestTransferComponent {
+  comp: NzTransferComponent;
+}
+
 @Component({
-  // eslint-disable-next-line
+  imports: [NzTransferModule],
   selector: 'nz-test-transfer',
   template: `
     <nz-transfer
@@ -551,6 +600,7 @@ describe('transfer', () => {
       [nzCanMove]="canMove"
       [nzFooter]="footer"
       [nzTargetKeys]="nzTargetKeys"
+      [nzOneWay]="nzOneWay"
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
@@ -561,28 +611,25 @@ describe('transfer', () => {
     <ng-template #footer>
       <p id="transfer-footer">footer</p>
     </ng-template>
-  `,
-  styleUrls: ['./style/index.less'],
-  encapsulation: ViewEncapsulation.None
+  `
 })
-class TestTransferComponent implements OnInit {
+class TestTransferComponent implements OnInit, AbstractTestTransferComponent {
   @ViewChild('comp', { static: false }) comp!: NzTransferComponent;
   @ViewChild('renderList', { static: false }) renderListTpl!: TemplateRef<void>;
-  nzDataSource: any[] = [];
+  nzDataSource: NzSafeAny[] = [];
   nzRenderList: Array<TemplateRef<void> | null> = [null, null];
   nzDisabled = false;
   nzShowSelectAll = true;
-  nzTitles = ['Source', 'Target'];
   nzSelectedKeys = ['0', '1', '2'];
   nzTargetKeys: string[] = [];
-  nzOperations = ['to right', 'to left'];
   nzItemUnit = 'item';
   nzItemsUnit = 'items';
   nzListStyle = { 'width.px': 300, 'height.px': 300 };
   nzShowSearch = true;
-  nzFilterOption: null | ((inputValue: string, item: any) => boolean) = null;
+  nzFilterOption: null | ((inputValue: string, item: NzSafeAny) => boolean) = null;
   nzSearchPlaceholder = '请输入搜索内容';
   nzNotFoundContent = '列表为空';
+  nzOneWay = false;
 
   canMove(arg: TransferCanMove): Observable<TransferItem[]> {
     // if (arg.direction === 'right' && arg.list.length > 0) arg.list.splice(0, 1);
@@ -613,25 +660,26 @@ class TestTransferComponent implements OnInit {
     this.nzDataSource = ret;
   }
 
-  search(): void {}
+  search(_: TransferSearchChange): void {}
 
-  select(): void {}
+  select(_: TransferSelectChange): void {}
 
-  change(): void {}
+  change(_: TransferChange): void {}
 }
 
 @Component({
+  imports: [NzIconModule, NzTransferModule],
   template: `
     <nz-transfer #comp nzShowSearch [nzRender]="render" [nzDataSource]="nzDataSource">
       <ng-template #render let-item>
-        <span nz-icon nzType="{{ item.icon }}"></span>
+        <nz-icon nzType="{{ item.icon }}" />
         {{ item.title }}
       </ng-template>
     </nz-transfer>
   `
 })
-class TestTransferCustomRenderComponent implements OnInit {
-  @ViewChild('comp', { static: false }) comp?: NzTransferComponent;
+class TestTransferCustomRenderComponent implements OnInit, AbstractTestTransferComponent {
+  @ViewChild('comp', { static: false }) comp!: NzTransferComponent;
   nzDataSource: Array<{
     key: string;
     title: string;
@@ -661,12 +709,14 @@ class TestTransferCustomRenderComponent implements OnInit {
   }
 }
 
+// https://github.com/NG-ZORRO/ng-zorro-antd/issues/996
 @Component({
-  template: ` <nz-transfer [nzDataSource]="list"></nz-transfer> `
+  imports: [NzTransferModule],
+  template: `<nz-transfer [nzDataSource]="list"></nz-transfer>`
 })
 class Test996Component implements OnInit {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  list: any[] = [];
+  @ViewChild(NzTransferComponent, { static: true }) comp!: NzTransferComponent;
+  list: NzSafeAny[] = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 2; i++) {
@@ -682,6 +732,7 @@ class Test996Component implements OnInit {
 }
 
 @Component({
+  imports: [BidiModule, TestTransferComponent],
   template: `
     <div [dir]="direction">
       <nz-test-transfer></nz-test-transfer>
@@ -690,17 +741,19 @@ class Test996Component implements OnInit {
 })
 export class NzTestTransferRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
-  template: ` <nz-transfer [nzDataSource]="[]" [nzStatus]="status"></nz-transfer> `
+  imports: [NzTransferModule],
+  template: `<nz-transfer [nzDataSource]="[]" [nzStatus]="status"></nz-transfer>`
 })
 export class NzTestTransferStatusComponent {
   status: NzStatus = 'error';
 }
 
 @Component({
+  imports: [NzFormModule, NzTransferModule],
   template: `
     <form nz-form>
       <nz-form-item>

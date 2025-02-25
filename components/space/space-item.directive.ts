@@ -8,6 +8,4 @@ import { Directive } from '@angular/core';
 @Directive({
   selector: '[nzSpaceItem]'
 })
-export class NzSpaceItemDirective {
-  constructor() {}
-}
+export class NzSpaceItemDirective {}

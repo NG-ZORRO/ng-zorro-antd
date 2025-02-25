@@ -1,25 +1,24 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { NzStatisticComponent } from './statistic.component';
 import { NzStatisticModule } from './statistic.module';
 
 describe('nz-statistic', () => {
   describe('basic', () => {
-    let testBed: ComponentBed<NzTestStatisticComponent>;
     let fixture: ComponentFixture<NzTestStatisticComponent>;
     let testComponent: NzTestStatisticComponent;
     let statisticEl: DebugElement;
     beforeEach(() => {
-      testBed = createComponentBed(NzTestStatisticComponent, {
-        imports: [NzStatisticModule]
-      });
-      fixture = testBed.fixture;
-      testComponent = testBed.component;
+      fixture = TestBed.createComponent(NzTestStatisticComponent);
+      testComponent = fixture.componentInstance;
       statisticEl = fixture.debugElement.query(By.directive(NzStatisticComponent));
     });
 
@@ -35,17 +34,20 @@ describe('nz-statistic', () => {
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-prefix').innerText).toBe('prefix');
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-suffix').innerText).toBe('suffix');
     });
+
+    it('should render skeleton', () => {
+      expect(statisticEl.nativeElement.querySelector('.ant-statistic-skeleton')).toBeFalsy();
+      testComponent.loading = true;
+      fixture.detectChanges();
+      expect(statisticEl.nativeElement.querySelector('.ant-statistic-skeleton')).toBeTruthy();
+    });
   });
 
   describe('RTL', () => {
-    let testBed: ComponentBed<NzTestStatisticRtlComponent>;
     let fixture: ComponentFixture<NzTestStatisticRtlComponent>;
     let statisticEl: DebugElement;
     beforeEach(() => {
-      testBed = createComponentBed(NzTestStatisticRtlComponent, {
-        imports: [BidiModule, NzStatisticModule]
-      });
-      fixture = testBed.fixture;
+      fixture = TestBed.createComponent(NzTestStatisticRtlComponent);
       statisticEl = fixture.debugElement.query(By.directive(NzStatisticComponent));
     });
 
@@ -61,17 +63,26 @@ describe('nz-statistic', () => {
 });
 
 @Component({
+  imports: [NzStatisticModule],
   template: `
-    <nz-statistic [nzValue]="123.45" [nzTitle]="title" [nzSuffix]="suffix" [nzPrefix]="prefix"></nz-statistic>
+    <nz-statistic
+      [nzValue]="123.45"
+      [nzTitle]="title"
+      [nzSuffix]="suffix"
+      [nzPrefix]="prefix"
+      [nzLoading]="loading"
+    ></nz-statistic>
   `
 })
 export class NzTestStatisticComponent {
   title = 'title';
   prefix = '';
   suffix = '';
+  loading = false;
 }
 
 @Component({
+  imports: [BidiModule, NzStatisticModule],
   template: `
     <div [dir]="direction">
       <nz-statistic [nzValue]="123.45" nzTitle="test title"></nz-statistic>
@@ -80,5 +91,5 @@ export class NzTestStatisticComponent {
 })
 export class NzTestStatisticRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

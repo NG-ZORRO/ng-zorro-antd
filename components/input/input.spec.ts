@@ -1,11 +1,16 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzStatus } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
@@ -13,22 +18,11 @@ import { NzInputDirective } from './input.directive';
 import { NzInputModule } from './input.module';
 
 describe('input', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-        declarations: [
-          NzTestInputWithInputComponent,
-          NzTestInputWithTextAreaComponent,
-          NzTestInputFormComponent,
-          NzTestInputWithStatusComponent,
-          NzTestInputWithDirComponent,
-          NzTestInputInFormComponent
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting()]
+    });
+  }));
   describe('single input', () => {
     describe('input with input element', () => {
       let fixture: ComponentFixture<NzTestInputWithInputComponent>;
@@ -61,6 +55,13 @@ describe('input', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input');
         expect(inputElement.nativeElement.classList).toContain('ant-input-lg');
+      });
+      it('should nzStepperLess work', () => {
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-stepperless');
+        testComponent.stepperless = false;
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).not.toContain('ant-input-stepperless');
       });
     });
 
@@ -190,6 +191,7 @@ describe('input', () => {
 });
 
 @Component({
+  imports: [BidiModule, NzInputModule],
   template: `
     <div [dir]="dir">
       <input nz-input />
@@ -204,48 +206,48 @@ export class NzTestInputWithDirComponent {
 }
 
 @Component({
-  template: ` <input nz-input [nzSize]="size" [disabled]="disabled" /> `
+  imports: [NzInputModule],
+  template: `<input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="stepperless" />`
 })
 export class NzTestInputWithInputComponent {
-  size = 'default';
+  size: NzSizeLDSType = 'default';
   disabled = false;
+  stepperless = true;
 }
 
 @Component({
-  template: ` <textarea nz-input></textarea> `
+  imports: [NzInputModule],
+  template: `<textarea nz-input></textarea>`
 })
 export class NzTestInputWithTextAreaComponent {}
 
 @Component({
+  imports: [ReactiveFormsModule, NzInputModule],
   template: `
-    <form [formGroup]="formGroup">
-      <input nz-input formControlName="input" />
+    <form>
+      <input nz-input [formControl]="formControl" />
     </form>
   `
 })
 export class NzTestInputFormComponent {
-  formGroup: UntypedFormGroup;
-
-  constructor(private formBuilder: UntypedFormBuilder) {
-    this.formGroup = this.formBuilder.group({
-      input: ['abc']
-    });
-  }
+  formControl = new FormControl('abc');
 
   disable(): void {
-    this.formGroup.disable();
+    this.formControl.disable();
   }
 }
 
 // status
 @Component({
-  template: ` <input nz-input [nzStatus]="status" /> `
+  imports: [NzInputModule],
+  template: `<input nz-input [nzStatus]="status" />`
 })
 export class NzTestInputWithStatusComponent {
   status: NzStatus = 'error';
 }
 
 @Component({
+  imports: [NzFormModule, NzInputModule],
   template: `
     <form nz-form>
       <nz-form-item>

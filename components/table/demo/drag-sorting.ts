@@ -1,8 +1,11 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
+
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'nz-demo-table-drag-sorting',
+  imports: [CdkDropList, CdkDrag, NzTableModule],
   template: `
     <nz-table [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false">
       <thead>
@@ -13,11 +16,13 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody cdkDropList (cdkDropListDropped)="drop($event)">
-        <tr *ngFor="let data of listOfData" cdkDrag>
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-        </tr>
+        @for (data of listOfData; track data) {
+          <tr cdkDrag>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `,

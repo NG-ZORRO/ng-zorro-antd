@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzTagModule } from 'ng-zorro-antd/tag';
+
 @Component({
   selector: 'nz-demo-tag-basic',
+  imports: [NzTagModule],
   template: `
     <nz-tag>Tag 1</nz-tag>
     <nz-tag>

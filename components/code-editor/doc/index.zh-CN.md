@@ -12,7 +12,6 @@ experimental: true
 <p>开发者或用户可以选择在正式发布前使用这些功能，但是每次发布版本时都可能存在 <strong>breaking changes</strong>。</p>
 </blockquote>
 
-
 ## 何时使用
 
 需要在网页上渲染 monaco editor 时使用。
@@ -26,9 +25,8 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 ### 引入样式
 
 ```less
-@import "node_modules/ng-zorro-antd/code-editor/style/entry.less"
+@import 'node_modules/ng-zorro-antd/code-editor/style/entry.less';
 ```
-
 
 ## API
 
@@ -74,20 +72,20 @@ npm install monaco-editor
 
 ### nz-code-editor
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzEditorMode]` | 编辑器的模式 | `normal`\|`diff` | `normal` |
-| `[nzLoading]` | 加载中 | `boolean` | `false` |
-| `[nzOriginalText]` | Diff 模式下，左半边的文本内容 | `boolean` | `false` |
-| `[nzFullControl]` | 完全控制模式，此模式下组件不会帮助用户处理 `TextModel`，用户应当自行管理 monaco editor 实例 | `boolean` | `false` |
-| `[nzEditorOption]` | 编辑器选项，[参考 monaco editor 的定义](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IEditorOptions.html) | `IEditorConstructionOptions` | `{}` |
-| `[nzToolkit]` | 暴露快捷操作 | `TemplateRef<void>` | - |
-| `(nzEditorInitialized)` | 当编辑器组件初始化完毕之后派发事件  | `IStandaloneCodeEditor` \| `IStandaloneDiffEditor` | - |
+| 参数                    | 说明                                                                                                                                | 类型                                               | 默认值   |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
+| `[nzEditorMode]`        | 编辑器的模式                                                                                                                        | `normal`\|`diff`                                   | `normal` |
+| `[nzLoading]`           | 加载中                                                                                                                              | `boolean`                                          | `false`  |
+| `[nzOriginalText]`      | Diff 模式下，左半边的文本内容                                                                                                       | `boolean`                                          | `false`  |
+| `[nzFullControl]`       | 完全控制模式，此模式下组件不会帮助用户处理 `TextModel`，用户应当自行管理 monaco editor 实例                                         | `boolean`                                          | `false`  |
+| `[nzEditorOption]`      | 编辑器选项，[参考 monaco editor 的定义](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IEditorOptions.html) | `IEditorConstructionOptions`                       | `{}`     |
+| `[nzToolkit]`           | 暴露快捷操作                                                                                                                        | `TemplateRef<void>`                                | -        |
+| `(nzEditorInitialized)` | 当编辑器组件初始化完毕之后派发事件                                                                                                  | `IStandaloneCodeEditor` \| `IStandaloneDiffEditor` | -        |
 
 #### 方法
 
-| 名称 | 描述 |
-| --- | --- |
+| 名称       | 描述             |
+| ---------- | ---------------- |
 | `layout()` | 强制组件重新渲染 |
 
 ### 全局配置
@@ -96,11 +94,11 @@ npm install monaco-editor
 
 #### CodeEditorConfig
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `assetsRoot` | 组件加载 monaco editor 资源文件的位置 | `string` \| `SageUrl` | - |
-| `defaultEditorOption` | 默认的编辑器设置，[参考 monaco editor 的定义](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html) | `IEditorConstructionOptions` | `{}` |
-| `onLoad` | 当 monaco editor 资源加载完毕时触发的钩子，此时全局对象 `monaco` 可用 (monaco-editor 版本不小于 0.22.0 时需定义 `window.MonacoEnvironment = { globalAP: true }`) | `() => void` | - |
-| `onFirstEditorInit` | 当第一个编辑器请求初始化时触发的钩子 | `() => void` | - |
-| `onInit` | 每个编辑器请求初始化时触发的钩子  | `() => void`  | - |
-| `useStaticLoading` | 使用静态加载 | `boolean` | `false` |
+| 属性                  | 说明                                                                                                                                                              | 类型                         | 默认值  |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------- |
+| `assetsRoot`          | 组件加载 monaco editor 资源文件的位置                                                                                                                             | `string` \| `SafeUrl`        | -       |
+| `defaultEditorOption` | 默认的编辑器设置，[参考 monaco editor 的定义](https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IEditorConstructionOptions.html)              | `IEditorConstructionOptions` | `{}`    |
+| `onLoad`              | 当 monaco editor 资源加载完毕时触发的钩子，此时全局对象 `monaco` 可用 (monaco-editor 版本不小于 0.22.0 时需定义 `window.MonacoEnvironment = { globalAPI: true }`) | `() => void`                 | -       |
+| `onFirstEditorInit`   | 当第一个编辑器请求初始化时触发的钩子                                                                                                                              | `() => void`                 | -       |
+| `onInit`              | 每个编辑器请求初始化时触发的钩子                                                                                                                                  | `() => void`                 | -       |
+| `useStaticLoading`    | 使用静态加载                                                                                                                                                      | `boolean`                    | `false` |

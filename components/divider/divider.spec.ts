@@ -1,8 +1,14 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzDividerComponent } from './divider.component';
 import { NzDividerModule } from './divider.module';
@@ -11,11 +17,11 @@ describe('divider', () => {
   let fixture: ComponentFixture<TestDividerComponent>;
   let context: TestDividerComponent;
   let dl: DebugElement;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzDividerModule, NzIconTestModule],
-      declarations: [TestDividerComponent, TestDividerTextTemplateComponent]
-    }).compileComponents();
+      providers: [provideNzIconsTesting()]
+    });
     fixture = TestBed.createComponent(TestDividerComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -33,7 +39,7 @@ describe('divider', () => {
   });
 
   describe('#nzType', () => {
-    for (const value of ['horizontal', 'vertical']) {
+    for (const value of ['horizontal', 'vertical'] as const) {
       it(`[${value}]`, () => {
         context.nzType = value;
         fixture.detectChanges();
@@ -55,15 +61,14 @@ describe('divider', () => {
     }
 
     it('should be custom template', () => {
-      let fixtureTemplate: ComponentFixture<TestDividerTextTemplateComponent>;
-      fixtureTemplate = TestBed.createComponent(TestDividerTextTemplateComponent);
-      fixtureTemplate.detectChanges();
-      expect(fixtureTemplate.debugElement.query(By.css('.anticon-plus')) != null).toBe(true);
+      const fixture = TestBed.createComponent(TestDividerTextTemplateComponent);
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.anticon-plus')) != null).toBe(true);
     });
   });
 
   describe('#nzOrientation', () => {
-    ['center', 'left', 'right'].forEach(type => {
+    (['center', 'left', 'right'] as const).forEach(type => {
       it(`with ${type}`, () => {
         context.nzOrientation = type;
         fixture.detectChanges();
@@ -71,9 +76,24 @@ describe('divider', () => {
       });
     });
   });
+
+  describe('#nzVariant', () => {
+    (['dashed', 'dotted'] as const).forEach(type => {
+      it(`with ${type}`, () => {
+        context.comp.nzVariant = type;
+        fixture.detectChanges();
+        expect(dl.query(By.css(`.ant-divider-${type}`)) != null).toBe(true);
+      });
+    });
+
+    it('should have solid as default value for nzVariant', () => {
+      expect(context.comp.nzVariant).toEqual('solid');
+    });
+  });
 });
 
 @Component({
+  imports: [NzDividerModule],
   template: `
     <nz-divider
       #comp
@@ -87,16 +107,17 @@ describe('divider', () => {
 class TestDividerComponent {
   @ViewChild('comp', { static: false }) comp!: NzDividerComponent;
   nzDashed = false;
-  nzType = 'horizontal';
+  nzType: 'vertical' | 'horizontal' = 'horizontal';
   nzText?: string = 'with text';
-  nzOrientation: string = '';
+  nzOrientation!: 'left' | 'right' | 'center';
 }
 
 @Component({
+  imports: [NzDividerModule, NzIconModule],
   template: `
     <nz-divider nzDashed [nzText]="text">
       <ng-template #text>
-        <span nz-icon nzType="plus"></span>
+        <nz-icon nzType="plus" />
         Add
       </ng-template>
     </nz-divider>

@@ -16,11 +16,11 @@ import {
   Output
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NZ_MENTION_CONFIG } from './config';
 import { Mention } from './mention.component';
@@ -45,15 +45,15 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
   onTouched: OnTouchedType = () => {};
 
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onFocusin: EventEmitter<void> = new EventEmitter();
+  @Output() readonly onFocusin = new EventEmitter<FocusEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onBlur: EventEmitter<void> = new EventEmitter();
+  @Output() readonly onBlur = new EventEmitter<FocusEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onInput: EventEmitter<KeyboardEvent> = new EventEmitter();
+  @Output() readonly onInput = new EventEmitter<KeyboardEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onKeydown: EventEmitter<KeyboardEvent> = new EventEmitter();
+  @Output() readonly onKeydown = new EventEmitter<KeyboardEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onClick: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() readonly onClick = new EventEmitter<MouseEvent>();
   value?: string;
 
   constructor(
@@ -113,27 +113,25 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
 
     this.setupEventListener('blur', this.onBlur);
     this.setupEventListener('focusin', this.onFocusin);
-    this.setupEventListener('input', this.onInput, true);
-    this.setupEventListener('click', this.onClick, true);
-    this.setupEventListener('keydown', this.onKeydown, true);
+    this.setupEventListener('input', this.onInput);
+    this.setupEventListener('click', this.onClick);
+    this.setupEventListener('keydown', this.onKeydown);
   }
 
   ngOnDestroy(): void {
     this.completeEvents();
   }
 
-  private setupEventListener<T>(eventName: string, eventEmitter: EventEmitter<T>, shouldPassEvent = false): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent<T>(this.el.nativeElement, eventName)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          if (eventEmitter.observers.length) {
-            this.ngZone.run(() => {
-              eventEmitter.emit(shouldPassEvent ? event : undefined);
-              this.ref.markForCheck();
-            });
-          }
-        });
-    });
+  private setupEventListener<TEvent extends Event>(eventName: string, eventEmitter: EventEmitter<TEvent>): void {
+    fromEventOutsideAngular<TEvent>(this.el.nativeElement, eventName)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        if (eventEmitter.observers.length) {
+          this.ngZone.run(() => {
+            eventEmitter.emit(event);
+            this.ref.markForCheck();
+          });
+        }
+      });
   }
 }

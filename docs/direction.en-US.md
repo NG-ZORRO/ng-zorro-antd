@@ -18,7 +18,7 @@ Set the `dir` attribute on the document `body` or `html` tag.
 Import the Angular CDK bidi module.
 
 ```typescript
-import {BidiModule} from '@angular/cdk/bidi';
+import { BidiModule } from '@angular/cdk/bidi';
 ```
 
 Set the direction for the application or its descendants in the template.

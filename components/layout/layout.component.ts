@@ -10,7 +10,6 @@ import {
   ContentChildren,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
@@ -22,10 +21,10 @@ import { NzSiderComponent } from './sider.component';
 @Component({
   selector: 'nz-layout',
   exportAs: 'nzLayout',
+  template: `<ng-content></ng-content>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-layout',
     '[class.ant-layout-rtl]': `dir === 'rtl'`,
@@ -38,7 +37,7 @@ export class NzLayoutComponent implements OnDestroy, OnInit {
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(@Optional() private directionality: Directionality) {}
+  constructor(private directionality: Directionality) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

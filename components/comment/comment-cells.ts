@@ -59,9 +59,9 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
 @Component({
   selector: 'nz-comment-action',
   exportAs: 'nzCommentAction',
+  template: '<ng-template><ng-content /></ng-template>',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: '<ng-template><ng-content></ng-content></ng-template>'
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzCommentActionComponent implements OnInit {
   @ViewChild(TemplateRef, { static: true }) implicitContent!: TemplateRef<void>;

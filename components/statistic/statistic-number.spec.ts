@@ -1,25 +1,27 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { DecimalPipe } from '@angular/common';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { NzStatisticValueType } from 'ng-zorro-antd/statistic/typings';
 
 import { NzStatisticNumberComponent } from './statistic-number.component';
 import { NzStatisticModule } from './statistic.module';
 
 describe('nz-number', () => {
-  let testBed: ComponentBed<NzTestNumberComponent>;
   let fixture: ComponentFixture<NzTestNumberComponent>;
   let testComponent: NzTestNumberComponent;
   let numberEl: DebugElement;
 
   describe('basic', () => {
     beforeEach(() => {
-      testBed = createComponentBed(NzTestNumberComponent, {
-        imports: [NzStatisticModule]
-      });
-      fixture = testBed.fixture;
-      testComponent = testBed.component;
+      fixture = TestBed.createComponent(NzTestNumberComponent);
+      testComponent = fixture.componentInstance;
       numberEl = fixture.debugElement.query(By.directive(NzStatisticNumberComponent));
     });
 
@@ -48,14 +50,15 @@ describe('nz-number', () => {
 });
 
 @Component({
+  imports: [DecimalPipe, NzStatisticModule],
   template: `
-    <nz-statistic-number [nzValue]="value | number" [nzValueTemplate]="template"></nz-statistic-number>
+    <nz-statistic-number [nzValue]="(value | number)!" [nzValueTemplate]="template"></nz-statistic-number>
     <ng-template #tpl let-value>It's {{ value }}</ng-template>
   `
 })
 export class NzTestNumberComponent {
-  @ViewChild('tpl', { static: true }) tpl?: TemplateRef<void>;
+  @ViewChild('tpl', { static: true }) tpl?: TemplateRef<{ $implicit: NzStatisticValueType }>;
 
   value = 1;
-  template?: TemplateRef<void>;
+  template?: TemplateRef<{ $implicit: NzStatisticValueType }>;
 }

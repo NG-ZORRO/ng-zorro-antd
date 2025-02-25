@@ -4,7 +4,14 @@
  */
 
 import { CdkTree } from '@angular/cdk/tree';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 
@@ -28,8 +35,8 @@ import { NzTreeView } from './tree';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: CdkTree, useExisting: NzTreeViewComponent },
-    { provide: NzTreeView, useExisting: NzTreeViewComponent }
+    { provide: CdkTree, useExisting: forwardRef(() => NzTreeViewComponent) },
+    { provide: NzTreeView, useExisting: forwardRef(() => NzTreeViewComponent) }
   ],
   host: {
     class: 'ant-tree',
@@ -37,12 +44,13 @@ import { NzTreeView } from './tree';
     '[class.ant-tree-directory]': 'nzDirectoryTree',
     '[class.ant-tree-rtl]': `dir === 'rtl'`
   },
-  animations: [treeCollapseMotion]
+  animations: [treeCollapseMotion],
+  imports: [NzTreeNodeOutletDirective]
 })
 export class NzTreeViewComponent<T> extends NzTreeView<T> implements AfterViewInit {
   @ViewChild(NzTreeNodeOutletDirective, { static: true }) nodeOutlet!: NzTreeNodeOutletDirective;
   _afterViewInit = false;
-  ngAfterViewInit(): void {
+  override ngAfterViewInit(): void {
     Promise.resolve().then(() => {
       this._afterViewInit = true;
       this.changeDetectorRef.markForCheck();

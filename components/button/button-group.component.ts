@@ -4,20 +4,15 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  Optional,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 export type NzButtonGroupSize = 'large' | 'default' | 'small';
 
+/**
+ * @deprecated Will be removed in v20. Use `NzSpaceCompactComponent` instead.
+ */
 @Component({
   selector: 'nz-button-group',
   exportAs: 'nzButtonGroup',
@@ -30,7 +25,7 @@ export type NzButtonGroupSize = 'large' | 'default' | 'small';
     '[class.ant-btn-group-rtl]': `dir === 'rtl'`
   },
   preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `
+  template: `<ng-content></ng-content>`
 })
 export class NzButtonGroupComponent implements OnDestroy, OnInit {
   @Input() nzSize: NzButtonGroupSize = 'default';
@@ -39,7 +34,8 @@ export class NzButtonGroupComponent implements OnDestroy, OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(@Optional() private directionality: Directionality) {}
+  constructor(private directionality: Directionality) {}
+
   ngOnInit(): void {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {

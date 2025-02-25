@@ -16,9 +16,7 @@ type Local = 'en' | 'zh';
 
 const browserOutput = `${buildConfig.outputDir}/browser`;
 
-const distFiles: {
-  [key: string]: string[];
-} = {
+const distFiles: Record<string, string[]> = {
   html: ['index.html', 'docs/**/index.html', 'experimental/**/index.html', 'components/**/index.html'],
   js: ['ngsw-worker.js', 'worker-basic.min.js', 'safety-worker.js'],
   json: ['manifest.json']

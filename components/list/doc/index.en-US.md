@@ -20,28 +20,27 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 ### nz-list
 
-| Property | Description | Type | Default
-| --- | --- | --- | --- |
-| `[nzBordered]` | Toggles rendering of the border around the list | `boolean` | `false` |
-| `[nzFooter]` | List footer renderer | `string \| TemplateRef<void>` | - |
-| `[nzHeader]` | List header renderer | `string \| TemplateRef<void>` | - |
-| `[nzItemLayout]` | The layout of list, default is `horizontal`, If a vertical list is desired, set the itemLayout property to `vertical` | `'vertical' \| 'horizontal'` | `'horizontal'` |
-| `[nzLoading]` | Shows a loading indicator while the contents of the list are being fetched | `boolean` | `false` |
-| `[nzSize]` | Size of list | `'large' \| 'small' \| 'default'` | `'default'` |
-| `[nzSplit]` | Toggles rendering of the split under the list item | `boolean` | `true` |
+| Property         | Description                                                                                                           | Type                              | Default        |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------- | -------------- |
+| `[nzBordered]`   | Toggles rendering of the border around the list                                                                       | `boolean`                         | `false`        |
+| `[nzFooter]`     | List footer renderer                                                                                                  | `string \| TemplateRef<void>`     | -              |
+| `[nzHeader]`     | List header renderer                                                                                                  | `string \| TemplateRef<void>`     | -              |
+| `[nzItemLayout]` | The layout of list, default is `horizontal`, If a vertical list is desired, set the itemLayout property to `vertical` | `'vertical' \| 'horizontal'`      | `'horizontal'` |
+| `[nzLoading]`    | Shows a loading indicator while the contents of the list are being fetched                                            | `boolean`                         | `false`        |
+| `[nzSize]`       | Size of list                                                                                                          | `'large' \| 'small' \| 'default'` | `'default'`    |
+| `[nzSplit]`      | Toggles rendering of the split under the list item                                                                    | `boolean`                         | `true`         |
 
 ### nz-list-empty
 
 Empty content component for the list.
 
-| Property | Description | Type | Default
-| --- | --- | --- | --- |
-| `[nzNoResult]` | Empty content | `string \| TemplateRef<void>` | - |
+| Property       | Description   | Type                          | Default |
+| -------------- | ------------- | ----------------------------- | ------- |
+| `[nzNoResult]` | Empty content | `string \| TemplateRef<void>` | -       |
 
 ### nz-list[nzGrid]
 
 Use grid layout for the list.
-
 
 ### nz-list-header
 
@@ -63,8 +62,8 @@ Load more component for the list.
 
 ### nz-list-item
 
-| Property | Description | Type | Default
-| --- | --- | --- | --- |
+| Property     | Description                              | Type      | Default |
+| ------------ | ---------------------------------------- | --------- | ------- |
 | `[nzNoFlex]` | Whether it's not `flex` layout rendering | `boolean` | `false` |
 
 #### ul[nz-list-item-actions]
@@ -83,11 +82,11 @@ Extra content for the list items.
 
 ### nz-list-item-meta
 
-| Property | Description | Type | Default
-| --- | --- | --- | --- |
-| `[nzAvatar]` | The avatar of list item | `string \| TemplateRef<void>` | - |
-| `[nzDescription]` | The description of list item | `string \| TemplateRef<void>` | - |
-| `[nzTitle]` | The title of list item | `string \| TemplateRef<void>` | - |
+| Property          | Description                  | Type                          | Default |
+| ----------------- | ---------------------------- | ----------------------------- | ------- |
+| `[nzAvatar]`      | The avatar of list item      | `string \| TemplateRef<void>` | -       |
+| `[nzDescription]` | The description of list item | `string \| TemplateRef<void>` | -       |
+| `[nzTitle]`       | The title of list item       | `string \| TemplateRef<void>` | -       |
 
 #### nz-list-item-meta-title
 
@@ -101,7 +100,6 @@ Description component for the list items meta part.
 
 Avatar component for the list items meta part.
 
-| Property | Description | Type | Default | Global Config |
-| -------- | ----------- | ---- | ------- | ------------- |
-| `[nzSrc]` | The address of the image for an image avatar | `string` | - |
-
+| Property  | Description                                  | Type     | Default | Global Config |
+| --------- | -------------------------------------------- | -------- | ------- | ------------- |
+| `[nzSrc]` | The address of the image for an image avatar | `string` | -       |

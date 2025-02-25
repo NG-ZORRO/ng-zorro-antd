@@ -1,21 +1,31 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzListModule } from 'ng-zorro-antd/list';
+
 @Component({
   selector: 'nz-demo-list-basic',
+  imports: [NzButtonModule, NzListModule],
   template: `
-    <div style="margin-bottom: 8px;"><button nz-button (click)="change()">Switch Data</button></div>
+    <div style="margin-bottom: 8px;">
+      <button nz-button (click)="change()">Switch Data</button>
+    </div>
     <nz-list nzItemLayout="horizontal" [nzLoading]="loading">
-      <nz-list-item *ngFor="let item of data">
-        <nz-list-item-meta
-          nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
-        >
-          <nz-list-item-meta-title>
-            <a href="https://ng.ant.design">{{ item.title }}</a>
-          </nz-list-item-meta-title>
-        </nz-list-item-meta>
-      </nz-list-item>
-      <nz-list-empty *ngIf="data.length === 0"></nz-list-empty>
+      @for (item of data; track item) {
+        <nz-list-item>
+          <nz-list-item-meta
+            nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
+          >
+            <nz-list-item-meta-title>
+              <a href="https://ng.ant.design">{{ item.title }}</a>
+            </nz-list-item-meta-title>
+          </nz-list-item-meta>
+        </nz-list-item>
+      }
+      @if (data.length === 0) {
+        <nz-list-empty />
+      }
     </nz-list>
   `
 })

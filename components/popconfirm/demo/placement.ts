@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 @Component({
   selector: 'nz-demo-popconfirm-placement',
+  imports: [NzButtonModule, NzPopconfirmModule],
   template: `
     <div style="margin-left: 60px">
       <button
@@ -147,6 +150,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   ]
 })
 export class NzDemoPopconfirmPlacementComponent {
+  constructor(private nzMessageService: NzMessageService) {}
+
   cancel(): void {
     this.nzMessageService.info('click cancel');
   }
@@ -154,6 +159,4 @@ export class NzDemoPopconfirmPlacementComponent {
   confirm(): void {
     this.nzMessageService.info('click confirm');
   }
-
-  constructor(private nzMessageService: NzMessageService) {}
 }

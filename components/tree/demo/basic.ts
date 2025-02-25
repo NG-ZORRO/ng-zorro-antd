@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 
-import { NzFormatEmitEvent, NzTreeComponent, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
+import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-basic',
+  imports: [NzTreeModule],
   template: `
     <nz-tree
       #nzTreeComponent
@@ -14,7 +15,7 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNodeOptions } from 'ng-zorro-
       [nzSelectedKeys]="defaultSelectedKeys"
       (nzClick)="nzClick($event)"
       (nzContextMenu)="nzClick($event)"
-      (nzCheckBoxChange)="nzCheck($event)"
+      (nzCheckboxChange)="nzCheck($event)"
       (nzExpandChange)="nzCheck($event)"
     ></nz-tree>
   `
@@ -25,7 +26,7 @@ export class NzDemoTreeBasicComponent implements AfterViewInit {
   defaultSelectedKeys = ['10010'];
   defaultExpandedKeys = ['100', '1001'];
 
-  nodes: NzTreeNodeOptions[] = [
+  readonly nodes: NzTreeNodeOptions[] = [
     {
       title: 'parent 1',
       key: '100',

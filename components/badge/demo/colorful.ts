@@ -1,27 +1,28 @@
 import { Component } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+
 @Component({
   selector: 'nz-demo-badge-colorful',
+  imports: [NzBadgeModule],
   template: `
-    <div>
-      <h4>Presets:</h4>
-      <div *ngFor="let color of colors">
+    <h4>Presets:</h4>
+    @for (color of presets; track color) {
+      <div>
         <nz-badge [nzColor]="color" [nzText]="color"></nz-badge>
       </div>
-      <br />
-      <h4>Custom:</h4>
-      <nz-badge nzColor="#f50" nzText="#f50"></nz-badge>
-      <br />
-      <nz-badge nzColor="#2db7f5" nzText="#2db7f5"></nz-badge>
-      <br />
-      <nz-badge nzColor="#87d068" nzText="#87d068"></nz-badge>
-      <br />
-      <nz-badge nzColor="#108ee9" nzText="#108ee9"></nz-badge>
-    </div>
+    }
+    <br />
+    <h4>Custom:</h4>
+    @for (color of customColors; track color) {
+      <div>
+        <nz-badge [nzColor]="color" [nzText]="color"></nz-badge>
+      </div>
+    }
   `
 })
 export class NzDemoBadgeColorfulComponent {
-  colors = [
+  readonly presets = [
     'pink',
     'red',
     'yellow',
@@ -36,4 +37,5 @@ export class NzDemoBadgeColorfulComponent {
     'gold',
     'lime'
   ];
+  readonly customColors = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
 }

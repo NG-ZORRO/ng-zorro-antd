@@ -9,25 +9,28 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject,
+  numberAttribute
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
+import { NzSelectItemComponent } from './select-item.component';
+import { NzSelectPlaceholderComponent } from './select-placeholder.component';
 import { NzSelectSearchComponent } from './select-search.component';
 import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } from './select.types';
 
@@ -39,8 +42,8 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
   encapsulation: ViewEncapsulation.None,
   template: `
     <!--single mode-->
-    <ng-container [ngSwitch]="mode">
-      <ng-container *ngSwitchCase="'default'">
+    @switch (mode) {
+      @case ('default') {
         <nz-select-search
           [nzId]="nzId"
           [disabled]="disabled"
@@ -52,28 +55,30 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (isComposingChange)="isComposingChange($event)"
           (valueChange)="onInputValueChange($event)"
         ></nz-select-search>
-        <nz-select-item
-          *ngIf="isShowSingleLabel"
-          [deletable]="false"
-          [disabled]="false"
-          [removeIcon]="removeIcon"
-          [label]="listOfTopItem[0].nzLabel"
-          [contentTemplateOutlet]="customTemplate"
-          [contentTemplateOutletContext]="listOfTopItem[0]"
-        ></nz-select-item>
-      </ng-container>
-      <ng-container *ngSwitchDefault>
+        @if (isShowSingleLabel) {
+          <nz-select-item
+            [deletable]="false"
+            [disabled]="false"
+            [removeIcon]="removeIcon"
+            [label]="listOfTopItem[0].nzLabel"
+            [contentTemplateOutlet]="customTemplate"
+            [contentTemplateOutletContext]="listOfTopItem[0]"
+          ></nz-select-item>
+        }
+      }
+      @default {
         <!--multiple or tags mode-->
-        <nz-select-item
-          *ngFor="let item of listOfSlicedItem; trackBy: trackValue"
-          [removeIcon]="removeIcon"
-          [label]="item.nzLabel"
-          [disabled]="item.nzDisabled || disabled"
-          [contentTemplateOutlet]="item.contentTemplateOutlet"
-          [deletable]="true"
-          [contentTemplateOutletContext]="item.contentTemplateOutletContext"
-          (delete)="onDeleteItem(item.contentTemplateOutletContext)"
-        ></nz-select-item>
+        @for (item of listOfSlicedItem; track item.nzValue) {
+          <nz-select-item
+            [removeIcon]="removeIcon"
+            [label]="item.nzLabel"
+            [disabled]="item.nzDisabled || disabled"
+            [contentTemplateOutlet]="item.contentTemplateOutlet"
+            [deletable]="true"
+            [contentTemplateOutletContext]="item.contentTemplateOutletContext"
+            (delete)="onDeleteItem(item.contentTemplateOutletContext)"
+          ></nz-select-item>
+        }
         <nz-select-search
           [nzId]="nzId"
           [disabled]="disabled"
@@ -85,18 +90,21 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (isComposingChange)="isComposingChange($event)"
           (valueChange)="onInputValueChange($event)"
         ></nz-select-search>
-      </ng-container>
-    </ng-container>
-    <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
+      }
+    }
+    @if (isShowPlaceholder) {
+      <nz-select-placeholder [placeholder]="placeHolder"></nz-select-placeholder>
+    }
   `,
-  host: { class: 'ant-select-selector' }
+  host: { class: 'ant-select-selector' },
+  imports: [NzSelectSearchComponent, NzSelectItemComponent, NzSelectPlaceholderComponent]
 })
 export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzId: string | null = null;
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() open = false;
-  @Input() maxTagCount: number = Infinity;
+  @Input({ transform: numberAttribute }) maxTagCount: number = Infinity;
   @Input() autofocus = false;
   @Input() disabled = false;
   @Input() mode: NzSelectModeType = 'default';
@@ -138,7 +146,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
   }
 
   tokenSeparate(inputValue: string, tokenSeparators: string[]): void {
-    const includesSeparators = (str: string | string[], separators: string[]): boolean => {
+    const includesSeparators = (str: string, separators: string[]): boolean => {
       // eslint-disable-next-line @typescript-eslint/prefer-for-of
       for (let i = 0; i < separators.length; ++i) {
         if (str.lastIndexOf(separators[i]) > 0) {
@@ -147,9 +155,9 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
       }
       return false;
     };
-    const splitBySeparators = (str: string | string[], separators: string[]): string[] => {
+    const splitBySeparators = (str: string, separators: string[]): string[] => {
       const reg = new RegExp(`[${separators.join()}]`);
-      const array = (str as string).split(reg).filter(token => token);
+      const array = str.split(reg).filter(token => token);
       return [...new Set(array)];
     };
     if (
@@ -182,20 +190,17 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
     }
   }
 
-  trackValue(_index: number, option: NzSelectTopControlItemType): NzSafeAny {
-    return option.nzValue;
-  }
-
   onDeleteItem(item: NzSelectItemInterface): void {
     if (!this.disabled && !item.nzDisabled) {
       this.deleteItem.next(item);
     }
   }
 
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    private ngZone: NgZone,
-    @Host() @Optional() public noAnimation: NzNoAnimationDirective | null
+    private ngZone: NgZone
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -228,35 +233,28 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent<MouseEvent>(this.elementRef.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          // `HTMLElement.focus()` is a native DOM API which doesn't require Angular to run change detection.
-          if (event.target !== this.nzSelectSearchComponent.inputElement.nativeElement) {
-            this.nzSelectSearchComponent.focus();
-          }
-        });
+    fromEventOutsideAngular<MouseEvent>(this.elementRef.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        // `HTMLElement.focus()` is a native DOM API which doesn't require Angular to run change detection.
+        if (event.target !== this.nzSelectSearchComponent.inputElement.nativeElement) {
+          this.nzSelectSearchComponent.focus();
+        }
+      });
 
-      fromEvent<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          if (event.target instanceof HTMLInputElement) {
-            const inputValue = event.target.value;
+    fromEventOutsideAngular<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        if (event.target instanceof HTMLInputElement) {
+          const inputValue = event.target.value;
 
-            if (
-              event.keyCode === BACKSPACE &&
-              this.mode !== 'default' &&
-              !inputValue &&
-              this.listOfTopItem.length > 0
-            ) {
-              event.preventDefault();
-              // Run change detection only if the user has pressed the `Backspace` key and the following condition is met.
-              this.ngZone.run(() => this.onDeleteItem(this.listOfTopItem[this.listOfTopItem.length - 1]));
-            }
+          if (event.keyCode === BACKSPACE && this.mode !== 'default' && !inputValue && this.listOfTopItem.length > 0) {
+            event.preventDefault();
+            // Run change detection only if the user has pressed the `Backspace` key and the following condition is met.
+            this.ngZone.run(() => this.onDeleteItem(this.listOfTopItem[this.listOfTopItem.length - 1]));
           }
-        });
-    });
+        }
+      });
   }
 
   ngOnDestroy(): void {

@@ -1,8 +1,15 @@
 import { Component } from '@angular/core';
 
-import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import {
+  NzTableFilterFn,
+  NzTableFilterList,
+  NzTableModule,
+  NzTableSortFn,
+  NzTableSortOrder
+} from 'ng-zorro-antd/table';
 
-interface DataItem {
+interface ItemData {
   name: string;
   age: number;
   address: string;
@@ -11,13 +18,14 @@ interface DataItem {
 interface ColumnItem {
   name: string;
   sortOrder: NzTableSortOrder | null;
-  sortFn: NzTableSortFn<DataItem> | null;
+  sortFn: NzTableSortFn<ItemData> | null;
   listOfFilter: NzTableFilterList;
-  filterFn: NzTableFilterFn<DataItem> | null;
+  filterFn: NzTableFilterFn<ItemData> | null;
 }
 
 @Component({
   selector: 'nz-demo-table-reset-filter',
+  imports: [NzButtonModule, NzTableModule],
   template: `
     <div class="table-operations">
       <button nz-button (click)="sortByAge()">Sort age</button>
@@ -27,23 +35,26 @@ interface ColumnItem {
     <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th
-            *ngFor="let column of listOfColumns; trackBy: trackByName"
-            [(nzSortOrder)]="column.sortOrder"
-            [nzSortFn]="column.sortFn"
-            [nzFilters]="column.listOfFilter"
-            [nzFilterFn]="column.filterFn"
-          >
-            {{ column.name }}
-          </th>
+          @for (column of listOfColumns; track column.name) {
+            <th
+              [(nzSortOrder)]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+            >
+              {{ column.name }}
+            </th>
+          }
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of filterTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-        </tr>
+        @for (data of filterTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `,
@@ -64,17 +75,17 @@ export class NzDemoTableResetFilterComponent {
     {
       name: 'Name',
       sortOrder: null,
-      sortFn: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
+      sortFn: (a: ItemData, b: ItemData) => a.name.localeCompare(b.name),
       listOfFilter: [
         { text: 'Joe', value: 'Joe' },
         { text: 'Jim', value: 'Jim' }
       ],
-      filterFn: (list: string[], item: DataItem) => list.some(name => item.name.indexOf(name) !== -1)
+      filterFn: (list: string[], item: ItemData) => list.some(name => item.name.indexOf(name) !== -1)
     },
     {
       name: 'Age',
       sortOrder: null,
-      sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
+      sortFn: (a: ItemData, b: ItemData) => a.age - b.age,
       listOfFilter: [],
       filterFn: null
     },
@@ -86,10 +97,10 @@ export class NzDemoTableResetFilterComponent {
         { text: 'London', value: 'London' },
         { text: 'Sidney', value: 'Sidney' }
       ],
-      filterFn: (address: string, item: DataItem) => item.address.indexOf(address) !== -1
+      filterFn: (address: string, item: ItemData) => item.address.indexOf(address) !== -1
     }
   ];
-  listOfData: DataItem[] = [
+  listOfData: ItemData[] = [
     {
       name: 'John Brown',
       age: 32,
@@ -111,10 +122,6 @@ export class NzDemoTableResetFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-
-  trackByName(_: number, item: ColumnItem): string {
-    return item.name;
-  }
 
   sortByAge(): void {
     this.listOfColumns.forEach(item => {

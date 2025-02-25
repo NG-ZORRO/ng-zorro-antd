@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 
-const options = [
+const options: NzCascaderOption[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -49,6 +50,7 @@ const options = [
 
 @Component({
   selector: 'nz-demo-cascader-custom-render',
+  imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader
       style="width: 100%;"
@@ -59,16 +61,19 @@ const options = [
     ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      <ng-container *ngFor="let label of labels; let i = index; let isLast = last">
-        <span *ngIf="!isLast">{{ label }} /</span>
-        <span *ngIf="isLast">
-          {{ label }} (
-          <a href="javascript:;" (click)="handleAreaClick($event, label, selectedOptions[i])">
-            {{ selectedOptions[i].code }}
-          </a>
-          )
-        </span>
-      </ng-container>
+      @for (label of labels; track label) {
+        @if (!$last) {
+          <span>{{ label }} /</span>
+        } @else {
+          <span>
+            {{ label }} (
+            <a href="javascript:;" (click)="handleAreaClick($event, label, selectedOptions[$index])">
+              {{ selectedOptions[$index].code }}
+            </a>
+            )
+          </span>
+        }
+      }
     </ng-template>
   `
 })

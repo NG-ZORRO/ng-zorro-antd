@@ -54,14 +54,17 @@ export default {
       weekPlaceholder: '請選擇周',
       rangeYearPlaceholder: ['開始年份', '結束年份'],
       rangeMonthPlaceholder: ['開始月份', '結束月份'],
-      rangeWeekPlaceholder: ['開始周', '結束周']
+      rangeWeekPlaceholder: ['開始周', '結束周'],
+      rangeQuarterPlaceholder: ['開始季度', '結束季度']
     },
     timePickerLocale: {
-      placeholder: '請選擇時間'
+      placeholder: '請選擇時間',
+      rangePlaceholder: ['開始時間', '結束時間']
     }
   },
   TimePicker: {
-    placeholder: '請選擇時間'
+    placeholder: '請選擇時間',
+    rangePlaceholder: ['開始時間', '結束時間']
   },
   Calendar: {
     lang: {
@@ -102,7 +105,8 @@ export default {
       rangeWeekPlaceholder: ['開始周', '結束周']
     },
     timePickerLocale: {
-      placeholder: '請選擇時間'
+      placeholder: '請選擇時間',
+      rangePlaceholder: ['開始時間', '結束時間']
     }
   },
   global: {
@@ -122,6 +126,8 @@ export default {
     triggerDesc: '點擊降序',
     triggerAsc: '點擊升序',
     cancelSort: '取消排序',
+    filterCheckall: '全選',
+    filterSearchPlaceholder: '在篩選項中搜尋',
     selectNone: '清空所有'
   },
   Modal: {
@@ -149,7 +155,7 @@ export default {
     removeFile: '刪除檔案',
     uploadError: '上傳失敗',
     previewFile: '檔案預覽',
-    downloadFile: '下载文件'
+    downloadFile: '下載文件'
   },
   Empty: {
     description: '無此資料'
@@ -168,5 +174,19 @@ export default {
   },
   Image: {
     preview: '預覽'
+  },
+  CronExpression: {
+    cronError: 'cron 表達式不合法',
+    second: '秒',
+    minute: '分',
+    hour: '時',
+    day: '日',
+    month: '月',
+    week: '週'
+  },
+  QRCode: {
+    expired: '二維條碼已過期',
+    refresh: '點擊刷新',
+    scanned: '已掃描'
   }
 };

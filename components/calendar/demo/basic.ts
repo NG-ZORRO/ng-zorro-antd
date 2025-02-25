@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzCalendarMode } from 'ng-zorro-antd/calendar';
+import { NzCalendarMode, NzCalendarModule } from 'ng-zorro-antd/calendar';
 
 @Component({
   selector: 'nz-demo-calendar-basic',
+  imports: [FormsModule, NzCalendarModule],
   template: ` <nz-calendar [(ngModel)]="date" [(nzMode)]="mode" (nzPanelChange)="panelChange($event)"></nz-calendar> `
 })
 export class NzDemoCalendarBasicComponent {

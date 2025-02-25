@@ -11,6 +11,4 @@ import { Directive } from '@angular/core';
     class: 'ant-dropdown-link'
   }
 })
-export class NzDropDownADirective {
-  constructor() {}
-}
+export class NzDropDownADirective {}

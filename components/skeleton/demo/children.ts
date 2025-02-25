@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+
 @Component({
   selector: 'nz-demo-skeleton-children',
+  imports: [NzButtonModule, NzSkeletonModule],
   template: `
     <div class="article">
       <nz-skeleton [nzLoading]="loading">

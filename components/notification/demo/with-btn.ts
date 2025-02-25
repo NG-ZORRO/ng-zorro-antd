@@ -1,35 +1,30 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzNotificationComponent, NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-with-btn',
+  imports: [NzButtonModule],
   template: `
-    <ng-template #template let-notification>
-      <div class="ant-notification-notice-content">
-        <div>
-          <div class="ant-notification-notice-message">Notification Title</div>
-          <div class="ant-notification-notice-description">
-            A function will be be called after the notification is closed (automatically after the "duration" time of
-            manually).
-          </div>
-          <span class="ant-notification-notice-btn">
-            <button nz-button nzType="primary" nzSize="small" (click)="notification.close()">
-              <span>Confirm</span>
-            </button>
-          </span>
-        </div>
-      </div>
+    <ng-template #notificationBtnTpl let-notification>
+      <button nz-button nzType="primary" nzSize="small" (click)="notification.close()">Confirm</button>
     </ng-template>
-    <button nz-button [nzType]="'primary'" (click)="createBasicNotification(template)">
-      Open the notification box
-    </button>
+
+    <button nz-button nzType="primary" (click)="createNotification()">Open the notification box</button>
   `
 })
 export class NzDemoNotificationWithBtnComponent {
+  @ViewChild('notificationBtnTpl', { static: true }) btnTemplate!: TemplateRef<{ $implicit: NzNotificationComponent }>;
   constructor(private notification: NzNotificationService) {}
 
-  createBasicNotification(template: TemplateRef<{}>): void {
-    this.notification.template(template);
+  createNotification(): void {
+    this.notification.blank(
+      'Notification Title',
+      'A function will be be called after the notification is closed (automatically after the "duration" time of manually).',
+      {
+        nzButton: this.btnTemplate
+      }
+    );
   }
 }

@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/schema",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "$id": "PLACEHOLDER_SCHEMATICS_ID",
   "title": "PLACEHOLDER_SCHEMATICS_TITLE",
   "type": "object",
@@ -26,6 +26,12 @@
       },
       "x-prompt": "What should be the name of the component?"
     },
+    "displayBlock": {
+      "description": "Specifies if the style will contain `:host { display: block; }`.",
+      "type": "boolean",
+      "default": false,
+      "alias": "b"
+    },
     "inlineStyle": {
       "description": "When true, includes styles inline in the component.ts file. Only CSS styles can be included inline. By default, an external styles file is created and referenced in the component.ts file.",
       "type": "boolean",
@@ -37,6 +43,11 @@
       "type": "boolean",
       "default": false,
       "alias": "t"
+    },
+    "standalone": {
+      "description": "Whether the generated component is standalone.",
+      "type": "boolean",
+      "default": true
     },
     "viewEncapsulation": {
       "description": "The view encapsulation strategy to use in the new component.",
@@ -65,14 +76,8 @@
         }
       ]
     },
-    "styleext": {
-      "description": "The file extension to use for style files.",
-      "type": "string",
-      "default": "css",
-      "x-deprecated": "Use \"style\" instead."
-    },
     "style": {
-      "description": "The file extension or preprocessor to use for style files.",
+      "description": "The file extension or preprocessor to use for style files, or 'none' to skip generating the style file.",
       "type": "string",
       "default": "css",
       "enum": [
@@ -80,18 +85,14 @@
         "scss",
         "sass",
         "less",
-        "styl"
+        "styl",
+        "none"
       ]
-    },
-    "spec": {
-      "type": "boolean",
-      "description": "When true (the default), generates a  \"spec.ts\" test file for the new component.",
-      "default": true,
-      "x-deprecated": "Use \"skipTests\" instead."
     },
     "skipTests": {
       "type": "boolean",
-      "description": "When true, does not create \"spec.ts\" test files for the new component."
+      "description": "When true, does not create \"spec.ts\" test files for the new component.",
+      "default": false
     },
     "flat": {
       "type": "boolean",
@@ -100,7 +101,8 @@
     },
     "skipImport": {
       "type": "boolean",
-      "description": "When true, does not import this component into the owning NgModule."
+      "description": "When true, does not import this component into the owning NgModule.",
+      "default": false
     },
     "selector": {
       "type": "string",

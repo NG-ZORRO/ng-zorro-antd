@@ -21,8 +21,6 @@ export class NzRowExpandButtonDirective {
   @Input() spaceMode = false;
   @Output() readonly expandChange = new EventEmitter();
 
-  constructor() {}
-
   onHostClick(): void {
     if (!this.spaceMode) {
       this.expand = !this.expand;

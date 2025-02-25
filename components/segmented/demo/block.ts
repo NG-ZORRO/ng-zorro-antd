@@ -1,19 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
+
 @Component({
   selector: 'nz-demo-segmented-block',
-  template: `<nz-segmented [nzOptions]="options" [nzBlock]="true"></nz-segmented>`,
-  styles: [
-    `
-      .code-box-demo {
-        overflow-x: auto;
-      }
-
-      .code-box-demo .ant-segmented {
-        margin-bottom: 10px;
-      }
-    `
-  ]
+  imports: [NzSegmentedModule],
+  template: `<nz-segmented [nzOptions]="options" [nzBlock]="true"></nz-segmented>`
 })
 export class NzDemoSegmentedBlockComponent {
   options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];

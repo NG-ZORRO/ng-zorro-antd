@@ -13,6 +13,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import { badgePresetColors } from './preset-colors';
 
 @Component({
@@ -21,6 +23,7 @@ import { badgePresetColors } from './preset-colors';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzOutletModule],
   template: `
     <ng-content></ng-content>
     <div
@@ -43,8 +46,6 @@ export class NzRibbonComponent implements OnChanges {
   @Input() nzPlacement: 'start' | 'end' = 'end';
   @Input() nzText: string | TemplateRef<void> | null = null;
   presetColor: string | null = null;
-
-  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzColor } = changes;

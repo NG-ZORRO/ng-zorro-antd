@@ -21,16 +21,16 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 ### nz-affix
 
-| Property | Description | Type | Default | Global Config |
-| -------- | ----------- | ---- | ------- | ------------- |
-| `[nzOffsetBottom]` | Pixels to offset from bottom when calculating position of scroll | `number` | - | ✅ |
-| `[nzOffsetTop]` | Pixels to offset from top when calculating position of scroll | `number` | `0` | ✅ |
-| `[nzTarget]` | specifies the scrollable area dom node | `string \| HTMLElement` | `window` |
-| `(nzChange)` | Callback for when affix state is changed | `EventEmitter<boolean>` | - |
+| Property           | Description                                                      | Type                    | Default  | Global Config |
+| ------------------ | ---------------------------------------------------------------- | ----------------------- | -------- | ------------- |
+| `[nzOffsetBottom]` | Pixels to offset from bottom when calculating position of scroll | `number`                | -        | ✅             |
+| `[nzOffsetTop]`    | Pixels to offset from top when calculating position of scroll    | `number`                | `0`      | ✅             |
+| `[nzTarget]`       | specifies the scrollable area dom node                           | `string \| HTMLElement` | `window` |
+| `(nzChange)`       | Callback for when affix state is changed                         | `EventEmitter<boolean>` | -        |
 
 **Note:** Children of `nz-affix` can not be `position: absolute`, but you can set `nz-affix` as `position: absolute`:
 
-```jsx
+```html
 <nz-affix style="position: absolute; top: 10px, left: 10px">
   ...
 </nz-affix>

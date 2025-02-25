@@ -1,24 +1,25 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzMarks } from 'ng-zorro-antd/slider';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-mark',
+  imports: [FormsModule, NzButtonModule, NzSliderModule],
   template: `
-    <div>
-      <h4>included=true</h4>
-      <nz-slider [nzMarks]="marks" [ngModel]="37"></nz-slider>
-      <nz-slider [nzMarks]="marks" nzIncluded nzRange [ngModel]="[26, 37]"></nz-slider>
-      <h4>included=false</h4>
-      <nz-slider [nzMarks]="marks" [nzIncluded]="false" [ngModel]="37"></nz-slider>
-      <h4>marks & step</h4>
-      <nz-slider [nzMarks]="marks" [nzStep]="10" [ngModel]="37"></nz-slider>
-      <h4>step=null || dots=true</h4>
-      <nz-slider [nzMarks]="marks" [nzStep]="null" [ngModel]="37"></nz-slider>
-      <nz-slider [nzMarks]="marks" nzDots [ngModel]="37"></nz-slider>
-      Change nzMarks dynamically:
-      <button nz-button (click)="changeMarks()">Change nzMarks</button>
-    </div>
+    <h4>included=true</h4>
+    <nz-slider [nzMarks]="marks" [ngModel]="37"></nz-slider>
+    <nz-slider [nzMarks]="marks" nzIncluded nzRange [ngModel]="[26, 37]"></nz-slider>
+    <h4>included=false</h4>
+    <nz-slider [nzMarks]="marks" [nzIncluded]="false" [ngModel]="37"></nz-slider>
+    <h4>marks & step</h4>
+    <nz-slider [nzMarks]="marks" [nzStep]="10" [ngModel]="37"></nz-slider>
+    <h4>step=null || dots=true</h4>
+    <nz-slider [nzMarks]="marks" [nzStep]="null" [ngModel]="37"></nz-slider>
+    <nz-slider [nzMarks]="marks" nzDots [ngModel]="37"></nz-slider>
+    Change nzMarks dynamically:
+    <button nz-button (click)="changeMarks()">Change nzMarks</button>
   `,
   styles: [
     `

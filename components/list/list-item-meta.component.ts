@@ -3,19 +3,24 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
   ElementRef,
   Input,
-  Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+
 import {
+  NzListItemMetaAvatarComponent,
+  NzListItemMetaDescriptionComponent,
   NzListItemMetaDescriptionComponent as DescriptionComponent,
+  NzListItemMetaTitleComponent,
   NzListItemMetaTitleComponent as TitleComponent
 } from './list-item-meta-cell';
 
@@ -24,31 +29,55 @@ import {
   exportAs: 'nzListItemMeta',
   template: `
     <!--Old API Start-->
-    <nz-list-item-meta-avatar *ngIf="avatarStr" [nzSrc]="avatarStr"></nz-list-item-meta-avatar>
-    <nz-list-item-meta-avatar *ngIf="avatarTpl">
-      <ng-container [ngTemplateOutlet]="avatarTpl"></ng-container>
-    </nz-list-item-meta-avatar>
+    @if (avatarStr) {
+      <nz-list-item-meta-avatar [nzSrc]="avatarStr" />
+    }
+
+    @if (avatarTpl) {
+      <nz-list-item-meta-avatar>
+        <ng-container [ngTemplateOutlet]="avatarTpl" />
+      </nz-list-item-meta-avatar>
+    }
+
     <!--Old API End-->
 
-    <ng-content select="nz-list-item-meta-avatar"></ng-content>
+    <ng-content select="nz-list-item-meta-avatar" />
 
-    <div *ngIf="nzTitle || nzDescription || descriptionComponent || titleComponent" class="ant-list-item-meta-content">
-      <!--Old API Start-->
-      <nz-list-item-meta-title *ngIf="nzTitle && !titleComponent">
-        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-      </nz-list-item-meta-title>
-      <nz-list-item-meta-description *ngIf="nzDescription && !descriptionComponent">
-        <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
-      </nz-list-item-meta-description>
-      <!--Old API End-->
+    @if (nzTitle || nzDescription || descriptionComponent || titleComponent) {
+      <div class="ant-list-item-meta-content">
+        <!--Old API Start-->
 
-      <ng-content select="nz-list-item-meta-title"></ng-content>
-      <ng-content select="nz-list-item-meta-description"></ng-content>
-    </div>
+        @if (nzTitle && !titleComponent) {
+          <nz-list-item-meta-title>
+            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+          </nz-list-item-meta-title>
+        }
+
+        @if (nzDescription && !descriptionComponent) {
+          <nz-list-item-meta-description>
+            <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+          </nz-list-item-meta-description>
+        }
+        <!--Old API End-->
+
+        <ng-content select="nz-list-item-meta-title" />
+        <ng-content select="nz-list-item-meta-description" />
+      </div>
+    }
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'ant-list-item-meta'
+  },
+  imports: [
+    NzListItemMetaAvatarComponent,
+    NgTemplateOutlet,
+    NzListItemMetaTitleComponent,
+    NzOutletModule,
+    NzListItemMetaDescriptionComponent
+  ]
 })
 export class NzListItemMetaComponent {
   avatarStr = '';
@@ -70,7 +99,6 @@ export class NzListItemMetaComponent {
 
   @ContentChild(DescriptionComponent) descriptionComponent?: DescriptionComponent;
   @ContentChild(TitleComponent) titleComponent?: TitleComponent;
-  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-    this.renderer.addClass(elementRef.nativeElement, 'ant-list-item-meta');
-  }
+
+  constructor(public elementRef: ElementRef) {}
 }

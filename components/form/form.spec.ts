@@ -1,43 +1,48 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { NzFormModule } from 'ng-zorro-antd/form/form.module';
 
-import { NzFormItemComponent } from './form-item.component';
-import { NzFormLabelComponent } from './form-label.component';
-import { NzFormDirective } from './form.directive';
+import { NzFormDirective, NzFormLayoutType } from './form.directive';
 
 const testBedOptions = {
-  imports: [NoopAnimationsModule],
-  declarations: [NzFormDirective, NzFormLabelComponent, NzFormItemComponent]
+  imports: [NoopAnimationsModule]
 };
 
 describe('nz-form', () => {
   describe('default', () => {
-    let testBed: ComponentBed<NzTestFormDirectiveComponent>;
+    let fixture: ComponentFixture<NzTestFormDirectiveComponent>;
     let testComponent: NzTestFormDirectiveComponent;
     let form: DebugElement;
     beforeEach(() => {
-      testBed = createComponentBed(NzTestFormDirectiveComponent, testBedOptions);
-      testComponent = testBed.component;
-      form = testBed.fixture.debugElement.query(By.directive(NzFormDirective));
+      TestBed.configureTestingModule(testBedOptions);
+      fixture = TestBed.createComponent(NzTestFormDirectiveComponent);
+      testComponent = fixture.componentInstance;
+      form = fixture.debugElement.query(By.directive(NzFormDirective));
     });
     it('should className correct', () => {
+      fixture.detectChanges();
       expect(form.nativeElement.classList).toContain('ant-form');
       expect(form.nativeElement.classList).toContain('ant-form-horizontal');
     });
     it('should layout work', () => {
       testComponent.layout = 'vertical';
 
-      testBed.fixture.detectChanges();
+      fixture.detectChanges();
 
       expect(form.nativeElement.classList).toContain('ant-form-vertical');
       expect(form.nativeElement.classList).not.toContain('ant-form-horizontal');
 
       testComponent.layout = 'inline';
 
-      testBed.fixture.detectChanges();
+      fixture.detectChanges();
 
       expect(form.nativeElement.classList).not.toContain('ant-form-vertical');
       expect(form.nativeElement.classList).not.toContain('ant-form-horizontal');
@@ -46,13 +51,14 @@ describe('nz-form', () => {
   });
 
   describe('label integrate', () => {
-    let testBed: ComponentBed<NzTestFormLabelIntegrateComponent>;
+    let fixture: ComponentFixture<NzTestFormLabelIntegrateComponent>;
     let testComponent: NzTestFormLabelIntegrateComponent;
     let form: DebugElement;
     beforeEach(() => {
-      testBed = createComponentBed(NzTestFormLabelIntegrateComponent, testBedOptions);
-      testComponent = testBed.component;
-      form = testBed.fixture.debugElement.query(By.directive(NzFormDirective));
+      TestBed.configureTestingModule(testBedOptions);
+      fixture = TestBed.createComponent(NzTestFormLabelIntegrateComponent);
+      testComponent = fixture.componentInstance;
+      form = fixture.debugElement.query(By.directive(NzFormDirective));
     });
 
     afterEach(() => {
@@ -69,7 +75,7 @@ describe('nz-form', () => {
 
       testComponent.defaultNoColon = true;
 
-      testBed.fixture.detectChanges();
+      fixture.detectChanges();
 
       labels.forEach(label => expect(label.classList).toContain('ant-form-item-no-colon'));
     });
@@ -82,12 +88,12 @@ describe('nz-form', () => {
 
       testComponent.defaultNoColon = true;
 
-      testBed.fixture.detectChanges();
+      fixture.detectChanges();
 
       labels.forEach(label => expect(label.classList).toContain('ant-form-item-no-colon'));
       testComponent.testPriority = true;
 
-      testBed.fixture.detectChanges();
+      fixture.detectChanges();
 
       labels.forEach(label => expect(label.classList).toContain('ant-form-item-no-colon'));
       labels.forEach(label => {
@@ -101,7 +107,7 @@ describe('nz-form', () => {
       testComponent.defaultNoColon = false;
       testComponent.noColon = true;
 
-      testBed.fixture.detectChanges();
+      fixture.detectChanges();
 
       labels.forEach(label => {
         if (label.innerText === 'TEST_PRIORITY') {
@@ -115,13 +121,15 @@ describe('nz-form', () => {
 });
 
 @Component({
-  template: ` <form nz-form [nzLayout]="layout"></form> `
+  imports: [NzFormModule],
+  template: `<form nz-form [nzLayout]="layout"></form>`
 })
 export class NzTestFormDirectiveComponent {
-  layout = 'horizontal';
+  layout: NzFormLayoutType = 'horizontal';
 }
 
 @Component({
+  imports: [NzFormModule],
   template: `
     <form nz-form [nzNoColon]="defaultNoColon">
       <nz-form-item>
@@ -130,9 +138,11 @@ export class NzTestFormDirectiveComponent {
       <nz-form-item>
         <nz-form-label>Label</nz-form-label>
       </nz-form-item>
-      <nz-form-item *ngIf="testPriority">
-        <nz-form-label [nzNoColon]="noColon">TEST_PRIORITY</nz-form-label>
-      </nz-form-item>
+      @if (testPriority) {
+        <nz-form-item>
+          <nz-form-label [nzNoColon]="noColon">TEST_PRIORITY</nz-form-label>
+        </nz-form-item>
+      }
     </form>
   `
 })

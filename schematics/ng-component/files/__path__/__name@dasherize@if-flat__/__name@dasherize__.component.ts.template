@@ -1,23 +1,24 @@
-import { Component, OnInit<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%><% if(changeDetection !== 'Default') { %>, ChangeDetectionStrategy<% }%> } from '@angular/core';
+import { <% if(changeDetection !== 'Default') { %>ChangeDetectionStrategy, <% }%>Component<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%> } from '@angular/core';
 
 @Component({
-  selector: '<%= selector %>',<% if(inlineTemplate) { %>
+  selector: '<%= selector %>',<% if(standalone) { %>
+  imports: [],<% } else { %>
+  standalone: false,<% } %><% if(inlineTemplate) { %>
   template: `
     <p>
       <%= dasherize(name) %> works!
     </p>
-  `,<% } else { %>
-  templateUrl: './<%= dasherize(name) %>.component.html',<% } if(inlineStyle) { %>
-  styles: []<% } else { %>
-  styleUrls: ['./<%= dasherize(name) %>.component.<%= style %>']<% } %><% if(!!viewEncapsulation) { %>,
+  `<% } else { %>
+  templateUrl: './<%= dasherize(name) %>.component.html'<% } if(inlineStyle) { %>,
+  styles: `<% if(displayBlock){ %>
+    :host {
+      display: block;
+    }
+  <% } %>`<% } else if (style !== 'none') { %>,
+  styleUrl: './<%= dasherize(name) %>.component.<%= style %>'<% } %><% if(!!viewEncapsulation) { %>,
   encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
   changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
 })
-export class <%= classify(name) %>Component implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class <%= classify(name) %>Component {
 
 }

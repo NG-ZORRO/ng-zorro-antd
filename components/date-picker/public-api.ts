@@ -7,9 +7,11 @@ export * from './standard-types';
 export * from './util';
 
 export { NzDatePickerModule } from './date-picker.module';
-export { NzDatePickerComponent, NzDatePickerSizeType } from './date-picker.component';
+export { NzDatePickerComponent } from './date-picker.component';
+export type { NzDatePickerSizeType } from './date-picker.component';
 export { NzRangePickerComponent } from './range-picker.component';
 export { NzMonthPickerComponent } from './month-picker.component';
+export { NzQuarterPickerComponent } from './quarter-picker.component';
 export { NzWeekPickerComponent } from './week-picker.component';
 export { NzYearPickerComponent } from './year-picker.component';
 export { DatePickerService as ɵDatePickerService } from './date-picker.service';

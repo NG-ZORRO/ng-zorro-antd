@@ -7,14 +7,36 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 import { ROUTER_LIST } from '../router';
 
 @Component({
-  selector: 'app-components-overview',
+    selector: 'app-components-overview',
+  imports: [
+    RouterLink,
+    NzAffixModule,
+    NzCardModule,
+    NzButtonModule,
+    NzTagModule,
+    NzGridModule,
+    NzTypographyModule,
+    NzDividerModule,
+    NzIconModule,
+    NzInputModule
+  ],
   templateUrl: './components-overview.component.html',
   styleUrls: ['./components-overview.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,7 +45,9 @@ import { ROUTER_LIST } from '../router';
 export class ComponentsOverviewComponent implements OnInit {
   routerList = ROUTER_LIST;
   language = 'en';
+  affixed = false;
   searchChange$ = new BehaviorSubject('');
+  @ViewChild('componentsList', { static: true }) componentsList!: ElementRef<HTMLElement>;
   @ViewChild('searchBox', { static: true }) searchBox!: ElementRef<HTMLInputElement>;
 
   constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {}
@@ -39,12 +63,19 @@ export class ComponentsOverviewComponent implements OnInit {
       .pipe(debounceTime(20))
       .subscribe((searchValue: string) => {
         this.filterComponents(searchValue);
+        if (this.affixed) {
+          this.scrollIntoView();
+        }
       });
 
     // autofocus
     Promise.resolve().then(() => {
       this.searchBox.nativeElement.focus();
     });
+  }
+
+  onSearchAffixed(affixed: boolean): void {
+    this.affixed = affixed;
   }
 
   onSearch(searchValue: string): void {
@@ -61,5 +92,14 @@ export class ComponentsOverviewComponent implements OnInit {
       }
     }
     this.cdr.detectChanges();
+  }
+
+  private scrollIntoView(): void {
+    if (this.componentsList) {
+      this.componentsList.nativeElement.scrollIntoView({
+        block: 'start',
+        behavior: 'smooth'
+      });
+    }
   }
 }

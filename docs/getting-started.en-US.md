@@ -5,7 +5,7 @@ title: Getting Started
 
 Ant Design of Angular is dedicated to providing a **good development experience** for programmers.
 
-> The prerequisite of Ant Design Angular is a solid background knowledge of [Angular](https://angular.io/) and [JavaScript ES2015](http://babeljs.io/docs/learn-es2015/).
+> The prerequisite of Ant Design Angular is a solid background knowledge of [Angular](https://angular.dev) and [JavaScript ES2015](http://babeljs.io/docs/learn-es2015/).
 
 ## Playground
 
@@ -19,7 +19,7 @@ There are several engineering requirements during development, including compili
 
 ### Installation
 
-> Read the documentation of [Angular](https://angular.io/cli) to explore more features.
+> Read the documentation of [Angular](https://angular.dev/cli) to explore more features.
 
 ```bash
 $ npm install -g @angular/cli
@@ -131,7 +131,7 @@ Import the less styles in `style.less`
 
 #### Import component module
 
-Finally, you need to import the component modules that you want to use into the `app.module.ts` file and [feature modules](https://angular.io/guide/feature-modules).
+Finally, you need to import the component modules that you want to use into the `app.module.ts` file and [feature modules](https://angular.dev/guide/ngmodules/feature-modules).
 
 Taking the following `NzButtonModule` module as an example, first import the component module:
 
@@ -156,6 +156,10 @@ Then use the component inside the template:
 ```html
 <button nz-button nzType="primary">Primary</button>
 ```
+
+# Precautions
+
+- `ng-zorro-antd` already contains `@angular/cdk/overlay-prebuilt.css` overlay style, no additional import is required.
 
 ## Other
 

@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+
 @Component({
   selector: 'nz-demo-steps-start-index',
+  imports: [NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current" [nzStartIndex]="3" nzSize="small">
       <nz-step nzTitle="Finished"></nz-step>

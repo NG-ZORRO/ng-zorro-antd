@@ -3,16 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgModule } from '@angular/core';
+import { EnvironmentProviders, NgModule } from '@angular/core';
 
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 
-import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NZ_ICONS, NzIconModule, provideNzIcons } from 'ng-zorro-antd/icon';
 
-const antDesignIcons = AllIcons as {
-  [key: string]: IconDefinition;
-};
+const antDesignIcons = AllIcons as Record<string, IconDefinition>;
 
 const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => {
   const i = antDesignIcons[key];
@@ -20,6 +18,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => {
 });
 
 /**
+ * @internal
+ * @deprecated Internal use only, do not use directly. Will be removed in v20
  * Include this module in every testing spec, except `icon.spec.ts`.
  */
 // @dynamic
@@ -33,3 +33,5 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => {
   ]
 })
 export class NzIconTestModule {}
+
+export const provideNzIconsTesting = (): EnvironmentProviders => provideNzIcons(icons);

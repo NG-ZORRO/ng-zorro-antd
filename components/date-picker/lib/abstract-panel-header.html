@@ -23,7 +23,7 @@
   </button>
 
   <div class="{{ prefixCls }}-view">
-    <ng-container *ngFor="let selector of selectors">
+    @for (selector of selectors; track trackBySelector(selector)) {
       <button
         class="{{ selector.className }}"
         role="button"
@@ -33,7 +33,7 @@
       >
         {{ selector.label }}
       </button>
-    </ng-container>
+    }
   </div>
   <button
     [style.visibility]="showNextBtn ? 'visible' : 'hidden'"

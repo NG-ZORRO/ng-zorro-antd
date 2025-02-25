@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { getISOWeek } from 'date-fns';
 
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+
 @Component({
   selector: 'nz-demo-date-picker-range-picker',
+  imports: [FormsModule, NzDatePickerModule],
   template: `
     <nz-range-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
     <br />
@@ -12,6 +16,8 @@ import { getISOWeek } from 'date-fns';
     <nz-range-picker nzMode="week" [(ngModel)]="date" (ngModelChange)="getWeek($event)"></nz-range-picker>
     <br />
     <nz-range-picker nzMode="month" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
+    <br />
+    <nz-range-picker nzMode="quarter" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
     <br />
     <nz-range-picker nzMode="year" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
   `,

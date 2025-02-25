@@ -1,14 +1,23 @@
-import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Directionality } from '@angular/cdk/bidi';
+import { Platform } from '@angular/cdk/platform';
+import { ApplicationRef, Component, DebugElement, SimpleChanges, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { Subject } from 'rxjs';
 
 import { NzScrollService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzBackTopComponent } from './back-top.component';
 import { NzBackTopModule } from './back-top.module';
 
-describe('Component:nz-back-top', () => {
+describe('nz-back-top', () => {
   let scrollService: MockNzScrollService;
   let fixture: ComponentFixture<TestBackTopComponent>;
   let debugElement: DebugElement;
@@ -33,15 +42,14 @@ describe('Component:nz-back-top', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzBackTopModule, NoopAnimationsModule],
-      declarations: [TestBackTopComponent, TestBackTopTemplateComponent],
       providers: [
+        provideNoopAnimations(),
         {
           provide: NzScrollService,
           useClass: MockNzScrollService
         }
       ]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TestBackTopComponent);
     component = fixture.componentInstance.nzBackTopComponent;
@@ -163,11 +171,11 @@ describe('Component:nz-back-top', () => {
 
   describe('[nzTarget]', () => {
     let fakeTarget: HTMLElement;
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fakeTarget = debugElement.query(By.css('#fakeTarget')).nativeElement;
       fixture.componentInstance.setTarget(fakeTarget);
       fixture.detectChanges();
-    }));
+    });
 
     it('window scroll does not show the button', fakeAsync(() => {
       componentObject.scrollTo(window, defaultVisibilityHeight + 1);
@@ -177,43 +185,43 @@ describe('Component:nz-back-top', () => {
       expect(componentObject.backTopButton() === null).toBe(true);
     }));
 
-    it('element scroll shows the button', fakeAsync(() => {
-      const time = 50;
-
+    it('element scroll shows the button', (done: () => void) => {
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(time + 1);
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(false);
-    }));
+      setTimeout(() => {
+        expect(componentObject.backTopButton() === null).toBe(false);
+        done();
+      }, 50);
+    });
 
-    it('element (use string id) scroll shows the button', fakeAsync(() => {
+    it('element (use string id) scroll shows the button', (done: () => void) => {
       component.nzTarget = '#fakeTarget';
 
-      const time = 50;
-
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
-      tick(time + 1);
       fixture.detectChanges();
 
-      expect(componentObject.backTopButton() === null).toBe(false);
-    }));
+      setTimeout(() => {
+        expect(componentObject.backTopButton() === null).toBe(false);
+        done();
+      }, 50);
+    });
   });
 
   describe('#nzTemplate', () => {
     it(`should show custom template`, fakeAsync(() => {
-      let fixtureTemplate: ComponentFixture<TestBackTopTemplateComponent>;
-      fixtureTemplate = TestBed.createComponent(TestBackTopTemplateComponent);
+      const fixture = TestBed.createComponent(TestBackTopTemplateComponent);
 
       componentObject.scrollTo(window, defaultVisibilityHeight + 1);
       tick();
-      fixtureTemplate.detectChanges();
-      expect(fixtureTemplate.debugElement.query(By.css('.this-is-my-template')) === null).toBe(false);
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.this-is-my-template')) === null).toBe(false);
     }));
   });
 });
 
 @Component({
+  imports: [NzBackTopModule],
   template: `
     <nz-back-top [nzTarget]="target"></nz-back-top>
     <div id="fakeTarget"></div>
@@ -223,7 +231,7 @@ class TestBackTopComponent {
   @ViewChild(NzBackTopComponent, { static: true })
   nzBackTopComponent!: NzBackTopComponent;
 
-  target: HTMLElement | null = null;
+  target: HTMLElement | undefined = undefined;
 
   setTarget(target: HTMLElement): void {
     this.target = target;
@@ -231,6 +239,7 @@ class TestBackTopComponent {
 }
 
 @Component({
+  imports: [NzBackTopModule],
   template: `
     my comp
     <nz-back-top [nzTemplate]="tpl">
@@ -256,3 +265,73 @@ class MockNzScrollService {
     this.mockTopOffset = targetTopValue;
   }
 }
+
+class MockDirectionality {
+  value = 'ltr';
+  change = new Subject();
+}
+
+describe('back-to-top', () => {
+  let component: NzBackTopComponent;
+  let fixture: ComponentFixture<NzBackTopComponent>;
+  let mockDirectionality: MockDirectionality;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: Directionality,
+          useClass: MockDirectionality
+        },
+        { provide: Platform, useValue: { isBrowser: false } },
+        { provide: Document, useValue: document }
+      ]
+    });
+
+    fixture = TestBed.createComponent(NzBackTopComponent);
+    component = fixture.componentInstance;
+    mockDirectionality = TestBed.inject(Directionality) as unknown as MockDirectionality;
+  });
+
+  it('dir change should work properly', fakeAsync(() => {
+    spyOn<NzSafeAny>(component['cdr'], 'detectChanges');
+    mockDirectionality.value = 'ltr';
+    component.ngOnInit();
+    expect(component.dir).toEqual('ltr');
+
+    mockDirectionality.change.next('rtl');
+    tick();
+    expect(component.dir).toEqual('rtl');
+    expect(component['cdr'].detectChanges).toHaveBeenCalled();
+  }));
+
+  it('should return if platform is not browser', () => {
+    spyOn<NzSafeAny>(component, 'handleScroll');
+    component['registerScrollEvent']();
+
+    expect(component['handleScroll']).not.toHaveBeenCalled();
+  });
+
+  it('should set correct value for target', fakeAsync(() => {
+    spyOn<NzSafeAny>(component, 'registerScrollEvent');
+    spyOn(document, 'querySelector').and.returnValue({} as HTMLElement);
+    const mockTarget: NzSafeAny = 'mockTarget';
+    component.nzTarget = mockTarget;
+    const change: SimpleChanges = {
+      nzTarget: {
+        currentValue: mockTarget,
+        previousValue: undefined,
+        firstChange: false,
+        isFirstChange: function (): boolean {
+          throw new Error('Function not implemented.');
+        }
+      }
+    };
+    component.ngOnChanges(change);
+    tick();
+
+    expect(document.querySelector).toHaveBeenCalledWith(mockTarget);
+    expect(component['target']).toBeTruthy();
+    expect(component['registerScrollEvent']).toHaveBeenCalled();
+  }));
+});

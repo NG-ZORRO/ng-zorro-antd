@@ -47,6 +47,8 @@
 /components/empty/zh
 /components/form/en
 /components/form/zh
+/components/flex/en
+/components/flex/zh
 /components/grid/en
 /components/grid/zh
 /components/icon/en
@@ -81,6 +83,8 @@
 /components/popover/zh
 /components/progress/en
 /components/progress/zh
+/components/qr-code/en
+/components/qr-code/zh
 /components/radio/en
 /components/radio/zh
 /components/rate/en
@@ -105,8 +109,6 @@
 /components/steps/zh
 /components/switch/en
 /components/switch/zh
-/components/table/en
-/components/table/zh
 /components/tabs/en
 /components/tabs/zh
 /components/tag/en
@@ -129,6 +131,16 @@
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
+/components/water-mark/en
+/components/water-mark/zh
+/components/check-list/en
+/components/check-list/zh
+/components/color-picker/en
+/components/color-picker/zh
+/components/hash-code/en
+/components/hash-code/zh
+/components/float-button/en
+/components/float-button/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en
@@ -153,8 +165,8 @@
 /docs/introduce/zh
 /docs/join/en
 /docs/join/zh
-/docs/migration-v15/en
-/docs/migration-v15/zh
+/docs/migration-v19/en
+/docs/migration-v19/zh
 /docs/recommendation/en
 /docs/recommendation/zh
 /docs/schematics/en
@@ -171,3 +183,5 @@
 /experimental/pipes/zh
 /experimental/resizable/zh
 /experimental/resizable/en
+/experimental/cron-expression/zh
+/experimental/cron-expression/en

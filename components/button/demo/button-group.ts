@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 @Component({
   selector: 'nz-demo-button-button-group',
+  imports: [NzButtonModule, NzIconModule],
   template: `
     <h4>Basic</h4>
     <nz-button-group>
@@ -22,17 +26,17 @@ import { Component } from '@angular/core';
     <h4>With Icon</h4>
     <nz-button-group>
       <button nz-button nzType="primary">
-        <span nz-icon nzType="left"></span>
+        <nz-icon nzType="left" />
         Go back
       </button>
       <button nz-button nzType="primary">
         Go forward
-        <span nz-icon nzType="right"></span>
+        <nz-icon nzType="right" />
       </button>
     </nz-button-group>
     <nz-button-group>
-      <button nz-button nzType="primary"><span nz-icon nzType="cloud"></span></button>
-      <button nz-button nzType="primary"><span nz-icon nzType="cloud-download"></span></button>
+      <button nz-button nzType="primary"><nz-icon nzType="cloud" /></button>
+      <button nz-button nzType="primary"><nz-icon nzType="cloud-download" /></button>
     </nz-button-group>
   `,
   styles: [
@@ -55,6 +59,7 @@ import { Component } from '@angular/core';
       nz-button-group {
         margin-bottom: 8px;
         margin-right: 8px;
+        vertical-align: bottom;
       }
     `
   ]

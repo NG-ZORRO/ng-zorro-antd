@@ -39,6 +39,7 @@ export default {
       year: 'Année',
       timeSelect: "Sélectionner l'heure",
       dateSelect: 'Sélectionner la date',
+      weekSelect: 'Choisissez une semaine',
       monthSelect: 'Choisissez un mois',
       yearSelect: 'Choisissez une année',
       decadeSelect: 'Choisissez une décennie',
@@ -123,7 +124,10 @@ export default {
     collapse: 'Réduire la ligne',
     triggerDesc: 'Trier par ordre décroissant',
     triggerAsc: 'Trier par ordre croissant',
-    cancelSort: 'Annuler le tri'
+    cancelSort: 'Annuler le tri',
+    filterEmptyText: 'Aucun filtre',
+    emptyText: 'Aucune donnée',
+    selectNone: 'Désélectionner toutes les données'
   },
   Modal: {
     okText: 'OK',
@@ -137,7 +141,14 @@ export default {
   Transfer: {
     searchPlaceholder: 'Rechercher',
     itemUnit: 'élément',
-    itemsUnit: 'éléments'
+    itemsUnit: 'éléments',
+    titles: ['', ''],
+    remove: 'Désélectionner',
+    selectCurrent: 'Sélectionner la page actuelle',
+    removeCurrent: 'Désélectionner la page actuelle',
+    selectAll: 'Sélectionner toutes les données',
+    removeAll: 'Désélectionner toutes les données',
+    selectInvert: 'Inverser la sélection de la page actuelle'
   },
   Empty: {
     description: 'Aucune donnée'
@@ -157,5 +168,25 @@ export default {
   },
   PageHeader: {
     back: 'Retour'
+  },
+  Icon: {
+    icon: 'icône'
+  },
+  Image: {
+    preview: 'Aperçu'
+  },
+  CronExpression: {
+    cronError: 'Expression CRON invalide',
+    second: 'seconde',
+    minute: 'minute',
+    hour: 'heure',
+    day: 'jour',
+    month: 'mois',
+    week: 'semaine'
+  },
+  QRCode: {
+    expired: 'QR code expiré',
+    refresh: 'Rafraîchir',
+    scanned: 'Scanné'
   }
 };

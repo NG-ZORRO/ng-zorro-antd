@@ -10,37 +10,34 @@ import {
   ContentChildren,
   Directive,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   SimpleChanges,
-  SkipSelf
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
-
-import { NzMenuItemDirective } from './menu-item.directive';
+import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken, NzMenuServiceLocalToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubMenuComponent } from './submenu.component';
 
-export function MenuServiceFactory(
-  serviceInsideDropDown: MenuService,
-  serviceOutsideDropDown: MenuService
-): MenuService {
-  return serviceInsideDropDown ? serviceInsideDropDown : serviceOutsideDropDown;
+export function MenuServiceFactory(): MenuService {
+  const serviceInsideDropDown = inject(MenuService, { skipSelf: true, optional: true });
+  const serviceOutsideDropDown = inject(NzMenuServiceLocalToken);
+  return serviceInsideDropDown ?? serviceOutsideDropDown;
 }
-export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): boolean {
-  return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
+
+export function MenuDropDownTokenFactory(): boolean {
+  const isMenuInsideDropDownToken = inject(NzIsMenuInsideDropDownToken, { skipSelf: true, optional: true });
+  return isMenuInsideDropDownToken ?? false;
 }
 
 @Directive({
@@ -54,14 +51,12 @@ export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): bo
     /** use the top level service **/
     {
       provide: MenuService,
-      useFactory: MenuServiceFactory,
-      deps: [[new SkipSelf(), new Optional(), MenuService], NzMenuServiceLocalToken]
+      useFactory: MenuServiceFactory
     },
     /** check if menu inside dropdown-menu component **/
     {
       provide: NzIsMenuInsideDropDownToken,
-      useFactory: MenuDropDownTokenFactory,
-      deps: [[new SkipSelf(), new Optional(), NzIsMenuInsideDropDownToken]]
+      useFactory: MenuDropDownTokenFactory
     }
   ],
   host: {
@@ -85,24 +80,23 @@ export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): bo
   }
 })
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
-  static ngAcceptInputType_nzInlineCollapsed: BooleanInput;
-  static ngAcceptInputType_nzSelectable: BooleanInput;
-
-  @ContentChildren(NzMenuItemDirective, { descendants: true })
-  listOfNzMenuItemDirective!: QueryList<NzMenuItemDirective>;
+  @ContentChildren(NzMenuItemComponent, { descendants: true })
+  listOfNzMenuItemDirective!: QueryList<NzMenuItemComponent>;
+  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent!: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: NzMenuThemeType = 'light';
   @Input() nzMode: NzMenuModeType = 'vertical';
-  @Input() @InputBoolean() nzInlineCollapsed = false;
-  @Input() @InputBoolean() nzSelectable = !this.isMenuInsideDropDown;
-  @Output() readonly nzClick = new EventEmitter<NzMenuItemDirective>();
+  @Input({ transform: booleanAttribute }) nzInlineCollapsed = false;
+  @Input({ transform: booleanAttribute }) nzSelectable = !this.isMenuInsideDropDown;
+  @Output() readonly nzClick = new EventEmitter<NzMenuItemComponent>();
   actualMode: NzMenuModeType = 'vertical';
   dir: Direction = 'ltr';
   private inlineCollapsed$ = new BehaviorSubject<boolean>(this.nzInlineCollapsed);
   private mode$ = new BehaviorSubject<NzMenuModeType>(this.nzMode);
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<boolean>();
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
+  private directionality = inject(Directionality);
 
   setInlineCollapsed(inlineCollapsed: boolean): void {
     this.nzInlineCollapsed = inlineCollapsed;
@@ -123,9 +117,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
 
   constructor(
     private nzMenuService: MenuService,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
-    private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -178,7 +170,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 }

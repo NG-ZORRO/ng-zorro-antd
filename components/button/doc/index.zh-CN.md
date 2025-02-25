@@ -5,6 +5,7 @@ title: Button
 subtitle: 按钮
 cover: https://gw.alipayobjects.com/zos/alicdn/fNUKzY1sk/Button.svg
 ---
+
 按钮用于开始一个即时操作。
 
 ## 何时使用
@@ -40,21 +41,19 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 按钮的属性说明如下：
 
-
-| 属性 | 说明 | 类型 | 默认值 | 支持全局配置 |
-| --- | --- | --- | --- | --- |
-| `[disabled]` | 禁止与button交互 | `boolean` | `false` |
-| `[nzGhost]` | 幽灵属性，使按钮背景透明 | `boolean` | `false` |
-| `[nzLoading]` | 设置按钮载入状态 | `boolean` | `false` |
-| `[nzShape]` | 设置按钮形状，可选值为 `circle` `round` 或者不设 | `'circle'\|'round'` | - | |
-| `[nzSize]` | 设置按钮大小，可选值为 `small` `large` 或者不设 | `'large'\|'small'\|'default'` | `'default'` | ✅ |
-| `[nzType]` | 设置按钮类型，可选值为 `primary` `dashed` `text` `link` 或者不设 | `'primary'\|'dashed'\|'link'\|'text'` | - |
-| `[nzBlock]` | 将按钮宽度调整为其父宽度的选项 | `boolean` | `false` |
-| `[nzDanger]` | 设置危险按钮 | boolean | `false` |  |
-
+| 属性          | 说明                                                             | 类型                                  | 默认值      | 支持全局配置 |
+| ------------- | ---------------------------------------------------------------- | ------------------------------------- | ----------- | ------------ |
+| `[disabled]`  | 禁止与 button 交互                                               | `boolean`                             | `false`     |
+| `[nzGhost]`   | 幽灵属性，使按钮背景透明                                         | `boolean`                             | `false`     |
+| `[nzLoading]` | 设置按钮载入状态                                                 | `boolean`                             | `false`     |
+| `[nzShape]`   | 设置按钮形状，可选值为 `circle` `round` 或者不设                 | `'circle'\|'round'`                   | -           |              |
+| `[nzSize]`    | 设置按钮大小，可选值为 `small` `large` 或者不设                  | `'large'\|'small'\|'default'`         | `'default'` | ✅            |
+| `[nzType]`    | 设置按钮类型，可选值为 `primary` `dashed` `text` `link` 或者不设 | `'primary'\|'dashed'\|'link'\|'text'` | -           |
+| `[nzBlock]`   | 将按钮宽度调整为其父宽度的选项                                   | `boolean`                             | `false`     |
+| `[nzDanger]`  | 设置危险按钮                                                     | boolean                               | `false`     |              |
 
 ### nz-button-group
 
-| 属性 | 说明 | 类型 | 默认值 | 支持全局配置 |
-| --- | --- | --- | --- | --- |
-| `[nzSize]` | 设置按钮大小，可选值为 `small` `large` 或者不设 | `'large'\|'small'\|'default'` | `'default'` | - |
+| 属性       | 说明                                            | 类型                          | 默认值      | 支持全局配置 |
+| ---------- | ----------------------------------------------- | ----------------------------- | ----------- | ------------ |
+| `[nzSize]` | 设置按钮大小，可选值为 `small` `large` 或者不设 | `'large'\|'small'\|'default'` | `'default'` | -            |

@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
 
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-layout-side',
+  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout>
       <nz-sider nzCollapsible nzWidth="200px">
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-menu-item>
-            <span nz-icon nzType="pie-chart"></span>
+            <nz-icon nzType="pie-chart" />
             <span>Option 1</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="desktop"></span>
+            <nz-icon nzType="desktop" />
             <span>Option 2</span>
           </li>
           <li nz-submenu nzTitle="User" nzIcon="user">
@@ -29,7 +35,7 @@ import { Component } from '@angular/core';
             </ul>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="file"></span>
+            <nz-icon nzType="file" />
             <span>File</span>
           </li>
         </ul>

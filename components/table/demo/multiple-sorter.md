@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-使用 `[nzSortPriority]` to config the priority of sort columns. Though `[nzSortFn]` to customize compare function.
+Use `[nzSortPriority]` to config the priority of sort columns. Though `[nzSortFn]` to customize compare function.

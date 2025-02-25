@@ -5,6 +5,9 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { ModalOptions } from './modal-types';
 
 @Component({
@@ -13,7 +16,7 @@ import { ModalOptions } from './modal-types';
   template: `
     <span class="ant-modal-close-x">
       <ng-container *nzStringTemplateOutlet="config.nzCloseIcon; let closeIcon">
-        <span nz-icon [nzType]="closeIcon" class="ant-modal-close-icon"></span>
+        <nz-icon [nzType]="closeIcon" class="ant-modal-close-icon" />
       </ng-container>
     </span>
   `,
@@ -21,7 +24,8 @@ import { ModalOptions } from './modal-types';
     class: 'ant-modal-close',
     'aria-label': 'Close'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NzIconModule, NzOutletModule]
 })
 export class NzModalCloseComponent {
   constructor(public config: ModalOptions) {}

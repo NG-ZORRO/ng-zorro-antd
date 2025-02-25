@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,7 +13,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   SimpleChanges,
   TemplateRef,
@@ -37,7 +37,8 @@ import { NzMenuModeType } from './menu.types';
     class: 'ant-menu ant-menu-inline ant-menu-sub',
     '[class.ant-menu-rtl]': `dir === 'rtl'`,
     '[@collapseMotion]': 'expandState'
-  }
+  },
+  imports: [NgTemplateOutlet]
 })
 export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
@@ -52,7 +53,7 @@ export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChang
   constructor(
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   calcMotionState(): void {

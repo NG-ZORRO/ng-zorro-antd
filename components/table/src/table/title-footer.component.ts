@@ -5,6 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -18,7 +19,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   host: {
     '[class.ant-table-title]': `title !== null`,
     '[class.ant-table-footer]': `footer !== null`
-  }
+  },
+  imports: [NzOutletModule]
 })
 export class NzTableTitleFooterComponent {
   @Input() title: string | TemplateRef<NzSafeAny> | null = null;

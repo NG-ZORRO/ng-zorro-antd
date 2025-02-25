@@ -1,7 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzSelectModule } from 'ng-zorro-antd/select';
+
+function alphabet(): string[] {
+  const children: string[] = [];
+  for (let i = 10; i < 36; i++) {
+    children.push(i.toString(36) + i);
+  }
+  return children;
+}
 
 @Component({
   selector: 'nz-demo-select-multiple',
+  imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
       [nzMaxTagCount]="3"
@@ -10,7 +22,9 @@ import { Component, OnInit } from '@angular/core';
       nzPlaceHolder="Please select"
       [(ngModel)]="listOfSelectedValue"
     >
-      <nz-option *ngFor="let item of listOfOption" [nzLabel]="item" [nzValue]="item"></nz-option>
+      @for (item of listOfOption; track item) {
+        <nz-option [nzLabel]="item" [nzValue]="item"></nz-option>
+      }
     </nz-select>
     <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
   `,
@@ -22,15 +36,7 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoSelectMultipleComponent implements OnInit {
-  listOfOption: string[] = [];
+export class NzDemoSelectMultipleComponent {
+  readonly listOfOption: string[] = alphabet();
   listOfSelectedValue = ['a10', 'c12'];
-
-  ngOnInit(): void {
-    const children: string[] = [];
-    for (let i = 10; i < 36; i++) {
-      children.push(`${i.toString(36)}${i}`);
-    }
-    this.listOfOption = children;
-  }
 }

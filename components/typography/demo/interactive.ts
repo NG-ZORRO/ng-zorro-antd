@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+
 @Component({
   selector: 'nz-demo-typography-interactive',
+  imports: [NzIconModule, NzTypographyModule],
   template: `
     <p nz-typography nzEditable [(nzContent)]="editStr"></p>
     <p
@@ -22,7 +26,7 @@ import { Component } from '@angular/core';
       [nzCopyIcons]="['meh', 'smile']"
     ></p>
     <ng-template #copedIcon>
-      <span nz-icon nzType="smile" nzTheme="fill"></span>
+      <nz-icon nzType="smile" nzTheme="fill" />
       you clicked!!
     </ng-template>
     <p nz-typography nzCopyable [nzCopyTooltips]="null" nzContent="Hide copy tooltips."></p>

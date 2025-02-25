@@ -1,21 +1,24 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { NzTabsCanDeactivateFn } from 'ng-zorro-antd/tabs';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzTabsCanDeactivateFn, NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-guard',
+  imports: [NzTabsModule, NzModalModule],
   template: `
     <nz-tabset [nzCanDeactivate]="canDeactivate">
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab">Content of tab {{ tab }}</nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzTitle]="'Tab' + tab">Content of tab {{ tab }}</nz-tab>
+      }
     </nz-tabset>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDemoTabsGuardComponent {
   tabs = [1, 2, 3, 4];
-  constructor(private modal: NzModalService) {}
+  private modalService = inject(NzModalService);
 
   canDeactivate: NzTabsCanDeactivateFn = (fromIndex: number, toIndex: number) => {
     switch (fromIndex) {
@@ -32,7 +35,7 @@ export class NzDemoTabsGuardComponent {
 
   private confirm(): Observable<boolean> {
     return new Observable(observer => {
-      this.modal.confirm({
+      this.modalService.confirm({
         nzTitle: 'Are you sure you want to leave this tab?',
         nzOnOk: () => {
           observer.next(true);

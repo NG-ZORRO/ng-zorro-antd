@@ -3,10 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Input } from '@angular/core';
-
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Directive, Input, booleanAttribute } from '@angular/core';
 
 @Directive({
   selector: 'th[nzBreakWord],td[nzBreakWord]',
@@ -15,7 +12,5 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   }
 })
 export class NzCellBreakWordDirective {
-  static ngAcceptInputType_nzBreakWord: BooleanInput;
-
-  @Input() @InputBoolean() nzBreakWord = true;
+  @Input({ transform: booleanAttribute }) nzBreakWord = true;
 }

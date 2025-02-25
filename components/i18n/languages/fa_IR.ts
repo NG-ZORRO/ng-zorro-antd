@@ -22,6 +22,7 @@ export default {
     lang: {
       placeholder: 'انتخاب تاریخ',
       yearPlaceholder: 'انتخاب سال',
+      quarterPlaceholder: 'انتخاب فصل',
       monthPlaceholder: 'انتخاب ماه',
       weekPlaceholder: 'انتخاب هفته',
       rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
@@ -38,6 +39,7 @@ export default {
       year: 'سال',
       timeSelect: 'انتخاب زمان',
       dateSelect: 'انتخاب تاریخ',
+      weekSelect: 'یک هفته رو انتخاب کنید',
       monthSelect: 'یک ماه را انتخاب کنید',
       yearSelect: 'یک سال را انتخاب کنید',
       decadeSelect: 'یک دهه را انتخاب کنید',
@@ -53,8 +55,7 @@ export default {
       previousDecade: 'دهه قبل',
       nextDecade: 'دهه بعد',
       previousCentury: 'قرن قبل',
-      nextCentury: 'قرن بعد',
-      quarterPlaceholder: 'انتخاب فصل'
+      nextCentury: 'قرن بعد'
     },
     timePickerLocale: {
       placeholder: 'انتخاب زمان',
@@ -68,7 +69,14 @@ export default {
   Calendar: {
     lang: {
       placeholder: 'انتخاب تاریخ',
+      yearPlaceholder: 'انتخاب سال',
+      quarterPlaceholder: 'انتخاب فصل',
+      monthPlaceholder: 'انتخاب ماه',
+      weekPlaceholder: 'انتخاب هفته',
       rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
+      rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
+      rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
+      rangeWeekPlaceholder: ['هفته شروع', 'هفته پایان'],
       locale: 'fa_IR',
       today: 'امروز',
       now: 'اکنون',
@@ -79,6 +87,7 @@ export default {
       year: 'سال',
       timeSelect: 'انتخاب زمان',
       dateSelect: 'انتخاب تاریخ',
+      weekSelect: 'انتخاب هفته',
       monthSelect: 'یک ماه را انتخاب کنید',
       yearSelect: 'یک سال را انتخاب کنید',
       decadeSelect: 'یک دهه را انتخاب کنید',
@@ -94,24 +103,22 @@ export default {
       previousDecade: 'دهه قبل',
       nextDecade: 'دهه بعد',
       previousCentury: 'قرن قبل',
-      nextCentury: 'قرن بعد',
-      yearPlaceholder: 'انتخاب سال',
-      quarterPlaceholder: 'انتخاب فصل',
-      monthPlaceholder: 'انتخاب ماه',
-      weekPlaceholder: 'انتخاب هفته',
-      rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
-      rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
-      rangeWeekPlaceholder: ['هفته شروع', 'هفته پایان']
+      nextCentury: 'قرن بعد'
     },
     timePickerLocale: {
       placeholder: 'انتخاب زمان',
       rangePlaceholder: ['زمان شروع', 'زمان پایان']
     }
   },
+  global: {
+    placeholder: 'لطفا انتخاب کنید'
+  },
   Table: {
     filterTitle: 'منوی فیلتر',
     filterConfirm: 'تایید',
     filterReset: 'پاک کردن',
+    filterEmptyText: 'بدون فیلتر',
+    emptyText: 'بدون داده',
     selectAll: 'انتخاب صفحه‌ی کنونی',
     selectInvert: 'معکوس کردن انتخاب‌ها در صفحه ی کنونی',
     selectionAll: 'انتخاب همه داده‌ها',
@@ -121,8 +128,8 @@ export default {
     triggerDesc: 'ترتیب نزولی',
     triggerAsc: 'ترتیب صعودی',
     cancelSort: 'لغوِ ترتیبِ داده شده',
-    filterEmptyText: 'بدون فیلتر',
-    emptyText: 'بدون داده',
+    filterCheckall: 'انتخاب همه موارد',
+    filterSearchPlaceholder: 'جست‌و‌جو در فیلتر‌ها',
     selectNone: 'انتخاب هیچکدام'
   },
   Modal: {
@@ -168,10 +175,21 @@ export default {
   PageHeader: {
     back: 'برگشت'
   },
-  global: {
-    placeholder: 'لطفاً انتخاب کنید'
-  },
   Image: {
     preview: 'نمایش'
+  },
+  CronExpression: {
+    cronError: 'Invalid cron expression',
+    second: 'ثانیه',
+    minute: 'دقیقه',
+    hour: 'ساعت',
+    day: 'روز',
+    month: 'ماه',
+    week: 'هفته'
+  },
+  QRCode: {
+    expired: 'کد QR منقضی شده است',
+    refresh: 'تازه کردن',
+    scanned: 'اسکن شده'
   }
 };

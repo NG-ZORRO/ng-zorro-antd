@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'nz-demo-message-duration',
-  template: `
-    <button nz-button [nzType]="'default'" (click)="createBasicMessage()">Customized display duration</button>
-  `
+  imports: [NzButtonModule],
+  template: `<button nz-button nzType="default" (click)="createBasicMessage()">Customized display duration</button>`
 })
 export class NzDemoMessageDurationComponent {
   createBasicMessage(): void {

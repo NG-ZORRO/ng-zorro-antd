@@ -10,20 +10,18 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
   OnInit,
   Output,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzDropDownDirective, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
+import { NzDropDownDirective, NzDropDownModule, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
 
@@ -50,18 +48,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
       <ng-content></ng-content>
     </span>
   `,
-  providers: [NzDestroyService]
+  providers: [NzDestroyService],
+  imports: [NzDropDownModule]
 })
 export class NzFilterTriggerComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-
-  static ngAcceptInputType_nzBackdrop: BooleanInput;
 
   @Input() nzActive = false;
   @Input() nzDropdownMenu!: NzDropdownMenuComponent;
   @Input() nzVisible = false;
 
-  @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
@@ -84,18 +81,15 @@ export class NzFilterTriggerComponent implements OnInit {
 
   constructor(
     public readonly nzConfigService: NzConfigService,
-    private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     private destroy$: NzDestroyService
   ) {}
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.nzDropdown.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          event.stopPropagation();
-        });
-    });
+    fromEventOutsideAngular(this.nzDropdown.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        event.stopPropagation();
+      });
   }
 }

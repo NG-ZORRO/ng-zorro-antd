@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
 
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+
 @Component({
   selector: 'nz-demo-collapse-accordion',
+  imports: [NzCollapseModule],
   template: `
     <nz-collapse nzAccordion>
-      <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active">
-        <p>{{ panel.name }} content</p>
-      </nz-collapse-panel>
+      @for (panel of panels; track panel) {
+        <nz-collapse-panel [nzHeader]="panel.name" [nzActive]="panel.active">
+          <p>{{ panel.name }} content</p>
+        </nz-collapse-panel>
+      }
     </nz-collapse>
   `
 })
