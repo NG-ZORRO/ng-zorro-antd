@@ -1,11 +1,12 @@
 <section class="code-box" [class.expand]="nzExpanded" [attr.id]="nzId">
   <section class="code-box-demo">
-    @if (!showIframe) {
+    @if (!nzIframe || !iframe) {
+      @let simulateIframe = nzIframe && !iframe;
       <div
-        [class.simulate-iframe]="simulateIFrame"
-        [class.browser-mockup]="simulateIFrame"
-        [class.with-url]="simulateIFrame"
-        [style.height.px]="simulateIFrame && nzIframeHeight"
+        [class.simulate-iframe]="simulateIframe"
+        [class.browser-mockup]="simulateIframe"
+        [class.with-url]="simulateIframe"
+        [style.height.px]="simulateIframe && nzIframeHeight"
       >
         <ng-content select="[demo]"></ng-content>
       </div>
@@ -26,7 +27,8 @@
       <ng-content select="[intro]"></ng-content>
     </div>
     <div class="code-box-actions">
-      <nz-icon
+      <span
+        nz-icon
         [nzTooltipTitle]="
           !onlineIDELoading
             ? language === 'zh'
@@ -41,8 +43,9 @@
         nzTheme="fill"
         class="code-box-code-copy"
         (click)="openOnlineIDE()"
-      />
-      <nz-icon
+      ></span>
+      <span
+        nz-icon
         [nzTooltipTitle]="
           !copyLoading ? (language === 'zh' ? '复制代码' : 'Copy Code') : language === 'zh' ? '加载中...' : 'Loading...'
         "
@@ -51,16 +54,17 @@
         class="code-box-code-copy"
         [class.ant-tooltip-open]="copied"
         (click)="copyCode()"
-      />
+      ></span>
       @if (nzGenerateCommand) {
-        <nz-icon
+        <span
+          nz-icon
           [nzTooltipTitle]="language === 'zh' ? '复制生成代码命令' : 'Copy Generate Command'"
           nz-tooltip
           [nzType]="commandCopied ? 'check' : 'code'"
           class="code-box-code-copy"
           [class.ant-tooltip-open]="commandCopied"
           (click)="copyGenerateCommand(nzGenerateCommand)"
-        />
+        ></span>
       }
       <span
         class="code-expand-icon"
