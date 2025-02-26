@@ -40,7 +40,6 @@
     "!/**/stackblitz",
     "!/version/**",
     "!/issue-helper/**",
-    "!/iframe/**",
     "!/blog/**",
     "!/docs/**/*",
     "!/docs/?*",
