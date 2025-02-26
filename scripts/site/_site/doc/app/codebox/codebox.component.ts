@@ -1,5 +1,5 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,8 +7,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  ViewEncapsulation,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
@@ -17,13 +16,12 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-import { environment } from '../../environments/environment';
 import { AppService, DemoCode } from '../app.service';
 import { OnlineIdeService } from '../online-ide/online-ide.service';
 import { NzHighlightComponent } from './highlight.component';
 
 @Component({
-    selector: 'nz-code-box',
+  selector: 'nz-code-box',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzIconModule, NzToolTipModule, NzHighlightComponent],
@@ -34,12 +32,9 @@ import { NzHighlightComponent } from './highlight.component';
   }
 })
 export class NzCodeBoxComponent implements OnInit, OnDestroy {
-  private document: Document = inject(DOCUMENT);
   highlightCode?: string;
   copied = false;
   commandCopied = false;
-  showIframe: boolean = false;
-  simulateIFrame: boolean = false;
   iframe?: SafeUrl;
   language = 'zh';
   theme = 'default';
@@ -56,12 +51,13 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   @Input() nzComponentName = '';
   @Input() nzSelector = '';
   @Input() nzGenerateCommand = '';
+  @Input() nzIframe: boolean = false;
 
   @Input()
   set nzIframeSource(value: string) {
-    this.showIframe = value !== 'null' && environment.production;
-    this.simulateIFrame = value !== 'null' && !environment.production;
-    this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(value);
+    if (value !== 'null') {
+      this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(value);
+    }
   }
 
   navigateToFragment(): void {
@@ -78,46 +74,22 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     this.getDemoCode().subscribe(data => {
       this.copyLoading = false;
       this.cdr.markForCheck();
-      this.copy(data.rawCode).then(() => {
-        this.copied = true;
-        setTimeout(() => {
-          this.copied = false;
-          this.cdr.markForCheck();
-        }, 1000);
-      });
-    });
-  }
-
-  copyGenerateCommand(command: string): void {
-    this.copy(command).then(() => {
-      this.commandCopied = true;
+      this.clipboard.copy(data.rawCode);
+      this.copied = true;
       setTimeout(() => {
-        this.commandCopied = false;
+        this.copied = false;
         this.cdr.markForCheck();
       }, 1000);
     });
   }
 
-  copy(value: string): Promise<string> {
-    return new Promise<string>((resolve): void => {
-      // @ts-ignore
-      let copyTextArea = null as HTMLTextAreaElement;
-      try {
-        copyTextArea = this.document.createElement('textarea');
-        copyTextArea.style.height = '0px';
-        copyTextArea.style.opacity = '0';
-        copyTextArea.style.width = '0px';
-        this.document.body.appendChild(copyTextArea);
-        copyTextArea.value = value;
-        copyTextArea.select();
-        this.document.execCommand('copy');
-        resolve(value);
-      } finally {
-        if (copyTextArea && copyTextArea.parentNode) {
-          copyTextArea.parentNode.removeChild(copyTextArea);
-        }
-      }
-    });
+  copyGenerateCommand(command: string): void {
+    this.clipboard.copy(command);
+    this.commandCopied = true;
+    setTimeout(() => {
+      this.commandCopied = false;
+      this.cdr.markForCheck();
+    }, 1000);
   }
 
   expandCode(expanded: boolean): void {
@@ -145,6 +117,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private appService: AppService,
     private platform: Platform,
+    private clipboard: Clipboard,
     private onlineIdeService: OnlineIdeService
   ) {}
 

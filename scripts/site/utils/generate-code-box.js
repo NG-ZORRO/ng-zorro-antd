@@ -10,21 +10,9 @@ module.exports = function generateCodeBox(component, demoName, key, title, doc, 
   output = output.replace(/{{componentName}}/g, demoName);
   output = output.replace(/{{key}}/g, key);
   output = output.replace(/{{doc}}/g, doc);
-  if (iframe) {
-    if (iframe.source) {
-      output = output.replace(/{{iframeSource}}/g, iframe.source);
-    } else {
-      output = output.replace(/{{iframeSource}}/g, `/iframe/#/${component}-${key}`);
-    }
-    if (iframe.height) {
-      output = output.replace(/{{iframeHeight}}/g, iframe.height);
-    } else {
-      output = output.replace(/{{iframeHeight}}/g, null);
-    }
-  } else {
-    output = output.replace(/{{iframeSource}}/g, null);
-    output = output.replace(/{{iframeHeight}}/g, null);
-  }
+  output = output.replace(/{{iframe}}/g,  iframe ? 'true' : 'false');
+  output = output.replace(/{{iframeSource}}/g, iframe?.source ?? null);
+  output = output.replace(/{{iframeHeight}}/g, iframe?.height ?? null);
   output = output.replace(/{{code}}/g, camelCase(key));
   output = output.replace(/{{rawCode}}/g, `${camelCase(key)}Raw`);
   output = output.replace(/{{nzGenerateCommand}}/g, `ng g ng-zorro-antd:${component}-${key} <name>`);
