@@ -77,18 +77,6 @@ task(
   execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=preview'])
 );
 
-/** Run `ng build ng-zorro-antd-iframe --base-href=./ --configuration=production --delete-output-path=false` */
-task(
-  'build:site-iframe',
-  execNodeTask('@angular/cli', 'ng', [
-    'build',
-    'ng-zorro-antd-iframe',
-    '--configuration=production',
-    '--base-href=./',
-    '--delete-output-path=false'
-  ])
-);
-
 /** Replace the library paths to publish/ directory */
 task('site:replace-path', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -115,22 +103,18 @@ task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 /** Build all site projects to the output directory. */
 task(
   'build:site',
-  series(
-    'build:site-doc',
-    parallel('site:sitemap', 'site:regen-ngsw-config'),
-    parallel('build:site-iframe', 'build:site-issue-helper')
-  )
+  series('build:site-doc', parallel('site:sitemap', 'site:regen-ngsw-config', 'build:site-issue-helper'))
 );
 
 /** Init site directory, and start watch and ng-serve */
 task('start:site', series('init:site', parallel('watch:site', 'serve:site')));
 
 /** Task that use source code to build ng-zorro-antd-doc project,
- * output not included issue-helper/iframe and prerender.
+ * output not included issue-helper and prerender.
  */
 task('build:simple-site', series('init:site', CI ? 'build:site-doc/pre-production' : 'build:site-doc'));
 
 /** Task that use publish code to build ng-zorro-antd-doc project,
- * output included issue-helper/iframe and prerender.
+ * output included issue-helper and prerender.
  */
 task('build:release-site', series('init:site', 'site:replace-path', 'build:site'));
