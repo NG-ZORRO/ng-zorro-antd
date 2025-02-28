@@ -45,7 +45,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 | `[nzMode]`            | type of the menu; `vertical`、 `horizontal`, and `inline` modes are supported | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'`  |
 | `[nzSelectable]`      | allow selecting menu items                                                   | `boolean`                                | `true`        |
 | `[nzTheme]`           | color theme of the menu                                                      | `'light' \| 'dark'`                      | `'light'`     |
-| `(nzClick)`           | the Output when click `nz-menu-item` inside nz-menu                          | `EventEmitter<NzMenuItemDirective>`      |               |
+| `(nzClick)`           | the Output when click `nz-menu-item` inside nz-menu                          | `EventEmitter<NzMenuItemComponent>`      |               |
 
 ### [nz-menu-item]
 
