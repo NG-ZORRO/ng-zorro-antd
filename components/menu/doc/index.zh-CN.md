@@ -44,7 +44,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 | `[nzMode]`            | 菜单类型，现在支持垂直、水平、和内嵌模式三种 | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` |
 | `[nzSelectable]`      | 是否允许选中                 | `boolean`                                | `true`       |
 | `[nzTheme]`           | 主题颜色                   | `'light' \| 'dark'`                      | `'light'`    |
-| `(nzClick)`           | 点击 `nz-menu-item` 输出属性 | `EventEmitter<NzMenuItemDirective>`      |              |
+| `(nzClick)`           | 点击 `nz-menu-item` 输出属性 | `EventEmitter<NzMenuItemComponent>`      |              |
 
 ### [nz-menu-item]
 
