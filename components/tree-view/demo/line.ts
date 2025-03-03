@@ -58,7 +58,7 @@ const TREE_DATA: TreeNode[] = [
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodeIndentLine [nzExpandable]="true">
         <nz-tree-node-toggle>
-          <nz-icon [nzType]="treeControl.isExpanded(node) ? 'minus-square' : 'plus-square'" nzTheme="outline" />
+          <nz-icon [nzType]="tree.isExpanded(node) ? 'minus-square' : 'plus-square'" nzTheme="outline" />
         </nz-tree-node-toggle>
         <nz-tree-node-option>
           {{ node.name }}
