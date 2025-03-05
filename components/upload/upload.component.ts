@@ -8,23 +8,23 @@ import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   Input,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  booleanAttribute,
-  inject,
-  numberAttribute
+  ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subject, Subscription, of } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -116,6 +116,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();
+  @Output() readonly nzFilesNotAccepted: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();
 
   _btnOptions?: ZipButtonOptions;
 
@@ -145,7 +146,23 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       const types = this.nzFileType.split(',');
       filters.push({
         name: 'type',
-        fn: (fileList: NzUploadFile[]) => fileList.filter(w => ~types.indexOf(w.type!))
+        fn: (fileList: NzUploadFile[]) => {
+          const [acceptedFiles, refusedFiles] = fileList.reduce(
+            (acc: [NzUploadFile[], NzUploadFile[]], current: NzUploadFile) => {
+              if (~types.indexOf(current.type!)) {
+                acc[0].push(current);
+              } else {
+                acc[1].push(current);
+              }
+              return acc;
+            },
+            [[], []]
+          );
+          if (refusedFiles.length > 0) {
+            this.nzFilesNotAccepted.emit(refusedFiles);
+          }
+          return acceptedFiles;
+        }
       });
     }
     this._btnOptions = {

@@ -7,7 +7,7 @@ import { ENTER, TAB } from '@angular/cdk/keycodes';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ApplicationRef, Component, DebugElement, Injector, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, Observer, of, throwError } from 'rxjs';
@@ -68,6 +68,7 @@ const PNGBIG = { target: { files: { 0: LARGEFILE, length: 1, item: () => LARGEFI
 
 class Item {
   children?: Item[];
+
   constructor(public name: string) {}
 }
 
@@ -150,6 +151,15 @@ describe('upload', () => {
         expect(instance._beforeUploadList.length).toBe(0);
         pageObject.postFile(JPGSMALL.target.files);
         expect(instance._beforeUploadList.length).toBe(0);
+      });
+
+      it('should emit nzFilesNotAccepted event if file type is not correct', () => {
+        const nzFilesNotAcceptedSpy = spyOn(instance, 'nzFilesNotAccepted');
+        instance.nzFileType = 'image/png';
+        fixture.detectChanges();
+        pageObject.postFile(JPGSMALL.target.files);
+        expect(nzFilesNotAcceptedSpy).toHaveBeenCalled();
+        expect(nzFilesNotAcceptedSpy).toHaveBeenCalledWith([JPGSMALL.target.files[0]]);
       });
 
       it('should limit 1kb size', () => {
@@ -932,6 +942,7 @@ describe('upload', () => {
         addEventListener(_name: string, callback: VoidFunction): void {
           callback();
         }
+
         removeEventListener(): void {}
 
         set src(_: string) {}
@@ -1375,6 +1386,7 @@ describe('upload', () => {
         [nzIconRender]="nzIconRender"
         [nzFileListRender]="nzFileListRender"
         (nzFileListChange)="nzFileListChange($event)"
+        (nzFilesNotAccepted)="nzFilesNotAccepted($event)"
         (nzChange)="nzChange($event)"
       >
         <button nz-button>
@@ -1401,6 +1413,7 @@ class TestUploadComponent {
   nzSize = 0;
   nzFileType: NzSafeAny;
   nzAccept = 'image/png';
+  _nzFilesNotAccepted: NzSafeAny = [];
   nzAction: string | ((file: NzUploadFile) => string | Observable<string>) = '/upload';
   _beforeUpload = false;
   _beforeUploadList: NzUploadFile[] = [];
@@ -1442,6 +1455,10 @@ class TestUploadComponent {
 
   nzFileListChange(value: NzSafeAny): void {
     this._nzChange = value;
+  }
+
+  nzFilesNotAccepted(value: NzSafeAny): void {
+    this._nzFilesNotAccepted = value;
   }
 
   directory = false;
@@ -1505,7 +1522,7 @@ class TestUploadListComponent {
 
 @Component({
   imports: [NzUploadBtnComponent],
-  template: `<div nz-upload-btn #btn [options]="options" class="test">UPLOAD</div>`
+  template: ` <div nz-upload-btn #btn [options]="options" class="test">UPLOAD</div>`
 })
 class TestUploadBtnComponent {
   @ViewChild('btn', { static: false }) comp!: NzUploadBtnComponent;
