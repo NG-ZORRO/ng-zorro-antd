@@ -98,8 +98,11 @@ export class NzDemoTransferTreeTransferComponent {
   change(ret: TransferChange): void {
     const isDisabled = ret.to === 'right';
     this.checkedNodeList.forEach(node => {
-      node.isDisabled = isDisabled;
-      node.isChecked = isDisabled;
+      if (ret.list.find(w => w.key === node.key)) {
+        node.isDisabled = isDisabled;
+        node.isChecked = isDisabled;
+      }
     });
+    this.checkedNodeList = this.checkedNodeList.filter(item => item.isChecked);
   }
 }
