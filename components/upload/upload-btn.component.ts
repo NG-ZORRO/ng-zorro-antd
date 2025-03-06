@@ -5,9 +5,9 @@
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
-import { Observable, Subject, Subscription, of } from 'rxjs';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Component, ElementRef, inject, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { concatMap, EMPTY, Observable, of, Subject, Subscription } from 'rxjs';
+import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -113,7 +113,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
               .indexOf(validType.toLowerCase(), fileName.toLowerCase().length - validType.toLowerCase().length) !== -1
           );
         } else if (/\/\*$/.test(validType)) {
-          // This is something like a image/* mime type
+          // This is something like an image/* mime type
           return baseMimeType === validType.replace(/\/.*$/, '');
         }
         return mimeType === validType;
@@ -134,24 +134,26 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
     if (this.options.filters) {
       this.options.filters.forEach(f => {
         filters$ = filters$.pipe(
-          switchMap(list => {
+          concatMap(list => {
             const fnRes = f.fn(list);
             return fnRes instanceof Observable ? fnRes : of(fnRes);
           })
         );
       });
     }
-    filters$.subscribe(
-      list => {
+    filters$
+      .pipe(
+        catchError(e => {
+          warn(`Unhandled upload filter error`, e);
+          return EMPTY;
+        })
+      )
+      .subscribe(list => {
         list.forEach((file: NzUploadFile) => {
           this.attachUid(file);
           this.upload(file, list);
         });
-      },
-      e => {
-        warn(`Unhandled upload filter error`, e);
-      }
-    );
+      });
   }
 
   private upload(file: NzUploadFile, fileList: NzUploadFile[]): void {
@@ -160,21 +162,23 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
     }
     const before = this.options.beforeUpload(file, fileList);
     if (before instanceof Observable) {
-      before.subscribe(
-        (processedFile: NzUploadFile) => {
+      before
+        .pipe(
+          catchError(e => {
+            warn(`Unhandled upload beforeUpload error`, e);
+            return EMPTY;
+          })
+        )
+        .subscribe((processedFile: NzUploadFile) => {
           const processedFileType = Object.prototype.toString.call(processedFile);
           if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
             this.attachUid(processedFile);
             this.post(processedFile);
-          } else if (typeof processedFile === 'boolean' && processedFile !== false) {
+          } else if (processedFile) {
             this.post(file);
           }
-        },
-        e => {
-          warn(`Unhandled upload beforeUpload error`, e);
-        }
-      );
-    } else if (before !== false) {
+        });
+    } else if (before) {
       return this.post(file);
     }
   }
@@ -300,8 +304,15 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
       withCredentials: args.withCredentials,
       headers: new HttpHeaders(args.headers)
     });
-    return this.http!.request(req).subscribe(
-      (event: HttpEvent<NzSafeAny>) => {
+    return this.http!.request(req)
+      .pipe(
+        catchError(err => {
+          this.abort(args.file);
+          args.onError!(err, args.file);
+          return EMPTY;
+        })
+      )
+      .subscribe((event: HttpEvent<NzSafeAny>) => {
         if (event.type === HttpEventType.UploadProgress) {
           if (event.total! > 0) {
             (event as NzSafeAny).percent = (event.loaded / event.total!) * 100;
@@ -310,12 +321,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
         } else if (event instanceof HttpResponse) {
           args.onSuccess!(event.body, args.file, event);
         }
-      },
-      err => {
-        this.abort(args.file);
-        args.onError!(err, args.file);
-      }
-    );
+      });
   }
 
   private clean(uid: string): void {
