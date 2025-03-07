@@ -54,6 +54,6 @@ export function isNonEmptyString(value: NzSafeAny): boolean {
   return typeof value === 'string' && value !== '';
 }
 
-export function isTemplateRef(value: NzSafeAny): boolean {
+export function isTemplateRef<T>(value: TemplateRef<T> | NzSafeAny): value is TemplateRef<T> {
   return value instanceof TemplateRef;
 }
