@@ -5,15 +5,26 @@
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
-import { Observable, Subject, Subscription, of } from 'rxjs';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
-import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
+import { NzFileNotAuthorize, NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
 
 @Component({
   selector: '[nz-upload-btn]',
@@ -34,8 +45,10 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
   reqs: Record<string, Subscription> = {};
   private destroy = false;
   private destroy$ = new Subject<void>();
+  private _nzFileNotAuthorize: NzFileNotAuthorize[] = [];
   @ViewChild('file', { static: true }) file!: ElementRef<HTMLInputElement>;
   @Input() options!: ZipButtonOptions;
+  @Output() readonly nzFilesNotAuthorize = new EventEmitter<NzFileNotAuthorize[]>();
 
   onClick(): void {
     if (this.options.disabled || !this.options.openFileDialogOnClick) {
@@ -46,6 +59,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
 
   // skip safari bug
   onFileDrop(e: DragEvent): void {
+    this._nzFileNotAuthorize = [];
     if (this.options.disabled || e.type === 'dragover') {
       e.preventDefault();
       return;
@@ -53,11 +67,19 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
     if (this.options.directory) {
       this.traverseFileTree(e.dataTransfer!.items);
     } else {
-      const files: File[] = Array.prototype.slice
-        .call(e.dataTransfer!.files)
-        .filter((file: File) => this.attrAccept(file, this.options.accept));
+      const files: File[] = Array.prototype.slice.call(e.dataTransfer!.files).filter((file: File) => {
+        if (this.attrAccept(file, this.options.accept)) {
+          return true;
+        } else {
+          this._nzFileNotAuthorize.push({ reason: 'extension', file });
+          return false;
+        }
+      });
       if (files.length) {
         this.uploadFiles(files);
+      }
+      if (this._nzFileNotAuthorize.length > 0) {
+        this.nzFilesNotAuthorize.emit(this._nzFileNotAuthorize);
       }
     }
 
@@ -65,20 +87,27 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
   }
 
   onChange(e: Event): void {
+    this._nzFileNotAuthorize = [];
     if (this.options.disabled) {
       return;
     }
     const hie = e.target as HTMLInputElement;
     this.uploadFiles(hie.files!);
+    if (this._nzFileNotAuthorize.length > 0) {
+      this.nzFilesNotAuthorize.emit(this._nzFileNotAuthorize);
+    }
     hie.value = '';
   }
 
   private traverseFileTree(files: DataTransferItemList): void {
+    const filesToUpload: File[] = [];
     const _traverseFileTree = (item: NzSafeAny, path: string): void => {
       if (item.isFile) {
         item.file((file: File) => {
           if (this.attrAccept(file, this.options.accept)) {
-            this.uploadFiles([file]);
+            filesToUpload.push(file);
+          } else {
+            this._nzFileNotAuthorize.push({ reason: 'extension', file });
           }
         });
       } else if (item.isDirectory) {
@@ -94,6 +123,9 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
 
     for (const file of files as NzSafeAny) {
       _traverseFileTree(file.webkitGetAsEntry(), '');
+    }
+    if (filesToUpload.length > 0) {
+      this.uploadFiles(filesToUpload);
     }
   }
 
@@ -135,7 +167,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
       this.options.filters.forEach(f => {
         filters$ = filters$.pipe(
           switchMap(list => {
-            const fnRes = f.fn(list);
+            const fnRes = f.fn(list, this._nzFileNotAuthorize);
             return fnRes instanceof Observable ? fnRes : of(fnRes);
           })
         );

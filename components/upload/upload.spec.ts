@@ -7,7 +7,7 @@ import { ENTER, TAB } from '@angular/cdk/keycodes';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ApplicationRef, Component, DebugElement, Injector, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, Observer, of, throwError } from 'rxjs';
@@ -23,6 +23,7 @@ import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzUploadModule } from 'ng-zorro-antd/upload/upload.module';
 
 import {
+  NzFileNotAuthorize,
   NzIconRenderTemplate,
   NzShowUploadList,
   NzUploadChangeParam,
@@ -68,6 +69,7 @@ const PNGBIG = { target: { files: { 0: LARGEFILE, length: 1, item: () => LARGEFI
 
 class Item {
   children?: Item[];
+
   constructor(public name: string) {}
 }
 
@@ -135,6 +137,15 @@ describe('upload', () => {
         httpMock.verify();
       });
 
+      it('should add the file, if the file respect all the filter criteria', () => {
+        instance.nzSize = 1;
+        instance.nzFileType = 'image/png';
+        fixture.detectChanges();
+        expect(instance._beforeUploadList.length).toBe(0);
+        pageObject.postFile(PNGSMALL.target.files);
+        expect(instance._beforeUploadList.length).toBe(1);
+      });
+
       it('should limit 2 file when allow multiple', () => {
         instance.nzLimit = 2;
         instance.nzMultiple = true;
@@ -152,12 +163,29 @@ describe('upload', () => {
         expect(instance._beforeUploadList.length).toBe(0);
       });
 
+      it('should send an event if extension is not correct', () => {
+        const spy = spyOn(instance, 'nzFileNotAuthorizeChange');
+        instance.nzFileType = 'image/png';
+        fixture.detectChanges();
+        pageObject.postFile(JPGSMALL.target.files);
+        expect(spy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalledWith([{ reason: 'extension', file: JPGSMALL.target.files[0] }]);
+      });
+
       it('should limit 1kb size', () => {
         instance.nzSize = 1;
         fixture.detectChanges();
         expect(instance._beforeUploadList.length).toBe(0);
         pageObject.postLarge();
         expect(instance._beforeUploadList.length).toBe(0);
+      });
+
+      it('should send an event if size is not correct', () => {
+        const spy = spyOn(instance, 'nzFileNotAuthorizeChange');
+        instance.nzSize = 1;
+        fixture.detectChanges();
+        pageObject.postLarge();
+        expect(spy).toHaveBeenCalled();
       });
 
       it('should be abort when user canceled', () => {
@@ -932,6 +960,7 @@ describe('upload', () => {
         addEventListener(_name: string, callback: VoidFunction): void {
           callback();
         }
+
         removeEventListener(): void {}
 
         set src(_: string) {}
@@ -1376,6 +1405,7 @@ describe('upload', () => {
         [nzFileListRender]="nzFileListRender"
         (nzFileListChange)="nzFileListChange($event)"
         (nzChange)="nzChange($event)"
+        (nzFilesNotAuthorize)="nzFileNotAuthorizeChange($event)"
       >
         <button nz-button>
           <nz-icon nzType="upload" />
@@ -1435,6 +1465,7 @@ class TestUploadComponent {
     return true;
   };
   _nzChange!: NzUploadChangeParam;
+  _nzFileNotAuthorizeChange: NzFileNotAuthorize[] = [];
 
   nzChange(value: NzUploadChangeParam): void {
     this._nzChange = value;
@@ -1442,6 +1473,10 @@ class TestUploadComponent {
 
   nzFileListChange(value: NzSafeAny): void {
     this._nzChange = value;
+  }
+
+  nzFileNotAuthorizeChange(value: NzFileNotAuthorize[]): void {
+    this._nzFileNotAuthorizeChange = value;
   }
 
   directory = false;
