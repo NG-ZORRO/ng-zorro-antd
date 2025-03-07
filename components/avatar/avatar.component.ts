@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { PlatformModule } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -20,8 +19,9 @@ import {
   numberAttribute
 } from '@angular/core';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
@@ -29,7 +29,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
 @Component({
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
-  imports: [NzIconModule, PlatformModule],
+  imports: [NzIconModule],
   template: `
     @if (nzIcon && hasIcon) {
       <nz-icon [nzType]="nzIcon" />
@@ -77,17 +77,15 @@ export class NzAvatarComponent implements OnChanges {
   @ViewChild('textEl', { static: false }) textEl?: ElementRef<HTMLSpanElement>;
 
   private el: HTMLElement = inject(ElementRef).nativeElement;
+  private cdr = inject(ChangeDetectorRef);
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor() {
     afterRender(() => this.calcStringSize());
   }
 
-  imgError($event: Event): void {
-    this.nzError.emit($event);
-    if (!$event.defaultPrevented) {
+  imgError(event: Event): void {
+    this.nzError.emit(event);
+    if (!event.defaultPrevented) {
       this.hasSrc = false;
       this.hasIcon = false;
       this.hasText = false;
@@ -128,7 +126,7 @@ export class NzAvatarComponent implements OnChanges {
 
   private setSizeStyle(): void {
     if (typeof this.nzSize === 'number') {
-      this.customSize = `${this.nzSize}px`;
+      this.customSize = toCssPixel(this.nzSize);
     } else {
       this.customSize = null;
     }
