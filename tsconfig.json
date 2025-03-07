@@ -17,8 +17,6 @@
       "es2020",
       "dom"
     ],
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
