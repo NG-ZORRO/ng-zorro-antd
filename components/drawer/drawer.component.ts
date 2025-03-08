@@ -118,7 +118,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                 <ng-template cdkPortalOutlet />
                 @if (nzContent) {
                   @if (isTemplateRef(nzContent)) {
-                    <ng-container *ngTemplateOutlet="$any(nzContent); context: templateContext" />
+                    <ng-container *ngTemplateOutlet="nzContent; context: templateContext" />
                   }
                 } @else {
                   @if (contentFromContentChild && (isOpen || inAnimation)) {
