@@ -117,8 +117,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
               <div class="ant-drawer-body" [style]="nzBodyStyle" cdkScrollable>
                 <ng-template cdkPortalOutlet />
                 @if (nzContent) {
-                  @if (isNzContentTemplateRef) {
-                    <ng-container *ngTemplateOutlet="$any(nzContent); context: templateContext" />
+                  @if (isTemplateRef(nzContent)) {
+                    <ng-container *ngTemplateOutlet="nzContent; context: templateContext" />
                   }
                 } @else {
                   @if (contentFromContentChild && (isOpen || inAnimation)) {
@@ -205,6 +205,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     $implicit: undefined,
     drawerRef: this as NzDrawerRef<R>
   };
+  protected isTemplateRef = isTemplateRef;
 
   get offsetTransform(): string | null {
     if (!this.isOpen || this.nzOffsetX + this.nzOffsetY === 0) {

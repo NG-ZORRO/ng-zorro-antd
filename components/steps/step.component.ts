@@ -39,7 +39,7 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
       [attr.role]="clickable && !nzDisabled ? 'button' : null"
       [tabindex]="clickable && !nzDisabled ? 0 : null"
     >
-      @if (last !== true) {
+      @if (!last) {
         <div class="ant-steps-item-tail"></div>
       }
       <div class="ant-steps-item-icon">

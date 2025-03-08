@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { isTemplateRef } from 'ng-zorro-antd/core/util';
 
 @Directive({
   selector: '[nzStringTemplateOutlet]',
@@ -35,17 +36,18 @@ export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges 
 
   private recreateView(): void {
     this.viewContainer.clear();
-    const isTemplateRef = this.nzStringTemplateOutlet instanceof TemplateRef;
-    const templateRef = (isTemplateRef ? this.nzStringTemplateOutlet : this.templateRef) as NzSafeAny;
-    this.embeddedViewRef = this.viewContainer.createEmbeddedView(
-      templateRef,
-      isTemplateRef ? this.nzStringTemplateOutletContext : this.context
-    );
+    if (isTemplateRef(this.nzStringTemplateOutlet)) {
+      this.embeddedViewRef = this.viewContainer.createEmbeddedView(
+        this.nzStringTemplateOutlet,
+        this.nzStringTemplateOutletContext
+      );
+    } else {
+      this.embeddedViewRef = this.viewContainer.createEmbeddedView(this.templateRef, this.context);
+    }
   }
 
   private updateContext(): void {
-    const isTemplateRef = this.nzStringTemplateOutlet instanceof TemplateRef;
-    const newCtx = isTemplateRef ? this.nzStringTemplateOutletContext : this.context;
+    const newCtx = isTemplateRef(this.nzStringTemplateOutlet) ? this.nzStringTemplateOutletContext : this.context;
     const oldCtx = this.embeddedViewRef!.context as NzSafeAny;
     if (newCtx) {
       for (const propName of Object.keys(newCtx)) {
@@ -64,13 +66,10 @@ export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges 
     const shouldRecreateView = (): boolean => {
       let shouldOutletRecreate = false;
       if (nzStringTemplateOutlet) {
-        if (nzStringTemplateOutlet.firstChange) {
-          shouldOutletRecreate = true;
-        } else {
-          const isPreviousOutletTemplate = nzStringTemplateOutlet.previousValue instanceof TemplateRef;
-          const isCurrentOutletTemplate = nzStringTemplateOutlet.currentValue instanceof TemplateRef;
-          shouldOutletRecreate = isPreviousOutletTemplate || isCurrentOutletTemplate;
-        }
+        shouldOutletRecreate =
+          nzStringTemplateOutlet.firstChange ||
+          isTemplateRef(nzStringTemplateOutlet.previousValue) ||
+          isTemplateRef(nzStringTemplateOutlet.currentValue);
       }
       const hasContextShapeChanged = (ctxChange: SimpleChange): boolean => {
         const prevCtxKeys = Object.keys(ctxChange.previousValue || {});
