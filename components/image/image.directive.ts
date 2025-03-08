@@ -7,16 +7,17 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectorRef,
+  DestroyRef,
   Directive,
   ElementRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   booleanAttribute,
   inject
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -39,7 +40,7 @@ export type NzImageScaleStep = number;
     '(click)': 'onPreview()'
   }
 })
-export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
+export class NzImageDirective implements OnInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzSrc = '';
@@ -53,9 +54,9 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   backLoadImage!: HTMLImageElement;
   status: ImageStatusType = 'normal';
   private backLoadDestroy$ = new Subject<void>();
-  private destroy$ = new Subject<void>();
   private document: Document = inject(DOCUMENT);
   private parentGroup = inject(NzImageGroupComponent, { optional: true });
+  private destroyRef = inject(DestroyRef);
 
   get previewable(): boolean {
     return !this.nzDisablePreview && this.status !== 'error';
@@ -75,17 +76,12 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       this.parentGroup.addImage(this);
     }
     if (this.directionality) {
-      this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
         this.dir = direction;
         this.cdr.detectChanges();
       });
       this.dir = this.directionality.value;
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   onPreview(): void {
@@ -146,40 +142,40 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
     this.backLoadImage.srcset = this.nzSrcset;
     this.status = 'loading';
 
+    const element = this.elementRef.nativeElement;
+
     // unsubscribe last backLoad
     this.backLoadDestroy$.next();
     this.backLoadDestroy$.complete();
     this.backLoadDestroy$ = new Subject();
     if (this.backLoadImage.complete) {
       this.status = 'normal';
-      this.getElement().nativeElement.src = this.nzSrc;
-      this.getElement().nativeElement.srcset = this.nzSrcset;
+      element.src = this.nzSrc;
+      element.srcset = this.nzSrcset;
     } else {
       if (this.nzPlaceholder) {
-        this.getElement().nativeElement.src = this.nzPlaceholder;
-        this.getElement().nativeElement.srcset = '';
+        element.src = this.nzPlaceholder;
+        element.srcset = '';
       } else {
-        this.getElement().nativeElement.src = this.nzSrc;
-        this.getElement().nativeElement.srcset = this.nzSrcset;
+        element.src = this.nzSrc;
+        element.srcset = this.nzSrcset;
       }
 
-      // The `nz-image` directive can be destroyed before the `load` or `error` event is dispatched,
-      // so there's no sense to keep capturing `this`.
       fromEvent(this.backLoadImage, 'load')
-        .pipe(takeUntil(this.backLoadDestroy$), takeUntil(this.destroy$))
+        .pipe(takeUntil(this.backLoadDestroy$), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.status = 'normal';
-          this.getElement().nativeElement.src = this.nzSrc;
-          this.getElement().nativeElement.srcset = this.nzSrcset;
+          element.src = this.nzSrc;
+          element.srcset = this.nzSrcset;
         });
 
       fromEvent(this.backLoadImage, 'error')
-        .pipe(takeUntil(this.backLoadDestroy$), takeUntil(this.destroy$))
+        .pipe(takeUntil(this.backLoadDestroy$), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.status = 'error';
           if (this.nzFallback) {
-            this.getElement().nativeElement.src = this.nzFallback;
-            this.getElement().nativeElement.srcset = '';
+            element.src = this.nzFallback;
+            element.srcset = '';
           }
         });
     }
