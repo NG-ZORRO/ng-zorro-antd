@@ -16,7 +16,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 ### nz-avatar
 
 | Property     | Description                                                                                        | Type                                        | Default     | Global Config |
-| ------------ | -------------------------------------------------------------------------------------------------- | ------------------------------------------- | ----------- | ------------- |
+|--------------|----------------------------------------------------------------------------------------------------|---------------------------------------------|-------------|---------------|
 | `[nzIcon]`   | The `Icon` type for an icon avatar, see `Icon`                                                     | `string`                                    | -           |
 | `[nzShape]`  | The shape of avatar                                                                                | `'circle' \| 'square'`                      | `'circle'`  | ✅             |
 | `[nzSize]`   | The size of the avatar                                                                             | `'large' \| 'small' \| 'default' \| number` | `'default'` | ✅             |
@@ -30,8 +30,8 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 ### nz-avatar-group
 
 ```html
- <nz-avatar-group>
+<nz-avatar-group>
   <nz-avatar nzIcon="user"></nz-avatar>
-  ...
+  <!--  ...  -->
 </nz-avatar-group>
 ```

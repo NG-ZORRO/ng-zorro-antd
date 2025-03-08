@@ -13,10 +13,10 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
       <nz-avatar nzSize="small" nzIcon="user"></nz-avatar>
     </div>
     <div>
-      <nz-avatar [nzShape]="'square'" [nzSize]="64" [nzIcon]="'user'"></nz-avatar>
-      <nz-avatar [nzShape]="'square'" [nzSize]="'large'" [nzIcon]="'user'"></nz-avatar>
-      <nz-avatar [nzShape]="'square'" [nzIcon]="'user'"></nz-avatar>
-      <nz-avatar [nzShape]="'square'" [nzSize]="'small'" [nzIcon]="'user'"></nz-avatar>
+      <nz-avatar nzShape="square" [nzSize]="64" nzIcon="user"></nz-avatar>
+      <nz-avatar nzShape="square" nzSize="large" nzIcon="user"></nz-avatar>
+      <nz-avatar nzShape="square" nzIcon="user"></nz-avatar>
+      <nz-avatar nzShape="square" nzSize="small" nzIcon="user"></nz-avatar>
     </div>
   `,
   styles: [
