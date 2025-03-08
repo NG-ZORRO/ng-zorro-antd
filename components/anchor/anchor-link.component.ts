@@ -20,7 +20,6 @@ import {
 } from '@angular/core';
 
 import { NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isTemplateRef } from 'ng-zorro-antd/core/util';
 
 import { NzAnchorComponent } from './anchor.component';
 
@@ -64,7 +63,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
-    if (isTemplateRef(value)) {
+    if (value instanceof TemplateRef) {
       this.titleStr = null;
       this.titleTpl = value;
     } else {

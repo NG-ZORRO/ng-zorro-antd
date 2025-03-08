@@ -92,7 +92,9 @@ export class NzListItemMetaComponent {
       this.avatarStr = value;
     }
   }
+
   @Input() nzTitle?: string | TemplateRef<void>;
+
   @Input() nzDescription?: string | TemplateRef<void>;
 
   @ContentChild(DescriptionComponent) descriptionComponent?: DescriptionComponent;
