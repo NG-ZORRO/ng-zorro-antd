@@ -5,7 +5,7 @@
 
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -112,6 +112,36 @@ describe('nz-segmented', () => {
       expect(component.value).toBe('Daily');
     }));
   });
+  describe('in reactive form', () => {
+    let fixture: ComponentFixture<NzSegmentedInReactiveFormTestComponent>;
+    let component: NzSegmentedInReactiveFormTestComponent;
+    let segmentedComponent: DebugElement;
+
+    function getSegmentedOptionByIndex(index: number): HTMLElement {
+      return segmentedComponent.nativeElement.querySelectorAll('.ant-segmented-item')[index];
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [provideNoopAnimations()]
+      });
+      fixture = TestBed.createComponent(NzSegmentedInReactiveFormTestComponent);
+      component = fixture.componentInstance;
+      segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
+      fixture.detectChanges();
+    });
+
+    it('first change form control value should work', fakeAsync(() => {
+      expect(component.formControl.value).toBe('Weekly');
+      const theThirdElement = getSegmentedOptionByIndex(2);
+      dispatchMouseEvent(theThirdElement.querySelector('.ant-segmented-item-label')!, 'click');
+      tick(400);
+      fixture.detectChanges();
+      const theSecondElement = getSegmentedOptionByIndex(1);
+      expect(theSecondElement.classList.contains('ant-segmented-item-selected')).toBeFalse();
+      expect(theThirdElement.classList.contains('ant-segmented-item-selected')).toBeTrue();
+    }));
+  });
 });
 
 @Component({
@@ -137,4 +167,13 @@ export class NzSegmentedTestComponent {
   handleValueChange(_e: string | number): void {
     // empty
   }
+}
+
+@Component({
+  imports: [ReactiveFormsModule, NzSegmentedModule],
+  template: `<nz-segmented [nzOptions]="options" [formControl]="formControl"></nz-segmented>`
+})
+export class NzSegmentedInReactiveFormTestComponent {
+  options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
+  formControl = new FormControl('Weekly');
 }
