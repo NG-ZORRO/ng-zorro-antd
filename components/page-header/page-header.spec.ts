@@ -6,7 +6,7 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -39,6 +39,14 @@ describe('NzPageHeaderComponent', () => {
     expect(pageHeader.nativeElement.querySelector('.ant-page-header-heading-sub-title')).toBeTruthy();
   });
 
+  it('should enable the back button if nzBack has observer', () => {
+    const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);
+    const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+    fixture.detectChanges();
+    const back = pageHeader.nativeElement.querySelector('.ant-page-header-back-button');
+    expect((back as HTMLButtonElement).disabled).toBeFalsy();
+  });
+
   it('should ghost work', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderGhostComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
@@ -66,6 +74,30 @@ describe('NzPageHeaderComponent', () => {
     fixture.detectChanges();
     expect(location.back).toHaveBeenCalled();
   });
+
+  it('should set the property disabled on back button if there is no history of navigation', fakeAsync(async () => {
+    const fixture = TestBed.createComponent(NzDemoPageHeaderResponsiveComponent);
+    const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+    spyOn(location, 'getState').and.returnValue({ navigationId: 1 });
+    fixture.detectChanges();
+    pageHeader.componentInstance.ngAfterViewInit();
+    tick();
+    fixture.detectChanges();
+    const back = pageHeader.nativeElement.querySelector('.ant-page-header-back-button');
+    expect((back as HTMLButtonElement).disabled).toBeTruthy();
+  }));
+
+  it('should not set the property disabled on back button if there is no history of navigation', fakeAsync(async () => {
+    const fixture = TestBed.createComponent(NzDemoPageHeaderResponsiveComponent);
+    const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+    spyOn(location, 'getState').and.returnValue({ navigationId: 2 });
+    fixture.detectChanges();
+    pageHeader.componentInstance.ngAfterViewInit();
+    tick();
+    fixture.detectChanges();
+    const back = pageHeader.nativeElement.querySelector('.ant-page-header-back-button');
+    expect((back as HTMLButtonElement).disabled).toBeFalsy();
+  }));
 
   it('should content work', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderContentComponent);

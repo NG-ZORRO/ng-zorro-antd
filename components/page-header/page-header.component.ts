@@ -13,21 +13,23 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   OnInit,
   Output,
   TemplateRef,
-  ViewEncapsulation,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
@@ -45,11 +47,18 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
         <!--back-->
         @if (nzBackIcon !== null) {
           <div (click)="onBack()" class="ant-page-header-back">
-            <div role="button" tabindex="0" class="ant-page-header-back-button">
+            <button
+              nz-button
+              role="button"
+              tabindex="0"
+              class="ant-page-header-back-button"
+              nzType="text"
+              [disabled]="!enableBackButton"
+            >
               <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
                 <nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline" />
               </ng-container>
-            </div>
+            </button>
           </div>
         }
 
@@ -91,9 +100,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     '[class.ant-page-header-compact]': 'compact',
     '[class.ant-page-header-rtl]': `dir === 'rtl'`
   },
-  imports: [NzOutletModule, NzIconModule]
+  imports: [NzOutletModule, NzIconModule, NzButtonModule]
 })
 export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
+  private location = inject(Location, { optional: true });
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
@@ -110,8 +120,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   compact = false;
   destroy$ = new Subject<void>();
   dir: Direction = 'ltr';
-
-  private location = inject(Location, { optional: true });
+  enableBackButton = true;
 
   constructor(
     public nzConfigService: NzConfigService,
@@ -126,11 +135,18 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
       this.dir = direction;
       this.cdr.detectChanges();
     });
-
     this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {
+    if (!this.nzBack.observed && this.location) {
+      this.enableBackButton = (this.location.getState() as NzSafeAny)?.navigationId > 1;
+      this.location.subscribe(() => {
+        this.enableBackButton = (this.location?.getState() as NzSafeAny)?.navigationId > 1;
+        this.cdr.detectChanges();
+      });
+    }
+
     this.nzResizeObserver
       .observe(this.elementRef)
       .pipe(
