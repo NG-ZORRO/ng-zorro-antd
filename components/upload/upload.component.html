@@ -23,14 +23,14 @@
 <ng-template #con><ng-content></ng-content></ng-template>
 <ng-template #btn>
   <div [class]="classList" [style.display]="nzShowButton ? '' : 'none'">
-    <div nz-upload-btn #uploadComp [options]="_btnOptions!">
+    <div nz-upload-btn #uploadComp [options]="_btnOptions!" (nzFilesNotAuthorize)="emitFilesNotAuthorize($event)">
       <ng-template [ngTemplateOutlet]="con"></ng-template>
     </div>
   </div>
 </ng-template>
 @if (nzType === 'drag') {
   <div [class]="classList" (drop)="fileDrop($event)" (dragover)="fileDrop($event)" (dragleave)="fileDrop($event)">
-    <div nz-upload-btn #uploadComp [options]="_btnOptions!" class="ant-upload-btn">
+    <div nz-upload-btn #uploadComp [options]="_btnOptions!" class="ant-upload-btn" (nzFilesNotAuthorize)="emitFilesNotAuthorize($event)">
       <div class="ant-upload-drag-container">
         <ng-template [ngTemplateOutlet]="con"></ng-template>
       </div>

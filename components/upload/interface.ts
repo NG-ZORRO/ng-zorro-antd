@@ -75,7 +75,7 @@ export interface ZipButtonOptions {
 
 export interface UploadFilter {
   name: string;
-  fn(fileList: NzUploadFile[]): NzUploadFile[] | Observable<NzUploadFile[]>;
+  fn(fileList: NzUploadFile[], filesNotAuthorize?: NzFileNotAuthorize[]): NzUploadFile[] | Observable<NzUploadFile[]>;
 }
 
 export interface NzUploadXHRArgs {
@@ -89,6 +89,11 @@ export interface NzUploadXHRArgs {
   onProgress?(e: NzSafeAny, file: NzUploadFile): void;
   onSuccess?(ret: NzSafeAny, file: NzUploadFile, xhr: NzSafeAny): void;
   onError?(err: NzSafeAny, file: NzUploadFile): void;
+}
+
+export interface NzFileNotAuthorize {
+  reason: 'size' | 'extension';
+  file: NzUploadFile | File;
 }
 
 export type NzIconRenderTemplate = TemplateRef<{ $implicit: NzUploadFile }>;

@@ -8,23 +8,23 @@ import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   Input,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  booleanAttribute,
-  inject,
-  numberAttribute
+  ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subject, Subscription, of } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -32,6 +32,7 @@ import { fromEventOutsideAngular, toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
 
 import {
+  NzFileNotAuthorize,
   NzIconRenderTemplate,
   NzShowUploadList,
   NzUploadChangeParam,
@@ -116,6 +117,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();
+  @Output() readonly nzFilesNotAuthorize: EventEmitter<NzFileNotAuthorize[]> = new EventEmitter<NzFileNotAuthorize[]>();
 
   _btnOptions?: ZipButtonOptions;
 
@@ -138,14 +140,30 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     if (this.nzSize > 0 && filters.findIndex(w => w.name === 'size') === -1) {
       filters.push({
         name: 'size',
-        fn: (fileList: NzUploadFile[]) => fileList.filter(w => w.size! / 1024 <= this.nzSize)
+        fn: (fileList: NzUploadFile[], filesNotAuthorize: NzFileNotAuthorize[]) =>
+          fileList.filter(w => {
+            if (w.size! / 1024 <= this.nzSize) {
+              return true;
+            } else {
+              filesNotAuthorize.push({ file: w, reason: 'size' });
+              return false;
+            }
+          })
       });
     }
     if (this.nzFileType && this.nzFileType.length > 0 && filters.findIndex(w => w.name === 'type') === -1) {
       const types = this.nzFileType.split(',');
       filters.push({
         name: 'type',
-        fn: (fileList: NzUploadFile[]) => fileList.filter(w => ~types.indexOf(w.type!))
+        fn: (fileList: NzUploadFile[], nzFileNotAuthorize: NzFileNotAuthorize[]) =>
+          fileList.filter(w => {
+            if (~types.indexOf(w.type!)) {
+              return true;
+            } else {
+              nzFileNotAuthorize.push({ file: w, reason: 'extension' });
+              return false;
+            }
+          })
       });
     }
     this._btnOptions = {
@@ -327,6 +345,10 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     ].filter(item => !!item);
 
     this.cdr.detectChanges();
+  }
+
+  emitFilesNotAuthorize($event: NzFileNotAuthorize[]): void {
+    this.nzFilesNotAuthorize.emit($event);
   }
 
   // #endregion
