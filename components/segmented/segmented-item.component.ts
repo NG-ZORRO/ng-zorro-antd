@@ -8,9 +8,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   inject,
   Input,
+  OnInit,
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -50,7 +52,7 @@ import { NzSegmentedService } from './segmented.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzSegmentedItemComponent {
+export class NzSegmentedItemComponent implements OnInit {
   @Input() nzIcon?: string;
   @Input() nzValue!: string | number;
   @Input() nzDisabled?: boolean;
@@ -59,17 +61,25 @@ export class NzSegmentedItemComponent {
 
   private readonly service = inject(NzSegmentedService);
 
-  constructor() {
-    const cdr = inject(ChangeDetectorRef);
-    const elementRef = inject(ElementRef);
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
+    private destroyRef: DestroyRef
+  ) {
+    this.service.disabled$.pipe(takeUntilDestroyed()).subscribe(disabled => {
+      this.nzDisabled = disabled;
+      this.cdr.markForCheck();
+    });
+  }
 
+  ngOnInit(): void {
     this.service.selected$
       .pipe(
         tap(value => {
           this.isChecked = false;
-          cdr.markForCheck();
+          this.cdr.markForCheck();
           if (value === this.nzValue) {
-            this.service.activated$.next(elementRef.nativeElement);
+            this.service.activated$.next(this.elementRef.nativeElement);
           }
         }),
         switchMap(value =>
@@ -80,17 +90,12 @@ export class NzSegmentedItemComponent {
           )
         ),
         filter(value => value === this.nzValue),
-        takeUntilDestroyed()
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.isChecked = true;
-        cdr.markForCheck();
+        this.cdr.markForCheck();
       });
-
-    this.service.disabled$.pipe(takeUntilDestroyed()).subscribe(disabled => {
-      this.nzDisabled = disabled;
-      cdr.markForCheck();
-    });
   }
 
   handleClick(): void {
