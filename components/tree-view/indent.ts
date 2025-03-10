@@ -9,7 +9,13 @@ import { auditTime } from 'rxjs/operators';
 
 import { NzNodeBase } from './node-base';
 import { NzTreeView } from './tree';
-import { getNextSibling, getParent } from './utils';
+import {
+  flattenNestedNodes,
+  getNextSibling,
+  getNextSiblingForNestedData,
+  getParent,
+  getParentForNestedData
+} from './utils';
 
 /**
  * [true, false, false, true] => 1001
@@ -72,15 +78,25 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
       });
   }
 
+  // indents 中的 true 和 false 表示当前节点左侧是否应该有竖线，因为如果不存在 nextSibling，就不存在竖线
   private getIndents(): boolean[] {
-    const indents: boolean[] = [];
-    if (!this.tree.treeControl) {
-      return indents;
+    if (this.tree.treeControl) {
+      return this.getIndentsForFlatData(
+        this.tree.treeControl.dataNodes,
+        this.treeNode.data,
+        this.tree.treeControl.getLevel
+      );
+    } else if (this.tree.levelAccessor) {
+      return this.getIndentsForFlatData(this.tree.dataNodes, this.treeNode.data, this.tree.levelAccessor);
+    } else if (this.tree.childrenAccessor) {
+      return this.getIndentsForNestedData(this.tree.dataNodes, this.treeNode.data, this.tree.childrenAccessor);
     }
+    return [];
+  }
 
-    const nodes = this.tree.treeControl.dataNodes;
-    const getLevel = this.tree.treeControl.getLevel;
-    let parent = getParent(nodes, this.treeNode.data, getLevel);
+  private getIndentsForFlatData(nodes: T[], node: T, getLevel: (dataNode: T) => number): boolean[] {
+    const indents: boolean[] = [];
+    let parent = getParent(nodes, node, getLevel);
     while (parent) {
       const parentNextSibling = getNextSibling(nodes, parent, getLevel);
       if (parentNextSibling) {
@@ -89,6 +105,21 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
         indents.unshift(false);
       }
       parent = getParent(nodes, parent, getLevel);
+    }
+    return indents;
+  }
+
+  private getIndentsForNestedData(nodes: T[], node: T, getChildren: (dataNode: T) => T[]): boolean[] {
+    const indents: boolean[] = [];
+    let parent = getParentForNestedData(nodes, node, getChildren);
+    while (parent) {
+      const parentNextSibling = getNextSiblingForNestedData(nodes, parent, getChildren);
+      if (parentNextSibling) {
+        indents.unshift(true);
+      } else {
+        indents.unshift(false);
+      }
+      parent = getParentForNestedData(nodes, parent, getChildren);
     }
     return indents;
   }
@@ -105,11 +136,22 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   }
 
   /**
-   * We need to add an class name for the last child node,
+   * We need to add a class name for the last child node,
    * this result can also be affected when the adjacent nodes are changed.
    */
   private checkAdjacent(): void {
-    const nodes = this.tree.treeControl?.dataNodes || [];
+    let nodes: T[] = [];
+    if (this.tree.treeControl) {
+      nodes = this.tree.treeControl.dataNodes || [];
+    } else if (this.tree.levelAccessor) {
+      nodes = this.tree.dataNodes || [];
+    } else if (this.tree.childrenAccessor) {
+      nodes = flattenNestedNodes(this.tree.dataNodes, this.tree.childrenAccessor) || [];
+    }
+    this.checkAdjacentNodeChanged(nodes);
+  }
+
+  private checkAdjacentNodeChanged(nodes: T[]): void {
     const index = nodes.indexOf(this.treeNode.data);
     const preNode = nodes[index - 1] || null;
     const nextNode = nodes[index + 1] || null;
@@ -121,10 +163,23 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
   }
 
   private checkLast(index?: number): void {
-    const nodes = this.tree.treeControl?.dataNodes || [];
     this.isLeaf = this.treeNode.isLeaf;
-    this.isLast =
-      !!this.tree.treeControl && !getNextSibling(nodes, this.treeNode.data, this.tree.treeControl.getLevel, index);
+    if (this.tree.treeControl) {
+      this.isLast = !getNextSibling(
+        this.tree.treeControl.dataNodes || [],
+        this.treeNode.data,
+        this.tree.treeControl.getLevel,
+        index
+      );
+    } else if (this.tree.levelAccessor) {
+      this.isLast = !getNextSibling(this.tree.dataNodes || [], this.treeNode.data, this.tree.levelAccessor, index);
+    } else if (this.tree.childrenAccessor) {
+      this.isLast = !getNextSiblingForNestedData(
+        this.tree.dataNodes || [],
+        this.treeNode.data,
+        this.tree.childrenAccessor
+      );
+    }
   }
 
   ngOnDestroy(): void {

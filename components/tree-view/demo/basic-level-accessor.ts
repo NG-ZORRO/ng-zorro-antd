@@ -1,77 +1,77 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {
   NzTreeFlattener,
+  NzTreeViewComponent,
   NzTreeViewFlatDataSource,
-  NzTreeViewModule,
-  NzTreeVirtualScrollViewComponent
+  NzTreeViewModule
 } from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
+  disabled?: boolean;
   children?: TreeNode[];
 }
 
-function dig(path: string = '0', level: number = 3): TreeNode[] {
-  const list: TreeNode[] = [];
-  for (let i = 0; i < 10; i += 1) {
-    const name = `${path}-${i}`;
-    const treeNode: TreeNode = {
-      name
-    };
-
-    if (level > 0) {
-      treeNode.children = dig(name, level - 1);
-    }
-
-    list.push(treeNode);
-  }
-  return list;
-}
-
-const TREE_DATA: TreeNode[] = dig();
-
-/** Flat node with expandable and level information */
 interface FlatNode {
   expandable: boolean;
   name: string;
   level: number;
+  disabled: boolean;
 }
 
+const TREE_DATA: TreeNode[] = [
+  {
+    name: 'parent 1',
+    children: [
+      {
+        name: 'parent 1-0',
+        disabled: true,
+        children: [{ name: 'leaf' }, { name: 'leaf' }]
+      },
+      {
+        name: 'parent 1-1',
+        children: [{ name: 'leaf' }]
+      }
+    ]
+  }
+];
+
 @Component({
-  selector: 'nz-demo-tree-view-virtual-scroll',
   imports: [NzIconModule, NzTreeViewModule],
+  selector: 'nz-demo-tree-view-basic-level-accessor',
   template: `
-    <nz-tree-virtual-scroll-view
-      class="virtual-scroll-tree"
-      [nzDataSource]="dataSource"
-      [nzLevelAccessor]="levelAccessor"
-    >
+    <nz-tree-view [nzDataSource]="dataSource" [nzLevelAccessor]="levelAccessor">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="node.expandable">
         <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
-        {{ node.name }}
+        <nz-tree-node-option
+          [nzDisabled]="node.disabled"
+          [nzSelected]="selectListSelection.isSelected(node)"
+          (nzClick)="selectListSelection.toggle(node)"
+        >
+          {{ node.name }}
+        </nz-tree-node-option>
       </nz-tree-node>
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding [nzExpandable]="node.expandable">
         <nz-tree-node-toggle>
           <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
-        {{ node.name }}
+        <nz-tree-node-option
+          [nzDisabled]="node.disabled"
+          [nzSelected]="selectListSelection.isSelected(node)"
+          (nzClick)="selectListSelection.toggle(node)"
+        >
+          {{ node.name }}
+        </nz-tree-node-option>
       </nz-tree-node>
-    </nz-tree-virtual-scroll-view>
-  `,
-  styles: [
-    `
-      .virtual-scroll-tree {
-        height: 200px;
-      }
-    `
-  ]
+    </nz-tree-view>
+  `
 })
-export class NzDemoTreeViewVirtualScrollComponent implements OnInit, AfterViewInit {
-  @ViewChild(NzTreeVirtualScrollViewComponent, { static: true }) tree!: NzTreeVirtualScrollViewComponent<FlatNode>;
-
+export class NzDemoTreeViewBasicLevelAccessorComponent implements OnInit, AfterViewInit {
+  @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<FlatNode>;
   readonly levelAccessor = (dataNode: FlatNode): number => dataNode.level;
 
   readonly hasChild = (_: number, node: FlatNode): boolean => node.expandable;
@@ -79,15 +79,18 @@ export class NzDemoTreeViewVirtualScrollComponent implements OnInit, AfterViewIn
   private transformer = (node: TreeNode, level: number): FlatNode => ({
     expandable: !!node.children && node.children.length > 0,
     name: node.name,
-    level
+    level,
+    disabled: !!node.disabled
   });
 
-  treeFlattener = new NzTreeFlattener(
+  private treeFlattener = new NzTreeFlattener(
     this.transformer,
     node => node.level,
     node => node.expandable,
     node => node.children
   );
+
+  selectListSelection = new SelectionModel<FlatNode>(true);
 
   dataSource!: NzTreeViewFlatDataSource<TreeNode, FlatNode>;
 
