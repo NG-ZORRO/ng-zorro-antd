@@ -51,8 +51,8 @@ const SPACE_SIZE: Record<NzSpaceType, number> = {
       @if (nzSplit && !last) {
         <span
           class="ant-space-split"
-          [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-          [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
+          [style.margin-block-end.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
+          [style.margin-inline-end.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
         >
           <ng-template [nzStringTemplateOutlet]="nzSplit" [nzStringTemplateOutletContext]="{ $implicit: index }">{{
             nzSplit
