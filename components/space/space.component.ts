@@ -43,16 +43,16 @@ const SPACE_SIZE: Record<NzSpaceType, number> = {
     @for (item of items; track item; let last = $last; let index = $index) {
       <div
         class="ant-space-item"
-        [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-        [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
+        [style.margin-block-end.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
+        [style.margin-inline-end.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
       >
         <ng-container [ngTemplateOutlet]="item"></ng-container>
       </div>
       @if (nzSplit && !last) {
         <span
           class="ant-space-split"
-          [style.margin-bottom.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-          [style.margin-right.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
+          [style.margin-block-end.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
+          [style.margin-inline-end.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
         >
           <ng-template [nzStringTemplateOutlet]="nzSplit" [nzStringTemplateOutletContext]="{ $implicit: index }">{{
             nzSplit
