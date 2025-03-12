@@ -71,6 +71,7 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
   @Input() nzItemSize = DEFAULT_SIZE;
   @Input() nzMinBufferPx = DEFAULT_SIZE * 5;
   @Input() nzMaxBufferPx = DEFAULT_SIZE * 10;
+  @Input() nzCompareBy: ((value: T) => NzSafeAny) | null = null!;
   @Input() override trackBy: TrackByFunction<T> = null!;
   nodes: Array<NzTreeVirtualNodeData<T>> = [];
   innerTrackBy: TrackByFunction<NzTreeVirtualNodeData<T>> = i => i;
@@ -86,12 +87,7 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
   }
 
   get compareBy(): ((value: T) => NzSafeAny) | null {
-    const baseTreeControl = this.treeControl as BaseTreeControl<T, NzSafeAny> | undefined;
-    if (baseTreeControl?.trackBy) {
-      return baseTreeControl?.trackBy;
-    }
-
-    return null;
+    return this.nzCompareBy || (this.treeControl as BaseTreeControl<T, NzSafeAny> | undefined)?.trackBy || null;
   }
 
   override renderNodeChanges(data: T[] | readonly T[]): void {

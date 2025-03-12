@@ -88,10 +88,9 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
       );
     } else if (this.tree.levelAccessor) {
       return this.getIndentsForFlatData(this.tree.dataNodes, this.treeNode.data, this.tree.levelAccessor);
-    } else if (this.tree.childrenAccessor) {
-      return this.getIndentsForNestedData(this.tree.dataNodes, this.treeNode.data, this.tree.childrenAccessor);
+    } else {
+      return this.getIndentsForNestedData(this.tree.dataNodes, this.treeNode.data, this.tree.childrenAccessor!);
     }
-    return [];
   }
 
   private getIndentsForFlatData(nodes: T[], node: T, getLevel: (dataNode: T) => number): boolean[] {
@@ -145,8 +144,8 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
       nodes = this.tree.treeControl.dataNodes || [];
     } else if (this.tree.levelAccessor) {
       nodes = this.tree.dataNodes || [];
-    } else if (this.tree.childrenAccessor) {
-      nodes = flattenNestedNodes(this.tree.dataNodes, this.tree.childrenAccessor) || [];
+    } else {
+      nodes = flattenNestedNodes(this.tree.dataNodes, this.tree.childrenAccessor!) || [];
     }
     this.checkAdjacentNodeChanged(nodes);
   }
@@ -173,11 +172,11 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
       );
     } else if (this.tree.levelAccessor) {
       this.isLast = !getNextSibling(this.tree.dataNodes || [], this.treeNode.data, this.tree.levelAccessor, index);
-    } else if (this.tree.childrenAccessor) {
+    } else {
       this.isLast = !getNextSiblingForNestedData(
         this.tree.dataNodes || [],
         this.treeNode.data,
-        this.tree.childrenAccessor
+        this.tree.childrenAccessor!
       );
     }
   }

@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { cloneDeep } from 'lodash';
+
 import {
   getParent,
   getDescendants,
@@ -48,49 +50,91 @@ describe('TreeView Utils', () => {
 
   describe('getParent', () => {
     it('should return the parent node', () => {
-      const parent = getParent(flatNodes, flatNodes[5], getLevel);
-      expect(parent).toBe(flatNodes[3]);
+      expect(getParent(flatNodes, flatNodes[1], getLevel)).toBe(flatNodes[0]);
+      expect(getParent(flatNodes, flatNodes[2], getLevel)).toBe(flatNodes[0]);
+      expect(getParent(flatNodes, flatNodes[3], getLevel)).toBe(flatNodes[0]);
+      expect(getParent(flatNodes, flatNodes[4], getLevel)).toBe(flatNodes[3]);
+      expect(getParent(flatNodes, flatNodes[5], getLevel)).toBe(flatNodes[3]);
+      expect(getParent(flatNodes, flatNodes[7], getLevel)).toBe(flatNodes[6]);
+    });
+
+    it('should return null if the node not in nodes', () => {
+      const equalNode = cloneDeep(flatNodes[1]);
+      expect(getParent(flatNodes, equalNode, getLevel)).toBeNull();
     });
 
     it('should return null if no parent found', () => {
-      const parent = getParent(flatNodes, flatNodes[6], getLevel);
-      expect(parent).toBeNull();
+      expect(getParent(flatNodes, flatNodes[0], getLevel)).toBeNull();
+      expect(getParent(flatNodes, flatNodes[6], getLevel)).toBeNull();
     });
   });
 
   describe('getDescendants', () => {
     it('should return all descendants', () => {
-      const descendants = getDescendants(flatNodes, flatNodes[0], getLevel);
-      expect(descendants).toEqual([flatNodes[1], flatNodes[2], flatNodes[3], flatNodes[4], flatNodes[5]]);
+      expect(getDescendants(flatNodes, flatNodes[0], getLevel)).toEqual([
+        flatNodes[1],
+        flatNodes[2],
+        flatNodes[3],
+        flatNodes[4],
+        flatNodes[5]
+      ]);
+      expect(getDescendants(flatNodes, flatNodes[3], getLevel)).toEqual([flatNodes[4], flatNodes[5]]);
+    });
+
+    it('should return an empty array if the node not in nodes', () => {
+      const equalNode = cloneDeep(flatNodes[1]);
+      expect(getDescendants(flatNodes, equalNode, getLevel)).toEqual([]);
     });
 
     it('should return an empty array if no descendants found', () => {
-      const descendants = getDescendants(flatNodes, flatNodes[1], getLevel);
-      expect(descendants).toEqual([]);
+      expect(getDescendants(flatNodes, flatNodes[1], getLevel)).toEqual([]);
+      expect(getDescendants(flatNodes, flatNodes[2], getLevel)).toEqual([]);
+      expect(getDescendants(flatNodes, flatNodes[4], getLevel)).toEqual([]);
+      expect(getDescendants(flatNodes, flatNodes[5], getLevel)).toEqual([]);
     });
   });
 
   describe('getNextSibling', () => {
     it('should return the next sibling', () => {
-      const nextSibling = getNextSibling(flatNodes, flatNodes[1], getLevel);
-      expect(nextSibling).toBe(flatNodes[2]);
+      expect(getNextSibling(flatNodes, flatNodes[1], getLevel)).toBe(flatNodes[2]);
+      expect(getNextSibling(flatNodes, flatNodes[2], getLevel)).toBe(flatNodes[3]);
+      expect(getNextSibling(flatNodes, flatNodes[4], getLevel)).toBe(flatNodes[5]);
     });
 
     it('should return null if no next sibling found', () => {
-      const nextSibling = getNextSibling(flatNodes, flatNodes[3], getLevel);
-      expect(nextSibling).toBeNull();
+      expect(getNextSibling(flatNodes, flatNodes[3], getLevel)).toBeNull();
+      expect(getNextSibling(flatNodes, flatNodes[7], getLevel)).toBeNull();
     });
 
     it('should return the first sibling after _index loc if enter _index', () => {
       const nextSibling = getNextSibling(flatNodes, flatNodes[1], getLevel, 2);
       expect(nextSibling).toBe(flatNodes[3]);
     });
+
+    it('should return the null if _index less than 0', () => {
+      const nextSibling = getNextSibling(flatNodes, flatNodes[1], getLevel, -1);
+      expect(nextSibling).toBeNull();
+    });
   });
 
   describe('getParentForNestedData', () => {
     it('should return the parent node in nested data', () => {
-      const parent = getParentForNestedData(nestedNodes, nestedNodes[0].children![0], getChildren);
-      expect(parent).toBe(nestedNodes[0]);
+      expect(getParentForNestedData(nestedNodes, nestedNodes[0].children![0], getChildren)).toBe(nestedNodes[0]);
+      expect(getParentForNestedData(nestedNodes, nestedNodes[0].children![1], getChildren)).toBe(nestedNodes[0]);
+      expect(getParentForNestedData(nestedNodes, nestedNodes[0].children![2], getChildren)).toBe(nestedNodes[0]);
+      expect(getParentForNestedData(nestedNodes, nestedNodes[0].children![2].children![0], getChildren)).toBe(
+        nestedNodes[0].children![2]
+      );
+      expect(getParentForNestedData(nestedNodes, nestedNodes[0].children![2].children![1], getChildren)).toBe(
+        nestedNodes[0].children![2]
+      );
+      expect(getParentForNestedData(nestedNodes, nestedNodes[1].children![0], getChildren)).toBe(nestedNodes[1]);
+    });
+
+    it('should return null if the node not in nodes', () => {
+      const equalNode = cloneDeep(nestedNodes[0].children![0]);
+      const parent = getParentForNestedData(nestedNodes, equalNode, getChildren);
+      expect(parent).toBeNull();
     });
 
     it('should return null if no parent found in nested data', () => {
@@ -105,27 +149,42 @@ describe('TreeView Utils', () => {
       expect(nextSibling).toBe(nestedNodes[0].children![1]);
     });
 
+    it('should return null if the node not in nodes', () => {
+      const equalNode = cloneDeep(nestedNodes[0].children![0]);
+      expect(getNextSiblingForNestedData(nestedNodes, equalNode, getChildren)).toBeNull();
+    });
+
     it('should return null if no next sibling found in nested data', () => {
-      const nextSibling = getNextSiblingForNestedData(nestedNodes, nestedNodes[0].children![2], getChildren);
-      expect(nextSibling).toBeNull();
+      expect(getNextSiblingForNestedData(nestedNodes, nestedNodes[0].children![2], getChildren)).toBeNull();
+      expect(
+        getNextSiblingForNestedData(nestedNodes, nestedNodes[0].children![2].children![1], getChildren)
+      ).toBeNull();
+      expect(getNextSiblingForNestedData(nestedNodes, nestedNodes[1], getChildren)).toBeNull();
+      expect(getNextSiblingForNestedData(nestedNodes, nestedNodes[1].children![0], getChildren)).toBeNull();
     });
   });
 
   describe('getDescendantsForNestedData', () => {
     it('should return all descendants in nested data', () => {
-      const descendants = getDescendantsForNestedData(nestedNodes[0], getChildren);
-      expect(descendants).toEqual([
+      expect(getDescendantsForNestedData(nestedNodes[0], getChildren)).toEqual([
         nestedNodes[0].children![0],
         nestedNodes[0].children![1],
         nestedNodes[0].children![2],
         nestedNodes[0].children![2].children![0],
         nestedNodes[0].children![2].children![1]
       ]);
+      expect(getDescendantsForNestedData(nestedNodes[0].children![2], getChildren)).toEqual([
+        nestedNodes[0].children![2].children![0],
+        nestedNodes[0].children![2].children![1]
+      ]);
     });
 
     it('should return an empty array if no descendants found in nested data', () => {
-      const descendants = getDescendantsForNestedData(nestedNodes[1].children![0], getChildren);
-      expect(descendants).toEqual([]);
+      expect(getDescendantsForNestedData(nestedNodes[0].children![0], getChildren)).toEqual([]);
+      expect(getDescendantsForNestedData(nestedNodes[0].children![1], getChildren)).toEqual([]);
+      expect(getDescendantsForNestedData(nestedNodes[0].children![2].children![0], getChildren)).toEqual([]);
+      expect(getDescendantsForNestedData(nestedNodes[0].children![2].children![1], getChildren)).toEqual([]);
+      expect(getDescendantsForNestedData(nestedNodes[1].children![0], getChildren)).toEqual([]);
     });
   });
 

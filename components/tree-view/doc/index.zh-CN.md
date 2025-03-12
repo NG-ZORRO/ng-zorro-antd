@@ -41,9 +41,10 @@ import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 | `[nzDataSource]`       | 用于渲染树的数组数据                                                                              | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | -         |
 | `[nzDirectoryTree]`    | 节点是否以文件夹样式显示                                                                            | `boolean`                                                                                                  | `false`   |
 | `[nzBlockNode]`        | 节点是否占据整行                                                                                | `boolean`                                                                                                  | `false`   |
-| `[nzItemSize]`         | 节点的尺寸(px)                                                                               | `number`                                                                                                   | `28`      |
-| `[nzMinBufferPx]`      | 超出渲染区的最小缓存区大小(px)                                                                       | `number`                                                                                                   | `28 * 5`  |
-| `[nzMaxBufferPx]`      | 需要渲染新节点时的缓冲区大小(px)                                                                      | `number`                                                                                                   | `28 * 10` |
+| `[nzItemSize]`         | 节点的尺寸（px）                                                                               | `number`                                                                                                   | `28`      |
+| `[nzMinBufferPx]`      | 超出渲染区的最小缓存区大小（px）                                                                       | `number`                                                                                                   | `28 * 5`  |
+| `[nzMaxBufferPx]`      | 需要渲染新节点时的缓冲区大小（px）                                                                      | `number`                                                                                                   | `28 * 10` |
+| `[nzCompareBy]`        | 决定是否触发节点内容重新渲染的比较函数（指纹），当返回值变化时才会触发节点视图重建。默认返回 `dataNode` 自身。                           | `(dataNode: T) => any`                                                                                     | `null`    |
 
 ### [nzTreeNodeDef]
 
@@ -159,7 +160,7 @@ import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 | `disconnect(): void`                                           | TreeView 组件销毁时调用         |
 | `setData(value: T[]): void`                                    | 设置原始数据                   |
 | `getData(): T[]`                                               | 获取原始数据                   |
-| `setFlattenedData(nodes: T[]): void`                           | 设置扁平数据（即渲染数据）            |
+| `setFlattenedData(nodes: F[]): void`                           | 设置扁平数据（即渲染数据）            |
 | `getFlattenData(): F[]`                                        | 获取扁平数据（即渲染数据）            |
 
 ### NzTreeViewNestedDataSource extends DataSource

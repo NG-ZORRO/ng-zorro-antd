@@ -23,12 +23,12 @@ export class NzTreeViewFlatDataSource<T, F = T, K = F> extends DataSource<F> {
   ) {
     super();
     this._data = new BehaviorSubject<T[]>(initialData);
-    this.setFlattenedData(initialData);
+    this.setFlattenedData(this.flatten(initialData));
   }
 
-  setData(value: T[]): void {
-    this._data.next(value);
-    this.setFlattenedData(value);
+  setData(data: T[]): void {
+    this._data.next(data);
+    this.setFlattenedData(this.flatten(data));
   }
 
   getData(): T[] {
@@ -39,10 +39,9 @@ export class NzTreeViewFlatDataSource<T, F = T, K = F> extends DataSource<F> {
     return this._flattenedData.getValue();
   }
 
-  setFlattenedData(nodes: T[]): void {
-    const flatNodes = this._treeFlattener.flattenNodes(nodes);
-    this._flattenedData.next(flatNodes);
-    this.setDataNodes(flatNodes);
+  setFlattenedData(nodes: F[]): void {
+    this._flattenedData.next(nodes);
+    this.setDataNodes(nodes);
   }
 
   connect(collectionViewer: CollectionViewer): Observable<F[]> {
@@ -63,5 +62,9 @@ export class NzTreeViewFlatDataSource<T, F = T, K = F> extends DataSource<F> {
 
   private setDataNodes(nodes: F[]): void {
     this._tree.dataNodes = nodes;
+  }
+
+  private flatten(data: T[]): F[] {
+    return this._treeFlattener.flattenNodes(data);
   }
 }

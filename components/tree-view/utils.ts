@@ -73,9 +73,6 @@ export const getParentForNestedData = <T>(nodes: T[], node: T, getChildren: (dat
 };
 
 export const getNextSiblingForNestedData = <T>(nodes: T[], node: T, getChildren: (dataNode: T) => T[]): T | null => {
-  if (!node) {
-    return null;
-  }
   const len = nodes.length;
   for (let i = 0; i < len; i++) {
     if (nodes[i] === node) {
@@ -83,7 +80,7 @@ export const getNextSiblingForNestedData = <T>(nodes: T[], node: T, getChildren:
     }
 
     const children = getChildren(nodes[i]);
-    if (children.length > 0) {
+    if (children && children.length > 0) {
       const sibling = getNextSiblingForNestedData(children, node, getChildren);
       if (sibling) {
         return sibling;
