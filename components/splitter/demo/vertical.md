@@ -2,7 +2,7 @@
 order: 2
 title:
   zh-CN: 垂直方向
-  en-US: Control Mode
+  en-US: Vertical
 ---
 
 ## zh-CN

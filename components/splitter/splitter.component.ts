@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
@@ -13,13 +14,12 @@ import {
   ViewEncapsulation,
   inject,
   signal,
-  computed,
-  Injectable
+  computed
 } from '@angular/core';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
+import { NzSplitterBarComponent } from './splitter-bar.component';
 import { NzSplitterPanelComponent } from './splitter-panel.component';
 import { NZ_SPLITTER_PANEL_LIST } from './tokens';
 import { NzSplitterLayout } from './typings';
@@ -31,11 +31,8 @@ interface PanelSize {
   hasSize: boolean;
   percentage: number;
   postPxSize: string;
-}
-
-@Injectable()
-export class NzSplitterResizeService {
-  constructor() {}
+  postPercentMinSize: number;
+  postPercentMaxSize: number;
 }
 
 @Component({
@@ -51,27 +48,25 @@ export class NzSplitterResizeService {
     @for (panel of panels(); let i = $index; track i; let last = $last) {
       @let size = sizes()[i];
       @let flexBasis = !!size.size ? size.size : 'auto';
-      @let flexGrow = !!size.size ? '0' : '1';
+      @let flexGrow = !!size.size ? 0 : 1;
       <div class="ant-splitter-panel" [style.flex-basis]="flexBasis" [style.flex-grow]="flexGrow">
         <ng-container *ngTemplateOutlet="panel.contentTemplate()"></ng-container>
       </div>
+
       @if (!last) {
         <div
-          class="ant-splitter-bar"
-          role="separator"
-          [attr.aria-valuenow]="panel.nzMin()"
-          [attr.aria-valuemin]="panel.nzMin()"
-          [attr.aria-valuemax]="panel.nzMax()"
+          nz-splitter-bar
+          [ariaNow]="size.percentage * 100"
+          [ariaMin]="size.postPercentMinSize * 100"
+          [ariaMax]="size.postPercentMaxSize * 100"
         >
-          <div class="ant-splitter-bar-dragger"></div>
         </div>
       }
     }
   `,
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, NzSplitterBarComponent],
   providers: [
     NzDestroyService,
-    NzSplitterResizeService,
     {
       provide: NZ_SPLITTER_PANEL_LIST,
       useValue: signal([])
@@ -84,6 +79,7 @@ export class NzSplitterResizeService {
   }
 })
 export class NzSplitterComponent {
+  /** ------------------- Props ------------------- */
   nzLayout = input<NzSplitterLayout>('horizontal');
   nzLazy = input<boolean>(false);
   readonly nzResizeStart = output<number[]>();
@@ -93,12 +89,15 @@ export class NzSplitterComponent {
   readonly panels = contentChildren(NzSplitterPanelComponent);
   readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  containerSize = computed(() =>
+  /** ------------------- Sizes ------------------- */
+  /**
+   * The size of the container, used to calculate the percentage size and flex basis of each panel.
+   */
+  readonly containerSize = computed(() =>
     this.nzLayout() === 'horizontal'
       ? this.elementRef.nativeElement.clientWidth || 0
       : this.elementRef.nativeElement.clientHeight || 0
   );
-
   readonly sizes = computed(() => {
     let emptyCount = 0;
     const containerSize = this.containerSize();
@@ -107,20 +106,31 @@ export class NzSplitterComponent {
       const size = panel.nzSize() ?? innerSize;
       const hasSize = panel.nzSize() !== undefined;
 
+      // Calculate the percentage size of each panel.
       const percentage = isPercent(size)
         ? getPercentValue(size)
-        : size || size === 0
+        : typeof size === 'number' && (size || size === 0)
           ? size / containerSize
           : undefined;
       if (percentage === undefined) {
         emptyCount++;
       }
 
+      // Calculate the min and max percentage size of each panel.
+      const minSize = panel.nzMin();
+      const maxSize = panel.nzMax();
+      const postPercentMinSize = isPercent(minSize) ? getPercentValue(minSize) : (minSize || 0) / containerSize;
+      const postPercentMaxSize = isPercent(maxSize)
+        ? getPercentValue(maxSize)
+        : (maxSize || containerSize) / containerSize;
+
       return {
         innerSize,
         size,
         hasSize,
-        percentage
+        percentage,
+        postPercentMinSize,
+        postPercentMaxSize
       } as PanelSize;
     });
 
@@ -141,32 +151,10 @@ export class NzSplitterComponent {
     }
 
     sizes.forEach(size => {
-      size.postPxSize = `${size.percentage * containerSize}px`;
+      size.postPxSize = coerceCssPixelValue(size.percentage * containerSize);
       size.size = containerSize ? size.postPxSize : size.size;
     });
 
     return sizes;
   });
-
-  protected style(index: number): NgStyleInterface {
-    const containerSize =
-      this.nzLayout() === 'horizontal'
-        ? this.elementRef.nativeElement.clientWidth
-        : this.elementRef.nativeElement.clientHeight;
-    const size = this.panels()[index].nzSize() ?? this.panels()[index].nzDefaultSize();
-    console.log(containerSize, size);
-    const hasSize = size !== undefined;
-    return {
-      'flex-basis': hasSize ? this.getFlexBasis(size, containerSize) : 'auto',
-      'flex-grow': hasSize ? 0 : 1
-    };
-  }
-
-  private getFlexBasis(size: number | string | undefined, containerSize: number): string {
-    if (isPercent(size)) {
-      return `${getPercentValue(size) * containerSize}px`;
-    } else {
-      return `${size}px`;
-    }
-  }
 }
