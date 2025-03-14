@@ -43,15 +43,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     <div class="ant-page-header-heading">
       <div class="ant-page-header-heading-left">
         <!--back-->
-        @if (nzBackIcon !== null) {
+        @if (nzBackIcon !== null && enableBackButton) {
           <div (click)="onBack()" class="ant-page-header-back">
-            @if (enableBackButton) {
-              <div role="button" tabindex="0" class="ant-page-header-back-button">
-                <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
-                  <nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline" />
-                </ng-container>
-              </div>
-            }
+            <div role="button" tabindex="0" class="ant-page-header-back-button">
+              <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
+                <nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline" />
+              </ng-container>
+            </div>
           </div>
         }
 
