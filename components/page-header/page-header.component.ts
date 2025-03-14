@@ -13,21 +13,21 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   OnInit,
   Output,
   TemplateRef,
-  ViewEncapsulation,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
@@ -43,7 +43,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     <div class="ant-page-header-heading">
       <div class="ant-page-header-heading-left">
         <!--back-->
-        @if (nzBackIcon !== null) {
+        @if (nzBackIcon !== null && enableBackButton) {
           <div (click)="onBack()" class="ant-page-header-back">
             <div role="button" tabindex="0" class="ant-page-header-back-button">
               <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
@@ -94,6 +94,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
   imports: [NzOutletModule, NzIconModule]
 })
 export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
+  private location = inject(Location);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
@@ -111,7 +112,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   destroy$ = new Subject<void>();
   dir: Direction = 'ltr';
 
-  private location = inject(Location, { optional: true });
+  enableBackButton = true;
 
   constructor(
     public nzConfigService: NzConfigService,
@@ -126,11 +127,18 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
       this.dir = direction;
       this.cdr.detectChanges();
     });
-
     this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {
+    if (!this.nzBack.observed) {
+      this.enableBackButton = (this.location.getState() as NzSafeAny)?.navigationId > 1;
+      this.location.subscribe(() => {
+        this.enableBackButton = true;
+        this.cdr.detectChanges();
+      });
+    }
+
     this.nzResizeObserver
       .observe(this.elementRef)
       .pipe(
@@ -147,11 +155,6 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this.nzBack.observers.length) {
       this.nzBack.emit();
     } else {
-      if (!this.location) {
-        throw new Error(
-          `${PREFIX} you should import 'RouterModule' or register 'Location' if you want to use 'nzBack' default event!`
-        );
-      }
       this.location.back();
     }
   }
