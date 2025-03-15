@@ -4,7 +4,7 @@
  */
 
 import { existsSync } from 'fs';
-import { dirname, join, resolve } from 'path';
+import { dirname, join, parse, resolve } from 'path';
 
 export interface BuildConfig {
   projectVersion: string;
@@ -22,6 +22,11 @@ export function findBuildConfig(): string {
   let currentDir = process.cwd();
 
   while (!existsSync(resolve(currentDir, BUILD_CONFIG_FILENAME))) {
+    if (currentDir === parse(process.cwd()).root) {
+      console.error(`Can not find ${BUILD_CONFIG_FILENAME}`);
+      break;
+    }
+
     currentDir = dirname(currentDir);
   }
 
