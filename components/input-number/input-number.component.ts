@@ -557,5 +557,5 @@ function getDecimalPlaces(num: number): number {
 }
 
 function isNotCompleteNumber(value: string | number): boolean {
-  return /[.。]$/.test(value.toString());
+  return /[.。](\d*0)?$/.test(value.toString());
 }
