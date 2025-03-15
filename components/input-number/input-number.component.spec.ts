@@ -4,7 +4,7 @@
  */
 
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
-import { Component, ElementRef, viewChild } from '@angular/core';
+import { ApplicationRef, Component, ElementRef, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -161,7 +161,9 @@ describe('Input number', () => {
     it('with range', () => {
       component.min = 1;
       component.max = 10;
-      fixture.detectChanges();
+
+      // Running change detection (first time)
+      TestBed.inject(ApplicationRef).tick();
 
       input('1');
       expect(component.value).toBe(1);
@@ -190,7 +192,9 @@ describe('Input number', () => {
     it('with formatter', () => {
       component.formatter = (value: number): string => `${value}%`;
       component.parser = (value: string): number => parseFloat(value?.replace('%', ''));
-      fixture.detectChanges();
+
+      // Running change detection (first time)
+      TestBed.inject(ApplicationRef).tick();
 
       const inputElement = getInputElement();
 
@@ -246,7 +250,9 @@ describe('Input number', () => {
     it('max > 0', () => {
       component.min = Number.MIN_SAFE_INTEGER;
       component.max = 1.5;
-      fixture.detectChanges();
+
+      // Running change detection (first time)
+      TestBed.inject(ApplicationRef).tick();
 
       input('1.1');
       expect(component.value).toBe(1.1);
@@ -261,7 +267,9 @@ describe('Input number', () => {
     it('max < 0', () => {
       component.min = Number.MIN_SAFE_INTEGER;
       component.max = -1.5;
-      fixture.detectChanges();
+
+      // Running change detection (first time)
+      TestBed.inject(ApplicationRef).tick();
 
       input('-1.1');
       expect(component.value).toBe(null);
@@ -276,7 +284,9 @@ describe('Input number', () => {
     it('min > 0', () => {
       component.min = 1.5;
       component.max = Number.MAX_SAFE_INTEGER;
-      fixture.detectChanges();
+
+      // Running change detection (first time)
+      TestBed.inject(ApplicationRef).tick();
 
       input('1.1');
       expect(component.value).toBe(null);
@@ -291,7 +301,9 @@ describe('Input number', () => {
     it('min < 0', () => {
       component.min = -1.5;
       component.max = Number.MAX_SAFE_INTEGER;
-      fixture.detectChanges();
+
+      // Running change detection (first time)
+      TestBed.inject(ApplicationRef).tick();
 
       input('-1.1');
       expect(component.value).toBe(-1.1);
@@ -304,9 +316,11 @@ describe('Input number', () => {
     });
   });
 
-  it('should set value with precision', async () => {
+  it('should set value with precision', () => {
     component.precision = 1;
-    fixture.detectChanges();
+
+    // Running change detection (first time)
+    TestBed.inject(ApplicationRef).tick();
 
     input('1.23');
     expect(component.value).toBe(1.23);
