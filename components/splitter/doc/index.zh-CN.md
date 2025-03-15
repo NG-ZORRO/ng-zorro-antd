@@ -35,9 +35,9 @@ import { NzSplitterModule } from 'ng-zorro-antd/splitter';
 
 | 参数                | 说明                            | 类型                                               | 默认值     | 全局配置 |
 |-------------------|-------------------------------|--------------------------------------------------|---------|------|
-| `[nzDefaultSize]` | 初始面板大小，支持数字 px 或者文字 '百分比%' 类型 | `number                                          | string` | -    | |
-| `[nzMin]`         | 最小阈值，支持数字 px 或者文字 '百分比%' 类型   | `number                                          | string` | -    |     |
-| `[nzMax]`         | 最大阈值，支持数字 px 或者文字 '百分比%' 类型   | ``number                                         | string` | -    |     |
-| `[nzSize]`        | 受控面板大小，支持数字 px 或者文字 '百分比%' 类型 | `number                                          | string` | -    | |
+| `[nzDefaultSize]` | 初始面板大小，支持数字 px 或者文字 '百分比%' 类型 | `number \| string`                               | -       |      |
+| `[nzMin]`         | 最小阈值，支持数字 px 或者文字 '百分比%' 类型   | `number \| string`                               | -       |      |
+| `[nzMax]`         | 最大阈值，支持数字 px 或者文字 '百分比%' 类型   | `number \| string`                               | -       |      |
+| `[nzSize]`        | 受控面板大小，支持数字 px 或者文字 '百分比%' 类型 | `number \| string`                               | -       |      |
 | `[nzCollapsible]` | 快速折叠                          | `boolean  \| { start?: boolean; end?: boolean }` | `false` |      |
 | `[nzResizable]`   | 是否开启拖拽伸缩                      | `boolean`                                        | `true`  |      |
