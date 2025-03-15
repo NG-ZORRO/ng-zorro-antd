@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component } from '@angular/core';
+import { ApplicationRef, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -173,6 +173,11 @@ describe('Space compact direction', () => {
   });
 
   it('should be apply direction classes for child components', () => {
+    // Running change detection (first time)
+    TestBed.inject(ApplicationRef).tick();
+    // detect signal changes
+    fixture.detectChanges();
+
     const spaceCompactElement: HTMLElement = fixture.nativeElement;
     const nzButtons = spaceCompactElement.querySelectorAll('button[nz-button]');
     const [firstBtn, lastBtn] = Array.from(nzButtons);
