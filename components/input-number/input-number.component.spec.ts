@@ -8,6 +8,7 @@ import { Component, ElementRef, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
+import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -373,6 +374,19 @@ describe('Input number', () => {
     expect(hostElement.querySelector('.ant-input-number-handler-wrap')).toBeNull();
   });
 
+  it('should not format input value if incomplete', () => {
+    fixture.detectChanges();
+
+    input('1.0');
+    expect(component.displayValue).toBe('1.0');
+
+    input('1.00'); // 2 consecutive zeros
+    expect(component.displayValue).toBe('1.00');
+
+    input('1.10'); // zero is not preceded by a `.`
+    expect(component.displayValue).toBe('1.10');
+  });
+
   function upStepByHandler(eventInit?: MouseEventInit): void {
     const handler = hostElement.querySelector('.ant-input-number-handler-up')!;
     handler.dispatchEvent(new MouseEvent('mousedown', eventInit));
@@ -385,13 +399,13 @@ describe('Input number', () => {
   }
 
   function upStepByKeyboard(): void {
-    hostElement.dispatchEvent(new KeyboardEvent('keydown', { keyCode: UP_ARROW }));
+    dispatchKeyboardEvent(hostElement, 'keydown', UP_ARROW);
   }
   function downStepByKeyboard(): void {
-    hostElement.dispatchEvent(new KeyboardEvent('keydown', { keyCode: DOWN_ARROW }));
+    dispatchKeyboardEvent(hostElement, 'keydown', DOWN_ARROW);
   }
   function enter(): void {
-    hostElement.dispatchEvent(new KeyboardEvent('keydown', { keyCode: ENTER }));
+    dispatchKeyboardEvent(hostElement, 'keydown', ENTER);
   }
 
   function getInputElement(): HTMLInputElement {
@@ -496,6 +510,10 @@ class InputNumberTestComponent {
   value: number | null = null;
   controlDisabled = false;
   inputNumber = viewChild.required(NzInputNumberComponent);
+
+  get displayValue(): string {
+    return this.inputNumber()['displayValue']();
+  }
 }
 
 @Component({
