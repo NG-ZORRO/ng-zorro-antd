@@ -152,7 +152,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   onBack(): void {
-    if (this.nzBack.observers.length) {
+    if (this.nzBack.observed) {
       this.nzBack.emit();
     } else {
       this.location.back();
