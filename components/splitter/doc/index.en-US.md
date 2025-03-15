@@ -33,9 +33,9 @@ import { NzSplitterModule } from 'ng-zorro-antd/splitter';
 
 | 参数                | 说明                                                              | 类型                                               | 默认值     | 全局配置 |
 |-------------------|-----------------------------------------------------------------|--------------------------------------------------|---------|------|
-| `[nzDefaultSize]` | Initial panel size support number for px or 'percent%' usage    | `number                                          | string` | -    | |
-| `[nzMin]`         | Minimum threshold support number for px or 'percent%' usage     | `number                                          | string` | -    |     |
-| `[nzMax]`         | Maximum threshold support number for px or 'percent%' usage     | ``number                                         | string` | -    |     |
-| `[nzSize]`        | Controlled panel size support number for px or 'percent%' usage | `number                                          | string` | -    | |
+| `[nzDefaultSize]` | Initial panel size support number for px or 'percent%' usage    | `number \| string`                               | -       |      |
+| `[nzMin]`         | Minimum threshold support number for px or 'percent%' usage     | `number \| string`                               | -       |      |
+| `[nzMax]`         | Maximum threshold support number for px or 'percent%' usage     | `number \| string`                               | -       |      |
+| `[nzSize]`        | Controlled panel size support number for px or 'percent%' usage | `number \| string`                               | -       |      |
 | `[nzCollapsible]` | Quick folding                                                   | `boolean  \| { start?: boolean; end?: boolean }` | `false` |      |
 | `[nzResizable]`   | Whether to enable drag and drop                                 | `boolean`                                        | `true`  |      |
