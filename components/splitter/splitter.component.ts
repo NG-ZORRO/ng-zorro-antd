@@ -13,15 +13,19 @@ import {
   output,
   ViewEncapsulation,
   inject,
-  signal,
-  computed
+  computed,
+  linkedSignal
 } from '@angular/core';
+import { map, merge, Subject, takeUntil } from 'rxjs';
+import { filter, pairwise } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
+import { getEventWithPoint } from 'ng-zorro-antd/resizable';
 
 import { NzSplitterBarComponent } from './splitter-bar.component';
 import { NzSplitterPanelComponent } from './splitter-panel.component';
-import { NZ_SPLITTER_PANEL_LIST } from './tokens';
 import { NzSplitterLayout } from './typings';
 import { getPercentValue, isPercent } from './utils';
 
@@ -29,8 +33,10 @@ interface PanelSize {
   innerSize: number;
   size: number | string | undefined;
   hasSize: boolean;
-  percentage: number;
   postPxSize: string;
+  percentage: number;
+  min: number | string | undefined;
+  max: number | string | undefined;
   postPercentMinSize: number;
   postPercentMaxSize: number;
 }
@@ -50,6 +56,9 @@ interface PanelSize {
       @let flexBasis = !!size.size ? size.size : 'auto';
       @let flexGrow = !!size.size ? 0 : 1;
       <div class="ant-splitter-panel" [style.flex-basis]="flexBasis" [style.flex-grow]="flexGrow">
+        @for (prop of debug(size); track prop) {
+          <div>{{ prop }}</div>
+        }
         <ng-container *ngTemplateOutlet="panel.contentTemplate()"></ng-container>
       </div>
 
@@ -59,19 +68,15 @@ interface PanelSize {
           [ariaNow]="size.percentage * 100"
           [ariaMin]="size.postPercentMinSize * 100"
           [ariaMax]="size.postPercentMaxSize * 100"
+          [resizable]="panel.nzResizable()"
+          (offsetStart)="startResize(i, $event)"
         >
         </div>
       }
     }
   `,
   imports: [NgTemplateOutlet, NzSplitterBarComponent],
-  providers: [
-    NzDestroyService,
-    {
-      provide: NZ_SPLITTER_PANEL_LIST,
-      useValue: signal([])
-    }
-  ],
+  providers: [NzDestroyService],
   host: {
     class: 'ant-splitter',
     '[class.ant-splitter-horizontal]': 'nzLayout() === "horizontal"',
@@ -87,7 +92,10 @@ export class NzSplitterComponent {
   readonly nzResizeEnd = output<number[]>();
 
   readonly panels = contentChildren(NzSplitterPanelComponent);
+  readonly destroy$ = inject(NzDestroyService);
   readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  readonly debug = (obj: NzSafeAny): string[] => Object.entries(obj).map(([key, value]) => `${key}: ${value}`);
 
   /** ------------------- Sizes ------------------- */
   /**
@@ -98,11 +106,16 @@ export class NzSplitterComponent {
       ? this.elementRef.nativeElement.clientWidth || 0
       : this.elementRef.nativeElement.clientHeight || 0
   );
+  readonly innerSizes = linkedSignal({
+    source: this.panels,
+    computation: source => source.map(panel => panel.nzDefaultSize())
+  });
   readonly sizes = computed(() => {
     let emptyCount = 0;
     const containerSize = this.containerSize();
-    const sizes = this.panels().map(panel => {
-      const innerSize = panel.nzDefaultSize();
+    const innerSizes = this.innerSizes();
+    const sizes = this.panels().map((panel, index) => {
+      const innerSize = innerSizes[index];
       const size = panel.nzSize() ?? innerSize;
       const hasSize = panel.nzSize() !== undefined;
 
@@ -129,6 +142,8 @@ export class NzSplitterComponent {
         size,
         hasSize,
         percentage,
+        min: minSize,
+        max: maxSize,
         postPercentMinSize,
         postPercentMaxSize
       } as PanelSize;
@@ -157,4 +172,89 @@ export class NzSplitterComponent {
 
     return sizes;
   });
+
+  /** ------------------ Resize ------------------ */
+  /**
+   * Handle the resize start event for the specified panel.
+   * @param index The index of the panel.
+   * @param startPos The start position of the resize event.
+   */
+  startResize(index: number, startPos: [x: number, y: number]): void {
+    this.nzResizeStart.emit([index, ...startPos]);
+    const end$ = new Subject<void>();
+
+    // resizing
+    merge(
+      fromEventOutsideAngular<MouseEvent>(window, 'mousemove', { passive: true }),
+      fromEventOutsideAngular<TouchEvent>(window, 'touchmove', { passive: true })
+    )
+      .pipe(
+        map(event => getEventWithPoint(event)),
+        map(({ pageX, pageY }) => (this.nzLayout() === 'horizontal' ? pageX - startPos[0] : pageY - startPos[1])),
+        pairwise(),
+        // delta offset
+        map(([prev, next]) => next - prev),
+        // filter out the 0 delta offset
+        filter(Boolean),
+        takeUntil(merge(end$, this.destroy$))
+      )
+      .subscribe(offset => this.updateOffset(index, offset));
+
+    // resize end
+    merge(
+      fromEventOutsideAngular<MouseEvent>(window, 'mouseup'),
+      fromEventOutsideAngular<TouchEvent>(window, 'touchend')
+    )
+      .pipe(takeUntil(merge(end$, this.destroy$)))
+      .subscribe(() => {
+        this.endResize(index);
+        end$.next();
+      });
+  }
+
+  private updateOffset(index: number, offset: number): void {
+    const containerSize = this.containerSize();
+    const limitSizes = this.sizes().map(p => [p.min, p.max]);
+    const pxSizes = this.sizes().map(p => p.percentage * containerSize);
+
+    const getLimitSize = (size: string | number | undefined, defaultLimit: number): number => {
+      if (typeof size === 'string') {
+        return getPercentValue(size) * containerSize;
+      }
+      return size ?? defaultLimit;
+    };
+
+    const nextIndex = index + 1;
+
+    // Get boundary
+    const startMinSize = getLimitSize(limitSizes[index][0], 0);
+    const endMinSize = getLimitSize(limitSizes[nextIndex][0], 0);
+    const startMaxSize = getLimitSize(limitSizes[index][1], containerSize);
+    const endMaxSize = getLimitSize(limitSizes[nextIndex][1], containerSize);
+
+    let mergedOffset = offset;
+
+    // Align with the boundary
+    if (pxSizes[index] + mergedOffset < startMinSize) {
+      mergedOffset = startMinSize - pxSizes[index];
+    }
+    if (pxSizes[nextIndex] - mergedOffset < endMinSize) {
+      mergedOffset = pxSizes[nextIndex] - endMinSize;
+    }
+    if (pxSizes[index] + mergedOffset > startMaxSize) {
+      mergedOffset = startMaxSize - pxSizes[index];
+    }
+    if (pxSizes[nextIndex] - mergedOffset > endMaxSize) {
+      mergedOffset = pxSizes[nextIndex] - endMaxSize;
+    }
+
+    // Do offset
+    pxSizes[index] += mergedOffset;
+    pxSizes[nextIndex] -= mergedOffset;
+    this.innerSizes.set(pxSizes);
+  }
+
+  private endResize(index: number): void {
+    this.nzResizeEnd.emit([index]);
+  }
 }
