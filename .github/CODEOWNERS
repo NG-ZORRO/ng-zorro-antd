@@ -58,6 +58,7 @@ components/pagination/**                  @vthinkxie
 components/radio/**                       @vthinkxie
 components/select/**                      @vthinkxie
 components/spin/**                        @vthinkxie
+components/splitter/**                    @laffery
 components/switch/**                      @vthinkxie
 components/table/**                       @vthinkxie
 components/tree/**                        @simplejason
