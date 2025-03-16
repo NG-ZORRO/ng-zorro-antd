@@ -35,38 +35,70 @@
   }
 
   &-bar {
-    flex: none;
     position: relative;
+    flex: none;
     user-select: none;
 
+    // ======================= Dragger =======================
     &-dragger {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
       z-index: 1;
+      transform: translate(-50%, -50%);
+
+      // Hover background
+      &::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: @splitter-bar-bg;
+        transform: translate(-50%, -50%);
+        content: '';
+      }
+
+      // Hover
+      &:hover:not(&-active) {
+        &::before {
+          background: @splitter-bar-hover-bg;
+        }
+      }
+
+      // Spinner
+      &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: @fill-color;
+        transform: translate(-50%, -50%);
+        content: '';
+      }
+
+      // Active
+      &-active {
+        z-index: 2;
+
+        &::before {
+          background: @splitter-bar-active-bg;
+        }
+      }
+    }
+  }
+
+  // Disabled
+  & > &-bar > &-bar-dragger&-bar-dragger-disabled {
+    z-index: 0;
+
+    &, &:hover, &-active {
+      cursor: default;
 
       &::before {
-        content: '';
-        background: @item-hover-bg;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        background: @splitter-bar-bg;
       }
+    }
 
-      &:hover::before {
-        background: @item-active-bg;
-      }
-
-      &::after {
-        content: '';
-        background: @fill-color;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
+    &::after {
+      display: none;
     }
   }
 
@@ -74,40 +106,60 @@
     width: 0;
   }
 
-  &-horizontal > &-bar > &-bar-dragger {
-    cursor: col-resize;
-    height: 100%;
+  &-horizontal > &-bar &-bar-dragger {
     width: @splitter-split-trigger-size;
-  }
-
-  &-horizontal > &-bar > &-bar-dragger::before {
     height: 100%;
-    width: @splitter-split-bar-size;
+    cursor: col-resize;
   }
 
-  &-horizontal > &-bar > &-bar-dragger::after {
-    height: @splitter-split-bar-draggable-size;
+  &-horizontal > &-bar &-bar-dragger::before {
     width: @splitter-split-bar-size;
+    height: 100%;
+  }
+
+  &-horizontal > &-bar &-bar-dragger::after {
+    width: @splitter-split-bar-size;
+    height: @splitter-split-bar-draggable-size;
   }
 
   &-vertical > &-bar {
     height: 0;
   }
 
-  &-vertical > &-bar > &-bar-dragger {
-    cursor: row-resize;
+  &-vertical > &-bar &-bar-dragger {
+    width: 100%;
     height: @splitter-split-trigger-size;
-    width: 100%;
+    cursor: row-resize;
+
+    &:has(&-disabled) {
+      cursor: default;
+    }
   }
 
-  &-vertical > &-bar > &-bar-dragger::before {
-    height: @splitter-split-bar-size;
+  &-vertical > &-bar &-bar-dragger::before {
     width: 100%;
+    height: @splitter-split-bar-size;
   }
 
-  &-vertical > &-bar > &-bar-dragger::after {
-    height: @splitter-split-bar-size;
+  &-vertical > &-bar &-bar-dragger::after {
     width: @splitter-split-bar-draggable-size;
+    height: @splitter-split-bar-size;
+  }
+
+  // ======================= Mask =======================
+  // Util dom for handle cursor
+  &-mask {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+
+    &-horizontal {
+      cursor: col-resize;
+    }
+
+    &-vertical {
+      cursor: row-resize;
+    }
   }
 }
 

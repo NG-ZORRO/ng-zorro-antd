@@ -14,13 +14,13 @@ import {
   ViewEncapsulation,
   inject,
   computed,
-  linkedSignal
+  linkedSignal,
+  signal
 } from '@angular/core';
 import { map, merge, Subject, takeUntil } from 'rxjs';
 import { filter, pairwise } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { getEventWithPoint } from 'ng-zorro-antd/resizable';
 
@@ -31,12 +31,12 @@ import { getPercentValue, isPercent } from './utils';
 
 interface PanelSize {
   innerSize: number;
-  size: number | string | undefined;
+  size: string | number | undefined;
   hasSize: boolean;
-  postPxSize: string;
+  postPxSize: number;
   percentage: number;
-  min: number | string | undefined;
-  max: number | string | undefined;
+  min: string | number | undefined;
+  max: string | number | undefined;
   postPercentMinSize: number;
   postPercentMaxSize: number;
 }
@@ -56,9 +56,6 @@ interface PanelSize {
       @let flexBasis = !!size.size ? size.size : 'auto';
       @let flexGrow = !!size.size ? 0 : 1;
       <div class="ant-splitter-panel" [style.flex-basis]="flexBasis" [style.flex-grow]="flexGrow">
-        @for (prop of debug(size); track prop) {
-          <div>{{ prop }}</div>
-        }
         <ng-container *ngTemplateOutlet="panel.contentTemplate()"></ng-container>
       </div>
 
@@ -69,10 +66,21 @@ interface PanelSize {
           [ariaMin]="size.postPercentMinSize * 100"
           [ariaMax]="size.postPercentMaxSize * 100"
           [resizable]="panel.nzResizable()"
+          [active]="movingIndex() === i"
           (offsetStart)="startResize(i, $event)"
         >
         </div>
       }
+    }
+
+    <!-- Fake mask for cursor -->
+    @if (movingIndex() !== null) {
+      <div
+        aria-hidden
+        class="ant-splitter-mask"
+        [class.ant-splitter-mask-horizontal]="nzLayout() === 'horizontal'"
+        [class.ant-splitter-mask-vertical]="nzLayout() !== 'horizontal'"
+      ></div>
     }
   `,
   imports: [NgTemplateOutlet, NzSplitterBarComponent],
@@ -94,8 +102,6 @@ export class NzSplitterComponent {
   readonly panels = contentChildren(NzSplitterPanelComponent);
   readonly destroy$ = inject(NzDestroyService);
   readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
-  readonly debug = (obj: NzSafeAny): string[] => Object.entries(obj).map(([key, value]) => `${key}: ${value}`);
 
   /** ------------------- Sizes ------------------- */
   /**
@@ -166,8 +172,8 @@ export class NzSplitterComponent {
     }
 
     sizes.forEach(size => {
-      size.postPxSize = coerceCssPixelValue(size.percentage * containerSize);
-      size.size = containerSize ? size.postPxSize : size.size;
+      size.postPxSize = size.percentage * containerSize;
+      size.size = containerSize ? coerceCssPixelValue(size.postPxSize) : size.size;
     });
 
     return sizes;
@@ -175,12 +181,19 @@ export class NzSplitterComponent {
 
   /** ------------------ Resize ------------------ */
   /**
+   * The index of the panel that is being resized.
+   * Mark the moving splitter bar as activated to show the dragging effect
+   * even if the mouse is outside the splitter container.
+   */
+  readonly movingIndex = signal<number | null>(null);
+  /**
    * Handle the resize start event for the specified panel.
    * @param index The index of the panel.
    * @param startPos The start position of the resize event.
    */
   startResize(index: number, startPos: [x: number, y: number]): void {
-    this.nzResizeStart.emit([index, ...startPos]);
+    this.movingIndex.set(index);
+    this.nzResizeStart.emit(this.sizes().map(s => s.postPxSize));
     const end$ = new Subject<void>();
 
     // resizing
@@ -198,7 +211,10 @@ export class NzSplitterComponent {
         filter(Boolean),
         takeUntil(merge(end$, this.destroy$))
       )
-      .subscribe(offset => this.updateOffset(index, offset));
+      .subscribe(offset => {
+        this.updateOffset(index, offset);
+        this.nzResize.emit(this.sizes().map(s => s.postPxSize));
+      });
 
     // resize end
     merge(
@@ -207,7 +223,8 @@ export class NzSplitterComponent {
     )
       .pipe(takeUntil(merge(end$, this.destroy$)))
       .subscribe(() => {
-        this.endResize(index);
+        this.movingIndex.set(null);
+        this.nzResize.emit(this.sizes().map(s => s.postPxSize));
         end$.next();
       });
   }
@@ -252,9 +269,5 @@ export class NzSplitterComponent {
     pxSizes[index] += mergedOffset;
     pxSizes[nextIndex] -= mergedOffset;
     this.innerSizes.set(pxSizes);
-  }
-
-  private endResize(index: number): void {
-    this.nzResizeEnd.emit([index]);
   }
 }
