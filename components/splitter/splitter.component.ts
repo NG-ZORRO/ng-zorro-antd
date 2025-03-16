@@ -28,7 +28,7 @@ import { getEventWithPoint } from 'ng-zorro-antd/resizable';
 import { NzSplitterBarComponent } from './splitter-bar.component';
 import { NzSplitterPanelComponent } from './splitter-panel.component';
 import { NzSplitterLayout } from './typings';
-import { getPercentValue, isPercent } from './utils';
+import { coerceCollapsible, getPercentValue, isPercent } from './utils';
 
 interface PanelSize {
   innerSize: number;
@@ -67,13 +67,14 @@ interface PanelSize {
           [ariaMin]="size.postPercentMinSize * 100"
           [ariaMax]="size.postPercentMaxSize * 100"
           [resizable]="panel.resizable"
+          [collapsible]="panel.collapsible"
           [active]="movingIndex() === i"
           [vertical]="nzLayout() === 'vertical'"
           [lazy]="nzLazy()"
           [constrainedOffset]="constrainedOffset()"
           (offsetStart)="startResize(i, $event)"
-        >
-        </div>
+          (collapse)="collapse(i, $event)"
+        ></div>
       }
     }
 
@@ -117,7 +118,7 @@ export class NzSplitterComponent {
       min: panel.nzMin(),
       max: panel.nzMax(),
       resizable: panel.nzResizable(),
-      collapsible: panel.nzCollapsible(),
+      collapsible: coerceCollapsible(panel.nzCollapsible()),
       contentTemplate: panel.contentTemplate()
     }))
   );
@@ -331,5 +332,9 @@ export class NzSplitterComponent {
     pxSizes[nextIndex] -= mergedOffset;
     this.innerSizes.set(pxSizes);
     this.nzResize.emit(pxSizes);
+  }
+
+  collapse(index: number, type: 'start' | 'end'): void {
+    console.log(index, type);
   }
 }

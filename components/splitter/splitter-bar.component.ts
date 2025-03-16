@@ -6,10 +6,13 @@
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { ChangeDetectionStrategy, Component, computed, input, output, ViewEncapsulation } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { getEventWithPoint } from 'ng-zorro-antd/resizable';
+import { NzSplitterCollapseOption } from 'ng-zorro-antd/splitter/typings';
 
 @Component({
   selector: '[nz-splitter-bar]',
+  imports: [NzIconModule],
   template: `
     @if (lazy()) {
       @let preview = active() && !!this.constrainedOffset();
@@ -27,6 +30,24 @@ import { getEventWithPoint } from 'ng-zorro-antd/resizable';
       (mousedown)="resizeStartEvent($event)"
       (touchstart)="resizeStartEvent($event)"
     ></div>
+
+    @if (collapsible()?.start) {
+      <div class="ant-splitter-bar-collapse-bar ant-splitter-bar-collapse-bar-start" (click)="collapse.emit('start')">
+        <nz-icon
+          [nzType]="vertical() ? 'up' : 'left'"
+          class="ant-splitter-bar-collapse-icon ant-splitter-bar-collapse-start"
+        />
+      </div>
+    }
+
+    @if (collapsible()?.end) {
+      <div class="ant-splitter-bar-collapse-bar ant-splitter-bar-collapse-bar-end" (click)="collapse.emit('end')">
+        <nz-icon
+          [nzType]="vertical() ? 'down' : 'right'"
+          class="ant-splitter-bar-collapse-icon ant-splitter-bar-collapse-end"
+        />
+      </div>
+    }
   `,
   host: {
     role: 'separator',
@@ -46,6 +67,7 @@ export class NzSplitterBarComponent {
   resizable = input(true);
   vertical = input<boolean>();
   lazy = input(false);
+  collapsible = input<NzSplitterCollapseOption>();
   constrainedOffset = input<number>();
 
   readonly previewTransform = computed(() => {
@@ -54,6 +76,7 @@ export class NzSplitterBarComponent {
   });
 
   readonly offsetStart = output<[x: number, y: number]>();
+  readonly collapse = output<'start' | 'end'>();
 
   protected resizeStartEvent(event: MouseEvent | TouchEvent): void {
     if (this.resizable()) {
