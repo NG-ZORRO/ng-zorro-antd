@@ -56,7 +56,12 @@ interface PanelSize {
       @let size = sizes()[i];
       @let flexBasis = !!size.size ? size.size : 'auto';
       @let flexGrow = !!size.size ? 0 : 1;
-      <div class="ant-splitter-panel" [style.flex-basis]="flexBasis" [style.flex-grow]="flexGrow">
+      <div
+        class="ant-splitter-panel"
+        [class.ant-splitter-panel-hidden]="size.postPxSize === 0"
+        [style.flex-basis]="flexBasis"
+        [style.flex-grow]="flexGrow"
+      >
         <ng-container *ngTemplateOutlet="panel.contentTemplate"></ng-container>
       </div>
 
@@ -98,8 +103,8 @@ interface PanelSize {
 })
 export class NzSplitterComponent {
   /** ------------------- Props ------------------- */
-  nzLayout = input<NzSplitterLayout>('horizontal');
-  nzLazy = input(false, { transform: booleanAttribute });
+  readonly nzLayout = input<NzSplitterLayout>('horizontal');
+  readonly nzLazy = input(false, { transform: booleanAttribute });
   readonly nzResizeStart = output<number[]>();
   readonly nzResize = output<number[]>();
   readonly nzResizeEnd = output<number[]>();
@@ -220,7 +225,7 @@ export class NzSplitterComponent {
    * @param index The index of the panel.
    * @param startPos The start position of the resize event.
    */
-  startResize(index: number, startPos: [x: number, y: number]): void {
+  protected startResize(index: number, startPos: [x: number, y: number]): void {
     this.movingIndex.set(index);
     this.nzResizeStart.emit(this.sizes().map(s => s.postPxSize));
     const end$ = new Subject<void>();
@@ -335,6 +340,43 @@ export class NzSplitterComponent {
   }
 
   collapse(index: number, type: 'start' | 'end'): void {
-    console.log(index, type);
+    const containerSize = this.containerSize();
+    const limitSizes = this.sizes().map(p => [p.min, p.max]);
+    const currentSizes = this.sizes().map(p => p.percentage * containerSize);
+
+    const currentIndex = type === 'start' ? index : index + 1;
+    const targetIndex = type == 'start' ? index + 1 : index;
+    const currentSize = currentSizes[currentIndex];
+    const targetSize = currentSizes[targetIndex];
+
+    const getLimitSize = (size: string | number | undefined, defaultLimit: number): number => {
+      if (typeof size === 'string') {
+        return getPercentValue(size) * containerSize;
+      }
+      return size ?? defaultLimit;
+    };
+
+    if (currentSize !== 0 && targetSize !== 0) {
+      // Collapse directly
+      currentSizes[currentIndex] = 0;
+      currentSizes[targetIndex] += currentSize;
+    } else {
+      const totalSize = currentSize + targetSize;
+
+      const currentSizeMin = getLimitSize(limitSizes[currentIndex][0], 0);
+      const currentSizeMax = getLimitSize(limitSizes[currentIndex][1], containerSize);
+      const targetSizeMin = getLimitSize(limitSizes[targetIndex][0], 0);
+      const targetSizeMax = getLimitSize(limitSizes[targetIndex][1], containerSize);
+
+      const limitStart = Math.max(currentSizeMin, totalSize - targetSizeMax);
+      const limitEnd = Math.min(currentSizeMax, totalSize - targetSizeMin);
+      const halfOffset = (limitEnd - limitStart) / 2;
+
+      currentSizes[currentIndex] -= halfOffset;
+      currentSizes[targetIndex] += halfOffset;
+    }
+
+    this.innerSizes.set(currentSizes);
+    this.nzResize.emit(currentSizes);
   }
 }
