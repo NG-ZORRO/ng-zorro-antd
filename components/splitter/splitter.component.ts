@@ -51,12 +51,12 @@ interface PanelSize {
       <ng-content></ng-content>
     </ng-template>
 
-    @for (panel of panels(); let i = $index; track i; let last = $last) {
+    @for (panel of panelProps(); let i = $index; track i; let last = $last) {
       @let size = sizes()[i];
       @let flexBasis = !!size.size ? size.size : 'auto';
       @let flexGrow = !!size.size ? 0 : 1;
       <div class="ant-splitter-panel" [style.flex-basis]="flexBasis" [style.flex-grow]="flexGrow">
-        <ng-container *ngTemplateOutlet="panel.contentTemplate()"></ng-container>
+        <ng-container *ngTemplateOutlet="panel.contentTemplate"></ng-container>
       </div>
 
       @if (!last) {
@@ -65,7 +65,7 @@ interface PanelSize {
           [ariaNow]="size.percentage * 100"
           [ariaMin]="size.postPercentMinSize * 100"
           [ariaMax]="size.postPercentMaxSize * 100"
-          [resizable]="panel.nzResizable()"
+          [resizable]="panel.resizable"
           [active]="movingIndex() === i"
           (offsetStart)="startResize(i, $event)"
         >
@@ -99,9 +99,24 @@ export class NzSplitterComponent {
   readonly nzResize = output<number[]>();
   readonly nzResizeEnd = output<number[]>();
 
-  readonly panels = contentChildren(NzSplitterPanelComponent);
   readonly destroy$ = inject(NzDestroyService);
   readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  /** ------------------- Panels ------------------- */
+  // Get all panels from content children
+  readonly panels = contentChildren(NzSplitterPanelComponent);
+  // Subscribe to the change of properties
+  readonly panelProps = computed(() =>
+    this.panels().map(panel => ({
+      defaultSize: panel.nzDefaultSize(),
+      size: panel.nzSize(),
+      min: panel.nzMin(),
+      max: panel.nzMax(),
+      resizable: panel.nzResizable(),
+      collapsible: panel.nzCollapsible(),
+      contentTemplate: panel.contentTemplate()
+    }))
+  );
 
   /** ------------------- Sizes ------------------- */
   /**
@@ -113,31 +128,35 @@ export class NzSplitterComponent {
       : this.elementRef.nativeElement.clientHeight || 0
   );
   readonly innerSizes = linkedSignal({
-    source: this.panels,
-    computation: source => source.map(panel => panel.nzDefaultSize())
+    source: this.panelProps,
+    computation: source => source.map(panel => panel.defaultSize)
   });
   readonly sizes = computed(() => {
     let emptyCount = 0;
     const containerSize = this.containerSize();
     const innerSizes = this.innerSizes();
-    const sizes = this.panels().map((panel, index) => {
+    const sizes = this.panelProps().map((panel, index) => {
       const innerSize = innerSizes[index];
-      const size = panel.nzSize() ?? innerSize;
-      const hasSize = panel.nzSize() !== undefined;
+      const size = panel.size ?? innerSize;
+      const hasSize = panel.size !== undefined;
 
       // Calculate the percentage size of each panel.
-      const percentage = isPercent(size)
-        ? getPercentValue(size)
-        : typeof size === 'number' && (size || size === 0)
-          ? size / containerSize
-          : undefined;
-      if (percentage === undefined) {
+      let percentage: number | undefined;
+      if (isPercent(size)) {
+        percentage = getPercentValue(size);
+      } else if (size || size === 0) {
+        const num = Number(size);
+        if (!isNaN(num)) {
+          percentage = num / containerSize;
+        }
+      } else {
+        percentage = undefined;
         emptyCount++;
       }
 
       // Calculate the min and max percentage size of each panel.
-      const minSize = panel.nzMin();
-      const maxSize = panel.nzMax();
+      const minSize = panel.min;
+      const maxSize = panel.max;
       const postPercentMinSize = isPercent(minSize) ? getPercentValue(minSize) : (minSize || 0) / containerSize;
       const postPercentMaxSize = isPercent(maxSize)
         ? getPercentValue(maxSize)
@@ -211,10 +230,7 @@ export class NzSplitterComponent {
         filter(Boolean),
         takeUntil(merge(end$, this.destroy$))
       )
-      .subscribe(offset => {
-        this.updateOffset(index, offset);
-        this.nzResize.emit(this.sizes().map(s => s.postPxSize));
-      });
+      .subscribe(offset => this.updateOffset(index, offset));
 
     // resize end
     merge(
@@ -269,5 +285,6 @@ export class NzSplitterComponent {
     pxSizes[index] += mergedOffset;
     pxSizes[nextIndex] -= mergedOffset;
     this.innerSizes.set(pxSizes);
+    this.nzResize.emit(pxSizes);
   }
 }
