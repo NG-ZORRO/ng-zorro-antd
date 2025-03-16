@@ -34,6 +34,15 @@
     padding: 0 1px;
     overflow: auto;
     scrollbar-width: thin;
+
+    &-hidden {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    &:has(.@{splitter-prefix-cls}:only-child) {
+      overflow: hidden;
+    }
   }
 
   &-bar {

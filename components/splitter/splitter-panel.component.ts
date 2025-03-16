@@ -18,10 +18,7 @@ import { NzSplitterCollapsible } from './typings';
     <ng-template #contentTemplate>
       <ng-content></ng-content>
     </ng-template>
-  `,
-  host: {
-    class: 'ant-splitter-panel'
-  }
+  `
 })
 export class NzSplitterPanelComponent {
   readonly nzDefaultSize = input<number | string>();

@@ -60,15 +60,15 @@ import { NzSplitterCollapseOption } from 'ng-zorro-antd/splitter/typings';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzSplitterBarComponent {
-  ariaNow = input.required<number>();
-  ariaMin = input.required<number>();
-  ariaMax = input.required<number>();
-  active = input(false);
-  resizable = input(true);
-  vertical = input<boolean>();
-  lazy = input(false);
-  collapsible = input<NzSplitterCollapseOption>();
-  constrainedOffset = input<number>();
+  readonly ariaNow = input.required<number>();
+  readonly ariaMin = input.required<number>();
+  readonly ariaMax = input.required<number>();
+  readonly active = input(false);
+  readonly resizable = input(true);
+  readonly vertical = input<boolean>();
+  readonly lazy = input(false);
+  readonly collapsible = input<NzSplitterCollapseOption>();
+  readonly constrainedOffset = input<number>();
 
   readonly previewTransform = computed(() => {
     const offset = coerceCssPixelValue(this.constrainedOffset());
