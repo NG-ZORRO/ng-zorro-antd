@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, input, output, signal, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, ViewEncapsulation } from '@angular/core';
 
 import { getEventWithPoint } from 'ng-zorro-antd/resizable';
 
@@ -12,6 +12,8 @@ import { getEventWithPoint } from 'ng-zorro-antd/resizable';
   template: `
     <div
       class="ant-splitter-bar-dragger"
+      [class.ant-splitter-bar-dragger-disabled]="!resizable()"
+      [class.ant-splitter-bar-dragger-active]="active()"
       (mousedown)="resizeStartEvent($event)"
       (touchstart)="resizeStartEvent($event)"
     ></div>
@@ -30,16 +32,14 @@ export class NzSplitterBarComponent {
   ariaNow = input.required<number>();
   ariaMin = input.required<number>();
   ariaMax = input.required<number>();
+  active = input(false);
   resizable = input(true);
 
   readonly offsetStart = output<[x: number, y: number]>();
 
-  startPos = signal<[x: number, y: number] | null>(null);
-
   protected resizeStartEvent(event: MouseEvent | TouchEvent): void {
     if (this.resizable()) {
       const { pageX, pageY } = getEventWithPoint(event);
-      this.startPos.set([pageX, pageY]);
       this.offsetStart.emit([pageX, pageY]);
     }
   }
