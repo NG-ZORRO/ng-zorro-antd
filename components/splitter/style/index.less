@@ -39,6 +39,20 @@
     flex: none;
     user-select: none;
 
+    &-preview {
+      position: absolute;
+      z-index: 1;
+      display: none;
+      background: @primary-color;
+      opacity: 0.2;
+      transition: none;
+      pointer-events: none;
+
+      &-active {
+        display: block;
+      }
+    }
+
     // ======================= Dragger =======================
     &-dragger {
       position: absolute;
@@ -122,6 +136,11 @@
     height: @splitter-split-bar-draggable-size;
   }
 
+  &-horizontal > &-bar &-bar-preview {
+    width: @splitter-split-bar-size;
+    height: 100%;
+  }
+
   &-vertical > &-bar {
     height: 0;
   }
@@ -143,6 +162,11 @@
 
   &-vertical > &-bar &-bar-dragger::after {
     width: @splitter-split-bar-draggable-size;
+    height: @splitter-split-bar-size;
+  }
+
+  &-vertical > &-bar &-bar-preview {
+    width: 100%;
     height: @splitter-split-bar-size;
   }
 

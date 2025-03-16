@@ -15,10 +15,11 @@ import {
   inject,
   computed,
   linkedSignal,
-  signal
+  signal,
+  booleanAttribute
 } from '@angular/core';
 import { map, merge, Subject, takeUntil } from 'rxjs';
-import { filter, pairwise } from 'rxjs/operators';
+import { pairwise } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
@@ -67,6 +68,9 @@ interface PanelSize {
           [ariaMax]="size.postPercentMaxSize * 100"
           [resizable]="panel.resizable"
           [active]="movingIndex() === i"
+          [vertical]="nzLayout() === 'vertical'"
+          [lazy]="nzLazy()"
+          [constrainedOffset]="constrainedOffset()"
           (offsetStart)="startResize(i, $event)"
         >
         </div>
@@ -94,7 +98,7 @@ interface PanelSize {
 export class NzSplitterComponent {
   /** ------------------- Props ------------------- */
   nzLayout = input<NzSplitterLayout>('horizontal');
-  nzLazy = input<boolean>(false);
+  nzLazy = input(false, { transform: booleanAttribute });
   readonly nzResizeStart = output<number[]>();
   readonly nzResize = output<number[]>();
   readonly nzResizeEnd = output<number[]>();
@@ -206,6 +210,11 @@ export class NzSplitterComponent {
    */
   readonly movingIndex = signal<number | null>(null);
   /**
+   * The offset of preview position (lazy mode) when dragging the splitter bar.
+   * Constrained by the min and max size of the target panel.
+   */
+  readonly constrainedOffset = signal<number>(0);
+  /**
    * Handle the resize start event for the specified panel.
    * @param index The index of the panel.
    * @param startPos The start position of the resize event.
@@ -214,6 +223,33 @@ export class NzSplitterComponent {
     this.movingIndex.set(index);
     this.nzResizeStart.emit(this.sizes().map(s => s.postPxSize));
     const end$ = new Subject<void>();
+
+    // Updated constraint calculation
+    const getConstrainedOffset = (rawOffset: number): number => {
+      const { percentage, postPercentMinSize, postPercentMaxSize } = this.sizes()[index];
+      const [ariaNow, ariaMin, ariaMax] = [percentage, postPercentMinSize, postPercentMaxSize].map(p => p * 100);
+
+      const containerSize = this.containerSize();
+      const currentPos = (containerSize * ariaNow) / 100;
+      const newPos = currentPos + rawOffset;
+
+      // Calculate available space
+      const minAllowed = Math.max(0, (containerSize * ariaMin) / 100);
+      const maxAllowed = Math.min(containerSize, (containerSize * ariaMax) / 100);
+
+      // Constrain new position within bounds
+      const clampedPos = Math.max(minAllowed, Math.min(maxAllowed, newPos));
+      return clampedPos - currentPos;
+    };
+
+    const handleLazyMove = (offset: number): void => {
+      this.constrainedOffset.set(getConstrainedOffset(offset));
+    };
+
+    const handleLazyEnd = (): void => {
+      this.updateOffset(index, this.constrainedOffset());
+      this.constrainedOffset.set(0);
+    };
 
     // resizing
     merge(
@@ -224,13 +260,19 @@ export class NzSplitterComponent {
         map(event => getEventWithPoint(event)),
         map(({ pageX, pageY }) => (this.nzLayout() === 'horizontal' ? pageX - startPos[0] : pageY - startPos[1])),
         pairwise(),
-        // delta offset
-        map(([prev, next]) => next - prev),
-        // filter out the 0 delta offset
-        filter(Boolean),
         takeUntil(merge(end$, this.destroy$))
       )
-      .subscribe(offset => this.updateOffset(index, offset));
+      .subscribe(([prev, next]) => {
+        if (this.nzLazy()) {
+          handleLazyMove(next);
+        } else {
+          const deltaOffset = next - prev;
+          // filter out the 0 delta offset
+          if (deltaOffset !== 0) {
+            this.updateOffset(index, deltaOffset);
+          }
+        }
+      });
 
     // resize end
     merge(
@@ -239,6 +281,9 @@ export class NzSplitterComponent {
     )
       .pipe(takeUntil(merge(end$, this.destroy$)))
       .subscribe(() => {
+        if (this.nzLazy()) {
+          handleLazyEnd();
+        }
         this.movingIndex.set(null);
         this.nzResize.emit(this.sizes().map(s => s.postPxSize));
         end$.next();
