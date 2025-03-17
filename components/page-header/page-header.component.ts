@@ -131,7 +131,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.nzBack.observed) {
+    if (!this.nzBack.observers.length) {
       this.enableBackButton = (this.location.getState() as NzSafeAny)?.navigationId > 1;
       this.location.subscribe(() => {
         this.enableBackButton = true;
