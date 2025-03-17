@@ -16,7 +16,8 @@ import {
   computed,
   linkedSignal,
   signal,
-  booleanAttribute
+  booleanAttribute,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { map, merge, Subject, takeUntil } from 'rxjs';
 import { pairwise } from 'rxjs/operators';
@@ -31,22 +32,25 @@ import { NzSplitterLayout } from './typings';
 import { coerceCollapsible, getPercentValue, isPercent } from './utils';
 
 interface PanelSize {
-  innerSize: number;
+  // Calculated size of the panel in pixels, constrained by the min and max size.
   size: string | number | undefined;
-  hasSize: boolean;
+  // Size in pixels
   postPxSize: number;
+  // The percentage size of the panel, calculated based on the container size.
   percentage: number;
+  // Original min size of the panel set by the user.
   min: string | number | undefined;
+  // Original max size of the panel set by the user.
   max: string | number | undefined;
+  // Post processed min size of the panel in percentage.
   postPercentMinSize: number;
+  // Post processed max size of the panel in percentage.
   postPercentMaxSize: number;
 }
 
 @Component({
   selector: 'nz-splitter',
   exportAs: 'nzSplitter',
-  preserveWhitespaces: false,
-  encapsulation: ViewEncapsulation.None,
   template: `
     <ng-template>
       <ng-content></ng-content>
@@ -99,7 +103,9 @@ interface PanelSize {
     class: 'ant-splitter',
     '[class.ant-splitter-horizontal]': 'nzLayout() === "horizontal"',
     '[class.ant-splitter-vertical]': 'nzLayout() !== "horizontal"'
-  }
+  },
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzSplitterComponent {
   /** ------------------- Props ------------------- */
@@ -109,14 +115,14 @@ export class NzSplitterComponent {
   readonly nzResize = output<number[]>();
   readonly nzResizeEnd = output<number[]>();
 
-  readonly destroy$ = inject(NzDestroyService);
-  readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  protected readonly destroy$ = inject(NzDestroyService);
+  protected readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   /** ------------------- Panels ------------------- */
   // Get all panels from content children
-  readonly panels = contentChildren(NzSplitterPanelComponent);
+  protected readonly panels = contentChildren(NzSplitterPanelComponent);
   // Subscribe to the change of properties
-  readonly panelProps = computed(() =>
+  protected readonly panelProps = computed(() =>
     this.panels().map(panel => ({
       defaultSize: panel.nzDefaultSize(),
       size: panel.nzSize(),
@@ -132,23 +138,31 @@ export class NzSplitterComponent {
   /**
    * The size of the container, used to calculate the percentage size and flex basis of each panel.
    */
-  readonly containerSize = computed(() =>
+  protected readonly containerSize = computed(() =>
     this.nzLayout() === 'horizontal'
       ? this.elementRef.nativeElement.clientWidth || 0
       : this.elementRef.nativeElement.clientHeight || 0
   );
-  readonly innerSizes = linkedSignal({
+  /**
+   * Derived from defaultSize of each panel.
+   * After that it will be updated by the resize event with **real** size in pixels.
+   */
+  protected readonly innerSizes = linkedSignal({
     source: this.panelProps,
     computation: source => source.map(panel => panel.defaultSize)
   });
-  readonly sizes = computed(() => {
+  /**
+   * Calculate the size of each panel based on the container size and the percentage size.
+   */
+  protected readonly sizes = computed(() => {
     let emptyCount = 0;
     const containerSize = this.containerSize();
     const innerSizes = this.innerSizes();
+    /**
+     * Get the calculated size, min and max percentage of each panel
+     */
     const sizes = this.panelProps().map((panel, index) => {
-      const innerSize = innerSizes[index];
-      const size = panel.size ?? innerSize;
-      const hasSize = panel.size !== undefined;
+      const size = panel.size ?? innerSizes[index];
 
       // Calculate the percentage size of each panel.
       let percentage: number | undefined;
@@ -173,9 +187,7 @@ export class NzSplitterComponent {
         : (maxSize || containerSize) / containerSize;
 
       return {
-        innerSize,
         size,
-        hasSize,
         percentage,
         min: minSize,
         max: maxSize,
@@ -184,26 +196,25 @@ export class NzSplitterComponent {
       } as PanelSize;
     });
 
+    /**
+     * Normalize the percentage size of each panel if the total percentage is larger than 1 or smaller than 1.
+     */
     const totalPercentage = sizes.reduce((acc, { percentage }) => acc + (percentage ?? 0), 0);
 
-    if (totalPercentage > 1 && !emptyCount) {
-      // If total percentage is larger than 1, we will scale it down.
-      const scale = 1 / totalPercentage;
-      sizes.forEach(size => {
+    for (const size of sizes) {
+      if (totalPercentage > 1 && !emptyCount) {
+        // If total percentage is larger than 1, we will scale it down.
+        const scale = 1 / totalPercentage;
         size.percentage = size.percentage === undefined ? 0 : size.percentage * scale;
-      });
-    } else {
-      // If total percentage is smaller than 1, we will fill the rest.
-      const averagePercentage = (1 - totalPercentage) / emptyCount;
-      sizes.forEach(size => {
+      } else {
+        // If total percentage is smaller than 1, we will fill the rest.
+        const averagePercentage = (1 - totalPercentage) / emptyCount;
         size.percentage = size.percentage === undefined ? averagePercentage : size.percentage;
-      });
-    }
+      }
 
-    sizes.forEach(size => {
       size.postPxSize = size.percentage * containerSize;
       size.size = containerSize ? coerceCssPixelValue(size.postPxSize) : size.size;
-    });
+    }
 
     return sizes;
   });
@@ -211,15 +222,15 @@ export class NzSplitterComponent {
   /** ------------------ Resize ------------------ */
   /**
    * The index of the panel that is being resized.
-   * Mark the moving splitter bar as activated to show the dragging effect
-   * even if the mouse is outside the splitter container.
+   * @note Mark the moving splitter bar as activated to show the dragging effect even if the mouse is outside the
+   * splitter container.
    */
-  readonly movingIndex = signal<number | null>(null);
+  protected readonly movingIndex = signal<number | null>(null);
   /**
    * The offset of preview position (lazy mode) when dragging the splitter bar.
    * Constrained by the min and max size of the target panel.
    */
-  readonly constrainedOffset = signal<number>(0);
+  protected readonly constrainedOffset = signal<number>(0);
   /**
    * Handle the resize start event for the specified panel.
    * @param index The index of the panel.
@@ -296,6 +307,11 @@ export class NzSplitterComponent {
       });
   }
 
+  /**
+   * Update the sizes of specified panels based on the move offset.
+   * @param index The index of the panel.
+   * @param offset The move offset in pixels.
+   */
   private updateOffset(index: number, offset: number): void {
     const containerSize = this.containerSize();
     const limitSizes = this.sizes().map(p => [p.min, p.max]);
@@ -339,6 +355,11 @@ export class NzSplitterComponent {
     this.nzResize.emit(pxSizes);
   }
 
+  /**
+   * Collapse the specified panel.
+   * @param index The index of the panel to collapse.
+   * @param type The type of collapse, either `start` or `end`.
+   */
   collapse(index: number, type: 'start' | 'end'): void {
     const containerSize = this.containerSize();
     const limitSizes = this.sizes().map(p => [p.min, p.max]);

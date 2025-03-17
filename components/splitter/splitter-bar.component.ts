@@ -70,13 +70,13 @@ export class NzSplitterBarComponent {
   readonly collapsible = input<NzSplitterCollapseOption>();
   readonly constrainedOffset = input<number>();
 
-  readonly previewTransform = computed(() => {
+  readonly offsetStart = output<[x: number, y: number]>();
+  readonly collapse = output<'start' | 'end'>();
+
+  protected readonly previewTransform = computed(() => {
     const offset = coerceCssPixelValue(this.constrainedOffset());
     return this.vertical() ? `translateY(${offset})` : `translateX(${offset})`;
   });
-
-  readonly offsetStart = output<[x: number, y: number]>();
-  readonly collapse = output<'start' | 'end'>();
 
   protected resizeStartEvent(event: MouseEvent | TouchEvent): void {
     if (this.resizable()) {
