@@ -8,7 +8,8 @@ import { ChangeDetectionStrategy, Component, computed, input, output, ViewEncaps
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { getEventWithPoint } from 'ng-zorro-antd/resizable';
-import { NzSplitterCollapseOption } from 'ng-zorro-antd/splitter/typings';
+
+import { NzSplitterCollapseOption } from './typings';
 
 @Component({
   selector: '[nz-splitter-bar]',

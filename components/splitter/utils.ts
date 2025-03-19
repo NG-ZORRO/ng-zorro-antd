@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NzSplitterCollapseOption, NzSplitterCollapsible } from 'ng-zorro-antd/splitter/typings';
+import { NzSplitterCollapseOption, NzSplitterCollapsible } from './typings';
 
 /**
  * Get the percentage value of the string. (e.g. '50%' => 0.5)
