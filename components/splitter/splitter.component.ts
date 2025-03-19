@@ -30,7 +30,7 @@ import { getEventWithPoint } from 'ng-zorro-antd/resizable';
 
 import { NzSplitterBarComponent } from './splitter-bar.component';
 import { NzSplitterPanelComponent } from './splitter-panel.component';
-import { NzSplitterLayout } from './typings';
+import { NzSplitterCollapseOption, NzSplitterLayout } from './typings';
 import { coerceCollapsible, getPercentValue, isPercent } from './utils';
 
 interface PanelSize {
@@ -48,6 +48,11 @@ interface PanelSize {
   postPercentMinSize: number;
   // Post processed max size of the panel in percentage.
   postPercentMaxSize: number;
+}
+
+interface ResizableInfo {
+  resizable: boolean;
+  collapsible: Required<NzSplitterCollapseOption>;
 }
 
 @Component({
@@ -72,13 +77,14 @@ interface PanelSize {
       </div>
 
       @if (!last) {
+        @let resizableInfo = resizableInfos()[i];
         <div
           nz-splitter-bar
           [ariaNow]="size.percentage * 100"
           [ariaMin]="size.postPercentMinSize * 100"
           [ariaMax]="size.postPercentMaxSize * 100"
-          [resizable]="panel.resizable"
-          [collapsible]="panel.collapsible"
+          [resizable]="resizableInfo.resizable"
+          [collapsible]="resizableInfo.collapsible"
           [active]="movingIndex() === i"
           [vertical]="nzLayout() === 'vertical'"
           [lazy]="nzLazy()"
@@ -235,6 +241,10 @@ export class NzSplitterComponent {
     return sizes;
   });
 
+  private getPxSizes(): number[] {
+    return this.sizes().map(s => s.postPxSize);
+  }
+
   /** ------------------ Resize ------------------ */
   /**
    * The index of the panel that is being resized.
@@ -248,13 +258,64 @@ export class NzSplitterComponent {
    */
   protected readonly constrainedOffset = signal<number>(0);
   /**
+   * The resizable information of each splitter bar.
+   */
+  protected readonly resizableInfos = computed(() => {
+    const items = this.panelProps();
+    const pxSizes = this.getPxSizes();
+
+    const resizeInfos: ResizableInfo[] = [];
+
+    for (let i = 0; i < items.length - 1; i += 1) {
+      const prevItem = items[i];
+      const nextItem = items[i + 1];
+      const prevSize = pxSizes[i];
+      const nextSize = pxSizes[i + 1];
+
+      const { resizable: prevResizable = true, min: prevMin, collapsible: prevCollapsible } = prevItem;
+      const { resizable: nextResizable = true, min: nextMin, collapsible: nextCollapsible } = nextItem;
+
+      const mergedResizable =
+        // Both need to be resizable
+        prevResizable &&
+        nextResizable &&
+        // Prev is not collapsed and limit min size
+        (prevSize !== 0 || !prevMin) &&
+        // Next is not collapsed and limit min size
+        (nextSize !== 0 || !nextMin);
+
+      const startCollapsible =
+        // Self is collapsible
+        (prevCollapsible.end && prevSize > 0) ||
+        // Collapsed and can be collapsed
+        (nextCollapsible.start && nextSize === 0 && prevSize > 0);
+
+      const endCollapsible =
+        // Self is collapsible
+        (nextCollapsible.start && nextSize > 0) ||
+        // Collapsed and can be collapsed
+        (prevCollapsible.end && prevSize === 0 && nextSize > 0);
+
+      resizeInfos[i] = {
+        resizable: mergedResizable,
+        collapsible: {
+          start: !!startCollapsible,
+          end: !!endCollapsible
+        }
+      };
+    }
+
+    return resizeInfos;
+  });
+
+  /**
    * Handle the resize start event for the specified panel.
    * @param index The index of the panel.
    * @param startPos The start position of the resize event.
    */
   protected startResize(index: number, startPos: [x: number, y: number]): void {
     this.movingIndex.set(index);
-    this.nzResizeStart.emit(this.sizes().map(s => s.postPxSize));
+    this.nzResizeStart.emit(this.getPxSizes());
     const end$ = new Subject<void>();
 
     // Updated constraint calculation
@@ -318,7 +379,7 @@ export class NzSplitterComponent {
           handleLazyEnd();
         }
         this.movingIndex.set(null);
-        this.nzResize.emit(this.sizes().map(s => s.postPxSize));
+        this.nzResize.emit(this.getPxSizes());
         end$.next();
       });
   }
