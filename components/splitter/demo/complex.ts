@@ -7,7 +7,7 @@ import { NzSplitterModule } from 'ng-zorro-antd/splitter';
   imports: [NzSplitterModule],
   template: `
     <nz-splitter>
-      <nz-splitter-panel>
+      <nz-splitter-panel [nzCollapsible]="true">
         <div class="box">Left</div>
       </nz-splitter-panel>
       <nz-splitter-panel>
