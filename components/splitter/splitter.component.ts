@@ -19,9 +19,11 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { map, merge, Subject, takeUntil } from 'rxjs';
 import { pairwise } from 'rxjs/operators';
 
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { getEventWithPoint } from 'ng-zorro-antd/resizable';
@@ -93,7 +95,7 @@ interface PanelSize {
         aria-hidden
         class="ant-splitter-mask"
         [class.ant-splitter-mask-horizontal]="nzLayout() === 'horizontal'"
-        [class.ant-splitter-mask-vertical]="nzLayout() !== 'horizontal'"
+        [class.ant-splitter-mask-vertical]="nzLayout() === 'vertical'"
       ></div>
     }
   `,
@@ -102,7 +104,7 @@ interface PanelSize {
   host: {
     class: 'ant-splitter',
     '[class.ant-splitter-horizontal]': 'nzLayout() === "horizontal"',
-    '[class.ant-splitter-vertical]': 'nzLayout() !== "horizontal"'
+    '[class.ant-splitter-vertical]': 'nzLayout() === "vertical"'
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -117,6 +119,7 @@ export class NzSplitterComponent {
 
   protected readonly destroy$ = inject(NzDestroyService);
   protected readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  protected readonly resizeObserver = inject(NzResizeObserver);
 
   /** ------------------- Panels ------------------- */
   // Get all panels from content children
@@ -136,12 +139,25 @@ export class NzSplitterComponent {
 
   /** ------------------- Sizes ------------------- */
   /**
+   * Observe the size of the container.
+   */
+  private readonly containerBox = toSignal(
+    this.resizeObserver.observe(this.elementRef).pipe(
+      map(([item]) => item.target as HTMLElement),
+      map(el => ({ width: el.clientWidth, height: el.clientHeight }))
+    ),
+    {
+      initialValue: {
+        width: this.elementRef.nativeElement.clientWidth || 0,
+        height: this.elementRef.nativeElement.clientHeight || 0
+      }
+    }
+  );
+  /**
    * The size of the container, used to calculate the percentage size and flex basis of each panel.
    */
   protected readonly containerSize = computed(() =>
-    this.nzLayout() === 'horizontal'
-      ? this.elementRef.nativeElement.clientWidth || 0
-      : this.elementRef.nativeElement.clientHeight || 0
+    this.nzLayout() === 'horizontal' ? this.containerBox().width : this.containerBox().height
   );
   /**
    * Derived from defaultSize of each panel.
