@@ -59,10 +59,6 @@ interface ResizableInfo {
   selector: 'nz-splitter',
   exportAs: 'nzSplitter',
   template: `
-    <ng-template>
-      <ng-content></ng-content>
-    </ng-template>
-
     @for (panel of panelProps(); let i = $index; track i; let last = $last) {
       @let size = sizes()[i];
       @let flexBasis = !!size.size ? size.size : 'auto';
