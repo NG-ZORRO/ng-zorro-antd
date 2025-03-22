@@ -1,4 +1,5 @@
-import { CommonModule } from '@angular/common';
+import { Direction } from '@angular/cdk/bidi';
+import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -30,11 +31,12 @@ const RESPONSIVE_XS = 1120;
 const RESPONSIVE_SM = 1200;
 
 @Component({
-    selector: 'app-header',
+  selector: 'app-header',
   templateUrl: './header.component.html',
   imports: [
-    CommonModule,
     FormsModule,
+    NgTemplateOutlet,
+    UpperCasePipe,
     NzGridModule,
     NzIconModule,
     NzMenuModule,
@@ -55,7 +57,7 @@ export class HeaderComponent implements OnChanges {
   @Input() page: 'docs' | 'components' | 'experimental' | string = 'docs';
   @Output() versionChange = new EventEmitter<string>();
   @Output() languageChange = new EventEmitter<'zh' | 'en'>();
-  @Output() directionChange = new EventEmitter<'ltr' | 'rtl'>();
+  @Output() directionChange = new EventEmitter<Direction>();
 
   searching = false;
   isMobile = false;
@@ -79,7 +81,7 @@ export class HeaderComponent implements OnChanges {
     '0.5.x'
   ];
   currentVersion = VERSION.full;
-  nextDirection: 'ltr' | 'rtl' = 'rtl';
+  nextDirection: Direction = 'rtl';
 
   constructor(private nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
 

@@ -1,8 +1,9 @@
+import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { CommonModule, DOCUMENT } from '@angular/common';
-import { ChangeDetectorRef, Component, NgZone, OnInit, Renderer2, inject } from '@angular/core';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { Component, NgZone, OnInit, Renderer2, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { NavigationEnd, NavigationStart, Router, RouterModule } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { NzColor } from 'ng-zorro-antd/color-picker';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzI18nService, en_US, zh_CN } from 'ng-zorro-antd/i18n';
@@ -45,8 +46,9 @@ const defaultKeywords =
 @Component({
   selector: 'app-root',
   imports: [
-    CommonModule,
-    RouterModule,
+    BidiModule,
+    NgTemplateOutlet,
+    RouterOutlet,
     NzGridModule,
     NzAffixModule,
     NzMenuModule,
@@ -103,14 +105,8 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl(`${url.join('/')}/${language}`).then();
   }
 
-  switchDirection(direction: 'ltr' | 'rtl'): void {
+  switchDirection(direction: Direction): void {
     this.direction = direction;
-    if (direction === 'rtl') {
-      this.renderer.setAttribute(document.body, 'dir', 'rtl');
-    } else {
-      this.renderer.removeAttribute(document.body, 'dir');
-    }
-    this.cdr.detectChanges();
   }
 
   initTheme(): void {
@@ -183,8 +179,7 @@ export class AppComponent implements OnInit {
     private ngZone: NgZone,
     private platform: Platform,
     private meta: Meta,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef
+    private renderer: Renderer2
   ) {}
 
   setPage(url: string): void {

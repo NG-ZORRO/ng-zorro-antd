@@ -1,4 +1,3 @@
-import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -51,14 +50,7 @@ export class SearchbarComponent implements OnChanges {
   focused = false;
   docsearch: any = null;
 
-  get useDocsearch(): boolean {
-    if (!this.platform.isBrowser) {
-      return false;
-    }
-    return window && window.location.href.indexOf('/version') === -1;
-  }
-
-  constructor(private cdr: ChangeDetectorRef, private platform: Platform) { }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   triggerFocus(focus: boolean): void {
     if (this.docsearch) {
