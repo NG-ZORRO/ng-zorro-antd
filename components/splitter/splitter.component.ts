@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
 import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
@@ -84,7 +85,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
           [ariaMax]="size.postPercentMaxSize * 100"
           [resizable]="resizableInfo.resizable"
           [collapsible]="resizableInfo.collapsible"
-          [active]="movingIndex() === i"
+          [active]="movingIndex()?.index === i"
           [vertical]="nzLayout() === 'vertical'"
           [lazy]="nzLazy()"
           [constrainedOffset]="constrainedOffset()"
@@ -109,7 +110,8 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   host: {
     class: 'ant-splitter',
     '[class.ant-splitter-horizontal]': 'nzLayout() === "horizontal"',
-    '[class.ant-splitter-vertical]': 'nzLayout() === "vertical"'
+    '[class.ant-splitter-vertical]': 'nzLayout() === "vertical"',
+    '[class.ant-splitter-rtl]': 'dir() === "rtl"'
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -124,8 +126,11 @@ export class NzSplitterComponent {
 
   protected readonly destroy$ = inject(NzDestroyService);
   protected readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  protected readonly directionality = inject(Directionality);
   protected readonly resizeObserver = inject(NzResizeObserver);
   protected readonly document = inject(DOCUMENT);
+
+  protected readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
 
   /** ------------------- Panels ------------------- */
   // Get all panels from content children
@@ -252,7 +257,7 @@ export class NzSplitterComponent {
    * @note Mark the moving splitter bar as activated to show the dragging effect even if the mouse is outside the
    * splitter container.
    */
-  protected readonly movingIndex = signal<number | null>(null);
+  protected readonly movingIndex = signal<{ index: number; confirmed: boolean } | null>(null);
   /**
    * The offset of preview position (lazy mode) when dragging the splitter bar.
    * Constrained by the min and max size of the target panel.
@@ -300,8 +305,8 @@ export class NzSplitterComponent {
       resizeInfos[i] = {
         resizable: mergedResizable,
         collapsible: {
-          start: !!startCollapsible,
-          end: !!endCollapsible
+          start: !!(this.dir() === 'rtl' ? endCollapsible : startCollapsible),
+          end: !!(this.dir() === 'rtl' ? startCollapsible : endCollapsible)
         }
       };
     }
@@ -315,7 +320,7 @@ export class NzSplitterComponent {
    * @param startPos The start position of the resize event.
    */
   protected startResize(index: number, startPos: [x: number, y: number]): void {
-    this.movingIndex.set(index);
+    this.movingIndex.set({ index, confirmed: false });
     this.nzResizeStart.emit(this.getPxSizes());
     const end$ = new Subject<void>();
 
@@ -354,6 +359,7 @@ export class NzSplitterComponent {
       .pipe(
         map(event => getEventWithPoint(event)),
         map(({ pageX, pageY }) => (this.nzLayout() === 'horizontal' ? pageX - startPos[0] : pageY - startPos[1])),
+        map(offset => (this.nzLayout() === 'horizontal' && this.dir() === 'rtl' ? -offset : offset)),
         startWith(0),
         pairwise(),
         takeUntil(merge(end$, this.destroy$))
@@ -403,32 +409,53 @@ export class NzSplitterComponent {
       return size ?? defaultLimit;
     };
 
-    const nextIndex = index + 1;
+    // First time trigger move index update is not sync in the state
+    let confirmedIndex: number | null = null;
+    const movingIndex = this.movingIndex();
+    // we need to know what the real index is
+    if ((!movingIndex || !movingIndex.confirmed) && offset !== 0) {
+      // search for the real index
+      if (offset > 0) {
+        confirmedIndex = index;
+        this.movingIndex.set({ index, confirmed: true });
+      } else {
+        for (let i = index; i >= 0; i -= 1) {
+          if (pxSizes[i] > 0 && this.resizableInfos()[i].resizable) {
+            confirmedIndex = i;
+            this.movingIndex.set({ index: i, confirmed: true });
+            break;
+          }
+        }
+      }
+    }
+
+    const mergedIndex = confirmedIndex ?? index;
+    const nextIndex = mergedIndex + 1;
 
     // Get boundary
-    const startMinSize = getLimitSize(limitSizes[index][0], 0);
+    const startMinSize = getLimitSize(limitSizes[mergedIndex][0], 0);
     const endMinSize = getLimitSize(limitSizes[nextIndex][0], 0);
-    const startMaxSize = getLimitSize(limitSizes[index][1], containerSize);
+    const startMaxSize = getLimitSize(limitSizes[mergedIndex][1], containerSize);
     const endMaxSize = getLimitSize(limitSizes[nextIndex][1], containerSize);
 
     let mergedOffset = offset;
 
     // Align with the boundary
-    if (pxSizes[index] + mergedOffset < startMinSize) {
-      mergedOffset = startMinSize - pxSizes[index];
+    if (pxSizes[mergedIndex] + mergedOffset < startMinSize) {
+      mergedOffset = startMinSize - pxSizes[mergedIndex];
     }
     if (pxSizes[nextIndex] - mergedOffset < endMinSize) {
       mergedOffset = pxSizes[nextIndex] - endMinSize;
     }
-    if (pxSizes[index] + mergedOffset > startMaxSize) {
-      mergedOffset = startMaxSize - pxSizes[index];
+    if (pxSizes[mergedIndex] + mergedOffset > startMaxSize) {
+      mergedOffset = startMaxSize - pxSizes[mergedIndex];
     }
     if (pxSizes[nextIndex] - mergedOffset > endMaxSize) {
       mergedOffset = pxSizes[nextIndex] - endMaxSize;
     }
 
     // Do offset
-    pxSizes[index] += mergedOffset;
+    pxSizes[mergedIndex] += mergedOffset;
     pxSizes[nextIndex] -= mergedOffset;
     this.innerSizes.set(pxSizes);
     this.nzResize.emit(pxSizes);
@@ -450,9 +477,10 @@ export class NzSplitterComponent {
     const containerSize = this.containerSize();
     const limitSizes = this.sizes().map(p => [p.min, p.max]);
     const currentSizes = this.sizes().map(p => p.percentage * containerSize);
+    const adjustedType = this.dir() === 'rtl' ? (type === 'start' ? 'end' : 'start') : type;
 
-    const currentIndex = type === 'start' ? index : index + 1;
-    const targetIndex = type == 'start' ? index + 1 : index;
+    const currentIndex = adjustedType === 'start' ? index : index + 1;
+    const targetIndex = adjustedType == 'start' ? index + 1 : index;
     const currentSize = currentSizes[currentIndex];
     const targetSize = currentSizes[targetIndex];
 
