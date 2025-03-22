@@ -53,9 +53,9 @@ import { NzSplitterCollapseOption } from './typings';
   host: {
     role: 'separator',
     class: 'ant-splitter-bar',
-    '[attr.aria-valuenow]': 'ariaNow()',
-    '[attr.aria-valuemin]': 'ariaMin()',
-    '[attr.aria-valuemax]': 'ariaMax()'
+    '[attr.aria-valuenow]': 'getValidNumber(ariaNow())',
+    '[attr.aria-valuemin]': 'getValidNumber(ariaMin())',
+    '[attr.aria-valuemax]': 'getValidNumber(ariaMax())'
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -88,5 +88,9 @@ export class NzSplitterBarComponent {
 
   protected collapseEvent(type: 'start' | 'end'): void {
     this.collapse.emit(type);
+  }
+
+  protected getValidNumber(num: number | undefined): number {
+    return typeof num === 'number' && !isNaN(num) ? Math.round(num) : 0;
   }
 }

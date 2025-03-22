@@ -28,6 +28,7 @@ interface PanelProps {
   imports: [BidiModule, NzSplitterModule],
   template: `
     <nz-splitter
+      [nzLazy]="lazy"
       [nzLayout]="vertical ? 'vertical' : 'horizontal'"
       (nzResizeStart)="onResizeStart($event)"
       (nzResize)="onResize($event)"
@@ -59,6 +60,7 @@ interface PanelProps {
 })
 class NzSplitterTestComponent {
   vertical = false;
+  lazy = false;
   panels: PanelProps[] = [{}, {}];
   readonly onResizeStart = (_sizes: number[]): void => void 0;
   readonly onResize = (_sizes: number[]): void => void 0;
@@ -75,6 +77,7 @@ describe('nz-splitter', () => {
   let fixture: ComponentFixture<NzSplitterTestComponent>;
   let component: NzSplitterTestComponent;
   let container: DebugElement;
+  let document: Document;
 
   function getDragger(index: number = 0): HTMLElement {
     return container.queryAll(By.css('.ant-splitter-bar-dragger'))[index].nativeElement as HTMLElement;
@@ -127,6 +130,7 @@ describe('nz-splitter', () => {
         ]
       });
       fixture = TestBed.createComponent(NzSplitterTestComponent);
+      document = TestBed.inject(DOCUMENT);
       container = fixture.debugElement;
       component = fixture.componentInstance;
     });
@@ -170,10 +174,7 @@ describe('nz-splitter', () => {
     });
 
     describe('drag', () => {
-      let document: Document;
-
       beforeEach(() => {
-        document = TestBed.inject(DOCUMENT);
         spyOn(component, 'onResizeStart');
         spyOn(component, 'onResize');
         spyOn(component, 'onResizeEnd');
@@ -236,10 +237,10 @@ describe('nz-splitter', () => {
         dispatchTouchEvent(dragger, 'touchstart', x + 40, y);
         fixture.detectChanges();
 
-        dispatchTouchEvent(window.document, 'touchmove', x - 240, y);
+        dispatchTouchEvent(document, 'touchmove', x - 240, y);
         fixture.detectChanges();
         expect(component.onResize).toHaveBeenCalledWith([0, 100]);
-        dispatchTouchEvent(window.document, 'touchend');
+        dispatchTouchEvent(document, 'touchend');
         fixture.detectChanges();
         expect(component.onResizeEnd).toHaveBeenCalledWith([0, 100]);
       });
@@ -473,6 +474,125 @@ describe('nz-splitter', () => {
         // Collapse right
         expectClick(endBtn, [100, 0]);
         expect(container.query(By.css('.ant-splitter-bar-dragger-disabled'))).toBeTruthy();
+      });
+    });
+
+    describe('lazy', () => {
+      beforeEach(() => {
+        component.lazy = true;
+        component.panels = [
+          {
+            defaultSize: '50%',
+            min: '30%',
+            max: '70%'
+          },
+          {
+            defaultSize: '50%',
+            min: '30%',
+            max: '70%'
+          }
+        ];
+
+        spyOn(component, 'onResizeStart');
+        spyOn(component, 'onResize');
+        spyOn(component, 'onResizeEnd');
+      });
+
+      it('should only update after mouse up', () => {
+        fixture.detectChanges();
+        const { dragger, x, y } = getDraggerAndPos();
+
+        // right
+        dispatchMouseEvent(dragger, 'mousedown', x, y);
+        fixture.detectChanges();
+        expect(dragger.classList).toContain('ant-splitter-bar-dragger-active');
+        expect(component.onResizeStart).toHaveBeenCalledWith([50, 50]);
+
+        dispatchMouseEvent(document, 'mousemove', x + 100, y);
+        fixture.detectChanges();
+        expect(component.onResize).not.toHaveBeenCalled();
+
+        dispatchMouseEvent(document, 'mouseup', x + 100, y);
+        expect(component.onResize).toHaveBeenCalledWith([70, 30]);
+        expect(component.onResizeEnd).toHaveBeenCalledWith([70, 30]);
+
+        // left
+        dispatchMouseEvent(dragger, 'mousedown', x + 100, y);
+        fixture.detectChanges();
+
+        dispatchMouseEvent(document, 'mousemove', x, y);
+        fixture.detectChanges();
+        expect(component.onResize).toHaveBeenCalledTimes(1);
+
+        dispatchMouseEvent(document, 'mouseup', x, y);
+        expect(component.onResize).toHaveBeenCalledWith([30, 70]);
+        expect(component.onResizeEnd).toHaveBeenCalledWith([30, 70]);
+      });
+
+      it('should work with touch events', () => {
+        fixture.detectChanges();
+        const { dragger, x, y } = getDraggerAndPos();
+
+        // right
+        dispatchTouchEvent(dragger, 'touchstart', x, y);
+        fixture.detectChanges();
+        expect(dragger.classList).toContain('ant-splitter-bar-dragger-active');
+        expect(component.onResizeStart).toHaveBeenCalledWith([50, 50]);
+
+        dispatchTouchEvent(document, 'touchmove', x + 100, y);
+        fixture.detectChanges();
+        expect(component.onResize).not.toHaveBeenCalled();
+
+        dispatchTouchEvent(document, 'touchend', x + 100, y);
+        expect(component.onResize).toHaveBeenCalledWith([70, 30]);
+        expect(component.onResizeEnd).toHaveBeenCalledWith([70, 30]);
+
+        // left
+        dispatchTouchEvent(dragger, 'touchstart', x + 100, y);
+        fixture.detectChanges();
+
+        dispatchTouchEvent(document, 'touchmove', x, y);
+        fixture.detectChanges();
+        expect(component.onResize).toHaveBeenCalledTimes(1);
+
+        dispatchTouchEvent(document, 'touchend', x, y);
+        expect(component.onResize).toHaveBeenCalledWith([30, 70]);
+        expect(component.onResizeEnd).toHaveBeenCalledWith([30, 70]);
+      });
+
+      it('should work with vertical layout', () => {
+        component.vertical = true;
+        fixture.detectChanges();
+
+        function dragWithMouse(f: (y: number) => number): void {
+          const { dragger, x, y } = getDraggerAndPos();
+          dispatchMouseEvent(dragger, 'mousedown', x, y);
+          dispatchMouseEvent(dragger, 'mousemove', x, f(y));
+          dispatchMouseEvent(dragger, 'mouseup', x, f(y));
+        }
+
+        function dragWithTouch(f: (y: number) => number): void {
+          const { dragger, x, y } = getDraggerAndPos();
+          dispatchTouchEvent(dragger, 'touchstart', x, y);
+          dispatchTouchEvent(document, 'touchmove', x, f(y));
+          dispatchTouchEvent(document, 'touchend', x, f(y));
+        }
+
+        // down
+        dragWithMouse(y => y + 100);
+        expect(component.onResize).toHaveBeenCalledWith([70, 30]);
+
+        // up
+        dragWithMouse(y => y - 100);
+        expect(component.onResize).toHaveBeenCalledWith([30, 70]);
+
+        // touch drag down
+        dragWithTouch(y => y + 100);
+        expect(component.onResize).toHaveBeenCalledWith([70, 30]);
+
+        // touch drag up
+        dragWithTouch(y => y - 100);
+        expect(component.onResize).toHaveBeenCalledWith([30, 70]);
       });
     });
   });
