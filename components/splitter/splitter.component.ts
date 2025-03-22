@@ -434,6 +434,13 @@ export class NzSplitterComponent {
     this.nzResize.emit(pxSizes);
   }
 
+  /** ------------------ Resize ------------------ */
+  /**
+   * Record the original size of the collapsed panel.
+   * Used to restore the size when the panel is expanded back.
+   */
+  readonly cacheCollapsedSize: number[] = [];
+
   /**
    * Collapse the specified panel.
    * @param index The index of the panel to collapse.
@@ -460,6 +467,7 @@ export class NzSplitterComponent {
       // Collapse directly
       currentSizes[currentIndex] = 0;
       currentSizes[targetIndex] += currentSize;
+      this.cacheCollapsedSize[index] = currentSize;
     } else {
       const totalSize = currentSize + targetSize;
 
@@ -472,8 +480,23 @@ export class NzSplitterComponent {
       const limitEnd = Math.min(currentSizeMax, totalSize - targetSizeMin);
       const halfOffset = (limitEnd - limitStart) / 2;
 
-      currentSizes[currentIndex] -= halfOffset;
-      currentSizes[targetIndex] += halfOffset;
+      const targetCacheCollapsedSize = this.cacheCollapsedSize[index];
+      const currentCacheCollapsedSize = totalSize - targetCacheCollapsedSize;
+
+      const shouldUseCache =
+        targetCacheCollapsedSize &&
+        targetCacheCollapsedSize <= targetSizeMax &&
+        targetCacheCollapsedSize >= targetSizeMin &&
+        currentCacheCollapsedSize <= currentSizeMax &&
+        currentCacheCollapsedSize >= currentSizeMin;
+
+      if (shouldUseCache) {
+        currentSizes[targetIndex] = targetCacheCollapsedSize;
+        currentSizes[currentIndex] = currentCacheCollapsedSize;
+      } else {
+        currentSizes[currentIndex] -= halfOffset;
+        currentSizes[targetIndex] += halfOffset;
+      }
     }
 
     this.innerSizes.set(currentSizes);
