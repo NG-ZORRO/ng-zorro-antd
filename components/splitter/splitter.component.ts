@@ -78,11 +78,12 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
 
       @if (!last) {
         @let resizableInfo = resizableInfos()[i];
+        @let ariaInfo = ariaInfos()[i];
         <div
           nz-splitter-bar
-          [ariaNow]="size.percentage * 100"
-          [ariaMin]="size.postPercentMinSize * 100"
-          [ariaMax]="size.postPercentMaxSize * 100"
+          [ariaNow]="ariaInfo.ariaNow"
+          [ariaMin]="ariaInfo.ariaMin"
+          [ariaMax]="ariaInfo.ariaMax"
           [resizable]="resizableInfo.resizable"
           [collapsible]="resizableInfo.collapsible"
           [active]="movingIndex()?.index === i"
@@ -245,6 +246,34 @@ export class NzSplitterComponent {
     }
 
     return sizes;
+  });
+
+  protected readonly ariaInfos = computed(() => {
+    const stackSizes: number[] = [];
+    const ariaInfos: Array<{ ariaNow: number; ariaMin: number; ariaMax: number }> = [];
+    const sizes = this.sizes();
+
+    let stack = 0;
+    for (const size of sizes) {
+      stack += size.percentage;
+      stackSizes.push(stack);
+    }
+
+    for (let i = 0; i < sizes.length - 1; i += 1) {
+      const ariaMinStart = (stackSizes[i - 1] || 0) + sizes[i].postPercentMinSize;
+      const ariaMinEnd = (stackSizes[i + 1] || 100) - sizes[i + 1].postPercentMaxSize;
+
+      const ariaMaxStart = (stackSizes[i - 1] || 0) + sizes[i].postPercentMaxSize;
+      const ariaMaxEnd = (stackSizes[i + 1] || 100) - sizes[i + 1].postPercentMinSize;
+
+      ariaInfos.push({
+        ariaNow: stackSizes[i] * 100,
+        ariaMin: Math.max(ariaMinStart, ariaMinEnd) * 100,
+        ariaMax: Math.min(ariaMaxStart, ariaMaxEnd) * 100
+      });
+    }
+
+    return ariaInfos;
   });
 
   private getPxSizes(): number[] {
