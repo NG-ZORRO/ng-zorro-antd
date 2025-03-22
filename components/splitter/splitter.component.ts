@@ -4,7 +4,8 @@
  */
 
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
-import { NgTemplateOutlet } from '@angular/common';
+import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   contentChildren,
@@ -21,7 +22,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, merge, Subject, takeUntil } from 'rxjs';
-import { pairwise } from 'rxjs/operators';
+import { pairwise, startWith } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -54,6 +55,8 @@ interface ResizableInfo {
   resizable: boolean;
   collapsible: Required<NzSplitterCollapseOption>;
 }
+
+const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: true });
 
 @Component({
   selector: 'nz-splitter',
@@ -122,6 +125,7 @@ export class NzSplitterComponent {
   protected readonly destroy$ = inject(NzDestroyService);
   protected readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   protected readonly resizeObserver = inject(NzResizeObserver);
+  protected readonly document = inject(DOCUMENT);
 
   /** ------------------- Panels ------------------- */
   // Get all panels from content children
@@ -143,10 +147,11 @@ export class NzSplitterComponent {
   /**
    * Observe the size of the container.
    */
-  private readonly containerBox = toSignal(
+  protected readonly containerBox = toSignal(
     this.resizeObserver.observe(this.elementRef).pipe(
       map(([item]) => item.target as HTMLElement),
-      map(el => ({ width: el.clientWidth, height: el.clientHeight }))
+      map(el => ({ width: el.clientWidth, height: el.clientHeight })),
+      takeUntil(this.destroy$)
     ),
     {
       initialValue: {
@@ -343,17 +348,18 @@ export class NzSplitterComponent {
 
     // resizing
     merge(
-      fromEventOutsideAngular<MouseEvent>(window, 'mousemove', { passive: true }),
-      fromEventOutsideAngular<TouchEvent>(window, 'touchmove', { passive: true })
+      fromEventOutsideAngular<MouseEvent>(this.document, 'mousemove', passiveEventListenerOptions),
+      fromEventOutsideAngular<TouchEvent>(this.document, 'touchmove', passiveEventListenerOptions)
     )
       .pipe(
         map(event => getEventWithPoint(event)),
         map(({ pageX, pageY }) => (this.nzLayout() === 'horizontal' ? pageX - startPos[0] : pageY - startPos[1])),
+        startWith(0),
         pairwise(),
         takeUntil(merge(end$, this.destroy$))
       )
       .subscribe(([prev, next]) => {
-        if (this.nzLazy()) {
+        if (this.nzLazy() && next !== 0) {
           handleLazyMove(next);
         } else {
           const deltaOffset = next - prev;
@@ -366,8 +372,8 @@ export class NzSplitterComponent {
 
     // resize end
     merge(
-      fromEventOutsideAngular<MouseEvent>(window, 'mouseup'),
-      fromEventOutsideAngular<TouchEvent>(window, 'touchend')
+      fromEventOutsideAngular<MouseEvent>(this.document, 'mouseup'),
+      fromEventOutsideAngular<TouchEvent>(this.document, 'touchend')
     )
       .pipe(takeUntil(merge(end$, this.destroy$)))
       .subscribe(() => {
@@ -375,7 +381,7 @@ export class NzSplitterComponent {
           handleLazyEnd();
         }
         this.movingIndex.set(null);
-        this.nzResize.emit(this.getPxSizes());
+        this.nzResizeEnd.emit(this.getPxSizes());
         end$.next();
       });
   }
@@ -472,5 +478,6 @@ export class NzSplitterComponent {
 
     this.innerSizes.set(currentSizes);
     this.nzResize.emit(currentSizes);
+    this.nzResizeEnd.emit(currentSizes);
   }
 }
