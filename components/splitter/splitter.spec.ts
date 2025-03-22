@@ -304,6 +304,13 @@ describe('nz-splitter', () => {
   });
 
   describe('collapsible', () => {
+    function expectClick(button: HTMLElement, sizes: number[]): void {
+      button.click();
+      fixture.detectChanges();
+      expect(component.onResize).toHaveBeenCalledWith(sizes);
+      expect(component.onResizeEnd).toHaveBeenCalledWith(sizes);
+    }
+
     beforeEach(() => {
       spyOn(component, 'onResize');
       spyOn(component, 'onResizeEnd');
@@ -409,13 +416,6 @@ describe('nz-splitter', () => {
       ];
       fixture.detectChanges();
 
-      function expectClick(button: HTMLElement, sizes: number[]): void {
-        button.click();
-        fixture.detectChanges();
-        expect(component.onResize).toHaveBeenCalledWith(sizes);
-        expect(component.onResizeEnd).toHaveBeenCalledWith(sizes);
-      }
-
       const startBtn = container.query(By.css('.ant-splitter-bar-collapse-start'))!.nativeElement as HTMLElement;
       const endBtn = container.query(By.css('.ant-splitter-bar-collapse-end'))!.nativeElement as HTMLElement;
 
@@ -425,8 +425,60 @@ describe('nz-splitter', () => {
       expectClick(startBtn, [50, 50]);
     });
 
-    it('collapsible with cache', () => {});
+    it('collapsible with cache', () => {
+      component.panels = [
+        {
+          defaultSize: 20,
+          collapsible: true,
+          min: 10
+        },
+        {
+          collapsible: true,
+          min: '80%'
+        }
+      ];
+      fixture.detectChanges();
 
-    it('collapsible with fallback', () => {});
+      const startBtn = container.query(By.css('.ant-splitter-bar-collapse-start'))!.nativeElement as HTMLElement;
+      const endBtn = container.query(By.css('.ant-splitter-bar-collapse-end'))!.nativeElement as HTMLElement;
+
+      // Collapse left
+      expectClick(startBtn, [0, 100]);
+      expect(container.query(By.css('.ant-splitter-bar-dragger-disabled'))).toBeTruthy();
+      // Collapse back
+      expectClick(endBtn, [20, 80]);
+      expect(container.query(By.css('.ant-splitter-bar-dragger-disabled'))).toBeFalsy();
+      // Collapse right
+      expectClick(endBtn, [100, 0]);
+      expect(container.query(By.css('.ant-splitter-bar-dragger-disabled'))).toBeTruthy();
+    });
+
+    it('collapsible with fallback', () => {
+      component.panels = [
+        {
+          defaultSize: 10,
+          collapsible: true,
+          min: 15
+        },
+        {
+          collapsible: true,
+          min: '80%'
+        }
+      ];
+      fixture.detectChanges();
+
+      const startBtn = container.query(By.css('.ant-splitter-bar-collapse-start'))!.nativeElement as HTMLElement;
+      const endBtn = container.query(By.css('.ant-splitter-bar-collapse-end'))!.nativeElement as HTMLElement;
+
+      // Collapse left
+      expectClick(startBtn, [0, 100]);
+      expect(container.query(By.css('.ant-splitter-bar-dragger-disabled'))).toBeTruthy();
+      // Collapse back
+      expectClick(endBtn, [2.5, 97.5]);
+      expect(container.query(By.css('.ant-splitter-bar-dragger-disabled'))).toBeFalsy();
+      // Collapse right
+      expectClick(endBtn, [100, 0]);
+      expect(container.query(By.css('.ant-splitter-bar-dragger-disabled'))).toBeTruthy();
+    });
   });
 });
