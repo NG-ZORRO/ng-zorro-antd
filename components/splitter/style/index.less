@@ -1,0 +1,265 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@splitter-prefix-cls: ~'@{ant-prefix}-splitter';
+
+.@{splitter-prefix-cls} {
+  .reset-component();
+  display: flex;
+  align-items: stretch;
+
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: @text-color;
+  font-size: @font-size-base;
+  font-family: @font-family;
+  line-height: @line-height-base;
+  list-style: none;
+
+  @half-trigger-size: calc(@splitter-split-trigger-size / 2);
+
+  &-horizontal {
+    flex-direction: row;
+  }
+
+  &-vertical {
+    flex-direction: column;
+  }
+
+  &-panel {
+    box-sizing: border-box;
+    padding: 0 1px;
+    overflow: auto;
+    scrollbar-width: thin;
+
+    &-hidden {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    &:has(.@{splitter-prefix-cls}:only-child) {
+      overflow: hidden;
+    }
+  }
+
+  &-bar {
+    position: relative;
+    flex: none;
+    user-select: none;
+
+    &-preview {
+      position: absolute;
+      z-index: 1;
+      display: none;
+      background: @primary-color;
+      opacity: 0.2;
+      transition: none;
+      pointer-events: none;
+
+      &-active {
+        display: block;
+      }
+    }
+
+    // ======================= Dragger =======================
+    &-dragger {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+
+      // Hover background
+      &::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: @splitter-bar-bg;
+        transform: translate(-50%, -50%);
+        content: '';
+      }
+
+      // Hover
+      &:hover:not(&-active) {
+        &::before {
+          background: @splitter-bar-hover-bg;
+        }
+      }
+
+      // Spinner
+      &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: @fill-color;
+        transform: translate(-50%, -50%);
+        content: '';
+      }
+
+      // Active
+      &-active {
+        z-index: 2;
+
+        &::before {
+          background: @splitter-bar-active-bg;
+        }
+      }
+    }
+
+    &:hover &-collapse-bar, &:active &-collapse-bar {
+      opacity: 1;
+    }
+  }
+
+  // Disabled
+  & > &-bar > &-bar-dragger&-bar-dragger-disabled {
+    z-index: 0;
+
+    &, &:hover, &-active {
+      cursor: default;
+
+      &::before {
+        background: @splitter-bar-bg;
+      }
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
+  // ======================= Collapse =======================
+  &-bar-collapse-bar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: @text-color;
+    font-size: @font-size-sm;
+    background: @splitter-bar-bg;
+    border-radius: @border-radius-sm;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    opacity: 0;
+
+    &:hover {
+      background: @splitter-bar-hover-bg;
+    }
+
+    &:active {
+      background: @splitter-bar-active-bg;
+    }
+  }
+
+  &-horizontal > &-bar {
+    width: 0;
+  }
+
+  &-horizontal > &-bar &-bar-dragger {
+    width: @splitter-split-trigger-size;
+    height: 100%;
+    cursor: col-resize;
+  }
+
+  &-horizontal > &-bar &-bar-dragger::before {
+    width: @splitter-split-bar-size;
+    height: 100%;
+  }
+
+  &-horizontal > &-bar &-bar-dragger::after {
+    width: @splitter-split-bar-size;
+    height: @splitter-split-bar-draggable-size;
+  }
+
+  &-horizontal > &-bar &-bar-preview {
+    width: @splitter-split-bar-size;
+    height: 100%;
+  }
+
+  &-horizontal > &-bar &-bar-collapse-bar {
+    width: @font-size-sm;
+    height: @splitter-split-bar-collapsible-size;
+  }
+
+  &-horizontal > &-bar &-bar-collapse-bar-start {
+    right: @half-trigger-size;
+    left: auto;
+    transform: translateY(-50%);
+  }
+
+  &-horizontal > &-bar &-bar-collapse-bar-end {
+    right: auto;
+    left: @half-trigger-size;
+    transform: translateY(-50%);
+  }
+
+  &-vertical > &-bar {
+    height: 0;
+  }
+
+  &-vertical > &-bar &-bar-dragger {
+    width: 100%;
+    height: @splitter-split-trigger-size;
+    cursor: row-resize;
+
+    &:has(&-disabled) {
+      cursor: default;
+    }
+  }
+
+  &-vertical > &-bar &-bar-dragger::before {
+    width: 100%;
+    height: @splitter-split-bar-size;
+  }
+
+  &-vertical > &-bar &-bar-dragger::after {
+    width: @splitter-split-bar-draggable-size;
+    height: @splitter-split-bar-size;
+  }
+
+  &-vertical > &-bar &-bar-preview {
+    width: 100%;
+    height: @splitter-split-bar-size;
+  }
+
+  &-vertical > &-bar &-bar-collapse-bar {
+    width: 24px;
+    height: @font-size-sm;
+  }
+
+  &-vertical > &-bar &-bar-collapse-bar-start {
+    top: auto;
+    bottom: @half-trigger-size;
+    transform: translateX(-50%);
+  }
+
+  &-vertical > &-bar &-bar-collapse-bar-end {
+    top: @half-trigger-size;
+    bottom: auto;
+    transform: translateX(-50%);
+  }
+
+  // ======================= Mask =======================
+  // Util dom for handle cursor
+  &-mask {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+
+    &-horizontal {
+      cursor: col-resize;
+    }
+
+    &-vertical {
+      cursor: row-resize;
+    }
+  }
+}
+
+@import './rtl';
