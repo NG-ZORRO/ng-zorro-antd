@@ -1,12 +1,12 @@
 import { Platform } from '@angular/cdk/platform';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'app-github-btn',
+  selector: 'app-github-btn',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <a class="gh-btn" tabindex="-1" [href]="'https://github.com/' + repo" target="_blank" rel="noopener" aria-hidden="true">
+    <a class="gh-btn" tabindex="-1" [attr.href]="'https://github.com/' + repo" target="_blank" rel="noopener" aria-hidden="true">
       <span class="gh-ico" aria-hidden="true"></span>
       <span class="gh-text">Star</span>
     </a>
@@ -14,8 +14,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, V
       class="gh-count"
       target="_blank"
       rel="noopener"
-      [href]="'https://github.com/' + repo + '/stargazers'"
-      style="display: block;"
+      style="display: block"
+      [attr.href]="'https://github.com/' + repo + '/stargazers'"
     >
       {{ starCount }}
     </a>
@@ -26,8 +26,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, V
     '[class.responsive-mode]': 'responsive',
     '[class.responsive-narrow]': 'responsive === "narrow"',
     '[class.responsive-crowded]': 'responsive === "crowded"'
-  },
-  encapsulation: ViewEncapsulation.None
+  }
 })
 export class GithubButtonComponent implements OnInit {
   starCount = 0;
@@ -45,7 +44,7 @@ export class GithubButtonComponent implements OnInit {
   private getStar(): void {
     this.http
       .get<{ stargazers_count: number }>(`https://api.github.com/repos/${this.repo}`)
-      .subscribe((res: { stargazers_count: number }) => {
+      .subscribe(res => {
         this.starCount = res.stargazers_count;
         this.cdr.markForCheck();
       });

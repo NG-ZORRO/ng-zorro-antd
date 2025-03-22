@@ -27,38 +27,26 @@
     </div>
   </div>
 </header>
+
 <ng-template #menu>
   @if (!searching || windowWidth > 1200) {
-    @if (windowWidth < 1120) {
-      <ul
-        nz-menu
-        app-navigation
-        class="menu-site"
-        [responsive]="responsive"
-        [page]="page"
-        [isMobile]="isMobile"
-        [nzMode]="isMobile ? 'inline' : 'horizontal'"
-        [nzSelectable]="false"
-        [(language)]="language"
-        (languageChange)="onChangeLanguage($event)"
-      ></ul>
-    } @else {
-      <ul
-        nz-menu
-        app-navigation
-        class="menu-site"
-        [responsive]="responsive"
-        [page]="page"
-        [isMobile]="isMobile"
-        [nzMode]="isMobile ? 'inline' : 'horizontal'"
-        [nzSelectable]="false"
-        [(language)]="language"
-        (languageChange)="onChangeLanguage($event)"
-      ></ul>
+    <ul
+      nz-menu
+      app-navigation
+      class="menu-site"
+      [responsive]="responsive"
+      [page]="page"
+      [isMobile]="isMobile"
+      [nzMode]="isMobile ? 'inline' : 'horizontal'"
+      [nzSelectable]="false"
+      [(language)]="language"
+      (languageChange)="onChangeLanguage($event)"
+    ></ul>
+    @if (windowWidth >= 1120) {
       <nz-select
         nzSize="small"
         class="version"
-        style="max-width: 126px;"
+        style="max-width: 126px"
         [ngModel]="currentVersion"
         (ngModelChange)="onChangeVersion($event)"
       >
