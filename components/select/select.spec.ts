@@ -1162,6 +1162,7 @@ describe('select', () => {
   describe('multiple reactive mode', () => {
     let component: TestSelectReactiveMultipleComponent;
     let fixture: ComponentFixture<TestSelectReactiveMultipleComponent>;
+    let selectComponent: NzSelectComponent;
     let selectElement!: HTMLElement;
     let overlayContainerElement: HTMLElement;
 
@@ -1169,6 +1170,7 @@ describe('select', () => {
       fixture = TestBed.createComponent(TestSelectReactiveMultipleComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
+      selectComponent = fixture.debugElement.query(By.directive(NzSelectComponent)).componentInstance;
       selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
       overlayContainerElement = TestBed.inject(OverlayContainer).getContainerElement();
     });
@@ -1332,6 +1334,65 @@ describe('select', () => {
       expect(listOfContainerItem[1]).toHaveClass('ant-select-item-option-disabled');
     }));
 
+    it('should isMaxMultipleCountSet work correct', () => {
+      component.nzMaxMultipleCount = Infinity;
+      fixture.detectChanges();
+      expect(selectComponent.isMaxMultipleCountSet).toBeFalsy();
+
+      component.nzMaxMultipleCount = 1;
+      fixture.detectChanges();
+      expect(selectComponent.isMaxMultipleCountSet).toBeTruthy();
+    });
+
+    it('should isMaxMultipleCountReached be set correctly when click options', fakeAsync(() => {
+      const flushRefresh = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.nzOpen = true;
+      component.listOfOption = [
+        { value: 'test_01', label: 'test_01' },
+        { value: 'test_02', label: 'test_02' }
+      ];
+      component.value = [];
+      component.nzMaxMultipleCount = 1;
+      flushRefresh();
+      expect(selectComponent.isMaxMultipleCountReached).toBeFalsy();
+      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      dispatchMouseEvent(listOfContainerItem[0], 'click');
+      flushRefresh();
+      expect(selectComponent.isMaxMultipleCountReached).toBeTruthy();
+    }));
+
+    it('should isMaxMultipleCountReached be set correctly when change the ng model value', fakeAsync(() => {
+      const options = [
+        { value: 'test_01', label: 'test_01' },
+        { value: 'test_02', label: 'test_02' }
+      ];
+      const flushRefresh = (): void => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.nzOpen = true;
+      component.listOfOption = options;
+      component.value = [];
+      component.nzMaxMultipleCount = 1;
+      flushRefresh();
+      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      expect(selectComponent.isMaxMultipleCountReached).toBeFalsy();
+      selectComponent.writeValue([options[0]]);
+      flushRefresh();
+      expect(selectComponent.isMaxMultipleCountReached).toBeTruthy();
+      expect(listOfContainerItem[1]).toHaveClass('ant-select-item-option-disabled');
+      selectComponent.writeValue([]);
+      flushRefresh();
+      expect(selectComponent.isMaxMultipleCountReached).toBeFalsy();
+      expect(listOfContainerItem[0]).not.toHaveClass('ant-select-item-option-disabled');
+      expect(listOfContainerItem[1]).not.toHaveClass('ant-select-item-option-disabled');
+    }));
+
     it('should show nzShowArrow component when having nzMaxMultipleCount', () => {
       component.nzMaxMultipleCount = 0;
       expect(selectElement.querySelector('nz-select-arrow')).toBeFalsy();
@@ -1492,33 +1553,6 @@ describe('select', () => {
       expect(detectChangesSpy).toHaveBeenCalledTimes(1);
       // expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(2);
     }));
-
-    it('should isMaxTagCountSet work correct', () => {
-      component.nzMaxMultipleCount = Infinity;
-      fixture.detectChanges();
-      let isMaxTagCountSet;
-      isMaxTagCountSet = selectComponent['isMaxTagCountSet'];
-      expect(isMaxTagCountSet).toBeFalsy();
-
-      component.nzMaxMultipleCount = 1;
-      fixture.detectChanges();
-      isMaxTagCountSet = selectComponent['isMaxTagCountSet'];
-      expect(isMaxTagCountSet).toBeTruthy();
-    });
-
-    it('should isMaxLimitReached be set correctly', () => {
-      selectComponent.nzMaxMultipleCount = 2;
-      selectComponent.listOfValue = ['a', 'b'];
-      fixture.detectChanges();
-      selectComponent.updateListOfValue(['a', 'b']);
-      expect(selectComponent.isMaxLimitReached).toBeTruthy();
-
-      selectComponent.nzMaxMultipleCount = 20;
-      selectComponent.listOfValue = ['a', 'b'];
-      fixture.detectChanges();
-      selectComponent.updateListOfValue(['a', 'b']);
-      expect(selectComponent.isMaxLimitReached).toBeFalsy();
-    });
 
     it('should not run change detection when `nz-select-top-control` is clicked and should focus the `nz-select-search`', () => {
       const appRef = TestBed.inject(ApplicationRef);

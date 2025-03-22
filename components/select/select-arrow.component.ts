@@ -21,7 +21,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (isMaxTagCountSet) {
+    @if (isMaxMultipleCountSet) {
       <span>{{ listOfValue.length }} / {{ nzMaxMultipleCount }}</span>
     }
     @if (loading) {
@@ -54,7 +54,7 @@ export class NzSelectArrowComponent {
   @Input() loading = false;
   @Input() search = false;
   @Input() showArrow = false;
-  @Input() isMaxTagCountSet = false;
+  @Input() isMaxMultipleCountSet = false;
   @Input() suffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() feedbackIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input({ transform: numberAttribute }) nzMaxMultipleCount: number = Infinity;

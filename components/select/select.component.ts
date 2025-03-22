@@ -128,7 +128,7 @@ export type NzSelectSizeType = NzSizeLDSType;
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
-    @if (nzShowArrow || (hasFeedback && !!status) || isMaxTagCountSet) {
+    @if (nzShowArrow || (hasFeedback && !!status) || isMaxMultipleCountSet) {
       <nz-select-arrow
         [showArrow]="nzShowArrow"
         [loading]="nzLoading"
@@ -137,7 +137,7 @@ export type NzSelectSizeType = NzSizeLDSType;
         [feedbackIcon]="feedbackIconTpl"
         [nzMaxMultipleCount]="nzMaxMultipleCount"
         [listOfValue]="listOfValue"
-        [isMaxTagCountSet]="isMaxTagCountSet"
+        [isMaxMultipleCountSet]="isMaxMultipleCountSet"
       >
         <ng-template #feedbackIconTpl>
           @if (hasFeedback && !!status) {
@@ -185,7 +185,7 @@ export type NzSelectSizeType = NzSizeLDSType;
         [dropdownRender]="nzDropdownRender"
         [compareWith]="compareWith"
         [mode]="nzMode"
-        [isMaxLimitReached]="isMaxLimitReached"
+        [isMaxMultipleCountReached]="isMaxMultipleCountReached"
         (keydown)="onKeyDown($event)"
         (itemClick)="onItemClick($event)"
         (scrollToBottom)="nzScrollToBottom.emit()"
@@ -271,8 +271,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     return this._nzShowArrow === undefined ? this.nzMode === 'default' : this._nzShowArrow;
   }
 
-  get isMaxTagCountSet(): boolean {
+  get isMaxMultipleCountSet(): boolean {
     return this.nzMaxMultipleCount !== Infinity;
+  }
+
+  get isMaxMultipleCountReached(): boolean {
+    return this.nzMaxMultipleCount !== Infinity && this.listOfValue.length === this.nzMaxMultipleCount;
   }
 
   @Output() readonly nzOnSearch = new EventEmitter<string>();
@@ -320,7 +324,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   focused = false;
   dir: Direction = 'ltr';
   positions: ConnectionPositionPair[] = [];
-  isMaxLimitReached = false;
 
   // status
   prefixCls: string = 'ant-select';
@@ -434,9 +437,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       this.value = model;
       this.onChange(this.value);
     }
-
-    this.isMaxLimitReached =
-      this.nzMaxMultipleCount !== Infinity && this.listOfValue.length === this.nzMaxMultipleCount;
   }
 
   onTokenSeparate(listOfLabel: string[]): void {
