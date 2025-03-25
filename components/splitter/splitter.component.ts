@@ -153,11 +153,10 @@ export class NzSplitterComponent {
   /**
    * Observe the size of the container.
    */
-  protected readonly containerBox = toSignal(
+  private readonly containerBox = toSignal(
     this.resizeObserver.observe(this.elementRef).pipe(
       map(([item]) => item.target as HTMLElement),
-      map(el => ({ width: el.clientWidth, height: el.clientHeight })),
-      takeUntil(this.destroy$)
+      map(el => ({ width: el.clientWidth, height: el.clientHeight }))
     ),
     {
       initialValue: {
@@ -388,6 +387,7 @@ export class NzSplitterComponent {
       .pipe(
         map(event => getEventWithPoint(event)),
         map(({ pageX, pageY }) => (this.nzLayout() === 'horizontal' ? pageX - startPos[0] : pageY - startPos[1])),
+        // flip the offset if the direction is rtl
         map(offset => (this.nzLayout() === 'horizontal' && this.dir() === 'rtl' ? -offset : offset)),
         startWith(0),
         pairwise(),
@@ -495,14 +495,14 @@ export class NzSplitterComponent {
    * Record the original size of the collapsed panel.
    * Used to restore the size when the panel is expanded back.
    */
-  readonly cacheCollapsedSize: number[] = [];
+  private readonly cacheCollapsedSize: number[] = [];
 
   /**
    * Collapse the specified panel.
    * @param index The index of the panel to collapse.
    * @param type The type of collapse, either `start` or `end`.
    */
-  collapse(index: number, type: 'start' | 'end'): void {
+  protected collapse(index: number, type: 'start' | 'end'): void {
     const containerSize = this.containerSize();
     const limitSizes = this.sizes().map(p => [p.min, p.max]);
     const currentSizes = this.sizes().map(p => p.percentage * containerSize);
