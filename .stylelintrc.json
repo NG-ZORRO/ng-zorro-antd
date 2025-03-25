@@ -1,9 +1,21 @@
 {
-  "extends": ["stylelint-config-standard", "stylelint-config-rational-order"],
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-rational-order"
+  ],
   "customSyntax": "postcss-less",
-  "plugins": ["stylelint-declaration-block-no-ignored-properties"],
+  "plugins": [
+    "stylelint-declaration-block-no-ignored-properties"
+  ],
   "rules": {
-    "function-name-case": ["lower", { "ignoreFunctions": ["/colorPalette/"] }],
+    "function-name-case": [
+      "lower",
+      {
+        "ignoreFunctions": [
+          "/colorPalette/"
+        ]
+      }
+    ],
     "function-no-unknown": [
       true,
       {
@@ -46,5 +58,7 @@
       }
     ]
   },
-  "ignoreFiles": ["components/style/color/{bezierEasing,colorPalette,tinyColor}.less"]
+  "ignoreFiles": [
+    "components/style/color/{bezierEasing,colorPalette,tinyColor}.less"
+  ]
 }

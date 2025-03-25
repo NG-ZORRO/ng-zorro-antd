@@ -24,20 +24,23 @@
             role="gridcell"
             [class]="cell.classMap!"
             (click)="cell.isDisabled ? null : cell.onClick()"
-            (mouseenter)="cell.onMouseEnter()">
+            (mouseenter)="cell.onMouseEnter()"
+          >
             @switch (prefixCls) {
               @case ('ant-picker') {
                 @if (cell.cellRender) {
                   <ng-template
                     [nzStringTemplateOutlet]="cell.cellRender"
-                    [nzStringTemplateOutletContext]="{ $implicit: cell.value }">
+                    [nzStringTemplateOutletContext]="{ $implicit: cell.value }"
+                  >
                     {{ cell.cellRender }}
                   </ng-template>
                 } @else {
                   <div
                     class="{{ prefixCls }}-cell-inner"
                     [attr.aria-selected]="cell.isSelected"
-                    [attr.aria-disabled]="cell.isDisabled">
+                    [attr.aria-disabled]="cell.isDisabled"
+                  >
                     {{ cell.content }}
                   </div>
                 }
@@ -45,7 +48,8 @@
               @case ('ant-picker-calendar') {
                 <div
                   class="{{ prefixCls }}-date ant-picker-cell-inner"
-                  [class.ant-picker-calendar-date-today]="cell.isToday">
+                  [class.ant-picker-calendar-date-today]="cell.isToday"
+                >
                   @if (cell.fullCellRender) {
                     <ng-container *nzStringTemplateOutlet="cell.fullCellRender; context: { $implicit: cell.value }">
                       {{ cell.fullCellRender }}
