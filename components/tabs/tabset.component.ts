@@ -111,9 +111,9 @@ let nextId = 0;
               nzTabNavItem
               cdkMonitorElementFocus
             >
-              <ng-container *nzStringTemplateOutlet="tab.label; context: { visible: true }">{{
-                tab.label
-              }}</ng-container>
+              <ng-container *nzStringTemplateOutlet="tab.label; context: { visible: true }">
+                {{ tab.label }}
+              </ng-container>
               @if (tab.nzClosable && closable && !tab.nzDisabled) {
                 <button
                   type="button"
