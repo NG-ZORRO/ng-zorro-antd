@@ -5,12 +5,12 @@
 
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, DebugElement, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, Router, RouterLink, RouterModule, RouterOutlet, Routes } from '@angular/router';
+import { provideRouter, Router, RouterLink, RouterOutlet, Routes } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
@@ -936,7 +936,6 @@ describe('NzTabSet', () => {
       tick();
 
       expect(comp.selectedIdx).toBe(2);
-
       flush();
     }));
   });
@@ -1201,7 +1200,8 @@ export class RouterTabsTestComponent {
 }
 
 @Component({
-  template: ` <nz-tabset nzLinkRouter [(nzSelectedIndex)]="selectedIdx" [nzLinkExact]="false">
+  template: `
+    <nz-tabset nzLinkRouter [(nzSelectedIndex)]="selectedIdx" [nzLinkExact]="false">
       @for (tab of tabs; track tab.title) {
         <nz-tab>
           <a *nzTabLink nz-tab-link [routerLink]="tab.route">{{ tab.title }}</a>
@@ -1209,8 +1209,9 @@ export class RouterTabsTestComponent {
         </nz-tab>
       }
     </nz-tabset>
-    <router-outlet></router-outlet>`,
-  imports: [CommonModule, RouterModule, NzTabsModule],
+    <router-outlet></router-outlet>
+  `,
+  imports: [RouterLink, RouterOutlet, NzTabsModule],
   standalone: true
 })
 export class DynamicRouterTabsTestComponent {
