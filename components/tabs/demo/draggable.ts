@@ -29,7 +29,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   `,
   styles: [
     `
-      ::ng-deep .ant-tabs-tab-btn {
+      :host ::ng-deep .ant-tabs-tab-btn {
         cursor: move;
       }
       nz-tabset.cdk-drop-list-dragging {
