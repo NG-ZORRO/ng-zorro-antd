@@ -879,6 +879,66 @@ describe('NzTabSet', () => {
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
     }));
   });
+
+  describe('dynamic router tabs', () => {
+    let fixture: ComponentFixture<DynamicRouterTabsTestComponent>;
+    let router: Router;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          provideRouter([
+            {
+              path: '',
+              pathMatch: 'full',
+              redirectTo: 'one'
+            },
+            {
+              path: 'one',
+              component: DynamicRouterTabsTestComponent
+            },
+            {
+              path: 'two',
+              component: DynamicRouterTabsTestComponent
+            },
+            {
+              path: 'three',
+              component: DynamicRouterTabsTestComponent
+            }
+          ])
+        ]
+      });
+
+      router = TestBed.inject(Router);
+      fixture = TestBed.createComponent(DynamicRouterTabsTestComponent);
+    });
+
+    it('should update active tab when tabs changed', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
+      router.initialNavigation();
+      tick();
+      fixture.detectChanges();
+
+      const comp = fixture.componentInstance;
+
+      router.navigate(['three']);
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
+      comp.tabs = comp.lazyTabs;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      tick();
+
+      expect(comp.selectedIdx).toBe(2);
+      flush();
+    }));
+  });
 });
 
 @Component({
@@ -1137,6 +1197,42 @@ class TabSetWithIndirectDescendantTabsTestComponent {
 })
 export class RouterTabsTestComponent {
   handleSelection(_event: number): void {}
+}
+
+@Component({
+  template: `
+    <nz-tabset nzLinkRouter [(nzSelectedIndex)]="selectedIdx" [nzLinkExact]="false">
+      @for (tab of tabs; track tab.title) {
+        <nz-tab>
+          <a *nzTabLink nz-tab-link [routerLink]="tab.route">{{ tab.title }}</a>
+          {{ tab.title }}
+        </nz-tab>
+      }
+    </nz-tabset>
+    <router-outlet></router-outlet>
+  `,
+  imports: [RouterLink, RouterOutlet, NzTabsModule],
+  standalone: true
+})
+export class DynamicRouterTabsTestComponent {
+  selectedIdx = 0;
+  tabs = [
+    {
+      title: 'one',
+      route: ['one']
+    },
+    {
+      title: 'two',
+      route: ['two']
+    }
+  ];
+  readonly lazyTabs = [
+    ...this.tabs,
+    {
+      title: 'three',
+      route: ['three']
+    }
+  ];
 }
 
 const routes: Routes = [
