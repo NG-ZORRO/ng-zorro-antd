@@ -1,4 +1,3 @@
-import { CommonModule, NgForOf } from '@angular/common';
 import { Component } from '@angular/core';
 import { Params, RouterLink } from '@angular/router';
 
@@ -7,7 +6,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-link-router',
-  imports: [RouterLink, NzTabsModule, NgForOf, NzButtonModule, CommonModule],
+  imports: [RouterLink, NzTabsModule, NzButtonModule],
   template: `
     <div style="margin-bottom: 16px;">
       <button nz-button (click)="newTab()">ADD</button>
