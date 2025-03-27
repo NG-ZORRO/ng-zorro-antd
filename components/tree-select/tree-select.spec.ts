@@ -663,6 +663,42 @@ describe('tree-select component', () => {
       expect(treeSelect.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
   });
+
+  describe('virtual scroll', () => {
+    let fixture: ComponentFixture<NzTestTreeSelectVirtualScrollComponent>;
+    let treeSelect: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTreeSelectVirtualScrollComponent);
+      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+    });
+
+    it('should set nzVirtualHeight work', fakeAsync(() => {
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      flush();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const virtualScrollViewport = overlayContainerElement.querySelector('.cdk-virtual-scroll-viewport')!;
+      expect(window.getComputedStyle(virtualScrollViewport).height).toBe('300px');
+    }));
+
+    it('should support x-scroll when the length of node label is greater than the length of select dropdown', fakeAsync(() => {
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      flush();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      overlayContainerElement
+        .querySelector('.cdk-virtual-scroll-content-wrapper')!
+        .setAttribute('style', 'width: 250px');
+      const virtualScrollViewport = overlayContainerElement.querySelector('.cdk-virtual-scroll-content-wrapper')!;
+      expect(virtualScrollViewport.clientWidth).toBe(250);
+      expect(virtualScrollViewport.scrollWidth).toBeGreaterThan(250);
+    }));
+  });
 });
 
 @Component({
@@ -973,4 +1009,45 @@ export class NzTestTreeSelectStatusComponent {
 export class NzTestTreeSelectInFormComponent {
   status: NzFormControlStatusType = 'error';
   feedback = true;
+}
+
+function dig(path = '0', level = 3): NzTreeNodeOptions[] {
+  const list: NzTreeNodeOptions[] = [];
+  for (let i = 0; i < 10; i += 1) {
+    // long key for overflow
+    const key = `${path}-${i}-${Array(50).join('x')}`;
+    const treeNode: NzTreeNodeOptions = {
+      title: key,
+      key,
+      expanded: true,
+      children: [],
+      isLeaf: false
+    };
+
+    if (level > 0) {
+      treeNode.children = dig(key, level - 1);
+    } else {
+      treeNode.isLeaf = true;
+    }
+
+    list.push(treeNode);
+  }
+  return list;
+}
+
+@Component({
+  imports: [NzTreeSelectModule],
+  template: `
+    <nz-tree-select
+      [nzNodes]="nodes"
+      nzShowSearch
+      nzPlaceHolder="Please select"
+      nzVirtualHeight="300px"
+      nzHideUnMatched="true"
+      [nzDropdownMatchSelectWidth]="true"
+    ></nz-tree-select>
+  `
+})
+export class NzTestTreeSelectVirtualScrollComponent {
+  nodes: NzTreeNodeOptions[] = dig();
 }
