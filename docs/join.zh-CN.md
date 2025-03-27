@@ -3,7 +3,7 @@ order: 16
 title: 社区招募
 ---
 
-NG-ZORRO 经过多年发展，受到的许多开发者的青睐帮助，目前已成为年下载量超 **300+** 万的组件库。
+NG-ZORRO 经过多年发展，受到的许多开发者的青睐帮助，目前已成为年下载量超 **400+** 万的组件库。
 在此感谢每一位参与社区推广与开发的同学，以及每一位 NG-ZORRO 用户!
 
 ## 求贤若渴
@@ -13,6 +13,6 @@ NG-ZORRO 经过多年发展，受到的许多开发者的青睐帮助，目前�
 对于有意愿长期参与社区工作的同学，我们也会将各位加入到社区 Member 中来，共同管理 PR 及 Issue 答疑。
 
 ## 欢迎咨询
-任何疑问可咨询：simplejason.coder#gmail.com
+任何疑问可咨询：[simplejason.coder@gmail.com](mailto:simplejason.coder@gmail.com)
 <br>
 也可进钉钉群进行咨询，再次感谢每一位同学的努力与付出。
