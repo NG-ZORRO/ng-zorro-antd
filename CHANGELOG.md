@@ -1,3 +1,26 @@
+## [19.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.1.0...19.2.0) (2025-03-28)
+
+### Features
+
+* **splitter:** add splitter component ([#8987](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8987)) ([9b3f62e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9b3f62e088f3d0953f236910df00175edf07e26e))
+* **page-header:** disable back button if no history ([#9041](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9041)) ([bb48232](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bb482328637829b91443075dddaaaef74b85cda8))
+
+### Documentation
+
+* **tabs:** add draggable tabs [showcase](https://ng.ant.design/components/tabs/en#components-tabs-demo-card-draggable) via CDK `DragDropModule`
+
+### Bug Fixes
+
+* **input-number:** consider input value ends with 0 as incomplete ([#9051](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9051)) ([2a0c2e0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2a0c2e08bcec7577558bf2578adf7710a5235a38))
+* **segmented:** fix error with the FormControl first change ([#9039](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9039)) ([33fe53d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/33fe53de16bbafd234fa369f677355349d24860a))
+* **select:** disable `nzMaxMultipleCount` in default mode ([#9068](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9068)) ([dcf8a5d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/dcf8a5d35785d5a4b282719601c0b226e67543bc))
+* **select:** ngModel change should update state of `nzMaxMultipleCount` reached ([#9056](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9056)) ([d7031da](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d7031dada3f24cf9c7e48a2eb09678d44caaf9b1))
+* **space:** nzSpaceItem margin in rtl ([#7801](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7801)) ([2d9ff5f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2d9ff5f0735afc4f4ae03e9f85ae4a8062c21f1a))
+* **tabs:** update active router tab after tabs changed ([#7649](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7649)) ([1f07121](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1f07121c3c8521036b011a6f71e1859f70cfe429))
+* **tree-select:** enable overflow-x for virtual scroll ([#9045](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9045)) ([e70cae3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e70cae3c7cbd47c82d575a49e1dc6a31faa5912d))
+
+
+
 ## [19.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.0.2...19.1.0) (2025-02-21)
 
 ### Features
