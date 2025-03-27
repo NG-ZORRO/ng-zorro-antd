@@ -59,7 +59,12 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { fromEventOutsideAngular, getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
+import {
+  fromEventOutsideAngular,
+  getStatusClassNames,
+  isNotNil,
+  numberAttributeWithInfinityFallback
+} from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 import { NzOptionContainerComponent } from './option-container.component';
@@ -246,7 +251,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzMenuItemSelectedIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzTokenSeparators: string[] = [];
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzSafeAny[] }> | null = null;
-  @Input() nzMaxMultipleCount = Infinity;
+  @Input({ transform: numberAttributeWithInfinityFallback }) nzMaxMultipleCount = Infinity;
   @Input() nzMode: NzSelectModeType = 'default';
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
@@ -271,8 +276,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     return this._nzShowArrow === undefined ? this.nzMode === 'default' : this._nzShowArrow;
   }
 
+  get isMultiple(): boolean {
+    return this.nzMode === 'multiple' || this.nzMode === 'tags';
+  }
+
   get isMaxMultipleCountSet(): boolean {
-    return this.nzMaxMultipleCount !== Infinity;
+    return this.isMultiple && this.nzMaxMultipleCount !== Infinity;
   }
 
   get isMaxMultipleCountReached(): boolean {

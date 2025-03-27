@@ -23,6 +23,7 @@ import { NzSelectModule } from './select.module';
 import {
   NzFilterOptionType,
   NzSelectItemInterface,
+  NzSelectModeType,
   NzSelectOptionInterface,
   NzSelectPlacementType
 } from './select.types';
@@ -1342,6 +1343,10 @@ describe('select', () => {
       component.nzMaxMultipleCount = 1;
       fixture.detectChanges();
       expect(selectComponent.isMaxMultipleCountSet).toBeTruthy();
+
+      component.nzMode = 'default';
+      fixture.detectChanges();
+      expect(selectComponent.isMaxMultipleCountSet).toBeFalsy();
     });
 
     it('should isMaxMultipleCountReached be set correctly when click options', fakeAsync(() => {
@@ -1975,7 +1980,7 @@ export class TestSelectReactiveDefaultComponent {
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
-      nzMode="multiple"
+      [nzMode]="nzMode"
       [(ngModel)]="value"
       [nzOptions]="listOfOption"
       [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
@@ -2002,6 +2007,7 @@ export class TestSelectReactiveMultipleComponent {
   nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
   nzTokenSeparators: string[] = [];
   nzMaxMultipleCount = Infinity;
+  nzMode: NzSelectModeType = 'multiple';
   compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAutoClearSearchValue = true;
 }
