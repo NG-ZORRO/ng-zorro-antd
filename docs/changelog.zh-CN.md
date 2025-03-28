@@ -13,6 +13,30 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 19.2.0
+
+`2025-03-28`
+
+### Features
+
+* **splitter:** 新增 `splitter` 组件 ([#8987](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8987)) ([9b3f62e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9b3f62e088f3d0953f236910df00175edf07e26e))
+* **page-header:** 无路由历史时隐藏回退按钮 ([#9041](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9041)) ([bb48232](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bb482328637829b91443075dddaaaef74b85cda8))
+
+### Documentation
+
+* **tabs:** 新增使用 CDK `DragDropModule` 实现可拖拽页签的[示例](https://ng.ant.design/components/tabs/zh#components-tabs-demo-card-draggable)
+
+### Bug Fixes
+
+* **input-number:** 输入数字以 0 结尾时视作输入进行中 ([#9051](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9051)) ([2a0c2e0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2a0c2e08bcec7577558bf2578adf7710a5235a38))
+* **segmented:** 修复 FormControl 第一次更新时不生效 ([#9039](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9039)) ([33fe53d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/33fe53de16bbafd234fa369f677355349d24860a))
+* **select:** 默认模式下禁用 `nzMaxMultipleCount` 属性 ([#9068](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9068)) ([dcf8a5d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/dcf8a5d35785d5a4b282719601c0b226e67543bc))
+* **select:** 多选模式下 ngModel 值变化时更新是否达到 `nzMaxMultipleCount` 的状态 ([#9056](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9056)) ([d7031da](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d7031dada3f24cf9c7e48a2eb09678d44caaf9b1))
+* **space:** 修复 rtl 模式下 nzSpaceItem 的行内边距 ([#7801](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7801)) ([2d9ff5f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2d9ff5f0735afc4f4ae03e9f85ae4a8062c21f1a))
+* **tabs:** tabs 改变时更新活动的路由联动页签 ([#7649](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7649)) ([1f07121](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1f07121c3c8521036b011a6f71e1859f70cfe429))
+* **tree-select:** 修复虚拟滚动下选项无法水平滚动 ([#9045](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9045)) ([e70cae3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e70cae3c7cbd47c82d575a49e1dc6a31faa5912d))
+
+
 ## 19.1.0
 
 `2025-02-21`
