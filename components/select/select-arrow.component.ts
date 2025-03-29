@@ -10,9 +10,6 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { numberAttributeWithInfinityFallback } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-/**
- * @internal
- */
 @Component({
   selector: 'nz-select-arrow',
   encapsulation: ViewEncapsulation.None,
