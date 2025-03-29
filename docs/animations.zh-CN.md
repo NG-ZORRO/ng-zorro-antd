@@ -10,12 +10,14 @@ NG-ZORRO 允许开发者关闭动画效果，您可以通过添加对应指令�
 在模块中使用 `NoopAnimationsModule` 替换 `BrowserAnimationsModule`。
 
 ```ts
-@NgModule({
-  imports: [
-   ...
-   NoopAnimationsModule
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    // ...
+    provideNoopAnimations()
   ]
-})
+}
 ```
 
 ### 在模版中关闭
@@ -25,10 +27,10 @@ NG-ZORRO 允许开发者关闭动画效果，您可以通过添加对应指令�
 ```ts
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
-@NgModule({
+@Component({
   imports: [
-  ...
-   NzNoAnimationModule
+    // ...
+    NzNoAnimationModule
   ]
 })
 ```
@@ -70,9 +72,9 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 ```ts
 import { provideNzWave } from 'ng-zorro-antd/core/wave';
 
-@NgModule({
+export const appConfig: ApplicationConfig = {
   providers: [
     provideNzWave({ disabled: true })
-   ]
-})
+  ]
+}
 ```

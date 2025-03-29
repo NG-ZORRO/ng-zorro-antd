@@ -18,7 +18,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 ## API
 
 **Note:** Some of nz-date-picker's locale are coming from [Angular i18n](https://angular.dev/guide/i18n), that should be
-provided in the file of `app.module.ts`.
+provided in the file `app.config.ts`.
 
 For example:
 
