@@ -13,6 +13,15 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+### 19.2.1
+
+`2025-03-29`
+
+### Bug Fixes
+
+* **select:** 修复 `@internal` 注释导致 select-arrow 组件在编译时未导出 ([#9074](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9074)) ([c9b2dd9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c9b2dd96db78ff257137b7a2cba79bbf70f64d3e))
+
+
 ## 19.2.0
 
 `2025-03-28`

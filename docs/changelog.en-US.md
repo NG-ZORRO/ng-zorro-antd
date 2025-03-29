@@ -13,6 +13,15 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+### 19.2.1
+
+`2025-03-29`
+
+### Bug Fixes
+
+* **select:** remove internal comment from select-arrow ([#9074](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9074)) ([c9b2dd9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c9b2dd96db78ff257137b7a2cba79bbf70f64d3e))
+
+
 ## 19.2.0
 
 `2025-03-28`
