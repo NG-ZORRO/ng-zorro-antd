@@ -5,7 +5,7 @@ title: 定制主题
 
 Ant Design 设计规范上支持一定程度的样式定制，以满足业务和品牌上多样化的视觉需求，包括但不限于主色、圆角、边框和部分组件的视觉定制。
 
-![](https://zos.alipayobjects.com/rmsportal/zTFoszBtDODhXfLAazfSpYbSLSEeytoG.png)
+![Example](https://zos.alipayobjects.com/rmsportal/zTFoszBtDODhXfLAazfSpYbSLSEeytoG.png)
 
 Ant Design 的样式使用了 [Less](https://lesscss.org/) 作为开发语言，并定义了一系列全局/组件的样式变量，你可以根据需求进行相应调整，[默认样式变量](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less)
 
@@ -96,7 +96,6 @@ Ant Design 的样式使用了 [Less](https://lesscss.org/) 作为开发语言，
 // Custom Theming for NG-ZORRO
 // For more information: https://ng.ant.design/docs/customize-theme/en
 @import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
-...
 ```
 
 #### 自定义样式变量
@@ -147,71 +146,66 @@ Angular CLI 提供了 [custom-webpack](https://www.npmjs.com/package/@angular-bu
 
 1. 在 `angular.json` 中引入 `ng-zorro-antd.less` 文件
 
-```json
-{
-  "styles": [
-    "node_modules/ng-zorro-antd/ng-zorro-antd.less"
-  ]
-}
-```
+    ```json
+    {
+      "styles": [
+        "node_modules/ng-zorro-antd/ng-zorro-antd.less"
+      ]
+    }
+    ```
 
 2. 安装 `@angular-builders/custom-webpack` builder
 
-```bash
-npm i -D @angular-builders/custom-webpack
-```
+    ```bash
+    npm i -D @angular-builders/custom-webpack
+    ```
 
 3. 新建 webpack 配置文件 `extra-webpack.config.js`
 
-```javascript
-module.exports = {
-  module: {
-    rules: [
-      {
-        test   : /\.less$/,
-        loader: 'less-loader',
-        options: {
-          modifyVars: { // 修改主题变量
-            'primary-color': '#1DA57A',
-            'link-color': '#1DA57A',
-            'border-radius-base': '2px'
-          },
-          javascriptEnabled: true
-        }
+    ```javascript
+    module.exports = {
+      module: {
+        rules: [
+          {
+            test   : /\.less$/,
+            loader: 'less-loader',
+            options: {
+              modifyVars: { // 修改主题变量
+                'primary-color': '#1DA57A',
+                'link-color': '#1DA57A',
+                'border-radius-base': '2px'
+              },
+              javascriptEnabled: true
+            }
+          }
+        ]
       }
-    ]
-  }
-};
-
-```
+    };
+    ```
 
 4. 在 `angular.json` 中配置自定义 builder
 
-```diff
-  "architect": {
-    "build": {
--     "builder": "@angular-devkit/build-angular:browser",
-+     "builder": "@angular-builders/custom-webpack:browser",
-      "options": {
-+        "customWebpackConfig": {
-+          "path": "./extra-webpack.config.js",
-+          "mergeStrategies": {
-+            "module.rules": "append"
-+          },
-+          "replaceDuplicatePlugins": true
-+        }
-        ...
-      },
-      ...
-    },
-    "serve": {
--      "builder": "@angular-devkit/build-angular:dev-server",
-+      "builder": "@angular-builders/custom-webpack:dev-server",
-       ...
-    }
-    ...
-  }
-```
+    ```diff
+      "architect": {
+        "build": {
+    -     "builder": "@angular-devkit/build-angular:browser",
+    +     "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+    +        "customWebpackConfig": {
+    +          "path": "./extra-webpack.config.js",
+    +          "mergeStrategies": {
+    +            "module.rules": "append"
+    +          },
+    +          "replaceDuplicatePlugins": true
+    +        }
+          },
+        },
+        "serve": {
+    -      "builder": "@angular-devkit/build-angular:dev-server",
+    +      "builder": "@angular-builders/custom-webpack:dev-server",
+        }
+      }
+    ```
 
 更多在 Angular CLI 中定制 webpack 的文章可以参考
 
@@ -229,50 +223,46 @@ module.exports = {
 
 1. 样式预处理器选项 `stylePreprocessorOptions`
 
-在`angular.json` 中配置样式预处理器选项 `stylePreprocessorOptions` 并添加路径：
+    在`angular.json` 中配置样式预处理器选项 `stylePreprocessorOptions` 并添加路径：
 
-```json
-...
-"stylePreprocessorOptions": {
-  "includePaths": [
-    "src/styles/themes"
-  ]
-},
-...
-```
+    ```json
+    "stylePreprocessorOptions": {
+      "includePaths": [
+        "src/styles/themes"
+      ]
+    },
+    ```
 
-于是，在项目组件样式文件里，无需相对路径，`src/styles/themes` 路径下的任意文件定义文件都可以从项目中的任何位置导入，例如：
+    于是，在项目组件样式文件里，无需相对路径，`src/styles/themes` 路径下的任意文件定义文件都可以从项目中的任何位置导入，例如：
 
-```less
-// A relative path works
-@import 'src/styles/themes/mixin';
-// But now this works as well
-@import 'mixin';
-```
+    ```less
+    // A relative path works
+    @import 'src/styles/themes/mixin';
+    // But now this works as well
+    @import 'mixin';
+    ```
 
 2. styles 里的 `bundleName` 和 `inject`
 
-如果需要在项目运行时动态切换主题，你就需要为构建器配置好每个主题的全局上下文样式文件。继续以默认和暗黑主题为例，请在 `angular.json` 的 `styles` 选项数组里进行如下配置：
+    如果需要在项目运行时动态切换主题，你就需要为构建器配置好每个主题的全局上下文样式文件。继续以默认和暗黑主题为例，请在 `angular.json` 的 `styles` 选项数组里进行如下配置：
 
-```json
-...
-"styles": [
-  "src/styles.less",
-  {
-    "input": "src/styles/default.less",
-    "bundleName": "default",
-    "inject": false
-  },
-  {
-    "input": "src/styles/dark.less",
-    "bundleName": "dark",
-    "inject": false
-  }
-],
-...
-```
+    ```json
+    "styles": [
+      "src/styles.less",
+      {
+        "input": "src/styles/default.less",
+        "bundleName": "default",
+        "inject": false
+      },
+      {
+        "input": "src/styles/dark.less",
+        "bundleName": "dark",
+        "inject": false
+      }
+    ],
+    ```
 
-`bundleName` 指捆绑包的自定义 CSS 文件名称，方便了之后切换主题创建所需的 link 标签的 href 属性。`inject` 默认为 `true`，会将捆绑包注入。为了动态主题切换则需要将主题捆绑包从注入中排除。
+    `bundleName` 指捆绑包的自定义 CSS 文件名称，方便了之后切换主题创建所需的 link 标签的 href 属性。`inject` 默认为 `true`，会将捆绑包注入。为了动态主题切换则需要将主题捆绑包从注入中排除。
 
 ### 多主题定制
 
@@ -304,7 +294,6 @@ module.exports = {
 
 @layout-sider-background: @component-background;
 @layout-header-background: @component-background;
-...
 ```
 
 > 当引入对应的预定义主题样式变量文件的时候，会遇到 `.less` 样式文件名跟项目自己的主题样式文件名是一样的情况，这样的话单单使用 `@import '<url>';` 是无法生效的。这种时候， Less 为我们提供了 `@import (multiple) '<url>';` 的 `multiple` 方法来引入这些同名的 `.less` 文件。
@@ -314,7 +303,6 @@ module.exports = {
 ```less
 // base.less 定制通用样式变量
 @margin-md: 17px;
-...
 ```
 
 ### 切换主题
@@ -401,7 +389,6 @@ private loadCss(href: string, id: string): Promise<Event> {
 项目组件样式会被打包进 js 文件，因此在切换 html 的 `className` 的时候主题样式会立即生效。另一方面，动态地加载 CSS 预定义主题文件却是需要时间完成的。如果两个操作同时进行，页面则会出现一部分是立即生效的项目组件样式，另一部分是切换主题加载之前的样式。因此，整个切换主题 `className` 操作需要包裹在 `Promise` 里等待 CSS 文件加载完成后才执行。
 
 ```ts
-...
 private removeUnusedTheme(theme: ThemeType): void {
   document.documentElement.classList.remove(theme);
   const removedThemeStyle = document.getElementById(theme);
@@ -409,7 +396,7 @@ private removeUnusedTheme(theme: ThemeType): void {
     document.head.removeChild(removedThemeStyle);
   }
 }
-...
+
 loadTheme(firstLoad = true): Promise<Event> {
   const theme = this.currentTheme;
   if (firstLoad) {
@@ -426,7 +413,10 @@ loadTheme(firstLoad = true): Promise<Event> {
     e => reject(e)
   );
 }
-...
 ```
 
 注意：第一次加载首先需要先将用户默认的项目组件主题加入 html 里，而不是包进 Promise 里，否则开始有一段时间会出现没有主题 `className` 的情况。
+
+
+## Q&A
+

@@ -17,8 +17,8 @@ Except [less customize theme](/docs/customize-theme/en), We also provide CSS Var
 Replace your import style file with CSS Variable version:
 
 ```diff
--- @import "~ng-zorro-antd/ng-zorro-antd.min.css";
-++ @import "~ng-zorro-antd/ng-zorro-antd.variable.min.css";
+- @import "~ng-zorro-antd/ng-zorro-antd.min.css";
++ @import "~ng-zorro-antd/ng-zorro-antd.variable.min.css";
 ```
 
 Note: You need remove `babel-plugin-import` for the dynamic theme.
@@ -28,7 +28,7 @@ Note: You need remove `babel-plugin-import` for the dynamic theme.
 In order to provide default configurations in certain components, please pass an object that implements the interface `NzConfig` through the injection token `NZ_CONFIG` in the root injector. For example:
 
 ```typescript
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 
 const ngZorroConfig: NzConfig = {
   theme: {
@@ -36,17 +36,11 @@ const ngZorroConfig: NzConfig = {
   }
 };
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    CommonModule
-  ],
+export const appConfig: ApplicationConfig = {
   providers: [
-    { provide: NZ_CONFIG, useValue:  ngZorroConfig  }
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
+    provideNzConfig(ngZorroConfig)
+  ]
+}
 ```
 
 These global configurations would be injected and stored in a service named `NzConfigService`.
@@ -62,7 +56,7 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
   selector: 'app-change-zorro-config'
 })
 export class ChangeZorroConfigComponent {
-  constructor(private nzConfigService: NzConfigService) {}
+  private nzConfigService = inject(NzConfigService);
 
   onChangeConfig() {
     this.nzConfigService.set('theme', { primaryColor: '#1890ff' })

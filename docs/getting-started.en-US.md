@@ -131,24 +131,20 @@ Import the less styles in `style.less`
 
 #### Import component module
 
-Finally, you need to import the component modules that you want to use into the `app.module.ts` file and [feature modules](https://angular.dev/guide/ngmodules/feature-modules).
+Finally, you need to import the component modules that you want to use into your components.
 
 Taking the following `NzButtonModule` module as an example, first import the component module:
 
 ```ts
-import { NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { AppComponent } from './app.component';
 
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
+@Component({
   imports: [
     NzButtonModule
   ]
 })
-export class AppModule {}
+export class AppComponent {}
 ```
 
 Then use the component inside the template:
