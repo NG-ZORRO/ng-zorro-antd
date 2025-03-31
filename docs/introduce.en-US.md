@@ -14,7 +14,7 @@ An enterprise-class Angular UI component library based on Ant Design, all compon
 ## Features
 
 - An enterprise-class UI design language for Angular applications.
-- 60+ high-quality Angular components out of the box.
+- 70+ high-quality Angular components out of the box.
 - Written in TypeScript with complete defined types.
 - Support OnPush mode, high performance.
 - Powerful theme customization in every detail.
@@ -27,8 +27,8 @@ An enterprise-class Angular UI component library based on Ant Design, all compon
 - [Electron](https://www.electronjs.org/)
 
 | [<img src="https://img.alicdn.com/tfs/TB1G5ewZuL2gK0jSZPhXXahvXXa-48-48.png" alt="Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges//)<br>Edge | [<img src="https://img.alicdn.com/tfs/TB1Dx73o79l0K4jSZFKXXXFjpXa-48-48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://img.alicdn.com/tfs/TB1mY9FZrr1gK0jSZFDXXb9yVXa-48-48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://img.alicdn.com/tfs/TB1Vas5o79l0K4jSZFKXXXFjpXa-48-48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Safari | [<img src="https://img.alicdn.com/tfs/TB12EmNZET1gK0jSZFrXXcNCXXa-48-48.png" alt="Opera" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Opera | [<img src="https://img.alicdn.com/tfs/TB1TMW8paNj0u4jSZFyXXXgMVXa-48-48.png" alt="Electron" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Electron |
-| --- | --- | --- | --- | --- | --- |
-| last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| last 2 versions                                                                                                                                                                    | last 2 versions                                                                                                                                                                         | last 2 versions                                                                                                                                                                       | last 2 versions                                                                                                                                                                       | last 2 versions                                                                                                                                                                     | last 2 versions                                                                                                                                                                           |
 
 ## Version
 
@@ -41,7 +41,6 @@ An enterprise-class Angular UI component library based on Ant Design, all compon
 ## Design Specification
 
 `ng-zorro-antd` synchronizes design specification with [Ant Design](https://ant.design/docs/spec/introduce) on a regular basis, you can check the [log](https://github.com/NG-ZORRO/ng-zorro-antd/actions?query=workflow:"styles-sync") online.
-
 
 ## Installation
 

@@ -11,12 +11,14 @@ configurations, or use the global configuration to turn off all animations assoc
 Replace `BrowserAnimationsModule` with `NoopAnimationsModule` in the module.
 
 ```ts
-@NgModule({
-  imports: [
-   ...
-   NoopAnimationsModule
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    // ...
+    provideNoopAnimations()
   ]
-})
+}
 ```
 
 ### Turn Off In Templates
@@ -27,10 +29,10 @@ Import `NzNoAnimationModule`.
 ```ts
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
-@NgModule({
+@Component({
   imports: [
-  ...
-   NzNoAnimationModule
+    // ...
+    NzNoAnimationModule
   ]
 })
 ```
@@ -50,8 +52,8 @@ Add the following configuration while invoking components' services.
 
 ```ts
 {
-    ...,
-    nzNoAnimation: true
+  // ...
+  nzNoAnimation: true
 }
 ```
 
@@ -59,22 +61,22 @@ Add the following configuration while invoking components' services.
 
 ```ts
 {
-   ...,
-   nzAnimate: false
+  // ...
+  nzAnimate: false
 }
 ```
 
 ### Turn Off The Wave Effect
 
-Some components use dynamic styles to support wave effects, so their styles are unable to be override directly. Instead, you can use `provideNzWave` or use
- `NoopAnimationsModule` to turn off the wave effects.
+Some components use dynamic styles to support wave effects, so their styles are unable to be overridden directly.
+Instead, you can use `provideNzWave` or use `NoopAnimationsModule` to turn off the wave effects.
 
 ```ts
 import { provideNzWave } from 'ng-zorro-antd/core/wave';
 
-@NgModule({
+export const appConfig: ApplicationConfig = {
   providers: [
     provideNzWave({ disabled: true })
   ]
-})
+}
 ```

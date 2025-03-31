@@ -19,7 +19,7 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 
 ## API
 
-**注意：**Calendar 的部分 locale 来自于 Angular 自身的国际化支持，需要在 app.module.ts 文件中 引入相应的 Angular 语言包。
+**注意：**Calendar 的部分 locale 来自于 Angular 自身的国际化支持，需要在 `app.config.ts` 文件中 引入相应的 Angular 语言包。
 
 例如：
 

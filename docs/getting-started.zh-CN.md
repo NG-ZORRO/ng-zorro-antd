@@ -127,24 +127,20 @@ $ npm install ng-zorro-antd --save
 
 ### 引入组件模块
 
-最后你需要将想要使用的组件模块引入到你的 `app.module.ts` 文件和[特性模块](https://angular.cn/guide/ngmodules/feature-modules)中。
+最后你需要将想要使用的组件模块引入到你的组件中。
 
-以下面的 `NzButtonModule` 模块为例，先引入组件模块：
+以下面的 `NzButtonModule` 模块为例：
 
 ```ts
-import { NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { AppComponent } from './app.component';
 
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
+@Component({
   imports: [
     NzButtonModule
   ]
 })
-export class AppModule { }
+export class AppComponent {}
 ```
 
 然后在模板中使用：

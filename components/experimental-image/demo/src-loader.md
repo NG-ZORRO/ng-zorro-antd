@@ -25,13 +25,11 @@ const nzConfig: NzConfig = {
   }
 };
 
-@NgModule({
-  // ...
+export const appConfig: ApplicationConfig = {
   providers: [
     provideNzConfig(nzConfig)
   ]
-})
-export class AppModule {}
+}
 ```
 
 ## en-US
@@ -54,11 +52,9 @@ const nzConfig: NzConfig = {
   }
 };
 
-@NgModule({
-  // ...
+export const appConfig: ApplicationConfig = {
   providers: [
     provideNzConfig(nzConfig)
   ]
-})
-export class AppModule {}
+}
 ```
