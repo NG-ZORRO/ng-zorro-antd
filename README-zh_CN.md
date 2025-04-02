@@ -40,8 +40,7 @@ NG-ZORRO
 
 ## ☀️ 授权协议
 
-[MIT](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
-
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd?ref=badge_shield)
 
 

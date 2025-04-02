@@ -34,18 +34,16 @@ English | [简体中文](README-zh_CN.md)
 ## ✨ Features
 
 - An enterprise-class UI design system for Angular applications.
-- 60+ high-quality Angular components out of the box.
+- 70+ high-quality Angular components out of the box.
 - Written in TypeScript with predictable static types.
 - The whole package of development and design resources and tools.
 - Support OnPush mode, high performance.
 - Powerful theme customization in every detail.
 - Internationalization support for dozens of languages.
 
-
 ## ☀️ License
 
-[MIT](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
-
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd?ref=badge_shield)
 
 ## 🖥 Environment Support
@@ -62,7 +60,6 @@ English | [简体中文](README-zh_CN.md)
 ## 🎨 Design Specification
 
 `ng-zorro-antd` synchronizes design specification with [Ant Design](https://ant.design/docs/spec/introduce) on a regular basis, you can check the [log](https://nz-styles-syncer.now.sh/) online.
-
 
 ## 📦 Installation
 
