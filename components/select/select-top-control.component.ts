@@ -12,7 +12,6 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -20,10 +19,10 @@ import {
   ViewChild,
   ViewEncapsulation,
   inject,
-  numberAttribute
+  numberAttribute,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -99,7 +98,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
   host: { class: 'ant-select-selector' },
   imports: [NzSelectSearchComponent, NzSelectItemComponent, NzSelectPlaceholderComponent]
 })
-export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy {
+export class NzSelectTopControlComponent implements OnChanges, OnInit {
   @Input() nzId: string | null = null;
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
@@ -122,8 +121,6 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
   isShowSingleLabel = false;
   isComposing = false;
   inputValue: string | null = null;
-
-  private destroy$ = new Subject<void>();
 
   updateTemplateVariable(): void {
     const isSelectedValueEmpty = this.listOfTopItem.length === 0;
@@ -196,12 +193,10 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
     }
   }
 
+  private destroyRef = inject(DestroyRef);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private ngZone = inject(NgZone);
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    private ngZone: NgZone
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { listOfTopItem, maxTagCount, customTemplate, maxTagPlaceholder } = changes;
@@ -234,7 +229,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
 
   ngOnInit(): void {
     fromEventOutsideAngular<MouseEvent>(this.elementRef.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         // `HTMLElement.focus()` is a native DOM API which doesn't require Angular to run change detection.
         if (event.target !== this.nzSelectSearchComponent.inputElement.nativeElement) {
@@ -243,7 +238,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
       });
 
     fromEventOutsideAngular<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         if (event.target instanceof HTMLInputElement) {
           const inputValue = event.target.value;
@@ -255,9 +250,5 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit, OnDestroy
           }
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
   }
 }

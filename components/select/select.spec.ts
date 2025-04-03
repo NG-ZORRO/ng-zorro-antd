@@ -1310,6 +1310,27 @@ describe('select', () => {
       expect(component.value[0]).toBe('test_01');
     }));
 
+    it('should nzTokenSeparators + nzMaxMultipleCount work', fakeAsync(() => {
+      component.nzMaxMultipleCount = 1;
+      component.listOfOption = [
+        { value: 'test_01', label: 'label_01' },
+        { value: 'test_02', label: 'label_02' }
+      ];
+      component.value = [];
+      component.nzTokenSeparators = [','];
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      inputElement.value = 'test_01,test_02';
+      dispatchFakeEvent(inputElement, 'input');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(component.value.length).toBe(1);
+      expect(component.value[0]).toBe('test_01');
+    }));
+
     it('should nzMaxMultipleCount work', fakeAsync(() => {
       const flushRefresh = (): void => {
         fixture.detectChanges();
