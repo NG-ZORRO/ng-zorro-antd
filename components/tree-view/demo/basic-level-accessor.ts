@@ -9,57 +9,53 @@ import {
   NzTreeViewModule
 } from 'ng-zorro-antd/tree-view';
 
-interface FoodNode {
+interface TreeNode {
   name: string;
   disabled?: boolean;
-  children?: FoodNode[];
+  children?: TreeNode[];
 }
 
-interface FlatFoodNode {
+interface FlatNode {
   expandable: boolean;
   name: string;
   level: number;
   disabled: boolean;
 }
 
-const TREE_DATA: FoodNode[] = [
+const TREE_DATA: TreeNode[] = [
   {
-    name: 'Fruit',
-    children: [{ name: 'Apple' }, { name: 'Banana', disabled: true }, { name: 'Fruit loops' }]
-  },
-  {
-    name: 'Vegetables',
+    name: 'parent 1',
     children: [
       {
-        name: 'Green',
-        children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }]
+        name: 'parent 1-0',
+        disabled: true,
+        children: [{ name: 'leaf' }, { name: 'leaf' }]
       },
       {
-        name: 'Orange',
-        children: [{ name: 'Pumpkins' }, { name: 'Carrots' }]
+        name: 'parent 1-1',
+        children: [{ name: 'leaf' }]
       }
     ]
   }
 ];
 
 @Component({
-  selector: 'nz-demo-tree-view-directory',
   imports: [NzIconModule, NzTreeViewModule],
+  selector: 'nz-demo-tree-view-basic-level-accessor',
   template: `
-    <nz-tree-view [nzDataSource]="dataSource" [nzLevelAccessor]="levelAccessor" [nzDirectoryTree]="true">
-      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="node.expandable">
+    <nz-tree-view [nzDataSource]="dataSource" [nzLevelAccessor]="levelAccessor">
+      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
         <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
         <nz-tree-node-option
           [nzDisabled]="node.disabled"
           [nzSelected]="selectListSelection.isSelected(node)"
           (nzClick)="selectListSelection.toggle(node)"
         >
-          <nz-icon nzType="file" nzTheme="outline" />
           {{ node.name }}
         </nz-tree-node-option>
       </nz-tree-node>
 
-      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding [nzExpandable]="node.expandable">
+      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding [nzExpandable]="true">
         <nz-tree-node-toggle>
           <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
@@ -68,20 +64,19 @@ const TREE_DATA: FoodNode[] = [
           [nzSelected]="selectListSelection.isSelected(node)"
           (nzClick)="selectListSelection.toggle(node)"
         >
-          <nz-icon [nzType]="tree.isExpanded(node) ? 'folder-open' : 'folder'" nzTheme="outline" />
           {{ node.name }}
         </nz-tree-node-option>
       </nz-tree-node>
     </nz-tree-view>
   `
 })
-export class NzDemoTreeViewDirectoryComponent implements OnInit, AfterViewInit {
-  @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<FlatFoodNode>;
-  readonly levelAccessor = (dataNode: FlatFoodNode): number => dataNode.level;
+export class NzDemoTreeViewBasicLevelAccessorComponent implements OnInit, AfterViewInit {
+  @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<FlatNode>;
+  readonly levelAccessor = (dataNode: FlatNode): number => dataNode.level;
 
-  readonly hasChild = (_: number, node: FlatFoodNode): boolean => node.expandable;
+  readonly hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 
-  private transformer = (node: FoodNode, level: number): FlatFoodNode => ({
+  private transformer = (node: TreeNode, level: number): FlatNode => ({
     expandable: !!node.children && node.children.length > 0,
     name: node.name,
     level,
@@ -95,21 +90,21 @@ export class NzDemoTreeViewDirectoryComponent implements OnInit, AfterViewInit {
     node => node.children
   );
 
-  selectListSelection = new SelectionModel<FlatFoodNode>(true);
+  selectListSelection = new SelectionModel<FlatNode>(true);
 
-  dataSource!: NzTreeViewFlatDataSource<FoodNode, FlatFoodNode>;
+  dataSource!: NzTreeViewFlatDataSource<TreeNode, FlatNode>;
 
   ngOnInit(): void {
     this.dataSource = new NzTreeViewFlatDataSource(this.tree, this.treeFlattener, TREE_DATA);
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.tree.expand(this.getNode('Vegetables')!);
-    }, 300);
-  }
-
-  getNode(name: string): FlatFoodNode | null {
-    return this.tree.dataNodes.find(n => n.name === name) || null;
+    /**
+     * TODO: use `expandAll` instead, but this func exists bug for flatten data (only expand first level) in @angular/cdk ^18.2.0
+     * https://github.com/angular/components/issues/30445
+     * It is recommended to use nzChildrenAccessor for now.
+     */
+    this.tree.expandAll();
+    // this.tree._getExpansionModel().select(...this.dataSource.getFlattenData());
   }
 }
