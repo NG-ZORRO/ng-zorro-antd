@@ -9,6 +9,7 @@ import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   afterNextRender,
+  afterRenderEffect,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
@@ -24,6 +25,7 @@ import {
   numberAttribute,
   OnInit,
   output,
+  Renderer2,
   signal,
   untracked,
   viewChild,
@@ -204,6 +206,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   private injector = inject(Injector);
   private focusMonitor = inject(FocusMonitor);
   private directionality = inject(Directionality);
+  private renderer = inject(Renderer2);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private autoStepTimer: ReturnType<typeof setTimeout> | null = null;
   private defaultFormater = (value: number): string => {
@@ -311,6 +314,13 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       });
     });
 
+    afterRenderEffect({
+      write: () => {
+        const displayValue = this.displayValue();
+        this.renderer.setProperty(this.inputRef().nativeElement, 'value', displayValue);
+      }
+    });
+
     this.nzFormStatusService?.formStatusChanges.pipe(takeUntilDestroyed()).subscribe(({ status, hasFeedback }) => {
       this.finalStatus.set(status);
       this.hasFeedback.set(hasFeedback);
@@ -397,8 +407,8 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   private setValueByTyping(value: string): void {
+    this.displayValue.set(value);
     if (value === '') {
-      this.displayValue.set('');
       this.updateValue(null);
       return;
     }
