@@ -1,14 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { Component } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import {
-  getDescendantsForNestedData,
-  getParentForNestedData,
-  NzTreeViewComponent,
-  NzTreeViewModule,
-  NzTreeViewNestedDataSource
-} from 'ng-zorro-antd/tree-view';
+import { NzTreeFlatDataSource, NzTreeFlattener, NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
@@ -37,12 +32,19 @@ const TREE_DATA: TreeNode[] = [
   }
 ];
 
+interface FlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+  disabled: boolean;
+}
+
 @Component({
-  selector: 'nz-demo-tree-view-checkbox',
+  selector: 'nz-demo-tree-view-legacy-checkbox',
   imports: [NzIconModule, NzTreeViewModule],
   template: `
-    <nz-tree-view [nzDataSource]="dataSource" [nzChildrenAccessor]="childrenAccessor">
-      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
+    <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
+      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
         <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
         <nz-tree-node-checkbox
           [nzDisabled]="node.disabled"
@@ -54,7 +56,7 @@ const TREE_DATA: TreeNode[] = [
         </nz-tree-node-option>
       </nz-tree-node>
 
-      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding [nzExpandable]="true">
+      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
           <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
@@ -71,47 +73,65 @@ const TREE_DATA: TreeNode[] = [
     </nz-tree-view>
   `
 })
-export class NzDemoTreeViewCheckboxComponent implements OnInit {
-  @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<TreeNode>;
-  readonly childrenAccessor = (dataNode: TreeNode): TreeNode[] => dataNode.children ?? [];
+export class NzDemoTreeViewLegacyCheckboxComponent {
+  private transformer = (node: TreeNode, level: number): FlatNode => {
+    const existingNode = this.nestedNodeMap.get(node);
+    const flatNode =
+      existingNode && existingNode.name === node.name
+        ? existingNode
+        : {
+            expandable: !!node.children && node.children.length > 0,
+            name: node.name,
+            level,
+            disabled: !!node.disabled
+          };
+    this.flatNodeMap.set(flatNode, node);
+    this.nestedNodeMap.set(node, flatNode);
+    return flatNode;
+  };
+  flatNodeMap = new Map<FlatNode, TreeNode>();
+  nestedNodeMap = new Map<TreeNode, FlatNode>();
+  checklistSelection = new SelectionModel<FlatNode>(true);
 
-  readonly hasChild = (_: number, node: TreeNode): boolean => !!node.children?.length;
+  treeControl = new FlatTreeControl<FlatNode>(
+    node => node.level,
+    node => node.expandable
+  );
 
-  checklistSelection = new SelectionModel<TreeNode>(true);
+  treeFlattener = new NzTreeFlattener(
+    this.transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.children
+  );
 
-  dataSource!: NzTreeViewNestedDataSource<TreeNode>;
+  dataSource = new NzTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  ngOnInit(): void {
-    this.dataSource = new NzTreeViewNestedDataSource<TreeNode>(this.tree, TREE_DATA);
+  constructor() {
+    this.dataSource.setData(TREE_DATA);
   }
 
-  private getDescendants(node: TreeNode): TreeNode[] {
-    return getDescendantsForNestedData(node, this.childrenAccessor);
-  }
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 
-  private getParentNode(node: TreeNode): TreeNode | null {
-    return getParentForNestedData(this.tree.dataNodes, node, this.childrenAccessor);
-  }
-
-  descendantsAllSelected(node: TreeNode): boolean {
-    const descendants = this.getDescendants(node);
+  descendantsAllSelected(node: FlatNode): boolean {
+    const descendants = this.treeControl.getDescendants(node);
     return descendants.length > 0 && descendants.every(child => this.checklistSelection.isSelected(child));
   }
 
-  descendantsPartiallySelected(node: TreeNode): boolean {
-    const descendants = this.getDescendants(node);
+  descendantsPartiallySelected(node: FlatNode): boolean {
+    const descendants = this.treeControl.getDescendants(node);
     const result = descendants.some(child => this.checklistSelection.isSelected(child));
     return result && !this.descendantsAllSelected(node);
   }
 
-  leafItemSelectionToggle(node: TreeNode): void {
+  leafItemSelectionToggle(node: FlatNode): void {
     this.checklistSelection.toggle(node);
     this.checkAllParentsSelection(node);
   }
 
-  itemSelectionToggle(node: TreeNode): void {
+  itemSelectionToggle(node: FlatNode): void {
     this.checklistSelection.toggle(node);
-    const descendants = this.getDescendants(node);
+    const descendants = this.treeControl.getDescendants(node);
     this.checklistSelection.isSelected(node)
       ? this.checklistSelection.select(...descendants)
       : this.checklistSelection.deselect(...descendants);
@@ -120,17 +140,17 @@ export class NzDemoTreeViewCheckboxComponent implements OnInit {
     this.checkAllParentsSelection(node);
   }
 
-  checkAllParentsSelection(node: TreeNode): void {
-    let parent: TreeNode | null = this.getParentNode(node);
+  checkAllParentsSelection(node: FlatNode): void {
+    let parent: FlatNode | null = this.getParentNode(node);
     while (parent) {
       this.checkRootNodeSelection(parent);
       parent = this.getParentNode(parent);
     }
   }
 
-  checkRootNodeSelection(node: TreeNode): void {
+  checkRootNodeSelection(node: FlatNode): void {
     const nodeSelected = this.checklistSelection.isSelected(node);
-    const descendants = this.getDescendants(node);
+    const descendants = this.treeControl.getDescendants(node);
     const descAllSelected =
       descendants.length > 0 && descendants.every(child => this.checklistSelection.isSelected(child));
     if (nodeSelected && !descAllSelected) {
@@ -138,5 +158,24 @@ export class NzDemoTreeViewCheckboxComponent implements OnInit {
     } else if (!nodeSelected && descAllSelected) {
       this.checklistSelection.select(node);
     }
+  }
+
+  getParentNode(node: FlatNode): FlatNode | null {
+    const currentLevel = node.level;
+
+    if (currentLevel < 1) {
+      return null;
+    }
+
+    const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
+
+    for (let i = startIndex; i >= 0; i--) {
+      const currentNode = this.treeControl.dataNodes[i];
+
+      if (currentNode.level < currentLevel) {
+        return currentNode;
+      }
+    }
+    return null;
   }
 }

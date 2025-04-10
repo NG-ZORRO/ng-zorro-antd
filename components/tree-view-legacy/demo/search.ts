@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { auditTime, map } from 'rxjs/operators';
@@ -7,12 +8,7 @@ import { NzHighlightPipe } from 'ng-zorro-antd/core/highlight';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import {
-  NzTreeFlattener,
-  NzTreeViewComponent,
-  NzTreeViewFlatDataSource,
-  NzTreeViewModule
-} from 'ng-zorro-antd/tree-view';
+import { NzTreeFlatDataSource, NzTreeFlattener, NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
@@ -77,7 +73,7 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
 }
 
 @Component({
-  selector: 'nz-demo-tree-view-search',
+  selector: 'nz-demo-tree-view-legacy-search',
   imports: [FormsModule, NzInputModule, NzIconModule, NzTreeViewModule, NzNoAnimationDirective, NzHighlightPipe],
   template: `
     <nz-input-group [nzSuffix]="suffixIcon">
@@ -87,13 +83,13 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
       <nz-icon nzType="search" />
     </ng-template>
 
-    <nz-tree-view [nzDataSource]="dataSource" [nzLevelAccessor]="levelAccessor" nzNoAnimation>
-      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="node.expandable">
+    <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource" nzNoAnimation>
+      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
         <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
         <span [innerHTML]="node.name | nzHighlight: searchValue : 'i' : 'highlight'"></span>
       </nz-tree-node>
 
-      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding [nzExpandable]="node.expandable">
+      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
           <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
@@ -113,13 +109,7 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
     `
   ]
 })
-export class NzDemoTreeViewSearchComponent implements OnInit {
-  @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<FlatNode>;
-
-  readonly levelAccessor = (dataNode: FlatNode): number => dataNode.level;
-
-  readonly hasChild = (_: number, node: FlatNode): boolean => node.expandable;
-
+export class NzDemoTreeViewLegacySearchComponent {
   flatNodeMap = new Map<FlatNode, TreeNode>();
   nestedNodeMap = new Map<TreeNode, FlatNode>();
   expandedNodes: TreeNode[] = [];
@@ -142,12 +132,22 @@ export class NzDemoTreeViewSearchComponent implements OnInit {
     return flatNode;
   };
 
-  treeFlattener = new NzTreeFlattener<TreeNode, FlatNode>(
+  treeControl = new FlatTreeControl<FlatNode, TreeNode>(
+    node => node.level,
+    node => node.expandable,
+    {
+      trackBy: flatNode => this.flatNodeMap.get(flatNode)!
+    }
+  );
+
+  treeFlattener = new NzTreeFlattener<TreeNode, FlatNode, TreeNode>(
     this.transformer,
     node => node.level,
     node => node.expandable,
     node => node.children
   );
+
+  dataSource = new NzTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   filteredData$ = combineLatest([
     this.originData$,
@@ -157,32 +157,26 @@ export class NzDemoTreeViewSearchComponent implements OnInit {
     )
   ]).pipe(map(([data, value]) => (value ? filterTreeData(data, value) : new FilteredTreeResult(data))));
 
-  dataSource!: NzTreeViewFlatDataSource<TreeNode, FlatNode>;
-
-  ngOnInit(): void {
-    this.dataSource = new NzTreeViewFlatDataSource(this.tree, this.treeFlattener);
-
+  constructor() {
     this.filteredData$.subscribe(result => {
       this.dataSource.setData(result.treeData);
 
       const hasSearchValue = !!this.searchValue;
-      // trans nested nodes to flat nodes
-      const needsToExpanded = result.needsToExpanded.map(node => this.nestedNodeMap.get(node)!);
-      const expandedNodes = this.expandedNodes.map(node => this.nestedNodeMap.get(node)!);
-      // expand nodes
       if (hasSearchValue) {
         if (this.expandedNodes.length === 0) {
-          this.expandedNodes = this.tree._getExpansionModel().selected;
-          this.tree._getExpansionModel().clear();
+          this.expandedNodes = this.treeControl.expansionModel.selected;
+          this.treeControl.expansionModel.clear();
         }
-        this.tree._getExpansionModel().select(...needsToExpanded);
+        this.treeControl.expansionModel.select(...result.needsToExpanded);
       } else {
         if (this.expandedNodes.length) {
-          this.tree._getExpansionModel().clear();
-          this.tree._getExpansionModel().select(...expandedNodes);
+          this.treeControl.expansionModel.clear();
+          this.treeControl.expansionModel.select(...this.expandedNodes);
           this.expandedNodes = [];
         }
       }
     });
   }
+
+  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }

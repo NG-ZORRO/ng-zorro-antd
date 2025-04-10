@@ -65,6 +65,14 @@ export interface NzTreeVirtualNodeData<T> {
   imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective]
 })
 export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {
+  @Input('nzExpandable')
+  override get isExpandable(): boolean {
+    return super.isExpandable;
+  }
+  override set isExpandable(value: boolean) {
+    super.isExpandable = value;
+  }
+
   indents: boolean[] = [];
   disabled = false;
   selected = false;
@@ -82,7 +90,8 @@ export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, 
   }
 
   override ngOnInit(): void {
-    this.isLeaf = !this.tree.treeControl?.isExpandable(this.data);
+    super.ngOnInit();
+    this.isLeaf = !this.isExpandable;
   }
 
   disable(): void {
@@ -146,7 +155,7 @@ export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
 export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
   private _viewRef: EmbeddedViewRef<NzSafeAny> | null = null;
   @Input() data!: NzTreeVirtualNodeData<T>;
-  @Input() compareBy?: ((value: T) => T | string | number) | null;
+  @Input() compareBy?: ((value: T) => NzSafeAny) | null;
 
   constructor(private _viewContainerRef: ViewContainerRef) {}
 
