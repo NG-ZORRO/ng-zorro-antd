@@ -11,11 +11,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   inject,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -25,14 +25,20 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { map, takeUntil, throttleTime } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { merge, ReplaySubject, Subscription } from 'rxjs';
+import { map, throttleTime } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
-import { getStyleAsText, numberAttributeWithZeroFallback, shallowEqual } from 'ng-zorro-antd/core/util';
+import {
+  fromEventOutsideAngular,
+  getStyleAsText,
+  numberAttributeWithZeroFallback,
+  shallowEqual
+} from 'ng-zorro-antd/core/util';
 
 import { AffixRespondEvents } from './respond-events';
 import { getTargetRect, SimpleRect } from './utils';
@@ -78,7 +84,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private placeholderStyle?: NgStyleInterface;
   private positionChangeSubscription: Subscription = Subscription.EMPTY;
   private offsetChanged$ = new ReplaySubject<void>(1);
-  private destroy$ = new Subject<boolean>();
   private timeout?: ReturnType<typeof setTimeout>;
   private document: Document = inject(DOCUMENT);
 
@@ -87,11 +92,12 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     return (typeof el === 'string' ? this.document.querySelector(el) : el) || window;
   }
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(
     el: ElementRef,
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
-    private ngZone: NgZone,
     private platform: Platform,
     private renderer: Renderer2,
     private nzResizeObserver: NzResizeObserver,
@@ -103,7 +109,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.registerListeners();
       this.updatePosition({} as Event);
@@ -139,23 +145,23 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
 
     this.removeListeners();
     const el = this.target === window ? this.document.body : (this.target as Element);
-    this.positionChangeSubscription = this.ngZone.runOutsideAngular(() =>
-      merge(
-        ...Object.keys(AffixRespondEvents).map(evName => fromEvent(this.target, evName)),
-        this.offsetChanged$.pipe(map(() => ({}))),
-        this.nzResizeObserver.observe(el)
+    this.positionChangeSubscription = merge(
+      ...Object.keys(AffixRespondEvents).map(evName => fromEventOutsideAngular(this.target, evName)),
+      this.offsetChanged$.pipe(map(() => ({}))),
+      this.nzResizeObserver.observe(el)
+    )
+      .pipe(
+        throttleTime(NZ_AFFIX_DEFAULT_SCROLL_TIME, undefined, { trailing: true }),
+        takeUntilDestroyed(this.destroyRef)
       )
-        .pipe(throttleTime(NZ_AFFIX_DEFAULT_SCROLL_TIME, undefined, { trailing: true }), takeUntil(this.destroy$))
-        .subscribe(e => this.updatePosition(e as Event))
-    );
+      .subscribe(e => this.updatePosition(e as Event));
+
     this.timeout = setTimeout(() => this.updatePosition({} as Event));
   }
 
   private removeListeners(): void {
     clearTimeout(this.timeout);
     this.positionChangeSubscription.unsubscribe();
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 
   getOffset(element: Element, target: Element | Window | undefined): SimpleRect {
