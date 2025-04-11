@@ -38,6 +38,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
     } @else if (nzText && hasText) {
       <span class="ant-avatar-string" #textEl>{{ nzText }}</span>
     }
+    <ng-content></ng-content>
   `,
   host: {
     class: 'ant-avatar',
