@@ -449,11 +449,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   onTokenSeparate(listOfLabel: string[]): void {
-    const listOfMatchedValue = this.listOfTagAndTemplateItem.filter(
-      item =>
-        listOfLabel.findIndex(label => label === item.nzLabel) !== -1 &&
-        this.listOfValue.findIndex(value => this.compareWith(value, item.nzValue)) === -1
-    );
+    const listOfMatchedValue = this.listOfTagAndTemplateItem
+      .filter(item => listOfLabel.findIndex(label => label === item.nzLabel) !== -1)
+      .map(item => item.nzValue)
+      .filter(item => this.listOfValue.findIndex(v => this.compareWith(v, item)) === -1);
     /**
      * Limit the number of selected item to nzMaxMultipleCount
      */

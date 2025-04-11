@@ -1322,7 +1322,7 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       const inputElement = selectElement.querySelector('input')!;
-      inputElement.value = 'test_01,test_02';
+      inputElement.value = 'label_01,label_02';
       dispatchFakeEvent(inputElement, 'input');
       fixture.detectChanges();
       flush();
@@ -1516,6 +1516,27 @@ describe('select', () => {
       expect(component.value.length).toBe(2);
       expect(component.value[0]).toBe('test_01');
       expect(component.value[1]).toBe('test_02');
+    }));
+
+    it('should nzTokenSeparators + nzMaxMultipleCount work', fakeAsync(() => {
+      component.nzMaxMultipleCount = 1;
+      component.listOfOption = [
+        { value: 'test_01', label: 'label_01' },
+        { value: 'test_02', label: 'label_02' }
+      ];
+      component.value = [];
+      component.nzTokenSeparators = [','];
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      inputElement.value = 'label_01,label_02';
+      dispatchFakeEvent(inputElement, 'input');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(component.value.length).toBe(1);
+      expect(component.value[0]).toBe('test_01');
     }));
 
     it('should nzMaxTagCount works', fakeAsync(() => {
@@ -2042,6 +2063,7 @@ export class TestSelectReactiveMultipleComponent {
       [nzOptions]="listOfOption"
       [nzSize]="nzSize"
       [nzMaxTagCount]="nzMaxTagCount"
+      [nzMaxMultipleCount]="nzMaxMultipleCount"
       [nzTokenSeparators]="nzTokenSeparators"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder ?? null"
       (ngModelChange)="valueChange($event)"
@@ -2058,6 +2080,7 @@ export class TestSelectReactiveTagsComponent {
   valueChange = jasmine.createSpy('valueChange');
   nzTokenSeparators: string[] = [];
   nzMaxTagPlaceholder?: TemplateRef<NzSafeAny>;
+  nzMaxMultipleCount?: number;
 }
 
 @Component({
