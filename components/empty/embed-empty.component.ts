@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ComponentPortal, Portal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -16,13 +15,18 @@ import {
   SimpleChanges,
   TemplateRef,
   Type,
+  ViewChild,
   ViewContainerRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  EmbeddedViewRef,
+  ComponentRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
+import { AnimationDuration } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize } from './config';
@@ -55,7 +59,7 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
       @if (contentType === 'string') {
         {{ content }}
       } @else {
-        <ng-template [cdkPortalOutlet]="contentPortal" />
+        <ng-container #dynamicContent></ng-container>
       }
     } @else {
       @if (specificContent !== null) {
@@ -73,25 +77,27 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
       }
     }
   `,
-  imports: [NzEmptyComponent, PortalModule]
+  imports: [NzEmptyComponent]
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzComponentName?: string;
   @Input() specificContent?: NzEmptyCustomContent;
 
+  @ViewChild('dynamicContent', { read: ViewContainerRef, static: true })
+  dynamicContentRef!: ViewContainerRef;
+
   content?: NzEmptyCustomContent;
   contentType: NzEmptyContentType = 'string';
-  contentPortal?: Portal<NzSafeAny>;
   size: NzEmptySize = '';
 
   private destroy$ = new Subject<void>();
+  private embeddedContentRef: EmbeddedViewRef<any> | ComponentRef<any> | null;
 
   constructor(
     private configService: NzConfigService,
-    private viewContainerRef: ViewContainerRef,
     private cdr: ChangeDetectorRef,
     private injector: Injector
-  ) {}
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzComponentName) {
@@ -109,29 +115,33 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroyEmbeddedContent();
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   private renderEmpty(): void {
+    this.destroyEmbeddedContent(true);
+
     const content = this.content;
 
     if (typeof content === 'string') {
       this.contentType = 'string';
     } else if (content instanceof TemplateRef) {
-      const context = { $implicit: this.nzComponentName } as NzSafeAny;
       this.contentType = 'template';
-      this.contentPortal = new TemplatePortal(content, this.viewContainerRef, context);
-    } else if (content instanceof Type) {
-      const injector = Injector.create({
-        parent: this.injector,
-        providers: [{ provide: NZ_EMPTY_COMPONENT_NAME, useValue: this.nzComponentName }]
+      this.embeddedContentRef = this.dynamicContentRef.createEmbeddedView(content, {
+        $implicit: this.nzComponentName
       });
+    } else if (content instanceof Type) {
       this.contentType = 'component';
-      this.contentPortal = new ComponentPortal(content, this.viewContainerRef, injector);
+      this.embeddedContentRef = this.dynamicContentRef.createComponent(content, {
+        injector: Injector.create({
+          parent: this.injector,
+          providers: [{ provide: NZ_EMPTY_COMPONENT_NAME, useValue: this.nzComponentName }]
+        })
+      });
     } else {
       this.contentType = 'string';
-      this.contentPortal = undefined;
     }
 
     this.cdr.detectChanges();
@@ -149,5 +159,23 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   private getUserDefaultEmptyContent(): Type<NzSafeAny> | TemplateRef<string> | string | undefined {
     return (this.configService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent;
+  }
+  /**
+   * 手动销毁嵌入的内容，以控制销毁顺序
+   */
+  private destroyEmbeddedContent(immediately: boolean = false): void {
+    if (this.embeddedContentRef) {
+      if (immediately) {
+        this.embeddedContentRef.destroy();
+        this.embeddedContentRef = null;
+      } else {
+        setTimeout(() => {
+          this.embeddedContentRef.destroy();
+          this.embeddedContentRef = null;
+        },
+          (parseFloat(AnimationDuration.SLOW) || 0) * 1000
+        );
+      }
+    }
   }
 }
