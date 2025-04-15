@@ -82,6 +82,13 @@ export interface NzCascaderOption {
 
 #### NzShowSearchOptions
 
+```ts
+export type NzShowSearchOptions = boolean | {
+  filter?: NzCascaderFilter;
+  sorter?: NzCascaderSorter;
+};
+```
+
 `nzShowSearch` 为对象时需遵守 `NzShowSearchOptions` 接口：
 
 | 参数       | 说明                              | 类型                                                                           | 默认值 |
