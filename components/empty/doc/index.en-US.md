@@ -41,3 +41,13 @@ The `nzEmpty` interface has properties as follows:
 
 You may notice or used some inputs like `nzNotFoundContent` in some components. Now they would use `Empty` component. So you can provide `nzDefaultEmptyContent` to customize them.
 
+```ts
+{
+  provide: NZ_CONFIG,
+  useValue: {
+    empty: {
+      nzDefaultEmptyContent
+    }
+  }
+}
+```

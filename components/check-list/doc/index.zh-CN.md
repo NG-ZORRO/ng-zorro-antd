@@ -5,8 +5,7 @@ title: CheckList
 subtitle: 任务清单
 cols: 1
 tag: 19.1.0
-cover: >-
-  https://img.alicdn.com/imgextra/i2/O1CN01E9BUpE1TCyZry8ETC_!!6000000002347-2-tps-386-453.png
+cover: 'https://img.alicdn.com/imgextra/i2/O1CN01E9BUpE1TCyZry8ETC_!!6000000002347-2-tps-386-453.png'
 description: 用于在项目中梳理任务流程。
 ---
 

@@ -3,8 +3,7 @@ category: Components
 type: Layout
 title: Splitter
 tag: 19.2.0
-cover: >-
-  https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*f0SISaETY0wAAAAAAAAAAAAADrJ8AQ/original
+cover: 'https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*f0SISaETY0wAAAAAAAAAAAAADrJ8AQ/original'
 description: Splits the area into multiple horizontal or vertical sides.
 ---
 

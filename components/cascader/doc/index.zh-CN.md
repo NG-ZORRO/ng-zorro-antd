@@ -65,10 +65,22 @@ description: 级联选择框。
 
 #### NzCascaderOption
 
+```ts
+export interface NzCascaderOption {
+  value?: any;
+  label?: string;
+  title?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  isLeaf?: boolean;
+  children?: NzCascaderOption[];
+  disableCheckbox?: boolean;
 
+  [key: string]: any;
+}
+```
 
 #### NzShowSearchOptions
-
 
 `nzShowSearch` 为对象时需遵守 `NzShowSearchOptions` 接口：
 
@@ -79,9 +91,25 @@ description: 级联选择框。
 
 默认的 filter 如下所示：
 
+```ts
+const defaultFilter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.indexOf(i) !== -1;
+  });
+};
+```
 
 如果你想要在搜索时忽略大小写，就可以编写一个这样的 filter 函数：
 
+```ts
+const filter: NzCascaderFilter = (i, p) => {
+  return p.some(o => {
+    const label = o.label;
+    return !!label && label.toLowerCase().indexOf(i.toLowerCase()) !== -1;
+  });
+};
+```
 
 #### 方法
 

@@ -8,8 +8,7 @@ description: Tree view component with better performance and customizability.
 
 ## When To Use
 
-More basic Tree component, allowing each of its parts to be defined in the
-template, and state to be managed manually.
+More basic Tree component, allowing each of its parts to be defined in the template, and state to be managed manually.
 
 
 ## API

@@ -20,7 +20,7 @@ description: Displays the current location within a hierarchy. And allow going b
 ### nz-breadcrumb
 
 | Property           | Description                                                                                                                                                                                                      | Type                                  | Default          |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ---------------- |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|------------------|
 | `[nzSeparator]`    | Custom separator                                                                                                                                                                                                 | `string \| TemplateRef<void> \| null` | `'/'`            |
 | `[nzAutoGenerate]` | Auto generate breadcrumb                                                                                                                                                                                         | `boolean`                             | `false`          |
 | `[nzRouteLabel]`   | Name of property that determines displayed text in routing config. It should be used when `nzAutoGenerate` is `true`                                                                                             | `string`                              | `'breadcrumb'`   |
@@ -29,9 +29,27 @@ description: Displays the current location within a hierarchy. And allow going b
 
 Using `[nzAutoGenerate]` by configuring `data` like this:
 
+```ts
+{
+  path: '/path',
+  component: SomeComponent,
+  data: {
+    breadcrumb: 'Display Name'
+  }
+}
+```
 
 For lazy loading modules, you should write `data` in parent module like this:
 
+```ts
+{
+  path: 'first',
+  loadChildren: () => import('./first/first.module').then(m => m.FirstModule),
+  data: {
+    breadcrumb: 'First'
+  },
+}
+```
 
 Use `nzRouteLabel` to custom `data` breadcrumb label:
 
@@ -39,6 +57,15 @@ Use `nzRouteLabel` to custom `data` breadcrumb label:
 <nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'customBreadcrumb'"></nz-breadcrumb>
 ```
 
+```ts
+{
+  path: 'path',
+  component: SomeComponent,
+  data: {
+    customBreadcrumb: 'Display Name'
+  }
+}
+```
 
 Use `nzRouteLabelFn` to format breadcrumb label in international application:
 
@@ -46,7 +73,19 @@ Use `nzRouteLabelFn` to format breadcrumb label in international application:
 <nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'breadcrumbI18nKey'" [nzRouteLabelFn]="translateFn"></nz-breadcrumb>
 ```
 
+```ts
+// In Route
+{
+  path: 'path',
+  component: SomeComponent,
+  data: {
+    breadcrumbI18nKey: 'i18n.aaa.bbbb'
+  }
+}
 
+// In component
+translateFn = (key:string) => this.yourI18nService.translate(key);
+```
 
 Use `nzRouteFn` to format or bind params and query strings to the route it self in international application:
 
@@ -54,6 +93,19 @@ Use `nzRouteFn` to format or bind params and query strings to the route it self 
 <nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'breadcrumbI18nKey'" [nzRouteLabelFn]="translateFn" [nzRouteFn]="customRoute"></nz-breadcrumb>
 ```
 
+```ts
+// In component
+bindCurrentParams(params, route) {
+  let newRoute = route;
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      newRoute += `;${key}=${params[key]}`;
+    }
+  }
+  return newRoute;
+}
 
+const params = this.activatedRoute.snapshot.params;
 
-
+customRoute = (route:string) => this.bindCurrentParams(params,route);
+```

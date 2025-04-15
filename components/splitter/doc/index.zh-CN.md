@@ -4,8 +4,7 @@ type: 布局
 title: Splitter
 subtitle: 分隔面板
 tag: 19.2.0
-cover: >-
-  https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*f0SISaETY0wAAAAAAAAAAAAADrJ8AQ/original
+cover: 'https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*f0SISaETY0wAAAAAAAAAAAAADrJ8AQ/original'
 description: 自由切分指定区域。
 ---
 

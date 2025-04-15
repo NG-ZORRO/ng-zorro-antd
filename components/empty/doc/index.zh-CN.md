@@ -41,3 +41,14 @@ description: 空状态时的展示占位图。
 ### 全局自定义空组件
 
 你或许知道或者用过一些类似 `nzNotFoundContent` 的属性来自定义组件数据为空时的内容，现在它们都会使用 `Empty` 组件。你可以通过在 `NZ_CONFIG` 中提供 `{ empty: { nzDefaultEmptyContent: something } }` 来定义一个自定义的全局空组件。
+
+```ts
+{
+  provide: NZ_CONFIG,
+  useValue: {
+    empty: {
+      nzDefaultEmptyContent
+    }
+  }
+}
+```
