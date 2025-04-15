@@ -2,19 +2,16 @@
 category: Components
 type: Data Display
 title: Image
-cover: https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg'
+description: Preview-able image.
 ---
 
-Previewable image.
 
 ## When To Use
 
 - When you need to display pictures.
-- Display when loading a large image or fault tolerant handling when loading fail.
+- Display when loading a large image or fault-tolerant handling when loading fail.
 
-```ts
-import { NzImageModule } from 'ng-zorro-antd/image';
-```
 
 ## API
 

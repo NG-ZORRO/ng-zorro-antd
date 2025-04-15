@@ -4,18 +4,15 @@ subtitle: 步骤条
 type: 导航
 cols: 1
 title: Steps
-cover: https://gw.alipayobjects.com/zos/antfincdn/UZYqMizXHaj/Steps.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/UZYqMizXHaj/Steps.svg'
+description: 引导用户按照流程完成任务的导航条。
 ---
 
-引导用户按照流程完成任务的导航条。
 
 ## 何时使用
 
 当任务复杂或者存在先后关系时，将其分解成一系列步骤，从而简化任务。
 
-```ts
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-```
 
 ## API
 

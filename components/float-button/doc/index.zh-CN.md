@@ -3,21 +3,16 @@ category: Components
 subtitle: 悬浮按钮
 type: 通用
 title: FloatButton
-cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*HS-wTIIwu0kAAAAAAAAAAAAADrJ8AQ/original
+cover: 'https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*HS-wTIIwu0kAAAAAAAAAAAAADrJ8AQ/original'
 tag: 19.0.0
+description: 悬浮于页面上方的按钮。
 ---
 
 ## 何时使用
 
 - 用于网站上的全局功能；
-
 - 无论浏览到何处都可以看见的按钮。
 
-### 引入模块
-
-```ts
-import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
-```
 
 ## API
 

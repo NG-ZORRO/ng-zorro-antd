@@ -3,10 +3,10 @@ category: Components
 subtitle: 气泡卡片
 type: 数据展示
 title: Popover
-cover: https://gw.alipayobjects.com/zos/alicdn/1PNL1p_cO/Popover.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/1PNL1p_cO/Popover.svg'
+description: 点击/鼠标移入元素，弹出气泡式的卡片浮层。
 ---
 
-点击/鼠标移入元素，弹出气泡式的卡片浮层。
 
 ## 何时使用
 
@@ -14,9 +14,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/1PNL1p_cO/Popover.svg
 
 和 `Tooltip` 的区别是，用户可以对浮层上的元素进行操作，因此它可以承载更复杂的内容，比如链接或按钮等。
 
-```ts
-import { NzPopoverModule } from 'ng-zorro-antd/popover';
-```
 
 ## API
 

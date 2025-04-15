@@ -4,21 +4,21 @@ subtitle: 穿梭框
 type: 数据录入
 cols: 1
 title: Transfer
-cover: https://gw.alipayobjects.com/zos/alicdn/QAXskNI4G/Transfer.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/QAXskNI4G/Transfer.svg'
+description: 双栏穿梭选择框。
 ---
 
-双栏穿梭选择框。
 
 ## 何时使用
 
-用直观的方式在两栏中移动元素，完成选择行为。
+- 需要在多个可选项中进行多选时。
+- 比起 Select 和 TreeSelect，穿梭框占据更大的空间，可以展示可选项的更多信息。
+
+穿梭选择框用直观的方式在两栏中移动元素，完成选择行为。
 
 选择一个或以上的选项后，点击对应的方向键，可以把选中的选项移动到另一栏。
 其中，左边一栏为 `source`，右边一栏为 `target`，API 的设计也反映了这两个概念。
 
-```ts
-import { NzTransferModule } from 'ng-zorro-antd/transfer';
-```
 
 ## API
 

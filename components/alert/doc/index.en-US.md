@@ -2,19 +2,16 @@
 category: Components
 type: Feedback
 title: Alert
-cover: https://gw.alipayobjects.com/zos/alicdn/8emPa3fjl/Alert.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/8emPa3fjl/Alert.svg'
+description: Alert component for feedback.
 ---
 
-Alert component for feedback.
 
 ## When To Use
 
 - When you need to show alert messages to users.
 - When you need a persistent static container which is closable by user actions.
 
-```ts
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-```
 
 ## API
 

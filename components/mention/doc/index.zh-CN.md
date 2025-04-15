@@ -3,18 +3,15 @@ category: Components
 subtitle: 提及
 type: 数据录入
 title: Mention
-cover: https://gw.alipayobjects.com/zos/alicdn/jPE-itMFM/Mentions.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/jPE-itMFM/Mentions.svg'
+description: 用于在输入中提及某人或某事。
 ---
 
-提及组件。
 
 ## 何时使用
 
 用于在输入中提及某人或某事，常用于发布、聊天或评论功能。
 
-```ts
-import { NzMentionModule } from 'ng-zorro-antd/mention';
-```
 
 ## API
 

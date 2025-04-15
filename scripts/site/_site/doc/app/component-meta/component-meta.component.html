@@ -1,0 +1,33 @@
+{{ description() }}
+
+<nz-descriptions nzSize="small" [nzColumn]="1" [nzColon]="false">
+  <nz-descriptions-item [nzTitle]="isEn() ? 'Import' : '使用'">
+    <button nz-button nzType="text" nzSize="small" (click)="copy()">
+      <span nz-typography nz-tooltip [nzTooltipTitle]="tip" nzTooltipPlacement="right" (nzTooltipVisibleChange)="usageTooltipVisibleChange($event)">
+        {{ usage }}
+      </span>
+    </button>
+  </nz-descriptions-item>
+  <nz-descriptions-item [nzTitle]="isEn() ? 'Source' : '源码'">
+    <a nz-button nzType="text" nzSize="small" [attr.href]="sourceCode" target="_blank" rel="noopener noreferrer">
+      <nz-icon nzType="github" />
+      <span nz-typography>components/{{ path() }}</span>
+    </a>
+  </nz-descriptions-item>
+  <nz-descriptions-item [nzTitle]="isEn() ? 'Docs' : '文档'">
+    <a nz-button nzType="text" nzSize="small" [attr.href]="document()" target="_blank" rel="noopener noreferrer">
+      <nz-icon nzType="edit" />
+      <span nz-typography>
+        {{ isEn() ? 'Edit this page' : '编辑此页' }}
+      </span>
+    </a>
+  </nz-descriptions-item>
+</nz-descriptions>
+
+<ng-template #tip>
+  @if (copied()) {
+    {{ isEn() ? 'Copied' : '已复制' }}
+  } @else {
+    {{ isEn() ? 'Copy' : '复制' }}
+  }
+</ng-template>

@@ -2,10 +2,10 @@
 category: Components
 type: Feedback
 title: Popconfirm
-cover: https://gw.alipayobjects.com/zos/alicdn/fjMCD9xRq/Popconfirm.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/fjMCD9xRq/Popconfirm.svg'
+description: Pop up a bubble confirmation box for an action.
 ---
 
-A simple and compact confirmation dialog of an action.
 
 ## When To Use
 
@@ -13,9 +13,6 @@ A simple and compact dialog used for asking for user confirmation.
 
 The difference with the `confirm` modal dialog is that it's more lightweight than the static popped full-screen confirm modal.
 
-```ts
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-```
 
 ## API
 

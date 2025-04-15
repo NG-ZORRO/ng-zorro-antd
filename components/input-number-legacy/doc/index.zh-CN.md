@@ -3,11 +3,11 @@ category: Components
 subtitle: 数字输入框
 type: 数据录入
 title: InputNumberLegacy
-cover: https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg'
 tag: deprecated
+description: 通过鼠标或键盘，输入范围内的数值。
 ---
 
-通过鼠标或键盘，输入范围内的数值。
 
 > ⚠️ `InputNumberLegacy` 已在 `v19.0.0` 中废弃，请使用新版 `InputNumber` 组件。
 
@@ -15,9 +15,6 @@ tag: deprecated
 
 当需要获取标准数值时。
 
-```ts
-import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
-```
 
 ## API
 

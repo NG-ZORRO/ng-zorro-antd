@@ -3,21 +3,16 @@ category: Components
 type: Feedback
 noinstant: true
 title: Message
-cover: https://gw.alipayobjects.com/zos/alicdn/hAkKTIW0K/Message.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/hAkKTIW0K/Message.svg'
+description: Display global messages as feedback in response to user operations.
 ---
 
-Display global messages as feedback in response to user operations.
 
 ## When To Use
 
 - To provide feedback such as success, warning, error etc.
 - A message is displayed at top and center and will be dismissed automatically, as a non-interrupting light-weighted prompt.
 
-```ts
-import { NzMessageService } from 'ng-zorro-antd/message';
-
-private readonly message = inject(NzMessageService);
-```
 
 ## API
 

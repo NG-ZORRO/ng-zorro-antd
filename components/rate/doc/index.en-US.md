@@ -2,19 +2,16 @@
 category: Components
 type: Data Entry
 title: Rate
-cover: https://gw.alipayobjects.com/zos/alicdn/R5uiIWmxe/Rate.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/R5uiIWmxe/Rate.svg'
+description: Used for rating operation on something.
 ---
 
-Rate component.
 
 ## When To Use
 
 - Show evaluation.
 - A quick rating operation on something.
 
-```ts
-import { NzRateModule } from 'ng-zorro-antd/rate';
-```
 
 ## API
 
@@ -40,5 +37,5 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 
 | Name    | Description  |
 | ------- | ------------ |
-| blur()  | remove focus |
-| focus() | get focus    |
+| `blur()`  | remove focus |
+| `focus()` | get focus    |

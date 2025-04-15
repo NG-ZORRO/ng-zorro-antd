@@ -2,14 +2,10 @@
 category: Components
 type: Data Display
 title: Avatar
-cover: https://gw.alipayobjects.com/zos/antfincdn/aBcnbw68hP/Avatar.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/aBcnbw68hP/Avatar.svg'
+description: Used to represent users or things, supporting the display of images, icons, or characters.
 ---
 
-Avatars can be used to represent people or objects. It supports images, `Icon`s, or letters.
-
-```ts
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-```
 
 ## API
 

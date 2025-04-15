@@ -2,19 +2,17 @@
 category: Components
 type: Data Entry
 title: Select
-cover: https://gw.alipayobjects.com/zos/alicdn/_0XzgOis7/Select.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/_0XzgOis7/Select.svg'
+description: A dropdown menu for displaying choices.
 ---
 
-Select component to select value from options.
 
 ## When To Use
 
 - A dropdown menu for displaying choices - an elegant alternative to the native `<select>` element.
 - Utilizing [Radio](/components/radio/en) is recommended when there are fewer total options (less than 5).
+- You probably need [AutoComplete](/components/auto-complete) if you're looking for an input box that can be typed or selected.
 
-```ts
-import { NzSelectModule } from 'ng-zorro-antd/select';
-```
 
 ## API
 
@@ -95,5 +93,5 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 | Name    | Description  |
 | ------- | ------------ |
-| blur()  | Remove focus |
-| focus() | Get focus    |
+| `blur()`  | Remove focus |
+| `focus()` | Get focus    |

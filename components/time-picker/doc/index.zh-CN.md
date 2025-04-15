@@ -3,24 +3,17 @@ category: Components
 subtitle: 时间选择框
 type: 数据录入
 title: TimePicker
-cover: https://gw.alipayobjects.com/zos/alicdn/h04Zsl98I/TimePicker.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/h04Zsl98I/TimePicker.svg'
+description: 输入或选择时间的控件。
 ---
 
-输入或选择时间的控件。
 
 ## 何时使用
 
 当用户需要输入一个时间，可以点击标准输入框，弹出时间面板进行选择。
 
-```ts
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-```
 
 ## API
-
-```html
-<nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
-```
 
 ### nz-time-picker
 

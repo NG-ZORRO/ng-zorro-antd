@@ -2,17 +2,14 @@
 category: Components
 type: Data Display
 title: Tree View
-cover: https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg'
+description: Tree view component with better performance and customizability.
 ---
 
 ## When To Use
 
 More basic Tree component, allowing each of its parts to be defined in the template, and state to be managed manually.
-With better performance and customizability.
 
-```ts
-import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
-```
 
 ## API
 

@@ -4,10 +4,10 @@ subtitle: 标签页
 type: 数据展示
 title: Tabs
 cols: 1
-cover: https://gw.alipayobjects.com/zos/antfincdn/lkI2hNEDr2V/Tabs.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/lkI2hNEDr2V/Tabs.svg'
+description: 选项卡切换组件。
 ---
 
-选项卡切换组件。
 
 ## 何时使用
 
@@ -19,9 +19,6 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 - 标准线条式页签，用于容器内部的主功能切换，这是最常用的 Tabs。
 - [RadioButton](/components/radio/zh/#components-radio-demo-radiobutton) 可作为更次级的页签来使用。
 
-```ts
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-```
 
 ## API
 

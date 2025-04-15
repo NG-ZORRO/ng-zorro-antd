@@ -2,18 +2,15 @@
 category: Components
 type: Other
 title: Anchor
-cover: https://gw.alipayobjects.com/zos/alicdn/_1-C1JwsC/Anchor.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/_1-C1JwsC/Anchor.svg'
+description: Hyperlinks to scroll on one page.
 ---
 
-Hyperlinks to scroll on one page.
 
 ## When To Use
 
 For displaying anchor hyperlinks on page and jumping between them.
 
-```ts
-import { NzAnchorModule } from 'ng-zorro-antd/anchor';
-```
 
 ## API
 

@@ -3,18 +3,15 @@ category: Components
 type: Navigation
 cols: 1
 title: Steps
-cover: https://gw.alipayobjects.com/zos/antfincdn/UZYqMizXHaj/Steps.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/UZYqMizXHaj/Steps.svg'
+description: A navigation bar that guides users through the steps of a task.
 ---
 
-`Steps` is a navigation bar that guides users through the steps of a task.
 
 ## When To Use
 
-When the task is complicated or has a certain sequence in the series of subtasks, we can decompose it into several steps to make things easier.
+When a given task is complicated or has a certain sequence in the series of subtasks, we can decompose it into several steps to make things easier.
 
-```ts
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-```
 
 ## API
 

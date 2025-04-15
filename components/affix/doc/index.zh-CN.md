@@ -3,10 +3,10 @@ category: Components
 subtitle: 固钉
 type: 导航
 title: Affix
-cover: https://gw.alipayobjects.com/zos/alicdn/tX6-md4H6/Affix.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/tX6-md4H6/Affix.svg'
+description: 将页面元素钉在可视范围。
 ---
 
-将页面元素钉在可视范围。
 
 ## 何时使用
 
@@ -14,9 +14,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/tX6-md4H6/Affix.svg
 
 页面可视范围过小时，慎用此功能以免遮挡页面内容。
 
-```ts
-import { NzAffixModule } from 'ng-zorro-antd/affix';
-```
 
 ## API
 

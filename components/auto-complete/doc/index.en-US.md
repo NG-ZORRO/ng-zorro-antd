@@ -2,18 +2,15 @@
 category: Components
 type: Data Entry
 title: Autocomplete
-cover: https://gw.alipayobjects.com/zos/alicdn/qtJm4yt45/AutoComplete.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/qtJm4yt45/AutoComplete.svg'
+description: Autocomplete function of input field.
 ---
 
-Autocomplete function of input field.
 
 ## When To Use
 
 When there is a need for autocomplete functionality.
 
-```ts
-import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-```
 
 ## API
 

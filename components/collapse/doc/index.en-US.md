@@ -3,19 +3,16 @@ category: Components
 type: Data Display
 title: Collapse
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/IxH16B9RD/Collapse.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/IxH16B9RD/Collapse.svg'
+description: A content area which can be collapsed and expanded.
 ---
 
-A content area which can be collapsed and expanded.
 
 ## When To Use
 
 - Can be used to group or hide complex regions to keep the page clean.
 - `Accordion` is a special kind of `Collapse`, which allows only one panel to be expanded at a time.
 
-```ts
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-```
 
 ## API
 

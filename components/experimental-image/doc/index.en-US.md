@@ -4,12 +4,9 @@ type: Data Display
 title: Image
 cols: 1
 experimental: true
+description: Experimental image component.
 ---
 
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
-<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
-</blockquote>
 
 ## When To Use
 
@@ -20,23 +17,20 @@ experimental: true
 - Next steps
   * Add [sizes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes) attribute and responsive support.
 
-```ts
-import { NzImageModule } from 'ng-zorro-antd/experimental/image';
-```
 
 ## API
 
 ### nz-image
 
-| Property | Description | Type | Default | Global Config |
-| --- | --- | --- | --- | --- |
-|nzSrc | URL | `string` | - | |
-|nzAlt | Alt | `string` | - | |
-|nzWidth | Width | `number\|string` | `auto` | |
-|nzHeight | Height | `number\|string` | `auto` | |
-|nzAutoSrcset | Whether to optimize image loading | `boolean` | `false` | ✅ |
-|nzSrcLoader | Loader | `NzImageSrcLoader` | `defaultImageSrcLoader` | ✅ |
-|nzPriority | Whether to add [preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content) (only SSR)  | `boolean` | `false` | ✅ |
+| Property       | Description                                                                                               | Type               | Default                 | Global Config |
+|----------------|-----------------------------------------------------------------------------------------------------------|--------------------|-------------------------|---------------|
+| `nzSrc`        | URL                                                                                                       | `string`           | -                       |               |
+| `nzAlt`        | Alt                                                                                                       | `string`           | -                       |               |
+| `nzWidth`      | Width                                                                                                     | `number\|string`   | `auto`                  |               |
+| `nzHeight`     | Height                                                                                                    | `number\|string`   | `auto`                  |               |
+| `nzAutoSrcset` | Whether to optimize image loading                                                                         | `boolean`          | `false`                 | ✅             |
+| `nzSrcLoader`  | Loader                                                                                                    | `NzImageSrcLoader` | `defaultImageSrcLoader` | ✅             |
+| `nzPriority`   | Whether to add [preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content) (only SSR) | `boolean`          | `false`                 | ✅             |
 
 ### NzImageSrcLoader
 
@@ -49,15 +43,16 @@ export type NzImageSrcLoader = (params: { src: string; width: number }) => strin
 ### nzSrcLoader
 
 Using `nzSrcLoader` helps you to fill in key information about the requested image, such as `src` and `width`, which defaults to
+
 ```ts
 export const defaultImageSrcLoader: NzImageSrcLoader = ({ src }) => {
   return src;
 };
 ```
+
 Built-in image CND creation method
 
 ```ts
-
 /**
  * AliObjectsLoader return format
  * {domain}/{src}?x-oss-process=image/resize,w_{width}

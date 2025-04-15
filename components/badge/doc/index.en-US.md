@@ -2,18 +2,15 @@
 category: Components
 type: Data Display
 title: Badge
-cover: https://gw.alipayobjects.com/zos/antfincdn/6%26GF9WHwvY/Badge.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/6%26GF9WHwvY/Badge.svg'
+description: Small numerical value or status descriptor for UI elements.
 ---
 
-Small numerical value or status descriptor for UI elements.
 
 ## When To Use
 
 Badge normally appears in proximity to notifications or user avatars with eye-catching appeal, typically displaying unread messages count.
 
-```ts
-import { NzBadgeModule } from 'ng-zorro-antd/badge';
-```
 
 ## API
 

@@ -3,19 +3,16 @@ category: Components
 type: Navigation
 title: Pagination
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/1vqv2bj68/Pagination.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/1vqv2bj68/Pagination.svg'
+description: A long list can be divided into several pages by `Pagination`, and only one page will be loaded at a time.
 ---
 
-A long list can be divided into several pages by `Pagination`, and only one page will be loaded at a time.
 
 ## When To Use
 
 - When it will take a long time to load/render all items.
 - If you want to browse the data by navigating through pages.
 
-```ts
-import { NzPaginationModule } from 'ng-zorro-antd/pagination';
-```
 
 ## API
 

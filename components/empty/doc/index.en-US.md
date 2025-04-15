@@ -3,18 +3,15 @@ category: Components
 type: Data Display
 title: Empty
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg'
+description: Empty state placeholder.
 ---
 
-Empty state placeholder.
 
 ## When To Use
 
 When there is no data provided, display for friendly tips.
 
-```ts
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-```
 
 ## API
 

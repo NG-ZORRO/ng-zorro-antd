@@ -2,18 +2,15 @@
 category: Components
 type: Feedback
 title: Spin
-cover: https://gw.alipayobjects.com/zos/alicdn/LBcJqCPRv/Spin.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/LBcJqCPRv/Spin.svg'
+description: Used for the loading status of a page or a block.
 ---
 
-A spinner for displaying loading state of a page or a section.
 
 ## When To Use
 
 When part of the page is waiting for asynchronous data or during a rendering process, an appropriate loading animation can effectively alleviate users' inquietude.
 
-```ts
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-```
 
 ## API
 

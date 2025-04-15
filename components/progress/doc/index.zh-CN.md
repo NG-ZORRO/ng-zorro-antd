@@ -3,10 +3,10 @@ category: Components
 subtitle: 进度条
 type: 反馈
 title: Progress
-cover: https://gw.alipayobjects.com/zos/alicdn/xqsDu4ZyR/Progress.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/xqsDu4ZyR/Progress.svg'
+description: 展示操作的当前进度。
 ---
 
-展示操作的当前进度。
 
 ## 何时使用
 
@@ -15,9 +15,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/xqsDu4ZyR/Progress.svg
 - 当一个操作会打断当前界面，或者需要在后台运行，且耗时可能超过 2 秒时；
 - 当需要显示一个操作完成的百分比时。
 
-```ts
-import { NzProgressModule } from 'ng-zorro-antd/progress';
-```
 
 ## API
 

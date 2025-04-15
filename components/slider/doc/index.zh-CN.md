@@ -3,18 +3,15 @@ category: Components
 subtitle: 滑动输入条
 type: 数据录入
 title: Slider
-cover: https://gw.alipayobjects.com/zos/alicdn/HZ3meFc6W/Silder.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/HZ3meFc6W/Silder.svg'
+description: 滑动型输入器，展示当前值和可选范围。
 ---
 
-滑动型输入器，展示当前值和可选范围。
 
 ## 何时使用
 
 当用户需要在数值区间/自定义区间内进行选择时，可为连续或离散值。
 
-```ts
-import { NzSliderModule } from 'ng-zorro-antd/slider';
-```
 
 ## API
 

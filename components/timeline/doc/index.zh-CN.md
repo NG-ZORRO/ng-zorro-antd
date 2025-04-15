@@ -3,19 +3,16 @@ category: Components
 subtitle: 时间轴
 type: 数据展示
 title: Timeline
-cover: https://gw.alipayobjects.com/zos/antfincdn/vJmo00mmgR/Timeline.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/vJmo00mmgR/Timeline.svg'
+description: 垂直展示的时间流信息。
 ---
 
-垂直展示的时间流信息。
 
 ## 何时使用
 
 - 当有一系列信息需按时间排列时，可正序和倒序。
 - 需要有一条时间轴进行视觉上的串联时。
 
-```ts
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-```
 
 ## API
 

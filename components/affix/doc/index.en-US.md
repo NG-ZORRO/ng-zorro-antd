@@ -2,10 +2,10 @@
 category: Components
 type: Navigation
 title: Affix
-cover: https://gw.alipayobjects.com/zos/alicdn/tX6-md4H6/Affix.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/tX6-md4H6/Affix.svg'
+description: Make an element stick to viewport.
 ---
 
-Make an element stick to viewport.
 
 ## When To Use
 
@@ -13,9 +13,6 @@ When user browses a long web page, some content need to stick to the viewport. T
 
 Please note that Affix should not cover other content on the page, especially when the size of the viewport is small.
 
-```ts
-import { NzAffixModule } from 'ng-zorro-antd/affix';
-```
 
 ## API
 

@@ -4,10 +4,10 @@ subtitle: 栅格
 type: 布局
 cols: 1
 title: Grid
-cover: https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg'
+description: 24 栅格系统。
 ---
 
-24 栅格系统。
 
 ## 设计理念
 
@@ -77,9 +77,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg
 
 布局是基于 24 栅格来定义每一个『盒子』的宽度，但不拘泥于栅格。
 
-```ts
-import { NzGridModule } from 'ng-zorro-antd/grid';
-```
 
 ## API
 

@@ -2,19 +2,16 @@
 category: Components
 type: Data Entry
 title: Switch
-cover: https://gw.alipayobjects.com/zos/alicdn/zNdJQMhfm/Switch.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/zNdJQMhfm/Switch.svg'
+description: Used to toggle between two states.
 ---
 
-Switching Selector.
 
 ## When To Use
 
 - If you need to represent the switching between two states or on-off state.
 - The difference between `Switch` and `Checkbox` is that `Switch` will trigger a state change directly when you toggle it, while `Checkbox` is generally used for state marking, which should work in conjunction with submit operation.
 
-```ts
-import { NzSwitchModule } from 'ng-zorro-antd/switch';
-```
 
 ## API
 

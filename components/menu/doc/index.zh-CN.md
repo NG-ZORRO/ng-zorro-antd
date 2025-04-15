@@ -4,10 +4,10 @@ cols: 1
 type: 导航
 title: Menu
 subtitle: 导航菜单
-cover: https://gw.alipayobjects.com/zos/alicdn/3XZcjGpvK/Menu.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/3XZcjGpvK/Menu.svg'
+description: 为页面和功能提供导航的菜单列表。
 ---
 
-为页面和功能提供导航的菜单列表。
 
 ## 何时使用
 
@@ -15,9 +15,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/3XZcjGpvK/Menu.svg
 
 更多布局和导航的使用可以参考：[通用布局](/components/layout/zh)。
 
-```ts
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-```
 
 ## API
 

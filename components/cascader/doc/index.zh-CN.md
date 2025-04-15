@@ -3,10 +3,10 @@ category: Components
 type: 数据录入
 title: Cascader
 subtitle: 级联选择
-cover: https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg'
+description: 级联选择框。
 ---
 
-级联选择框。
 
 ## 何时使用
 
@@ -14,9 +14,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg
 - 从一个较大的数据集合中进行选择时，用多级分类进行分隔，方便选择。
 - 比起 Select 组件，可以在同一个浮层中完成选择，有较好的体验。
 
-```ts
-import { NzCascaderModule } from 'ng-zorro-antd/cascader';
-```
 
 ## API
 

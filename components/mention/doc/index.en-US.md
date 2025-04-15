@@ -2,18 +2,15 @@
 category: Components
 type: Data Entry
 title: Mention
-cover: https://gw.alipayobjects.com/zos/alicdn/jPE-itMFM/Mentions.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/jPE-itMFM/Mentions.svg'
+description: Used to mention someone or something in an input.
 ---
 
-Mention component.
 
 ## When To Use
 
 When need to mention someone or something.
 
-```ts
-import { NzMentionModule } from 'ng-zorro-antd/mention';
-```
 
 ## API
 

@@ -2,19 +2,16 @@
 category: Components
 type: Data Entry
 title: InputNumber
-cover: https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg'
 tag: 19.0.0
+description: Enter a number within certain range with the mouse or keyboard.
 ---
 
-Enter a number within certain range with the mouse or keyboard.
 
 ## When To Use
 
 When a numeric value needs to be provided.
 
-```ts
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-```
 
 ## API
 

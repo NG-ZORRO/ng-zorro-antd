@@ -2,21 +2,16 @@
 category: Components
 type: General
 title: FloatButton
-cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*HS-wTIIwu0kAAAAAAAAAAAAADrJ8AQ/original
+cover: 'https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*HS-wTIIwu0kAAAAAAAAAAAAADrJ8AQ/original'
 tag: 19.0.0
+description: A button that floats at the top of the page.
 ---
 
 ## When To Use
 
 - For global functionality on the site.
-
 - Buttons that can be seen wherever you browse.
 
-### Import Module
-
-```ts
-import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
-```
 
 ## API
 

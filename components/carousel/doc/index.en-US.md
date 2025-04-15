@@ -2,10 +2,10 @@
 category: Components
 type: Data Display
 title: Carousel
-cover: https://gw.alipayobjects.com/zos/antfincdn/%24C9tmj978R/Carousel.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/%24C9tmj978R/Carousel.svg'
+description: A carousel component. Scales with its container.
 ---
 
-A carousel component. Scales with its container.
 
 ## When To Use
 
@@ -13,9 +13,6 @@ A carousel component. Scales with its container.
 - When there is insufficient content space, it can be used to save space in the form of a revolving door.
 - Commonly used for a group of pictures/cards.
 
-```ts
-import { NzCarouselModule } from 'ng-zorro-antd/carousel';
-```
 
 ## API
 

@@ -4,19 +4,16 @@ subtitle: 分页
 type: 导航
 title: Pagination
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/1vqv2bj68/Pagination.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/1vqv2bj68/Pagination.svg'
+description: 分页器用于分隔长列表，每次只加载一个页面。
 ---
 
-采用分页的形式分隔长列表，每次只加载一个页面。
 
 ## 何时使用
 
 - 当加载/渲染所有数据将花费很多时间时；
 - 可切换页码浏览数据。
 
-```ts
-import { NzPaginationModule } from 'ng-zorro-antd/pagination';
-```
 
 ## API
 

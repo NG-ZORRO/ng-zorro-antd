@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDescriptionsModule, NzDescriptionsSize } from 'ng-zorro-antd/descriptions';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-descriptions-custom-size',
-  imports: [FormsModule, NzDescriptionsModule, NzRadioModule],
+  imports: [FormsModule, NzButtonModule, NzDescriptionsModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="size">
       <label nz-radio nzValue="default">default</label>

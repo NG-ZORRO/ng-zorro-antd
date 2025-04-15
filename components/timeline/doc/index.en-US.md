@@ -2,19 +2,16 @@
 category: Components
 type: Data Display
 title: Timeline
-cover: https://gw.alipayobjects.com/zos/antfincdn/vJmo00mmgR/Timeline.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/vJmo00mmgR/Timeline.svg'
+description: Vertical display timeline.
 ---
 
-Vertical display timeline.
 
 ## When To Use
 
 - When a series of information needs to be ordered by time (ascend or descend).
 - When you need a timeline to make a visual connection.
 
-```ts
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-```
 
 ## API
 

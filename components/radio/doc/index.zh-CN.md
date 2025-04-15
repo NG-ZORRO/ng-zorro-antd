@@ -3,19 +3,16 @@ category: Components
 subtitle: 单选框
 type: 数据录入
 title: Radio
-cover: https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg'
+description: 用于在多个备选项中选中单个状态。
 ---
 
-单选框。
 
 ## 何时使用
 
 - 用于在多个备选项中选中单个状态。
 - 和 Select 的区别是，Radio 所有选项默认可见，方便用户在比较中选择，因此选项不宜过多。
 
-```ts
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-```
 
 ## API
 
@@ -50,5 +47,5 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 | 名称    | 描述     |
 | ------- | -------- |
-| blur()  | 移除焦点 |
-| focus() | 获取焦点 |
+| `blur()`  | 移除焦点 |
+| `focus()` | 获取焦点 |

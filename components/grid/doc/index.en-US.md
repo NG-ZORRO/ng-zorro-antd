@@ -3,10 +3,10 @@ category: Components
 type: Layout
 cols: 1
 title: Grid
-cover: https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg'
+description: 24 Grids System。
 ---
 
-24 Grids System。
 
 ## Design concept
 
@@ -78,9 +78,6 @@ Our grid systems base on Flex layout to allow the elements within the parent to 
 
 Layout uses a 24 grid layout to define the width of each "box", but does not rigidly adhere to the grid layout.
 
-```ts
-import { NzGridModule } from 'ng-zorro-antd/grid';
-```
 
 ## API
 

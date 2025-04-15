@@ -5,24 +5,16 @@ type: 数据展示
 title: Graph
 cols: 1
 experimental: true
+description: 渲染流程图。
 ---
 
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO 实验性功能是指已发布但不稳定或者还未准备好用于生产环境的功能。</p>
-<p>开发者或用户可以选择在正式发布前使用这些功能，但是每次发布版本时都可能存在 <strong>breaking changes</strong>。</p>
-</blockquote>
 
 ## 何时使用
 
 需要在网页上渲染 GRAPH 图时使用。
 
-### 引入模块
-
 > 目前组件依赖 d3-drag d3-zoom d3-selection d3-transition d3-shape 用于绘制相关属性（可能会在之后的版本中逐步替换）
 
-```ts
-import { NzGraphModule } from 'ng-zorro-antd/graph';
-```
 
 ### 引入样式
 

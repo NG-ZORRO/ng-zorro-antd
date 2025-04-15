@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const capitalizeFirstLetter = require('./capitalize-first-letter');
 const camelCase = require('./camelcase');
+const generateTitle = require('./generate.title');
 
 /**
  * Generate demos for the component
@@ -166,22 +167,34 @@ function generateDemoComponent(content) {
 function generateTemplate(result) {
   const generateTitle = require('./generate.title');
   const innerMap = generateExample(result);
-  const titleMap = {
-    zh: generateTitle(result.docZh.meta, result.docZh.path),
-    en: generateTitle(result.docEn.meta, result.docEn.path)
-  };
   const name = result.name;
   const hasPageDemo = !!result.pageDemo;
   return {
     zh: wrapperAll(
       generateToc('zh-CN', result.name, result.demoMap),
-      wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh, hasPageDemo, name) +
-        wrapperAPI(result.docZh.api)
+      wrapperHeader(
+        generateTitle(result.docZh.meta, result.docZh.path),
+        result.docZh.whenToUse,
+        'zh',
+        innerMap.zh,
+        hasPageDemo,
+        name,
+        result.docZh.meta
+      ),
+      wrapperAPI(result.docZh.api)
     ),
     en: wrapperAll(
       generateToc('en-US', result.name, result.demoMap),
-      wrapperHeader(titleMap.en, result.docEn.whenToUse, 'en', innerMap.en, hasPageDemo, name) +
-        wrapperAPI(result.docEn.api)
+      wrapperHeader(
+        generateTitle(result.docEn.meta, result.docEn.path),
+        result.docEn.whenToUse,
+        'en',
+        innerMap.en,
+        hasPageDemo,
+        name,
+        result.docEn.meta
+      ),
+      wrapperAPI(result.docEn.api)
     )
   };
 }
@@ -190,22 +203,52 @@ function wrapperAPI(content) {
   return `<section class="markdown api-container" ngNonBindable>${content}</section>`;
 }
 
-function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
+/**
+ * @param {string} title
+ * @param {string} whenToUse
+ * @param {string} language
+ * @param {string} example
+ * @param {boolean} hasPageDemo
+ * @param {string} name
+ * @param {ComponentIndexDocMeta} metadata
+ * @return {string}
+ */
+function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name, metadata) {
+  const isZh = language === 'zh';
+  const meta = `<component-meta name="${name}" description="${metadata.rawDescription}" language="${language}"></component-meta>`;
+  let experimental = '';
+
+  if (metadata.experimental) {
+    if (isZh) {
+      experimental = `
+<blockquote style="border-color: #faad14">
+<p>NG-ZORRO 实验性功能是指已发布但不稳定或者还未准备好用于生产环境的功能。</p>
+<p>开发者或用户可以选择在正式发布前使用这些功能，但是每次发布版本时都可能存在 <strong>breaking changes</strong>。</p>
+</blockquote>`
+    } else {
+      experimental = `
+<blockquote style="border-color: #faad14">
+<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
+<p>Developers and users can opt in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
+</blockquote>`
+    }
+  }
+
+  const pageDemo = hasPageDemo ? `<section class="page-demo"><nz-page-demo-${name}-${language}></nz-page-demo-${name}-${language}></section>` : '';
+
   if (example) {
     return `<section class="markdown">
 	${title}
+  ${meta}
+  ${experimental}
 	<section class="markdown" ngNonBindable>
 		${whenToUse}
 	</section>
-	${
-    hasPageDemo
-      ? `<section class="page-demo"><nz-page-demo-${name}-${language}></nz-page-demo-${name}-${language}></section>`
-      : ''
-  }
+	${pageDemo}
 	<h2>
-		<span>${language === 'zh' ? '代码演示' : 'Examples'}</span>
+		<span>${isZh ? '代码演示' : 'Examples'}</span>
 		<nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
-      language === 'zh' ? '展开全部代码' : 'Expand All Code'
+      isZh ? '展开全部代码' : 'Expand All Code'
     }" (click)="expandAllCode()" />
 	</h2>
 </section>
@@ -213,6 +256,7 @@ ${example}`;
   } else {
     return `<section class="markdown">
 	${title}
+	${meta}
 	<section class="markdown">
 		${whenToUse}
 	</section>
@@ -220,8 +264,8 @@ ${example}`;
   }
 }
 
-function wrapperAll(toc, content) {
-  return `<article>${toc}${content}</article>`;
+function wrapperAll(toc, header, content) {
+  return `<article>${toc}${header}${content}</article>`;
 }
 
 /**

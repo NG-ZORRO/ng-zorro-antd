@@ -5,22 +5,14 @@ type: Data Entry
 title: Cron Expression
 cols: 1
 experimental: true
+description: Display and edit cron expression.
 ---
 
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
-<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
-</blockquote>
 
 ## When To Use
 
-When you want to use cron in Angular.
+When you want to use cron expression in Angular.
 
-### Import Module
-
-```ts
-import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
-```
 
 ## API
 

@@ -3,19 +3,16 @@ category: Components
 subtitle: 标签
 type: 数据展示
 title: Tag
-cover: https://gw.alipayobjects.com/zos/alicdn/cH1BOLfxC/Tag.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/cH1BOLfxC/Tag.svg'
+description: 进行标记和分类的小标签。
 ---
 
-进行标记和分类的小标签。
 
 ## 何时使用
 
 - 用于标记事物的属性和维度。
 - 进行分类。
 
-```ts
-import { NzTagModule } from 'ng-zorro-antd/tag';
-```
 
 ## API
 

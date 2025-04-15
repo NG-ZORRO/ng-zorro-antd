@@ -4,18 +4,15 @@ subtitle: 图标
 type: 通用
 title: Icon
 hasPageDemo: true
-cover: https://gw.alipayobjects.com/zos/alicdn/rrwbSt3FQ/Icon.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/rrwbSt3FQ/Icon.svg'
+description: 语义化的矢量图形。
 ---
 
-语义化的矢量图形。
 
 ## 图标列表
 
 新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/) 同步保持图标的更新。
 
-```typescript
-import { NzIconModule } from 'ng-zorro-antd/icon';
-```
 
 ## API
 

@@ -4,26 +4,15 @@ subtitle: 哈希码
 type: 特色组件
 title: HashCode
 tag: 17.0.0
-cover: https://img.alicdn.com/imgextra/i3/O1CN01jn3OGS1qq7Xkq6O6b_!!6000000005546-2-tps-1074-374.png
+cover: 'https://img.alicdn.com/imgextra/i3/O1CN01jn3OGS1qq7Xkq6O6b_!!6000000005546-2-tps-1074-374.png'
+description: 展示区块链数据的哈希值。
 ---
+
 
 ## 何时使用
 
 哈希码组件是以 64 位设计的样式，如果给出的数据不足或者高于 64 位，可能会带来一些展示上的差异。
 
-### 引入模块
-
-module:
-
-```ts
-import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
-```
-
-standalone:
-
-```ts
-import { NzHashCodeComponent } from 'ng-zorro-antd/hash-code';
-```
 
 ## API
 

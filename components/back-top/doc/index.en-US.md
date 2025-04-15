@@ -2,10 +2,11 @@
 category: Components
 type: Other
 title: BackTop
-cover: https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg'
+description: Makes it easy to go back to the top of the page.
 ---
 
-* Note: This component will be removed later. Please use `<nz-float-button-top></nz-float-button-top>` in the FloatButton component.
+> ⚠️ **Note**: This component will be removed later, please use `<nz-float-button-top>` in [FloatButton](/components/float-button/en) instead.
 
 `nz-back-top` makes it easy to go back to the top of the page.
 
@@ -14,9 +15,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg
 - When the page content is very long.
 - When you need to go back to the top very frequently in order to view the contents.
 
-```ts
-import { NzBackTopModule } from 'ng-zorro-antd/back-top';
-```
 
 ## API
 

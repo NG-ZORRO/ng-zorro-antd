@@ -3,18 +3,15 @@ category: Components
 type: Data Display
 title: Comment
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/ILhxpGzBO/Comment.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/ILhxpGzBO/Comment.svg'
+description: A comment displays user feedback and discussion to website content.
 ---
 
-A comment displays user feedback and discussion to website content.
 
 ## When To Use
 
 Comments can be used to enable discussions on an entity such as a page, blog post, issue or other.
 
-```ts
-import { NzCommentModule } from 'ng-zorro-antd/comment';
-```
 
 ## API
 

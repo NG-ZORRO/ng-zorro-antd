@@ -3,10 +3,10 @@ category: Components
 cols: 1
 type: Navigation
 title: Menu
-cover: https://gw.alipayobjects.com/zos/alicdn/3XZcjGpvK/Menu.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/3XZcjGpvK/Menu.svg'
+description: A versatile menu for navigation.
 ---
 
-Menu list of Navigation.
 
 ## When To Use
 
@@ -16,9 +16,6 @@ Side navigation provides the multi-level structure of the website.
 
 More layouts with navigation: [layout](/components/layout/en).
 
-```ts
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-```
 
 ## API
 

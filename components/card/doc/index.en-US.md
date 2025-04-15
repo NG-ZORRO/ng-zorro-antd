@@ -3,18 +3,15 @@ category: Components
 type: Data Display
 title: Card
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/keNB-R8Y9/Card.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/keNB-R8Y9/Card.svg'
+description: Simple rectangular container.
 ---
 
-Simple rectangular container.
 
 ## When To Use
 
 A card can be used to display content related to a single subject. The content can consist of multiple elements of varying types and sizes.
 
-```ts
-import { NzCardModule } from 'ng-zorro-antd/card';
-```
 
 ## API
 

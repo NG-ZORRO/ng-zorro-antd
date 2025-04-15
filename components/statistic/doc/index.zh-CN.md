@@ -3,19 +3,16 @@ category: Components
 title: Statistic
 subtitle: 统计
 type: 数据展示
-cover: https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg'
+description: 展示统计数字。
 ---
 
-展示统计数字。
 
 ## 何时使用
 
 - 当需要突出某个或某组数字时。
 - 当需要展示带描述的统计类数据时使用。
 
-```ts
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-```
 
 ## API
 

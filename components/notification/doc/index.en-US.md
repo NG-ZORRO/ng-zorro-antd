@@ -3,10 +3,10 @@ category: Components
 type: Feedback
 noinstant: true
 title: Notification
-cover: https://gw.alipayobjects.com/zos/alicdn/Jxm5nw61w/Notification.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/Jxm5nw61w/Notification.svg'
+description: Prompt notification message globally.
 ---
 
-Display a notification message globally.
 
 ## When To Use
 
@@ -18,11 +18,6 @@ used in the following cases:
   about upcoming steps the user may have to follow.
 - A notification that is pushed by the application.
 
-```ts
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-
-private readonly notification = inject(NzNotificationService);
-```
 
 ## API
 

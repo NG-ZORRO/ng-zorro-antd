@@ -3,14 +3,11 @@ category: Components
 type: Layout
 cols: 1
 title: Layout
-cover: https://gw.alipayobjects.com/zos/alicdn/hzEndUVEx/Layout.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/hzEndUVEx/Layout.svg'
+description: Handling the overall layout of a page.
 ---
 
-Handling the overall layout of a page.
 
-```ts
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-```
 
 ## Specification
 

@@ -3,26 +3,13 @@ category: Components
 type: Data Entry
 title: ColorPicker
 tag: 16.2.0
-cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*PpY4RYNM8UcAAAAAAAAAAAAADrJ8AQ/original
+cover: 'https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*PpY4RYNM8UcAAAAAAAAAAAAADrJ8AQ/original'
+description: Used for color selection.
 ---
 
 ## When To Use
 
 Used when the user needs to customize the color selection.
-
-### Import Module
-
-module:
-
-```ts
-import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
-```
-
-standalone:
-
-```ts
-import { NzColorPickerComponent } from 'ng-zorro-antd/color-picker';
-```
 
 ## API
 

@@ -2,10 +2,10 @@
 category: Components
 type: Data Entry
 title: Cascader
-cover: https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg'
+description: Cascade selection box.
 ---
 
-Cascade selection box.
 
 ## When To Use
 
@@ -13,9 +13,6 @@ Cascade selection box.
 - When selecting from a large data set, with multi-stage classification separated for easy selection.
 - Chooses cascade items in one float layer for a better user experience.
 
-```ts
-import { NzCascaderModule } from 'ng-zorro-antd/cascader';
-```
 
 ## API
 

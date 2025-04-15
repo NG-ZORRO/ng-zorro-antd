@@ -3,18 +3,15 @@ category: Components
 type: General
 title: Icon
 hasPageDemo: true
-cover: https://gw.alipayobjects.com/zos/alicdn/rrwbSt3FQ/Icon.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/rrwbSt3FQ/Icon.svg'
+description: Semantic vector graphics.
 ---
 
-Semantic vector graphics.
 
 ## List of icons
 
 We keep in syncing with [antd](https://ant.design/components/icon/).
 
-```typescript
-import { NzIconModule } from 'ng-zorro-antd/icon';
-```
 
 ## API
 

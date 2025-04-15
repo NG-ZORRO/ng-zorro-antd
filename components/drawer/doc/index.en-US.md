@@ -1,9 +1,9 @@
 ---
 type: Feedback
 category: Components
-subtitle:
 title: Drawer
-cover: https://gw.alipayobjects.com/zos/alicdn/7z8NJQhFb/Drawer.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/7z8NJQhFb/Drawer.svg'
+description: A panel that slides out from the edge of the screen.
 ---
 
 A Drawer is a panel that is typically overlaid on top of a page and slides in from the side. It contains a set of
@@ -17,9 +17,6 @@ achieved more efficient within the same context.
   the main task, Drawer comes very handy.
 - When a same Form is needed in multiple places.
 
-```ts
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-```
 
 ## API
 

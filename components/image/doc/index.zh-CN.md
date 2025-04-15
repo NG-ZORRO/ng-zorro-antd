@@ -3,19 +3,16 @@ category: Components
 subtitle: 图片
 type: 数据展示
 title: Image
-cover: https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/D1dXz9PZqa/image.svg'
+description: 可预览的图片。
 ---
 
-可预览的图片。
 
 ## 何时使用
 
 - 需要展示图片时使用。
 - 加载大图时渐进加载或加载失败时容错处理。
 
-```ts
-import { NzImageModule } from 'ng-zorro-antd/image';
-```
 
 ## API
 

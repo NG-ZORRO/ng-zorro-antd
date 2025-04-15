@@ -3,10 +3,10 @@ category: Components
 type: Data Display
 title: Tabs
 cols: 1
-cover: https://gw.alipayobjects.com/zos/antfincdn/lkI2hNEDr2V/Tabs.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/lkI2hNEDr2V/Tabs.svg'
+description: Tabs make it easy to switch between different views.
 ---
 
-Tabs make it easy to switch between different views.
 
 ## When To Use
 
@@ -16,9 +16,6 @@ Ant Design has 3 types of Tabs for different situations.
 - Normal Tabs: for functional aspects of a page.
 - [RadioButton](/components/radio/en/#components-radio-demo-radiobutton): for secondary tabs.
 
-```ts
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-```
 
 ## API
 

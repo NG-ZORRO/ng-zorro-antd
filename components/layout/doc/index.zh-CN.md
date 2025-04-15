@@ -4,14 +4,11 @@ subtitle: 布局
 type: 布局
 cols: 1
 title: Layout
-cover: https://gw.alipayobjects.com/zos/alicdn/hzEndUVEx/Layout.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/hzEndUVEx/Layout.svg'
+description: 协助进行页面级整体布局。
 ---
 
-协助进行页面级整体布局。
 
-```ts
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-```
 
 ## 设计规则
 

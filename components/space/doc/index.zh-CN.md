@@ -4,11 +4,11 @@ type: 布局
 subtitle: 间距
 title: Space
 cols: 1
-cover: https://gw.alipayobjects.com/zos/antfincdn/wc6%263gJ0Y8/Space.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/wc6%263gJ0Y8/Space.svg'
 tag: New
+description: 设置组件之间的间距。
 ---
 
-设置组件之间的间距。
 
 ## 何时使用
 
@@ -16,10 +16,13 @@ tag: New
 
 - 适合行内元素的水平间距。
 - 可以设置各种水平对齐方式。
+- 需要表单组件之间紧凑连接且合并边框时，使用 `<nz-space-compact>`。
 
-```ts
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-```
+与 Flex 组件的区别：
+
+- Space 为内联元素提供间距，其本身会为每一个子元素添加包裹元素用于内联对齐。适用于行、列中多个子元素的等距排列。
+- Flex 为块级元素提供间距，其本身不会添加包裹元素。适用于垂直或水平方向上的子元素布局，并提供了更多的灵活性和控制能力。
+
 
 ## API
 
@@ -44,7 +47,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 - Select
 - TimePicker
 - TreeSelect
--
+
 | 参数            | 说明                         | 类型                              | 默认值         | 支持全局配置 |
 | --------------- | ---------------------------- | --------------------------------- | -------------- | ------------ |
 | `[nzBlock]`     | 将宽度调整为父元素宽度的选项 | `boolean`                         | `false`        |              |

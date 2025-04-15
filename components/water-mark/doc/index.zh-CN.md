@@ -5,29 +5,16 @@ subtitle: 水印
 title: WaterMark
 cols: 1
 tag: 15.1.0
-cover: https://img.alicdn.com/imgextra/i2/O1CN01ozPPZp1wj9CwsVvDL_!!6000000006343-0-tps-1232-820.jpg
+cover: 'https://img.alicdn.com/imgextra/i2/O1CN01ozPPZp1wj9CwsVvDL_!!6000000006343-0-tps-1232-820.jpg'
+description: 给页面的某个区域加上水印。
 ---
 
-给页面的某个区域加上水印。
 
 ## 何时使用
 
 - 页面需要添加水印标识版权时使用。
 - 适用于防止信息盗用。
 
-### 引入模块
-
-module:
-
-```ts
-import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
-```
-
-standalone:
-
-```ts
-import { NzWaterMarkComponent } from 'ng-zorro-antd/water-mark';
-```
 
 ## API
 
