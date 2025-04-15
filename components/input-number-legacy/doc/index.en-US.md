@@ -2,11 +2,11 @@
 category: Components
 type: Data Entry
 title: InputNumberLegacy
-cover: https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg'
 tag: deprecated
+description: Enter a number within certain range with the mouse or keyboard.
 ---
 
-Enter a number within certain range with the mouse or keyboard.
 
 > ⚠️ `InputNumberLegacy` has been deprecated in `v19.0.0`, please use the new version of `InputNumber` component.
 
@@ -14,9 +14,6 @@ Enter a number within certain range with the mouse or keyboard.
 
 When a numeric value needs to be provided.
 
-```ts
-import { NzInputNumberLegacyModule } from 'ng-zorro-antd/input-number-legacy';
-```
 
 ## API
 

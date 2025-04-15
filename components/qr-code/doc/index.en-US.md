@@ -3,26 +3,22 @@ category: Components
 type: Data Display
 title: QRCode
 tag: 15.1.0
-cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*cJopQrf0ncwAAAAAAAAAAAAADrJ8AQ/original
+cover: 'https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*cJopQrf0ncwAAAAAAAAAAAAADrJ8AQ/original'
+description: Convert text into QR codes, and support custom color and logo.
 ---
 
 ## When To Use
 
-Used when the link needs to be converted into a QR Code.
+Used when the text needs to be converted into a QR Code.
 
-### Import Module
-
-```ts
-import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
-```
 
 ## API
 
 ### nz-qrcode
 
 | Property           | Description                         | Type                              | Default   |
-| ------------------ | ----------------------------------- | --------------------------------- | --------- |
-| `[nzValue]`        | scanned link                        | `string`                          | -         |
+| ------------------ |-------------------------------------| --------------------------------- | --------- |
+| `[nzValue]`        | scanned text                        | `string`                          | -         |
 | `[nzColor]`        | QR code Color                       | `string`                          | `#000`    |
 | `[nzBgColor]`      | QR code background color            | `string`                          | `#FFFFFF` |
 | `[nzSize]`         | QR code Size                        | `number`                          | `160`     |

@@ -4,22 +4,13 @@ type: Data Entry
 title: Code Editor
 cols: 1
 experimental: true
+description: Code Editor based on monaco-editor.
 ---
 
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
-<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
-</blockquote>
 
 ## When To Use
 
 When you want to use monaco editor in Angular.
-
-### Import Module
-
-```ts
-import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
-```
 
 ### Import Style
 
@@ -49,7 +40,7 @@ If you would like to load monaco dynamically (which means you load resources of 
 ],
 ```
 
-If you deploy resources of monaco editor on CDN, you won't need to modify angular.json. Instead, you must configure the `assetsRoot` property via `NzConfigService`. For example, you put resources of monaco editor on https://mycdn.com/assets/vs, you should provide `{ assets: 'https://mycdn.com/assets/vs' }`.
+If you deploy resources of monaco editor on CDN, you won't need to modify `angular.json`. Instead, you must configure the `assetsRoot` property via `NzConfigService`. For example, you put resources of monaco editor on https://mycdn.com/assets/vs, you should provide `{ assets: 'https://mycdn.com/assets/vs' }`.
 
 > If you are going to use static loading (which we will explain in detail at the bottom of this page), you don't need to modify angular.json file.
 

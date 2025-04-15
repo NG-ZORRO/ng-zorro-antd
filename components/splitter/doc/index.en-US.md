@@ -3,10 +3,11 @@ category: Components
 type: Layout
 title: Splitter
 tag: 19.2.0
-cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*f0SISaETY0wAAAAAAAAAAAAADrJ8AQ/original
+cover: >-
+  https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*f0SISaETY0wAAAAAAAAAAAAADrJ8AQ/original
+description: Splits the area into multiple horizontal or vertical sides.
 ---
 
-Splits the area into multiple horizontal or vertical sides.
 
 ## When To Use
 
@@ -14,9 +15,6 @@ The Splitter component can be used to separate areas horizontally or vertically.
 You can freely drag the splitter to adjust the size of each side, while also being able to specify its minimum and
 maximum width and height.
 
-```ts
-import { NzSplitterModule } from 'ng-zorro-antd/splitter';
-```
 
 ## API
 

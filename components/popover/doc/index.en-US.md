@@ -2,10 +2,10 @@
 category: Components
 type: Data Display
 title: Popover
-cover: https://gw.alipayobjects.com/zos/alicdn/1PNL1p_cO/Popover.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/1PNL1p_cO/Popover.svg'
+description: The floating card popped by clicking or hovering.
 ---
 
-The floating card popped by clicking or hovering.
 
 ## When To Use
 
@@ -13,9 +13,6 @@ A simple popup menu to provide extra information or operations.
 
 Comparing with `Tooltip`, besides information `Popover` card can also provide action elements like links and buttons.
 
-```ts
-import { NzPopoverModule } from 'ng-zorro-antd/popover';
-```
 
 ## API
 

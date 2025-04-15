@@ -3,18 +3,15 @@ category: Components
 type: Data Display
 title: Empty
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg'
+description: Empty state placeholder.
 ---
 
-Empty state placeholder.
 
 ## When To Use
 
 When there is no data provided, display for friendly tips.
 
-```ts
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-```
 
 ## API
 
@@ -44,13 +41,3 @@ The `nzEmpty` interface has properties as follows:
 
 You may notice or used some inputs like `nzNotFoundContent` in some components. Now they would use `Empty` component. So you can provide `nzDefaultEmptyContent` to customize them.
 
-```ts
-{
-  provide: NZ_CONFIG,
-  useValue: {
-    empty: {
-      nzDefaultEmptyContent
-    }
-  }
-}
-```

@@ -2,19 +2,16 @@
 category: Components
 type: Data Display
 title: Statistic
-cover: https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg'
+description: Display statistic number.
 ---
 
-Display statistic number.
 
 ## When To Use
 
 - When want to highlight some data.
 - When want to display statistic data with description.
 
-```ts
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-```
 
 ## API
 

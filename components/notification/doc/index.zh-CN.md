@@ -4,10 +4,10 @@ type: 反馈
 noinstant: true
 title: Notification
 subtitle: 通知提醒框
-cover: https://gw.alipayobjects.com/zos/alicdn/Jxm5nw61w/Notification.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/Jxm5nw61w/Notification.svg'
+description: 全局展示通知提醒信息。
 ---
 
-全局展示通知提醒信息。
 
 ## 何时使用
 
@@ -17,11 +17,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/Jxm5nw61w/Notification.svg
 - 带有交互的通知，给出用户下一步的行动点。
 - 系统主动推送。
 
-```ts
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-
-private readonly notification = inject(NzNotificationService);
-```
 
 ## API
 

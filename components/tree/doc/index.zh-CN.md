@@ -3,16 +3,14 @@ category: Components
 type: 数据展示
 title: Tree
 subtitle: 树形控件
-cover: https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg'
+description: 多层次的结构列表。
 ---
 
 ## 何时使用
 
 文件夹、组织架构、生物分类、国家地区等等，世间万物的大多数结构都是树形结构。使用`树控件`可以完整展现其中的层级关系，并具有展开收起选择等交互功能。
 
-```ts
-import { NzTreeModule } from 'ng-zorro-antd/tree';
-```
 
 ## API
 
@@ -140,17 +138,6 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 - 当前请确保 `nzData` 在其他数据相关的属性之前被初始化:
 
-```typescript
-// 示例
-this.nzExpandAll = false;
-const nodes = []; // 源数据
-this.nzData = [...nodes];
-// nzData 值异步获取变化后重新渲染一下属性
-this.nzExpandedKeys = [...this.nzExpandedKeys];
-// this.nzExpandAll = true;
-this.nzCheckedKeys = [...this.nzCheckedKeys];
-this.nzSelectedKeys = [...this.nzSelectedKeys];
-```
 
 - `NzTreeNodeOptions` 可以接受用户自定义属性，可通过 `NzTreeNode` 的 `origin` 属性取得。
 - 使用 ViewChild 时，Tree 方法需要在 ngAfterViewInit 中调用。

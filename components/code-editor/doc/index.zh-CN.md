@@ -5,22 +5,13 @@ type: 数据录入
 title: Code Editor
 cols: 1
 experimental: true
+description: 基于 monaco-editor 的代码编辑器。
 ---
 
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO 实验性功能是指已发布但不稳定或者还未准备好用于生产环境的功能。</p>
-<p>开发者或用户可以选择在正式发布前使用这些功能，但是每次发布版本时都可能存在 <strong>breaking changes</strong>。</p>
-</blockquote>
 
 ## 何时使用
 
 需要在网页上渲染 monaco editor 时使用。
-
-### 引入模块
-
-```ts
-import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
-```
 
 ### 引入样式
 
@@ -40,7 +31,7 @@ npm install monaco-editor
 
 如果你使用动态加载，你就需要在运行时加载 monaco editor 本身的资源。
 
-在 angular.json 中添加：
+在 `angular.json` 中添加：
 
 ```diff
 "assets": [

@@ -2,19 +2,16 @@
 category: Components
 type: Data Entry
 title: Radio
-cover: https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg'
+description: Used to select a single state from multiple options.
 ---
 
-Radio.
 
 ## When To Use
 
 - Used to select a single state in multiple options.
-- The difference between Select is that Radio is visible to user and can facilitate the comparison of choice. So, when you want to use Radio, option should not be too much.
+- The difference from Select is that Radio is visible to the user and can facilitate the comparison of choice, which means there shouldn't be too many of them.
 
-```ts
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-```
 
 ## API
 
@@ -49,5 +46,5 @@ you can get `NzRadioComponent` via `ViewChild`
 
 | Name    | Description  |
 | ------- | ------------ |
-| blur()  | remove focus |
-| focus() | get focus    |
+| `blur()`  | remove focus |
+| `focus()` | get focus    |

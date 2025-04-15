@@ -3,21 +3,17 @@ category: Components
 subtitle: 回到顶部
 type: 其他
 title: BackTop
-cover: https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg'
+description: 返回页面顶部的操作按钮。
 ---
 
-* 注意：该组件将在后续移除，请前往 FloatButton 组件中使用 `<nz-float-button-top></nz-float-button-top>`
-
-返回页面顶部的操作按钮。
+> ⚠️ **注意**：该组件将在后续版本移除，请使用 [FloatButton](/components/float-button/zh) 中的 `<nz-float-button-top>` 组件替代。
 
 ## 何时使用
 
 - 当页面内容区域比较长时；
 - 当用户需要频繁返回顶部查看相关内容时。
 
-```ts
-import { NzBackTopModule } from 'ng-zorro-antd/back-top';
-```
 
 ## API
 

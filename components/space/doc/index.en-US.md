@@ -3,19 +3,21 @@ category: Components
 type: Layout
 cols: 1
 title: Space
-cover: https://gw.alipayobjects.com/zos/antfincdn/wc6%263gJ0Y8/Space.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/wc6%263gJ0Y8/Space.svg'
 tag: New
+description: Set components spacing.
 ---
 
-Set components spacing.
 
 ## When To Use
 
-Avoid components clinging together and set a unified space.
+- Avoid components clinging together and set a unified space.
+- Use `<nz-space-compact>` when child form components are compactly connected and the border is collapsed.
 
-```ts
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-```
+The difference with Flex component is:
+
+- Space is used to set the spacing between inline elements. It will add a wrapper element for each child element for inline alignment. Suitable for equidistant arrangement of multiple child elements in rows and columns.
+- Flex is used to set the layout of block-level elements. It does not add a wrapper element. Suitable for layout of child elements in vertical or horizontal direction, and provides more flexibility and control.
 
 ## API
 
@@ -40,7 +42,7 @@ Use `<nz-space-compact>` when child form components are compactly connected and 
 - Select
 - TimePicker
 - TreeSelect
--
+
 | 参数            | 说明                                       | 类型                              | 默认值         | 支持全局配置 |
 | --------------- | ------------------------------------------ | --------------------------------- | -------------- | ------------ |
 | `[nzBlock]`     | Option to fit width to its parent\'s width | `boolean`                         | `false`        |              |

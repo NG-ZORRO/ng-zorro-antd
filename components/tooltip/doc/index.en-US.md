@@ -2,19 +2,16 @@
 category: Components
 type: Data Display
 title: Tooltip
-cover: https://gw.alipayobjects.com/zos/alicdn/Vyyeu8jq2/Tooltp.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/Vyyeu8jq2/Tooltp.svg'
+description: Simple text popup box.
 ---
 
-A simple text popup tip.
 
 ## When To Use
 
 - The Tooltip doesn't support complex text or operations. The tip is shown on mouse enter and is hidden on mouse leave.
-- It's often used instead of the HTML `title` attribute to explain `button/text/operation`.
+- To provide an explanation fo a `button/text/operation`. It's often used instead of the HTML `title` attribute to explain `button/text/operation`.
 
-```ts
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-```
 
 ## API
 

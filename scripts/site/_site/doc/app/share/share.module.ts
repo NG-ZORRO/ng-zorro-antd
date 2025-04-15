@@ -12,6 +12,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzCodeBoxComponent } from '../codebox/codebox.component';
+import { ComponentMetaComponent } from '../component-meta/component-meta.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { NzCodeBoxComponent } from '../codebox/codebox.component';
     FormsModule,
     RouterModule,
     ReactiveFormsModule,
+    ComponentMetaComponent,
     NzCodeBoxComponent,
     NzToolTipModule,
     NzAnchorModule,
@@ -34,6 +36,7 @@ import { NzCodeBoxComponent } from '../codebox/codebox.component';
     ReactiveFormsModule,
     RouterModule,
     NzCodeBoxComponent,
+    ComponentMetaComponent,
     NzAnchorModule,
     NzAffixModule,
     NzGridModule,

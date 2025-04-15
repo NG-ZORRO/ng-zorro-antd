@@ -3,10 +3,10 @@ category: Components
 subtitle: 上传
 type: 数据录入
 title: Upload
-cover: https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg'
+description: 文件选择上传和拖拽上传控件。
 ---
 
-文件选择上传和拖拽上传控件。
 
 ## 何时使用
 
@@ -16,9 +16,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg
 - 当需要展现上传的进度时。
 - 当需要使用拖拽交互时。
 
-```ts
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-```
 
 ## API
 

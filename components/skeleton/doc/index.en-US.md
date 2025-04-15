@@ -3,10 +3,10 @@ category: Components
 type: Feedback
 title: Skeleton
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/KpcciCJgv/Skeleton.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/KpcciCJgv/Skeleton.svg'
+description: Provide a placeholder while you wait for content to load or visualize content that doesn't exist yet.
 ---
 
-Provide a placeholder while you wait for content to load or visualize content that doesn't exist yet.
 
 ## When To Use
 
@@ -15,9 +15,6 @@ Provide a placeholder while you wait for content to load or visualize content th
 - Only works when loading data for the first time.
 - Could be replaced by Spin in any situation but can provide a better user experience.
 
-```ts
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-```
 
 ## API
 

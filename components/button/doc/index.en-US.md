@@ -2,33 +2,30 @@
 category: Components
 type: General
 title: Button
-cover: https://gw.alipayobjects.com/zos/alicdn/fNUKzY1sk/Button.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/fNUKzY1sk/Button.svg'
+description: To trigger an operation.
 ---
 
-To trigger an operation.
 
 ## When To Use
 
 A button means an operation (or a series of operations). Clicking a button will trigger corresponding business logic.
 
-In Ant Design, we provide 4 types of buttons.
+In Ant Design, we provide 5 types of buttons.
 
-- Primary button: indicate the main action, one primary button at most in one section.
-- Default button: indicate a series of actions without priority.
-- Dashed button: used for adding action commonly.
-- Text button: used for the most secondary action.
-- Link button: used for external links.
+- 🔵 Primary button: indicate the main action, one primary button at most in one section.
+- ⚪️ Default button: indicate a series of actions without priority.
+- 🫥 Dashed button: used for adding action commonly.
+- 🔤 Text button: used for the most secondary action.
+- 🔗 Link button: used for external links.
 
 And 4 other properties additionally.
 
-- `danger`: used for risk actions, like deletion or authorization.
-- `ghost`: usually used in situations with a complex background, home pages.
-- `disabled`: when actions are not available.
-- `loading`: add loading spinner in button, avoiding multiple submit.
+- ⚠️ `danger`: used for risk actions, like deletion or authorization.
+- 👻 `ghost`: usually used in situations with a complex background, home pages.
+- 🚫 `disabled`: when actions are not available.
+- 🔃 `loading`: add loading spinner in button, avoiding multiple submit.
 
-```ts
-import { NzButtonModule } from 'ng-zorro-antd/button';
-```
 
 ## API
 

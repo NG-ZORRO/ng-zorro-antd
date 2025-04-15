@@ -3,10 +3,10 @@ category: Components
 type: 数据展示
 title: Carousel
 subtitle: 走马灯
-cover: https://gw.alipayobjects.com/zos/antfincdn/%24C9tmj978R/Carousel.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/%24C9tmj978R/Carousel.svg'
+description: 一组轮播的区域。
 ---
 
-旋转木马，一组轮播的区域。
 
 ## 何时使用
 
@@ -14,9 +14,6 @@ cover: https://gw.alipayobjects.com/zos/antfincdn/%24C9tmj978R/Carousel.svg
 - 当内容空间不足时，可以用走马灯的形式进行收纳，进行轮播展现。
 - 常用于一组图片或卡片轮播。
 
-```ts
-import { NzCarouselModule } from 'ng-zorro-antd/carousel';
-```
 
 ## API
 

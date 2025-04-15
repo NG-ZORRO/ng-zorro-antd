@@ -3,16 +3,14 @@ category: Components
 type: 数据展示
 title: Tree View
 subtitle: 树视图
-cover: https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg'
+description: 树视图组件，相比封装好的 Tree 组件具有更高的定制度和更好的性能。
 ---
 
 ## 何时使用
 
-更基础的 Tree 组件，允许在模版中定义每个组成部分，并手动管理状态。相比封装好的 Tree 组件具有更高的定制度和更好的性能。
+更基础的 Tree 组件，允许在模版中定义每个组成部分，并手动管理状态。
 
-```ts
-import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
-```
 
 ## API
 

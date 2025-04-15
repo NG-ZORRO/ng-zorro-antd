@@ -4,19 +4,16 @@ subtitle: 排版
 type: 通用
 title: Typography
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/GOM1KQ24O/Typography.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/GOM1KQ24O/Typography.svg'
+description: 文本的基本格式。
 ---
 
-文本的基本格式。
 
 ## 何时使用
 
 - 当需要展示标题、段落、列表内容时使用，如文章/博客/日志的文本样式。
 - 当需要一列基于文本的基础操作时，如拷贝/省略/可编辑。
 
-```ts
-import { NzTypographyModule } from 'ng-zorro-antd/typography';
-```
 
 ## API
 

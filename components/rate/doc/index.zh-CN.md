@@ -3,19 +3,16 @@ category: Components
 subtitle: 评分
 type: 数据录入
 title: Rate
-cover: https://gw.alipayobjects.com/zos/alicdn/R5uiIWmxe/Rate.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/R5uiIWmxe/Rate.svg'
+description: 用于对事物进行评分操作。
 ---
 
-评分组件。
 
 ## 何时使用
 
 - 对评价进行展示。
 - 对事物进行快速的评级操作。
 
-```ts
-import { NzRateModule } from 'ng-zorro-antd/rate';
-```
 
 ## API
 
@@ -41,5 +38,5 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 
 | 名称    | 描述     |
 | ------- | -------- |
-| blur()  | 移除焦点 |
-| focus() | 获取焦点 |
+| `blur()`  | 移除焦点 |
+| `focus()` | 获取焦点 |

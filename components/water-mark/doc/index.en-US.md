@@ -4,29 +4,16 @@ type: Other
 cols: 1
 title: WaterMark
 tag: 15.1.0
-cover: https://img.alicdn.com/imgextra/i2/O1CN01ozPPZp1wj9CwsVvDL_!!6000000006343-0-tps-1232-820.jpg
+cover: 'https://img.alicdn.com/imgextra/i2/O1CN01ozPPZp1wj9CwsVvDL_!!6000000006343-0-tps-1232-820.jpg'
+description: Add specific text or patterns to the page.
 ---
 
-Add specific text or patterns to the page.
 
 ## When To Use
 
 - Use when the page needs to be watermarked to identify the copyright.
 - Suitable for preventing information theft.
 
-### Import Module
-
-module:
-
-```ts
-import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
-```
-
-standalone:
-
-```ts
-import { NzWaterMarkComponent } from 'ng-zorro-antd/water-mark';
-```
 
 ## API
 

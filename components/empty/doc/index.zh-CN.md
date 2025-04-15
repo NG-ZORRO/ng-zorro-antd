@@ -4,18 +4,15 @@ type: 数据展示
 subtitle: 空状态
 title: Empty
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg'
+description: 空状态时的展示占位图。
 ---
 
-空状态时的展示占位图。
 
 ## 何时使用
 
 当目前没有数据时，用于显式的用户提示。
 
-```ts
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-```
 
 ## API
 

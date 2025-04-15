@@ -3,18 +3,15 @@ category: Components
 subtitle: 树选择
 type: 数据录入
 title: TreeSelect
-cover: https://gw.alipayobjects.com/zos/alicdn/Ax4DA0njr/TreeSelect.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/Ax4DA0njr/TreeSelect.svg'
+description: 树型选择控件。
 ---
 
-树型选择控件。
 
 ## 何时使用
 
 类似 Select 的选择控件，可选择的数据结构是一个树形结构时，可以使用 TreeSelect，例如公司层级、学科系统、分类目录等等。
 
-```ts
-import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
-```
 
 ## API
 
@@ -58,12 +55,12 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 #### 方法
 
-| 方法名                    | 说明                     | 返回值            |
-|------------------------|------------------------|----------------|
-| getTreeNodes           | 获取组件 NzTreeNode 节点     | `NzTreeNode[]` |
-| getTreeNodeByKey       | 按 key 获取 NzTreeNode 节点 | `NzTreeNode`   |
-| getCheckedNodeList     | 获取组件 checkbox 被点击选中的节点 | `NzTreeNode[]` |
-| getSelectedNodeList    | 获取组件被选中的节点             | `NzTreeNode[]` |
-| getHalfCheckedNodeList | 获取组件半选状态节点             | `NzTreeNode[]` |
-| getExpandedNodeList    | 获取组件展开状态节点             | `NzTreeNode[]` |
-| getMatchedNodeList     | 获取组搜索匹配到的节点            | `NzTreeNode[]` |
+| 方法名                      | 说明                     | 返回值            |
+|--------------------------|------------------------|----------------|
+| `getTreeNodes`           | 获取组件 NzTreeNode 节点     | `NzTreeNode[]` |
+| `getTreeNodeByKey`       | 按 key 获取 NzTreeNode 节点 | `NzTreeNode`   |
+| `getCheckedNodeList`     | 获取组件 checkbox 被点击选中的节点 | `NzTreeNode[]` |
+| `getSelectedNodeList`    | 获取组件被选中的节点             | `NzTreeNode[]` |
+| `getHalfCheckedNodeList` | 获取组件半选状态节点             | `NzTreeNode[]` |
+| `getExpandedNodeList`    | 获取组件展开状态节点             | `NzTreeNode[]` |
+| `getMatchedNodeList`     | 获取组搜索匹配到的节点            | `NzTreeNode[]` |

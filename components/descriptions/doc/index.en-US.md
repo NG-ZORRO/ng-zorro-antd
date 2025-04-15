@@ -3,18 +3,15 @@ category: Components
 type: Data Display
 title: Descriptions
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/MjtG9_FOI/Descriptions.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/MjtG9_FOI/Descriptions.svg'
+description: Display multiple read-only fields in a group.
 ---
 
-Display multiple read-only fields in groups.
 
 ## When To Use
 
 Commonly displayed on the details page.
 
-```ts
-import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
-```
 
 ## API
 

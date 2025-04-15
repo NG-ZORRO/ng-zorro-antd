@@ -3,11 +3,11 @@ category: Components
 type: Layout
 cols: 1
 title: Flex
-cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*SMzgSJZE_AwAAAAAAAAAAAAADrJ8AQ/original
+cover: 'https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*SMzgSJZE_AwAAAAAAAAAAAAADrJ8AQ/original'
 tag: 17.1.0
+description: A flex layout container for alignment.
 ---
 
-Wrapper for `display: flex`.
 
 ## When To Use
 
@@ -21,11 +21,6 @@ Wrapper for `display: flex`.
 - Flex is used to set the layout of block-level elements. It does not add a wrapper element. Suitable for layout of
   child elements in vertical or horizontal direction, and provides more flexibility and control.
 
-### Import Module
-
-```ts
-import { NzFlexModule } from 'ng-zorro-antd/flex';
-```
 
 ## API
 

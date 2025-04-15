@@ -3,19 +3,16 @@ category: Components
 subtitle: 多选框
 type: 数据录入
 title: Checkbox
-cover: https://gw.alipayobjects.com/zos/alicdn/8nbVbHEm_/CheckBox.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/8nbVbHEm_/CheckBox.svg'
+description: 收集用户的多项选择。
 ---
 
-多选框。
 
 ## 何时使用
 
 - 在一组可选项中进行多项选择时；
 - 单独使用可以表示两种状态之间的切换，和 `switch` 类似。区别在于切换 `switch` 会直接触发状态改变，而 `checkbox` 一般用于状态标记，需要和提交操作配合。
 
-```ts
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-```
 
 ## API
 
@@ -63,10 +60,3 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 ### NzCheckboxOption
 
-```ts
-export interface NzCheckboxOption {
-  label: string;
-  value: string | number;
-  disabled?: boolean;
-}
-```

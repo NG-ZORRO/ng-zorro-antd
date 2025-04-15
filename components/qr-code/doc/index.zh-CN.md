@@ -4,37 +4,33 @@ subtitle: 二维码
 type: 数据展示
 title: QRCode
 tag: 15.1.0
-cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*cJopQrf0ncwAAAAAAAAAAAAADrJ8AQ/original
+cover: 'https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*cJopQrf0ncwAAAAAAAAAAAAADrJ8AQ/original'
+description: 能够将文本转换生成二维码的组件，支持自定义配色和 Logo 配置。
 ---
 
 ## 何时使用
 
-当需要将链接转换成为二维码时使用。
+当需要将文本转换成为二维码时使用。
 
-### 引入模块
-
-```ts
-import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
-```
 
 ## API
 
 ### nz-qrcode
 
-| 参数               | 说明                 | 类型                              | 默认值    |
-| ------------------ | -------------------- | --------------------------------- | --------- |
-| `[nzValue]`        | 扫描后的地址         | `string`                          | -         |
-| `[nzColor]`        | 二维码颜色           | `string`                          | `#000`    |
-| `[nzBgColor]`      | 二维码背景颜色       | `string`                          | `#FFFFFF` |
-| `[nzSize]`         | 二维码大小           | `number`                          | `160`     |
-| `[nzPadding]`      | 二维码填充           | `number \| number[]`              | `0`       |
-| `[nzIcon]`         | 二维码中 icon 地址   | `string`                          | -         |
-| `[nzIconSize]`     | 二维码中 icon 大小   | `number`                          | `40`      |
-| `[nzBordered]`     | 是否有边框           | `boolean`                         | `true`    |
-| `[nzStatus]`       | 二维码状态           | `'active'｜'expired' ｜'loading'` | `active`  |
+| 参数               | 说明           | 类型                              | 默认值    |
+| ------------------ |--------------| --------------------------------- | --------- |
+| `[nzValue]`        | 扫描后的文本       | `string`                          | -         |
+| `[nzColor]`        | 二维码颜色        | `string`                          | `#000`    |
+| `[nzBgColor]`      | 二维码背景颜色      | `string`                          | `#FFFFFF` |
+| `[nzSize]`         | 二维码大小        | `number`                          | `160`     |
+| `[nzPadding]`      | 二维码填充        | `number \| number[]`              | `0`       |
+| `[nzIcon]`         | 二维码中 icon 地址 | `string`                          | -         |
+| `[nzIconSize]`     | 二维码中 icon 大小 | `number`                          | `40`      |
+| `[nzBordered]`     | 是否有边框        | `boolean`                         | `true`    |
+| `[nzStatus]`       | 二维码状态        | `'active'｜'expired' ｜'loading'` | `active`  |
 | `[nzStatusRender]` | 自定义状态渲染器     | `TemplateRef<void> \| string`     | -         |
-| `[nzLevel]`        | 二维码容错等级       | `'L'｜'M'｜'Q'｜'H'`              | `M`       |
-| `(nzRefresh)`      | 点击"点击刷新"的回调 | `EventEmitter<string>`            | -         |
+| `[nzLevel]`        | 二维码容错等级      | `'L'｜'M'｜'Q'｜'H'`              | `M`       |
+| `(nzRefresh)`      | 点击"点击刷新"的回调  | `EventEmitter<string>`            | -         |
 
 ## 注意
 

@@ -4,14 +4,18 @@ subtitle: 表单
 type: 数据录入
 cols: 1
 title: Form
-cover: https://gw.alipayobjects.com/zos/alicdn/ORmcdeaoO/Form.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/ORmcdeaoO/Form.svg'
+description: 高性能表单控件，自带数据域管理。包含数据录入、校验以及对应样式。
 ---
 
-具有数据收集、校验和提交功能的表单，包含复选框、单选框、输入框、下拉选择框等元素。
 
-该组件需要与 [Angular 表单](https://angular.cn/guide/forms) 结合使用，开发者根据需要可以自由选择 [响应式表单](https://angular.cn/guide/forms/reactive-forms) 或 [模板驱动表单](https://angular.cn/guide/forms/template-driven-forms).
+## 何时使用
 
-> 使用该组件前请确保您已经阅读并掌握了 [Forms](https://angular.cn/guide/forms) 的使用方式。
+- 用于创建一个实体或收集信息。
+- 需要对输入的数据类型进行校验时。
+
+> 该组件需要与 [Angular 表单](https://angular.cn/guide/forms) 结合使用，根据需要可以自由选择 [响应式表单](https://angular.cn/guide/forms/reactive-forms) 或 [模板驱动表单](https://angular.cn/guide/forms/template-driven-forms)。
+> 使用该组件前请确保您已经阅读并掌握了 [Angular 表单](https://angular.cn/guide/forms) 的使用方式。
 
 ## 表单
 
@@ -44,9 +48,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/ORmcdeaoO/Form.svg
 </form>
 ```
 
-```ts
-import { NzFormModule } from 'ng-zorro-antd/form';
-```
 
 ## API
 

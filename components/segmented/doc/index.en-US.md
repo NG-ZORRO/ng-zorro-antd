@@ -2,17 +2,16 @@
 category: Components
 type: Data Display
 title: Segmented
-cover: https://gw.alipayobjects.com/zos/bmw-prod/a3ff040f-24ba-43e0-92e9-c845df1612ad.svg
+cover: 'https://gw.alipayobjects.com/zos/bmw-prod/a3ff040f-24ba-43e0-92e9-c845df1612ad.svg'
+description: Display multiple options and allow users to select a single option.
 ---
+
 
 ## When To Use
 
 - When displaying multiple options and user can select a single option;
 - When switching the selected option, the content of the associated area changes.
 
-```ts
-import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
-```
 
 ## API
 

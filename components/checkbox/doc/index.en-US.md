@@ -2,19 +2,16 @@
 category: Components
 type: Data Entry
 title: Checkbox
-cover: https://gw.alipayobjects.com/zos/alicdn/8nbVbHEm_/CheckBox.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/8nbVbHEm_/CheckBox.svg'
+description: Collect user's choices.
 ---
 
-Checkbox.
 
 ## When To Use
 
 - Used for selecting multiple values from several options.
 - If you use only one checkbox, it is the same as using Switch to toggle between two states. The difference is that Switch will trigger the state change directly, but Checkbox just marks the state as changed and this needs to be submitted.
 
-```ts
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-```
 
 ## API
 
@@ -60,10 +57,3 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 ### NzCheckboxOption
 
-```ts
-export interface NzCheckboxOption {
-  label: string;
-  value: string | number;
-  disabled?: boolean;
-}
-```

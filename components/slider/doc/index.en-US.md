@@ -2,18 +2,15 @@
 category: Components
 type: Data Entry
 title: Slider
-cover: https://gw.alipayobjects.com/zos/alicdn/HZ3meFc6W/Silder.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/HZ3meFc6W/Silder.svg'
+description: A Slider component for displaying current value and intervals in range.
 ---
 
-A Slider component for displaying current value and intervals in range.
 
 ## When To Use
 
 To input a value in a range.
 
-```ts
-import { NzSliderModule } from 'ng-zorro-antd/slider';
-```
 
 ## API
 

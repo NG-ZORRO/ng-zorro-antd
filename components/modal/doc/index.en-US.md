@@ -2,10 +2,10 @@
 type: Feedback
 category: Components
 title: Modal
-cover: https://gw.alipayobjects.com/zos/alicdn/3StSdUlSH/Modal.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/3StSdUlSH/Modal.svg'
+description: Display a modal dialog box, providing a title, content area, and action buttons.
 ---
 
-Modal dialogs.
 
 ## When To Use
 
@@ -18,9 +18,6 @@ It is recommended to use the `Component` way to pop up the Modal so that the com
 completely isolated from the outer component and reused at any time. In the popup layer component, you can obtain
 Modal's component instance by injecting `NzModalRef` to control the behavior of the modal box.
 
-```ts
-import { NzModalModule } from 'ng-zorro-antd/modal';
-```
 
 ## API
 
@@ -102,11 +99,7 @@ Consistent with the above API, some property types or initial values are differe
 All the `NzModalService.method`s will return a reference, and then we can close the popup by the reference.
 
 ```ts
-constructor(modal
-:
-NzModalService
-)
-{
+constructor(modal: NzModalService) {
   const ref: NzModalRef = modal.info();
   ref.close(); // Or ref.destroy(); This dialog will be destroyed directly
 }

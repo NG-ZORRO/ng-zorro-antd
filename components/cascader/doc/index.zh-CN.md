@@ -3,10 +3,10 @@ category: Components
 type: 数据录入
 title: Cascader
 subtitle: 级联选择
-cover: https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg'
+description: 级联选择框。
 ---
 
-级联选择框。
 
 ## 何时使用
 
@@ -14,9 +14,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg
 - 从一个较大的数据集合中进行选择时，用多级分类进行分隔，方便选择。
 - 比起 Select 组件，可以在同一个浮层中完成选择，有较好的体验。
 
-```ts
-import { NzCascaderModule } from 'ng-zorro-antd/cascader';
-```
 
 ## API
 
@@ -68,29 +65,10 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 
 #### NzCascaderOption
 
-```ts
-export interface NzCascaderOption {
-  value?: any;
-  label?: string;
-  title?: string;
-  disabled?: boolean;
-  loading?: boolean;
-  isLeaf?: boolean;
-  children?: NzCascaderOption[];
-  disableCheckbox?: boolean;
 
-  [key: string]: any;
-}
-```
 
 #### NzShowSearchOptions
 
-```ts
-export type NzShowSearchOptions = boolean | {
-  filter?: NzCascaderFilter;
-  sorter?: NzCascaderSorter;
-};
-```
 
 `nzShowSearch` 为对象时需遵守 `NzShowSearchOptions` 接口：
 
@@ -101,25 +79,9 @@ export type NzShowSearchOptions = boolean | {
 
 默认的 filter 如下所示：
 
-```ts
-const defaultFilter: NzCascaderFilter = (i, p) => {
-  return p.some(o => {
-    const label = o.label;
-    return !!label && label.indexOf(i) !== -1;
-  });
-};
-```
 
 如果你想要在搜索时忽略大小写，就可以编写一个这样的 filter 函数：
 
-```ts
-const filter: NzCascaderFilter = (i, p) => {
-  return p.some(o => {
-    const label = o.label;
-    return !!label && label.toLowerCase().indexOf(i.toLowerCase()) !== -1;
-  });
-};
-```
 
 #### 方法
 

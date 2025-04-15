@@ -29,6 +29,7 @@ function findNodeByName(fragment, name, result = []) {
  * @property {string} cover - cover image url
  * @property {string} [subtitle] - subtitle of the component
  * @property {string} [description] - description of the component
+ * @property {string} [rawDescription] - raw description content
  * @property {number} [order] - order of the component
  * @property {boolean} [hidden=false] - whether the documentation is hidden
  * @property {boolean} [experimental=false] - whether the component is experimental
@@ -44,6 +45,19 @@ function findNodeByName(fragment, name, result = []) {
 module.exports = function getMeta(file) {
   /** @type ComponentIndexDocMeta */
   const meta = YFM.loadFront(file);
+
+  let description = '';
+  if (meta.description) {
+    meta.rawDescription = meta.description;
+    if (meta.subtitle) {
+      description = `Angular ${meta.subtitle}组件，${meta.description}`;
+    } else if (meta.title) {
+      description = `Angular ${meta.title} Component, ${meta.description}`;
+    }
+    meta.description = description;
+    return meta;
+  }
+
   const content = parse(meta.__content, { async: false });
   const fragment = parseFragment(content);
   /** @type DocumentFragment[] */
@@ -57,12 +71,6 @@ module.exports = function getMeta(file) {
       return c;
     })
     .reduce((a, b) => [...a, ...b], []);
-  let description = '';
-  if (meta.subtitle) {
-    description = `Angular ${meta.subtitle} 组件，`;
-  } else if (meta.title) {
-    description = `Angular ${meta.title} Component, `;
-  }
   for (const content of contents) {
     if (description.length >= 150) {
       break;

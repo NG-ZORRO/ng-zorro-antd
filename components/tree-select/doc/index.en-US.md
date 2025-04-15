@@ -2,19 +2,16 @@
 category: Components
 type: Data Entry
 title: TreeSelect
-cover: https://gw.alipayobjects.com/zos/alicdn/Ax4DA0njr/TreeSelect.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/Ax4DA0njr/TreeSelect.svg'
+description: Tree selection control.
 ---
 
-Tree selection control.
 
 ## When To Use
 
 `TreeSelect` is similar to `Select`, but the values are provided in a tree like structure.
 Any data whose entries are defined in a hierarchical manner is fit to use this control. Examples of such case may include a corporate hierarchy, a directory structure, and so on.
 
-```ts
-import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
-```
 
 ## API
 
@@ -58,12 +55,12 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 #### Methods
 
-| Property               | Description                                       | Type           |
-|------------------------|---------------------------------------------------|----------------|
-| getTreeNodes           | get all nodes(NzTreeNode)                         | `NzTreeNode[]` |
-| getTreeNodeByKey       | get NzTreeNode with key                           | `NzTreeNode`   |
-| getCheckedNodeList     | get checked nodes(merged)                         | `NzTreeNode[]` |
-| getSelectedNodeList    | get selected nodes                                | `NzTreeNode[]` |
-| getHalfCheckedNodeList | get half checked nodes                            | `NzTreeNode[]` |
-| getExpandedNodeList    | get expanded nodes                                | `NzTreeNode[]` |
-| getMatchedNodeList     | get matched nodes(if `nzSearchValue` is not null) | `NzTreeNode[]` |
+| Property                 | Description                                       | Type           |
+|--------------------------|---------------------------------------------------|----------------|
+| `getTreeNodes`           | get all nodes(NzTreeNode)                         | `NzTreeNode[]` |
+| `getTreeNodeByKey`       | get NzTreeNode with key                           | `NzTreeNode`   |
+| `getCheckedNodeList`     | get checked nodes(merged)                         | `NzTreeNode[]` |
+| `getSelectedNodeList`    | get selected nodes                                | `NzTreeNode[]` |
+| `getHalfCheckedNodeList` | get half checked nodes                            | `NzTreeNode[]` |
+| `getExpandedNodeList`    | get expanded nodes                                | `NzTreeNode[]` |
+| `getMatchedNodeList`     | get matched nodes(if `nzSearchValue` is not null) | `NzTreeNode[]` |

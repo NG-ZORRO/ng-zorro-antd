@@ -5,18 +5,16 @@ title: CheckList
 subtitle: 任务清单
 cols: 1
 tag: 19.1.0
-cover: https://img.alicdn.com/imgextra/i2/O1CN01E9BUpE1TCyZry8ETC_!!6000000002347-2-tps-386-453.png
+cover: >-
+  https://img.alicdn.com/imgextra/i2/O1CN01E9BUpE1TCyZry8ETC_!!6000000002347-2-tps-386-453.png
+description: 用于在项目中梳理任务流程。
 ---
 
-用于在项目中梳理任务流程。
 
 ## 何时使用
 
 如果当前页面业务逻辑过于复杂，且带有较为强制的顺序流控制，那么你可以采用这个组件来帮你简化流程。
 
-```ts
-import { NzCheckListModule } from 'ng-zorro-antd/check-list';
-```
 
 ## API
 

@@ -4,22 +4,14 @@ type: General
 title: Pipes
 cols: 1
 experimental: true
+description: Common Pipe Collections.
 ---
 
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
-<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
-</blockquote>
-
-Common Pipe Collections in Projects
 
 ## When To Use
 
-- After introducing Pipe, use it like Angular's built-in Pipe
+After importing Pipe, use it like Angular's built-in Pipe
 
-```ts
-import { NzPipesModule } from 'ng-zorro-antd/pipes';
-```
 
 ## API
 

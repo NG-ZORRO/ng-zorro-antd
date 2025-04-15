@@ -3,10 +3,10 @@ type: 反馈
 category: Components
 subtitle: 对话框
 title: Modal
-cover: https://gw.alipayobjects.com/zos/alicdn/3StSdUlSH/Modal.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/3StSdUlSH/Modal.svg'
+description: 展示一个对话框，提供标题、内容区、操作区。
 ---
 
-模态对话框。
 
 ## 何时使用
 
@@ -18,9 +18,6 @@ cover: https://gw.alipayobjects.com/zos/alicdn/3StSdUlSH/Modal.svg
 
 在弹出层 Component 中可以通过依赖注入`NzModalRef`方式直接获取模态框的组件实例，用于控制在弹出层组件中控制模态框行为。
 
-```ts
-import { NzModalModule } from 'ng-zorro-antd/modal';
-```
 
 ## API
 

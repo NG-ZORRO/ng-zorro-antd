@@ -2,10 +2,10 @@
 category: Components
 type: Data Entry
 title: Upload
-cover: https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg'
+description: Used to select and upload files or drag and drop files.
 ---
 
-Upload file by selecting or dragging.
 
 ## When To Use
 
@@ -15,9 +15,6 @@ Uploading is publishing information (web pages, text, pictures, video, etc.) to 
 - When you need to show the process of uploading.
 - When you need to upload files by dragging and dropping.
 
-```ts
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-```
 
 ## API
 

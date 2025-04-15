@@ -2,10 +2,10 @@
 category: Components
 type: Data Entry
 title: Cascader
-cover: https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg'
+description: Cascade selection box.
 ---
 
-Cascade selection box.
 
 ## When To Use
 
@@ -13,9 +13,6 @@ Cascade selection box.
 - When selecting from a large data set, with multi-stage classification separated for easy selection.
 - Chooses cascade items in one float layer for a better user experience.
 
-```ts
-import { NzCascaderModule } from 'ng-zorro-antd/cascader';
-```
 
 ## API
 
@@ -67,20 +64,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 
 #### NzCascaderOption
 
-```ts
-export interface NzCascaderOption {
-  value?: any;
-  label?: string;
-  title?: string;
-  disabled?: boolean;
-  loading?: boolean;
-  isLeaf?: boolean;
-  children?: NzCascaderOption[];
-  disableCheckbox?: boolean;
 
-  [key: string]: any;
-}
-```
 
 #### NzShowSearchOptions
 
@@ -93,25 +77,9 @@ When `nzShowSearch` is an object it should implement `NzShowSearchOptions`:
 
 The default filter looks as follows:
 
-```ts
-const defaultFilter: NzCascaderFilter = (i, p) => {
-  return p.some(o => {
-    const label = o.label;
-    return !!label && label.indexOf(i) !== -1;
-  });
-};
-```
 
 For example, if you would like to ignore lower or upper case, you could use a filter function like this:
 
-```ts
-const filter: NzCascaderFilter = (i, p) => {
-  return p.some(o => {
-    const label = o.label;
-    return !!label && label.toLowerCase().indexOf(i.toLowerCase()) !== -1;
-  });
-};
-```
 
 #### Methods
 

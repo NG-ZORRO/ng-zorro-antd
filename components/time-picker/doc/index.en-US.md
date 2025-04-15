@@ -2,24 +2,17 @@
 category: Components
 type: Data Entry
 title: TimePicker
-cover: https://gw.alipayobjects.com/zos/alicdn/h04Zsl98I/TimePicker.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/h04Zsl98I/TimePicker.svg'
+description: To select/input a time.
 ---
 
-To select/input a time.
 
 ## When To Use
 
 By clicking the input box, you can select a time from a popup panel.
 
-```ts
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-```
 
 ## API
-
-```html
-<nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
-```
 
 ### nz-time-picker
 

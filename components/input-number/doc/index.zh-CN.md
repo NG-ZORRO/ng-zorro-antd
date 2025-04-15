@@ -3,19 +3,16 @@ category: Components
 subtitle: 数字输入框
 type: 数据录入
 title: InputNumber
-cover: https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg'
 tag: 19.0.0
+description: 通过鼠标或键盘，输入范围内的数值。
 ---
 
-通过鼠标或键盘，输入范围内的数值。
 
 ## 何时使用
 
 当需要获取标准数值时。
 
-```ts
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-```
 
 ## API
 

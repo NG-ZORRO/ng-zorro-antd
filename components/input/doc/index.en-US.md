@@ -2,20 +2,16 @@
 category: Components
 type: Data Entry
 title: Input
-cover: https://gw.alipayobjects.com/zos/alicdn/xS9YEJhfe/Input.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/xS9YEJhfe/Input.svg'
+description: Through mouse or keyboard input content, it is the most basic form field wrapper.
 ---
 
-A basic widget for getting the user input is a text field.
-Keyboard and mouse can be used for providing or changing data.
 
 ## When To Use
 
 - A user input in a form field is needed.
 - A search input is required.
 
-```ts
-import { NzInputModule } from 'ng-zorro-antd/input';
-```
 
 ## API
 
