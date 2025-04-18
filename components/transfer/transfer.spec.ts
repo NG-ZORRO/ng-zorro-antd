@@ -39,9 +39,7 @@ describe('transfer', () => {
   let pageObject: TransferPageObject<AbstractTestTransferComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
-    });
+    TestBed.configureTestingModule({ providers: [provideNzIconsTesting(), provideNoopAnimations()] });
     fixture = TestBed.createComponent(TestTransferComponent);
     debugElement = fixture.debugElement;
     instance = debugElement.componentInstance;
@@ -208,6 +206,22 @@ describe('transfer', () => {
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(COUNT - LEFTCOUNT - DISABLED);
       btn.click();
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
+    });
+
+    it('should be checkboxes are toggle select via shift key', () => {
+      expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
+      pageObject.checkItem('right', 0);
+      expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(1);
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
+      expect(instance.comp.isShiftPressed).toBeTrue();
+      fixture.detectChanges();
+      const multiSelectEndIndex = 9;
+      pageObject.checkItem('right', multiSelectEndIndex);
+      expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(
+        COUNT - LEFTCOUNT - DISABLED - multiSelectEndIndex + 1
+      );
+      window.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
+      expect(instance.comp.isShiftPressed).toBeFalse();
     });
 
     describe('#notFoundContent', () => {
@@ -680,22 +694,12 @@ class TestTransferComponent implements OnInit, AbstractTestTransferComponent {
 })
 class TestTransferCustomRenderComponent implements OnInit, AbstractTestTransferComponent {
   @ViewChild('comp', { static: false }) comp!: NzTransferComponent;
-  nzDataSource: Array<{
-    key: string;
-    title: string;
-    description: string;
-    direction: TransferDirection;
-    icon: string;
-  }> = [];
+  nzDataSource: Array<{ key: string; title: string; description: string; direction: TransferDirection; icon: string }> =
+    [];
 
   ngOnInit(): void {
-    const ret: Array<{
-      key: string;
-      title: string;
-      description: string;
-      direction: TransferDirection;
-      icon: string;
-    }> = [];
+    const ret: Array<{ key: string; title: string; description: string; direction: TransferDirection; icon: string }> =
+      [];
     for (let i = 0; i < COUNT; i++) {
       ret.push({
         key: i.toString(),
@@ -710,21 +714,14 @@ class TestTransferCustomRenderComponent implements OnInit, AbstractTestTransferC
 }
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/996
-@Component({
-  imports: [NzTransferModule],
-  template: `<nz-transfer [nzDataSource]="list"></nz-transfer>`
-})
+@Component({ imports: [NzTransferModule], template: `<nz-transfer [nzDataSource]="list"></nz-transfer>` })
 class Test996Component implements OnInit {
   @ViewChild(NzTransferComponent, { static: true }) comp!: NzTransferComponent;
   list: NzSafeAny[] = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 2; i++) {
-      this.list.push({
-        key: i.toString(),
-        title: `content${i + 1}`,
-        disabled: i % 3 < 1
-      });
+      this.list.push({ key: i.toString(), title: `content${i + 1}`, disabled: i % 3 < 1 });
     }
 
     [0, 1].forEach(idx => (this.list[idx].direction = 'right'));

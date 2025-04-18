@@ -10,6 +10,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -220,9 +221,31 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   // left
   leftDataSource: TransferItem[] = [];
+  lastLeftCheckedIndex?: number;
 
   // right
   rightDataSource: TransferItem[] = [];
+  lastRightCheckedIndex?: number;
+
+  isShiftPressed = false;
+
+  @HostListener('window:keydown.shift')
+  onTriggerShiftDown(): void {
+    this.isShiftPressed = true;
+  }
+
+  @HostListener('window:keyup.shift')
+  onTriggerShiftUp(): void {
+    this.isShiftPressed = false;
+  }
+
+  @HostListener('mousedown', ['$event'])
+  onTriggerMouseDown(event: MouseEvent): void {
+    const isInsideTransfer = (event.target as HTMLElement).closest('.ant-transfer-list');
+    if (event.shiftKey && isInsideTransfer) {
+      event.preventDefault();
+    }
+  }
 
   private splitDataSource(): void {
     this.leftDataSource = [];
@@ -249,6 +272,23 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   handleRightSelect = (item: TransferItem): void => this.handleSelect('right', !!item.checked, item);
 
   handleSelect(direction: TransferDirection, checked: boolean, item?: TransferItem): void {
+    if (item) {
+      const datasource = direction === 'left' ? this.leftDataSource : this.rightDataSource;
+      const currentIndex = datasource.findIndex(i => i.key === item.key);
+      const lastCheckedIndex = this[direction === 'left' ? 'lastLeftCheckedIndex' : 'lastRightCheckedIndex'] ?? -1;
+      if (this.isShiftPressed && lastCheckedIndex > -1) {
+        const start = Math.min(lastCheckedIndex, currentIndex);
+        const end = Math.max(lastCheckedIndex, currentIndex);
+        for (let i = start; i <= end; i++) {
+          const item = datasource[i];
+          if (!item.disabled) {
+            item.checked = checked;
+          }
+        }
+        this.markForCheckAllList();
+      }
+      this[direction === 'left' ? 'lastLeftCheckedIndex' : 'lastRightCheckedIndex'] = currentIndex;
+    }
     const list = this.getCheckedData(direction);
     const count = list.filter(i => !i.disabled).length;
     this.updateOperationStatus(direction, count);
@@ -301,11 +341,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     }
     targetDatasource.splice(0, 0, ...list);
     this.updateOperationStatus(oppositeDirection);
-    this.nzChange.emit({
-      from: oppositeDirection,
-      to: direction,
-      list
-    });
+    this.nzChange.emit({ from: oppositeDirection, to: direction, list });
     this.markForCheckAllList();
   }
 
