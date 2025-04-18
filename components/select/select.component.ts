@@ -453,13 +453,21 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       .filter(item => listOfLabel.findIndex(label => label === item.nzLabel) !== -1)
       .map(item => item.nzValue)
       .filter(item => this.listOfValue.findIndex(v => this.compareWith(v, item)) === -1);
+    /**
+     * Limit the number of selected item to nzMaxMultipleCount
+     */
+    const limitWithinMaxCount = <T>(value: T[]): T[] =>
+      this.isMaxMultipleCountSet ? value.slice(0, this.nzMaxMultipleCount) : value;
+
     if (this.nzMode === 'multiple') {
-      this.updateListOfValue([...this.listOfValue, ...listOfMatchedValue]);
+      const updateValue = limitWithinMaxCount([...this.listOfValue, ...listOfMatchedValue]);
+      this.updateListOfValue(updateValue);
     } else if (this.nzMode === 'tags') {
       const listOfUnMatchedLabel = listOfLabel.filter(
         label => this.listOfTagAndTemplateItem.findIndex(item => item.nzLabel === label) === -1
       );
-      this.updateListOfValue([...this.listOfValue, ...listOfMatchedValue, ...listOfUnMatchedLabel]);
+      const updateValue = limitWithinMaxCount([...this.listOfValue, ...listOfMatchedValue, ...listOfUnMatchedLabel]);
+      this.updateListOfValue(updateValue);
     }
     this.clearInput();
   }
