@@ -33,11 +33,11 @@ description: 收集用户的多项选择。
 
 | 参数                | 说明                                  | 类型                                                                     | 默认值     |
 |-------------------|-------------------------------------|------------------------------------------------------------------------|---------|
-| `[ngModel]`       | 指定可选项，可双向绑定                         | `{ label: string; value: string; checked?: boolean; }[]`               | `[]`    |
-| `[nzName]`        | CheckboxGroup 下所有 input 的 `name` 属性 | `string`                                                               | -       |
-| `[nzOptions]`     | 指定可选项                               | `string[] \| number[] \| NzCheckboxOption[]`                           | `[]`    |
-| `[nzDisabled]`    | 设定全部 checkbox disable 状态            | `boolean`                                                              | `false` |
-| `(ngModelChange)` | 选中数据变化时的回调                          | `EventEmitter<{ label: string; value: string; checked?: boolean; }[]>` | -       |
+| `[ngModel]`       | 指定可选项，可双向绑定                         | `string[] \| number[]`                           | `[]`    |
+| `[nzName]`        | CheckboxGroup 下所有 input 的 `name` 属性    | `string`                                         | -       |
+| `[nzOptions]`     | 指定可选项                                   | `string[] \| number[] \| NzCheckboxOption[]`     | `[]`    |
+| `[nzDisabled]`    | 设定全部 checkbox disable 状态               | `boolean`                                        | `false` |
+| `(ngModelChange)` | 选中数据变化时的回调                          | `EventEmitter<string[] \| number[]>`              | -       |
 
 ### nz-checkbox-wrapper
 

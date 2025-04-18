@@ -32,11 +32,11 @@ description: Collect user's choices.
 
 | Property          | Description                                                     | Type                                                                        | Default |
 |-------------------|-----------------------------------------------------------------|-----------------------------------------------------------------------------|---------|
-| `[ngModel]`       | Specifies options, double binding                               | `Array<{ label: string; value: string; checked?: boolean; }>`               | `[]`    |
+| `[ngModel]`       | Specifies options, double binding                               | `string[] \| number[]`                                                      | `[]`     |
 | `[nzName]`        | The `name` property of all input children                       | `string`                                                                    | -       |
-| `[nzOptions]`     | Specifies options                                               | `string[] \| number[] \| NzCheckboxOption[]`                                | `[]`    |
+| `[nzOptions]`     | Specifies options                                               | `string[] \| number[] \| NzCheckboxOption[]`                                | `[]`     |
 | `[nzDisabled]`    | Disable all checkboxes                                          | `boolean`                                                                   | `false` |
-| `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<Array<{ label: string; value: string; checked?: boolean; }>>` | -       |
+| `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<string[] \| number[]>`                                        | -       |
 
 ### nz-checkbox-wrapper
 
