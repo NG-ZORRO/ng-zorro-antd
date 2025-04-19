@@ -37,6 +37,8 @@ description: 通过鼠标或键盘，输入范围内的数值。
 | `[nzSize]`        | 输入框大小，可选 `large` `default` `small`                     | `string`                                                                | `default`                                                                                                                           |
 | `[nzStep]`        | 每次改变步数，可以是小数                                       | `number`                                                                | `1`                                                                                                                                 |
 | `(nzOnStep)`      | 点击上下箭头的回调                                             | `EventEmitter<{ value: number, offset: number, type: 'up' \| 'down' }>` | -                                                                                                                                   |
+| `(nzFocus)`       | focus 时回调                                                   | `OutputRef<void>`                                                       | -                                                                                                                                   |
+| `(nzBlur)`        | blur 时回调                                                    | `OutputRef<void>`                                                       | -                                                                                                                                   |
 | `(ngModelChange)` | 值变化时的回调函数                                             | `EventEmitter<number>`                                                  | -                                                                                                                                   |
 
 #### 方法

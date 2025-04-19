@@ -192,6 +192,9 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzKeyboard = input(true, { transform: booleanAttribute });
   readonly nzControls = input(true, { transform: booleanAttribute });
 
+  readonly nzBlur = output<void>();
+  readonly nzFocus = output<void>();
+
   readonly nzOnStep = output<{ value: number; offset: number; type: 'up' | 'down' }>();
 
   private onChange: OnChangeType = () => {};
@@ -300,9 +303,12 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
         .subscribe(origin => {
           this.focused.set(!!origin);
 
-          if (!origin) {
+          if (origin) {
+            this.nzFocus.emit();
+          } else {
             this.fixValue();
             this.onTouched();
+            this.nzBlur.emit();
           }
         });
 
