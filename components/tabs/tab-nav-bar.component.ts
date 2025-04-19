@@ -28,7 +28,9 @@ import {
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  computed,
+  input
 } from '@angular/core';
 import { Subject, animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
@@ -39,6 +41,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
 import { NzTabAddButtonComponent } from './tab-add-button.component';
+import { NzTabBarExtraContentDirective } from './tab-bar-extra-content.directive';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
 import { NzTabNavOperationComponent } from './tab-nav-operation.component';
 import { NzTabScrollListDirective } from './tab-scroll-list.directive';
@@ -54,6 +57,11 @@ const CSS_TRANSFORM_TIME = 150;
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
+    @if (startExtraContent()) {
+      <div class="ant-tabs-extra-content">
+        <ng-template [ngTemplateOutlet]="startExtraContent()!.templateRef"></ng-template>
+      </div>
+    }
     <div
       class="ant-tabs-nav-wrap"
       [class.ant-tabs-nav-wrap-ping-left]="pingLeft"
@@ -90,7 +98,11 @@ const CSS_TRANSFORM_TIME = 150;
       [addable]="addable"
       [items]="hiddenItems"
     ></nz-tab-nav-operation>
-    @if (extraTemplate) {
+    @if (endExtraContent()) {
+      <div class="ant-tabs-extra-content">
+        <ng-template [ngTemplateOutlet]="endExtraContent()!.templateRef"></ng-template>
+      </div>
+    } @else if (extraTemplate) {
       <div class="ant-tabs-extra-content">
         <ng-template [ngTemplateOutlet]="extraTemplate"></ng-template>
       </div>
@@ -120,6 +132,11 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   @Input() addIcon: string | TemplateRef<NzSafeAny> = 'plus';
   @Input() inkBarAnimated = true;
   @Input() extraTemplate?: TemplateRef<void>;
+
+  readonly extraContents = input.required<readonly NzTabBarExtraContentDirective[]>();
+
+  readonly startExtraContent = computed(() => this.extraContents().find(item => item.position() === 'start'));
+  readonly endExtraContent = computed(() => this.extraContents().find(item => item.position() === 'end'));
 
   @Input()
   get selectedIndex(): number {

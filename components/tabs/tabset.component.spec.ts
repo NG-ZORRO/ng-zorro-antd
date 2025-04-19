@@ -939,6 +939,18 @@ describe('NzTabSet', () => {
       flush();
     }));
   });
+
+  describe('extra content', () => {
+    it('should be possible to render additional content on both sides', () => {
+      const fixture = TestBed.createComponent(SimpleTabsWithExtraContentComponent);
+      fixture.detectChanges();
+      const tabsNav: HTMLDivElement = fixture.nativeElement.querySelector('.ant-tabs-nav');
+      expect(tabsNav.firstElementChild?.classList).toContain('ant-tabs-extra-content');
+      expect(tabsNav.firstElementChild?.textContent?.trim()).toEqual('Start Extra Action');
+      expect(tabsNav.lastElementChild?.classList).toContain('ant-tabs-extra-content');
+      expect(tabsNav.lastElementChild?.textContent?.trim()).toEqual('End Extra Action');
+    });
+  });
 });
 
 @Component({
@@ -1258,4 +1270,21 @@ function getTranslate(transformValue: string): { x: number; y: number } {
     x: match && match[1] ? Number.parseFloat(match[1]) : 0,
     y: match && match[2] ? Number.parseFloat(match[2]) : 0
   };
+}
+
+@Component({
+  imports: [NzTabsModule],
+  template: `
+    <nz-tabset [(nzSelectedIndex)]="selectedIndex">
+      <button *nzTabBarExtraContent="'start'">Start Extra Action</button>
+      <button *nzTabBarExtraContent="'end'">End Extra Action</button>
+
+      <nz-tab nzTitle="Tab 0">Content of Tab Pane 0</nz-tab>
+      <nz-tab nzTitle="Tab 1">Content of Tab Pane 1</nz-tab>
+      <nz-tab nzTitle="Tab 2">Content of Tab Pane 2</nz-tab>
+    </nz-tabset>
+  `
+})
+class SimpleTabsWithExtraContentComponent {
+  selectedIndex = 0;
 }

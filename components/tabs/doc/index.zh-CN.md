@@ -110,3 +110,11 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
   </nz-tab>
 </nz-tabset>
 ```
+
+### [nzTabBarExtraContent]
+
+> 注意：`*nzTabBarExtraContent` 比 `nz-tabset[nzTabBarExtraContent]` 具有更高的优先级。
+
+| 参数                     | 说明           | 类型               | 默认值  |
+| ------------------------ | -------------- | ------------------ | ------- |
+| `[nzTabBarExtraContent]` | 附加内容的位置 | `'start' \| 'end'` | `'end'` |
