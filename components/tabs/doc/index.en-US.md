@@ -107,3 +107,9 @@ Show a link in tab's head. Used in router link mode.
   </nz-tab>
 </nz-tabset>
 ```
+
+### [nzTabBarExtraContent]
+
+| Property                 | Description               | Type               | Default | Global Config |
+| ------------------------ | ------------------------- | ------------------ | ------- | ------------- |
+| `[nzTabBarExtraContent]` | Position of extra content | `'start' \| 'end'` | `'end'` |
