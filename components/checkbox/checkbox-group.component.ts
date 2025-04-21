@@ -83,7 +83,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor {
 
   readonly nzName = input<string | null>(null);
   readonly nzDisabled = input(false, { transform: booleanAttribute });
-  readonly nzOptions = input<NzCheckboxOption[]>([]);
+  readonly nzOptions = input<NzCheckboxOption[] | string[] | number[]>([]);
   readonly value = signal<Array<NzCheckboxOption['value']> | null>(null);
   readonly finalDisabled = linkedSignal(() => this.nzDisabled());
 
