@@ -122,6 +122,7 @@
     "stylelint": "^16.15.0",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^37.0.0",
+    "stylelint-config-standard-less": "^3.0.1",
     "stylelint-declaration-block-no-ignored-properties": "^2.1.0",
     "stylelint-order": "^6.0.0",
     "terser": "^5.37.0",
