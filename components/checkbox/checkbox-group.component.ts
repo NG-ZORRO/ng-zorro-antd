@@ -18,7 +18,8 @@ import {
   inject,
   input,
   linkedSignal,
-  signal
+  signal,
+  untracked
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -112,7 +113,9 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor {
   }
 
   writeValue(value: Array<string | number> | null): void {
-    this.value.set(value);
+    untracked(() => {
+      this.value.set(value);
+    });
   }
 
   registerOnChange(fn: OnChangeType): void {
@@ -124,7 +127,9 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor {
   }
 
   setDisabledState(disabled: boolean): void {
-    this.finalDisabled.set((this.isDisabledFirstChange && this.nzDisabled()) || disabled);
+    untracked(() => {
+      this.finalDisabled.set((this.isDisabledFirstChange && this.nzDisabled()) || disabled);
+    });
     this.isDisabledFirstChange = false;
   }
 
