@@ -13,6 +13,18 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+### 19.2.2
+
+`2025-04-25`
+
+### Bug Fixes
+
+* **select:** 多选模式下，限制粘贴后的选项数不超过 `nzMaxMultipleCount` ([#9080](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9080)) ([3714840](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3714840a8a72d4d7809a2cac339dd3891052225d))
+* **input-number:** 修复 `NG0600` 错误 ([#9106](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9106)) ([9f5b525](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9f5b525e5eb5e50ed4f93ed15b6831d7db3483ee))
+* **checkbox:** 修复 `NG0600` 错误 ([#9105](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9105)) ([61b6886](https://github.com/NG-ZORRO/ng-zorro-antd/commit/61b68861a6215e40bd29e14d2fe2bc02ce112ce0))
+* **checkbox:** 修正 `nzOptions` 的类型定义 ([#9099](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9099)) ([7be2fe5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7be2fe5412aa00b9178dcae49f202b21a1b7e9e8))
+
+
 ### 19.2.1
 
 `2025-03-29`

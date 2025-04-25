@@ -1,8 +1,20 @@
+## [19.2.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.2.1...19.2.2) (2025-04-25)
+
+### Bug Fixes
+
+* **input-number:** fix NG0600 error ([#9106](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9106)) ([9f5b525](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9f5b525e5eb5e50ed4f93ed15b6831d7db3483ee))
+* **checkbox:** fix NG0600 error ([#9105](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9105)) ([61b6886](https://github.com/NG-ZORRO/ng-zorro-antd/commit/61b68861a6215e40bd29e14d2fe2bc02ce112ce0))
+* **checkbox:** fix type of options ([#9099](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9099)) ([7be2fe5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7be2fe5412aa00b9178dcae49f202b21a1b7e9e8))
+* **select:** limit number of pasted item to nzMaxMultipleCount ([#9080](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9080)) ([3714840](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3714840a8a72d4d7809a2cac339dd3891052225d))
+
+
+
 ## [19.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.2.0...19.2.1) (2025-03-29)
 
 ### Bug Fixes
 
 * **select:** remove internal comment from select-arrow ([#9074](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9074)) ([c9b2dd9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c9b2dd96db78ff257137b7a2cba79bbf70f64d3e))
+
 
 
 ## [19.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.1.0...19.2.0) (2025-03-28)
