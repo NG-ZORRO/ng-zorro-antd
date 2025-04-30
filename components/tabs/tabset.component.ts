@@ -16,6 +16,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  contentChildren,
   ContentChildren,
   EventEmitter,
   forwardRef,
@@ -49,6 +50,7 @@ import {
   NzTabScrollEvent,
   NzTabType
 } from './interfaces';
+import { NzTabBarExtraContentDirective } from './tab-bar-extra-content.directive';
 import { NzTabBodyComponent } from './tab-body.component';
 import { NzTabCloseButtonComponent } from './tab-close-button.component';
 import { NzTabLinkDirective } from './tab-link.directive';
@@ -83,6 +85,7 @@ let nextId = 0;
         [hideBar]="nzHideAll"
         [position]="position"
         [extraTemplate]="nzTabBarExtraContent"
+        [extraContents]="extraContents()"
         (tabScroll)="nzTabListScroll.emit($event)"
         (selectFocusedIndex)="setSelectedIndex($event)"
         (addClicked)="onAdd()"
@@ -252,12 +255,14 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   // We filter out only the tabs that belong to this tab set in `tabs`.
   @ContentChildren(NzTabComponent, { descendants: true })
   allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
+
   @ContentChildren(NzTabLinkDirective, { descendants: true })
   tabLinks: QueryList<NzTabLinkDirective> = new QueryList<NzTabLinkDirective>();
   @ViewChild(NzTabNavBarComponent, { static: false }) tabNavBarRef!: NzTabNavBarComponent;
-
   // All the direct tabs for this tab set
   tabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
+
+  readonly extraContents = contentChildren(NzTabBarExtraContentDirective);
 
   dir: Direction = 'ltr';
   private readonly tabSetId!: number;
