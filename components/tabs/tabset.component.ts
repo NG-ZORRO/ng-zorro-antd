@@ -483,14 +483,8 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       if (!this.router) {
         throw new Error(`${PREFIX} you should import 'RouterModule' if you want to use 'nzLinkRouter'!`);
       }
-      merge(
-        this.router.events.pipe(
-          filter(e => e instanceof NavigationEnd),
-          delay(0)
-        ),
-        this.tabLinks.changes
-      )
-        .pipe(takeUntil(this.destroy$), startWith(true))
+      merge(this.router.events.pipe(filter(e => e instanceof NavigationEnd)), this.tabLinks.changes)
+        .pipe(delay(0), takeUntil(this.destroy$))
         .subscribe(() => {
           this.updateRouterActive();
           this.cdr.markForCheck();
