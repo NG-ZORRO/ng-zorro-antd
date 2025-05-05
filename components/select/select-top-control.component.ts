@@ -83,7 +83,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           [disabled]="disabled"
           [value]="inputValue!"
           [autofocus]="autofocus"
-          [showInput]="true"
+          [showInput]="showSearch"
           [mirrorSync]="true"
           [focusTrigger]="open"
           (isComposingChange)="isComposingChange($event)"
