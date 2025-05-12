@@ -32,5 +32,5 @@ Commonly displayed on the details page.
 | Property        | Description                    | Type      | Default                     |
 | --------------- | ------------------------------ | --------- | --------------------------- |
 | `[nzTitle]`     | Title of the content     | `boolean` | `string\|TemplateRef<void>` |
-| `[nzTitleBlod]` | Title in bold                  | `boolean` | `false`                     |
+| `[nzTitleBold]` | Title in bold                  | `boolean` | `false`                     |
 | `[nzSpan]`      | The number of columns included | `number`  | `1`                         |

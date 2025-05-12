@@ -17,13 +17,13 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
     <br />
     <br />
     <nz-descriptions nzTitle="Custom Size" [nzExtra]="extraTpl" nzBordered [nzSize]="size">
-      <nz-descriptions-item nzTitle="Product">Cloud Database</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Billing">Prepaid</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="time">18:00:00</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Amount">$80.00</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Discount">$20.00</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Official">$60.00</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Config Info">
+      <nz-descriptions-item nzTitle="Product" [nzTitleBold]="true">Cloud Database</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Billing" [nzTitleBold]="true">Prepaid</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="time" [nzTitleBold]="true">18:00:00</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Amount" [nzTitleBold]="true">$80.00</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Discount" [nzTitleBold]="true">$20.00</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Official" [nzTitleBold]="true">$60.00</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Config Info" [nzTitleBold]="true">
         Data disk type: MongoDB
         <br />
         Database version: 3.4

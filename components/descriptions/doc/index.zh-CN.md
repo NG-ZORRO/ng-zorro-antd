@@ -32,5 +32,5 @@ description: 展示多个只读字段的组合。
 | 参数            | 说明         | 类型                        | 默认值 |
 | --------------- | ------------ | --------------------------- | ------ |
 | `[nzTitle]`     | 内容的标题   | `string\|TemplateRef<void>` | -       |
-| `[nzTitleBlod]` | 标题加粗     | `boolean`                   | `false` |
+| `[nzTitleBold]` | 标题加粗     | `boolean`                   | `false` |
 | `[nzSpan]`      | 包含列的数量 | `number`                    | `1`     |
