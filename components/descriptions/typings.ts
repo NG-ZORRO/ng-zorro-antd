@@ -11,7 +11,7 @@ export type NzDescriptionsLayout = 'horizontal' | 'vertical';
 
 export interface NzDescriptionsItemRenderProps {
   title: string | TemplateRef<void>;
-  titleBlod: boolean;
+  titleBold: boolean;
   span: number;
   content: TemplateRef<void>;
 }

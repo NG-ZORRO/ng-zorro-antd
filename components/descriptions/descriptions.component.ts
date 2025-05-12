@@ -76,7 +76,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                       <div class="ant-descriptions-item-container">
                         <span
                           class="ant-descriptions-item-label"
-                          [class.ant-descriptions-item-label-bold]="item.titleBlod"
+                          [class.ant-descriptions-item-label-bold]="item.titleBold"
                           [class.ant-descriptions-item-no-colon]="!nzColon"
                         >
                           <ng-container *nzStringTemplateOutlet="item.title">
@@ -89,7 +89,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                       </div>
                     </td>
                   } @else {
-                    <td class="ant-descriptions-item-label" [class.ant-descriptions-item-label-bold]="item.titleBlod">
+                    <td class="ant-descriptions-item-label" [class.ant-descriptions-item-label-bold]="item.titleBold">
                       <ng-container *nzStringTemplateOutlet="item.title">
                         {{ item.title }}
                       </ng-container>
@@ -112,7 +112,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                       <div class="ant-descriptions-item-container">
                         <span
                           class="ant-descriptions-item-label"
-                          [class.ant-descriptions-item-label-bold]="item.titleBlod"
+                          [class.ant-descriptions-item-label-bold]="item.titleBold"
                           [class.ant-descriptions-item-no-colon]="!nzColon"
                         >
                           <ng-container *nzStringTemplateOutlet="item.title">
@@ -141,7 +141,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                   @for (item of row; track item; let isLast = $last) {
                     <td
                       class="ant-descriptions-item-label"
-                      [class.ant-descriptions-item-label-bold]="item.titleBlod"
+                      [class.ant-descriptions-item-label-bold]="item.titleBold"
                       [colSpan]="item.span"
                     >
                       <ng-container *nzStringTemplateOutlet="item.title">
@@ -255,7 +255,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
     for (let i = 0; i < length; i++) {
       const item = items[i];
-      const { nzTitle: title, nzTitleBold: titleBlod, content, nzSpan: span } = item;
+      const { nzTitle: title, nzTitleBold: titleBold, content, nzSpan: span } = item;
 
       width += span;
 
@@ -266,13 +266,13 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
         if (width > column) {
           warn(`"nzColumn" is ${column} but we have row length ${width}`);
         }
-        currentRow.push({ title, titleBlod, content, span: column - (width - span) });
+        currentRow.push({ title, titleBold, content, span: column - (width - span) });
         flushRow();
       } else if (i === length - 1) {
-        currentRow.push({ title, titleBlod, content, span: column - (width - span) });
+        currentRow.push({ title, titleBold, content, span: column - (width - span) });
         flushRow();
       } else {
-        currentRow.push({ title, titleBlod, content, span });
+        currentRow.push({ title, titleBold, content, span });
       }
     }
 
