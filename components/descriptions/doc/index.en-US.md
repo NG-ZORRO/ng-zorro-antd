@@ -29,7 +29,8 @@ Commonly displayed on the details page.
 
 ### nz-descriptions-item
 
-| Property    | Description                    | Type      | Default                     |
-| ----------- | ------------------------------ | --------- | --------------------------- |
-| `[nzTitle]` | Description of the content     | `boolean` | `string\|TemplateRef<void>` |
-| `[nzSpan]`  | The number of columns included | `number`  | `1`                         |
+| Property        | Description                    | Type      | Default                     |
+| --------------- | ------------------------------ | --------- | --------------------------- |
+| `[nzTitle]`     | Title of the content     | `boolean` | `string\|TemplateRef<void>` |
+| `[nzTitleBlod]` | Title in bold                  | `boolean` | `false`                     |
+| `[nzSpan]`      | The number of columns included | `number`  | `1`                         |

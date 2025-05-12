@@ -74,7 +74,11 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                   @if (!nzBordered) {
                     <td class="ant-descriptions-item" [colSpan]="item.span">
                       <div class="ant-descriptions-item-container">
-                        <span class="ant-descriptions-item-label" [class.ant-descriptions-item-no-colon]="!nzColon">
+                        <span
+                          class="ant-descriptions-item-label"
+                          [class.ant-descriptions-item-label-bold]="item.titleBlod"
+                          [class.ant-descriptions-item-no-colon]="!nzColon"
+                        >
                           <ng-container *nzStringTemplateOutlet="item.title">
                             {{ item.title }}
                           </ng-container>
@@ -85,7 +89,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                       </div>
                     </td>
                   } @else {
-                    <td class="ant-descriptions-item-label">
+                    <td class="ant-descriptions-item-label" [class.ant-descriptions-item-label-bold]="item.titleBlod">
                       <ng-container *nzStringTemplateOutlet="item.title">
                         {{ item.title }}
                       </ng-container>
@@ -106,7 +110,11 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                   @for (item of row; track item; let isLast = $last) {
                     <td class="ant-descriptions-item" [colSpan]="item.span">
                       <div class="ant-descriptions-item-container">
-                        <span class="ant-descriptions-item-label" [class.ant-descriptions-item-no-colon]="!nzColon">
+                        <span
+                          class="ant-descriptions-item-label"
+                          [class.ant-descriptions-item-label-bold]="item.titleBlod"
+                          [class.ant-descriptions-item-no-colon]="!nzColon"
+                        >
                           <ng-container *nzStringTemplateOutlet="item.title">
                             {{ item.title }}
                           </ng-container>
@@ -131,7 +139,11 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
               @for (row of itemMatrix; track row; let i = $index) {
                 <tr class="ant-descriptions-row">
                   @for (item of row; track item; let isLast = $last) {
-                    <td class="ant-descriptions-item-label" [colSpan]="item.span">
+                    <td
+                      class="ant-descriptions-item-label"
+                      [class.ant-descriptions-item-label-bold]="item.titleBlod"
+                      [colSpan]="item.span"
+                    >
                       <ng-container *nzStringTemplateOutlet="item.title">
                         {{ item.title }}
                       </ng-container>
@@ -243,7 +255,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
     for (let i = 0; i < length; i++) {
       const item = items[i];
-      const { nzTitle: title, content, nzSpan: span } = item;
+      const { nzTitle: title, nzTitleBold: titleBlod, content, nzSpan: span } = item;
 
       width += span;
 
@@ -254,13 +266,13 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
         if (width > column) {
           warn(`"nzColumn" is ${column} but we have row length ${width}`);
         }
-        currentRow.push({ title, content, span: column - (width - span) });
+        currentRow.push({ title, titleBlod, content, span: column - (width - span) });
         flushRow();
       } else if (i === length - 1) {
-        currentRow.push({ title, content, span: column - (width - span) });
+        currentRow.push({ title, titleBlod, content, span: column - (width - span) });
         flushRow();
       } else {
-        currentRow.push({ title, content, span });
+        currentRow.push({ title, titleBlod, content, span });
       }
     }
 
