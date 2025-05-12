@@ -96,7 +96,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
       } @else {
         @if (stat.shownCount > 0) {
           <ul class="ant-transfer-list-content">
-            @for (item of validData; track item) {
+            @for (item of validData; track item.key) {
               <li
                 (click)="!oneWay ? onItemSelect(item) : null"
                 class="ant-transfer-list-content-item"
