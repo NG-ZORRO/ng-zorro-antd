@@ -1689,6 +1689,18 @@ describe('cascader', () => {
       expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
       expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(true);
     }));
+
+    it('should cascade work when the value of ngModel that is not existed in options', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.values = ['zhejiang', 'a'];
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      getItemAtColumnAndRow(1, 1)!.click();
+      getItemAtColumnAndRow(2, 1)!.click();
+      getItemAtColumnAndRow(3, 1)!.click();
+      fixture.detectChanges();
+      expect(testComponent.values).toEqual(['zhejiang', 'hangzhou', 'xihu']);
+    }));
   });
 
   describe('multiple', () => {
@@ -1866,6 +1878,42 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.onChanges).toHaveBeenCalledWith([['light']]);
     }));
+
+    describe('should cascade work when the value of ngModel includes nodes that are not existed in options', () => {
+      it('should remove item work', fakeAsync(() => {
+        setValues(2);
+        testComponent.values![0] = ['light', 'a'];
+        tick();
+        fixture.detectChanges();
+        const removeBtn = cascader.queryAll(By.css('.ant-select-selection-item-remove'))[0];
+        removeBtn.nativeElement.click();
+        fixture.detectChanges();
+        const tags = cascader.queryAll(By.directive(NzSelectItemComponent));
+        expect(tags.length).toBe(1);
+      }));
+
+      it('should add item work', fakeAsync(() => {
+        spyOn(testComponent, 'onChanges');
+        setValues(2);
+        testComponent.values![0] = ['light', 'a'];
+        console.log(testComponent.values);
+        tick();
+        fixture.detectChanges();
+        cascader.componentInstance.setMenuVisible(true);
+        fixture.detectChanges();
+        const checkbox = getCheckboxAtColumnAndRow(2, 3)!;
+        checkbox.click();
+        fixture.detectChanges();
+        expect(testComponent.values!.length).toBe(3);
+        const selectedNodes = [
+          ['light', 1],
+          ['light', 'a'],
+          ['light', 2]
+        ];
+        expect(testComponent.values).toEqual(selectedNodes);
+        expect(testComponent.onChanges).toHaveBeenCalledWith(selectedNodes);
+      }));
+    });
   });
 
   describe('load data lazily', () => {

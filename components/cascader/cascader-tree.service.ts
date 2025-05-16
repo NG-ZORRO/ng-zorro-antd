@@ -22,7 +22,6 @@ export class NzCascaderTreeService extends NzTreeBaseService {
     label: 'label',
     value: 'value'
   };
-  missingNodeList: NzTreeNode[] = [];
 
   override treeNodePostProcessor = (node: NzTreeNode): void => {
     node.key = this.getOptionValue(node);
@@ -76,7 +75,6 @@ export class NzCascaderTreeService extends NzTreeBaseService {
   conductCheckPaths(paths: NzTreeNodeKey[][] | null, checkStrictly: boolean): void {
     this.checkedNodeList = [];
     this.halfCheckedNodeList = [];
-    this.missingNodeList = [];
     const existsPathList: NzTreeNodeKey[][] = [];
     const calc = (nodes: NzTreeNode[]): void => {
       nodes.forEach(node => {
@@ -102,37 +100,38 @@ export class NzCascaderTreeService extends NzTreeBaseService {
     };
     calc(this.rootNodes);
     this.refreshCheckState(checkStrictly);
-    this.missingNodeList = this.getMissingNodeList(paths, existsPathList);
+    // handle missing node
+    this.handleMissingNodeList(paths, existsPathList);
   }
 
-  conductSelectedPaths(paths: NzTreeNodeKey[][], isMulti: boolean): void {
+  conductSelectedPaths(paths: NzTreeNodeKey[][]): void {
     this.selectedNodeList.forEach(node => (node.isSelected = false));
     this.selectedNodeList = [];
-    this.missingNodeList = [];
     const existsPathList: NzTreeNodeKey[][] = [];
-    const calc = (nodes: NzTreeNode[]): boolean =>
-      nodes.every(node => {
+    const calc = (nodes: NzTreeNode[]): void =>
+      nodes.forEach(node => {
         // if node is in selected path
         const nodePath = this.getAncestorNodeList(node).map(n => this.getOptionValue(n));
         if (paths.some(keys => arraysEqual(nodePath, keys))) {
           node.isSelected = true;
           this.setSelectedNodeList(node);
           existsPathList.push(nodePath);
-          if (!isMulti) {
-            // if not support multi select
-            return false;
-          }
         } else {
           node.isSelected = false;
         }
         if (node.children.length > 0) {
-          // Recursion
-          return calc(node.children);
+          calc(node.children);
         }
-        return true;
       });
     calc(this.rootNodes);
-    this.missingNodeList = this.getMissingNodeList(paths, existsPathList);
+    this.handleMissingNodeList(paths, existsPathList);
+  }
+
+  private handleMissingNodeList(paths: NzTreeNodeKey[][] | null, existsPathList: NzTreeNodeKey[][]): void {
+    const missingNodeList = this.getMissingNodeList(paths, existsPathList);
+    missingNodeList.forEach(node => {
+      this.setSelectedNodeList(node);
+    });
   }
 
   private getMissingNodeList(paths: NzTreeNodeKey[][] | null, existsPathList: NzTreeNodeKey[][]): NzTreeNode[] {
@@ -165,6 +164,12 @@ export class NzCascaderTreeService extends NzTreeBaseService {
       node = childNode;
     }
 
+    if (this.isMultiple) {
+      node.isChecked = true;
+      node.isHalfChecked = false;
+    } else {
+      node.isSelected = true;
+    }
     return node;
   }
 }
