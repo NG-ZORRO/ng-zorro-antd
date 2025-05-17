@@ -115,6 +115,9 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
 
     this.service.selected$.pipe(takeUntilDestroyed()).subscribe(value => {
       this.value = value;
+    });
+
+    this.service.change$.pipe(takeUntilDestroyed()).subscribe(value => {
       this.nzValueChange.emit(value);
       this.onChange(value);
     });
@@ -141,8 +144,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
       }
 
       if (
-        this.value === null ||
-        this.value === undefined ||
+        this.value === undefined || // If no value is set, select the first item
         !itemCmps.some(item => item.nzValue === this.value) // handle value not in options
       ) {
         this.service.selected$.next(itemCmps[0].nzValue);
@@ -168,7 +170,6 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   }
 
   writeValue(value: number | string): void {
-    if (value === null || value === undefined) return;
     this.service.selected$.next(value);
   }
 

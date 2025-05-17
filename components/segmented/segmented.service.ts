@@ -11,12 +11,14 @@ import { ReplaySubject, Subject } from 'rxjs';
 export class NzSegmentedService implements OnDestroy {
   readonly selected$ = new ReplaySubject<string | number>(1);
   readonly activated$ = new ReplaySubject<HTMLElement>(1);
+  readonly change$ = new Subject<string | number>();
   readonly disabled$ = new ReplaySubject<boolean>(1);
   readonly animationDone$ = new Subject<AnimationEvent>();
 
   ngOnDestroy(): void {
     this.selected$.complete();
     this.activated$.complete();
+    this.change$.complete();
     this.disabled$.complete();
     this.animationDone$.complete();
   }

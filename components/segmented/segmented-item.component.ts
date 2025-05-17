@@ -15,7 +15,7 @@ import {
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -46,7 +46,7 @@ import { NzSegmentedService } from './segmented.service';
   host: {
     class: 'ant-segmented-item',
     '[class.ant-segmented-item-selected]': 'isChecked',
-    '[class.ant-segmented-item-disabled]': 'nzDisabled',
+    '[class.ant-segmented-item-disabled]': 'nzDisabled || parentDisabled()',
     '(click)': 'handleClick()'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,16 +61,13 @@ export class NzSegmentedItemComponent implements OnInit {
 
   private readonly service = inject(NzSegmentedService);
 
+  readonly parentDisabled = toSignal(this.service.disabled$, { initialValue: false });
+
   constructor(
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     private destroyRef: DestroyRef
-  ) {
-    this.service.disabled$.pipe(takeUntilDestroyed()).subscribe(disabled => {
-      this.nzDisabled = disabled;
-      this.cdr.markForCheck();
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.service.selected$
@@ -99,8 +96,9 @@ export class NzSegmentedItemComponent implements OnInit {
   }
 
   handleClick(): void {
-    if (!this.nzDisabled) {
+    if (!this.nzDisabled && !this.parentDisabled()) {
       this.service.selected$.next(this.nzValue);
+      this.service.change$.next(this.nzValue);
     }
   }
 }
