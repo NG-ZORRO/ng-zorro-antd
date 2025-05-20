@@ -45,7 +45,9 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   /* eslint-disable @angular-eslint/no-input-rename, @angular-eslint/no-output-rename */
   @Input({ alias: 'nzPopoverArrowPointAtCenter', transform: booleanAttribute }) override arrowPointAtCenter?: boolean;
   @Input('nzPopoverTitle') override title?: NzTSType;
+  @Input('nzPopoverTitleContext') titleContext?: object | null = null;
   @Input('nzPopoverContent') override content?: NzTSType;
+  @Input('nzPopoverContentContext') ContentContext?: object | null = null;
   @Input('nz-popover') override directiveTitle?: NzTSType | null;
   @Input('nzPopoverTrigger') override trigger?: NzTooltipTrigger = 'hover';
   @Input('nzPopoverPlacement') override placement?: string | string[] = 'top';
@@ -66,6 +68,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   protected override getProxyPropertyMap(): PropertyMapping {
     return {
       nzPopoverBackdrop: ['nzBackdrop', () => this.nzPopoverBackdrop],
+      ContentContext: ['nzContentContext', () => this.ContentContext],
       ...super.getProxyPropertyMap()
     };
   }
@@ -114,11 +117,13 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
             <div>
               @if (nzTitle) {
                 <div class="ant-popover-title">
-                  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+                  <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">{{ nzTitle }}</ng-container>
                 </div>
               }
               <div class="ant-popover-inner-content">
-                <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
+                <ng-container *nzStringTemplateOutlet="nzContent; context: nzContentContext">
+                  {{ nzContent }}
+                </ng-container>
               </div>
             </div>
           </div>
@@ -130,6 +135,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   override _prefix = 'ant-popover';
+  nzContentContext: object | null = null;
 
   get hasBackdrop(): boolean {
     return this.nzTrigger === 'click' ? this.nzBackdrop : false;
