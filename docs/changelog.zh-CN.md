@@ -13,6 +13,29 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+### 19.3.0
+
+`2025-05-23`
+
+
+### Features
+
+* **avatar:** 支持通过 ng-content 自定义图标 ([#9090](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9090)) ([89d0767](https://github.com/NG-ZORRO/ng-zorro-antd/commit/89d076775b542996c46e48d2fb6f49c5981be40b))
+* **input-number:** 新增 Output 属性 `nzBlur` 和 `nzFocus` ([#9098](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9098)) ([1b1a013](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1b1a0130df4a86fb2abd42d95213d880fd0b14d7))
+* **tabs:** 附加内容支持 start 和 end 两种位置 ([#9097](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9097)) ([2500821](https://github.com/NG-ZORRO/ng-zorro-antd/commit/250082160770d7f24404bbed86af5df96b9f3e53))
+* **transfer:** 支持键入 `Shift` 后多选 ([#9092](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9092)) ([b78b99f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b78b99f9f4cec6298cffc915b8ab86f708dccddf))
+
+### Bug Fixes
+
+* **i18n:** 更新 `es_ES` 国际化文案 ([#9127](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9127)) ([0aadfdf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0aadfdf39682bd779eabae57e02596fd0f730624))
+* **segmented:** 修复初始化时发射不必要的值更新事件 ([#9125](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9125)) ([fb0635b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb0635b0dc2fed0f28d60248b60b0ecd5e3294d4))
+* **tabs:** 修复首次加载页面时 `nzLinkRouter` 不生效的问题 ([#9118](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9118)) ([0f7f94d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0f7f94dab24175b28f34720f5c98e7dc9a2c6c88))
+
+### Performance Improvements
+
+* **transfer:** 使用 item.key 跟踪数据条目  ([#9123](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9123)) ([adb91e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/adb91e4ba0cbcfc72cccb26a66580fa19dc9c8aa))
+
+
 ### 19.2.2
 
 `2025-04-25`

@@ -1,3 +1,23 @@
+## [19.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.2.2...19.3.0) (2025-05-23)
+
+### Features
+
+* **avatar:** support custom icon by ng-content ([#9090](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9090)) ([89d0767](https://github.com/NG-ZORRO/ng-zorro-antd/commit/89d076775b542996c46e48d2fb6f49c5981be40b))
+* **input-number:** add `nzBlur` and `nzFocus` output ([#9098](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9098)) ([1b1a013](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1b1a0130df4a86fb2abd42d95213d880fd0b14d7))
+* **tabs:** support for start and end extra content ([#9097](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9097)) ([2500821](https://github.com/NG-ZORRO/ng-zorro-antd/commit/250082160770d7f24404bbed86af5df96b9f3e53))
+* **transfer:** support multiple row selection with `Shift` key ([#9092](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9092)) ([b78b99f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b78b99f9f4cec6298cffc915b8ab86f708dccddf))
+
+### Bug Fixes
+
+* **i18n:** add missing translations to `es_ES` ([#9127](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9127)) ([0aadfdf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0aadfdf39682bd779eabae57e02596fd0f730624))
+* **segmented:** fix emitting unnecessary value changed events ([#9125](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9125)) ([fb0635b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb0635b0dc2fed0f28d60248b60b0ecd5e3294d4))
+* **tabs:** `nzLinkRouter` not work for the first time ([#9118](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9118)) ([0f7f94d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0f7f94dab24175b28f34720f5c98e7dc9a2c6c88))
+
+### Performance Improvements
+
+* **transfer:** use item.key as tracking for the list render ([#9123](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9123)) ([adb91e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/adb91e4ba0cbcfc72cccb26a66580fa19dc9c8aa))
+
+
 ## [19.2.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.2.1...19.2.2) (2025-04-25)
 
 ### Bug Fixes
