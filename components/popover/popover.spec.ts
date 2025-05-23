@@ -257,7 +257,7 @@ export class NzPopoverTestComponent {
   class = 'testClass';
 
   contentList = [
-    { id: '1', title: 'title1', content: 'content1' },
-    { id: '2', title: 'title2', content: 'content2' }
+    { id: 'class1', title: 'title1', content: 'content1' },
+    { id: 'class2', title: 'title2', content: 'content2' }
   ];
 }
