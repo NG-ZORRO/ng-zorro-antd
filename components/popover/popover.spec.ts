@@ -144,6 +144,34 @@ describe('NzPopover', () => {
 
     expect(overlayContainerElement.querySelector('.testClass1.testClass2')).not.toBeNull();
   }));
+
+  it('should support context', fakeAsync(() => {
+    const triggerElement = component.contextDiv.nativeElement;
+
+    expect(getTitleTextContent()).toBeNull();
+    expect(getInnerTextContent()).toBeNull();
+
+    const contentList = [
+      { id: '1', title: 'title1', content: 'content1' },
+      { id: '2', title: 'title2', content: 'content2' }
+    ];
+
+    contentList.forEach(item => {
+      const elem = triggerElement.querySelector(`.${item.id}`);
+      expect(getTitleTextContent()).toBeNull();
+      expect(getInnerTextContent()).toBeNull();
+
+      dispatchMouseEvent(elem, 'mouseenter');
+      waitingForTooltipToggling();
+      expect(getTitleTextContent()).toContain(item.title);
+      expect(getInnerTextContent()).toContain(item.content);
+
+      dispatchMouseEvent(elem, 'mouseleave');
+      waitingForTooltipToggling();
+      expect(getTitleTextContent()).toBeNull();
+      expect(getInnerTextContent()).toBeNull();
+    });
+  }));
 });
 
 @Component({
@@ -184,6 +212,23 @@ describe('NzPopover', () => {
     <ng-template #templateTitle>title-template</ng-template>
 
     <ng-template #templateContent>content-template</ng-template>
+
+    <div #contextDiv>
+      @for (i of contentList; track i.id) {
+        <a
+          nz-popover
+          class="{{ i.id }}"
+          [nzPopoverTitle]="templateTitleContext"
+          [nzPopoverTitleContext]="i.title"
+          [nzPopoverContent]="templateContentContext"
+          [nzPopoverContentContext]="i.content"
+        >
+          Click
+        </a>
+      }
+    </div>
+    <ng-template #templateTitleContext let-i>{{ i }}</ng-template>
+    <ng-template #templateContentContext let-i>{{ i }}</ng-template>
   `
 })
 export class NzPopoverTestComponent {
@@ -205,7 +250,14 @@ export class NzPopoverTestComponent {
 
   @ViewChild('backdropPopover', { static: true }) backdropPopover!: ElementRef;
 
+  @ViewChild('contextDiv', { static: false }) contextDiv!: ElementRef;
+
   content = 'content';
   visible = false;
   class = 'testClass';
+
+  contentList = [
+    { id: '1', title: 'title1', content: 'content1' },
+    { id: '2', title: 'title2', content: 'content2' }
+  ];
 }

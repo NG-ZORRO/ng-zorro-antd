@@ -21,7 +21,7 @@ import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import {
   NzToolTipComponent,
   NzTooltipBaseDirective,
