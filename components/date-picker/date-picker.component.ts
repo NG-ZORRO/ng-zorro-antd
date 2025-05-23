@@ -745,6 +745,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
     if (nzFormat?.currentValue) {
       this.isCustomFormat = true;
+      this.updateInputValue();
     }
 
     if (nzLocale) {

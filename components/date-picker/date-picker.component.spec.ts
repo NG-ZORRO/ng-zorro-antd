@@ -374,6 +374,23 @@ describe('NzDatePickerComponent', () => {
       expect(input.value).toBe('24.02.2020');
     }));
 
+    it('should rerender input value when nzFormat changed', fakeAsync(() => {
+      fixtureInstance.nzFormat = 'dd.MM.yyyy';
+      fixtureInstance.nzValue = new Date('2025-05-23');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const input = getPickerInput(fixture.debugElement);
+      expect(input.value).toBe('23.05.2025');
+      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      fixtureInstance.nzFormat = 'dd/MM/yyyy';
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(input.value).toBe('23/05/2025');
+      expect(nzOnChange).not.toHaveBeenCalled();
+    }));
+
     it('should support nzDisabledDate', fakeAsync(() => {
       fixture.detectChanges();
       const compareDate = new Date('2018-11-15 00:00:00');
