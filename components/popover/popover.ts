@@ -68,7 +68,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   protected override getProxyPropertyMap(): PropertyMapping {
     return {
       nzPopoverBackdrop: ['nzBackdrop', () => this.nzPopoverBackdrop],
-      ContentContext: ['nzContentContext', () => this.ContentContext],
+      contentContext: ['nzContentContext', () => this.contentContext],
       ...super.getProxyPropertyMap()
     };
   }
