@@ -107,12 +107,12 @@ describe('NzTabSet', () => {
       fixture.detectChanges();
       const component: NzTabSetComponent = fixture.debugElement.query(By.css('nz-tabset'))!.componentInstance;
 
-      // Set the index to be negative, expect first tab selected
+      // Set the index to be negative, expect the first tab selected
       fixture.componentInstance.selectedIndex = -1;
       fixture.detectChanges();
       expect(component.nzSelectedIndex).toBe(0);
 
-      // Set the index beyond the size of the tabs, expect last tab selected
+      // Set the index beyond the size of the tabs, expect the last tab selected
       fixture.componentInstance.selectedIndex = 3;
       fixture.detectChanges();
       expect(component.nzSelectedIndex).toBe(2);
@@ -510,7 +510,7 @@ describe('NzTabSet', () => {
       fixture.detectChanges();
       flush();
 
-      // Remove last tab while last tab is selected, expect next tab over to be selected
+      // Remove last tab while last tab is selected, expect the next tab over to be selected
       fixture.componentInstance.tabs.pop();
       fixture.detectChanges();
       flush();
