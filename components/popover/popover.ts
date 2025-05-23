@@ -45,7 +45,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   /* eslint-disable @angular-eslint/no-input-rename, @angular-eslint/no-output-rename */
   @Input({ alias: 'nzPopoverArrowPointAtCenter', transform: booleanAttribute }) override arrowPointAtCenter?: boolean;
   @Input('nzPopoverTitle') override title?: NzTSType;
-  @Input('nzPopoverTitleContext') titleContext?: object | null = null;
+  @Input('nzPopoverTitleContext') titleContext?: NzSafeAny | null = null;
   @Input('nzPopoverContent') override content?: NzTSType;
   @Input('nzPopoverContentContext') contentContext?: NzSafeAny | null = null;
   @Input('nz-popover') override directiveTitle?: NzTSType | null;
