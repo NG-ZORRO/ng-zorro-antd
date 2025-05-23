@@ -11,18 +11,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   ViewEncapsulation,
   inject
 } from '@angular/core';
-import { Observable, Subject, fromEvent, of } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -67,7 +69,7 @@ interface UploadListFile extends NzUploadFile {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzToolTipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NzProgressModule]
 })
-export class NzUploadListComponent implements OnChanges, OnDestroy {
+export class NzUploadListComponent implements OnChanges {
   list: UploadListFile[] = [];
 
   private get showPic(): boolean {
@@ -90,7 +92,7 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
   @Input() dir: Direction = 'ltr';
 
   private document: Document = inject(DOCUMENT);
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   private genErr(file: NzUploadFile): string {
     if (file.response && typeof file.response === 'string') {
@@ -152,7 +154,7 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
     const img = new Image();
     const objectUrl = URL.createObjectURL(file);
     img.src = objectUrl;
-    return fromEvent(img, 'load').pipe(
+    return fromEventOutsideAngular(img, 'load').pipe(
       map(() => {
         const { width, height } = img;
 
@@ -206,7 +208,7 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
         // A promise microtask can be resolved after the view is destroyed. Thus running `detectChanges()`
         // will cause a runtime exception (`detectChanges()` cannot be run on destroyed views).
         const dataUrl$ = (this.previewFile ? this.previewFile(file) : this.previewImage(file.originFileObj!)).pipe(
-          takeUntil(this.destroy$)
+          takeUntilDestroyed(this.destroyRef)
         );
         this.ngZone.runOutsideAngular(() => {
           dataUrl$.subscribe(dataUrl => {
@@ -275,9 +277,5 @@ export class NzUploadListComponent implements OnChanges, OnDestroy {
   ngOnChanges(): void {
     this.fixData();
     this.genThumb();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
   }
 }

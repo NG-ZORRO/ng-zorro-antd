@@ -10,7 +10,9 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
+  inject,
   Input,
   NgZone,
   OnChanges,
@@ -22,8 +24,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge, Subject } from 'rxjs';
-import { delay, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { delay, filter, startWith, switchMap } from 'rxjs/operators';
 
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -134,7 +137,6 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
   @Input() noDataVirtualHeight = '182px';
   private data$ = new Subject<void>();
   private scroll$ = new Subject<void>();
-  private destroy$ = new Subject<void>();
 
   setScrollPositionClassName(clear: boolean = false): void {
     const { scrollWidth, scrollLeft, clientWidth } = this.tableBodyElement.nativeElement;
@@ -154,6 +156,8 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
       this.renderer.addClass(this.tableMainElement, rightClassName);
     }
   }
+
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private renderer: Renderer2,
@@ -187,36 +191,32 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
 
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
-      this.ngZone.runOutsideAngular(() => {
-        const scrollEvent$ = this.scroll$.pipe(
-          startWith(null),
-          delay(0),
-          switchMap(() =>
-            fromEventOutsideAngular<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(startWith(true))
-          ),
-          takeUntil(this.destroy$)
-        );
-        const resize$ = this.resizeService.subscribe().pipe(takeUntil(this.destroy$));
-        const data$ = this.data$.pipe(takeUntil(this.destroy$));
-        const setClassName$ = merge(scrollEvent$, resize$, data$, this.scroll$).pipe(
-          startWith(true),
-          delay(0),
-          takeUntil(this.destroy$)
-        );
-        setClassName$.subscribe(() => this.setScrollPositionClassName());
-        scrollEvent$.pipe(filter(() => !!this.scrollY)).subscribe(() => {
-          this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
-          if (this.tableFootElement) {
-            this.tableFootElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
-          }
-        });
+      const scrollEvent$ = this.scroll$.pipe(
+        startWith(null),
+        delay(0),
+        switchMap(() =>
+          fromEventOutsideAngular<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(startWith(true))
+        ),
+        takeUntilDestroyed(this.destroyRef)
+      );
+      const resize$ = this.resizeService.subscribe().pipe(takeUntilDestroyed(this.destroyRef));
+      const data$ = this.data$.pipe(takeUntilDestroyed(this.destroyRef));
+      const setClassName$ = merge(scrollEvent$, resize$, data$, this.scroll$).pipe(
+        startWith(true),
+        delay(0),
+        takeUntilDestroyed(this.destroyRef)
+      );
+      setClassName$.subscribe(() => this.setScrollPositionClassName());
+      scrollEvent$.pipe(filter(() => !!this.scrollY)).subscribe(() => {
+        this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
+        if (this.tableFootElement) {
+          this.tableFootElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
+        }
       });
     }
   }
 
   ngOnDestroy(): void {
     this.setScrollPositionClassName(true);
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
