@@ -27,6 +27,7 @@ export default {
       weekPlaceholder: 'Seleccionar semana',
       rangePlaceholder: ['Fecha inicial', 'Fecha final'],
       rangeYearPlaceholder: ['Año inicial', 'Año final'],
+      rangeQuarterPlaceholder: ['Trimestre inicial', 'Trimestre final'],
       rangeMonthPlaceholder: ['Mes inicial', 'Mes final'],
       rangeWeekPlaceholder: ['Semana inicial', 'Semana final'],
       locale: 'es_ES',
@@ -177,5 +178,29 @@ export default {
   },
   Image: {
     preview: 'Previsualización'
+  },
+  CronExpression: {
+    cronError: 'Expresión cron inválida',
+    second: 'segundo',
+    minute: 'minuto',
+    hour: 'hora',
+    day: 'día',
+    month: 'mes',
+    week: 'semana'
+  },
+  QRCode: {
+    expired: 'Código QR expirado',
+    refresh: 'Actualizar',
+    scanned: 'Escaneado'
+  },
+  CheckList: {
+    checkList: 'Lista de tareas',
+    checkListFinish: '¡Has completado la lista correctamente!',
+    checkListClose: 'Cerrar',
+    checkListFooter: 'La lista ya no es necesaria',
+    checkListCheck: '¿Quiere cerrar la lista?',
+    ok: 'OK',
+    cancel: 'Cancelar',
+    checkListCheckOther: 'No mostrar de nuevo'
   }
 };
