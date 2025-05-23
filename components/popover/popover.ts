@@ -47,7 +47,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverTitle') override title?: NzTSType;
   @Input('nzPopoverTitleContext') titleContext?: object | null = null;
   @Input('nzPopoverContent') override content?: NzTSType;
-  @Input('nzPopoverContentContext') ContentContext?: object | null = null;
+  @Input('nzPopoverContentContext') contentContext?: NzSafeAny | null = null;
   @Input('nz-popover') override directiveTitle?: NzTSType | null;
   @Input('nzPopoverTrigger') override trigger?: NzTooltipTrigger = 'hover';
   @Input('nzPopoverPlacement') override placement?: string | string[] = 'top';
