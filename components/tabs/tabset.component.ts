@@ -308,12 +308,12 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     this.subscribeToTabLabels();
     this.subscribeToAllTabChanges();
 
-    // Subscribe to changes in the amount of tabs, in order to be
+    // Subscribe to changes of the number of tabs, to be
     // able to re-render the content as new tabs are added or removed.
     this.tabsSubscription = this.tabs.changes.subscribe(() => {
       const indexToSelect = this.clampTabIndex(this.indexToSelect);
 
-      // Maintain the previously-selected tab if a new tab is added or removed and there is no
+      // Maintain the previously selected tab if a new tab is added or removed, and there is no
       // explicit change that selects a different tab.
       if (indexToSelect === this.selectedIndex) {
         const tabs = this.tabs.toArray();
@@ -338,7 +338,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     // the amount of tabs changes before the actual change detection runs.
     const indexToSelect = (this.indexToSelect = this.clampTabIndex(this.indexToSelect));
 
-    // If there is a change in selected index, emit a change event. Should not trigger if
+    // If there is a change in the selected index, emit a change event. Should not trigger if
     // the selected index has not yet been initialized.
     if (this.selectedIndex !== indexToSelect) {
       const isFirstRun = this.selectedIndex == null;
@@ -358,8 +358,8 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       });
     }
 
-    // Setup the position for each tab and optionally setup an origin on the next selected tab.
-    this.tabs.forEach((tab: NzTabComponent, index: number) => {
+    // Set up the position for each tab and optionally set up an origin on the next selected tab.
+    this.tabs.forEach((tab, index) => {
       tab.position = index - indexToSelect;
 
       // If there is already a selected tab, then set up an origin for the next selected tab
@@ -484,7 +484,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
         throw new Error(`${PREFIX} you should import 'RouterModule' if you want to use 'nzLinkRouter'!`);
       }
       merge(this.router.events.pipe(filter(e => e instanceof NavigationEnd)), this.tabLinks.changes)
-        .pipe(delay(0), takeUntil(this.destroy$))
+        .pipe(startWith(true), delay(0), takeUntil(this.destroy$))
         .subscribe(() => {
           this.updateRouterActive();
           this.cdr.markForCheck();
