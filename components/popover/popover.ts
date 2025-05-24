@@ -68,6 +68,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   protected override getProxyPropertyMap(): PropertyMapping {
     return {
       nzPopoverBackdrop: ['nzBackdrop', () => this.nzPopoverBackdrop],
+      titleContext: ['nzTitleContext', () => this.titleContext],
       contentContext: ['nzContentContext', () => this.contentContext],
       ...super.getProxyPropertyMap()
     };
@@ -117,11 +118,13 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
             <div>
               @if (nzTitle) {
                 <div class="ant-popover-title">
-                  <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">{{ nzTitle }}</ng-container>
+                  <ng-container *nzStringTemplateOutlet="nzTitle; context: { $implicit: nzTitleContext }">
+                    {{ nzTitle }}
+                  </ng-container>
                 </div>
               }
               <div class="ant-popover-inner-content">
-                <ng-container *nzStringTemplateOutlet="nzContent; context: nzContentContext">
+                <ng-container *nzStringTemplateOutlet="nzContent; context: { $implicit: nzContentContext }">
                   {{ nzContent }}
                 </ng-container>
               </div>

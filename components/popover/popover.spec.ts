@@ -146,31 +146,14 @@ describe('NzPopover', () => {
   }));
 
   it('should support context', fakeAsync(() => {
-    const triggerElement = component.contextDiv.nativeElement;
+    const triggerElement = component.contextPopover.nativeElement;
 
     expect(getTitleTextContent()).toBeNull();
     expect(getInnerTextContent()).toBeNull();
-
-    const contentList = [
-      { id: '1', title: 'title1', content: 'content1' },
-      { id: '2', title: 'title2', content: 'content2' }
-    ];
-
-    contentList.forEach(item => {
-      const elem = triggerElement.querySelector(`.${item.id}`);
-      expect(getTitleTextContent()).toBeNull();
-      expect(getInnerTextContent()).toBeNull();
-
-      dispatchMouseEvent(elem, 'mouseenter');
-      waitingForTooltipToggling();
-      expect(getTitleTextContent()).toContain(item.title);
-      expect(getInnerTextContent()).toContain(item.content);
-
-      dispatchMouseEvent(elem, 'mouseleave');
-      waitingForTooltipToggling();
-      expect(getTitleTextContent()).toBeNull();
-      expect(getInnerTextContent()).toBeNull();
-    });
+    dispatchMouseEvent(triggerElement, 'mouseenter');
+    waitingForTooltipToggling();
+    expect(getTitleTextContent()).toContain('titleContextTest');
+    expect(getInnerTextContent()).toContain('contentContextTest');
   }));
 });
 
@@ -206,29 +189,23 @@ describe('NzPopover', () => {
       [nzPopoverBackdrop]="true"
       [nzPopoverOverlayClickable]="false"
     >
-      Click
     </a>
 
     <ng-template #templateTitle>title-template</ng-template>
 
     <ng-template #templateContent>content-template</ng-template>
 
-    <div #contextDiv>
-      @for (i of contentList; track i.id) {
-        <a
-          nz-popover
-          class="{{ i.id }}"
-          [nzPopoverTitle]="templateTitleContext"
-          [nzPopoverTitleContext]="i.title"
-          [nzPopoverContent]="templateContentContext"
-          [nzPopoverContentContext]="i.content"
-        >
-          Click
-        </a>
-      }
-    </div>
-    <ng-template #templateTitleContext let-i>{{ i }}</ng-template>
-    <ng-template #templateContentContext let-i>{{ i }}</ng-template>
+    <a
+      #contextPopover
+      nz-popover
+      [nzPopoverTitle]="templateTitleContext"
+      [nzPopoverContent]="templateContentContext"
+      [nzPopoverTitleContext]="'titleContextTest'"
+      [nzPopoverContentContext]="'contentContextTest'"
+    >
+    </a>
+    <ng-template #templateTitleContext let-item>{{ item }}</ng-template>
+    <ng-template #templateContentContext let-item>{{ item }}</ng-template>
   `
 })
 export class NzPopoverTestComponent {
@@ -250,14 +227,11 @@ export class NzPopoverTestComponent {
 
   @ViewChild('backdropPopover', { static: true }) backdropPopover!: ElementRef;
 
-  @ViewChild('contextDiv', { static: false }) contextDiv!: ElementRef;
+  @ViewChild('contextPopover', { static: false }) contextPopover!: ElementRef;
+  @ViewChild('contextPopover', { static: false, read: NzPopoverDirective })
+  contextPopoverNzPopoverDirective!: NzPopoverDirective;
 
   content = 'content';
   visible = false;
   class = 'testClass';
-
-  contentList = [
-    { id: 'class1', title: 'title1', content: 'content1' },
-    { id: 'class2', title: 'title2', content: 'content2' }
-  ];
 }
