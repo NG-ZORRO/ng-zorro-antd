@@ -21,7 +21,7 @@ import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import {
   NzToolTipComponent,
   NzTooltipBaseDirective,
@@ -45,7 +45,9 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   /* eslint-disable @angular-eslint/no-input-rename, @angular-eslint/no-output-rename */
   @Input({ alias: 'nzPopoverArrowPointAtCenter', transform: booleanAttribute }) override arrowPointAtCenter?: boolean;
   @Input('nzPopoverTitle') override title?: NzTSType;
+  @Input('nzPopoverTitleContext') titleContext?: NzSafeAny | null = null;
   @Input('nzPopoverContent') override content?: NzTSType;
+  @Input('nzPopoverContentContext') contentContext?: NzSafeAny | null = null;
   @Input('nz-popover') override directiveTitle?: NzTSType | null;
   @Input('nzPopoverTrigger') override trigger?: NzTooltipTrigger = 'hover';
   @Input('nzPopoverPlacement') override placement?: string | string[] = 'top';
@@ -66,6 +68,8 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   protected override getProxyPropertyMap(): PropertyMapping {
     return {
       nzPopoverBackdrop: ['nzBackdrop', () => this.nzPopoverBackdrop],
+      titleContext: ['nzTitleContext', () => this.titleContext],
+      contentContext: ['nzContentContext', () => this.contentContext],
       ...super.getProxyPropertyMap()
     };
   }
@@ -114,11 +118,15 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
             <div>
               @if (nzTitle) {
                 <div class="ant-popover-title">
-                  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+                  <ng-container *nzStringTemplateOutlet="nzTitle; context: { $implicit: nzTitleContext }">
+                    {{ nzTitle }}
+                  </ng-container>
                 </div>
               }
               <div class="ant-popover-inner-content">
-                <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
+                <ng-container *nzStringTemplateOutlet="nzContent; context: { $implicit: nzContentContext }">
+                  {{ nzContent }}
+                </ng-container>
               </div>
             </div>
           </div>
@@ -130,6 +138,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   override _prefix = 'ant-popover';
+  nzContentContext: object | null = null;
 
   get hasBackdrop(): boolean {
     return this.nzTrigger === 'click' ? this.nzBackdrop : false;
