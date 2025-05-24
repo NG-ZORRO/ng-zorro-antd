@@ -108,20 +108,22 @@ export class NzCascaderTreeService extends NzTreeBaseService {
     this.selectedNodeList.forEach(node => (node.isSelected = false));
     this.selectedNodeList = [];
     const existsPathList: NzTreeNodeKey[][] = [];
-    const calc = (nodes: NzTreeNode[]): void =>
-      nodes.forEach(node => {
+    const calc = (nodes: NzTreeNode[]): boolean =>
+      nodes.every(node => {
         // if node is in selected path
         const nodePath = this.getAncestorNodeList(node).map(n => this.getOptionValue(n));
         if (paths.some(keys => arraysEqual(nodePath, keys))) {
           node.isSelected = true;
           this.setSelectedNodeList(node);
           existsPathList.push(nodePath);
+          return false;
         } else {
           node.isSelected = false;
         }
         if (node.children.length > 0) {
-          calc(node.children);
+          return calc(node.children);
         }
+        return true;
       });
     calc(this.rootNodes);
     this.handleMissingNodeList(paths, existsPathList);
