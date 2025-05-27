@@ -34,7 +34,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NzFormItemFeedbackIconComponent, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType, NzStatus, NzValidateStatus, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { NzVariant } from 'ng-zorro-antd/core/types/variant';
 import { getStatusClassNames, isNil, isNotNil } from 'ng-zorro-antd/core/util';
+import { getVariantClassNames } from 'ng-zorro-antd/core/util/variant-utils';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {
   NzInputAddonAfterDirective,
@@ -179,6 +181,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzSize = input<NzSizeLDSType>('default');
   readonly nzPlaceHolder = input<string | null>(null);
   readonly nzStatus = input<NzStatus>('');
+  readonly nzVariant = input<NzVariant>('outlined');
   readonly nzStep = input(1, { transform: numberAttribute });
   readonly nzMin = input(Number.MIN_SAFE_INTEGER, { transform: numberAttribute });
   readonly nzMax = input(Number.MAX_SAFE_INTEGER, { transform: numberAttribute });
@@ -188,6 +191,9 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzDisabled = input(false, { transform: booleanAttribute });
   readonly nzReadOnly = input(false, { transform: booleanAttribute });
   readonly nzAutoFocus = input(false, { transform: booleanAttribute });
+  /**
+   * @deprecated Use `nzVariant` instead.
+   */
   readonly nzBordered = input(true, { transform: booleanAttribute });
   readonly nzKeyboard = input(true, { transform: booleanAttribute });
   readonly nzControls = input(true, { transform: booleanAttribute });
@@ -249,11 +255,11 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-sm': this.finalSize() === 'small',
       'ant-input-number-disabled': this.finalDisabled(),
       'ant-input-number-readonly': this.nzReadOnly(),
-      'ant-input-number-borderless': !this.nzBordered(),
       'ant-input-number-focused': this.focused(),
       'ant-input-number-rtl': this.dir() === 'rtl',
       'ant-input-number-in-form-item': !!this.nzFormStatusService,
       'ant-input-number-out-of-range': this.value() !== null && !isInRange(this.value()!, this.nzMin(), this.nzMax()),
+      ...getVariantClassNames('ant-input-number', this.nzVariant(), !this.nzBordered()),
       ...getStatusClassNames('ant-input-number', this.finalStatus(), this.hasFeedback())
     };
   });
@@ -262,10 +268,10 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-affix-wrapper': true,
       'ant-input-number-affix-wrapper-disabled': this.finalDisabled(),
       'ant-input-number-affix-wrapper-readonly': this.nzReadOnly(),
-      'ant-input-number-affix-wrapper-borderless': !this.nzBordered(),
       'ant-input-number-affix-wrapper-focused': this.focused(),
       'ant-input-number-affix-wrapper-rtl': this.dir() === 'rtl',
-      ...getStatusClassNames('ant-input-number-affix-wrapper', this.finalStatus(), this.hasFeedback())
+      ...getStatusClassNames('ant-input-number-affix-wrapper', this.finalStatus(), this.hasFeedback()),
+      ...getVariantClassNames('ant-input-number-affix-wrapper', this.nzVariant(), !this.nzBordered())
     };
   });
   protected groupWrapperClass = computed(() => {

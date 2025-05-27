@@ -37,6 +37,7 @@ import {
   dispatchMouseEvent
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzVariant } from 'ng-zorro-antd/core/types/variant';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzSelectItemComponent } from 'ng-zorro-antd/select';
@@ -225,6 +226,30 @@ describe('cascader', () => {
       testComponent.nzAllowClear = false;
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-select-clear')).toBeNull();
+    });
+
+    describe('should variant works', () => {
+      it('filled', () => {
+        fixture.detectChanges();
+        expect(cascader.nativeElement.classList).not.toContain('ant-select-filled');
+        testComponent.nzVariant = 'filled';
+        fixture.detectChanges();
+        expect(cascader.nativeElement.classList).toContain('ant-select-filled');
+      });
+      it('borderless', () => {
+        fixture.detectChanges();
+        expect(cascader.nativeElement.classList).not.toContain('ant-select-borderless');
+        testComponent.nzVariant = 'borderless';
+        fixture.detectChanges();
+        expect(cascader.nativeElement.classList).toContain('ant-select-borderless');
+      });
+      it('underlined', () => {
+        fixture.detectChanges();
+        expect(cascader.nativeElement.classList).not.toContain('ant-select-underlined');
+        testComponent.nzVariant = 'underlined';
+        fixture.detectChanges();
+        expect(cascader.nativeElement.classList).toContain('ant-select-underlined');
+      });
     });
 
     it('should open work', () => {
@@ -2408,6 +2433,7 @@ const options5: NzSafeAny[] = [];
       [nzValueProperty]="nzValueProperty"
       [nzBackdrop]="nzBackdrop"
       [nzPlacement]="nzPlacement"
+      [nzVariant]="nzVariant"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
       (nzClear)="onClear()"
@@ -2451,6 +2477,7 @@ export class NzDemoCascaderDefaultComponent {
   nzExpandIcon = 'right';
   nzBackdrop = false;
   nzPlacement: NzCascaderPlacement = 'bottomLeft';
+  nzVariant: NzVariant = 'outlined';
 
   onVisibleChange = jasmine.createSpy<(visible: boolean) => void>('open change');
   onValueChanges = jasmine.createSpy('value change');

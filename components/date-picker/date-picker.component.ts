@@ -63,6 +63,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
+import { NzVariant } from 'ng-zorro-antd/core/types/variant';
 import { fromEventOutsideAngular, getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
@@ -249,7 +250,9 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     '[class.ant-picker-small]': `finalSize() === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-rtl]': `dir === 'rtl'`,
-    '[class.ant-picker-borderless]': `nzBorderless`,
+    '[class.ant-picker-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
+    '[class.ant-picker-filled]': `nzVariant === 'filled'`,
+    '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
     '[class.ant-picker-inline]': `nzInline`,
     '(click)': 'onClickInputBox($event)'
   },
@@ -301,6 +304,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
   @Input({ transform: booleanAttribute }) nzAutoFocus: boolean = false;
   @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
+  /**
+   * @deprecated Use `nzVariant` instead.
+   */
   @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
   @Input({ transform: booleanAttribute }) nzInline: boolean = false;
@@ -313,6 +319,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() nzSize: NzDatePickerSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
   @Input() nzFormat!: string;
+  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
   @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
   @Input() nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;

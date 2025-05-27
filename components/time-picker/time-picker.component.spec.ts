@@ -15,6 +15,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzVariant } from 'ng-zorro-antd/core/types/variant';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
@@ -325,6 +326,30 @@ describe('time-picker', () => {
       expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
     }));
 
+    describe('should nzVariant works', () => {
+      it('filled', () => {
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css(`.ant-picker-filled`))).toBeNull();
+        fixture.componentInstance.nzVariant = 'filled';
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css(`.ant-picker-filled`))).toBeDefined();
+      });
+      it('borderless', () => {
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeNull();
+        fixture.componentInstance.nzVariant = 'borderless';
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
+      });
+      it('underlined', () => {
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css(`.ant-picker-underlined`))).toBeNull();
+        fixture.componentInstance.nzVariant = 'underlined';
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css(`.ant-picker-underlined`))).toBeDefined();
+      });
+    });
+
     it('should not trigger blur after close panel', fakeAsync(() => {
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
@@ -478,6 +503,7 @@ describe('time-picker', () => {
       [nzBackdrop]="nzBackdrop"
       [nzDefaultOpenValue]="defaultOpenValue"
       [nzBorderless]="nzBorderless"
+      [nzVariant]="nzVariant"
     ></nz-time-picker>
   `
 })
@@ -491,7 +517,8 @@ export class NzTestTimePickerComponent {
   use12Hours = false;
   nzSuffixIcon: string = 'close-circle';
   nzBackdrop = false;
-  nzBorderless = true;
+  nzBorderless = false;
+  nzVariant: NzVariant = 'outlined';
   defaultOpenValue: Date = new Date('2020-03-27T00:00:00');
   onChange(_: Date | null): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
