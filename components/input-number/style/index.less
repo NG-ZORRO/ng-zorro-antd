@@ -141,7 +141,7 @@
     right: 0;
     width: 22px;
     height: 100%;
-    background: @input-number-handler-bg;
+    background: transparent;
     border-radius: 0 @control-border-radius @control-border-radius 0;
     opacity: 0;
     transition: opacity 0.24s linear 0.1s;
@@ -225,10 +225,6 @@
     color: @disabled-color;
   }
 
-  &-borderless {
-    box-shadow: none;
-  }
-
   // ===================== Out Of Range =====================
   &-out-of-range {
     input {
@@ -237,6 +233,7 @@
   }
 
   // ===================== Compact Item Styles =====================
+  /* stylelint-disable less/no-duplicate-variables */
   .compact-item(@input-number-prefix-cls, null, ~'@{input-number-prefix-cls}-focused');
   .compact-item(~'@{input-number-prefix-cls}-affix-wrapper', null, ~'@{input-number-prefix-cls}-focused');
   .compact-item(~'@{input-number-prefix-cls}-group-wrapper', ~'@{input-number-prefix-cls}-group-addon', ~'@{input-number-prefix-cls}-focused');

@@ -51,6 +51,44 @@
     box-shadow: none !important;
   }
 
+  // filled style
+  &&-filled {
+    background-color: @input-variant-filled-bg !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &&-filled:hover {
+    background-color: @input-variant-filled-hover-bg !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &&-filled:focus,
+  &&-filled&-focused {
+    .active() !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &&-filled&-disabled,
+  &&-filled&[disabled] {
+    .disabled() !important;
+  }
+
+  // underlined style
+  &&-underlined,
+  &&-underlined:hover,
+  &&-underlined:focus,
+  &&-underlined&-focused,
+  &&-underlined&-disabled,
+  &&-underlined&[disabled] {
+    background-color: transparent !important;
+    border-width: 0 0 @border-width-base !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
   // ======================== Input =========================
   &-input {
     position: relative;
@@ -343,7 +381,7 @@
     .@{picker-prefix-cls}-panel {
       vertical-align: top;
       background: transparent;
-      border-width: 0 0 @border-width-base 0;
+      border-width: 0 0 @border-width-base;
       border-radius: 0;
 
       .@{picker-prefix-cls}-content,

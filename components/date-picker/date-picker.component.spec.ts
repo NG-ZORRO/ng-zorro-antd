@@ -22,6 +22,7 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface, NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzVariant } from 'ng-zorro-antd/core/types/variant';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NZ_DATE_LOCALE, NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
@@ -568,6 +569,32 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
     }));
+
+    describe('should support nzVariant', () => {
+      it('borderless', () => {
+        fixture.detectChanges();
+        expect(debugElement.query(By.css(`.ant-picker-borderless`))).toBeNull();
+        fixtureInstance.nzVariant = 'borderless';
+        fixture.detectChanges();
+        expect(debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
+      });
+
+      it('filled', () => {
+        fixture.detectChanges();
+        expect(debugElement.query(By.css(`.ant-picker-filled`))).toBeNull();
+        fixtureInstance.nzVariant = 'filled';
+        fixture.detectChanges();
+        expect(debugElement.query(By.css(`.ant-picker-filled`))).toBeDefined();
+      });
+
+      it('underlined', () => {
+        fixture.detectChanges();
+        expect(debugElement.query(By.css(`.ant-picker-underlined`))).toBeNull();
+        fixtureInstance.nzVariant = 'underlined';
+        fixture.detectChanges();
+        expect(debugElement.query(By.css(`.ant-picker-underlined`))).toBeDefined();
+      });
+    });
 
     it('should support nzInline', fakeAsync(() => {
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
@@ -1514,6 +1541,7 @@ describe('in form', () => {
           (nzOnOk)="nzOnOk($event)"
           [nzSuffixIcon]="nzSuffixIcon"
           [nzBorderless]="nzBorderless"
+          [nzVariant]="nzVariant"
           [nzInline]="nzInline"
           [nzBackdrop]="nzBackdrop"
           [nzPlacement]="nzPlacement"
@@ -1577,6 +1605,7 @@ class NzTestDatePickerComponent {
   nzMode: string = 'date';
   nzSuffixIcon!: string;
   nzBorderless = false;
+  nzVariant: NzVariant = 'outlined';
   nzInline = false;
   nzBackdrop = false;
   nzPlacement: NzPlacement = 'bottomLeft';

@@ -63,6 +63,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
+import { NzVariant } from 'ng-zorro-antd/core/types/variant';
 import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzSelectModule, NzSelectSearchComponent } from 'ng-zorro-antd/select';
@@ -252,6 +253,9 @@ const listOfPositions = [
     '[class.ant-select-single]': '!isMultiple',
     '[class.ant-select-show-arrow]': '!isMultiple',
     '[class.ant-select-show-search]': '!isMultiple',
+    '[class.ant-select-borderless]': 'nzVariant === "borderless"',
+    '[class.ant-select-filled]': 'nzVariant === "filled"',
+    '[class.ant-select-underlined]': 'nzVariant === "underlined"',
     '[class.ant-select-multiple]': 'isMultiple',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]': 'nzOpen',
@@ -287,6 +291,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzNodes: NzTreeNodeOptions[] | NzTreeNode[] = [];
   @Input() nzOpen = false;
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
+  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: NgStyleInterface | null = null;
   @Input() nzDropdownClassName?: string;
