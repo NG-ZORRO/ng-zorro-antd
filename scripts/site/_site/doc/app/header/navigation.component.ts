@@ -1,4 +1,3 @@
-import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -26,11 +25,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
         <span>{{ language == 'zh' ? '实验性功能' : 'Experimental' }}</span>
       </a>
     </li>
-    @if (showCNMirror && language == 'zh') {
-      <li nz-menu-item [nzSelected]="false">
-        <a [attr.href]="'https://' + CNMirrorSite">国内镜像</a>
-      </li>
-    }
     @if (!isMobile && responsive === 'crowded') {
       <li nz-submenu [nzTitle]="additionalTitle" nzMenuClassName="top-menu-additional">
         <ng-template #additionalTitle><nz-icon nzType="unordered-list" nzTheme="outline" /></ng-template>
@@ -66,9 +60,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
   encapsulation: ViewEncapsulation.None
 })
 export class NavigationComponent {
-  readonly CNMirrorSite = 'ng-zorro.gitee.io';
-  showCNMirror = inject(Platform).isBrowser && window.location.hostname !== this.CNMirrorSite;
-
   @Input() language: 'zh' | 'en' = 'zh';
   @Output() languageChange = new EventEmitter<'zh' | 'en'>();
   @Input() responsive: null | 'narrow' | 'crowded' = null;
