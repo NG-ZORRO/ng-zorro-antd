@@ -1,3 +1,12 @@
+## [19.3.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.3.0...19.3.1) (2025-05-29)
+
+### Bug Fixes
+
+* **cascader:** cannot update value when it is missing in options ([#9124](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9124)) ([689fc72](https://github.com/NG-ZORRO/ng-zorro-antd/commit/689fc72e5c8175c830f995155daf1d7d4c318c25))
+* **date-picker:** update input value when nzFormat changed ([#9129](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9129)) ([f4c4e05](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f4c4e05264dd3109a0c45018886603ddd9c45aa2))
+* **tabs:** `nzLinkRouter` not work for the first time load ([#9130](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9130)) ([925a6a5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/925a6a54dd477b687b3dd0b836c32cb17e6d8a0f))
+
+
 ## [19.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/19.2.2...19.3.0) (2025-05-23)
 
 ### Features
