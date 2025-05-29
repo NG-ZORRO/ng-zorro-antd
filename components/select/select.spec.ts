@@ -13,6 +13,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzVariant } from 'ng-zorro-antd/core/types/variant';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -262,6 +263,30 @@ describe('select', () => {
       component.nzBorderless = true;
       fixture.detectChanges();
       expect(selectElement.classList).toContain('ant-select-borderless');
+    });
+
+    describe('should nzVariant works', () => {
+      it('filled', () => {
+        fixture.detectChanges();
+        expect(selectElement.classList).not.toContain('ant-select-filled');
+        component.nzVariant = 'filled';
+        fixture.detectChanges();
+        expect(selectElement.classList).toContain('ant-select-filled');
+      });
+      it('borderless', () => {
+        fixture.detectChanges();
+        expect(selectElement.classList).not.toContain('ant-select-borderless');
+        component.nzVariant = 'borderless';
+        fixture.detectChanges();
+        expect(selectElement.classList).toContain('ant-select-borderless');
+      });
+      it('underlined', () => {
+        fixture.detectChanges();
+        expect(selectElement.classList).not.toContain('ant-select-underlined');
+        component.nzVariant = 'underlined';
+        fixture.detectChanges();
+        expect(selectElement.classList).toContain('ant-select-underlined');
+      });
     });
 
     it('should nzAutoFocus works', () => {
@@ -1789,6 +1814,7 @@ describe('select', () => {
       [compareWith]="compareWith"
       [nzAllowClear]="nzAllowClear"
       [nzBorderless]="nzBorderless"
+      [nzVariant]="nzVariant"
       [nzShowSearch]="nzShowSearch"
       [nzLoading]="nzLoading"
       [nzAutoFocus]="nzAutoFocus"
@@ -1860,6 +1886,7 @@ export class TestSelectTemplateDefaultComponent {
   compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAllowClear = false;
   nzBorderless = false;
+  nzVariant: NzVariant = 'outlined';
   nzShowSearch = false;
   nzLoading = false;
   nzAutoFocus = false;

@@ -55,6 +55,7 @@ description: 级联选择框。
 | `[nzStatus]`          | 设置校验状态                                                  | `'error' \| 'warning'`                                                | -              |
 | `[nzSuffixIcon]`      | 自定义的选择框后缀图标                                             | `string \| TemplateRef<void>`                                         | -              |
 | `[nzValueProperty]`   | 选项的实际值的属性名                                              | `string`                                                              | `'value'`      |
+| `[nzVariant]`         | 形态变体                                                    | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'`              | `outlined`     | ✅      |
 | `(ngModelChange)`     | 值发生变化时触发                                                | `EventEmitter<any[]>`                                                 | -              |
 | `(nzClear)`           | 清除值时触发                                                  | `EventEmitter<void>`                                                  | -              |
 | `(nzVisibleChange)`   | 菜单浮层的显示/隐藏                                              | `EventEmitter<boolean>`                                               | -              |

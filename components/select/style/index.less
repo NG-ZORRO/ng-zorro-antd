@@ -325,6 +325,44 @@
     box-shadow: none !important;
   }
 
+  // filled style
+  &-filled &-selector {
+    background-color: @input-variant-filled-bg !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &-filled:hover &-selector {
+    background-color: @input-variant-filled-hover-bg !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &-filled:focus &-selector,
+  &-filled&-focused &-selector {
+    .active() !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &-filled&-disabled &-selector,
+  &-filled&[disabled] &-selector {
+    .disabled() !important;
+  }
+
+  // underlined style
+  &-underlined &-selector,
+  &-underlined:hover &-selector,
+  &-underlined:focus &-selector,
+  &-underlined&-focused &-selector,
+  &-underlined&-disabled &-selector,
+  &-underlined&[disabled] &-selector{
+    background-color: transparent !important;
+    border-width: 0 0 @border-width-base !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
   &&-in-form-item {
     width: 100%;
   }
