@@ -151,7 +151,7 @@ describe('nz-float-button-top', () => {
     describe('change detection behavior', () => {
       it('should not run change detection if there are no `nzClick` listeners', () => {
         const appRef = TestBed.inject(ApplicationRef);
-        spyOn(appRef, 'tick');
+        spyOn(appRef, 'tick').and.callThrough();
 
         const backTopButton = componentObject.backTopButton().nativeElement.firstElementChild;
         backTopButton.dispatchEvent(new MouseEvent('click'));
@@ -160,6 +160,7 @@ describe('nz-float-button-top', () => {
         component.nzOnClick.subscribe();
 
         backTopButton.dispatchEvent(new MouseEvent('click'));
+        TestBed.tick();
         expect(appRef.tick).toHaveBeenCalled();
       });
     });

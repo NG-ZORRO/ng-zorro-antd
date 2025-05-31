@@ -162,8 +162,8 @@ describe('nz-back-top', () => {
         expect(appRef.tick).not.toHaveBeenCalled();
 
         component.nzClick.subscribe();
-
         backTopButton.dispatchEvent(new MouseEvent('click'));
+        TestBed.tick();
         expect(appRef.tick).toHaveBeenCalled();
       });
     });

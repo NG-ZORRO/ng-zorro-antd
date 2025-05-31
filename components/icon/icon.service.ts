@@ -4,9 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
-import { HttpBackend } from '@angular/common/http';
-import { Injectable, InjectionToken, OnDestroy, RendererFactory2, inject } from '@angular/core';
+import { inject, Injectable, InjectionToken, OnDestroy, RendererFactory2 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
 
@@ -82,13 +80,7 @@ export class NzIconService extends IconService implements OnDestroy {
     protected nzConfigService: NzConfigService,
     private platform: Platform
   ) {
-    super(
-      rendererFactory,
-      inject(HttpBackend, { optional: true }) as HttpBackend, // TODO: fix the type
-      inject(DOCUMENT),
-      sanitizer,
-      [...NZ_ICONS_USED_BY_ZORRO, ...(inject(NZ_ICONS, { optional: true }) || [])]
-    );
+    super([...NZ_ICONS_USED_BY_ZORRO, ...(inject(NZ_ICONS, { optional: true }) || [])]);
 
     this.onConfigChange();
     this.configDefaultTwotoneColor();

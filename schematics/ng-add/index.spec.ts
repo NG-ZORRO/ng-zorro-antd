@@ -132,7 +132,7 @@ describe('ng-add schematic', () => {
   it('should required modules and providers', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app-module.ts');
 
     expect(fileContent).toContain('provideHttpClient()');
     expect(fileContent).toContain('FormsModule');
@@ -141,14 +141,14 @@ describe('ng-add schematic', () => {
   it('should add provideAnimationsAsync() function call if animations is enable', async () => {
     const options = { ...defaultOptions, animations: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app-module.ts');
     expect(fileContent).toContain('provideAnimationsAsync()');
   });
 
   it(`should add provideAnimationsAsync('noop') function call if animations is disable`, async () => {
     const options = { ...defaultOptions, animations: false };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app-module.ts');
 
     expect(fileContent).toContain(`provideAnimationsAsync('noop')`);
   });
@@ -156,7 +156,7 @@ describe('ng-add schematic', () => {
   it('should register default locale id', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app-module.ts');
 
     expect(fileContent).not.toContain('NZ_I18N');
     expect(fileContent).toContain('provideNzI18n(en_US)');
@@ -166,7 +166,7 @@ describe('ng-add schematic', () => {
   it('should register specified locale id', async () => {
     const options = { ...defaultOptions, locale: 'zh_CN' };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app-module.ts');
 
     expect(fileContent).not.toContain('NZ_I18N');
     expect(fileContent).toContain('provideNzI18n(zh_CN)');

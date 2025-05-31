@@ -6,7 +6,7 @@
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, Provider, Type, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
@@ -152,6 +152,7 @@ describe('context-menu', () => {
     overlayContainerElement.querySelector('ul')!.click();
     expect(appRef.tick).toHaveBeenCalledTimes(0);
     document.body.click();
+    TestBed.tick();
     expect(appRef.tick).toHaveBeenCalledTimes(1);
   });
 });

@@ -6,19 +6,20 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DOCUMENT,
+  inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
-  ViewEncapsulation,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subject, fromEvent, of } from 'rxjs';
+import { fromEvent, Observable, of, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';

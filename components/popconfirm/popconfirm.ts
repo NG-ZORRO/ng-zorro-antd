@@ -5,22 +5,22 @@
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { DOCUMENT } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   Directive,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   Output,
   QueryList,
   TemplateRef,
   ViewChildren,
-  ViewEncapsulation,
-  booleanAttribute,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { finalize, first, takeUntil } from 'rxjs/operators';
@@ -35,7 +35,7 @@ import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { wrapIntoObservable } from 'ng-zorro-antd/core/util';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzToolTipComponent, NzTooltipBaseDirective, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
+import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 
 export type NzAutoFocusType = null | 'ok' | 'cancel';
 

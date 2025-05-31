@@ -3,8 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
-import { Injectable, NgZone, OnDestroy, inject } from '@angular/core';
+import { DOCUMENT, inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { isTouchEvent } from 'ng-zorro-antd/core/util';

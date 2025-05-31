@@ -86,8 +86,7 @@ describe('side-menu schematic', () => {
   it('should set standalone to be false', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
-
+    const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
     expect(appContent).toContain('standalone: false');
   });
 });

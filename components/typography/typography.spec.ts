@@ -534,7 +534,7 @@ describe('change detection behavior', () => {
     expect(spy).not.toHaveBeenCalled();
 
     dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
-
+    TestBed.tick();
     ngZone.onMicrotaskEmpty.pipe(take(1)).subscribe(() => {
       expect(spy).toHaveBeenCalledTimes(1);
       done();

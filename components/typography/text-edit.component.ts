@@ -5,20 +5,20 @@
 
 import { ENTER, ESCAPE } from '@angular/cdk/keycodes';
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Injector,
   Input,
   NgZone,
   OnInit,
   Output,
   ViewChild,
-  ViewEncapsulation,
-  afterNextRender,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { first, switchMap, takeUntil } from 'rxjs/operators';

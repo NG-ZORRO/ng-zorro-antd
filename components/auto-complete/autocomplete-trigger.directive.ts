@@ -13,18 +13,18 @@ import {
   PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   Directive,
+  DOCUMENT,
   ElementRef,
   ExistingProvider,
+  forwardRef,
+  inject,
   Input,
   NgZone,
   OnDestroy,
-  ViewContainerRef,
-  forwardRef,
-  inject
+  ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';

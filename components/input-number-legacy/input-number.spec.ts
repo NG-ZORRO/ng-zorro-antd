@@ -5,7 +5,7 @@
 
 import { DOWN_ARROW, ENTER, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
@@ -426,6 +426,8 @@ describe('input number', () => {
             keyCode: ENTER
           })
         );
+
+        TestBed.tick();
 
         ngZone.onMicrotaskEmpty.pipe(take(1)).subscribe(() => {
           expect(appRef.tick).toHaveBeenCalledTimes(1);

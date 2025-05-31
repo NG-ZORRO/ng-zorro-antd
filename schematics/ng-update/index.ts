@@ -7,13 +7,13 @@ import { createMigrationSchematicRule, TargetVersion } from '@angular/cdk/schema
 
 import { Rule, SchematicContext } from '@angular-devkit/schematics';
 
-import { nzMigrations} from './migrations';
+import { nzMigrations } from './migrations';
 import { nzUpgradeData } from './upgrade-data';
 import { nzUpgradeRules } from './upgrade-rules';
 
-export function updateToV19(): Rule {
+export function updateToV20(): Rule {
   return createMigrationSchematicRule(
-    TargetVersion.V19,
+    TargetVersion.V20,
     [...nzUpgradeRules, ...nzMigrations],
     nzUpgradeData,
     postUpdate

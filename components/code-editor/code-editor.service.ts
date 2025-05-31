@@ -3,9 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
-import { Injectable, OnDestroy, inject } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject, Subscription, of } from 'rxjs';
+import { DOCUMENT, inject, Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { CodeEditorConfig, NzConfigService } from 'ng-zorro-antd/core/config';

@@ -28,7 +28,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     <div class="ant-cron-expression-preview-dateTime" [class.ant-cron-expression-preview-dateTime-center]="!isExpand">
       @if (visible) {
         @if (!nzSemantic) {
-          {{ TimeList[0] | date: 'YYYY-MM-dd HH:mm:ss' }}
+          {{ TimeList[0] | date: 'yyyy-MM-dd HH:mm:ss' }}
         } @else {
           <ng-template [ngTemplateOutlet]="nzSemantic" />
         }
@@ -41,7 +41,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         <ul class="ant-cron-expression-preview-list">
           @for (item of TimeList; track item) {
             <li>
-              {{ item | date: 'YYYY-MM-dd HH:mm:ss' }}
+              {{ item | date: 'yyyy-MM-dd HH:mm:ss' }}
             </li>
           }
           <li><a (click)="loadMorePreview.emit()">···</a></li>

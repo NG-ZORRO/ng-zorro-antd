@@ -13,7 +13,7 @@ import {
   VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -21,6 +21,7 @@ import {
   ChangeDetectorRef,
   Component,
   computed,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
   forwardRef,

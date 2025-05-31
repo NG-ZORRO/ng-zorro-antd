@@ -82,6 +82,7 @@ export default tseslint.config(
           prefix: ['nz']
         }
       ],
+      '@angular-eslint/prefer-inject': 'off',
       '@angular-eslint/no-rename-input': 'off',
       '@angular-eslint/no-attribute-decorator': 'error',
       '@angular-eslint/no-conflicting-lifecycle': 'off',

@@ -4,8 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
-import { Component, DebugElement, ElementRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, DOCUMENT, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
