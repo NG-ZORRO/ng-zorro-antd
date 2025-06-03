@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -149,19 +149,16 @@ describe('nz-float-button-top', () => {
     });
 
     describe('change detection behavior', () => {
-      it('should not run change detection if there are no `nzClick` listeners', () => {
-        const appRef = TestBed.inject(ApplicationRef);
-        spyOn(appRef, 'tick').and.callThrough();
+      it('should not emit the event nzOnClick if there are no `nzClick` listeners', () => {
+        const emitNzOnClick = spyOn(component.nzOnClick, 'emit');
 
         const backTopButton = componentObject.backTopButton().nativeElement.firstElementChild;
         backTopButton.dispatchEvent(new MouseEvent('click'));
-        expect(appRef.tick).not.toHaveBeenCalled();
-
+        expect(emitNzOnClick).not.toHaveBeenCalled();
         component.nzOnClick.subscribe();
 
         backTopButton.dispatchEvent(new MouseEvent('click'));
-        TestBed.tick();
-        expect(appRef.tick).toHaveBeenCalled();
+        expect(emitNzOnClick).toHaveBeenCalled();
       });
     });
   });

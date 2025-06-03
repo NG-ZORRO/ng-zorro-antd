@@ -5,7 +5,7 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { ApplicationRef, Component, DebugElement, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, DebugElement, SimpleChanges, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -153,19 +153,24 @@ describe('nz-back-top', () => {
     });
 
     describe('change detection behavior', () => {
-      it('should not run change detection if there are no `nzClick` listeners', () => {
-        const appRef = TestBed.inject(ApplicationRef);
-        spyOn(appRef, 'tick');
+      it('should emit click event only when there are subscribers', fakeAsync(() => {
+        const emitSpy = spyOn(component.nzClick, 'emit');
 
         const backTopButton = componentObject.backTopButton().nativeElement;
         backTopButton.dispatchEvent(new MouseEvent('click'));
-        expect(appRef.tick).not.toHaveBeenCalled();
+        tick();
 
-        component.nzClick.subscribe();
+        expect(emitSpy).not.toHaveBeenCalled();
+
+        const subscription = component.nzClick.subscribe();
+
         backTopButton.dispatchEvent(new MouseEvent('click'));
-        TestBed.tick();
-        expect(appRef.tick).toHaveBeenCalled();
-      });
+        tick();
+
+        expect(emitSpy).toHaveBeenCalledWith(true);
+
+        subscription.unsubscribe();
+      }));
     });
   });
 

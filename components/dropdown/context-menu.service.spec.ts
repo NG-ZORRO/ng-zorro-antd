@@ -5,7 +5,7 @@
 
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
-import { ApplicationRef, Component, Provider, Type, ViewChild } from '@angular/core';
+import { Component, Provider, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -138,7 +138,7 @@ describe('context-menu', () => {
       expect(overlayContainerElement.textContent).toBe('');
     }).not.toThrowError();
   }));
-  it('should not run change detection if the overlay is clicked inside', async () => {
+  it('should not call the method close if the overlay is clicked inside', async () => {
     const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     const fakeEvent = createMouseEvent('contextmenu', 300, 300);
@@ -147,13 +147,11 @@ describe('context-menu', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    const appRef = TestBed.inject(ApplicationRef);
-    spyOn(appRef, 'tick');
+    const closeSpy = spyOn(component.nzContextMenuService, 'close');
     overlayContainerElement.querySelector('ul')!.click();
-    expect(appRef.tick).toHaveBeenCalledTimes(0);
+    expect(closeSpy).toHaveBeenCalledTimes(0);
     document.body.click();
-    TestBed.tick();
-    expect(appRef.tick).toHaveBeenCalledTimes(1);
+    expect(closeSpy).toHaveBeenCalledTimes(1);
   });
 });
 
