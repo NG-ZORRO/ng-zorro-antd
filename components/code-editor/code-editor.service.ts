@@ -4,7 +4,7 @@
  */
 
 import { DestroyRef, DOCUMENT, inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { CodeEditorConfig, NzConfigService } from 'ng-zorro-antd/core/config';
