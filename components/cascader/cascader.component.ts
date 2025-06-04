@@ -815,23 +815,22 @@ export class NzCascaderComponent
      * @param shouldUpdateValue if false, only update selected nodes
      */
     const updateNodesAndValue = (shouldUpdateValue: boolean): void => {
-      this.selectedNodes = [
-        ...this.treeService.missingNodeList,
-        ...(this.nzMultiple ? this.getCheckedNodeList() : this.getSelectedNodeList())
-      ].sort((a, b) => {
-        const indexA = value.indexOf(a.key);
-        const indexB = value.indexOf(b.key);
-        if (indexA !== -1 && indexB !== -1) {
-          return indexA - indexB;
+      this.selectedNodes = [...(this.nzMultiple ? this.getCheckedNodeList() : this.getSelectedNodeList())].sort(
+        (a, b) => {
+          const indexA = value.indexOf(a.key);
+          const indexB = value.indexOf(b.key);
+          if (indexA !== -1 && indexB !== -1) {
+            return indexA - indexB;
+          }
+          if (indexA !== -1) {
+            return -1;
+          }
+          if (indexB !== -1) {
+            return 1;
+          }
+          return 0;
         }
-        if (indexA !== -1) {
-          return -1;
-        }
-        if (indexB !== -1) {
-          return 1;
-        }
-        return 0;
-      });
+      );
       if (shouldUpdateValue) {
         this.cascaderService.values = this.selectedNodes.map(node =>
           this.getAncestorOptionList(node).map(o => this.cascaderService.getOptionValue(o))
@@ -857,7 +856,7 @@ export class NzCascaderComponent
         if (multiple) {
           this.treeService.conductCheckPaths(value, this.treeService.isCheckStrictly);
         } else {
-          this.treeService.conductSelectedPaths(value, multiple);
+          this.treeService.conductSelectedPaths(value);
         }
       };
 

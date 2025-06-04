@@ -8,7 +8,7 @@ export * from './util';
 
 export { NzDatePickerModule } from './date-picker.module';
 export { NzDatePickerComponent } from './date-picker.component';
-export type { NzDatePickerSizeType } from './date-picker.component';
+export type { NzDatePickerSizeType, NzPlacement } from './date-picker.component';
 export { NzRangePickerComponent } from './range-picker.component';
 export { NzMonthPickerComponent } from './month-picker.component';
 export { NzQuarterPickerComponent } from './quarter-picker.component';

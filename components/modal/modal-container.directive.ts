@@ -8,19 +8,19 @@ import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Direction } from '@angular/cdk/bidi';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT } from '@angular/common';
 import {
   ANIMATION_MODULE_TYPE,
   ChangeDetectorRef,
   ComponentRef,
   Directive,
+  DOCUMENT,
   ElementRef,
   EmbeddedViewRef,
   EventEmitter,
+  inject,
   NgZone,
   OnDestroy,
-  Renderer2,
-  inject
+  Renderer2
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

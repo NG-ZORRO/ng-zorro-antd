@@ -9,7 +9,6 @@ import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { take } from 'rxjs';
 
 import {
   createKeyboardEvent,
@@ -517,28 +516,29 @@ describe('change detection behavior', () => {
     expect(nzTextEdit.componentInstance.currentText).toEqual('some-value');
   });
 
-  it('should not run change detection on non-handled keydown events', done => {
+  it('should not run change detection on non-handled keydown events', () => {
     componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit')!.click();
     fixture.detectChanges();
-
-    const ngZone = TestBed.inject(NgZone);
-    const appRef = TestBed.inject(ApplicationRef);
-    const spy = spyOn(appRef, 'tick');
-
     const nzTextEdit = fixture.debugElement.query(By.directive(NzTextEditComponent));
     const textarea: HTMLTextAreaElement = nzTextEdit.nativeElement.querySelector('textarea');
+    const spyCancel = spyOn(nzTextEdit.componentInstance, 'onCancel');
+    const spyEnter = spyOn(nzTextEdit.componentInstance, 'onEnter');
 
     dispatchKeyboardEvent(textarea, 'keydown', TAB);
     dispatchKeyboardEvent(textarea, 'keydown', CAPS_LOCK);
 
-    expect(spy).not.toHaveBeenCalled();
+    expect(spyCancel).not.toHaveBeenCalled();
+    expect(spyEnter).not.toHaveBeenCalled();
 
     dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
+    expect(spyCancel).toHaveBeenCalled();
+    expect(spyEnter).not.toHaveBeenCalled();
 
-    ngZone.onMicrotaskEmpty.pipe(take(1)).subscribe(() => {
-      expect(spy).toHaveBeenCalledTimes(1);
-      done();
-    });
+    spyCancel.calls.reset();
+
+    dispatchKeyboardEvent(textarea, 'keydown', ENTER);
+    expect(spyCancel).not.toHaveBeenCalled();
+    expect(spyEnter).toHaveBeenCalled();
   });
 });
 

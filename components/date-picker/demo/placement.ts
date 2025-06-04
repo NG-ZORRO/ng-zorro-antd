@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzPlacement } from 'ng-zorro-antd/date-picker/date-picker.component';
+import { NzDatePickerModule, NzPlacement } from 'ng-zorro-antd/date-picker';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({

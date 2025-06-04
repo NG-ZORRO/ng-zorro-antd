@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT, PlatformLocation } from '@angular/common';
-import { ApplicationRef, Injector, NgZone } from '@angular/core';
+import { PlatformLocation } from '@angular/common';
+import { ApplicationRef, DOCUMENT, NgZone } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -13,7 +13,6 @@ import { NzScrollService } from './scroll';
 
 describe('NzScrollService', () => {
   const TOP = 10;
-  let injector: Injector;
   let document: MockDocument;
   let scrollService: NzScrollService;
 
@@ -39,7 +38,7 @@ describe('NzScrollService', () => {
   });
 
   beforeEach(() => {
-    injector = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       providers: [
         NzScrollService,
         { provide: DOCUMENT, useClass: MockDocument },
@@ -47,8 +46,8 @@ describe('NzScrollService', () => {
       ]
     });
 
-    document = injector.get<MockDocument>(DOCUMENT);
-    scrollService = injector.get(NzScrollService);
+    document = TestBed.inject<MockDocument>(DOCUMENT);
+    scrollService = TestBed.inject(NzScrollService);
   });
 
   describe('#setScrollTop', () => {

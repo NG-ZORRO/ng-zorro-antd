@@ -6,5 +6,5 @@
 import { SymbolRemovalUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const symbolRemoval: VersionChanges<SymbolRemovalUpgradeData> = {
-  [TargetVersion.V19]: []
+  [TargetVersion.V20]: []
 };

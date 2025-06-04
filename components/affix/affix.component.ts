@@ -5,12 +5,12 @@
 
 import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
   inject,

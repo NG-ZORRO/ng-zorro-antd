@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { TargetVersion, VersionChanges, CssSelectorUpgradeData } from '@angular/cdk/schematics';
+import { CssSelectorUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const cssSelectors: VersionChanges<CssSelectorUpgradeData> = {
-  [TargetVersion.V19]: []
+  [TargetVersion.V20]: []
 };

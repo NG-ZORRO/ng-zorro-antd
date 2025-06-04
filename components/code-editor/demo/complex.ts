@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Renderer2, ViewChild, inject } from '@angular/core';
+import { Component, DOCUMENT, inject, Renderer2, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCodeEditorComponent, NzCodeEditorModule } from 'ng-zorro-antd/code-editor';

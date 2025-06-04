@@ -4,16 +4,19 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Platform, normalizePassiveListenerOptions } from '@angular/cdk/platform';
-import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -21,9 +24,7 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  inject,
-  numberAttribute
+  ViewEncapsulation
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -124,11 +125,11 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private handleScroll(): void {
-    if (this.visible === this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight) {
-      return;
+    const newVisible = this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight;
+    if (this.visible !== newVisible) {
+      this.visible = newVisible;
+      this.cdr.detectChanges();
     }
-    this.visible = !this.visible;
-    this.cdr.detectChanges();
   }
 
   private registerScrollEvent(): void {

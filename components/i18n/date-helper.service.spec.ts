@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { enUS } from 'date-fns/locale';
@@ -15,17 +14,16 @@ import { NzI18nModule } from './nz-i18n.module';
 import { NZ_DATE_LOCALE, provideNzI18n } from './nz-i18n.token';
 
 describe('DateHelperService', () => {
-  let injector: Injector;
   let dateHelper: DateHelperService;
 
   describe('Formatting with DatePipe', () => {
     beforeEach(() => {
-      injector = TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         imports: [NzI18nModule],
         providers: [provideNzI18n(en_US)]
       });
 
-      dateHelper = injector.get(DateHelperService);
+      dateHelper = TestBed.inject(DateHelperService);
     });
 
     it('should do formatting by DatePipe', () => {
@@ -60,12 +58,12 @@ describe('DateHelperService', () => {
 
   describe('Formatting with Data-fns', () => {
     beforeEach(() => {
-      injector = TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         imports: [NzI18nModule],
         providers: [{ provide: NZ_DATE_LOCALE, useValue: enUS }]
       });
 
-      dateHelper = injector.get(DateHelperService);
+      dateHelper = TestBed.inject(DateHelperService);
     });
 
     it('should do formatting by Date-fns', () => {
@@ -86,7 +84,7 @@ describe('DateHelperService', () => {
 
   describe('Custom firstDayOfWeek', () => {
     beforeEach(() => {
-      injector = TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         imports: [NzI18nModule],
         providers: [
           { provide: NZ_DATE_LOCALE, useValue: enUS },
@@ -94,7 +92,7 @@ describe('DateHelperService', () => {
         ]
       });
 
-      dateHelper = injector.get(DateHelperService);
+      dateHelper = TestBed.inject(DateHelperService);
     });
 
     it('should set first day of week to 4', () => {

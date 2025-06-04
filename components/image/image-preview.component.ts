@@ -6,11 +6,11 @@
 import { AnimationEvent } from '@angular/animations';
 import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
   inject,
