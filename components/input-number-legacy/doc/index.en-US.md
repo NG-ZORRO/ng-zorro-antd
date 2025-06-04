@@ -8,7 +8,7 @@ description: Enter a number within certain range with the mouse or keyboard.
 ---
 
 
-> ⚠️ `InputNumberLegacy` has been deprecated in `v19.0.0`, please use the new version of `InputNumber` component.
+> ⚠️ `InputNumberLegacy` has been deprecated in `v19.0.0`, and will be removed in `v21.0.0`, please use the new version of `InputNumber` component.
 
 ## When To Use
 
@@ -51,7 +51,6 @@ When a numeric value needs to be provided.
 | `[nzSuffix]`      | The suffix icon for the Input Number, can work with `nzPrefix`                                              | `string \| TemplateRef<void>`     | -           |
 | `[nzPrefixIcon]`  | The prefix icon for the Input Number                                                                        | `string`                          | -           |
 | `[nzSuffixIcon]`  | The suffix icon for the Input Number                                                                        | `string`                          | -           |
-| `[nzCompact]`     | Whether use compact style                                                                                   | `boolean`                         | `false`     |
 | `[nzSize]`        | The size of `nz-input-number-group` specifies the size of the included `nz-input-number` fields             | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzStatus]`      | Set validation status                                                                                       | `'error' \| 'warning'`            | -           |
 

@@ -9,7 +9,7 @@ description: 通过鼠标或键盘，输入范围内的数值。
 ---
 
 
-> ⚠️ `InputNumberLegacy` 已在 `v19.0.0` 中废弃，请使用新版 `InputNumber` 组件。
+> ⚠️ `InputNumberLegacy` 已在 `v19.0.0` 中废弃，将在 `v21.0.0` 中移除，请使用新版 `InputNumber` 组件。
 
 ## 何时使用
 
@@ -52,7 +52,6 @@ description: 通过鼠标或键盘，输入范围内的数值。
 | `[nzSuffix]`      | 带有后缀图标的 input-number，可以与 `nzPrefix` 配合使用              | `string \| TemplateRef<void>`     | -           |
 | `[nzPrefixIcon]`  | 带有前缀图标的 input-number                                          | `string`                          | -           |
 | `[nzSuffixIcon]`  | 带有后缀图标的 input-number                                          | `string`                          | -           |
-| `[nzCompact]`     | 是否用紧凑模式                                                       | `boolean`                         | `false`     |
 | `[nzSize]`        | `nz-input-number-group` 中所有的 `nz-input-number` 的大小            | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzStatus]`      | 设置校验状态                                                         | `'error' \| 'warning'`            | -           |
 

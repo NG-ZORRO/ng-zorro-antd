@@ -48,9 +48,3 @@ description: 按钮用于开始一个即时操作。
 | `[nzType]`    | 设置按钮类型，可选值为 `primary` `dashed` `text` `link` 或者不设 | `'primary'\|'dashed'\|'link'\|'text'` | -           |
 | `[nzBlock]`   | 将按钮宽度调整为其父宽度的选项                                   | `boolean`                             | `false`     |
 | `[nzDanger]`  | 设置危险按钮                                                     | boolean                               | `false`     |              |
-
-### nz-button-group
-
-| 属性       | 说明                                            | 类型                          | 默认值      | 支持全局配置 |
-| ---------- | ----------------------------------------------- | ----------------------------- | ----------- | ------------ |
-| `[nzSize]` | 设置按钮大小，可选值为 `small` `large` 或者不设 | `'large'\|'small'\|'default'` | `'default'` | -            |

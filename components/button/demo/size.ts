@@ -57,10 +57,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
         margin-right: 8px;
         margin-bottom: 12px;
       }
-
-      nz-button-group [nz-button] {
-        margin-right: 0;
-      }
     `
   ]
 })

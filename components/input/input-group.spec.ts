@@ -24,6 +24,7 @@ describe('input-group', () => {
       providers: [provideNzIconsTesting()]
     });
   }));
+
   describe('input group', () => {
     describe('addon', () => {
       let testComponent: NzTestInputGroupAddonComponent;
@@ -36,10 +37,12 @@ describe('input-group', () => {
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
+
       it('should not show addon without before and after content', () => {
         expect(inputGroupElement.firstElementChild!.classList).not.toContain('ant-input-group');
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input');
       });
+
       it('should before content string work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -48,6 +51,7 @@ describe('input-group', () => {
         expect(inputGroupElement.firstElementChild!.lastElementChild!.classList).toContain('ant-input');
         expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe('before');
       });
+
       it('should before content template work', () => {
         testComponent.beforeContent = testComponent.beforeTemplate;
         fixture.detectChanges();
@@ -58,6 +62,7 @@ describe('input-group', () => {
           'beforeTemplate'
         );
       });
+
       it('should after content string work', () => {
         testComponent.afterContent = 'after';
         fixture.detectChanges();
@@ -66,6 +71,7 @@ describe('input-group', () => {
         expect(inputGroupElement.firstElementChild!.firstElementChild!.classList).toContain('ant-input');
         expect((inputGroupElement.firstElementChild!.lastElementChild as HTMLElement).innerText).toBe('after');
       });
+
       it('should after content template work', () => {
         testComponent.afterContent = testComponent.afterTemplate;
         fixture.detectChanges();
@@ -74,6 +80,7 @@ describe('input-group', () => {
         expect(inputGroupElement.firstElementChild!.firstElementChild!.classList).toContain('ant-input');
         expect((inputGroupElement.firstElementChild!.lastElementChild as HTMLElement).innerText).toBe('afterTemplate');
       });
+
       it('should size work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -86,6 +93,7 @@ describe('input-group', () => {
         expect(inputGroupElement.classList).toContain('ant-input-group-wrapper-sm');
       });
     });
+
     describe('affix', () => {
       let fixture: ComponentFixture<NzTestInputGroupAffixComponent>;
       let testComponent: NzTestInputGroupAffixComponent;
@@ -149,6 +157,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         expect(inputGroupElement.classList).toContain('ant-input-affix-wrapper-sm');
       });
+
       it('should disabled work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -157,6 +166,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         expect(inputGroupElement.classList).toContain('ant-input-affix-wrapper-disabled');
       });
+
       it('should focus work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -166,6 +176,7 @@ describe('input-group', () => {
         expect(inputGroupElement.classList).toContain('ant-input-affix-wrapper-focused');
       });
     });
+
     describe('multiple', () => {
       let fixture: ComponentFixture<NzTestInputGroupMultipleComponent>;
       let testComponent: NzTestInputGroupMultipleComponent;
@@ -176,12 +187,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
-      it('should compact work', () => {
-        expect(inputGroupElement.classList).not.toContain('ant-input-group-compact');
-        testComponent.compact = true;
-        fixture.detectChanges();
-        expect(inputGroupElement.classList).toContain('ant-input-group-compact');
-      });
+
       it('should search work', () => {
         expect(inputGroupElement.classList).not.toContain('ant-input-search-enter-button');
         expect(inputGroupElement.classList).not.toContain('ant-input-search');
@@ -190,6 +196,7 @@ describe('input-group', () => {
         expect(inputGroupElement.classList).toContain('ant-input-search-enter-button');
         expect(inputGroupElement.classList).toContain('ant-input-search');
       });
+
       it('should size work', () => {
         expect(inputGroupElement.classList).toContain('ant-input-group');
         testComponent.size = 'large';
@@ -199,6 +206,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         expect(inputGroupElement.classList).toContain('ant-input-group-sm');
       });
+
       it('should search size work', () => {
         testComponent.search = true;
         fixture.detectChanges();
@@ -211,18 +219,7 @@ describe('input-group', () => {
         expect(inputGroupElement.classList).toContain('ant-input-search-sm');
       });
     });
-    describe('col', () => {
-      let fixture: ComponentFixture<NzTestInputGroupColComponent>;
-      let inputGroupElement: HTMLElement;
-      beforeEach(() => {
-        fixture = TestBed.createComponent(NzTestInputGroupColComponent);
-        fixture.detectChanges();
-        inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
-      });
-      it('should compact work', () => {
-        expect(inputGroupElement.classList).toContain('ant-input-group');
-      });
-    });
+
     describe('mix', () => {
       let fixture: ComponentFixture<NzTestInputGroupMixComponent>;
       let inputGroupElement: HTMLElement;
@@ -232,12 +229,14 @@ describe('input-group', () => {
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
+
       it('should mix work', () => {
         expect(inputGroupElement.querySelector('.ant-input-affix-wrapper')!.nextElementSibling!.classList).toContain(
           'ant-input-group-addon'
         );
       });
     });
+
     describe('status', () => {
       let fixture: ComponentFixture<NzTestInputGroupWithStatusComponent>;
       let inputElement: DebugElement;
@@ -277,6 +276,7 @@ describe('input-group', () => {
         expect(inputElement.nativeElement.className).not.toContain('ant-input-group-wrapper-status-warning');
       });
     });
+
     describe('in form', () => {
       let fixture: ComponentFixture<NzTestInputGroupInFormComponent>;
       let inputElement: DebugElement;
@@ -357,14 +357,13 @@ export class NzTestInputGroupAffixComponent {
 @Component({
   imports: [NzInputModule],
   template: `
-    <nz-input-group [nzCompact]="compact" [nzSearch]="search" [nzSize]="size">
+    <nz-input-group [nzSearch]="search" [nzSize]="size">
       <input type="text" nz-input />
       <input type="text" nz-input />
     </nz-input-group>
   `
 })
 export class NzTestInputGroupMultipleComponent {
-  compact = false;
   search = false;
   size: NzSizeLDSType = 'default';
 }

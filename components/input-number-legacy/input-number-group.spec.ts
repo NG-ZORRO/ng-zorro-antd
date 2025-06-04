@@ -25,6 +25,7 @@ describe('input-number-group', () => {
       providers: [provideNzIconsTesting()]
     });
   }));
+
   describe('input number group', () => {
     describe('addon', () => {
       let testComponent: NzTestInputNumberGroupAddonComponent;
@@ -37,10 +38,12 @@ describe('input-number-group', () => {
         fixture.detectChanges();
         inputNumberGroupElement = fixture.debugElement.query(By.directive(NzInputNumberGroupComponent)).nativeElement;
       });
+
       it('should not show addon without before and after content', () => {
         expect(inputNumberGroupElement.firstElementChild!.classList).not.toContain('ant-input-number-group');
         expect(inputNumberGroupElement.firstElementChild!.classList).toContain('ant-input-number');
       });
+
       it('should before content string work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -49,6 +52,7 @@ describe('input-number-group', () => {
         expect(inputNumberGroupElement.firstElementChild!.lastElementChild!.classList).toContain('ant-input-number');
         expect((inputNumberGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe('before');
       });
+
       it('should before content template work', () => {
         testComponent.beforeContent = testComponent.beforeTemplate;
         fixture.detectChanges();
@@ -59,6 +63,7 @@ describe('input-number-group', () => {
           'beforeTemplate'
         );
       });
+
       it('should after content string work', () => {
         testComponent.afterContent = 'after';
         fixture.detectChanges();
@@ -67,6 +72,7 @@ describe('input-number-group', () => {
         expect(inputNumberGroupElement.firstElementChild!.firstElementChild!.classList).toContain('ant-input-number');
         expect((inputNumberGroupElement.firstElementChild!.lastElementChild as HTMLElement).innerText).toBe('after');
       });
+
       it('should after content template work', () => {
         testComponent.afterContent = testComponent.afterTemplate;
         fixture.detectChanges();
@@ -77,6 +83,7 @@ describe('input-number-group', () => {
           'afterTemplate'
         );
       });
+
       it('should size work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -89,6 +96,7 @@ describe('input-number-group', () => {
         expect(inputNumberGroupElement.classList).toContain('ant-input-number-group-wrapper-sm');
       });
     });
+
     describe('affix', () => {
       let fixture: ComponentFixture<NzTestInputNumberGroupAffixComponent>;
       let testComponent: NzTestInputNumberGroupAffixComponent;
@@ -152,6 +160,7 @@ describe('input-number-group', () => {
         fixture.detectChanges();
         expect(inputNumberGroupElement.classList).toContain('ant-input-number-affix-wrapper-sm');
       });
+
       it('should disabled work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -160,6 +169,7 @@ describe('input-number-group', () => {
         fixture.detectChanges();
         expect(inputNumberGroupElement.classList).toContain('ant-input-number-affix-wrapper-disabled');
       });
+
       it('should focus work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -169,22 +179,19 @@ describe('input-number-group', () => {
         expect(inputNumberGroupElement.classList).toContain('ant-input-number-affix-wrapper-focused');
       });
     });
+
     describe('multiple', () => {
       let fixture: ComponentFixture<NzTestInputNumberGroupMultipleComponent>;
       let testComponent: NzTestInputNumberGroupMultipleComponent;
       let inputNumberGroupElement: HTMLElement;
+
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputNumberGroupMultipleComponent);
         testComponent = fixture.debugElement.componentInstance;
         fixture.detectChanges();
         inputNumberGroupElement = fixture.debugElement.query(By.directive(NzInputNumberGroupComponent)).nativeElement;
       });
-      it('should compact work', () => {
-        expect(inputNumberGroupElement.classList).not.toContain('ant-input-number-group-compact');
-        testComponent.compact = true;
-        fixture.detectChanges();
-        expect(inputNumberGroupElement.classList).toContain('ant-input-number-group-compact');
-      });
+
       it('should size work', () => {
         expect(inputNumberGroupElement.firstElementChild!.classList).not.toContain('ant-input-number-lg');
         testComponent.size = 'large';
@@ -195,18 +202,22 @@ describe('input-number-group', () => {
         expect(inputNumberGroupElement.firstElementChild!.classList).toContain('ant-input-number-sm');
       });
     });
+
     describe('col', () => {
       let fixture: ComponentFixture<NzTestInputNumberGroupColComponent>;
       let inputNumberGroupElement: HTMLElement;
+
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputNumberGroupColComponent);
         fixture.detectChanges();
         inputNumberGroupElement = fixture.debugElement.query(By.directive(NzInputNumberGroupComponent)).nativeElement;
       });
+
       it('should size work', () => {
         expect(inputNumberGroupElement.querySelector('nz-input-number')!.classList).toContain('ant-input-number-lg');
       });
     });
+
     describe('mix', () => {
       let fixture: ComponentFixture<NzTestInputNumberGroupMixComponent>;
       let inputGroupElement: HTMLElement;
@@ -216,12 +227,14 @@ describe('input-number-group', () => {
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputNumberGroupComponent)).nativeElement;
       });
+
       it('should mix work', () => {
         expect(
           inputGroupElement.querySelector('.ant-input-number-affix-wrapper')!.nextElementSibling!.classList
         ).toContain('ant-input-number-group-addon');
       });
     });
+
     describe('status', () => {
       let fixture: ComponentFixture<NzTestInputNumberGroupWithStatusComponent>;
       let inputNumberGroupElement: DebugElement;
@@ -277,11 +290,13 @@ describe('input-number-group', () => {
     describe('dir', () => {
       let fixture: ComponentFixture<NzTestInputNumberGroupWithDirComponent>;
       let inputNumberGroupElement: HTMLElement;
+
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestInputNumberGroupWithDirComponent);
         fixture.detectChanges();
         inputNumberGroupElement = fixture.debugElement.query(By.directive(NzInputNumberGroupComponent)).nativeElement;
       });
+
       it('should dir work', () => {
         expect(inputNumberGroupElement.classList).not.toContain('ant-input-number-group-wrapper-rtl');
         fixture.componentInstance.dir = 'rtl';
@@ -380,14 +395,13 @@ export class NzTestInputNumberGroupAffixComponent {
 @Component({
   imports: [NzInputNumberLegacyModule],
   template: `
-    <nz-input-number-group [nzCompact]="compact" [nzSize]="size">
+    <nz-input-number-group [nzSize]="size">
       <nz-input-number></nz-input-number>
       <nz-input-number></nz-input-number>
     </nz-input-number-group>
   `
 })
 export class NzTestInputNumberGroupMultipleComponent {
-  compact = false;
   size: NzSizeLDSType = 'default';
 }
 
