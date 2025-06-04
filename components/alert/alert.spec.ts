@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
-import { NzAlertComponent } from './alert.component';
+import { NzAlertComponent, NzAlertType } from './alert.component';
 import { NzAlertModule } from './alert.module';
 
 describe('alert', () => {
@@ -102,7 +102,7 @@ describe('alert', () => {
       );
     });
     it('should type work', () => {
-      const listOfType = ['success', 'info', 'warning', 'error'];
+      const listOfType: NzAlertType[] = ['success', 'info', 'warning', 'error'];
       listOfType.forEach(type => {
         testComponent.type = type;
         fixture.detectChanges();
@@ -176,15 +176,15 @@ describe('alert', () => {
 })
 export class NzDemoTestBasicComponent {
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;
-  action?: string | TemplateRef<void>;
+  action: string | TemplateRef<void> | null = null;
   banner = false;
   closeable = false;
-  closeText?: string | TemplateRef<void>;
+  closeText: string | TemplateRef<void> | null = null;
   description: string | TemplateRef<void> = 'description';
   message: string | TemplateRef<void> = 'message';
   showIcon = false;
-  iconType?: string;
-  type = 'info';
+  iconType: string | null = null;
+  type: NzAlertType = 'info';
   onClose = jasmine.createSpy('close callback');
 }
 

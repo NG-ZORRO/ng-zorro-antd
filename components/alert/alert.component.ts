@@ -11,16 +11,16 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -28,6 +28,7 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
+export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
 
 @Component({
   selector: 'nz-alert',
@@ -100,7 +101,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false
 })
-export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
+export class NzAlertComponent implements OnChanges, OnInit {
+  public nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzAction: string | TemplateRef<void> | null = null;
@@ -121,23 +126,18 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   dir: Direction = 'ltr';
   private isTypeSet = false;
   private isShowIconSet = false;
-  private destroy$ = new Subject<boolean>();
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {
+  constructor() {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.cdr.markForCheck();
       });
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -188,9 +188,5 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
         this.nzShowIcon = true;
       }
     }
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }
