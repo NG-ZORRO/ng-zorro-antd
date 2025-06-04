@@ -11,17 +11,18 @@ import {
   ElementRef,
   Injector,
   Input,
-  OnDestroy,
   OnInit,
   Renderer2,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  forwardRef
+  forwardRef,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Params, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, startWith, takeUntil } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs/operators';
 
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 
@@ -56,7 +57,14 @@ export interface BreadcrumbOption {
     class: 'ant-breadcrumb'
   }
 })
-export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
+export class NzBreadCrumbComponent implements OnInit, NzBreadcrumb {
+  private injector = inject(Injector);
+  private cdr = inject(ChangeDetectorRef);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private renderer = inject(Renderer2);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   @Input({ transform: booleanAttribute }) nzAutoGenerate = false;
   @Input() nzSeparator: string | TemplateRef<void> | null = '/';
   @Input() nzRouteLabel: string = 'breadcrumb';
@@ -66,22 +74,12 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
   breadcrumbs: BreadcrumbOption[] = [];
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private injector: Injector,
-    private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
     if (this.nzAutoGenerate) {
       this.registerRouterChange();
     }
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.prepareComponentForRtl();
       this.cdr.detectChanges();
@@ -89,11 +87,6 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
 
     this.dir = this.directionality.value;
     this.prepareComponentForRtl();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   navigate(url: string, e: MouseEvent): void {
@@ -108,7 +101,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy, NzBreadcrumb {
       router.events
         .pipe(
           filter(e => e instanceof NavigationEnd),
-          takeUntil(this.destroy$),
+          takeUntilDestroyed(this.destroyRef),
           startWith(true) // trigger initial render
         )
         .subscribe(() => {
