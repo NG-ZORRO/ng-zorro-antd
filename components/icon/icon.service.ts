@@ -4,8 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { inject, Injectable, InjectionToken, OnDestroy, RendererFactory2 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
@@ -30,6 +29,9 @@ export const DEFAULT_TWOTONE_COLOR = '#1890ff';
   providedIn: 'root'
 })
 export class NzIconService extends IconService implements OnDestroy {
+  protected nzConfigService = inject(NzConfigService);
+  private platform = inject(Platform);
+
   configUpdated$ = new Subject<void>();
 
   protected override get _disableDynamicLoading(): boolean {
@@ -74,12 +76,7 @@ export class NzIconService extends IconService implements OnDestroy {
     return this._createSVGElementFromString(`<svg><use xlink:href="${type}"></svg>`);
   }
 
-  constructor(
-    rendererFactory: RendererFactory2,
-    sanitizer: DomSanitizer,
-    protected nzConfigService: NzConfigService,
-    private platform: Platform
-  ) {
+  constructor() {
     super([...NZ_ICONS_USED_BY_ZORRO, ...(inject(NZ_ICONS, { optional: true }) || [])]);
 
     this.onConfigChange();
