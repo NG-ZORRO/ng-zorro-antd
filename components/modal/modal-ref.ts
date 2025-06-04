@@ -16,16 +16,20 @@ import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { ModalOptions } from './modal-types';
 
-export const enum NzModalState {
-  OPEN,
-  CLOSING,
-  CLOSED
-}
+export const NzModalState = {
+  OPEN: 0,
+  CLOSING: 1,
+  CLOSED: 2
+} as const;
 
-export const enum NzTriggerAction {
-  CANCEL = 'cancel',
-  OK = 'ok'
-}
+export type NzModalState = (typeof NzModalState)[keyof typeof NzModalState];
+
+export const NzTriggerAction = {
+  CANCEL: 'cancel',
+  OK: 'ok'
+} as const;
+
+export type NzTriggerAction = (typeof NzTriggerAction)[keyof typeof NzTriggerAction];
 
 export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAPI<T, R> {
   componentInstance: T | null = null;
