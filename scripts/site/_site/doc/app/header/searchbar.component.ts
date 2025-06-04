@@ -4,7 +4,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   Output,
@@ -37,7 +36,8 @@ declare const docsearch: any;
   host: {
     id: 'search-box',
     '[class.focused]': 'focused',
-    '[class.narrow-mode]': 'responsive'
+    '[class.narrow-mode]': 'responsive',
+    '(document:keyup.s)': 'onKeyUp($any($event))'
   },
   encapsulation: ViewEncapsulation.None
 })
@@ -64,7 +64,6 @@ export class SearchbarComponent implements OnChanges {
     }
   }
 
-  @HostListener('document:keyup.s', ['$event'])
   onKeyUp(event: KeyboardEvent): void {
     if (this.searchInput.nativeElement && event.target === document.body) {
       this.searchInput.nativeElement.focus();
