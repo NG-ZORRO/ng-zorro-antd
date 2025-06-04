@@ -11,6 +11,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   DOCUMENT,
   ElementRef,
   EventEmitter,
@@ -18,7 +19,6 @@ import {
   Input,
   numberAttribute,
   OnChanges,
-  OnDestroy,
   Output,
   Renderer2,
   SimpleChanges,
@@ -80,7 +80,15 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
+export class NzAnchorComponent implements AfterViewInit, OnChanges {
+  public nzConfigService = inject(NzConfigService);
+  private scrollSrv = inject(NzScrollService);
+  private cdr = inject(ChangeDetectorRef);
+  private platform = inject(Platform);
+  private renderer = inject(Renderer2);
+  private doc: Document = inject(DOCUMENT);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ViewChild('ink', { static: false }) private ink!: ElementRef;
@@ -121,15 +129,14 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   private animating = false;
   private destroy$ = new Subject<boolean>();
   private handleScrollTimeoutID?: ReturnType<typeof setTimeout>;
-  private doc: Document = inject(DOCUMENT);
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private scrollSrv: NzScrollService,
-    private cdr: ChangeDetectorRef,
-    private platform: Platform,
-    private renderer: Renderer2
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      clearTimeout(this.handleScrollTimeoutID);
+      this.destroy$.next(true);
+      this.destroy$.complete();
+    });
+  }
 
   registerLink(link: NzAnchorLinkComponent): void {
     this.links.push(link);
@@ -146,13 +153,6 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     this.registerScrollEvent();
   }
-
-  ngOnDestroy(): void {
-    clearTimeout(this.handleScrollTimeoutID);
-    this.destroy$.next(true);
-    this.destroy$.complete();
-  }
-
   private registerScrollEvent(): void {
     if (!this.platform.isBrowser) {
       return;

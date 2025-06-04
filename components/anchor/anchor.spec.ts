@@ -32,7 +32,7 @@ describe('anchor', () => {
     spyOn(context, '_change');
     srv = TestBed.inject(NzScrollService);
   });
-  afterEach(() => context.comp.ngOnDestroy());
+  afterEach(() => fixture.destroy());
 
   describe('[default]', () => {
     it(`should scrolling to target via click a link`, () => {

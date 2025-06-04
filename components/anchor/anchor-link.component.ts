@@ -9,9 +9,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
+  inject,
   Input,
-  OnDestroy,
   OnInit,
   Renderer2,
   TemplateRef,
@@ -53,7 +54,13 @@ import { NzAnchorComponent } from './anchor.component';
     class: 'ant-anchor-link'
   }
 })
-export class NzAnchorLinkComponent implements OnInit, OnDestroy {
+export class NzAnchorLinkComponent implements OnInit {
+  public elementRef = inject(ElementRef<HTMLElement>);
+  private anchorComp = inject(NzAnchorComponent);
+  private platform = inject(Platform);
+  private renderer = inject(Renderer2);
+  private readonly destroyRef = inject(DestroyRef);
+
   @Input() nzHref = '#';
   @Input() nzTarget?: string;
 
@@ -74,12 +81,11 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @ContentChild('nzTemplate', { static: false }) nzTemplate!: TemplateRef<void>;
   @ViewChild('linkTitle') linkTitle!: ElementRef<HTMLAnchorElement>;
 
-  constructor(
-    public elementRef: ElementRef,
-    private anchorComp: NzAnchorComponent,
-    private platform: Platform,
-    private renderer: Renderer2
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.anchorComp.unregisterLink(this);
+    });
+  }
 
   ngOnInit(): void {
     this.anchorComp.registerLink(this);
@@ -104,9 +110,5 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     if (this.platform.isBrowser) {
       this.anchorComp.handleScrollTo(this);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.anchorComp.unregisterLink(this);
   }
 }
