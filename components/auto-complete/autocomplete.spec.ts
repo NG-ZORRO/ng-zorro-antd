@@ -989,7 +989,7 @@ describe('auto-complete', () => {
         nz-input
         [formControl]="inputControl"
         [nzAutocomplete]="auto"
-        (input)="onInput($event.target?.value)"
+        (input)="onInput($any($event).target?.value)"
       />
       <nz-autocomplete #auto>
         @for (option of filteredOptions; track option) {
@@ -1103,7 +1103,7 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
 })
 class NzTestAutocompleteGroupComponent {
   inputValue!: string;
-  optionGroups = [
+  optionGroups: Array<{ title: string; children: Array<{ title: string; count: number; disabled?: boolean }> }> = [
     {
       title: '话题',
       children: [

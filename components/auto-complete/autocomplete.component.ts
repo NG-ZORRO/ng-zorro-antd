@@ -13,11 +13,11 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -29,8 +29,9 @@ import {
   booleanAttribute,
   inject
 } from '@angular/core';
-import { Observable, Subject, Subscription, defer, merge } from 'rxjs';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, Subscription, defer, merge } from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -100,7 +101,10 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   `,
   animations: [slideMotion]
 })
-export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit, OnChanges {
+export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnInit, OnChanges {
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
   @Input({ transform: numberAttributeWithZeroFallback }) nzWidth?: number;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: Record<string, string> = {};
@@ -117,7 +121,6 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   activeItem: NzAutocompleteOptionComponent | null = null;
   dir: Direction = 'ltr';
   normalizedDataSource: AutocompleteDataSourceItem[] = [];
-  private destroy$ = new Subject<void>();
   animationStateChange = new EventEmitter<AnimationEvent>();
 
   /**
@@ -169,13 +172,20 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
-  constructor(
-    private changeDetectorRef: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.dataSourceChangeSubscription!.unsubscribe();
+      this.selectionChangeSubscription!.unsubscribe();
+      this.optionMouseEnterSubscription!.unsubscribe();
+      // Caretaker note: we have to set these subscriptions to `null` since these will be closed subscriptions, but they
+      // still keep references to destinations (which are `SafeSubscriber`s). Destinations keep referencing `next` functions,
+      // which we pass, for instance, to `this.optionSelectionChanges.subscribe(...)`.
+      this.dataSourceChangeSubscription = this.selectionChangeSubscription = this.optionMouseEnterSubscription = null;
+    });
+  }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.changeDetectorRef.detectChanges();
     });
@@ -204,18 +214,6 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     if (this.nzDataSource) {
       this.optionsInit();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.dataSourceChangeSubscription!.unsubscribe();
-    this.selectionChangeSubscription!.unsubscribe();
-    this.optionMouseEnterSubscription!.unsubscribe();
-    // Caretaker note: we have to set these subscriptions to `null` since these will be closed subscriptions, but they
-    // still keep references to destinations (which are `SafeSubscriber`s). Destinations keep referencing `next` functions,
-    // which we pass, for instance, to `this.optionSelectionChanges.subscribe(...)`.
-    this.dataSourceChangeSubscription = this.selectionChangeSubscription = this.optionMouseEnterSubscription = null;
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   setVisibility(): void {

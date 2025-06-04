@@ -11,15 +11,15 @@ import {
   EventEmitter,
   Input,
   NgZone,
-  OnDestroy,
   OnInit,
   Output,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, scrollIntoView } from 'ng-zorro-antd/core/util';
@@ -56,7 +56,12 @@ export class NzOptionSelectionChange {
     '(click)': 'selectViaInteraction()'
   }
 })
-export class NzAutocompleteOptionComponent implements OnInit, OnDestroy {
+export class NzAutocompleteOptionComponent implements OnInit {
+  private ngZone = inject(NgZone);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private element = inject(ElementRef<HTMLElement>);
+  private destroyRef = inject(DestroyRef);
+
   @Input() nzValue: NzSafeAny;
   @Input() nzLabel?: string;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
@@ -67,31 +72,19 @@ export class NzAutocompleteOptionComponent implements OnInit, OnDestroy {
   selected = false;
   nzAutocompleteOptgroupComponent = inject(NzAutocompleteOptgroupComponent, { optional: true });
 
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private ngZone: NgZone,
-    private changeDetectorRef: ChangeDetectorRef,
-    private element: ElementRef<HTMLElement>
-  ) {}
-
   ngOnInit(): void {
     fromEventOutsideAngular(this.element.nativeElement, 'mouseenter')
       .pipe(
         filter(() => this.mouseEntered.observers.length > 0),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.ngZone.run(() => this.mouseEntered.emit(this));
       });
 
     fromEventOutsideAngular(this.element.nativeElement, 'mousedown')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => event.preventDefault());
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
   }
 
   select(emit: boolean = true): void {

@@ -15,6 +15,7 @@ import {
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
+  DestroyRef,
   Directive,
   DOCUMENT,
   ElementRef,
@@ -23,12 +24,12 @@ import {
   inject,
   Input,
   NgZone,
-  OnDestroy,
   ViewContainerRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
-import { delay, filter, takeUntil, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { delay, filter, tap } from 'rxjs/operators';
 
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
@@ -64,7 +65,12 @@ export function getNzAutocompleteMissingPanelError(): Error {
     '(click)': 'handleClick()'
   }
 })
-export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor, OnDestroy {
+export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor {
+  private ngZone = inject(NgZone);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private overlay = inject(Overlay);
+  private viewContainerRef = inject(ViewContainerRef);
+  private destroyRef = inject(DestroyRef);
   /** Bind nzAutocomplete component */
   @Input() nzAutocomplete!: NzAutocompleteComponent;
 
@@ -81,7 +87,6 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     }
   }
 
-  private destroy$ = new Subject<void>();
   private overlayRef: OverlayRef | null = null;
   private portal: TemplatePortal<{}> | null = null;
   private positionStrategy!: FlexibleConnectedPositionStrategy;
@@ -92,16 +97,15 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   private document: Document = inject(DOCUMENT);
   private nzInputGroupWhitSuffixOrPrefixDirective = inject(NzInputGroupWhitSuffixOrPrefixDirective, { optional: true });
 
-  constructor(
-    private ngZone: NgZone,
-    private elementRef: ElementRef,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.destroyPanel();
+    });
+  }
 
   ngAfterViewInit(): void {
     if (this.nzAutocomplete) {
-      this.nzAutocomplete.animationStateChange.pipe(takeUntil(this.destroy$)).subscribe(event => {
+      this.nzAutocomplete.animationStateChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
         if (event.toState === 'void') {
           if (this.overlayRef) {
             this.overlayRef.dispose();
@@ -110,12 +114,6 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
         }
       });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.destroyPanel();
   }
 
   writeValue(value: NzSafeAny): void {
@@ -281,7 +279,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
       this.overlayOutsideClickSubscription = this.subscribeOverlayOutsideClick();
       this.overlayRef
         .detachments()
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.closePanel();
         });
