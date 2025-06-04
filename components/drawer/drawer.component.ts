@@ -8,15 +8,18 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { CdkScrollable, Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
-import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ComponentRef,
   ContentChild,
+  DOCUMENT,
   EventEmitter,
+  inject,
   Injector,
   Input,
   OnChanges,
@@ -28,9 +31,7 @@ import {
   TemplateRef,
   Type,
   ViewChild,
-  ViewContainerRef,
-  booleanAttribute,
-  inject
+  ViewContainerRef
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

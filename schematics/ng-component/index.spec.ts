@@ -7,8 +7,6 @@ import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { ChangeDetection, Style } from '@schematics/angular/component/schema';
 
-import { describe } from 'node:test'
-
 import { createTestApp } from '../testing/test-app';
 
 const appOptions = {
@@ -184,11 +182,11 @@ describe('ng-component schematic', () => {
     });
 
     it('should set classname with the specified module', async () => {
-      const options = { ...defaultOptions, classnameWithModule: true, module: 'app.module.ts', standalone: false };
+      const options = { ...defaultOptions, classnameWithModule: true, module: 'app-module.ts', standalone: false };
       const app = await createTestApp(runner, { ...appOptions, standalone: false });
       const tree = await runner.runSchematic('component', options, app);
 
-      const appComponentContent = tree.readContent('/projects/ng-zorro/src/app/app.module.ts');
+      const appComponentContent = tree.readContent('/projects/ng-zorro/src/app/app-module.ts');
       expect(appComponentContent).toMatch(/import { AppTestComponent } from '.\/test\/test.component'/);
     });
   });

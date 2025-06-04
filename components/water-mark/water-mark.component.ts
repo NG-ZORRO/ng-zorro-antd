@@ -3,20 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DOCUMENT,
   ElementRef,
+  inject,
   Input,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
-  inject,
-  numberAttribute
+  SimpleChanges
 } from '@angular/core';
 
 import { FontType, MarkStyleType } from './typings';

@@ -6,20 +6,21 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
-import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
-  Component,
-  contentChildren,
-  ElementRef,
-  input,
-  output,
-  ViewEncapsulation,
-  inject,
-  computed,
-  linkedSignal,
-  signal,
   booleanAttribute,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  contentChildren,
+  DOCUMENT,
+  ElementRef,
+  inject,
+  input,
+  linkedSignal,
+  output,
+  signal,
+  ViewEncapsulation
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, merge, Subject, takeUntil } from 'rxjs';

@@ -5,7 +5,10 @@
     "baseUrl": "./",
     "module": "es2020",
     "isolatedModules": true,
-    "types": [],
+    "types": [
+      "node",
+      "express"
+    ],
     "paths": {
       "ng-zorro-antd": [ "../components/ng-zorro-antd.module.ts" ],
       "ng-zorro-antd/*": [ "../components/*" ],

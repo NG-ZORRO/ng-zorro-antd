@@ -4,8 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
-import { Injectable, inject } from '@angular/core';
+import { DOCUMENT, inject, Injectable } from '@angular/core';
 
 interface PreloadOption {
   src: string;

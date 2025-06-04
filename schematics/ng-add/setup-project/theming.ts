@@ -23,10 +23,9 @@ const defaultCustomThemeFilename = 'theme.less';
 /** Object that maps a CLI target to its default builder name. */
 const defaultTargetBuilders = {
   build: [
-    '@angular-devkit/build-angular:application', // for esbuild
-    '@angular-devkit/build-angular:browser' // for webpack
+    '@angular/build:application',
   ],
-  test: ['@angular-devkit/build-angular:karma']
+  test: ['@angular/build:karma']
 };
 
 /** Add pre-built styles to the main project style file. */
@@ -41,7 +40,7 @@ export function addThemeToAppStyles(options: Schema): Rule {
 }
 
 /**
- * Insert a custom theme to project style file. If no valid style file could be found, a new
+ * Insert a custom theme to a project style file. If no valid style file could be found, a new
  * Scss file for the custom theme will be created.
  */
 async function insertCustomTheme(projectName: string, host: Tree, logger: logging.LoggerApi): Promise<Rule> {
@@ -59,7 +58,7 @@ async function insertCustomTheme(projectName: string, host: Tree, logger: loggin
     }
 
     // Normalize the path through the devkit utilities because we want to avoid having
-    // unnecessary path segments and windows backslash delimiters.
+    // unnecessary path segments and window backslash delimiters.
     const customThemePath = normalize(join(project.sourceRoot, defaultCustomThemeFilename));
 
     if (host.exists(customThemePath)) {

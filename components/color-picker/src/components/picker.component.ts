@@ -3,21 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectorRef,
   Component,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
-  booleanAttribute,
-  inject
+  ViewChild
 } from '@angular/core';
 
 import { HandlerComponent } from './handler.component';

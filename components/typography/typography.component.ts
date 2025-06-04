@@ -5,16 +5,20 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DOCUMENT,
   ElementRef,
   EmbeddedViewRef,
   EventEmitter,
+  inject,
   Input,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -24,10 +28,7 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  ViewEncapsulation,
-  booleanAttribute,
-  inject,
-  numberAttribute
+  ViewEncapsulation
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

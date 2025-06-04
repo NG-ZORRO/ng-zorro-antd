@@ -4,19 +4,19 @@
  */
 
 import {
+  afterEveryRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
+  numberAttribute,
   OnChanges,
   Output,
   ViewChild,
-  ViewEncapsulation,
-  afterRender,
-  inject,
-  numberAttribute
+  ViewEncapsulation
 } from '@angular/core';
 
 import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
@@ -81,7 +81,7 @@ export class NzAvatarComponent implements OnChanges {
   private cdr = inject(ChangeDetectorRef);
 
   constructor() {
-    afterRender(() => this.calcStringSize());
+    afterEveryRender(() => this.calcStringSize());
   }
 
   imgError(event: Event): void {

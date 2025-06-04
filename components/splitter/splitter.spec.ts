@@ -4,8 +4,7 @@
  */
 
 import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
-import { DOCUMENT } from '@angular/common';
-import { Component, DebugElement, NgZone } from '@angular/core';
+import { Component, DebugElement, DOCUMENT, NgZone } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';

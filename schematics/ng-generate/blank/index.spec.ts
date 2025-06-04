@@ -21,9 +21,9 @@ describe('ng-component schematic', () => {
     appTree = await createTestApp(runner);
   });
 
-  it('should update app.component.html', async () => {
+  it('should update app.html', async () => {
     const options = {...defaultOptions};
-    const appComponentHTMLPath = '/projects/ng-zorro/src/app/app.component.html';
+    const appComponentHTMLPath = '/projects/ng-zorro/src/app/app.html';
     const tree = await runner.runSchematic('blank', options, appTree);
     const appComponentHTML = tree.readContent(appComponentHTMLPath);
     const files = tree.files;

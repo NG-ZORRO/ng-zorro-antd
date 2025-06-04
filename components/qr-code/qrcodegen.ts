@@ -893,63 +893,69 @@ namespace qrcodegen {
 
 /*---- Public helper enumeration ----*/
 // eslint-disable-next-line @typescript-eslint/no-namespace
-namespace qrcodegen.QrCode {
-  type int = number;
+namespace qrcodegen {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  export namespace QrCode {
+    type int = number;
 
-  /*
-   * The error correction level in a QR Code symbol. Immutable.
-   */
-  export class Ecc {
-    /*-- Constants --*/
+    /*
+     * The error correction level in a QR Code symbol. Immutable.
+     */
+    export class Ecc {
+      /*-- Constants --*/
 
-    public static readonly LOW = new Ecc(0, 1); // The QR Code can tolerate about  7% erroneous codewords
-    public static readonly MEDIUM = new Ecc(1, 0); // The QR Code can tolerate about 15% erroneous codewords
-    public static readonly QUARTILE = new Ecc(2, 3); // The QR Code can tolerate about 25% erroneous codewords
-    public static readonly HIGH = new Ecc(3, 2); // The QR Code can tolerate about 30% erroneous codewords
+      public static readonly LOW = new Ecc(0, 1); // The QR Code can tolerate about  7% erroneous codewords
+      public static readonly MEDIUM = new Ecc(1, 0); // The QR Code can tolerate about 15% erroneous codewords
+      public static readonly QUARTILE = new Ecc(2, 3); // The QR Code can tolerate about 25% erroneous codewords
+      public static readonly HIGH = new Ecc(3, 2); // The QR Code can tolerate about 30% erroneous codewords
 
-    /*-- Constructor and fields --*/
+      /*-- Constructor and fields --*/
 
-    private constructor(
-      // In the range 0 to 3 (unsigned 2-bit integer).
-      public readonly ordinal: int,
-      // (Package-private) In the range 0 to 3 (unsigned 2-bit integer).
-      public readonly formatBits: int
-    ) {}
+      private constructor(
+        // In the range 0 to 3 (unsigned 2-bit integer).
+        public readonly ordinal: int,
+        // (Package-private) In the range 0 to 3 (unsigned 2-bit integer).
+        public readonly formatBits: int
+      ) {}
+    }
   }
 }
 
 /*---- Public helper enumeration ----*/
 // eslint-disable-next-line @typescript-eslint/no-namespace
-namespace qrcodegen.QrSegment {
-  type int = number;
+namespace qrcodegen {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  export namespace QrSegment {
+    type int = number;
 
-  /*
-   * Describes how a segment's data bits are interpreted. Immutable.
-   */
-  export class Mode {
-    /*-- Constants --*/
+    /*
+     * Describes how a segment's data bits are interpreted. Immutable.
+     */
+    export class Mode {
+      /*-- Constants --*/
 
-    public static readonly NUMERIC = new Mode(0x1, [10, 12, 14]);
-    public static readonly ALPHANUMERIC = new Mode(0x2, [9, 11, 13]);
-    public static readonly BYTE = new Mode(0x4, [8, 16, 16]);
-    public static readonly KANJI = new Mode(0x8, [8, 10, 12]);
-    public static readonly ECI = new Mode(0x7, [0, 0, 0]);
+      public static readonly NUMERIC = new Mode(0x1, [10, 12, 14]);
+      public static readonly ALPHANUMERIC = new Mode(0x2, [9, 11, 13]);
+      public static readonly BYTE = new Mode(0x4, [8, 16, 16]);
+      public static readonly KANJI = new Mode(0x8, [8, 10, 12]);
+      public static readonly ECI = new Mode(0x7, [0, 0, 0]);
 
-    /*-- Constructor and fields --*/
+      /*-- Constructor and fields --*/
 
-    private constructor(
-      // The mode indicator bits, which is a uint4 value (range 0 to 15).
-      public readonly modeBits: int,
-      // Number of character count bits for three different version ranges.
-      private readonly numBitsCharCount: [int, int, int]
-    ) {}
+      private constructor(
+        // The mode indicator bits, which is a uint4 value (range 0 to 15).
+        public readonly modeBits: int,
+        // Number of character count bits for three different version ranges.
+        private readonly numBitsCharCount: [int, int, int]
+      ) {}
 
-    /*-- Method --*/
+      /*-- Method --*/
 
-    // (Package-private) Returns the bit width of the character count field for a segment in
-    // this mode in a QR Code at the given version number. The result is in the range [0, 16].
-    public numCharCountBits(ver: int): int {
-      return this.numBitsCharCount[Math.floor((ver + 7) / 17)];
+      // (Package-private) Returns the bit width of the character count field for a segment in
+      // this mode in a QR Code at the given version number. The result is in the range [0, 16].
+      public numCharCountBits(ver: int): int {
+        return this.numBitsCharCount[Math.floor((ver + 7) / 17)];
+      }
     }
   }
 }

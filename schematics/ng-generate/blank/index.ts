@@ -23,7 +23,7 @@ export default function(options: Schema): Rule {
   return async (host: Tree, context) => {
     const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
     const project = getProjectFromWorkspace(workspace, options.project);
-    const appHTMLFile = `${project.sourceRoot}/app/app.component.html`;
+    const appHTMLFile = `${project.sourceRoot}/app/app.html`;
     const buffer = host.read(appHTMLFile);
 
     if (!buffer) {

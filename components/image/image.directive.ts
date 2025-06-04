@@ -4,20 +4,20 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { DOCUMENT } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectorRef,
   Directive,
+  DOCUMENT,
   ElementRef,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
-  booleanAttribute,
-  inject
+  SimpleChanges
 } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';

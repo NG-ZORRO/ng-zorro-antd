@@ -8,30 +8,30 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   ElementRef,
   EventEmitter,
+  forwardRef,
+  inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
   Renderer2,
+  signal,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation,
-  booleanAttribute,
-  computed,
-  forwardRef,
-  inject,
-  numberAttribute,
-  signal
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, merge } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
@@ -487,7 +487,6 @@ export class NzInputNumberLegacyComponent implements ControlValueAccessor, After
           } else {
             this.updateDisplayValue(this.value!);
           }
-
           this.cdr.markForCheck();
         });
       });

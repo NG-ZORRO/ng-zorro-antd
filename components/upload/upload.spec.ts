@@ -6,8 +6,8 @@
 import { ENTER, TAB } from '@angular/cdk/keycodes';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { ApplicationRef, Component, DebugElement, Injector, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, Observer, of, throwError } from 'rxjs';
@@ -79,14 +79,13 @@ describe('upload', () => {
   });
 
   describe('component', () => {
-    let injector: Injector;
     let fixture: ComponentFixture<TestUploadComponent>;
     let dl: DebugElement;
     let instance: TestUploadComponent;
     let pageObject: NzUploadPageObject;
     let httpMock: HttpTestingController;
     beforeEach(() => {
-      injector = TestBed.configureTestingModule({
+      TestBed.configureTestingModule({
         providers: [
           provideNzIconsTesting(),
           provideNoopAnimations(),
@@ -99,7 +98,7 @@ describe('upload', () => {
       instance = dl.componentInstance;
       fixture.detectChanges();
       pageObject = new NzUploadPageObject();
-      httpMock = injector.get(HttpTestingController);
+      httpMock = TestBed.inject(HttpTestingController);
     });
 
     describe('[default]', () => {
@@ -221,7 +220,7 @@ describe('upload', () => {
           } as NzSafeAny
         ];
         fixture.detectChanges();
-        injector.get(NzI18nService).setLocale(en_US);
+        TestBed.inject(NzI18nService).setLocale(en_US);
         fixture.detectChanges();
         const removeFileText = pageObject.getByCss('.ant-upload-list-item-card-actions-btn > .anticon-delete')
           .nativeElement as HTMLElement;
@@ -618,7 +617,7 @@ describe('upload', () => {
           expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(count);
         });
         it('should be with null', () => {
-          instance.onRemove = null;
+          instance.onRemove = undefined;
           fixture.detectChanges();
           expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(count);
           dl.query(By.css('.anticon-delete')).nativeElement.click();
@@ -830,7 +829,7 @@ describe('upload', () => {
       });
       it('should be invalid handle preview when is a null', () => {
         expect(instance._onPreview).toBe(false);
-        instance.onPreview = null;
+        instance.onPreview = undefined;
         fixture.detectChanges();
         dl.query(By.css('.ant-upload-list-item-actions a')).nativeElement.click();
         expect(instance._onPreview).toBe(false);
@@ -1237,12 +1236,11 @@ describe('upload', () => {
     });
 
     describe('methods', () => {
-      let injector: Injector;
       let fixture: ComponentFixture<NzUploadBtnComponent>;
       let comp: NzUploadBtnComponent;
       let http: HttpTestingController;
       beforeEach(() => {
-        injector = TestBed.configureTestingModule({
+        TestBed.configureTestingModule({
           imports: [NzUploadBtnComponent],
           providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
         });
@@ -1263,7 +1261,7 @@ describe('upload', () => {
           onSuccess: () => {},
           onError: () => {}
         } as ZipButtonOptions;
-        http = injector.get(HttpTestingController);
+        http = TestBed.inject(HttpTestingController);
       });
 
       it('should uploading a png file', fakeAsync(() => {
@@ -1430,7 +1428,7 @@ class TestUploadComponent {
   };
   previewFile!: (file: NzUploadFile) => Observable<string>;
   _onRemove = false;
-  onRemove: null | ((file: NzUploadFile) => boolean | Observable<boolean>) = (): boolean => {
+  onRemove: undefined | ((file: NzUploadFile) => boolean | Observable<boolean>) = (): boolean => {
     this._onRemove = true;
     return true;
   };
@@ -1492,7 +1490,7 @@ class TestUploadListComponent {
     showRemoveIcon: true
   };
   _onPreview = false;
-  onPreview: VoidFunction | null = (): void => {
+  onPreview: VoidFunction | undefined = (): void => {
     this._onPreview = true;
   };
   previewFile!: (file: NzUploadFile) => Observable<string>;
