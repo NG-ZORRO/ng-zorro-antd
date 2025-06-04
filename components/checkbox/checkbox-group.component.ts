@@ -35,11 +35,6 @@ export interface NzCheckboxOption {
   disabled?: boolean;
 }
 
-/**
- * @deprecated Deprecated in v19.0.0. Please use {@link NzCheckboxOption} to instead.
- */
-export type NzCheckBoxOptionInterface = NzCheckboxOption;
-
 @Component({
   selector: 'nz-checkbox-group',
   exportAs: 'nzCheckboxGroup',

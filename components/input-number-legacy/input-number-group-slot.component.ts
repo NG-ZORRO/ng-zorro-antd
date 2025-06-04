@@ -9,7 +9,7 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
+ * @deprecated Will be removed in v21. It is recommended to use the new version `<nz-input-number>`.
  */
 @Component({
   selector: '[nz-input-number-group-slot]',

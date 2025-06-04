@@ -4,7 +4,6 @@ type: Layout
 cols: 1
 title: Space
 cover: 'https://gw.alipayobjects.com/zos/antfincdn/wc6%263gJ0Y8/Space.svg'
-tag: New
 description: Set components spacing.
 ---
 

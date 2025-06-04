@@ -109,7 +109,6 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
     </ng-template>
   `,
   host: {
-    '[class.ant-input-group-compact]': `nzCompact`,
     '[class.ant-input-search-enter-button]': `nzSearch`,
     '[class.ant-input-search]': `nzSearch`,
     '[class.ant-input-search-rtl]': `dir === 'rtl'`,
@@ -146,10 +145,6 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input({ transform: booleanAttribute }) nzSearch = false;
-  /**
-   * @deprecated Will be removed in v20. Use `NzSpaceCompactComponent` instead.
-   */
-  @Input({ transform: booleanAttribute }) nzCompact = false;
   isLarge = false;
   isSmall = false;
   isAffix = false;

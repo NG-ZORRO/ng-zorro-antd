@@ -13,7 +13,7 @@ import {
 import { NzInputNumberLegacyComponent } from './input-number.component';
 
 /**
- * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
+ * @deprecated Will be removed in v21. It is recommended to use the new version `<nz-input-number>`.
  */
 @NgModule({
   imports: [

@@ -23,7 +23,6 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute,
   inject
 } from '@angular/core';
 import { Subject, merge } from 'rxjs';
@@ -38,7 +37,7 @@ import { NzInputNumberGroupSlotComponent } from './input-number-group-slot.compo
 import { NzInputNumberLegacyComponent } from './input-number.component';
 
 /**
- * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
+ * @deprecated Will be removed in v21. It is recommended to use the new version `<nz-input-number>`.
  */
 @Directive({
   selector: `nz-input-number-group[nzSuffix], nz-input-number-group[nzPrefix]`
@@ -48,7 +47,7 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
 }
 
 /**
- * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
+ * @deprecated Will be removed in v21. It is recommended to use the new version `<nz-input-number>`.
  */
 @Component({
   selector: 'nz-input-number-group',
@@ -119,8 +118,6 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzFormNoStatusService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input-number' }],
   host: {
-    '[class.ant-input-number-group]': 'nzCompact',
-    '[class.ant-input-number-group-compact]': 'nzCompact',
     '[class.ant-input-number-group-wrapper]': `isAddOn`,
     '[class.ant-input-number-group-wrapper-rtl]': `isAddOn && dir === 'rtl'`,
     '[class.ant-input-number-group-wrapper-lg]': `isAddOn && isLarge`,
@@ -147,10 +144,7 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   @Input() nzStatus: NzStatus = '';
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
-  /**
-   * @deprecated Will be removed in v20. Use `NzSpaceCompactComponent` instead.
-   */
-  @Input({ transform: booleanAttribute }) nzCompact = false;
+
   isLarge = false;
   isSmall = false;
   isAffix = false;
