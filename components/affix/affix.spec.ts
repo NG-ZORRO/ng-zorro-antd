@@ -650,9 +650,7 @@ describe('NzAffixComponent', () => {
 
   it('should remove listeners on destroy', () => {
     spyOn(component as NzSafeAny, 'removeListeners').and.callThrough();
-
-    component.ngOnDestroy();
-
+    fixture.destroy();
     expect(component['removeListeners']).toHaveBeenCalled();
   });
 
