@@ -12,18 +12,18 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  forwardRef
+  forwardRef,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { LibPackerModule } from 'ng-zorro-antd/date-picker';
@@ -92,10 +92,13 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }],
   imports: [NzCalendarHeaderComponent, LibPackerModule]
 })
-export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
+export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit {
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   activeDate: CandyDate = new CandyDate();
   prefixCls: string = 'ant-picker-calendar';
-  private destroy$ = new Subject<void>();
   dir: Direction = 'ltr';
 
   private onChangeFn: (date: Date) => void = () => {};
@@ -143,14 +146,9 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
   @Input({ transform: booleanAttribute })
   nzFullscreen: boolean = true;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.dir = this.directionality.value;
     });
   }
@@ -204,10 +202,5 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
     if (changes.nzValue) {
       this.updateDate(new CandyDate(this.nzValue), false);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
