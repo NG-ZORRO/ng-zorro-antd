@@ -7,7 +7,6 @@ import { Direction } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -18,7 +17,8 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   inject,
-  numberAttribute
+  numberAttribute,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
@@ -80,6 +80,8 @@ import { NzCascaderOption } from './typings';
   encapsulation: ViewEncapsulation.None
 })
 export class NzCascaderOptionComponent implements OnInit {
+  private cdr = inject(ChangeDetectorRef);
+
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
   @Input() node!: NzTreeNode;
   @Input() activated = false;
@@ -93,8 +95,6 @@ export class NzCascaderOptionComponent implements OnInit {
   @Output() readonly check = new EventEmitter<void>();
 
   public readonly nativeElement: HTMLElement = inject(ElementRef).nativeElement;
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     if (this.expandIcon === '' && this.dir === 'rtl') {
