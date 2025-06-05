@@ -11,17 +11,16 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -77,13 +76,20 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
     '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
   }
 })
-export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
+export class NzBadgeComponent implements OnChanges, OnInit {
+  public nzConfigService = inject(NzConfigService);
+  private renderer = inject(Renderer2);
+  private cdr = inject(ChangeDetectorRef);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   showSup = false;
   presetColor: string | null = null;
   dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
+
   @Input({ transform: booleanAttribute }) nzShowZero: boolean = false;
   @Input({ transform: booleanAttribute }) nzShowDot = true;
   @Input({ transform: booleanAttribute }) nzStandalone = false;
@@ -100,15 +106,8 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    private directionality: Directionality
-  ) {}
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.prepareBadgeForRtl();
       this.cdr.detectChanges();
@@ -140,10 +139,5 @@ export class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
 
   get isRtlLayout(): boolean {
     return this.dir === 'rtl';
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
