@@ -39,6 +39,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 
 const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: true });
 
+/**
+ * @deprecated Will be removed in v21. It is recommended to use `<nz-float-button-top>` instead.
+ */
 @Component({
   selector: 'nz-back-top',
   exportAs: 'nzBackTop',
