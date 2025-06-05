@@ -49,7 +49,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 /**
- * @deprecated Deprecated in v19.0.0. It is recommended to use the new version `<nz-input-number>`.
+ * @deprecated Will be removed in v21. It is recommended to use the new version `<nz-input-number>`.
  */
 @Component({
   selector: 'nz-input-number',

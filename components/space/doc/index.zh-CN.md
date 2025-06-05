@@ -5,7 +5,6 @@ subtitle: 间距
 title: Space
 cols: 1
 cover: 'https://gw.alipayobjects.com/zos/antfincdn/wc6%263gJ0Y8/Space.svg'
-tag: New
 description: 设置组件之间的间距。
 ---
 

@@ -10,7 +10,7 @@ import { By } from '@angular/platform-browser';
 import { PRIMARY_OUTLET, provideRouter, Router, RouterOutlet, Routes } from '@angular/router';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
 import { NzBreadCrumbComponent } from './breadcrumb.component';
@@ -67,7 +67,7 @@ describe('breadcrumb', () => {
 
     beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NzIconTestModule]
+        providers: [provideNzIconsTesting()]
       });
     }));
 

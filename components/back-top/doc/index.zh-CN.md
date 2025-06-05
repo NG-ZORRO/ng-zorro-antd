@@ -7,7 +7,7 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg'
 description: 返回页面顶部的操作按钮。
 ---
 
-> ⚠️ **注意**：该组件将在后续版本移除，请使用 [FloatButton](/components/float-button/zh) 中的 `<nz-float-button-top>` 组件替代。
+> ⚠️ **注意**：该组件将在 v21 版本移除，请使用 [FloatButton](/components/float-button/zh) 中的 `<nz-float-button-top>` 组件替代。
 
 ## 何时使用
 

@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-button-size',
-  imports: [FormsModule, NzButtonModule, NzIconModule, NzRadioModule],
+  imports: [FormsModule, NzButtonModule, NzIconModule, NzRadioModule, NzSpaceModule],
   template: `
     <nz-radio-group [(ngModel)]="size">
       <label nz-radio-button nzValue="large">Large</label>
@@ -39,7 +40,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
       Download
     </button>
     <br />
-    <nz-button-group [nzSize]="size">
+    <nz-space-compact [nzSize]="size">
       <button nz-button nzType="primary">
         <nz-icon nzType="left" />
         Backward
@@ -48,17 +49,13 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
         Forward
         <nz-icon nzType="right" />
       </button>
-    </nz-button-group>
+    </nz-space-compact>
   `,
   styles: [
     `
       [nz-button] {
         margin-right: 8px;
         margin-bottom: 12px;
-      }
-
-      nz-button-group [nz-button] {
-        margin-right: 0;
       }
     `
   ]

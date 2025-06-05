@@ -6,7 +6,7 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg'
 description: Makes it easy to go back to the top of the page.
 ---
 
-> ⚠️ **Note**: This component will be removed later, please use `<nz-float-button-top>` in [FloatButton](/components/float-button/en) instead.
+> ⚠️ **Note**: This component will be removed in v21, please use `<nz-float-button-top>` in [FloatButton](/components/float-button/en) instead.
 
 `nz-back-top` makes it easy to go back to the top of the page.
 

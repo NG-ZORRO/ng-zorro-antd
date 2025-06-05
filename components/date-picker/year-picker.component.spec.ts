@@ -135,7 +135,7 @@ describe('NzYearPickerComponent', () => {
     }));
 
     it('should nz-year-picker work', fakeAsync(() => {
-      fixtureInstance.useSuite = 5;
+      fixtureInstance.useSuite = 4;
       fixture.whenRenderingDone().then(() => {
         tick(500);
         fixture.detectChanges();
@@ -144,16 +144,6 @@ describe('NzYearPickerComponent', () => {
         expect(pickerInput).not.toBeNull();
       });
     }));
-
-    it('should support nzCompact', () => {
-      fixtureInstance.useSuite = 4;
-      fixture.detectChanges();
-      const pickerInput = getPickerInput(fixture.debugElement);
-      expect(pickerInput).not.toBeNull();
-      const compStyles = window.getComputedStyle(pickerInput);
-      expect(compStyles.getPropertyValue('border-top-right-radius') === '0px').toBeTruthy();
-      expect(compStyles.getPropertyValue('border-bottom-right-radius') === '0px').toBeTruthy();
-    });
 
     it('should support nzDisabledDate', fakeAsync(() => {
       fixture.detectChanges();
@@ -370,7 +360,7 @@ describe('NzYearPickerComponent', () => {
           [nzDisabledDate]="nzDisabledDate"
           [nzLocale]="nzLocale"
           [nzPlaceHolder]="nzPlaceHolder"
-          [nzPopupStyle]="nzPopupStyle"
+          [nzPopupStyle]="nzPopupStyle ?? {}"
           [nzDropdownClassName]="nzDropdownClassName"
           [nzSize]="nzSize"
           (nzOnOpenChange)="nzOnOpenChange($event)"
@@ -386,19 +376,13 @@ describe('NzYearPickerComponent', () => {
         <nz-date-picker nzMode="year" nzOpen [(ngModel)]="modelValue" />
       }
       @case (4) {
-        <nz-input-group nzCompact>
-          <nz-date-picker nzMode="year" style="width: 200px;" />
-          <input nz-input type="text" style="width: 200px;" />
-        </nz-input-group>
-      }
-      @case (5) {
         <nz-year-picker nzOpen [(ngModel)]="modelValue" />
       }
     }
   `
 })
 class NzTestYearPickerComponent {
-  useSuite?: 1 | 2 | 3 | 4 | 5;
+  useSuite?: 1 | 2 | 3 | 4;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
   // --- Suite 1
