@@ -5,6 +5,9 @@
 
 import { Directive } from '@angular/core';
 
+/**
+ * @deprecated Will be removed in v21, because it is not used anymore.
+ */
 @Directive({
   selector: '[nz-button][nz-dropdown]'
 })
