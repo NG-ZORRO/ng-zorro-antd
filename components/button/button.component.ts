@@ -11,6 +11,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
   Input,
   OnChanges,
@@ -23,8 +24,9 @@ import {
   inject,
   signal
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
-import { filter, startWith, takeUntil } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -77,6 +79,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   providers: [NzDestroyService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'btn' }]
 })
 export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContentInit, OnInit {
+  private elementRef = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
+  private renderer = inject(Renderer2);
+  public nzConfigService = inject(NzConfigService);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
@@ -101,7 +109,6 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
 
   private size = signal<NzSizeLDSType>(this.nzSize);
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
-  private destroy$ = inject(NzDestroyService);
   private loading$ = new Subject<boolean>();
 
   insertSpan(nodes: NodeList, renderer: Renderer2): void {
@@ -126,25 +133,17 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
     return !!this.nzIconDirectiveElement && noSpan && noText;
   }
 
-  constructor(
-    private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
-    private renderer: Renderer2,
-    public nzConfigService: NzConfigService,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
     this.size.set(this.nzSize);
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.size.set(this.nzSize);
         this.cdr.markForCheck();
       });
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -156,7 +155,7 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
     // function, which runs `markDirty()` before running the actual listener (the decorated class method).
     // Since we're preventing the default behavior and stopping event propagation this doesn't require Angular to run the change detection.
     fromEventOutsideAngular<MouseEvent>(this.elementRef.nativeElement, 'click', { capture: true })
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         if ((this.disabled && (event.target as HTMLElement)?.tagName === 'A') || this.nzLoading) {
           event.preventDefault();
@@ -183,7 +182,7 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
       .pipe(
         startWith(this.nzLoading),
         filter(() => !!this.nzIconDirectiveElement),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(loading => {
         const nativeElement = this.nzIconDirectiveElement.nativeElement;
