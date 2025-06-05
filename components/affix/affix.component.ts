@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   DOCUMENT,
   ElementRef,
   EventEmitter,
@@ -17,7 +18,6 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -25,8 +25,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { map, takeUntil, throttleTime } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { fromEvent, merge, ReplaySubject, Subscription } from 'rxjs';
+import { map, throttleTime } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -53,7 +54,17 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, OnInit {
+export class NzAffixComponent implements AfterViewInit, OnChanges, OnInit {
+  public nzConfigService = inject(NzConfigService);
+  private scrollSrv = inject(NzScrollService);
+  private ngZone = inject(NgZone);
+  private platform = inject(Platform);
+  private renderer = inject(Renderer2);
+  private nzResizeObserver = inject(NzResizeObserver);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ViewChild('fixedEl', { static: true }) private fixedEl!: ElementRef<HTMLDivElement>;
@@ -72,13 +83,12 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
 
   dir: Direction = 'ltr';
 
-  private readonly placeholderNode: HTMLElement;
+  private readonly placeholderNode: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
 
   private affixStyle?: NgStyleInterface;
   private placeholderStyle?: NgStyleInterface;
   private positionChangeSubscription: Subscription = Subscription.EMPTY;
   private offsetChanged$ = new ReplaySubject<void>(1);
-  private destroy$ = new Subject<boolean>();
   private timeout?: ReturnType<typeof setTimeout>;
   private document: Document = inject(DOCUMENT);
 
@@ -87,23 +97,14 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     return (typeof el === 'string' ? this.document.querySelector(el) : el) || window;
   }
 
-  constructor(
-    el: ElementRef,
-    public nzConfigService: NzConfigService,
-    private scrollSrv: NzScrollService,
-    private ngZone: NgZone,
-    private platform: Platform,
-    private renderer: Renderer2,
-    private nzResizeObserver: NzResizeObserver,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {
-    // The wrapper would stay at the original position as a placeholder.
-    this.placeholderNode = el.nativeElement;
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.removeListeners();
+    });
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.registerListeners();
       this.updatePosition({} as Event);
@@ -128,10 +129,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
     this.registerListeners();
   }
 
-  ngOnDestroy(): void {
-    this.removeListeners();
-  }
-
   private registerListeners(): void {
     if (!this.platform.isBrowser) {
       return;
@@ -145,7 +142,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
         this.offsetChanged$.pipe(map(() => ({}))),
         this.nzResizeObserver.observe(el)
       )
-        .pipe(throttleTime(NZ_AFFIX_DEFAULT_SCROLL_TIME, undefined, { trailing: true }), takeUntil(this.destroy$))
+        .pipe(
+          throttleTime(NZ_AFFIX_DEFAULT_SCROLL_TIME, undefined, { trailing: true }),
+          takeUntilDestroyed(this.destroyRef)
+        )
         .subscribe(e => this.updatePosition(e as Event))
     );
     this.timeout = setTimeout(() => this.updatePosition({} as Event));
@@ -154,8 +154,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, On
   private removeListeners(): void {
     clearTimeout(this.timeout);
     this.positionChangeSubscription.unsubscribe();
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 
   getOffset(element: Element, target: Element | Window | undefined): SimpleRect {
