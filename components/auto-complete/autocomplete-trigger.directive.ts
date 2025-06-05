@@ -59,9 +59,9 @@ export function getNzAutocompleteMissingPanelError(): Error {
     'aria-autocomplete': 'list',
     '(focusin)': 'handleFocus()',
     '(blur)': 'handleBlur()',
-    '(input)': 'handleInput($event)',
-    '(keydown)': 'handleKeydown($event)',
-    '(click)': 'handleClick($event)'
+    '(input)': 'handleInput($any($event))',
+    '(keydown)': 'handleKeydown($any($event))',
+    '(click)': 'handleClick()'
   }
 })
 export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor, OnDestroy {
