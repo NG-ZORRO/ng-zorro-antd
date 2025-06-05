@@ -17,7 +17,19 @@ export type NzJustify =
   | 'stretch'
   | 'normal';
 
-export type NzAlign = 'flex-start' | 'center' | 'flex-end' | 'start' | 'end' | 'stretch' | 'normal';
+export type NzAlign =
+  | 'flex-start'
+  | 'center'
+  | 'flex-end'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly'
+  | 'start'
+  | 'end'
+  | 'right'
+  | 'left'
+  | 'stretch'
+  | 'normal';
 
 export type NzGap = 'small' | 'middle' | 'large' | NzCustomGap;
 export type NzCustomGap = number | string;

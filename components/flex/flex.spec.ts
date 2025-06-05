@@ -172,20 +172,8 @@ describe('flex', () => {
 })
 export class TestFlexComponent {
   isVertical = false;
-  justify:
-    | 'flex-start'
-    | 'center'
-    | 'flex-end'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly'
-    | 'start'
-    | 'end'
-    | 'right'
-    | 'left'
-    | 'stretch'
-    | 'normal' = 'normal';
-  align: 'flex-start' | 'center' | 'flex-end' | 'start' | 'end' | 'stretch' | 'normal' = 'normal';
+  justify: NzJustify = 'normal';
+  align: NzAlign = 'normal';
   gap: 'small' | 'middle' | 'large' | NzCustomGap = 0;
   wrap: 'wrap' | 'nowrap' | 'wrap-reverse' = 'nowrap';
   flex: `${NzFlexShrink} ${NzFlexGrow} ${NzFlexBasis}` | 'unset' = 'unset';
