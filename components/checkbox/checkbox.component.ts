@@ -169,7 +169,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, AfterV
 
     this.nzCheckboxWrapperComponent?.addCheckbox(this);
 
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
