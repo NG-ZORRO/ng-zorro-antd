@@ -144,6 +144,17 @@ describe('NzPopover', () => {
 
     expect(overlayContainerElement.querySelector('.testClass1.testClass2')).not.toBeNull();
   }));
+
+  it('should support context', fakeAsync(() => {
+    const triggerElement = component.contextPopover.nativeElement;
+
+    expect(getTitleTextContent()).toBeNull();
+    expect(getInnerTextContent()).toBeNull();
+    dispatchMouseEvent(triggerElement, 'mouseenter');
+    waitingForTooltipToggling();
+    expect(getTitleTextContent()).toContain('titleContextTest');
+    expect(getInnerTextContent()).toContain('contentContextTest');
+  }));
 });
 
 @Component({
@@ -178,12 +189,23 @@ describe('NzPopover', () => {
       [nzPopoverBackdrop]="true"
       [nzPopoverOverlayClickable]="false"
     >
-      Click
     </a>
 
     <ng-template #templateTitle>title-template</ng-template>
 
     <ng-template #templateContent>content-template</ng-template>
+
+    <a
+      #contextPopover
+      nz-popover
+      [nzPopoverTitle]="templateTitleContext"
+      [nzPopoverContent]="templateContentContext"
+      [nzPopoverTitleContext]="'titleContextTest'"
+      [nzPopoverContentContext]="'contentContextTest'"
+    >
+    </a>
+    <ng-template #templateTitleContext let-item>{{ item }}</ng-template>
+    <ng-template #templateContentContext let-item>{{ item }}</ng-template>
   `
 })
 export class NzPopoverTestComponent {
@@ -204,6 +226,10 @@ export class NzPopoverTestComponent {
   hideTemplateDirective!: NzPopoverDirective;
 
   @ViewChild('backdropPopover', { static: true }) backdropPopover!: ElementRef;
+
+  @ViewChild('contextPopover', { static: false }) contextPopover!: ElementRef;
+  @ViewChild('contextPopover', { static: false, read: NzPopoverDirective })
+  contextPopoverNzPopoverDirective!: NzPopoverDirective;
 
   content = 'content';
   visible = false;
