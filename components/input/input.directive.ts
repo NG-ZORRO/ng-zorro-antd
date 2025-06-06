@@ -25,7 +25,7 @@ import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
@@ -35,7 +35,9 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
   host: {
     class: 'ant-input',
     '[class.ant-input-disabled]': 'disabled',
-    '[class.ant-input-borderless]': 'nzBorderless',
+    '[class.ant-input-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
+    '[class.ant-input-filled]': `nzVariant === 'filled'`,
+    '[class.ant-input-underlined]': `nzVariant === 'underlined'`,
     '[class.ant-input-lg]': `finalSize() === 'large'`,
     '[class.ant-input-sm]': `finalSize() === 'small'`,
     '[attr.disabled]': 'disabled || null',
@@ -46,7 +48,11 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
   providers: [NzDestroyService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
 })
 export class NzInputDirective implements OnChanges, OnInit {
+  /**
+   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
+   */
   @Input({ transform: booleanAttribute }) nzBorderless = false;
+  @Input() nzVariant: NzVariant = 'outlined';
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input({ transform: booleanAttribute }) nzStepperless: boolean = true;
   @Input() nzStatus: NzStatus = '';

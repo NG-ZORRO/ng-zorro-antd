@@ -9,7 +9,7 @@ import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angu
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
 
@@ -62,6 +62,34 @@ describe('input', () => {
         testComponent.stepperless = false;
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-stepperless');
+      });
+      it('should nzBorderless work', () => {
+        testComponent.borderless = true;
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-borderless');
+      });
+      describe('should nzVariant work', () => {
+        it('filled', () => {
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).not.toContain('ant-input-filled');
+          testComponent.variant = 'filled';
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).toContain('ant-input-filled');
+        });
+        it('borderless', () => {
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).not.toContain('ant-input-borderless');
+          testComponent.variant = 'borderless';
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).toContain('ant-input-borderless');
+        });
+        it('underlined', () => {
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).not.toContain('ant-input-borderless');
+          testComponent.variant = 'underlined';
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).toContain('ant-input-underlined');
+        });
       });
     });
 
@@ -207,12 +235,21 @@ export class NzTestInputWithDirComponent {
 
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="stepperless" />`
+  template: `<input
+    nz-input
+    [nzSize]="size"
+    [disabled]="disabled"
+    [nzBorderless]="borderless"
+    [nzVariant]="variant"
+    [nzStepperless]="stepperless"
+  />`
 })
 export class NzTestInputWithInputComponent {
   size: NzSizeLDSType = 'default';
   disabled = false;
   stepperless = true;
+  borderless = false;
+  variant: NzVariant = 'outlined';
 }
 
 @Component({

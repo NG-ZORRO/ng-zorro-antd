@@ -21,7 +21,7 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
-import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 
 import { NzTreeSelectComponent } from './tree-select.component';
@@ -83,6 +83,31 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(treeSelect.nativeElement.classList).toContain('ant-select-lg');
     }));
+
+    describe('should variant works', () => {
+      it('filled', () => {
+        fixture.detectChanges();
+        expect(treeSelect.nativeElement.classList).not.toContain('ant-select-filled');
+        testComponent.variant = 'filled';
+        fixture.detectChanges();
+        expect(treeSelect.nativeElement.classList).toContain('ant-select-filled');
+      });
+      it('borderless', () => {
+        fixture.detectChanges();
+        expect(treeSelect.nativeElement.classList).not.toContain('ant-select-borderless');
+        testComponent.variant = 'borderless';
+        fixture.detectChanges();
+        expect(treeSelect.nativeElement.classList).toContain('ant-select-borderless');
+      });
+      it('underlined', () => {
+        fixture.detectChanges();
+        expect(treeSelect.nativeElement.classList).not.toContain('ant-select-underlined');
+        testComponent.variant = 'underlined';
+        fixture.detectChanges();
+        expect(treeSelect.nativeElement.classList).toContain('ant-select-underlined');
+      });
+    });
+
     it('should allowClear work', () => {
       const nativeElement = treeSelect.nativeElement as HTMLElement;
       expect(nativeElement.classList).not.toContain('ant-select-allow-clear');
@@ -711,6 +736,7 @@ describe('tree-select component', () => {
       [nzNodes]="nodes"
       [(ngModel)]="value"
       [nzSize]="size"
+      [nzVariant]="variant"
       [nzAllowClear]="allowClear"
       [nzDropdownMatchSelectWidth]="dropdownMatchSelectWidth"
       [nzDisabled]="disabled"
@@ -727,7 +753,8 @@ export class NzTestTreeSelectBasicComponent {
   @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent!: NzTreeSelectComponent;
   expandKeys = ['1001', '10001'];
   value: string | string[] | null = '10001';
-  size = 'default';
+  size: NzSizeLDSType = 'default';
+  variant: NzVariant = 'outlined';
   allowClear = false;
   disabled = false;
   showSearch = false;

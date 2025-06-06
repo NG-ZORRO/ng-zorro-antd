@@ -42,7 +42,14 @@ import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { NgClassInterface, NzSafeAny, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import {
+  NgClassInterface,
+  NzSafeAny,
+  NzSizeLDSType,
+  NzStatus,
+  NzValidateStatus,
+  NzVariant
+} from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -138,7 +145,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-focused]': `focused`,
     '[class.ant-picker-rtl]': `dir === 'rtl'`,
-    '[class.ant-picker-borderless]': `nzBorderless`,
+    '[class.ant-picker-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
+    '[class.ant-picker-filled]': `nzVariant === 'filled'`,
+    '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
     '(click)': 'open()'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
@@ -218,6 +227,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzStatus: NzStatus = '';
+  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
   @Input() @WithConfig() nzHourStep: number = 1;
   @Input() @WithConfig() nzMinuteStep: number = 1;
   @Input() @WithConfig() nzSecondStep: number = 1;
@@ -243,6 +253,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input() @WithConfig() nzBackdrop = false;
+  /**
+   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
+   */
   @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
 

@@ -64,7 +64,8 @@ import {
   NzSafeAny,
   NzSizeLDSType,
   NzStatus,
-  NzValidateStatus
+  NzValidateStatus,
+  NzVariant
 } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, getStatusClassNames, isNotNil, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
@@ -268,6 +269,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-show-arrow]': 'nzShowArrow',
     '[class.ant-select-show-search]': '!!nzShowSearch',
     '[class.ant-select-disabled]': 'nzDisabled',
+    '[class.ant-select-borderless]': `nzVariant === 'borderless'`,
+    '[class.ant-select-filled]': `nzVariant === 'filled'`,
+    '[class.ant-select-underlined]': `nzVariant === 'underlined'`,
     '[class.ant-select-open]': 'menuVisible',
     '[class.ant-select-focused]': 'isFocused',
     '[class.ant-select-multiple]': 'nzMultiple',
@@ -335,6 +339,7 @@ export class NzCascaderComponent
   @Input() nzValueProperty: string = 'value';
   @Input() nzLabelProperty: string = 'label';
   @Input() nzLabelRender: TemplateRef<typeof this.labelRenderContext> | null = null;
+  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig() nzSize: NzCascaderSize = 'default';
   @Input() @WithConfig() nzBackdrop = false;

@@ -186,6 +186,7 @@
 
 @background-color-light: hsv(0, 0, 98%); // background of header and selected item
 @background-color-base: hsv(0, 0, 96%); // Default grey background color
+@background-color-dark: hsv(0, 0, 94%); // dark grey background color
 
 // Disabled states
 @disabled-color: fade(#000, 25%);
@@ -462,6 +463,8 @@
 @input-outline-offset: 0 0;
 @input-icon-hover-color: fade(@black, 85%);
 @input-disabled-color: @disabled-color;
+@input-variant-filled-bg: @background-color-base;
+@input-variant-filled-hover-bg: @background-color-dark;
 
 // Mentions
 // ---
@@ -491,6 +494,7 @@
 @select-multiple-disabled-background: @input-disabled-bg;
 @select-multiple-item-disabled-color: #bfbfbf;
 @select-multiple-item-disabled-border-color: @select-border-color;
+@select-multiple-item-filled-bg: @component-background;
 
 // Cascader
 // ---

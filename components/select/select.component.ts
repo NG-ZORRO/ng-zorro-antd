@@ -56,6 +56,7 @@ import {
   NzSizeLDSType,
   NzStatus,
   NzValidateStatus,
+  NzVariant,
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
@@ -206,7 +207,9 @@ export type NzSelectSizeType = NzSizeLDSType;
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-show-search]': `(nzShowSearch || nzMode !== 'default') && !nzDisabled`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
-    '[class.ant-select-borderless]': 'nzBorderless',
+    '[class.ant-select-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
+    '[class.ant-select-filled]': `nzVariant === 'filled'`,
+    '[class.ant-select-underlined]': `nzVariant === 'underlined'`,
     '[class.ant-select-open]': 'nzOpen',
     '[class.ant-select-focused]': 'nzOpen || focused',
     '[class.ant-select-single]': `nzMode === 'default'`,
@@ -232,6 +235,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
+  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
   @Input() @WithConfig() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string[] | string | null = null;
@@ -256,6 +260,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input({ transform: booleanAttribute }) nzAllowClear = false;
+  /**
+   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
+   */
   @Input({ transform: booleanAttribute }) @WithConfig() nzBorderless = false;
   @Input({ transform: booleanAttribute }) nzShowSearch = false;
   @Input({ transform: booleanAttribute }) nzLoading = false;
