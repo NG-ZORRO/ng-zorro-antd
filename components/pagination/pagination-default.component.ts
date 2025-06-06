@@ -34,7 +34,6 @@ import { PaginationItemRenderContext } from './pagination.types';
 
 @Component({
   selector: 'nz-pagination-default',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

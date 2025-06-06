@@ -40,7 +40,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   host: {
     '[class.ant-select-tree-switcher]': 'nzSelectMode',
     '[class.ant-select-tree-switcher-noop]': 'nzSelectMode && isLeaf',

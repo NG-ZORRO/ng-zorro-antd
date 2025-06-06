@@ -36,7 +36,6 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
 @Component({
   selector: 'nz-select-top-control',
   exportAs: 'nzSelectTopControl',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

@@ -21,7 +21,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 @Component({
   selector: '[nz-transfer-search]',
   exportAs: 'nzTransferSearch',
-  preserveWhitespaces: false,
   template: `
     <span class="ant-input-prefix">
       <nz-icon nzType="search" />

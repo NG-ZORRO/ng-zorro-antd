@@ -59,7 +59,6 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-progress',
   exportAs: 'nzProgress',
-  preserveWhitespaces: false,
   imports: [NzIconModule, NzOutletModule, NgTemplateOutlet],
   template: `
     <ng-template #progressInfoTemplate>

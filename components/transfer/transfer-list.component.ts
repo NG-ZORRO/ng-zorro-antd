@@ -35,7 +35,6 @@ import { NzTransferSearchComponent } from './transfer-search.component';
 @Component({
   selector: 'nz-transfer-list',
   exportAs: 'nzTransferList',
-  preserveWhitespaces: false,
   template: `
     <div class="ant-transfer-list-header">
       @if (showSelectAll && !oneWay) {

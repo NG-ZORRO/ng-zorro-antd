@@ -20,7 +20,6 @@ import { NgStyleInterface } from 'ng-zorro-antd/core/types';
   exportAs: 'NzTreeDropIndicator',
   template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   host: {
     '[class.ant-tree-drop-indicator]': 'true',
     '[style]': 'style'

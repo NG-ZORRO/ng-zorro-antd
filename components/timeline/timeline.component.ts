@@ -35,7 +35,6 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   selector: 'nz-timeline',
   providers: [TimelineService],
   exportAs: 'nzTimeline',

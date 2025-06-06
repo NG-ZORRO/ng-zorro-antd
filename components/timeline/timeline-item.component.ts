@@ -27,7 +27,6 @@ function isDefaultColor(color?: string): boolean {
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   selector: 'nz-timeline-item, [nz-timeline-item]',
   exportAs: 'nzTimelineItem',
   template: `

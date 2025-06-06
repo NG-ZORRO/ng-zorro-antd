@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   selector: 'nz-content',
   exportAs: 'nzContent',
   template: `<ng-content></ng-content>`,
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })

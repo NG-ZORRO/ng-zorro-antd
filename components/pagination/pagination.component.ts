@@ -37,7 +37,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
 @Component({
   selector: 'nz-pagination',
   exportAs: 'nzPagination',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

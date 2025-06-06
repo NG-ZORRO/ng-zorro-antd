@@ -36,7 +36,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 @Component({
   selector: 'nz-tag',
   exportAs: 'nzTag',
-  preserveWhitespaces: false,
   template: `
     <ng-content></ng-content>
     @if (nzMode === 'closeable') {

@@ -65,7 +65,6 @@ import {
       </div>
     }
   `,
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {

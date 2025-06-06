@@ -16,7 +16,6 @@ import { NzCheckboxComponent } from './checkbox.component';
   selector: 'nz-checkbox-wrapper',
   exportAs: 'nzCheckboxWrapper',
   template: `<ng-content></ng-content>`,
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {

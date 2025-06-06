@@ -11,7 +11,6 @@ import { ShareModule } from '../share/share.module';
     ShareModule,
 {{declarations}}
   ],
-  preserveWhitespaces: false,
   templateUrl  : './{{language}}.html'
 })
 export class {{componentName}} {

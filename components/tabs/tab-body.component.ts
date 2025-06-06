@@ -11,7 +11,6 @@ import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
 @Component({
   selector: '[nz-tab-body]',
   exportAs: 'nzTabBody',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: ` <ng-template [ngTemplateOutlet]="content"></ng-template> `,

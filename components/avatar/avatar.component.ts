@@ -54,7 +54,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
     // nzSize type is number when customSize is true
     '[style.font-size.px]': '(hasIcon && customSize) ? $any(nzSize) / 2 : null'
   },
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })

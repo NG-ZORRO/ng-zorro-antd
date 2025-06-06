@@ -54,7 +54,6 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   host: {
     '[attr.title]': 'title',
     '[attr.draggable]': 'canDraggable',

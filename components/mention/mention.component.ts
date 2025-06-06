@@ -118,7 +118,6 @@ export type MentionPlacement = 'top' | 'bottom';
       <nz-form-item-feedback-icon class="ant-mentions-suffix" [status]="status" />
     }
   `,
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzMentionService, NzDestroyService],
   host: {

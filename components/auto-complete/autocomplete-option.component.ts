@@ -36,7 +36,6 @@ export class NzOptionSelectionChange {
 @Component({
   selector: 'nz-auto-option',
   exportAs: 'nzAutoOption',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

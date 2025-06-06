@@ -58,7 +58,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   selector: 'nz-table',
   exportAs: 'nzTable',
   providers: [NzTableStyleService, NzTableDataService],
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

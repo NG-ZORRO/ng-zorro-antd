@@ -112,7 +112,6 @@ import {
 
     <ng-content select="nz-list-pagination, [nz-list-pagination]" />
   `,
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

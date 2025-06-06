@@ -27,7 +27,6 @@ const iconTypeMap = {
   selector: 'nz-form-item-feedback-icon',
   exportAs: 'nzFormFeedbackIcon',
   imports: [NzIconModule],
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

@@ -27,7 +27,6 @@ export interface NzSliderTrackStyle {
   selector: 'nz-slider-track',
   exportAs: 'nzSliderTrack',
   template: `<div class="ant-slider-track" [style]="style"></div>`,
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

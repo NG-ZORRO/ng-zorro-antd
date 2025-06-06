@@ -36,7 +36,6 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
   exportAs: 'nzOptionContainer',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   template: `
     <div>
       @if (listOfContainerItem.length === 0) {

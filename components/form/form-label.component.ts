@@ -38,7 +38,6 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
 @Component({
   selector: 'nz-form-label',
   exportAs: 'nzFormLabel',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

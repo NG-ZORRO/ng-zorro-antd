@@ -12,7 +12,6 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
 @Component({
   selector: 'nz-form-item',
   exportAs: 'nzFormItem',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {

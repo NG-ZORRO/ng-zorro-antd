@@ -96,7 +96,6 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
     ></nz-tree-node-title>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   host: {
     '[class.ant-select-tree-treenode]': `nzSelectMode`,
     '[class.ant-select-tree-treenode-disabled]': `nzSelectMode && isDisabled`,

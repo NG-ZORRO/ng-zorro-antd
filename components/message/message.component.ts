@@ -26,7 +26,6 @@ import { NzMessageData } from './typings';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-message',
   exportAs: 'nzMessage',
-  preserveWhitespaces: false,
   animations: [moveUpMotion],
   template: `
     <div

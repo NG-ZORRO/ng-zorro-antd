@@ -64,7 +64,6 @@ import { NzListComponent } from './list.component';
       <ng-template [ngTemplateOutlet]="actionsTpl" />
     }
   `,
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

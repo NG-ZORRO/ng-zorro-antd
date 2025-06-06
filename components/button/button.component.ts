@@ -45,7 +45,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   selector: 'button[nz-button], a[nz-button]',
   exportAs: 'nzButton',
   imports: [NzIconModule],
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

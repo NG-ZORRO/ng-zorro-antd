@@ -22,7 +22,6 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 @Component({
   selector: 'nz-badge-sup',
   exportAs: 'nzBadgeSup',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],

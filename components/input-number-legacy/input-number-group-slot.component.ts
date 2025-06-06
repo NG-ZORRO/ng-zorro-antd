@@ -13,7 +13,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
  */
 @Component({
   selector: '[nz-input-number-group-slot]',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

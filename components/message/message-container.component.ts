@@ -29,7 +29,6 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-message-container',
   exportAs: 'nzMessageContainer',
-  preserveWhitespaces: false,
   template: `
     <div class="ant-message" [class.ant-message-rtl]="dir === 'rtl'" [style.top]="top">
       @for (instance of instances; track instance) {

@@ -137,7 +137,6 @@ const NZ_DEFAULT_ROTATE = 0;
       </div>
     </div>
   `,
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {

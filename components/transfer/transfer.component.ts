@@ -48,7 +48,6 @@ import { NzTransferListComponent } from './transfer-list.component';
 @Component({
   selector: 'nz-transfer',
   exportAs: 'nzTransfer',
-  preserveWhitespaces: false,
   template: `
     <nz-transfer-list
       class="ant-transfer-list"

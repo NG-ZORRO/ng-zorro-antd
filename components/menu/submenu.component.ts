@@ -64,7 +64,6 @@ const listOfHorizontalPositions = [
   providers: [NzSubmenuService],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   template: `
     <div
       nz-submenu-title

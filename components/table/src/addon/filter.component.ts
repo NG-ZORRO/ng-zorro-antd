@@ -42,7 +42,6 @@ interface NzThItemInterface {
 
 @Component({
   selector: 'nz-table-filter',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

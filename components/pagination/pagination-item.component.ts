@@ -23,7 +23,6 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
 
 @Component({
   selector: 'li[nz-pagination-item]',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

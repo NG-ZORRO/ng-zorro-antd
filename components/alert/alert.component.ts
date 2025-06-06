@@ -98,8 +98,7 @@ export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false
+  encapsulation: ViewEncapsulation.None
 })
 export class NzAlertComponent implements OnChanges, OnInit {
   public nzConfigService = inject(NzConfigService);

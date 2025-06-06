@@ -37,7 +37,6 @@ import { NzInputDirective } from './input.directive';
 @Component({
   selector: 'nz-input-otp',
   exportAs: 'nzInputOtp',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

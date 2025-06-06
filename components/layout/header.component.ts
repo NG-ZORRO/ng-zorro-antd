@@ -10,8 +10,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   exportAs: 'nzHeader',
   template: `<ng-content></ng-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false
+  encapsulation: ViewEncapsulation.None
 })
 export class NzHeaderComponent {
   constructor(

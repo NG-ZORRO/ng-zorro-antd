@@ -35,7 +35,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
 @Component({
   selector: 'nz-card',
   exportAs: 'nzCard',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

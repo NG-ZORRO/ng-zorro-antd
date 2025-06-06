@@ -20,7 +20,6 @@ import { badgePresetColors } from './preset-colors';
 @Component({
   selector: 'nz-ribbon',
   exportAs: 'nzRibbon',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzOutletModule],

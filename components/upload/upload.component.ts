@@ -51,7 +51,6 @@ import { NzUploadListComponent } from './upload-list.component';
   selector: 'nz-upload',
   exportAs: 'nzUpload',
   templateUrl: './upload.component.html',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

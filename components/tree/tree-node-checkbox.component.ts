@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component, Input, booleanAttribute } from '@an
     <span [class.ant-tree-checkbox-inner]="!nzSelectMode" [class.ant-select-tree-checkbox-inner]="nzSelectMode"></span>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   host: {
     '[class.ant-select-tree-checkbox]': `nzSelectMode`,
     '[class.ant-select-tree-checkbox-checked]': `nzSelectMode && isChecked`,

@@ -29,7 +29,6 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
   selector:
     'td[nzChecked], td[nzDisabled], td[nzIndeterminate], td[nzIndentSize], td[nzExpand], td[nzShowExpand], td[nzShowCheckbox]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzShowExpand || nzIndentSize > 0) {

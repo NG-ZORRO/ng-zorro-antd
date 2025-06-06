@@ -29,7 +29,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
   selector: 'nz-filter-trigger',
   exportAs: `nzFilterTrigger`,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
     <span

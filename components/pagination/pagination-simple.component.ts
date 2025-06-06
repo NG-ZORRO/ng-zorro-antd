@@ -33,7 +33,6 @@ import { PaginationItemRenderContext } from './pagination.types';
 
 @Component({
   selector: 'nz-pagination-simple',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

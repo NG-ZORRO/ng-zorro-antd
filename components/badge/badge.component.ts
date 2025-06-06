@@ -37,7 +37,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
 @Component({
   selector: 'nz-badge',
   exportAs: 'nzBadge',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],

@@ -58,7 +58,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   providers: [NzDestroyService],
   imports: [NzInputModule, NzTransButtonModule, NzIconModule, NzToolTipModule, NzOutletModule]
 })

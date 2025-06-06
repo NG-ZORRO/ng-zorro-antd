@@ -21,7 +21,6 @@ import { NzTableSortOrder } from '../table.types';
 
 @Component({
   selector: 'nz-table-sorters',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
@@ -37,7 +36,9 @@ import { NzTableSortOrder } from '../table.types';
       </span>
     </span>
   `,
-  host: { class: 'ant-table-column-sorters' },
+  host: {
+    class: 'ant-table-column-sorters'
+  },
   imports: [NzIconModule, NgTemplateOutlet]
 })
 export class NzTableSortersComponent implements OnChanges {

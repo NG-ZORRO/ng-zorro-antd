@@ -24,7 +24,6 @@ import { NzSiderComponent } from './sider.component';
   template: `<ng-content></ng-content>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   host: {
     class: 'ant-layout',
     '[class.ant-layout-rtl]': `dir === 'rtl'`,
