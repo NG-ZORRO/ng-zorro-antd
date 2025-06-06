@@ -179,7 +179,7 @@
     "./comment/style/*.css": {
       "style": "./comment/style/index.min.css"
     },
-     "./cron-expression/style/*.less": {
+    "./cron-expression/style/*.less": {
       "less": "./cron-expression/style/*.less",
     },
     "./cron-expression/style/*.css": {
@@ -239,7 +239,7 @@
     "./grid/style/*.css": {
       "style": "./grid/style/index.min.css"
     },
-     "./icon/style/*.less": {
+    "./icon/style/*.less": {
       "less": "./icon/style/*.less",
     },
     "./icon/style/*.css": {
