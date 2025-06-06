@@ -42,8 +42,14 @@ import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { NgClassInterface, NzSafeAny, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
-import { NzVariant } from 'ng-zorro-antd/core/types/variant';
+import {
+  NgClassInterface,
+  NzSafeAny,
+  NzSizeLDSType,
+  NzStatus,
+  NzValidateStatus,
+  NzVariant
+} from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';

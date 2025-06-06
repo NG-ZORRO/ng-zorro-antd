@@ -33,8 +33,14 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NzFormItemFeedbackIconComponent, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzSizeLDSType, NzStatus, NzValidateStatus, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { NzVariant } from 'ng-zorro-antd/core/types/variant';
+import {
+  NzSizeLDSType,
+  NzStatus,
+  NzValidateStatus,
+  NzVariant,
+  OnChangeType,
+  OnTouchedType
+} from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, isNil, isNotNil } from 'ng-zorro-antd/core/util';
 import { getVariantClassNames } from 'ng-zorro-antd/core/util/variant-utils';
 import { NzIconModule } from 'ng-zorro-antd/icon';

@@ -9,8 +9,7 @@ import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angu
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
-import { NzVariant } from 'ng-zorro-antd/core/types/variant';
+import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
 

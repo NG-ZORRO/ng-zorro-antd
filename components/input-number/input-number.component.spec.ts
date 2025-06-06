@@ -9,8 +9,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
-import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
-import { NzVariant } from 'ng-zorro-antd/core/types/variant';
+import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzInputNumberComponent } from './input-number.component';

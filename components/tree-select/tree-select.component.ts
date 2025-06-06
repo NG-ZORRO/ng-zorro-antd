@@ -60,10 +60,10 @@ import {
   NzSizeLDSType,
   NzStatus,
   NzValidateStatus,
+  NzVariant,
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { NzVariant } from 'ng-zorro-antd/core/types/variant';
 import { getStatusClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzSelectModule, NzSelectSearchComponent } from 'ng-zorro-antd/select';

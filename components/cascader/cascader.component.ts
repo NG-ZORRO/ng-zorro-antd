@@ -63,9 +63,9 @@ import {
   NzSafeAny,
   NzSizeLDSType,
   NzStatus,
-  NzValidateStatus
+  NzValidateStatus,
+  NzVariant
 } from 'ng-zorro-antd/core/types';
-import { NzVariant } from 'ng-zorro-antd/core/types/variant';
 import { fromEventOutsideAngular, getStatusClassNames, isNotNil, toArray } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
