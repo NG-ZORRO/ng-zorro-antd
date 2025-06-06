@@ -19,6 +19,7 @@ import {
   ChangeDetectorRef,
   Component,
   computed,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   forwardRef,
@@ -28,7 +29,6 @@ import {
   NgZone,
   numberAttribute,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -40,9 +40,10 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
-import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -292,8 +293,16 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
 })
 export class NzCascaderComponent
   extends NzTreeBase
-  implements NzCascaderComponentAsSource, OnInit, OnDestroy, OnChanges, ControlValueAccessor
+  implements NzCascaderComponentAsSource, OnInit, OnChanges, ControlValueAccessor
 {
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  private i18nService = inject(NzI18nService);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private renderer = inject(Renderer2);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ViewChild('selectContainer', { static: false }) selectContainer!: ElementRef;
@@ -395,7 +404,7 @@ export class NzCascaderComponent
    */
   shouldShowEmpty: boolean = false;
 
-  el: HTMLElement;
+  el: HTMLElement = this.elementRef.nativeElement;
   menuVisible = false;
   isLoading = false;
   labelRenderText?: string;
@@ -480,21 +489,16 @@ export class NzCascaderComponent
   private nzConfigService = inject(NzConfigService);
   public cascaderService = inject(NzCascaderService);
 
-  constructor(
-    treeService: NzCascaderTreeService,
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private i18nService: NzI18nService,
-    private destroy$: NzDestroyService,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private directionality: Directionality
-  ) {
-    super(treeService);
-    this.el = elementRef.nativeElement;
+  constructor() {
+    super(inject(NzCascaderTreeService));
     this.cascaderService.withComponent(this);
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-cascader');
+
+    this.destroyRef.onDestroy(() => {
+      this.clearDelayMenuTimer();
+      this.clearDelaySelectTimer();
+    });
   }
 
   ngOnInit(): void {
@@ -503,7 +507,7 @@ export class NzCascaderComponent
         distinctUntilChanged((pre, cur) => pre.status === cur.status && pre.hasFeedback === cur.hasFeedback),
         withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : of(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
@@ -511,7 +515,7 @@ export class NzCascaderComponent
 
     const srv = this.cascaderService;
 
-    srv.$redraw.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    srv.$redraw.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       // These operations would not mutate data.
       this.checkChildren();
       this.setDisplayLabel();
@@ -520,11 +524,11 @@ export class NzCascaderComponent
       this.setDropdownStyles();
     });
 
-    srv.$loading.pipe(takeUntil(this.destroy$)).subscribe(loading => {
+    srv.$loading.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(loading => {
       this.isLoading = loading;
     });
 
-    srv.$nodeSelected.pipe(takeUntil(this.destroy$)).subscribe(node => {
+    srv.$nodeSelected.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(node => {
       if (!node) {
         this.emitValue([]);
         this.nzSelectionChange.emit([]);
@@ -540,26 +544,26 @@ export class NzCascaderComponent
       }
     });
 
-    srv.$quitSearching.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    srv.$quitSearching.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.inputValue = '';
       this.dropdownWidthStyle = '';
     });
 
-    this.i18nService.localeChange.pipe(startWith(), takeUntil(this.destroy$)).subscribe(() => {
+    this.i18nService.localeChange.pipe(startWith(), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.setLocale();
     });
 
     this.size.set(this.nzSize);
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.size.set(this.nzSize);
         this.cdr.markForCheck();
       });
 
     this.dir = this.directionality.value;
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.dir = this.directionality.value;
       srv.$redraw.next();
     });
@@ -590,11 +594,6 @@ export class NzCascaderComponent
     }
   }
 
-  ngOnDestroy(): void {
-    this.clearDelayMenuTimer();
-    this.clearDelaySelectTimer();
-  }
-
   registerOnChange(fn: () => {}): void {
     this.onChange = fn;
   }
@@ -623,7 +622,7 @@ export class NzCascaderComponent
 
   private setupSelectionChangeListener(): void {
     merge(this.nzSelectionChange, this.nzRemoved, this.nzClear)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.updateSelectedNodes();
         this.emitValue(this.cascaderService.values);
@@ -1174,7 +1173,7 @@ export class NzCascaderComponent
     this.input$
       .pipe(
         switchMap(input => fromEventOutsideAngular(input?.nativeElement, 'change')),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(event => event.stopPropagation());
   }
@@ -1183,21 +1182,21 @@ export class NzCascaderComponent
     this.input$
       .pipe(
         switchMap(input => fromEventOutsideAngular(input?.nativeElement, 'focus')),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.handleInputFocus());
 
     this.input$
       .pipe(
         switchMap(input => fromEventOutsideAngular(input?.nativeElement, 'blur')),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.handleInputBlur());
   }
 
   private setupKeydownListener(): void {
     fromEventOutsideAngular<KeyboardEvent>(this.el, 'keydown')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         const keyCode = event.keyCode;
 

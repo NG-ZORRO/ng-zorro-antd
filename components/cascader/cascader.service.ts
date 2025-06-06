@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, OnDestroy } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
@@ -18,7 +18,8 @@ import { isChildNode, isParentNode } from './utils';
  * All data is stored and parsed in NzCascaderService.
  */
 @Injectable()
-export class NzCascaderService implements OnDestroy {
+export class NzCascaderService {
+  private destroyRef = inject(DestroyRef);
   /** Activated options in each column. */
   activatedNodes: NzTreeNode[] = [];
 
@@ -61,17 +62,19 @@ export class NzCascaderService implements OnDestroy {
 
   private searchOptionPathMap = new Map<NzTreeNode, NzCascaderOption[]>();
 
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.$redraw.complete();
+      this.$quitSearching.complete();
+      this.$nodeSelected.complete();
+      this.$loading.complete();
+      this.searchOptionPathMap.clear();
+    });
+  }
+
   /** Return cascader options in the first layer. */
   get nzOptions(): NzCascaderOption[] {
     return this.cascaderComponent.treeService.toOptions(this.columns[0] || []);
-  }
-
-  ngOnDestroy(): void {
-    this.$redraw.complete();
-    this.$quitSearching.complete();
-    this.$nodeSelected.complete();
-    this.$loading.complete();
-    this.searchOptionPathMap.clear();
   }
 
   /**
