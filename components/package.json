@@ -78,421 +78,421 @@
       "style": "./*.css"
     },
     "./affix/style/*.less": {
-      "less": "./affix/style/*.less",
+      "less": "./affix/style/*.less"
     },
     "./affix/style/*.css": {
       "style": "./affix/style/index.min.css"
     },
     "./alert/style/*.less": {
-      "less": "./alert/style/*.less",
+      "less": "./alert/style/*.less"
     },
     "./alert/style/*.css": {
       "style": "./alert/style/index.min.css"
     },
     "./anchor/style/*.less": {
-      "less": "./anchor/style/*.less",
+      "less": "./anchor/style/*.less"
     },
     "./anchor/style/*.css": {
       "style": "./anchor/style/index.min.css"
     },
     "./auto-complete/style/*.less": {
-      "less": "./auto-complete/style/*.less",
+      "less": "./auto-complete/style/*.less"
     },
     "./auto-complete/style/*.css": {
       "style": "./auto-complete/style/index.min.css"
     },
     "./avatar/style/*.less": {
-      "less": "./avatar/style/*.less",
+      "less": "./avatar/style/*.less"
     },
     "./avatar/style/*.css": {
       "style": "./avatar/style/index.min.css"
     },
     "./back-top/style/*.less": {
-      "less": "./back-top/style/*.less",
+      "less": "./back-top/style/*.less"
     },
     "./back-top/style/*.css": {
       "style": "./back-top/style/index.min.css"
     },
     "./badge/style/*.less": {
-      "less": "./badge/style/*.less",
+      "less": "./badge/style/*.less"
     },
     "./badge/style/*.css": {
       "style": "./badge/style/index.min.css"
     },
     "./breadcrumb/style/*.less": {
-      "less": "./breadcrumb/style/*.less",
+      "less": "./breadcrumb/style/*.less"
     },
     "./breadcrumb/style/*.css": {
       "style": "./breadcrumb/style/index.min.css"
     },
     "./button/style/*.less": {
-      "less": "./button/style/*.less",
+      "less": "./button/style/*.less"
     },
     "./button/style/*.css": {
       "style": "./button/style/index.min.css"
     },
     "./calendar/style/*.less": {
-      "less": "./calendar/style/*.less",
+      "less": "./calendar/style/*.less"
     },
     "./calendar/style/*.css": {
       "style": "./calendar/style/index.min.css"
     },
     "./card/style/*.less": {
-      "less": "./card/style/*.less",
+      "less": "./card/style/*.less"
     },
     "./card/style/*.css": {
       "style": "./card/style/index.min.css"
     },
     "./carousel/style/*.less": {
-      "less": "./carousel/style/*.less",
+      "less": "./carousel/style/*.less"
     },
     "./carousel/style/*.css": {
       "style": "./carousel/style/index.min.css"
     },
     "./cascader/style/*.less": {
-      "less": "./cascader/style/*.less",
+      "less": "./cascader/style/*.less"
     },
     "./cascader/style/*.css": {
       "style": "./cascader/style/index.min.css"
     },
     "./code-editor/style/*.less": {
-      "less": "./code-editor/style/*.less",
+      "less": "./code-editor/style/*.less"
     },
     "./code-editor/style/*.css": {
       "style": "./code-editor/style/index.min.css"
     },
     "./checkbox/style/*.less": {
-      "less": "./checkbox/style/*.less",
+      "less": "./checkbox/style/*.less"
     },
     "./checkbox/style/*.css": {
       "style": "./checkbox/style/index.min.css"
     },
     "./collapse/style/*.less": {
-      "less": "./collapse/style/*.less",
+      "less": "./collapse/style/*.less"
     },
     "./collapse/style/*.css": {
       "style": "./collapse/style/index.min.css"
     },
     "./comment/style/*.less": {
-      "less": "./comment/style/*.less",
+      "less": "./comment/style/*.less"
     },
     "./comment/style/*.css": {
       "style": "./comment/style/index.min.css"
     },
     "./cron-expression/style/*.less": {
-      "less": "./cron-expression/style/*.less",
+      "less": "./cron-expression/style/*.less"
     },
     "./cron-expression/style/*.css": {
       "style": "./cron-expression/style/index.min.css"
     },
     "./date-picker/style/*.less": {
-      "less": "./date-picker/style/*.less",
+      "less": "./date-picker/style/*.less"
     },
     "./date-picker/style/*.css": {
       "style": "./date-picker/style/index.min.css"
     },
     "./descriptions/style/*.less": {
-      "less": "./descriptions/style/*.less",
+      "less": "./descriptions/style/*.less"
     },
     "./descriptions/style/*.css": {
       "style": "./descriptions/style/index.min.css"
     },
     "./divider/style/*.less": {
-      "less": "./divider/style/*.less",
+      "less": "./divider/style/*.less"
     },
     "./divider/style/*.css": {
       "style": "./divider/style/index.min.css"
     },
     "./drawer/style/*.less": {
-      "less": "./drawer/style/*.less",
+      "less": "./drawer/style/*.less"
     },
     "./drawer/style/*.css": {
       "style": "./drawer/style/index.min.css"
     },
     "./dropdown/style/*.less": {
-      "less": "./dropdown/style/*.less",
+      "less": "./dropdown/style/*.less"
     },
     "./dropdown/style/*.css": {
       "style": "./dropdown/style/index.min.css"
     },
     "./empty/style/*.less": {
-      "less": "./empty/style/*.less",
+      "less": "./empty/style/*.less"
     },
     "./empty/style/*.css": {
       "style": "./empty/style/index.min.css"
     },
     "./form/style/*.less": {
-      "less": "./form/style/*.less",
+      "less": "./form/style/*.less"
     },
     "./form/style/*.css": {
       "style": "./form/style/index.min.css"
     },
     "./graph/style/*.less": {
-      "less": "./graph/style/*.less",
+      "less": "./graph/style/*.less"
     },
     "./graph/style/*.css": {
       "style": "./graph/style/index.min.css"
     },
     "./grid/style/*.less": {
-      "less": "./grid/style/*.less",
+      "less": "./grid/style/*.less"
     },
     "./grid/style/*.css": {
       "style": "./grid/style/index.min.css"
     },
     "./icon/style/*.less": {
-      "less": "./icon/style/*.less",
+      "less": "./icon/style/*.less"
     },
     "./icon/style/*.css": {
       "style": "./icon/style/index.min.css"
     },
     "./image/style/*.less": {
-      "less": "./image/style/*.less",
+      "less": "./image/style/*.less"
     },
     "./image/style/*.css": {
       "style": "./image/style/index.min.css"
     },
     "./input/style/*.less": {
-      "less": "./input/style/*.less",
+      "less": "./input/style/*.less"
     },
     "./input/style/*.css": {
       "style": "./input/style/index.min.css"
     },
     "./input-number/style/*.less": {
-      "less": "./input-number/style/*.less",
+      "less": "./input-number/style/*.less"
     },
     "./input-number/style/*.css": {
       "style": "./input-number/style/index.min.css"
     },
     "./layout/style/*.less": {
-      "less": "./layout/style/*.less",
+      "less": "./layout/style/*.less"
     },
     "./layout/style/*.css": {
       "style": "./layout/style/index.min.css"
     },
     "./list/style/*.less": {
-      "less": "./list/style/*.less",
+      "less": "./list/style/*.less"
     },
     "./list/style/*.css": {
       "style": "./list/style/index.min.css"
     },
     "./mention/style/*.less": {
-      "less": "./mention/style/*.less",
+      "less": "./mention/style/*.less"
     },
     "./mention/style/*.css": {
       "style": "./mention/style/index.min.css"
     },
     "./menu/style/*.less": {
-      "less": "./menu/style/*.less",
+      "less": "./menu/style/*.less"
     },
     "./menu/style/*.css": {
       "style": "./menu/style/index.min.css"
     },
     "./message/style/*.less": {
-      "less": "./message/style/*.less",
+      "less": "./message/style/*.less"
     },
     "./message/style/*.css": {
       "style": "./message/style/index.min.css"
     },
     "./modal/style/*.less": {
-      "less": "./modal/style/*.less",
+      "less": "./modal/style/*.less"
     },
     "./modal/style/*.css": {
       "style": "./modal/style/index.min.css"
     },
     "./notification/style/*.less": {
-      "less": "./notification/style/*.less",
+      "less": "./notification/style/*.less"
     },
     "./notification/style/*.css": {
       "style": "./notification/style/index.min.css"
     },
     "./page-header/style/*.less": {
-      "less": "./page-header/style/*.less",
+      "less": "./page-header/style/*.less"
     },
     "./page-header/style/*.css": {
       "style": "./page-header/style/index.min.css"
     },
     "./pagination/style/*.less": {
-      "less": "./pagination/style/*.less",
+      "less": "./pagination/style/*.less"
     },
     "./pagination/style/*.css": {
       "style": "./pagination/style/index.min.css"
     },
     "./popconfirm/style/*.less": {
-      "less": "./popconfirm/style/*.less",
+      "less": "./popconfirm/style/*.less"
     },
     "./popconfirm/style/*.css": {
       "style": "./popconfirm/style/index.min.css"
     },
     "./popover/style/*.less": {
-      "less": "./popover/style/*.less",
+      "less": "./popover/style/*.less"
     },
     "./popover/style/*.css": {
       "style": "./popover/style/index.min.css"
     },
     "./progress/style/*.less": {
-      "less": "./progress/style/*.less",
+      "less": "./progress/style/*.less"
     },
     "./progress/style/*.css": {
       "style": "./progress/style/index.min.css"
     },
     "./qr-code/style/*.less": {
-      "less": "./qr-code/style/*.less",
+      "less": "./qr-code/style/*.less"
     },
     "./qr-code/style/*.css": {
       "style": "./qr-code/style/index.min.css"
     },
     "./radio/style/*.less": {
-      "less": "./radio/style/*.less",
+      "less": "./radio/style/*.less"
     },
     "./radio/style/*.css": {
       "style": "./radio/style/index.min.css"
     },
     "./rate/style/*.less": {
-      "less": "./rate/style/*.less",
+      "less": "./rate/style/*.less"
     },
     "./rate/style/*.css": {
       "style": "./rate/style/index.min.css"
     },
     "./resizable/style/*.less": {
-      "less": "./resizable/style/*.less",
+      "less": "./resizable/style/*.less"
     },
     "./resizable/style/*.css": {
       "style": "./resizable/style/index.min.css"
     },
     "./result/style/*.less": {
-      "less": "./result/style/*.less",
+      "less": "./result/style/*.less"
     },
     "./result/style/*.css": {
       "style": "./result/style/index.min.css"
     },
     "./skeleton/style/*.less": {
-      "less": "./skeleton/style/*.less",
+      "less": "./skeleton/style/*.less"
     },
     "./skeleton/style/*.css": {
       "style": "./skeleton/style/index.min.css"
     },
     "./slider/style/*.less": {
-      "less": "./slider/style/*.less",
+      "less": "./slider/style/*.less"
     },
     "./slider/style/*.css": {
       "style": "./slider/style/index.min.css"
     },
     "./segmented/style/*.less": {
-      "less": "./segmented/style/*.less",
+      "less": "./segmented/style/*.less"
     },
     "./segmented/style/*.css": {
       "style": "./segmented/style/index.min.css"
     },
     "./select/style/*.less": {
-      "less": "./select/style/*.less",
+      "less": "./select/style/*.less"
     },
     "./select/style/*.css": {
       "style": "./select/style/index.min.css"
     },
     "./space/style/*.less": {
-      "less": "./space/style/*.less",
+      "less": "./space/style/*.less"
     },
     "./space/style/*.css": {
       "style": "./space/style/index.min.css"
     },
     "./spin/style/*.less": {
-      "less": "./spin/style/*.less",
+      "less": "./spin/style/*.less"
     },
     "./spin/style/*.css": {
       "style": "./spin/style/index.min.css"
     },
     "./statistic/style/*.less": {
-      "less": "./statistic/style/*.less",
+      "less": "./statistic/style/*.less"
     },
     "./statistic/style/*.css": {
       "style": "./statistic/style/index.min.css"
     },
     "./steps/style/*.less": {
-      "less": "./steps/style/*.less",
+      "less": "./steps/style/*.less"
     },
     "./steps/style/*.css": {
       "style": "./steps/style/index.min.css"
     },
     "./switch/style/*.less": {
-      "less": "./switch/style/*.less",
+      "less": "./switch/style/*.less"
     },
     "./switch/style/*.css": {
       "style": "./switch/style/index.min.css"
     },
     "./table/style/*.less": {
-      "less": "./table/style/*.less",
+      "less": "./table/style/*.less"
     },
     "./table/style/*.css": {
       "style": "./table/style/index.min.css"
     },
     "./tabs/style/*.less": {
-      "less": "./tabs/style/*.less",
+      "less": "./tabs/style/*.less"
     },
     "./tabs/style/*.css": {
       "style": "./tabs/style/index.min.css"
     },
     "./tag/style/*.less": {
-      "less": "./tag/style/*.less",
+      "less": "./tag/style/*.less"
     },
     "./tag/style/*.css": {
       "style": "./tag/style/index.min.css"
     },
     "./time-picker/style/*.less": {
-      "less": "./time-picker/style/*.less",
+      "less": "./time-picker/style/*.less"
     },
     "./time-picker/style/*.css": {
       "style": "./time-picker/style/index.min.css"
     },
     "./timeline/style/*.less": {
-      "less": "./timeline/style/*.less",
+      "less": "./timeline/style/*.less"
     },
     "./timeline/style/*.css": {
       "style": "./timeline/style/index.min.css"
     },
     "./tooltip/style/*.less": {
-      "less": "./tooltip/style/*.less",
+      "less": "./tooltip/style/*.less"
     },
     "./tooltip/style/*.css": {
       "style": "./tooltip/style/index.min.css"
     },
     "./transfer/style/*.less": {
-      "less": "./transfer/style/*.less",
+      "less": "./transfer/style/*.less"
     },
     "./transfer/style/*.css": {
       "style": "./transfer/style/index.min.css"
     },
     "./tree/style/*.less": {
-      "less": "./tree/style/*.less",
+      "less": "./tree/style/*.less"
     },
     "./tree/style/*.css": {
       "style": "./tree/style/index.min.css"
     },
     "./tree-select/style/*.less": {
-      "less": "./tree-select/style/*.less",
+      "less": "./tree-select/style/*.less"
     },
     "./tree-select/style/*.css": {
       "style": "./tree-select/style/index.min.css"
     },
     "./tree-view/style/*.less": {
-      "less": "./tree-view/style/*.less",
+      "less": "./tree-view/style/*.less"
     },
     "./tree-view/style/*.css": {
       "style": "./tree-view/style/index.min.css"
     },
     "./typography/style/*.less": {
-      "less": "./typography/style/*.less",
+      "less": "./typography/style/*.less"
     },
     "./typography/style/*.css": {
       "style": "./typography/style/index.min.css"
     },
     "./upload/style/*.less": {
-      "less": "./upload/style/*.less",
+      "less": "./upload/style/*.less"
     },
     "./upload/style/*.css": {
       "style": "./upload/style/index.min.css"
     },
     "./water-mark/style/*.less": {
-      "less": "./water-mark/style/*.less",
+      "less": "./water-mark/style/*.less"
     },
     "./water-mark/style/*.css": {
       "style": "./water-mark/style/index.min.css"
