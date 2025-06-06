@@ -22,7 +22,7 @@ import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-tree-node-checkbox:not([builtin])',
-  template: ` <span class="ant-tree-checkbox-inner"></span> `,
+  template: `<span class="ant-tree-checkbox-inner"></span>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-tree-checkbox',

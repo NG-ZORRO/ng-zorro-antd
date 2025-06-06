@@ -505,7 +505,7 @@ export class NzTestProgressCircleComponent {
 
 @Component({
   imports: [NzProgressModule],
-  template: ` <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>`
+  template: `<nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>`
 })
 export class NzTestProgressCircleSuccessComponent {}
 

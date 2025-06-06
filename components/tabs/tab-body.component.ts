@@ -13,7 +13,7 @@ import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
   exportAs: 'nzTabBody',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-template [ngTemplateOutlet]="content"></ng-template> `,
+  template: `<ng-template [ngTemplateOutlet]="content"></ng-template>`,
   host: {
     class: 'ant-tabs-tabpane',
     '[class.ant-tabs-tabpane-active]': 'active',

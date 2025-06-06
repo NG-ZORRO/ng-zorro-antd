@@ -244,7 +244,7 @@ export class NzSegmentedTestComponent {
 
 @Component({
   imports: [FormsModule, NzSegmentedModule],
-  template: ` <nz-segmented [nzOptions]="options" [(ngModel)]="value" (ngModelChange)="handleValueChange($event)" /> `
+  template: `<nz-segmented [nzOptions]="options" [(ngModel)]="value" (ngModelChange)="handleValueChange($event)" />`
 })
 export class NzSegmentedNgModelTestComponent {
   options: NzSegmentedOptions = [1, 2, 3];
