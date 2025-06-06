@@ -90,22 +90,22 @@
       "style": "./alert/style/index.min.css"
     },
     "./anchor/style/*.less": {
-      "less": "./alert/style/*.less",
+      "less": "./anchor/style/*.less",
     },
     "./anchor/style/*.css": {
-      "style": "./alert/style/index.min.css"
+      "style": "./anchor/style/index.min.css"
     },
     "./auto-complete/style/*.less": {
-      "less": "./alert/style/*.less",
+      "less": "./auto-complete/style/*.less",
     },
     "./auto-complete/style/*.css": {
       "style": "./auto-complete/style/index.min.css"
     },
     "./avatar/style/*.less": {
-      "less": "./alert/style/*.less",
+      "less": "./avatar/style/*.less",
     },
     "./avatar/style/*.css": {
-      "style": "./alert/style/index.min.css"
+      "style": "./avatar/style/index.min.css"
     },
     "./back-top/style/*.less": {
       "less": "./back-top/style/*.less",
@@ -155,11 +155,11 @@
     "./cascader/style/*.css": {
       "style": "./cascader/style/index.min.css"
     },
-    "./code-edito/style/*.less": {
-      "less": "./code-edito/style/*.less",
+    "./code-editor/style/*.less": {
+      "less": "./code-editor/style/*.less",
     },
-    "./code-edito/style/*.css": {
-      "style": "./code-edito/style/index.min.css"
+    "./code-editor/style/*.css": {
+      "style": "./code-editor/style/index.min.css"
     },
     "./checkbox/style/*.less": {
       "less": "./checkbox/style/*.less",
@@ -473,11 +473,11 @@
     "./tree-select/style/*.css": {
       "style": "./tree-select/style/index.min.css"
     },
-    "./tree-view//style/*.less": {
-      "less": "./tree-view//style/*.less",
+    "./tree-view/style/*.less": {
+      "less": "./tree-view/style/*.less",
     },
-    "./tree-view//style/*.css": {
-      "style": "./tree-view//style/index.min.css"
+    "./tree-view/style/*.css": {
+      "style": "./tree-view/style/index.min.css"
     },
     "./typography/style/*.less": {
       "less": "./typography/style/*.less",
