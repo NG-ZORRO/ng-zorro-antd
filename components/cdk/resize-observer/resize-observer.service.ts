@@ -4,7 +4,7 @@
  */
 
 import { coerceElement } from '@angular/cdk/coercion';
-import { ElementRef, Injectable, OnDestroy } from '@angular/core';
+import { DestroyRef, ElementRef, inject, Injectable } from '@angular/core';
 import { Observable, Observer, Subject } from 'rxjs';
 
 /**
@@ -19,7 +19,9 @@ export class NzResizeObserverFactory {
 
 /** An injectable service that allows watching elements for changes to their content. */
 @Injectable({ providedIn: 'root' })
-export class NzResizeObserver implements OnDestroy {
+export class NzResizeObserver {
+  private nzResizeObserverFactory = inject(NzResizeObserverFactory);
+  private destroyRef = inject(DestroyRef);
   /** Keeps track of the existing ResizeObservers so they can be reused. */
   private observedElements = new Map<
     Element,
@@ -30,10 +32,8 @@ export class NzResizeObserver implements OnDestroy {
     }
   >();
 
-  constructor(private nzResizeObserverFactory: NzResizeObserverFactory) {}
-
-  ngOnDestroy(): void {
-    this.observedElements.forEach((_, element) => this.cleanupObserver(element));
+  constructor() {
+    this.destroyRef.onDestroy(() => this.observedElements.forEach((_, element) => this.cleanupObserver(element)));
   }
 
   observe(elementOrRef: Element | ElementRef<Element>): Observable<ResizeObserverEntry[]> {

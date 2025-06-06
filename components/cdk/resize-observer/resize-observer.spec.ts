@@ -83,7 +83,7 @@ describe('resize observer', () => {
     directive['nzResizeObserver'].observe(element);
     fixture.detectChanges();
     spyOn<NzSafeAny>(directive['nzResizeObserver'], 'cleanupObserver');
-    directive['nzResizeObserver']['ngOnDestroy']();
+    fixture.destroy();
     expect(directive['nzResizeObserver']['cleanupObserver']).toHaveBeenCalled();
   });
 
