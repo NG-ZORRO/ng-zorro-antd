@@ -48,7 +48,8 @@ export class NzSpaceCompactItemDirective implements OnDestroy {
     // so we need to use findIndex to find the index value of the first valid element.
     if (index === firstIndex) {
       classes.push(compactFirstItemClassOf(this.type, direction));
-    } else if (index === items.length - 1) {
+    }
+    if (index === items.length - 1) {
       classes.push(compactLastItemClassOf(this.type, direction));
     }
 
