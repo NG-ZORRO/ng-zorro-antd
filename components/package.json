@@ -74,6 +74,9 @@
     "./*.less": {
       "less": "./*.less"
     },
+    "./*.css": {
+      "style": "./*.css"
+    },
     "./affix/style/*": {
       "less": "./affix/style/*.less",
       "style": "./affix/style/index.min.css"
