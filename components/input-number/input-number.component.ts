@@ -192,7 +192,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzReadOnly = input(false, { transform: booleanAttribute });
   readonly nzAutoFocus = input(false, { transform: booleanAttribute });
   /**
-   * @deprecated Use `nzVariant` instead.
+   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
    */
   readonly nzBordered = input(true, { transform: booleanAttribute });
   readonly nzKeyboard = input(true, { transform: booleanAttribute });

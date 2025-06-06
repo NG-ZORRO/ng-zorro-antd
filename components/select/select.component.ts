@@ -261,7 +261,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input({ transform: booleanAttribute }) nzAllowClear = false;
   /**
-   * @deprecated Use `nzVariant` instead.
+   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
    */
   @Input({ transform: booleanAttribute }) @WithConfig() nzBorderless = false;
   @Input({ transform: booleanAttribute }) nzShowSearch = false;

@@ -50,7 +50,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
 })
 export class NzInputDirective implements OnChanges, OnInit {
   /**
-   * @deprecated Use `nzVariant` instead.
+   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
    */
   @Input({ transform: booleanAttribute }) nzBorderless = false;
   @Input() nzVariant: NzVariant = 'outlined';

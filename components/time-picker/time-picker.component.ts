@@ -248,7 +248,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input() @WithConfig() nzBackdrop = false;
   /**
-   * @deprecated Use `nzVariant` instead.
+   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
    */
   @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;

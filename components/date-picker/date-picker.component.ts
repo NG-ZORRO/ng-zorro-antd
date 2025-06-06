@@ -305,7 +305,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input({ transform: booleanAttribute }) nzAutoFocus: boolean = false;
   @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
   /**
-   * @deprecated Use `nzVariant` instead.
+   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
    */
   @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
