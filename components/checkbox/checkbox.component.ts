@@ -8,13 +8,10 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
-  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -22,11 +19,14 @@ import {
   booleanAttribute,
   effect,
   forwardRef,
-  inject
+  inject,
+  NgZone,
+  ChangeDetectorRef,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -80,7 +80,18 @@ import { NZ_CHECKBOX_GROUP } from './tokens';
   },
   imports: [FormsModule]
 })
-export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDestroy, AfterViewInit {
+export class NzCheckboxComponent implements OnInit, ControlValueAccessor, AfterViewInit {
+  private ngZone = inject(NgZone);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private cdr = inject(ChangeDetectorRef);
+  private focusMonitor = inject(FocusMonitor);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+  protected checkboxGroupComponent = inject(NZ_CHECKBOX_GROUP, { optional: true });
+  protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  /** @deprecated */
+  private nzCheckboxWrapperComponent = inject(NzCheckboxWrapperComponent, { optional: true });
+
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
@@ -132,18 +143,11 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     this.inputElement.nativeElement.blur();
   }
 
-  /** @deprecated */
-  private nzCheckboxWrapperComponent = inject(NzCheckboxWrapperComponent, { optional: true });
-  protected checkboxGroupComponent = inject(NZ_CHECKBOX_GROUP, { optional: true });
-  protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
-
-  constructor(
-    private ngZone: NgZone,
-    private elementRef: ElementRef<HTMLElement>,
-    private cdr: ChangeDetectorRef,
-    private focusMonitor: FocusMonitor,
-    private directionality: Directionality
-  ) {
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.focusMonitor.stopMonitoring(this.elementRef);
+      this.nzCheckboxWrapperComponent?.removeCheckbox(this);
+    });
     if (this.checkboxGroupComponent) {
       effect(() => {
         const values = this.checkboxGroupComponent!.value() || [];
@@ -156,7 +160,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   ngOnInit(): void {
     this.focusMonitor
       .monitor(this.elementRef, true)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {
           Promise.resolve().then(() => this.onTouched());
@@ -165,7 +169,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
 
     this.nzCheckboxWrapperComponent?.addCheckbox(this);
 
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -173,7 +177,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     this.dir = this.directionality.value;
 
     fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         event.preventDefault();
         this.focus();
@@ -187,7 +191,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
       });
 
     fromEventOutsideAngular(this.inputElement.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => event.stopPropagation());
   }
 
@@ -195,14 +199,6 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     if (this.nzAutoFocus) {
       this.focus();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.focusMonitor.stopMonitoring(this.elementRef);
-    this.nzCheckboxWrapperComponent?.removeCheckbox(this);
-
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private setValue(value: boolean): void {
