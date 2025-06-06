@@ -41,8 +41,7 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, isNil, isNotNil } from 'ng-zorro-antd/core/util';
-import { getVariantClassNames } from 'ng-zorro-antd/core/util/variant-utils';
+import { getStatusClassNames, getVariantClassNames, isNil, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {
   NzInputAddonAfterDirective,
