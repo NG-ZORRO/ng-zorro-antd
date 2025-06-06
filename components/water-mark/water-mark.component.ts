@@ -8,13 +8,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   DOCUMENT,
   ElementRef,
   inject,
   Input,
   numberAttribute,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges
 } from '@angular/core';
@@ -33,12 +33,12 @@ const FontGap = 3;
   selector: 'nz-water-mark',
   exportAs: 'NzWaterMark',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: {
     class: 'ant-water-mark'
   }
 })
-export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
+export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges {
   @Input({ transform: numberAttribute }) nzWidth: number = 120;
   @Input({ transform: numberAttribute }) nzHeight: number = 64;
   @Input({ transform: numberAttribute }) nzRotate: number = -22;
@@ -50,6 +50,9 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
   @Input() nzOffset: [number, number] = [this.nzGap[0] / 2, this.nzGap[1] / 2];
 
   private document: Document = inject(DOCUMENT);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
 
   waterMarkElement: HTMLDivElement = this.document.createElement('div');
   stopObservation: boolean = false;
@@ -66,13 +69,14 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
     });
   });
 
-  constructor(
-    private el: ElementRef,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.observer.disconnect();
+    });
+  }
 
   ngOnInit(): void {
-    this.observer.observe(this.el.nativeElement, {
+    this.observer.observe(this.el, {
       subtree: true,
       childList: true,
       attributeFilter: ['style', 'class']
@@ -164,7 +168,7 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
         backgroundSize: `${(this.nzGap[0] + markWidth) * BaseSize}px`
       })
     );
-    this.el.nativeElement.append(this.waterMarkElement);
+    this.el.append(this.waterMarkElement);
     this.cdr.markForCheck();
 
     // Delayed execution
@@ -318,9 +322,5 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
         );
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.observer.disconnect();
   }
 }
