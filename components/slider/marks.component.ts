@@ -21,7 +21,6 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   selector: 'nz-slider-marks',
   exportAs: 'nzSliderMarks',
   template: `

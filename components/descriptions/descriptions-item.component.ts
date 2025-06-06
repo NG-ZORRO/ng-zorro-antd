@@ -25,8 +25,7 @@ import { Subject } from 'rxjs';
       <ng-content></ng-content>
     </ng-template>
   `,
-  exportAs: 'nzDescriptionsItem',
-  preserveWhitespaces: false
+  exportAs: 'nzDescriptionsItem'
 })
 export class NzDescriptionsItemComponent implements OnChanges, OnDestroy {
   @ViewChild(TemplateRef, { static: true }) content!: TemplateRef<void>;

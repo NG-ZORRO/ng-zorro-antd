@@ -96,7 +96,7 @@ describe('resize observer', () => {
 });
 
 @Component({
-  template: ` <div nzResizeObserver></div>`,
+  template: `<div nzResizeObserver></div>`,
   imports: [NzResizeObserverDirective]
 })
 class TestHostComponent {}

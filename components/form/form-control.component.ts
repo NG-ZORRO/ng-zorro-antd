@@ -36,7 +36,6 @@ import { NzFormDirective } from './form.directive';
 @Component({
   selector: 'nz-form-control',
   exportAs: 'nzFormControl',
-  preserveWhitespaces: false,
   animations: [helpMotion],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

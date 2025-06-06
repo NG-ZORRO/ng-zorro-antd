@@ -63,7 +63,6 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
 @Component({
   selector: 'nz-autocomplete',
   exportAs: 'nzAutocomplete',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   imports: [NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],

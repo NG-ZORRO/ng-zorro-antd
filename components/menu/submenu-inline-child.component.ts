@@ -32,7 +32,7 @@ import { NzMenuModeType } from './menu.types';
   exportAs: 'nzSubmenuInlineChild',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template> `,
+  template: `<ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>`,
   host: {
     class: 'ant-menu ant-menu-inline ant-menu-sub',
     '[class.ant-menu-rtl]': `dir === 'rtl'`,

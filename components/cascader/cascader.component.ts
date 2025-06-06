@@ -101,7 +101,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-cascader, [nz-cascader]',
   exportAs: 'nzCascader',
-  preserveWhitespaces: false,
   template: `
     @if (nzShowInput) {
       <div #selectContainer class="ant-select-selector">

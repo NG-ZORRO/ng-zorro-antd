@@ -47,7 +47,6 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-descriptions',
   exportAs: 'nzDescriptions',
-  preserveWhitespaces: false,
   template: `
     @if (nzTitle || nzExtra) {
       <div class="ant-descriptions-header">

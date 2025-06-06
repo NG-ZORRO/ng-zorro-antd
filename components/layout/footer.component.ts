@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   selector: 'nz-footer',
   exportAs: 'nzFooter',
   template: `<ng-content></ng-content>`,
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

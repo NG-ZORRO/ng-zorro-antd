@@ -24,7 +24,6 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 
 @Component({
   selector: 'tr[nz-table-measure-row]',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
@@ -32,7 +31,9 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
       <td #tdElement class="nz-disable-td" style="padding: 0; border: 0; height: 0;"></td>
     }
   `,
-  host: { class: 'ant-table-measure-now' }
+  host: {
+    class: 'ant-table-measure-now'
+  }
 })
 export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
   @Input() listOfMeasureColumn: readonly string[] = [];

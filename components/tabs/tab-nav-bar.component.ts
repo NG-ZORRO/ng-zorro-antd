@@ -53,7 +53,6 @@ const CSS_TRANSFORM_TIME = 150;
 @Component({
   selector: 'nz-tabs-nav',
   exportAs: 'nzTabsNav',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

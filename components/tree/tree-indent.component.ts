@@ -21,7 +21,6 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   host: {
     '[attr.aria-hidden]': 'true',
     '[class.ant-tree-indent]': '!nzSelectMode',

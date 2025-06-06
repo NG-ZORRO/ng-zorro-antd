@@ -699,7 +699,7 @@ describe('Preview', () => {
 
 @Component({
   imports: [NzImageModule],
-  template: ` <img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" /> `
+  template: `<img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" />`
 })
 export class TestImageBasicsComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
@@ -709,7 +709,7 @@ export class TestImageBasicsComponent {
 
 @Component({
   imports: [NzImageModule],
-  template: ` <img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" /> `
+  template: `<img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />`
 })
 export class TestImagePlaceholderComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;

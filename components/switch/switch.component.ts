@@ -38,7 +38,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
 @Component({
   selector: 'nz-switch',
   exportAs: 'nzSwitch',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [

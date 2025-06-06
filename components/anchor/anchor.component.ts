@@ -51,7 +51,6 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
 @Component({
   selector: 'nz-anchor',
   exportAs: 'nzAnchor',
-  preserveWhitespaces: false,
   imports: [NgTemplateOutlet, NzAffixModule],
   template: `
     @if (nzAffix) {

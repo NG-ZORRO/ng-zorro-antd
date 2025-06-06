@@ -127,7 +127,6 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-popconfirm',
   exportAs: 'nzPopconfirmComponent',
-  preserveWhitespaces: false,
   animations: [zoomBigMotion],
   template: `
     <ng-template

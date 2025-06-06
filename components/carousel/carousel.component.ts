@@ -60,7 +60,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-carousel',
   exportAs: 'nzCarousel',
-  preserveWhitespaces: false,
   template: `
     <div
       class="slick-initialized slick-slider"

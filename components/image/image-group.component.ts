@@ -11,7 +11,6 @@ import { NzImageDirective } from './image.directive';
   selector: 'nz-image-group',
   exportAs: 'nzImageGroup',
   template: '<ng-content></ng-content>',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })

@@ -97,7 +97,6 @@ export type NzSelectSizeType = NzSizeLDSType;
 @Component({
   selector: 'nz-select',
   exportAs: 'nzSelect',
-  preserveWhitespaces: false,
   providers: [
     NzDestroyService,
     {

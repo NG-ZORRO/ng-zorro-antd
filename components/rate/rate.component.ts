@@ -43,7 +43,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-rate',
   exportAs: 'nzRate',
-  preserveWhitespaces: false,
   template: `
     <ul
       #ulElement

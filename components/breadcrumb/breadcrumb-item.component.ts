@@ -18,7 +18,6 @@ import { NzBreadCrumbSeparatorComponent } from './breadcrumb-separator.component
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-breadcrumb-item',
   exportAs: 'nzBreadcrumbItem',
-  preserveWhitespaces: false,
   imports: [NgTemplateOutlet, NzBreadCrumbSeparatorComponent, NzDropDownModule, NzIconModule, NzOutletModule],
   template: `
     @if (!!nzOverlay) {

@@ -37,7 +37,6 @@ export type NzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   selector: 'nz-steps',
   exportAs: 'nzSteps',
   template: `<ng-content></ng-content>`,

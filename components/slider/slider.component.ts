@@ -55,7 +55,6 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider',
   exportAs: 'nzSlider',
-  preserveWhitespaces: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

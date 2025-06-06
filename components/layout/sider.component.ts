@@ -33,7 +33,6 @@ import { NzSiderTriggerComponent } from './sider-trigger.component';
 @Component({
   selector: 'nz-sider',
   exportAs: 'nzSider',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

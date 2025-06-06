@@ -11,7 +11,6 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 @Component({
   selector: 'nz-card-meta',
   exportAs: 'nzCardMeta',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

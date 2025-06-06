@@ -33,7 +33,7 @@ const FontGap = 3;
   selector: 'nz-water-mark',
   exportAs: 'NzWaterMark',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: {
     class: 'ant-water-mark'
   }

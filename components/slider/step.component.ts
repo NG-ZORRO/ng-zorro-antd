@@ -21,7 +21,6 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-step',
   exportAs: 'nzSliderStep',
-  preserveWhitespaces: false,
   template: `
     @for (step of steps; track step.value) {
       <span class="ant-slider-dot" [class.ant-slider-dot-active]="step.active" [style]="step.style!"></span>

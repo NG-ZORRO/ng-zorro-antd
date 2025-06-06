@@ -17,7 +17,6 @@ import { NzNotificationData } from './typings';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-notification',
   exportAs: 'nzNotification',
-  preserveWhitespaces: false,
   animations: [notificationMotion],
   template: `
     <div

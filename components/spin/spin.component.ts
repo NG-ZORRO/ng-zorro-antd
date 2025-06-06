@@ -29,7 +29,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
 @Component({
   selector: 'nz-spin',
   exportAs: 'nzSpin',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
     <ng-template #defaultTemplate>

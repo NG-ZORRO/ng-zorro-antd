@@ -29,7 +29,6 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
 @Component({
   selector: 'nz-tab-nav-operation',
   exportAs: 'nzTabNavOperation',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

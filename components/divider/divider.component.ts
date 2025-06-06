@@ -17,7 +17,6 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 @Component({
   selector: 'nz-divider',
   exportAs: 'nzDivider',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

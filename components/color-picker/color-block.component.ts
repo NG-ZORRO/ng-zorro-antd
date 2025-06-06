@@ -15,7 +15,7 @@ import { defaultColor } from './src/util/util';
   exportAs: 'NzColorBlock',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgAntdColorPickerModule],
-  template: ` <ng-antd-color-block [color]="nzColor" (nzOnClick)="nzOnClick.emit($event)"></ng-antd-color-block> `,
+  template: `<ng-antd-color-block [color]="nzColor" (nzOnClick)="nzOnClick.emit($event)"></ng-antd-color-block>`,
   host: {
     class: 'ant-color-picker-inline',
     '[class.ant-color-picker-inline-sm]': `nzSize === 'small'`,

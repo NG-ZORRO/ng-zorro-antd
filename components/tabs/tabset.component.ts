@@ -65,7 +65,6 @@ let nextId = 0;
 @Component({
   selector: 'nz-tabset',
   exportAs: 'nzTabset',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.Default,
   providers: [

@@ -20,7 +20,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 @Component({
   selector: '[nz-sider-trigger]',
   exportAs: 'nzSiderTrigger',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

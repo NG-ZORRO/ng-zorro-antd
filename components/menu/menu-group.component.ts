@@ -49,7 +49,6 @@ export function MenuGroupFactory(): boolean {
     </div>
     <ng-content></ng-content>
   `,
-  preserveWhitespaces: false,
   imports: [NzOutletModule]
 })
 export class NzMenuGroupComponent implements AfterViewInit {

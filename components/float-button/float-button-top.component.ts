@@ -68,7 +68,6 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   providers: [NzDestroyService]
 })
 export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {

@@ -19,7 +19,6 @@ import { NzTrMeasureComponent } from './tr-measure.component';
 
 @Component({
   selector: 'tbody',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

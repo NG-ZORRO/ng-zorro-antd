@@ -85,7 +85,6 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   animations: [zoomBigMotion],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   template: `
     <ng-template
       #overlay="cdkConnectedOverlay"

@@ -113,7 +113,6 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   host: {
     '[class.ant-typography]': '!editing',
     '[class.ant-typography-rtl]': 'dir === "rtl"',

@@ -34,7 +34,6 @@ import { NzRadioService } from './radio.service';
 @Component({
   selector: '[nz-radio],[nz-radio-button]',
   exportAs: 'nzRadio',
-  preserveWhitespaces: false,
   template: `
     <span
       [class.ant-radio]="!isRadioButton"

@@ -33,7 +33,6 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-notification-container',
   exportAs: 'nzNotificationContainer',
-  preserveWhitespaces: false,
   template: `
     <div
       class="ant-notification ant-notification-topLeft"

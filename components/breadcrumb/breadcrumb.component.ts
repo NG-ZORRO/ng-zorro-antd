@@ -40,7 +40,6 @@ export interface BreadcrumbOption {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-breadcrumb',
   exportAs: 'nzBreadcrumb',
-  preserveWhitespaces: false,
   providers: [{ provide: NzBreadcrumb, useExisting: forwardRef(() => NzBreadCrumbComponent) }],
   imports: [NzBreadCrumbItemComponent],
   template: `

@@ -1766,7 +1766,7 @@ class TestWithViewContainerDirective {
 
 @Component({
   imports: [TestWithViewContainerDirective],
-  template: ` <test-with-view-container></test-with-view-container> `
+  template: `<test-with-view-container></test-with-view-container>`
 })
 class TestWithChildViewContainerComponent {
   @ViewChild(TestWithViewContainerDirective) childWithViewContainer!: TestWithViewContainerDirective;

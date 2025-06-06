@@ -43,7 +43,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
 @Component({
   selector:
     'th[nzColumnKey], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

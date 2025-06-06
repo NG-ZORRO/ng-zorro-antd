@@ -63,7 +63,6 @@ interface UploadListFile extends NzUploadFile {
     '[class.ant-upload-list-picture]': `listType === 'picture'`,
     '[class.ant-upload-list-picture-card]': `listType === 'picture-card'`
   },
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzToolTipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NzProgressModule]

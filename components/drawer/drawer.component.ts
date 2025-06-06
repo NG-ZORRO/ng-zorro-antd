@@ -138,7 +138,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
       </div>
     </ng-template>
   `,
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [drawerMaskMotion],
   imports: [NzNoAnimationDirective, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet, CdkScrollable]

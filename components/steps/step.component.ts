@@ -31,7 +31,6 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-step',
   exportAs: 'nzStep',
-  preserveWhitespaces: false,
   template: `
     <div
       #itemContainer

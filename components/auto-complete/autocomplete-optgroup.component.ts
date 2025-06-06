@@ -10,7 +10,6 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 @Component({
   selector: 'nz-auto-optgroup',
   exportAs: 'nzAutoOptgroup',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   imports: [NzOutletModule],

@@ -20,7 +20,6 @@ import { NzStatisticValueType } from './typings';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   selector: 'nz-statistic-number',
   exportAs: 'nzStatisticNumber',
   template: `

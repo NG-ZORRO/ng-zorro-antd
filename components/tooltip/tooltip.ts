@@ -114,7 +114,6 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  preserveWhitespaces: false,
   imports: [OverlayModule, NzNoAnimationDirective, NzOutletModule, NzOverlayModule]
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {

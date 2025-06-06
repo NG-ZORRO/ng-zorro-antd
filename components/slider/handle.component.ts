@@ -30,7 +30,6 @@ import { NzSliderShowTooltip } from './typings';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-handle',
   exportAs: 'nzSliderHandle',
-  preserveWhitespaces: false,
   template: `
     <div
       #handle

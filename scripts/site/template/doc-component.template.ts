@@ -5,8 +5,7 @@ import { ShareModule } from '../share/share.module';
   selector     : 'nz-doc-{{component}}-{{language}}',
   standalone   : true,
   imports      : [ShareModule],
-  templateUrl  : './{{component}}-{{language}}.html',
-  preserveWhitespaces: false
+  templateUrl  : './{{component}}-{{language}}.html'
 })
 export class NzDoc{{componentName}}Component {
   goLink(link: string) {

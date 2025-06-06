@@ -38,7 +38,6 @@ import { NZ_CHECKBOX_GROUP } from './tokens';
 @Component({
   selector: '[nz-checkbox]',
   exportAs: 'nzCheckbox',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `

@@ -35,7 +35,6 @@ import { NzSubmenuService } from './submenu.service';
   exportAs: 'nzMenuItem',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   template: `
     <span class="ant-menu-title-content">
       <ng-content></ng-content>
