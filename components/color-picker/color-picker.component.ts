@@ -9,20 +9,19 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
   forwardRef,
   inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -114,7 +113,9 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
     }
   ]
 })
-export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAccessor, OnDestroy {
+export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAccessor {
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
   @Input() nzFormat: NzColorPickerFormatType | null = null;
   @Input() nzValue: string | NzColor = '';
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -133,14 +134,10 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
   private formBuilder = inject(FormBuilder);
-  private destroy$ = new Subject<void>();
   private isNzDisableFirstChange: boolean = true;
   blockColor: string = '';
   clearColor: boolean = false;
   showText: string = defaultColor.toHexString();
-
-  constructor(private cdr: ChangeDetectorRef) {}
-
   formControl = this.formBuilder.control('');
 
   onChange: (value: string) => void = () => {};
@@ -165,7 +162,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
 
   ngOnInit(): void {
     this.getBlockColor();
-    this.formControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
+    this.formControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       if (value) {
         let color = value;
         if (this.nzFormat === 'hex') {
@@ -221,10 +218,5 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
     this.nzOnChange.emit({ color: generateColor(value.color), format: value.format });
     this.formControl.patchValue(value.color);
     this.cdr.markForCheck();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
