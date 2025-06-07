@@ -90,6 +90,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
 
   private viewItemCmps = viewChildren(NzSegmentedItemComponent);
   private contentItemCmps = contentChildren(NzSegmentedItemComponent);
+  private isDisabledFirstChange = true;
 
   protected dir: Direction = 'ltr';
   protected value?: number | string;
@@ -179,6 +180,11 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
 
   registerOnTouched(fn: OnTouchedType): void {
     this.onTouched = fn;
+  }
+
+  setDisabledState(disabled: boolean): void {
+    this.nzDisabled = (this.isDisabledFirstChange && this.nzDisabled) || disabled;
+    this.isDisabledFirstChange = false;
   }
 }
 
