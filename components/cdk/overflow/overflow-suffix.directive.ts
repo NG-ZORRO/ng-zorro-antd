@@ -17,6 +17,7 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 export class NzOverflowSuffixDirective {
   private nzResizeObserver = inject(NzResizeObserver);
   private elementRef = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
 
   suffixStyle = {};
   suffixWidth$ = this.nzResizeObserver.observe(this.elementRef.nativeElement).pipe(
@@ -24,7 +25,6 @@ export class NzOverflowSuffixDirective {
     tap(width => (this.suffixWidth = width))
   );
   suffixWidth = 0;
-  constructor(private cdr: ChangeDetectorRef) {}
 
   setSuffixStyle(start: number | null, order: number): void {
     if (start !== null) {
