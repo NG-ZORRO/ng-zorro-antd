@@ -11,33 +11,31 @@ import {
   AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
   inject,
-  numberAttribute
+  numberAttribute,
+  NgZone,
+  Renderer2,
+  ChangeDetectorRef,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
@@ -52,6 +50,8 @@ import {
   NzCarouselEffects,
   PointerVector
 } from './typings';
+import { NzResizeObserver } from '../cdk/resize-observer';
+import { NzDragService, NzResizeService } from '../core/services';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
 
@@ -110,7 +110,16 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
   },
   imports: [NgTemplateOutlet]
 })
-export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
+export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnChanges, OnInit {
+  public readonly nzConfigService = inject(NzConfigService);
+  public readonly ngZone = inject(NgZone);
+  private readonly renderer = inject(Renderer2);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly platform = inject(Platform);
+  private readonly resizeService = inject(NzResizeService);
+  private readonly nzDragService = inject(NzDragService);
+  private nzResizeObserver = inject(NzResizeObserver);
+  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ContentChildren(NzCarouselContentDirective) carouselContents!: QueryList<NzCarouselContentDirective>;
@@ -150,7 +159,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @Output() readonly nzAfterChange = new EventEmitter<number>();
 
   activeIndex = 0;
-  el: HTMLElement;
+  el = inject(ElementRef<HTMLElement>).nativeElement;
   slickListEl!: HTMLElement;
   slickTrackEl!: HTMLElement;
   strategy?: NzCarouselBaseStrategy;
@@ -158,7 +167,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   transitionInProgress?: ReturnType<typeof setTimeout>;
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject<void>();
   private gestureRect: ClientRect | null = null;
   private pointerDelta: PointerVector | null = null;
   private isTransiting = false;
@@ -166,19 +174,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   private directionality = inject(Directionality);
   private customStrategies = inject(NZ_CAROUSEL_CUSTOM_STRATEGIES, { optional: true });
 
-  constructor(
-    elementRef: ElementRef,
-    public readonly nzConfigService: NzConfigService,
-    public readonly ngZone: NgZone,
-    private readonly renderer: Renderer2,
-    private readonly cdr: ChangeDetectorRef,
-    private readonly platform: Platform,
-    private readonly resizeService: NzResizeService,
-    private readonly nzDragService: NzDragService,
-    private nzResizeObserver: NzResizeObserver
-  ) {
+  constructor() {
     this.nzDotPosition = 'bottom';
-    this.el = elementRef.nativeElement;
+
+    this.destroyRef.onDestroy(() => {
+      this.clearScheduledTransition();
+      this.strategy?.dispose();
+    });
   }
   ngOnInit(): void {
     this.slickListEl = this.slickList!.nativeElement;
@@ -186,14 +188,14 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     this.dir = this.directionality.value;
 
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.markContentActive(this.activeIndex);
       this.cdr.detectChanges();
     });
 
     fromEventOutsideAngular<KeyboardEvent>(this.slickListEl, 'keydown')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         const { keyCode } = event;
 
@@ -215,7 +217,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     this.nzResizeObserver
       .observe(this.el)
-      .pipe(debounceTime(100), distinctUntilChanged(), takeUntil(this.destroy$))
+      .pipe(debounceTime(100), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.layout();
       });
@@ -233,7 +235,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     this.resizeService
       .subscribe()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.layout();
       });
@@ -270,16 +272,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     } else {
       this.scheduleNextTransition();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.clearScheduledTransition();
-    if (this.strategy) {
-      this.strategy.dispose();
-    }
-
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   next(): void {
