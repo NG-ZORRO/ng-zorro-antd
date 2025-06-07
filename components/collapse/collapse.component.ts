@@ -11,9 +11,11 @@ import {
   Input,
   OnInit,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -39,6 +41,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
   providers: [NzDestroyService]
 })
 export class NzCollapseComponent implements OnInit {
+  public nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input({ transform: booleanAttribute }) @WithConfig() nzAccordion: boolean = false;
@@ -50,22 +57,17 @@ export class NzCollapseComponent implements OnInit {
 
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality,
-    private destroy$: NzDestroyService
-  ) {
+  constructor() {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.cdr.markForCheck();
       });
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });

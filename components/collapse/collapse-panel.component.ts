@@ -5,22 +5,23 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
-  OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  NgZone,
+  ChangeDetectorRef,
+  DestroyRef
 } from '@angular/core';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -78,7 +79,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
   providers: [NzDestroyService],
   imports: [NzOutletModule, NzIconModule]
 })
-export class NzCollapsePanelComponent implements OnInit, OnDestroy {
+export class NzCollapsePanelComponent implements OnInit {
+  public nzConfigService = inject(NzConfigService);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
+  private nzCollapseComponent = inject(NzCollapseComponent, { host: true });
+  noAnimation = inject(NzNoAnimationDirective, { optional: true });
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input({ transform: booleanAttribute }) nzActive = false;
@@ -95,21 +103,17 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private nzCollapseComponent = inject(NzCollapseComponent, { host: true });
-  noAnimation = inject(NzNoAnimationDirective, { optional: true });
-
-  constructor(
-    public nzConfigService: NzConfigService,
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private destroy$: NzDestroyService
-  ) {
+  constructor() {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+
+    this.destroyRef.onDestroy(() => {
+      this.nzCollapseComponent.removePanel(this);
+    });
   }
 
   ngOnInit(): void {
@@ -118,7 +122,7 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
     fromEventOutsideAngular(this.collapseHeader.nativeElement, 'click')
       .pipe(
         filter(() => !this.nzDisabled),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.ngZone.run(() => {
@@ -126,9 +130,5 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         });
       });
-  }
-
-  ngOnDestroy(): void {
-    this.nzCollapseComponent.removePanel(this);
   }
 }
