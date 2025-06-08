@@ -8,8 +8,8 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ComponentFactoryResolver,
   Directive,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -39,10 +39,6 @@ export class NzCommentContentDirective {}
 export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnInit, OnDestroy, AfterViewInit {
   @Input() nzCommentActionHost?: TemplatePortal | null;
 
-  constructor(componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef) {
-    super(componentFactoryResolver, viewContainerRef);
-  }
-
   override ngOnInit(): void {
     super.ngOnInit();
   }
@@ -65,13 +61,12 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
 })
 export class NzCommentActionComponent implements OnInit {
   @ViewChild(TemplateRef, { static: true }) implicitContent!: TemplateRef<void>;
+  private viewContainerRef = inject(ViewContainerRef);
   private contentPortal: TemplatePortal | null = null;
 
   get content(): TemplatePortal | null {
     return this.contentPortal;
   }
-
-  constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit(): void {
     this.contentPortal = new TemplatePortal(this.implicitContent, this.viewContainerRef);
