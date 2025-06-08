@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, NgZone, OnDestroy, Renderer2, RendererFactory2 } from '@angular/core';
+import { DestroyRef, inject, Injectable, NgZone, RendererFactory2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { auditTime, finalize } from 'rxjs/operators';
 
@@ -12,12 +12,14 @@ const NOOP = (): void => {};
 @Injectable({
   providedIn: 'root'
 })
-export class NzResizeService implements OnDestroy {
+export class NzResizeService {
+  private ngZone = inject(NgZone);
+  private destroyRef = inject(DestroyRef);
   private readonly resizeSource$ = new Subject<void>();
 
   private listeners = 0;
 
-  private renderer: Renderer2;
+  private renderer = inject(RendererFactory2).createRenderer(null, null);
 
   private disposeHandle = NOOP;
 
@@ -27,17 +29,11 @@ export class NzResizeService implements OnDestroy {
     });
   };
 
-  constructor(
-    private ngZone: NgZone,
-    private rendererFactory2: RendererFactory2
-  ) {
-    this.renderer = this.rendererFactory2.createRenderer(null, null);
-  }
-
-  ngOnDestroy(): void {
-    // Caretaker note: the `handler` is an instance property (it's not defined on the class prototype).
-    // The `handler` captures `this` and prevents the `NzResizeService` from being GC'd.
-    this.handler = NOOP;
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      // Caretaker note: the `handler` is an instance property (it's not defined on the class prototype).
+      this.handler = NOOP;
+    });
   }
 
   subscribe(): Observable<void> {

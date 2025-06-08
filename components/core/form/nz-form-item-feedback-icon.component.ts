@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   Input,
   OnChanges,
   SimpleChanges,
@@ -43,8 +44,8 @@ const iconTypeMap = {
   }
 })
 export class NzFormItemFeedbackIconComponent implements OnChanges {
+  public cdr = inject(ChangeDetectorRef);
   @Input() status: NzValidateStatus = '';
-  constructor(public cdr: ChangeDetectorRef) {}
 
   iconType: (typeof iconTypeMap)[keyof typeof iconTypeMap] | null = null;
 

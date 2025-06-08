@@ -20,8 +20,7 @@ export class ImagePreloadService {
   private counter = new Map<string, number>();
   private linkRefs = new Map<string, HTMLLinkElement>();
   private document: Document = inject(DOCUMENT);
-
-  constructor(private platform: Platform) {}
+  private platform: Platform = inject(Platform);
 
   addPreload(option: PreloadOption): PreloadDisposeHandle {
     if (this.platform.isBrowser) {
