@@ -18,7 +18,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
 
@@ -37,8 +36,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
     '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered',
     '[class.ant-collapse-rtl]': "dir === 'rtl'"
-  },
-  providers: [NzDestroyService]
+  }
 })
 export class NzCollapseComponent implements OnInit {
   public nzConfigService = inject(NzConfigService);

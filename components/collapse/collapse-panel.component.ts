@@ -27,7 +27,6 @@ import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -76,7 +75,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
     '[class.ant-collapse-item-active]': 'nzActive',
     '[class.ant-collapse-item-disabled]': 'nzDisabled'
   },
-  providers: [NzDestroyService],
   imports: [NzOutletModule, NzIconModule]
 })
 export class NzCollapsePanelComponent implements OnInit {
