@@ -234,7 +234,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
     });
 
     this.resizeService
-      .subscribe()
+      .connect()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.layout();

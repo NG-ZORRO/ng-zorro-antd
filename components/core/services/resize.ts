@@ -36,7 +36,7 @@ export class NzResizeService {
     });
   }
 
-  subscribe(): Observable<void> {
+  connect(): Observable<void> {
     this.registerListener();
 
     return this.resizeSource$.pipe(
@@ -45,7 +45,7 @@ export class NzResizeService {
     );
   }
 
-  unsubscribe(): void {
+  disconnet(): void {
     this.unregisterListener();
   }
 

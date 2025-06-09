@@ -185,7 +185,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     if (this.autosize && this.platform.isBrowser) {
       this.resizeToFitContent();
       this.resizeService
-        .subscribe()
+        .connect()
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.resizeToFitContent(true));
     }

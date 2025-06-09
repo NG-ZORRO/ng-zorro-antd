@@ -196,7 +196,7 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
           ),
           takeUntil(this.destroy$)
         );
-        const resize$ = this.resizeService.subscribe().pipe(takeUntil(this.destroy$));
+        const resize$ = this.resizeService.connect().pipe(takeUntil(this.destroy$));
         const data$ = this.data$.pipe(takeUntil(this.destroy$));
         const setClassName$ = merge(scrollEvent$, resize$, data$, this.scroll$).pipe(
           startWith(true),

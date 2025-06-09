@@ -51,7 +51,7 @@ export class NzBreakpointService {
 
   constructor() {
     this.resizeService
-      .subscribe()
+      .connect()
       .pipe(takeUntilDestroyed())
       .subscribe(() => {});
   }
@@ -62,7 +62,7 @@ export class NzBreakpointService {
     if (fullMap) {
       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       const get = () => this.matchMedia(breakpointMap, true);
-      return this.resizeService.subscribe().pipe(
+      return this.resizeService.connect().pipe(
         map(get),
         startWith(get()),
         distinctUntilChanged(
@@ -73,7 +73,7 @@ export class NzBreakpointService {
     } else {
       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       const get = () => this.matchMedia(breakpointMap);
-      return this.resizeService.subscribe().pipe(map(get), startWith(get()), distinctUntilChanged());
+      return this.resizeService.connect().pipe(map(get), startWith(get()), distinctUntilChanged());
     }
   }
 

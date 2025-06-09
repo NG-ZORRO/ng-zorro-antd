@@ -326,7 +326,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.cssEllipsis = this.canUseCSSEllipsis();
       this.renderOnNextFrame();
       this.windowResizeSubscription = this.resizeService
-        .subscribe()
+        .connect()
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.renderOnNextFrame());
     }
