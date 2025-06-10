@@ -12,7 +12,8 @@ import {
   OnChanges,
   SimpleChanges,
   TemplateRef,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
@@ -71,6 +72,8 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
   imports: [NgTemplateOutlet, NzIconModule, NzHighlightModule, NzTreeDropIndicatorComponent]
 })
 export class NzTreeNodeTitleComponent implements OnChanges {
+  private cdr = inject(ChangeDetectorRef);
+
   @Input() searchValue!: string;
   @Input() treeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> | null = null;
   @Input({ transform: booleanAttribute }) draggable!: boolean;
@@ -104,8 +107,6 @@ export class NzTreeNodeTitleComponent implements OnChanges {
   get isSwitcherClose(): boolean {
     return !this.isExpanded && !this.isLeaf;
   }
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { showIndicator, dragPosition } = changes;
