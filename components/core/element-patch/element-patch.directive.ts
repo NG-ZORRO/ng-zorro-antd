@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, inject } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -15,9 +15,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   exportAs: 'nzElement'
 })
 export class NzElementPatchDirective {
+  public elementRef = inject(ElementRef<HTMLElement>);
   get nativeElement(): NzSafeAny {
     return this.elementRef.nativeElement;
   }
-
-  constructor(public elementRef: ElementRef) {}
 }

@@ -57,11 +57,10 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   private platform = inject(Platform);
   private config = inject(NZ_WAVE_GLOBAL_CONFIG, { optional: true });
   private animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
+  private ngZone = inject(NgZone);
+  private elementRef = inject(ElementRef<HTMLElement>);
 
-  constructor(
-    private ngZone: NgZone,
-    private elementRef: ElementRef
-  ) {
+  constructor() {
     this.waveDisabled = this.isConfigDisabled();
   }
 

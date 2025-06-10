@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { inject, Injectable, RendererFactory2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, finalize, map } from 'rxjs/operators';
 
@@ -41,11 +41,7 @@ export class NzDragService {
   private currentDraggingSequence: Subject<MouseEvent | Touch> | null = null;
   private currentStartingPoint: Point | null = null;
   private handleRegistry = new Set<HandlerItem>();
-  private renderer: Renderer2;
-
-  constructor(rendererFactory2: RendererFactory2) {
-    this.renderer = rendererFactory2.createRenderer(null, null);
-  }
+  private renderer = inject(RendererFactory2).createRenderer(null, null);
 
   requestDraggingSequence(event: MouseEvent | TouchEvent): Observable<Delta> {
     if (!this.handleRegistry.size) {

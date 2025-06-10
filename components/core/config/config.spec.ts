@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, inject } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -17,9 +17,8 @@ import { NzConfigService } from './config.service';
   template: `<button nz-button nzType="primary" [nzSize]="size">Global Config</button>`
 })
 export class NzGlobalConfigTestBasicComponent {
+  public nzConfigService = inject(NzConfigService);
   size!: NzButtonSize;
-
-  constructor(public nzConfigService: NzConfigService) {}
 }
 
 describe('nz global config', () => {

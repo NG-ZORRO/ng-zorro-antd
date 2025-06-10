@@ -6,6 +6,7 @@
 import {
   Directive,
   EmbeddedViewRef,
+  inject,
   Input,
   OnChanges,
   SimpleChange,
@@ -22,6 +23,9 @@ import { isTemplateRef } from 'ng-zorro-antd/core/util';
   exportAs: 'nzStringTemplateOutlet'
 })
 export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges {
+  private viewContainer = inject(ViewContainerRef);
+  private templateRef = inject(TemplateRef<NzSafeAny>);
+
   private embeddedViewRef: EmbeddedViewRef<NzSafeAny> | null = null;
   private context = new NzStringTemplateOutletContext();
   @Input() nzStringTemplateOutletContext: NzSafeAny | null = null;
@@ -55,11 +59,6 @@ export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges 
       }
     }
   }
-
-  constructor(
-    private viewContainer: ViewContainerRef,
-    private templateRef: TemplateRef<NzSafeAny>
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzStringTemplateOutletContext, nzStringTemplateOutlet } = changes;

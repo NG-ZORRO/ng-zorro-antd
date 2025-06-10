@@ -9,7 +9,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzOutletModule } from './outlet.module';
-import { NzStringTemplateOutletDirective } from './string_template_outlet.directive';
+import { NzStringTemplateOutletDirective } from './string-template-outlet.directive';
 
 describe('string template outlet', () => {
   let fixture: ComponentFixture<StringTemplateOutletTestComponent>;

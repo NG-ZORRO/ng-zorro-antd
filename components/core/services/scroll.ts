@@ -34,8 +34,7 @@ export interface NzScrollToOptions {
 })
 export class NzScrollService {
   private doc: Document = inject(DOCUMENT);
-
-  constructor(private ngZone: NgZone) {}
+  private ngZone = inject(NgZone);
 
   /** Set the position of the scroll bar of `el`. */
   setScrollTop(el: Element | Window, topValue: number = 0): void {
@@ -100,6 +99,7 @@ export class NzScrollService {
    *
    * @param containerEl container, `window` by default
    * @param y Scroll to `top`, 0 by default
+   * @param options Scroll animation options
    */
   scrollTo(
     containerEl?: Element | HTMLElement | Window | Document | null,

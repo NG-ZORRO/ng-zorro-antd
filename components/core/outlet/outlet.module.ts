@@ -5,7 +5,7 @@
 
 import { NgModule } from '@angular/core';
 
-import { NzStringTemplateOutletDirective } from './string_template_outlet.directive';
+import { NzStringTemplateOutletDirective } from './string-template-outlet.directive';
 
 @NgModule({
   imports: [NzStringTemplateOutletDirective],
