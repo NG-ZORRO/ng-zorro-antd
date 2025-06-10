@@ -14,7 +14,8 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -83,6 +84,7 @@ import { PREFIX_CLASS } from './util';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CalendarFooterComponent implements OnChanges {
+  private dateHelper = inject(DateHelperService);
   @Input() locale!: NzCalendarI18nInterface;
   @Input({ transform: booleanAttribute }) showToday: boolean = false;
   @Input({ transform: booleanAttribute }) showNow: boolean = false;
@@ -100,8 +102,6 @@ export class CalendarFooterComponent implements OnChanges {
   prefixCls: string = PREFIX_CLASS;
   isTodayDisabled: boolean = false;
   todayTitle: string = '';
-
-  constructor(private dateHelper: DateHelperService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const now: Date = new Date();
