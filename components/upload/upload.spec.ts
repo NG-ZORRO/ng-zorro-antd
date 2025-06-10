@@ -1222,13 +1222,13 @@ describe('upload', () => {
             }
           } as NzSafeAny);
           expect(Object.keys(instance.comp.reqs).length).toBe(2);
-          instance.comp.ngOnDestroy();
+          fixture.destroy();
           expect(Object.keys(instance.comp.reqs).length).toBe(0);
         });
         it('should be subsequent uploading', () => {
           instance.comp.onChange(PNGSMALL as NzSafeAny);
           expect(Object.keys(instance.comp.reqs).length).toBe(1);
-          instance.comp.ngOnDestroy();
+          fixture.destroy();
           instance.comp.onChange(PNGSMALL as NzSafeAny);
           expect(Object.keys(instance.comp.reqs).length).toBe(0);
         });

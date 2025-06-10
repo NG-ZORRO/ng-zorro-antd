@@ -5,9 +5,10 @@
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Component, ElementRef, inject, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Observable, of, Subject, Subscription } from 'rxjs';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Component, DestroyRef, ElementRef, inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, of, Subscription } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -29,10 +30,9 @@ import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
   },
   encapsulation: ViewEncapsulation.None
 })
-export class NzUploadBtnComponent implements OnInit, OnDestroy {
+export class NzUploadBtnComponent implements OnInit {
   reqs: Record<string, Subscription> = {};
-  private destroy = false;
-  private destroy$ = new Subject<void>();
+  private destroyed = false;
   @ViewChild('file', { static: true }) file!: ElementRef<HTMLInputElement>;
   @Input() options!: ZipButtonOptions;
 
@@ -179,7 +179,7 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
   }
 
   private post(file: NzUploadFile): void {
-    if (this.destroy) {
+    if (this.destroyed) {
       return;
     }
     let process$: Observable<string | Blob | File | NzUploadFile> = of(file);
@@ -334,24 +334,30 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
   }
 
   private http = inject(HttpClient, { optional: true });
+  private elementRef = inject(ElementRef);
+  private destroyRef = inject(DestroyRef);
 
-  constructor(private elementRef: ElementRef) {
+  constructor() {
     if (!this.http) {
       throw new Error(
         `Not found 'HttpClient', You can configure 'HttpClient' with 'provideHttpClient()' in your root module.`
       );
     }
+    this.destroyRef.onDestroy(() => {
+      this.destroyed = true;
+      this.abort();
+    });
   }
 
   ngOnInit(): void {
     // Caretaker note: `input[type=file].click()` will open a native OS file picker,
     // it doesn't require Angular to run `ApplicationRef.tick()`.
     fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.onClick());
 
     fromEventOutsideAngular<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         if (this.options.disabled) {
           return;
@@ -360,11 +366,5 @@ export class NzUploadBtnComponent implements OnInit, OnDestroy {
           this.onClick();
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy = true;
-    this.destroy$.next();
-    this.abort();
   }
 }
