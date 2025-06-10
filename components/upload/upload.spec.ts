@@ -37,34 +37,34 @@ import { NzUploadBtnComponent } from './upload-btn.component';
 import { NzUploadListComponent } from './upload-list.component';
 import { NzUploadComponent } from './upload.component';
 
-const FILECONTENT = [
+const FILE_CONTENT = [
   `iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`
 ];
-const FILE = new File(FILECONTENT, '');
-const PNGSMALL = {
+const FILE = new File(FILE_CONTENT, '');
+const PNG_SMALL = {
   target: {
     files: [
-      new File(FILECONTENT, 'test.png', {
+      new File(FILE_CONTENT, 'test.png', {
         type: 'image/png'
       })
     ]
   }
 };
-const JPGSMALL = {
+const JPG_SMALL = {
   target: {
     files: [
-      new File(FILECONTENT, 'test.jpg', {
+      new File(FILE_CONTENT, 'test.jpg', {
         type: 'image/jpg'
       })
     ]
   }
 };
-const LARGEFILE = {
+const LARGE_FILE = {
   name: 'test.png',
   size: 500001,
   type: 'image/png'
 };
-const PNGBIG = { target: { files: { 0: LARGEFILE, length: 1, item: () => LARGEFILE } } };
+const PNG_BIG = { target: { files: { 0: LARGE_FILE, length: 1, item: () => LARGE_FILE } } };
 
 class Item {
   children?: Item[];
@@ -139,7 +139,7 @@ describe('upload', () => {
         instance.nzMultiple = true;
         fixture.detectChanges();
         expect(instance._beforeUploadList.length).toBe(0);
-        pageObject.postFile([...PNGSMALL.target.files, ...PNGSMALL.target.files, ...PNGSMALL.target.files]);
+        pageObject.postFile([...PNG_SMALL.target.files, ...PNG_SMALL.target.files, ...PNG_SMALL.target.files]);
         expect(instance._beforeUploadList.length).toBe(instance.nzLimit);
       });
 
@@ -147,7 +147,7 @@ describe('upload', () => {
         instance.nzFileType = 'image/png';
         fixture.detectChanges();
         expect(instance._beforeUploadList.length).toBe(0);
-        pageObject.postFile(JPGSMALL.target.files);
+        pageObject.postFile(JPG_SMALL.target.files);
         expect(instance._beforeUploadList.length).toBe(0);
       });
 
@@ -472,7 +472,7 @@ describe('upload', () => {
           ];
           fixture.detectChanges();
           expect(instance._beforeUploadList.length).toBe(0);
-          pageObject.postFile([...PNGSMALL.target.files, ...PNGSMALL.target.files, ...PNGSMALL.target.files]);
+          pageObject.postFile([...PNG_SMALL.target.files, ...PNG_SMALL.target.files, ...PNG_SMALL.target.files]);
           expect(instance._beforeUploadList.length).toBe(instance.nzLimit);
         });
         it('should be custom size', () => {
@@ -498,7 +498,7 @@ describe('upload', () => {
           ];
           fixture.detectChanges();
           expect(instance._beforeUploadList.length).toBe(0);
-          pageObject.postFile(JPGSMALL.target.files);
+          pageObject.postFile(JPG_SMALL.target.files);
           expect(instance._beforeUploadList.length).toBe(0);
         });
         describe('with Observable', () => {
@@ -523,7 +523,7 @@ describe('upload', () => {
             ];
             fixture.detectChanges();
             expect(instance._beforeUploadList.length).toBe(0);
-            pageObject.postFile([...PNGSMALL.target.files, ...PNGSMALL.target.files, ...PNGSMALL.target.files]);
+            pageObject.postFile([...PNG_SMALL.target.files, ...PNG_SMALL.target.files, ...PNG_SMALL.target.files]);
             expect(instance._beforeUploadList.length).toBe(1);
           });
           it('should be console.warn error', () => {
@@ -539,7 +539,7 @@ describe('upload', () => {
               }
             ];
             fixture.detectChanges();
-            pageObject.postFile(PNGSMALL.target.files);
+            pageObject.postFile(PNG_SMALL.target.files);
             expect(warnMsg).toContain(`Unhandled upload filter error`);
           });
         });
@@ -733,12 +733,12 @@ describe('upload', () => {
       }
 
       postSmall(): this {
-        this.postFile(PNGSMALL.target.files);
+        this.postFile(PNG_SMALL.target.files);
         return this;
       }
 
       postLarge(): this {
-        this.postFile(PNGBIG.target.files);
+        this.postFile(PNG_BIG.target.files);
         return this;
       }
 
@@ -1069,7 +1069,7 @@ describe('upload', () => {
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
-              dataTransfer: { files: PNGSMALL.target.files },
+              dataTransfer: { files: PNG_SMALL.target.files },
               preventDefault: () => {}
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
@@ -1081,7 +1081,7 @@ describe('upload', () => {
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
-              dataTransfer: { files: PNGSMALL.target.files },
+              dataTransfer: { files: PNG_SMALL.target.files },
               preventDefault: () => {}
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
@@ -1093,7 +1093,7 @@ describe('upload', () => {
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
-              dataTransfer: { files: PNGSMALL.target.files },
+              dataTransfer: { files: PNG_SMALL.target.files },
               preventDefault: () => {}
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
@@ -1105,7 +1105,7 @@ describe('upload', () => {
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
-              dataTransfer: { files: PNGSMALL.target.files },
+              dataTransfer: { files: PNG_SMALL.target.files },
               preventDefault: () => {}
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
@@ -1114,7 +1114,7 @@ describe('upload', () => {
         it('via onChange', () => {
           spyOn(instance.comp, 'uploadFiles');
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
-          instance.comp.onChange(PNGSMALL as NzSafeAny);
+          instance.comp.onChange(PNG_SMALL as NzSafeAny);
           expect(instance.comp.uploadFiles).toHaveBeenCalled();
         });
         describe('via directory', () => {
@@ -1218,7 +1218,7 @@ describe('upload', () => {
         it('should be abort all uploading file', () => {
           instance.comp.onChange({
             target: {
-              files: [...PNGSMALL.target.files, ...JPGSMALL.target.files]
+              files: [...PNG_SMALL.target.files, ...JPG_SMALL.target.files]
             }
           } as NzSafeAny);
           expect(Object.keys(instance.comp.reqs).length).toBe(2);
@@ -1226,10 +1226,10 @@ describe('upload', () => {
           expect(Object.keys(instance.comp.reqs).length).toBe(0);
         });
         it('should be subsequent uploading', () => {
-          instance.comp.onChange(PNGSMALL as NzSafeAny);
+          instance.comp.onChange(PNG_SMALL as NzSafeAny);
           expect(Object.keys(instance.comp.reqs).length).toBe(1);
           fixture.destroy();
-          instance.comp.onChange(PNGSMALL as NzSafeAny);
+          instance.comp.onChange(PNG_SMALL as NzSafeAny);
           expect(Object.keys(instance.comp.reqs).length).toBe(0);
         });
       });
@@ -1268,7 +1268,7 @@ describe('upload', () => {
         spyOn<NzSafeAny>(comp.options, 'onStart');
         spyOn<NzSafeAny>(comp.options, 'onProgress');
         spyOn<NzSafeAny>(comp.options, 'onSuccess');
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         tick(1);
         const req = http.expectOne('/test');
         req.event({ type: 1, loaded: 10, total: 100 });
@@ -1279,7 +1279,7 @@ describe('upload', () => {
       }));
 
       it('should contain the parameters of http request', fakeAsync(() => {
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         tick(1);
         const req = http.expectOne('/test');
         expect(req.request.withCredentials).toBe(true);
@@ -1298,14 +1298,14 @@ describe('upload', () => {
             fn: (fileList: NzUploadFile[]) => fileList.filter(w => w.size! / 1024 <= 0)
           }
         ];
-        comp.onChange(PNGBIG as NzSafeAny);
+        comp.onChange(PNG_BIG as NzSafeAny);
         expect(comp.options.onStart).not.toHaveBeenCalled();
       });
 
       it('should be no request when beforeUpload is false', () => {
         spyOn<NzSafeAny>(comp.options, 'beforeUpload').and.returnValue(false);
         spyOn<NzSafeAny>(comp.options, 'onStart');
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         expect(comp.options.beforeUpload).toHaveBeenCalled();
         expect(comp.options.onStart).not.toHaveBeenCalled();
       });
@@ -1314,7 +1314,7 @@ describe('upload', () => {
         spyOn<NzSafeAny>(comp.options, 'onStart');
         spyOn<NzSafeAny>(comp.options, 'onSuccess');
         spyOn<NzSafeAny>(comp.options, 'onError');
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         tick(1);
         http.expectOne('/test').error({ status: 403 } as unknown as ProgressEvent);
         expect(comp.options.onStart).toHaveBeenCalled();
@@ -1325,7 +1325,7 @@ describe('upload', () => {
       it('should custom request', () => {
         comp.options.customRequest = () => of(true).subscribe(() => {});
         spyOn<NzSafeAny>(comp.options, 'customRequest');
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         expect(comp.options.customRequest).toHaveBeenCalled();
       });
 
@@ -1333,7 +1333,7 @@ describe('upload', () => {
         let warnMsg = '';
         console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
         comp.options.customRequest = (() => {}) as NzSafeAny;
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         expect(warnMsg).toContain(`Must return Subscription type in '[nzCustomRequest]' property`);
       });
     });
