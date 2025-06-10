@@ -12,6 +12,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   DOCUMENT,
   ElementRef,
   EmbeddedViewRef,
@@ -20,7 +21,6 @@ import {
   Input,
   numberAttribute,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -30,8 +30,8 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subscription } from 'rxjs';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
@@ -130,8 +130,20 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   },
   imports: [NgTemplateOutlet, NzTextEditComponent, NzTextCopyComponent]
 })
-export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+export class NzTypographyComponent implements OnInit, AfterViewInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  nzConfigService = inject(NzConfigService);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private cdr = inject(ChangeDetectorRef);
+  private viewContainerRef = inject(ViewContainerRef);
+  private renderer = inject(Renderer2);
+  private platform = inject(Platform);
+  private i18n = inject(NzI18nService);
+  private resizeService = inject(NzResizeService);
+  private directionality = inject(Directionality);
+  private document: Document = inject(DOCUMENT);
+  private destroyRef = inject(DestroyRef);
 
   @Input({ transform: booleanAttribute }) nzCopyable = false;
   @Input({ transform: booleanAttribute }) nzEditable = false;
@@ -160,7 +172,6 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @ViewChild('contentTemplate', { static: false }) contentTemplate?: TemplateRef<{ content: string }>;
 
   locale!: NzTextI18nInterface;
-  private document: Document = inject(DOCUMENT);
   expandableBtnElementCache: HTMLElement | null = null;
   editing = false;
   ellipsisText: string | undefined;
@@ -183,24 +194,19 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   private viewInit = false;
-  private rfaId: number = -1;
-  private destroy$ = new Subject<boolean>();
+  private requestId: number = -1;
   private windowResizeSubscription = Subscription.EMPTY;
+
   get copyText(): string {
     return (typeof this.nzCopyText === 'string' ? this.nzCopyText : this.nzContent)!;
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private host: ElementRef<HTMLElement>,
-    private cdr: ChangeDetectorRef,
-    private viewContainerRef: ViewContainerRef,
-    private renderer: Renderer2,
-    private platform: Platform,
-    private i18n: NzI18nService,
-    private resizeService: NzResizeService,
-    private directionality: Directionality
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.expandableBtnElementCache = null;
+      this.windowResizeSubscription.unsubscribe();
+    });
+  }
 
   onTextCopy(text: string): void {
     this.nzCopy.emit(text);
@@ -242,13 +248,11 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   renderOnNextFrame(): void {
-    cancelRequestAnimationFrame(this.rfaId);
+    cancelRequestAnimationFrame(this.requestId);
     if (!this.viewInit || !this.nzEllipsis || this.nzEllipsisRows < 0 || this.expanded || !this.platform.isBrowser) {
       return;
     }
-    this.rfaId = reqAnimFrame(() => {
-      this.syncEllipsis();
-    });
+    this.requestId = reqAnimFrame(() => this.syncEllipsis());
   }
 
   getOriginContentViewRef(): { viewRef: EmbeddedViewRef<{ content: string }>; removeView(): void } {
@@ -258,9 +262,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     viewRef.detectChanges();
     return {
       viewRef,
-      removeView: () => {
-        this.viewContainerRef.remove(this.viewContainerRef.indexOf(viewRef));
-      }
+      removeView: () => this.viewContainerRef.remove(this.viewContainerRef.indexOf(viewRef))
     };
   }
 
@@ -277,7 +279,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       fixedNodes.push(expandableBtnElement);
     }
     const { contentNodes, text, ellipsis } = measure(
-      this.host.nativeElement,
+      this.el,
       this.nzEllipsisRows,
       viewRef.rootNodes,
       fixedNodes,
@@ -327,18 +329,18 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.renderOnNextFrame();
       this.windowResizeSubscription = this.resizeService
         .connect()
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => this.renderOnNextFrame());
     }
   }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Text');
       this.cdr.markForCheck();
     });
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -362,12 +364,5 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
         }
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
-    this.expandableBtnElementCache = null;
-    this.windowResizeSubscription.unsubscribe();
   }
 }

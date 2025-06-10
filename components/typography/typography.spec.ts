@@ -25,8 +25,7 @@ import { NzTextEditComponent } from '.';
 import { NzTypographyComponent } from './typography.component';
 import { NzTypographyModule } from './typography.module';
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
-declare const viewport: any;
+declare const viewport: NzSafeAny;
 
 describe('typography', () => {
   let componentElement: HTMLElement;

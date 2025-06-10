@@ -9,6 +9,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   inject,
@@ -20,11 +21,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from 'rxjs';
-import { first, switchMap, takeUntil } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
@@ -58,10 +59,14 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [NzDestroyService],
   imports: [NzInputModule, NzTransButtonModule, NzIconModule, NzToolTipModule, NzOutletModule]
 })
 export class NzTextEditComponent implements OnInit {
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  private i18n = inject(NzI18nService);
+  private destroyRef = inject(DestroyRef);
+
   editing = false;
   locale!: NzTextI18nInterface;
 
@@ -81,21 +86,14 @@ export class NzTextEditComponent implements OnInit {
   nativeElement: HTMLElement = inject(ElementRef).nativeElement;
 
   // We could've saved the textarea within some private property (e.g. `_textarea`) and have a getter,
-  // but having subject makes the code more reactive and cancellable (e.g. event listeners will be
+  // but having subject makes the code more reactive and cancellable (e.g., event listeners will be
   // automatically removed and re-added through the `switchMap` below).
   private textarea$ = new BehaviorSubject<ElementRef<HTMLTextAreaElement> | null | undefined>(null);
 
   private injector = inject(Injector);
 
-  constructor(
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService,
-    private destroy$: NzDestroyService
-  ) {}
-
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Text');
       this.cdr.markForCheck();
     });
@@ -103,7 +101,7 @@ export class NzTextEditComponent implements OnInit {
     this.textarea$
       .pipe(
         switchMap(textarea => fromEventOutsideAngular<KeyboardEvent>(textarea?.nativeElement, 'keydown')),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(event => {
         // Caretaker note: adding modifier at the end (for instance `(keydown.esc)`) will tell Angular to add
@@ -127,7 +125,7 @@ export class NzTextEditComponent implements OnInit {
     this.textarea$
       .pipe(
         switchMap(textarea => fromEventOutsideAngular<KeyboardEvent>(textarea?.nativeElement, 'input')),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(event => {
         this.currentText = (event.target as HTMLTextAreaElement).value;
@@ -167,9 +165,9 @@ export class NzTextEditComponent implements OnInit {
           .pipe(
             // It may still not be available, so we need to wait until view queries
             // are executed during the change detection. It's safer to wait until
-            // the query runs and the textarea is set on the behavior subject.
+            // the query runs, and the textarea is set on the behavior subject.
             first((textarea): textarea is ElementRef<HTMLTextAreaElement> => textarea != null),
-            takeUntil(this.destroy$)
+            takeUntilDestroyed(this.destroyRef)
           )
           .subscribe(textarea => {
             textarea.nativeElement.focus();
