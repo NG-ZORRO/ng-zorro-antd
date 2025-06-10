@@ -129,6 +129,10 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
   ]
 })
 export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValueAccessor, AsyncValidator {
+  private formBuilder = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
+  private i18n = inject(NzI18nService);
+
   @Input() nzSize: NzCronExpressionSize = 'default';
   @Input() nzType: NzCronExpressionType = 'linux';
   @Input({ transform: booleanAttribute }) nzCollapseDisable: boolean = false;
@@ -188,11 +192,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
     this.cdr.markForCheck();
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService
-  ) {
+  constructor() {
     this.validateForm = this.formBuilder.nonNullable.group(
       {
         second: ['0', Validators.required],
