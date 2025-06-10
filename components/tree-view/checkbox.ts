@@ -13,11 +13,12 @@ import {
   NgZone,
   OnInit,
   Output,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 @Component({
@@ -29,26 +30,23 @@ import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
     '[class.ant-tree-checkbox-checked]': `nzChecked`,
     '[class.ant-tree-checkbox-indeterminate]': `nzIndeterminate`,
     '[class.ant-tree-checkbox-disabled]': `nzDisabled`
-  },
-  providers: [NzDestroyService]
+  }
 })
 export class NzTreeNodeCheckboxComponent implements OnInit {
+  private ngZone = inject(NgZone);
+  private ref = inject(ChangeDetectorRef);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private destroyRef = inject(DestroyRef);
+
   @Input({ transform: booleanAttribute }) nzChecked?: boolean;
   @Input({ transform: booleanAttribute }) nzIndeterminate?: boolean;
   @Input({ transform: booleanAttribute }) nzDisabled?: boolean;
   @Output() readonly nzClick = new EventEmitter<MouseEvent>();
 
-  constructor(
-    private ngZone: NgZone,
-    private ref: ChangeDetectorRef,
-    private host: ElementRef<HTMLElement>,
-    private destroy$: NzDestroyService
-  ) {}
-
   ngOnInit(): void {
-    fromEventOutsideAngular<MouseEvent>(this.host.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((event: MouseEvent) => {
+    fromEventOutsideAngular<MouseEvent>(this.el, 'click')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(event => {
         if (!this.nzDisabled && this.nzClick.observers.length) {
           this.ngZone.run(() => {
             this.nzClick.emit(event);
