@@ -12,21 +12,22 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   DOCUMENT,
   EventEmitter,
   inject,
   Input,
   numberAttribute,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, of, Subject, Subscription } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, of, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, toBoolean } from 'ng-zorro-antd/core/util';
@@ -58,10 +59,14 @@ import { NzUploadListComponent } from './upload-list.component';
   },
   imports: [NzUploadListComponent, NgTemplateOutlet, NzUploadBtnComponent]
 })
-export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList;
 
-  private destroy$ = new Subject<void>();
+  private cdr = inject(ChangeDetectorRef);
+  private i18n = inject(NzI18nService);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   @ViewChild('uploadComp', { static: false }) uploadComp!: NzUploadBtnComponent;
   @ViewChild('listComp', { static: false }) listComp!: NzUploadListComponent;
 
@@ -174,12 +179,6 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   private readonly platform = inject(Platform);
 
   // #endregion
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService,
-    private directionality: Directionality
-  ) {}
 
   // #region upload
 
@@ -333,13 +332,13 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.setClassMap();
       this.cdr.detectChanges();
     });
 
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Upload');
       this.detectChangesList();
     });
@@ -349,7 +348,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     if (this.platform.FIREFOX) {
       // fix firefox drop open new tab
       fromEventOutsideAngular<MouseEvent>(this.document.body, 'drop')
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(event => {
           event.preventDefault();
           event.stopPropagation();
@@ -359,10 +358,5 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   ngOnChanges(): void {
     this.zipOptions().setClassMap();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
