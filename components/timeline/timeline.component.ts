@@ -13,17 +13,17 @@ import {
   ContentChildren,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   QueryList,
   SimpleChange,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -86,7 +86,12 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
   `,
   imports: [NgTemplateOutlet, NzOutletModule, NzIconModule]
 })
-export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
+export class NzTimelineComponent implements AfterContentInit, OnChanges, OnInit {
+  private cdr = inject(ChangeDetectorRef);
+  private timelineService = inject(TimelineService);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   @ContentChildren(NzTimelineItemComponent) listOfItems!: QueryList<NzTimelineItemComponent>;
 
   @Input() nzMode: NzTimelineMode = 'left';
@@ -98,14 +103,6 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   timelineItems: NzTimelineItemComponent[] = [];
   dir: Direction = 'ltr';
   hasLabelItem = false;
-
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private timelineService: TimelineService,
-    private directionality: Directionality
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzMode, nzReverse, nzPending } = changes;
@@ -120,11 +117,11 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   }
 
   ngOnInit(): void {
-    this.timelineService.check$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.timelineService.check$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.cdr.markForCheck();
     });
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -135,14 +132,9 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   ngAfterContentInit(): void {
     this.updateChildren();
 
-    this.listOfItems.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.listOfItems.changes.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.updateChildren();
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private updateChildren(): void {
@@ -177,13 +169,11 @@ function simpleChangeActivated(simpleChange?: SimpleChange): boolean {
 }
 
 function getInferredTimelineItemPosition(index: number, mode: NzTimelineMode): NzTimelinePosition | undefined {
-  return mode === 'custom'
-    ? undefined
-    : mode === 'left'
-      ? 'left'
-      : mode === 'right'
-        ? 'right'
-        : mode === 'alternate' && index % 2 === 0
-          ? 'left'
-          : 'right';
+  if (mode === 'custom') {
+    return undefined;
+  } else if (mode === 'left' || mode === 'right') {
+    return mode;
+  } else {
+    return mode === 'alternate' && index % 2 === 0 ? 'left' : 'right';
+  }
 }
