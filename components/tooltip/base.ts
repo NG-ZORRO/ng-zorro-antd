@@ -10,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
+  DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -22,12 +23,8 @@ import {
   Type,
   ViewChild,
   ViewContainerRef,
-  inject,
-  DestroyRef
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, asapScheduler } from 'rxjs';
 import { delay, distinctUntilChanged, filter } from 'rxjs/operators';
