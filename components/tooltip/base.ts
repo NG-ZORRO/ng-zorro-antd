@@ -398,12 +398,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
-  constructor() {
-    this.destroyRef.onDestroy(() => {
-      this.nzVisibleChange.complete();
-    });
-  }
-
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
