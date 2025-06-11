@@ -4,7 +4,7 @@
  */
 
 import { FocusableOption } from '@angular/cdk/a11y';
-import { Directive, ElementRef, Input, booleanAttribute } from '@angular/core';
+import { Directive, ElementRef, Input, booleanAttribute, inject } from '@angular/core';
 
 import { NzTabComponent } from './tab.component';
 
@@ -15,13 +15,10 @@ export class NzTabNavItemDirective implements FocusableOption {
   @Input({ transform: booleanAttribute }) disabled: boolean = false;
   @Input() tab!: NzTabComponent;
   @Input({ transform: booleanAttribute }) active: boolean = false;
-  private el!: HTMLElement;
-  private parentElement!: HTMLElement;
 
-  constructor(public elementRef: ElementRef<HTMLElement>) {
-    this.el = elementRef.nativeElement;
-    this.parentElement = this.el.parentElement!;
-  }
+  public elementRef: ElementRef<HTMLElement> = inject(ElementRef<HTMLElement>);
+  private el: HTMLElement = this.elementRef.nativeElement;
+  private parentElement: HTMLElement = this.el.parentElement!;
 
   focus(): void {
     this.el.focus({ preventScroll: true });

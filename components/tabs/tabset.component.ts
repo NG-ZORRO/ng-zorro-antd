@@ -18,12 +18,12 @@ import {
   Component,
   contentChildren,
   ContentChildren,
+  DestroyRef,
   EventEmitter,
   forwardRef,
   inject,
   Input,
   NgZone,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -31,9 +31,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { merge, Observable, of, Subject, Subscription } from 'rxjs';
-import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
+import { merge, Observable, of, Subscription } from 'rxjs';
+import { delay, filter, first, startWith } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
@@ -194,8 +195,14 @@ let nextId = 0;
     NzTabBodyComponent
   ]
 })
-export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit {
+export class NzTabSetComponent implements OnInit, AfterContentChecked, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  public nzConfigService = inject(NzConfigService);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
 
   @Input()
   get nzSelectedIndex(): number | null {
@@ -265,38 +272,28 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
   dir: Direction = 'ltr';
   private readonly tabSetId!: number;
-  private destroy$ = new Subject<void>();
   private indexToSelect: number | null = 0;
   private selectedIndex: number | null = null;
   private tabLabelSubscription = Subscription.EMPTY;
-  private tabsSubscription = Subscription.EMPTY;
   private canDeactivateSubscription = Subscription.EMPTY;
   private router = inject(Router, { optional: true });
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {
+  constructor() {
     this.tabSetId = nextId++;
+
+    this.destroyRef.onDestroy(() => {
+      this.tabs.destroy();
+      this.tabLabelSubscription.unsubscribe();
+      this.canDeactivateSubscription.unsubscribe();
+    });
   }
 
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.tabs.destroy();
-    this.tabLabelSubscription.unsubscribe();
-    this.tabsSubscription.unsubscribe();
-    this.canDeactivateSubscription.unsubscribe();
   }
 
   ngAfterContentInit(): void {
@@ -309,7 +306,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
     // Subscribe to changes of the number of tabs, to be
     // able to re-render the content as new tabs are added or removed.
-    this.tabsSubscription = this.tabs.changes.subscribe(() => {
+    this.tabs.changes.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       const indexToSelect = this.clampTabIndex(this.indexToSelect);
 
       // Maintain the previously selected tab if a new tab is added or removed, and there is no
@@ -423,7 +420,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   canDeactivateFun(pre: number, next: number): Observable<boolean> {
     if (typeof this.nzCanDeactivate === 'function') {
       const observable = wrapIntoObservable(this.nzCanDeactivate(pre, next));
-      return observable.pipe(first(), takeUntil(this.destroy$));
+      return observable.pipe(first(), takeUntilDestroyed(this.destroyRef));
     } else {
       return of(true);
     }
@@ -483,7 +480,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
         throw new Error(`${PREFIX} you should import 'RouterModule' if you want to use 'nzLinkRouter'!`);
       }
       merge(this.router.events.pipe(filter(e => e instanceof NavigationEnd)), this.tabLinks.changes)
-        .pipe(startWith(true), delay(0), takeUntil(this.destroy$))
+        .pipe(startWith(true), delay(0), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.updateRouterActive();
           this.cdr.markForCheck();

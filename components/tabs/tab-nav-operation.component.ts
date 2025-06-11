@@ -14,7 +14,8 @@ import {
   Output,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -96,13 +97,8 @@ export class NzTabNavOperationComponent implements OnDestroy {
   closeAnimationWaitTimeoutId?: ReturnType<typeof setTimeout>;
   menuOpened = false;
 
-  private readonly element: HTMLElement;
-  constructor(
-    public cdr: ChangeDetectorRef,
-    private elementRef: ElementRef<HTMLElement>
-  ) {
-    this.element = this.elementRef.nativeElement;
-  }
+  private cdr = inject(ChangeDetectorRef);
+  private readonly element: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
 
   onSelect(item: NzTabNavItemDirective): void {
     if (!item.disabled) {
