@@ -96,7 +96,7 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
   override renderNodeChanges(data: T[] | readonly T[]): void {
     this.nodes = new Array(...data).map((n, i) => this.createNode(n, i));
     this._dataSourceChanged.next();
-    this.changeDetectorRef.markForCheck();
+    this.cdr.markForCheck();
   }
 
   /**

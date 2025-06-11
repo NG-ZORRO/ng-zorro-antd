@@ -8,7 +8,12 @@ import { Directive, forwardRef, Input, numberAttribute } from '@angular/core';
 
 @Directive({
   selector: '[nzTreeNodePadding]',
-  providers: [{ provide: CdkTreeNodePadding, useExisting: forwardRef(() => NzTreeNodePaddingDirective) }]
+  providers: [
+    {
+      provide: CdkTreeNodePadding,
+      useExisting: forwardRef(() => NzTreeNodePaddingDirective)
+    }
+  ]
 })
 export class NzTreeNodePaddingDirective<T> extends CdkTreeNodePadding<T> {
   override _indent = 24;

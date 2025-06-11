@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CDK_TREE_NODE_OUTLET_NODE, CdkTreeNodeOutlet } from '@angular/cdk/tree';
-import { Directive, ViewContainerRef, forwardRef, inject } from '@angular/core';
+import { CdkTreeNodeOutlet } from '@angular/cdk/tree';
+import { Directive, forwardRef } from '@angular/core';
 
 @Directive({
   selector: '[nzTreeNodeOutlet]',
@@ -15,8 +15,4 @@ import { Directive, ViewContainerRef, forwardRef, inject } from '@angular/core';
     }
   ]
 })
-export class NzTreeNodeOutletDirective implements CdkTreeNodeOutlet {
-  _node = inject(CDK_TREE_NODE_OUTLET_NODE, { optional: true });
-
-  constructor(public viewContainer: ViewContainerRef) {}
-}
+export class NzTreeNodeOutletDirective extends CdkTreeNodeOutlet {}

@@ -50,10 +50,11 @@ import { NzTreeView } from './tree';
 export class NzTreeViewComponent<T> extends NzTreeView<T> implements AfterViewInit {
   @ViewChild(NzTreeNodeOutletDirective, { static: true }) nodeOutlet!: NzTreeNodeOutletDirective;
   _afterViewInit = false;
+
   override ngAfterViewInit(): void {
     Promise.resolve().then(() => {
       this._afterViewInit = true;
-      this.changeDetectorRef.markForCheck();
+      this.cdr.markForCheck();
     });
   }
 }

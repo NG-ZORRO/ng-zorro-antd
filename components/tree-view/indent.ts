@@ -3,8 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, Input, OnDestroy } from '@angular/core';
-import { Subscription, animationFrameScheduler, asapScheduler, merge } from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  Directive,
+  inject,
+  Input
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { animationFrameScheduler, asapScheduler, merge } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
 import { NzNodeBase } from './node-base';
@@ -43,19 +52,19 @@ export class NzTreeNodeIndentsComponent {
     '[class.ant-tree-treenode-leaf-last]': 'isLast && isLeaf'
   }
 })
-export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
+export class NzTreeNodeIndentLineDirective<T> {
+  private treeNode = inject(NzNodeBase<T>);
+  private tree = inject(NzTreeView<T>);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
+
   isLast: boolean | 'unset' = 'unset';
   isLeaf = false;
   private preNodeRef: T | null = null;
   private nextNodeRef: T | null = null;
   private currentIndents: string = '';
-  private changeSubscription: Subscription;
 
-  constructor(
-    private treeNode: NzNodeBase<T>,
-    private tree: NzTreeView<T>,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor() {
     this.buildIndents();
     this.checkLast();
 
@@ -63,13 +72,18 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
      * The dependent data (TreeControl.dataNodes) can be set after node instantiation,
      * and setting the indents can cause frame rate loss if it is set too often.
      */
-    this.changeSubscription = merge(this.treeNode._dataChanges, tree._dataSourceChanged)
-      .pipe(auditTime(0, BUILD_INDENTS_SCHEDULER))
+    merge(this.treeNode._dataChanges, this.tree._dataSourceChanged)
+      .pipe(auditTime(0, BUILD_INDENTS_SCHEDULER), takeUntilDestroyed())
       .subscribe(() => {
         this.buildIndents();
         this.checkAdjacent();
         this.cdr.markForCheck();
       });
+
+    this.destroyRef.onDestroy(() => {
+      this.preNodeRef = null;
+      this.nextNodeRef = null;
+    });
   }
 
   private getIndents(): boolean[] {
@@ -125,11 +139,5 @@ export class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
     this.isLeaf = this.treeNode.isLeaf;
     this.isLast =
       !!this.tree.treeControl && !getNextSibling(nodes, this.treeNode.data, this.tree.treeControl.getLevel, index);
-  }
-
-  ngOnDestroy(): void {
-    this.preNodeRef = null;
-    this.nextNodeRef = null;
-    this.changeSubscription.unsubscribe();
   }
 }
