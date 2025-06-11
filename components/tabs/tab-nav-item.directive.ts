@@ -24,7 +24,7 @@ export class NzTabNavItemDirective implements FocusableOption {
   }
 
   focus(): void {
-    this.el.focus();
+    this.el.focus({ preventScroll: true });
   }
 
   get width(): number {
