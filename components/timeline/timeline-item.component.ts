@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   Input,
   OnChanges,
   SimpleChanges,
@@ -25,8 +26,6 @@ function isDefaultColor(color?: string): boolean {
 }
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-timeline-item, [nz-timeline-item]',
   exportAs: 'nzTimelineItem',
   template: `
@@ -60,9 +59,14 @@ function isDefaultColor(color?: string): boolean {
       </li>
     </ng-template>
   `,
-  imports: [NzOutletModule]
+  imports: [NzOutletModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzTimelineItemComponent implements OnChanges {
+  private cdr = inject(ChangeDetectorRef);
+  private timelineService = inject(TimelineService);
+
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;
 
   @Input() nzPosition?: NzTimelinePosition;
@@ -74,14 +78,10 @@ export class NzTimelineItemComponent implements OnChanges {
   borderColor: string | null = null;
   position?: NzTimelinePosition;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private timelineService: TimelineService
-  ) {}
-
   ngOnChanges(changes: SimpleChanges): void {
     this.timelineService.markForCheck();
-    if (changes.nzColor) {
+    const { nzColor } = changes;
+    if (nzColor) {
       this.updateCustomColor();
     }
   }

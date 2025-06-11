@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { NzDemoTimelineLabelComponent } from './demo/label';
 import { NzTimelineComponent } from './timeline.component';
 import { NzTimelineModule } from './timeline.module';
+import { NzTimelineMode } from './typings';
 
 describe('nz-timeline', () => {
   describe('basic', () => {
@@ -256,7 +257,7 @@ export class NzTestTimelineBasicComponent {
   pending: boolean | string = false;
   last = false;
   reverse = false;
-  mode = 'left';
+  mode: NzTimelineMode = 'left';
 }
 
 @Component({
