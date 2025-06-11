@@ -14,7 +14,6 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -23,11 +22,12 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   forwardRef,
-  numberAttribute
+  numberAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
@@ -147,14 +147,25 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     '[class.ant-picker-time-panel-narrow]': `enabledColumns < 3`,
     '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`
   },
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzTimePickerPanelComponent), multi: true }],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NzTimePickerPanelComponent),
+      multi: true
+    }
+  ],
   imports: [DecimalPipe, NgTemplateOutlet, NzI18nModule, NzButtonModule]
 })
-export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
+export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnChanges {
+  dateHelper = inject(DateHelperService);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  private elementRef = inject(ElementRef);
+  private destroyRef = inject(DestroyRef);
+
   private _nzHourStep = 1;
   private _nzMinuteStep = 1;
   private _nzSecondStep = 1;
-  private unsubscribe$ = new Subject<void>();
   private onChange?: (value: Date) => void;
   private onTouch?: () => void;
   private _format = 'HH:mm:ss';
@@ -310,7 +321,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
         } else {
           /**
            * Filter and transform hours which less than 12
-           * [0, 1, 2,..., 12, 13, 14, 15, ...23] => [12, 1, 2, 3, ..., 11]
+           * [0, 1, 2, ..., 12, 13, 14, 15, ...23] => [12, 1, 2, 3, ..., 11]
            */
           disabledHours = disabledHours.filter(i => i < 12 || i === 24).map(i => (i === 24 || i === 0 ? 12 : i));
         }
@@ -527,15 +538,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     return value.value.toUpperCase() === this.time.selected12Hours;
   }
 
-  constructor(
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    public dateHelper: DateHelperService,
-    private elementRef: ElementRef<HTMLElement>
-  ) {}
-
   ngOnInit(): void {
-    this.time.changes.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+    this.time.changes.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.changed();
       this.touched();
       this.scrollToTime(120);
@@ -550,15 +554,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     });
 
     fromEventOutsideAngular(this.elementRef.nativeElement, 'mousedown')
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         event.preventDefault();
       });
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
