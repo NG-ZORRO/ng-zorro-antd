@@ -319,7 +319,7 @@ export class NzPopconfirmTestNewComponent {
   icon: string | undefined = undefined;
   nzPopconfirmBackdrop = false;
   autoFocus: NzAutoFocusType = null;
-  beforeConfirm: (() => Observable<boolean> | Promise<boolean> | boolean) | null = null;
+  beforeConfirm?: () => Observable<boolean> | Promise<boolean> | boolean = undefined;
 
   @ViewChild('stringTemplate', { static: false }) stringTemplate!: ElementRef;
   @ViewChild('templateTemplate', { static: false }) templateTemplate!: ElementRef;

@@ -175,10 +175,6 @@ describe('nz-tooltip', () => {
   });
 
   describe('content', () => {
-    // These specs are covered in previous specs.
-    // it('should nzTooltipTitle support string', fakeAsync(() => {}));
-    // it('should nzTooltipTitle support template', fakeAsync(() => {}));
-
     it('cannot be visible when the title is empty', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
 
@@ -244,7 +240,7 @@ describe('nz-tooltip', () => {
       expect(overlayContainerElement.textContent).toContain(title);
       expect(component.visibilityTogglingCount).toBe(1);
 
-      // Should close when title is changed to null.
+      // Should close when the title is changed to null.
       component.title = null;
       fixture.detectChanges();
       waitingForTooltipToggling();
@@ -253,7 +249,7 @@ describe('nz-tooltip', () => {
       expect(component.visibilityTogglingCount).toBe(2);
     }));
 
-    // changing title on the directive should be synced to the component
+    // changing the title on the directive should be synced to the component
     it('should set `setTitle` proxy to `nzTitle`', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
       const tooltipComponent = component.titleStringDirective.component!;
