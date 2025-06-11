@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, Input, TemplateRef } from '@angular/core';
+import { Component, ElementRef, inject, Input, TemplateRef } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -26,11 +26,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 export class NzTabAddButtonComponent {
   @Input() addIcon: string | TemplateRef<NzSafeAny> = 'plus';
 
-  private readonly element: HTMLElement;
-
-  constructor(private elementRef: ElementRef<HTMLElement>) {
-    this.element = this.elementRef.nativeElement;
-  }
+  private readonly element: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
 
   getElementWidth(): number {
     return this.element?.offsetWidth || 0;

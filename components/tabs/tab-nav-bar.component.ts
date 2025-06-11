@@ -21,7 +21,6 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   Output,
   QueryList,
   SimpleChanges,
@@ -30,10 +29,13 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   computed,
-  input
+  input,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject, animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
-import { auditTime, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
+import { auditTime } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
@@ -119,7 +121,14 @@ const CSS_TRANSFORM_TIME = 150;
     NgTemplateOutlet
   ]
 })
-export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
+export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnChanges {
+  private cdr = inject(ChangeDetectorRef);
+  private ngZone = inject(NgZone);
+  private viewportRuler = inject(ViewportRuler);
+  private nzResizeObserver = inject(NzResizeObserver);
+  private dir = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   @Output() readonly indexFocused: EventEmitter<number> = new EventEmitter<number>();
   @Output() readonly selectFocusedIndex: EventEmitter<number> = new EventEmitter<number>();
   @Output() readonly addClicked = new EventEmitter<void>();
@@ -187,7 +196,6 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   hiddenItems: NzTabNavItemDirective[] = [];
 
   private keyManager!: FocusKeyManager<NzTabNavItemDirective>;
-  private destroy$ = new Subject<void>();
   private _selectedIndex = 0;
   private wrapperWidth = 0;
   private wrapperHeight = 0;
@@ -201,13 +209,12 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   private lockAnimationTimeoutId?: ReturnType<typeof setTimeout>;
   private cssTransformTimeWaitingId?: ReturnType<typeof setTimeout>;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
-    private viewportRuler: ViewportRuler,
-    private nzResizeObserver: NzResizeObserver,
-    private dir: Directionality
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      clearTimeout(this.lockAnimationTimeoutId);
+      clearTimeout(this.cssTransformTimeWaitingId);
+    });
+  }
 
   ngAfterViewInit(): void {
     const dirChange = this.dir ? this.dir.change.asObservable() : of(null);
@@ -225,20 +232,19 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
     reqAnimFrame(realign);
 
     merge(this.nzResizeObserver.observe(this.navWarpRef), this.nzResizeObserver.observe(this.navListRef))
-      .pipe(takeUntil(this.destroy$), auditTime(16, RESIZE_SCHEDULER))
+      .pipe(takeUntilDestroyed(this.destroyRef), auditTime(16, RESIZE_SCHEDULER))
       .subscribe(() => {
         realign();
       });
     merge(dirChange, resize, this.items.changes)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         Promise.resolve().then(realign);
         this.keyManager.withHorizontalOrientation(this.getLayoutDirection());
       });
 
-    this.keyManager.change.pipe(takeUntil(this.destroy$)).subscribe(newFocusIndex => {
+    this.keyManager.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(newFocusIndex => {
       this.indexFocused.emit(newFocusIndex);
-      this.setTabFocus(newFocusIndex);
       this.scrollToTab(this.keyManager.activeItem!);
     });
   }
@@ -250,13 +256,6 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
       this.selectedIndexChanged = false;
       this.cdr.markForCheck();
     }
-  }
-
-  ngOnDestroy(): void {
-    clearTimeout(this.lockAnimationTimeoutId);
-    clearTimeout(this.cssTransformTimeWaitingId);
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   onSelectedFromMenu(tab: NzTabNavItemDirective): void {
@@ -565,8 +564,6 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   private getLayoutDirection(): Direction {
     return this.dir && this.dir.value === 'rtl' ? 'rtl' : 'ltr';
   }
-
-  private setTabFocus(_tabIndex: number): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { position } = changes;

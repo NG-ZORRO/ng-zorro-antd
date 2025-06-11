@@ -18,6 +18,9 @@ import { NzTabPositionMode } from './interfaces';
   }
 })
 export class NzTabsInkBarDirective {
+  private ngZone = inject(NgZone);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+
   @Input() position: NzTabPositionMode = 'horizontal';
   @Input() animated = true;
 
@@ -26,11 +29,6 @@ export class NzTabsInkBarDirective {
     return this.animationMode !== 'NoopAnimations' && this.animated;
   }
 
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    private ngZone: NgZone
-  ) {}
-
   alignToElement(element: HTMLElement): void {
     this.ngZone.runOutsideAngular(() => {
       reqAnimFrame(() => this.setStyles(element));
@@ -38,18 +36,16 @@ export class NzTabsInkBarDirective {
   }
 
   setStyles(element: HTMLElement): void {
-    const inkBar: HTMLElement = this.elementRef.nativeElement;
-
     if (this.position === 'horizontal') {
-      inkBar.style.top = '';
-      inkBar.style.height = '';
-      inkBar.style.left = this.getLeftPosition(element);
-      inkBar.style.width = this.getElementWidth(element);
+      this.el.style.top = '';
+      this.el.style.height = '';
+      this.el.style.left = this.getLeftPosition(element);
+      this.el.style.width = this.getElementWidth(element);
     } else {
-      inkBar.style.left = '';
-      inkBar.style.width = '';
-      inkBar.style.top = this.getTopPosition(element);
-      inkBar.style.height = this.getElementHeight(element);
+      this.el.style.left = '';
+      this.el.style.width = '';
+      this.el.style.top = this.getTopPosition(element);
+      this.el.style.height = this.getElementHeight(element);
     }
   }
 
