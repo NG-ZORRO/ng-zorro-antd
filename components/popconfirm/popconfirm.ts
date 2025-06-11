@@ -22,8 +22,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { filter, Observable, Subject } from 'rxjs';
-import { finalize, first } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, finalize, first } from 'rxjs/operators';
 
 import { NzButtonModule, NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
