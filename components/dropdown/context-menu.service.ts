@@ -5,7 +5,7 @@
 
 import { ConnectionPositionPair, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { EmbeddedViewRef, Injectable, NgZone } from '@angular/core';
+import { EmbeddedViewRef, inject, Injectable, NgZone } from '@angular/core';
 import { merge, Subscription } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
@@ -26,13 +26,10 @@ const LIST_OF_POSITIONS = [
   providedIn: NzContextMenuServiceModule
 })
 export class NzContextMenuService {
+  private ngZone = inject(NgZone);
+  private overlay = inject(Overlay);
   private overlayRef: OverlayRef | null = null;
   private closeSubscription = Subscription.EMPTY;
-
-  constructor(
-    private ngZone: NgZone,
-    private overlay: Overlay
-  ) {}
 
   create(
     $event: MouseEvent | { x: number; y: number },
