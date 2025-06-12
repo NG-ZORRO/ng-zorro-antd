@@ -10,15 +10,15 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
@@ -54,7 +54,12 @@ const sizeBreakpoints = [16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080,
   encapsulation: ViewEncapsulation.None,
   imports: [NzImageDirective]
 })
-export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
+export class NzImageViewComponent implements OnInit, OnChanges {
+  private nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private imagePreloadService = inject(ImagePreloadService);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzSrc: string = '';
@@ -74,23 +79,21 @@ export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
   width: string | number = 'auto';
   height: string | number = 'auto';
   srcset = '';
-  internalImage!: HTMLImageElement;
 
-  private destroy$ = new Subject<void>();
   private reloadDisposeHandler: PreloadDisposeHandle = () => void 0;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    public nzConfigService: NzConfigService,
-    private imagePreloadService: ImagePreloadService
-  ) {
+  constructor() {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.composeImageAttrs();
         this.cdr.markForCheck();
       });
+
+    this.destroyRef.onDestroy(() => {
+      this.reloadDisposeHandler();
+    });
   }
 
   ngOnInit(): void {
@@ -105,12 +108,6 @@ export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
     if (nzSrc || nzLoader || nzOptimize) {
       this.composeImageAttrs();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.reloadDisposeHandler();
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private preload(): void {
