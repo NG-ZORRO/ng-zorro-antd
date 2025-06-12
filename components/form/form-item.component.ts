@@ -3,7 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
 
 export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | '';
@@ -26,6 +33,8 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
   template: `<ng-content></ng-content>`
 })
 export class NzFormItemComponent implements OnDestroy, OnDestroy {
+  private cdr = inject(ChangeDetectorRef);
+
   status: NzFormControlStatusType = '';
   hasFeedback = false;
   withHelpClass = false;
@@ -46,8 +55,6 @@ export class NzFormItemComponent implements OnDestroy, OnDestroy {
     this.hasFeedback = hasFeedback;
     this.cdr.markForCheck();
   }
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
     this.destroy$.next(true);

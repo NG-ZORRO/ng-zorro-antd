@@ -60,6 +60,9 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
   imports: [NzOutletModule, NzTooltipDirective, NzIconModule]
 })
 export class NzFormLabelComponent implements OnDestroy {
+  private cdr = inject(ChangeDetectorRef);
+  private nzFormDirective = inject(NzFormDirective, { skipSelf: true, optional: true });
+
   @Input() nzFor?: string;
   @Input({ transform: booleanAttribute }) nzRequired = false;
   @Input({ transform: booleanAttribute })
@@ -109,9 +112,7 @@ export class NzFormLabelComponent implements OnDestroy {
 
   private destroy$ = new Subject<boolean>();
 
-  private nzFormDirective = inject(NzFormDirective, { skipSelf: true, optional: true });
-
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor() {
     if (this.nzFormDirective) {
       this.nzFormDirective
         .getInputObservable('nzNoColon')

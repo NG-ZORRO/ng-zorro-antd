@@ -68,6 +68,12 @@ import { NzFormDirective } from './form.directive';
   imports: [NzOutletModule]
 })
 export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {
+  private cdr = inject(ChangeDetectorRef);
+  private i18n = inject(NzI18nService);
+  private nzFormItemComponent = inject(NzFormItemComponent, { host: true, optional: true });
+  private nzFormDirective = inject(NzFormDirective, { optional: true });
+  private nzFormStatusService = inject(NzFormStatusService);
+
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null = null;
@@ -231,15 +237,8 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     });
   }
 
-  private nzFormItemComponent = inject(NzFormItemComponent, { host: true, optional: true });
-  private nzFormDirective = inject(NzFormDirective, { optional: true });
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    i18n: NzI18nService,
-    private nzFormStatusService: NzFormStatusService
-  ) {
-    this.subscribeAutoTips(i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));
+  constructor() {
+    this.subscribeAutoTips(this.i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));
     this.subscribeAutoTips(this.nzFormDirective?.getInputObservable('nzAutoTips'));
     this.subscribeAutoTips(
       this.nzFormDirective

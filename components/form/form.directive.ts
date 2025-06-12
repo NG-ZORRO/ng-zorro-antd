@@ -4,7 +4,16 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Directive, Input, OnChanges, OnDestroy, SimpleChange, SimpleChanges, booleanAttribute } from '@angular/core';
+import {
+  Directive,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChange,
+  SimpleChanges,
+  booleanAttribute,
+  inject
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
@@ -36,6 +45,9 @@ export const DefaultTooltipIcon = {
   }
 })
 export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
+  public nzConfigService = inject(NzConfigService);
+  private directionality = inject(Directionality);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzLayout: NzFormLayoutType = 'horizontal';
@@ -57,10 +69,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
     );
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private directionality: Directionality
-  ) {
+  constructor() {
     this.dir = this.directionality.value;
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
