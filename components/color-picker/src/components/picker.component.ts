@@ -63,6 +63,9 @@ function getPosition(e: EventType): { pageX: number; pageY: number } {
   `
 })
 export class PickerComponent implements OnInit, AfterViewInit, OnChanges {
+  private document = inject(DOCUMENT);
+  private cdr = inject(ChangeDetectorRef);
+
   @ViewChild('slider', { static: false }) containerRef!: ElementRef<HTMLDivElement>;
   @ViewChild('transform', { static: false }) transformRef!: ElementRef<HTMLDivElement>;
 
@@ -73,7 +76,6 @@ export class PickerComponent implements OnInit, AfterViewInit, OnChanges {
 
   offsetValue: TransformOffset = { x: 0, y: 0 };
   dragRef: boolean = false;
-  private document: Document = inject(DOCUMENT);
 
   mouseMoveRef: (e: MouseEvent | TouchEvent) => void = () => null;
   mouseUpRef: (e: MouseEvent | TouchEvent) => void = () => null;
@@ -85,8 +87,6 @@ export class PickerComponent implements OnInit, AfterViewInit, OnChanges {
   toHsb(): string {
     return `hsl(${this.color?.toHsb().h},100%, 50%)`;
   }
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.document.removeEventListener('mousemove', this.mouseMoveRef);
