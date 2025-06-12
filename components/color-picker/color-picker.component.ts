@@ -116,6 +116,8 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
 export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAccessor {
   private cdr = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
+  private formBuilder = inject(FormBuilder);
+
   @Input() nzFormat: NzColorPickerFormatType | null = null;
   @Input() nzValue: string | NzColor = '';
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -133,7 +135,6 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   @Output() readonly nzOnClear = new EventEmitter<boolean>();
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
-  private formBuilder = inject(FormBuilder);
   private isNzDisableFirstChange: boolean = true;
   blockColor: string = '';
   clearColor: boolean = false;

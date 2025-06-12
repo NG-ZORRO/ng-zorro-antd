@@ -73,6 +73,9 @@ function getPosition(e: EventType): { pageX: number; pageY: number } {
   ]
 })
 export class SliderComponent implements OnInit, AfterViewInit, OnChanges {
+  private document = inject(DOCUMENT);
+  private cdr = inject(ChangeDetectorRef);
+
   @ViewChild('slider', { static: false }) containerRef!: ElementRef<HTMLDivElement>;
   @ViewChild('transform', { static: false }) transformRef!: ElementRef<HTMLDivElement>;
 
@@ -89,9 +92,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges {
   dragRef: boolean = false;
   mouseMoveRef: (e: MouseEvent | TouchEvent) => void = () => null;
   mouseUpRef: (e: MouseEvent | TouchEvent) => void = () => null;
-  private document: Document = inject(DOCUMENT);
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.document.removeEventListener('mousemove', this.mouseMoveRef);

@@ -14,7 +14,8 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 
 import { PickerComponent } from './components/picker.component';
@@ -70,6 +71,8 @@ import { defaultColor, generateColor } from './util/util';
   `
 })
 export class NgAntdColorPickerComponent implements OnInit, OnChanges {
+  private cdr = inject(ChangeDetectorRef);
+
   @Input() value: ColorValue;
   @Input() defaultValue: ColorValue;
   @Output() readonly nzOnChange = new EventEmitter<{ color: Color; type?: HsbaColorType }>();
@@ -95,8 +98,6 @@ export class NgAntdColorPickerComponent implements OnInit, OnChanges {
   gradientColors: string[] = ['rgba(255, 0, 4, 0) 0%', this.alphaColor];
 
   toRgbString: string = this.colorValue?.toRgbString() || '';
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.setColorValue(this.value);
