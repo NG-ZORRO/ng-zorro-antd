@@ -17,6 +17,7 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 export class NzOverflowItemDirective {
   private nzResizeObserver = inject(NzResizeObserver);
   private elementRef = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
 
   overflowStyle: Record<string, string | number | undefined> | undefined = undefined;
   itemWidth$ = this.nzResizeObserver.observe(this.elementRef.nativeElement).pipe(
@@ -28,7 +29,6 @@ export class NzOverflowItemDirective {
     })
   );
   itemWidth: number | undefined = undefined;
-  constructor(private cdr: ChangeDetectorRef) {}
 
   setItemStyle(display: boolean, order: number): void {
     const mergedHidden = !display;
