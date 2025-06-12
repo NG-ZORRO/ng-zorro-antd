@@ -5,16 +5,15 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Input,
-  OnDestroy,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  ChangeDetectorRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 
 import { ThemeType } from '@ant-design/icons-angular';
 
@@ -59,7 +58,9 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
   },
   imports: [NzOutletModule, NzTooltipDirective, NzIconModule]
 })
-export class NzFormLabelComponent implements OnDestroy {
+export class NzFormLabelComponent {
+  private cdr = inject(ChangeDetectorRef);
+
   @Input() nzFor?: string;
   @Input({ transform: booleanAttribute }) nzRequired = false;
   @Input({ transform: booleanAttribute })
@@ -107,17 +108,15 @@ export class NzFormLabelComponent implements OnDestroy {
 
   private labelWrap: boolean | 'default' = 'default';
 
-  private destroy$ = new Subject<boolean>();
-
   private nzFormDirective = inject(NzFormDirective, { skipSelf: true, optional: true });
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor() {
     if (this.nzFormDirective) {
       this.nzFormDirective
         .getInputObservable('nzNoColon')
         .pipe(
           filter(() => this.noColon === 'default'),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed()
         )
         .subscribe(() => this.cdr.markForCheck());
 
@@ -125,7 +124,7 @@ export class NzFormLabelComponent implements OnDestroy {
         .getInputObservable('nzTooltipIcon')
         .pipe(
           filter(() => this._tooltipIcon === 'default'),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed()
         )
         .subscribe(() => this.cdr.markForCheck());
 
@@ -133,7 +132,7 @@ export class NzFormLabelComponent implements OnDestroy {
         .getInputObservable('nzLabelAlign')
         .pipe(
           filter(() => this.labelAlign === 'default'),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed()
         )
         .subscribe(() => this.cdr.markForCheck());
 
@@ -141,14 +140,9 @@ export class NzFormLabelComponent implements OnDestroy {
         .getInputObservable('nzLabelWrap')
         .pipe(
           filter(() => this.labelWrap === 'default'),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed()
         )
         .subscribe(() => this.cdr.markForCheck());
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }
