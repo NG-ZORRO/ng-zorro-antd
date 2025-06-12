@@ -10,19 +10,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { merge } from 'rxjs';
 
 import {
   CandyDate,
@@ -148,7 +149,12 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   `,
   imports: [InnerPopupComponent, NgTemplateOutlet, CalendarFooterComponent]
 })
-export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
+export class DateRangePopupComponent implements OnInit, OnChanges {
+  public datePickerService = inject(DatePickerService);
+  public cdr = inject(ChangeDetectorRef);
+  private host = inject(ElementRef<HTMLElement>);
+  private destroyRef = inject(DestroyRef);
+
   @Input({ transform: booleanAttribute }) isRange!: boolean;
   @Input({ transform: booleanAttribute }) inline: boolean = false;
   @Input({ transform: booleanAttribute }) showWeek!: boolean;
@@ -175,7 +181,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   timeOptions: SupportTimeOptions | SupportTimeOptions[] | null = null;
   hoverValue: SingleValue[] = []; // Range ONLY
   checkedPartArr: boolean[] = [false, false];
-  destroy$ = new Subject<boolean>();
 
   get hasTimePicker(): boolean {
     return !!this.showTime;
@@ -191,22 +196,16 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       : { left: `${this.datePickerService?.arrowLeft}px` };
   }
 
-  constructor(
-    public datePickerService: DatePickerService,
-    public cdr: ChangeDetectorRef,
-    private host: ElementRef<HTMLElement>
-  ) {}
-
   ngOnInit(): void {
     merge(this.datePickerService.valueChange$, this.datePickerService.inputPartChange$)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.updateActiveDate();
         this.cdr.markForCheck();
       });
 
     fromEventOutsideAngular(this.host.nativeElement, 'mousedown')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => event.preventDefault());
   }
 
@@ -223,11 +222,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.defaultPickerValue) {
       this.updateActiveDate();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 
   updateActiveDate(): void {
