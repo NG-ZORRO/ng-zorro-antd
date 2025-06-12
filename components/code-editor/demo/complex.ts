@@ -79,8 +79,7 @@ export class NzDemoCodeEditorComplexComponent {
 
 console.log(flatten(['1', 2, [[3]]]))`;
   private document: Document = inject(DOCUMENT);
-
-  constructor(private renderer: Renderer2) {}
+  private renderer: Renderer2 = inject(Renderer2);
 
   toggleFullScreen(): void {
     this.fullScreen = !this.fullScreen;

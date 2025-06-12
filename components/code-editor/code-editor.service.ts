@@ -39,6 +39,7 @@ let loadingStatus: NzCodeEditorLoadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
   providedIn: 'root'
 })
 export class NzCodeEditorService {
+  private readonly nzConfigService = inject(NzConfigService);
   private document: Document = inject(DOCUMENT);
   private firstEditorInitialized = false;
   private option: JoinedEditorOptions = {};
@@ -46,7 +47,7 @@ export class NzCodeEditorService {
 
   option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
 
-  constructor(private readonly nzConfigService: NzConfigService) {
+  constructor() {
     const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
 
     this.config = { ...globalConfig };
