@@ -7,20 +7,21 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   booleanAttribute,
   ChangeDetectorRef,
+  DestroyRef,
   Directive,
   DOCUMENT,
   ElementRef,
   inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 
 import { NzImageGroupComponent } from './image-group.component';
 import { NZ_DEFAULT_SCALE_STEP } from './image-preview.component';
@@ -39,7 +40,14 @@ export type NzImageScaleStep = number;
     '(click)': 'onPreview()'
   }
 })
-export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
+export class NzImageDirective implements OnInit, OnChanges {
+  private document: Document = inject(DOCUMENT);
+  private parentGroup = inject(NzImageGroupComponent, { optional: true });
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality, { optional: true });
+  private destroyRef = inject(DestroyRef);
+  private nzImageService = inject(NzImageService);
+  private elementRef = inject(ElementRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzSrc = '';
@@ -53,21 +61,10 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
   backLoadImage!: HTMLImageElement;
   status: ImageStatusType = 'normal';
   private backLoadDestroy$ = new Subject<void>();
-  private destroy$ = new Subject<void>();
-  private document: Document = inject(DOCUMENT);
-  private parentGroup = inject(NzImageGroupComponent, { optional: true });
 
   get previewable(): boolean {
     return !this.nzDisablePreview && this.status !== 'error';
   }
-
-  constructor(
-    public nzConfigService: NzConfigService,
-    private elementRef: ElementRef,
-    private nzImageService: NzImageService,
-    protected cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
 
   ngOnInit(): void {
     this.backLoad();
@@ -75,17 +72,12 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       this.parentGroup.addImage(this);
     }
     if (this.directionality) {
-      this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
         this.dir = direction;
         this.cdr.detectChanges();
       });
       this.dir = this.directionality.value;
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   onPreview(): void {
@@ -94,7 +86,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
     }
 
     if (this.parentGroup) {
-      // preview inside image group
+      // preview inside an image group
       const previewAbleImages = this.parentGroup.images.filter(e => e.previewable);
       const previewImages = previewAbleImages.map(e => ({ src: e.nzSrc, srcset: e.nzSrcset }));
       const previewIndex = previewAbleImages.findIndex(el => this === el);
@@ -114,7 +106,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       );
       previewRef.switchTo(previewIndex);
     } else {
-      // preview not inside image group
+      // preview not inside an image group
       const previewImages = [{ src: this.nzSrc, srcset: this.nzSrcset }];
       this.nzImageService.preview(previewImages, {
         nzDirection: this.dir,
@@ -166,7 +158,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
       // The `nz-image` directive can be destroyed before the `load` or `error` event is dispatched,
       // so there's no sense to keep capturing `this`.
       fromEvent(this.backLoadImage, 'load')
-        .pipe(takeUntil(this.backLoadDestroy$), takeUntil(this.destroy$))
+        .pipe(takeUntil(this.backLoadDestroy$), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.status = 'normal';
           this.getElement().nativeElement.src = this.nzSrc;
@@ -174,7 +166,7 @@ export class NzImageDirective implements OnInit, OnChanges, OnDestroy {
         });
 
       fromEvent(this.backLoadImage, 'error')
-        .pipe(takeUntil(this.backLoadDestroy$), takeUntil(this.destroy$))
+        .pipe(takeUntil(this.backLoadDestroy$), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.status = 'error';
           if (this.nzFallback) {

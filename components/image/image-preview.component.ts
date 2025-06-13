@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   DOCUMENT,
   ElementRef,
   EventEmitter,
@@ -19,12 +20,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -34,6 +34,7 @@ import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
 import { NzImageScaleStep, NzImageUrl } from './image.directive';
 import { getClientSize, getFitContentPosition, getOffset } from './utils';
+import { NzConfigService } from '../core/config';
 
 export interface NzImageContainerOperation {
   icon: string;
@@ -148,10 +149,17 @@ const NZ_DEFAULT_ROTATE = 0;
     '(@fadeMotion.start)': 'onAnimationStart($event)',
     '(@fadeMotion.done)': 'onAnimationDone($event)'
   },
-  imports: [NzIconModule, CdkDragHandle, CdkDrag],
-  providers: [NzDestroyService]
+  imports: [NzIconModule, CdkDragHandle, CdkDrag]
 })
 export class NzImagePreviewComponent implements OnInit {
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  public nzConfigService = inject(NzConfigService);
+  public config = inject(NzImagePreviewOptions);
+  private destroyRef = inject(DestroyRef);
+  private sanitizer = inject(DomSanitizer);
+  private document = inject(DOCUMENT);
+
   readonly _defaultNzZoom = NZ_DEFAULT_ZOOM;
   readonly _defaultNzScaleStep = NZ_DEFAULT_SCALE_STEP;
   readonly _defaultNzRotate = NZ_DEFAULT_ROTATE;
@@ -226,12 +234,11 @@ export class NzImagePreviewComponent implements OnInit {
   @ViewChild('imgRef') imageRef!: ElementRef<HTMLImageElement>;
   @ViewChild('imagePreviewWrapper', { static: true }) imagePreviewWrapper!: ElementRef<HTMLElement>;
 
-  private document = inject(DOCUMENT);
-  private zoom: number;
-  private rotate: number;
-  private scaleStep: number;
-  private flipHorizontally: boolean;
-  private flipVertically: boolean;
+  private zoom = this.config.nzZoom ?? this._defaultNzZoom;
+  private rotate = this.config.nzRotate ?? this._defaultNzRotate;
+  private scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
+  private flipHorizontally = this.config.nzFlipHorizontally ?? false;
+  private flipVertically = this.config.nzFlipVertically ?? false;
 
   get animationDisabled(): boolean {
     return this.config.nzNoAnimation ?? false;
@@ -242,19 +249,7 @@ export class NzImagePreviewComponent implements OnInit {
     return this.config.nzMaskClosable ?? defaultConfig.nzMaskClosable ?? true;
   }
 
-  constructor(
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    public nzConfigService: NzConfigService,
-    public config: NzImagePreviewOptions,
-    private destroy$: NzDestroyService,
-    private sanitizer: DomSanitizer
-  ) {
-    this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
-    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
-    this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
-    this.flipHorizontally = this.config.nzFlipHorizontally ?? false;
-    this.flipVertically = this.config.nzFlipVertically ?? false;
+  constructor() {
     this.updateZoomOutDisabled();
     this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
@@ -262,13 +257,13 @@ export class NzImagePreviewComponent implements OnInit {
 
   ngOnInit(): void {
     fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mousedown')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.isDragging = true;
       });
 
     fromEventOutsideAngular<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         this.ngZone.run(() => this.wheelZoomEventHandler(event));
       });
@@ -276,7 +271,7 @@ export class NzImagePreviewComponent implements OnInit {
     fromEventOutsideAngular<KeyboardEvent>(this.document, 'keydown')
       .pipe(
         filter(event => event.keyCode === ESCAPE),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.ngZone.run(() => {
