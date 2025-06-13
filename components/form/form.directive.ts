@@ -4,13 +4,23 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Directive, Input, OnChanges, OnDestroy, SimpleChange, SimpleChanges, booleanAttribute } from '@angular/core';
+import {
+  Directive,
+  Input,
+  OnChanges,
+  SimpleChange,
+  SimpleChanges,
+  booleanAttribute,
+  DestroyRef,
+  inject
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 import { ThemeType } from '@ant-design/icons-angular';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { InputObservable } from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
@@ -35,7 +45,10 @@ export const DefaultTooltipIcon = {
     '[class.ant-form-rtl]': `dir === 'rtl'`
   }
 })
-export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
+export class NzFormDirective implements OnChanges, InputObservable {
+  private destroyRef = inject(DestroyRef);
+  private directionality = inject(Directionality);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzLayout: NzFormLayoutType = 'horizontal';
@@ -47,7 +60,6 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   @Input({ transform: booleanAttribute }) @WithConfig() nzLabelWrap: boolean = false;
 
   dir: Direction = 'ltr';
-  destroy$ = new Subject<boolean>();
   private inputChanges$ = new Subject<SimpleChanges>();
 
   getInputObservable<K extends keyof this>(changeType: K): Observable<SimpleChange> {
@@ -57,23 +69,17 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
     );
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private directionality: Directionality
-  ) {
+  constructor() {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed()).subscribe(direction => {
       this.dir = direction;
+    });
+    this.destroyRef.onDestroy(() => {
+      this.inputChanges$.complete();
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.inputChanges$.next(changes);
-  }
-
-  ngOnDestroy(): void {
-    this.inputChanges$.complete();
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }
