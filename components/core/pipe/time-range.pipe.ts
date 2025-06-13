@@ -16,7 +16,11 @@ export class NzTimeRangePipe implements PipeTransform {
   transform(value: string | number, format: string = 'HH:mm:ss'): string {
     let duration = Number(value || 0);
 
-    return timeUnits.reduce((current, [name, unit]) => {
+    const escapeRegex = /\[[^\]]*]/g;
+    const keepList: string[] = (format.match(escapeRegex) || []).map(str => str.slice(1, -1));
+    const templateText = format.replace(escapeRegex, '[]');
+
+    const replacedText = timeUnits.reduce((current, [name, unit]) => {
       if (current.indexOf(name) !== -1) {
         const v = Math.floor(duration / unit);
         duration -= v * unit;
@@ -25,6 +29,13 @@ export class NzTimeRangePipe implements PipeTransform {
         );
       }
       return current;
-    }, format);
+    }, templateText);
+
+    let index = 0;
+    return replacedText.replace(escapeRegex, () => {
+      const match = keepList[index];
+      index += 1;
+      return match;
+    });
   }
 }
