@@ -9,6 +9,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   DOCUMENT,
   ElementRef,
   EventEmitter,
@@ -17,7 +18,6 @@ import {
   NgZone,
   numberAttribute,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -25,12 +25,13 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -67,10 +68,17 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
     '[class.ant-float-btn-rtl]': `dir === 'rtl'`
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  providers: [NzDestroyService]
+  encapsulation: ViewEncapsulation.None
 })
-export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
+export class NzFloatButtonTopComponent implements OnInit, OnChanges {
+  public nzConfigService = inject(NzConfigService);
+  private scrollSrv = inject(NzScrollService);
+  private platform = inject(Platform);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   private scrollListenerDestroy$ = new Subject<void>();
@@ -97,7 +105,7 @@ export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
       this.backTopClickSubscription.unsubscribe();
 
       this.backTopClickSubscription = fromEventOutsideAngular(backTop.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
           if (this.nzOnClick.observers.length) {
@@ -110,27 +118,21 @@ export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
   private doc = inject(DOCUMENT);
   private backTopClickSubscription = Subscription.EMPTY;
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private scrollSrv: NzScrollService,
-    private platform: Platform,
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private destroy$: NzDestroyService,
-    private directionality: Directionality
-  ) {
-    this.dir = this.directionality.value;
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.scrollListenerDestroy$.next();
+      this.scrollListenerDestroy$.complete();
+    });
   }
 
   ngOnInit(): void {
     this.registerScrollEvent();
+    this.dir = this.directionality.value;
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
-
-    this.dir = this.directionality.value;
   }
 
   private getTarget(): HTMLElement | Window {
@@ -154,11 +156,6 @@ export class NzFloatButtonTopComponent implements OnInit, OnDestroy, OnChanges {
     fromEventOutsideAngular(this.getTarget(), 'scroll', passiveEventListenerOptions as AddEventListenerOptions)
       .pipe(debounceTime(50), takeUntil(this.scrollListenerDestroy$))
       .subscribe(() => this.handleScroll());
-  }
-
-  ngOnDestroy(): void {
-    this.scrollListenerDestroy$.next();
-    this.scrollListenerDestroy$.complete();
   }
 
   detectChanges(): void {

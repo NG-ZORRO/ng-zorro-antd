@@ -10,14 +10,16 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
   OnInit,
   Output,
   QueryList,
   TemplateRef
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -71,6 +73,9 @@ import { NzFloatButtonComponent } from './float-button.component';
   providers: [NzDestroyService]
 })
 export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
+  private directionality = inject(Directionality);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
   @ContentChildren(NzFloatButtonComponent) nzFloatButtonComponent!: QueryList<NzFloatButtonComponent>;
   @ContentChildren(NzFloatButtonTopComponent) nzFloatButtonTopComponents!: QueryList<NzFloatButtonTopComponent>;
   @Input() nzHref: string | null = null;
@@ -86,16 +91,8 @@ export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
   isOpen: boolean = false;
   dir: Direction = 'ltr';
 
-  constructor(
-    private destroy$: NzDestroyService,
-    private directionality: Directionality,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.dir = this.directionality.value;
-  }
-
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });

@@ -8,17 +8,17 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   TemplateRef
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 
 import { NzFloatButtonContentComponent } from './float-button-content.component';
 
@@ -65,10 +65,13 @@ import { NzFloatButtonContentComponent } from './float-button-content.component'
     '[class.ant-float-btn-circle]': `nzShape === 'circle'`,
     '[class.ant-float-btn-square]': `nzShape === 'square'`,
     '[class.ant-float-btn-rtl]': `dir === 'rtl'`
-  },
-  providers: [NzDestroyService]
+  }
 })
-export class NzFloatButtonComponent implements OnInit, OnDestroy {
+export class NzFloatButtonComponent implements OnInit {
+  private directionality = inject(Directionality);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
+
   @Input() nzHref: string | null = null;
   @Input() nzTarget: string | null = null;
   @Input() nzType: 'default' | 'primary' = 'default';
@@ -78,25 +81,16 @@ export class NzFloatButtonComponent implements OnInit, OnDestroy {
   @Output() readonly nzOnClick = new EventEmitter<boolean>();
   dir: Direction = 'ltr';
 
-  constructor(
-    private destroy$: NzDestroyService,
-    private directionality: Directionality,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor() {
     this.dir = this.directionality.value;
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
