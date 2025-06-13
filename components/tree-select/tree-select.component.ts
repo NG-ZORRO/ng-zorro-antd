@@ -267,7 +267,7 @@ const listOfPositions = [
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  nzConfigService = inject(NzConfigService);
+  readonly nzConfigService = inject(NzConfigService);
   private renderer = inject(Renderer2);
   private cdr = inject(ChangeDetectorRef);
   private elementRef = inject(ElementRef);
@@ -384,7 +384,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   constructor() {
-    super(inject(NzTreeSelectService));
+    super();
 
     this.destroyRef.onDestroy(() => {
       this.closeDropDown();

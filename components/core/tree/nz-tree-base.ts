@@ -3,13 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { inject } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTreeNode } from './nz-tree-base-node';
 import { NzTreeBaseService } from './nz-tree-base.service';
 
 export class NzTreeBase {
-  constructor(public nzTreeService: NzTreeBaseService) {}
+  public readonly nzTreeService = inject(NzTreeBaseService);
 
   /**
    * Coerces a value({@link any[]}) to a TreeNodes({@link NzTreeNode[]})

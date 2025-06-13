@@ -124,6 +124,12 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
   ]
 })
 export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy {
+  private ngZone = inject(NgZone);
+  private renderer = inject(Renderer2);
+  private cdr = inject(ChangeDetectorRef);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  public readonly nzTreeService = inject(NzTreeBaseService);
+
   /**
    * for global property
    */
@@ -403,14 +409,6 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-
-  constructor(
-    public nzTreeService: NzTreeBaseService,
-    private ngZone: NgZone,
-    private renderer: Renderer2,
-    private elementRef: ElementRef<HTMLElement>,
-    private cdr: ChangeDetectorRef
-  ) {}
 
   ngOnInit(): void {
     this.nzTreeNode.component = this;

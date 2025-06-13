@@ -10,6 +10,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
+  inject,
   numberAttribute
 } from '@angular/core';
 
@@ -26,12 +27,12 @@ import { NgStyleInterface } from 'ng-zorro-antd/core/types';
   }
 })
 export class NzTreeDropIndicatorComponent implements OnChanges {
+  private cdr = inject(ChangeDetectorRef);
+
   @Input() dropPosition?: number;
   @Input({ transform: numberAttribute }) level: number = 1;
   @Input() direction: string = 'ltr';
   style: NgStyleInterface = {};
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(_changes: SimpleChanges): void {
     this.renderIndicator(this.dropPosition!, this.direction);

@@ -494,7 +494,8 @@ export class NzCascaderComponent
   public cascaderService = inject(NzCascaderService);
 
   constructor() {
-    super(inject(NzCascaderTreeService));
+    super();
+
     this.cascaderService.withComponent(this);
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-cascader');

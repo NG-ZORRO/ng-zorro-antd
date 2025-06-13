@@ -186,6 +186,10 @@ export class NzTreeComponent
   extends NzTreeBase
   implements OnInit, OnDestroy, ControlValueAccessor, OnChanges, AfterViewInit
 {
+  public readonly nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input({ transform: booleanAttribute }) @WithConfig() nzShowIcon: boolean = false;
@@ -478,13 +482,8 @@ export class NzTreeComponent
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
-  constructor(
-    nzTreeService: NzTreeBaseService,
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {
-    super(nzTreeService);
+  constructor() {
+    super();
   }
 
   ngOnInit(): void {
