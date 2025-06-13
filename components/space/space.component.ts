@@ -12,13 +12,13 @@ import {
   ContentChildren,
   Input,
   OnChanges,
-  OnDestroy,
   QueryList,
   TemplateRef,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -73,8 +73,12 @@ const SPACE_SIZE: Record<NzSpaceType, number> = {
   },
   imports: [NgTemplateOutlet, NzStringTemplateOutletDirective]
 })
-export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
+export class NzSpaceComponent implements OnChanges, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
 
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
   @Input() nzAlign?: NzSpaceAlign;
@@ -86,12 +90,6 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
 
   mergedAlign?: NzSpaceAlign;
   spaceSize: number = SPACE_SIZE.small;
-  private destroy$ = new Subject<boolean>();
-
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef
-  ) {}
 
   private updateSpaceItems(): void {
     const numberSize = typeof this.nzSize === 'string' ? SPACE_SIZE[this.nzSize] : this.nzSize;
@@ -104,14 +102,9 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit 
     this.mergedAlign = this.nzAlign === undefined && this.nzDirection === 'horizontal' ? 'center' : this.nzAlign;
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
-  }
-
   ngAfterContentInit(): void {
     this.updateSpaceItems();
-    this.items.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.items.changes.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.cdr.markForCheck();
     });
   }
