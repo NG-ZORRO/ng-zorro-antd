@@ -196,7 +196,7 @@ describe('nz-slider', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('13');
 
-      // Always show tooltip even when handle is not hovered.
+      // Always show tooltip even when the handle is not hovered.
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('13');
 
@@ -214,7 +214,7 @@ describe('nz-slider', () => {
       dispatchClickEventSequence(sliderNativeElement, 0.13);
       fixture.detectChanges();
 
-      // Do not show tooltip even when handle is hovered.
+      // Do not show tooltip even when the handle is hovered.
       dispatchMouseEvent(handlerHost, 'mouseenter');
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).not.toContain('13');
@@ -250,7 +250,7 @@ describe('nz-slider', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('Slider value: 13');
 
-      // Always show tooltip even when handle is not hovered.
+      // Always show tooltip even when the handle is not hovered.
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('Slider value: 13');
 

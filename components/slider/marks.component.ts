@@ -19,8 +19,6 @@ import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-marks',
   exportAs: 'nzSliderMarks',
   template: `
@@ -35,7 +33,9 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
   `,
   host: {
     class: 'ant-slider-mark'
-  }
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzSliderMarksComponent implements OnChanges {
   @Input() lowerBound: number | null = null;
@@ -107,11 +107,9 @@ export class NzSliderMarksComponent implements OnChanges {
     if (this.marks && this.lowerBound !== null && this.upperBound !== null) {
       this.marks.forEach(mark => {
         const value = mark.value;
-        const isActive =
-          (!this.included && value === this.upperBound) ||
-          (this.included && value <= this.upperBound! && value >= this.lowerBound!);
-
-        mark.active = isActive;
+        mark.active = this.included
+          ? value <= this.upperBound! && value >= this.lowerBound!
+          : value === this.upperBound;
       });
     }
   }
