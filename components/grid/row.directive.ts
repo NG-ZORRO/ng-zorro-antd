@@ -8,18 +8,19 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
+  DestroyRef,
   Directive,
   ElementRef,
+  inject,
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Renderer2,
   SimpleChanges
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { IndexableObject } from 'ng-zorro-antd/core/types';
@@ -44,7 +45,15 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
     '[class.ant-row-rtl]': `dir === "rtl"`
   }
 })
-export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class NzRowDirective implements OnInit, OnChanges, AfterViewInit {
+  private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private mediaMatcher = inject(MediaMatcher);
+  private ngZone = inject(NgZone);
+  private platform = inject(Platform);
+  private breakpointService = inject(NzBreakpointService);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
   @Input() nzAlign: NzAlign | null = null;
   @Input() nzJustify: NzJustify | null = null;
   @Input() nzGutter: string | number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null =
@@ -89,19 +98,10 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     renderGutter('margin-top', verticalGutter);
     renderGutter('margin-bottom', verticalGutter);
   }
-  constructor(
-    public elementRef: ElementRef,
-    public renderer: Renderer2,
-    public mediaMatcher: MediaMatcher,
-    public ngZone: NgZone,
-    public platform: Platform,
-    private breakpointService: NzBreakpointService,
-    private directionality: Directionality
-  ) {}
 
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
 
@@ -118,15 +118,10 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     if (this.platform.isBrowser) {
       this.breakpointService
         .subscribe(gridResponsiveMap)
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.setGutterStyle();
         });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

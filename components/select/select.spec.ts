@@ -992,7 +992,7 @@ describe('select', () => {
       expect(component.valueChange).toHaveBeenCalledWith(null);
     }));
 
-    fit('should call the event emitter nzOnClear when click on te clear icon', fakeAsync(() => {
+    it('should call the event emitter nzOnClear when click on te clear icon', fakeAsync(() => {
       component.listOfOption = [{ value: 'test_value', label: 'test_label' }];
       component.value = 'test_value';
       fixture.detectChanges();
