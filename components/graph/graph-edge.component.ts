@@ -6,7 +6,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Injector,
@@ -16,7 +15,8 @@ import {
   SimpleChanges,
   TemplateRef,
   afterNextRender,
-  inject
+  inject,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { curveBasis, curveLinear, line } from 'd3-shape';
@@ -43,6 +43,8 @@ import { NzGraphEdge, NzGraphEdgeType } from './interface';
   imports: [NgTemplateOutlet]
 })
 export class NzGraphEdgeComponent implements OnInit, OnChanges {
+  private injector = inject(Injector);
+  private cdr = inject(ChangeDetectorRef);
   @Input() edge!: NzGraphEdge;
   @Input() edgeType?: NzGraphEdgeType | string;
 
@@ -53,22 +55,13 @@ export class NzGraphEdgeComponent implements OnInit, OnChanges {
   public get id(): string {
     return this.edge?.id || `${this.edge.v}--${this.edge.w}`;
   }
-  private el!: SVGGElement;
+  private el: SVGGElement = inject(ElementRef<SVGGElement>).nativeElement;
   private path!: SVGPathElement;
 
   private line = line<{ x: number; y: number }>()
     .x(d => d.x)
     .y(d => d.y)
     .curve(curveLinear);
-
-  private injector = inject(Injector);
-
-  constructor(
-    private elementRef: ElementRef<SVGGElement>,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.el = this.elementRef.nativeElement;
-  }
 
   ngOnInit(): void {
     this.initElementStyle();

@@ -7,14 +7,12 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -24,10 +22,13 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   forwardRef,
-  inject
+  inject,
+  DestroyRef,
+  ChangeDetectorRef
 } from '@angular/core';
-import { Observable, ReplaySubject, Subject, Subscription, forkJoin } from 'rxjs';
-import { finalize, take, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, ReplaySubject, Subscription, forkJoin } from 'rxjs';
+import { finalize, take } from 'rxjs/operators';
 
 import { buildGraph } from 'dagre-compound';
 
@@ -129,7 +130,11 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
   },
   imports: [NgTemplateOutlet, NzGraphEdgeComponent, NzGraphNodeComponent, NzGraphDefsComponent]
 })
-export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy, NzGraph {
+export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, NzGraph {
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private elementRef: ElementRef = inject(ElementRef);
+  private destroyRef = inject(DestroyRef);
+
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;
   @ViewChildren(NzGraphNodeComponent) listOfNodeComponent!: QueryList<NzGraphNodeComponent>;
 
@@ -168,7 +173,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   private layoutSetting: NzLayoutSetting = NZ_GRAPH_LAYOUT_SETTING;
   /** Data subscription */
   private _dataSubscription?: Subscription | null;
-  private destroy$ = new Subject<void>();
 
   edgeTrackByFun = (edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
 
@@ -185,13 +189,22 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   nzGraphZoom = inject(NzGraphZoomDirective, { optional: true });
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      if (this.dataSource && typeof this.dataSource.disconnect === 'function') {
+        this.dataSource.disconnect();
+      }
+
+      if (this._dataSubscription) {
+        this._dataSubscription.unsubscribe();
+        this._dataSubscription = null;
+      }
+      cancelRequestAnimationFrame(this.requestId);
+    });
+  }
 
   ngOnInit(): void {
-    this.graphRenderedSubject$.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
+    this.graphRenderedSubject$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       // Only zooming is not set, move graph to center
       if (!this.nzGraphZoom) {
         this.fitCenter();
@@ -231,21 +244,6 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
     if (this.dataSource && !this._dataSubscription) {
       this.observeRenderChanges();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-
-    if (this.dataSource && typeof this.dataSource.disconnect === 'function') {
-      this.dataSource.disconnect();
-    }
-
-    if (this._dataSubscription) {
-      this._dataSubscription.unsubscribe();
-      this._dataSubscription = null;
-    }
-    cancelRequestAnimationFrame(this.requestId);
   }
 
   /**
@@ -382,7 +380,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
     }
 
     if (dataStream) {
-      this._dataSubscription = dataStream.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      this._dataSubscription = dataStream.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
         graphOptions = {
           rankDirection: this.nzRankDirection,
           expanded: this.nzGraphData.expansionModel.selected
