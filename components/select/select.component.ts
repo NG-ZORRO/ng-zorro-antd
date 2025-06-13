@@ -37,7 +37,8 @@ import {
   computed,
   forwardRef,
   inject,
-  signal
+  signal,
+  output
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, merge, of as observableOf } from 'rxjs';
@@ -299,6 +300,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzBlur = new EventEmitter<void>();
   @Output() readonly nzFocus = new EventEmitter<void>();
+  readonly nzOnClear = output<void>();
   @ViewChild(CdkOverlayOrigin, { static: true, read: ElementRef }) originElement!: ElementRef;
   @ViewChild(CdkConnectedOverlay, { static: true }) cdkConnectedOverlay!: CdkConnectedOverlay;
   @ViewChild(NzSelectTopControlComponent, { static: true }) nzSelectTopControlComponent!: NzSelectTopControlComponent;
@@ -570,6 +572,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   onClearSelection(): void {
     this.updateListOfValue([]);
+    this.nzOnClear.emit();
   }
 
   onClickOutside(event: MouseEvent): void {

@@ -6,13 +6,11 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/_0XzgOis7/Select.svg'
 description: A dropdown menu for displaying choices.
 ---
 
-
 ## When To Use
 
 - A dropdown menu for displaying choices - an elegant alternative to the native `<select>` element.
 - Utilizing [Radio](/components/radio/en) is recommended when there are fewer total options (less than 5).
 - You probably need [AutoComplete](/components/auto-complete) if you're looking for an input box that can be typed or selected.
-
 
 ## API
 
@@ -67,13 +65,14 @@ description: A dropdown menu for displaying choices.
 | `(nzOpenChange)`               | dropdown expand change callback                                                                                                                                                                                 | `EventEmitter<boolean>`                                                                                                                                                   | `false`                                                 |
 | `(nzScrollToBottom)`           | Called when dropdown scrolls to bottom                                                                                                                                                                          | `EventEmitter<any>`                                                                                                                                                       | -                                                       |
 | `(nzOnSearch)`                 | Callback function that is fired when input changed.                                                                                                                                                             | `EventEmitter<string>`                                                                                                                                                    | -                                                       |
+| `(nzOnClear)`                  | Callback function that clear the selected items                                                                                                                                                              | `EventEmitter<any>`                                                                                                                                                       | -                                                       |
 | `(nzFocus)`                    | focus callback                                                                                                                                                                                                  | `EventEmitter<any>`                                                                                                                                                       | -                                                       |
 | `(nzBlur)`                     | blur callback                                                                                                                                                                                                   | `EventEmitter<any>`                                                                                                                                                       | -                                                       |
 
 ### nz-option
 
 | Property            | Description                                                                                                                | Type                | Default |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------- | ------- |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------|---------------------|---------|
 | `[nzDisabled]`      | Disable this option                                                                                                        | `boolean`           | `false` |
 | `[nzTitle]`         | Native title hint on this option                                                                                           | `string \| number`  | -       |
 | `[nzLabel]`         | The text show in nz-select and dropdown menu                                                                               | `string \| number`  | -       |
@@ -85,14 +84,14 @@ description: A dropdown menu for displaying choices.
 ### nz-option-group
 
 | Property    | Description | Type                                    | Default |
-| ----------- | ----------- | --------------------------------------- | ------- |
+|-------------|-------------|-----------------------------------------|---------|
 | `[nzLabel]` | Group label | `string \| number \| TemplateRef<void>` | -       |
 
 ## Methods
 
 ### nz-select
 
-| Name    | Description  |
-| ------- | ------------ |
+| Name      | Description  |
+|-----------|--------------|
 | `blur()`  | Remove focus |
 | `focus()` | Get focus    |

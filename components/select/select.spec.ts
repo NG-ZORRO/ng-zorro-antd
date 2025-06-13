@@ -992,6 +992,20 @@ describe('select', () => {
       expect(component.valueChange).toHaveBeenCalledWith(null);
     }));
 
+    fit('should call the event emitter nzOnClear when click on te clear icon', fakeAsync(() => {
+      component.listOfOption = [{ value: 'test_value', label: 'test_label' }];
+      component.value = 'test_value';
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(selectElement.querySelector('nz-select-clear')).toBeFalsy();
+      component.nzAllowClear = true;
+      fixture.detectChanges();
+      dispatchMouseEvent(selectElement.querySelector('nz-select-clear')!, 'click');
+      fixture.detectChanges();
+      expect(component.onClear).toHaveBeenCalled();
+    }));
+
     it('should nzCustomTemplate works', fakeAsync(() => {
       component.listOfOption = [{ value: 'value', label: 'label' }];
       fixture.detectChanges();
@@ -2003,6 +2017,7 @@ export class TestSelectTemplateTagsComponent {
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
       (nzOpenChange)="openChange($event)"
+      (nzOnClear)="onClear()"
     ></nz-select>
     <ng-template #dropdownTemplate><div class="dropdown-render">dropdownRender</div></ng-template>
     <ng-template #customTemplate let-selected>selected: {{ selected.nzLabel }}</ng-template>
@@ -2016,6 +2031,8 @@ export class TestSelectReactiveDefaultComponent {
   value: NzSafeAny | null = null;
   valueChange = jasmine.createSpy<NzSafeAny>('valueChange');
   openChange = jasmine.createSpy<NzSafeAny>('openChange');
+
+  onClear = jasmine.createSpy<NzSafeAny>('onClear');
   searchValueChange = jasmine.createSpy<NzSafeAny>('searchValueChange');
   listOfOption: NzSelectOptionInterface[] = [];
   nzSize: NzSelectSizeType = 'default';
