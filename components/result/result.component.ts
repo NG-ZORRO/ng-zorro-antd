@@ -8,15 +8,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -38,8 +38,6 @@ const IconMap = {
 const ExceptionStatus = ['404', '500', '403'];
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-result',
   exportAs: 'nzResult',
   template: `
@@ -104,9 +102,15 @@ const ExceptionStatus = ['404', '500', '403'];
     NzResultNotFoundComponent,
     NzResultServerErrorComponent,
     NzResultUnauthorizedComponent
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
-export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
+export class NzResultComponent implements OnChanges, OnInit {
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   @Input() nzIcon?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzStatus: NzResultStatusType = 'info';
@@ -117,15 +121,8 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
   isException = false;
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -135,11 +132,6 @@ export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
 
   ngOnChanges(): void {
     this.setStatusIcon();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private setStatusIcon(): void {
