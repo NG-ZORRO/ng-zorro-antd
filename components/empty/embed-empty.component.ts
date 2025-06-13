@@ -8,10 +8,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  inject,
   Injector,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   TemplateRef,
@@ -19,8 +20,8 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -75,7 +76,13 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
   `,
   imports: [NzEmptyComponent, PortalModule]
 })
-export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
+export class NzEmbedEmptyComponent implements OnChanges, OnInit {
+  private configService = inject(NzConfigService);
+  private viewContainerRef = inject(ViewContainerRef);
+  private cdr = inject(ChangeDetectorRef);
+  private injector = inject(Injector);
+  private destroyRef = inject(DestroyRef);
+
   @Input() nzComponentName?: string;
   @Input() specificContent?: NzEmptyCustomContent;
 
@@ -83,15 +90,6 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   contentType: NzEmptyContentType = 'string';
   contentPortal?: Portal<NzSafeAny>;
   size: NzEmptySize = '';
-
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private configService: NzConfigService,
-    private viewContainerRef: ViewContainerRef,
-    private cdr: ChangeDetectorRef,
-    private injector: Injector
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzComponentName) {
@@ -106,11 +104,6 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscribeDefaultEmptyContentChange();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private renderEmpty(): void {
@@ -140,7 +133,7 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   private subscribeDefaultEmptyContentChange(): void {
     this.configService
       .getConfigChangeEventForComponent('empty')
-      .pipe(startWith(true), takeUntil(this.destroy$))
+      .pipe(startWith(true), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.content = this.specificContent || this.getUserDefaultEmptyContent();
         this.renderEmpty();
