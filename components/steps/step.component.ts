@@ -14,13 +14,15 @@ import {
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -115,10 +117,12 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
     '[class.ant-steps-item-custom]': '!!nzIcon',
     '[class.ant-steps-next-error]': '(outStatus === "error") && (currentIndex === index + 1)'
   },
-  providers: [NzDestroyService],
   imports: [NzProgressModule, NzIconModule, NzOutletModule, NgTemplateOutlet]
 })
 export class NzStepComponent implements OnInit {
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
+
   @ViewChild('processDotTemplate', { static: false }) processDotTemplate?: TemplateRef<void>;
   @ViewChild('itemContainer', { static: true }) itemContainer!: ElementRef<HTMLElement>;
 
@@ -192,16 +196,11 @@ export class NzStepComponent implements OnInit {
 
   private _currentIndex = 0;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private destroy$: NzDestroyService
-  ) {}
-
   ngOnInit(): void {
     fromEventOutsideAngular(this.itemContainer.nativeElement, 'click')
       .pipe(
         filter(() => this.clickable && this.currentIndex !== this.index && !this.nzDisabled),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.clickOutsideAngular$.next(this.index);
