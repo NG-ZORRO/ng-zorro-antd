@@ -6,19 +6,19 @@
 import {
   AfterContentChecked,
   ChangeDetectorRef,
+  DestroyRef,
   Directive,
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   Renderer2,
   SimpleChanges,
   booleanAttribute,
   inject,
   numberAttribute
 } from '@angular/core';
-import { Subject, from } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { from } from 'rxjs';
 
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 
@@ -33,7 +33,12 @@ import { NzIconPatchService, NzIconService } from './icon.service';
     class: 'anticon'
   }
 })
-export class NzIconDirective extends IconDirective implements OnChanges, AfterContentChecked, OnDestroy {
+export class NzIconDirective extends IconDirective implements OnChanges, AfterContentChecked {
+  private readonly ngZone = inject(NgZone);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private renderer = inject(Renderer2);
+  private destroyRef = inject(DestroyRef);
+
   cacheClassName: string | null = null;
   @Input({ transform: booleanAttribute })
   set nzSpin(value: boolean) {
@@ -68,14 +73,7 @@ export class NzIconDirective extends IconDirective implements OnChanges, AfterCo
   private iconfont?: string;
   private spin: boolean = false;
 
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private readonly ngZone: NgZone,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-    public readonly iconService: NzIconService,
-    public readonly renderer: Renderer2
-  ) {
+  constructor(private iconService: NzIconService) {
     super(iconService);
 
     const iconPatch = inject(NzIconPatchService, { optional: true });
@@ -116,10 +114,6 @@ export class NzIconDirective extends IconDirective implements OnChanges, AfterCo
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-  }
-
   /**
    * Replacement of `changeIcon` for more modifications.
    */
@@ -132,7 +126,7 @@ export class NzIconDirective extends IconDirective implements OnChanges, AfterCo
     // while the icon is being loaded dynamically.
     this.ngZone.runOutsideAngular(() => {
       from(this._changeIcon())
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: svgOrRemove => {
             // Get back into the Angular zone after completing all the tasks.
