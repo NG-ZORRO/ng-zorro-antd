@@ -5,19 +5,18 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
-  AfterViewInit,
+  DestroyRef,
   Directive,
   ElementRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Renderer2,
   SimpleChanges,
-  inject
+  inject,
+  type AfterViewInit
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NgClassInterface } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
@@ -39,9 +38,12 @@ export interface EmbeddedProperty {
     '[style.flex]': 'hostFlexStyle'
   }
 })
-export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class NzColDirective implements OnInit, OnChanges, AfterViewInit {
+  private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
   private classMap: Record<string, boolean> = {};
-  private destroy$ = new Subject<boolean>();
   hostFlexStyle: string | null = null;
   dir: Direction = 'ltr';
   @Input() nzFlex: string | number | null = null;
@@ -120,15 +122,9 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   nzRowDirective = inject(NzRowDirective, { host: true, optional: true });
 
-  constructor(
-    private elementRef: ElementRef,
-    public renderer: Renderer2,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.setHostClassMap();
     });
@@ -148,7 +144,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   ngAfterViewInit(): void {
     if (this.nzRowDirective) {
       this.nzRowDirective.actualGutter$
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(([horizontalGutter, verticalGutter]) => {
           const renderGutter = (name: string, gutter: number | null): void => {
             const nativeElement = this.elementRef.nativeElement;
@@ -162,10 +158,5 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
           renderGutter('padding-bottom', verticalGutter);
         });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }
