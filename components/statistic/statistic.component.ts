@@ -9,15 +9,14 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
-  OnDestroy,
   OnInit,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
@@ -59,7 +58,7 @@ import { NzStatisticValueType } from './typings';
   },
   imports: [NzSkeletonModule, NzStatisticNumberComponent, NzOutletModule]
 })
-export class NzStatisticComponent implements OnDestroy, OnInit {
+export class NzStatisticComponent implements OnInit {
   @Input() nzPrefix?: string | TemplateRef<void>;
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
@@ -69,21 +68,16 @@ export class NzStatisticComponent implements OnDestroy, OnInit {
   @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject<void>();
   protected cdr = inject(ChangeDetectorRef);
+  protected destroyRef = inject(DestroyRef);
   private directionality = inject(Directionality);
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

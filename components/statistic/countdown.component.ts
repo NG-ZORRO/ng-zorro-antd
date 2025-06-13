@@ -8,10 +8,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  inject,
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -44,7 +44,10 @@ const REFRESH_INTERVAL = 1000 / 30;
   `,
   imports: [NzStatisticComponent, NzPipesModule]
 })
-export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
+export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges {
+  private ngZone = inject(NgZone);
+  private platform = inject(Platform);
+
   @Input() nzFormat: string = 'HH:mm:ss';
   @Output() readonly nzCountdownFinish = new EventEmitter<void>();
 
@@ -53,17 +56,19 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   private target: number = 0;
   private updater_?: Subscription | null;
 
-  constructor(
-    private ngZone: NgZone,
-    private platform: Platform
-  ) {
+  constructor() {
     super();
+
+    this.destroyRef.onDestroy(() => {
+      this.stopTimer();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzValue) {
-      this.target = Number(changes.nzValue.currentValue);
-      if (!changes.nzValue.isFirstChange()) {
+    const { nzValue } = changes;
+    if (nzValue) {
+      this.target = Number(nzValue.currentValue);
+      if (!nzValue.isFirstChange()) {
         this.syncTimer();
       }
     }
@@ -72,10 +77,6 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   override ngOnInit(): void {
     super.ngOnInit();
     this.syncTimer();
-  }
-
-  override ngOnDestroy(): void {
-    this.stopTimer();
   }
 
   syncTimer(): void {
@@ -99,10 +100,8 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   }
 
   stopTimer(): void {
-    if (this.updater_) {
-      this.updater_.unsubscribe();
-      this.updater_ = null;
-    }
+    this.updater_?.unsubscribe();
+    this.updater_ = null;
   }
 
   /**
