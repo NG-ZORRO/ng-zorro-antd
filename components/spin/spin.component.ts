@@ -10,16 +10,18 @@ import {
   Component,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  numberAttribute
+  numberAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { BehaviorSubject, ReplaySubject, Subject, timer } from 'rxjs';
-import { debounce, distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, ReplaySubject, timer } from 'rxjs';
+import { debounce, distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -67,8 +69,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
   },
   imports: [NgTemplateOutlet]
 })
-export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
+export class NzSpinComponent implements OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
 
   @Input() @WithConfig() nzIndicator: TemplateRef<NzSafeAny> | null = null;
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -76,41 +83,31 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   @Input({ transform: numberAttribute }) nzDelay = 0;
   @Input({ transform: booleanAttribute }) nzSimple = false;
   @Input({ transform: booleanAttribute }) nzSpinning = true;
-  private destroy$ = new Subject<void>();
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private delay$ = new ReplaySubject<number>(1);
   isLoading = false;
   dir: Direction = 'ltr';
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
-    const loading$ = this.delay$.pipe(
-      startWith(this.nzDelay),
-      distinctUntilChanged(),
-      switchMap(delay => {
-        if (delay === 0) {
-          return this.spinning$;
-        }
-
-        return this.spinning$.pipe(debounce(spinning => timer(spinning ? delay : 0)));
-      }),
-      takeUntil(this.destroy$)
-    );
-    loading$.subscribe(loading => {
-      this.isLoading = loading;
-      this.cdr.markForCheck();
-    });
+    this.delay$
+      .pipe(
+        startWith(this.nzDelay),
+        distinctUntilChanged(),
+        switchMap(delay =>
+          delay === 0 ? this.spinning$ : this.spinning$.pipe(debounce(spinning => timer(spinning ? delay : 0)))
+        ),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(loading => {
+        this.isLoading = loading;
+        this.cdr.markForCheck();
+      });
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.cdr.markForCheck());
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -126,10 +123,5 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
     if (nzDelay) {
       this.delay$.next(this.nzDelay);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
