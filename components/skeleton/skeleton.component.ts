@@ -4,9 +4,11 @@
  */
 
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   Input,
   OnChanges,
   OnInit,
@@ -26,15 +28,13 @@ import {
 } from './skeleton.type';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-skeleton',
   exportAs: 'nzSkeleton',
   host: {
     class: 'ant-skeleton',
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
     '[class.ant-skeleton-active]': 'nzActive',
-    '[class.ant-skeleton-round]': '!!nzRound'
+    '[class.ant-skeleton-round]': 'nzRound'
   },
   template: `
     @if (nzLoading) {
@@ -63,12 +63,16 @@ import {
       <ng-content></ng-content>
     }
   `,
-  imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent]
+  imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {
-  @Input() nzActive = false;
-  @Input() nzLoading = true;
-  @Input() nzRound = false;
+  private cdr = inject(ChangeDetectorRef);
+
+  @Input({ transform: booleanAttribute }) nzActive = false;
+  @Input({ transform: booleanAttribute }) nzLoading = true;
+  @Input({ transform: booleanAttribute }) nzRound = false;
   @Input() nzTitle: NzSkeletonTitle | boolean = true;
   @Input() nzAvatar: NzSkeletonAvatar | boolean = false;
   @Input() nzParagraph: NzSkeletonParagraph | boolean = true;
@@ -79,9 +83,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   rowsList: number[] = [];
   widthList: Array<number | string> = [];
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  toCSSUnit(value: number | string = ''): string {
+  protected toCSSUnit(value: number | string = ''): string {
     return toCssPixel(value);
   }
 
