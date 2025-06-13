@@ -15,7 +15,6 @@ import {
   EventEmitter,
   inject,
   Input,
-  OnDestroy,
   Output,
   QueryList,
   TemplateRef,
@@ -23,8 +22,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, Subject } from 'rxjs';
-import { finalize, first, takeUntil } from 'rxjs/operators';
+import { filter, Observable, Subject } from 'rxjs';
+import { finalize, first } from 'rxjs/operators';
 
 import { NzButtonModule, NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
@@ -224,7 +223,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
+export class NzPopconfirmComponent extends NzToolTipComponent {
   @ViewChildren('okBtn', { read: ElementRef }) okBtn!: QueryList<ElementRef>;
   @ViewChildren('cancelBtn', { read: ElementRef }) cancelBtn!: QueryList<ElementRef>;
 
@@ -250,11 +249,11 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
 
   confirmLoading = false;
 
-  override ngOnDestroy(): void {
-    super.ngOnDestroy();
-
-    this.nzOnCancel.complete();
-    this.nzOnConfirm.complete();
+  constructor() {
+    super();
+    this.destroyRef.onDestroy(() => {
+      this.nzVisibleChange.complete();
+    });
   }
 
   /**
@@ -292,18 +291,13 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
       wrapIntoObservable(this.nzBeforeConfirm())
         .pipe(
           first(),
+          filter(Boolean),
           finalize(() => {
             this.confirmLoading = false;
             this.cdr.markForCheck();
-          }),
-          takeUntil(this.nzVisibleChange),
-          takeUntilDestroyed(this.destroyRef)
+          })
         )
-        .subscribe(value => {
-          if (value) {
-            this.handleConfirm();
-          }
-        });
+        .subscribe(() => this.handleConfirm());
     } else {
       this.handleConfirm();
     }

@@ -14,7 +14,6 @@ import {
   ElementRef,
   EventEmitter,
   OnChanges,
-  OnDestroy,
   OnInit,
   PLATFORM_ID,
   Renderer2,
@@ -43,7 +42,7 @@ export interface PropertyMapping {
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
 @Directive()
-export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges, OnDestroy {
+export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges {
   config?: Required<PopoverConfig | PopConfirmConfig>;
   abstract arrowPointAtCenter?: boolean;
   abstract directiveTitle?: NzTSType | null;
@@ -129,7 +128,13 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
   protected destroyRef = inject(DestroyRef);
   protected platformId = inject(PLATFORM_ID);
 
-  protected constructor(protected componentType: Type<NzTooltipBaseComponent>) {}
+  constructor(protected componentType: Type<NzTooltipBaseComponent>) {
+    this.destroyRef.onDestroy(() => {
+      // Clear toggling timer. Issue #3875 #4317 #4386
+      this.clearTogglingTimer();
+      this.removeTriggerListeners();
+    });
+  }
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -148,12 +153,6 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
     if (this.component) {
       this.updatePropertiesByChanges(changes);
     }
-  }
-
-  ngOnDestroy(): void {
-    // Clear toggling timer. Issue #3875 #4317 #4386
-    this.clearTogglingTimer();
-    this.removeTriggerListeners();
   }
 
   show(): void {
@@ -335,7 +334,7 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 }
 
 @Directive()
-export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
+export abstract class NzTooltipBaseComponent implements OnInit {
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
@@ -398,6 +397,12 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
 
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.nzVisibleChange.complete();
+    });
+  }
+
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
@@ -405,10 +410,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     });
 
     this.dir = this.directionality.value;
-  }
-
-  ngOnDestroy(): void {
-    this.nzVisibleChange.complete();
   }
 
   show(): void {
