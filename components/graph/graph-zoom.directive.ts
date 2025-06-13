@@ -6,14 +6,14 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
+  DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
-  OnDestroy,
   Output
 } from '@angular/core';
-import { Subject } from 'rxjs';
 
 import { Selection } from 'd3-selection';
 import { transition } from 'd3-transition';
@@ -29,7 +29,11 @@ import { NzZoomTransform, RelativePositionInfo } from './interface';
   selector: '[nz-graph-zoom]',
   exportAs: 'nzGraphZoom'
 })
-export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
+export class NzGraphZoomDirective implements AfterViewInit {
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  private element = inject(ElementRef);
+
   @Input({ transform: numberAttributeWithOneFallback }) nzZoom?: number;
   @Input() nzMinZoom = 0.1;
   @Input() nzMaxZoom = 10;
@@ -45,21 +49,14 @@ export class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
   svgElement!: SVGSVGElement;
   gZoomElement!: SVGGElement;
 
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private element: ElementRef,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.unbind();
+    });
+  }
 
   ngAfterViewInit(): void {
     this.bind();
-  }
-
-  ngOnDestroy(): void {
-    this.unbind();
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   bind(): void {
