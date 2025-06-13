@@ -53,21 +53,17 @@ import { NzSegmentedService } from './segmented.service';
   encapsulation: ViewEncapsulation.None
 })
 export class NzSegmentedItemComponent implements OnInit {
+  private readonly service = inject(NzSegmentedService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly elementRef = inject(ElementRef);
+  private readonly destroyRef = inject(DestroyRef);
+
   @Input() nzIcon?: string;
   @Input() nzValue!: string | number;
   @Input() nzDisabled?: boolean;
 
   protected isChecked = false;
-
-  private readonly service = inject(NzSegmentedService);
-
   readonly parentDisabled = toSignal(this.service.disabled$, { initialValue: false });
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    private destroyRef: DestroyRef
-  ) {}
 
   ngOnInit(): void {
     this.service.selected$
