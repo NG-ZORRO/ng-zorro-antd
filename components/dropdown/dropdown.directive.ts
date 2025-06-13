@@ -9,12 +9,12 @@ import { Platform } from '@angular/cdk/platform';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
+  DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   Output,
   Renderer2,
   SimpleChanges,
@@ -22,8 +22,9 @@ import {
   booleanAttribute,
   inject
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, EMPTY, Subject, combineLatest, fromEvent, merge } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { auditTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
@@ -47,14 +48,19 @@ const listOfPositions = [
     class: 'ant-dropdown-trigger'
   }
 })
-export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges {
+export class NzDropDownDirective implements AfterViewInit, OnChanges {
+  public readonly nzConfigService = inject(NzConfigService);
+  private renderer = inject(Renderer2);
+  private viewContainerRef = inject(ViewContainerRef);
+  private platform = inject(Platform);
+  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   public elementRef = inject(ElementRef);
   private overlay = inject(Overlay);
 
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
-  private destroy$ = new Subject<boolean>();
+
   private positionStrategy = this.overlay
     .position()
     .flexibleConnectedTo(this.elementRef.nativeElement)
@@ -75,18 +81,18 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.overlayRef?.dispose();
+      this.overlayRef = null;
+    });
+  }
+
   setDropdownMenuValue<T extends keyof NzDropdownMenuComponent>(key: T, value: NzDropdownMenuComponent[T]): void {
     if (this.nzDropdownMenu) {
       this.nzDropdownMenu.setValue(key, value);
     }
   }
-
-  constructor(
-    public readonly nzConfigService: NzConfigService,
-    private renderer: Renderer2,
-    private viewContainerRef: ViewContainerRef,
-    private platform: Platform
-  ) {}
 
   ngAfterViewInit(): void {
     if (this.nzDropdownMenu) {
@@ -128,7 +134,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
           auditTime(150),
           distinctUntilChanged(),
           filter(() => this.platform.isBrowser),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed(this.destroyRef)
         )
         .subscribe((visible: boolean) => {
           const element = this.nzMatchWidthElement ? this.nzMatchWidthElement.nativeElement : nativeElement;
@@ -156,7 +162,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
                   .pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target))),
                 this.overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e)))
               )
-                .pipe(takeUntil(this.destroy$))
+                .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe(() => {
                   this.overlayClose$.next(false);
                 });
@@ -180,7 +186,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
           }
         });
 
-      this.nzDropdownMenu!.animationStateChange$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+      this.nzDropdownMenu!.animationStateChange$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
         if (event.toState === 'void') {
           if (this.overlayRef) {
             this.overlayRef.dispose();
@@ -188,15 +194,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
           this.overlayRef = null;
         }
       });
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-      this.overlayRef = null;
     }
   }
 
