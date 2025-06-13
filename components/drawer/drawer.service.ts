@@ -5,7 +5,7 @@
 
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -65,7 +65,7 @@ export class DrawerBuilderForService<T extends {}, R> {
 
 @Injectable()
 export class NzDrawerService {
-  constructor(private overlay: Overlay) {}
+  private overlay = inject(Overlay);
 
   create<T extends {} = NzSafeAny, D = undefined, R = NzSafeAny>(
     options: NzDrawerOptions<T, D extends undefined ? {} : D>
