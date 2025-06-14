@@ -15,15 +15,15 @@ import {
   EventEmitter,
   inject,
   Input,
-  OnDestroy,
   Output,
   QueryList,
   TemplateRef,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { finalize, first, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter, Observable, Subject } from 'rxjs';
+import { finalize, first } from 'rxjs/operators';
 
 import { NzButtonModule, NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
@@ -113,18 +113,16 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   protected override createComponent(): void {
     super.createComponent();
 
-    (this.component as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    (this.component as NzPopconfirmComponent).nzOnCancel.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.nzOnCancel.emit();
     });
-    (this.component as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    (this.component as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.nzOnConfirm.emit();
     });
   }
 }
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-popconfirm',
   exportAs: 'nzPopconfirmComponent',
   animations: [zoomBigMotion],
@@ -221,9 +219,11 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     NzIconModule,
     NzButtonModule,
     NzI18nModule
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
-export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
+export class NzPopconfirmComponent extends NzToolTipComponent {
   @ViewChildren('okBtn', { read: ElementRef }) okBtn!: QueryList<ElementRef>;
   @ViewChildren('cancelBtn', { read: ElementRef }) cancelBtn!: QueryList<ElementRef>;
 
@@ -249,15 +249,11 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
 
   confirmLoading = false;
 
-  constructor(private elementRef: ElementRef) {
+  constructor() {
     super();
-  }
-
-  override ngOnDestroy(): void {
-    super.ngOnDestroy();
-
-    this.nzOnCancel.complete();
-    this.nzOnConfirm.complete();
+    this.destroyRef.onDestroy(() => {
+      this.nzVisibleChange.complete();
+    });
   }
 
   /**
@@ -289,22 +285,19 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
 
   onConfirm(): void {
     if (this.nzBeforeConfirm) {
-      const observable = wrapIntoObservable(this.nzBeforeConfirm()).pipe(first());
       this.confirmLoading = true;
-      observable
+      this.cdr.markForCheck();
+
+      wrapIntoObservable(this.nzBeforeConfirm())
         .pipe(
+          first(),
+          filter(Boolean),
           finalize(() => {
             this.confirmLoading = false;
             this.cdr.markForCheck();
-          }),
-          takeUntil(this.nzVisibleChange),
-          takeUntil(this.destroy$)
+          })
         )
-        .subscribe(value => {
-          if (value) {
-            this.handleConfirm();
-          }
-        });
+        .subscribe(() => this.handleConfirm());
     } else {
       this.handleConfirm();
     }
@@ -322,7 +315,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
     // We need the extra check, because IE can set the `activeElement` to null in some cases.
     if (toFocus && typeof toFocus.focus === 'function') {
       const activeElement = this.document.activeElement as Element;
-      const element = this.elementRef.nativeElement;
+      const element: HTMLElement = this.elementRef.nativeElement;
 
       if (
         !activeElement ||
