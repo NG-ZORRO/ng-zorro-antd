@@ -56,9 +56,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
 
       <ng-content>
         @for (item of normalizedOptions; track item.value) {
-          <label nz-segmented-item [nzIcon]="item.icon" [nzValue]="item.value" [nzDisabled]="item.disabled">{{
-            item.label
-          }}</label>
+          <label nz-segmented-item [nzIcon]="item.icon" [nzValue]="item.value" [nzDisabled]="item.disabled">
+            {{ item.label }}
+          </label>
         }
       </ng-content>
     </div>
@@ -73,13 +73,22 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
   },
   providers: [
     NzSegmentedService,
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzSegmentedComponent), multi: true }
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NzSegmentedComponent),
+      multi: true
+    }
   ],
   animations: [thumbMotion],
   imports: [NzIconModule, NzOutletModule, NzSegmentedItemComponent]
 })
 export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  public readonly nzConfigService = inject(NzConfigService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly directionality = inject(Directionality);
+  private readonly service = inject(NzSegmentedService);
 
   @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
@@ -102,13 +111,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   protected onChange: OnChangeType = () => {};
   protected onTouched: OnTouchedType = () => {};
 
-  private readonly service = inject(NzSegmentedService);
-
-  constructor(
-    public readonly nzConfigService: NzConfigService,
-    private readonly cdr: ChangeDetectorRef,
-    private readonly directionality: Directionality
-  ) {
+  constructor() {
     this.directionality.change.pipe(takeUntilDestroyed()).subscribe(direction => {
       this.dir = direction;
       this.cdr.markForCheck();
