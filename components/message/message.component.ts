@@ -8,7 +8,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   ViewEncapsulation
@@ -65,7 +64,7 @@ import { NzMessageData } from './typings';
   `,
   imports: [NzIconModule, NzOutletModule]
 })
-export class NzMessageComponent extends NzMNComponent implements OnInit, OnDestroy {
+export class NzMessageComponent extends NzMNComponent implements OnInit {
   @Input() override instance!: Required<NzMessageData>;
   @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
   index?: number;

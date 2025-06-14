@@ -6,7 +6,7 @@
 import { AnimationEvent } from '@angular/animations';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnInit, inject, DestroyRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
@@ -21,11 +21,8 @@ export abstract class NzMNService<T extends NzMNContainerComponent> {
   protected abstract componentPrefix: string;
   protected container?: T;
   protected nzSingletonService = inject(NzSingletonService);
-
-  protected constructor(
-    protected overlay: Overlay,
-    private injector: Injector
-  ) {}
+  protected overlay = inject(Overlay);
+  protected injector = inject(Injector);
 
   remove(id?: string): void {
     if (this.container) {
@@ -73,10 +70,9 @@ export abstract class NzMNService<T extends NzMNContainerComponent> {
 
 @Directive()
 export abstract class NzMNContainerComponent<
-    C extends MessageConfig = MessageConfig,
-    D extends NzMessageData = NzMessageData
-  >
-  implements OnInit, OnDestroy
+  C extends MessageConfig = MessageConfig,
+  D extends NzMessageData = NzMessageData
+> implements OnInit
 {
   config?: Required<C>;
   instances: Array<Required<D>> = [];
@@ -85,17 +81,12 @@ export abstract class NzMNContainerComponent<
 
   readonly afterAllInstancesRemoved = this._afterAllInstancesRemoved.asObservable();
 
+  protected destroyRef = inject(DestroyRef);
   protected cdr = inject(ChangeDetectorRef);
   protected nzConfigService = inject(NzConfigService);
-  protected readonly destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     this.subscribeConfigChange();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   create(data: D): Required<D> {
@@ -165,12 +156,13 @@ export abstract class NzMNContainerComponent<
 }
 
 @Directive()
-export abstract class NzMNComponent implements OnInit, OnDestroy {
+export abstract class NzMNComponent implements OnInit {
   abstract instance: Required<NzMessageData>;
   abstract index?: number;
   abstract destroyed: EventEmitter<{ id: string; userAction: boolean }>;
 
   protected cdr = inject(ChangeDetectorRef);
+  protected destroyRef = inject(DestroyRef);
   readonly animationStateChanged: Subject<AnimationEvent> = new Subject<AnimationEvent>();
 
   protected options!: Required<NzMessageDataOptions>;
@@ -180,6 +172,15 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   protected eraseTimer?: ReturnType<typeof setTimeout>;
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      if (this.autoClose) {
+        this.clearEraseTimeout();
+      }
+      this.animationStateChanged.complete();
+    });
+  }
 
   ngOnInit(): void {
     this.options = this.instance.options as Required<NzMessageDataOptions>;
@@ -203,13 +204,6 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
       this.initErase();
       this.startEraseTimeout();
     }
-  }
-
-  ngOnDestroy(): void {
-    if (this.autoClose) {
-      this.clearEraseTimeout();
-    }
-    this.animationStateChanged.complete();
   }
 
   onEnter(): void {
