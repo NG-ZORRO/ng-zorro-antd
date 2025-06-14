@@ -53,8 +53,9 @@ export class NzResizeHandlesComponent implements OnChanges {
   resizeHandleOptions = normalizeResizeHandleOptions(this.nzDirections);
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzDirections) {
-      this.resizeHandleOptions = normalizeResizeHandleOptions(changes.nzDirections.currentValue);
+    const { nzDirections } = changes;
+    if (nzDirections) {
+      this.resizeHandleOptions = normalizeResizeHandleOptions(nzDirections.currentValue);
     }
   }
 }
