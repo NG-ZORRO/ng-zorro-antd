@@ -98,6 +98,11 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
   imports: [NzSelectSearchComponent, NzSelectItemComponent, NzSelectPlaceholderComponent]
 })
 export class NzSelectTopControlComponent implements OnChanges, OnInit {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly ngZone = inject(NgZone);
+  readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   @Input() nzId: string | null = null;
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
@@ -192,11 +197,6 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
     }
   }
 
-  private destroyRef = inject(DestroyRef);
-  private elementRef = inject(ElementRef<HTMLElement>);
-  private ngZone = inject(NgZone);
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-
   ngOnChanges(changes: SimpleChanges): void {
     const { listOfTopItem, maxTagCount, customTemplate, maxTagPlaceholder } = changes;
     if (listOfTopItem) {
@@ -230,7 +230,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
     fromEventOutsideAngular<MouseEvent>(this.elementRef.nativeElement, 'click')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
-        // `HTMLElement.focus()` is a native DOM API which doesn't require Angular to run change detection.
+        // `HTMLElement.focus()` is a native DOM API that doesn't require Angular to run change detection.
         if (event.target !== this.nzSelectSearchComponent.inputElement.nativeElement) {
           this.nzSelectSearchComponent.focus();
         }

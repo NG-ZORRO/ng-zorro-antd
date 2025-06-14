@@ -8,8 +8,10 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   NgZone,
   OnChanges,
@@ -19,9 +21,8 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -56,10 +57,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     '[class.ant-select-item-option-disabled]': 'disabled',
     '[class.ant-select-item-option-active]': 'activated && !disabled'
   },
-  providers: [NzDestroyService],
   imports: [NgTemplateOutlet, NzIconModule]
 })
 export class NzOptionItemComponent implements OnChanges, OnInit {
+  private readonly el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private readonly ngZone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
+
   selected = false;
   activated = false;
   @Input() grouped = false;
@@ -77,12 +81,6 @@ export class NzOptionItemComponent implements OnChanges, OnInit {
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly itemHover = new EventEmitter<NzSafeAny>();
 
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    private ngZone: NgZone,
-    private destroy$: NzDestroyService
-  ) {}
-
   ngOnChanges(changes: SimpleChanges): void {
     const { value, activatedValue, listOfSelectedValue } = changes;
     if (value || listOfSelectedValue) {
@@ -94,16 +92,16 @@ export class NzOptionItemComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
+    fromEventOutsideAngular(this.el, 'click')
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         if (!this.disabled) {
           this.ngZone.run(() => this.itemClick.emit(this.value));
         }
       });
 
-    fromEventOutsideAngular(this.elementRef.nativeElement, 'mouseenter')
-      .pipe(takeUntil(this.destroy$))
+    fromEventOutsideAngular(this.el, 'mouseenter')
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         if (!this.disabled) {
           this.ngZone.run(() => this.itemHover.emit(this.value));
