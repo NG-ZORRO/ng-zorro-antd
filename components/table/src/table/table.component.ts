@@ -40,6 +40,7 @@ import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import {
   NzCustomColumn,
+  NzHiddenColumn,
   NzTableLayout,
   NzTablePaginationPosition,
   NzTablePaginationType,
@@ -145,7 +146,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   host: {
     class: 'ant-table-wrapper',
     '[class.ant-table-wrapper-rtl]': 'dir === "rtl"',
-    '[class.ant-table-custom-column]': `nzCustomColumn.length`
+    '[class.ant-table-custom-column]': `nzCustomColumn.length && nzCustomColumn[0].hidden === undefined`
   },
   imports: [
     NzSpinComponent,
@@ -176,7 +177,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   @Input() nzTotal = 0;
   @Input() nzWidthConfig: ReadonlyArray<string | null> = [];
   @Input() nzData: readonly T[] = [];
-  @Input() nzCustomColumn: NzCustomColumn[] = [];
+  @Input() nzCustomColumn: NzCustomColumn[] | NzHiddenColumn[] = [];
 
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
@@ -198,7 +199,7 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
   @Output() readonly nzCurrentPageDataChange = new EventEmitter<readonly T[]>();
-  @Output() readonly nzCustomColumnChange = new EventEmitter<readonly NzCustomColumn[]>();
+  @Output() readonly nzCustomColumnChange = new EventEmitter<readonly NzCustomColumn[] | NzHiddenColumn[]>();
 
   /** public data for ngFor tr */
   public data: readonly T[] = [];
