@@ -3,8 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Overlay } from '@angular/cdk/overlay';
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { NzMNService } from './base';
 import { NzMessageContainerComponent } from './message-container.component';
@@ -15,10 +14,6 @@ import { NzMessageContentType, NzMessageData, NzMessageDataOptions, NzMessageRef
 })
 export class NzMessageService extends NzMNService<NzMessageContainerComponent> {
   protected componentPrefix = 'message-';
-
-  constructor(overlay: Overlay, injector: Injector) {
-    super(overlay, injector);
-  }
 
   success(content: NzMessageContentType, options?: NzMessageDataOptions): NzMessageRef {
     return this.createInstance({ type: 'success', content }, options);
