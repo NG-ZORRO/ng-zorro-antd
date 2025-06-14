@@ -4,14 +4,14 @@
  */
 
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   Input,
+  numberAttribute,
   OnChanges,
   SimpleChanges,
-  ViewEncapsulation,
-  booleanAttribute,
-  numberAttribute
+  ViewEncapsulation
 } from '@angular/core';
 
 import { NzDisplayedStep, NzExtendedMark } from './typings';
@@ -82,10 +82,9 @@ export class NzSliderStepComponent implements OnChanges {
     if (this.steps && this.lowerBound !== null && this.upperBound !== null) {
       this.steps.forEach(step => {
         const value = step.value;
-        const isActive =
-          (!this.included && value === this.upperBound) ||
-          (this.included && value <= this.upperBound! && value >= this.lowerBound!);
-        step.active = isActive;
+        step.active = this.included
+          ? value <= this.upperBound! && value >= this.lowerBound!
+          : value === this.upperBound;
       });
     }
   }

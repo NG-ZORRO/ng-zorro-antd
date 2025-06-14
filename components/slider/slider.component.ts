@@ -14,7 +14,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -24,10 +23,14 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   forwardRef,
-  numberAttribute
+  numberAttribute,
+  signal,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject, Subscription, fromEvent, merge } from 'rxjs';
+import { Observable, Subscription, fromEvent, merge } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -45,7 +48,6 @@ import {
 
 import { NzSliderHandleComponent } from './handle.component';
 import { NzSliderMarksComponent } from './marks.component';
-import { NzSliderService } from './slider.service';
 import { NzSliderStepComponent } from './step.component';
 import { NzSliderTrackComponent } from './track.component';
 import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSliderValue } from './typings';
@@ -60,8 +62,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSliderComponent),
       multi: true
-    },
-    NzSliderService
+    }
   ],
   template: `
     <div class="ant-slider-rail"></div>
@@ -95,6 +96,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [tooltipFormatter]="nzTipFormatter"
         [tooltipVisible]="nzTooltipVisible"
         [tooltipPlacement]="nzTooltipPlacement"
+        [dragging]="dragging()"
         [dir]="dir"
         (focusin)="onHandleFocusIn(handleIndex)"
       ></nz-slider-handle>
@@ -122,7 +124,13 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
     '(keydown)': 'onKeyDown($event)'
   }
 })
-export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
+export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges {
+  public slider = inject(ElementRef<HTMLElement>);
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  private platform = inject(Platform);
+  private directionality = inject(Directionality);
+
   @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
 
   @Input({ transform: booleanAttribute }) nzDisabled = false;
@@ -152,26 +160,18 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   bounds: { lower: NzSliderValue | null; upper: NzSliderValue | null } = { lower: null, upper: null }; // now for nz-slider-step
   dir: Direction = 'ltr';
 
+  readonly dragging = signal(false);
   private dragStart$?: Observable<number>;
   private dragMove$?: Observable<number>;
   private dragEnd$?: Observable<Event>;
   private dragStart_?: Subscription | null;
   private dragMove_?: Subscription | null;
   private dragEnd_?: Subscription | null;
-  private destroy$ = new Subject<boolean>();
   private isNzDisableFirstChange = true;
-
-  constructor(
-    public slider: ElementRef<HTMLDivElement>,
-    private sliderService: NzSliderService,
-    private cdr: ChangeDetectorRef,
-    private platform: Platform,
-    private directionality: Directionality
-  ) {}
 
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
       this.updateTrackAndHandles();
@@ -199,12 +199,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       this.handles = generateHandlers(nzRange.currentValue ? 2 : 1);
       this.setValue(this.formatValue(null));
     }
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribeDrag();
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 
   writeValue(val: NzSliderValue | null): void {
@@ -248,8 +242,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
     e.preventDefault();
 
-    let step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1);
-    step = this.dir === 'rtl' ? step * -1 : step;
+    const step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1) * (this.dir === 'rtl' ? -1 : 1);
     const newVal = this.nzRange
       ? (this.value as number[])[this.activeValueIndex!] + step
       : (this.value as number) + step;
@@ -319,7 +312,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
   private setActiveValue(pointerValue: number): void {
     if (isValueRange(this.value!)) {
-      const newValue = [...(this.value as number[])];
+      const newValue = [...this.value];
       newValue[this.activeValueIndex!] = pointerValue;
       this.setValue(newValue);
     } else {
@@ -395,7 +388,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     }
     const pluckFunc: (keys: string[]) => (event: Event) => number = keys => (event: Event) =>
       keys.reduce((acc: NzSafeAny, key: string) => acc[key] || acc, event);
-    const sliderDOM = this.slider.nativeElement;
+    const sliderDOM: HTMLElement = this.slider.nativeElement;
     const orientField = this.nzVertical ? 'pageY' : 'pageX';
     const mouse: MouseTouchObserverConfig = {
       start: 'mousedown',
@@ -439,31 +432,33 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
   private subscribeDrag(periods: string[] = ['start', 'move', 'end']): void {
     if (periods.indexOf('start') !== -1 && this.dragStart$ && !this.dragStart_) {
-      this.dragStart_ = this.dragStart$.subscribe(this.onDragStart.bind(this));
+      this.dragStart_ = this.dragStart$
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(this.onDragStart.bind(this));
     }
 
     if (periods.indexOf('move') !== -1 && this.dragMove$ && !this.dragMove_) {
-      this.dragMove_ = this.dragMove$.subscribe(this.onDragMove.bind(this));
+      this.dragMove_ = this.dragMove$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.onDragMove.bind(this));
     }
 
     if (periods.indexOf('end') !== -1 && this.dragEnd$ && !this.dragEnd_) {
-      this.dragEnd_ = this.dragEnd$.subscribe(this.onDragEnd.bind(this));
+      this.dragEnd_ = this.dragEnd$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.onDragEnd.bind(this));
     }
   }
 
   private unsubscribeDrag(periods: string[] = ['start', 'move', 'end']): void {
-    if (periods.indexOf('start') !== -1 && this.dragStart_) {
-      this.dragStart_.unsubscribe();
+    if (periods.includes('start')) {
+      this.dragStart_?.unsubscribe();
       this.dragStart_ = null;
     }
 
-    if (periods.indexOf('move') !== -1 && this.dragMove_) {
-      this.dragMove_.unsubscribe();
+    if (periods.includes('move')) {
+      this.dragMove_?.unsubscribe();
       this.dragMove_ = null;
     }
 
-    if (periods.indexOf('end') !== -1 && this.dragEnd_) {
-      this.dragEnd_.unsubscribe();
+    if (periods.includes('end')) {
+      this.dragEnd_?.unsubscribe();
       this.dragEnd_ = null;
     }
   }
@@ -471,10 +466,10 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private toggleDragMoving(movable: boolean): void {
     const periods = ['move', 'end'];
     if (movable) {
-      this.sliderService.isDragging = true;
+      this.dragging.set(true);
       this.subscribeDrag(periods);
     } else {
-      this.sliderService.isDragging = false;
+      this.dragging.set(false);
       this.unsubscribeDrag(periods);
     }
   }
@@ -507,7 +502,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     const gaps = points.map(point => Math.abs(val - point));
     const closest = points[gaps.indexOf(Math.min(...gaps))];
 
-    // return parseFloat(closest.toFixed(getPrecision(this.nzStep)));
     return this.nzStep === 0 ? closest : parseFloat(closest.toFixed(getPrecision(this.nzStep)));
   }
 
@@ -555,9 +549,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
    * Show one handle's tooltip and hide others'.
    */
   private showHandleTooltip(handleIndex: number = 0): void {
-    this.handles.forEach((handle, index) => {
-      handle.active = index === handleIndex;
-    });
+    this.handles.forEach((handle, index) => (handle.active = index === handleIndex));
   }
 
   private hideAllHandleTooltip(): void {
