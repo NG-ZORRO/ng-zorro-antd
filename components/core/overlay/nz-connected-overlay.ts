@@ -14,8 +14,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { getPlacementName } from './overlay-position';
 
-/** Equivalent of `ClientRect` without some of the properties we don't care about. */
-type Dimensions = Omit<ClientRect, 'x' | 'y' | 'toJSON'>;
+/** Equivalent of `DOMRect` without some of the properties we don't care about. */
+type Dimensions = Omit<DOMRect, 'x' | 'y' | 'toJSON'>;
 
 @Directive({
   selector: '[cdkConnectedOverlay][nzConnectedOverlay]',
@@ -28,13 +28,11 @@ export class NzConnectedOverlayDirective {
   constructor() {
     this.cdkConnectedOverlay.backdropClass = 'nz-overlay-transparent-backdrop';
 
-    this.cdkConnectedOverlay.positionChange
-      .pipe(takeUntilDestroyed())
-      .subscribe((position: ConnectedOverlayPositionChange) => {
-        if (this.nzArrowPointAtCenter) {
-          this.updateArrowPosition(position);
-        }
-      });
+    this.cdkConnectedOverlay.positionChange.pipe(takeUntilDestroyed()).subscribe(position => {
+      if (this.nzArrowPointAtCenter) {
+        this.updateArrowPosition(position);
+      }
+    });
   }
 
   private updateArrowPosition(position: ConnectedOverlayPositionChange): void {

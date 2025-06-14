@@ -111,6 +111,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
   imports: [NgTemplateOutlet]
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnChanges, OnInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   public readonly nzConfigService = inject(NzConfigService);
   public readonly ngZone = inject(NgZone);
   private readonly renderer = inject(Renderer2);
@@ -120,8 +122,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   private readonly nzDragService = inject(NzDragService);
   private nzResizeObserver = inject(NzResizeObserver);
   private destroyRef = inject(DestroyRef);
-
-  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ContentChildren(NzCarouselContentDirective) carouselContents!: QueryList<NzCarouselContentDirective>;
 
@@ -168,7 +168,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   transitionInProgress?: ReturnType<typeof setTimeout>;
   dir: Direction = 'ltr';
 
-  private gestureRect: ClientRect | null = null;
+  private gestureRect: DOMRect | null = null;
   private pointerDelta: PointerVector | null = null;
   private isTransiting = false;
   private isDragging = false;
@@ -182,6 +182,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
       this.strategy?.dispose();
     });
   }
+
   ngOnInit(): void {
     this.slickListEl = this.slickList!.nativeElement;
     this.slickTrackEl = this.slickTrack!.nativeElement;
@@ -218,9 +219,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
     this.nzResizeObserver
       .observe(this.el)
       .pipe(debounceTime(100), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.layout();
-      });
+      .subscribe(() => this.layout());
   }
 
   ngAfterContentInit(): void {
@@ -236,9 +235,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
     this.resizeService
       .connect()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.layout();
-      });
+      .subscribe(() => this.layout());
 
     this.switchStrategy();
     this.markContentActive(0);
@@ -247,9 +244,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
     // If embedded in an entry component, it may do initial render at an inappropriate time.
     // ngZone.onStable won't do this trick
     // TODO: need to change this.
-    Promise.resolve().then(() => {
-      this.layout();
-    });
+    Promise.resolve().then(() => this.layout());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -340,13 +335,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
 
   private markContentActive(index: number): void {
     this.activeIndex = index;
-
-    if (this.carouselContents) {
-      this.carouselContents.forEach((slide, i) => {
-        slide.isActive = index === i;
-      });
-    }
-
+    this.carouselContents?.forEach((slide, i) => (slide.isActive = index === i));
     this.cdr.markForCheck();
   }
 
@@ -358,14 +347,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
       this.clearScheduledTransition();
       this.gestureRect = this.slickListEl.getBoundingClientRect();
 
-      this.nzDragService.requestDraggingSequence(event).subscribe(
-        delta => {
+      this.nzDragService.requestDraggingSequence(event).subscribe({
+        next: delta => {
           this.pointerDelta = delta;
           this.isDragging = true;
           this.strategy?.dragging(this.pointerDelta);
         },
-        () => {},
-        () => {
+        complete: () => {
           if (this.nzEnableSwipe && this.isDragging) {
             const xDelta = this.pointerDelta ? this.pointerDelta.x : 0;
 
@@ -387,13 +375,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
 
           this.isDragging = false;
         }
-      );
+      });
     }
   };
 
   layout(): void {
-    if (this.strategy) {
-      this.strategy.withCarouselContents(this.carouselContents);
-    }
+    this.strategy?.withCarouselContents(this.carouselContents);
   }
 }
