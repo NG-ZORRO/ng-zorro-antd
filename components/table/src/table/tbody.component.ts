@@ -6,9 +6,9 @@
 /* eslint-disable @angular-eslint/component-selector */
 
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, TemplateRef, ViewEncapsulation, inject } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewEncapsulation, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject } from 'rxjs';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
@@ -43,30 +43,23 @@ import { NzTrMeasureComponent } from './tr-measure.component';
   },
   imports: [AsyncPipe, NzTrMeasureComponent, NzTableFixedRowComponent, NzEmptyModule]
 })
-export class NzTbodyComponent implements OnDestroy {
-  isInsideTable = false;
+export class NzTbodyComponent {
   showEmpty$ = new BehaviorSubject<boolean>(false);
   noResult$ = new BehaviorSubject<string | TemplateRef<NzSafeAny> | undefined>(undefined);
   listOfMeasureColumn$ = new BehaviorSubject<readonly string[]>([]);
-  private destroy$ = new Subject<void>();
   private nzTableStyleService = inject(NzTableStyleService, { optional: true });
+  isInsideTable = !!this.nzTableStyleService;
 
   constructor() {
-    this.isInsideTable = !!this.nzTableStyleService;
     if (this.nzTableStyleService) {
       const { showEmpty$, noResult$, listOfMeasureColumn$ } = this.nzTableStyleService;
-      noResult$.pipe(takeUntil(this.destroy$)).subscribe(this.noResult$);
-      listOfMeasureColumn$.pipe(takeUntil(this.destroy$)).subscribe(this.listOfMeasureColumn$);
-      showEmpty$.pipe(takeUntil(this.destroy$)).subscribe(this.showEmpty$);
+      noResult$.pipe(takeUntilDestroyed()).subscribe(this.noResult$);
+      listOfMeasureColumn$.pipe(takeUntilDestroyed()).subscribe(this.listOfMeasureColumn$);
+      showEmpty$.pipe(takeUntilDestroyed()).subscribe(this.showEmpty$);
     }
   }
 
   onListOfAutoWidthChange(listOfAutoWidth: number[]): void {
     this.nzTableStyleService?.setListOfAutoWidth(listOfAutoWidth);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -10,11 +10,12 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
+  inject,
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   Renderer2,
   SimpleChanges,
   TemplateRef,
@@ -22,8 +23,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge, Subject } from 'rxjs';
-import { delay, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { delay, filter, startWith, switchMap } from 'rxjs/operators';
 
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -107,7 +109,13 @@ import { NzTbodyComponent } from './tbody.component';
   host: { class: 'ant-table-container' },
   imports: [NzTableContentComponent, ScrollingModule, NgTemplateOutlet, NzTbodyComponent]
 })
-export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {
+export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit {
+  private renderer = inject(Renderer2);
+  private ngZone = inject(NgZone);
+  private platform = inject(Platform);
+  private resizeService = inject(NzResizeService);
+  private destroyRef = inject(DestroyRef);
+
   @Input() data: readonly T[] = [];
   @Input() scrollX: string | null = null;
   @Input() scrollY: string | null = null;
@@ -134,9 +142,8 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
   @Input() noDataVirtualHeight = '182px';
   private data$ = new Subject<void>();
   private scroll$ = new Subject<void>();
-  private destroy$ = new Subject<void>();
 
-  setScrollPositionClassName(clear: boolean = false): void {
+  private setScrollPositionClassName(clear: boolean = false): void {
     const { scrollWidth, scrollLeft, clientWidth } = this.tableBodyElement.nativeElement;
     const leftClassName = 'ant-table-ping-left';
     const rightClassName = 'ant-table-ping-right';
@@ -155,12 +162,11 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
     }
   }
 
-  constructor(
-    private renderer: Renderer2,
-    private ngZone: NgZone,
-    private platform: Platform,
-    private resizeService: NzResizeService
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.setScrollPositionClassName(true);
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { scrollX, scrollY, data } = changes;
@@ -193,17 +199,12 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
           delay(0),
           switchMap(() =>
             fromEventOutsideAngular<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(startWith(true))
-          ),
-          takeUntil(this.destroy$)
+          )
         );
-        const resize$ = this.resizeService.connect().pipe(takeUntil(this.destroy$));
-        const data$ = this.data$.pipe(takeUntil(this.destroy$));
-        const setClassName$ = merge(scrollEvent$, resize$, data$, this.scroll$).pipe(
-          startWith(true),
-          delay(0),
-          takeUntil(this.destroy$)
-        );
-        setClassName$.subscribe(() => this.setScrollPositionClassName());
+        const resize$ = this.resizeService.connect();
+        merge(scrollEvent$, resize$, this.data$, this.scroll$)
+          .pipe(startWith(true), delay(0), takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => this.setScrollPositionClassName());
         scrollEvent$.pipe(filter(() => !!this.scrollY)).subscribe(() => {
           this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
           if (this.tableFootElement) {
@@ -212,11 +213,5 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit,
         });
       });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.setScrollPositionClassName(true);
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

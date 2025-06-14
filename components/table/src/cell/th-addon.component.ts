@@ -19,13 +19,15 @@ import {
   SimpleChange,
   SimpleChanges,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzTableFilterComponent } from '../addon/filter.component';
@@ -80,11 +82,16 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     '[class.ant-table-column-has-sorters]': 'nzShowSort',
     '[class.ant-table-column-sort]': `sortOrder === 'descend' || sortOrder === 'ascend'`
   },
-  providers: [NzDestroyService],
   imports: [NzTableFilterComponent, NgTemplateOutlet, NzTableSortersComponent]
 })
 export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  nzConfigService = inject(NzConfigService);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  private ngZone = inject(NgZone);
 
   manualClickOrder$ = new Subject<NzThAddOnComponent<T>>();
   calcOperatorChange$ = new Subject<void>();
@@ -138,19 +145,11 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
     this.calcOperatorChange$.next();
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private host: ElementRef<HTMLElement>,
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
-    private destroy$: NzDestroyService
-  ) {}
-
   ngOnInit(): void {
-    fromEventOutsideAngular(this.host.nativeElement, 'click')
+    fromEventOutsideAngular(this.el, 'click')
       .pipe(
         filter(() => this.nzShowSort),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         const nextOrder = this.getNextSortDirection(this.sortDirections, this.sortOrder!);
@@ -160,7 +159,7 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
         });
       });
 
-    this.sortOrderChange$.pipe(takeUntil(this.destroy$)).subscribe(order => {
+    this.sortOrderChange$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(order => {
       if (this.sortOrder !== order) {
         this.sortOrder = order;
         this.nzSortOrderChange.emit(order);

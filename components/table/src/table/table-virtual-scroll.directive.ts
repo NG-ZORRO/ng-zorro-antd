@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, TemplateRef } from '@angular/core';
+import { Directive, inject, TemplateRef } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -12,7 +12,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   exportAs: 'nzVirtualScroll'
 })
 export class NzTableVirtualScrollDirective<T> {
-  constructor(public templateRef: TemplateRef<{ $implicit: T; index: number }>) {}
+  templateRef: TemplateRef<{ $implicit: T; index: number }> = inject(TemplateRef);
 
   static ngTemplateContextGuard<T>(
     _dir: NzTableVirtualScrollDirective<T>,
