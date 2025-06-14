@@ -10,6 +10,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   Output,
@@ -49,6 +50,10 @@ import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
   imports: [FormsModule]
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
+  private readonly elementRef = inject(ElementRef);
+  private readonly renderer = inject(Renderer2);
+  private readonly focusMonitor = inject(FocusMonitor);
+
   @Input() nzId: string | null = null;
   @Input() disabled = false;
   @Input() mirrorSync = false;
@@ -97,12 +102,6 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   blur(): void {
     this.inputElement.nativeElement.blur();
   }
-
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private focusMonitor: FocusMonitor
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const inputDOM = this.inputElement.nativeElement;
