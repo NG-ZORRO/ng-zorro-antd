@@ -8,20 +8,21 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   Output,
   SimpleChanges,
   TemplateRef,
   Type,
   ViewContainerRef,
   booleanAttribute,
+  inject,
   numberAttribute
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -42,8 +43,13 @@ import { getConfigFromComponent } from './utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
-  implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy
+  implements OnChanges, NzModalLegacyAPI<T, R>
 {
+  private cdr = inject(ChangeDetectorRef);
+  private modal = inject(NzModalService);
+  private viewContainerRef = inject(ViewContainerRef);
+  private destroyRef = inject(DestroyRef);
+
   @Input({ transform: booleanAttribute }) nzMask?: boolean;
   @Input({ transform: booleanAttribute }) nzMaskClosable?: boolean;
   @Input({ transform: booleanAttribute }) nzCloseOnNavigation?: boolean;
@@ -108,7 +114,6 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   }
 
   private modalRef: NzModalRef | null = null;
-  private destroy$ = new Subject<void>();
 
   get afterOpen(): Observable<void> {
     // Observable alias for nzAfterOpen
@@ -120,11 +125,11 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
     return this.nzAfterClose.asObservable();
   }
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private modal: NzModalService,
-    private viewContainerRef: ViewContainerRef
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.modalRef?._finishDialogClose();
+    });
+  }
 
   open(): void {
     if (!this.nzVisible) {
@@ -139,7 +144,7 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
       // When the modal is implicitly closed (e.g. closeAll) the nzVisible needs to be set to the correct value and emit.
       this.modalRef.afterClose
         .asObservable()
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.close();
         });
@@ -229,11 +234,5 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
         this.close();
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.modalRef?._finishDialogClose();
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -12,13 +12,12 @@ import { NzModalRef } from './modal-ref';
   exportAs: 'nzModalTitle'
 })
 export class NzModalTitleDirective {
+  public readonly templateRef: TemplateRef<{}> = inject(TemplateRef);
   private nzModalRef = inject(NzModalRef, { optional: true });
 
-  constructor(public templateRef: TemplateRef<{}>) {
-    if (this.nzModalRef) {
-      this.nzModalRef.updateConfig({
-        nzTitle: this.templateRef
-      });
-    }
+  constructor() {
+    this.nzModalRef?.updateConfig({
+      nzTitle: this.templateRef
+    });
   }
 }
