@@ -143,8 +143,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   @Input() nzStrategyOptions: NzSafeAny = undefined;
 
   @Input()
-  // @ts-ignore
-  @WithConfig()
   set nzDotPosition(value: NzCarouselDotPosition) {
     this._dotPosition = value;
     this.vertical = value === 'left' || value === 'right';
