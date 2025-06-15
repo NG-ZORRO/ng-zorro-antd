@@ -166,7 +166,7 @@ interface ItemData {
   imports: [NzTableModule],
   template: `
     <nz-table #filterTable [nzData]="displayData">
-      <thead (nzSortOrderChange)="sort($event)">
+      <thead (nzSortOrderChange)="sort($any($event))">
         <tr>
           <th nzColumnKey="name" [nzFilters]="nameList" (nzFilterChange)="filter($event, searchAddress)">Name</th>
           <th nzColumnKey="age">Age</th>

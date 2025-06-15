@@ -7,18 +7,20 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   NgZone,
-  OnDestroy,
   Output,
   QueryList,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subject, combineLatest } from 'rxjs';
-import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, combineLatest } from 'rxjs';
+import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 
@@ -35,16 +37,14 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
     class: 'ant-table-measure-now'
   }
 })
-export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
+export class NzTrMeasureComponent implements AfterViewInit {
+  private nzResizeObserver = inject(NzResizeObserver);
+  private ngZone = inject(NgZone);
+  private destroyRef = inject(DestroyRef);
+
   @Input() listOfMeasureColumn: readonly string[] = [];
   @Output() readonly listOfAutoWidth = new EventEmitter<number[]>();
   @ViewChildren('tdElement') listOfTdElement!: QueryList<ElementRef>;
-  private destroy$ = new Subject<boolean>();
-
-  constructor(
-    private nzResizeObserver: NzResizeObserver,
-    private ngZone: NgZone
-  ) {}
 
   ngAfterViewInit(): void {
     this.listOfTdElement.changes
@@ -64,7 +64,7 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
             ) as Observable<number[]>
         ),
         debounceTime(16),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(data => {
         // Caretaker note: we don't have to re-enter the Angular zone each time the stream emits.
@@ -79,10 +79,5 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
           this.ngZone.run(() => this.listOfAutoWidth.next(data));
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

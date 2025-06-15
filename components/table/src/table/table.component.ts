@@ -9,14 +9,11 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -24,10 +21,15 @@ import {
   TrackByFunction,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef,
+  ElementRef,
+  ChangeDetectorRef
 } from '@angular/core';
-import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -156,8 +158,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
     NzPaginationModule
   ]
 })
-export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class NzTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  private elementRef = inject(ElementRef);
+  private nzResizeObserver = inject(NzResizeObserver);
+  private nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private nzTableStyleService = inject(NzTableStyleService);
+  private nzTableDataService = inject(NzTableDataService<T>);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
 
   @Input() nzTableLayout: NzTableLayout = 'auto';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
@@ -213,7 +224,6 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
   hasFixLeft = false;
   hasFixRight = false;
   showPagination = true;
-  private destroy$ = new Subject<void>();
   private templateMode$ = new BehaviorSubject<boolean>(false);
   dir: Direction = 'ltr';
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
@@ -228,21 +238,11 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     this.nzTableDataService.updatePageIndex(index);
   }
 
-  constructor(
-    private elementRef: ElementRef,
-    private nzResizeObserver: NzResizeObserver,
-    private nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private nzTableStyleService: NzTableStyleService,
-    private nzTableDataService: NzTableDataService<T>,
-    private directionality: Directionality
-  ) {
+  constructor() {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.cdr.markForCheck());
   }
 
   ngOnInit(): void {
@@ -251,19 +251,19 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     const { theadTemplate$, tfootTemplate$, tfootFixed$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
-    queryParams$.pipe(takeUntil(this.destroy$)).subscribe(this.nzQueryParams);
-    pageIndexDistinct$.pipe(takeUntil(this.destroy$)).subscribe(pageIndex => {
+    queryParams$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.nzQueryParams);
+    pageIndexDistinct$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(pageIndex => {
       if (pageIndex !== this.nzPageIndex) {
         this.nzPageIndex = pageIndex;
         this.nzPageIndexChange.next(pageIndex);
       }
     });
-    pageSizeDistinct$.pipe(takeUntil(this.destroy$)).subscribe(pageSize => {
+    pageSizeDistinct$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(pageSize => {
       if (pageSize !== this.nzPageSize) {
         this.nzPageSize = pageSize;
         this.nzPageSizeChange.next(pageSize);
@@ -271,46 +271,44 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     });
     total$
       .pipe(
-        takeUntil(this.destroy$),
-        filter(() => this.nzFrontPagination)
+        takeUntilDestroyed(this.destroyRef),
+        filter(total => this.nzFrontPagination && total !== this.nzTotal)
       )
       .subscribe(total => {
-        if (total !== this.nzTotal) {
-          this.nzTotal = total;
-          this.cdr.markForCheck();
-        }
+        this.nzTotal = total;
+        this.cdr.markForCheck();
       });
-    listOfCurrentPageData$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+    listOfCurrentPageData$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.data = data;
       this.nzCurrentPageDataChange.next(data);
       this.cdr.markForCheck();
     });
 
-    listOfCustomColumn$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+    listOfCustomColumn$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.nzCustomColumn = data;
       this.nzCustomColumnChange.next(data);
       this.cdr.markForCheck();
     });
 
-    theadTemplate$.pipe(takeUntil(this.destroy$)).subscribe(theadTemplate => {
+    theadTemplate$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(theadTemplate => {
       this.theadTemplate = theadTemplate;
       this.cdr.markForCheck();
     });
 
     combineLatest([tfootTemplate$, tfootFixed$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([tfootTemplate, tfootFixed]) => {
         this.tfootTemplate = tfootTemplate;
         this.tfootFixed = tfootFixed;
         this.cdr.markForCheck();
       });
 
-    hasFixLeft$.pipe(takeUntil(this.destroy$)).subscribe(hasFixLeft => {
+    hasFixLeft$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(hasFixLeft => {
       this.hasFixLeft = hasFixLeft;
       this.cdr.markForCheck();
     });
 
-    hasFixRight$.pipe(takeUntil(this.destroy$)).subscribe(hasFixRight => {
+    hasFixRight$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(hasFixRight => {
       this.hasFixRight = hasFixRight;
       this.cdr.markForCheck();
     });
@@ -318,18 +316,18 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
     combineLatest([total$, this.templateMode$])
       .pipe(
         map(([total, templateMode]) => total === 0 && !templateMode),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(empty => {
         this.nzTableStyleService.setShowEmpty(empty);
       });
 
     this.verticalScrollBarWidth = measureScrollbar('vertical');
-    this.nzTableStyleService.listOfListOfThWidthPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
+    this.nzTableStyleService.listOfListOfThWidthPx$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(listOfWidth => {
       this.listOfAutoColWidth = listOfWidth;
       this.cdr.markForCheck();
     });
-    this.nzTableStyleService.manualWidthConfigPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
+    this.nzTableStyleService.manualWidthConfigPx$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(listOfWidth => {
       this.listOfManualColWidth = listOfWidth;
       this.cdr.markForCheck();
     });
@@ -389,17 +387,12 @@ export class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterV
           const scrollBarWidth = this.scrollY ? this.verticalScrollBarWidth : 0;
           return Math.floor(width - scrollBarWidth);
         }),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(this.nzTableStyleService.hostWidth$);
     if (this.nzTableInnerScrollComponent && this.nzTableInnerScrollComponent.cdkVirtualScrollViewport) {
       this.cdkVirtualScrollViewport = this.nzTableInnerScrollComponent.cdkVirtualScrollViewport;
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private setScrollOnChanges(): void {
