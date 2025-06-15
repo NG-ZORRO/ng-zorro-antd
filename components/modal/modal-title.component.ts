@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
@@ -26,5 +26,5 @@ import { ModalOptions } from './modal-types';
   imports: [NzOutletModule]
 })
 export class NzModalTitleComponent {
-  constructor(public config: ModalOptions) {}
+  public config = inject(ModalOptions);
 }

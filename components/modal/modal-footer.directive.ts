@@ -12,13 +12,12 @@ import { NzModalRef } from './modal-ref';
   exportAs: 'nzModalFooter'
 })
 export class NzModalFooterDirective {
+  public readonly templateRef: TemplateRef<{}> = inject(TemplateRef);
   private nzModalRef = inject(NzModalRef, { optional: true });
 
-  constructor(public templateRef: TemplateRef<{}>) {
-    if (this.nzModalRef) {
-      this.nzModalRef.updateConfig({
-        nzFooter: this.templateRef
-      });
-    }
+  constructor() {
+    this.nzModalRef?.updateConfig({
+      nzFooter: this.templateRef
+    });
   }
 }
