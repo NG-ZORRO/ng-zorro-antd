@@ -27,7 +27,6 @@ export function MenuGroupFactory(): boolean {
 @Component({
   selector: '[nz-menu-group]',
   exportAs: 'nzMenuGroup',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     /** check if menu inside dropdown-menu component **/
     {
@@ -35,7 +34,6 @@ export function MenuGroupFactory(): boolean {
       useFactory: MenuGroupFactory
     }
   ],
-  encapsulation: ViewEncapsulation.None,
   template: `
     <div
       [class.ant-menu-item-group-title]="!isMenuInsideDropDown"
@@ -49,20 +47,20 @@ export function MenuGroupFactory(): boolean {
     </div>
     <ng-content></ng-content>
   `,
-  imports: [NzOutletModule]
+  imports: [NzOutletModule],
+  host: {
+    '[class.ant-menu-item-group]': '!isMenuInsideDropDown',
+    '[class.ant-dropdown-menu-item-group]': 'isMenuInsideDropDown'
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzMenuGroupComponent implements AfterViewInit {
+  private readonly renderer = inject(Renderer2);
+  protected readonly isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
+
   @Input() nzTitle?: string | TemplateRef<void>;
   @ViewChild('titleElement') titleElement?: ElementRef;
-  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
-
-  constructor(
-    public elementRef: ElementRef,
-    private renderer: Renderer2
-  ) {
-    const className = this.isMenuInsideDropDown ? 'ant-dropdown-menu-item-group' : 'ant-menu-item-group';
-    this.renderer.addClass(elementRef.nativeElement, className);
-  }
 
   ngAfterViewInit(): void {
     const ulElement = this.titleElement!.nativeElement.nextElementSibling;

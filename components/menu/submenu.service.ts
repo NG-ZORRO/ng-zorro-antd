@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, OnDestroy, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, Subject, combineLatest, merge } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { auditTime, distinctUntilChanged, filter, map, mergeMap } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -14,8 +15,10 @@ import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType } from './menu.types';
 
 @Injectable()
-export class NzSubmenuService implements OnDestroy {
-  public nzMenuService = inject(MenuService);
+export class NzSubmenuService {
+  public readonly nzMenuService = inject(MenuService);
+  private readonly nzHostSubmenuService = inject(NzSubmenuService, { optional: true, skipSelf: true });
+
   mode$: Observable<NzMenuModeType> = this.nzMenuService.mode$.pipe(
     map(mode => {
       if (mode === 'inline') {
@@ -35,12 +38,8 @@ export class NzSubmenuService implements OnDestroy {
   /** submenu title & overlay mouse enter status **/
   private isMouseEnterTitleOrOverlay$ = new Subject<boolean>();
   private childMenuItemClick$ = new Subject<NzSafeAny>();
-  private destroy$ = new Subject<void>();
-  private nzHostSubmenuService = inject(NzSubmenuService, { optional: true, skipSelf: true });
   /**
    * menu item inside submenu clicked
-   *
-   * @param menu
    */
   onChildMenuItemClick(menu: NzSafeAny): void {
     this.childMenuItemClick$.next(menu);
@@ -56,6 +55,7 @@ export class NzSubmenuService implements OnDestroy {
     if (this.nzHostSubmenuService) {
       this.level = this.nzHostSubmenuService.level + 1;
     }
+
     /** close if menu item clicked **/
     const isClosedByMenuItemClick = this.childMenuItemClick$.pipe(
       mergeMap(() => this.mode$),
@@ -66,11 +66,9 @@ export class NzSubmenuService implements OnDestroy {
     /** combine the child submenu status with current submenu status to calculate host submenu open **/
     const isSubMenuOpenWithDebounce$ = combineLatest([this.isChildSubMenuOpen$, isCurrentSubmenuOpen$]).pipe(
       map(([isChildSubMenuOpen, isCurrentSubmenuOpen]) => isChildSubMenuOpen || isCurrentSubmenuOpen),
-      auditTime(150),
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
+      auditTime(150)
     );
-    isSubMenuOpenWithDebounce$.pipe(distinctUntilChanged()).subscribe(data => {
+    isSubMenuOpenWithDebounce$.pipe(distinctUntilChanged(), takeUntilDestroyed()).subscribe(data => {
       this.setOpenStateWithoutDebounce(data);
       if (this.nzHostSubmenuService) {
         /** set parent submenu's child submenu open status **/
@@ -79,10 +77,5 @@ export class NzSubmenuService implements OnDestroy {
         this.nzMenuService.isChildSubMenuOpen$.next(data);
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

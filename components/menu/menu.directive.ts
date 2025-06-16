@@ -12,16 +12,16 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
   SimpleChanges,
   booleanAttribute,
-  inject
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 
 import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
@@ -79,7 +79,12 @@ export function MenuDropDownTokenFactory(): boolean {
     '[class.ant-menu-rtl]': `dir === 'rtl'`
   }
 })
-export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
+export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges {
+  private readonly nzMenuService = inject(MenuService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly directionality = inject(Directionality);
+
   @ContentChildren(NzMenuItemComponent, { descendants: true })
   listOfNzMenuItemDirective!: QueryList<NzMenuItemComponent>;
   isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
@@ -94,9 +99,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   dir: Direction = 'ltr';
   private inlineCollapsed$ = new BehaviorSubject<boolean>(this.nzInlineCollapsed);
   private mode$ = new BehaviorSubject<NzMenuModeType>(this.nzMode);
-  private destroy$ = new Subject<boolean>();
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
-  private directionality = inject(Directionality);
 
   setInlineCollapsed(inlineCollapsed: boolean): void {
     this.nzInlineCollapsed = inlineCollapsed;
@@ -115,20 +118,15 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
     }
   }
 
-  constructor(
-    private nzMenuService: MenuService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
   ngOnInit(): void {
     combineLatest([this.inlineCollapsed$, this.mode$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([inlineCollapsed, mode]) => {
         this.actualMode = inlineCollapsed ? 'vertical' : mode;
         this.nzMenuService.setMode(this.actualMode);
         this.cdr.markForCheck();
       });
-    this.nzMenuService.descendantMenuItemClick$.pipe(takeUntil(this.destroy$)).subscribe(menu => {
+    this.nzMenuService.descendantMenuItemClick$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(menu => {
       this.nzClick.emit(menu);
       if (this.nzSelectable && !menu.nzMatchRouter) {
         this.listOfNzMenuItemDirective.forEach(item => item.setSelectedState(item === menu));
@@ -136,7 +134,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
     });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.nzMenuService.setMode(this.actualMode);
       this.cdr.markForCheck();
@@ -144,7 +142,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   }
 
   ngAfterContentInit(): void {
-    this.inlineCollapsed$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.inlineCollapsed$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.updateInlineCollapse();
       this.cdr.markForCheck();
     });
@@ -163,14 +161,9 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
     }
     if (nzMode) {
       this.mode$.next(this.nzMode);
-      if (!changes.nzMode.isFirstChange() && this.listOfNzSubMenuComponent) {
+      if (!nzMode.isFirstChange() && this.listOfNzSubMenuComponent) {
         this.listOfNzSubMenuComponent.forEach(submenu => submenu.setOpenStateWithoutDebounce(false));
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

@@ -8,18 +8,18 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -40,7 +40,12 @@ import { NzMenuModeType } from './menu.types';
   },
   imports: [NgTemplateOutlet]
 })
-export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChanges {
+export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
+  private readonly elementRef = inject(ElementRef);
+  private readonly renderer = inject(Renderer2);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
+
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() menuClass: string = '';
   @Input() mode: NzMenuModeType = 'vertical';
@@ -48,29 +53,20 @@ export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChang
   listOfCacheClassName: string[] = [];
   expandState = 'collapsed';
   dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private directionality: Directionality
-  ) {}
 
   calcMotionState(): void {
-    if (this.nzOpen) {
-      this.expandState = 'expanded';
-    } else {
-      this.expandState = 'collapsed';
-    }
+    this.expandState = this.nzOpen ? 'expanded' : 'collapsed';
   }
+
   ngOnInit(): void {
     this.calcMotionState();
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { mode, nzOpen, menuClass } = changes;
     if (mode || nzOpen) {
@@ -78,25 +74,16 @@ export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChang
     }
     if (menuClass) {
       if (this.listOfCacheClassName.length) {
-        this.listOfCacheClassName
-          .filter(item => !!item)
-          .forEach(className => {
-            this.renderer.removeClass(this.elementRef.nativeElement, className);
-          });
+        this.listOfCacheClassName.filter(Boolean).forEach(className => {
+          this.renderer.removeClass(this.elementRef.nativeElement, className);
+        });
       }
       if (this.menuClass) {
         this.listOfCacheClassName = this.menuClass.split(' ');
-        this.listOfCacheClassName
-          .filter(item => !!item)
-          .forEach(className => {
-            this.renderer.addClass(this.elementRef.nativeElement, className);
-          });
+        this.listOfCacheClassName.filter(Boolean).forEach(className => {
+          this.renderer.addClass(this.elementRef.nativeElement, className);
+        });
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
