@@ -8,15 +8,16 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
-  OnDestroy,
+  inject,
   OnInit,
   Renderer2,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject } from 'rxjs';
 
 import { NzTableStyleService } from '../table-style.service';
 
@@ -44,33 +45,26 @@ import { NzTableStyleService } from '../table-style.service';
   `,
   imports: [AsyncPipe, NgTemplateOutlet]
 })
-export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewInit {
+export class NzTableFixedRowComponent implements OnInit, AfterViewInit {
+  private nzTableStyleService = inject(NzTableStyleService);
+  private renderer = inject(Renderer2);
+  private destroyRef = inject(DestroyRef);
+
   @ViewChild('tdElement', { static: true }) tdElement!: ElementRef;
   hostWidth$ = new BehaviorSubject<number | null>(null);
   enableAutoMeasure$ = new BehaviorSubject<boolean>(false);
-  private destroy$ = new Subject<boolean>();
-
-  constructor(
-    private nzTableStyleService: NzTableStyleService,
-    private renderer: Renderer2
-  ) {}
 
   ngOnInit(): void {
     if (this.nzTableStyleService) {
       const { enableAutoMeasure$, hostWidth$ } = this.nzTableStyleService;
-      enableAutoMeasure$.pipe(takeUntil(this.destroy$)).subscribe(this.enableAutoMeasure$);
-      hostWidth$.pipe(takeUntil(this.destroy$)).subscribe(this.hostWidth$);
+      enableAutoMeasure$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.enableAutoMeasure$);
+      hostWidth$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.hostWidth$);
     }
   }
 
   ngAfterViewInit(): void {
-    this.nzTableStyleService.columnCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
+    this.nzTableStyleService.columnCount$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(count => {
       this.renderer.setAttribute(this.tdElement.nativeElement, 'colspan', `${count}`);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

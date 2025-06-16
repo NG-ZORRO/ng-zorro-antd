@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, inject, Input, OnChanges, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Directive({
@@ -15,6 +15,9 @@ import { Subject } from 'rxjs';
   }
 })
 export class NzCellFixedDirective implements OnChanges {
+  private renderer = inject(Renderer2);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+
   @Input() nzRight: string | boolean = false;
   @Input() nzLeft: string | boolean = false;
   @Input() colspan: number | null = null;
@@ -27,11 +30,11 @@ export class NzCellFixedDirective implements OnChanges {
   isFixed = false;
 
   setAutoLeftWidth(autoLeft: string | null): void {
-    this.renderer.setStyle(this.elementRef.nativeElement, 'left', autoLeft);
+    this.renderer.setStyle(this.el, 'left', autoLeft);
   }
 
   setAutoRightWidth(autoRight: string | null): void {
-    this.renderer.setStyle(this.elementRef.nativeElement, 'right', autoRight);
+    this.renderer.setStyle(this.el, 'right', autoRight);
   }
 
   setIsFirstRight(isFirstRight: boolean): void {
@@ -44,17 +47,12 @@ export class NzCellFixedDirective implements OnChanges {
 
   private setFixClass(flag: boolean, className: string): void {
     // the setFixClass function may call many times, so remove it first.
-    this.renderer.removeClass(this.elementRef.nativeElement, className);
+    this.renderer.removeClass(this.el, className);
 
     if (flag) {
-      this.renderer.addClass(this.elementRef.nativeElement, className);
+      this.renderer.addClass(this.el, className);
     }
   }
-
-  constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef
-  ) {}
 
   ngOnChanges(): void {
     this.setIsFirstRight(false);
