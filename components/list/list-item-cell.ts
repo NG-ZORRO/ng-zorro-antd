@@ -10,14 +10,17 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
+  inject,
   Input,
   OnChanges,
   QueryList,
   TemplateRef,
   ViewChild
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject, defer, merge, of } from 'rxjs';
-import { mergeMap, startWith, takeUntil } from 'rxjs/operators';
+import { mergeMap, startWith } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -64,6 +67,9 @@ export class NzListItemActionComponent {
   imports: [NgTemplateOutlet]
 })
 export class NzListItemActionsComponent implements OnChanges, AfterContentInit {
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
+
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @ContentChildren(NzListItemActionComponent) nzListItemActions!: QueryList<NzListItemActionComponent>;
 
@@ -80,16 +86,16 @@ export class NzListItemActionsComponent implements OnChanges, AfterContentInit {
 
   private initialized = new Subject<void>();
 
-  constructor(cdr: ChangeDetectorRef, destroy$: NzDestroyService) {
+  constructor() {
     merge(this.contentChildrenChanges$, this.inputActionChanges$)
-      .pipe(takeUntil(destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         if (this.nzActions.length) {
           this.actions = this.nzActions;
         } else {
           this.actions = this.nzListItemActions.map(action => action.templateRef!);
         }
-        cdr.detectChanges();
+        this.cdr.detectChanges();
       });
   }
 

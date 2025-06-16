@@ -9,6 +9,7 @@ import {
   Component,
   ContentChild,
   ElementRef,
+  inject,
   Input,
   TemplateRef,
   ViewEncapsulation
@@ -79,6 +80,8 @@ import {
   ]
 })
 export class NzListItemMetaComponent {
+  public readonly elementRef: ElementRef<void> = inject(ElementRef);
+
   avatarStr = '';
   avatarTpl?: TemplateRef<void>;
 
@@ -98,6 +101,4 @@ export class NzListItemMetaComponent {
 
   @ContentChild(DescriptionComponent) descriptionComponent?: DescriptionComponent;
   @ContentChild(TitleComponent) titleComponent?: TitleComponent;
-
-  constructor(public elementRef: ElementRef) {}
 }

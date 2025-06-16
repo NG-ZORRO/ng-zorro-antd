@@ -15,7 +15,8 @@ import {
   OnDestroy,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
@@ -72,6 +73,9 @@ import { NzListComponent } from './list.component';
   imports: [NzListItemActionsComponent, NzOutletModule, NgTemplateOutlet, NzListItemExtraComponent]
 })
 export class NzListItemComponent implements OnDestroy, AfterViewInit {
+  private cdr = inject(ChangeDetectorRef);
+  private parentComp = inject(NzListComponent);
+
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzContent?: string | TemplateRef<void>;
   @Input() nzExtra: TemplateRef<void> | null = null;
@@ -85,11 +89,6 @@ export class NzListItemComponent implements OnDestroy, AfterViewInit {
   get isVerticalAndExtra(): boolean {
     return this.itemLayout === 'vertical' && (!!this.listItemExtraDirective || !!this.nzExtra);
   }
-
-  constructor(
-    private parentComp: NzListComponent,
-    private cdr: ChangeDetectorRef
-  ) {}
 
   ngAfterViewInit(): void {
     this.itemLayout$ = this.parentComp.itemLayoutNotify$.subscribe(val => {
