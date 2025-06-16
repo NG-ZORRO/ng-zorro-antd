@@ -6,7 +6,7 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 
 import { ImageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 
@@ -24,12 +24,10 @@ export interface NzImageService {
 @Injectable()
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class NzImageService {
-  constructor(
-    private overlay: Overlay,
-    private injector: Injector,
-    private nzConfigService: NzConfigService,
-    private directionality: Directionality
-  ) {}
+  private overlay = inject(Overlay);
+  private injector = inject(Injector);
+  private nzConfigService = inject(NzConfigService);
+  private directionality = inject(Directionality);
 
   preview(
     images: NzImage[],
