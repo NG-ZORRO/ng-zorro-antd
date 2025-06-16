@@ -140,6 +140,8 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   private cdr = inject(ChangeDetectorRef);
   private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   @ContentChildren(NzInputDirective) listOfNzInputDirective!: QueryList<NzInputDirective>;
   @Input() nzAddOnBeforeIcon?: string | null = null;
@@ -168,9 +170,6 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   affixInGroupStatusCls: NgClassInterface = {};
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
-  // private destroy$ = new Subject<void>();
-  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   constructor() {
     this.destroyRef.onDestroy(() => this.focusMonitor.stopMonitoring(this.elementRef));
