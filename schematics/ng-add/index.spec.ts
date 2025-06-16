@@ -173,18 +173,14 @@ describe('ng-add schematic', () => {
     expect(fileContent).toContain('registerLocaleData(zh)');
   });
 
-  /**
-   * Test skip because it seems that it's not possible anymore to call the runSchematics method twice in the same test.
-   * error: getStart of undefined
-   */
-  xit('should not add locale id if locale id is set up', async () => {
+  it('should not add locale id if locale id is set up', async () => {
     const options = { ...defaultOptions, i18n: 'zh_CN' };
     await runner.runSchematic('ng-add-setup-project', { ...defaultOptions }, appTree);
 
     spyOn(console, 'log');
 
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app-module.ts');
 
     expect(fileContent).toContain('provideNzI18n(en_US)');
     expect(fileContent).toContain('registerLocaleData(en)');
