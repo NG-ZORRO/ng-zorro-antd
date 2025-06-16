@@ -8,8 +8,10 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   forwardRef,
+  inject,
   Input,
   numberAttribute,
   OnChanges,
@@ -18,6 +20,7 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   ControlValueAccessor,
   FormArray,
@@ -27,7 +30,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { takeUntil, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny, NzSizeLDSType, NzStatus, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -72,6 +75,9 @@ import { NzInputDirective } from './input.directive';
   imports: [NzInputDirective, ReactiveFormsModule]
 })
 export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
+  private formBuilder = inject(FormBuilder);
+  private destroyRef = inject(DestroyRef);
+
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
 
   @Input({ transform: numberAttribute }) nzLength: number = 6;
@@ -86,10 +92,7 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   private onChangeCallback?: (_: NzSafeAny) => void;
   onTouched: OnTouchedType = () => {};
 
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    private readonly nzDestroyService: NzDestroyService
-  ) {
+  constructor() {
     this.createFormArray();
   }
 
@@ -207,7 +210,7 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
 
             this.emitValue();
           }),
-          takeUntil(this.nzDestroyService)
+          takeUntilDestroyed(this.destroyRef)
         )
         .subscribe();
 

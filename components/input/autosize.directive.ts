@@ -26,6 +26,10 @@ export interface AutoSizeType {
   }
 })
 export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
+  private ngZone = inject(NgZone);
+  private platform = inject(Platform);
+  private resizeService = inject(NzResizeService);
+
   private autosize: boolean = false;
   private el: HTMLTextAreaElement | HTMLInputElement = inject(ElementRef).nativeElement;
   private cachedLineHeight!: number;
@@ -174,12 +178,6 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   noopInputHandler(): void {
     // no-op handler that ensures we're running change detection on input events.
   }
-
-  constructor(
-    private ngZone: NgZone,
-    private platform: Platform,
-    private resizeService: NzResizeService
-  ) {}
 
   ngAfterViewInit(): void {
     if (this.autosize && this.platform.isBrowser) {

@@ -6,6 +6,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ComponentRef,
+  DestroyRef,
   Directive,
   ElementRef,
   Input,
@@ -19,9 +20,10 @@ import {
   inject,
   signal
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
@@ -48,6 +50,15 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
   providers: [NzDestroyService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
 })
 export class NzInputDirective implements OnChanges, OnInit {
+  private renderer = inject(Renderer2);
+  private elementRef = inject(ElementRef);
+  protected hostView = inject(ViewContainerRef);
+  private directionality = inject(Directionality);
+  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
+  private destroyRef = inject(DestroyRef);
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   /**
    * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
    */
@@ -87,17 +98,8 @@ export class NzInputDirective implements OnChanges, OnInit {
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
-  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
-  private destroy$ = inject(NzDestroyService);
-  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
-  constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    protected hostView: ViewContainerRef,
-    private directionality: Directionality
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
@@ -105,7 +107,7 @@ export class NzInputDirective implements OnChanges, OnInit {
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
@@ -115,7 +117,7 @@ export class NzInputDirective implements OnChanges, OnInit {
       this.ngControl.statusChanges
         ?.pipe(
           filter(() => this.ngControl!.disabled !== null),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed(this.destroyRef)
         )
         .subscribe(() => {
           this.disabled$.next(this.ngControl!.disabled!);
@@ -123,7 +125,7 @@ export class NzInputDirective implements OnChanges, OnInit {
     }
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
     });
   }
