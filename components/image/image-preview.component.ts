@@ -158,7 +158,7 @@ export class NzImagePreviewComponent implements OnInit {
   public nzConfigService = inject(NzConfigService);
   public config = inject(NzImagePreviewOptions);
   private sanitizer = inject(DomSanitizer);
-  private destroy$ = inject(DestroyRef);
+  private destroyRef = inject(DestroyRef);
   readonly _defaultNzZoom = NZ_DEFAULT_ZOOM;
   readonly _defaultNzScaleStep = NZ_DEFAULT_SCALE_STEP;
   readonly _defaultNzRotate = NZ_DEFAULT_ROTATE;
@@ -256,13 +256,13 @@ export class NzImagePreviewComponent implements OnInit {
 
   ngOnInit(): void {
     fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mousedown')
-      .pipe(takeUntilDestroyed(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.isDragging = true;
       });
 
     fromEventOutsideAngular<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
-      .pipe(takeUntilDestroyed(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         this.ngZone.run(() => this.wheelZoomEventHandler(event));
       });
@@ -270,7 +270,7 @@ export class NzImagePreviewComponent implements OnInit {
     fromEventOutsideAngular<KeyboardEvent>(this.document, 'keydown')
       .pipe(
         filter(event => event.keyCode === ESCAPE),
-        takeUntilDestroyed(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.ngZone.run(() => {

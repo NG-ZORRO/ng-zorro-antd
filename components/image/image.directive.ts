@@ -47,7 +47,7 @@ export class NzImageDirective implements OnInit, OnChanges {
   private nzImageService = inject(NzImageService);
   protected cdr = inject(ChangeDetectorRef);
   private directionality = inject(Directionality);
-  private destroy$ = inject(DestroyRef);
+  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzSrc = '';
@@ -73,7 +73,7 @@ export class NzImageDirective implements OnInit, OnChanges {
       this.parentGroup.addImage(this);
     }
     if (this.directionality) {
-      this.directionality.change?.pipe(takeUntilDestroyed(this.destroy$)).subscribe(direction => {
+      this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
         this.dir = direction;
         this.cdr.detectChanges();
       });
@@ -159,7 +159,7 @@ export class NzImageDirective implements OnInit, OnChanges {
       // The `nz-image` directive can be destroyed before the `load` or `error` event is dispatched,
       // so there's no sense to keep capturing `this`.
       fromEvent(this.backLoadImage, 'load')
-        .pipe(takeUntil(this.backLoadDestroy$), takeUntilDestroyed(this.destroy$))
+        .pipe(takeUntil(this.backLoadDestroy$), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.status = 'normal';
           this.getElement().nativeElement.src = this.nzSrc;
@@ -167,7 +167,7 @@ export class NzImageDirective implements OnInit, OnChanges {
         });
 
       fromEvent(this.backLoadImage, 'error')
-        .pipe(takeUntil(this.backLoadDestroy$), takeUntilDestroyed(this.destroy$))
+        .pipe(takeUntil(this.backLoadDestroy$), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.status = 'error';
           if (this.nzFallback) {
