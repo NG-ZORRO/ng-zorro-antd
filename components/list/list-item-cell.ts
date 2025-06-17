@@ -61,7 +61,6 @@ export class NzListItemActionComponent {
   host: {
     class: 'ant-list-item-action'
   },
-  providers: [],
   imports: [NgTemplateOutlet]
 })
 export class NzListItemActionsComponent implements OnChanges, AfterContentInit {
