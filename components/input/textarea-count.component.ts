@@ -17,7 +17,7 @@ import {
   Renderer2
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { EMPTY, merge, Subject } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { isNotNil } from 'ng-zorro-antd/core/util';
@@ -42,13 +42,6 @@ export class NzTextareaCountComponent implements AfterContentInit {
   @Input() nzComputeCharacterCount: (v: string) => number = v => v.length;
   @Input() nzFormatter: (cur: number, max: number) => string = (c, m) => `${c}${m > 0 ? `/${m}` : ``}`;
 
-  private configChange$ = new Subject();
-  private destroy$ = new Subject<boolean>();
-
-  constructor() {
-    this.destroyRef.onDestroy(() => this.configChange$.complete());
-  }
-
   ngAfterContentInit(): void {
     if (!this.nzInputDirective && isDevMode()) {
       throw new Error('[nz-textarea-count]: Could not find matching textarea[nz-input] child.');
@@ -56,7 +49,7 @@ export class NzTextareaCountComponent implements AfterContentInit {
 
     if (this.nzInputDirective.ngControl) {
       const valueChanges = this.nzInputDirective.ngControl.valueChanges || EMPTY;
-      merge(valueChanges, this.configChange$)
+      valueChanges
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           map(() => this.nzInputDirective.ngControl!.value),

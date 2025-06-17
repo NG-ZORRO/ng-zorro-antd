@@ -26,7 +26,6 @@ import { Subject } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
@@ -47,7 +46,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     '[class.ant-input-stepperless]': `nzStepperless`
   },
   hostDirectives: [NzSpaceCompactItemDirective],
-  providers: [NzDestroyService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
+  providers: [{ provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
 })
 export class NzInputDirective implements OnChanges, OnInit {
   private renderer = inject(Renderer2);
@@ -98,8 +97,6 @@ export class NzInputDirective implements OnChanges, OnInit {
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
-
-  constructor() {}
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges

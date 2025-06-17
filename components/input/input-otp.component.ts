@@ -32,7 +32,6 @@ import {
 } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny, NzSizeLDSType, NzStatus, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzInputDirective } from './input.directive';
@@ -69,8 +68,7 @@ import { NzInputDirective } from './input.directive';
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzInputOtpComponent),
       multi: true
-    },
-    NzDestroyService
+    }
   ],
   imports: [NzInputDirective, ReactiveFormsModule]
 })

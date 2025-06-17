@@ -4,9 +4,8 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { AfterViewInit, Directive, DoCheck, ElementRef, inject, Input, NgZone, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { AfterViewInit, DestroyRef, Directive, DoCheck, ElementRef, inject, Input, NgZone } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 
@@ -25,13 +24,14 @@ export interface AutoSizeType {
     '(input)': 'noopInputHandler()'
   }
 })
-export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
+export class NzAutosizeDirective implements AfterViewInit, DoCheck {
   private ngZone = inject(NgZone);
   private platform = inject(Platform);
+  private destroyRef = inject(DestroyRef);
   private resizeService = inject(NzResizeService);
+  private el: HTMLTextAreaElement | HTMLInputElement = inject(ElementRef).nativeElement;
 
   private autosize: boolean = false;
-  private el: HTMLTextAreaElement | HTMLInputElement = inject(ElementRef).nativeElement;
   private cachedLineHeight!: number;
   private previousValue!: string;
   private previousMinRows: number | undefined;
@@ -39,8 +39,14 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   private maxRows: number | undefined;
   private maxHeight: number | null = null;
   private minHeight: number | null = null;
-  private destroy$ = new Subject<boolean>();
   private inputGap = 10;
+  private isStopped = false;
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.isStopped = true;
+    });
+  }
 
   @Input()
   set nzAutosize(value: string | boolean | AutoSizeType) {
@@ -109,7 +115,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
           // Also note that we have to assert that the textarea is focused before we set the
           // selection range. Setting the selection range on a non-focused textarea will cause
           // it to receive focus on IE and Edge.
-          if (!this.destroy$.isStopped && document.activeElement === textarea) {
+          if (!this.isStopped && document.activeElement === textarea) {
             textarea.setSelectionRange(selectionStart, selectionEnd);
           }
         })
@@ -184,14 +190,9 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
       this.resizeToFitContent();
       this.resizeService
         .connect()
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => this.resizeToFitContent(true));
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 
   ngDoCheck(): void {
