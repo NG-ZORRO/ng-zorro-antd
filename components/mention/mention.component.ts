@@ -22,6 +22,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   DOCUMENT,
   ElementRef,
   EventEmitter,
@@ -29,7 +30,6 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -40,12 +40,12 @@ import {
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge, of as observableOf, Subscription } from 'rxjs';
-import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import {
   fromEventOutsideAngular,
@@ -119,14 +119,23 @@ export type MentionPlacement = 'top' | 'bottom';
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzMentionService, NzDestroyService],
+  providers: [NzMentionService],
   host: {
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir === 'rtl'`
   },
   imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
 })
-export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
+export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
+  private ngZone = inject(NgZone);
+  private directionality = inject(Directionality);
+  private cdr = inject(ChangeDetectorRef);
+  private overlay = inject(Overlay);
+  private viewContainerRef = inject(ViewContainerRef);
+  private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private nzMentionService = inject(NzMentionService);
+  private destroyRef = inject(DestroyRef);
   @Input() nzValueWith: (value: NzSafeAny) => string = value => value;
   @Input() nzPrefix: string | string[] = '@';
   @Input({ transform: booleanAttribute }) nzLoading = false;
@@ -185,17 +194,11 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
-  constructor(
-    private ngZone: NgZone,
-    private directionality: Directionality,
-    private cdr: ChangeDetectorRef,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private nzMentionService: NzMentionService,
-    private destroy$: NzDestroyService
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.closeDropdown();
+    });
+  }
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
@@ -205,7 +208,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
         }),
         withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
@@ -219,7 +222,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
   }
@@ -250,10 +253,6 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
       .subscribe(event => {
         event.preventDefault();
       });
-  }
-
-  ngOnDestroy(): void {
-    this.closeDropdown();
   }
 
   closeDropdown(): void {
