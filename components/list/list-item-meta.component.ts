@@ -80,7 +80,7 @@ import {
   ]
 })
 export class NzListItemMetaComponent {
-  public readonly elementRef: ElementRef<void> = inject(ElementRef);
+  public readonly elementRef = inject(ElementRef);
 
   avatarStr = '';
   avatarTpl?: TemplateRef<void>;

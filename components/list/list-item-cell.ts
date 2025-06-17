@@ -10,7 +10,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  DestroyRef,
   inject,
   Input,
   OnChanges,
@@ -22,7 +21,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject, defer, merge, of } from 'rxjs';
 import { mergeMap, startWith } from 'rxjs/operators';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -63,12 +61,11 @@ export class NzListItemActionComponent {
   host: {
     class: 'ant-list-item-action'
   },
-  providers: [NzDestroyService],
+  providers: [],
   imports: [NgTemplateOutlet]
 })
 export class NzListItemActionsComponent implements OnChanges, AfterContentInit {
   private cdr = inject(ChangeDetectorRef);
-  private destroyRef = inject(DestroyRef);
 
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @ContentChildren(NzListItemActionComponent) nzListItemActions!: QueryList<NzListItemActionComponent>;
