@@ -82,8 +82,10 @@ export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
       }
       if (this.menuClass) {
         this.listOfCacheClassName = this.menuClass.split(' ');
-        this.listOfCacheClassName.filter(Boolean).forEach(className => {
-          this.renderer.addClass(this.elementRef.nativeElement, className);
+        this.listOfCacheClassName.forEach(className => {
+          if (className) {
+            this.renderer.addClass(this.elementRef.nativeElement, className);
+          }
         });
       }
     }
