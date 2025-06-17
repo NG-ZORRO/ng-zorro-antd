@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'nz-footer',
@@ -13,10 +13,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzFooterComponent {
-  constructor(
-    public elementRef: ElementRef,
-    private renderer: Renderer2
-  ) {
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-layout-footer');
+  constructor() {
+    inject(Renderer2).addClass(inject(ElementRef<HTMLElement>).nativeElement, 'ant-layout-footer');
   }
 }

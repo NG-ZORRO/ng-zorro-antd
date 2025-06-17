@@ -8,13 +8,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
-  OnDestroy,
+  DestroyRef,
+  inject,
   OnInit,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzSiderComponent } from './sider.component';
 
@@ -30,22 +30,17 @@ import { NzSiderComponent } from './sider.component';
     '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0'
   }
 })
-export class NzLayoutComponent implements OnDestroy, OnInit {
+export class NzLayoutComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
+  private directionality = inject(Directionality);
   @ContentChildren(NzSiderComponent) listOfNzSiderComponent!: QueryList<NzSiderComponent>;
 
   dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
 
-  constructor(private directionality: Directionality) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
