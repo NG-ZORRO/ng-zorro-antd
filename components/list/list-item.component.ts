@@ -10,15 +10,15 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   HostBinding,
   Input,
-  OnDestroy,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
   inject
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
@@ -72,8 +72,9 @@ import { NzListComponent } from './list.component';
   },
   imports: [NzListItemActionsComponent, NzOutletModule, NgTemplateOutlet, NzListItemExtraComponent]
 })
-export class NzListItemComponent implements OnDestroy, AfterViewInit {
+export class NzListItemComponent implements AfterViewInit {
   private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
   private parentComp = inject(NzListComponent);
 
   @Input() nzActions: Array<TemplateRef<void>> = [];
@@ -84,22 +85,15 @@ export class NzListItemComponent implements OnDestroy, AfterViewInit {
   @ContentChild(NzListItemExtraComponent) listItemExtraDirective?: NzListItemExtraComponent;
 
   private itemLayout?: NzDirectionVHType;
-  private itemLayout$?: Subscription;
 
   get isVerticalAndExtra(): boolean {
     return this.itemLayout === 'vertical' && (!!this.listItemExtraDirective || !!this.nzExtra);
   }
 
   ngAfterViewInit(): void {
-    this.itemLayout$ = this.parentComp.itemLayoutNotify$.subscribe(val => {
+    this.parentComp.itemLayoutNotify$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(val => {
       this.itemLayout = val;
       this.cdr.detectChanges();
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.itemLayout$) {
-      this.itemLayout$.unsubscribe();
-    }
   }
 }

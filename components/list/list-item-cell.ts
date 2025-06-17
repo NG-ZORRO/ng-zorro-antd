@@ -88,7 +88,7 @@ export class NzListItemActionsComponent implements OnChanges, AfterContentInit {
 
   constructor() {
     merge(this.contentChildrenChanges$, this.inputActionChanges$)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         if (this.nzActions.length) {
           this.actions = this.nzActions;
