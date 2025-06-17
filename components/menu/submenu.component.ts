@@ -13,13 +13,13 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   forwardRef,
   inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -28,8 +28,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { combineLatest, merge, Subject } from 'rxjs';
-import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { combineLatest, merge } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zorro-antd/core/overlay';
@@ -153,7 +154,16 @@ const listOfHorizontalPositions = [
     OverlayModule
   ]
 })
-export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
+export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
+  public readonly nzSubmenuService = inject(NzSubmenuService);
+  protected readonly isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
+  protected readonly noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly nzMenuService = inject(MenuService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly platform = inject(Platform);
+
   @Input() nzMenuClassName: string = '';
   @Input() nzPaddingLeft: number | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
@@ -165,15 +175,13 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @ViewChild(CdkOverlayOrigin, { static: true, read: ElementRef }) cdkOverlayOrigin: ElementRef | null = null;
   // fix errors about circular dependency
-  // Can't construct a query for the property ... since the query selector wasn't defined"
+  // Can't construct a query for the property ... since the query selector wasn't defined
   @ContentChildren(forwardRef(() => NzSubMenuComponent), { descendants: true })
   listOfNzSubMenuComponent: QueryList<NzSubMenuComponent> | null = null;
   @ContentChildren(NzMenuItemComponent, { descendants: true })
   listOfNzMenuItemDirective: QueryList<NzMenuItemComponent> | null = null;
 
-  public nzSubmenuService = inject(NzSubmenuService);
   private level = this.nzSubmenuService.level;
-  private destroy$ = new Subject<void>();
   position = 'right';
   triggerWidth: number | null = null;
   theme: NzMenuThemeType = 'light';
@@ -183,9 +191,6 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   isSelected = false;
   isActive = false;
   dir: Direction = 'ltr';
-  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
-  noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
-  private directionality = inject(Directionality);
 
   /** set the submenu host open status directly **/
   setOpenStateWithoutDebounce(open: boolean): void {
@@ -210,7 +215,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
       this.cdkOverlayOrigin &&
       this.nzPlacement === 'bottomLeft'
     ) {
-      /** TODO: fast dom **/
+      /** TODO: fast dom */
       this.triggerWidth = this.cdkOverlayOrigin!.nativeElement.getBoundingClientRect().width;
     }
   }
@@ -224,20 +229,15 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     }
   }
 
-  constructor(
-    public nzMenuService: MenuService,
-    private cdr: ChangeDetectorRef,
-    private platform: Platform
-  ) {}
-
   ngOnInit(): void {
     /** submenu theme update **/
-    this.nzMenuService.theme$.pipe(takeUntil(this.destroy$)).subscribe(theme => {
+    this.nzMenuService.theme$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(theme => {
       this.theme = theme;
       this.cdr.markForCheck();
     });
+
     /** submenu mode update **/
-    this.nzSubmenuService.mode$.pipe(takeUntil(this.destroy$)).subscribe(mode => {
+    this.nzSubmenuService.mode$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(mode => {
       this.mode = mode;
       if (mode === 'horizontal') {
         this.overlayPositions = [POSITION_MAP[this.nzPlacement], ...listOfHorizontalPositions];
@@ -246,15 +246,17 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
       }
       this.cdr.markForCheck();
     });
+
     /** inlineIndent update **/
     combineLatest([this.nzSubmenuService.mode$, this.nzMenuService.inlineIndent$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([mode, inlineIndent]) => {
         this.inlinePaddingLeft = mode === 'inline' ? this.level * inlineIndent : null;
         this.cdr.markForCheck();
       });
+
     /** current submenu open status **/
-    this.nzSubmenuService.isCurrentSubMenuOpen$.pipe(takeUntil(this.destroy$)).subscribe(open => {
+    this.nzSubmenuService.isCurrentSubMenuOpen$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(open => {
       this.isActive = open;
       if (open !== this.nzOpen) {
         this.setTriggerWidth();
@@ -265,7 +267,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.markForCheck();
     });
@@ -275,14 +277,14 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     this.setTriggerWidth();
     const listOfNzMenuItemDirective = this.listOfNzMenuItemDirective;
     const changes = listOfNzMenuItemDirective!.changes;
-    const mergedObservable = merge(...[changes, ...listOfNzMenuItemDirective!.map(menu => menu.selected$)]);
+    const mergedObservable = merge(changes, ...listOfNzMenuItemDirective!.map(menu => menu.selected$));
     changes
       .pipe(
         startWith(listOfNzMenuItemDirective),
         switchMap(() => mergedObservable),
         startWith(true),
         map(() => listOfNzMenuItemDirective!.some(e => e.nzSelected)),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(selected => {
         this.isSelected = selected;
@@ -296,10 +298,5 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
       this.nzSubmenuService.setOpenStateWithoutDebounce(this.nzOpen);
       this.setTriggerWidth();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

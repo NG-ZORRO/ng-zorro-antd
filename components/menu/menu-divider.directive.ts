@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef } from '@angular/core';
+import { Directive } from '@angular/core';
 
 @Directive({
   selector: '[nz-menu-divider]',
@@ -12,6 +12,4 @@ import { Directive, ElementRef } from '@angular/core';
     class: 'ant-dropdown-menu-item-divider'
   }
 })
-export class NzMenuDividerDirective {
-  constructor(public elementRef: ElementRef) {}
-}
+export class NzMenuDividerDirective {}
