@@ -26,8 +26,8 @@ import { Subject, combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
-import { MenuService } from 'ng-zorro-antd/menu/menu.service';
 
+import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzSubmenuService } from './submenu.service';
 
