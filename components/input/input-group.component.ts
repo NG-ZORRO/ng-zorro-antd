@@ -9,25 +9,26 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChildren,
   Directive,
   ElementRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   QueryList,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  DestroyRef,
+  Renderer2,
+  ChangeDetectorRef
 } from '@angular/core';
-import { Subject, merge } from 'rxjs';
-import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { merge } from 'rxjs';
+import { distinctUntilChanged, map, mergeMap, startWith, switchMap } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
@@ -41,7 +42,7 @@ import { NzInputDirective } from './input.directive';
   selector: `nz-input-group[nzSuffix], nz-input-group[nzPrefix]`
 })
 export class NzInputGroupWhitSuffixOrPrefixDirective {
-  constructor(public elementRef: ElementRef) {}
+  public elementRef = inject(ElementRef);
 }
 
 @Component({
@@ -132,7 +133,16 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
   hostDirectives: [NzSpaceCompactItemDirective],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
+export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnInit {
+  private destroyRef = inject(DestroyRef);
+  private focusMonitor = inject(FocusMonitor);
+  private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+
   @ContentChildren(NzInputDirective) listOfNzInputDirective!: QueryList<NzInputDirective>;
   @Input() nzAddOnBeforeIcon?: string | null = null;
   @Input() nzAddOnAfterIcon?: string | null = null;
@@ -160,17 +170,12 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   affixInGroupStatusCls: NgClassInterface = {};
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
-  private destroy$ = new Subject<void>();
-  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
-  constructor(
-    private focusMonitor: FocusMonitor,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.focusMonitor.stopMonitoring(this.elementRef);
+    });
+  }
 
   updateChildrenInputSize(): void {
     if (this.listOfNzInputDirective) {
@@ -184,7 +189,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
         distinctUntilChanged((pre, cur) => {
           return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
         }),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
@@ -192,14 +197,14 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
 
     this.focusMonitor
       .monitor(this.elementRef, true)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(focusOrigin => {
         this.focused = !!focusOrigin;
         this.cdr.markForCheck();
       });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
   }
@@ -212,7 +217,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
         switchMap(list => merge(...[listOfInputChange$, ...list.map((input: NzInputDirective) => input.disabled$)])),
         mergeMap(() => listOfInputChange$),
         map(list => list.some((input: NzInputDirective) => input.disabled)),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(disabled => {
         this.disabled = disabled;
@@ -247,11 +252,6 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
-  }
-  ngOnDestroy(): void {
-    this.focusMonitor.stopMonitoring(this.elementRef);
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
