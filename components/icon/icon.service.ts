@@ -4,8 +4,9 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { DestroyRef, inject, Injectable, InjectionToken } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject } from 'rxjs';
 
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 
@@ -28,8 +29,9 @@ export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 @Injectable({
   providedIn: 'root'
 })
-export class NzIconService extends IconService implements OnDestroy {
+export class NzIconService extends IconService {
   protected nzConfigService = inject(NzConfigService);
+  private destroyRef = inject(DestroyRef);
   private platform = inject(Platform);
 
   configUpdated$ = new Subject<void>();
@@ -39,14 +41,6 @@ export class NzIconService extends IconService implements OnDestroy {
   }
 
   private iconfontCache = new Set<string>();
-  private subscription: Subscription | null = null;
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
-    }
-  }
 
   normalizeSvgElement(svg: SVGElement): void {
     if (!svg.getAttribute('viewBox')) {
@@ -85,11 +79,14 @@ export class NzIconService extends IconService implements OnDestroy {
   }
 
   private onConfigChange(): void {
-    this.subscription = this.nzConfigService.getConfigChangeEventForComponent('icon').subscribe(() => {
-      this.configDefaultTwotoneColor();
-      this.configDefaultTheme();
-      this.configUpdated$.next();
-    });
+    this.nzConfigService
+      .getConfigChangeEventForComponent('icon')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.configDefaultTwotoneColor();
+        this.configDefaultTheme();
+        this.configUpdated$.next();
+      });
   }
 
   private configDefaultTheme(): void {
