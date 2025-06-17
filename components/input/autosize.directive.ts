@@ -40,11 +40,11 @@ export class NzAutosizeDirective implements AfterViewInit, DoCheck {
   private maxHeight: number | null = null;
   private minHeight: number | null = null;
   private inputGap = 10;
-  private isStopped = false;
+  private destroyed = false;
 
   constructor() {
     this.destroyRef.onDestroy(() => {
-      this.isStopped = true;
+      this.destroyed = true;
     });
   }
 
@@ -115,7 +115,7 @@ export class NzAutosizeDirective implements AfterViewInit, DoCheck {
           // Also note that we have to assert that the textarea is focused before we set the
           // selection range. Setting the selection range on a non-focused textarea will cause
           // it to receive focus on IE and Edge.
-          if (!this.isStopped && document.activeElement === textarea) {
+          if (!this.destroyed && document.activeElement === textarea) {
             textarea.setSelectionRange(selectionStart, selectionEnd);
           }
         })
