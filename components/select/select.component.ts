@@ -51,7 +51,6 @@ import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusSer
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   NgClassInterface,
   NzSafeAny,
@@ -100,7 +99,6 @@ export type NzSelectSizeType = NzSizeLDSType;
   selector: 'nz-select',
   exportAs: 'nzSelect',
   providers: [
-    NzDestroyService,
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSelectComponent),

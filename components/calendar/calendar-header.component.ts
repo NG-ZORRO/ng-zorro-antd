@@ -14,13 +14,14 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate } from 'ng-zorro-antd/core/time';
-import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
 
@@ -79,6 +80,9 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
   imports: [NzSelectModule, FormsModule, NzRadioModule, NzStringTemplateOutletDirective]
 })
 export class NzCalendarHeaderComponent implements OnInit, OnChanges {
+  private readonly dateHelper = inject(DateHelperService);
+  private readonly i18n = inject(NzI18nService);
+
   @Input() mode: 'month' | 'year' = 'month';
   @Input({ transform: booleanAttribute }) fullscreen: boolean = true;
   @Input() activeDate: CandyDate = new CandyDate();
@@ -87,7 +91,6 @@ export class NzCalendarHeaderComponent implements OnInit, OnChanges {
   @Output() readonly modeChange = new EventEmitter<'month' | 'year'>();
   @Output() readonly yearChange = new EventEmitter<number>();
   @Output() readonly monthChange = new EventEmitter<number>();
-  // @Output() readonly valueChange: EventEmitter<CandyDate> = new EventEmitter();
 
   yearOffset: number = 10;
   yearTotal: number = 20;
@@ -113,11 +116,6 @@ export class NzCalendarHeaderComponent implements OnInit, OnChanges {
   get monthTypeText(): string {
     return this.i18n.getLocale().Calendar.lang.month;
   }
-
-  constructor(
-    private i18n: I18n,
-    private dateHelper: DateHelperService
-  ) {}
 
   ngOnInit(): void {
     this.setUpYears();

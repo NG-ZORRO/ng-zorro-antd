@@ -12,17 +12,18 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  numberAttribute
+  numberAttribute,
+  DestroyRef,
+  inject
 } from '@angular/core';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReplaySubject } from 'rxjs';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzBreakpointEnum, NzBreakpointService, gridResponsiveMap } from 'ng-zorro-antd/core/services';
@@ -84,8 +85,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
   },
   imports: [NgTemplateOutlet, NzPaginationSimpleComponent, NzPaginationDefaultComponent]
 })
-export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
+export class NzPaginationComponent implements OnInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  private readonly i18n = inject(NzI18nService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly breakpointService = inject(NzBreakpointService);
+  protected readonly nzConfigService = inject(NzConfigService);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
@@ -108,17 +116,10 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   size: 'default' | 'small' = 'default';
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject<void>();
   private total$ = new ReplaySubject<number>(1);
 
   validatePageIndex(value: number, lastIndex: number): number {
-    if (value > lastIndex) {
-      return lastIndex;
-    } else if (value < 1) {
-      return 1;
-    } else {
-      return value;
-    }
+    return Math.min(Math.max(value, 1), lastIndex);
   }
 
   onPageIndexChange(index: number): void {
@@ -153,27 +154,19 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     return Math.ceil(total / pageSize);
   }
 
-  constructor(
-    private i18n: NzI18nService,
-    private cdr: ChangeDetectorRef,
-    private breakpointService: NzBreakpointService,
-    protected nzConfigService: NzConfigService,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Pagination');
       this.cdr.markForCheck();
     });
 
-    this.total$.pipe(takeUntil(this.destroy$)).subscribe(total => {
+    this.total$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(total => {
       this.onTotalChange(total);
     });
 
     this.breakpointService
       .subscribe(gridResponsiveMap)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(bp => {
         if (this.nzResponsive) {
           this.size = bp === NzBreakpointEnum.xs ? 'small' : 'default';
@@ -181,17 +174,11 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
-
     this.dir = this.directionality.value;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

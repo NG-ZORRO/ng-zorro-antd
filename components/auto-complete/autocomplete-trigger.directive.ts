@@ -37,12 +37,18 @@ import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
 
+/**
+ * @deprecated Internally used, will be removed in v21, please do not use it.
+ */
 export const NZ_AUTOCOMPLETE_VALUE_ACCESSOR: ExistingProvider = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NzAutocompleteTriggerDirective),
   multi: true
 };
 
+/**
+ * @deprecated Internally used, will not be exported in v21, please do not use it.
+ */
 export function getNzAutocompleteMissingPanelError(): Error {
   return Error(
     'Attempting to open an undefined instance of `nz-autocomplete`. ' +
@@ -117,7 +123,9 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   writeValue(value: NzSafeAny): void {
-    this.ngZone.runOutsideAngular(() => Promise.resolve(null).then(() => this.setTriggerValue(value)));
+    this.ngZone.runOutsideAngular(() => {
+      Promise.resolve(null).then(() => this.setTriggerValue(value));
+    });
   }
 
   registerOnChange(fn: (value: {}) => {}): void {
@@ -315,9 +323,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   private getConnectedElement(): ElementRef {
-    return this.nzInputGroupWhitSuffixOrPrefixDirective
-      ? this.nzInputGroupWhitSuffixOrPrefixDirective.elementRef
-      : this.elementRef;
+    return this.nzInputGroupWhitSuffixOrPrefixDirective?.elementRef ?? this.elementRef;
   }
 
   private getHostWidth(): number {

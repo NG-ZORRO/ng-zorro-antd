@@ -11,14 +11,14 @@ import {
   Component,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewEncapsulation,
-  numberAttribute
+  numberAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -169,8 +169,13 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
     </div>
   `
 })
-export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
+export class NzProgressComponent implements OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  private readonly cdr = inject(ChangeDetectorRef);
+  public readonly nzConfigService = inject(NzConfigService);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Input() @WithConfig() nzShowInfo: boolean = true;
   @Input() nzWidth = 132;
@@ -232,13 +237,6 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
 
   private cachedStatus: NzProgressStatusType = 'normal';
   private inferredStatus: NzProgressStatusType = 'normal';
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    public nzConfigService: NzConfigService,
-    private directionality: Directionality
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const {
@@ -292,24 +290,18 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   ngOnInit(): void {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.updateIcon();
         this.setStrokeColor();
         this.getCirclePaths();
       });
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
-
     this.dir = this.directionality.value;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private updateIcon(): void {

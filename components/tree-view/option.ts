@@ -21,7 +21,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs/operators';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzTreeNodeComponent } from './node';
@@ -34,8 +33,7 @@ import { NzTreeNodeComponent } from './node';
     class: 'ant-tree-node-content-wrapper',
     '[class.ant-tree-node-content-wrapper-open]': 'isExpanded',
     '[class.ant-tree-node-selected]': 'nzSelected'
-  },
-  providers: [NzDestroyService]
+  }
 })
 export class NzTreeNodeOptionComponent<T> implements OnChanges, OnInit {
   private ngZone = inject(NgZone);

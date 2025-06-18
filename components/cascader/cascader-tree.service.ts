@@ -44,10 +44,6 @@ export class NzCascaderTreeService extends NzTreeBaseService {
     this.rootNodes = value.map(v => (v instanceof NzTreeNode ? v : new NzTreeNode(v, null)));
   }
 
-  constructor() {
-    super();
-  }
-
   /**
    * Map list of nodes to list of option
    */
