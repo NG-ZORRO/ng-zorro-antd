@@ -12,7 +12,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'class': 'ant-layout-footer'
+    class: 'ant-layout-footer'
   }
 })
 export class NzFooterComponent {}
