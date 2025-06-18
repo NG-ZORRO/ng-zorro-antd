@@ -12,7 +12,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    'class': 'ant-layout-content'
+    class: 'ant-layout-content'
   }
 })
 export class NzContentComponent {}
