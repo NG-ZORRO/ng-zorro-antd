@@ -3,17 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, inject, Renderer2, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'nz-content',
   exportAs: 'nzContent',
   template: `<ng-content></ng-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
-})
-export class NzContentComponent {
-  constructor() {
-    inject(Renderer2).addClass(inject(ElementRef<HTMLElement>).nativeElement, 'ant-layout-content');
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    'class': 'ant-layout-content'
   }
-}
+})
+export class NzContentComponent {}
