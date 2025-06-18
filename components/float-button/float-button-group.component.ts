@@ -22,7 +22,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzFloatButtonTopComponent } from './float-button-top.component';
@@ -69,13 +68,13 @@ import { NzFloatButtonComponent } from './float-button.component';
     '[class.ant-float-btn-group-square]': `nzShape === 'square'`,
     '[class.ant-float-btn-group-square-shadow]': `nzShape === 'square' && !nzTrigger`,
     '[class.ant-float-btn-group-rtl]': `dir === 'rtl'`
-  },
-  providers: [NzDestroyService]
+  }
 })
 export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
   private directionality = inject(Directionality);
   private cdr = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
+
   @ContentChildren(NzFloatButtonComponent) nzFloatButtonComponent!: QueryList<NzFloatButtonComponent>;
   @ContentChildren(NzFloatButtonTopComponent) nzFloatButtonTopComponents!: QueryList<NzFloatButtonTopComponent>;
   @Input() nzHref: string | null = null;

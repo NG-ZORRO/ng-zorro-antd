@@ -42,7 +42,7 @@ import { NzInputDirective } from './input.directive';
   selector: `nz-input-group[nzSuffix], nz-input-group[nzPrefix]`
 })
 export class NzInputGroupWhitSuffixOrPrefixDirective {
-  constructor(public elementRef: ElementRef) {}
+  public readonly elementRef = inject(ElementRef);
 }
 
 @Component({
@@ -184,9 +184,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
       .pipe(
-        distinctUntilChanged((pre, cur) => {
-          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
-        }),
+        distinctUntilChanged((pre, cur) => pre.status === cur.status && pre.hasFeedback === cur.hasFeedback),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
@@ -202,7 +200,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
       });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
   }
@@ -222,6 +220,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
         this.cdr.markForCheck();
       });
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     const {
       nzSize,

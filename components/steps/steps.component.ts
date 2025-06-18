@@ -27,7 +27,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription, merge } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { toBoolean } from 'ng-zorro-antd/core/util';
 
@@ -54,8 +53,7 @@ export type NzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; 
     '[class.ant-steps-navigation]': `nzType === 'navigation'`,
     '[class.ant-steps-rtl]': `dir === 'rtl'`,
     '[class.ant-steps-with-progress]': 'showProgress'
-  },
-  providers: [NzDestroyService]
+  }
 })
 export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   static ngAcceptInputType_nzProgressDot: BooleanInput | NzProgressDotTemplate | undefined | null;
@@ -96,13 +94,14 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   dir: Direction = 'ltr';
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzStartIndex || changes.nzDirection || changes.nzStatus || changes.nzCurrent || changes.nzSize) {
+    const { nzStartIndex, nzDirection, nzStatus, nzCurrent, nzSize } = changes;
+    if (nzStartIndex || nzDirection || nzStatus || nzCurrent || nzSize) {
       this.updateChildrenSteps();
     }
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });

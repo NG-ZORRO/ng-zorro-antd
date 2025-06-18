@@ -29,7 +29,6 @@ import { Subject } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
@@ -75,7 +74,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[attr.disabled]': 'disabled || null'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
-  providers: [NzDestroyService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'btn' }]
+  providers: [{ provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'btn' }]
 })
 export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContentInit, OnInit {
   private elementRef = inject(ElementRef);

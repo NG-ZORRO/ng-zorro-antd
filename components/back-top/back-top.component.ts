@@ -32,7 +32,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -63,8 +63,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  providers: [NzDestroyService]
+  encapsulation: ViewEncapsulation.None
 })
 export class NzBackTopComponent implements OnInit, OnChanges {
   public nzConfigService = inject(NzConfigService);

@@ -56,7 +56,6 @@ import {
   POSITION_MAP,
   POSITION_TYPE
 } from 'ng-zorro-antd/core/overlay';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzTreeBase, NzTreeNode } from 'ng-zorro-antd/core/tree';
 import {
   NgClassInterface,
@@ -256,7 +255,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     },
     { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'select' },
     NzCascaderService,
-    NzDestroyService,
     NzCascaderTreeService
   ],
   host: {

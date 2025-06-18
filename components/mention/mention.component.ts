@@ -180,7 +180,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private document: Document = inject(DOCUMENT);
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
-    return this.trigger.el.nativeElement;
+    return this.trigger.elementRef.nativeElement;
   }
 
   private get focusItemElement(): HTMLElement | null {
@@ -445,7 +445,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
       const clickTarget = event.target as HTMLElement;
       return (
         this.isOpen &&
-        clickTarget !== this.trigger.el.nativeElement &&
+        clickTarget !== this.trigger.elementRef.nativeElement &&
         !this.overlayRef?.overlayElement.contains(clickTarget)
       );
     };
@@ -492,7 +492,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
     ];
     this.positionStrategy = this.overlay
       .position()
-      .flexibleConnectedTo(this.trigger.el)
+      .flexibleConnectedTo(this.trigger.elementRef)
       .withPositions(positions)
       .withFlexibleDimensions(false)
       .withPush(false);

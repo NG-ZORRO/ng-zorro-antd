@@ -14,12 +14,13 @@ import {
   Output,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  DestroyRef,
+  inject
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzDropDownDirective, NzDropDownModule, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
@@ -47,11 +48,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
       <ng-content></ng-content>
     </span>
   `,
-  providers: [NzDestroyService],
   imports: [NzDropDownModule]
 })
 export class NzFilterTriggerComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  public readonly nzConfigService = inject(NzConfigService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Input() nzActive = false;
   @Input() nzDropdownMenu!: NzDropdownMenuComponent;
@@ -78,17 +82,9 @@ export class NzFilterTriggerComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  constructor(
-    public readonly nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private destroy$: NzDestroyService
-  ) {}
-
   ngOnInit(): void {
     fromEventOutsideAngular(this.nzDropdown.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(event => {
-        event.stopPropagation();
-      });
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(event => event.stopPropagation());
   }
 }

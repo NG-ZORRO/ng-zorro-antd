@@ -6,10 +6,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   DOCUMENT,
   inject,
   Input,
-  OnDestroy,
   OnInit,
   PLATFORM_ID,
   TemplateRef,
@@ -511,7 +511,11 @@ declare const locale: NzSafeAny;
     `
   ]
 })
-export class NzPageDemoIconComponent implements OnInit, OnDestroy {
+export class NzPageDemoIconComponent implements OnInit {
+  private platformId = inject(PLATFORM_ID);
+  private message = inject(NzMessageService);
+  private viewContainerRef = inject(ViewContainerRef);
+
   displayedNames: Array<{ name: string; icons: string[] }> = [];
   categoryNames: string[] = [];
   currentTheme: ThemeType = 'outline';
@@ -708,15 +712,14 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     }
   }
 
-  private platformId = inject(PLATFORM_ID);
-
-  constructor(
-    private _iconService: NzIconService,
-    private message: NzMessageService,
-    private viewContainerRef: ViewContainerRef
-  ) {
+  constructor() {
     // This is to test that tree shake works!
-    this._iconService.addIcon(AccountBookFill);
+    inject(NzIconService).addIcon(AccountBookFill);
+
+    inject(DestroyRef).onDestroy(() => {
+      this.document.removeEventListener('paste', this.onPaste as EventListener);
+      this.viewContainerRef.clear();
+    });
   }
 
   ngOnInit(): void {
@@ -726,11 +729,6 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       this.loadModel();
       this.popoverVisible = !localStorage.getItem('disableIconTip');
     }
-  }
-
-  ngOnDestroy(): void {
-    this.document.removeEventListener('paste', this.onPaste as EventListener);
-    this.viewContainerRef.clear();
   }
 }
 

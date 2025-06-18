@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { startOfQuarter } from 'date-fns';
 
@@ -25,12 +25,10 @@ import { DateBodyRow, DateCell } from './interface';
   imports: [NzStringTemplateOutletDirective]
 })
 export class QuarterTableComponent extends AbstractTable implements OnChanges, OnInit {
+  private readonly dateHelper = inject(DateHelperService);
+
   override MAX_ROW = 1;
   override MAX_COL = 4;
-
-  constructor(private dateHelper: DateHelperService) {
-    super();
-  }
 
   private changeValueFromInside(value: CandyDate): void {
     this.activeDate = value.clone();
