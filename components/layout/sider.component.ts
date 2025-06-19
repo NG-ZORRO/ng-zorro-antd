@@ -10,19 +10,19 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzBreakpointKey, NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 import { inNextTick, toCssPixel } from 'ng-zorro-antd/core/util';
@@ -68,8 +68,12 @@ import { NzSiderTriggerComponent } from './sider-trigger.component';
   },
   imports: [NzSiderTriggerComponent]
 })
-export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
-  private destroy$ = new Subject<boolean>();
+export class NzSiderComponent implements OnInit, OnChanges, AfterContentInit {
+  private destroyRef = inject(DestroyRef);
+  private platform = inject(Platform);
+  private cdr = inject(ChangeDetectorRef);
+  private breakpointService = inject(NzBreakpointService);
+
   @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective | null = null;
   @Output() readonly nzCollapsedChange = new EventEmitter();
   @Input() nzWidth: string | number = 200;
@@ -107,19 +111,13 @@ export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterCont
     }
   }
 
-  constructor(
-    private platform: Platform,
-    private cdr: ChangeDetectorRef,
-    private breakpointService: NzBreakpointService
-  ) {}
-
   ngOnInit(): void {
     this.updateStyleMap();
 
     if (this.platform.isBrowser) {
       this.breakpointService
         .subscribe(siderResponsiveMap, true)
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(map => {
           const breakpoint = this.nzBreakpoint;
           if (breakpoint) {
@@ -145,10 +143,5 @@ export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterCont
 
   ngAfterContentInit(): void {
     this.updateMenuInlineCollapsed();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }
