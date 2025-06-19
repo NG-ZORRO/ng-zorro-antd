@@ -16,7 +16,6 @@ import { transCompatFormat } from './util';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'quarter-header', // eslint-disable-line @angular-eslint/component-selector
-  exportAs: 'quarterHeader',
   templateUrl: './abstract-panel-header.html'
 })
 export class QuarterHeaderComponent extends AbstractPanelHeader {

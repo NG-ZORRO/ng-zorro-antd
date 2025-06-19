@@ -13,7 +13,6 @@ import { PanelSelector } from './interface';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'decade-header', // eslint-disable-line @angular-eslint/component-selector
-  exportAs: 'decadeHeader',
   templateUrl: './abstract-panel-header.html'
 })
 export class DecadeHeaderComponent extends AbstractPanelHeader {

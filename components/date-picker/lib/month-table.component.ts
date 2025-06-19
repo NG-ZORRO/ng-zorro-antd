@@ -18,7 +18,6 @@ import { DateBodyRow, DateCell } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'month-table',
-  exportAs: 'monthTable',
   templateUrl: 'abstract-table.html',
   imports: [NzStringTemplateOutletDirective]
 })

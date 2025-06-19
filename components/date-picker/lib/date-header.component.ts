@@ -16,7 +16,6 @@ import { transCompatFormat } from './util';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'date-header', // eslint-disable-line @angular-eslint/component-selector
-  exportAs: 'dateHeader',
   templateUrl: './abstract-panel-header.html'
 })
 export class DateHeaderComponent extends AbstractPanelHeader {
