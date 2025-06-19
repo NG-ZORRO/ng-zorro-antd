@@ -18,7 +18,6 @@ import { DateBodyRow, DateCell, YearCell } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'year-table',
-  exportAs: 'nzYearTable',
   templateUrl: 'abstract-table.html',
   imports: [NzStringTemplateOutletDirective]
 })
