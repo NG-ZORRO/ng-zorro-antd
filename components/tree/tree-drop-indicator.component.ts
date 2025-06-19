@@ -18,11 +18,11 @@ import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-tree-drop-indicator',
-  exportAs: 'NzTreeDropIndicator',
+  exportAs: 'nzTreeDropIndicator',
   template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ant-tree-drop-indicator]': 'true',
+    class: 'ant-tree-drop-indicator',
     '[style]': 'style'
   }
 })

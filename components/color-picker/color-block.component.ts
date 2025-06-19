@@ -12,7 +12,7 @@ import { defaultColor } from './src/util/util';
 
 @Component({
   selector: 'nz-color-block',
-  exportAs: 'NzColorBlock',
+  exportAs: 'nzColorBlock',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgAntdColorPickerModule],
   template: `<ng-antd-color-block [color]="nzColor" (nzOnClick)="nzOnClick.emit($event)"></ng-antd-color-block>`,
