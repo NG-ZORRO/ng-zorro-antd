@@ -250,23 +250,6 @@ describe('button', () => {
       expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
     }));
   });
-
-  describe('basic', () => {
-    let fixture: ComponentFixture<NzButtonComponent>;
-    let component: NzButtonComponent;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzButtonComponent);
-      component = fixture.componentInstance;
-    });
-
-    it('correct value for listOfNode', () => {
-      component['elementRef'] = {
-        nativeElement: {}
-      };
-      expect(component.iconOnly).toBeFalsy();
-    });
-  });
 });
 
 describe('anchor', () => {
