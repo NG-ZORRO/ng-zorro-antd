@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -28,8 +28,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 
+import { NzPresetColor } from 'ng-zorro-antd/core/color';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
@@ -37,8 +38,22 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
 export type NzButtonType = 'primary' | 'default' | 'dashed' | 'link' | 'text' | null;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = NzSizeLDSType;
+export type NzButtonColor = 'primary' | 'default' | 'danger' | NzPresetColor | null;
+export type NzButtonVariant = 'outlined' | 'dashed' | 'solid' | 'filled' | 'text' | 'link' | null;
+
+type NzColorVariantPair = [color: NonNullable<NzButtonColor>, variant: NonNullable<NzButtonVariant>];
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
+const NZ_BUTTON_DEFAULT_COLOR: NonNullable<NzButtonColor> = 'default';
+const NZ_BUTTON_DEFAULT_VARIANT: NonNullable<NzButtonVariant> = 'outlined';
+const NZ_BUTTON_TYPE_MAP: Record<NonNullable<NzButtonType>, NzColorVariantPair> = {
+  default: [NZ_BUTTON_DEFAULT_COLOR, NZ_BUTTON_DEFAULT_VARIANT],
+  primary: ['primary', 'solid'],
+  dashed: ['default', 'dashed'],
+  // `link` is not a real color but should be compatible
+  link: ['link' as NzSafeAny, 'link'],
+  text: ['default', 'text']
+};
 
 @Component({
   selector: 'button[nz-button], a[nz-button]',
@@ -53,22 +68,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     <ng-content></ng-content>
   `,
   host: {
-    class: 'ant-btn',
-    '[class.ant-btn-default]': `nzType === 'default'`,
-    '[class.ant-btn-primary]': `nzType === 'primary'`,
-    '[class.ant-btn-dashed]': `nzType === 'dashed'`,
-    '[class.ant-btn-link]': `nzType === 'link'`,
-    '[class.ant-btn-text]': `nzType === 'text'`,
+    '[class]': 'class()',
     '[class.ant-btn-circle]': `nzShape === 'circle'`,
     '[class.ant-btn-round]': `nzShape === 'round'`,
     '[class.ant-btn-lg]': `finalSize() === 'large'`,
     '[class.ant-btn-sm]': `finalSize() === 'small'`,
     '[class.ant-btn-dangerous]': `nzDanger`,
     '[class.ant-btn-loading]': `nzLoading`,
-    '[class.ant-btn-background-ghost]': `nzGhost`,
+    '[class.ant-btn-background-ghost]': `nzGhost && !isUnBorderedButtonVariant(variant())`,
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
-    '[class.ant-btn-rtl]': `dir === 'rtl'`,
+    '[class.ant-btn-rtl]': `dir() === 'rtl'`,
     '[class.ant-btn-icon-only]': `iconOnly`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
@@ -77,13 +87,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   providers: [{ provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'btn' }]
 })
 export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContentInit, OnInit {
-  private elementRef = inject(ElementRef);
-  private cdr = inject(ChangeDetectorRef);
-  private renderer = inject(Renderer2);
-  public nzConfigService = inject(NzConfigService);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  private readonly elementRef = inject(ElementRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly renderer = inject(Renderer2);
+  public readonly nzConfigService = inject(NzConfigService);
+  protected readonly dir = inject(Directionality).valueSignal;
+  private readonly destroyRef = inject(DestroyRef);
 
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
   @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
@@ -96,7 +107,8 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
-  dir: Direction = 'ltr';
+  @Input() nzColor: NzButtonColor = null;
+  @Input() nzVariant: NzButtonVariant = null;
 
   protected finalSize = computed(() => {
     if (this.compactSize) {
@@ -105,9 +117,29 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
     return this.size();
   });
 
+  protected readonly type = signal<NzButtonType>('default');
+  protected readonly color = signal<NzButtonColor | undefined>(undefined);
+  protected readonly variant = signal<NzButtonVariant | undefined>(undefined);
   private size = signal<NzSizeLDSType>(this.nzSize);
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private loading$ = new Subject<boolean>();
+
+  protected readonly class = computed(() => {
+    const type = this.type();
+    const prefixCls = 'ant-btn';
+    const classes: string[] = [prefixCls];
+    classes.push(`${prefixCls}-${type}`);
+
+    const color = this.color();
+    const isDanger = color === 'danger';
+    const mergedColor = isDanger ? 'dangerous' : color || NZ_BUTTON_DEFAULT_COLOR;
+    classes.push(`${prefixCls}-color-${mergedColor}`);
+
+    const variant = this.variant() || NZ_BUTTON_DEFAULT_VARIANT;
+    classes.push(`${prefixCls}-variant-${variant}`);
+
+    return classes;
+  });
 
   insertSpan(nodes: NodeList, renderer: Renderer2): void {
     nodes.forEach(node => {
@@ -120,7 +152,7 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
     });
   }
 
-  public get iconOnly(): boolean {
+  get iconOnly(): boolean {
     const listOfNode = Array.from((this.elementRef?.nativeElement as HTMLButtonElement)?.childNodes || []);
     const noText = listOfNode.every(node => node.nodeName !== '#text');
     // ignore icon and comment
@@ -141,13 +173,6 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
         this.cdr.markForCheck();
       });
 
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-
     // Caretaker note: this event listener could've been added through `host.click` or `HostListener`.
     // The compiler generates the `ɵɵlistener` instruction which wraps the actual listener internally into the
     // function, which runs `markDirty()` before running the actual listener (the decorated class method).
@@ -162,12 +187,26 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
       });
   }
 
-  ngOnChanges({ nzLoading, nzSize }: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzLoading, nzSize, nzType, nzColor, nzVariant, nzDanger } = changes;
     if (nzLoading) {
       this.loading$.next(this.nzLoading);
     }
     if (nzSize) {
       this.size.set(nzSize.currentValue);
+    }
+    if (nzType) {
+      this.type.set(nzType.currentValue || 'default');
+    }
+    if (nzType || nzColor || nzVariant || nzDanger) {
+      const [color, variant] = this.calcColorAndVariant({
+        type: this.nzType,
+        color: this.nzColor,
+        variant: this.nzVariant,
+        danger: this.nzDanger
+      });
+      this.color.set(color);
+      this.variant.set(variant);
     }
   }
 
@@ -190,5 +229,34 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
           this.renderer.removeStyle(nativeElement, 'display');
         }
       });
+  }
+
+  private calcColorAndVariant(
+    deps: Partial<{
+      color: NzButtonColor;
+      variant: NzButtonVariant;
+      type: NzButtonType;
+      danger: boolean;
+    }>
+  ): NzColorVariantPair {
+    const { color, variant, type = 'default', danger } = deps;
+    if (color && variant) {
+      return [color, variant];
+    }
+
+    if (type || danger) {
+      const mergedType = type || 'default';
+      const colorVariantPair = NZ_BUTTON_TYPE_MAP[mergedType];
+      if (danger) {
+        return ['danger', colorVariantPair[1]];
+      }
+      return colorVariantPair;
+    }
+
+    return [NZ_BUTTON_DEFAULT_COLOR, NZ_BUTTON_DEFAULT_VARIANT];
+  }
+
+  protected isUnBorderedButtonVariant(variant?: NzButtonVariant): boolean {
+    return variant === 'text' || variant === 'link';
   }
 }
