@@ -19,7 +19,6 @@ import { transCompatFormat } from './util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'date-table',
-  exportAs: 'dateTable',
   templateUrl: './abstract-table.html',
   imports: [NzStringTemplateOutletDirective]
 })

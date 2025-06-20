@@ -58,7 +58,6 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'date-range-popup',
-  exportAs: 'dateRangePopup',
   template: `
     @if (isRange) {
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">

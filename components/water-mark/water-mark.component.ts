@@ -31,7 +31,7 @@ const FontGap = 3;
 
 @Component({
   selector: 'nz-water-mark',
-  exportAs: 'NzWaterMark',
+  exportAs: 'nzWaterMark',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content></ng-content>`,
   host: {

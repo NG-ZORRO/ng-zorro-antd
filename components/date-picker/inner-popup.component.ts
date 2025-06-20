@@ -29,7 +29,6 @@ import { PREFIX_CLASS } from './util';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'inner-popup',
-  exportAs: 'innerPopup',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

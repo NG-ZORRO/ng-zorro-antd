@@ -16,7 +16,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
 
 @Component({
   selector: 'div[nz-modal-footer]',
-  exportAs: 'NzModalFooterBuiltin',
+  exportAs: 'nzModalFooterBuiltin',
   template: `
     @if (config.nzFooter) {
       <ng-container

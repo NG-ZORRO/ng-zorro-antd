@@ -35,7 +35,7 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
 
 @Component({
   selector: 'nz-color-picker',
-  exportAs: 'NzColorPicker',
+  exportAs: 'nzColorPicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgAntdColorPickerModule,

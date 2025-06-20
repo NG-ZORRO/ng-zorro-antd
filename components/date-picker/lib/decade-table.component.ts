@@ -18,7 +18,6 @@ const MAX_COL = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'decade-table',
-  exportAs: 'decadeTable',
   templateUrl: 'abstract-table.html',
   imports: [NzStringTemplateOutletDirective]
 })

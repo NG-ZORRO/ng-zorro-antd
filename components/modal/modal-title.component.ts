@@ -11,7 +11,7 @@ import { ModalOptions } from './modal-types';
 
 @Component({
   selector: 'div[nz-modal-title]',
-  exportAs: 'NzModalTitleBuiltin',
+  exportAs: 'nzModalTitleBuiltin',
   template: `
     <div class="ant-modal-title">
       <ng-container *nzStringTemplateOutlet="config.nzTitle">

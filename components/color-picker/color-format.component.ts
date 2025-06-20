@@ -37,7 +37,7 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
 
 @Component({
   selector: 'nz-color-format',
-  exportAs: 'NzColorFormat',
+  exportAs: 'nzColorFormat',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, NzSelectModule, NzInputDirective, NzInputGroupComponent, NzInputNumberComponent],
   template: `

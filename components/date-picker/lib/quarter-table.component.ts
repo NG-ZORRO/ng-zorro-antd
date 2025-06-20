@@ -20,7 +20,6 @@ import { DateBodyRow, DateCell } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'quarter-table',
-  exportAs: 'quarterTable',
   templateUrl: 'abstract-table.html',
   imports: [NzStringTemplateOutletDirective]
 })
