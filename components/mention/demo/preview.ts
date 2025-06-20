@@ -10,7 +10,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-mention-preview',
   imports: [FormsModule, NzInputModule, NzMentionModule, NzTabsModule],
   template: `
-    <nz-tabset>
+    <nz-tabs>
       <nz-tab nzTitle="Write">
         <nz-mention [nzSuggestions]="suggestions">
           <textarea
@@ -25,7 +25,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
       <nz-tab nzTitle="Preview">
         <pre [innerHTML]="preview"></pre>
       </nz-tab>
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoMentionPreviewComponent {

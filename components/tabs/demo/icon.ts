@@ -7,7 +7,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-icon',
   imports: [NzIconModule, NzTabsModule],
   template: `
-    <nz-tabset>
+    <nz-tabs>
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="titleTemplate">
           <ng-template #titleTemplate>
@@ -17,7 +17,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
           {{ tab.name }}
         </nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsIconComponent {

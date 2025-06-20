@@ -19,7 +19,7 @@ Ant Design has 3 types of Tabs for different situations.
 
 ## API
 
-### nz-tabset
+### nz-tabs
 
 | Property                     | Description                                                                               | Type                                                | Default                            | Global Config |
 | ---------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------- | ------------- |
@@ -40,7 +40,7 @@ Ant Design has 3 types of Tabs for different situations.
 | `(nzSelectedIndexChange)`    | Current tab's index change callback                                                       | `EventEmitter<number>`                              | -                                  |
 | `(nzSelectChange)`           | Current tab's change callback                                                             | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                  |
 
-### nz-tabset[nzType="editable-card"]
+### nz-tabs[nzType="editable-card"]
 
 | Property      | Description                    | Type                              | Default | Global Config |
 | ------------- | ------------------------------ | --------------------------------- | ------- | ------------- |
@@ -61,7 +61,7 @@ Ant Design has 3 types of Tabs for different situations.
 | `(nzSelect)`      | title select callback                                                    | `EventEmitter<void>`          | -       |
 | `(nzDeselect)`    | title deselect callback                                                  | `EventEmitter<void>`          | -       |
 
-### nz-tabset[nzType="editable-card"] > nz-tab
+### nz-tabs[nzType="editable-card"] > nz-tab
 
 | Property        | Description            | Type                          | Default | Global Config |
 | --------------- | ---------------------- | ----------------------------- | ------- | ------------- |
@@ -100,17 +100,17 @@ Tab contents can be lazy loaded by declaring the body in a `ng-template` with th
 Show a link in tab's head. Used in router link mode.
 
 ```html
-<nz-tabset nzLinkRouter>
+<nz-tabs nzLinkRouter>
   <nz-tab>
     <a *nzTabLink nz-tab-link [routerLink]="['.']">Link</a>
     Default.
   </nz-tab>
-</nz-tabset>
+</nz-tabs>
 ```
 
 ### [nzTabBarExtraContent]
 
-> Note: `*nzTabBarExtraContent` has a higher priority than `nz-tabset[nzTabBarExtraContent]`.
+> Note: `*nzTabBarExtraContent` has a higher priority than `nz-tabs[nzTabBarExtraContent]`.
 
 | Property                 | Description               | Type               | Default | Global Config |
 | ------------------------ | ------------------------- | ------------------ | ------- | ------------- |

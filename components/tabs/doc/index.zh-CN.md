@@ -22,7 +22,7 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 
 ## API
 
-### nz-tabset
+### nz-tabs
 
 | 参数                         | 说明                                                               | 类型                                                | 默认值                                | 全局配置 |
 | ---------------------------- | ------------------------------------------------------------------ | --------------------------------------------------- | ------------------------------------- | -------- |
@@ -43,7 +43,7 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | `(nzSelectedIndexChange)`    | 当前激活 tab 面板的 序列号变更回调函数                             | `EventEmitter<number>`                              | -                                     |
 | `(nzSelectChange)`           | 当前激活 tab 面板变更回调函数                                      | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                     |
 
-### nz-tabset[nzType="editable-card"]
+### nz-tabs[nzType="editable-card"]
 
 | 参数          | 说明                 | 类型                              | 默认值  | 全局配置 |
 | ------------- | -------------------- | --------------------------------- | ------- | -------- |
@@ -64,7 +64,7 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | `(nzSelect)`      | tab 被选中的回调函数      | `EventEmitter<void>`                        | -       |
 | `(nzDeselect)`    | tab 被取消选中的回调函数  | `EventEmitter<void>`                        | -       |
 
-### nz-tabset[nzType="editable-card"] > nz-tab
+### nz-tabs[nzType="editable-card"] > nz-tab
 
 | 参数            | 说明         | 类型                          | 默认值  | 全局配置 |
 | --------------- | ------------ | ----------------------------- | ------- | -------- |
@@ -103,17 +103,17 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 路由联动可以让 tab 的切换和路由行为相一致。
 
 ```html
-<nz-tabset nzLinkRouter>
+<nz-tabs nzLinkRouter>
   <nz-tab>
     <a *nzTabLink nz-tab-link [routerLink]="['.']">Link</a>
     Default.
   </nz-tab>
-</nz-tabset>
+</nz-tabs>
 ```
 
 ### [nzTabBarExtraContent]
 
-> 注意：`*nzTabBarExtraContent` 比 `nz-tabset[nzTabBarExtraContent]` 具有更高的优先级。
+> 注意：`*nzTabBarExtraContent` 比 `nz-tabs[nzTabBarExtraContent]` 具有更高的优先级。
 
 | 参数                     | 说明           | 类型               | 默认值  |
 | ------------------------ | -------------- | ------------------ | ------- |

@@ -21,6 +21,7 @@ import {
   DestroyRef,
   EventEmitter,
   forwardRef,
+  HOST_TAG_NAME,
   inject,
   Input,
   NgZone,
@@ -37,7 +38,7 @@ import { merge, Observable, of, Subscription } from 'rxjs';
 import { delay, filter, first, startWith } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { PREFIX } from 'ng-zorro-antd/core/logger';
+import { PREFIX, warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { wrapIntoObservable } from 'ng-zorro-antd/core/util';
@@ -64,14 +65,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tabs';
 let nextId = 0;
 
 @Component({
-  selector: 'nz-tabset',
-  exportAs: 'nzTabset',
+  selector: 'nz-tabs,nz-tabset',
+  exportAs: 'nzTabs',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.Default,
   providers: [
     {
       provide: NZ_TAB_SET,
-      useExisting: forwardRef(() => NzTabSetComponent)
+      useExisting: forwardRef(() => NzTabsComponent)
     }
   ],
   template: `
@@ -195,7 +196,7 @@ let nextId = 0;
     NzTabBodyComponent
   ]
 })
-export class NzTabSetComponent implements OnInit, AfterContentChecked, AfterContentInit {
+export class NzTabsComponent implements OnInit, AfterContentChecked, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   public nzConfigService = inject(NzConfigService);
@@ -280,6 +281,11 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, AfterCont
 
   constructor() {
     this.tabSetId = nextId++;
+
+    // TODO: Remove this warning in 21.0.0
+    if (inject(HOST_TAG_NAME) === 'nz-tabset') {
+      warn(`${PREFIX} <nz-tabset> is deprecated, please use <nz-tabs> instead.`);
+    }
 
     this.destroyRef.onDestroy(() => {
       this.tabs.destroy();
@@ -520,3 +526,8 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, AfterCont
         : false;
   }
 }
+
+/**
+ * @deprecated Use `NzTabsComponent` instead. This will be removed in 21.0.0.
+ */
+export const NzTabSetComponent = NzTabsComponent;

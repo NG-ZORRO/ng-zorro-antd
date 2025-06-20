@@ -16,11 +16,11 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
         }
       </nz-select>
     </div>
-    <nz-tabset [nzTabPosition]="position">
+    <nz-tabs [nzTabPosition]="position">
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsPositionComponent {

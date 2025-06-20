@@ -7,7 +7,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-draggable',
   imports: [NzTabsModule, CdkDrag, CdkDropList],
   template: `
-    <nz-tabset
+    <nz-tabs
       [(nzSelectedIndex)]="selectedTabIndex"
       class="example-drag-tabs"
       cdkDropList
@@ -25,14 +25,14 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
           </span>
         </ng-template>
       }
-    </nz-tabset>
+    </nz-tabs>
   `,
   styles: [
     `
       :host ::ng-deep .ant-tabs-tab-btn {
         cursor: move;
       }
-      nz-tabset.cdk-drop-list-dragging {
+      nz-tabs.cdk-drop-list-dragging {
         pointer-events: none;
       }
       .preview.cdk-drag-animating {

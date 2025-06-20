@@ -10,11 +10,11 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     <div style="margin-bottom: 16px;">
       <button nz-button (click)="newTab()">ADD</button>
     </div>
-    <nz-tabset [(nzSelectedIndex)]="index" nzType="editable-card" nzHideAdd (nzClose)="closeTab($event)">
+    <nz-tabs [(nzSelectedIndex)]="index" nzType="editable-card" nzHideAdd (nzClose)="closeTab($event)">
       @for (tab of tabs; track tab; let i = $index) {
         <nz-tab [nzClosable]="i > 1" [nzTitle]="tab">Content of {{ tab }}</nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsCustomAddTriggerComponent {

@@ -17,10 +17,10 @@ import { NzTabScrollListDirective } from './tab-scroll-list.directive';
 import { NzTabComponent } from './tab.component';
 import { NzTabDirective } from './tab.directive';
 import { NzTabsInkBarDirective } from './tabs-ink-bar.directive';
-import { NzTabSetComponent } from './tabset.component';
+import { NzTabsComponent } from './tabs.component';
 
 const DIRECTIVES = [
-  NzTabSetComponent,
+  NzTabsComponent,
   NzTabComponent,
   NzTabNavBarComponent,
   NzTabNavItemDirective,
