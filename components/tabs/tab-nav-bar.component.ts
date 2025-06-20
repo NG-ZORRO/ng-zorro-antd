@@ -69,7 +69,7 @@ const CSS_TRANSFORM_TIME = 150;
       [class.ant-tabs-nav-wrap-ping-right]="pingRight"
       [class.ant-tabs-nav-wrap-ping-top]="pingTop"
       [class.ant-tabs-nav-wrap-ping-bottom]="pingBottom"
-      #navWarp
+      #navWrap
     >
       <div
         class="ant-tabs-nav-list"
@@ -161,7 +161,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
     }
   }
 
-  @ViewChild('navWarp', { static: true }) navWarpRef!: ElementRef<HTMLElement>;
+  @ViewChild('navWrap', { static: true }) navWrapRef!: ElementRef<HTMLElement>;
   @ViewChild('navList', { static: true }) navListRef!: ElementRef<HTMLElement>;
   @ViewChild(NzTabNavOperationComponent, { static: true }) operationRef!: NzTabNavOperationComponent;
   @ViewChild(NzTabAddButtonComponent, { static: false }) addBtnRef!: NzTabAddButtonComponent;
@@ -231,7 +231,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
 
     reqAnimFrame(realign);
 
-    merge(this.nzResizeObserver.observe(this.navWarpRef), this.nzResizeObserver.observe(this.navListRef))
+    merge(this.nzResizeObserver.observe(this.navWrapRef), this.nzResizeObserver.observe(this.navListRef))
       .pipe(takeUntilDestroyed(this.destroyRef), auditTime(16, RESIZE_SCHEDULER))
       .subscribe(() => {
         realign();
@@ -302,7 +302,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   handleKeydown(event: KeyboardEvent): void {
-    const inNavigationList = this.navWarpRef.nativeElement.contains(event.target as HTMLElement);
+    const inNavigationList = this.navWrapRef.nativeElement.contains(event.target as HTMLElement);
     if (hasModifierKey(event) || !inNavigationList) {
       return;
     }
@@ -426,8 +426,8 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
     this.addButtonHeight = this.addBtnRef ? this.addBtnRef.getElementHeight() : 0;
     this.operationWidth = this.operationRef.getElementWidth();
     this.operationHeight = this.operationRef.getElementHeight();
-    this.wrapperWidth = this.navWarpRef.nativeElement.offsetWidth || 0;
-    this.wrapperHeight = this.navWarpRef.nativeElement.offsetHeight || 0;
+    this.wrapperWidth = this.navWrapRef.nativeElement.offsetWidth || 0;
+    this.wrapperHeight = this.navWrapRef.nativeElement.offsetHeight || 0;
     this.scrollListHeight = this.navListRef.nativeElement.offsetHeight || 0;
     this.scrollListWidth = this.navListRef.nativeElement.offsetWidth || 0;
   }
@@ -453,7 +453,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
       bottom: false,
       left: false
     };
-    const navWarp = this.navWarpRef.nativeElement;
+    const navWrap = this.navWrapRef.nativeElement;
     if (this.position === 'horizontal') {
       if (this.getLayoutDirection() === 'rtl') {
         ping.right = this.transformX > 0;
@@ -470,9 +470,9 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
     (Object.keys(ping) as Array<'top' | 'right' | 'bottom' | 'left'>).forEach(pos => {
       const className = `ant-tabs-nav-wrap-ping-${pos}`;
       if (ping[pos]) {
-        navWarp.classList.add(className);
+        navWrap.classList.add(className);
       } else {
-        navWarp.classList.remove(className);
+        navWrap.classList.remove(className);
       }
     });
   }
