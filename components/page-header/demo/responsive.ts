@@ -43,10 +43,10 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
         </div>
       </nz-page-header-content>
       <nz-page-header-footer>
-        <nz-tabset [nzSelectedIndex]="1">
+        <nz-tabs [nzSelectedIndex]="1">
           <nz-tab nzTitle="Details"></nz-tab>
           <nz-tab nzTitle="Rule"></nz-tab>
-        </nz-tabset>
+        </nz-tabs>
       </nz-page-header-footer>
     </nz-page-header>
   `,

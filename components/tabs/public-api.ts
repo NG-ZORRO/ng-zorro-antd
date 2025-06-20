@@ -16,5 +16,5 @@ export { NzTabScrollListDirective as ɵNzTabScrollListDirective } from './tab-sc
 export * from './tab.component';
 export * from './tab.directive';
 export { NzTabsInkBarDirective as ɵNzTabsInkBarDirective } from './tabs-ink-bar.directive';
+export * from './tabs.component';
 export * from './tabs.module';
-export * from './tabset.component';

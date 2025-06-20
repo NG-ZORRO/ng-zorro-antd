@@ -7,7 +7,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   imports: [NzTabsModule],
   template: `
     <div class="card-container">
-      <nz-tabset nzType="card">
+      <nz-tabs nzType="card">
         @for (tab of tabs; track tab) {
           <nz-tab [nzTitle]="'Tab Title ' + tab">
             <p>Content of Tab Pane {{ tab }}</p>
@@ -15,7 +15,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
             <p>Content of Tab Pane {{ tab }}</p>
           </nz-tab>
         }
-      </nz-tabset>
+      </nz-tabs>
     </div>
   `,
   styles: [

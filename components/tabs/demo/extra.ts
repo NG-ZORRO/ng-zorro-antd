@@ -9,11 +9,11 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-extra',
   imports: [NzButtonModule, NzTabsModule, NzCheckboxModule, FormsModule],
   template: `
-    <nz-tabset [nzTabBarExtraContent]="extraTemplate">
+    <nz-tabs [nzTabBarExtraContent]="extraTemplate">
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
     <ng-template #extraTemplate>
       <button nz-button>Extra Action</button>
     </ng-template>
@@ -26,7 +26,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     <br />
     <br />
 
-    <nz-tabset>
+    <nz-tabs>
       @if (positions.includes('start')) {
         <button *nzTabBarExtraContent="'start'" nz-button [style.margin-right.px]="16">Start Extra Action</button>
       }
@@ -37,7 +37,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsExtraComponent {

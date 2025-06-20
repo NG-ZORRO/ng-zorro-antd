@@ -6,11 +6,11 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-card',
   imports: [NzTabsModule],
   template: `
-    <nz-tabset nzType="card">
+    <nz-tabs nzType="card">
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="'Tab' + tab">Content of Tab Pane {{ tab }}</nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsCardComponent {

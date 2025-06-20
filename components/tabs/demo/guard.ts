@@ -8,11 +8,11 @@ import { NzTabsCanDeactivateFn, NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-guard',
   imports: [NzTabsModule, NzModalModule],
   template: `
-    <nz-tabset [nzCanDeactivate]="canDeactivate">
+    <nz-tabs [nzCanDeactivate]="canDeactivate">
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="'Tab' + tab">Content of tab {{ tab }}</nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

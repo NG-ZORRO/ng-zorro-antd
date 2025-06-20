@@ -10,7 +10,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-date-picker-inline',
   imports: [FormsModule, NzDatePickerModule, NzTabsModule],
   template: `
-    <nz-tabset>
+    <nz-tabs>
       <nz-tab nzTitle="Default">
         <nz-date-picker nzInline [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
       </nz-tab>
@@ -74,7 +74,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
           (ngModelChange)="onChange($event)"
         ></nz-range-picker>
       </nz-tab>
-    </nz-tabset>
+    </nz-tabs>
   `,
   styles: [
     `

@@ -26,7 +26,7 @@ export class NzDemoTabContentEagerlyComponent implements OnInit {
   selector: 'nz-demo-tabs-lazy',
   imports: [NzTabsModule, NzDemoTabContentEagerlyComponent, NzDemoTabContentLazyComponent],
   template: `
-    <nz-tabset>
+    <nz-tabs>
       <nz-tab nzTitle="Tab Eagerly 1">
         <nz-demo-tab-content-eagerly></nz-demo-tab-content-eagerly>
       </nz-tab>
@@ -43,7 +43,7 @@ export class NzDemoTabContentEagerlyComponent implements OnInit {
           <nz-demo-tab-content-lazy></nz-demo-tab-content-lazy>
         </ng-template>
       </nz-tab>
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsLazyComponent {}

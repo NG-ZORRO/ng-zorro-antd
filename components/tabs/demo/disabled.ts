@@ -6,13 +6,13 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-disabled',
   imports: [NzTabsModule],
   template: `
-    <nz-tabset>
+    <nz-tabs>
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="tab.name" [nzDisabled]="tab.disabled">
           {{ tab.name }}
         </nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsDisabledComponent {
