@@ -18,10 +18,10 @@ description: 对网站内容的反馈、评价和讨论。
 
 ### nz-comment
 
-| Property     | Description    | Type                          | Default |
-| ------------ | -------------- | ----------------------------- | ------- |
-| [nzAuthor]   | 显示评论的作者 | `string \| TemplateRef<void>` | -       |
-| [nzDatetime] | 展示时间描述   | `string \| TemplateRef<void>` | -       |
+| Property       | Description | Type                          | Default |
+|----------------|-------------|-------------------------------|---------|
+| `[nzAuthor]`   | 显示评论的作者     | `string \| TemplateRef<void>` | -       |
+| `[nzDatetime]` | 展示时间描述      | `string \| TemplateRef<void>` | -       |
 
 ### [nz-comment-avatar]
 

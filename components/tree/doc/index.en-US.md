@@ -83,7 +83,7 @@ Almost anything can be represented in a tree structure. Examples include directo
 | selectable      | Set whether the treeNode can be selected                 | `boolean`             | `true`  |
 | disabled        | Disables the treeNode                                    | `boolean`             | `false` |
 | disableCheckbox | Disables the checkbox of the treeNode                    | `boolean`             | `false` |
-| [key: string]   | Indexable Types, can be used with NzTreeNode.origin      | `any `                | -       |
+| `[key: string]` | Indexable Types, can be used with NzTreeNode.origin      | `any `                | -       |
 
 #### NzFormatEmitEvent props
 

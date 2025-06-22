@@ -1,6 +1,7 @@
 // @ts-check
 
 import eslint from '@eslint/js';
+import markdown from '@eslint/markdown';
 import tseslint from 'typescript-eslint';
 import angular from 'angular-eslint';
 
@@ -215,6 +216,16 @@ export default tseslint.config(
           parser: 'angular'
         }
       ]
+    }
+  },
+  {
+    files: ['**/*.md'],
+    plugins: {
+      markdown
+    },
+    extends: [markdown.configs.recommended],
+    rules: {
+      'markdown/no-missing-label-refs': 'off'
     }
   }
 );

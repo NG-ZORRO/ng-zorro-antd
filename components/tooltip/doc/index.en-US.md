@@ -18,7 +18,7 @@ description: Simple text popup box.
 ### [nz-tooltip]
 
 | Property                        | Description                                                      | Type                                                                                                                                                                              | Default   |
-| ------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+|---------------------------------|------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
 | `[nzTooltipArrowPointAtCenter]` | Arrow point at center of the origin                              | `boolean`                                                                                                                                                                         | `false`   |
 | `[nzTooltipTitle]`              | The text shown in the tooltip                                    | `string \| TemplateRef<void>`                                                                                                                                                     | -         |
 | `[nzTooltipTitleContext]`       | The context of tooltip title                                     | `object`                                                                                                                                                                          | -         |
@@ -37,11 +37,11 @@ description: Simple text popup box.
 
 The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.
 
-| Method           | Description     |
-| ---------------- | --------------- |
-| `show`           | Show            |
-| `hide`           | Hide            |
-| `updatePosition` | Update position |
+| Method             | Description     |
+|--------------------|-----------------|
+| `show()`           | Show            |
+| `hide()`           | Hide            |
+| `updatePosition()` | Update position |
 
 ## Exclude body element's scroll event need to refresh the position of CDK
 

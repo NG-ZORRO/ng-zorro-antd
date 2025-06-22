@@ -25,7 +25,7 @@ NG-ZORRO
 
 </div>
 
-[![](https://img.alicdn.com/tfs/TB1t6QPylr0gK0jSZFnXXbRRXXa-4000-1378.png)](http://ng.ant.design)
+[![logo](https://img.alicdn.com/tfs/TB1t6QPylr0gK0jSZFnXXbRRXXa-4000-1378.png)](http://ng.ant.design)
 
 [English](README.md) | 简体中文
 

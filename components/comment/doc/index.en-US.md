@@ -17,10 +17,10 @@ Comments can be used to enable discussions on an entity such as a page, blog pos
 
 ### nz-comment
 
-| Property     | Description                                            | Type                          | Default |
-| ------------ | ------------------------------------------------------ | ----------------------------- | ------- |
-| [nzAuthor]   | The element to display as the comment author           | `string \| TemplateRef<void>` | -       |
-| [nzDatetime] | A datetime element containing the time to be displayed | `string \| TemplateRef<void>` | -       |
+| Property       | Description                                            | Type                          | Default |
+|----------------|--------------------------------------------------------|-------------------------------|---------|
+| `[nzAuthor]`   | The element to display as the comment author           | `string \| TemplateRef<void>` | -       |
+| `[nzDatetime]` | A datetime element containing the time to be displayed | `string \| TemplateRef<void>` | -       |
 
 ### [nz-comment-avatar]
 

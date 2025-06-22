@@ -16,26 +16,26 @@ description: 树视图组件，相比封装好的 Tree 组件具有更高的定�
 
 ### nz-tree-view
 
-| 参数                | 说明           | 类型                                                                                                         | 默认值     |
-|-------------------|--------------|------------------------------------------------------------------------------------------------------------|---------|
-| [nzTreeControl]   | 树控制器         | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                        | -       |
-| [nzDataSource]    | 用于渲染树的数组数据   | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | -       |
-| [nzDirectoryTree] | 节点是否以文件夹样式显示 | boolean                                                                                                    | `false` |
-| [nzBlockNode]     | 节点是否占据整行     | boolean                                                                                                    | `false` |
+| 参数                  | 说明           | 类型                                                                                                         | 默认值     |
+|---------------------|--------------|------------------------------------------------------------------------------------------------------------|---------|
+| `[nzTreeControl]`   | 树控制器         | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                        | -       |
+| `[nzDataSource]`    | 用于渲染树的数组数据   | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | -       |
+| `[nzDirectoryTree]` | 节点是否以文件夹样式显示 | `boolean`                                                                                                  | `false` |
+| `[nzBlockNode]`     | 节点是否占据整行     | `boolean`                                                                                                  | `false` |
 
 ### nz-tree-virtual-scroll-view
 
 虚拟滚动的树视图，可以通过组件实例上的 `virtualScrollViewport` 成员访问 [CdkVirtualScrollViewport](https://material.angular.io/cdk/scrolling/api#CdkVirtualScrollViewport) 实例。
 
-| 参数                | 说明                 | 类型                                                                                                         | 默认值       |
-|-------------------|--------------------|------------------------------------------------------------------------------------------------------------|-----------|
-| [nzTreeControl]   | 树控制器               | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                        | -         |
-| [nzDataSource]    | 用于渲染树的数组数据         | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | -         |
-| [nzDirectoryTree] | 节点是否以文件夹样式显示       | `boolean`                                                                                                  | `false`   |
-| [nzBlockNode]     | 节点是否占据整行           | `boolean`                                                                                                  | `false`   |
-| [nzItemSize]      | 节点的尺寸(px)          | `number`                                                                                                   | `28`      |
-| [nzMinBufferPx]   | 超出渲染区的最小缓存区大小(px)  | `number`                                                                                                   | `28 * 5`  |
-| [nzMaxBufferPx]   | 需要渲染新节点时的缓冲区大小(px) | `number`                                                                                                   | `28 * 10` |
+| 参数                  | 说明                 | 类型                                                                                                         | 默认值       |
+|---------------------|--------------------|------------------------------------------------------------------------------------------------------------|-----------|
+| `[nzTreeControl]`   | 树控制器               | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                        | -         |
+| `[nzDataSource]`    | 用于渲染树的数组数据         | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | -         |
+| `[nzDirectoryTree]` | 节点是否以文件夹样式显示       | `boolean`                                                                                                  | `false`   |
+| `[nzBlockNode]`     | 节点是否占据整行           | `boolean`                                                                                                  | `false`   |
+| `[nzItemSize]`      | 节点的尺寸(px)          | `number`                                                                                                   | `28`      |
+| `[nzMinBufferPx]`   | 超出渲染区的最小缓存区大小(px)  | `number`                                                                                                   | `28 * 5`  |
+| `[nzMaxBufferPx]`   | 需要渲染新节点时的缓冲区大小(px) | `number`                                                                                                   | `28 * 10` |
 
 ### [nzTreeNodeDef]
 
@@ -77,11 +77,11 @@ description: 树视图组件，相比封装好的 Tree 组件具有更高的定�
 
 不做任何操作的切换部分，可用于占位或者显示图标。
 
-### [nztreenodetogglerotateicon]
+### [nzTreeNodeToggleRotateIcon]
 
 定义切换部分中的图标，会随着展开收起状态自动旋转。
 
-### [nztreenodetoggleactiveicon]
+### [nzTreeNodeToggleActiveIcon]
 
 定义切换部分中的图标，使其具有激活状态的样式，可用于 loading 图标。
 

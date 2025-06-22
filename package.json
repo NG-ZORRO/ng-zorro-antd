@@ -54,6 +54,7 @@
     "@commitlint/config-angular": "^19.0.0",
     "@ctrl/tinycolor": "^3.6.0",
     "@eslint/js": "^9.23.0",
+    "@eslint/markdown": "^6.6.0",
     "@schematics/angular": "^20.0.0",
     "@stackblitz/sdk": "^1.11.0",
     "@types/d3": "^6.2.0",

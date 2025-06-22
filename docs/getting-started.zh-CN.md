@@ -44,7 +44,7 @@ $ ng new PROJECT-NAME
 $ ng add ng-zorro-antd
 ```
 
-<img style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);" src="https://img.alicdn.com/tfs/TB19fFHdkxz61VjSZFtXXaDSVXa-680-243.svg">
+<img alt="CLI" style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);" src="https://img.alicdn.com/tfs/TB19fFHdkxz61VjSZFtXXaDSVXa-680-243.svg">
 
 
 开发者可以通过增加参数来完成个性化的初始化配置，例如国际化或者自定义主题等，详细可以参考 [脚手架](/docs/schematics/zh) 部分。
@@ -57,7 +57,7 @@ $ ng add ng-zorro-antd
 $ ng serve --port 0 --open
 ```
 
-<img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
+<img alt="welcome" style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 
 
 ### 构建和部署

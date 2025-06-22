@@ -152,7 +152,7 @@ we use the git commit messages to **generate the NG-ZORRO change log**.
 Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
 format that includes a **type**, a **scope** and a **subject**:
 
-```
+```txt
 <type>(<scope>): <subject>
 <BLANK LINE>
 <body>
@@ -169,10 +169,10 @@ Footer should contain a [closing reference to an issue](https://help.github.com/
 
 Samples: (even more [samples](https://github.com/NG-ZORRO/ng-zorro-antd/commits/master))
 
-```
+```txt
 docs(changelog): update change log to beta.5
 ```
-```
+```txt
 fix(release): need to depend on latest rxjs and zone.js
 
 The version in our package.json gets copied to the one we publish, and users need the latest of these.

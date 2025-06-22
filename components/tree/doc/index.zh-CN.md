@@ -84,7 +84,7 @@ description: 多层次的结构列表。
 | selectable      | 设置节点是否可被选中                         | `boolean`             | `true`  |
 | disabled        | 设置是否禁用节点(不可进行任何操作)                 | `boolean`             | `false` |
 | disableCheckbox | 设置节点禁用 checkbox                    | `boolean`             | `false` |
-| [key: string]   | 自定义数据,可通过 NzTreeNode 的 origin 字段获取 | `any `                | -       |
+| `[key: string]` | 自定义数据,可通过 NzTreeNode 的 origin 字段获取 | `any `                | -       |
 
 #### NzFormatEmitEvent props
 
