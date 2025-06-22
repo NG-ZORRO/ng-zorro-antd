@@ -6,5 +6,11 @@
 import { ElementSelectorUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const elementSelectors: VersionChanges<ElementSelectorUpgradeData> = {
-  [TargetVersion.V20]: []
+  [TargetVersion.V20]: [{
+    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9238',
+    changes: [{
+      replace: 'nz-tabset',
+      replaceWith: 'nz-tabs'
+    }]
+  }]
 };
