@@ -11,5 +11,5 @@ title:
 
 ## en-US
 
-Referring to the Bootstrap [responsive design] (http://getbootstrap.com/css/#grid-media-queries), here preset five dimensions: `xs` `sm` `md` `lg` `xl`.
+Referring to the Bootstrap [responsive design](http://getbootstrap.com/css/#grid-media-queries), here preset five dimensions: `xs` `sm` `md` `lg` `xl`.
 

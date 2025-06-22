@@ -26,7 +26,7 @@ An enterprise-class Angular UI component library based on Ant Design.
 
 </div>
 
-[![](https://img.alicdn.com/tfs/TB1t6QPylr0gK0jSZFnXXbRRXXa-4000-1378.png)](http://ng.ant.design)
+[![logo](https://img.alicdn.com/tfs/TB1t6QPylr0gK0jSZFnXXbRRXXa-4000-1378.png)](http://ng.ant.design)
 
 English | [简体中文](README-zh_CN.md)
 

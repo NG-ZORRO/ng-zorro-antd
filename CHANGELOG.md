@@ -116,7 +116,7 @@ Now feel free to use `isolatedModules` compiler option in your project.
 
 
 
-# [19.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.2.1...19.0.0) (2024-12-06)
+## [19.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.2.1...19.0.0) (2024-12-06)
 
 
 ### Bug Fixes
@@ -263,7 +263,7 @@ Please refer to related documentation for better alternatives.
 
 
 
-# [18.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.1.1...18.2.0) (2024-11-07)
+## [18.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.1.1...18.2.0) (2024-11-07)
 
 
 ### Bug Fixes
@@ -297,7 +297,7 @@ Please refer to related documentation for better alternatives.
 * **tree-select:** clear selected nodes when user set value ([#8693](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8693)) ([91927bc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/91927bcede24a89ffc5ec4c814503547c86ad09e))
 
 
-# [18.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.0.1...18.1.0) (2024-07-25)
+## [18.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/18.0.1...18.1.0) (2024-07-25)
 
 
 ### Bug Fixes
@@ -336,7 +336,7 @@ Please refer to related documentation for better alternatives.
 
 
 
-# [18.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.4.1...18.0.0) (2024-06-06)
+## [18.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.4.1...18.0.0) (2024-06-06)
 
 ### ⚠ BREAKING CHANGES
 
@@ -393,7 +393,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [17.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.3.0...17.4.0) (2024-04-19)
+## [17.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.3.0...17.4.0) (2024-04-19)
 
 
 ### Bug Fixes
@@ -425,7 +425,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [17.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.1.0...17.3.0) (2024-03-11)
+## [17.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.1.0...17.3.0) (2024-03-11)
 
 
 ### Bug Fixes
@@ -459,7 +459,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [17.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.1.0...17.2.0) (2024-01-29)
+## [17.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.1.0...17.2.0) (2024-01-29)
 
 
 ### Bug Fixes
@@ -477,7 +477,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [17.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.0.1...17.1.0) (2023-12-17)
+## [17.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/17.0.1...17.1.0) (2023-12-17)
 
 
 ### Bug Fixes
@@ -583,7 +583,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [17.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/16.2.2...17.0.0) (2023-11-18)
+## [17.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/16.2.2...17.0.0) (2023-11-18)
 
 
 ### Bug Fixes
@@ -645,7 +645,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [16.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/16.0.0...16.2.0) (2023-09-18)
+## [16.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/16.0.0...16.2.0) (2023-09-18)
 
 
 ### Bug Fixes
@@ -696,7 +696,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [16.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/16.0.0...16.1.0) (2023-07-16)
+## [16.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/16.0.0...16.1.0) (2023-07-16)
 
 
 ### Bug Fixes
@@ -731,7 +731,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [16.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/15.1.0...16.0.0) (2023-05-31)
+## [16.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/15.1.0...16.0.0) (2023-05-31)
 
 
 ### Bug Fixes
@@ -743,7 +743,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [15.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/15.0.2...15.1.0) (2023-04-02)
+## [15.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/15.0.2...15.1.0) (2023-04-02)
 
 
 ### Bug Fixes
@@ -794,7 +794,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 * **components:** some forms component can't be disable ([#7786](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7786)) ([bc673e7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bc673e7deef219de82e5dc23e1318f76a1ef98f6))
 
 
-# [15.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.3.0...15.0.0) (2022-12-21)
+## [15.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.3.0...15.0.0) (2022-12-21)
 
 
 ### Bug Fixes
@@ -809,7 +809,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [14.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.2.1...14.3.0) (2022-12-11)
+## [14.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.2.1...14.3.0) (2022-12-11)
 
 
 ### Bug Fixes
@@ -841,7 +841,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [14.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.1.1...14.2.0) (2022-11-20)
+## [14.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.1.1...14.2.0) (2022-11-20)
 
 
 ### Bug Fixes
@@ -872,7 +872,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 * **date-picker:** fix datePicker can't clear ([#7671](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7671)) ([ba90876](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ba90876690e462e18da0126d8e90d682b62ebb70)), closes [#7534](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7534)
 
 
-# [14.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.0.0-beta.0...14.1.0) (2022-10-09)
+## [14.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.0.0-beta.0...14.1.0) (2022-10-09)
 
 
 ### Bug Fixes
@@ -898,7 +898,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 * **time-picker:** support input readonly ([#7660](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7660)) ([2dcefe2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2dcefe2c197e6438736f326206229b0287400cc3))
 
 
-# [14.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.0.0-beta.0...14.0.0) (2022-08-25)
+## [14.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/14.0.0-beta.0...14.0.0) (2022-08-25)
 
 
 ### Bug Fixes
@@ -914,7 +914,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 * **pagination:** add ul tag ([#7500](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7500)) ([becdd68](https://github.com/NG-ZORRO/ng-zorro-antd/commit/becdd682514e36b188be93667a03ac74f224dcf7))
 
 
-# [13.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.3.2...13.4.0) (2022-07-25)
+## [13.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.3.2...13.4.0) (2022-07-25)
 
 
 ### Bug Fixes
@@ -957,7 +957,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [13.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.2.2...13.3.0) (2022-06-15)
+## [13.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.2.2...13.3.0) (2022-06-15)
 
 
 ### Bug Fixes
@@ -1002,7 +1002,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [13.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.1.1...13.2.0) (2022-04-26)
+## [13.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.1.1...13.2.0) (2022-04-26)
 
 
 ### Bug Fixes
@@ -1050,7 +1050,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 
 
 
-# [13.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.0.1...13.1.0) (2022-02-25)
+## [13.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/13.0.1...13.1.0) (2022-02-25)
 
 
 ### Bug Fixes
@@ -1126,7 +1126,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 * **transfer:** do not trigger change detection when the checkbox is clicked ([#7124](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7124)) ([b12f43a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b12f43afe78d03687000471f164ff1f5d2631d3b))
 
 
-# [13.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/12.1.0...13.0.0) (2021-12-29)
+## [13.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/12.1.0...13.0.0) (2021-12-29)
 
 
 ### BREAKING CHANGES
@@ -1159,7 +1159,7 @@ No need to wrap Less functions provided by antd (including `colorEasing`, `color
 * **tree:** do not run change detection when the tree node is clicked ([#7128](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7128)) ([55f1e04](https://github.com/NG-ZORRO/ng-zorro-antd/commit/55f1e047b32597397c42c779409beff7ab13b1f7))
 
 
-# [12.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/12.0.2...12.1.0) (2021-11-29)
+## [12.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/12.0.2...12.1.0) (2021-11-29)
 
 
 ### Bug Fixes
@@ -1253,7 +1253,7 @@ import ResizeObserver from 'resize-observer-polyfill';
 export class AppModule {}
 ```
 
-# [12.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.4.2...12.0.0) (2021-07-11)
+## [12.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.4.2...12.0.0) (2021-07-11)
 
 
 ### Bug Fixes
@@ -1328,7 +1328,7 @@ export class AppModule {}
 
 
 
-# [11.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.3.0...11.4.0) (2021-04-08)
+## [11.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.3.0...11.4.0) (2021-04-08)
 
 
 ### Bug Fixes
@@ -1347,7 +1347,7 @@ export class AppModule {}
 
 
 
-# [11.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.2.0...11.3.0) (2021-03-23)
+## [11.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.2.0...11.3.0) (2021-03-23)
 
 
 ### Bug Fixes
@@ -1374,7 +1374,7 @@ export class AppModule {}
 _Deprecated_
 - space: `nz-space-item` in `nz-space` will be removed in 12.0.0, please use `*nzSpaceItem` instead.
 
-# [11.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.1.0...11.2.0) (2021-02-26)
+## [11.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.1.0...11.2.0) (2021-02-26)
 
 
 ### Bug Fixes
@@ -1405,7 +1405,7 @@ _Deprecated_
 
 
 
-# [11.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.0.2...11.1.0) (2021-01-22)
+## [11.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/11.0.2...11.1.0) (2021-01-22)
 
 
 ### Bug Fixes
@@ -1456,7 +1456,7 @@ _Deprecated_
 
 
 
-# [11.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.2.1...11.0.0) (2020-12-21)
+## [11.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.2.1...11.0.0) (2020-12-21)
 
 ## Highlights
 
@@ -1532,7 +1532,6 @@ The previous Tree already contains many common features, and to handle more cust
   - `(nzOnNextClick)` output has been removed, please remove it manually.
   - `a[nz-tab-link]` selector has been removed, please use `ng-template[nzTabLink] > a[nz-tab-link]` instead.
 
-<a name="10.2.1"></a>
 ## [10.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.1.2...10.2.1) (2020-12-11)
 
 
@@ -1547,8 +1546,7 @@ The previous Tree already contains many common features, and to handle more cust
 * **tabs:** keyboard events in extra areas trigger navigation ([#6173](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6173)) ([375366f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/375366f)), closes [#6139](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6139)
 * **transfer:** fix only filtered data in `nzRenderList` ([#6169](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6169)) ([17d43fb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/17d43fb)), closes [#5641](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5641)
 
-<a name="10.2.0"></a>
-# [10.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.1.2...10.2.0) (2020-12-01)
+## [10.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.1.2...10.2.0) (2020-12-01)
 
 
 ### Bug Fixes
@@ -1580,7 +1578,6 @@ _Deprecated_
   * Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzDrawerContent></ng-template>` to declare the content of the drawer.
 
 
-<a name="10.1.2"></a>
 ## [10.1.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.1.1...10.1.2) (2020-11-16)
 
 
@@ -1593,7 +1590,6 @@ _Deprecated_
 
 
 
-<a name="10.1.1"></a>
 ## [10.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.1.0...10.1.1) (2020-11-09)
 
 
@@ -1608,8 +1604,7 @@ _Deprecated_
 
 
 
-<a name="10.1.0"></a>
-# [10.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.0.2...10.1.0) (2020-10-30)
+## [10.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.0.2...10.1.0) (2020-10-30)
 
 
 ### Bug Fixes
@@ -1641,7 +1636,6 @@ _Deprecated_
 
 
 
-<a name="10.0.2"></a>
 ## [10.0.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.0.1...10.0.2) (2020-10-16)
 
 
@@ -1655,7 +1649,6 @@ _Deprecated_
 * **tooltip:** fix mouse leave overlay not obey delaying ([#5868](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5868)) ([6b5fdee](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6b5fdee)), closes [#5713](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5713)
 
 
-<a name="10.0.1"></a>
 ## [10.0.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/10.0.0...10.0.1) (2020-10-09)
 
 
@@ -1670,8 +1663,7 @@ _Deprecated_
 
 
 
-<a name="10.0.0"></a>
-# [10.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.3.0...10.0.0) (2020-09-28)
+## [10.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.3.0...10.0.0) (2020-09-28)
 
 
 ### Bug Fixes
@@ -1813,8 +1805,7 @@ _Deprecated_
 
 
 
-<a name="9.3.0"></a>
-# [9.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.2.2...9.3.0) (2020-07-09)
+## [9.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.2.2...9.3.0) (2020-07-09)
 
 
 ### Bug Fixes
@@ -1842,7 +1833,6 @@ _Deprecated_
 
 
 
-<a name="9.2.2"></a>
 ## [9.2.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.2.1...9.2.2) (2020-06-23)
 
 
@@ -1853,7 +1843,6 @@ _Deprecated_
 
 
 
-<a name="9.2.1"></a>
 ## [9.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.2.0...9.2.1) (2020-06-17)
 
 
@@ -1863,8 +1852,7 @@ _Deprecated_
 
 
 
-<a name="9.2.0"></a>
-# [9.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.1.2...9.2.0) (2020-06-16)
+## [9.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.1.2...9.2.0) (2020-06-16)
 
 
 ### Bug Fixes
@@ -1912,7 +1900,6 @@ _Deprecated_
 
 
 
-<a name="9.1.2"></a>
 ## [9.1.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.1.1...9.1.2) (2020-05-13)
 
 
@@ -1923,7 +1910,6 @@ _Deprecated_
 * **select:** option item not selected with falsy value ([#5264](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5264)) ([1c4d7d8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1c4d7d8))
 
 
-<a name="9.1.1"></a>
 ## [9.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.1.0...9.1.1) (2020-05-11)
 
 
@@ -1945,8 +1931,7 @@ _Deprecated_
 
 
 
-<a name="9.1.0"></a>
-# [9.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.2...9.1.0) (2020-04-26)
+## [9.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.2...9.1.0) (2020-04-26)
 
 
 ### Bug Fixes
@@ -1982,7 +1967,6 @@ _Deprecated_
 
 
 
-<a name="9.0.2"></a>
 ## [9.0.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0...9.0.2) (2020-04-20)
 
 
@@ -2000,8 +1984,7 @@ _Deprecated_
 
 
 
-<a name="9.0.0"></a>
-# [9.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.4...9.0.0) (2020-04-15)
+## [9.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.4...9.0.0) (2020-04-15)
 
 
 ### Intro
@@ -2069,8 +2052,7 @@ We have synced the Ant Design 4 design specification and support the Dark and Co
 
 
 
-<a name="9.0.0-beta.4"></a>
-# [9.0.0-beta.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.3...9.0.0-beta.4) (2020-04-14)
+## [9.0.0-beta.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.3...9.0.0-beta.4) (2020-04-14)
 
 
 ### Bug Fixes
@@ -2112,8 +2094,7 @@ We have synced the Ant Design 4 design specification and support the Dark and Co
 - NzNotificationDataFilled is replaced by NzNotificationRef
 
 
-<a name="9.0.0-beta.3"></a>
-# [9.0.0-beta.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.2...9.0.0-beta.3) (2020-03-24)
+## [9.0.0-beta.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.2...9.0.0-beta.3) (2020-03-24)
 
 
 ### Bug Fixes
@@ -2128,8 +2109,7 @@ We have synced the Ant Design 4 design specification and support the Dark and Co
 
 
 
-<a name="9.0.0-beta.2"></a>
-# [9.0.0-beta.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.1...9.0.0-beta.2) (2020-03-19)
+## [9.0.0-beta.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.1...9.0.0-beta.2) (2020-03-19)
 
 
 ### Bug Fixes
@@ -2139,8 +2119,7 @@ We have synced the Ant Design 4 design specification and support the Dark and Co
 
 
 
-<a name="9.0.0-beta.1"></a>
-# [9.0.0-beta.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.5.1...9.0.0-beta.1) (2020-03-15)
+## [9.0.0-beta.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.5.1...9.0.0-beta.1) (2020-03-15)
 
 
 ### Bug Fixes
@@ -2285,7 +2264,6 @@ docs: fix icon English doc
 
 
 
-<a name="8.5.1"></a>
 ## [8.5.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.5.0...8.5.1) (2019-11-18)
 
 
@@ -2299,8 +2277,7 @@ docs: fix icon English doc
 
 
 
-<a name="8.5.0"></a>
-# [8.5.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.4.1...8.5.0) (2019-11-08)
+## [8.5.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.4.1...8.5.0) (2019-11-08)
 
 
 ### Bug Fixes
@@ -2327,7 +2304,6 @@ docs: fix icon English doc
 
 
 
-<a name="8.4.1"></a>
 ## [8.4.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.4.0...8.4.1) (2019-10-23)
 
 
@@ -2340,8 +2316,7 @@ docs: fix icon English doc
 
 
 
-<a name="8.4.0"></a>
-# [8.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.3.1...8.4.0) (2019-10-15)
+## [8.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.3.1...8.4.0) (2019-10-15)
 
 
 ### Bug Fixes
@@ -2383,7 +2358,6 @@ docs: fix icon English doc
 
 
 
-<a name="8.3.1"></a>
 ## [8.3.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.3.0...8.3.1) (2019-09-24)
 
 
@@ -2402,8 +2376,7 @@ docs: fix icon English doc
 
 
 
-<a name="8.3.0"></a>
-# [8.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.2.1...8.3.0) (2019-09-09)
+## [8.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.2.1...8.3.0) (2019-09-09)
 
 
 ### Bug Fixes
@@ -2431,7 +2404,6 @@ docs: fix icon English doc
 
 
 
-<a name="8.2.1"></a>
 ## [8.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.2.0...8.2.1) (2019-08-26)
 
 
@@ -2446,8 +2418,7 @@ docs: fix icon English doc
 
 
 
-<a name="8.2.0"></a>
-# [8.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.1.2...8.2.0) (2019-08-13)
+## [8.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.1.2...8.2.0) (2019-08-13)
 
 
 ### Bug Fixes
@@ -2479,7 +2450,6 @@ docs: fix icon English doc
 
 
 
-<a name="8.1.2"></a>
 ## [8.1.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.1.1...8.1.2) (2019-07-29)
 
 
@@ -2491,7 +2461,6 @@ docs: fix icon English doc
 
 
 
-<a name="8.1.1"></a>
 ## [8.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.1.0...8.1.1) (2019-07-29)
 
 
@@ -2509,8 +2478,7 @@ docs: fix icon English doc
 
 
 
-<a name="8.1.0"></a>
-# [8.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.0.3...8.1.0) (2019-07-19)
+## [8.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.0.3...8.1.0) (2019-07-19)
 
 
 ### Bug Fixes
@@ -2538,7 +2506,6 @@ docs: fix icon English doc
 
 
 
-<a name="8.0.3"></a>
 ## [8.0.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.0.2...8.0.3) (2019-07-14)
 
 
@@ -2550,7 +2517,6 @@ docs: fix icon English doc
 * **switch:** fix switch ViewChild static ([#3784](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3784)) ([f59d79f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f59d79f)), closes [#3760](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3760)
 * **table:** fix table custom filter panel ([#3787](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3787)) ([b9a7267](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b9a7267)), closes [#3721](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3721)
 
-<a name="8.0.2"></a>
 ## [8.0.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.0.1...8.0.2) (2019-07-03)
 
 Fix the dependencies version ranges.
@@ -2566,7 +2532,7 @@ Fix the dependencies version ranges.
 
 
 
-# [8.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.5.1...8.0.0) (2019-06-29)
+## [8.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.5.1...8.0.0) (2019-06-29)
 
 
 ### Bug Fixes
@@ -2614,7 +2580,7 @@ Fix the dependencies version ranges.
 
 
 
-# [7.5.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.4.1...7.5.0) (2019-06-05)
+## [7.5.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.4.1...7.5.0) (2019-06-05)
 
 
 ### Bug Fixes
@@ -2641,7 +2607,7 @@ Fix the dependencies version ranges.
 
 * **build:** unable to build in production when importing secondary module ([#3266](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3266))
 
-# [7.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.3.3...7.4.0) (2019-05-19)
+## [7.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.3.3...7.4.0) (2019-05-19)
 
 ### Bug Fixes
 
@@ -2692,7 +2658,7 @@ Fix the dependencies version ranges.
 
 
 
-# [7.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.2.0...7.3.0) (2019-04-21)
+## [7.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.2.0...7.3.0) (2019-04-21)
 
 ### Features
 
@@ -2733,7 +2699,7 @@ Fix the dependencies version ranges.
 * **style** fix patch not included ([#3317](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3317)) ([5b02e48](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5b02e48))
 
 
-# [7.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.1.0...7.2.0) (2019-03-27)
+## [7.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.1.0...7.2.0) (2019-03-27)
 
 
 ### Bug Fixes
@@ -2756,7 +2722,7 @@ Fix the dependencies version ranges.
 
 
 
-# [7.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.3...7.1.0) (2019-03-21)
+## [7.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.3...7.1.0) (2019-03-21)
 
 
 ### Bug Fixes
@@ -2818,7 +2784,7 @@ Fix the dependencies version ranges.
 
 
 
-# [7.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.3...7.0.0) (2019-02-28)
+## [7.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.3...7.0.0) (2019-02-28)
 
 ### Update Guidance
 
@@ -2891,7 +2857,7 @@ Pay attention to these changes to ensure that your code works as expected:
 * **tree-select:** support set the max count for tags ([#2970](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2970)) ([4081abb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4081abb)), closes [#2488](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2488)
 * **upload:** support with non-image format file preview ([#2709](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2709)) ([4c41715](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4c41715))
 
-# [7.0.0-rc.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.2...7.0.0-rc.3) (2018-12-26)
+## [7.0.0-rc.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.2...7.0.0-rc.3) (2018-12-26)
 
 
 ### Bug Fixes
@@ -2901,7 +2867,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-# [7.0.0-rc.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.1...7.0.0-rc.2) (2018-12-24) [deprecated]
+## [7.0.0-rc.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.1...7.0.0-rc.2) (2018-12-24) [deprecated]
 
 
 ### Bug Fixes
@@ -2920,7 +2886,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-# [7.0.0-rc.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.0...7.0.0-rc.1) (2018-12-12)
+## [7.0.0-rc.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/7.0.0-rc.0...7.0.0-rc.1) (2018-12-12)
 
 
 ### Bug Fixes
@@ -2940,7 +2906,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-# [7.0.0-rc.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.8.0...7.0.0-rc.0) (2018-11-30)
+## [7.0.0-rc.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.8.0...7.0.0-rc.0) (2018-11-30)
 
 
 ### Bug Fixes
@@ -2961,7 +2927,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.8.1"></a>
 ## [1.8.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.8.0...1.8.1) (2018-11-24)
 
 
@@ -2979,8 +2944,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.8.0"></a>
-# [1.8.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.7.1...1.8.0) (2018-10-26)
+## [1.8.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.7.1...1.8.0) (2018-10-26)
 
 
 ### Bug Fixes
@@ -3006,7 +2970,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.7.1"></a>
 ## [1.7.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.7.0...1.7.1) (2018-10-23)
 
 
@@ -3019,8 +2982,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.7.0"></a>
-# [1.7.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.6.0...1.7.0) (2018-10-18)
+## [1.7.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.6.0...1.7.0) (2018-10-18)
 
 
 ### Bug Fixes
@@ -3050,8 +3012,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.6.0"></a>
-# [1.6.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.5.0...1.6.0) (2018-09-22)
+## [1.6.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.5.0...1.6.0) (2018-09-22)
 
 
 ### Bug Fixes
@@ -3086,8 +3047,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.5.0"></a>
-# [1.5.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.4.1...1.5.0) (2018-09-09)
+## [1.5.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.4.1...1.5.0) (2018-09-09)
 
 
 ### Bug Fixes
@@ -3108,7 +3068,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.4.1"></a>
 ## [1.4.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.4.0...1.4.1) (2018-09-02)
 
 
@@ -3122,8 +3081,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.4.0"></a>
-# [1.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.3.0...1.4.0) (2018-08-19)
+## [1.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.3.0...1.4.0) (2018-08-19)
 
 
 ### Bug Fixes
@@ -3145,8 +3103,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.3.0"></a>
-# [1.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.2.0...1.3.0) (2018-08-03)
+## [1.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.2.0...1.3.0) (2018-08-03)
 
 
 ### Bug Fixes
@@ -3165,8 +3122,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.2.0"></a>
-# [1.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.1.1...1.2.0) (2018-07-22)
+## [1.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.1.1...1.2.0) (2018-07-22)
 
 
 ### Bug Fixes
@@ -3187,7 +3143,6 @@ Pay attention to these changes to ensure that your code works as expected:
 * **form:** support touched status update ([#1861](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1861)) ([27ca5bc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/27ca5bc)), closes [#1665](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1665)
 * **tree-select:** support custom display in the trigger ([#1832](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1832)) ([1cc3646](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1cc3646)), closes [#1823](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1823)
 
-<a name="1.1.1"></a>
 ## [1.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.1.0...1.1.1) (2018-07-02)
 
 
@@ -3211,8 +3166,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.1.0"></a>
-# [1.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.0.0...1.1.0) (2018-06-25)
+## [1.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/1.0.0...1.1.0) (2018-06-25)
 
 
 ### Bug Fixes
@@ -3235,8 +3189,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="1.0.0"></a>
-# [1.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.1...1.0.0) (2018-06-11)
+## [1.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.1...1.0.0) (2018-06-11)
 
 
 ### Bug Fixes
@@ -3263,7 +3216,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.7.1"></a>
 ## [0.7.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.0...0.7.1) (2018-05-24)
 
 
@@ -3287,8 +3239,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.7.0"></a>
-# [0.7.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.0-beta.5...0.7.0) (2018-05-15)
+## [0.7.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.0-beta.5...0.7.0) (2018-05-15)
 
 
 ### Bug Fixes
@@ -3299,8 +3250,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.7.0-beta.5"></a>
-# [0.7.0-beta.5](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.0-beta.4...0.7.0-beta.5) (2018-05-01)
+## [0.7.0-beta.5](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.0-beta.4...0.7.0-beta.5) (2018-05-01)
 
 
 ### Bug Fixes
@@ -3315,8 +3265,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.7.0-beta.4"></a>
-# [0.7.0-beta.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.0-beta.3...0.7.0-beta.4) (2018-04-12)
+## [0.7.0-beta.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.0-beta.3...0.7.0-beta.4) (2018-04-12)
 
 
 ### Bug Fixes
@@ -3343,8 +3292,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.7.0-beta.3"></a>
-# [0.7.0-beta.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.0-beta.1...0.7.0-beta.3) (2018-03-26)
+## [0.7.0-beta.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.7.0-beta.1...0.7.0-beta.3) (2018-03-26)
 
 
 ### Bug Fixes
@@ -3363,8 +3311,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.7.0-beta.1"></a>
-# [0.7.0-beta.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.10...0.7.0-beta.1) (2018-03-15)
+## [0.7.0-beta.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.10...0.7.0-beta.1) (2018-03-15)
 
 
 ### Bug Fixes
@@ -3394,7 +3341,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.10"></a>
 ## [0.6.10](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.9...0.6.10) (2018-01-06)
 
 
@@ -3411,7 +3357,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.9"></a>
 ## [0.6.9](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.8...0.6.9) (2018-01-02)
 
 
@@ -3428,7 +3373,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.8"></a>
 ## [0.6.8](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.7...0.6.8) (2017-12-21)
 
 
@@ -3441,7 +3385,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.7"></a>
 ## [0.6.7](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.6...0.6.7) (2017-12-15)
 
 
@@ -3459,7 +3402,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.6"></a>
 ## [0.6.6](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.5...0.6.6) (2017-12-11)
 
 
@@ -3477,12 +3419,10 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.5"></a>
 ## [0.6.5](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.4...0.6.5) (2017-12-10)
 
 
 
-<a name="0.6.4"></a>
 ## [0.6.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.3...0.6.4) (2017-12-10)
 
 
@@ -3501,7 +3441,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.3"></a>
 ## [0.6.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.2...0.6.3) (2017-12-06)
 
 
@@ -3530,7 +3469,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.2"></a>
 ## [0.6.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.1...0.6.2) (2017-11-29)
 
 
@@ -3541,7 +3479,6 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.1"></a>
 ## [0.6.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.0...0.6.1) (2017-11-26)
 
 
@@ -3558,8 +3495,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.0"></a>
-# [0.6.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.0-rc.3...0.6.0) (2017-11-18)
+## [0.6.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.0-rc.3...0.6.0) (2017-11-18)
 
 
 ### Bug Fixes
@@ -3578,8 +3514,7 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.0-rc.3"></a>
-# [0.6.0-rc.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.0-rc.2...0.6.0-rc.3) (2017-11-04)
+## [0.6.0-rc.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.0-rc.2...0.6.0-rc.3) (2017-11-04)
 
 
 ### Bug Fixes
@@ -3601,13 +3536,11 @@ Pay attention to these changes to ensure that your code works as expected:
 
 
 
-<a name="0.6.0-rc.2"></a>
-# [0.6.0-rc.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.0-rc.1...0.6.0-rc.2) (2017-10-29)
+## [0.6.0-rc.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.6.0-rc.1...0.6.0-rc.2) (2017-10-29)
 
 
 
-<a name="0.6.0-rc.1"></a>
-# [0.6.0-rc.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.5...0.6.0-rc.1) (2017-10-28)
+## [0.6.0-rc.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.5...0.6.0-rc.1) (2017-10-28)
 
 
 ### Bug Fixes
@@ -3635,7 +3568,6 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.5"></a>
 ## [0.5.5](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.4...0.5.5) (2017-10-21)
 
 
@@ -3652,7 +3584,6 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.4"></a>
 ## [0.5.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.3...0.5.4) (2017-10-14)
 
 
@@ -3668,7 +3599,6 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.3"></a>
 ## [0.5.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.2...0.5.3) (2017-09-30)
 
 
@@ -3687,7 +3617,6 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.2"></a>
 ## [0.5.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.1...0.5.2) (2017-09-23)
 
 
@@ -3708,7 +3637,6 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.1"></a>
 ## [0.5.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.0...0.5.1) (2017-09-16)
 
 
@@ -3727,8 +3655,7 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.0"></a>
-# [0.5.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.0-rc.4...0.5.0) (2017-09-09)
+## [0.5.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.0-rc.4...0.5.0) (2017-09-09)
 
 
 ### Bug Fixes
@@ -3757,8 +3684,7 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.0-rc.4"></a>
-# [0.5.0-rc.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.0-rc.3...0.5.0-rc.4) (2017-08-31)
+## [0.5.0-rc.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.0-rc.3...0.5.0-rc.4) (2017-08-31)
 
 
 ### Bug Fixes
@@ -3773,8 +3699,7 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.0-rc.3"></a>
-# [0.5.0-rc.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.0-rc.2...0.5.0-rc.3) (2017-08-26)
+## [0.5.0-rc.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.0-rc.2...0.5.0-rc.3) (2017-08-26)
 
 
 ### Bug Fixes
@@ -3797,8 +3722,7 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.0-rc.2"></a>
-# [0.5.0-rc.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.0-rc.0...0.5.0-rc.2) (2017-08-19)
+## [0.5.0-rc.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/0.5.0-rc.0...0.5.0-rc.2) (2017-08-19)
 
 
 ### Bug Fixes
@@ -3822,7 +3746,4 @@ And the default value of "nzShowExpand" has changed to "true".
 
 
 
-<a name="0.5.0-rc.0"></a>
 # 0.5.0-rc.0 (2017-08-15)
-
-
