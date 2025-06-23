@@ -18,11 +18,11 @@ import {
   numberAttribute
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { from } from 'rxjs';
 
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 
 import { warn } from 'ng-zorro-antd/core/logger';
+import { wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
 import { NzIconPatchService, NzIconService } from './icon.service';
 
@@ -119,7 +119,7 @@ export class NzIconDirective extends IconDirective implements OnChanges, AfterCo
     // HTTP calls. This is used to reduce the number of change detections
     // while the icon is being loaded dynamically.
     this.ngZone.runOutsideAngular(() => {
-      from(this._changeIcon())
+      wrapIntoObservable(this._changeIcon())
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: svgOrRemove => {

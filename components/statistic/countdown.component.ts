@@ -17,7 +17,6 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { Subscription, interval } from 'rxjs';
 
 import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 
@@ -54,7 +53,7 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   diff!: number;
 
   private target: number = 0;
-  private updater_?: Subscription | null;
+  private intervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
     super();
@@ -91,17 +90,19 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
     if (this.platform.isBrowser) {
       this.ngZone.runOutsideAngular(() => {
         this.stopTimer();
-        this.updater_ = interval(REFRESH_INTERVAL).subscribe(() => {
+        this.intervalId = setInterval(() => {
           this.updateValue();
           this.cdr.detectChanges();
-        });
+        }, REFRESH_INTERVAL);
       });
     }
   }
 
   stopTimer(): void {
-    this.updater_?.unsubscribe();
-    this.updater_ = null;
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
   }
 
   /**
