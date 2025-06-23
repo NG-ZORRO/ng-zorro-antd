@@ -33,7 +33,7 @@ import { finalize, take } from 'rxjs/operators';
 import { buildGraph } from 'dagre-compound';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { cancelRequestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
+import { cancelAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { calculateTransform } from './core/utils';
@@ -199,7 +199,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
         this._dataSubscription.unsubscribe();
         this._dataSubscription = null;
       }
-      cancelRequestAnimationFrame(this.requestId);
+      cancelAnimationFrame(this.requestId);
     });
   }
 

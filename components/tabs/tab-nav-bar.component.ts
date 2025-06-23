@@ -38,7 +38,7 @@ import { animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
@@ -229,7 +229,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
       .withWrap();
     this.keyManager.updateActiveItem(this.selectedIndex);
 
-    reqAnimFrame(realign);
+    requestAnimationFrame(realign);
 
     merge(this.nzResizeObserver.observe(this.navWrapRef), this.nzResizeObserver.observe(this.navListRef))
       .pipe(takeUntilDestroyed(this.destroyRef), auditTime(16, RESIZE_SCHEDULER))

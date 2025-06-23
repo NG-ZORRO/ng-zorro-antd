@@ -50,7 +50,7 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
-import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { cancelAnimationFrame, requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NgClassInterface,
   NzSafeAny,
@@ -607,8 +607,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   updateCdkConnectedOverlayStatus(): void {
     if (this.platform.isBrowser && this.originElement.nativeElement) {
       const triggerWidth = this.triggerWidth;
-      cancelRequestAnimationFrame(this.requestId);
-      this.requestId = reqAnimFrame(() => {
+      cancelAnimationFrame(this.requestId);
+      this.requestId = requestAnimationFrame(() => {
         // Blink triggers style and layout pipelines anytime the `getBoundingClientRect()` is called, which may cause a
         // frame drop. That's why it's scheduled through the `requestAnimationFrame` to unload the composite thread.
         this.triggerWidth = this.originElement.nativeElement.getBoundingClientRect().width;
@@ -623,7 +623,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   updateCdkConnectedOverlayPositions(): void {
-    reqAnimFrame(() => {
+    requestAnimationFrame(() => {
       this.cdkConnectedOverlay?.overlayRef?.updatePosition();
     });
   }
@@ -634,7 +634,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   constructor() {
     this.destroyRef.onDestroy(() => {
-      cancelRequestAnimationFrame(this.requestId);
+      cancelAnimationFrame(this.requestId);
       this.focusMonitor.stopMonitoring(this.host);
     });
   }

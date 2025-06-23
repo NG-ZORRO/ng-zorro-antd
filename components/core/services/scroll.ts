@@ -5,7 +5,7 @@
 
 import { DOCUMENT, inject, Injectable, NgZone } from '@angular/core';
 
-import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type EasyingFn = (t: number, b: number, c: number, d: number) => number;
@@ -122,7 +122,7 @@ export class NzScrollService {
         (target as HTMLElement).scrollTop = nextScrollTop;
       }
       if (time < duration) {
-        reqAnimFrame(frameFunc);
+        requestAnimationFrame(frameFunc);
       } else if (typeof callback === 'function') {
         // Caretaker note: the `frameFunc` is called within the `<root>` zone, but we have to re-enter
         // the Angular zone when calling custom callback to be backwards-compatible.
@@ -131,6 +131,6 @@ export class NzScrollService {
     };
     // Caretaker note: the `requestAnimationFrame` triggers change detection, but updating a `scrollTop` property or
     // calling `window.scrollTo` doesn't require Angular to run `ApplicationRef.tick()`.
-    this.ngZone.runOutsideAngular(() => reqAnimFrame(frameFunc));
+    this.ngZone.runOutsideAngular(() => requestAnimationFrame(frameFunc));
   }
 }

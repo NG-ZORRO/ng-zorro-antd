@@ -25,7 +25,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
 
@@ -162,7 +162,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     if (this.document) {
       this.elementFocusedBeforeModalWasOpened = this.document.activeElement as HTMLElement;
       if (this.host.nativeElement.focus) {
-        this.ngZone.runOutsideAngular(() => reqAnimFrame(() => this.host.nativeElement.focus()));
+        this.ngZone.runOutsideAngular(() => requestAnimationFrame(() => this.host.nativeElement.focus()));
       }
     }
   }
