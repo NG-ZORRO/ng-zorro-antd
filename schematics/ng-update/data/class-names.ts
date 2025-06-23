@@ -15,5 +15,11 @@ export const classNames: VersionChanges<ClassNameUpgradeData> = {
       replace: 'NzInputNumberComponent',
       replaceWith: 'NzInputNumberLegacyComponent',
     }]
+  }, {
+    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9238',
+    changes: [{
+      replace: 'NzTabsetComponent',
+      replaceWith: 'NzTabsComponent'
+    }]
   }]
 };
