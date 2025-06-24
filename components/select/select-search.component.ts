@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 import { COMPOSITION_BUFFER_MODE, FormsModule } from '@angular/forms';
 
-import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 
 @Component({
   selector: 'nz-select-search',
@@ -85,7 +85,7 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   }
 
   syncMirrorWidth(): void {
-    reqAnimFrame(() => {
+    requestAnimationFrame(() => {
       const mirrorDOM = this.mirrorElement!.nativeElement;
       const hostDOM = this.elementRef.nativeElement;
       const inputDOM = this.inputElement.nativeElement;

@@ -6,7 +6,7 @@
 import { Directive, ElementRef, Input, NgZone, inject } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
-import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 
 import { NzTabPositionMode } from './interfaces';
 
@@ -31,7 +31,7 @@ export class NzTabsInkBarDirective {
 
   alignToElement(element: HTMLElement): void {
     this.ngZone.runOutsideAngular(() => {
-      reqAnimFrame(() => this.setStyles(element));
+      requestAnimationFrame(() => this.setStyles(element));
     });
   }
 

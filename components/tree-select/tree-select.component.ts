@@ -46,7 +46,7 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NzFormatEmitEvent,
   NzTreeBase,
@@ -694,7 +694,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   updatePosition(): void {
-    reqAnimFrame(() => {
+    requestAnimationFrame(() => {
       this.cdkConnectedOverlay?.overlayRef?.updatePosition();
     });
   }

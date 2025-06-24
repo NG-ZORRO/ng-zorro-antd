@@ -9,7 +9,7 @@ import { drag } from 'd3-drag';
 import { pointer, select } from 'd3-selection';
 import { ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3-zoom';
 
-import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzZoomTransform } from '../interface';
@@ -178,7 +178,7 @@ export class Minimap {
     if (this.translate != null && this.zoom != null) {
       // Update the viewpoint rectangle shape since the aspect ratio of the
       // map has changed.
-      this.ngZone.runOutsideAngular(() => reqAnimFrame(() => this.zoom()));
+      this.ngZone.runOutsideAngular(() => requestAnimationFrame(() => this.zoom()));
     }
 
     // Serialize the main svg to a string which will be used as the rendering
@@ -202,7 +202,7 @@ export class Minimap {
       context!.drawImage(image, minimapOffset.x, minimapOffset.y, this.minimapSize.width, this.minimapSize.height);
 
       this.ngZone.runOutsideAngular(() => {
-        reqAnimFrame(() => {
+        requestAnimationFrame(() => {
           // Hide the old canvas and show the new buffer canvas.
           select(this.canvasBuffer).style('display', 'block');
           select(this.canvas).style('display', 'none');

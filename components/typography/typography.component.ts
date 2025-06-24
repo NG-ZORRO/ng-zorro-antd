@@ -34,7 +34,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { cancelAnimationFrame, requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 import { isStyleSupport, measure } from 'ng-zorro-antd/core/util';
@@ -248,11 +248,11 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   renderOnNextFrame(): void {
-    cancelRequestAnimationFrame(this.requestId);
+    cancelAnimationFrame(this.requestId);
     if (!this.viewInit || !this.nzEllipsis || this.nzEllipsisRows < 0 || this.expanded || !this.platform.isBrowser) {
       return;
     }
-    this.requestId = reqAnimFrame(() => this.syncEllipsis());
+    this.requestId = requestAnimationFrame(() => this.syncEllipsis());
   }
 
   getOriginContentViewRef(): { viewRef: EmbeddedViewRef<{ content: string }>; removeView(): void } {
