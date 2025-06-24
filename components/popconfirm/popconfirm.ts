@@ -9,14 +9,17 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  computed,
   Directive,
   DOCUMENT,
   ElementRef,
   EventEmitter,
   inject,
+  input,
   Input,
   Output,
   QueryList,
+  signal,
   TemplateRef,
   ViewChildren,
   ViewEncapsulation
@@ -36,6 +39,8 @@ import { wrapIntoObservable } from 'ng-zorro-antd/core/util';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
+
+import { NzPopConfirmButtonProps } from './popconfirm-option';
 
 export type NzAutoFocusType = null | 'ok' | 'cancel';
 
@@ -65,17 +70,38 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input('nzPopconfirmOverlayClassName') override overlayClassName?: string;
   @Input('nzPopconfirmOverlayStyle') override overlayStyle?: NgStyleInterface;
   @Input('nzPopconfirmVisible') override visible?: boolean;
-  @Input() nzOkText?: string;
-  @Input() nzOkType?: string;
-  @Input({ transform: booleanAttribute }) nzOkDisabled?: boolean;
-  @Input({ transform: booleanAttribute }) nzOkDanger?: boolean;
-  @Input() nzCancelText?: string;
   @Input() nzBeforeConfirm?: () => Observable<boolean> | Promise<boolean> | boolean;
   @Input() nzIcon?: string | TemplateRef<void>;
   @Input({ transform: booleanAttribute }) nzCondition: boolean = false;
   @Input({ transform: booleanAttribute }) nzPopconfirmShowArrow: boolean = true;
   @Input() @WithConfig() nzPopconfirmBackdrop?: boolean = false;
   @Input() @WithConfig() nzAutofocus: NzAutoFocusType = null;
+
+  nzOkText = input<string | null>(null);
+  nzOkType = input<string>('primary');
+  nzCancelText = input<string | null>(null);
+  nzOkButtonProps = input<null | NzPopConfirmButtonProps>(null);
+  nzCancelButtonProps = input<null | NzPopConfirmButtonProps>(null);
+  /**
+   * @deprecated v21
+   * please use the nzOkButton object input to describe option of the ok button
+   */
+  nzOkDisabled = input(false, { transform: booleanAttribute });
+  /**
+   * @deprecated v21
+   * please use the nzOkButton object input to describe option of the ok button
+   */
+  nzOkDanger = input(false, { transform: booleanAttribute });
+
+  private okButtonProps = computed(() => ({
+    ...this.nzOkButtonProps(),
+    nzType: this.nzOkButtonProps()?.nzType || this.nzOkType() === 'danger' ? 'primary' : this.nzOkType(),
+    nzDanger: this.nzOkDanger() || this.nzOkButtonProps()?.nzDanger || this.nzOkType() === 'danger',
+    nzDisabled: this.nzOkDisabled() || this.nzOkButtonProps()?.nzDisabled
+  }));
+  private cancelButtonProps = computed(() => ({
+    ...this.nzCancelButtonProps()
+  }));
 
   override directiveContent?: NzTSType | null = null;
   override content?: NzTSType | null = null;
@@ -88,10 +114,9 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   protected override getProxyPropertyMap(): PropertyMapping {
     return {
       nzOkText: ['nzOkText', () => this.nzOkText],
-      nzOkType: ['nzOkType', () => this.nzOkType],
-      nzOkDanger: ['nzOkDanger', () => this.nzOkDanger],
-      nzOkDisabled: ['nzOkDisabled', () => this.nzOkDisabled],
       nzCancelText: ['nzCancelText', () => this.nzCancelText],
+      nzOkButtonProps: ['nzOkButtonProps', () => this.okButtonProps],
+      nzCancelButtonProps: ['nzCancelButtonProps', () => this.cancelButtonProps],
       nzBeforeConfirm: ['nzBeforeConfirm', () => this.nzBeforeConfirm],
       nzCondition: ['nzCondition', () => this.nzCondition],
       nzIcon: ['nzIcon', () => this.nzIcon],
@@ -177,30 +202,25 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     #cancelBtn
                     [nzSize]="'small'"
                     (click)="onCancel()"
+                    [disabled]="nzCancelButtonProps()?.nzDisabled"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'cancel' || null"
                   >
-                    @if (nzCancelText) {
-                      {{ nzCancelText }}
-                    } @else {
-                      {{ 'Modal.cancelText' | nzI18n }}
-                    }
+                    @let cancelText = nzCancelText() || ('Modal.cancelText' | nzI18n);
+                    {{ cancelText }}
                   </button>
                   <button
                     nz-button
                     #okBtn
                     [nzSize]="'small'"
-                    [nzType]="nzOkType !== 'danger' ? nzOkType : 'primary'"
-                    [nzDanger]="nzOkDanger || nzOkType === 'danger'"
+                    [nzType]="nzOkButtonProps().nzType"
+                    [nzDanger]="nzOkButtonProps().nzDanger"
                     [nzLoading]="confirmLoading"
-                    [disabled]="nzOkDisabled"
+                    [disabled]="nzOkButtonProps().nzDisabled"
                     (click)="onConfirm()"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'ok' || null"
                   >
-                    @if (nzOkText) {
-                      {{ nzOkText }}
-                    } @else {
-                      {{ 'Modal.okText' | nzI18n }}
-                    }
+                    @let okText = nzOkText() || ('Modal.okText' | nzI18n);
+                    {{ okText }}
                   </button>
                 </div>
               </div>
@@ -227,16 +247,16 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   @ViewChildren('okBtn', { read: ElementRef }) okBtn!: QueryList<ElementRef>;
   @ViewChildren('cancelBtn', { read: ElementRef }) cancelBtn!: QueryList<ElementRef>;
 
-  nzCancelText?: string;
   nzCondition = false;
   nzPopconfirmShowArrow = true;
   nzIcon?: string | TemplateRef<void>;
-  nzOkText?: string;
-  nzOkType: NzButtonType | 'danger' = 'primary';
-  nzOkDanger: boolean = false;
-  nzOkDisabled: boolean = false;
   nzAutoFocus: NzAutoFocusType = null;
   nzBeforeConfirm: (() => Observable<boolean> | Promise<boolean> | boolean) | null = null;
+
+  nzOkText = signal<string | null>(null);
+  nzCancelText = signal<string | null>(null);
+  nzOkButtonProps = signal<NzPopConfirmButtonProps & { nzType: NzButtonType }>({ nzType: 'primary' });
+  nzCancelButtonProps = signal<NzPopConfirmButtonProps | null>(null);
 
   readonly nzOnCancel = new Subject<void>();
   readonly nzOnConfirm = new Subject<void>();

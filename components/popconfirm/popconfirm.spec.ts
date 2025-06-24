@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -14,6 +14,8 @@ import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzAutoFocusType } from 'ng-zorro-antd/popconfirm/popconfirm';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm/popconfirm.module';
+
+import { NzPopConfirmButtonProps } from './popconfirm-option';
 
 describe('NzPopconfirm', () => {
   let fixture: ComponentFixture<NzPopconfirmTestNewComponent>;
@@ -91,6 +93,25 @@ describe('NzPopconfirm', () => {
     fixture.detectChanges();
 
     expect(getTooltipTrigger(1).disabled).toBeTrue();
+  });
+
+  it('should support nzOkButtonProps', () => {
+    fixture.detectChanges();
+    const triggerElement = component.stringTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    component.nzOkButtonProps.update(props => ({ ...props, nzDisabled: true }));
+    fixture.detectChanges();
+    expect(getTooltipTrigger(1).disabled).toBeTrue();
+  });
+
+  it('should support nzCancelButtonProps and disabled the cancel button', () => {
+    fixture.detectChanges();
+    const triggerElement = component.stringTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    expect(getTooltipTrigger(0).disabled).toBeFalse();
+    component.nzCancelButtonProps.update(props => ({ ...props, nzDisabled: true }));
+    fixture.detectChanges();
+    expect(getTooltipTrigger(0).disabled).toBeTrue();
   });
 
   it('should cancel work', fakeAsync(() => {
@@ -290,6 +311,8 @@ describe('NzPopconfirm', () => {
       [nzPopconfirmOverlayClassName]="class"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
+      [nzOkButtonProps]="nzOkButtonProps()"
+      [nzCancelButtonProps]="nzCancelButtonProps()"
     >
       Delete
     </a>
@@ -315,6 +338,10 @@ export class NzPopconfirmTestNewComponent {
   condition = false;
   nzOkType: string = 'default';
   nzOkDisabled: boolean = false;
+  nzCancelText = 'Cancel';
+  nzOkText = 'Ok';
+  nzOkButtonProps = signal<NzPopConfirmButtonProps>({ nzDisabled: false });
+  nzCancelButtonProps = signal<NzPopConfirmButtonProps>({ nzDisabled: false });
   nzPopconfirmShowArrow = true;
   icon: string | undefined = undefined;
   nzPopconfirmBackdrop = false;
