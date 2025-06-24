@@ -193,24 +193,22 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit 
 
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
-      this.ngZone.runOutsideAngular(() => {
-        const scrollEvent$ = this.scroll$.pipe(
-          startWith(null),
-          delay(0),
-          switchMap(() =>
-            fromEventOutsideAngular<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(startWith(true))
-          )
-        );
-        const resize$ = this.resizeService.connect();
-        merge(scrollEvent$, resize$, this.data$, this.scroll$)
-          .pipe(startWith(true), delay(0), takeUntilDestroyed(this.destroyRef))
-          .subscribe(() => this.setScrollPositionClassName());
-        scrollEvent$.pipe(filter(() => !!this.scrollY)).subscribe(() => {
-          this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
-          if (this.tableFootElement) {
-            this.tableFootElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
-          }
-        });
+      const scrollEvent$ = this.scroll$.pipe(
+        startWith(null),
+        delay(0),
+        switchMap(() =>
+          fromEventOutsideAngular<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(startWith(true))
+        )
+      );
+      const resize$ = this.resizeService.connect();
+      merge(scrollEvent$, resize$, this.data$, this.scroll$)
+        .pipe(startWith(true), delay(0), takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.setScrollPositionClassName());
+      scrollEvent$.pipe(filter(() => !!this.scrollY)).subscribe(() => {
+        this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
+        if (this.tableFootElement) {
+          this.tableFootElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
+        }
       });
     }
   }
