@@ -8,7 +8,7 @@ import { Directive, inject } from '@angular/core';
 import { NzTableStyleService } from '../table-style.service';
 
 @Directive({
-  selector: 'th:not(.nz-disable-th):not([mat-cell]), td:not(.nz-disable-td):not([mat-cell])',
+  selector: 'th:not(.nz-disable-th), td:not(.nz-disable-td)',
   host: {
     '[class.ant-table-cell]': 'isInsideTable'
   }

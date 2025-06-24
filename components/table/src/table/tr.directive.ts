@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AfterContentInit, ContentChildren, Directive, QueryList, inject, DestroyRef } from '@angular/core';
+import { AfterContentInit, ContentChildren, DestroyRef, Directive, QueryList, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, ReplaySubject, combineLatest, merge } from 'rxjs';
 import { map, mergeMap, startWith, switchMap } from 'rxjs/operators';
@@ -13,8 +13,7 @@ import { NzThMeasureDirective } from '../cell/th-measure.directive';
 import { NzTableStyleService } from '../table-style.service';
 
 @Directive({
-  selector:
-    'tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand]):not([nz-table-fixed-row])',
+  selector: 'tr:not([nz-table-measure-row]):not([nzExpand]):not([nz-table-fixed-row])',
   host: {
     '[class.ant-table-row]': 'isInsideTable'
   }
