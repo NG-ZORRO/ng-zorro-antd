@@ -11,18 +11,18 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   inject,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -93,8 +93,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
   },
   imports: [NzOutletModule, NzIconModule]
 })
-export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
+export class NzPageHeaderComponent implements AfterViewInit, OnInit {
   private location = inject(Location);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
@@ -109,7 +111,6 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
   compact = false;
-  destroy$ = new Subject<void>();
   dir: Direction = 'ltr';
 
   enableBackButton = true;
@@ -123,7 +124,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -133,17 +134,19 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   ngAfterViewInit(): void {
     if (!this.nzBack.observers.length) {
       this.enableBackButton = (this.location.getState() as NzSafeAny)?.navigationId > 1;
-      this.location.subscribe(() => {
+      // Location is not an RxJS construct, as a result, we can't pipe it.
+      const subscription = this.location.subscribe(() => {
         this.enableBackButton = true;
         this.cdr.detectChanges();
       });
+      this.destroyRef.onDestroy(() => subscription.unsubscribe());
     }
 
     this.nzResizeObserver
       .observe(this.elementRef)
       .pipe(
         map(([entry]) => entry.contentRect.width),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((width: number) => {
         this.compact = width < 768;
@@ -157,11 +160,6 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       this.location.back();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   getBackIcon(): string {
