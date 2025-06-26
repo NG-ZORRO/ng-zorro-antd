@@ -119,7 +119,13 @@ export class NzPaginationComponent implements OnInit, OnChanges {
   private total$ = new ReplaySubject<number>(1);
 
   validatePageIndex(value: number, lastIndex: number): number {
-    return Math.min(Math.max(value, 1), lastIndex);
+    if (value > lastIndex) {
+      return lastIndex;
+    } else if (value < 1) {
+      return 1;
+    } else {
+      return value;
+    }
   }
 
   onPageIndexChange(index: number): void {
