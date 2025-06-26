@@ -17,11 +17,11 @@ description: Used to represent users or things, supporting the display of images
 | `[nzSize]`          | The size of the avatar                                                                             | `'large' \| 'small' \| 'default' \| number` | `'default'` | ✅            |
 | `[nzGap]`           | Letter type unit distance between left and right sides                                             | `number`                                    | `4`         | ✅            |
 | `[nzSrc]`           | Avatar image URL                                                                                   | `string`                                    | -           |
-| `[nzSrcSet]`        | a list of sources to use for different screen resolutions                                          | string                                      | -           |
-| `[nzAlt]`           | This attribute defines the alternative text describing the image                                   | string                                      | -           |
+| `[nzSrcSet]`        | a list of sources to use for different screen resolutions                                          | `string`                                    | -           |
+| `[nzAlt]`           | This attribute defines the alternative text describing the image                                   | `string`                                    | -           |
 | `[nzText]`          | Letter type avatar                                                                                 | `string`                                    | -           |
-| `[nzLoading]`       | Sets the native `loading` attribute on the avatar image element                                    | `'eager' \| 'lazy'`                         | `'eager'`   |               |
-| `[nzFetchPriority]` | Sets the native `fetchpriority` attribute on the avatar image element                              | `'high' \| 'low' \| 'auto'`                 | `'auto'`    |               |
+| `[nzLoading]`       | Sets the native [`loading`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#loading) attribute on the avatar image element                                    | `'eager' \| 'lazy'`                         | `'eager'`   |               |
+| `[nzFetchPriority]` | Sets the native [`fetchpriority`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#fetchpriority) attribute on the avatar image element                              | `'high' \| 'low' \| 'auto'`                 | `'auto'`    |               |
 | `(nzError)`         | Handler when img load error, call the `preventDefault` method to prevent default fallback behavior | `EventEmitter<Event>`                       | -           |
 
 ### nz-avatar-group
