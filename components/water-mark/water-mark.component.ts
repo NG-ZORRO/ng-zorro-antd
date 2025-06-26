@@ -3,8 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { isPlatformServer } from '@angular/common';
 import {
-  AfterViewInit,
+  afterNextRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -16,6 +17,7 @@ import {
   numberAttribute,
   OnChanges,
   OnInit,
+  PLATFORM_ID,
   SimpleChanges
 } from '@angular/core';
 
@@ -38,7 +40,7 @@ const FontGap = 3;
     class: 'ant-water-mark'
   }
 })
-export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges {
+export class NzWaterMarkComponent implements OnInit, OnChanges {
   @Input({ transform: numberAttribute }) nzWidth: number = 120;
   @Input({ transform: numberAttribute }) nzHeight: number = 64;
   @Input({ transform: numberAttribute }) nzRotate: number = -22;
@@ -49,42 +51,47 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges {
   @Input() nzGap: [number, number] = [100, 100];
   @Input() nzOffset: [number, number] = [this.nzGap[0] / 2, this.nzGap[1] / 2];
 
+  private isServer = isPlatformServer(inject(PLATFORM_ID));
+
   private document: Document = inject(DOCUMENT);
   private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-  private destroyRef = inject(DestroyRef);
 
   waterMarkElement: HTMLDivElement = this.document.createElement('div');
   stopObservation: boolean = false;
 
-  observer = new MutationObserver(mutations => {
-    if (this.stopObservation) {
-      return;
-    }
-    mutations.forEach(mutation => {
-      if (reRendering(mutation, this.waterMarkElement)) {
-        this.destroyWatermark();
-        this.renderWatermark();
-      }
-    });
-  });
+  private observer: MutationObserver | null = null;
 
   constructor() {
-    this.destroyRef.onDestroy(() => {
-      this.observer.disconnect();
+    if (this.isServer) {
+      return;
+    }
+
+    const observer = (this.observer = new MutationObserver(mutations => {
+      if (this.stopObservation) {
+        return;
+      }
+      mutations.forEach(mutation => {
+        if (reRendering(mutation, this.waterMarkElement)) {
+          this.destroyWatermark();
+          this.renderWatermark();
+        }
+      });
+    }));
+
+    afterNextRender(() => {
+      this.renderWatermark();
     });
+
+    inject(DestroyRef).onDestroy(() => observer.disconnect());
   }
 
   ngOnInit(): void {
-    this.observer.observe(this.el, {
+    this.observer?.observe(this.el, {
       subtree: true,
       childList: true,
       attributeFilter: ['style', 'class']
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.renderWatermark();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -228,6 +235,10 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges {
   }
 
   renderWatermark(): void {
+    if (this.isServer) {
+      return;
+    }
+
     if (!this.nzContent && !this.nzImage) {
       return;
     }
