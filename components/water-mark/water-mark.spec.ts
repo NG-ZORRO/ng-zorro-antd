@@ -3,9 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, destroyPlatform } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import { bootstrapApplication, By } from '@angular/platform-browser';
+import { renderApplication } from '@angular/platform-server';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { FontType } from './typings';
 import { NzWaterMarkComponent } from './water-mark.component';
@@ -85,7 +88,39 @@ describe('water-mark', () => {
   }));
 });
 
+describe('water-mark (SSR)', () => {
+  it('should render water mark on server', async () => {
+    destroyPlatform();
+
+    // `as any` because `ngDevMode` is not exposed on the global namespace typings.
+    const ngDevMode = (globalThis as NzSafeAny)['ngDevMode'];
+
+    try {
+      // Disable development-mode checks for these tests (we don't care).
+      (globalThis as NzSafeAny)['ngDevMode'] = false;
+      // Enter server mode for the duration of this function.
+      globalThis['ngServerMode'] = true;
+
+      const bootstrap = (): Promise<ApplicationRef> =>
+        bootstrapApplication(NzTestWaterMarkBasicComponent, { providers: [] });
+      const html = await renderApplication(bootstrap, {
+        document: '<html><head></head><body><nz-app></nz-app></body></html>'
+      });
+
+      expect(html).toContain('<nz-water-mark class="ant-water-mark water-mark">');
+    } finally {
+      // Restore the original value.
+      (globalThis as NzSafeAny)['ngDevMode'] = ngDevMode;
+      // Leave server mode so the remaining test is back in "client mode".
+      globalThis['ngServerMode'] = undefined;
+    }
+
+    destroyPlatform();
+  });
+});
+
 @Component({
+  selector: 'nz-app',
   imports: [NzWaterMarkModule],
   template: `
     <nz-water-mark
