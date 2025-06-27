@@ -46,7 +46,7 @@ NG-ZORRO
 
 ## 🖥 支持环境
 
-- Angular `^19.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- Angular `^20.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 - 支持服务端渲染
 - 现代浏览器，[浏览器支持](https://angular.cn/reference/versions#browser-support)
 - [Electron](http://electron.atom.io/)
