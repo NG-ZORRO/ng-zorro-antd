@@ -39,7 +39,7 @@ export default (nzVersion: string, ngVersion: string) => {
       '@angular-devkit/build-angular': ngVersion,
       '@angular/cli': ngVersion,
       '@angular/compiler-cli': ngVersion,
-      typescript: '~5.5.0'
+      typescript: '~5.8.2'
     }
   };
 };

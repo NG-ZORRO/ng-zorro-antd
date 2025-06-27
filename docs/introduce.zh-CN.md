@@ -36,7 +36,7 @@ title: Ant Design of Angular
 
 ## 支持 Angular 版本
 
-`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^19.0.0` 版本。
+`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^20.0.0` 版本。
 
 ## 设计规范
 

@@ -13,7 +13,99 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
-### 19.3.1
+## 20.0.0
+
+`2025-06-27`
+
+### Features
+
+* **cascader,date-picker,input-number,input,select,time-picker,tree-select:** support `nzVariant` ([#9131](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9131)) ([b342bb4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b342bb464eb544a2e3fda8723cac7e550828b3f2))
+* **popover:** add `nzPopoverTitleContext` and `nzPopoverContentContext` ([#9126](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9126)) ([df3ead9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/df3ead9af8368eb7e2374744f01cecd5ccc21440))
+* **select:** add `nzOnClear` callback ([#9188](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9188)) ([e047ac2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e047ac249b16b547525a0ca4d13beeef620f44c4))
+* **avatar:** add `loading` and `fetchpriority` attributes ([#7347](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7347)) ([ff8419f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ff8419f6614bdac8bc3c778e470da08b679889d0))
+* **popconfirm:** add `nzOkButtonProps` and `nzCancelButtonProps` ([#9245](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9245)) ([22e2a9f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/22e2a9fb148fd875c76fb339c6582d92aef62791))
+
+### Bug Fixes
+
+* **flex:** fix `NzAlign` type ([#9151](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9151)) ([b271c19](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b271c19076ead71fabbe5b224072cfea975d801d))
+* **segmented:** accepts disabled state from ng control ([#9166](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9166)) ([134cd59](https://github.com/NG-ZORRO/ng-zorro-antd/commit/134cd5976220d51179118491a4b4b2e4d7cf761c))
+* **space:** border radius compact mode one item ([#9165](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9165)) ([d2f4541](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d2f4541a9ae01d6ea8705faf2bc4b96bf34b6945))
+* **tabs:** prevent incorrect scroll offset on tab focus ([#9186](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9186)) ([4f658e0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4f658e0834e99ea2be0ffd4ead2dd041ec88fb83))
+* **schematics:** ng add failed when call twice ([#9171](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9171)) ([d0a9748](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d0a974848c0e31ad41ba69a5af60c002a7b251cd))
+* **water-mark:** make server-side compatible ([#9250](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9250)) ([a70a682](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a70a682c8aa4d073bb150abd4b69104fbe21e2ed))
+
+### Code Refactoring
+
+* **core:** cleanup animation frame polyfill ([#9243](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9243)) ([272237a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/272237a7a33d150ac9c0f6965df37a678221b074))
+* migrate to `inject` pattern
+
+### ⚠ BREAKING CHANGES
+
+* **core:** refactoring in `ng-zorro-antd/core/polyfill`:
+  - rename `cancelRequestAnimationFrame` to `cancelAnimationFrame`
+  - rename `reqAnimFrame` to `requestAnimationFrame`
+* **tabs:** rename `NzTabsetComponent` to `NzTabsComponent`, `nz-tabset` selector to `nz-tabs`, the original component and selector are marked as deprecated
+* **table:** no longer compatible with material components
+- **popconfirm:** `nzOkDisabled` and `nzOkDanger` are marked as deprecated, use `nzOkButtonProps` and `nzCancelButtonProps` instead
+
+Remove the following APIs which were marked as deprecated in the previous version:
+
+| Module                       | API                                                      |
+|------------------------------|----------------------------------------------------------|
+| `ng-zorro-antd/button`       | `NzButtonGroupComponent`                                 |
+| `ng-zorro-antd/core/form`    | `NzFormPatchModule`                                      |
+| `ng-zorro-antd/checkbox`     | `NzCheckBoxOptionInterface`                              |
+| `ng-zorro-antd/input`        | `NzInputGroupComponent#nzCompact`                        |
+| `ng-zorro-antd/message`      | `NzMessageModule`                                        |
+| `ng-zorro-antd/notification` | `NzNotificationModule`<br/>`NzNotificationServiceModule` |
+
+The `exportAs` of components are updated to follow `camelCase` and start with `nz`, `exportAs` of internal components are removed. Changes can be seen as follow:
+
+| Component                | Original               | Current                |
+|--------------------------|------------------------|------------------------|
+| `calendar-footer`        | `calendarFooter`       | -                      |
+| `date-helper`            | `dateHelper`           | -                      |
+| `date-range-popup`       | `dateRangePopup`       | -                      |
+| `date-table`             | `dateTable`            | -                      |
+| `decade-helper`          | `decadeHelper`         | -                      |
+| `decade-table`           | `decadeTable`          | -                      |
+| `month-helper`           | `monthHelper`          | -                      |
+| `month-table`            | `monthTable`           | -                      |
+| `quarter-helper`         | `quarterHelper`        | -                      |
+| `quarter-table`          | `quarterTable`         | -                      |
+| `year-helper`            | `yearHelper`           | -                      |
+| `year-table`             | `yearTable`            | -                      |
+| `inner-popup`            | `innerPopup`           | -                      |
+| `nz-color-block`         | `NzColorBlock`         | `nzColorBlock`         |
+| `nz-color-format`        | `NzColorFormat`        | `nzColorFormat`        |
+| `nz-color-picker`        | `NzColorPicker`        | `nzColorPicker`        |
+| `nz-model-close`         | `NzModalCloseBuiltin`  | `nzModalCloseBuiltin`  |
+| `nz-model-footer`        | `NzModalFooterBuiltin` | `nzModalFooterBuiltin` |
+| `nz-model-title`         | `NzModalTitleBuiltin`  | `nzModalTitleBuiltin`  |
+| `nz-tree-drop-indicator` | `NzTreeDropIndicator`  | `nzTreeDropIndicator`  |
+| `nz-water-mark`          | `NzWaterMark`          | `nzWaterMark`          |
+| `nz-tabs`                | `nzTabset`             | `nzTabs`               |
+
+### Deprecations
+
+The following APIs are marked as **deprecated** in v20 and will be removed in the next major version.
+Please refer to related documentation for better alternatives.
+
+| Module                       | API                                                                          |
+|------------------------------|------------------------------------------------------------------------------|
+| `ng-zorro-antd/autocomplete` | `NZ_AUTOCOMPLETE_VALUE_ACCESSOR` <br /> `getNzAutocompleteMissingPanelError` |
+| `ng-zorro-antd/button`       | `NzButtonGroupComponent`                                                     |
+| `ng-zorro-antd/core/form`    | `NzFormPatchModule`                                                          |
+| `ng-zorro-antd/checkbox`     | `NzCheckBoxOptionInterface`                                                  |
+| `ng-zorro-antd/input`        | `NzInputGroupComponent#nzCompact`                                            |
+| `ng-zorro-antd/mention`      | `NZ_MENTION_TRIGGER_ACCESSOR`                                                |
+| `ng-zorro-antd/message`      | `NzMessageModule`                                                            |
+| `ng-zorro-antd/notification` | `NzNotificationModule`<br/>`NzNotificationServiceModule`                     |
+| `ng-zorro-antd/tabs`         | `NzTabsetComponent`                                                          |
+
+
+
+## 19.3.1
 
 `2025-05-29`
 
@@ -24,7 +116,7 @@ timeline: true
 * **tabs:** `nzLinkRouter` not work for the first time load ([#9130](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9130)) ([925a6a5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/925a6a54dd477b687b3dd0b836c32cb17e6d8a0f))
 
 
-### 19.3.0
+## 19.3.0
 
 `2025-05-23`
 
@@ -46,7 +138,7 @@ timeline: true
 * **transfer:** use item.key as tracking for the list render ([#9123](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9123)) ([adb91e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/adb91e4ba0cbcfc72cccb26a66580fa19dc9c8aa))
 
 
-### 19.2.2
+## 19.2.2
 
 `2025-04-25`
 
@@ -58,7 +150,7 @@ timeline: true
 * **select:** limit number of pasted item to `nzMaxMultipleCount` ([#9080](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9080)) ([3714840](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3714840a8a72d4d7809a2cac339dd3891052225d))
 
 
-### 19.2.1
+## 19.2.1
 
 `2025-03-29`
 

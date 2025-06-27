@@ -13,7 +13,98 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
-### 19.3.1
+## 20.0.0
+
+`2025-06-27`
+
+### Features
+
+* **cascader,date-picker,input-number,input,select,time-picker,tree-select:** 新增 `nzVariant` 属性设置变体 ([#9131](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9131)) ([b342bb4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b342bb464eb544a2e3fda8723cac7e550828b3f2))
+* **popover:** 新增 `nzPopoverTitleContext` 和 `nzPopoverContentContext` 属性 ([#9126](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9126)) ([df3ead9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/df3ead9af8368eb7e2374744f01cecd5ccc21440))
+* **select:** 新增 `nzOnClear` 事件回调 ([#9188](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9188)) ([e047ac2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e047ac249b16b547525a0ca4d13beeef620f44c4))
+* **avatar:** 支持设置原生 `<img>` 的 `loading` 和 `fetchpriority` 属性 ([#7347](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7347)) ([ff8419f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ff8419f6614bdac8bc3c778e470da08b679889d0))
+* **popconfirm:** 新增 `nzOkButtonProps` 和 `nzCancelButtonProps` ([#9245](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9245)) ([22e2a9f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/22e2a9fb148fd875c76fb339c6582d92aef62791))
+
+### Bug Fixes
+
+* **flex:** 修复 `NzAlign` 类型 ([#9151](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9151)) ([b271c19](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b271c19076ead71fabbe5b224072cfea975d801d))
+* **segmented:** 接受 ng control 的禁用状态 ([#9166](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9166)) ([134cd59](https://github.com/NG-ZORRO/ng-zorro-antd/commit/134cd5976220d51179118491a4b4b2e4d7cf761c))
+* **space:** 紧凑模式下只有一个子元素时的 border-radius 不正确 ([#9165](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9165)) ([d2f4541](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d2f4541a9ae01d6ea8705faf2bc4b96bf34b6945))
+* **tabs:** 修复 tab focus 时不正确的滚动行为 ([#9186](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9186)) ([4f658e0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4f658e0834e99ea2be0ffd4ead2dd041ec88fb83))
+* **schematics:** 修复重复执行 `ng add` 时的问题 ([#9171](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9171)) ([d0a9748](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d0a974848c0e31ad41ba69a5af60c002a7b251cd))
+* **water-mark:** 修复 ssr 模式的兼容问题 ([#9250](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9250)) ([a70a682](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a70a682c8aa4d073bb150abd4b69104fbe21e2ed))
+
+### Code Refactoring
+
+* **core:** 移除对 animation frame 的 polyfill ([#9243](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9243)) ([272237a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/272237a7a33d150ac9c0f6965df37a678221b074))
+* 从基于 `constructor` 的依赖注入模式迁移到  `inject`
+
+### ⚠ BREAKING CHANGES
+
+* **core:** 移除对 animation frame 的 polyfill
+  - 重命名 `cancelRequestAnimationFrame` 为 `cancelAnimationFrame`
+  - 重命名 `reqAnimFrame` 为 `requestAnimationFrame`
+* **tabs:** 废弃 `NzTabsetComponent` 并重命名为 `NzTabsComponent`，废弃 `nz-tabset` 选择器并重命名为 `nz-tabs`
+* **table:** 移除对 material 组件的兼容
+- **popconfirm:** 废弃 `nzOkDisabled` 和 `nzOkDanger`，请使用 `nzOkButtonProps` 代替
+
+移除以下在过去的版本中标记为废弃的 API:
+
+| Module                       | API                                                      |
+|------------------------------|----------------------------------------------------------|
+| `ng-zorro-antd/button`       | `NzButtonGroupComponent`                                 |
+| `ng-zorro-antd/core/form`    | `NzFormPatchModule`                                      |
+| `ng-zorro-antd/checkbox`     | `NzCheckBoxOptionInterface`                              |
+| `ng-zorro-antd/input`        | `NzInputGroupComponent#nzCompact`                        |
+| `ng-zorro-antd/message`      | `NzMessageModule`                                        |
+| `ng-zorro-antd/notification` | `NzNotificationModule`<br/>`NzNotificationServiceModule` |
+
+组件的 `exportAs` 属性命名统一采用小驼峰 `camelCase` 且以 `nz` 开头，并移除一些内部组件的 `exportAs` 属性。变化如下：
+
+| Component                | Original               | Current                |
+|--------------------------|------------------------|------------------------|
+| `calendar-footer`        | `calendarFooter`       | -                      |
+| `date-helper`            | `dateHelper`           | -                      |
+| `date-range-popup`       | `dateRangePopup`       | -                      |
+| `date-table`             | `dateTable`            | -                      |
+| `decade-helper`          | `decadeHelper`         | -                      |
+| `decade-table`           | `decadeTable`          | -                      |
+| `month-helper`           | `monthHelper`          | -                      |
+| `month-table`            | `monthTable`           | -                      |
+| `quarter-helper`         | `quarterHelper`        | -                      |
+| `quarter-table`          | `quarterTable`         | -                      |
+| `year-helper`            | `yearHelper`           | -                      |
+| `year-table`             | `yearTable`            | -                      |
+| `inner-popup`            | `innerPopup`           | -                      |
+| `nz-color-block`         | `NzColorBlock`         | `nzColorBlock`         |
+| `nz-color-format`        | `NzColorFormat`        | `nzColorFormat`        |
+| `nz-color-picker`        | `NzColorPicker`        | `nzColorPicker`        |
+| `nz-model-close`         | `NzModalCloseBuiltin`  | `nzModalCloseBuiltin`  |
+| `nz-model-footer`        | `NzModalFooterBuiltin` | `nzModalFooterBuiltin` |
+| `nz-model-title`         | `NzModalTitleBuiltin`  | `nzModalTitleBuiltin`  |
+| `nz-tree-drop-indicator` | `NzTreeDropIndicator`  | `nzTreeDropIndicator`  |
+| `nz-water-mark`          | `NzWaterMark`          | `nzWaterMark`          |
+| `nz-tabs`                | `nzTabset`             | `nzTabs`               |
+
+### Deprecations
+
+在 v20 中，以下 API 被标记为 **deprecated**，并将在下一个主要版本中移除。 请参考相关文档以获取更好的替代方案。
+
+| Module                       | API                                                                          |
+|------------------------------|------------------------------------------------------------------------------|
+| `ng-zorro-antd/autocomplete` | `NZ_AUTOCOMPLETE_VALUE_ACCESSOR` <br /> `getNzAutocompleteMissingPanelError` |
+| `ng-zorro-antd/button`       | `NzButtonGroupComponent`                                                     |
+| `ng-zorro-antd/core/form`    | `NzFormPatchModule`                                                          |
+| `ng-zorro-antd/checkbox`     | `NzCheckBoxOptionInterface`                                                  |
+| `ng-zorro-antd/input`        | `NzInputGroupComponent#nzCompact`                                            |
+| `ng-zorro-antd/mention`      | `NZ_MENTION_TRIGGER_ACCESSOR`                                                |
+| `ng-zorro-antd/message`      | `NzMessageModule`                                                            |
+| `ng-zorro-antd/notification` | `NzNotificationModule`<br/>`NzNotificationServiceModule`                     |
+| `ng-zorro-antd/tabs`         | `NzTabsetComponent`                                                          |
+
+
+
+## 19.3.1
 
 `2025-05-29`
 
@@ -24,7 +115,7 @@ timeline: true
 * **tabs:** 修复首次加载页面时 `nzLinkRouter` 不生效的问题 ([#9130](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9130)) ([925a6a5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/925a6a54dd477b687b3dd0b836c32cb17e6d8a0f))
 
 
-### 19.3.0
+## 19.3.0
 
 `2025-05-23`
 
@@ -47,7 +138,7 @@ timeline: true
 * **transfer:** 使用 item.key 跟踪数据条目  ([#9123](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9123)) ([adb91e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/adb91e4ba0cbcfc72cccb26a66580fa19dc9c8aa))
 
 
-### 19.2.2
+## 19.2.2
 
 `2025-04-25`
 
@@ -59,7 +150,7 @@ timeline: true
 * **checkbox:** 修正 `nzOptions` 的类型定义 ([#9099](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9099)) ([7be2fe5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7be2fe5412aa00b9178dcae49f202b21a1b7e9e8))
 
 
-### 19.2.1
+## 19.2.1
 
 `2025-03-29`
 
