@@ -18,9 +18,8 @@ import {
   inject,
   DestroyRef
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { ImagePreloadService, PreloadDisposeHandle } from 'ng-zorro-antd/core/services';
 import { NzImageDirective } from 'ng-zorro-antd/image';
@@ -55,7 +54,6 @@ const sizeBreakpoints = [16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080,
   imports: [NzImageDirective]
 })
 export class NzImageViewComponent implements OnInit, OnChanges {
-  private nzConfigService = inject(NzConfigService);
   private cdr = inject(ChangeDetectorRef);
   private imagePreloadService = inject(ImagePreloadService);
   private destroyRef = inject(DestroyRef);
@@ -83,13 +81,10 @@ export class NzImageViewComponent implements OnInit, OnChanges {
   private reloadDisposeHandler: PreloadDisposeHandle = () => void 0;
 
   constructor() {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.composeImageAttrs();
-        this.cdr.markForCheck();
-      });
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.composeImageAttrs();
+      this.cdr.markForCheck();
+    });
 
     this.destroyRef.onDestroy(() => {
       this.reloadDisposeHandler();

@@ -32,7 +32,7 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { measureScrollbar } from 'ng-zorro-antd/core/util';
 import { NzPaginationModule, PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
@@ -163,7 +163,6 @@ export class NzTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
 
   private elementRef = inject(ElementRef);
   private nzResizeObserver = inject(NzResizeObserver);
-  private nzConfigService = inject(NzConfigService);
   private cdr = inject(ChangeDetectorRef);
   private nzTableStyleService = inject(NzTableStyleService);
   private nzTableDataService = inject(NzTableDataService<T>);
@@ -239,10 +238,7 @@ export class NzTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
   }
 
   constructor() {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => this.cdr.markForCheck());
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
   }
 
   ngOnInit(): void {

@@ -30,7 +30,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NgClassType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -86,7 +86,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
 export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  public readonly nzConfigService = inject(NzConfigService);
   private readonly ngZone = inject(NgZone);
   private readonly renderer = inject(Renderer2);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -132,6 +131,10 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     this.hoverValue = Math.ceil(input);
   }
 
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { nzAutoFocus, nzCount, nzValue } = changes;
 
@@ -154,11 +157,6 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   }
 
   ngOnInit(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.cdr.markForCheck());
-
     this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();

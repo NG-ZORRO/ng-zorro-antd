@@ -8,7 +8,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DestroyRef,
   inject,
   Injector,
   Input,
@@ -20,10 +19,8 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { startWith } from 'rxjs/operators';
 
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigService, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize } from './config';
@@ -81,7 +78,6 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit {
   private viewContainerRef = inject(ViewContainerRef);
   private cdr = inject(ChangeDetectorRef);
   private injector = inject(Injector);
-  private destroyRef = inject(DestroyRef);
 
   @Input() nzComponentName?: string;
   @Input() specificContent?: NzEmptyCustomContent;
@@ -90,6 +86,13 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit {
   contentType: NzEmptyContentType = 'string';
   contentPortal?: Portal<NzSafeAny>;
   size: NzEmptySize = '';
+
+  constructor() {
+    onConfigChangeEventForComponent('empty', () => {
+      this.content = this.specificContent || this.getUserDefaultEmptyContent();
+      this.renderEmpty();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzComponentName) {
@@ -103,7 +106,8 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    this.subscribeDefaultEmptyContentChange();
+    this.content = this.specificContent || this.getUserDefaultEmptyContent();
+    this.renderEmpty();
   }
 
   private renderEmpty(): void {
@@ -128,16 +132,6 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit {
     }
 
     this.cdr.detectChanges();
-  }
-
-  private subscribeDefaultEmptyContentChange(): void {
-    this.configService
-      .getConfigChangeEventForComponent('empty')
-      .pipe(startWith(true), takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.content = this.specificContent || this.getUserDefaultEmptyContent();
-        this.renderEmpty();
-      });
   }
 
   private getUserDefaultEmptyContent(): Type<NzSafeAny> | TemplateRef<string> | string | undefined {

@@ -4,13 +4,12 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { DestroyRef, inject, Injectable, InjectionToken } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { inject, Injectable, InjectionToken } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 
-import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { IconConfig, NzConfigService, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 
 import { NZ_ICONS_USED_BY_ZORRO } from './icons';
@@ -31,7 +30,6 @@ export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 })
 export class NzIconService extends IconService {
   protected nzConfigService = inject(NzConfigService);
-  private destroyRef = inject(DestroyRef);
   private platform = inject(Platform);
 
   configUpdated$ = new Subject<void>();
@@ -79,14 +77,11 @@ export class NzIconService extends IconService {
   }
 
   private onConfigChange(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent('icon')
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.configDefaultTwotoneColor();
-        this.configDefaultTheme();
-        this.configUpdated$.next();
-      });
+    onConfigChangeEventForComponent('icon', () => {
+      this.configDefaultTwotoneColor();
+      this.configDefaultTheme();
+      this.configUpdated$.next();
+    });
   }
 
   private configDefaultTheme(): void {

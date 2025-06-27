@@ -24,7 +24,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs/operators';
 
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
@@ -78,7 +78,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
   imports: [NzOutletModule, NzIconModule]
 })
 export class NzCollapsePanelComponent implements OnInit {
-  public nzConfigService = inject(NzConfigService);
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
@@ -102,12 +101,7 @@ export class NzCollapsePanelComponent implements OnInit {
   }
 
   constructor() {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
 
     this.destroyRef.onDestroy(() => {
       this.nzCollapseComponent.removePanel(this);

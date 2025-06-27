@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DestroyRef, DOCUMENT, inject, Injectable } from '@angular/core';
+import { DOCUMENT, inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { CodeEditorConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { CodeEditorConfig, NzConfigService, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { PREFIX, warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -56,14 +56,12 @@ export class NzCodeEditorService {
     }
     this.option = this.config.defaultEditorOption || {};
 
-    const subscription = this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME).subscribe(() => {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
       const newGlobalConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
       if (newGlobalConfig) {
         this._updateDefaultOption(newGlobalConfig.defaultEditorOption);
       }
     });
-
-    inject(DestroyRef).onDestroy(() => subscription.unsubscribe());
   }
 
   private _updateDefaultOption(option: JoinedEditorOptions): void {

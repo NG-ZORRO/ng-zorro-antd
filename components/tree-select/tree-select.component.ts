@@ -42,7 +42,7 @@ import { Subject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, filter, map, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
@@ -267,7 +267,6 @@ const listOfPositions = [
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  nzConfigService = inject(NzConfigService);
   private renderer = inject(Renderer2);
   private cdr = inject(ChangeDetectorRef);
   private elementRef = inject(ElementRef);
@@ -389,17 +388,15 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.destroyRef.onDestroy(() => {
       this.closeDropDown();
     });
+
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.size.set(this.nzSize);
+      this.cdr.markForCheck();
+    });
   }
 
   ngOnInit(): void {
     this.size.set(this.nzSize);
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.size.set(this.nzSize);
-        this.cdr.markForCheck();
-      });
 
     this.nzFormStatusService?.formStatusChanges
       .pipe(

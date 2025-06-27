@@ -46,7 +46,7 @@ import { BehaviorSubject, combineLatest, merge, of as observableOf } from 'rxjs'
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
@@ -232,7 +232,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   private readonly ngZone = inject(NgZone);
-  public readonly nzConfigService = inject(NzConfigService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly renderer = inject(Renderer2);
@@ -637,6 +636,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       cancelAnimationFrame(this.requestId);
       this.focusMonitor.stopMonitoring(this.host);
     });
+
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.size.set(this.nzSize);
+      this.cdr.markForCheck();
+    });
   }
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
@@ -774,14 +778,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       this.dir = direction;
       this.cdr.detectChanges();
     });
-
-    this.nzConfigService
-      .getConfigChangeEventForComponent('select')
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.size.set(this.nzSize);
-        this.cdr.markForCheck();
-      });
 
     this.dir = this.directionality.value;
 

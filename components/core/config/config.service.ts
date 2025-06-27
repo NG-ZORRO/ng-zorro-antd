@@ -3,8 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CSP_NONCE, Injectable, inject } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { CSP_NONCE, DestroyRef, Injectable, afterNextRender, assertInInjectionContext, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -58,6 +59,41 @@ export class NzConfigService {
     }
     this.configUpdated$.next(componentName);
   }
+}
+
+/**
+ * Subscribes to configuration change events for a specific NZ component after the next render cycle.
+ *
+ * This utility is intended for use within Angular injection contexts and handles automatic
+ * unsubscription via `DestroyRef`. It returns a cleanup function that can be manually called
+ * to unsubscribe early if needed.
+ *
+ * @param componentName - The name of the component (as defined in `NzConfigKey`) to listen for config changes.
+ * @param callback - A function to invoke when the component's configuration changes.
+ * @returns A cleanup function that destroys the post-render effect and unsubscribes from the config event.
+ *
+ * @throws If called outside of an Angular injection context (in dev mode).
+ */
+export function onConfigChangeEventForComponent(componentName: NzConfigKey, callback: () => void): () => void {
+  if (typeof ngDevMode !== 'undefined' && ngDevMode) {
+    assertInInjectionContext(onConfigChangeEventForComponent);
+  }
+
+  const destroyRef = inject(DestroyRef);
+  const nzConfigService = inject(NzConfigService);
+  let subscription: Subscription | null = null;
+
+  const ref = afterNextRender(() => {
+    subscription = nzConfigService
+      .getConfigChangeEventForComponent(componentName)
+      .pipe(takeUntilDestroyed(destroyRef))
+      .subscribe(callback);
+  });
+
+  return () => {
+    ref.destroy();
+    subscription?.unsubscribe();
+  };
 }
 
 /**

@@ -24,7 +24,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
@@ -72,7 +72,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
 export class NzSpinComponent implements OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  nzConfigService = inject(NzConfigService);
   private cdr = inject(ChangeDetectorRef);
   private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
@@ -89,6 +88,10 @@ export class NzSpinComponent implements OnChanges, OnInit {
   readonly isLoading = signal(false);
 
   dir: Direction = 'ltr';
+
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
+  }
 
   ngOnInit(): void {
     this.delay$
@@ -117,11 +120,6 @@ export class NzSpinComponent implements OnChanges, OnInit {
       .subscribe(isLoading => {
         this.isLoading.set(isLoading);
       });
-
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.cdr.markForCheck());
 
     this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;

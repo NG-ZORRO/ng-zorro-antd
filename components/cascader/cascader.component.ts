@@ -46,7 +46,7 @@ import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import {
@@ -488,7 +488,6 @@ export class NzCascaderComponent
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
-  private nzConfigService = inject(NzConfigService);
   public cascaderService = inject(NzCascaderService);
 
   constructor() {
@@ -500,6 +499,11 @@ export class NzCascaderComponent
     this.destroyRef.onDestroy(() => {
       this.clearDelayMenuTimer();
       this.clearDelaySelectTimer();
+    });
+
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.size.set(this.nzSize);
+      this.cdr.markForCheck();
     });
   }
 
@@ -556,13 +560,6 @@ export class NzCascaderComponent
     });
 
     this.size.set(this.nzSize);
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.size.set(this.nzSize);
-        this.cdr.markForCheck();
-      });
 
     this.dir = this.directionality.value;
     this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {

@@ -28,7 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
@@ -80,7 +80,6 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   private elementRef = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
   private renderer = inject(Renderer2);
-  public nzConfigService = inject(NzConfigService);
   private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -131,15 +130,15 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
     return !!this.nzIconDirectiveElement && noSpan && noText;
   }
 
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.size.set(this.nzSize);
+      this.cdr.markForCheck();
+    });
+  }
+
   ngOnInit(): void {
     this.size.set(this.nzSize);
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.size.set(this.nzSize);
-        this.cdr.markForCheck();
-      });
 
     this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
