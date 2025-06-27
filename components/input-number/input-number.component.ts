@@ -340,7 +340,8 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  writeValue(value: number | null): void {
+  writeValue(value: number | null | undefined): void {
+    if (isNil(value)) value = null;
     untracked(() => {
       this.value.set(value);
       this.setValue(value);
@@ -531,7 +532,7 @@ const STEP_INTERVAL = 200;
 const STEP_DELAY = 600;
 
 function defaultParser(value: string): number {
-  return +value.trim().replace(/。/g, '.');
+  return parseFloat(value.trim().replace(/,/g, '').replace(/。/g, '.'));
 }
 
 function isInRange(value: number, min: number, max: number): boolean {
