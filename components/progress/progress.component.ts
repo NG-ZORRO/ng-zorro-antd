@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { isNotNil, numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
@@ -173,7 +173,6 @@ export class NzProgressComponent implements OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   private readonly cdr = inject(ChangeDetectorRef);
-  public readonly nzConfigService = inject(NzConfigService);
   private readonly directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -238,6 +237,14 @@ export class NzProgressComponent implements OnChanges, OnInit {
   private cachedStatus: NzProgressStatusType = 'normal';
   private inferredStatus: NzProgressStatusType = 'normal';
 
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.updateIcon();
+      this.setStrokeColor();
+      this.getCirclePaths();
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const {
       nzSteps,
@@ -288,15 +295,6 @@ export class NzProgressComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.updateIcon();
-        this.setStrokeColor();
-        this.getCirclePaths();
-      });
-
     this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();

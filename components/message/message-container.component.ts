@@ -5,9 +5,8 @@
 
 import { Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { MessageConfig } from 'ng-zorro-antd/core/config';
+import { MessageConfig, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzMNContainerComponent } from './base';
@@ -48,13 +47,10 @@ export class NzMessageContainerComponent extends NzMNContainerComponent {
   }
 
   protected subscribeConfigChange(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.updateConfig();
-        this.dir = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)?.nzDirection || this.dir;
-      });
+    onConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME, () => {
+      this.updateConfig();
+      this.dir = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)?.nzDirection || this.dir;
+    });
   }
 
   protected updateConfig(): void {

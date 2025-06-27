@@ -24,7 +24,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigService, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
@@ -85,12 +85,8 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     super();
     this.dir = this.overlayRef.getDirection();
     this.isStringContent = typeof this.config.nzContent === 'string';
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.updateMaskClassname();
-      });
+
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.updateMaskClassname());
 
     this.destroyRef.onDestroy(() => {
       this.setMaskExitAnimationClass(true);

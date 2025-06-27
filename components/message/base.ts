@@ -72,8 +72,7 @@ export abstract class NzMNService<T extends NzMNContainerComponent> {
 export abstract class NzMNContainerComponent<
   C extends MessageConfig = MessageConfig,
   D extends NzMessageData = NzMessageData
-> implements OnInit
-{
+> {
   config?: Required<C>;
   instances: Array<Required<D>> = [];
 
@@ -81,11 +80,10 @@ export abstract class NzMNContainerComponent<
 
   readonly afterAllInstancesRemoved = this._afterAllInstancesRemoved.asObservable();
 
-  protected destroyRef = inject(DestroyRef);
   protected cdr = inject(ChangeDetectorRef);
   protected nzConfigService = inject(NzConfigService);
 
-  ngOnInit(): void {
+  constructor() {
     this.subscribeConfigChange();
   }
 
