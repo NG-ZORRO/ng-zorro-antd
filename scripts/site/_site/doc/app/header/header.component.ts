@@ -64,6 +64,7 @@ export class HeaderComponent implements OnChanges {
   mode = 'horizontal';
   responsive: null | 'narrow' | 'crowded' = null;
   oldVersionList = [
+    '19.3.x',
     '18.2.x',
     '17.4.x',
     '16.2.x',
