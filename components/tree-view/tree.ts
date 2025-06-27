@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DataSource } from '@angular/cdk/collections';
 import { CdkTree, TreeControl } from '@angular/cdk/tree';
 import {
@@ -18,9 +17,9 @@ import {
   DestroyRef,
   ChangeDetectorRef
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -30,10 +29,10 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   protected destroyRef = inject(DestroyRef);
-  protected directionality = inject(Directionality);
   protected cdr = inject(ChangeDetectorRef);
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
+
   _dataSourceChanged = new Subject<void>();
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -47,16 +46,6 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   }
   @Input({ transform: booleanAttribute }) nzDirectoryTree = false;
   @Input({ transform: booleanAttribute }) nzBlockNode = false;
-
-  override ngOnInit(): void {
-    super.ngOnInit();
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-  }
 
   override renderNodeChanges(
     data: T[] | readonly T[],

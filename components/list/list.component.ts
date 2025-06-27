@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -13,16 +12,15 @@ import {
   DestroyRef,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
   inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -117,7 +115,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-list',
-    '[class.ant-list-rtl]': `dir === 'rtl'`,
+    '[class.ant-list-rtl]': `dir.isRtl()`,
     '[class.ant-list-vertical]': 'nzItemLayout === "vertical"',
     '[class.ant-list-lg]': 'nzSize === "large"',
     '[class.ant-list-sm]': 'nzSize === "small"',
@@ -137,10 +135,7 @@ import {
     NzListPaginationComponent
   ]
 })
-export class NzListComponent implements AfterContentInit, OnChanges, OnInit {
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
-
+export class NzListComponent implements AfterContentInit, OnChanges {
   @Input() nzDataSource?: NzSafeAny[];
   @Input({ transform: booleanAttribute }) nzBordered = false;
   @Input() nzGrid?: NzListGrid | '' | null | undefined = '';
@@ -160,7 +155,9 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnInit {
   @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective!: NzListLoadMoreDirective;
 
   hasSomethingAfterLastItem = false;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
+
   private itemLayoutNotifySource = new BehaviorSubject<NzDirectionVHType>(this.nzItemLayout);
 
   get itemLayoutNotify$(): Observable<NzDirectionVHType> {
@@ -168,14 +165,7 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnInit {
   }
 
   constructor() {
-    this.destroyRef.onDestroy(() => this.itemLayoutNotifySource.unsubscribe());
-  }
-
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-    });
+    inject(DestroyRef).onDestroy(() => this.itemLayoutNotifySource.unsubscribe());
   }
 
   getSomethingAfterLastItem(): boolean {

@@ -3,9 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import { afterNextRender, computed, DestroyRef, Directive, ElementRef, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 
 import { NzSpaceCompactComponent } from './space-compact.component';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_ITEMS } from './space-compact.token';
@@ -25,8 +25,7 @@ export class NzSpaceCompactItemDirective {
   private readonly items = inject(NZ_SPACE_COMPACT_ITEMS, { host: true, optional: true });
   private readonly type = inject(NZ_SPACE_COMPACT_ITEM_TYPE);
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
-  private readonly directionality = inject(Directionality);
-  private readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
+  private readonly dir = nzInjectDirectionality();
 
   private get parentElement(): HTMLElement | null {
     return this.elementRef.nativeElement?.parentElement;
@@ -40,7 +39,7 @@ export class NzSpaceCompactItemDirective {
 
     const items = this.items();
     const direction = this.spaceCompactCmp.nzDirection();
-    const classes = [compactItemClassOf(this.type, direction, this.dir() === 'rtl')];
+    const classes = [compactItemClassOf(this.type, direction, this.dir.isRtl())];
     const index = items.indexOf(this);
     const firstIndex = items.findIndex(element => element);
     // Array [empty, item]

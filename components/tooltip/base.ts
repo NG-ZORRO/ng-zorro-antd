@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { _getEventTarget } from '@angular/cdk/platform';
 import { isPlatformBrowser } from '@angular/common';
@@ -14,7 +13,6 @@ import {
   ElementRef,
   EventEmitter,
   OnChanges,
-  OnInit,
   PLATFORM_ID,
   Renderer2,
   SimpleChanges,
@@ -29,6 +27,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, asapScheduler } from 'rxjs';
 import { delay, distinctUntilChanged, filter } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
@@ -334,11 +333,10 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 }
 
 @Directive()
-export abstract class NzTooltipBaseComponent implements OnInit {
+export abstract class NzTooltipBaseComponent {
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-  protected directionality = inject(Directionality);
   protected cdr = inject(ChangeDetectorRef);
   protected elementRef = inject(ElementRef);
   protected destroyRef = inject(DestroyRef);
@@ -389,7 +387,7 @@ export abstract class NzTooltipBaseComponent implements OnInit {
 
   origin!: ElementRef<NzSafeAny>;
 
-  public dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   _classMap: NgClassInterface = {};
 
@@ -401,15 +399,6 @@ export abstract class NzTooltipBaseComponent implements OnInit {
     this.destroyRef.onDestroy(() => {
       this.nzVisibleChange.complete();
     });
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   show(): void {

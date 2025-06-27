@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -28,6 +27,7 @@ import {
 import { Subject, merge } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
@@ -119,11 +119,11 @@ export class NzInputNumberGroupWhitSuffixOrPrefixDirective {
   providers: [NzFormNoStatusService, { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input-number' }],
   host: {
     '[class.ant-input-number-group-wrapper]': `isAddOn`,
-    '[class.ant-input-number-group-wrapper-rtl]': `isAddOn && dir === 'rtl'`,
+    '[class.ant-input-number-group-wrapper-rtl]': `isAddOn && dir.isRtl()`,
     '[class.ant-input-number-group-wrapper-lg]': `isAddOn && isLarge`,
     '[class.ant-input-number-group-wrapper-sm]': `isAddOn && isSmall`,
     '[class.ant-input-number-affix-wrapper]': `!isAddOn && isAffix`,
-    '[class.ant-input-number-affix-wrapper-rtl]': `!isAddOn && dir === 'rtl'`,
+    '[class.ant-input-number-affix-wrapper-rtl]': `!isAddOn && dir.isRtl()`,
     '[class.ant-input-number-affix-wrapper-focused]': `!isAddOn && isAffix && focused`,
     '[class.ant-input-number-affix-wrapper-disabled]': `!isAddOn && isAffix && disabled`,
     '[class.ant-input-number-affix-wrapper-lg]': `!isAddOn && isAffix && isLarge`,
@@ -152,7 +152,7 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
   isFeedback = false;
   focused = false;
   disabled = false;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   // status
   prefixCls: string = 'ant-input-number';
   affixStatusCls: NgClassInterface = {};
@@ -168,8 +168,7 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
     private focusMonitor: FocusMonitor,
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
+    private cdr: ChangeDetectorRef
   ) {}
 
   updateChildrenInputSize(): void {
@@ -197,11 +196,6 @@ export class NzInputNumberGroupComponent implements AfterContentInit, OnChanges,
         this.focused = !!focusOrigin;
         this.cdr.markForCheck();
       });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
-      this.dir = direction;
-    });
   }
 
   ngAfterContentInit(): void {

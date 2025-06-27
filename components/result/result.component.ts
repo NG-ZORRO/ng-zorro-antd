@@ -3,21 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  inject,
-  Input,
-  OnChanges,
-  OnInit,
-  TemplateRef,
-  ViewEncapsulation
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -94,7 +82,7 @@ const ExceptionStatus = ['404', '500', '403'];
     '[class.ant-result-error]': `nzStatus === 'error'`,
     '[class.ant-result-info]': `nzStatus === 'info'`,
     '[class.ant-result-warning]': `nzStatus === 'warning'`,
-    '[class.ant-result-rtl]': `dir === 'rtl'`
+    '[class.ant-result-rtl]': `dir.isRtl()`
   },
   imports: [
     NzOutletModule,
@@ -106,11 +94,7 @@ const ExceptionStatus = ['404', '500', '403'];
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzResultComponent implements OnChanges, OnInit {
-  private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
-
+export class NzResultComponent implements OnChanges {
   @Input() nzIcon?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzStatus: NzResultStatusType = 'info';
@@ -119,16 +103,7 @@ export class NzResultComponent implements OnChanges, OnInit {
 
   icon?: string | TemplateRef<void>;
   isException = false;
-  dir: Direction = 'ltr';
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-  }
+  readonly dir = nzInjectDirectionality();
 
   ngOnChanges(): void {
     this.setStatusIcon();

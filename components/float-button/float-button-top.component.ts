@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
@@ -29,6 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
@@ -65,7 +65,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
     '[class.ant-float-btn-circle]': `nzShape === 'circle'`,
     '[class.ant-float-btn-hidden]': `!visible`,
     '[class.ant-float-btn-square]': `nzShape === 'square'`,
-    '[class.ant-float-btn-rtl]': `dir === 'rtl'`
+    '[class.ant-float-btn-rtl]': `dir.isRtl()`
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
@@ -76,7 +76,6 @@ export class NzFloatButtonTopComponent implements OnInit, OnChanges {
   private platform = inject(Platform);
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -85,7 +84,7 @@ export class NzFloatButtonTopComponent implements OnInit, OnChanges {
   private target?: HTMLElement | null = null;
 
   visible: boolean = false;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   @Input() nzHref: string | null = null;
   @Input() nzType: 'default' | 'primary' = 'default';
@@ -127,12 +126,6 @@ export class NzFloatButtonTopComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.registerScrollEvent();
-    this.dir = this.directionality.value;
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
   }
 
   private getTarget(): HTMLElement | Window {

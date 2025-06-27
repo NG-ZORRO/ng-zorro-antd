@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -29,6 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -167,7 +167,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     '[class.ant-select-tree-icon-hide]': `nzSelectMode && !nzShowIcon`,
     '[class.ant-select-tree-block-node]': `nzSelectMode && nzBlockNode`,
     '[class.ant-tree]': `!nzSelectMode`,
-    '[class.ant-tree-rtl]': `dir === 'rtl'`,
+    '[class.ant-tree-rtl]': `dir.isRtl()`,
     '[class.ant-tree-show-line]': `!nzSelectMode && nzShowLine`,
     '[class.ant-tree-icon-hide]': `!nzSelectMode && !nzShowIcon`,
     '[class.ant-tree-block-node]': `!nzSelectMode && nzBlockNode`,
@@ -188,7 +188,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, ControlValueA
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   nzConfigService = inject(NzConfigService);
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   @Input({ transform: booleanAttribute }) @WithConfig() nzShowIcon: boolean = false;
@@ -224,7 +223,8 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, ControlValueA
   cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   nzFlattenNodes: NzTreeNode[] = [];
   beforeInit = true;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
 
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
@@ -487,12 +487,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, ControlValueA
           ? data.filter(d => !d.canHide)
           : data;
       this.cdr.markForCheck();
-    });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
     });
   }
 

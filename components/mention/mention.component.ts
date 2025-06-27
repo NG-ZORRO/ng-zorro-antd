@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectionPositionPair,
@@ -44,6 +43,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge, of as observableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
@@ -122,13 +122,12 @@ export type MentionPlacement = 'top' | 'bottom';
   providers: [NzMentionService],
   host: {
     class: 'ant-mentions',
-    '[class.ant-mentions-rtl]': `dir === 'rtl'`
+    '[class.ant-mentions-rtl]': `dir.isRtl()`
   },
   imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
 })
 export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private ngZone = inject(NgZone);
-  private directionality = inject(Directionality);
   private cdr = inject(ChangeDetectorRef);
   private overlay = inject(Overlay);
   private viewContainerRef = inject(ViewContainerRef);
@@ -162,7 +161,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   filteredSuggestions: string[] = [];
   suggestionTemplate: TemplateRef<{ $implicit: NzSafeAny }> | null = null;
   activeIndex = -1;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   // status
   prefixCls: string = 'ant-mentions';
   statusCls: NgClassInterface = {};
@@ -219,11 +218,6 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
       this.bindTriggerEvents();
       this.closeDropdown();
       this.overlayRef = null;
-    });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
     });
   }
 

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,17 +10,15 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -39,7 +36,7 @@ export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
     @if (!closed) {
       <div
         class="ant-alert"
-        [class.ant-alert-rtl]="dir === 'rtl'"
+        [class.ant-alert-rtl]="dir.isRtl()"
         [class.ant-alert-success]="nzType === 'success'"
         [class.ant-alert-info]="nzType === 'info'"
         [class.ant-alert-warning]="nzType === 'warning'"
@@ -100,10 +97,8 @@ export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzAlertComponent implements OnChanges, OnInit {
+export class NzAlertComponent implements OnChanges {
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
-  private readonly destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzAction: string | TemplateRef<void> | null = null;
@@ -121,21 +116,12 @@ export class NzAlertComponent implements OnChanges, OnInit {
   closed = false;
   iconTheme: 'outline' | 'fill' = 'fill';
   inferredIconType: string = 'info-circle';
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   private isTypeSet = false;
   private isShowIconSet = false;
 
   constructor() {
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   closeAlert(): void {

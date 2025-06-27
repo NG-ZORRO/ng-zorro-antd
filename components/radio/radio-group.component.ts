@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,6 +20,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzRadioService } from './radio.service';
@@ -46,13 +46,12 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     '[class.ant-radio-group-large]': `nzSize === 'large'`,
     '[class.ant-radio-group-small]': `nzSize === 'small'`,
     '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`,
-    '[class.ant-radio-group-rtl]': `dir === 'rtl'`
+    '[class.ant-radio-group-rtl]': `dir.isRtl()`
   }
 })
 export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnChanges {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly nzRadioService = inject(NzRadioService);
-  private readonly directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
 
   private value: NzSafeAny | null = null;
@@ -64,7 +63,7 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnCh
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzName: string | null = null;
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   ngOnInit(): void {
     this.nzRadioService.selected$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
@@ -76,13 +75,6 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnCh
     this.nzRadioService.touched$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       Promise.resolve().then(() => this.onTouched());
     });
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

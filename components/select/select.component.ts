@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
@@ -45,6 +44,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
@@ -213,7 +213,7 @@ export type NzSelectSizeType = NzSizeLDSType;
     '[class.ant-select-focused]': 'nzOpen || focused',
     '[class.ant-select-single]': `nzMode === 'default'`,
     '[class.ant-select-multiple]': `nzMode !== 'default'`,
-    '[class.ant-select-rtl]': `dir === 'rtl'`
+    '[class.ant-select-rtl]': `dir.isRtl()`
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   imports: [
@@ -237,7 +237,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private readonly renderer = inject(Renderer2);
   private readonly platform = inject(Platform);
   private readonly focusMonitor = inject(FocusMonitor);
-  private readonly directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
 
   @Input() nzId: string | null = null;
@@ -347,7 +346,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   activatedValue: NzSafeAny | null = null;
   listOfValue: NzSafeAny[] = [];
   focused = false;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   positions: ConnectionPositionPair[] = [];
 
   // status
@@ -773,13 +772,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
           .filter(item => !!item);
         this.updateListOfContainerItem();
       });
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
 
     fromEventOutsideAngular(this.host.nativeElement, 'click')
       .pipe(takeUntilDestroyed(this.destroyRef))

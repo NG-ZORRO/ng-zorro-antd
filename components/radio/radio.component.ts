@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -24,6 +23,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
@@ -73,12 +73,11 @@ import { NzRadioService } from './radio.service';
     '[class.ant-radio-button-wrapper-checked]': 'isChecked && isRadioButton',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled && !isRadioButton',
     '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled && isRadioButton',
-    '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir === 'rtl'`,
-    '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir === 'rtl'`
+    '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir.isRtl()`,
+    '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir.isRtl()`
   }
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnInit {
-  private readonly directionality = inject(Directionality);
   private readonly nzRadioService = inject(NzRadioService, { optional: true });
   private readonly ngZone = inject(NgZone);
   private readonly elementRef = inject(ElementRef);
@@ -99,7 +98,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input({ alias: 'nz-radio-button', transform: booleanAttribute }) isRadioButton = false;
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   focus(): void {
     this.focusMonitor.focusVia(this.inputElement!, 'keyboard');
@@ -176,13 +175,6 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
           }
         }
       });
-
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
 
     this.setupClickListener();
   }

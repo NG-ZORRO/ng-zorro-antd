@@ -3,20 +3,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   ContentChild,
   DestroyRef,
   ElementRef,
   EventEmitter,
   inject,
   Input,
-  OnInit,
   Output,
   TemplateRef,
   ViewEncapsulation
@@ -24,6 +23,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -47,7 +47,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
           <div (click)="onBack()" class="ant-page-header-back">
             <div role="button" tabindex="0" class="ant-page-header-back-button">
               <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
-                <nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline" />
+                <nz-icon [nzType]="backIcon || fallbackBackIcon()" nzTheme="outline" />
               </ng-container>
             </div>
           </div>
@@ -89,11 +89,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     '[class.ant-page-header-ghost]': 'nzGhost',
     '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb',
     '[class.ant-page-header-compact]': 'compact',
-    '[class.ant-page-header-rtl]': `dir === 'rtl'`
+    '[class.ant-page-header-rtl]': `dir.isRtl()`
   },
   imports: [NzOutletModule, NzIconModule]
 })
-export class NzPageHeaderComponent implements AfterViewInit, OnInit {
+export class NzPageHeaderComponent implements AfterViewInit {
   private location = inject(Location);
   private destroyRef = inject(DestroyRef);
 
@@ -111,7 +111,9 @@ export class NzPageHeaderComponent implements AfterViewInit, OnInit {
   nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
   compact = false;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
+  readonly fallbackBackIcon = computed(() => (this.dir.isRtl() ? 'arrow-right' : 'arrow-left'));
 
   enableBackButton = true;
 
@@ -119,17 +121,8 @@ export class NzPageHeaderComponent implements AfterViewInit, OnInit {
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
     private nzResizeObserver: NzResizeObserver,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
+    private cdr: ChangeDetectorRef
   ) {}
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
-  }
 
   ngAfterViewInit(): void {
     if (!this.nzBack.observers.length) {
@@ -160,12 +153,5 @@ export class NzPageHeaderComponent implements AfterViewInit, OnInit {
     } else {
       this.location.back();
     }
-  }
-
-  getBackIcon(): string {
-    if (this.dir === 'rtl') {
-      return 'arrow-right';
-    }
-    return 'arrow-left';
   }
 }

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -31,6 +30,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -70,7 +70,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
       <div
         #tableMainElement
         class="ant-table"
-        [class.ant-table-rtl]="dir === 'rtl'"
+        [class.ant-table-rtl]="dir.isRtl()"
         [class.ant-table-fixed-header]="nzData.length && scrollY"
         [class.ant-table-fixed-column]="scrollX"
         [class.ant-table-has-fix-left]="hasFixLeft"
@@ -146,7 +146,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   `,
   host: {
     class: 'ant-table-wrapper',
-    '[class.ant-table-wrapper-rtl]': 'dir === "rtl"',
+    '[class.ant-table-wrapper-rtl]': 'dir.isRtl()',
     '[class.ant-table-custom-column]': `nzCustomColumn.length`
   },
   imports: [
@@ -166,7 +166,6 @@ export class NzTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
   private cdr = inject(ChangeDetectorRef);
   private nzTableStyleService = inject(NzTableStyleService);
   private nzTableDataService = inject(NzTableDataService<T>);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   @Input() nzTableLayout: NzTableLayout = 'auto';
@@ -224,7 +223,9 @@ export class NzTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
   hasFixRight = false;
   showPagination = true;
   private templateMode$ = new BehaviorSubject<boolean>(false);
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
+
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
   nzVirtualScrollDirective!: NzTableVirtualScrollDirective<T>;
   @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent<T>;
@@ -245,12 +246,6 @@ export class NzTableComponent<T> implements OnInit, OnChanges, AfterViewInit {
     const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$, listOfCustomColumn$ } =
       this.nzTableDataService;
     const { theadTemplate$, tfootTemplate$, tfootFixed$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
 
     queryParams$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.nzQueryParams);
     pageIndexDistinct$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(pageIndex => {

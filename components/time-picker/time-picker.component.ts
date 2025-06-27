@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { Platform, _getEventTarget } from '@angular/cdk/platform';
 import { AsyncPipe } from '@angular/common';
@@ -37,6 +36,7 @@ import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { isValid } from 'date-fns';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
@@ -145,7 +145,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '[class.ant-picker-small]': `finalSize() === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-focused]': `focused`,
-    '[class.ant-picker-rtl]': `dir === 'rtl'`,
+    '[class.ant-picker-rtl]': `dir.isRtl()`,
     '[class.ant-picker-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
     '[class.ant-picker-filled]': `nzVariant === 'filled'`,
     '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
@@ -185,7 +185,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   private cdr = inject(ChangeDetectorRef);
   private dateHelper = inject(DateHelperService);
   private platform = inject(Platform);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   private _onChange?: (value: Date | null) => void;
@@ -228,7 +227,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       overlayY: 'bottom'
     }
   ] as ConnectionPositionPair[];
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   // status
   prefixCls: string = 'ant-picker';
   statusCls: NgClassInterface = {};
@@ -416,11 +415,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
     this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(map(nzLocale => nzLocale.TimePicker.placeholder));
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-    });
   }
 
   ngOnChanges({ nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus, nzStatus, nzSize }: SimpleChanges): void {

@@ -4,16 +4,13 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DestroyRef,
   ElementRef,
   EventEmitter,
-  OnInit,
   Renderer2,
   TemplateRef,
   ViewChild,
@@ -21,9 +18,9 @@ import {
   ViewEncapsulation,
   inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from 'rxjs';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -47,7 +44,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
     <ng-template>
       <div
         class="ant-dropdown"
-        [class.ant-dropdown-rtl]="dir === 'rtl'"
+        [class.ant-dropdown-rtl]="dir.isRtl()"
         [class]="nzOverlayClassName"
         [style]="nzOverlayStyle"
         @slideMotion
@@ -65,13 +62,11 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzNoAnimationDirective]
 })
-export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
+export class NzDropdownMenuComponent implements AfterContentInit {
   private cdr = inject(ChangeDetectorRef);
   private elementRef = inject(ElementRef);
   private renderer = inject(Renderer2);
   public viewContainerRef = inject(ViewContainerRef);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
   mouseState$ = new BehaviorSubject<boolean>(false);
   public nzMenuService = inject(MenuService);
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
@@ -81,7 +76,7 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   nzOverlayStyle: IndexableObject = {};
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   onAnimationEvent(event: AnimationEvent): void {
     this.animationStateChange$.emit(event);
@@ -97,15 +92,6 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   }
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-  }
 
   ngAfterContentInit(): void {
     this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);

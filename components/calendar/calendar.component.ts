@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,19 +11,17 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
   forwardRef,
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { LibPackerModule } from 'ng-zorro-antd/date-picker';
 
@@ -87,19 +84,18 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     class: 'ant-picker-calendar',
     '[class.ant-picker-calendar-full]': 'nzFullscreen',
     '[class.ant-picker-calendar-mini]': '!nzFullscreen',
-    '[class.ant-picker-calendar-rtl]': `dir === 'rtl'`
+    '[class.ant-picker-calendar-rtl]': `dir.isRtl()`
   },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }],
   imports: [NzCalendarHeaderComponent, LibPackerModule]
 })
-export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit {
+export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
 
   activeDate: CandyDate = new CandyDate();
   prefixCls: string = 'ant-picker-calendar';
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
 
   private onChangeFn: (date: Date) => void = () => {};
   private onTouchFn: () => void = () => {};
@@ -145,13 +141,6 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnI
 
   @Input({ transform: booleanAttribute })
   nzFullscreen: boolean = true;
-
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.dir = this.directionality.value;
-    });
-  }
 
   onModeChange(mode: NzCalendarMode): void {
     this.nzModeChange.emit(mode);

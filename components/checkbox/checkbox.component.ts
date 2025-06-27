@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -26,8 +25,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
@@ -76,7 +75,7 @@ import { NZ_CHECKBOX_GROUP } from './tokens';
     '[class.ant-checkbox-wrapper-in-form-item]': '!!nzFormStatusService',
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
     '[class.ant-checkbox-wrapper-disabled]': 'nzDisabled || checkboxGroupComponent?.finalDisabled()',
-    '[class.ant-checkbox-rtl]': `dir === 'rtl'`
+    '[class.ant-checkbox-rtl]': `dir.isRtl()`
   },
   imports: [FormsModule]
 })
@@ -85,15 +84,14 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, AfterV
   private elementRef = inject(ElementRef<HTMLElement>);
   private cdr = inject(ChangeDetectorRef);
   private focusMonitor = inject(FocusMonitor);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   protected checkboxGroupComponent = inject(NZ_CHECKBOX_GROUP, { optional: true });
   protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
   /** @deprecated */
   private nzCheckboxWrapperComponent = inject(NzCheckboxWrapperComponent, { optional: true });
 
-  dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
+  readonly dir = nzInjectDirectionality();
+
   private isNzDisableFirstChange: boolean = true;
 
   onChange: OnChangeType = () => {};
@@ -168,13 +166,6 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, AfterV
       });
 
     this.nzCheckboxWrapperComponent?.addCheckbox(this);
-
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
 
     fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
       .pipe(takeUntilDestroyed(this.destroyRef))

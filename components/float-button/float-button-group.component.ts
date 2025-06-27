@@ -3,24 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  DestroyRef,
   EventEmitter,
   inject,
   Input,
-  OnInit,
   Output,
   QueryList,
   TemplateRef
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -67,13 +64,11 @@ import { NzFloatButtonComponent } from './float-button.component';
     '[class.ant-float-btn-group-circle-shadow]': `nzShape === 'circle'`,
     '[class.ant-float-btn-group-square]': `nzShape === 'square'`,
     '[class.ant-float-btn-group-square-shadow]': `nzShape === 'square' && !nzTrigger`,
-    '[class.ant-float-btn-group-rtl]': `dir === 'rtl'`
+    '[class.ant-float-btn-group-rtl]': `dir.isRtl()`
   }
 })
-export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
-  private directionality = inject(Directionality);
+export class NzFloatButtonGroupComponent implements AfterContentInit {
   private cdr = inject(ChangeDetectorRef);
-  private destroyRef = inject(DestroyRef);
 
   @ContentChildren(NzFloatButtonComponent) nzFloatButtonComponent!: QueryList<NzFloatButtonComponent>;
   @ContentChildren(NzFloatButtonTopComponent) nzFloatButtonTopComponents!: QueryList<NzFloatButtonTopComponent>;
@@ -88,16 +83,8 @@ export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
   @Input() nzOpen: boolean | null = null;
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
   isOpen: boolean = false;
-  dir: Direction = 'ltr';
 
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-  }
+  readonly dir = nzInjectDirectionality();
 
   ngAfterContentInit(): void {
     if (this.nzFloatButtonComponent) {

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   DestroyRef,
   Directive,
@@ -18,6 +17,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NgClassInterface } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 
@@ -41,11 +41,10 @@ export interface EmbeddedProperty {
 export class NzColDirective implements OnInit, OnChanges, AfterViewInit {
   private elementRef = inject(ElementRef);
   private renderer = inject(Renderer2);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   private classMap: Record<string, boolean> = {};
   hostFlexStyle: string | null = null;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality(() => this.setHostClassMap());
   @Input() nzFlex: string | number | null = null;
   @Input() nzSpan: string | number | null = null;
   @Input() nzOrder: string | number | null = null;
@@ -67,7 +66,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit {
       [`ant-col-offset-${this.nzOffset}`]: isNotNil(this.nzOffset),
       [`ant-col-pull-${this.nzPull}`]: isNotNil(this.nzPull),
       [`ant-col-push-${this.nzPush}`]: isNotNil(this.nzPush),
-      ['ant-col-rtl']: this.dir === 'rtl',
+      ['ant-col-rtl']: this.dir.isRtl(),
       ...this.generateClass()
     };
     for (const i in this.classMap) {
@@ -123,12 +122,6 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit {
   nzRowDirective = inject(NzRowDirective, { host: true, optional: true });
 
   ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.setHostClassMap();
-    });
-
     this.setHostClassMap();
     this.setHostFlexStyle();
   }

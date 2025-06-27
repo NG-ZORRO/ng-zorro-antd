@@ -3,18 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  DestroyRef,
   ElementRef,
   EventEmitter,
   inject,
   Input,
   OnChanges,
-  OnInit,
   Output,
   Renderer2,
   SimpleChanges,
@@ -22,8 +18,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toNumber } from 'ng-zorro-antd/core/util';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
@@ -68,14 +64,10 @@ import { PaginationItemRenderContext } from './pagination.types';
   `,
   imports: [NzPaginationItemComponent],
   host: {
-    '[class.ant-pagination-rtl]': "dir === 'rtl'"
+    '[class.ant-pagination-rtl]': 'dir.isRtl()'
   }
 })
-export class NzPaginationSimpleComponent implements OnChanges, OnInit {
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly directionality = inject(Directionality);
-  private readonly destroyRef = inject(DestroyRef);
-
+export class NzPaginationSimpleComponent implements OnChanges {
   @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() disabled = false;
@@ -88,20 +80,12 @@ export class NzPaginationSimpleComponent implements OnChanges, OnInit {
   isFirstIndex = false;
   isLastIndex = false;
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   constructor() {
     const el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
     const renderer = inject(Renderer2);
     renderer.removeChild(renderer.parentNode(el), el);
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
   }
 
   jumpToPageViaInput($event: Event): void {

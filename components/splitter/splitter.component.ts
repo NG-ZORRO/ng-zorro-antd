@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
@@ -26,6 +25,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map, merge, Subject, takeUntil } from 'rxjs';
 import { pairwise, startWith } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
@@ -128,11 +128,10 @@ export class NzSplitterComponent {
 
   protected readonly destroy$ = inject(NzDestroyService);
   protected readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-  protected readonly directionality = inject(Directionality);
   protected readonly resizeObserver = inject(NzResizeObserver);
   protected readonly document = inject(DOCUMENT);
 
-  protected readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
+  protected readonly dir = nzInjectDirectionality();
 
   /** ------------------- Panels ------------------- */
   // Get all panels from content children
@@ -334,8 +333,8 @@ export class NzSplitterComponent {
       resizeInfos[i] = {
         resizable: mergedResizable,
         collapsible: {
-          start: !!(this.dir() === 'rtl' ? endCollapsible : startCollapsible),
-          end: !!(this.dir() === 'rtl' ? startCollapsible : endCollapsible)
+          start: !!(this.dir.isRtl() ? endCollapsible : startCollapsible),
+          end: !!(this.dir.isRtl() ? startCollapsible : endCollapsible)
         }
       };
     }
@@ -389,7 +388,7 @@ export class NzSplitterComponent {
         map(event => getEventWithPoint(event)),
         map(({ pageX, pageY }) => (this.nzLayout() === 'horizontal' ? pageX - startPos[0] : pageY - startPos[1])),
         // flip the offset if the direction is rtl
-        map(offset => (this.nzLayout() === 'horizontal' && this.dir() === 'rtl' ? -offset : offset)),
+        map(offset => (this.nzLayout() === 'horizontal' && this.dir.isRtl() ? -offset : offset)),
         startWith(0),
         pairwise(),
         takeUntil(merge(end$, this.destroy$))
@@ -507,7 +506,7 @@ export class NzSplitterComponent {
     const containerSize = this.containerSize();
     const limitSizes = this.sizes().map(p => [p.min, p.max]);
     const currentSizes = this.sizes().map(p => p.percentage * containerSize);
-    const adjustedType = this.dir() === 'rtl' ? (type === 'start' ? 'end' : 'start') : type;
+    const adjustedType = this.dir.isRtl() ? (type === 'start' ? 'end' : 'start') : type;
 
     const currentIndex = adjustedType === 'start' ? index : index + 1;
     const targetIndex = adjustedType == 'start' ? index + 1 : index;

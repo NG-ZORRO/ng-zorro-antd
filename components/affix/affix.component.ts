@@ -3,12 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
-import { Platform, PlatformModule } from '@angular/cdk/platform';
+import { isPlatformServer } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   DOCUMENT,
@@ -17,8 +15,8 @@ import {
   inject,
   Input,
   OnChanges,
-  OnInit,
   Output,
+  PLATFORM_ID,
   Renderer2,
   SimpleChanges,
   ViewChild,
@@ -28,6 +26,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge, ReplaySubject, Subscription } from 'rxjs';
 import { map, throttleTime } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
@@ -49,7 +48,6 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 @Component({
   selector: 'nz-affix',
   exportAs: 'nzAffix',
-  imports: [BidiModule, PlatformModule],
   template: `
     <div #fixedEl>
       <ng-content></ng-content>
@@ -58,15 +56,13 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzAffixComponent implements AfterViewInit, OnChanges, OnInit {
+export class NzAffixComponent implements AfterViewInit, OnChanges {
   public nzConfigService = inject(NzConfigService);
   private scrollSrv = inject(NzScrollService);
-  private platform = inject(Platform);
   private renderer = inject(Renderer2);
   private nzResizeObserver = inject(NzResizeObserver);
-  private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
+  private isServer = isPlatformServer(inject(PLATFORM_ID));
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -84,7 +80,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnInit {
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality(() => {
+    this.registerListeners();
+    this.updatePosition({} as Event);
+  });
 
   private readonly placeholderNode: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
 
@@ -106,17 +105,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.registerListeners();
-      this.updatePosition({} as Event);
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     const { nzOffsetBottom, nzOffsetTop, nzTarget } = changes;
 
@@ -133,7 +121,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   private registerListeners(): void {
-    if (!this.platform.isBrowser) {
+    if (this.isServer) {
       return;
     }
 
@@ -228,7 +216,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   updatePosition(e: Event): void {
-    if (!this.platform.isBrowser) {
+    if (this.isServer) {
       return;
     }
 
@@ -308,7 +296,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnInit {
 
   private updateRtlClass(): void {
     const wrapEl = this.fixedEl.nativeElement;
-    if (this.dir === 'rtl') {
+    if (this.dir.isRtl()) {
       if (wrapEl.classList.contains(NZ_AFFIX_CLS_PREFIX)) {
         wrapEl.classList.add(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
       } else {

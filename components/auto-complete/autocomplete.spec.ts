@@ -1251,7 +1251,6 @@ describe('auto-complete', () => {
   it('should change dir', fakeAsync(() => {
     spyOn(component['changeDetectorRef'], 'detectChanges');
     mockDirectionality.value = 'ltr';
-    component.ngOnInit();
     expect(component.dir).toEqual('ltr');
     mockDirectionality.change.next('rtl');
     tick();

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectorRef,
@@ -22,6 +21,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest } from 'rxjs';
+
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 
 import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
@@ -76,14 +77,13 @@ export function MenuDropDownTokenFactory(): boolean {
     '[class.ant-menu-horizontal]': `!isMenuInsideDropDown && actualMode === 'horizontal'`,
     '[class.ant-menu-inline]': `!isMenuInsideDropDown && actualMode === 'inline'`,
     '[class.ant-menu-inline-collapsed]': `!isMenuInsideDropDown && nzInlineCollapsed`,
-    '[class.ant-menu-rtl]': `dir === 'rtl'`
+    '[class.ant-menu-rtl]': `dir.isRtl()`
   }
 })
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges {
   private readonly nzMenuService = inject(MenuService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly directionality = inject(Directionality);
 
   @ContentChildren(NzMenuItemComponent, { descendants: true })
   listOfNzMenuItemDirective!: QueryList<NzMenuItemComponent>;
@@ -96,7 +96,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges {
   @Input({ transform: booleanAttribute }) nzSelectable = !this.isMenuInsideDropDown;
   @Output() readonly nzClick = new EventEmitter<NzMenuItemComponent>();
   actualMode: NzMenuModeType = 'vertical';
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality(() => this.nzMenuService.setMode(this.actualMode));
   private inlineCollapsed$ = new BehaviorSubject<boolean>(this.nzInlineCollapsed);
   private mode$ = new BehaviorSubject<NzMenuModeType>(this.nzMode);
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
@@ -131,13 +131,6 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges {
       if (this.nzSelectable && !menu.nzMatchRouter) {
         this.listOfNzMenuItemDirective.forEach(item => item.setSelectedState(item === menu));
       }
-    });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.nzMenuService.setMode(this.actualMode);
-      this.cdr.markForCheck();
     });
   }
 

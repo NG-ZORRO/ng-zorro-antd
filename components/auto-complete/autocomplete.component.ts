@@ -4,7 +4,6 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -18,7 +17,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -29,10 +27,10 @@ import {
   booleanAttribute,
   inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subscription, defer, merge } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NZ_AFTER_NEXT_RENDER$ } from 'ng-zorro-antd/core/render';
@@ -72,7 +70,7 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
         #panel
         class="ant-select-dropdown ant-select-dropdown-placement-bottomLeft"
         [class.ant-select-dropdown-hidden]="!showPanel"
-        [class.ant-select-dropdown-rtl]="dir === 'rtl'"
+        [class.ant-select-dropdown-rtl]="dir.isRtl()"
         [class]="nzOverlayClassName"
         [style]="nzOverlayStyle"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
@@ -100,9 +98,8 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   `,
   animations: [slideMotion]
 })
-export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnInit, OnChanges {
+export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnChanges {
   private changeDetectorRef = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   @Input({ transform: numberAttributeWithZeroFallback }) nzWidth?: number;
   @Input() nzOverlayClassName = '';
@@ -118,7 +115,9 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   showPanel: boolean = true;
   isOpen: boolean = false;
   activeItem: NzAutocompleteOptionComponent | null = null;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
+
   normalizedDataSource: AutocompleteDataSourceItem[] = [];
   animationStateChange = new EventEmitter<AnimationEvent>();
 
@@ -181,15 +180,6 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
       // which we pass, for instance, to `this.optionSelectionChanges.subscribe(...)`.
       this.dataSourceChangeSubscription = this.selectionChangeSubscription = this.optionMouseEnterSubscription = null;
     });
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.changeDetectorRef.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

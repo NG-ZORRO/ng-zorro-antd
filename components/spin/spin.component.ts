@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectorRef,
@@ -24,6 +23,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
@@ -46,7 +46,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
       <div>
         <div
           class="ant-spin ant-spin-spinning"
-          [class.ant-spin-rtl]="dir === 'rtl'"
+          [class.ant-spin-rtl]="dir.isRtl()"
           [class.ant-spin-lg]="nzSize === 'large'"
           [class.ant-spin-sm]="nzSize === 'small'"
           [class.ant-spin-show-text]="nzTip"
@@ -73,7 +73,6 @@ export class NzSpinComponent implements OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   @Input() @WithConfig() nzIndicator: TemplateRef<NzSafeAny> | null = null;
@@ -87,7 +86,7 @@ export class NzSpinComponent implements OnChanges, OnInit {
 
   readonly isLoading = signal(false);
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   constructor() {
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
@@ -120,13 +119,6 @@ export class NzSpinComponent implements OnChanges, OnInit {
       .subscribe(isLoading => {
         this.isLoading.set(isLoading);
       });
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
