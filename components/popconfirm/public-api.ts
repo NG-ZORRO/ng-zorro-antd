@@ -5,3 +5,4 @@
 
 export * from './popconfirm';
 export * from './popconfirm.module';
+export * from './popconfirm-option';
