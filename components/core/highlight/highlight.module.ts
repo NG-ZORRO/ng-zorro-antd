@@ -7,6 +7,9 @@ import { NgModule } from '@angular/core';
 
 import { NzHighlightPipe } from './highlight.pipe';
 
+/**
+ * @deprecated Will be removed in v21, use `NzHighlightPipe` directly instead.
+ */
 @NgModule({
   imports: [NzHighlightPipe],
   exports: [NzHighlightPipe]
