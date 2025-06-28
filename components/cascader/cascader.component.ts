@@ -106,18 +106,14 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         @if (nzMultiple) {
           @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node) {
             <nz-select-item
-              [deletable]="true"
+              deletable
               [disabled]="nzDisabled"
               [label]="nzDisplayWith(getAncestorOptionList(node))"
               (delete)="removeSelected(node)"
             ></nz-select-item>
           }
           @if (selectedNodes.length > nzMaxTagCount) {
-            <nz-select-item
-              [deletable]="false"
-              [disabled]="false"
-              [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
-            ></nz-select-item>
+            <nz-select-item [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"></nz-select-item>
           }
         }
 
@@ -141,7 +137,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
 
         @if (showLabelRender) {
           <nz-select-item
-            [deletable]="false"
             [disabled]="nzDisabled"
             [label]="labelRenderText"
             [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
