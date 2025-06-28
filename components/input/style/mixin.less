@@ -98,15 +98,19 @@
     box-shadow: none !important;
   }
 
-  &-filled& {
+  &-filled {
     background-color: @input-variant-filled-bg !important;
-    border-color: transparent !important;
+    border-color: transparent;
     box-shadow: none !important;
   }
 
-  &-filled:hover {
+  &-filled:hover&:not(&-focused) {
     background-color: @input-variant-filled-hover-bg !important;
     border-color: transparent !important;
+  }
+
+  &-filled:hover&-focused {
+    background-color: @input-variant-filled-hover-bg !important;
   }
 
   &-filled:focus,
