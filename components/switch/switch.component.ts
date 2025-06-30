@@ -121,12 +121,6 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     this.switchElement.nativeElement.blur();
   }
 
-  constructor() {
-    this.destroyRef.onDestroy(() => {
-      this.focusMonitor.stopMonitoring(this.switchElement!.nativeElement);
-    });
-  }
-
   ngOnInit(): void {
     this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;

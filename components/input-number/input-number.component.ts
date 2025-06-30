@@ -322,10 +322,6 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
             this.nzBlur.emit();
           }
         });
-
-      destroyRef.onDestroy(() => {
-        this.focusMonitor.stopMonitoring(element);
-      });
     });
 
     this.nzFormStatusService?.formStatusChanges.pipe(takeUntilDestroyed()).subscribe(({ status, hasFeedback }) => {

@@ -109,12 +109,6 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     this.inputElement!.nativeElement.blur();
   }
 
-  constructor() {
-    this.destroyRef.onDestroy(() => {
-      this.focusMonitor.stopMonitoring(this.elementRef);
-    });
-  }
-
   setDisabledState(disabled: boolean): void {
     this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || disabled;
     this.isNzDisableFirstChange = false;

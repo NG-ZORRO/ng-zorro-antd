@@ -171,10 +171,6 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
 
-  constructor() {
-    this.destroyRef.onDestroy(() => this.focusMonitor.stopMonitoring(this.elementRef));
-  }
-
   updateChildrenInputSize(): void {
     if (this.listOfNzInputDirective) {
       this.listOfNzInputDirective.forEach(item => item['size'].set(this.nzSize));

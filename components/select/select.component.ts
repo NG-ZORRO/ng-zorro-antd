@@ -632,10 +632,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   constructor() {
-    this.destroyRef.onDestroy(() => {
-      cancelAnimationFrame(this.requestId);
-      this.focusMonitor.stopMonitoring(this.host);
-    });
+    this.destroyRef.onDestroy(() => cancelAnimationFrame(this.requestId));
 
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
       this.size.set(this.nzSize);

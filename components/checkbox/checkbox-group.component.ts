@@ -100,10 +100,6 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor {
             this.onTouched();
           }
         });
-
-      destroyRef.onDestroy(() => {
-        focusMonitor.stopMonitoring(elementRef);
-      });
     });
   }
 

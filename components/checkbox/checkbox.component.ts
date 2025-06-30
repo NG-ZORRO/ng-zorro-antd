@@ -145,7 +145,6 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, AfterV
 
   constructor() {
     this.destroyRef.onDestroy(() => {
-      this.focusMonitor.stopMonitoring(this.elementRef);
       this.nzCheckboxWrapperComponent?.removeCheckbox(this);
     });
     if (this.checkboxGroupComponent) {
