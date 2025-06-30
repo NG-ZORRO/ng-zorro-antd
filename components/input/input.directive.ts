@@ -102,6 +102,12 @@ export class NzInputDirective implements OnChanges, OnInit {
 
   private size = signal<NzSizeLDSType>(this.nzSize);
 
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.focusMonitor.stopMonitoring(this.elementRef);
+    });
+  }
+
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
       .pipe(
