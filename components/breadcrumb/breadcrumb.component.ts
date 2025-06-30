@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,6 +23,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Params, Router } from '@angular/router';
 import { filter, startWith } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 
 import { NzBreadcrumb } from './breadcrumb';
@@ -61,7 +61,6 @@ export class NzBreadCrumbComponent implements OnInit, NzBreadcrumb {
   private cdr = inject(ChangeDetectorRef);
   private elementRef = inject(ElementRef<HTMLElement>);
   private renderer = inject(Renderer2);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   @Input({ transform: booleanAttribute }) nzAutoGenerate = false;
@@ -71,20 +70,14 @@ export class NzBreadCrumbComponent implements OnInit, NzBreadcrumb {
   @Input() nzRouteFn: (route: string) => string = route => route;
 
   breadcrumbs: BreadcrumbOption[] = [];
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality(() => this.prepareComponentForRtl());
 
   ngOnInit(): void {
     if (this.nzAutoGenerate) {
       this.registerRouterChange();
     }
 
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.prepareComponentForRtl();
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
     this.prepareComponentForRtl();
   }
 
@@ -155,7 +148,7 @@ export class NzBreadCrumbComponent implements OnInit, NzBreadcrumb {
   }
 
   private prepareComponentForRtl(): void {
-    if (this.dir === 'rtl') {
+    if (this.dir.isRtl()) {
       this.renderer.addClass(this.elementRef.nativeElement, 'ant-breadcrumb-rtl');
     } else {
       this.renderer.removeClass(this.elementRef.nativeElement, 'ant-breadcrumb-rtl');

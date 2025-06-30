@@ -6,7 +6,6 @@
 /** get some code from https://github.com/angular/material2 */
 
 import { A11yModule } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -25,7 +24,6 @@ import {
   inject,
   Input,
   NgZone,
-  OnInit,
   Output,
   QueryList,
   TemplateRef,
@@ -37,6 +35,7 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { merge, Observable, of, Subscription } from 'rxjs';
 import { delay, filter, first, startWith } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX, warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -177,7 +176,7 @@ let nextId = 0;
     '[class.ant-tabs-editable]': `nzType === 'editable-card'`,
     '[class.ant-tabs-editable-card]': `nzType === 'editable-card'`,
     '[class.ant-tabs-centered]': `nzCentered`,
-    '[class.ant-tabs-rtl]': `dir === 'rtl'`,
+    '[class.ant-tabs-rtl]': `dir.isRtl()`,
     '[class.ant-tabs-top]': `nzTabPosition === 'top'`,
     '[class.ant-tabs-bottom]': `nzTabPosition === 'bottom'`,
     '[class.ant-tabs-left]': `nzTabPosition === 'left'`,
@@ -196,13 +195,12 @@ let nextId = 0;
     NzTabBodyComponent
   ]
 })
-export class NzTabsComponent implements OnInit, AfterContentChecked, AfterContentInit {
+export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   public nzConfigService = inject(NzConfigService);
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   @Input()
@@ -271,7 +269,7 @@ export class NzTabsComponent implements OnInit, AfterContentChecked, AfterConten
 
   readonly extraContents = contentChildren(NzTabBarExtraContentDirective);
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   private readonly tabSetId!: number;
   private indexToSelect: number | null = 0;
   private selectedIndex: number | null = null;
@@ -291,14 +289,6 @@ export class NzTabsComponent implements OnInit, AfterContentChecked, AfterConten
       this.tabs.destroy();
       this.tabLabelSubscription.unsubscribe();
       this.canDeactivateSubscription.unsubscribe();
-    });
-  }
-
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
     });
   }
 

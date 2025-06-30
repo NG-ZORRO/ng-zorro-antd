@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
@@ -41,6 +40,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, filter, map, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
@@ -119,8 +119,8 @@ const listOfPositions = [
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'top'"
-        [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
-        [dir]="dir"
+        [class.ant-tree-select-dropdown-rtl]="dir.isRtl()"
+        [dir]="dir()"
         [style]="nzDropdownStyle"
       >
         <nz-tree
@@ -245,7 +245,7 @@ const listOfPositions = [
   host: {
     class: 'ant-select ant-tree-select',
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
-    '[class.ant-select-rtl]': 'dir==="rtl"',
+    '[class.ant-select-rtl]': 'dir.isRtl()',
     '[class.ant-select-lg]': 'finalSize() === "large"',
     '[class.ant-select-sm]': 'finalSize() === "small"',
     '[class.ant-select-disabled]': 'nzDisabled',
@@ -270,7 +270,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   private renderer = inject(Renderer2);
   private cdr = inject(ChangeDetectorRef);
   private elementRef = inject(ElementRef);
-  private directionality = inject(Directionality);
   private focusMonitor = inject(FocusMonitor);
   private destroyRef = inject(DestroyRef);
 
@@ -351,7 +350,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   positions: ConnectionPositionPair[] = [];
 
   protected finalSize = computed(() => {
@@ -412,12 +411,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       });
 
     this.subscribeSelectionChange();
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
 
     this.focusMonitor
       .monitor(this.elementRef, true)

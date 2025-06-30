@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -29,9 +28,10 @@ import {
   viewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzFormItemFeedbackIconComponent, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import {
   NzSizeLDSType,
@@ -217,7 +217,6 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   private elementRef = inject(ElementRef);
   private injector = inject(Injector);
   private focusMonitor = inject(FocusMonitor);
-  private directionality = inject(Directionality);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private autoStepTimer: ReturnType<typeof setTimeout> | null = null;
   private defaultFormater = (value: number): string => {
@@ -231,7 +230,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   protected value = signal<number | null>(null);
   protected displayValue = signal('');
 
-  protected dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
+  protected dir = nzInjectDirectionality();
   protected focused = signal(false);
   protected hasFeedback = signal(false);
   protected finalStatus = linkedSignal<NzValidateStatus>(() => this.nzStatus());
@@ -261,7 +260,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-disabled': this.finalDisabled(),
       'ant-input-number-readonly': this.nzReadOnly(),
       'ant-input-number-focused': this.focused(),
-      'ant-input-number-rtl': this.dir() === 'rtl',
+      'ant-input-number-rtl': this.dir.isRtl(),
       'ant-input-number-in-form-item': !!this.nzFormStatusService,
       'ant-input-number-out-of-range': this.value() !== null && !isInRange(this.value()!, this.nzMin(), this.nzMax()),
       ...getVariantClassNames('ant-input-number', this.nzVariant(), !this.nzBordered()),
@@ -274,7 +273,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-affix-wrapper-disabled': this.finalDisabled(),
       'ant-input-number-affix-wrapper-readonly': this.nzReadOnly(),
       'ant-input-number-affix-wrapper-focused': this.focused(),
-      'ant-input-number-affix-wrapper-rtl': this.dir() === 'rtl',
+      'ant-input-number-affix-wrapper-rtl': this.dir.isRtl(),
       ...getStatusClassNames('ant-input-number-affix-wrapper', this.finalStatus(), this.hasFeedback()),
       ...getVariantClassNames('ant-input-number-affix-wrapper', this.nzVariant(), !this.nzBordered())
     };
@@ -282,7 +281,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   protected groupWrapperClass = computed(() => {
     return {
       'ant-input-number-group-wrapper': true,
-      'ant-input-number-group-wrapper-rtl': this.dir() === 'rtl',
+      'ant-input-number-group-wrapper-rtl': this.dir.isRtl(),
       ...getStatusClassNames('ant-input-number-group-wrapper', this.finalStatus(), this.hasFeedback())
     };
   });

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import {
@@ -33,6 +32,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subscription, fromEvent, merge } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import {
   MouseTouchObserverConfig,
@@ -72,7 +72,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       [offset]="track.offset!"
       [length]="track.length!"
       [reverse]="nzReverse"
-      [dir]="dir"
+      [dir]="dir()"
     ></nz-slider-track>
     @if (marksArray) {
       <nz-slider-step
@@ -97,7 +97,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [tooltipVisible]="nzTooltipVisible"
         [tooltipPlacement]="nzTooltipPlacement"
         [dragging]="dragging()"
-        [dir]="dir"
+        [dir]="dir()"
         (focusin)="onHandleFocusIn(handleIndex)"
       ></nz-slider-handle>
     }
@@ -117,7 +117,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
   imports: [NzSliderTrackComponent, NzSliderStepComponent, NzSliderHandleComponent, NzSliderMarksComponent],
   host: {
     class: 'ant-slider',
-    '[class.ant-slider-rtl]': `dir === 'rtl'`,
+    '[class.ant-slider-rtl]': `dir.isRtl()`,
     '[class.ant-slider-disabled]': 'nzDisabled',
     '[class.ant-slider-vertical]': 'nzVertical',
     '[class.ant-slider-with-marks]': 'marksArray',
@@ -129,7 +129,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
   private platform = inject(Platform);
-  private directionality = inject(Directionality);
 
   @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
 
@@ -158,7 +157,10 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   handles: NzSliderHandler[] = []; // Handles' offset
   marksArray: NzExtendedMark[] | null = null; // "steps" in array type with more data & FILTER out the invalid mark
   bounds: { lower: NzSliderValue | null; upper: NzSliderValue | null } = { lower: null, upper: null }; // now for nz-slider-step
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality(() => {
+    this.updateTrackAndHandles();
+    this.onValueChange(this.getValue(true));
+  });
 
   readonly dragging = signal(false);
   private dragStart$?: Observable<number>;
@@ -170,14 +172,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private isNzDisableFirstChange = true;
 
   ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-      this.updateTrackAndHandles();
-      this.onValueChange(this.getValue(true));
-    });
-
     this.handles = generateHandlers(this.nzRange ? 2 : 1);
     this.marksArray = this.nzMarks ? this.generateMarkItems(this.nzMarks) : null;
     this.bindDraggingHandlers();
@@ -242,7 +236,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
     e.preventDefault();
 
-    const step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1) * (this.dir === 'rtl' ? -1 : 1);
+    const step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1) * (this.dir.isRtl() ? -1 : 1);
     const newVal = this.nzRange
       ? (this.value as number[])[this.activeValueIndex!] + step
       : (this.value as number) + step;
@@ -359,12 +353,12 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
   private getLogicalValue(value: number): number {
     if (this.nzReverse) {
-      if (!this.nzVertical && this.dir === 'rtl') {
+      if (!this.nzVertical && this.dir.isRtl()) {
         return value;
       }
       return this.nzMax - value + this.nzMin;
     }
-    if (!this.nzVertical && this.dir === 'rtl') {
+    if (!this.nzVertical && this.dir.isRtl()) {
       return this.nzMax - value + this.nzMin;
     }
 

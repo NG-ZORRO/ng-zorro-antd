@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
@@ -45,6 +44,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
@@ -187,7 +187,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         [class.ant-select-dropdown-placement-bottomRight]="dropdownPosition === 'bottomRight'"
         [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'topLeft'"
         [class.ant-select-dropdown-placement-topRight]="dropdownPosition === 'topRight'"
-        [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
+        [class.ant-cascader-dropdown-rtl]="dir.isRtl()"
         [@slideMotion]="'enter'"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
@@ -197,7 +197,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         <div
           #menu
           class="ant-cascader-menus"
-          [class.ant-cascader-rtl]="dir === 'rtl'"
+          [class.ant-cascader-rtl]="dir.isRtl()"
           [class.ant-cascader-menus-hidden]="!menuVisible"
           [class.ant-cascader-menu-empty]="shouldShowEmpty"
           [class]="nzMenuClassName"
@@ -231,7 +231,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                     [activated]="isOptionActivated(option, i)"
                     [highlightText]="inSearchingMode ? inputValue : ''"
                     [node]="option"
-                    [dir]="dir"
+                    [dir]="dir()"
                     [checkable]="nzMultiple"
                     (mouseenter)="onOptionMouseEnter(option, i, $event)"
                     (mouseleave)="onOptionMouseLeave(option, i, $event)"
@@ -273,7 +273,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-focused]': 'isFocused',
     '[class.ant-select-multiple]': 'nzMultiple',
     '[class.ant-select-single]': '!nzMultiple',
-    '[class.ant-select-rtl]': `dir === 'rtl'`
+    '[class.ant-select-rtl]': `dir.isRtl()`
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   imports: [
@@ -301,7 +301,6 @@ export class NzCascaderComponent
   private i18nService = inject(NzI18nService);
   private elementRef = inject(ElementRef<HTMLElement>);
   private renderer = inject(Renderer2);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -424,7 +423,7 @@ export class NzCascaderComponent
   isFocused = false;
 
   locale!: NzCascaderI18nInterface;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality(() => this.cascaderService.$redraw.next());
 
   isComposing = false;
 
@@ -560,12 +559,6 @@ export class NzCascaderComponent
     });
 
     this.size.set(this.nzSize);
-
-    this.dir = this.directionality.value;
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.dir = this.directionality.value;
-      srv.$redraw.next();
-    });
 
     this.setupSelectionChangeListener();
     this.setupChangeListener();

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -25,6 +24,7 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { Subject, combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 import { MenuService } from './menu.service';
@@ -50,8 +50,8 @@ import { NzSubmenuService } from './submenu.service';
     '[class.ant-menu-item-selected]': `!isMenuInsideDropDown && nzSelected`,
     '[class.ant-menu-item-danger]': `!isMenuInsideDropDown && nzDanger`,
     '[class.ant-menu-item-disabled]': `!isMenuInsideDropDown && nzDisabled`,
-    '[style.paddingLeft.px]': `dir === 'rtl' ? null : nzPaddingLeft || inlinePaddingLeft`,
-    '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : null`,
+    '[style.paddingLeft.px]': `dir.isRtl() ? null : nzPaddingLeft || inlinePaddingLeft`,
+    '[style.paddingRight.px]': `dir.isRtl() ? nzPaddingLeft || inlinePaddingLeft : null`,
     '(click)': 'clickMenuItem($event)'
   }
 })
@@ -60,7 +60,6 @@ export class NzMenuItemComponent implements OnInit, OnChanges, AfterContentInit 
   private readonly destroyRef = inject(DestroyRef);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly nzSubmenuService = inject(NzSubmenuService, { optional: true });
-  private readonly directionality = inject(Directionality);
   private readonly routerLink = inject(RouterLink, { optional: true });
   private readonly router = inject(Router, { optional: true });
   protected readonly isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
@@ -68,7 +67,7 @@ export class NzMenuItemComponent implements OnInit, OnChanges, AfterContentInit 
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   @Input({ transform: numberAttributeWithZeroFallback }) nzPaddingLeft?: number;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzSelected = false;
@@ -144,11 +143,6 @@ export class NzMenuItemComponent implements OnInit, OnChanges, AfterContentInit 
       .subscribe(([mode, inlineIndent]) => {
         this.inlinePaddingLeft = mode === 'inline' ? this.level * inlineIndent : null;
       });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-    });
   }
 
   ngAfterContentInit(): void {

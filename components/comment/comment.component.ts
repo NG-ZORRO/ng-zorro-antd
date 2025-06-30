@@ -3,22 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChildren,
-  DestroyRef,
-  inject,
   Input,
-  OnInit,
   QueryList,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 import { NzCommentActionComponent as CommentAction, NzCommentActionHostDirective } from './comment-cells';
@@ -64,27 +59,15 @@ import { NzCommentActionComponent as CommentAction, NzCommentActionHostDirective
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ant-comment]': `true`,
-    '[class.ant-comment-rtl]': `dir === "rtl"`
+    '[class.ant-comment-rtl]': `dir.isRtl()`
   },
   imports: [NzOutletModule, NzCommentActionHostDirective]
 })
-export class NzCommentComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
-  private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
-
+export class NzCommentComponent {
   @Input() nzAuthor?: string | TemplateRef<void>;
   @Input() nzDatetime?: string | TemplateRef<void>;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
 
   @ContentChildren(CommentAction) actions!: QueryList<CommentAction>;
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-  }
 }

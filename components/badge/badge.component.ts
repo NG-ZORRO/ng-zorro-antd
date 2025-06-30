@@ -3,10 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -17,11 +15,10 @@ import {
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -78,16 +75,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
 export class NzBadgeComponent implements OnChanges, OnInit {
   public nzConfigService = inject(NzConfigService);
   private renderer = inject(Renderer2);
-  private cdr = inject(ChangeDetectorRef);
   private elementRef = inject(ElementRef<HTMLElement>);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   showSup = false;
   presetColor: string | null = null;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality(() => this.prepareBadgeForRtl());
 
   @Input({ transform: booleanAttribute }) nzShowZero: boolean = false;
   @Input({ transform: booleanAttribute }) nzShowDot = true;
@@ -106,12 +101,6 @@ export class NzBadgeComponent implements OnChanges, OnInit {
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.prepareBadgeForRtl();
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
     this.prepareBadgeForRtl();
   }
 
@@ -129,14 +118,10 @@ export class NzBadgeComponent implements OnChanges, OnInit {
   }
 
   private prepareBadgeForRtl(): void {
-    if (this.isRtlLayout) {
+    if (this.dir.isRtl()) {
       this.renderer.addClass(this.elementRef.nativeElement, 'ant-badge-rtl');
     } else {
       this.renderer.removeClass(this.elementRef.nativeElement, 'ant-badge-rtl');
     }
-  }
-
-  get isRtlLayout(): boolean {
-    return this.dir === 'rtl';
   }
 }

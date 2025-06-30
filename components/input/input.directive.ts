@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ComponentRef,
   DestroyRef,
@@ -25,6 +24,7 @@ import { NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
@@ -42,7 +42,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     '[class.ant-input-lg]': `finalSize() === 'large'`,
     '[class.ant-input-sm]': `finalSize() === 'small'`,
     '[attr.disabled]': 'disabled || null',
-    '[class.ant-input-rtl]': `dir=== 'rtl'`,
+    '[class.ant-input-rtl]': `dir.isRtl()`,
     '[class.ant-input-stepperless]': `nzStepperless`
   },
   hostDirectives: [NzSpaceCompactItemDirective],
@@ -52,7 +52,6 @@ export class NzInputDirective implements OnChanges, OnInit {
   private renderer = inject(Renderer2);
   private elementRef = inject(ElementRef);
   protected hostView = inject(ViewContainerRef);
-  private directionality = inject(Directionality);
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private destroyRef = inject(DestroyRef);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
@@ -79,7 +78,7 @@ export class NzInputDirective implements OnChanges, OnInit {
   _disabled = false;
   disabled$ = new Subject<boolean>();
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   // status
   prefixCls: string = 'ant-input';
   status: NzValidateStatus = '';
@@ -120,11 +119,6 @@ export class NzInputDirective implements OnChanges, OnInit {
           this.disabled$.next(this.ngControl!.disabled!);
         });
     }
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-    });
   }
 
   ngOnChanges({ disabled, nzStatus, nzSize }: SimpleChanges): void {

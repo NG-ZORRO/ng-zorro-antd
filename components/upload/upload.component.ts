@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -29,6 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, of, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
@@ -64,14 +64,14 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
 
   private cdr = inject(ChangeDetectorRef);
   private i18n = inject(NzI18nService);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   @ViewChild('uploadComp', { static: false }) uploadComp!: NzUploadBtnComponent;
   @ViewChild('listComp', { static: false }) listComp!: NzUploadListComponent;
 
   locale!: NzUploadI18nInterface;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality(() => this.setClassMap());
 
   // #region fields
 
@@ -322,7 +322,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
       `${this.prefixCls}-${this.nzType}`,
       ...subCls,
       (this.nzDisabled && `${this.prefixCls}-disabled`) || '',
-      (this.dir === 'rtl' && `${this.prefixCls}-rtl`) || ''
+      (this.dir.isRtl() && `${this.prefixCls}-rtl`) || ''
     ].filter(item => !!item);
 
     this.cdr.detectChanges();
@@ -331,13 +331,6 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   // #endregion
 
   ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.setClassMap();
-      this.cdr.detectChanges();
-    });
-
     this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Upload');
       this.detectChangesList();

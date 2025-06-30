@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
@@ -45,6 +44,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { of } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -187,7 +187,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     <ng-template #inlineMode>
       <div
         class="{{ prefixCls }}-dropdown {{ nzDropdownClassName }}"
-        [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
+        [class.ant-picker-dropdown-rtl]="dir.isRtl()"
         [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
         [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
         [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
@@ -214,7 +214,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
           [disabledTime]="nzDisabledTime"
           [extraFooter]="extraFooter"
           [ranges]="nzRanges"
-          [dir]="dir"
+          [dir]="dir()"
           [format]="nzFormat"
           (resultOk)="onResultOk()"
         />
@@ -250,7 +250,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     '[class.ant-picker-large]': `finalSize() === 'large'`,
     '[class.ant-picker-small]': `finalSize() === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
-    '[class.ant-picker-rtl]': `dir === 'rtl'`,
+    '[class.ant-picker-rtl]': `dir.isRtl()`,
     '[class.ant-picker-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
     '[class.ant-picker-filled]': `nzVariant === 'filled'`,
     '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
@@ -290,7 +290,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   private dateHelper = inject(DateHelperService);
   private nzResizeObserver = inject(NzResizeObserver);
   private platform = inject(Platform);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -300,7 +299,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
   isRange: boolean = false; // Indicate whether the value is a range value
   extraFooter?: TemplateRef<NzSafeAny> | string;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   // status
   statusCls: NgClassInterface = {};
@@ -443,7 +442,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
         ? 0
         : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
 
-    if (this.dir === 'rtl') {
+    if (this.dir.isRtl()) {
       this.activeBarStyle = { ...baseStyle, right: `${this.datePickerService.arrowLeft}px` };
     } else {
       this.activeBarStyle = { ...baseStyle, left: `${this.datePickerService.arrowLeft}px` };
@@ -715,11 +714,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
       this.close();
     });
 
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
     this.inputValue = this.isRange ? ['', ''] : '';
     this.setModeAndFormat();
 

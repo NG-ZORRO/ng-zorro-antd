@@ -4,7 +4,6 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -26,6 +25,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { bufferCount } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { ThumbAnimationProps, thumbMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -66,7 +66,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
   host: {
     class: 'ant-segmented',
     '[class.ant-segmented-disabled]': 'nzDisabled',
-    '[class.ant-segmented-rtl]': `dir === 'rtl'`,
+    '[class.ant-segmented-rtl]': `dir.isRtl()`,
     '[class.ant-segmented-lg]': `nzSize === 'large'`,
     '[class.ant-segmented-sm]': `nzSize === 'small'`,
     '[class.ant-segmented-block]': `nzBlock`
@@ -87,7 +87,6 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
 
   public readonly nzConfigService = inject(NzConfigService);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly directionality = inject(Directionality);
   private readonly service = inject(NzSegmentedService);
 
   @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
@@ -101,7 +100,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   private contentItemCmps = contentChildren(NzSegmentedItemComponent);
   private isDisabledFirstChange = true;
 
-  protected dir: Direction = 'ltr';
+  protected readonly dir = nzInjectDirectionality();
   protected value?: number | string;
   protected animationState: null | { value: string; params: ThumbAnimationProps } = {
     value: 'to',
@@ -112,11 +111,6 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   protected onTouched: OnTouchedType = () => {};
 
   constructor() {
-    this.directionality.change.pipe(takeUntilDestroyed()).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.markForCheck();
-    });
-
     this.service.selected$.pipe(takeUntilDestroyed()).subscribe(value => {
       this.value = value;
     });

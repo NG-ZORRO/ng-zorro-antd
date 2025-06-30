@@ -613,25 +613,21 @@ describe('NzAffixComponent', () => {
 
   it('should handle directionality change', () => {
     mockDirectionality.value = 'ltr';
-    component.ngOnInit();
 
     spyOn<NzSafeAny>(component, 'registerListeners');
     spyOn(component, 'updatePosition');
-    spyOn(component['cdr'], 'detectChanges');
 
     mockDirectionality.change.next('rtl');
 
     expect(component.dir).toBe('rtl');
     expect(component['registerListeners']).toHaveBeenCalled();
     expect(component.updatePosition).toHaveBeenCalled();
-    expect(component['cdr'].detectChanges).toHaveBeenCalled();
   });
 
   it('should register listeners if platform is browser', () => {
     spyOn(component as NzSafeAny, 'removeListeners').and.callThrough();
     spyOn(mockRenderer, 'setStyle');
 
-    component.ngOnInit();
     component.ngAfterViewInit();
 
     expect(component['removeListeners']).toHaveBeenCalled();
@@ -642,7 +638,6 @@ describe('NzAffixComponent', () => {
   it('should not register listeners if platform is not browser', () => {
     mockPlatform.isBrowser = false;
 
-    component.ngOnInit();
     component.ngAfterViewInit();
 
     expect(component['positionChangeSubscription']).toEqual(Subscription.EMPTY);
@@ -666,29 +661,29 @@ describe('NzAffixComponent', () => {
   });
 
   it('should update RTL class when direction changes', () => {
+    mockDirectionality.value = 'ltr';
+    mockDirectionality.change.next('ltr');
     component['fixedEl'].nativeElement.classList.add('ant-affix');
-    component.dir = 'ltr';
-    component['updateRtlClass']();
     fixture.detectChanges();
 
     expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
 
-    component.dir = 'rtl';
-    component['updateRtlClass']();
+    mockDirectionality.value = 'rtl';
+    mockDirectionality.change.next('rtl');
     fixture.detectChanges();
 
     expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeTrue();
 
-    component.dir = 'ltr';
-    component['updateRtlClass']();
+    mockDirectionality.value = 'ltr';
+    mockDirectionality.change.next('ltr');
     fixture.detectChanges();
 
     expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
 
-    component.dir = 'rtl';
     component['fixedEl'].nativeElement.classList.remove('ant-affix');
     component['fixedEl'].nativeElement.classList.add('ant-affix-rtl');
-    component['updateRtlClass']();
+    mockDirectionality.value = 'rtl';
+    mockDirectionality.change.next('rtl');
     fixture.detectChanges();
 
     expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();

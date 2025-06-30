@@ -66,7 +66,7 @@ export interface NzCheckboxOption {
   ],
   host: {
     class: 'ant-checkbox-group',
-    '[class.ant-checkbox-group-rtl]': `dir() === 'rtl'`
+    '[class.ant-checkbox-group-rtl]': `dir.isRtl()`
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -25,6 +24,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -46,7 +46,7 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
       [class.ant-timeline-alternate]="nzMode === 'alternate' || nzMode === 'custom'"
       [class.ant-timeline-pending]="!!nzPending"
       [class.ant-timeline-reverse]="nzReverse"
-      [class.ant-timeline-rtl]="dir === 'rtl'"
+      [class.ant-timeline-rtl]="dir.isRtl()"
     >
       <!-- pending dot (reversed) -->
       @if (nzReverse) {
@@ -89,7 +89,6 @@ import { NzTimelineMode, NzTimelinePosition } from './typings';
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnInit {
   private cdr = inject(ChangeDetectorRef);
   private timelineService = inject(TimelineService);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   @ContentChildren(NzTimelineItemComponent) listOfItems!: QueryList<NzTimelineItemComponent>;
@@ -101,7 +100,8 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnInit 
 
   isPendingBoolean: boolean = false;
   timelineItems: NzTimelineItemComponent[] = [];
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
   hasLabelItem = false;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -120,13 +120,6 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnInit 
     this.timelineService.check$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.cdr.markForCheck();
     });
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   ngAfterContentInit(): void {

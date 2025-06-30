@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
@@ -35,6 +34,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
@@ -106,7 +106,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
   host: {
     class: 'ant-carousel',
     '[class.ant-carousel-vertical]': 'vertical',
-    '[class.ant-carousel-rtl]': `dir === 'rtl'`
+    '[class.ant-carousel-rtl]': `dir.isRtl()`
   },
   imports: [NgTemplateOutlet]
 })
@@ -166,13 +166,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   strategy?: NzCarouselBaseStrategy;
   vertical = false;
   transitionInProgress?: ReturnType<typeof setTimeout>;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality(() => this.markContentActive(this.activeIndex));
 
   private gestureRect: DOMRect | null = null;
   private pointerDelta: PointerVector | null = null;
   private isTransiting = false;
   private isDragging = false;
-  private directionality = inject(Directionality);
   private customStrategies = inject(NZ_CAROUSEL_CUSTOM_STRATEGIES, { optional: true });
 
   constructor() {
@@ -186,14 +186,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   ngOnInit(): void {
     this.slickListEl = this.slickList!.nativeElement;
     this.slickTrackEl = this.slickTrack!.nativeElement;
-
-    this.dir = this.directionality.value;
-
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.markContentActive(this.activeIndex);
-      this.cdr.detectChanges();
-    });
 
     fromEventOutsideAngular<KeyboardEvent>(this.slickListEl, 'keydown')
       .pipe(takeUntilDestroyed(this.destroyRef))

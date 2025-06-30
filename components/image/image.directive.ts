@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   booleanAttribute,
   ChangeDetectorRef,
@@ -21,6 +20,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 
 import { NzImageGroupComponent } from './image-group.component';
@@ -46,7 +46,6 @@ export class NzImageDirective implements OnInit, OnChanges {
   private elementRef = inject(ElementRef);
   private nzImageService = inject(NzImageService);
   protected cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -57,7 +56,8 @@ export class NzImageDirective implements OnInit, OnChanges {
   @Input() @WithConfig() nzPlaceholder: string | null = null;
   @Input() @WithConfig() nzScaleStep: number | null = null;
 
-  dir?: Direction;
+  readonly dir = nzInjectDirectionality();
+
   backLoadImage!: HTMLImageElement;
   status: ImageStatusType = 'normal';
   private backLoadDestroy$ = new Subject<void>();
@@ -71,13 +71,6 @@ export class NzImageDirective implements OnInit, OnChanges {
     this.backLoad();
     if (this.parentGroup) {
       this.parentGroup.addImage(this);
-    }
-    if (this.directionality) {
-      this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-        this.dir = direction;
-        this.cdr.detectChanges();
-      });
-      this.dir = this.directionality.value;
     }
   }
 
@@ -101,7 +94,7 @@ export class NzImageDirective implements OnInit, OnChanges {
       const previewRef = this.nzImageService.preview(
         previewImages,
         {
-          nzDirection: this.dir
+          nzDirection: this.dir()
         },
         scaleStepMap
       );
@@ -110,7 +103,7 @@ export class NzImageDirective implements OnInit, OnChanges {
       // preview not inside image group
       const previewImages = [{ src: this.nzSrc, srcset: this.nzSrcset }];
       this.nzImageService.preview(previewImages, {
-        nzDirection: this.dir,
+        nzDirection: this.dir(),
         nzScaleStep: this.nzScaleStep ?? NZ_DEFAULT_SCALE_STEP
       });
     }

@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   AfterViewInit,
@@ -34,6 +33,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { merge, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
@@ -116,7 +116,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     '[class.ant-input-number-sm]': `finalSize() === 'small'`,
     '[class.ant-input-number-disabled]': 'nzDisabled',
     '[class.ant-input-number-readonly]': 'nzReadOnly',
-    '[class.ant-input-number-rtl]': `dir === 'rtl'`,
+    '[class.ant-input-number-rtl]': `dir.isRtl()`,
     '[class.ant-input-number-borderless]': `nzBorderless`
   },
   imports: [NzIconModule, FormsModule, NzFormItemFeedbackIconComponent],
@@ -128,7 +128,7 @@ export class NzInputNumberLegacyComponent implements ControlValueAccessor, After
   disabled$ = new Subject<boolean>();
   disabledUp = false;
   disabledDown = false;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   // status
   prefixCls: string = 'ant-input-number';
   status: NzValidateStatus = '';
@@ -424,7 +424,6 @@ export class NzInputNumberLegacyComponent implements ControlValueAccessor, After
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
     private renderer: Renderer2,
-    private directionality: Directionality,
     private destroy$: NzDestroyService
   ) {}
 
@@ -454,11 +453,6 @@ export class NzInputNumberLegacyComponent implements ControlValueAccessor, After
           this.nzFocus.emit();
         }
       });
-
-    this.dir = this.directionality.value;
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
-      this.dir = direction;
-    });
 
     this.setupHandlersListeners();
 

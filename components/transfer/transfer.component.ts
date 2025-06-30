@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -30,6 +29,7 @@ import { Observable, of as observableOf, of } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NgStyleInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
@@ -164,7 +164,7 @@ import { NzTransferListComponent } from './transfer-list.component';
   `,
   host: {
     class: 'ant-transfer',
-    '[class.ant-transfer-rtl]': `dir === 'rtl'`,
+    '[class.ant-transfer-rtl]': `dir.isRtl()`,
     '[class.ant-transfer-disabled]': `nzDisabled`,
     '[class.ant-transfer-customize-list]': `nzRenderList`
   },
@@ -178,7 +178,6 @@ export class NzTransferComponent implements OnInit, OnChanges {
   private i18n = inject(NzI18nService);
   private elementRef = inject(ElementRef<HTMLElement>);
   private renderer = inject(Renderer2);
-  private directionality = inject(Directionality);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
@@ -187,7 +186,7 @@ export class NzTransferComponent implements OnInit, OnChanges {
 
   leftFilter = '';
   rightFilter = '';
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   // status
   prefixCls: string = 'ant-transfer';
@@ -400,12 +399,6 @@ export class NzTransferComponent implements OnInit, OnChanges {
     this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Transfer');
       this.markForCheckAllList();
-    });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
     });
   }
 

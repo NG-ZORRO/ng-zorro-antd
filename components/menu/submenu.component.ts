@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, ConnectedOverlayPositionChange, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
@@ -32,6 +31,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { combineLatest, merge } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zorro-antd/core/overlay';
 
@@ -144,7 +144,7 @@ const listOfHorizontalPositions = [
     '[class.ant-menu-submenu-horizontal]': `!isMenuInsideDropDown && mode === 'horizontal'`,
     '[class.ant-menu-submenu-inline]': `!isMenuInsideDropDown && mode === 'inline'`,
     '[class.ant-menu-submenu-active]': `!isMenuInsideDropDown && isActive`,
-    '[class.ant-menu-submenu-rtl]': `dir === 'rtl'`
+    '[class.ant-menu-submenu-rtl]': `dir.isRtl()`
   },
   imports: [
     NzSubMenuTitleComponent,
@@ -158,7 +158,6 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
   public readonly nzSubmenuService = inject(NzSubmenuService);
   protected readonly isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
   protected readonly noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
-  private readonly directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
   private readonly nzMenuService = inject(MenuService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -190,7 +189,7 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
   overlayPositions = listOfVerticalPositions;
   isSelected = false;
   isActive = false;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   /** set the submenu host open status directly **/
   setOpenStateWithoutDebounce(open: boolean): void {
@@ -264,12 +263,6 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
         this.nzOpenChange.emit(this.nzOpen);
         this.cdr.markForCheck();
       }
-    });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.markForCheck();
     });
   }
 

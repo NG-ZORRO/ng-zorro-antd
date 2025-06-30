@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -14,7 +13,6 @@ import {
   DestroyRef,
   Input,
   OnChanges,
-  OnInit,
   QueryList,
   SimpleChanges,
   TemplateRef,
@@ -26,6 +24,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge } from 'rxjs';
 import { auditTime, startWith, switchMap, tap } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -158,15 +157,14 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
     '[class.ant-descriptions-bordered]': 'nzBordered',
     '[class.ant-descriptions-middle]': 'nzSize === "middle"',
     '[class.ant-descriptions-small]': 'nzSize === "small"',
-    '[class.ant-descriptions-rtl]': 'dir === "rtl"'
+    '[class.ant-descriptions-rtl]': 'dir.isRtl()'
   },
   imports: [NzOutletModule, NgTemplateOutlet]
 })
-export class NzDescriptionsComponent implements OnChanges, AfterContentInit, OnInit {
+export class NzDescriptionsComponent implements OnChanges, AfterContentInit {
   public nzConfigService = inject(NzConfigService);
   private cdr = inject(ChangeDetectorRef);
   private breakpointService = inject(NzBreakpointService);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -182,16 +180,10 @@ export class NzDescriptionsComponent implements OnChanges, AfterContentInit, OnI
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
 
   private breakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
-
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-    });
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzColumn) {

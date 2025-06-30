@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -12,16 +11,14 @@ import {
   ContentChild,
   ContentChildren,
   Input,
-  OnInit,
   QueryList,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
@@ -90,14 +87,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     '[class.ant-card-contain-grid]': 'listOfNzCardGridDirective && listOfNzCardGridDirective.length',
     '[class.ant-card-type-inner]': 'nzType === "inner"',
     '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
-    '[class.ant-card-rtl]': `dir === 'rtl'`
+    '[class.ant-card-rtl]': `dir.isRtl()`
   },
   imports: [NzOutletModule, NgTemplateOutlet, NzSkeletonModule]
 })
-export class NzCardComponent implements OnInit {
+export class NzCardComponent {
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -113,18 +108,10 @@ export class NzCardComponent implements OnInit {
   @Input() nzExtra?: string | TemplateRef<void>;
   @ContentChild(NzCardTabComponent, { static: false }) listOfNzCardTabComponent?: NzCardTabComponent;
   @ContentChildren(NzCardGridDirective) listOfNzCardGridDirective!: QueryList<NzCardGridDirective>;
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
 
   constructor() {
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 }

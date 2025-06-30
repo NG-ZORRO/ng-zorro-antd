@@ -3,22 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  DestroyRef,
   EventEmitter,
-  inject,
   Input,
-  OnInit,
   Output,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -55,19 +50,15 @@ import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
   host: {
     '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropDown',
     '[class.ant-menu-submenu-title]': '!isMenuInsideDropDown',
-    '[style.paddingLeft.px]': `dir === 'rtl' ? null : paddingLeft `,
-    '[style.paddingRight.px]': `dir === 'rtl' ? paddingLeft : null`,
+    '[style.paddingLeft.px]': `dir.isRtl() ? null : paddingLeft `,
+    '[style.paddingRight.px]': `dir.isRtl() ? paddingLeft : null`,
     '(click)': 'clickTitle()',
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
   },
   imports: [NzIconModule, NzOutletModule]
 })
-export class NzSubMenuTitleComponent implements OnInit {
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly directionality = inject(Directionality);
-
+export class NzSubMenuTitleComponent {
   @Input() nzIcon: string | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() isMenuInsideDropDown = false;
@@ -78,15 +69,7 @@ export class NzSubMenuTitleComponent implements OnInit {
   @Output() readonly toggleSubMenu = new EventEmitter();
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
-  dir: Direction = 'ltr';
-
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-  }
+  readonly dir = nzInjectDirectionality();
 
   setMouseState(state: boolean): void {
     if (!this.nzDisabled && this.nzTriggerSubMenuAction === 'hover') {

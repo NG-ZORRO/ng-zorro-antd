@@ -73,8 +73,7 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
     }
   }
 
-  override ngOnInit(): void {
-    super.ngOnInit();
+  ngOnInit(): void {
     this.syncTimer();
   }
 

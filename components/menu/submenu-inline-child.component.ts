@@ -3,12 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   ElementRef,
   inject,
   Input,
@@ -19,8 +17,8 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -35,7 +33,7 @@ import { NzMenuModeType } from './menu.types';
   template: `<ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>`,
   host: {
     class: 'ant-menu ant-menu-inline ant-menu-sub',
-    '[class.ant-menu-rtl]': `dir === 'rtl'`,
+    '[class.ant-menu-rtl]': `dir.isRtl()`,
     '[@collapseMotion]': 'expandState'
   },
   imports: [NgTemplateOutlet]
@@ -43,8 +41,6 @@ import { NzMenuModeType } from './menu.types';
 export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
   private readonly elementRef = inject(ElementRef);
   private readonly renderer = inject(Renderer2);
-  private readonly directionality = inject(Directionality);
-  private readonly destroyRef = inject(DestroyRef);
 
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() menuClass: string = '';
@@ -52,7 +48,7 @@ export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
   @Input() nzOpen = false;
   listOfCacheClassName: string[] = [];
   expandState = 'collapsed';
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   calcMotionState(): void {
     this.expandState = this.nzOpen ? 'expanded' : 'collapsed';
@@ -60,11 +56,6 @@ export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.calcMotionState();
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

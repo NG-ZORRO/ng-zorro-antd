@@ -3,22 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  EventEmitter,
-  inject,
-  Input,
-  OnInit,
-  Output,
-  TemplateRef
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 
 import { NzFloatButtonContentComponent } from './float-button-content.component';
 
@@ -64,14 +52,10 @@ import { NzFloatButtonContentComponent } from './float-button-content.component'
     class: 'ant-float-btn',
     '[class.ant-float-btn-circle]': `nzShape === 'circle'`,
     '[class.ant-float-btn-square]': `nzShape === 'square'`,
-    '[class.ant-float-btn-rtl]': `dir === 'rtl'`
+    '[class.ant-float-btn-rtl]': `dir.isRtl()`
   }
 })
-export class NzFloatButtonComponent implements OnInit {
-  private directionality = inject(Directionality);
-  private cdr = inject(ChangeDetectorRef);
-  private destroyRef = inject(DestroyRef);
-
+export class NzFloatButtonComponent {
   @Input() nzHref: string | null = null;
   @Input() nzTarget: string | null = null;
   @Input() nzType: 'default' | 'primary' = 'default';
@@ -79,18 +63,6 @@ export class NzFloatButtonComponent implements OnInit {
   @Input() nzIcon: TemplateRef<void> | null = null;
   @Input() nzDescription: TemplateRef<void> | string | null = null;
   @Output() readonly nzOnClick = new EventEmitter<boolean>();
-  dir: Direction = 'ltr';
 
-  constructor() {
-    this.dir = this.directionality.value;
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-  }
+  readonly dir = nzInjectDirectionality();
 }

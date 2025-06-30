@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -33,6 +32,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelAnimationFrame, requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
@@ -115,7 +115,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   encapsulation: ViewEncapsulation.None,
   host: {
     '[class.ant-typography]': '!editing',
-    '[class.ant-typography-rtl]': 'dir === "rtl"',
+    '[class.ant-typography-rtl]': 'dir.isRtl()',
     '[class.ant-typography-edit-content]': 'editing',
     '[class.ant-typography-secondary]': 'nzType === "secondary"',
     '[class.ant-typography-warning]': 'nzType === "warning"',
@@ -141,7 +141,6 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnChanges {
   private platform = inject(Platform);
   private i18n = inject(NzI18nService);
   private resizeService = inject(NzResizeService);
-  private directionality = inject(Directionality);
   private document: Document = inject(DOCUMENT);
   private destroyRef = inject(DestroyRef);
 
@@ -179,7 +178,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnChanges {
   isEllipsis: boolean = true;
   expanded: boolean = false;
   ellipsisStr = '...';
-  dir: Direction = 'ltr';
+
+  readonly dir = nzInjectDirectionality();
 
   get hasEllipsisObservers(): boolean {
     return this.nzOnEllipsis.observers.length > 0;
@@ -339,13 +339,6 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnChanges {
       this.locale = this.i18n.getLocaleData('Text');
       this.cdr.markForCheck();
     });
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {

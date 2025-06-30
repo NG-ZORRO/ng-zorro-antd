@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import {
   AfterViewInit,
@@ -26,6 +25,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -59,7 +59,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       [class.ant-switch-loading]="nzLoading"
       [class.ant-switch-disabled]="nzDisabled"
       [class.ant-switch-small]="nzSize === 'small'"
-      [class.ant-switch-rtl]="dir === 'rtl'"
+      [class.ant-switch-rtl]="dir.isRtl()"
       [nzWaveExtraNode]="true"
     >
       <span class="ant-switch-handle">
@@ -87,7 +87,6 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
   private focusMonitor = inject(FocusMonitor);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   isChecked = false;
@@ -102,7 +101,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
   @Input() nzId: string | null = null;
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   private isNzDisableFirstChange = true;
 
@@ -128,13 +127,6 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   }
 
   ngOnInit(): void {
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-
     fromEventOutsideAngular(this.el, 'click')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {

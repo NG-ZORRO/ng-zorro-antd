@@ -3,20 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
-  OnInit,
   ViewEncapsulation,
   booleanAttribute,
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
@@ -35,13 +32,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
     '[class.ant-collapse-icon-position-end]': `nzExpandIconPosition === 'end'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered',
-    '[class.ant-collapse-rtl]': "dir === 'rtl'"
+    '[class.ant-collapse-rtl]': 'dir.isRtl()'
   }
 })
-export class NzCollapseComponent implements OnInit {
+export class NzCollapseComponent {
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -50,21 +45,12 @@ export class NzCollapseComponent implements OnInit {
   @Input({ transform: booleanAttribute }) @WithConfig() nzGhost: boolean = false;
   @Input() nzExpandIconPosition: 'start' | 'end' = 'start';
 
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
 
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
 
   constructor() {
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   addPanel(value: NzCollapsePanelComponent): void {

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -30,6 +29,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
@@ -50,7 +50,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   imports: [NgTemplateOutlet, NzIconModule],
   template: `
     @if (visible) {
-      <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion>
+      <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir.isRtl()" @fadeMotion>
         <ng-template #defaultContent>
           <div class="ant-back-top-content">
             <div class="ant-back-top-icon">
@@ -71,7 +71,6 @@ export class NzBackTopComponent implements OnInit, OnChanges {
   private platform = inject(Platform);
   private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -79,7 +78,8 @@ export class NzBackTopComponent implements OnInit, OnChanges {
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
-  dir: Direction = this.directionality.value || 'ltr';
+
+  readonly dir = nzInjectDirectionality();
 
   @Input() nzTemplate?: TemplateRef<void>;
   @Input({ transform: numberAttribute }) @WithConfig() nzVisibilityHeight: number = 400;
@@ -115,13 +115,6 @@ export class NzBackTopComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.registerScrollEvent();
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   private getTarget(): HTMLElement | Window {

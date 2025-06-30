@@ -4,7 +4,6 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -30,6 +29,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map, mergeMap, startWith, switchMap } from 'rxjs/operators';
 
+import { nzInjectDirectionality } from 'ng-zorro-antd/cdk/bidi';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
@@ -112,21 +112,21 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
   host: {
     '[class.ant-input-search-enter-button]': `nzSearch`,
     '[class.ant-input-search]': `nzSearch`,
-    '[class.ant-input-search-rtl]': `dir === 'rtl'`,
+    '[class.ant-input-search-rtl]': `dir.isRtl()`,
     '[class.ant-input-search-sm]': `nzSearch && isSmall`,
     '[class.ant-input-search-large]': `nzSearch && isLarge`,
     '[class.ant-input-group-wrapper]': `isAddOn`,
-    '[class.ant-input-group-wrapper-rtl]': `dir === 'rtl'`,
+    '[class.ant-input-group-wrapper-rtl]': `dir.isRtl()`,
     '[class.ant-input-group-wrapper-lg]': `isAddOn && isLarge`,
     '[class.ant-input-group-wrapper-sm]': `isAddOn && isSmall`,
     '[class.ant-input-affix-wrapper]': `isAffix && !isAddOn`,
-    '[class.ant-input-affix-wrapper-rtl]': `dir === 'rtl'`,
+    '[class.ant-input-affix-wrapper-rtl]': `dir.isRtl()`,
     '[class.ant-input-affix-wrapper-focused]': `isAffix && focused`,
     '[class.ant-input-affix-wrapper-disabled]': `isAffix && disabled`,
     '[class.ant-input-affix-wrapper-lg]': `isAffix && !isAddOn && isLarge`,
     '[class.ant-input-affix-wrapper-sm]': `isAffix && !isAddOn && isSmall`,
     '[class.ant-input-group]': `!isAffix && !isAddOn`,
-    '[class.ant-input-group-rtl]': `dir === 'rtl'`,
+    '[class.ant-input-group-rtl]': `dir.isRtl()`,
     '[class.ant-input-group-lg]': `!isAffix && !isAddOn && isLarge`,
     '[class.ant-input-group-sm]': `!isAffix && !isAddOn && isSmall`
   },
@@ -138,7 +138,6 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   private elementRef = inject(ElementRef);
   private renderer = inject(Renderer2);
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
@@ -162,7 +161,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   isFeedback = false;
   focused = false;
   disabled = false;
-  dir: Direction = 'ltr';
+  readonly dir = nzInjectDirectionality();
   // status
   prefixCls: string = 'ant-input';
   affixStatusCls: NgClassInterface = {};
@@ -198,11 +197,6 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
         this.focused = !!focusOrigin;
         this.cdr.markForCheck();
       });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-    });
   }
 
   ngAfterContentInit(): void {
