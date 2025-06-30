@@ -45,7 +45,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     '[attr.disabled]': 'disabled || null',
     '[class.ant-input-rtl]': `dir=== 'rtl'`,
     '[class.ant-input-stepperless]': `nzStepperless`,
-    '[class.ant-input-focused]': 'focus()'
+    '[class.ant-input-focused]': 'focused()'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   providers: [{ provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
@@ -92,7 +92,7 @@ export class NzInputDirective implements OnChanges, OnInit {
   components: Array<ComponentRef<NzFormItemFeedbackIconComponent>> = [];
   ngControl = inject(NgControl, { self: true, optional: true });
 
-  protected focus = signal<boolean>(false);
+  protected focused = signal<boolean>(false);
   protected finalSize = computed(() => {
     if (this.compactSize) {
       return this.compactSize();
@@ -133,7 +133,7 @@ export class NzInputDirective implements OnChanges, OnInit {
     this.focusMonitor
       .monitor(this.elementRef, false)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(origin => this.focus.set(!!origin));
+      .subscribe(origin => this.focused.set(!!origin));
   }
 
   ngOnChanges({ disabled, nzStatus, nzSize }: SimpleChanges): void {
