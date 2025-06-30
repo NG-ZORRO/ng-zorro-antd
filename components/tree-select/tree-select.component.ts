@@ -168,9 +168,10 @@ const listOfPositions = [
       @if (isMultiple) {
         @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node.key) {
           <nz-select-item
-            [deletable]="true"
+            deletable
             [disabled]="node.isDisabled || nzDisabled"
             [label]="nzDisplayWith(node)"
+            displayLabelInHtml
             (delete)="removeSelected(node, true)"
           ></nz-select-item>
         }
@@ -178,8 +179,6 @@ const listOfPositions = [
           <nz-select-item
             [contentTemplateOutlet]="nzMaxTagPlaceholder"
             [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
-            [deletable]="false"
-            [disabled]="false"
             [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
           ></nz-select-item>
         }
@@ -205,11 +204,7 @@ const listOfPositions = [
       }
 
       @if (!isMultiple && selectedNodes.length === 1 && !isComposing && inputValue === '') {
-        <nz-select-item
-          [deletable]="false"
-          [disabled]="false"
-          [label]="nzDisplayWith(selectedNodes[0])"
-        ></nz-select-item>
+        <nz-select-item [label]="nzDisplayWith(selectedNodes[0])" displayLabelInHtml></nz-select-item>
       }
 
       @if (!isMultiple) {

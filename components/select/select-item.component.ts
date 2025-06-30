@@ -5,6 +5,7 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -24,10 +25,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *nzStringTemplateOutlet="contentTemplateOutlet; context: templateOutletContext">
-      @if (deletable) {
-        <div class="ant-select-selection-item-content">{{ label }}</div>
+      @if (displayLabelInHtml) {
+        <div [class.ant-select-selection-item-content]="deletable" [innerHTML]="label"></div>
       } @else {
-        {{ label }}
+        <div [class.ant-select-selection-item-content]="deletable">{{ label }}</div>
       }
     </ng-container>
     @if (deletable && !disabled) {
@@ -48,9 +49,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   imports: [NgTemplateOutlet, NzOutletModule, NzIconModule]
 })
 export class NzSelectItemComponent {
-  @Input() disabled = false;
+  @Input({ transform: booleanAttribute }) disabled = false;
   @Input() label: string | number | null | undefined = null;
-  @Input() deletable = false;
+  /**
+   * @internal Internally used, please do not use it directly.
+   * @description Whether the label is in HTML format.
+   */
+  @Input({ transform: booleanAttribute }) displayLabelInHtml = false;
+  @Input({ transform: booleanAttribute }) deletable = false;
   @Input() removeIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplateOutletContext: NzSafeAny | null = null;
   @Input() contentTemplateOutlet: string | TemplateRef<NzSafeAny> | null = null;
