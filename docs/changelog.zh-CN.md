@@ -15,7 +15,7 @@ timeline: true
 ---
 ## 20.0.0
 
-`2025-06-27`
+`2025-07-01`
 
 ### Features
 
@@ -24,6 +24,7 @@ timeline: true
 * **select:** 新增 `nzOnClear` 事件回调 ([#9188](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9188)) ([e047ac2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e047ac249b16b547525a0ca4d13beeef620f44c4))
 * **avatar:** 支持设置原生 `<img>` 的 `loading` 和 `fetchpriority` 属性 ([#7347](https://github.com/NG-ZORRO/ng-zorro-antd/issues/7347)) ([ff8419f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ff8419f6614bdac8bc3c778e470da08b679889d0))
 * **popconfirm:** 新增 `nzOkButtonProps` 和 `nzCancelButtonProps` ([#9245](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9245)) ([22e2a9f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/22e2a9fb148fd875c76fb339c6582d92aef62791))
+* **tree-select:** render title of selected node in innerHTML ([#9259](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9259)) ([8066f7b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8066f7bb082c95652a2e158a01e55382992fe8c6))
 
 ### Bug Fixes
 
@@ -33,6 +34,7 @@ timeline: true
 * **tabs:** 修复 tab focus 时不正确的滚动行为 ([#9186](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9186)) ([4f658e0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4f658e0834e99ea2be0ffd4ead2dd041ec88fb83))
 * **schematics:** 修复重复执行 `ng add` 时的问题 ([#9171](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9171)) ([d0a9748](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d0a974848c0e31ad41ba69a5af60c002a7b251cd))
 * **water-mark:** 修复 ssr 模式的兼容问题 ([#9250](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9250)) ([a70a682](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a70a682c8aa4d073bb150abd4b69104fbe21e2ed))
+* **icon:** debounce icon rendering on animation frame ([#8579](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8579)) ([c0709d1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c0709d1e01d80969a48634fe8194dbfd49f6192f))
 
 ### Code Refactoring
 
@@ -90,17 +92,18 @@ timeline: true
 
 在 v20 中，以下 API 被标记为 **deprecated**，并将在下一个主要版本中移除。 请参考相关文档以获取更好的替代方案。
 
-| Module                       | API                                                                          |
-|------------------------------|------------------------------------------------------------------------------|
-| `ng-zorro-antd/autocomplete` | `NZ_AUTOCOMPLETE_VALUE_ACCESSOR` <br /> `getNzAutocompleteMissingPanelError` |
-| `ng-zorro-antd/button`       | `NzButtonGroupComponent`                                                     |
-| `ng-zorro-antd/core/form`    | `NzFormPatchModule`                                                          |
-| `ng-zorro-antd/checkbox`     | `NzCheckBoxOptionInterface`                                                  |
-| `ng-zorro-antd/input`        | `NzInputGroupComponent#nzCompact`                                            |
-| `ng-zorro-antd/mention`      | `NZ_MENTION_TRIGGER_ACCESSOR`                                                |
-| `ng-zorro-antd/message`      | `NzMessageModule`                                                            |
-| `ng-zorro-antd/notification` | `NzNotificationModule`<br/>`NzNotificationServiceModule`                     |
-| `ng-zorro-antd/tabs`         | `NzTabsetComponent`                                                          |
+| Module                         | API                                                                          |
+|--------------------------------|------------------------------------------------------------------------------|
+| `ng-zorro-antd/autocomplete`   | `NZ_AUTOCOMPLETE_VALUE_ACCESSOR` <br /> `getNzAutocompleteMissingPanelError` |
+| `ng-zorro-antd/button`         | `NzButtonGroupComponent`                                                     |
+| `ng-zorro-antd/core/highlight` | `NzHighlightModule`                                                          |
+| `ng-zorro-antd/core/form`      | `NzFormPatchModule`                                                          |
+| `ng-zorro-antd/checkbox`       | `NzCheckBoxOptionInterface`                                                  |
+| `ng-zorro-antd/input`          | `NzInputGroupComponent#nzCompact`                                            |
+| `ng-zorro-antd/mention`        | `NZ_MENTION_TRIGGER_ACCESSOR`                                                |
+| `ng-zorro-antd/message`        | `NzMessageModule`                                                            |
+| `ng-zorro-antd/notification`   | `NzNotificationModule`<br/>`NzNotificationServiceModule`                     |
+| `ng-zorro-antd/tabs`           | `NzTabsetComponent`                                                          |
 
 
 

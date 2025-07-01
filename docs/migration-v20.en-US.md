@@ -24,4 +24,4 @@ This document will help you upgrade from `ng-zorro-antd` 19.x version to 20.x ve
 
 ### 3. Remove deprecated APIs
 
-- Remove deprecated APIs, please refer to the [v20 changelog](/docs/changelog/en#20-0-0) for more information.
+- Remove deprecated APIs, please refer to the [v20 changelog](/docs/changelog/en#2000) for more information.

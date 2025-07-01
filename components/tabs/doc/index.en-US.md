@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Display
+type: Navigation
 title: Tabs
 cols: 1
 cover: 'https://gw.alipayobjects.com/zos/antfincdn/lkI2hNEDr2V/Tabs.svg'
