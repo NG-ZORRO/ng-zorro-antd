@@ -31,25 +31,25 @@ The component provides a number of service methods using the following methods a
 - `NzNotificationService.info(title, content, [options])`
 - `NzNotificationService.warning(title, content, [options])`
 
-| Argument | Description                                                                          | Type                                                                              | Default |
-|----------|--------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|---------|
-| title    | Title                                                                                | `string \| TemplateRef<void>`                                                     | -       |
-| content  | Notification content                                                                 | `NzNotificationContentType` | -       |
-| options  | Support setting the parameters for the current notification box, see the table below | `object`                                                                          | -       |
+| Argument  | Description                                                                          | Type                          | Default |
+|-----------|--------------------------------------------------------------------------------------|-------------------------------|---------|
+| `title`   | Title                                                                                | `string \| TemplateRef<void>` | -       |
+| `content` | Notification content                                                                 | `NzNotificationContentType`   | -       |
+| `options` | Support setting the parameters for the current notification box, see the table below | `object`                      | -       |
 
 The parameters that are set by the `options` support are as follows:
 
-| Argument       | Description                                                            | Type                                                            |
-|----------------|------------------------------------------------------------------------|-----------------------------------------------------------------|
-| nzKey          | The unique identifier of the Notification                              | `string`                                                        |
-| nzDuration     | Duration (milliseconds), does not disappear when set to 0              | `number`                                                        |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean`                                                       |
-| nzAnimate      | Whether to turn on animation                                           | `boolean`                                                       |
-| nzStyle        | Custom inline style                                                    | `object`                                                        |
-| nzClass        | Custom CSS class                                                       | `object`                                                        |
-| nzData         | Anything that would be used as template context                        | `any`                                                           |
-| nzCloseIcon    | Custom close icon                                                      | `TemplateRef<void> \| string`                                   |
-| nzButton       | Custom button                                                          | `TemplateRef<{ $implicit: NzNotificationComponent }> \| string` |
+| Argument         | Description                                                            | Type                                                            |
+|------------------|------------------------------------------------------------------------|-----------------------------------------------------------------|
+| `nzKey`          | The unique identifier of the Notification                              | `string`                                                        |
+| `nzDuration`     | Duration (milliseconds), does not disappear when set to 0              | `number`                                                        |
+| `nzPauseOnHover` | Do not remove automatically when mouse is over while setting to `true` | `boolean`                                                       |
+| `nzAnimate`      | Whether to turn on animation                                           | `boolean`                                                       |
+| `nzStyle`        | Custom inline style                                                    | `object`                                                        |
+| `nzClass`        | Custom CSS class                                                       | `object`                                                        |
+| `nzData`         | Anything that would be used as template context                        | `any`                                                           |
+| `nzCloseIcon`    | Custom close icon                                                      | `TemplateRef<void> \| string`                                   |
+| `nzButton`       | Custom button                                                          | `TemplateRef<{ $implicit: NzNotificationComponent }> \| string` |
 
 Methods for destruction are also provided:
 
@@ -59,16 +59,16 @@ Methods for destruction are also provided:
 
 You can use `NzConfigService` to configure this component globally. Please check the [Global Configuration](/docs/global-config/en) chapter for more information.
 
-| Parameter      | Description                                                                             | Type             | Default    |
-|----------------|-----------------------------------------------------------------------------------------|------------------|------------|
-| nzDuration     | Duration (milliseconds), does not disappear when set to 0                               | `number`         | 4500       |
-| nzMaxStack     | The maximum number of notifications that can be displayed at the same time              | `number`         | 8          |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true`                  | `boolean`        | `true`     |
-| nzAnimate      | Whether to turn on animation                                                            | `boolean`        | `true`     |
-| nzTop          | The top of the notification when it pops up from the top.                               | `string`         | 24px       |
-| nzBottom       | The bottom of the notification when it pops up from the bottom.                         | `string`         | 24px       |
-| nzPlacement    | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `string`         | `topRight` |
-| nzDirection    | Direction of the text in the notification                                               | `'ltr' \| 'rtl'` | -          |
+| Parameter        | Description                                                                             | Type             | Default    |
+|------------------|-----------------------------------------------------------------------------------------|------------------|------------|
+| `nzDuration`     | Duration (milliseconds), does not disappear when set to 0                               | `number`         | 4500       |
+| `nzMaxStack`     | The maximum number of notifications that can be displayed at the same time              | `number`         | 8          |
+| `nzPauseOnHover` | Do not remove automatically when mouse is over while setting to `true`                  | `boolean`        | `true`     |
+| `nzAnimate`      | Whether to turn on animation                                                            | `boolean`        | `true`     |
+| `nzTop`          | The top of the notification when it pops up from the top.                               | `string`         | 24px       |
+| `nzBottom`       | The bottom of the notification when it pops up from the bottom.                         | `string`         | 24px       |
+| `nzPlacement`    | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `string`         | `topRight` |
+| `nzDirection`    | Direction of the text in the notification                                               | `'ltr' \| 'rtl'` | -          |
 
 ### NzNotificationRef
 

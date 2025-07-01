@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 标签页
-type: 数据展示
+type: 导航
 title: Tabs
 cols: 1
 cover: 'https://gw.alipayobjects.com/zos/antfincdn/lkI2hNEDr2V/Tabs.svg'

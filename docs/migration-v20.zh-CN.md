@@ -26,4 +26,4 @@ toc: false
 
 ### 3. 移除废弃 API
 
-- 请参考 [v20 changelog](/docs/changelog/zh#20-0-0) 移除废弃 API
+- 请参考 [v20 changelog](/docs/changelog/zh#2000) 移除废弃 API

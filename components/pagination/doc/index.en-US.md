@@ -23,15 +23,15 @@ description: A long list can be divided into several pages by `Pagination`, and 
 ### nz-pagination
 
 | Property               | Description                                                    | Type                                                                                         | Default            | Global Config |
-| ---------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------ | ------------- |
+|------------------------|----------------------------------------------------------------|----------------------------------------------------------------------------------------------|--------------------|---------------|
 | `[nzTotal]`            | total number of data items                                     | `number`                                                                                     | `0`                | -             |
-| `[nzPageIndex]`        | current page number，double binding                            | `number`                                                                                     | `1`                | -             |
+| `[nzPageIndex]`        | current page number，double binding                             | `number`                                                                                     | `1`                | -             |
 | `[nzPageSize]`         | number of data items per page, double binding                  | `number`                                                                                     | `10`               | -             |
 | `[nzDisabled]`         | disable pagination                                             | `boolean`                                                                                    | `false`            | -             |
 | `[nzShowQuickJumper]`  | determine whether you can jump to pages directly               | `boolean`                                                                                    | `false`            | ✅             |
 | `[nzShowSizeChanger]`  | determine whether `nzPageSize` can be changed                  | `boolean`                                                                                    | `false`            | ✅             |
 | `[nzSimple]`           | whether to use simple mode                                     | `boolean`                                                                                    | -                  | ✅             |
-| `[nzSize]`             | specify the size of `nz-pagination`, can be set to `small`     | `'small' \| 'default'`                                                                       | `'default'`        | ✅             |
+| `[nzSize]`             | specify the size of `nz-pagination`                            | `'small' \| 'default'`                                                                       | `'default'`        | ✅             |
 | `[nzResponsive]`       | `Pagination` would resize according to the width of the window | `boolean`                                                                                    | `false`            | -             |
 | `[nzPageSizeOptions]`  | specify the sizeChanger options                                | `number[]`                                                                                   | `[10, 20, 30, 40]` | ✅             |
 | `[nzItemRender]`       | to customize item                                              | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next'\| 'prev_5'\| 'next_5', page: number }>` | -                  | -             |

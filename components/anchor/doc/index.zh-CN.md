@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 锚点
-type: 其他
+type: 导航
 title: Anchor
 cover: 'https://gw.alipayobjects.com/zos/alicdn/_1-C1JwsC/Anchor.svg'
 description: 用于跳转到页面指定位置。
