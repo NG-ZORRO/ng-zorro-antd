@@ -55,8 +55,6 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
         ></nz-select-search>
         @if (isShowSingleLabel) {
           <nz-select-item
-            [deletable]="false"
-            [disabled]="false"
             [removeIcon]="removeIcon"
             [label]="listOfTopItem[0].nzLabel"
             [contentTemplateOutlet]="customTemplate"
@@ -72,7 +70,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
             [label]="item.nzLabel"
             [disabled]="item.nzDisabled || disabled"
             [contentTemplateOutlet]="item.contentTemplateOutlet"
-            [deletable]="true"
+            deletable
             [contentTemplateOutletContext]="item.contentTemplateOutletContext"
             (delete)="onDeleteItem(item.contentTemplateOutletContext)"
           ></nz-select-item>
