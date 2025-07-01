@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ComponentRef,
@@ -43,7 +44,8 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     '[class.ant-input-sm]': `finalSize() === 'small'`,
     '[attr.disabled]': 'disabled || null',
     '[class.ant-input-rtl]': `dir=== 'rtl'`,
-    '[class.ant-input-stepperless]': `nzStepperless`
+    '[class.ant-input-stepperless]': `nzStepperless`,
+    '[class.ant-input-focused]': 'focused()'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   providers: [{ provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
@@ -57,6 +59,7 @@ export class NzInputDirective implements OnChanges, OnInit {
   private destroyRef = inject(DestroyRef);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+  private focusMonitor = inject(FocusMonitor);
 
   /**
    * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
@@ -89,6 +92,7 @@ export class NzInputDirective implements OnChanges, OnInit {
   components: Array<ComponentRef<NzFormItemFeedbackIconComponent>> = [];
   ngControl = inject(NgControl, { self: true, optional: true });
 
+  protected focused = signal<boolean>(false);
   protected finalSize = computed(() => {
     if (this.compactSize) {
       return this.compactSize();
@@ -97,6 +101,12 @@ export class NzInputDirective implements OnChanges, OnInit {
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.focusMonitor.stopMonitoring(this.elementRef);
+    });
+  }
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
@@ -125,6 +135,11 @@ export class NzInputDirective implements OnChanges, OnInit {
     this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
     });
+
+    this.focusMonitor
+      .monitor(this.elementRef, false)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(origin => this.focused.set(!!origin));
   }
 
   ngOnChanges({ disabled, nzStatus, nzSize }: SimpleChanges): void {
