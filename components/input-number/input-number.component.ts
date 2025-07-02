@@ -410,7 +410,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       value &&= +value.toFixed(precision);
     }
 
-    const formatedValue = value === null ? '' : formatter(value);
+    const formatedValue = value === null || typeof value === 'undefined' ? '' : formatter(value);
     this.displayValue.set(formatedValue);
     this.updateValue(value);
   }
