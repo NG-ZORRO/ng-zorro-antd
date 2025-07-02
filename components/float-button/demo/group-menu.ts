@@ -42,8 +42,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         height: 300px;
         position: relative;
       }
-      nz-float-button-group,
-      nz-float-button {
+      nz-float-button-group {
         position: absolute;
       }
     `

@@ -98,6 +98,52 @@ describe('nz-float-button-group', () => {
         false
       );
     });
+
+    describe('float-button-group placement', () => {
+      it('should set correct class for nzPlacement top', () => {
+        testComponent.nzTrigger = 'click';
+        testComponent.nzPlacement = 'top';
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-top');
+        // is not menu mode
+        testComponent.nzTrigger = null;
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-top');
+      });
+
+      it('should set correct class for nzPlacement bottom', () => {
+        testComponent.nzTrigger = 'click';
+        testComponent.nzPlacement = 'bottom';
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-bottom');
+        // is not menu mode
+        testComponent.nzTrigger = null;
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-bottom');
+      });
+
+      it('should set correct class for nzPlacement left', () => {
+        testComponent.nzTrigger = 'click';
+        testComponent.nzPlacement = 'left';
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-left');
+        // is not menu mode
+        testComponent.nzTrigger = null;
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-left');
+      });
+
+      it('should set correct class for nzPlacement right', () => {
+        testComponent.nzTrigger = 'click';
+        testComponent.nzPlacement = 'right';
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-right');
+        // is not menu mode
+        testComponent.nzTrigger = null;
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-right');
+      });
+    });
   });
 });
 
@@ -128,6 +174,7 @@ describe('nz-float-button-group RTL', () => {
       [nzShape]="nzShape"
       [nzTrigger]="nzTrigger"
       [nzOpen]="nzOpen"
+      [nzPlacement]="nzPlacement"
       (nzOnOpenChange)="onClick($event)"
     >
     </nz-float-button-group>
@@ -141,6 +188,7 @@ export class NzTestFloatButtonGroupBasicComponent {
   nzTrigger: 'click' | 'hover' | null = null;
   nzOpen: boolean | null = null;
   nzIcon: TemplateRef<void> | null = null;
+  nzPlacement: 'top' | 'right' | 'bottom' | 'left' = 'top';
   @ViewChild('icon', { static: false }) icon!: TemplateRef<void>;
 
   isClick: boolean = false;
