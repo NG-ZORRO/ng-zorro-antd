@@ -26,12 +26,14 @@ describe('nz-float-button-group', () => {
     let fixture: ComponentFixture<NzTestFloatButtonGroupBasicComponent>;
     let testComponent: NzTestFloatButtonGroupBasicComponent;
     let resultEl: DebugElement;
+    let groupComponent: NzFloatButtonGroupComponent;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFloatButtonGroupBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzFloatButtonGroupComponent));
+      groupComponent = resultEl.componentInstance;
     });
 
     it('basic', () => {
@@ -43,6 +45,10 @@ describe('nz-float-button-group', () => {
       testComponent.nzShape = 'square';
       fixture.detectChanges();
       expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-square');
+      const innerButtons = [...groupComponent.nzFloatButtonComponents, ...groupComponent.nzFloatButtonTopComponents];
+      innerButtons.forEach(btn => {
+        expect(btn.nzShape).toBe('square');
+      });
     });
 
     it('nzTrigger hover', () => {
@@ -150,6 +156,7 @@ describe('nz-float-button-group', () => {
 describe('nz-float-button-group RTL', () => {
   let fixture: ComponentFixture<NzTestFloatButtonRtlComponent>;
   let resultEl: DebugElement;
+  let groupComponent: NzFloatButtonGroupComponent;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -157,10 +164,12 @@ describe('nz-float-button-group RTL', () => {
     });
     fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
     resultEl = fixture.debugElement.query(By.directive(NzFloatButtonGroupComponent));
+    groupComponent = resultEl.componentInstance;
   }));
 
   it('rtl', () => {
     fixture.detectChanges();
+    expect(groupComponent.dir()).toBe('rtl');
     expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-rtl');
   });
 });
