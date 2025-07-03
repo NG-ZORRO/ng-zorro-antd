@@ -114,6 +114,15 @@ describe('NzPopconfirm', () => {
     expect(getTooltipTrigger(0).disabled).toBeTrue();
   });
 
+  it('should support nzCancelButtonProps and support danger on close button', () => {
+    fixture.detectChanges();
+    const triggerElement = component.stringTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    component.nzCancelButtonProps.update(props => ({ ...props, nzDanger: true }));
+    fixture.detectChanges();
+    expect(getTooltipTrigger(0).classList).toContain('ant-btn-dangerous');
+  });
+
   it('should cancel work', fakeAsync(() => {
     const triggerElement = component.stringTemplate.nativeElement;
 
