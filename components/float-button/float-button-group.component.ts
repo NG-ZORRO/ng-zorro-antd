@@ -4,6 +4,7 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -31,20 +32,16 @@ import { NzFloatButtonComponent } from './float-button.component';
 @Component({
   selector: 'nz-float-button-group',
   exportAs: 'nzFloatButtonGroup',
-  imports: [NzFloatButtonComponent, NzIconModule],
+  imports: [NzFloatButtonComponent, NzIconModule, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [fadeMotion],
   template: `
-    @if (!isMenuMode() || open()) {
-      <div
-        @fadeMotion
-        [class.ant-float-btn-group-wrap]="isMenuMode()"
-        [class.ant-float-btn-group-un-menu]="!isMenuMode()"
-      >
-        <ng-content></ng-content>
-      </div>
-    }
-    @if (isMenuMode()) {
+    @if (!isMenuMode()) {
+      <ng-container *ngTemplateOutlet="menu"></ng-container>
+    } @else {
+      @if (open()) {
+        <div class="ant-float-btn-group-wrap" @fadeMotion><ng-container *ngTemplateOutlet="menu"></ng-container></div>
+      }
       <nz-float-button
         class="ant-float-btn-group-trigger"
         [nzType]="nzType()"
@@ -55,7 +52,7 @@ import { NzFloatButtonComponent } from './float-button.component';
         (mouseover)="hoverOpenMenu()"
       ></nz-float-button>
     }
-
+    <ng-template #menu><ng-content></ng-content></ng-template>
     <ng-template #close>
       <nz-icon nzType="close" nzTheme="outline" />
     </ng-template>
