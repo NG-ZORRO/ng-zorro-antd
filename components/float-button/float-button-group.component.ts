@@ -58,17 +58,8 @@ import { NzFloatButtonComponent } from './float-button.component';
     </ng-template>
   `,
   host: {
-    class: 'ant-float-btn-group',
-    '(mouseleave)': 'hoverCloseMenu()',
-    '[class.ant-float-btn-group-circle]': `nzShape() === 'circle'`,
-    '[class.ant-float-btn-group-circle-shadow]': `nzShape() === 'circle' && !isMenuMode()`,
-    '[class.ant-float-btn-group-square]': `nzShape() === 'square'`,
-    '[class.ant-float-btn-group-square-shadow]': `nzShape() === 'square' && !isMenuMode()`,
-    '[class.ant-float-btn-group-rtl]': `dir() === 'rtl'`,
-    '[class.ant-float-btn-group-top]': `isMenuMode() && nzPlacement() === 'top'`,
-    '[class.ant-float-btn-group-bottom]': `isMenuMode() && nzPlacement() === 'bottom'`,
-    '[class.ant-float-btn-group-left]': `isMenuMode() && nzPlacement() === 'left'`,
-    '[class.ant-float-btn-group-right]': `isMenuMode() && nzPlacement() === 'right'`
+    '[class]': 'class()',
+    '(mouseleave)': 'hoverCloseMenu()'
   }
 })
 export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
@@ -92,6 +83,21 @@ export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
   isMenuMode = computed(() => !!this.nzTrigger() && ['click', 'hover'].includes(this.nzTrigger() as string));
   isControlledMode = computed(() => this.nzOpen() !== null);
   dir = signal<Direction>('ltr');
+
+  class = computed<string[]>(() => {
+    const shape = this.nzShape();
+    const dir = this.dir();
+    const classes = ['ant-float-btn-group', this.generateClass(shape)];
+    if (!this.isMenuMode()) {
+      classes.push(this.generateClass(`${shape}-shadow`));
+    } else {
+      classes.push(this.generateClass(this.nzPlacement()));
+    }
+    if (dir === 'rtl') {
+      classes.push(this.generateClass(dir));
+    }
+    return classes;
+  });
 
   ngOnInit(): void {
     this.dir.set(this.directionality.value);
@@ -137,5 +143,9 @@ export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
     }
     this.open.set(isOpen);
     this.nzOnOpenChange.emit(isOpen);
+  }
+
+  private generateClass(suffix: string): string {
+    return `ant-float-btn-group-${suffix}`;
   }
 }
