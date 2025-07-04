@@ -4,19 +4,21 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  computed,
   ContentChildren,
   DestroyRef,
-  EventEmitter,
   inject,
-  Input,
+  input,
+  linkedSignal,
   OnInit,
-  Output,
+  output,
   QueryList,
+  signal,
   TemplateRef
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -30,122 +32,120 @@ import { NzFloatButtonComponent } from './float-button.component';
 @Component({
   selector: 'nz-float-button-group',
   exportAs: 'nzFloatButtonGroup',
-  imports: [NzFloatButtonComponent, NzIconModule],
+  imports: [NzFloatButtonComponent, NzIconModule, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [fadeMotion],
   template: `
-    @if (!nzTrigger || isOpen || nzOpen === true) {
-      <div [class.ant-float-btn-group-wrap]="!!nzTrigger" @fadeMotion><ng-content></ng-content></div>
-    }
-    @if (!!nzTrigger) {
-      @if (!isOpen && !nzOpen) {
-        <nz-float-button
-          [nzType]="nzType"
-          [nzIcon]="nzIcon"
-          [nzShape]="nzShape"
-          [nzDescription]="nzDescription"
-          (nzOnClick)="clickOpenMenu()"
-          (mouseover)="hoverOpenMenu()"
-        ></nz-float-button>
-      } @else {
-        <nz-float-button
-          [nzType]="nzType"
-          [nzIcon]="close"
-          [nzShape]="nzShape"
-          (nzOnClick)="clickCloseMenu()"
-        ></nz-float-button>
+    @if (!isMenuMode()) {
+      <ng-container *ngTemplateOutlet="menu"></ng-container>
+    } @else {
+      @if (open()) {
+        <div class="ant-float-btn-group-wrap" @fadeMotion><ng-container *ngTemplateOutlet="menu"></ng-container></div>
       }
+      <nz-float-button
+        class="ant-float-btn-group-trigger"
+        [nzType]="nzType()"
+        [nzIcon]="open() ? close : nzIcon()"
+        [nzShape]="nzShape()"
+        [nzDescription]="open() ? null : nzDescription()"
+        (nzOnClick)="open() ? clickCloseMenu() : clickOpenMenu()"
+        (mouseover)="hoverOpenMenu()"
+      ></nz-float-button>
     }
+    <ng-template #menu><ng-content></ng-content></ng-template>
     <ng-template #close>
       <nz-icon nzType="close" nzTheme="outline" />
     </ng-template>
   `,
   host: {
-    class: 'ant-float-btn-group',
-    '(mouseleave)': 'hoverCloseMenu()',
-    '[class.ant-float-btn-group-circle]': `nzShape === 'circle'`,
-    '[class.ant-float-btn-group-circle-shadow]': `nzShape === 'circle'`,
-    '[class.ant-float-btn-group-square]': `nzShape === 'square'`,
-    '[class.ant-float-btn-group-square-shadow]': `nzShape === 'square' && !nzTrigger`,
-    '[class.ant-float-btn-group-rtl]': `dir === 'rtl'`
+    '[class]': 'class()',
+    '(mouseleave)': 'hoverCloseMenu()'
   }
 })
 export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
   private directionality = inject(Directionality);
-  private cdr = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
 
-  @ContentChildren(NzFloatButtonComponent) nzFloatButtonComponent!: QueryList<NzFloatButtonComponent>;
+  @ContentChildren(NzFloatButtonComponent) nzFloatButtonComponents!: QueryList<NzFloatButtonComponent>;
   @ContentChildren(NzFloatButtonTopComponent) nzFloatButtonTopComponents!: QueryList<NzFloatButtonTopComponent>;
-  @Input() nzHref: string | null = null;
-  @Input() nzTarget: string | null = null;
-  @Input() nzType: 'default' | 'primary' = 'default';
-  @Input() nzIcon: TemplateRef<void> | null = null;
-  @Input() nzDescription: TemplateRef<void> | null = null;
+  nzHref = input<string | null>(null);
+  nzTarget = input<string | null>(null);
+  nzType = input<'default' | 'primary'>('default');
+  nzIcon = input<TemplateRef<void> | null>(null);
+  nzDescription = input<TemplateRef<void> | null>(null);
+  nzShape = input<'circle' | 'square'>('circle');
+  nzTrigger = input<'click' | 'hover' | null>(null);
+  nzOpen = input<boolean | null>(null);
+  nzPlacement = input<'top' | 'right' | 'bottom' | 'left'>('top');
+  readonly nzOnOpenChange = output<boolean>();
 
-  @Input() nzShape: 'circle' | 'square' = 'circle';
-  @Input() nzTrigger: 'click' | 'hover' | null = null;
-  @Input() nzOpen: boolean | null = null;
-  @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
-  isOpen: boolean = false;
-  dir: Direction = 'ltr';
+  open = linkedSignal<boolean>(() => !!this.nzOpen());
+  isMenuMode = computed(() => !!this.nzTrigger() && ['click', 'hover'].includes(this.nzTrigger() as string));
+  isControlledMode = computed(() => this.nzOpen() !== null);
+  dir = signal<Direction>('ltr');
+
+  class = computed<string[]>(() => {
+    const shape = this.nzShape();
+    const dir = this.dir();
+    const classes = ['ant-float-btn-group', this.generateClass(shape)];
+    if (!this.isMenuMode()) {
+      classes.push(this.generateClass(`${shape}-shadow`));
+    } else {
+      classes.push(this.generateClass(this.nzPlacement()));
+    }
+    if (dir === 'rtl') {
+      classes.push(this.generateClass(dir));
+    }
+    return classes;
+  });
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
+    this.dir.set(this.directionality.value);
 
-    this.dir = this.directionality.value;
+    this.directionality.change
+      ?.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((direction: Direction) => this.dir.set(direction));
   }
 
   ngAfterContentInit(): void {
-    if (this.nzFloatButtonComponent) {
-      this.nzFloatButtonComponent.forEach(item => {
-        item.nzShape = this.nzShape;
+    if (this.nzFloatButtonComponents) {
+      this.nzFloatButtonComponents.forEach(item => {
+        item.nzShape = this.nzShape();
       });
     }
     if (this.nzFloatButtonTopComponents) {
       this.nzFloatButtonTopComponents.forEach(item => {
-        item.nzShape = this.nzShape;
+        item.nzShape = this.nzShape();
         item.detectChanges();
       });
     }
   }
 
   clickOpenMenu(): void {
-    if (this.nzTrigger !== 'click' || this.nzOpen !== null) {
-      return;
-    }
-    this.isOpen = true;
-    this.nzOnOpenChange.emit(true);
-    this.cdr.markForCheck();
+    this.handleEvent('click', true);
   }
 
   hoverOpenMenu(): void {
-    if (this.nzTrigger !== 'hover' || this.nzOpen !== null) {
-      return;
-    }
-    this.isOpen = true;
-    this.nzOnOpenChange.emit(true);
-    this.cdr.markForCheck();
+    this.handleEvent('hover', true);
   }
 
   clickCloseMenu(): void {
-    if (this.nzTrigger !== 'click') {
-      return;
-    }
-    this.isOpen = false;
-    this.nzOnOpenChange.emit(false);
-    this.cdr.markForCheck();
+    this.handleEvent('click', false);
   }
 
   hoverCloseMenu(): void {
-    if (this.nzTrigger !== 'hover' || typeof this.nzOpen === 'boolean') {
+    this.handleEvent('hover', false);
+  }
+
+  private handleEvent(type: 'click' | 'hover', isOpen: boolean): void {
+    if (this.nzTrigger() !== type || this.isControlledMode() || this.open() === isOpen) {
       return;
     }
-    this.isOpen = false;
-    this.nzOnOpenChange.emit(false);
-    this.cdr.markForCheck();
+    this.open.set(isOpen);
+    this.nzOnOpenChange.emit(isOpen);
+  }
+
+  private generateClass(suffix: string): string {
+    return `ant-float-btn-group-${suffix}`;
   }
 }
