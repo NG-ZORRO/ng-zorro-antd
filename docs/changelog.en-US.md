@@ -56,7 +56,6 @@ Remove the following APIs which were marked as deprecated in the previous versio
 |--------------------------------|----------------------------------------------------------|
 | `ng-zorro-antd/button`         | `NzButtonGroupComponent`                                 |
 | `ng-zorro-antd/core/form`      | `NzFormPatchModule`                                      |
-| `ng-zorro-antd/core/highlight` | `NzHighlightModule`                                      |
 | `ng-zorro-antd/checkbox`       | `NzCheckBoxOptionInterface`                              |
 | `ng-zorro-antd/input`          | `NzInputGroupComponent#nzCompact`                        |
 | `ng-zorro-antd/message`        | `NzMessageModule`                                        |
@@ -94,17 +93,18 @@ The `exportAs` of components are updated to follow `camelCase` and start with `n
 The following APIs are marked as **deprecated** in v20 and will be removed in the next major version.
 Please refer to related documentation for better alternatives.
 
-| Module                       | API                                                                          |
-|------------------------------|------------------------------------------------------------------------------|
-| `ng-zorro-antd/autocomplete` | `NZ_AUTOCOMPLETE_VALUE_ACCESSOR` <br /> `getNzAutocompleteMissingPanelError` |
-| `ng-zorro-antd/button`       | `NzButtonGroupComponent`                                                     |
-| `ng-zorro-antd/core/form`    | `NzFormPatchModule`                                                          |
-| `ng-zorro-antd/checkbox`     | `NzCheckBoxOptionInterface`                                                  |
-| `ng-zorro-antd/input`        | `NzInputGroupComponent#nzCompact`                                            |
-| `ng-zorro-antd/mention`      | `NZ_MENTION_TRIGGER_ACCESSOR`                                                |
-| `ng-zorro-antd/message`      | `NzMessageModule`                                                            |
-| `ng-zorro-antd/notification` | `NzNotificationModule`<br/>`NzNotificationServiceModule`                     |
-| `ng-zorro-antd/tabs`         | `NzTabsetComponent`                                                          |
+| Module                         | API                                                                          |
+|--------------------------------|------------------------------------------------------------------------------|
+| `ng-zorro-antd/autocomplete`   | `NZ_AUTOCOMPLETE_VALUE_ACCESSOR` <br /> `getNzAutocompleteMissingPanelError` |
+| `ng-zorro-antd/button`         | `NzButtonGroupComponent`                                                     |
+| `ng-zorro-antd/core/form`      | `NzFormPatchModule`                                                          |
+| `ng-zorro-antd/core/highlight` | `NzHighlightModule`                                                          |
+| `ng-zorro-antd/checkbox`       | `NzCheckBoxOptionInterface`                                                  |
+| `ng-zorro-antd/input`          | `NzInputGroupComponent#nzCompact`                                            |
+| `ng-zorro-antd/mention`        | `NZ_MENTION_TRIGGER_ACCESSOR`                                                |
+| `ng-zorro-antd/message`        | `NzMessageModule`                                                            |
+| `ng-zorro-antd/notification`   | `NzNotificationModule`<br/>`NzNotificationServiceModule`                     |
+| `ng-zorro-antd/tabs`           | `NzTabsetComponent`                                                          |
 
 
 
