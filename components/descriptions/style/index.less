@@ -74,6 +74,16 @@
     }
   }
 
+  &-item-label-bold {
+    font-weight: bold !important;
+
+    &::after {
+      & when (@descriptions-item-trailing-colon=true) {
+        font-weight: bold;
+      }
+    }
+  }
+ 
   &-item-no-label {
     &::after {
       margin: 0;
