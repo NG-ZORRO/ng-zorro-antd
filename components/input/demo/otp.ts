@@ -9,6 +9,11 @@ import { NzTypographyComponent } from 'ng-zorro-antd/typography';
   template: `
     <nz-flex nzVertical [nzGap]="16">
       <nz-flex nzVertical>
+        <h5 nz-typography>With AutoComplete (SMS Support)</h5>
+        <nz-input-otp [nzAutoComplete]="true"></nz-input-otp>
+      </nz-flex>
+
+      <nz-flex nzVertical>
         <h5 nz-typography>With Formatter (Uppercase)</h5>
         <nz-input-otp [nzFormatter]="formatter"></nz-input-otp>
       </nz-flex>
@@ -26,6 +31,11 @@ import { NzTypographyComponent } from 'ng-zorro-antd/typography';
       <nz-flex nzVertical>
         <h5 nz-typography>With custom display character</h5>
         <nz-input-otp [nzMask]="'🔒'"></nz-input-otp>
+      </nz-flex>
+
+      <nz-flex nzVertical>
+        <h5 nz-typography>With AutoComplete + Formatter + Mask</h5>
+        <nz-input-otp [nzAutoComplete]="true" [nzFormatter]="formatter" [nzMask]="'*'"></nz-input-otp>
       </nz-flex>
     </nz-flex>
   `,

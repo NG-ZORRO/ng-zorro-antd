@@ -52,6 +52,7 @@ import { NzInputDirective } from './input.directive';
         [nzSize]="nzSize"
         [formControl]="item"
         [nzStatus]="nzStatus"
+        [attr.autocomplete]="$index === 0 && nzAutoComplete ? 'one-time-code' : null"
         (input)="onInput($index, $event)"
         (focus)="onFocus($event)"
         (keydown)="onKeyDown($index, $event)"
@@ -84,6 +85,7 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
   @Input() nzStatus: NzStatus = '';
   @Input() nzFormatter: (value: string) => string = value => value;
   @Input() nzMask: string | null = null;
+  @Input({ transform: booleanAttribute }) nzAutoComplete = false;
 
   protected otpArray!: FormArray<FormControl<string>>;
   private internalValue: string[] = [];
@@ -106,9 +108,17 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
 
   onInput(index: number, event: Event): void {
     const inputElement = event.target as HTMLInputElement;
+    const inputValue = inputElement.value;
+
+    // Handle autocomplete scenarios where multiple characters might be input at once
+    if (this.nzAutoComplete && index === 0 && inputValue.length > 1) {
+      this.handleMultiCharacterInput(inputValue);
+      return;
+    }
+
     const nextInput = this.otpInputs.toArray()[index + 1];
 
-    if (inputElement.value && nextInput) {
+    if (inputValue && nextInput) {
       nextInput.nativeElement.focus();
     } else if (!nextInput) {
       this.selectInputBox(index);
@@ -228,5 +238,23 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
     if (index >= otpInputArray.length) index = otpInputArray.length - 1;
 
     otpInputArray[index].nativeElement.select();
+  }
+
+  private handleMultiCharacterInput(inputValue: string): void {
+    let currentIndex = 0;
+    for (const char of inputValue.split('')) {
+      if (currentIndex < this.nzLength) {
+        const formattedChar = this.nzFormatter(char);
+        this.internalValue[currentIndex] = char;
+        const maskedValue = this.nzMask ? this.nzMask : formattedChar;
+        this.otpArray.at(currentIndex).setValue(maskedValue, { emitEvent: false });
+        currentIndex++;
+      } else {
+        break;
+      }
+    }
+
+    this.selectInputBox(Math.min(currentIndex, this.nzLength - 1));
+    this.emitValue();
   }
 }

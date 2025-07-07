@@ -229,4 +229,92 @@ describe('NzInputOtpComponent', () => {
 
     expect(callback).toHaveBeenCalledWith('123456');
   });
+
+  it('should set autocomplete attribute on first input when nzAutoComplete is true', () => {
+    component.nzAutoComplete = true;
+    fixture.detectChanges();
+
+    const firstInput = inputElements[0].nativeElement;
+    const secondInput = inputElements[1].nativeElement;
+
+    expect(firstInput.getAttribute('autocomplete')).toBe('one-time-code');
+    expect(secondInput.getAttribute('autocomplete')).toBeNull();
+  });
+
+  it('should not set autocomplete attribute when nzAutoComplete is false', () => {
+    component.nzAutoComplete = false;
+    fixture.detectChanges();
+
+    inputElements.forEach(input => {
+      expect(input.nativeElement.getAttribute('autocomplete')).toBeNull();
+    });
+  });
+
+  it('should handle multi-character input on first input when nzAutoComplete is true', () => {
+    component.nzAutoComplete = true;
+    fixture.detectChanges();
+
+    const firstInput = inputElements[0];
+    firstInput.nativeElement.value = '123456';
+    firstInput.triggerEventHandler('input', { target: firstInput.nativeElement });
+
+    fixture.detectChanges();
+
+    expect(component['otpArray'].at(0).value).toBe('1');
+    expect(component['otpArray'].at(1).value).toBe('2');
+    expect(component['otpArray'].at(2).value).toBe('3');
+    expect(component['otpArray'].at(3).value).toBe('4');
+    expect(component['otpArray'].at(4).value).toBe('5');
+    expect(component['otpArray'].at(5).value).toBe('6');
+  });
+
+  it('should handle multi-character input with nzMask when nzAutoComplete is true', () => {
+    component.nzAutoComplete = true;
+    component.nzMask = '*';
+    fixture.detectChanges();
+
+    const firstInput = inputElements[0];
+    firstInput.nativeElement.value = '789';
+    firstInput.triggerEventHandler('input', { target: firstInput.nativeElement });
+
+    fixture.detectChanges();
+
+    expect(component['otpArray'].at(0).value).toBe('*');
+    expect(component['internalValue'][0]).toBe('7');
+    expect(component['otpArray'].at(1).value).toBe('*');
+    expect(component['internalValue'][1]).toBe('8');
+    expect(component['otpArray'].at(2).value).toBe('*');
+    expect(component['internalValue'][2]).toBe('9');
+  });
+
+  it('should use formatter when handling multi-character input', () => {
+    component.nzAutoComplete = true;
+    component.nzFormatter = value => value.toUpperCase();
+    fixture.detectChanges();
+
+    const firstInput = inputElements[0];
+    firstInput.nativeElement.value = 'abc';
+    firstInput.triggerEventHandler('input', { target: firstInput.nativeElement });
+
+    fixture.detectChanges();
+
+    expect(component['otpArray'].at(0).value).toBe('A');
+    expect(component['otpArray'].at(1).value).toBe('B');
+    expect(component['otpArray'].at(2).value).toBe('C');
+  });
+
+  it('should not handle multi-character input on non-first inputs', () => {
+    component.nzAutoComplete = true;
+    fixture.detectChanges();
+
+    const secondInput = inputElements[1];
+    spyOn(secondInput.nativeElement, 'focus');
+    secondInput.nativeElement.value = '123456';
+    secondInput.triggerEventHandler('input', { target: secondInput.nativeElement });
+
+    fixture.detectChanges();
+
+    // Should behave like normal single character input
+    expect(inputElements[2].nativeElement.focus).toHaveBeenCalled();
+  });
 });
