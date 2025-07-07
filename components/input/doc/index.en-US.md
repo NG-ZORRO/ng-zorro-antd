@@ -48,11 +48,12 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 
 ### nz-input-otp
 
-| Property        | Description                                             | Type                              | Default   |
-| --------------- | ------------------------------------------------------- | --------------------------------- | --------- |
-| `[disabled]`    | Whether the input is disabled                           | boolean                           | `false`   |
-| `[nzFormatter]` | Format display, blank fields will be filled with ` `    | `(value: string) => string`       | -         |
-| `[nzMask]`      | Custom display, the original value will not be modified | `boolean  \| null`                | `null`    |
-| `[nzLength]`    | The number of input elements                            | `number`                          | 6         |
-| `[nzStatus]`    | Set validation status                                   | `'error' \| 'warning'`            | -         |
-| `[nzSize]`      | The size of the input box                               | `'large' \| 'small' \| 'default'` | `default` |
+| Property          | Description                                             | Type                              | Default   |
+| ----------------- | ------------------------------------------------------- | --------------------------------- | --------- |
+| `[disabled]`      | Whether the input is disabled                           | boolean                           | `false`   |
+| `[nzAutoComplete]`| Enable SMS one-time-code autocomplete                  | `boolean`                         | `false`   |
+| `[nzFormatter]`   | Format display, blank fields will be filled with ` `    | `(value: string) => string`       | -         |
+| `[nzMask]`        | Custom display, the original value will not be modified | `boolean  \| null`                | `null`    |
+| `[nzLength]`      | The number of input elements                            | `number`                          | 6         |
+| `[nzStatus]`      | Set validation status                                   | `'error' \| 'warning'`            | -         |
+| `[nzSize]`        | The size of the input box                               | `'large' \| 'small' \| 'default'` | `default` |

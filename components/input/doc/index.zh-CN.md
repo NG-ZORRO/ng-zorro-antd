@@ -27,6 +27,7 @@ nz-input 可以使用所有的 W3C 标准下的所有 [使用方式](https://www
 | ~~`[nzBorderless]`~~ | ~~是否隐藏边框~~                                                               | ~~`boolean`~~                                            | ~~`false`~~ |
 | `[nzVariant]`        | 形态变体                                                                     | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'` | `outlined`  |
 | `[nzStatus]`         | 设置校验状态                                                                   | `'error' \| 'warning'`                                   | -           |
+| `[nzStepperless]`    | 当输入框类型为数字时是否隐藏步进器                                                 | `boolean`                                                | `true`      |
 
 ### nz-input-group
 
@@ -49,11 +50,12 @@ nz-input 可以使用所有的 W3C 标准下的所有 [使用方式](https://www
 
 ### nz-input-otp
 
-| Property        | Description                                       | Type                              | Default   |
-| --------------- | ------------------------------------------------- | --------------------------------- | --------- |
-| `[disabled]`    | 是否禁用                                          | boolean                           | `false`   |
-| `[nzFormatter]` | 格式化展示，留空字段会被 ` ` 填充                 | `(value: string) => string`       | -         |
-| `[nzMask]`      | 自定义展示，和 `formatter` 的区别是不会修改原始值 | `boolean  \| null`                | `null`    |
-| `[nzLength]`    | 输入元素数量                                      | `number`                          | 6         |
-| `[nzStatus]`    | 设置校验状态                                      | `'error' \| 'warning'`            | -         |
-| `[nzSize]`      | 输入框大小                                        | `'large' \| 'small' \| 'default'` | `default` |
+| Property          | Description                                       | Type                              | Default   |
+| ----------------- | ------------------------------------------------- | --------------------------------- | --------- |
+| `[disabled]`      | 是否禁用                                          | boolean                           | `false`   |
+| `[nzAutoComplete]`| 启用短信一次性验证码自动填充                         | `boolean`                         | `false`   |
+| `[nzFormatter]`   | 格式化展示，留空字段会被 ` ` 填充                 | `(value: string) => string`       | -         |
+| `[nzMask]`        | 自定义展示，和 `formatter` 的区别是不会修改原始值 | `boolean  \| null`                | `null`    |
+| `[nzLength]`      | 输入元素数量                                      | `number`                          | 6         |
+| `[nzStatus]`      | 设置校验状态                                      | `'error' \| 'warning'`            | -         |
+| `[nzSize]`        | 输入框大小                                        | `'large' \| 'small' \| 'default'` | `default` |
