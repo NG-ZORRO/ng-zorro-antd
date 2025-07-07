@@ -21,7 +21,15 @@ export const tabSwitchMotion: AnimationTriggerMetadata = trigger('tabSwitchMotio
     }),
     animate(AnimationDuration.SLOW)
   ]),
-  transition('* => leave, :leave', [
+  transition('* => leave', [
+    animate(
+      AnimationDuration.SLOW,
+      style({
+        opacity: 0
+      })
+    )
+  ]),
+  transition(':leave', [
     style({
       position: 'absolute',
       top: 0,
@@ -33,9 +41,6 @@ export const tabSwitchMotion: AnimationTriggerMetadata = trigger('tabSwitchMotio
       style({
         opacity: 0
       })
-    ),
-    style({
-      display: 'none'
-    })
+    )
   ])
 ]);
