@@ -32,7 +32,7 @@ import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAutosizeDirective, NzInputModule } from 'ng-zorro-antd/input';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-text-edit',
@@ -59,7 +59,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [NzInputModule, NzTransButtonModule, NzIconModule, NzToolTipModule, NzOutletModule]
+  imports: [NzInputModule, NzTransButtonModule, NzIconModule, NzTooltipModule, NzOutletModule]
 })
 export class NzTextEditComponent implements OnInit {
   private ngZone = inject(NgZone);

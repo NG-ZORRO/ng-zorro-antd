@@ -13,7 +13,7 @@ import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 import { NzTooltipDirective } from './tooltip';
-import { NzToolTipModule } from './tooltip.module';
+import { NzTooltipModule } from './tooltip.module';
 
 describe('nz-tooltip', () => {
   let fixture: ComponentFixture<NzTooltipTestComponent>;
@@ -372,7 +372,7 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
 }
 
 @Component({
-  imports: [NzToolTipModule],
+  imports: [NzTooltipModule],
   template: `
     <a
       #titleString
@@ -455,7 +455,7 @@ export class NzTooltipTestComponent {
 }
 
 @Component({
-  imports: [NzElementPatchModule, NzToolTipModule],
+  imports: [NzElementPatchModule, NzTooltipModule],
   template: `
     <button nz-element #button="nzElement">Action</button>
     <a nz-tooltip nzTooltipTitle="This action could not be revoked!" [nzTooltipOrigin]="button.elementRef">Notice</a>
@@ -466,7 +466,7 @@ export class NzTestTooltipTargetComponent {
 }
 
 @Component({
-  imports: [NzToolTipModule],
+  imports: [NzTooltipModule],
   template: `
     <a
       #titleString

@@ -5,11 +5,11 @@ import { formatDistance } from 'date-fns';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-comment-basic',
-  imports: [NzAvatarModule, NzCommentModule, NzIconModule, NzToolTipModule],
+  imports: [NzAvatarModule, NzCommentModule, NzIconModule, NzTooltipModule],
   template: `
     <nz-comment nzAuthor="Han Solo" [nzDatetime]="time">
       <nz-avatar

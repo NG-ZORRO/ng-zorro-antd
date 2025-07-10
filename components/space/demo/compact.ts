@@ -11,7 +11,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
@@ -28,7 +28,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
     NzDatePickerModule,
     NzTimePickerModule,
     NzAutocompleteModule,
-    NzToolTipModule,
+    NzTooltipModule,
     FormsModule
   ],
   template: `

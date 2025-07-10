@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-The ToolTip has 12 placements choice.
+The Tooltip has 12 placements choice.

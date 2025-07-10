@@ -2,11 +2,11 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-input-tooltip',
-  imports: [FormsModule, NzInputModule, NzToolTipModule],
+  imports: [FormsModule, NzInputModule, NzTooltipModule],
   template: `
     <input
       #inputElement

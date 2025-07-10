@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-input-presuffix',
-  imports: [NzInputModule, NzIconModule, NzToolTipModule],
+  imports: [NzInputModule, NzIconModule, NzTooltipModule],
   template: `
     <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">
       <input type="text" nz-input placeholder="Enter your username" />

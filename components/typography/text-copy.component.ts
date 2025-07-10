@@ -26,7 +26,7 @@ import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-text-copy',
@@ -48,7 +48,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [NzToolTipModule, NzTransButtonModule, NzIconModule, NzOutletModule]
+  imports: [NzTooltipModule, NzTransButtonModule, NzIconModule, NzOutletModule]
 })
 export class NzTextCopyComponent implements OnInit, OnChanges {
   private cdr = inject(ChangeDetectorRef);

@@ -62,7 +62,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Output('nzTooltipVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
 
   constructor() {
-    super(NzToolTipComponent);
+    super(NzTooltipComponent);
   }
 
   protected override getProxyPropertyMap(): PropertyMapping {
@@ -116,7 +116,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   `,
   imports: [OverlayModule, NzNoAnimationDirective, NzOutletModule, NzOverlayModule]
 })
-export class NzToolTipComponent extends NzTooltipBaseComponent {
+export class NzTooltipComponent extends NzTooltipBaseComponent {
   override nzTitle: NzTSType | null = null;
   nzTitleContext: object | null = null;
 
@@ -143,3 +143,9 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
     };
   }
 }
+
+/**
+ * @deprecated Use {@link NzTooltipComponent} instead.
+ * This will be removed in v21.0.0.
+ */
+export const NzToolTipComponent = NzTooltipComponent;
