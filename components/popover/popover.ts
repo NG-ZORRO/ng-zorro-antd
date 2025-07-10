@@ -23,8 +23,8 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import {
-  NzToolTipComponent,
   NzTooltipBaseDirective,
+  NzTooltipComponent,
   NzTooltipTrigger,
   PropertyMapping,
   isTooltipEmpty
@@ -135,7 +135,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   `,
   imports: [OverlayModule, NzOverlayModule, NzNoAnimationDirective, NzOutletModule]
 })
-export class NzPopoverComponent extends NzToolTipComponent {
+export class NzPopoverComponent extends NzTooltipComponent {
   override _prefix = 'ant-popover';
   nzContentContext: object | null = null;
 

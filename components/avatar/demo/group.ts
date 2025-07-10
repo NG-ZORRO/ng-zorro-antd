@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-avatar-group',
-  imports: [NzAvatarModule, NzDividerModule, NzToolTipModule, NzIconModule],
+  imports: [NzAvatarModule, NzDividerModule, NzTooltipModule, NzIconModule],
   template: `
     <nz-avatar-group>
       <nz-avatar nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>

@@ -4,12 +4,12 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'component-meta',
-  imports: [NzButtonModule, NzDescriptionsModule, NzIconModule, NzToolTipModule, NzTypographyModule],
+  imports: [NzButtonModule, NzDescriptionsModule, NzIconModule, NzTooltipModule, NzTypographyModule],
   templateUrl: './component-meta.component.html',
   styles: `
     :host {
@@ -52,7 +52,7 @@ export class ComponentMetaComponent {
     return `https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/${this.path()}`;
   }
 
-  readonly isEn= computed(() => this.language() === 'en');
+  readonly isEn = computed(() => this.language() === 'en');
   readonly document = computed(() => {
     const lang = this.isEn() ? 'en-US' : 'zh-CN';
     return `https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/${this.name()}/doc/index.${lang}.md`;
