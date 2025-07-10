@@ -532,7 +532,7 @@ const STEP_INTERVAL = 200;
 const STEP_DELAY = 600;
 
 function defaultParser(value: string): number {
-  return +value.trim().replace(/。/g, '.');
+  return parseFloat(value.trim().replace(/,/g, '').replace(/。/g, '.'));
 }
 
 function isInRange(value: number, min: number, max: number): boolean {
