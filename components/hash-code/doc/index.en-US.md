@@ -19,10 +19,10 @@ bring some differences in presentation.
 ### nz-hashCode
 
 | Property     | Description                                         | Type                                | Default    |
-| ------------ | --------------------------------------------------- | ----------------------------------- | ---------- |
+|--------------|-----------------------------------------------------|-------------------------------------|------------|
 | `[nzValue]`  | The value of the hash code                          | `string`                            | -          |
 | `[nzTitle]`  | Description of the content in the upper left corner | `string`                            | `HashCode` |
 | `[nzLogo]`   | Display in the upper right corner                   | `TemplateRef<void> \| string`       | -          |
 | `[nzMode]`   | Demonstration Mode                                  | `single \| double \| strip \| rect` | `double`   |
-| `[nzType]`   | style                                               | `defalut \| primary`                | `primary`  |
+| `[nzType]`   | style                                               | `default \| primary`                | `primary`  |
 | `(nzOnCopy)` | Clicking the Copy callback                          | `EventEmitter<string>`              | -          |

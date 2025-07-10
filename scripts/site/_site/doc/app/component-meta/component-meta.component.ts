@@ -52,20 +52,30 @@ export class ComponentMetaComponent {
     return `https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/${this.path()}`;
   }
 
-  readonly isEn= computed(() => this.language() === 'en');
+  readonly isEn = computed(() => this.language() === 'en');
   readonly document = computed(() => {
     const lang = this.isEn() ? 'en-US' : 'zh-CN';
     return `https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/${this.name()}/doc/index.${lang}.md`;
   });
   copied = signal(false);
 
+  readonly serviceOnlyComponents = ['notification', 'message'];
+
   get usage(): string {
-    const componentName = this.name().startsWith('experimental-') ? this.name().slice(13) : this.name();
+    const componentName = this.name().startsWith('experimental-')
+      ? this.name().slice(13)
+      : // todo(v21): rename NzToolTipModule to NzTooltipModule
+        this.name() === 'tooltip'
+        ? 'tool-tip'
+        : this.name();
     const camelCaseName = componentName
       .split('-')
       .map(part => part.charAt(0).toUpperCase() + part.slice(1))
       .join('');
-    return `import { Nz${camelCaseName}Module } from 'ng-zorro-antd/${this.path()}';`;
+    const importTargetName = this.serviceOnlyComponents.includes(componentName)
+      ? `Nz${camelCaseName}Service`
+      : `Nz${camelCaseName}Module`;
+    return `import { ${importTargetName} } from 'ng-zorro-antd/${this.path()}';`;
   }
 
   usageTooltipVisibleChange(visible: boolean): void {

@@ -58,46 +58,46 @@ Almost anything can be represented in a tree structure. Examples include directo
 
 #### Methods
 
-| Property               | Description                                     | Type           |
-|------------------------|-------------------------------------------------|----------------|
-| getTreeNodes           | get all nodes(NzTreeNode)                       | `NzTreeNode[]` |
-| getTreeNodeByKey       | get NzTreeNode with key                         | `NzTreeNode`   |
-| getCheckedNodeList     | get checked nodes(merged)                       | `NzTreeNode[]` |
-| getSelectedNodeList    | get selected nodes                              | `NzTreeNode[]` |
-| getHalfCheckedNodeList | get half checked nodes                          | `NzTreeNode[]` |
-| getExpandedNodeList    | get expanded nodes                              | `NzTreeNode[]` |
-| getMatchedNodeList     | get matched nodes(if nzSearchValue is not null) | `NzTreeNode[]` |
+| Property                 | Description                                     | Type           |
+|--------------------------|-------------------------------------------------|----------------|
+| `getTreeNodes`           | get all nodes(NzTreeNode)                       | `NzTreeNode[]` |
+| `getTreeNodeByKey`       | get NzTreeNode with key                         | `NzTreeNode`   |
+| `getCheckedNodeList`     | get checked nodes(merged)                       | `NzTreeNode[]` |
+| `getSelectedNodeList`    | get selected nodes                              | `NzTreeNode[]` |
+| `getHalfCheckedNodeList` | get half checked nodes                          | `NzTreeNode[]` |
+| `getExpandedNodeList`    | get expanded nodes                              | `NzTreeNode[]` |
+| `getMatchedNodeList`     | get matched nodes(if nzSearchValue is not null) | `NzTreeNode[]` |
 
 #### NzTreeNodeOptions props
 
-| Property        | Description                                              | Type                  | Default |
-|-----------------|----------------------------------------------------------|-----------------------|---------|
-| title           | Title                                                    | `string`              | `'---'` |
-| key             | Must be unique！                                          | `string`              | `null`  |
-| icon            | icon before the treeNode，used with `nzShowIcon`          | `string`              | `null`  |
-| children        | TreeNode's children                                      | `NzTreeNodeOptions[]` | `[]`    |
-| isLeaf          | Determines if this is a leaf node(can not be dropped to) | `boolean`             | `false` |
-| checked         | Set the treeNode be checked                              | `boolean`             | `false` |
-| selected        | Set the treeNode be selected                             | `boolean`             | `false` |
-| expanded        | Set the treeNode be expanded ()                          | `boolean`             | `false` |
-| selectable      | Set whether the treeNode can be selected                 | `boolean`             | `true`  |
-| disabled        | Disables the treeNode                                    | `boolean`             | `false` |
-| disableCheckbox | Disables the checkbox of the treeNode                    | `boolean`             | `false` |
-| `[key: string]` | Indexable Types, can be used with NzTreeNode.origin      | `any `                | -       |
+| Property          | Description                                              | Type                  | Default |
+|-------------------|----------------------------------------------------------|-----------------------|---------|
+| `title`           | Title                                                    | `string`              | `'---'` |
+| `key`             | Must be unique！                                          | `string`              | `null`  |
+| `icon`            | icon before the treeNode，used with `nzShowIcon`          | `string`              | `null`  |
+| `children`        | TreeNode's children                                      | `NzTreeNodeOptions[]` | `[]`    |
+| `isLeaf`          | Determines if this is a leaf node(can not be dropped to) | `boolean`             | `false` |
+| `checked`         | Set the treeNode be checked                              | `boolean`             | `false` |
+| `selected`        | Set the treeNode be selected                             | `boolean`             | `false` |
+| `expanded`        | Set the treeNode be expanded ()                          | `boolean`             | `false` |
+| `selectable`      | Set whether the treeNode can be selected                 | `boolean`             | `true`  |
+| `disabled`        | Disables the treeNode                                    | `boolean`             | `false` |
+| `disableCheckbox` | Disables the checkbox of the treeNode                    | `boolean`             | `false` |
+| `[key: string]`   | Indexable Types, can be used with NzTreeNode.origin      | `any `                | -       |
 
 #### NzFormatEmitEvent props
 
-| Property      | Description                                                                 | Type                                                                                                                               | Default |
-|---------------|-----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|---------|
-| eventName     | Event Name                                                                  | enum: `click` `dblclick` `contextmenu` `check` `expand` `search` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | -       |
-| node          | The current operation node (such as the target node to drop while dragging) | `NzTreeNode`                                                                                                                       | `null`  |
-| event         | MouseEvent or DragEvent                                                     | `'MouseEvent' \| 'DragEvent'`                                                                                                      | `null`  |
-| dragNode?     | Current drag node (existing if dragged)                                     | `NzTreeNode`                                                                                                                       | `null`  |
-| selectedKeys? | Selected nodes list                                                         | `NzTreeNode[]`                                                                                                                     | `[]`    |
-| checkedKeys?  | Checked nodes list                                                          | `NzTreeNode[]`                                                                                                                     | `[]`    |
-| matchedKeys?  | Matched keys list while searching                                           | `NzTreeNode[]`                                                                                                                     | `[]`    |
-| keys?         | All nodes' keys list related event(except drag events)                      | `string[]`                                                                                                                         | `[]`    |
-| nodes?        | All nodes related event(except drag events)                                 | `NzTreeNode[]`                                                                                                                     | `[]`    |
+| Property        | Description                                                                 | Type                                                                                                                               | Default |
+|-----------------|-----------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `eventName`     | Event Name                                                                  | enum: `click` `dblclick` `contextmenu` `check` `expand` `search` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | -       |
+| `node `         | The current operation node (such as the target node to drop while dragging) | `NzTreeNode`                                                                                                                       | `null`  |
+| `event`         | MouseEvent or DragEvent                                                     | `'MouseEvent' \| 'DragEvent'`                                                                                                      | `null`  |
+| `dragNode?`     | Current drag node (existing if dragged)                                     | `NzTreeNode`                                                                                                                       | `null`  |
+| `selectedKeys?` | Selected nodes list                                                         | `NzTreeNode[]`                                                                                                                     | `[]`    |
+| `checkedKeys?`  | Checked nodes list                                                          | `NzTreeNode[]`                                                                                                                     | `[]`    |
+| `matchedKeys?`  | Matched keys list while searching                                           | `NzTreeNode[]`                                                                                                                     | `[]`    |
+| `keys?`         | All nodes' keys list related event(except drag events)                      | `string[]`                                                                                                                         | `[]`    |
+| `nodes?`        | All nodes related event(except drag events)                                 | `NzTreeNode[]`                                                                                                                     | `[]`    |
 
 #### NzFormatBeforeDropEvent props
 
@@ -109,29 +109,29 @@ Almost anything can be represented in a tree structure. Examples include directo
 
 #### NzTreeNode props
 
-| Property          | Description                                                                                                         | Type                                   | Default                 |
-|-------------------|---------------------------------------------------------------------------------------------------------------------|----------------------------------------|-------------------------|
-| title             | Title                                                                                                               | `string`                               | NzTreeNodeOptions.title |
-| key               | Key                                                                                                                 | `string`                               | NzTreeNodeOptions.key   |
-| level             | TreeNode's level relative to the root node                                                                          | `number`                               | `number`                |
-| children          | Children                                                                                                            | NzTreeNode[]                           | `[]`                    |
-| origin            | treeNode's raw data of NzTreeNodeOptions(user provided to show more datas)                                          | NzTreeNodeOptions                      | -                       |
-| getParentNode     | Get parentNode                                                                                                      | function                               | `null`                  |
-| isLeaf            | Whether treeNode is a Leaf Node                                                                                     | `boolean`                              | `false`                 |
-| isExpanded        | Whether treeNode is expanded                                                                                        | `boolean`                              | `false`                 |
-| isDisabled        | Whether treeNode is disabled                                                                                        | `boolean`                              | `false`                 |
-| isDisableCheckbox | Whether treeNode's checkbox can not be clicked                                                                      | `boolean`                              | `false`                 |
-| isSelectable      | Set whether the treeNode can be selected                                                                            | `boolean`                              | `true`                  |
-| isChecked         | Whether treeNode is checked                                                                                         | `boolean`                              | `false`                 |
-| isHalfChecked     | Part of treeNode's children are checked                                                                             | `boolean`                              | `false`                 |
-| isSelected        | Whether treeNode is selected                                                                                        | `boolean`                              | `false`                 |
-| isLoading         | Whether treeNode is loading(when nzAsyncData is true)                                                               | `boolean`                              | `false`                 |
-| isMatched         | Whether treeNode's title contains nzSearchValue                                                                     | `boolean`                              | `false`                 |
-| setSyncChecked    | set isChecked value and sync other nodes' state of checkbox                                                         | function                               | -                       |
-| getChildren       | Get all children                                                                                                    | function                               | -                       |
-| addChildren       | Add child nodes, receive NzTreeNode or NzTreeNodeOptions array, the second parameter is the inserted index position | (children: array, index?: number )=>{} | -                       |
-| clearChildren     | Clear the treeNode's children                                                                                       | function                               | -                       |
-| remove            | Clear current node(not root node)                                                                                   | function                               | -                       |
+| Property            | Description                                                                                                         | Type                                   | Default                 |
+|---------------------|---------------------------------------------------------------------------------------------------------------------|----------------------------------------|-------------------------|
+| `title`             | Title                                                                                                               | `string`                               | NzTreeNodeOptions.title |
+| `key`               | Key                                                                                                                 | `string`                               | NzTreeNodeOptions.key   |
+| `level`             | TreeNode's level relative to the root node                                                                          | `number`                               | `number`                |
+| `children`          | Children                                                                                                            | NzTreeNode[]                           | `[]`                    |
+| `origin`            | treeNode's raw data of NzTreeNodeOptions(user provided to show more data)                                           | NzTreeNodeOptions                      | -                       |
+| `getParentNode`     | Get parentNode                                                                                                      | function                               | `null`                  |
+| `isLeaf`            | Whether treeNode is a Leaf Node                                                                                     | `boolean`                              | `false`                 |
+| `isExpanded`        | Whether treeNode is expanded                                                                                        | `boolean`                              | `false`                 |
+| `isDisabled`        | Whether treeNode is disabled                                                                                        | `boolean`                              | `false`                 |
+| `isDisableCheckbox` | Whether treeNode's checkbox can not be clicked                                                                      | `boolean`                              | `false`                 |
+| `isSelectable`      | Set whether the treeNode can be selected                                                                            | `boolean`                              | `true`                  |
+| `isChecked`         | Whether treeNode is checked                                                                                         | `boolean`                              | `false`                 |
+| `isHalfChecked`     | Part of treeNode's children are checked                                                                             | `boolean`                              | `false`                 |
+| `isSelected`        | Whether treeNode is selected                                                                                        | `boolean`                              | `false`                 |
+| `isLoading`         | Whether treeNode is loading(when nzAsyncData is true)                                                               | `boolean`                              | `false`                 |
+| `isMatched`         | Whether treeNode's title contains nzSearchValue                                                                     | `boolean`                              | `false`                 |
+| `setSyncChecked`    | set isChecked value and sync other nodes' state of checkbox                                                         | function                               | -                       |
+| `getChildren`       | Get all children                                                                                                    | function                               | -                       |
+| `addChildren`       | Add child nodes, receive NzTreeNode or NzTreeNodeOptions array, the second parameter is the inserted index position | (children: array, index?: number )=>{} | -                       |
+| `clearChildren`     | Clear the treeNode's children                                                                                       | function                               | -                       |
+| `remove`            | Clear current node(not root node)                                                                                   | function                               | -                       |
 
 ## Note
 
@@ -149,6 +149,6 @@ this.nzCheckedKeys = [...this.nzCheckedKeys];
 this.nzSelectedKeys = [...this.nzSelectedKeys];
 ```
 
-- `NzTreeNodeOptions` accepts your custom properties，use NzTreeNode.origin to get them.
+- `NzTreeNodeOptions` accepts your custom properties，use `NzTreeNode.origin` to get them.
 - If Tree Methods are used with ViewChild, should be used in ngAfterViewInit.
 - Setting `nzData` with NzTreeNodeOptions[] is better，if you set nzData with NzTreeNode[], it will be deprecated in next major version(8.x).
