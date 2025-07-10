@@ -340,7 +340,8 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  writeValue(value: number | null): void {
+  writeValue(value: number | null | undefined): void {
+    if (isNil(value)) value = null;
     untracked(() => {
       this.value.set(value);
       this.setValue(value);
@@ -410,7 +411,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       value &&= +value.toFixed(precision);
     }
 
-    const formatedValue = value === null ? '' : formatter(value);
+    const formatedValue = isNil(value) ? '' : formatter(value);
     this.displayValue.set(formatedValue);
     this.updateValue(value);
   }
