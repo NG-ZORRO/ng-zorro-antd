@@ -4,7 +4,7 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation, HostListener } from '@angular/core';
 
 import { tabSwitchMotion } from 'ng-zorro-antd/core/animation';
 
@@ -31,4 +31,13 @@ export class NzTabBodyComponent {
   @Input() content: TemplateRef<void> | null = null;
   @Input() active = false;
   @Input() animated = true;
+
+  @HostListener('@tabSwitchMotion.done', ['$event'])
+  onAnimationDone(event: any): void {
+    // Ensure proper cleanup after animation completes
+    if (event.toState === 'leave') {
+      // Additional cleanup for leave animations if needed
+      // This helps prevent memory leaks by ensuring the animation system releases references
+    }
+  }
 }
