@@ -270,7 +270,7 @@ We have prepared you a demonstration project illustrating how theme dynamic swit
 
 ### Customize theme stylesheets
 
-In the context of multiple themes, every theme is supposed to have its own style entry file. For better project manageability, we also recommend you to put all relevant theme entry files under `src/styles` path. For a project with default and dark thems, your project styles can be in the following structure:
+In the context of multiple themes, every theme is supposed to have its own style entry file. For better project manageability, we also recommend you to put all relevant theme entry files under `src/styles` path. For a project with default and dark themes, your project styles can be in the following structure:
 
 <pre>
   src/styles
@@ -302,7 +302,7 @@ Accordingly, `src/styles/themes/dark.less` is in charge of customizing dark them
 
 > The theme filename that you define can be identical to corresponding pre-defined theme filename. In such cases, `@import '<url>';` has no effects. Less provides us a solution to this circumstance which uses `multiple` method to import `.less` files with identical filenames, i.e. `@import (multiple) '<url>';`.
 
-Note that if there exists common style variables for all themes, you shoud create a `base.less` stylesheet and import it in every theme customization stylesheet:
+Note that if there exists common style variables for all themes, you should create a `base.less` stylesheet and import it in every theme customization stylesheet:
 
 ```less
 // base.less customizes common style variables
@@ -389,7 +389,7 @@ private loadCss(href: string, id: string): Promise<Event> {
 
 #### Synchronize the style switching
 
-Project component styles will be packaged into a JS file which take effects immediately while switching themes via html `className`. On the other hand, it takes time to dynamically load the CSS theme file. If you attempt to perform two actions simultaneously, project styles will change immeditately whereas styles of the pre-defined theme remain unchanged until the CSS theme file is fully loaded, resulting two themes mixing on the web page. As such, you must wrap the loading CSS process in a Promise and force the `className` switching to wait until the former completely finishes.
+Project component styles will be packaged into a JS file which take effects immediately while switching themes via html `className`. On the other hand, it takes time to dynamically load the CSS theme file. If you attempt to perform two actions simultaneously, project styles will change immediately whereas styles of the pre-defined theme remain unchanged until the CSS theme file is fully loaded, resulting two themes mixing on the web page. As such, you must wrap the loading CSS process in a Promise and force the `className` switching to wait until the former completely finishes.
 
 ```ts
 private removeUnusedTheme(theme: ThemeType): void {

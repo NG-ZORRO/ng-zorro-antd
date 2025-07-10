@@ -22,14 +22,14 @@ The first level navigation is inclined left near a logo, and the secondary menu 
 
 ### Interaction rules
 
-- The first level navigation and the last level navigation should be distincted by visualization;
+- The first level navigation and the last level navigation should be distinguishable by visualization;
 - The current item should have the highest priority of visualization;
 - When the current navigation item is collapsed, the style of the current navigation item will be applied to its parent level;
 - The left side navigation bar has support for both the accordion and expanding styles, you can choose the one that fits your case best.
 
 ## Visualization rules
 
-Style of a navigation should conform to the its level.
+Style of a navigation should conform to its level.
 
 - **Emphasis by colorblock**
 
@@ -37,15 +37,15 @@ Style of a navigation should conform to the its level.
 
 - **The highlight match stick**
 
-  When background color is a light color, you can use this pattern for the current page navigation item, we recommed using it for the last item of the navigation path.
+  When background color is a light color, you can use this pattern for the current page navigation item, we recommend using it for the last item of the navigation path.
 
-- **Hightlighted font**
+- **Highlighted font**
 
-  From the visualization aspect, hightlighted font is stronger than colorblock, this pattern is often used for the parent level of the current item.
+  From the visualization aspect, highlighted font is stronger than colorblock, this pattern is often used for the parent level of the current item.
 
 - **Enlarge the size of the font**
 
-  `12px`、`14px` is a standard font size of navigations，`14px` is used for the first and the second level of the navigation. You can choose a approprigate font size in terms of the level of your navigation.
+  `12px`、`14px` is a standard font size of navigations，`14px` is used for the first and the second level of the navigation. You can choose an appropriate font size in terms of the level of your navigation.
 
 ## Component Overview
 
@@ -76,7 +76,7 @@ Style of a navigation should conform to the its level.
 The sidebar.
 
 | Property              | Description                                                                       | Type                                            | Default |
-| --------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------- | ------- |
+|-----------------------|-----------------------------------------------------------------------------------|-------------------------------------------------|---------|
 | `[nzBreakpoint]`      | breakpoints of the responsive layout                                              | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'xxl'` | -       |
 | `[nzCollapsedWidth]`  | width of the collapsed sidebar, by setting to `0` a special `trigger` will appear | `number`                                        | `64`    |
 | `[nzCollapsible]`     | whether can be collapsed                                                          | `boolean`                                       | `false` |
