@@ -20,14 +20,14 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { Style } from '@schematics/angular/application/schema';
-import { readWorkspace, WorkspaceDefinition } from '@schematics/angular/utility';
+import { readWorkspace } from '@schematics/angular/utility';
 
 import { Schema } from './schema';
 import { addModule } from '../../utils/root-module';
 
 export default function(options: Schema): Rule {
   return async (host: Tree) => {
-    const workspace = await readWorkspace(host) as unknown as WorkspaceDefinition;
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const mainFile = getProjectMainFile(project);
     const prefix = options.prefix || project.prefix;
