@@ -5,12 +5,11 @@
 
 import { addDeclarationToModule, addModuleImportToRootModule, getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
 
-import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { noop, Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
+import { readWorkspace, WorkspaceDefinition } from '@schematics/angular/utility';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { buildRelativePath } from '@schematics/angular/utility/find-module';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
 import * as ts from 'typescript';
 
 function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
@@ -25,7 +24,7 @@ function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
 
 export function addModule(moduleName: string, modulePath: string, projectName: string): Rule {
   return async (host: Tree) => {
-    const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
+    const workspace = await readWorkspace(host) as unknown as WorkspaceDefinition;
     const project = getProjectFromWorkspace(workspace, projectName);
     addModuleImportToRootModule(host, moduleName, modulePath, project);
     return noop();
@@ -34,7 +33,7 @@ export function addModule(moduleName: string, modulePath: string, projectName: s
 
 export function addDeclaration(componentName: string, componentPath: string, projectName: string): Rule {
   return async (host: Tree) => {
-    const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
+    const workspace = await readWorkspace(host) as unknown as WorkspaceDefinition;
     const project = getProjectFromWorkspace(workspace, projectName);
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const source = readIntoSourceFile(host, appModulePath);

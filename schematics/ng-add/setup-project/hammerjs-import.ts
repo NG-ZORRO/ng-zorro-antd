@@ -5,9 +5,8 @@
 
 import { getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
 
-import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Rule, Tree } from '@angular-devkit/schematics';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { readWorkspace, WorkspaceDefinition } from '@schematics/angular/utility';
 import { blue, red } from 'chalk';
 
 import { Schema } from '../schema';
@@ -17,7 +16,7 @@ const hammerjsImportStatement = `import 'hammerjs';`;
 /** Adds HammerJS to the main file of the specified Angular CLI project. */
 export function hammerjsImport(options: Schema): Rule {
   return async (host: Tree) => {
-    const workspace = await getWorkspace(host);
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, options.project);
     const mainFile = getProjectMainFile(project);
 

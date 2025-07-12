@@ -6,9 +6,8 @@
 import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 
 
-import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { noop, Rule, Tree } from '@angular-devkit/schematics';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { readWorkspace, WorkspaceDefinition } from '@schematics/angular/utility';
 
 import { existsSync, statSync as fsStatSync } from 'fs';
 
@@ -21,7 +20,7 @@ const bootPageHTML = `<!-- NG-ZORRO -->
 
 export default function(options: Schema): Rule {
   return async (host: Tree, context) => {
-    const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
+    const workspace = await readWorkspace(host) as unknown as WorkspaceDefinition;
     const project = getProjectFromWorkspace(workspace, options.project);
     const appHTMLFile = `${project.sourceRoot}/app/app.html`;
     const buffer = host.read(appHTMLFile);

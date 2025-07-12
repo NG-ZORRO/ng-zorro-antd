@@ -6,10 +6,9 @@
 import { getProjectFromWorkspace, getProjectStyleFile, getProjectTargetOptions } from '@angular/cdk/schematics';
 
 import { logging, normalize } from '@angular-devkit/core';
-import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import { chain, noop, Rule, SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
+import { ProjectDefinition, readWorkspace, updateWorkspace } from '@schematics/angular/utility';
 import { InsertChange } from '@schematics/angular/utility/change';
-import { getWorkspace, updateWorkspace } from '@schematics/angular/utility/workspace';
 
 import { join } from 'path';
 
@@ -44,7 +43,7 @@ export function addThemeToAppStyles(options: Schema): Rule {
  * Scss file for the custom theme will be created.
  */
 async function insertCustomTheme(projectName: string, host: Tree, logger: logging.LoggerApi): Promise<Rule> {
-  const workspace = await getWorkspace(host);
+  const workspace = await readWorkspace(host);
   const project = getProjectFromWorkspace(workspace, projectName);
   const stylesPath = getProjectStyleFile(project, 'less');
   const themeContent = createCustomTheme();

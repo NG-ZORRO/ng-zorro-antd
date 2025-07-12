@@ -7,7 +7,7 @@ import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 
 import { chain, noop, Rule, schematic, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { NodePackageInstallTask, RunSchematicTask } from '@angular-devkit/schematics/tasks';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { readWorkspace } from '@schematics/angular/utility';
 
 import { Schema } from './schema';
 import { addPackageToPackageJson } from '../utils/package-config';
@@ -44,7 +44,7 @@ export default function (options: Schema): Rule {
 
 function applyTemplate(options: Schema): Rule {
   return async (host: Tree) => {
-    const workspace = await getWorkspace(host);
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const style = getProjectStyle(project);
 

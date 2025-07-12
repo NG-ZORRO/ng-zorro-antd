@@ -6,11 +6,10 @@
 import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
 
 import { normalize } from '@angular-devkit/core';
-import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Tree } from '@angular-devkit/schematics';
 import { NodePackageName } from '@angular-devkit/schematics/tasks/package-manager/options';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { readWorkspace, WorkspaceDefinition } from '@schematics/angular/utility';
 
 import { join } from 'path';
 
@@ -73,7 +72,7 @@ describe('[standalone] ng-add schematic', () => {
   it('should add hammerjs import to project main file', async () => {
     const options = { ...defaultOptions, gestures: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
+    const workspace = await readWorkspace(tree);
     const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
     const fileContent = getFileContent(tree, normalize(join(project.sourceRoot, 'main.ts')));
 
@@ -83,7 +82,7 @@ describe('[standalone] ng-add schematic', () => {
   it('should add default theme', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
+    const workspace = await readWorkspace(tree);
     const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
 
     expect(getProjectTargetOptions(project, 'build').styles).toContain(
@@ -96,7 +95,7 @@ describe('[standalone] ng-add schematic', () => {
 
     appTree = await createTestApp(runner, { style: 'less' });
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
+    const workspace = await readWorkspace(tree);
     const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
 
     const customThemePath = normalize(join(project.sourceRoot, 'styles.less'));
@@ -111,7 +110,7 @@ describe('[standalone] ng-add schematic', () => {
   it('should add custom theme file when no LESS file in project', async () => {
     const options = { ...defaultOptions, theme: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
+    const workspace = await readWorkspace(tree);
     const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
 
     expect(getProjectTargetOptions(project, 'build').styles).toContain('projects/ng-zorro/src/theme.less');
@@ -120,7 +119,7 @@ describe('[standalone] ng-add schematic', () => {
   it('should add icon assets', async () => {
     const options = { ...defaultOptions, dynamicIcon: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
+    const workspace = await readWorkspace(tree);
     const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
     const assets = getProjectTargetOptions(project, 'build').assets;
 

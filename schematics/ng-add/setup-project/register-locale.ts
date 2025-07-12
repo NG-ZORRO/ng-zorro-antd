@@ -17,11 +17,10 @@ import {
 } from '@angular/cdk/schematics';
 
 import { chain, Rule, Tree } from '@angular-devkit/schematics';
-import { addRootProvider } from '@schematics/angular/utility';
+import { addRootProvider , readWorkspace } from '@schematics/angular/utility';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
 import { findBootstrapApplicationCall } from '@schematics/angular/utility/standalone/util';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, cyan, yellow } from 'chalk';
 import * as ts from 'typescript';
 
@@ -30,7 +29,7 @@ import { Schema } from '../schema';
 
 export function registerLocale(options: Schema): Rule {
   return async (host: Tree) => {
-    const workspace = await getWorkspace(host);
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const mainFile = getProjectMainFile(project);
     if (isStandaloneApp(host, mainFile)) {
