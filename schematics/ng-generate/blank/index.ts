@@ -27,7 +27,7 @@ export default function(options: Schema): Rule {
 
     if (!buffer) {
       context.logger.error(
-       `Could not find the project ${appHTMLFile} file inside of the ` + `workspace config`
+        `Could not find the project ${appHTMLFile} file inside of the ` + `workspace config`
       );
       return noop();
     }

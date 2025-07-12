@@ -73,7 +73,7 @@ describe('[standalone] ng-add schematic', () => {
     const options = { ...defaultOptions, gestures: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const workspace = await readWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace , defaultOptions.project);
+    const project = getProjectFromWorkspace(workspace, defaultOptions.project);
     const fileContent = getFileContent(tree, normalize(join(project.sourceRoot, 'main.ts')));
 
     expect(fileContent).toContain(`import 'hammerjs';`);

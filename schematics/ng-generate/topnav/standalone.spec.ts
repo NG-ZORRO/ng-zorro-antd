@@ -14,18 +14,18 @@ import { getFileContent } from '../../utils/get-file-content';
 
 describe('[standalone] top-nav schematic', () => {
   const defaultOptions: NzOptions = {
-    project: 'ng-zorro-top-nav',
+    project: 'ng-zorro-top-nav'
   };
   let runner: SchematicTestRunner;
   let appTree: Tree;
 
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../../collection.json'));
-    appTree = await createTestApp(runner, {name: 'ng-zorro-top-nav'});
+    appTree = await createTestApp(runner, { name: 'ng-zorro-top-nav' });
   });
 
   it('should create top-nav files', async () => {
-    const options = {...defaultOptions};
+    const options = { ...defaultOptions };
 
     const tree = await runner.runSchematic('topnav', options, appTree);
     const files = tree.files;
@@ -44,7 +44,7 @@ describe('[standalone] top-nav schematic', () => {
   });
 
   it('should fall back to the @schematics/angular:component option value', async () => {
-    const options = {...defaultOptions};
+    const options = { ...defaultOptions };
     const tree = await runner.runSchematic('topnav', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
 
@@ -56,7 +56,7 @@ describe('[standalone] top-nav schematic', () => {
   });
 
   it('should set the style preprocessor correctly', async () => {
-    const options = {...defaultOptions, style: Style.Less};
+    const options = { ...defaultOptions, style: Style.Less };
 
     const tree = await runner.runSchematic('topnav', options, appTree);
     const files = tree.files;
@@ -75,7 +75,7 @@ describe('[standalone] top-nav schematic', () => {
   });
 
   it('should set the prefix correctly', async () => {
-    const options = {...defaultOptions, prefix: 'nz'};
+    const options = { ...defaultOptions, prefix: 'nz' };
     const tree = await runner.runSchematic('topnav', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
     const welcomeContent = getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts');

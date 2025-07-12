@@ -16,7 +16,7 @@ import { getProjectStyle } from '../utils/project-style';
 // @ts-ignore
 import { hammerjsVersion, zorroVersion } from '../utils/version-names';
 
-export default function (options: Schema): Rule {
+export default function(options: Schema): Rule {
   return chain([
     (host: Tree, context: SchematicContext) => {
       // The CLI inserts `ng-zorro-antd` into the `package.json` before this schematic runs.
@@ -38,7 +38,7 @@ export default function (options: Schema): Rule {
         context.addTask(new RunSchematicTask('ng-add-setup-project', options), [installTaskId]);
       }
     },
-    options.template ? applyTemplate(options) : noop(),
+    options.template ? applyTemplate(options) : noop()
   ]);
 }
 
@@ -48,6 +48,6 @@ function applyTemplate(options: Schema): Rule {
     const project = getProjectFromWorkspace(workspace, options.project);
     const style = getProjectStyle(project);
 
-    return schematic(options.template, {...options, style});
-  }
+    return schematic(options.template, { ...options, style });
+  };
 }

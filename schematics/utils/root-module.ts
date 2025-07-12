@@ -3,7 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { addDeclarationToModule, addModuleImportToRootModule, getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
+import {
+  addDeclarationToModule,
+  addModuleImportToRootModule,
+  getProjectFromWorkspace,
+  getProjectMainFile
+} from '@angular/cdk/schematics';
 
 import { noop, Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { readWorkspace } from '@schematics/angular/utility';
@@ -24,16 +29,16 @@ function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
 
 export function addModule(moduleName: string, modulePath: string, projectName: string): Rule {
   return async (host: Tree) => {
-    const workspace = await readWorkspace(host) ;
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, projectName);
     addModuleImportToRootModule(host, moduleName, modulePath, project);
     return noop();
-  }
+  };
 }
 
 export function addDeclaration(componentName: string, componentPath: string, projectName: string): Rule {
   return async (host: Tree) => {
-    const workspace = await readWorkspace(host) ;
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, projectName);
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const source = readIntoSourceFile(host, appModulePath);
@@ -48,5 +53,5 @@ export function addDeclaration(componentName: string, componentPath: string, pro
     host.commitUpdate(declarationRecorder);
 
     return noop();
-  }
+  };
 }

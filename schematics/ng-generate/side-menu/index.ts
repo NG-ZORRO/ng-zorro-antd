@@ -25,7 +25,7 @@ import {
   Tree,
   url
 } from '@angular-devkit/schematics';
-import { addRootProvider , readWorkspace } from '@schematics/angular/utility';
+import { addRootProvider, readWorkspace } from '@schematics/angular/utility';
 import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
 import { findBootstrapApplicationCall } from '@schematics/angular/utility/standalone/util';
 
@@ -33,7 +33,7 @@ import { Schema } from './schema';
 import { applyChangesToFile } from '../../utils/apply-changes';
 import { addModule } from '../../utils/root-module';
 
-export default function (options: Schema): Rule {
+export default function(options: Schema): Rule {
   return async (host: Tree) => {
     const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
@@ -93,5 +93,5 @@ function importIconDefinitions(mainFile: string): Rule {
     applyChangesToFile(host, appConfigFile, [
       insertImport(appConfigSource, appConfigFile, 'icons', './icons-provider')
     ]);
-  }
+  };
 }

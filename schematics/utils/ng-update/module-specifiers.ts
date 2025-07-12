@@ -17,11 +17,11 @@ export function isNgZorroExportDeclaration(node: ts.Node): boolean {
   return isNgZorroDeclaration(getExportDeclaration(node));
 }
 
-function isNgZorroDeclaration(declaration: ts.ImportDeclaration|ts.ExportDeclaration): boolean {
+function isNgZorroDeclaration(declaration: ts.ImportDeclaration | ts.ExportDeclaration): boolean {
   if (!declaration.moduleSpecifier) {
     return false;
   }
 
   const moduleSpecifier = declaration.moduleSpecifier.getText();
-  return moduleSpecifier.indexOf(ngZorroModuleSpecifier) !== -1
+  return moduleSpecifier.indexOf(ngZorroModuleSpecifier) !== -1;
 }

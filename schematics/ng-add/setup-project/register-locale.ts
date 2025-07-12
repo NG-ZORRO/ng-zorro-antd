@@ -17,7 +17,7 @@ import {
 } from '@angular/cdk/schematics';
 
 import { chain, Rule, Tree } from '@angular-devkit/schematics';
-import { addRootProvider , readWorkspace } from '@schematics/angular/utility';
+import { addRootProvider, readWorkspace } from '@schematics/angular/utility';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
 import { findBootstrapApplicationCall } from '@schematics/angular/utility/standalone/util';
@@ -60,7 +60,7 @@ function safeInsertImport(moduleSource: ts.SourceFile | undefined, filePath: str
 
   const importExists = allImports.some(node => {
     // Make sure it's an import declaration
-    if (!ts.isImportDeclaration(node)){
+    if (!ts.isImportDeclaration(node)) {
       return false;
     }
 
@@ -82,7 +82,7 @@ function safeInsertImport(moduleSource: ts.SourceFile | undefined, filePath: str
       return false;
     }
     const namedBindings = node.importClause.namedBindings;
-    if (!namedBindings){
+    if (!namedBindings) {
       return false;
     }
 
@@ -195,7 +195,7 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
   const registerLocaleDataFun = allFun.filter(node => {
     if (!node) return false;
     const children = node.getChildren();
-    if (!children || children.length === 0){
+    if (!children || children.length === 0) {
       return false;
     }
     const firstChild = children[0];
@@ -238,12 +238,12 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   }
 
   const addProvide = addSymbolToNgModuleMetadata(
-      moduleSource,
-      modulePath,
-      'providers',
-      `provideNzI18n(${locale})`,
-      null
-    );
+    moduleSource,
+    modulePath,
+    'providers',
+    `provideNzI18n(${locale})`,
+    null
+  );
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const node: any = nodes[0];
 

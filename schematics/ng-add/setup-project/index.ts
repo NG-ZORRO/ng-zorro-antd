@@ -13,7 +13,7 @@ import { hammerjsImport } from './hammerjs-import';
 import { registerLocale } from './register-locale';
 import { addThemeToAppStyles } from './theming';
 
-export default function (options: Schema): Rule {
+export default function(options: Schema): Rule {
   return chain([
     registerLocale(options),
     addRequiredModules(options),

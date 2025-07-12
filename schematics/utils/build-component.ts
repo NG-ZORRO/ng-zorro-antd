@@ -84,8 +84,7 @@ function buildDefaultPath(project: ProjectDefinition): string {
  */
 const supportedCssExtensions = ['css', 'scss', 'sass', 'less', 'none'];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function readIntoSourceFile(host: Tree, modulePath: string): any {
+function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
   const text = host.read(modulePath);
   if (text === null) {
     throw new SchematicsException(`File ${modulePath} does not exist.`);
@@ -94,8 +93,7 @@ function readIntoSourceFile(host: Tree, modulePath: string): any {
   return ts.createSourceFile(modulePath, text.toString('utf-8'), ts.ScriptTarget.Latest, true);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getModuleClassnamePrefix(source: any): string {
+function getModuleClassnamePrefix(source: ts.SourceFile): string {
   const className = getFirstNgModuleName(source);
   if (className) {
     const execArray = /(\w+)Module/gi.exec(className);
@@ -279,12 +277,10 @@ export function buildComponent(options: ZorroComponentOptions, additionalFiles: 
       options.inlineTemplate ? filter(path => !path.endsWith('.html.template')) : noop(),
       // Treat the template options as any, because the type definition for the template options
       // is made unnecessarily explicit. Every type of object can be used in the EJS template.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      applyTemplates({ indentTextContent, resolvedFiles, ...baseTemplateContext } as any),
+      applyTemplates({ indentTextContent, resolvedFiles, ...baseTemplateContext }),
       // TODO(devversion): figure out why we cannot just remove the first parameter
       // See for example: angular-cli#schematics/angular/component/index.ts#L160
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      move(null as any, parsedPath.path)
+      move(null, parsedPath.path)
     ]);
 
     return () =>
