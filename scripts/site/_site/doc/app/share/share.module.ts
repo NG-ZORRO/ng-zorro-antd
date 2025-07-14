@@ -47,4 +47,4 @@ import { ComponentMetaComponent } from '../component-meta/component-meta.compone
     DragDropModule
   ]
 })
-export class ShareModule { }
+export class ShareModule {}
