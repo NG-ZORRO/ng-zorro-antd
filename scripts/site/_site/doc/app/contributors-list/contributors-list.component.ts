@@ -40,7 +40,7 @@ export class NzContributorsListComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private http: HttpClient,
     private elementRef: ElementRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     if (!this.platform.isBrowser) {
