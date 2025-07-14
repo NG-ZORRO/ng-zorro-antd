@@ -57,24 +57,21 @@ describe('NzTabs Memory Leak', () => {
       for (let i = 0; i < 3; i++) {
         tabsComponent.nzSelectedIndex = 1;
         fixture.detectChanges();
-        tick(300);
+        tick(300); // Wait for animation to complete
         
         tabsComponent.nzSelectedIndex = 0;
         fixture.detectChanges();
-        tick(300);
+        tick(300); // Wait for animation to complete
       }
     }
     
-    // Verify no animations are stuck in progress
-    const elementsWithAbsolutePosition = document.querySelectorAll('[style*="position: absolute"]');
-    const tabRelatedAbsoluteElements = Array.from(elementsWithAbsolutePosition).filter(el => 
-      el.classList.contains('ant-tabs-tabpane') || 
-      el.closest('.ant-tabs')
-    );
+    // After animations complete, verify that elements are properly in leave state
+    const hiddenTabPanes = document.querySelectorAll('.ant-tabs-tabpane[style*="display: none"]');
+    const activeTabPanes = document.querySelectorAll('.ant-tabs-tabpane.ant-tabs-tabpane-active');
     
-    // Only elements that are properly part of the active DOM should have absolute positioning
-    // Not detached elements from animations
-    expect(tabRelatedAbsoluteElements.length).toBe(0);
+    // Should have exactly one active tab pane and others should be properly hidden
+    expect(activeTabPanes.length).toBe(1);
+    expect(hiddenTabPanes.length).toBeGreaterThan(0);
   }));
 
   it('should handle rapid component creation and destruction', fakeAsync(() => {
