@@ -119,7 +119,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     private platform: Platform,
     private clipboard: Clipboard,
     private onlineIdeService: OnlineIdeService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.appService.theme$.pipe(takeUntil(this.destroy$)).subscribe(data => {
