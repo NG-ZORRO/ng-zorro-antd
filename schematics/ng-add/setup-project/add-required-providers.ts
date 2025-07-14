@@ -19,7 +19,7 @@ function addAnimations(options: Schema): Rule {
   return addRootProvider(options.project, ({ code, external }) => {
     return code`${external(
       'provideAnimationsAsync',
-      '@angular/platform-browser/animations/async',
+      '@angular/platform-browser/animations/async'
     )}(${options.animations ? '' : `'noop'`})`;
   });
 }
@@ -28,7 +28,7 @@ function addHttpClient(options: Schema): Rule {
   return addRootProvider(options.project, ({ code, external }) => {
     return code`${external(
       'provideHttpClient',
-      '@angular/common/http',
+      '@angular/common/http'
     )}()`;
   });
 }

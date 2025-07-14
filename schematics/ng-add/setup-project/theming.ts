@@ -6,10 +6,9 @@
 import { getProjectFromWorkspace, getProjectStyleFile, getProjectTargetOptions } from '@angular/cdk/schematics';
 
 import { logging, normalize } from '@angular-devkit/core';
-import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
 import { chain, noop, Rule, SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
+import { ProjectDefinition, readWorkspace, updateWorkspace } from '@schematics/angular/utility';
 import { InsertChange } from '@schematics/angular/utility/change';
-import { getWorkspace, updateWorkspace } from '@schematics/angular/utility/workspace';
 
 import { join } from 'path';
 
@@ -23,7 +22,7 @@ const defaultCustomThemeFilename = 'theme.less';
 /** Object that maps a CLI target to its default builder name. */
 const defaultTargetBuilders = {
   build: [
-    '@angular/build:application',
+    '@angular/build:application'
   ],
   test: ['@angular/build:karma']
 };
@@ -44,7 +43,7 @@ export function addThemeToAppStyles(options: Schema): Rule {
  * Scss file for the custom theme will be created.
  */
 async function insertCustomTheme(projectName: string, host: Tree, logger: logging.LoggerApi): Promise<Rule> {
-  const workspace = await getWorkspace(host);
+  const workspace = await readWorkspace(host);
   const project = getProjectFromWorkspace(workspace, projectName);
   const stylesPath = getProjectStyleFile(project, 'less');
   const themeContent = createCustomTheme();
@@ -53,7 +52,7 @@ async function insertCustomTheme(projectName: string, host: Tree, logger: loggin
     if (!project.sourceRoot) {
       throw new SchematicsException(
         `Could not find source root for project: "${projectName}". ` +
-          `Please make sure that the "sourceRoot" property is set in the workspace config.`
+        `Please make sure that the "sourceRoot" property is set in the workspace config.`
       );
     }
 
@@ -120,7 +119,7 @@ function addThemeStyleToTarget(
         if (stylePath.includes(defaultCustomThemeFilename)) {
           logger.error(
             `Could not style file to the CLI project configuration ` +
-              `because there is already a custom theme file referenced.`
+            `because there is already a custom theme file referenced.`
           );
           logger.info(`Please manually add the following style file to your configuration:`);
           logger.info(`${assetPath}`);
@@ -131,7 +130,7 @@ function addThemeStyleToTarget(
       }
     }
     styles.unshift(assetPath);
-  }) as unknown as Rule;
+  });
 }
 
 /**
@@ -151,13 +150,13 @@ function validateDefaultTargetBuilder(
   if (!isDefaultBuilder && targetName === 'build') {
     throw new SchematicsException(
       `Your project is not using the default builders for ` +
-        `"${targetName}". The NG-ZORRO schematics cannot add a theme to the workspace ` +
-        `configuration if the builder has been changed.`
+      `"${targetName}". The NG-ZORRO schematics cannot add a theme to the workspace ` +
+      `configuration if the builder has been changed.`
     );
   } else if (!isDefaultBuilder) {
     logger.warn(
       `Your project is not using the default builders for "${targetName}". This ` +
-        `means that we cannot add the configured theme to the "${targetName}" target.`
+      `means that we cannot add the configured theme to the "${targetName}" target.`
     );
   }
 

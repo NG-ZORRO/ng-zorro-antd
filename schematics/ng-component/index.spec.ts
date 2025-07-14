@@ -28,8 +28,19 @@ const defaultOptions = {
   skipTests: false,
   module: undefined,
   export: false,
-    project: 'ng-zorro'
+  project: 'ng-zorro'
 };
+
+function generateModuleContent(moduleName: string): string {
+  return `
+import { NgModule } from '@angular/core';
+@NgModule({
+  imports: [],
+  declarations: []
+})
+export class ${moduleName} {}
+`;
+}
 
 describe('ng-component schematic', () => {
   let runner: SchematicTestRunner;
@@ -56,7 +67,7 @@ describe('ng-component schematic', () => {
   });
 
   describe('style', () => {
-    it('should create specified style',  async() => {
+    it('should create specified style', async () => {
       const options = { ...defaultOptions, style: Style.Sass };
       const tree = await runner.runSchematic('component', options, appTree);
       const files = tree.files.filter(file => file.startsWith('/projects/ng-zorro/src/app/test/'));
@@ -71,7 +82,7 @@ describe('ng-component schematic', () => {
       );
     });
 
-    it('should not create style file when inlineStyle is true',  async() => {
+    it('should not create style file when inlineStyle is true', async () => {
       const options = { ...defaultOptions, inlineStyle: true };
       const tree = await runner.runSchematic('component', options, appTree);
       const files = tree.files.filter(file => file.startsWith('/projects/ng-zorro/src/app/test/'));
@@ -86,7 +97,7 @@ describe('ng-component schematic', () => {
       );
     });
 
-    it('should not create style file when style is none',  async() => {
+    it('should not create style file when style is none', async () => {
       const options = { ...defaultOptions, style: Style.None };
       const tree = await runner.runSchematic('component', options, appTree);
       const files = tree.files.filter(file => file.startsWith('/projects/ng-zorro/src/app/test/'));
@@ -144,14 +155,7 @@ describe('ng-component schematic', () => {
 
       appTree.create(
         closestModule,
-        `
-        import { NgModule } from '@angular/core';
-        @NgModule({
-          imports: [],
-          declarations: []
-        })
-        export class ClosestModule { }
-      `
+        generateModuleContent('ClosestModule')
       );
       const tree = await runner.runSchematic('component', options, appTree);
       const fooModuleContent = tree.readContent(closestModule);
@@ -165,14 +169,7 @@ describe('ng-component schematic', () => {
 
       appTree.create(
         testModule,
-        `
-        import { NgModule } from '@angular/core';
-        @NgModule({
-          imports: [],
-          declarations: []
-        })
-        export class TestModule { }
-      `
+        generateModuleContent('TestModule')
       );
 
       const tree = await runner.runSchematic('component', options, appTree);

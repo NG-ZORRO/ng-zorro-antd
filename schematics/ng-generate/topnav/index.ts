@@ -5,8 +5,6 @@
 
 import { getProjectFromWorkspace, getProjectMainFile, isStandaloneApp } from '@angular/cdk/schematics';
 
-import { strings } from '@angular-devkit/core';
-import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import {
   apply,
   applyTemplates,
@@ -17,18 +15,19 @@ import {
   mergeWith,
   move,
   Rule,
+  strings,
   Tree,
   url
 } from '@angular-devkit/schematics';
 import { Style } from '@schematics/angular/application/schema';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { readWorkspace } from '@schematics/angular/utility';
 
 import { Schema } from './schema';
 import { addModule } from '../../utils/root-module';
 
 export default function(options: Schema): Rule {
   return async (host: Tree) => {
-    const workspace = await getWorkspace(host) as unknown as WorkspaceDefinition;
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const mainFile = getProjectMainFile(project);
     const prefix = options.prefix || project.prefix;
