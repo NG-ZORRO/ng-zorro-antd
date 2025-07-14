@@ -181,9 +181,9 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
       return;
     }
     const actionMap = {
-      [NzTriggerAction.OK]: { trigger: this.config.nzOnOk, loadingKey: 'nzOkLoading' as const },
-      [NzTriggerAction.CANCEL]: { trigger: this.config.nzOnCancel, loadingKey: 'nzCancelLoading' as const }
-    };
+      [NzTriggerAction.OK]: { trigger: this.config.nzOnOk, loadingKey: 'nzOkLoading' },
+      [NzTriggerAction.CANCEL]: { trigger: this.config.nzOnCancel, loadingKey: 'nzCancelLoading' }
+    } as const;
     const { trigger, loadingKey } = actionMap[action];
     if (this.config[loadingKey]) {
       return;
