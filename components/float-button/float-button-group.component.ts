@@ -3,25 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   computed,
-  ContentChildren,
-  DestroyRef,
+  contentChildren,
+  effect,
   inject,
   input,
   linkedSignal,
-  OnInit,
   output,
-  QueryList,
-  signal,
   TemplateRef
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -62,29 +57,26 @@ import { NzFloatButtonComponent } from './float-button.component';
     '(mouseleave)': 'hoverCloseMenu()'
   }
 })
-export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
+export class NzFloatButtonGroupComponent {
+  readonly nzFloatButtonComponents = contentChildren(NzFloatButtonComponent);
+  readonly nzFloatButtonTopComponents = contentChildren(NzFloatButtonTopComponent);
 
-  @ContentChildren(NzFloatButtonComponent) nzFloatButtonComponents!: QueryList<NzFloatButtonComponent>;
-  @ContentChildren(NzFloatButtonTopComponent) nzFloatButtonTopComponents!: QueryList<NzFloatButtonTopComponent>;
-  nzHref = input<string | null>(null);
-  nzTarget = input<string | null>(null);
-  nzType = input<'default' | 'primary'>('default');
-  nzIcon = input<TemplateRef<void> | null>(null);
-  nzDescription = input<TemplateRef<void> | null>(null);
-  nzShape = input<'circle' | 'square'>('circle');
-  nzTrigger = input<'click' | 'hover' | null>(null);
-  nzOpen = input<boolean | null>(null);
-  nzPlacement = input<'top' | 'right' | 'bottom' | 'left'>('top');
+  readonly nzHref = input<string | null>(null);
+  readonly nzTarget = input<string | null>(null);
+  readonly nzType = input<'default' | 'primary'>('default');
+  readonly nzIcon = input<TemplateRef<void> | null>(null);
+  readonly nzDescription = input<TemplateRef<void> | null>(null);
+  readonly nzShape = input<'circle' | 'square'>('circle');
+  readonly nzTrigger = input<'click' | 'hover' | null>(null);
+  readonly nzOpen = input<boolean | null>(null);
+  readonly nzPlacement = input<'top' | 'right' | 'bottom' | 'left'>('top');
   readonly nzOnOpenChange = output<boolean>();
 
-  open = linkedSignal<boolean>(() => !!this.nzOpen());
-  isMenuMode = computed(() => !!this.nzTrigger() && ['click', 'hover'].includes(this.nzTrigger() as string));
-  isControlledMode = computed(() => this.nzOpen() !== null);
-  dir = signal<Direction>('ltr');
-
-  class = computed<string[]>(() => {
+  protected dir = inject(Directionality).valueSignal;
+  protected open = linkedSignal<boolean>(() => !!this.nzOpen());
+  protected isMenuMode = computed(() => !!this.nzTrigger() && ['click', 'hover'].includes(this.nzTrigger() as string));
+  protected isControlledMode = computed(() => this.nzOpen() !== null);
+  protected class = computed<string[]>(() => {
     const shape = this.nzShape();
     const dir = this.dir();
     const classes = ['ant-float-btn-group', this.generateClass(shape)];
@@ -99,26 +91,20 @@ export class NzFloatButtonGroupComponent implements OnInit, AfterContentInit {
     return classes;
   });
 
-  ngOnInit(): void {
-    this.dir.set(this.directionality.value);
-
-    this.directionality.change
-      ?.pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((direction: Direction) => this.dir.set(direction));
-  }
-
-  ngAfterContentInit(): void {
-    if (this.nzFloatButtonComponents) {
-      this.nzFloatButtonComponents.forEach(item => {
-        item.nzShape = this.nzShape();
-      });
-    }
-    if (this.nzFloatButtonTopComponents) {
-      this.nzFloatButtonTopComponents.forEach(item => {
-        item.nzShape = this.nzShape();
-        item.detectChanges();
-      });
-    }
+  constructor() {
+    effect(() => {
+      if (this.nzFloatButtonComponents()) {
+        this.nzFloatButtonComponents().forEach(item => {
+          item.nzShape = this.nzShape();
+        });
+      }
+      if (this.nzFloatButtonTopComponents()) {
+        this.nzFloatButtonTopComponents().forEach(item => {
+          item.nzShape = this.nzShape();
+          item.detectChanges();
+        });
+      }
+    });
   }
 
   clickOpenMenu(): void {

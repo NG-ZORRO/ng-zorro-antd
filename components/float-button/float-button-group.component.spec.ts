@@ -45,7 +45,10 @@ describe('nz-float-button-group', () => {
       testComponent.nzShape = 'square';
       fixture.detectChanges();
       expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-square');
-      const innerButtons = [...groupComponent.nzFloatButtonComponents, ...groupComponent.nzFloatButtonTopComponents];
+      const innerButtons = [
+        ...groupComponent.nzFloatButtonComponents(),
+        ...groupComponent.nzFloatButtonTopComponents()
+      ];
       innerButtons.forEach(btn => {
         expect(btn.nzShape).toBe('square');
       });
@@ -169,6 +172,7 @@ describe('nz-float-button-group RTL', () => {
 
   it('rtl', () => {
     fixture.detectChanges();
+    // @ts-ignore
     expect(groupComponent.dir()).toBe('rtl');
     expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-rtl');
   });
