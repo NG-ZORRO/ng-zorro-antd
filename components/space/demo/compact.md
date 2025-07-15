@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 7
 title:
   zh-CN: 紧凑布局组合
   en-US: Compact Mode
