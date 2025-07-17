@@ -201,6 +201,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                     nz-button
                     #cancelBtn
                     [nzSize]="'small'"
+                    [nzDanger]="nzCancelButtonProps()?.nzDanger"
                     (click)="onCancel()"
                     [disabled]="nzCancelButtonProps()?.nzDisabled"
                     [attr.cdkFocusInitial]="nzAutoFocus === 'cancel' || null"
