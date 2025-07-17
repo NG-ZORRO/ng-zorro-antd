@@ -427,6 +427,44 @@ describe('Input number', () => {
     expect(component.displayValue).toBe('1.10');
   });
 
+  it('should be accepted numbers with commas', () => {
+    input('1,234');
+    expect(component.value).toBe(1234);
+    blur();
+    expect(component.value).toBe(1234);
+
+    input('1,,2');
+    expect(component.value).toBe(12);
+    blur();
+    expect(component.value).toBe(12);
+
+    input(',1,2,3,');
+    expect(component.value).toBe(123);
+    blur();
+    expect(component.value).toBe(123);
+
+    // Illegal value will fall back to the last legal value
+    input(',');
+    expect(component.value).toBe(123);
+    blur();
+    expect(component.value).toBe(123);
+    // Illegal value will fall back to the last legal value
+    input(',,,');
+    expect(component.value).toBe(123);
+    blur();
+    expect(component.value).toBe(123);
+
+    input('1,234,567');
+    expect(component.value).toBe(1234567);
+    blur();
+    expect(component.value).toBe(1234567);
+
+    input('1,234,567.01');
+    expect(component.value).toBe(1234567.01);
+    blur();
+    expect(component.value).toBe(1234567.01);
+  });
+
   function upStepByHandler(eventInit?: MouseEventInit): void {
     const handler = hostElement.querySelector('.ant-input-number-handler-up')!;
     handler.dispatchEvent(new MouseEvent('mousedown', eventInit));
