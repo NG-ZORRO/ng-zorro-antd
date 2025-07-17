@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BACKSPACE } from '@angular/cdk/keycodes';
+import { BACKSPACE, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -134,6 +134,12 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
       }
 
       this.emitValue();
+    } else if (event.keyCode === LEFT_ARROW) {
+      event.preventDefault();
+      this.selectInputBox(index - 1);
+    } else if (event.keyCode === RIGHT_ARROW) {
+      event.preventDefault();
+      this.selectInputBox(index + 1);
     }
   }
 
@@ -225,6 +231,7 @@ export class NzInputOtpComponent implements ControlValueAccessor, OnChanges {
 
   private selectInputBox(index: number): void {
     const otpInputArray = this.otpInputs.toArray();
+    if (index <= 0) index = 0;
     if (index >= otpInputArray.length) index = otpInputArray.length - 1;
 
     otpInputArray[index].nativeElement.select();
