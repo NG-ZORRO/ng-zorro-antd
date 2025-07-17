@@ -21,7 +21,7 @@ import {
 
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
-import { NzToolTipModule, NzTooltipDirective } from 'ng-zorro-antd/tooltip';
+import { NzTooltipDirective, NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzSliderShowTooltip } from './typings';
 
@@ -45,7 +45,7 @@ import { NzSliderShowTooltip } from './typings';
     '(mouseenter)': 'enterHandle()',
     '(mouseleave)': 'leaveHandle()'
   },
-  imports: [NzToolTipModule],
+  imports: [NzTooltipModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })

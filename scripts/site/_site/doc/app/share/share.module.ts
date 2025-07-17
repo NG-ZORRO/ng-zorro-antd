@@ -9,7 +9,7 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzCodeBoxComponent } from '../codebox/codebox.component';
 import { ComponentMetaComponent } from '../component-meta/component-meta.component';
@@ -22,7 +22,7 @@ import { ComponentMetaComponent } from '../component-meta/component-meta.compone
     ReactiveFormsModule,
     ComponentMetaComponent,
     NzCodeBoxComponent,
-    NzToolTipModule,
+    NzTooltipModule,
     NzAnchorModule,
     NzAffixModule,
     NzGridModule,
@@ -40,7 +40,7 @@ import { ComponentMetaComponent } from '../component-meta/component-meta.compone
     NzAnchorModule,
     NzAffixModule,
     NzGridModule,
-    NzToolTipModule,
+    NzTooltipModule,
     NzIconModule,
     // third libs
     ScrollingModule,

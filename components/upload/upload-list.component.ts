@@ -28,7 +28,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
 
@@ -67,7 +67,7 @@ interface UploadListFile extends NzUploadFile {
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzToolTipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NzProgressModule]
+  imports: [NzTooltipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NzProgressModule]
 })
 export class NzUploadListComponent implements OnChanges {
   list: UploadListFile[] = [];

@@ -35,7 +35,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzUploadFile, NzUploadModule, NzUploadXHRArgs } from 'ng-zorro-antd/upload';
 
 export interface Categories {
@@ -326,7 +326,7 @@ declare const locale: NzSafeAny;
     NzRadioModule,
     NzResultModule,
     NzSpinModule,
-    NzToolTipModule,
+    NzTooltipModule,
     NzProgressModule,
     NzUploadModule
   ],

@@ -14,7 +14,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { AppService, DemoCode } from '../app.service';
 import { OnlineIdeService } from '../online-ide/online-ide.service';
@@ -24,7 +24,7 @@ import { NzHighlightComponent } from './highlight.component';
   selector: 'nz-code-box',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzIconModule, NzToolTipModule, NzHighlightComponent],
+  imports: [NzIconModule, NzTooltipModule, NzHighlightComponent],
   templateUrl: './codebox.component.html',
   styleUrls: ['./codebox.component.less'],
   host: {

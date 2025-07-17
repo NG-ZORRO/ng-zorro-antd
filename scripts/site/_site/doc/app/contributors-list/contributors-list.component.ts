@@ -5,12 +5,12 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
 
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
-    selector: 'nz-contributors-list',
+  selector: 'nz-contributors-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzAvatarModule, NzAvatarModule, NzToolTipModule],
+  imports: [NzAvatarModule, NzAvatarModule, NzTooltipModule],
   template: `
     <ul class="contributors-list">
       @for (item of list; track $index) {

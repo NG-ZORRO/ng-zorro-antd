@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { NzCodeEditorComponent, NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { NzTooltipDirective, NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipDirective, NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-code-editor-complex',
-  imports: [FormsModule, NzCodeEditorModule, NzIconModule, NzTypographyModule, NzSwitchModule, NzToolTipModule],
+  imports: [FormsModule, NzCodeEditorModule, NzIconModule, NzTypographyModule, NzSwitchModule, NzTooltipModule],
   template: `
     <p nz-paragraph style="margin-bottom: 8px;">
       Loading
