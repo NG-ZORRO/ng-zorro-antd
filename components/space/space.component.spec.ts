@@ -155,7 +155,7 @@ describe('Space', () => {
   `
 })
 class SpaceTestComponent {
-  size: NzSpaceSize | NzSpaceSize[] = 'small';
+  size: NzSpaceSize | [NzSpaceSize, NzSpaceSize] = 'small';
   direction: NzSpaceDirection = 'horizontal';
   show = false;
   align?: NzSpaceAlign;
