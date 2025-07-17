@@ -12,7 +12,7 @@ today! As a contributor, here are the guidelines we would like you to follow:
  - [Commit Message Guidelines](#commit)
 
 ## <a name="coc"></a> Code of Conduct
-Help us keep NG-ZORRO open and inclusive. Please read and follow our [Code of Conduct][coc].
+Help us keep NG-ZORRO open and inclusive. Please read and follow our [Code of Conduct](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CODE_OF_CONDUCT.md).
 
 ## <a name="question"></a> Got a Question or Problem?
 
@@ -30,7 +30,7 @@ If you would like to chat about the question in real-time, you can reach out via
 
 ## <a name="issue"></a> Found a Bug?
 If you find a bug in the source code, you can help us by
-[submitting an issue](#submit-issue) to our [GitHub Repository][github]. Even better, you can
+[submitting an issue](#submit-issue) to our [GitHub Repository](https://github.com/NG-ZORRO/ng-zorro-antd). Even better, you can
 [submit a Pull Request](#submit-pr) with a fix.
 
 ## <a name="feature"></a> Missing a Feature?
@@ -78,7 +78,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 * Create your patch, **including appropriate test cases**.
 * Follow our [Coding Rules](#rules).
-* Run the full NG-ZORRO test suite <!-- , as described in the [developer documentation][dev-doc] -->, and ensure that all tests pass.
+* Run the full test suite, and ensure that all tests pass.
 * Commit your changes using a descriptive commit message that follows our
   [commit message conventions](#commit). Adherence to these conventions
   is necessary because release notes are automatically generated from these messages.
@@ -228,12 +228,4 @@ reference GitHub issues that this commit **Closes**.
 
 **Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
 
-A detailed explanation can be found in this [document][commit-message-format].
-
-
-[coc]: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CODE_OF_CONDUCT.md
-[commit-message-format]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
-[dev-doc]: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/docs/DEVELOPER.md
-[github]: https://github.com/NG-ZORRO/ng-zorro-antd
-[discord]: https://discord.com/channels/748677963142135818/764322550712893451
-[plunker]: http://plnkr.co/edit
+A detailed explanation can be found in this [document](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y).
