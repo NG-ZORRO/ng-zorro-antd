@@ -134,10 +134,14 @@
 
 .@{float-btn-group-prefix-cls} {
   position: fixed;
+  bottom: 48px;
   z-index: 99;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
-  width: 40px;
+  min-width: 40px;
   height: auto;
   min-height: 40px;
   margin: 0;
@@ -151,102 +155,181 @@
   border-radius: @border-radius-base;
   box-shadow: none;
   inset-inline-end: 24px;
-  inset-block-end: 48px;
 
   &-wrap {
-    position: relative;
+    position: absolute;
     z-index: -1;
-    display: block;
-    margin-bottom: @margin-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  &-rtl {
+  &&-rtl {
     direction: rtl;
   }
 
   .@{float-btn-prefix-cls} {
     position: static;
   }
+}
 
-  &-circle {
-    .@{float-btn-prefix-cls}-circle:not(:last-child) {
-      margin-bottom: @margin-md;
-    }
+.@{float-btn-group-prefix-cls}-top > .@{float-btn-group-prefix-cls}-wrap {
+  top: auto;
+  bottom: calc(40px + @margin-md);
+  flex-direction: column;
 
-    .@{float-btn-prefix-cls}-body {
-      width: 40px;
-      height: 40px;
-    }
+  &::after {
+    position: absolute;
+    bottom: -@margin-md;
+    width: 100%;
+    height: @margin-md;
+    content: '';
+  }
+}
+.@{float-btn-group-prefix-cls}-bottom > .@{float-btn-group-prefix-cls}-wrap {
+  top: calc(40px + @margin-md);
+  bottom: auto;
+  flex-direction: column;
+
+  &::after {
+    position: absolute;
+    top: -@margin-md;
+    width: 100%;
+    height: @margin-md;
+    content: '';
+  }
+}
+.@{float-btn-group-prefix-cls}-left > .@{float-btn-group-prefix-cls}-wrap {
+  right: calc(40px + @margin-md);
+  left: auto;
+  flex-direction: row;
+
+  &::after {
+    position: absolute;
+    right: -@margin-md;
+    width: @margin-md;
+    height: 100%;
+    content: '';
+  }
+}
+.@{float-btn-group-prefix-cls}-right > .@{float-btn-group-prefix-cls}-wrap {
+  right: auto;
+  left: calc(40px + @margin-md);
+  flex-direction: row;
+
+  &::after {
+    position: absolute;
+    left: -@margin-md;
+    width: @margin-md;
+    height: 100%;
+    content: '';
+  }
+}
+
+.@{float-btn-group-prefix-cls}-circle {
+  gap: @margin-md;
+
+  .@{float-btn-group-prefix-cls}-wrap {
+    gap: @margin-md;
   }
 
-  &-square {
-    .@{float-btn-prefix-cls}-square {
-      padding: 0;
-      border-radius: 0;
+  .@{float-btn-prefix-cls}-body {
+    width: 40px;
+    height: 40px;
+  }
+}
 
-      &:first-child {
-        border-start-start-radius: @border-radius-base;
-        border-start-end-radius: @border-radius-base;
-      }
+.@{float-btn-group-prefix-cls}-square {
+  .@{float-btn-prefix-cls}-square {
+    padding: 0;
+    border-radius: 0;
 
-      &:last-child {
-        border-start-start-radius: @border-radius-base;
-        border-start-end-radius: @border-radius-base;
-      }
-
-      &:not(:last-child) {
-        border-bottom: 1px solid @border-color-base;
-      }
-    }
-
-    .@{float-btn-group-prefix-cls}-wrap {
-      display: block;
-      overflow: hidden;
+    &.@{float-btn-group-prefix-cls}-trigger {
       border-radius: @border-radius-base;
-      box-shadow: @shadow-2;
+    }
 
-      .@{float-btn-prefix-cls}-square {
-        margin-top: 0;
-        padding: @padding-xss;
-        border-radius: 0;
-        box-shadow: none;
+    &:first-child {
+      border-start-start-radius: @border-radius-base;
+      border-start-end-radius: @border-radius-base;
+    }
 
-        &:first-child {
-          border-start-start-radius: @border-radius-base;
-          border-start-end-radius: @border-radius-base;
-        }
+    &:last-child {
+      border-end-start-radius: @border-radius-base;
+      border-end-end-radius: @border-radius-base;
+    }
 
-        &:last-child {
-          border-start-start-radius: @border-radius-base;
-          border-start-end-radius: @border-radius-base;
-        }
-
-        &:not(:last-child) {
-          border-bottom: @border-width-base @border-style-base @border-color-base;
-        }
-
-        .@{float-btn-prefix-cls}-body {
-          width: 32px;
-          height: 32px;
-        }
-      }
+    &:not(:last-child) {
+      border-bottom: 1px solid @border-color-base;
     }
   }
 
-  &-circle-shadow {
-    box-shadow: none;
-  }
-
-  &-square-shadow {
+  .@{float-btn-group-prefix-cls}-wrap {
+    border-radius: @border-radius-base;
     box-shadow: @shadow-2;
 
     .@{float-btn-prefix-cls}-square {
       padding: @padding-xss;
+      border-radius: 0;
       box-shadow: none;
+
       .@{float-btn-prefix-cls}-body {
         width: 32px;
         height: 32px;
       }
+    }
+  }
+}
+
+.@{float-btn-group-prefix-cls}-top > .@{float-btn-group-prefix-cls}-wrap, .@{float-btn-group-prefix-cls}-bottom > .@{float-btn-group-prefix-cls}-wrap {
+  > .@{float-btn-prefix-cls}-square {
+    &:first-child {
+      border-start-start-radius: @border-radius-base;
+      border-start-end-radius: @border-radius-base;
+    }
+
+    &:last-child {
+      border-end-start-radius: @border-radius-base;
+      border-end-end-radius: @border-radius-base;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid @border-color-base;
+    }
+  }
+}
+
+.@{float-btn-group-prefix-cls}-left > .@{float-btn-group-prefix-cls}-wrap, .@{float-btn-group-prefix-cls}-right > .@{float-btn-group-prefix-cls}-wrap {
+  > .@{float-btn-prefix-cls}-square {
+    &:first-child {
+      border-start-start-radius: @border-radius-base;
+      border-end-start-radius: @border-radius-base;
+    }
+
+    &:last-child {
+      border-start-end-radius: @border-radius-base;
+      border-end-end-radius: @border-radius-base;
+    }
+
+    &:not(:last-child) {
+      border-inline-end: 1px solid @border-color-base;
+      border-bottom: none;
+    }
+  }
+}
+
+.@{float-btn-group-prefix-cls}-circle-shadow {
+  box-shadow: none;
+}
+
+.@{float-btn-group-prefix-cls}-square-shadow {
+  box-shadow: @shadow-2;
+
+  .@{float-btn-prefix-cls}-square {
+    padding: @padding-xss;
+    box-shadow: none;
+    .@{float-btn-prefix-cls}-body {
+      width: 32px;
+      height: 32px;
     }
   }
 }
