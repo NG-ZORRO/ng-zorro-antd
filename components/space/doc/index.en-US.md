@@ -24,11 +24,17 @@ The difference with Flex component is:
 
 | Property        | Description                                 | Type                                         | Default      | Global Config |
 | --------------- | ------------------------------------------- | -------------------------------------------- | ------------ | ------------- |
-| `[nzSize]`      | The space size                              | `'small' \| 'middle' \| 'large' \| number`   | `small`      | ✅             |
+| `[nzSize]`      | The space size                              | `NzSpaceSize \| NzSpaceSize[]`               | `small`      | ✅             |
 | `[nzDirection]` | The space direction                         | `'vertical' \| 'horizontal'`                 | `horizontal` |               |
 | `[nzAlign]`     | Align items                                 | `'start' \| 'end' \| 'baseline' \| 'center'` | -            |               |
 | `[nzWrap]`      | Auto wrap line, when `horizontal` effective | `boolean`                                    | `false`      |               |
 | `[nzSplit]`     | Set split                                   | `TemplateRef \| string`                      | -            |               |
+
+#### Interfaces
+
+```ts
+type NzSpaceSize = 'small' | 'middle' | 'large' | number;
+```
 
 ### nz-space-compact
 

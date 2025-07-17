@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 8
 title:
   zh-CN: Button 紧凑布局
   en-US: Button Compact Mode

@@ -24,134 +24,64 @@ describe('Space', () => {
     fixture.detectChanges();
   });
 
-  it('should render size when the items changes', () => {
-    let items = fixture.debugElement.queryAll(By.css('.ant-space-item'));
-    expect(items.length).toBe(2);
-
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBe('8px');
-      } else {
-        expect(element.style.marginInlineEnd).toBe('');
-      }
-    });
-
-    component.show = true;
-    fixture.detectChanges();
-
-    items = fixture.debugElement.queryAll(By.css('.ant-space-item'));
-    expect(items.length).toBe(3);
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBe('8px');
-      } else {
-        expect(element.style.marginInlineEnd).toBe('');
-      }
-    });
-  });
-
   it('should render size', () => {
-    const items = fixture.debugElement.queryAll(By.css('.ant-space-item'));
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBe('8px');
-      } else {
-        expect(element.style.marginInlineEnd).toBe('');
-      }
-    });
+    const spaceComponent = fixture.debugElement.query(By.directive(NzSpaceComponent));
+    const spaceElement = spaceComponent.nativeElement as HTMLElement;
+
+    // default size is 'small'
+    expect(spaceElement.style.columnGap).toBe('8px');
+    expect(spaceElement.style.rowGap).toBe('8px');
 
     component.size = 'middle';
     fixture.detectChanges();
-
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBe('16px');
-      } else {
-        expect(element.style.marginInlineEnd).toBe('');
-      }
-    });
+    expect(spaceElement.style.columnGap).toBe('16px');
+    expect(spaceElement.style.rowGap).toBe('16px');
 
     component.size = 'large';
     fixture.detectChanges();
-
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBe('24px');
-      } else {
-        expect(element.style.marginInlineEnd).toBe('');
-      }
-    });
+    expect(spaceElement.style.columnGap).toBe('24px');
+    expect(spaceElement.style.rowGap).toBe('24px');
   });
 
   it('should render customize size', () => {
+    const spaceComponent = fixture.debugElement.query(By.directive(NzSpaceComponent));
+    const spaceElement = spaceComponent.nativeElement as HTMLElement;
+
     component.size = 36;
     fixture.detectChanges();
+    expect(spaceElement.style.columnGap).toBe('36px');
+    expect(spaceElement.style.rowGap).toBe('36px');
 
-    const items = fixture.debugElement.queryAll(By.css('.ant-space-item'));
+    component.size = [36, 18];
+    fixture.detectChanges();
+    expect(spaceElement.style.columnGap).toBe('36px');
+    expect(spaceElement.style.rowGap).toBe('18px');
+  });
 
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBe('36px');
-      } else {
-        expect(element.style.marginInlineEnd).toBe('');
-      }
-    });
+  it('should wrap', () => {
+    const spaceComponent = fixture.debugElement.query(By.directive(NzSpaceComponent));
+    const spaceElement = spaceComponent.nativeElement as HTMLElement;
 
-    component.size = 18;
+    // default wrap is false
+    expect(spaceElement.style.flexWrap).toBeFalsy();
+
+    component.wrap = true;
     fixture.detectChanges();
 
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBe('18px');
-      } else {
-        expect(element.style.marginInlineEnd).toBe('');
-      }
-    });
+    expect(spaceElement.style.flexWrap).toBe('wrap');
   });
 
   it('should set direction', () => {
-    const items = fixture.debugElement.queryAll(By.css('.ant-space-item'));
+    const spaceComponent = fixture.debugElement.query(By.directive(NzSpaceComponent));
+    const spaceElement = spaceComponent.nativeElement as HTMLElement;
 
     component.direction = 'vertical';
     fixture.detectChanges();
-
-    const spaceComponent = fixture.debugElement.query(By.directive(NzSpaceComponent));
-
-    expect((spaceComponent.nativeElement as HTMLElement).classList).toContain('ant-space-vertical');
-
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBeFalsy();
-        expect(element.style.marginBlockEnd).toBeTruthy();
-      } else {
-        expect(element.style.marginInlineEnd).toBeFalsy();
-        expect(element.style.marginBlockEnd).toBeFalsy();
-      }
-    });
+    expect(spaceElement.classList).toContain('ant-space-vertical');
 
     component.direction = 'horizontal';
     fixture.detectChanges();
-
-    expect((spaceComponent.nativeElement as HTMLElement).classList).toContain('ant-space-horizontal');
-
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBeTruthy();
-        expect(element.style.marginBlockEnd).toBeFalsy();
-      } else {
-        expect(element.style.marginInlineEnd).toBeFalsy();
-        expect(element.style.marginBlockEnd).toBeFalsy();
-      }
-    });
+    expect(spaceElement.classList).toContain('ant-space-horizontal');
   });
 
   it('should set align', () => {
@@ -181,24 +111,15 @@ describe('Space', () => {
     component.showSplit = true;
     fixture.detectChanges();
 
+    const spaceComponent = fixture.debugElement.query(By.directive(NzSpaceComponent));
+    const spaceElement = spaceComponent.nativeElement as HTMLElement;
     let items = fixture.debugElement.queryAll(By.css('.ant-space-item'));
     let splits = fixture.debugElement.queryAll(By.css('.ant-space-split'));
+
     expect(items.length).toBe(2);
     expect(splits.length).toBe(1);
-
-    items.forEach((item, i) => {
-      const element = item.nativeElement as HTMLElement;
-      if (i < items.length - 1) {
-        expect(element.style.marginInlineEnd).toBe('4px');
-      } else {
-        expect(element.style.marginInlineEnd).toBe('');
-      }
-    });
-
-    splits.forEach(item => {
-      const element = item.nativeElement as HTMLElement;
-      expect(element.style.marginInlineEnd).toBe('4px');
-    });
+    expect(spaceElement.style.columnGap).toBe('8px');
+    expect(spaceElement.style.rowGap).toBe('8px');
 
     component.show = true;
     fixture.detectChanges();
@@ -208,18 +129,21 @@ describe('Space', () => {
 
     expect(items.length).toBe(3);
     expect(splits.length).toBe(2);
-
-    splits.forEach(item => {
-      const element = item.nativeElement as HTMLElement;
-      expect(element.style.marginInlineEnd).toBe('4px');
-    });
+    expect(spaceElement.style.columnGap).toBe('8px');
+    expect(spaceElement.style.rowGap).toBe('8px');
   });
 });
 
 @Component({
   imports: [NzSpaceModule],
   template: `
-    <nz-space [nzSplit]="showSplit ? spaceSplit : null" [nzSize]="size" [nzDirection]="direction" [nzAlign]="align">
+    <nz-space
+      [nzSplit]="showSplit ? spaceSplit : null"
+      [nzSize]="size"
+      [nzDirection]="direction"
+      [nzAlign]="align"
+      [nzWrap]="wrap"
+    >
       <div *nzSpaceItem>item</div>
       <div *nzSpaceItem>item</div>
       @if (show) {
@@ -231,9 +155,10 @@ describe('Space', () => {
   `
 })
 class SpaceTestComponent {
-  size: NzSpaceSize = 'small';
+  size: NzSpaceSize | NzSpaceSize[] = 'small';
   direction: NzSpaceDirection = 'horizontal';
   show = false;
   align?: NzSpaceAlign;
+  wrap?: boolean;
   showSplit = false;
 }

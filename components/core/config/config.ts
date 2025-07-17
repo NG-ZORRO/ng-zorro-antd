@@ -276,7 +276,7 @@ export interface SegmentedConfig {
 }
 
 export interface SpaceConfig {
-  nzSize?: 'small' | 'middle' | 'large' | number;
+  nzSize?: 'small' | 'middle' | 'large' | number | Array<'small' | 'middle' | 'large' | number>;
 }
 
 export interface SpinConfig {
