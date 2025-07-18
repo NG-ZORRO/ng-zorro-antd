@@ -33,6 +33,8 @@
               "site/doc/404.html",
               "site/doc/google854eb8b183564acb.html",
               "site/doc/robots.txt",
+              "site/doc/llms.txt",
+              "site/doc/llms-full.txt",
               {
                 "glob": "**/*",
                 "input": "node_modules/@ant-design/icons-angular/src/inline-svg/",

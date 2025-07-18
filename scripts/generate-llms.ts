@@ -3,17 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import fs from 'fs-extra';
+import * as fs from 'fs-extra';
 import { glob } from 'glob';
 
-import path from 'path';
+import { resolve, join } from 'path';
 
 /**
  * @see https://github.com/ant-design/ant-design/blob/master/scripts/generate-llms.ts
  */
-async function generateLLms(): Promise<void> {
+export async function generateLLms(): Promise<void> {
   const cwd = process.cwd();
-  const siteDir = path.resolve(cwd, '_site');
+  const siteDir = resolve(cwd, 'site', 'doc');
   const docsDir = ['components', 'docs'];
 
   const matchSuffix = '.en-US.md';
@@ -29,7 +29,7 @@ async function generateLLms(): Promise<void> {
   const docsBody: string[] = [];
 
   for (const markdown of filteredDocs) {
-    const mdPath = path.join(cwd, markdown);
+    const mdPath = join(cwd, markdown);
 
     const fsContent = (await fs.readFile(mdPath, 'utf-8')).trim();
 
@@ -44,7 +44,7 @@ async function generateLLms(): Promise<void> {
     // URL
     let url = `https://ng.ant.design/${markdown.replace(matchSuffix, '')}/en`;
     if (url.includes('/components/')) {
-      url = url.replace('/index', '');
+      url = url.replace('/doc/index', '');
     }
 
     // Docs: title
@@ -83,8 +83,8 @@ async function generateLLms(): Promise<void> {
 
   const docsBodyContent = docsBody.join('\n');
 
-  await fs.writeFile(path.join(siteDir, 'llms.txt'), docsIndexContent);
-  await fs.writeFile(path.join(siteDir, 'llms-full.txt'), docsBodyContent);
+  await fs.writeFile(join(siteDir, 'llms.txt'), docsIndexContent);
+  await fs.writeFile(join(siteDir, 'llms-full.txt'), docsBodyContent);
   console.log('Generated llms.txt and llms-full.txt');
 }
 

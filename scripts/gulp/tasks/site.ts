@@ -11,6 +11,7 @@ import { debounce } from 'lodash';
 import { join } from 'path';
 
 import { buildConfig } from '../../build-config';
+import { generateLLms } from '../../generate-llms';
 import { generate } from '../../prerender/ngsw-config';
 import { generateSitemap } from '../../prerender/sitemap';
 import { execNodeTask, execTask } from '../util/task-helpers';
@@ -50,6 +51,7 @@ task('watch:site', () => {
 task('init:site', async done => {
   siteGenerate('init');
   await themeGenerate();
+  await generateLLms();
   done();
 });
 
