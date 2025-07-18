@@ -21,5 +21,14 @@ export const classNames: VersionChanges<ClassNameUpgradeData> = {
       replace: 'NzTabsetComponent',
       replaceWith: 'NzTabsComponent'
     }]
+  }, {
+    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9285',
+    changes: [{
+      replace: 'NzToolTipComponent',
+      replaceWith: 'NzTooltipComponent'
+    }, {
+      replace: 'NzToolTipModule',
+      replaceWith: 'NzTooltipModule'
+    }]
   }]
 };

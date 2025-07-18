@@ -118,14 +118,10 @@ function registerLocaleInAppModule(mainFile: string, options: Schema): Rule {
     const localePrefix = locale.split('_')[0];
 
     applyChangesToFile(host, appModulePath, [
-      safeInsertImport(moduleSource, appModulePath, 'provideNzI18n',
-        'ng-zorro-antd/i18n'),
-      safeInsertImport(moduleSource, appModulePath, locale,
-        'ng-zorro-antd/i18n'),
-      safeInsertImport(moduleSource, appModulePath, 'registerLocaleData',
-        '@angular/common'),
-      safeInsertImport(moduleSource, appModulePath, localePrefix,
-        `@angular/common/locales/${localePrefix}`, true),
+      safeInsertImport(moduleSource, appModulePath, 'provideNzI18n', 'ng-zorro-antd/i18n'),
+      safeInsertImport(moduleSource, appModulePath, locale, 'ng-zorro-antd/i18n'),
+      safeInsertImport(moduleSource, appModulePath, 'registerLocaleData', '@angular/common'),
+      safeInsertImport(moduleSource, appModulePath, localePrefix, `@angular/common/locales/${localePrefix}`, true),
       registerLocaleData(moduleSource, appModulePath, localePrefix),
       ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
     ]);
