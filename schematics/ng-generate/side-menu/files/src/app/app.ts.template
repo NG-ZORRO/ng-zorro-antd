@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: '<%= prefix %>-root',
   standalone: false,
   templateUrl: './app.html',
-  styleUrls: ['./app.<%= style %>']
+  styleUrl: './app.<%= style %>'
 })
-export class AppComponent {
+export class App {
   isCollapsed = false;
 }
