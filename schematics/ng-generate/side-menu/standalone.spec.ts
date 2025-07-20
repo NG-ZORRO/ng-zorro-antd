@@ -49,7 +49,7 @@ describe('[schematic][standalone] side-menu', () => {
     const tree = await runner.runSchematic('sidemenu', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
 
-    expect(tree.exists('/projects/material/src/app/app.module.ts')).toBe(false);
+    expect(tree.exists('/projects/material/src/app/app-module.ts')).toBe(false);
 
     // since v19, the standalone option is removed
     expect(appContent).not.toContain('standalone: true');

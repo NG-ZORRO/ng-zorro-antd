@@ -86,7 +86,7 @@ export default function(options: Schema): Rule {
 
 function addModules(project: string): Rule {
   return chain([
-    addModule('AppRoutingModule', './app-routing.module', project),
+    addModule('AppRoutingModule', './app-routing-module', project),
     addModule('IconsProviderModule', './icons-provider.module', project),
     addModule('NzLayoutModule', 'ng-zorro-antd/layout', project),
     addModule('NzMenuModule', 'ng-zorro-antd/menu', project)

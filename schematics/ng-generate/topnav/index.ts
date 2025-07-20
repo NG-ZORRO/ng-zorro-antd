@@ -15,7 +15,8 @@ import {
   mergeWith,
   move,
   noop,
-  Rule, schematic,
+  Rule,
+  schematic,
   strings,
   Tree,
   url
@@ -72,7 +73,16 @@ export default function(options: Schema): Rule {
         prefix,
         style
       }),
-      isStandalone ? noop() : addModule('AppRoutingModule', './app-routing.module', options.project)
+      isStandalone ? noop() : addModules(options.project)
     ]);
   };
+}
+
+
+function addModules(project: string): Rule {
+  return chain([
+    addModule('AppRoutingModule', './app-routing-module', project),
+    addModule('NzLayoutModule', 'ng-zorro-antd/layout', project),
+    addModule('NzMenuModule', 'ng-zorro-antd/menu', project)
+  ]);
 }

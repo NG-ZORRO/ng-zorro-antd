@@ -204,7 +204,7 @@ describe('[schematic] ng-component', () => {
   describe('classnameWithModule', () => {
     it('should find the closest module', async () => {
       const options = { ...defaultOptions, standalone: false };
-      const closestModule = '/projects/ng-zorro/src/app/test/test.module.ts';
+      const closestModule = '/projects/ng-zorro/src/app/test/test-module.ts';
 
       appTree.create(
         closestModule,
@@ -218,7 +218,7 @@ describe('[schematic] ng-component', () => {
 
     it('should set classname with the closest module', async () => {
       const options = { ...defaultOptions, classnameWithModule: true, standalone: false };
-      const testModule = '/projects/ng-zorro/src/app/test/test.module.ts';
+      const testModule = '/projects/ng-zorro/src/app/test/test-module.ts';
 
       appTree.create(
         testModule,

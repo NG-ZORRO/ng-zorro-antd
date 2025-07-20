@@ -34,9 +34,9 @@ describe('[schematic] top-nav', () => {
         '/projects/ng-zorro/src/app/app.html',
         '/projects/ng-zorro/src/app/app.css',
         '/projects/ng-zorro/src/app/app.ts',
-        '/projects/ng-zorro/src/app/app-routing.module.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.module.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome-routing.module.ts',
+        '/projects/ng-zorro/src/app/app-routing-module.ts',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome-module.ts',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome-routing-module.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.css',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.html'

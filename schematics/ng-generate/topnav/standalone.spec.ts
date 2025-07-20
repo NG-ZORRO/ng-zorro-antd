@@ -48,7 +48,7 @@ describe('[schematic][standalone] top-nav', () => {
     const tree = await runner.runSchematic('topnav', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
 
-    expect(tree.exists('/projects/ng-zorro/src/app/app.module.ts')).toBe(false);
+    expect(tree.exists('/projects/ng-zorro/src/app/app-module.ts')).toBe(false);
 
     // since v19, the standalone option is removed
     expect(appContent).not.toContain('standalone: true');
