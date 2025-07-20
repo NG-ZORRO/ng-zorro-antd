@@ -9,7 +9,7 @@ import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { Schema as NzOptions } from '../../ng-add/schema';
 import { createTestApp } from '../../testing/test-app';
 
-describe('ng-component schematic', () => {
+describe('[schematic] ng-generate', () => {
   const defaultOptions: NzOptions = {
     project: 'ng-zorro',
   };
@@ -29,8 +29,6 @@ describe('ng-component schematic', () => {
     const files = tree.files;
 
     expect(files).toEqual(jasmine.arrayContaining([ appComponentHTMLPath ]));
-
     expect(appComponentHTML).toContain('href="https://github.com/NG-ZORRO/ng-zorro-antd"');
   });
-
 });
