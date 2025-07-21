@@ -13,6 +13,29 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 20.1.0
+
+`2025-07-21`
+
+### Features
+
+* 新增 [llms.txt](https://ng.ant.design/llms.txt) 和 [llms-full.txt](https://ng.ant.design/llms-full.txt) ([#9281](https://github.com/NG-ZORRO/ng-zorro-antd/pull/9281)) ([165b963](https://github.com/NG-ZORRO/ng-zorro-antd/commit/165b96372e737a6dceac9404bded06041d286e2a))
+* **float-button:** 新增 `nzPlacement` 属性自定义弹出位置 ([#9267](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9267)) ([9dc19f3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9dc19f35c9f4d9de0c6fc1f2b58c97f2aded95c1))
+* **input-number:** 支持输入的数字带 `,` ([#9256](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9256)) ([7567bd8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7567bd87a7862b52c12e152b9ce0c395b5e18ff0))
+* **input:** 一次性密码框支持通过键盘控制光标位置 ([#9268](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9268)) ([da97b02](https://github.com/NG-ZORRO/ng-zorro-antd/commit/da97b02a82361e23c77f14bec76add77f6c39302))
+* **popconfirm:** 取消按钮支持设置 `nzDanger` 属性 ([#9270](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9270)) ([f94cb31](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f94cb318b05b01d1560ddfe3a5bfb226f23a83b4))
+* **space:** 支持通过数组形式设置 `nzSize` ([#9289](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9289)) ([8809885](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8809885be2b268e38c8ba04f57f46803e92e0c28))
+* **schematics:** 对齐 Angular 20 更新的风格指南 ([#9295](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9295)) ([b5f607b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b5f607b874ed150fb1858eb81b19c3cc67478f37))
+
+### Bug Fixes
+
+* **core:** 避免使用 `setAttribute` 设置 `style` ([#9292](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9292)) ([12d58bd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/12d58bde7cb8d762405728825d6261fe5fc663b8))
+* **input-number:** ngModel 的值可为 `undefined` ([#9269](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9269)) ([4c5666a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4c5666a90f477703dcda96ec135a6eea99d11105))
+* **tooltip:** 重命名 `ToolTip` 为 `Tooltip` ([#9285](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9285)) ([2ebef97](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2ebef970cb7cd2855ee725b89ab8dfef9e6e35d6))
+* **schematics:** 支持迁移 `ToolTip` 到 `Tooltip` ([#9294](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9294)) ([add21f7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/add21f71d92645be9f1c7684c2f213a6864f5891))
+
+
+
 ## 20.0.0
 
 `2025-07-01`

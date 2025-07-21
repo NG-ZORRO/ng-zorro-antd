@@ -64,10 +64,7 @@ export class ComponentMetaComponent {
   get usage(): string {
     const componentName = this.name().startsWith('experimental-')
       ? this.name().slice(13)
-      : // todo(v21): rename NzToolTipModule to NzTooltipModule
-        this.name() === 'tooltip'
-        ? 'tool-tip'
-        : this.name();
+      : this.name();
     const camelCaseName = componentName
       .split('-')
       .map(part => part.charAt(0).toUpperCase() + part.slice(1))
