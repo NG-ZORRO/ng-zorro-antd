@@ -26,13 +26,13 @@ export class OnlineIdeService {
         'tsconfig.app.json': JSON.stringify(tsconfigAppJSON, null, 2),
         'src/index.html': `<${selector}>loading</${selector}>`,
         'src/main.ts': mainTS(componentName),
-        'src/app/app.component.ts': appComponentCode,
+        'src/app/app.ts': appComponentCode,
         'src/app/app.config.ts': appConfigTS,
         'src/styles.css': `/* Add application styles & imports to this file! */`
       }
     }, {
       // open demo component by default
-      openFile: 'src/app/app.component.ts'
+      openFile: 'src/app/app.ts'
     });
   }
 }
