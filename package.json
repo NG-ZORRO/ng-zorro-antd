@@ -11,6 +11,7 @@
     "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI --code-coverage",
     "test:watch": "gulp test:watch --tags",
     "test:schematics": "gulp build:schematics && gulp test:schematics",
+    "build:schematics": "gulp build:schematics",
     "build": "gulp build:release",
     "build:lib": "gulp build:library",
     "doc": "gulp build:preview",

@@ -9,7 +9,7 @@ import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { noop, Rule, Tree } from '@angular-devkit/schematics';
 import { readWorkspace } from '@schematics/angular/utility';
 
-import { existsSync, statSync as fsStatSync } from 'fs';
+import { existsSync, statSync } from 'fs';
 
 import { Schema } from './schema';
 
@@ -32,7 +32,7 @@ export default function(options: Schema): Rule {
       return noop();
     }
     if (existsSync(appHTMLFile)) {
-      const stat = fsStatSync(appHTMLFile);
+      const stat = statSync(appHTMLFile);
       if (stat.mtimeMs === stat.ctimeMs) {
         host.overwrite(appHTMLFile, bootPageHTML);
       }

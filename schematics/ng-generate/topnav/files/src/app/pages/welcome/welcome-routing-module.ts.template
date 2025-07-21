@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { WelcomeComponent } from './welcome.component';
+
+import <% if(!exportDefault) { %>{ <% }%>Welcome<%= classify(type) %> <% if(!exportDefault) {%>} <% }%>from './welcome<%= type ? '.' + dasherize(type): '' %>';
 
 const routes: Routes = [
-  { path: '', component: WelcomeComponent },
+  { path: '', component: Welcome<%= type ? classify(type): '' %> },
 ];
 
 @NgModule({

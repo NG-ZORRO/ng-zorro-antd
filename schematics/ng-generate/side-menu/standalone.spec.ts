@@ -11,7 +11,7 @@ import { Schema as NzOptions } from '../../ng-add/schema';
 import { createTestApp } from '../../testing/test-app';
 import { getFileContent } from '../../utils/get-file-content';
 
-describe('[standalone] side-menu schematic', () => {
+describe('[schematic][standalone] side-menu', () => {
   const defaultOptions: NzOptions = {
     project: 'ng-zorro'
   };
@@ -28,11 +28,12 @@ describe('[standalone] side-menu schematic', () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('sidemenu', options, appTree);
     const files = tree.files;
+
     expect(files).toEqual(
       jasmine.arrayContaining([
-        '/projects/ng-zorro/src/app/app.component.html',
-        '/projects/ng-zorro/src/app/app.component.css',
-        '/projects/ng-zorro/src/app/app.component.ts',
+        '/projects/ng-zorro/src/app/app.html',
+        '/projects/ng-zorro/src/app/app.css',
+        '/projects/ng-zorro/src/app/app.ts',
         '/projects/ng-zorro/src/app/app.routes.ts',
         '/projects/ng-zorro/src/app/icons-provider.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts',
@@ -46,9 +47,9 @@ describe('[standalone] side-menu schematic', () => {
   it('should infer the standalone option from the project structure', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('sidemenu', options, appTree);
-    const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
+    const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
 
-    expect(tree.exists('/projects/material/src/app/app.module.ts')).toBe(false);
+    expect(tree.exists('/projects/material/src/app/app-module.ts')).toBe(false);
 
     // since v19, the standalone option is removed
     expect(appContent).not.toContain('standalone: true');
@@ -60,15 +61,15 @@ describe('[standalone] side-menu schematic', () => {
       const options = { ...defaultOptions, style: Style.Less };
       const tree = await runner.runSchematic('sidemenu', options, appTree);
       const files = tree.files;
-      const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
+      const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
       const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
 
-      expect(appContent).toContain('app.component.less');
+      expect(appContent).toContain('app.less');
       expect(welcomeContent).toContain('welcome.component.less');
 
       expect(files).toEqual(
         jasmine.arrayContaining([
-          '/projects/ng-zorro/src/app/app.component.less',
+          '/projects/ng-zorro/src/app/app.less',
           '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
         ])
       );
@@ -81,7 +82,7 @@ describe('[standalone] side-menu schematic', () => {
 
       expect(tree.files).toEqual(
         jasmine.arrayContaining([
-          '/projects/ng-zorro/src/app/app.component.less',
+          '/projects/ng-zorro/src/app/app.less',
           '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
         ])
       );
@@ -91,7 +92,7 @@ describe('[standalone] side-menu schematic', () => {
   it('should set the prefix correctly', async () => {
     const options = { ...defaultOptions, prefix: 'nz' };
     const tree = await runner.runSchematic('sidemenu', options, appTree);
-    const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
+    const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
     const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
 
     expect(appContent).toContain(`selector: 'nz-root'`);

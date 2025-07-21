@@ -9,9 +9,10 @@ import { template as interpolateTemplate } from '@angular-devkit/core';
 import {
   apply,
   applyTemplates,
-  branchAndMerge,
   chain,
+  FileOperator,
   filter,
+  forEach,
   mergeWith,
   move,
   noop,
@@ -226,6 +227,8 @@ export function buildComponent(options: ZorroComponentOptions, additionalFiles: 
       options.module = findModuleFromOptions(host, options);
     }
 
+    options.type ??= '';
+
     const parsedPath = parseName(options.path!, options.name);
     if (options.classnameWithModule && !options.skipImport && options.module) {
       const source = readIntoSourceFile(host, options.module);
@@ -255,6 +258,7 @@ export function buildComponent(options: ZorroComponentOptions, additionalFiles: 
       ...strings,
       'if-flat': (s: string) => (options.flat ? '' : s),
       classify: classifyCovered,
+      ngext: options.ngHtml ? '.ng' : '',
       ...options
     };
 
@@ -278,12 +282,26 @@ export function buildComponent(options: ZorroComponentOptions, additionalFiles: 
       // Treat the template options as any, because the type definition for the template options
       // is made unnecessarily explicit. Every type of object can be used in the EJS template.
       applyTemplates({ indentTextContent, resolvedFiles, ...baseTemplateContext }),
+      // remove multiple dots if no type is specified
+      !options.type
+        ? forEach(((file) => {
+            return file.path.includes('..')
+              ? {
+                content: file.content,
+                path: file.path.replace('..', '.')
+              }
+              : file;
+          }
+        ) as FileOperator)
+        : noop(),
       // TODO(devversion): figure out why we cannot just remove the first parameter
       // See for example: angular-cli#schematics/angular/component/index.ts#L160
       move(null, parsedPath.path)
     ]);
 
-    return () =>
-      chain([branchAndMerge(chain([addDeclarationToNgModule(options), mergeWith(templateSource)]))])(host, context);
+    return () => chain([
+      addDeclarationToNgModule(options),
+      mergeWith(templateSource)
+    ])(host, context);
   };
 }

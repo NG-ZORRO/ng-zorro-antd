@@ -7,9 +7,9 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 @Component({
   selector: '<%= prefix %>-root',
   imports: [RouterLink, RouterOutlet, NzIconModule, NzLayoutModule, NzMenuModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.<%= style %>'
+  templateUrl: './app.html',
+  styleUrl: './app.<%= style %>'
 })
-export class AppComponent {
+export class App {
   isCollapsed = false;
 }

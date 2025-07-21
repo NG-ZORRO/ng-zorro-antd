@@ -21,6 +21,7 @@ import {
   mergeWith,
   move,
   Rule,
+  schematic,
   strings,
   Tree,
   url
@@ -31,6 +32,7 @@ import { findBootstrapApplicationCall } from '@schematics/angular/utility/standa
 
 import { Schema } from './schema';
 import { applyChangesToFile } from '../../utils/apply-changes';
+import { getAppOptions } from '../../utils/config';
 import { addModule } from '../../utils/root-module';
 
 export default function(options: Schema): Rule {
@@ -38,7 +40,11 @@ export default function(options: Schema): Rule {
     const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const mainFile = getProjectMainFile(project);
+    const { componentOptions, sourceDir } = await getAppOptions(options.project, project.root);
     const prefix = options.prefix || project.prefix;
+    const style = options.style || componentOptions.style;
+    const exportDefault = componentOptions.exportDefault ?? false;
+
     const isStandalone = isStandaloneApp(host, mainFile);
     const templateSourcePath = isStandalone ? './standalone' : './files';
 
@@ -47,8 +53,10 @@ export default function(options: Schema): Rule {
         apply(url(`${templateSourcePath}/src`), [
           applyTemplates({
             ...strings,
-            ...options,
-            prefix
+            ...componentOptions,
+            exportDefault,
+            prefix,
+            style
           }),
           move(project.sourceRoot as string),
           forEach((fileEntry: FileEntry) => {
@@ -60,6 +68,17 @@ export default function(options: Schema): Rule {
         ]),
         MergeStrategy.Overwrite
       ),
+      schematic('component', {
+        name: 'welcome',
+        project: options.project,
+        standalone: isStandalone,
+        ...componentOptions,
+        path: `${sourceDir}/pages`,
+        skipImport: true,
+        skipTests: true,
+        prefix,
+        style
+      }),
       isStandalone ? addIconsProvider(options.project, mainFile) : addModules(options.project)
     ]);
   };
@@ -67,7 +86,7 @@ export default function(options: Schema): Rule {
 
 function addModules(project: string): Rule {
   return chain([
-    addModule('AppRoutingModule', './app-routing.module', project),
+    addModule('AppRoutingModule', './app-routing-module', project),
     addModule('IconsProviderModule', './icons-provider.module', project),
     addModule('NzLayoutModule', 'ng-zorro-antd/layout', project),
     addModule('NzMenuModule', 'ng-zorro-antd/menu', project)

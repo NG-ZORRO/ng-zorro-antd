@@ -3,7 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: '<%= prefix %>-root',
   standalone: false,
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.<%= style %>'
+  templateUrl: './app.html',
+  styleUrl: './app.<%= style %>'
 })
-export class AppComponent {}
+export class App {
+  isCollapsed = false;
+}
