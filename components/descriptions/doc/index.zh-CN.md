@@ -29,7 +29,8 @@ description: 展示多个只读字段的组合。
 
 ### nz-descriptions-item
 
-| 参数        | 说明         | 类型                        | 默认值 |
-| ----------- | ------------ | --------------------------- | ------ |
-| `[nzTitle]` | 内容的描述   | `string\|TemplateRef<void>` | -      |
-| `[nzSpan]`  | 包含列的数量 | `number`                    | `1`    |
+| 参数            | 说明         | 类型                        | 默认值 |
+| --------------- | ------------ | --------------------------- | ------ |
+| `[nzTitle]`     | 内容的标题   | `string\|TemplateRef<void>` | -       |
+| `[nzTitleBold]` | 标题加粗     | `boolean`                   | `false` |
+| `[nzSpan]`      | 包含列的数量 | `number`                    | `1`     |

@@ -12,6 +12,7 @@ import {
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
+  booleanAttribute,
   numberAttribute
 } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -32,6 +33,7 @@ export class NzDescriptionsItemComponent implements OnChanges, OnDestroy {
 
   @Input({ transform: numberAttribute }) nzSpan = 1;
   @Input() nzTitle: string | TemplateRef<void> = '';
+  @Input({ transform: booleanAttribute }) nzTitleBold: boolean = false;
 
   readonly inputChange$ = new Subject<void>();
 
