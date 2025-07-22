@@ -59,16 +59,16 @@ Methods for destruction are also provided:
 
 You can use `NzConfigService` to configure this component globally. Please check the [Global Configuration](/docs/global-config/en) chapter for more information.
 
-| Parameter        | Description                                                                             | Type             | Default    |
-|------------------|-----------------------------------------------------------------------------------------|------------------|------------|
-| `nzDuration`     | Duration (milliseconds), does not disappear when set to 0                               | `number`         | 4500       |
-| `nzMaxStack`     | The maximum number of notifications that can be displayed at the same time              | `number`         | 8          |
-| `nzPauseOnHover` | Do not remove automatically when mouse is over while setting to `true`                  | `boolean`        | `true`     |
-| `nzAnimate`      | Whether to turn on animation                                                            | `boolean`        | `true`     |
-| `nzTop`          | The top of the notification when it pops up from the top.                               | `string`         | 24px       |
-| `nzBottom`       | The bottom of the notification when it pops up from the bottom.                         | `string`         | 24px       |
-| `nzPlacement`    | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `string`         | `topRight` |
-| `nzDirection`    | Direction of the text in the notification                                               | `'ltr' \| 'rtl'` | -          |
+| Parameter        | Description                                                                             | Type                                                                            | Default      |
+|------------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|--------------|
+| `nzDuration`     | Duration (milliseconds), does not disappear when set to 0                               | `number`                                                                        | `4500`       |
+| `nzMaxStack`     | The maximum number of notifications that can be displayed at the same time              | `number`                                                                        | `8`          |
+| `nzPauseOnHover` | Do not remove automatically when mouse is over while setting to `true`                  | `boolean`                                                                       | `true`       |
+| `nzAnimate`      | Whether to turn on animation                                                            | `boolean`                                                                       | `true`       |
+| `nzTop`          | The top of the notification when it pops up from the top.                               | `string`                                                                        | `'24px'`     |
+| `nzBottom`       | The bottom of the notification when it pops up from the bottom.                         | `string`                                                                        | `'24px'`     |
+| `nzPlacement`    | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'top' \| 'bottom'` | `'topRight'` |
+| `nzDirection`    | Direction of the text in the notification                                               | `'ltr' \| 'rtl'`                                                                | -            |
 
 ### NzNotificationRef
 

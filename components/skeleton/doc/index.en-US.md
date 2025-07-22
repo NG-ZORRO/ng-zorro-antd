@@ -52,7 +52,7 @@ description: Provide a placeholder while you wait for content to load or visuali
 ### nz-skeleton-element [nzType="button"]
 
 | Property     | Description           | Type                                           | Default     |
-| ------------ | --------------------- | ---------------------------------------------- | ----------- |
+|--------------|-----------------------|------------------------------------------------|-------------|
 | `[nzActive]` | Show animation effect | `boolean`                                      | `false`     |
 | `[nzSize]`   | Set the size          | `'large' \| 'small' \| 'default'`              | `'default'` |
 | `[nzShape]`  | Set the shape         | `'square' \| 'circle' \| 'round' \| 'default'` | `'default'` |
@@ -60,7 +60,7 @@ description: Provide a placeholder while you wait for content to load or visuali
 ### nz-skeleton-element [nzType="avatar"]
 
 | Property     | Description           | Type                                        | Default     |
-| ------------ | --------------------- | ------------------------------------------- | ----------- |
+|--------------|-----------------------|---------------------------------------------|-------------|
 | `[nzActive]` | Show animation effect | `boolean`                                   | `false`     |
 | `[nzSize]`   | Set the size          | `number \| 'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzShape]`  | Set the shape         | `'circle' \| 'square'`                      | `'square'`  |
@@ -68,12 +68,12 @@ description: Provide a placeholder while you wait for content to load or visuali
 ### nz-skeleton-element [nzType="input"]
 
 | Property     | Description           | Type                              | Default     |
-| ------------ | --------------------- | --------------------------------- | ----------- |
+|--------------|-----------------------|-----------------------------------|-------------|
 | `[nzActive]` | Show animation effect | `boolean`                         | `false`     |
 | `[nzSize]`   | Set the size          | `'large' \| 'small' \| 'default'` | `'default'` |
 
 ### nz-skeleton-element [nzType="image"]
 
 | Property     | Description           | Type      | Default |
-| ------------ | --------------------- | --------- | ------- |
+|--------------|-----------------------|-----------|---------|
 | `[nzActive]` | Show animation effect | `boolean` | `false` |

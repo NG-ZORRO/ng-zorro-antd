@@ -19,13 +19,13 @@ description: A carousel component. Scales with its container.
 ### nz-carousel
 
 | Property            | Description                                                                 | Type                                        | Default     | Global Config |
-| ------------------- | --------------------------------------------------------------------------- | ------------------------------------------- | ----------- | ------------- |
+|---------------------|-----------------------------------------------------------------------------|---------------------------------------------|-------------|---------------|
 | `[nzAutoPlay]`      | Whether to scroll automatically                                             | `boolean`                                   | `false`     | ✅             |
 | `[nzAutoPlaySpeed]` | Duration (milliseconds), does not scroll when set to 0                      | `number`                                    | `3000`      | ✅             |
 | `[nzDotRender]`     | Dot render template                                                         | `TemplateRef<{ $implicit: number }>`        | -           |
-| `[nzDotPosition]`   | The position of the dots, which can be one of `top` `bottom` `left` `right` | `string`                                    | `bottom`    | ✅             |
+| `[nzDotPosition]`   | The position of the dots, which can be one of `top` `bottom` `left` `right` | `'top' \| 'right' \| 'bottom' \| 'left'`    | `'bottom'`  | ✅             |
 | `[nzDots]`          | Whether to show the dots at the bottom of the gallery                       | `boolean`                                   | `true`      | ✅             |
-| `[nzEffect]`        | Transition effect                                                           | `'scrollx'\|'fade'`                         | `'scrollx'` | ✅             |
+| `[nzEffect]`        | Transition effect                                                           | `'scrollx' \| 'fade'`                       | `'scrollx'` | ✅             |
 | `[nzEnableSwipe]`   | Whether to support swipe gesture                                            | `boolean`                                   | `true`      | ✅             |
 | `[nzLoop]`          | Whether to enable the carousel to go in a loop                              | `boolean`                                   | `true`      | ✅             |
 | `(nzAfterChange)`   | Callback function called after the current index changes                    | `EventEmitter<number>`                      | -           |
@@ -34,7 +34,7 @@ description: A carousel component. Scales with its container.
 #### Methods
 
 | Name                | Description                                |
-| ------------------- | ------------------------------------------ |
+|---------------------|--------------------------------------------|
 | `goTo(slideNumber)` | Change current slide to given slide number |
 | `next()`            | Change current slide to next slide         |
 | `pre()`             | Change current slide to previous slide     |
@@ -42,7 +42,7 @@ description: A carousel component. Scales with its container.
 ### InjectionToken
 
 | Token                           | Description                             | Parameters                       | Default Value |
-| ------------------------------- | --------------------------------------- | -------------------------------- | ------------- |
+|---------------------------------|-----------------------------------------|----------------------------------|---------------|
 | `NZ_CAROUSEL_CUSTOM_STRATEGIES` | Provide custom transitioning strategies | `CarouselStrategyRegistryItem[]` | -             |
 
 ### Customizing transition effects

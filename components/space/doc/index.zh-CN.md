@@ -27,13 +27,13 @@ description: 设置组件之间的间距。
 
 ### nz-space
 
-| 参数            | 说明                                   | 类型                                         | 默认值       | 支持全局配置 |
-| --------------- | -------------------------------------- | -------------------------------------------- | ------------ | ------------ |
-| `[nzSize]`      | 间距大小                               | `NzSpaceSize \| NzSpaceSize[]`               | `'small'`    | ✅            |
-| `[nzDirection]` | 间距方向                               | `'vertical' \| 'horizontal'`                 | `horizontal` |              |
-| `[nzAlign]`     | 对齐方式                               | `'start' \| 'end' \| 'baseline' \| 'center'` | -            |              |
-| `[nzWrap]`      | 是否自动换行，仅在 `horizontal` 时有效 | `boolean`                                    | `false`      |              |
-| `[nzSplit]`     | 设置分隔符                             | `TemplateRef \| string`                      | -            |              |
+| 参数              | 说明                         | 类型                                           | 默认值            | 支持全局配置 |
+|-----------------|----------------------------|----------------------------------------------|----------------|--------|
+| `[nzSize]`      | 间距大小                       | `NzSpaceSize \| NzSpaceSize[]`               | `'small'`      | ✅      |
+| `[nzDirection]` | 间距方向                       | `'vertical' \| 'horizontal'`                 | `'horizontal'` |        |
+| `[nzAlign]`     | 对齐方式                       | `'start' \| 'end' \| 'baseline' \| 'center'` | -              |        |
+| `[nzWrap]`      | 是否自动换行，仅在 `horizontal` 时有效 | `boolean`                                    | `false`        |        |
+| `[nzSplit]`     | 设置分隔符                      | `TemplateRef \| string`                      | -              |        |
 
 #### Interfaces
 
@@ -53,8 +53,8 @@ type NzSpaceSize = 'small' | 'middle' | 'large' | number;
 - TimePicker
 - TreeSelect
 
-| 参数            | 说明                         | 类型                              | 默认值         | 支持全局配置 |
-| --------------- | ---------------------------- | --------------------------------- | -------------- | ------------ |
-| `[nzBlock]`     | 将宽度调整为父元素宽度的选项 | `boolean`                         | `false`        |              |
-| `[nzDirection]` | 指定排列方向                 | `'vertical' \| 'horizontal'`      | `'horizontal'` |              |
-| `[nzSize]`      | 子组件大小                   | `'large' \| 'default' \| 'small'` | `'default'`    |              |
+| 参数              | 说明             | 类型                                | 默认值            | 支持全局配置 |
+|-----------------|----------------|-----------------------------------|----------------|--------|
+| `[nzBlock]`     | 将宽度调整为父元素宽度的选项 | `boolean`                         | `false`        |        |
+| `[nzDirection]` | 指定排列方向         | `'vertical' \| 'horizontal'`      | `'horizontal'` |        |
+| `[nzSize]`      | 子组件大小          | `'large' \| 'small' \| 'default'` | `'default'`    |        |

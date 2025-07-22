@@ -60,7 +60,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 ### nz-table
 
 | Property                    | Description                                                                                                                                                                              | Type                                                                   | Default            | Global Config |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ | ------------- |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|--------------------|---------------|
 | `[nzData]`                  | Data record array to be rendered                                                                                                                                                         | `T[]`                                                                  | -                  |
 | `[nzFrontPagination]`       | Whether to paginate data on client. Should be set to `false` if data is to be paginated on server side or if all the data is to be displayed at once in the table without any pagination | `boolean`                                                              | `true`             |
 | `[nzTotal]`                 | Total data count. Should set when `nzFrontPagination` is `false`                                                                                                                         | `number`                                                               | -                  |
@@ -68,8 +68,8 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzPageIndex]`             | pageIndex , double binding                                                                                                                                                               | `number`                                                               | -                  |
 | `[nzPageSize]`              | pageSize, double binding                                                                                                                                                                 | `number`                                                               | -                  |
 | `[nzShowPagination]`        | Whether to show pagination component at bottom of the table                                                                                                                              | `boolean`                                                              | `true`             |
-| `[nzPaginationPosition]`    | Specify the position of pagination                                                                                                                                                       | `'top' \| 'bottom' \| 'both'`                                          | `bottom`           |
-| `[nzPaginationType]`        | Specify the size of pagination                                                                                                                                                           | `'default' \| 'small'`                                                 | `default`          |
+| `[nzPaginationPosition]`    | Specify the position of pagination                                                                                                                                                       | `'top' \| 'bottom' \| 'both'`                                          | `'bottom'`         |
+| `[nzPaginationType]`        | Specify the size of pagination                                                                                                                                                           | `'default' \| 'small'`                                                 | `'default'`        |
 | `[nzBordered]`              | Whether to show all table borders                                                                                                                                                        | `boolean`                                                              | `false`            | ✅             |
 | `[nzOuterBordered]`         | Whether to show table outer borders                                                                                                                                                      | `boolean`                                                              | `false`            | -             |
 | `[nzWidthConfig]`           | Set col width can not used with `[nzWidth]` of `th`                                                                                                                                      | `string[]`                                                             | `[]`               |
@@ -88,7 +88,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzItemRender]`            | To customize Pagination item, same as Pagination                                                                                                                                         | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next', page: number }>` | -                  |
 | `[nzHideOnSinglePage]`      | Whether to hide pagination on single page                                                                                                                                                | `boolean`                                                              | `false`            |
 | `[nzSimple]`                | Whether to use simple mode                                                                                                                                                               | `boolean`                                                              | -                  | ✅             |
-| `[nzTemplateMode]`          | Template mode，no need to pass data to `nzData`                                                                                                                                          | `boolean`                                                              | `false`            |
+| `[nzTemplateMode]`          | Template mode，no need to pass data to `nzData`                                                                                                                                           | `boolean`                                                              | `false`            |
 | `[nzVirtualItemSize]`       | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api)                                                                                 | `number`                                                               | `0`                |
 | `[nzVirtualMaxBufferPx]`    | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api)                                    | `number`                                                               | `200`              |
 | `[nzVirtualMinBufferPx]`    | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api)                                           | `number`                                                               | `100`              |
@@ -105,7 +105,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 Checkbox property
 
 | Property            | Description                                         | Type                    | Default |
-| ------------------- | --------------------------------------------------- | ----------------------- | ------- |
+|---------------------|-----------------------------------------------------|-------------------------|---------|
 | `[nzShowCheckbox]`  | Whether `nz-checkbox` should be shown in the header | `boolean`               | -       |
 | `[nzDisabled]`      | Whether the `nz-checkbox` is disabled               | `boolean`               | -       |
 | `[nzIndeterminate]` | `nz-checkbox` indeterminate status                  | `boolean`               | -       |
@@ -116,24 +116,24 @@ Checkbox property
 Selection property
 
 | Property               | Description                                                         | Type                                     | Default |
-| ---------------------- | ------------------------------------------------------------------- | ---------------------------------------- | ------- |
+|------------------------|---------------------------------------------------------------------|------------------------------------------|---------|
 | `[nzShowRowSelection]` | Whether to show row selection options                               | `boolean`                                | -       |
 | `[nzSelections]`       | Selection options including `text` and `onSelect` callback function | `Array<{ text: string, onSelect: any }>` | -       |
 
 Sort property
 
 | Property              | Description                                                                                                                                    | Type                                          | Default                       |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------------------------- |
+|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|-------------------------------|
 | `[nzShowSort]`        | Whether to display sorting                                                                                                                     | `boolean`                                     | -                             |
 | `[nzSortFn]`          | Sort function used to sort the data on client side (ref to Array.sort compareFunction). Should be set to `true` when using server side sorting | `NzTableSortFn<T> \| boolean`                 | -                             |
-| `[nzSortOrder]`       | Sort direction                                                                                                                                 | `'ascend' \| 'descend' \| null`               | -                             |
-| `[nzSortDirections]`  | Supported sort order, could be `'ascend'`, `'descend'`, `null`                                                                                 | `Array<'ascend' \| 'descend' \| null>`        | `['ascend', 'descend', null]` | ✅ |
-| `(nzSortOrderChange)` | Callback when sort direction changes                                                                                                           | `EventEmitter<'ascend' \| 'descend' \| null>` | -                             |
+| `[nzSortOrder]`       | Sort direction                                                                                                                                 | `'descend' \| 'ascend' \| null`               | -                             |
+| `[nzSortDirections]`  | Supported sort order, could be `'descend'`, `'ascend'`, `null`                                                                                 | `Array<'descend' \| 'ascend' \| null>`        | `['ascend', 'descend', null]` | ✅ |
+| `(nzSortOrderChange)` | Callback when sort direction changes                                                                                                           | `EventEmitter<'descend' \| 'ascend' \| null>` | -                             |
 
 Filter property
 
 | Property             | Description                                                                                            | Type                                                       | Default |
-| -------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- | ------- |
+|----------------------|--------------------------------------------------------------------------------------------------------|------------------------------------------------------------|---------|
 | `[nzShowFilter]`     | Whether to show filter                                                                                 | `boolean`                                                  | -       |
 | `[nzFilterFn]`       | Filter function used to filter the data on client side. Set to `true` when using server side filtering | `NzTableFilterFn<T> \| boolean`                            | -       |
 | `[nzFilters]`        | Filter options, `text`, and `value` for callback, `byDefault` to enable filter by default              | `Array<{ text: string; value: any; byDefault?: boolean }>` | -       |
@@ -143,7 +143,7 @@ Filter property
 Style property
 
 | Property          | Description                                                                                                  | Type                            | Default |
-| ----------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------- |
+|-------------------|--------------------------------------------------------------------------------------------------------------|---------------------------------|---------|
 | `[nzWidth]`       | Specify the column width (in pixels), can not used when grouping columns                                     | `string`                        | -       |
 | `[nzLeft]`        | Left pixels, used to fixed column to left, auto calc when set to `true` and disable fixed when `false`       | `string \| boolean`             | -       |
 | `[nzRight]`       | Right pixels, used to fixed column to right, auto calc when set to `true` and disable fixed when `false`     | `string \| boolean`             | -       |
@@ -155,7 +155,7 @@ Style property
 Other
 
 | Property        | Description                                  | Type     | Default |
-| --------------- | -------------------------------------------- | -------- | ------- |
+|-----------------|----------------------------------------------|----------|---------|
 | `[nzColumnKey]` | column key, work with server sort and filter | `string` | -       |
 
 ### td
@@ -163,7 +163,7 @@ Other
 Checkbox property
 
 | Property            | Description                       | Type                    | Default |
-| ------------------- | --------------------------------- | ----------------------- | ------- |
+|---------------------|-----------------------------------|-------------------------|---------|
 | `[nzShowCheckbox]`  | Whether add nz-checkbox           | `boolean`               | -       |
 | `[nzDisabled]`      | Whether disable checkbox          | `boolean`               | -       |
 | `[nzIndeterminate]` | Indeterminate status              | `boolean`               | -       |
@@ -176,7 +176,7 @@ Checkbox property
 Expand property
 
 | Property           | Description                           | Type                    | Default |
-| ------------------ | ------------------------------------- | ----------------------- | ------- |
+|--------------------|---------------------------------------|-------------------------|---------|
 | `[nzShowExpand]`   | Whether show expand icon              | `boolean`               | -       |
 | `[nzExpand]`       | Current expand status, double binding | `boolean`               | -       |
 | `[nzExpandIcon]`   | Custom expand icon                    | `TemplateRef<void>`     | -       |
@@ -185,7 +185,7 @@ Expand property
 Style property
 
 | Property          | Description                                                                                                  | Type                            | Default |
-| ----------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------- |
+|-------------------|--------------------------------------------------------------------------------------------------------------|---------------------------------|---------|
 | `[nzLeft]`        | Left pixels, used to fixed column to left, auto calc when set to `true` and disable fixed when `false`       | `string \| boolean`             | -       |
 | `[nzRight]`       | Right pixels, used to fixed column to right, auto calc when set to `true` and disable fixed when `false`     | `string \| boolean`             | -       |
 | `[nzAlign]`       | Specify how content is aligned                                                                               | `'left' \| 'right' \| 'center'` | -       |
@@ -196,25 +196,25 @@ Style property
 Other property
 
 | Property         | Description                        | Type     | Default |
-| ---------------- | ---------------------------------- | -------- | ------- |
+|------------------|------------------------------------|----------|---------|
 | `[nzIndentSize]` | Indent size in pixels of tree data | `number` | -       |
 
 ### thead
 
-| Property              | Description                                                  | Type                                                                  | Default |
-| --------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------- | ------- |
+| Property              | Description                                                 | Type                                                                  | Default |
+|-----------------------|-------------------------------------------------------------|-----------------------------------------------------------------------|---------|
 | `(nzSortOrderChange)` | sort change callback，should used with `nzColumnKey` of `th` | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | -       |
 
 ### tr
 
-| Property     | Description                                              | Type      | Default |
-| ------------ | -------------------------------------------------------- | --------- | ------- |
+| Property     | Description                                             | Type      | Default |
+|--------------|---------------------------------------------------------|-----------|---------|
 | `[nzExpand]` | Whether expand current row，used with `nzExpand` of `td` | `boolean` | -       |
 
 ### tfoot
 
 | Property      | Description                         | Type                           | Default |
-| ------------- | ----------------------------------- | ------------------------------ | ------- |
+|---------------|-------------------------------------|--------------------------------|---------|
 | `[nzSummary]` | Summary content                     | `boolean`                      | -       |
 | `[nzFixed]`   | Fixed summary, used with `nzScroll` | `boolean \| 'top' \| 'bottom'` | `false` |
 
@@ -223,7 +223,7 @@ Other property
 Customized filter panel
 
 | Property            | Description                                                                                       | Type                      | Default |
-| ------------------- | ------------------------------------------------------------------------------------------------- | ------------------------- | ------- |
+|---------------------|---------------------------------------------------------------------------------------------------|---------------------------|---------|
 | `[nzDropdownMenu]`  | Dropdown menu                                                                                     | `NzDropdownMenuComponent` | -       |
 | `[nzVisible]`       | whether the dropdown menu is visible, double binding                                              | `boolean`                 | -       |
 | `[nzActive]`        | whether the icon status is activated                                                              | `boolean`                 | `false` |

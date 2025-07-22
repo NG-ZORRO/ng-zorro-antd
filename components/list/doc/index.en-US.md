@@ -18,7 +18,7 @@ A list can be used to display content related to a single subject. The content c
 ### nz-list
 
 | Property         | Description                                                                                                           | Type                              | Default        |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------- | -------------- |
+|------------------|-----------------------------------------------------------------------------------------------------------------------|-----------------------------------|----------------|
 | `[nzBordered]`   | Toggles rendering of the border around the list                                                                       | `boolean`                         | `false`        |
 | `[nzFooter]`     | List footer renderer                                                                                                  | `string \| TemplateRef<void>`     | -              |
 | `[nzHeader]`     | List header renderer                                                                                                  | `string \| TemplateRef<void>`     | -              |

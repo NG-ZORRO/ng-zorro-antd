@@ -88,17 +88,17 @@ description: 多层次的结构列表。
 
 #### NzFormatEmitEvent props
 
-| 属性              | 说明                                  | 类型                                                                                                                                 | 默认值    |
-|-----------------|-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|--------|
-| `eventName`     | 事件名                                 | enum: `click` `dblclick` `contextmenu` `check` `expand` `search` & `dragstart` `dragenter` `dragover` `dragleave` `drop` `dragend` | -      |
-| `node`          | 当前操作节点(拖拽时表示目标节点)                   | `NzTreeNode`                                                                                                                       | `null` |
-| `event`         | 原生事件                                | `'MouseEvent' \| 'DragEvent'`                                                                                                      | `null` |
-| `dragNode?`     | 当前拖拽节点(拖拽时存在)                       | `NzTreeNode`                                                                                                                       | `null` |
-| `selectedKeys?` | 已选中的节点 key(单击时存在)                   | `NzTreeNode[]`                                                                                                                     | `[]`   |
-| `checkedKeys?`  | checkbox 已选中的节点 key(点击 checkbox 存在) | `NzTreeNode[]`                                                                                                                     | `[]`   |
-| `matchedKeys?`  | 搜索时匹配到的节点 key                       | `NzTreeNode[]`                                                                                                                     | `[]`   |
-| `keys?`         | 非拖拽事件相关的全部节点的 key 数组                | `string[]`                                                                                                                         | `[]`   |
-| `nodes?`        | 非拖拽事件相关的全部节点                        | `NzTreeNode[]`                                                                                                                     | `[]`   |
+| 属性              | 说明                                  | 类型                                                                                                                                                                  | 默认值    |
+|-----------------|-------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|
+| `eventName`     | 事件名                                 | enum: `'click' \| 'dblclick' \| 'contextmenu' \| 'check' \| 'expand' \| 'search' \| 'dragstart' \| 'dragenter' \| 'dragover' \| 'dragleave' \| 'drop' \| 'dragend'` | -      |
+| `node`          | 当前操作节点(拖拽时表示目标节点)                   | `NzTreeNode`                                                                                                                                                        | `null` |
+| `event`         | 原生事件                                | `'MouseEvent' \| 'DragEvent'`                                                                                                                                       | `null` |
+| `dragNode?`     | 当前拖拽节点(拖拽时存在)                       | `NzTreeNode`                                                                                                                                                        | `null` |
+| `selectedKeys?` | 已选中的节点 key(单击时存在)                   | `NzTreeNode[]`                                                                                                                                                      | `[]`   |
+| `checkedKeys?`  | checkbox 已选中的节点 key(点击 checkbox 存在) | `NzTreeNode[]`                                                                                                                                                      | `[]`   |
+| `matchedKeys?`  | 搜索时匹配到的节点 key                       | `NzTreeNode[]`                                                                                                                                                      | `[]`   |
+| `keys?`         | 非拖拽事件相关的全部节点的 key 数组                | `string[]`                                                                                                                                                          | `[]`   |
+| `nodes?`        | 非拖拽事件相关的全部节点                        | `NzTreeNode[]`                                                                                                                                                      | `[]`   |
 
 #### NzFormatBeforeDropEvent props
 
@@ -110,29 +110,29 @@ description: 多层次的结构列表。
 
 #### NzTreeNode props
 
-| 属性                  | 说明                                                              | 类型                                     | 默认值                     |
-|---------------------|-----------------------------------------------------------------|----------------------------------------|-------------------------|
-| `title`             | 标题                                                              | `string`                               | NzTreeNodeOptions.title |
-| `key`               | key 值                                                           | `string`                               | NzTreeNodeOptions.key   |
-| `level`             | 层级(最顶层为 0，子节点逐层加 1)                                             | `number`                               | `number`                |
-| `children`          | 子节点                                                             | NzTreeNode[]                           | `[]`                    |
-| `origin`            | 原始节点树结构(用户提供,用于展示额外信息)                                          | NzTreeNodeOptions                      | -                       |
-| `getParentNode`     | 获取父节点                                                           | function                               | `null`                  |
-| `isLeaf`            | 是否为叶子节点                                                         | `boolean`                              | `false`                 |
-| `isExpanded`        | 是否已展开                                                           | `boolean`                              | `false`                 |
-| `isDisabled`        | 是否禁用                                                            | `boolean`                              | `false`                 |
-| `isDisableCheckbox` | 是否禁用 checkbox                                                   | `boolean`                              | `false`                 |
-| `isSelectable`      | 是否可选中                                                           | `boolean`                              | `true`                  |
-| `isChecked`         | 是否选中 checkbox                                                   | `boolean`                              | `false`                 |
-| `isHalfChecked`     | 子节点有选中但未全选                                                      | `boolean`                              | `false`                 |
-| `isSelected`        | 是否已选中                                                           | `boolean`                              | `false`                 |
-| `isLoading`         | 是否异步加载状态(影响展开图标展示)                                              | `boolean`                              | `false`                 |
-| `isMatched`         | title 是否包含 nzSearchValue(搜索使用)                                  | `boolean`                              | `false`                 |
-| `setSyncChecked`    | 设置 checked 状态并同步其他节点状态                                          | function                               | -                       |
-| `getChildren`       | 获取子节点,返回 NzTreeNode 数组                                          | function                               | -                       |
-| `addChildren`       | 添加子节点,接收 NzTreeNode 或 NzTreeNodeOptions 数组,第二个参数为插入的索引位置，默认插入末尾 | (children: array, index?: number )=>{} | -                       |
-| `clearChildren`     | 清除子节点                                                           | function                               | -                       |
-| `remove`            | 清除当前节点(非根节点)                                                    | function                               | -                       |
+| 属性                  | 说明                                                              | 类型                                       | 默认值                       |
+|---------------------|-----------------------------------------------------------------|------------------------------------------|---------------------------|
+| `title`             | 标题                                                              | `string`                                 | `NzTreeNodeOptions.title` |
+| `key`               | key 值                                                           | `string`                                 | `NzTreeNodeOptions.key`   |
+| `level`             | 层级(最顶层为 0，子节点逐层加 1)                                             | `number`                                 | `number`                  |
+| `children`          | 子节点                                                             | `NzTreeNode[]`                           | `[]`                      |
+| `origin`            | 原始节点树结构(用户提供,用于展示额外信息)                                          | `NzTreeNodeOptions`                      | -                         |
+| `getParentNode`     | 获取父节点                                                           | `function`                               | `null`                    |
+| `isLeaf`            | 是否为叶子节点                                                         | `boolean`                                | `false`                   |
+| `isExpanded`        | 是否已展开                                                           | `boolean`                                | `false`                   |
+| `isDisabled`        | 是否禁用                                                            | `boolean`                                | `false`                   |
+| `isDisableCheckbox` | 是否禁用 checkbox                                                   | `boolean`                                | `false`                   |
+| `isSelectable`      | 是否可选中                                                           | `boolean`                                | `true`                    |
+| `isChecked`         | 是否选中 checkbox                                                   | `boolean`                                | `false`                   |
+| `isHalfChecked`     | 子节点有选中但未全选                                                      | `boolean`                                | `false`                   |
+| `isSelected`        | 是否已选中                                                           | `boolean`                                | `false`                   |
+| `isLoading`         | 是否异步加载状态(影响展开图标展示)                                              | `boolean`                                | `false`                   |
+| `isMatched`         | title 是否包含 nzSearchValue(搜索使用)                                  | `boolean`                                | `false`                   |
+| `setSyncChecked`    | 设置 checked 状态并同步其他节点状态                                          | `function`                               | -                         |
+| `getChildren`       | 获取子节点,返回 NzTreeNode 数组                                          | `function`                               | -                         |
+| `addChildren`       | 添加子节点,接收 NzTreeNode 或 NzTreeNodeOptions 数组,第二个参数为插入的索引位置，默认插入末尾 | `(children: array, index?: number )=>{}` | -                         |
+| `clearChildren`     | 清除子节点                                                           | `function`                               | -                         |
+| `remove`            | 清除当前节点(非根节点)                                                    | `function`                               | -                         |
 
 ## 注意
 
