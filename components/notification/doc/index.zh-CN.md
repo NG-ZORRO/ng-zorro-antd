@@ -58,16 +58,16 @@ description: 全局展示通知提醒信息。
 
 可以通过 `NzConfigService` 进行全局配置，详情请见文档中 [全局配置项](/docs/global-config/zh) 章节。
 
-| 参数               | 说明                                                                     | 类型               | 默认值        |
-|------------------|------------------------------------------------------------------------|------------------|------------|
-| `nzDuration`     | 持续时间(毫秒)，当设置为0时不消失                                                     | `number`         | 4500       |
-| `nzMaxStack`     | 同一时间可展示的最大提示数量                                                         | `number`         | 8          |
-| `nzPauseOnHover` | 鼠标移上时禁止自动移除                                                            | `boolean`        | `true`     |
-| `nzAnimate`      | 开关动画效果                                                                 | `boolean`        | `true`     |
-| `nzTop`          | 消息从顶部弹出时，距离顶部的位置。                                                      | `string`         | 24px       |
-| `nzBottom`       | 消息从底部弹出时，距离底部的位置。                                                      | `string`         | 24px       |
-| `nzPlacement`    | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `string`         | `topRight` |
-| `nzDirection`    | 通知的文字方向                                                                | `'ltr' \| 'rtl'` | -          |
+| 参数               | 说明                                                                     | 类型                                                                              | 默认值          |
+|------------------|------------------------------------------------------------------------|---------------------------------------------------------------------------------|--------------|
+| `nzDuration`     | 持续时间(毫秒)，当设置为0时不消失                                                     | `number`                                                                        | `4500`       |
+| `nzMaxStack`     | 同一时间可展示的最大提示数量                                                         | `number`                                                                        | `8`          |
+| `nzPauseOnHover` | 鼠标移上时禁止自动移除                                                            | `boolean`                                                                       | `true`       |
+| `nzAnimate`      | 开关动画效果                                                                 | `boolean`                                                                       | `true`       |
+| `nzTop`          | 消息从顶部弹出时，距离顶部的位置。                                                      | `string`                                                                        | `'24px'`     |
+| `nzBottom`       | 消息从底部弹出时，距离底部的位置。                                                      | `string`                                                                        | `'24px'`     |
+| `nzPlacement`    | 弹出位置，可选 `topLeft` `topRight` `bottomLeft` `bottomRight` `top` `bottom` | `'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'top' \| 'bottom'` | `'topRight'` |
+| `nzDirection`    | 通知的文字方向                                                                | `'ltr' \| 'rtl'`                                                                | -            |
 
 ### NzNotificationRef
 

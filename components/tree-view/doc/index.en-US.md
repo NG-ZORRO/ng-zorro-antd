@@ -15,12 +15,12 @@ More basic Tree component, allowing each of its parts to be defined in the templ
 
 ### nz-tree-view
 
-| Property            | Description                                        | Type                                                                                                       | Default |
-|---------------------|----------------------------------------------------|------------------------------------------------------------------------------------------------------------|---------|
-| `[nzTreeControl]`   | The tree controller                                | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                        | -       |
-| `[nzDataSource]`    | The data array to render                           | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | -       |
-| `[nzDirectoryTree]` | Whether nodes are displayed as directory style     | `boolean`                                                                                                  | `false` |
-| `[nzBlockNode]`     | Whether tree nodes fill remaining horizontal space | `boolean`                                                                                                  | `false` |
+| Property            | Description                                        | Type                                                                                                               | Default |
+|---------------------|----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|---------|
+| `[nzTreeControl]`   | The tree controller                                | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                                | -       |
+| `[nzDataSource]`    | The data array to render                           | `DataSource<T> \| Observable<T[]> \| T[]`, [DataSource](https://material.angular.io/cdk/tree/overview#data-source) | -       |
+| `[nzDirectoryTree]` | Whether nodes are displayed as directory style     | `boolean`                                                                                                          | `false` |
+| `[nzBlockNode]`     | Whether tree nodes fill remaining horizontal space | `boolean`                                                                                                          | `false` |
 
 ### nz-tree-virtual-scroll-view
 
@@ -28,15 +28,15 @@ The virtual scroll tree view, which can be accessed from
 the [CdkVirtualScrollViewport](https://material.angular.io/cdk/scrolling/api#CdkVirtualScrollViewport) instance through
 the `virtualScrollViewport` member of the component instance.
 
-| Property            | Description                                                                    | Type                                                                                                       | Default   |
-|---------------------|--------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|-----------|
-| `[nzTreeControl]`   | The tree controller                                                            | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                        | -         |
-| `[nzDataSource]`    | The data array to render                                                       | [DataSource](https://material.angular.io/cdk/tree/overview#data-source)&lt;T&gt; \| Observable<T[]> \| T[] | -         |
-| `[nzDirectoryTree]` | Whether nodes are displayed as directory style                                 | `boolean`                                                                                                  | `false`   |
-| `[nzBlockNode]`     | Whether tree nodes fill remaining horizontal space                             | `boolean`                                                                                                  | `false`   |
-| `[nzItemSize]`      | The size of nodes in the tree (in pixels)                                      | `number`                                                                                                   | `28`      |
-| `[nzMinBufferPx]`   | The minimum amount of buffer rendered allowed outside the viewport (in pixels) | `number`                                                                                                   | `28 * 5`  |
-| `[nzMaxBufferPx]`   | The amount of buffer required for rendering new nodes (in pixels)              | `number`                                                                                                   | `28 * 10` |
+| Property            | Description                                                                    | Type                                                                                                               | Default   |
+|---------------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|-----------|
+| `[nzTreeControl]`   | The tree controller                                                            | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                                | -         |
+| `[nzDataSource]`    | The data array to render                                                       | `DataSource<T> \| Observable<T[]> \| T[]`, [DataSource](https://material.angular.io/cdk/tree/overview#data-source) | -         |
+| `[nzDirectoryTree]` | Whether nodes are displayed as directory style                                 | `boolean`                                                                                                          | `false`   |
+| `[nzBlockNode]`     | Whether tree nodes fill remaining horizontal space                             | `boolean`                                                                                                          | `false`   |
+| `[nzItemSize]`      | The size of nodes in the tree (in pixels)                                      | `number`                                                                                                           | `28`      |
+| `[nzMinBufferPx]`   | The minimum amount of buffer rendered allowed outside the viewport (in pixels) | `number`                                                                                                           | `28 * 5`  |
+| `[nzMaxBufferPx]`   | The amount of buffer required for rendering new nodes (in pixels)              | `number`                                                                                                           | `28 * 10` |
 
 ### [nzTreeNodeDef]
 

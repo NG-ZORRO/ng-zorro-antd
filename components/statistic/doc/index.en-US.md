@@ -18,7 +18,7 @@ description: Display statistic number.
 ### nz-statistic
 
 | Property            | Description                        | Type                                           | Default |
-| ------------------- | ---------------------------------- | ---------------------------------------------- | ------- |
+|---------------------|------------------------------------|------------------------------------------------|---------|
 | `[nzPrefix]`        | Prefix of Value                    | `string \| TemplateRef<void>`                  | -       |
 | `[nzSuffix]`        | Suffix of Value                    | `string \| TemplateRef<void>`                  | -       |
 | `[nzTitle]`         | Title                              | `string \| TemplateRef<void>`                  | -       |
@@ -30,8 +30,8 @@ description: Display statistic number.
 ### nz-countdown
 
 | Property              | Description                      | Type                                 | Default      |
-| --------------------- | -------------------------------- | ------------------------------------ | ------------ |
-| `[nzFormat]`          | Format string                    | `string`                             | `"HH:mm:ss"` |
+|-----------------------|----------------------------------|--------------------------------------|--------------|
+| `[nzFormat]`          | Format string                    | `string`                             | `'HH:mm:ss'` |
 | `[nzPrefix]`          | Prefix of Value                  | `string \| TemplateRef<void>`        | -            |
 | `[nzSuffix]`          | Suffix of Value                  | `string \| TemplateRef<void>`        | -            |
 | `[nzTitle]`           | Title                            | `string \| TemplateRef<void>`        | -            |
@@ -42,7 +42,7 @@ description: Display statistic number.
 ### nzFormat
 
 | Token | Description |
-| ----- | ----------- |
+|-------|-------------|
 | `Y`   | Year        |
 | `M`   | Month       |
 | `D`   | Date        |

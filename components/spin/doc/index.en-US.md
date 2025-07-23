@@ -17,7 +17,7 @@ When part of the page is waiting for asynchronous data or during a rendering pro
 ### nz-spin
 
 | Property        | Description                                                                             | Type                              | Default Value | Global Config |
-| --------------- | --------------------------------------------------------------------------------------- | --------------------------------- | ------------- | ------------- |
+| --------------- | --------------------------------------------------------------------------------------- |-----------------------------------| ------------- | ------------- |
 | `[nzDelay]`     | specifies a delay in milliseconds for loading state (prevent flush), unit: milliseconds | `number`                          | -             |
 | `[nzIndicator]` | the spinning indicator                                                                  | `TemplateRef<void>`               | -             | ✅             |
 | `[nzSize]`      | size of Spin                                                                            | `'large' \| 'small' \| 'default'` | `'default'`   |

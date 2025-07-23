@@ -19,27 +19,27 @@ description: Add specific text or patterns to the page.
 
 ### nz-water-mark
 
-| Property    | Description                                                                                       | Type                | Default                    |
-|-------------|---------------------------------------------------------------------------------------------------|---------------------|----------------------------|
-| `nzContent` | Watermark text content                                                                            | `string ｜ string[]` | -                          |
-| `nzWidth`   | The width of the watermark, the default value of `nzContent` is its own width                     | `number`            | 120                        |
-| `nzHeight`  | The height of the watermark, the default value of `nzContent` is its own height                   | `number`            | 64                         |
-| `nzRotate`  | When the watermark is drawn, the rotation Angle, unit `°`                                         | `number`            | -22                        |
-| `nzZIndex`  | The z-index of the appended watermark element                                                     | `number`            | 9                          |
-| `nzImage`   | Image source, it is recommended to export 2x or 3x image, high priority (support base64 format)   | `string`            | -                          |
-| `nzFont`    | Text style                                                                                        | `FontType`          | FontType                   |
-| `nzGap`     | The spacing between watermarks                                                                    | `[number, number]`  | `[100, 100]`               |
-| `nzOffset`  | The offset of the watermark from the upper left corner of the container. The default is `nzGap/2` | `[number, number]`  | `[nzGap[0]/2, nzGap[1]/2]` |
+| Property    | Description                                                                                       | Type                 | Default                    |
+|-------------|---------------------------------------------------------------------------------------------------|----------------------|----------------------------|
+| `nzContent` | Watermark text content                                                                            | `string \| string[]` | -                          |
+| `nzWidth`   | The width of the watermark, the default value of `nzContent` is its own width                     | `number`             | `120`                      |
+| `nzHeight`  | The height of the watermark, the default value of `nzContent` is its own height                   | `number`             | `64`                       |
+| `nzRotate`  | When the watermark is drawn, the rotation Angle, unit `°`                                         | `number`             | `-22`                      |
+| `nzZIndex`  | The z-index of the appended watermark element                                                     | `number`             | `9`                        |
+| `nzImage`   | Image source, it is recommended to export 2x or 3x image, high priority (support base64 format)   | `string`             | -                          |
+| `nzFont`    | Text style                                                                                        | `FontType`           | FontType                   |
+| `nzGap`     | The spacing between watermarks                                                                    | `[number, number]`   | `[100, 100]`               |
+| `nzOffset`  | The offset of the watermark from the upper left corner of the container. The default is `nzGap/2` | `[number, number]`   | `[nzGap[0]/2, nzGap[1]/2]` |
 
 ### FontType
 
-| Property     | Description | Type                               | Default           |
-|--------------|-------------|------------------------------------|-------------------|
-| `color`      | font color  | `string`                           | `rgba(0,0,0,.15)` |
-| `fontSize`   | font size   | `number`                           | 16                |
-| `fontWeight` | font weight | `normal ｜ light ｜ weight ｜ number` | normal            |
-| `fontFamily` | font family | `string`                           | sans-serif        |
-| `fontStyle`  | font style  | `none ｜ normal ｜ italic ｜ oblique` | normal            |
+| Property     | Description | Type                                          | Default           |
+|--------------|-------------|-----------------------------------------------|-------------------|
+| `color`      | font color  | `string`                                      | `rgba(0,0,0,.15)` |
+| `fontSize`   | font size   | `number`                                      | `16`              |
+| `fontWeight` | font weight | `'normal' \| 'light' \| 'weight' \| number`   | `'normal'`        |
+| `fontFamily` | font family | `string`                                      | `'sans-serif'`    |
+| `fontStyle`  | font style  | `'none' \| 'normal' \| 'italic' \| 'oblique'` | `'normal'`        |
 
 ## FAQ
 

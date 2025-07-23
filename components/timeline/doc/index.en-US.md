@@ -28,19 +28,19 @@ description: Vertical display timeline.
 
 Timeline
 
-| Property         | Description                                                                         | Type                                           | Default                                  |
-| ---------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------- |
-| `[nzPending]`    | Set the last ghost node's existence or its content                                  | `string\|boolean\|TemplateRef<void>`           | `false`                                  |
-| `[nzPendingDot]` | Set the dot of the last ghost node when pending is true                             | `string\|TemplateRef<void>`                    | `<nz-icon nzType="loading" />` |
-| `[nzReverse]`    | Reverse nodes or not                                                                | `boolean`                                      | `false`                                  |
-| `[nzMode]`       | By sending `alternate` the timeline will distribute the nodes to the left and right | `'left' \| 'alternate' \| 'right' \| 'custom'` | -                                        |
+| Property         | Description                                                                         | Type                                           | Default                        |
+|------------------|-------------------------------------------------------------------------------------|------------------------------------------------|--------------------------------|
+| `[nzPending]`    | Set the last ghost node's existence or its content                                  | `string \| boolean \| TemplateRef<void>`       | `false`                        |
+| `[nzPendingDot]` | Set the dot of the last ghost node when pending is true                             | `string \| TemplateRef<void>`                  | `<nz-icon nzType="loading" />` |
+| `[nzReverse]`    | Reverse nodes or not                                                                | `boolean`                                      | `false`                        |
+| `[nzMode]`       | By sending `alternate` the timeline will distribute the nodes to the left and right | `'left' \| 'alternate' \| 'right' \| 'custom'` | -                              |
 
 ### nz-timeline-item
 
 Node of timeline
 
 | Property       | Description                                                                             | Type                          | Default |
-| -------------- | --------------------------------------------------------------------------------------- | ----------------------------- | ------- |
+|----------------|-----------------------------------------------------------------------------------------|-------------------------------|---------|
 | `[nzColor]`    | Set the circle's color to `'blue' \| 'red' \| 'green' \| 'gray'` or other custom colors | `string`                      | `blue`  |
 | `[nzDot]`      | Customize timeline dot                                                                  | `string \| TemplateRef<void>` | -       |
 | `[nzPosition]` | Customize position, only works when `nzMode` is `custom`                                | `'left' \| 'right'`           | -       |

@@ -17,20 +17,20 @@ Use when important operations need to inform the user to process the results and
 
 ### nz-result
 
-| Property     | Description                             | Type                                                                              | Default  |
-| ------------ | --------------------------------------- | --------------------------------------------------------------------------------- | -------- |
-| `nzTitle`    | title                                   | `TemplateRef<void>` \| `string`                                                   | -        |
-| `nzSubTitle` | subTitle                                | `TemplateRef<void>` \| `string`                                                   | -        |
-| `nzStatus`   | result status, decides icons and colors | `'success' \| 'error' \| 'info' \| 'warning'\| '404' \| '403' \| '500'` \| 'info' | `'info'` |
-| `nzIcon`     | custom icon                             | `TemplateRef<void>` \| `string`                                                   | -        |
-| `nzExtra`    | operating area                          | `TemplateRef<void>` \| `string`                                                   | -        |
+| Property     | Description                             | Type                                                                    | Default  |
+|--------------|-----------------------------------------|-------------------------------------------------------------------------|----------|
+| `nzTitle`    | title                                   | `TemplateRef<void> \| string`                                           | -        |
+| `nzSubTitle` | subTitle                                | `TemplateRef<void> \| string`                                           | -        |
+| `nzStatus`   | result status, decides icons and colors | `'success' \| 'error' \| 'info' \| 'warning'\| '404' \| '403' \| '500'` | `'info'` |
+| `nzIcon`     | custom icon                             | `TemplateRef<void> \| string`                                           | -        |
+| `nzExtra`    | operating area                          | `TemplateRef<void> \| string`                                           | -        |
 
 ### Counter Parts
 
 You can use these directives as children of nz-result.
 
 | Directive                                | Description                              |
-| ---------------------------------------- | ---------------------------------------- |
+|------------------------------------------|------------------------------------------|
 | `i[nz-result-icon], div[nz-result-icon]` | custom icon                              |
 | `div[nz-result-title]`                   | title                                    |
 | `div[nz-result-subtitle]`                | subtitle                                 |
