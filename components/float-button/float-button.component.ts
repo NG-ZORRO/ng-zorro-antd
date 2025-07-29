@@ -76,14 +76,10 @@ export class NzFloatButtonComponent implements OnInit {
   @Input() nzTarget: string | null = null;
   @Input() nzType: 'default' | 'primary' = 'default';
   @Input() nzShape: 'circle' | 'square' = 'circle';
-  @Input() nzIcon: TemplateRef<void> | null = null;
+  @Input() nzIcon: string | TemplateRef<void> | null = null;
   @Input() nzDescription: TemplateRef<void> | string | null = null;
   @Output() readonly nzOnClick = new EventEmitter<boolean>();
   dir: Direction = 'ltr';
-
-  constructor() {
-    this.dir = this.directionality.value;
-  }
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {

@@ -90,7 +90,7 @@ export class NzFloatButtonTopComponent implements OnInit, OnChanges {
   @Input() nzHref: string | null = null;
   @Input() nzType: 'default' | 'primary' = 'default';
   @Input() nzShape: 'circle' | 'square' = 'circle';
-  @Input() nzIcon: TemplateRef<void> | null = null;
+  @Input() nzIcon: string | TemplateRef<void> | null = null;
   @Input() nzDescription: TemplateRef<void> | null = null;
 
   @Input() nzTemplate?: TemplateRef<void>;
