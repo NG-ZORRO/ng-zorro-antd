@@ -20,7 +20,7 @@ description: 悬浮于页面上方的按钮。
 
 | 参数                | 说明                               | 类型                            | 默认值         |
 |-------------------|----------------------------------|-------------------------------|-------------|
-| `[nzIcon]`        | 自定义图标                            | `TemplateRef<void>`           | -           |
+| `[nzIcon]`        | 自定义图标                            | `string \| TemplateRef<void>` | -           |
 | `[nzDescription]` | 文字及其它内容                          | `TemplateRef<void> \| string` | -           |
 | `[nzType]`        | 设置按钮类型                           | `'default' \| 'primary'`      | `'default'` |
 | `[nzShape]`       | 设置按钮形状                           | `'circle' \| 'square'`        | `'circle'`  |

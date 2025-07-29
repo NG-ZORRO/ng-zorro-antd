@@ -1,74 +1,58 @@
 import { Component } from '@angular/core';
 
 import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-float-button-group-placement',
-  imports: [NzFloatButtonModule, NzIconModule],
+  imports: [NzFloatButtonModule],
   template: `
     <div class="container">
       <div class="anchor">
         <nz-float-button-group
           class="up"
-          [nzIcon]="up"
+          nzIcon="up"
           nzType="primary"
           nzTrigger="click"
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="top"
         >
           <nz-float-button></nz-float-button>
-          <nz-float-button [nzIcon]="inner"></nz-float-button>
+          <nz-float-button nzIcon="comment"></nz-float-button>
         </nz-float-button-group>
         <nz-float-button-group
           class="down"
-          [nzIcon]="down"
+          nzIcon="down"
           nzType="primary"
           nzTrigger="click"
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="bottom"
         >
           <nz-float-button></nz-float-button>
-          <nz-float-button [nzIcon]="inner"></nz-float-button>
+          <nz-float-button nzIcon="comment"></nz-float-button>
         </nz-float-button-group>
         <nz-float-button-group
           class="left"
-          [nzIcon]="left"
+          nzIcon="left"
           nzType="primary"
           nzTrigger="click"
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="left"
         >
           <nz-float-button></nz-float-button>
-          <nz-float-button [nzIcon]="inner"></nz-float-button>
+          <nz-float-button nzIcon="comment"></nz-float-button>
         </nz-float-button-group>
         <nz-float-button-group
           class="right"
-          [nzIcon]="right"
+          nzIcon="right"
           nzType="primary"
           nzTrigger="click"
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="right"
         >
           <nz-float-button></nz-float-button>
-          <nz-float-button [nzIcon]="inner"></nz-float-button>
+          <nz-float-button nzIcon="comment"></nz-float-button>
         </nz-float-button-group>
       </div>
-      <ng-template #inner>
-        <nz-icon nzType="comment" nzTheme="outline"></nz-icon>
-      </ng-template>
-      <ng-template #up>
-        <nz-icon nzType="up" nzTheme="outline" />
-      </ng-template>
-      <ng-template #down>
-        <nz-icon nzType="down" nzTheme="outline" />
-      </ng-template>
-      <ng-template #left>
-        <nz-icon nzType="left" nzTheme="outline" />
-      </ng-template>
-      <ng-template #right>
-        <nz-icon nzType="right" nzTheme="outline" />
-      </ng-template>
     </div>
   `,
   styles: [
