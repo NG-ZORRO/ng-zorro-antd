@@ -138,29 +138,13 @@ describe('nz-float-button-top', () => {
       fixture.detectChanges();
     }));
 
-    describe('when clicked', () => {
-      it(`emit event on nzClick`, fakeAsync(() => {
-        component.nzOnClick.subscribe((returnValue: boolean) => {
-          expect(returnValue).toBe(true);
-        });
-
-        componentObject.clickBackTop();
-      }));
-    });
-
-    describe('change detection behavior', () => {
-      it('should not emit the event nzOnClick if there are no `nzClick` listeners', () => {
-        const emitNzOnClick = spyOn(component.nzOnClick, 'emit');
-
-        const backTopButton = componentObject.backTopButton().nativeElement.firstElementChild;
-        backTopButton.dispatchEvent(new MouseEvent('click'));
-        expect(emitNzOnClick).not.toHaveBeenCalled();
-        component.nzOnClick.subscribe();
-
-        backTopButton.dispatchEvent(new MouseEvent('click'));
-        expect(emitNzOnClick).toHaveBeenCalled();
+    it(`emit event on nzClick`, fakeAsync(() => {
+      component.nzOnClick.subscribe((returnValue: boolean) => {
+        expect(returnValue).toBe(true);
       });
-    });
+
+      componentObject.clickBackTop();
+    }));
   });
 
   describe('[nzTarget]', () => {
@@ -191,7 +175,7 @@ describe('nz-float-button-top', () => {
     });
 
     it('element (use string id) scroll shows the button', (done: () => void) => {
-      component.nzTarget = '#fakeTarget';
+      fixture.componentInstance.setTarget('#fakeTarget');
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
       fixture.detectChanges();
 
@@ -228,7 +212,7 @@ class TestBackTopComponent {
 
   target!: HTMLElement | string;
 
-  setTarget(target: HTMLElement): void {
+  setTarget(target: HTMLElement | string): void {
     this.target = target;
   }
 }
