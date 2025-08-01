@@ -147,7 +147,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
             content
           </div>
         </nz-content>
-        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,
@@ -196,4 +196,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
     `
   ]
 })
-export class NzDemoLayoutFixedSiderComponent {}
+export class NzDemoLayoutFixedSiderComponent {
+  protected readonly date = new Date();
+}

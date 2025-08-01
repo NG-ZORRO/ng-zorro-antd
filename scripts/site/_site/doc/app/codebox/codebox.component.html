@@ -6,9 +6,10 @@
         [class.simulate-iframe]="simulateIframe"
         [class.browser-mockup]="simulateIframe"
         [class.with-url]="simulateIframe"
-        [style.height.px]="simulateIframe && nzIframeHeight"
       >
-        <ng-content select="[demo]"></ng-content>
+        <div [style.height.px]="simulateIframe && nzIframeHeight">
+          <ng-content select="[demo]"></ng-content>
+        </div>
       </div>
     } @else {
       <div class="browser-mockup with-url">
