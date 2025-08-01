@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 2
 title:
   zh-CN: 顶部-侧边布局
   en-US: Header-Sider
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Both the top navigation and the sidebar, commonly used in documentation site.
-
