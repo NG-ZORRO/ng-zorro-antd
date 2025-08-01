@@ -19,7 +19,7 @@ description: A button that floats at the top of the page.
 
 | Property          | Description                               | Type                          | Default     |
 |-------------------|-------------------------------------------|-------------------------------|-------------|
-| `[nzIcon]`        | Set the icon component of button          | `TemplateRef<void>`           | -           |
+| `[nzIcon]`        | Set the icon component of button          | `string \| TemplateRef<void>` | -           |
 | `[nzDescription]` | Text and other                            | `TemplateRef<void> \| string` | -           |
 | `[nzType]`        | Setting button type                       | `'default' \| 'primary'`      | `'default'` |
 | `[nzShape]`       | Setting button shape                      | `'circle' \| 'square'`        | `'circle'`  |

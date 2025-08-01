@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
 
 import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-float-button-shape',
-  imports: [NzFloatButtonModule, NzIconModule],
+  imports: [NzFloatButtonModule],
   template: `
     <div class="shape">
-      <nz-float-button nzShape="circle" style="right: 94px" nzType="primary" [nzIcon]="icon"> </nz-float-button>
-      <nz-float-button nzShape="square" style="right: 24px" nzType="primary" [nzIcon]="icon"></nz-float-button>
-      <ng-template #icon>
-        <nz-icon nzType="customer-service" nzTheme="outline"></nz-icon>
-      </ng-template>
+      <nz-float-button nzShape="circle" style="right: 94px" nzType="primary" nzIcon="customer-service">
+      </nz-float-button>
+      <nz-float-button
+        nzShape="square"
+        style="right: 24px"
+        nzType="primary"
+        nzIcon="customer-service"
+      ></nz-float-button>
     </div>
   `,
   styles: [

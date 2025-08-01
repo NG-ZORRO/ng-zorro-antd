@@ -7,6 +7,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
+import { isTemplateRef } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -20,7 +21,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         @if (nzDescription || nzIcon) {
           @if (nzIcon) {
             <div class="ant-float-btn-icon">
-              <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
+              @if (isTemplateRef(nzIcon)) {
+                <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
+              } @else {
+                <nz-icon [nzType]="nzIcon" nzTheme="outline" />
+              }
             </div>
           }
           @if (nzDescription && nzShape === 'square') {
@@ -40,7 +45,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `
 })
 export class NzFloatButtonContentComponent {
-  @Input() nzIcon: TemplateRef<void> | null = null;
+  @Input() nzIcon: string | TemplateRef<void> | null = null;
   @Input() nzDescription: string | TemplateRef<void> | null = null;
   @Input() nzShape: 'circle' | 'square' = 'circle';
+
+  protected readonly isTemplateRef = isTemplateRef;
 }
