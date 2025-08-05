@@ -13,6 +13,17 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 20.1.1
+
+`2025-08-05`
+
+### Bug Fixes
+
+* **badge:** export `NzBadgeStatusType` type ([#9298](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9298)) ([91b1ad7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/91b1ad7af23eda253c21530e2a01a5ac9f7c62a8))
+* **layout:** fix showcases ([#9303](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9303)) ([9a37ef8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9a37ef8325522ee200462b75e13a72f403ec4bef))
+
+
+
 ## 20.1.0
 
 `2025-07-21`

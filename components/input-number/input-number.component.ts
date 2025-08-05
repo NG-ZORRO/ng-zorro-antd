@@ -220,7 +220,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   private directionality = inject(Directionality);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private autoStepTimer: ReturnType<typeof setTimeout> | null = null;
-  private defaultFormater = (value: number): string => {
+  private defaultFormatter = (value: number): string => {
     const precision = this.nzPrecision();
     if (isNotNil(precision)) {
       return value.toFixed(precision);
@@ -404,7 +404,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   private setValue(value: number | null): void {
-    const formatter = this.nzFormatter() ?? this.defaultFormater;
+    const formatter = this.nzFormatter() ?? this.defaultFormatter;
     const precision = this.nzPrecision();
 
     if (isNotNil(precision)) {

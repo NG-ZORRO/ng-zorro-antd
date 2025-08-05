@@ -15,7 +15,7 @@ import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzInputNumberComponent } from './input-number.component';
 import { NzInputNumberModule } from './input-number.module';
 
-describe('Input number', () => {
+describe('input-number', () => {
   let component: InputNumberTestComponent;
   let fixture: ComponentFixture<InputNumberTestComponent>;
   let hostElement: HTMLElement;
@@ -499,7 +499,7 @@ describe('Input number', () => {
   }
 });
 
-describe('Input number with affixes or addons', () => {
+describe('input-number with affixes or addons', () => {
   let component: InputNumberWithAffixesAndAddonsTestComponent;
   let fixture: ComponentFixture<InputNumberWithAffixesAndAddonsTestComponent>;
 
