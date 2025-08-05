@@ -52,7 +52,7 @@ import { NzTbodyComponent } from './tbody.component';
         ></table>
       </div>
       @if (!virtualTemplate) {
-        <div #tableBodyElement class="ant-table-body" [style]="bodyStyleMap">
+        <div #tableBodyElement cdkScrollable class="ant-table-body" [style]="bodyStyleMap">
           <table
             nz-table-content
             tableLayout="fixed"
