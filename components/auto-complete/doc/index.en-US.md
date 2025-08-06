@@ -1,9 +1,9 @@
 ---
 category: Components
 type: Data Entry
-title: Autocomplete
+title: AutoComplete
 cover: 'https://gw.alipayobjects.com/zos/alicdn/qtJm4yt45/AutoComplete.svg'
-description: Autocomplete function of input field.
+description: AutoComplete function of input field.
 ---
 
 
