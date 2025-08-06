@@ -10,12 +10,10 @@ export default {
       prefix: 'app',
       architect: {
         build: {
-          builder: '@angular-devkit/build-angular:browser',
+          builder: '@angular/build:application',
           options: {
-            outputPath: 'dist/demo',
-            index: 'src/index.html',
-            main: 'src/main.ts',
-            polyfills: 'zone.js',
+            browser: 'src/main.ts',
+            polyfills: ['zone.js'],
             tsConfig: 'tsconfig.app.json',
             assets: [
               'src/favicon.ico',
@@ -44,8 +42,8 @@ export default {
                 },
                 {
                   type: 'anyComponentStyle',
-                  maximumWarning: '2kB',
-                  maximumError: '4kB'
+                  maximumWarning: '4kB',
+                  maximumError: '8kB'
                 }
               ],
               outputHashing: 'all'
@@ -59,7 +57,7 @@ export default {
           defaultConfiguration: 'production'
         },
         serve: {
-          builder: '@angular-devkit/build-angular:dev-server',
+          builder: '@angular/build:dev-server',
           configurations: {
             production: {
               buildTarget: 'demo:build:production'

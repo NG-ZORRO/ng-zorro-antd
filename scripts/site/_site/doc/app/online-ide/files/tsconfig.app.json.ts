@@ -4,6 +4,5 @@ export default {
     outDir: './out-tsc/app',
     types: []
   },
-  files: ['src/main.ts'],
-  include: ['src/**/*.d.ts']
+  include: ['src/**/*.ts']
 };
