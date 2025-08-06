@@ -11,7 +11,6 @@ import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
 
 import { environment } from '../environments/environment';
-
 import { routes } from './app.routes';
 
 const antDesignIcons = AllIcons as Record<string, IconDefinition>;
@@ -35,7 +34,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideClientHydration(),
     provideHttpClient(withJsonpSupport(), withFetch()),
-    provideServiceWorker('ngsw-worker.js', { enabled: environment.production && !environment.preProduction }),
+    provideServiceWorker('ngsw-worker.js', { enabled: environment.production }),
     provideAnimationsAsync()
   ]
 };
