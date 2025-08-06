@@ -1,7 +1,7 @@
 ---
 category: Components
 type: 数据录入
-title: Autocomplete
+title: AutoComplete
 subtitle: 自动完成
 cover: 'https://gw.alipayobjects.com/zos/alicdn/qtJm4yt45/AutoComplete.svg'
 description: 输入框自动完成功能。
