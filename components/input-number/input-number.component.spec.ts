@@ -151,6 +151,13 @@ describe('input-number', () => {
       blur();
       expect(component.value).toBe(123);
 
+      input('321NonNumber');
+      expect(component.value).toBe(123);
+      enter();
+      expect(component.value).toBe(123);
+      blur();
+      expect(component.value).toBe(123);
+
       input('');
       expect(component.value).toBe(null);
       enter();
