@@ -16,7 +16,7 @@ bring some differences in presentation.
 
 ## API
 
-### nz-hashCode
+### nz-hash-code
 
 | Property     | Description                                         | Type                                        | Default      |
 |--------------|-----------------------------------------------------|---------------------------------------------|--------------|
