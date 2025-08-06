@@ -28,7 +28,7 @@ export class NzDemoInputNumberFormatterComponent {
   dollarValue = 1000;
   percentValue = 100;
   formatterDollar = (value: number): string => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  parserDollar = (value: string): number => parseFloat(value?.replace(/\$\s?|(,*)/g, ''));
+  parserDollar = (value: string): number => +value?.replace(/\$\s?|(,*)/g, '');
   formatterPercent = (value: number): string => `${value}%`;
-  parserPercent = (value: string): number => parseFloat(value?.replace('%', ''));
+  parserPercent = (value: string): number => +value?.replace('%', '');
 }

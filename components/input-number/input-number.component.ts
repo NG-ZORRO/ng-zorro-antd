@@ -417,8 +417,9 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   private setValueByTyping(value: string): void {
+    this.displayValue.set(value);
+
     if (value === '') {
-      this.displayValue.set('');
       this.updateValue(null);
       return;
     }
@@ -427,12 +428,16 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     const parsedValue = parser(value);
 
     if (isNotCompleteNumber(value) || Number.isNaN(parsedValue)) {
-      this.displayValue.set(value);
       return;
     }
 
-    const formattedValue = this.nzFormatter()?.(parsedValue) ?? parsedValue.toString();
-    this.displayValue.set(formattedValue);
+    // Formatting is called during input only if the user provided a formatter.
+    // Otherwise, formatting is only called when the input blurs.
+    const formatter = this.nzFormatter();
+    if (formatter) {
+      const formattedValue = formatter(parsedValue);
+      this.displayValue.set(formattedValue);
+    }
 
     if (!isInRange(parsedValue, this.nzMin(), this.nzMax())) {
       return;
@@ -532,7 +537,12 @@ const STEP_INTERVAL = 200;
 const STEP_DELAY = 600;
 
 function defaultParser(value: string): number {
-  return parseFloat(value.trim().replace(/,/g, '').replace(/。/g, '.'));
+  const parsedValue = value.trim().replace(/,/g, '').replace(/。/g, '.');
+  // `+'' === 0`, so we need to check if parsedValue is empty
+  if (parsedValue.length) {
+    return +parsedValue;
+  }
+  return NaN;
 }
 
 function isInRange(value: number, min: number, max: number): boolean {
