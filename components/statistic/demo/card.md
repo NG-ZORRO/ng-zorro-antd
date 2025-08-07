@@ -1,6 +1,6 @@
 ---
 order: 2
-title: 
+title:
   zh-CN: 在卡片中使用
   en-US: In Card
 ---

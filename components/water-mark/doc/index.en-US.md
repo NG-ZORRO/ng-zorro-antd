@@ -8,19 +8,17 @@ cover: 'https://img.alicdn.com/imgextra/i2/O1CN01ozPPZp1wj9CwsVvDL_!!60000000063
 description: Add specific text or patterns to the page.
 ---
 
-
 ## When To Use
 
 - Use when the page needs to be watermarked to identify the copyright.
 - Suitable for preventing information theft.
-
 
 ## API
 
 ### nz-water-mark
 
 | Property    | Description                                                                                       | Type                 | Default                    |
-|-------------|---------------------------------------------------------------------------------------------------|----------------------|----------------------------|
+| ----------- | ------------------------------------------------------------------------------------------------- | -------------------- | -------------------------- |
 | `nzContent` | Watermark text content                                                                            | `string \| string[]` | -                          |
 | `nzWidth`   | The width of the watermark, the default value of `nzContent` is its own width                     | `number`             | `120`                      |
 | `nzHeight`  | The height of the watermark, the default value of `nzContent` is its own height                   | `number`             | `64`                       |
@@ -34,7 +32,7 @@ description: Add specific text or patterns to the page.
 ### FontType
 
 | Property     | Description | Type                                          | Default           |
-|--------------|-------------|-----------------------------------------------|-------------------|
+| ------------ | ----------- | --------------------------------------------- | ----------------- |
 | `color`      | font color  | `string`                                      | `rgba(0,0,0,.15)` |
 | `fontSize`   | font size   | `number`                                      | `16`              |
 | `fontWeight` | font weight | `'normal' \| 'light' \| 'weight' \| number`   | `'normal'`        |

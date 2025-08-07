@@ -7,7 +7,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/ORmcdeaoO/Form.svg'
 description: High-performance form component with data domain management. Includes data entry, validation, and corresponding styles.
 ---
 
-
 ## When To Use
 
 - When you need to create an instance or collect information.
@@ -47,7 +46,6 @@ A form consists of one or more form fields whose type includes input, textarea, 
 </form>
 ```
 
-
 ## API
 
 ### [nz-form]
@@ -55,10 +53,10 @@ A form consists of one or more form fields whose type includes input, textarea, 
 | Property              | Description                                                                                             | Type                                           | Default Value                                   | Global Config |
 | --------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- | ------------- |
 | `[nzLayout]`          | Form layout                                                                                             | `'horizontal' \| 'vertical' \| 'inline'`       | `'horizontal'`                                  |
-| `[nzAutoTips]`        | Set default props `[nzAutoTips]` value of `nz-form-control`, please refer to the example: **Auto tips** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅             |
-| `[nzDisableAutoTips]` | Set default props `[nzDisableAutoTip]` value of `nz-form-control`                                       | `boolean`                                      | `false`                                         | ✅             |
-| `[nzNoColon]`         | Set default props `[nzNoColon]` value of `nz-form-label`                                                | `boolean`                                      | `false`                                         | ✅             |
-| `[nzTooltipIcon]`     | Set default props `[nzTooltipIcon]` value of `nz-form-label`                                            | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅             |
+| `[nzAutoTips]`        | Set default props `[nzAutoTips]` value of `nz-form-control`, please refer to the example: **Auto tips** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅            |
+| `[nzDisableAutoTips]` | Set default props `[nzDisableAutoTip]` value of `nz-form-control`                                       | `boolean`                                      | `false`                                         | ✅            |
+| `[nzNoColon]`         | Set default props `[nzNoColon]` value of `nz-form-label`                                                | `boolean`                                      | `false`                                         | ✅            |
+| `[nzTooltipIcon]`     | Set default props `[nzTooltipIcon]` value of `nz-form-label`                                            | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅            |
 | `[nzLabelAlign]`      | Set default props `[nzLabelAlign]` value of `nz-form-label`                                             | `'left' \| 'right'`                            | `'right'`                                       |
 | `[nzLabelWrap]`       | Set default props `[nzLabelWrap]` value of `nz-form-label`                                              | `boolean`                                      | `false`                                         |
 

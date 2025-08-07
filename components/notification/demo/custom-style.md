@@ -12,5 +12,3 @@ title:
 ## en-US
 
 The nzStyle and nzClass are available to customize Notification.
-
-

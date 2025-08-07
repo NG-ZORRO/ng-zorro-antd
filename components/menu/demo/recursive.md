@@ -1,8 +1,8 @@
 ---
 order: 7
 title:
-    zh-CN: 递归生成菜单
-    en-US: Recursive
+  zh-CN: 递归生成菜单
+  en-US: Recursive
 ---
 
 ## zh-CN

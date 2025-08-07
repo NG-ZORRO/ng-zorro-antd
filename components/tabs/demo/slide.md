@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Tab can be slide to left or right(up or down), which is used for a lot of tabs.
-
-

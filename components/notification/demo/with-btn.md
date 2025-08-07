@@ -12,5 +12,3 @@ title:
 ## en-US
 
 To customize the style or font of the close button.
-
-

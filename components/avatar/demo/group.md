@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Avatar group display.
-

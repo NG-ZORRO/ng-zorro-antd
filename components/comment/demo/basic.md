@@ -12,4 +12,3 @@ title:
 ## en-US
 
 A basic comment with author, avatar, time and actions.
-

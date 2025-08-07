@@ -14,5 +14,3 @@ title:
 ## en-US
 
 By using `nzPush` and `nzPull` class you can easily change column order.
-
-

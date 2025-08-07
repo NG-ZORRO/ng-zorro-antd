@@ -12,4 +12,3 @@ title:
 ## en-US
 
 subscribe `(nzIndexChange)` makes Steps clickable.
-

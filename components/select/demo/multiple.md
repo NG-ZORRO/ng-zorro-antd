@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Multiple selection, selecting from existing items, max 3 option will display at the same time by `nzMaxTagCount`.
-
-

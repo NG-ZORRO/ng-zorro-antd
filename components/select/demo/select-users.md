@@ -12,4 +12,3 @@ title:
 ## en-US
 
 A complete multiple select sample with remote search, debounce fetch, ajax callback order flow, and loading state.
-

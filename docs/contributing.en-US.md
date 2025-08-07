@@ -27,8 +27,8 @@ If you intend to change a public API or introduce a new feature, we also recomme
 
 Please use the following resources for your first pull request:
 
-* [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
-* [First Contributions](https://github.com/firstcontributions/first-contributions)
+- [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+- [First Contributions](https://github.com/firstcontributions/first-contributions)
 
 To help you get your feet wet and get familiar with our contribution process, we have a list of [Good First Issue](https://github.com/NG-ZORRO/ng-zorro-antd/labels/good%20first%20issue) that contain either bugs that are relatively easy to be fixed or small features. These issues are considered as great starting points.
 
@@ -65,11 +65,10 @@ The core team is monitoring all pull requests. Your pull request will be either 
 
 After cloning `ng-zorro-antd` and running `npm install` to install its dependencies, you can also run the following commands:
 
-* `npm start` runs NG-ZORRO website locally.
-* `npm run lint` checks the code style.
-* `npm test` runs the complete test suite.
-* `npm run test:watch [name]` run some test files and monitor changes.
-* `npm run build:lib` creates a build of `ng-zorro-antd` under `publish` directory.
+- `npm start` runs NG-ZORRO website locally.
+- `npm run lint` checks the code style.
+- `npm test` runs the complete test suite.
+- `npm run test:watch [name]` run some test files and monitor changes.
+- `npm run build:lib` creates a build of `ng-zorro-antd` under `publish` directory.
 
 If you encounter problems while developing `ng-zorro-antd`, please refer to our [development guide](https://github.com/NG-ZORRO/ng-zorro-antd/wiki/Development-Guide) on the GitHub.
-

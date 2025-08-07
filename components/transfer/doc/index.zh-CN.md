@@ -8,7 +8,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/QAXskNI4G/Transfer.svg'
 description: 双栏穿梭选择框。
 ---
 
-
 ## 何时使用
 
 - 需要在多个可选项中进行多选时。
@@ -18,7 +17,6 @@ description: 双栏穿梭选择框。
 
 选择一个或以上的选项后，点击对应的方向键，可以把选中的选项移动到另一栏。
 其中，左边一栏为 `source`，右边一栏为 `target`，API 的设计也反映了这两个概念。
-
 
 ## API
 

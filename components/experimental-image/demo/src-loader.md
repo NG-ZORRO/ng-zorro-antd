@@ -26,10 +26,8 @@ const nzConfig: NzConfig = {
 };
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzConfig(nzConfig)
-  ]
-}
+  providers: [provideNzConfig(nzConfig)]
+};
 ```
 
 ## en-US
@@ -48,13 +46,13 @@ import { createAliObjectsLoader, defaultImageSrcLoader } from 'ng-zorro-antd/exp
 
 const nzConfig: NzConfig = {
   imageExperimental: {
-    nzSrcLoader: environment.production ? createAliObjectsLoader('https://zos.alipayobjects.com/rmsportal') : defaultImageSrcLoader
+    nzSrcLoader: environment.production
+      ? createAliObjectsLoader('https://zos.alipayobjects.com/rmsportal')
+      : defaultImageSrcLoader
   }
 };
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzConfig(nzConfig)
-  ]
-}
+  providers: [provideNzConfig(nzConfig)]
+};
 ```

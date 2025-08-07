@@ -8,33 +8,31 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/5FrZKStG_/List.svg'
 description: 最基础的列表展示，可承载文字、列表、图片、段落。
 ---
 
-
 ## 何时使用
 
 最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面。
-
 
 ## API
 
 ### nz-list
 
-| 参数               | 说明                                                 | 类型                                | 默认值            |
-|------------------|----------------------------------------------------|-----------------------------------|----------------|
-| `[nzBordered]`   | 是否展示边框                                             | `boolean`                         | `false`        |
-| `[nzFooter]`     | 列表底部                                               | `string \| TemplateRef<void>`     | -              |
-| `[nzHeader]`     | 列表头部                                               | `string \| TemplateRef<void>`     | -              |
+| 参数             | 说明                                                                 | 类型                              | 默认值         |
+| ---------------- | -------------------------------------------------------------------- | --------------------------------- | -------------- |
+| `[nzBordered]`   | 是否展示边框                                                         | `boolean`                         | `false`        |
+| `[nzFooter]`     | 列表底部                                                             | `string \| TemplateRef<void>`     | -              |
+| `[nzHeader]`     | 列表头部                                                             | `string \| TemplateRef<void>`     | -              |
 | `[nzItemLayout]` | 设置 `nz-list-item` 布局, 设置成 `vertical` 则竖直样式显示, 默认横排 | `'vertical' \| 'horizontal'`      | `'horizontal'` |
-| `[nzLoading]`    | 当卡片内容还在加载中时，可以用 `loading` 展示一个占位                   | `boolean`                         | `false`        |
-| `[nzSize]`       | list 的尺寸                                           | `'large' \| 'small' \| 'default'` | `'default'`    |
-| `[nzSplit]`      | 是否展示分割线                                            | `boolean`                         | `true`         |
+| `[nzLoading]`    | 当卡片内容还在加载中时，可以用 `loading` 展示一个占位                | `boolean`                         | `false`        |
+| `[nzSize]`       | list 的尺寸                                                          | `'large' \| 'small' \| 'default'` | `'default'`    |
+| `[nzSplit]`      | 是否展示分割线                                                       | `boolean`                         | `true`         |
 
 ### nz-list-empty
 
 列表空内容组件
 
-| 参数             | 说明      | 类型                            | 默认值 |
-|----------------|---------|-------------------------------|-----|
-| `[nzNoResult]` | 空内容显示内容 | `string \| TemplateRef<void>` | -   |
+| 参数           | 说明           | 类型                          | 默认值 |
+| -------------- | -------------- | ----------------------------- | ------ |
+| `[nzNoResult]` | 空内容显示内容 | `string \| TemplateRef<void>` | -      |
 
 ### nz-list[nzGrid]
 

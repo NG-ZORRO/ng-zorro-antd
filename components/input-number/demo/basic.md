@@ -1,8 +1,8 @@
 ---
 order: 0
 title:
-    zh-CN: 基本
-    en-US: Basic
+  zh-CN: 基本
+  en-US: Basic
 ---
 
 ## zh-CN
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Numeric-only input box.
-

@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Implement a customized column search example via `<nz-filter-trigger>`.
-
-

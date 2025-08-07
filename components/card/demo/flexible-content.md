@@ -12,4 +12,3 @@ title:
 ## en-US
 
 You can use `nz-card-meta` to support more flexible content.
-

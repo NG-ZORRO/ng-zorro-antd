@@ -13,7 +13,7 @@ title:
 
 ```html
 @for (product of products; track product)
-  <nz-image [nzPriority]="$index <= 8"></nz-image>
+<nz-image [nzPriority]="$index <= 8"></nz-image>
 }
 ```
 
@@ -25,6 +25,6 @@ Note: usually we only need to set `nzPriority` for the first screen images, so y
 
 ```html
 @for (product of products; track product)
-  <nz-image [nzPriority]="$index <= 8"></nz-image>
+<nz-image [nzPriority]="$index <= 8"></nz-image>
 }
 ```

@@ -7,7 +7,6 @@ experimental: true
 description: Resize element.
 ---
 
-
 ## When To Use
 
 When you want to resize elements.
@@ -39,7 +38,7 @@ interface NzResizeEvent {
 ```
 
 | Property              | Description                                     | Type                                              | Default  |
-|-----------------------|-------------------------------------------------|---------------------------------------------------|----------|
+| --------------------- | ----------------------------------------------- | ------------------------------------------------- | -------- |
 | `[nzBounds]`          | Specifies resize boundaries.                    | `'window' \| 'parent' \| ElementRef<HTMLElement>` | `parent` |
 | `[nzMaxHeight]`       | Maximum height of resizable element             | `number`                                          | -        |
 | `[nzMaxWidth]`        | Maximum width of resizable element              | `number`                                          | -        |
@@ -65,7 +64,7 @@ type NzCursorType = 'window' | 'grid';
 ```
 
 | Property         | Description                    | Type                | Default         |
-|------------------|--------------------------------|---------------------|-----------------|
+| ---------------- | ------------------------------ | ------------------- | --------------- |
 | `[nzDirection]`  | Set the direction of resizable | `NzResizeDirection` | `'bottomRight'` |
 | `[nzCursorType]` | Cursor type for handle         | `NzCursorType`      | `'window'`      |
 
@@ -81,7 +80,7 @@ interface NzResizeHandleOption {
 ```
 
 | Property         | Description                               | Type                                            | Default        |
-|------------------|-------------------------------------------|-------------------------------------------------|----------------|
+| ---------------- | ----------------------------------------- | ----------------------------------------------- | -------------- |
 | `[nzDirections]` | Allow handle directions or handle options | `<NzResizeDirection \| NzResizeHandleOption>[]` | ALL DIRECTIONS |
 
 ### Styling

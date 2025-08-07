@@ -12,5 +12,3 @@ title:
 ## en-US
 
 When using the `nzExpand` prop, add the `nzExpandIcon` custom expand icon.
-
-

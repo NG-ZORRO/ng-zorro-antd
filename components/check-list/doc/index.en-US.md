@@ -8,18 +8,16 @@ cover: 'https://img.alicdn.com/imgextra/i2/O1CN01E9BUpE1TCyZry8ETC_!!60000000023
 description: Used to organize the flow of tasks in a project.
 ---
 
-
 ## When To Use
 
 If the current page business logic is too complex, and with a more mandatory sequential flow control, then you can use this component to help you simplify the process.
-
 
 ## API
 
 ### nz-check-list
 
 | Property            | Description                                        | Type                          | Default | Global Config |
-|---------------------|----------------------------------------------------|-------------------------------|---------|---------------|
+| ------------------- | -------------------------------------------------- | ----------------------------- | ------- | ------------- |
 | `[nzItems]`         | check list elements                                | `NzItemProps`                 | `[]`    | -             |
 | `[nzVisible]`       | show check-list                                    | `boolean`                     | `false` | -             |
 | `[nzIndex]`         | current index                                      | `number`                      | `1`     | -             |
@@ -37,7 +35,7 @@ If the current page business logic is too complex, and with a more mandatory seq
 #### NzItemProps
 
 | Property      | Description                           | Type         | Default |
-|---------------|---------------------------------------|--------------|---------|
+| ------------- | ------------------------------------- | ------------ | ------- |
 | `key`         | unique identifier                     | `string`     | -       |
 | `description` | description content                   | `string`     | -       |
 | `onClick`     | method triggered by clicking the step | `() => void` | -       |

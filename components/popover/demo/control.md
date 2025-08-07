@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Use `nzPopoverVisible` prop to control the display of the card.
-

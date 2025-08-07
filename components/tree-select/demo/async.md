@@ -12,4 +12,3 @@ title:
 ## en-US
 
 To load data asynchronously when click to expand a treeNode, loading state keeps until excute addChildren().
-

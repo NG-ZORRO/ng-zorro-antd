@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Specifies default value by an array, and setting `nzOptions` in a asynchronous way.
-

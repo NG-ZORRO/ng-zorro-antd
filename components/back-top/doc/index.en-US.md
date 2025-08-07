@@ -15,7 +15,6 @@ description: Makes it easy to go back to the top of the page.
 - When the page content is very long.
 - When you need to go back to the top very frequently in order to view the contents.
 
-
 ## API
 
 ### nz-back-top
@@ -26,7 +25,7 @@ description: Makes it easy to go back to the top of the page.
 | Property               | Description                                                                       | Type                    | Default  | Global Config |
 | ---------------------- | --------------------------------------------------------------------------------- | ----------------------- | -------- | ------------- |
 | `[nzTemplate]`         | custom content                                                                    | `TemplateRef<void>`     | -        |
-| `[nzVisibilityHeight]` | the `nz-back-top` button will not show until the scroll height reaches this value | `number`                | `400`    | ✅             |
+| `[nzVisibilityHeight]` | the `nz-back-top` button will not show until the scroll height reaches this value | `number`                | `400`    | ✅            |
 | `[nzTarget]`           | specifies the scrollable area dom node                                            | `string \| Element`     | `window` |
 | `[nzDuration]`         | Time to return to top (ms)                                                        | `number`                | `450`    |
 | `(nzClick)`            | a callback function, which can be executed when you click the button              | `EventEmitter<boolean>` | -        |

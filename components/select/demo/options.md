@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Pass all options via `nzOptions`
-

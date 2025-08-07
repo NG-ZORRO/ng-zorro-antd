@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Customize the background, border, margin and icon styles for each panel.
-
-

@@ -6,22 +6,20 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/HZ3meFc6W/Silder.svg'
 description: A Slider component for displaying current value and intervals in range.
 ---
 
-
 ## When To Use
 
 To input a value in a range.
-
 
 ## API
 
 ### nz-slider
 
 | Property               | Description                                                                                                                                          | Type                                             | Default                                                                          |
-|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|----------------------------------------------------------------------------------|
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------- |
 | `[nzDisabled]`         | If true, the slider will not be interactable.                                                                                                        | `boolean`                                        | `false`                                                                          |
 | `[nzDots]`             | Whether the thumb can drag over tick only.                                                                                                           | `boolean`                                        | `false`                                                                          |
-| `[nzIncluded]`         | Make effect when `marks` not null，`true` means containment and `false` means coordinative                                                            | `boolean`                                        | `true`                                                                           |
-| `[nzMarks]`            | Tick mark of Slider, type of key must be `number`, and must in closed interval `[min, max]` ，each mark can declare its own style.                    | `object`                                         | `{ number: string/HTML }` or `{ number: { style: object, label: string/HTML } }` |
+| `[nzIncluded]`         | Make effect when `marks` not null，`true` means containment and `false` means coordinative                                                           | `boolean`                                        | `true`                                                                           |
+| `[nzMarks]`            | Tick mark of Slider, type of key must be `number`, and must in closed interval `[min, max]` ，each mark can declare its own style.                   | `object`                                         | `{ number: string/HTML }` or `{ number: { style: object, label: string/HTML } }` |
 | `[nzMax]`              | The maximum value the slider can slide to                                                                                                            | `number`                                         | `100`                                                                            |
 | `[nzMin]`              | The minimum value the slider can slide to.                                                                                                           | `number`                                         | `0`                                                                              |
 | `[nzRange]`            | dual thumb mode                                                                                                                                      | `boolean`                                        | `false`                                                                          |

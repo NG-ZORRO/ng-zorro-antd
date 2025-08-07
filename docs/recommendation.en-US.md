@@ -9,9 +9,9 @@ title: Resources
 resources, which can hopefully serve well during your project development.
 
 | Category         | Recommended Components                                           | Details                                        |
-|------------------|------------------------------------------------------------------|------------------------------------------------|
+| ---------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
 | Component Lib    | [NG ALAIN](https://ng-alain.com/)                                | Admin Template work with ng-zorro-antd         |
-| Component Lib    | [ng-antd-admin](https://github.com/huajian123/ng-antd-admin)      | The Admin Template imitating Ant Design Pro   |
+| Component Lib    | [ng-antd-admin](https://github.com/huajian123/ng-antd-admin)     | The Admin Template imitating Ant Design Pro    |
 | Component Lib    | [Material Design](https://material.angular.io)                   | Material Design                                |
 | Component Lib    | [Clarity](https://github.com/vmware/clarity)                     | Vmware Angular Component Lib                   |
 | Component Lib    | [Nebular](https://github.com/akveo/nebular/)                     | Nebular Angular Component Lib                  |

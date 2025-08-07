@@ -7,7 +7,6 @@ experimental: true
 description: Experimental image component.
 ---
 
-
 ## When To Use
 
 - When you need the browser to prioritize image loading (needs to be handled in SSR).
@@ -15,22 +14,21 @@ description: Experimental image component.
 - When using image CDN.
 - More in [Image documentation](/components/image/en)
 - Next steps
-  * Add [sizes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes) attribute and responsive support.
-
+  - Add [sizes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes) attribute and responsive support.
 
 ## API
 
 ### nz-image
 
 | Property       | Description                                                                                               | Type               | Default                 | Global Config |
-|----------------|-----------------------------------------------------------------------------------------------------------|--------------------|-------------------------|---------------|
+| -------------- | --------------------------------------------------------------------------------------------------------- | ------------------ | ----------------------- | ------------- |
 | `nzSrc`        | URL                                                                                                       | `string`           | -                       |               |
 | `nzAlt`        | Alt                                                                                                       | `string`           | -                       |               |
 | `nzWidth`      | Width                                                                                                     | `number\|string`   | `auto`                  |               |
 | `nzHeight`     | Height                                                                                                    | `number\|string`   | `auto`                  |               |
-| `nzAutoSrcset` | Whether to optimize image loading                                                                         | `boolean`          | `false`                 | ✅             |
-| `nzSrcLoader`  | Loader                                                                                                    | `NzImageSrcLoader` | `defaultImageSrcLoader` | ✅             |
-| `nzPriority`   | Whether to add [preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content) (only SSR) | `boolean`          | `false`                 | ✅             |
+| `nzAutoSrcset` | Whether to optimize image loading                                                                         | `boolean`          | `false`                 | ✅            |
+| `nzSrcLoader`  | Loader                                                                                                    | `NzImageSrcLoader` | `defaultImageSrcLoader` | ✅            |
+| `nzPriority`   | Whether to add [preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content) (only SSR) | `boolean`          | `false`                 | ✅            |
 
 ### NzImageSrcLoader
 
@@ -72,9 +70,9 @@ export function createImgixLoader(domain: string): NzImageSrcLoader;
 export function createCloudinaryLoader(domain: string): NzImageSrcLoader;
 ```
 
-
 ### Responsive images and preloaded images
 
 Using responsive images can help web pages display well on different devices. Preloading images can help you load images faster, for more information please refer to.
+
 - [preloading responsive images](https://web.dev/preload-responsive-images/)
 - [next.js image component and image optimization](https://nextjs.org/docs/basic-features/image-optimization)

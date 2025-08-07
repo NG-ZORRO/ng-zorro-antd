@@ -7,8 +7,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/hzEndUVEx/Layout.svg'
 description: Handling the overall layout of a page.
 ---
 
-
-
 ## Specification
 
 ### Size
@@ -76,7 +74,7 @@ Style of a navigation should conform to its level.
 The sidebar.
 
 | Property              | Description                                                                       | Type                                            | Default  |
-|-----------------------|-----------------------------------------------------------------------------------|-------------------------------------------------|----------|
+| --------------------- | --------------------------------------------------------------------------------- | ----------------------------------------------- | -------- |
 | `[nzBreakpoint]`      | breakpoints of the responsive layout                                              | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'xxl'` | -        |
 | `[nzCollapsedWidth]`  | width of the collapsed sidebar, by setting to `0` a special `trigger` will appear | `number`                                        | `64`     |
 | `[nzCollapsible]`     | whether can be collapsed                                                          | `boolean`                                       | `false`  |

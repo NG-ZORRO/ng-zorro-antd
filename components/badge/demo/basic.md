@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Simplest Usage. Badge will be hidden when `nzCount` is `0`, but we can use `nzShowZero` to show it.
-

@@ -1,8 +1,8 @@
 ---
 order: 4
 title:
-    zh-CN: 格式化展示
-    en-US: Formatter
+  zh-CN: 格式化展示
+  en-US: Formatter
 ---
 
 ## zh-CN
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Display value within it's situation with `nzFormatter`, and we usually use `nzParser` at the same time.
-

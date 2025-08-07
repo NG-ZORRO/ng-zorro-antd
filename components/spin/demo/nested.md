@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Embedding content into `nz-spin` will alter it into loading state.
-

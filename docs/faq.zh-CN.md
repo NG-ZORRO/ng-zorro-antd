@@ -55,12 +55,15 @@ Angular 的数据流是单向数据流，违反数据流走向会引起该问题
 
 ```typescript
 // 增加数据
-this.dataSet = [ ...this.dataSet, {
-  key    : `${this.i}`,
-  name   : `Edward King ${this.i}`,
-  age    : '32',
-  address: `London, Park Lane no. ${this.i}`
-}];
+this.dataSet = [
+  ...this.dataSet,
+  {
+    key: `${this.i}`,
+    name: `Edward King ${this.i}`,
+    age: '32',
+    address: `London, Park Lane no. ${this.i}`
+  }
+];
 // 删除数据
 this.dataSet = this.dataSet.filter(d => d.key !== i);
 ```
@@ -73,9 +76,7 @@ this.dataSet = this.dataSet.filter(d => d.key !== i);
 
 ```typescript
 @Component({
-  template: `
-    <input [value]="value" />
-  `
+  template: ` <input [value]="value" /> `
 })
 export class BugComponent {
   value(): string {

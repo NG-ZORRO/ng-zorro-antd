@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Customize image, description and extra content.
-
-

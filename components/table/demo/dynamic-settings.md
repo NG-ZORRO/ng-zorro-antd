@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Select different settings to see the result.
-

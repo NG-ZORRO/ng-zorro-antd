@@ -1,8 +1,8 @@
 ---
 order: 5
 title:
-    zh-CN: 精度
-    en-US: Precision
+  zh-CN: 精度
+  en-US: Precision
 ---
 
 ## zh-CN

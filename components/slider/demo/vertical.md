@@ -12,5 +12,3 @@ title:
 ## en-US
 
 The vertical Slider.
-
-

@@ -8,12 +8,10 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/hAkKTIW0K/Message.svg'
 description: 全局展示操作反馈信息。
 ---
 
-
 ## 何时使用
 
 - 可提供成功、警告和错误等反馈信息。
 - 顶部居中显示并自动消失，是一种不打断用户操作的轻量级提示方式。
-
 
 ## API
 
@@ -34,12 +32,12 @@ description: 全局展示操作反馈信息。
 
 `options` 支持设置的参数如下：
 
-| 参数           | 说明                              | 类型      |
-| -------------- | --------------------------------- | --------- |
-| nzDuration     | 持续时间(毫秒)，当设置为0时不消失 | `number`  |
-| nzPauseOnHover | 鼠标移上时禁止自动移除            | `boolean` |
-| nzAnimate      | 开关动画效果                      | `boolean` |
-| nzData        | 传递给自定义模板的数据                                       | `NzSafeAny` |
+| 参数           | 说明                              | 类型        |
+| -------------- | --------------------------------- | ----------- |
+| nzDuration     | 持续时间(毫秒)，当设置为0时不消失 | `number`    |
+| nzPauseOnHover | 鼠标移上时禁止自动移除            | `boolean`   |
+| nzAnimate      | 开关动画效果                      | `boolean`   |
+| nzData         | 传递给自定义模板的数据            | `NzSafeAny` |
 
 还提供了全局销毁方法：
 

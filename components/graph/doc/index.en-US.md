@@ -7,7 +7,6 @@ experimental: true
 description: Render graph.
 ---
 
-
 ## When To Use
 
 When you want to use graph in Angular.

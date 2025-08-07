@@ -23,7 +23,6 @@ Angular Vue and React have very similar benchmarks, which should not be a decidi
 
 Yes, all components of `ng-zorro-antd` can be imported separately.
 
-
 ### Why ng-zorro-antd use less？ Can I use sass instead？
 
 ng-zorro-antd follow the design spec of Ant Design, which could customize theme by less. `@angular/cli` support using both `less` and `sass` in the same project, they could work together.
@@ -53,19 +52,21 @@ Don't forget to import `ReactiveFormsModule`, [ref](https://angular.dev/guide/fo
 In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.dev/guide/components/advanced-configuration#changedetectionstrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
 
 ```typescript
-    // add data
-    this.dataSet = [ ...this.dataSet, {
-      key    : `${this.i}`,
-      name   : `Edward King ${this.i}`,
-      age    : '32',
-      address: `London, Park Lane no. ${this.i}`
-    }];
-    // remove data
-    this.dataSet = this.dataSet.filter(d => d.key !== i);
+// add data
+this.dataSet = [
+  ...this.dataSet,
+  {
+    key: `${this.i}`,
+    name: `Edward King ${this.i}`,
+    age: '32',
+    address: `London, Park Lane no. ${this.i}`
+  }
+];
+// remove data
+this.dataSet = this.dataSet.filter(d => d.key !== i);
 ```
 
 Recommend using [immer](https://immerjs.github.io/immer/docs/introduction) for a better development experience.
-
 
 ### My Angular app is deadlock, what happened?
 
@@ -73,9 +74,7 @@ Evaluation of a template expression should have no visible side effects. It woul
 
 ```typescript
 @Component({
-  template: `
-    <input [value]="value" />
-  `
+  template: ` <input [value]="value" /> `
 })
 export class BugComponent {
   value(): string {

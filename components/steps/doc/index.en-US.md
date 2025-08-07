@@ -7,11 +7,9 @@ cover: 'https://gw.alipayobjects.com/zos/antfincdn/UZYqMizXHaj/Steps.svg'
 description: A navigation bar that guides users through the steps of a task.
 ---
 
-
 ## When To Use
 
 When a given task is complicated or has a certain sequence in the series of subtasks, we can decompose it into several steps to make things easier.
-
 
 ## API
 
@@ -28,7 +26,7 @@ When a given task is complicated or has a certain sequence in the series of subt
 The whole of the step bar.
 
 | Property             | Description                                                                                                         | Type                                                                                      | Default        |
-|----------------------|---------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------|
+| -------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------- |
 | `[nzType]`           | type of steps, can be set to one of the following values: `default`, `navigation`                                   | `'default' \| 'navigation'`                                                               | `'default'`    |
 | `[nzCurrent]`        | To set the current step, counting from 0. You can overwrite this state by using `nzStatus` of `nz-step`             | `number`                                                                                  | `0`            |
 | `[nzDirection]`      | To specify the direction of the step bar, `horizontal` and `vertical` are currently supported                       | `'vertical' \| 'horizontal'`                                                              | `'horizontal'` |
@@ -44,7 +42,7 @@ The whole of the step bar.
 A single step in the step bar.
 
 | Property          | Description                                                                                                                                                | Type                                                                                    | Default  |
-|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|----------|
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | -------- |
 | `[nzDescription]` | description of the step, optional property                                                                                                                 | `string \| TemplateRef<void>`                                                           | -        |
 | `[nzIcon]`        | icon of the step, optional property                                                                                                                        | `string \| string[] \| Set<string> \| { [klass: string]: any; }` \| `TemplateRef<void>` | -        |
 | `[nzStatus]`      | to specify the status. It will be automatically set by `nzCurrent` of `nz-steps` if not configured. Optional values are: `wait` `process` `finish` `error` | `'wait' \| 'process' \| 'finish' \| 'error'`                                            | `'wait'` |

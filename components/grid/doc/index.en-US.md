@@ -7,7 +7,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg'
 description: 24 Grids System。
 ---
 
-
 ## Design concept
 
 <div class="grid-demo">
@@ -78,13 +77,12 @@ Our grid systems base on Flex layout to allow the elements within the parent to 
 
 Layout uses a 24 grid layout to define the width of each "box", but does not rigidly adhere to the grid layout.
 
-
 ## API
 
 ### [nz-row]
 
 | Property      | Description                                                                                                                                                                                       | Type                                                                 | Default |
-|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|---------|
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------- |
 | `[nzAlign]`   | the vertical alignment                                                                                                                                                                            | `'top' \| 'middle' \| 'bottom'`                                      | -       |
 | `[nzGutter]`  | spacing between grids, could be a number or a object like `{ xs: 8, sm: 16, md: 24}`. or you can use array to make horizontal and vertical spacing work at the same time `[horizontal, vertical]` | `string \| number \| object \| [number, number] \| [object, object]` | `0`     |
 | `[nzJustify]` | horizontal arrangement                                                                                                                                                                            | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'`  | -       |
@@ -92,7 +90,7 @@ Layout uses a 24 grid layout to define the width of each "box", but does not rig
 ### [nz-col]
 
 | Property     | Description                                                                                    | Type               | Default |
-|--------------|------------------------------------------------------------------------------------------------|--------------------|---------|
+| ------------ | ---------------------------------------------------------------------------------------------- | ------------------ | ------- |
 | `[nzFlex]`   | flex layout style                                                                              | `string \| number` | -       |
 | `[nzOffset]` | the number of cells to offset Col from the left                                                | `number`           | `0`     |
 | `[nzOrder]`  | raster order                                                                                   | `number`           | `0`     |

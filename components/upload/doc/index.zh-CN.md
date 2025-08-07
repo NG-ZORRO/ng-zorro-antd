@@ -7,7 +7,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg'
 description: 文件选择上传和拖拽上传控件。
 ---
 
-
 ## 何时使用
 
 上传是将信息（网页、文字、图片、视频等）通过网页或者上传工具发布到远程服务器上的过程。
@@ -15,7 +14,6 @@ description: 文件选择上传和拖拽上传控件。
 - 当需要上传一个或一些文件时。
 - 当需要展现上传的进度时。
 - 当需要使用拖拽交互时。
-
 
 ## API
 

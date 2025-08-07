@@ -38,15 +38,14 @@ const ngZorroConfig: NzConfig = {
 };
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzConfig(ngZorroConfig)
-  ]
-}
+  providers: [provideNzConfig(ngZorroConfig)]
+};
 ```
 
 这些全局配置项将会被注入 `NzConfigService` 当中并保存。
 
 ### 动态变更
+
 你可以通过调用 `NzConfigService` 的 `set` 方法来改变 CSS Variable 样式配置项，例如：
 
 ```typescript
@@ -59,7 +58,7 @@ export class ChangeZorroConfigComponent {
   private nzConfigService = inject(NzConfigService);
 
   onChangeConfig() {
-    this.nzConfigService.set('theme', { primaryColor: '#1890ff' })
+    this.nzConfigService.set('theme', { primaryColor: '#1890ff' });
   }
 }
 ```

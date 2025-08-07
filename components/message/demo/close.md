@@ -12,4 +12,3 @@ title:
 ## en-US
 
 You can subscribe to `onClose` event to make some operations. This case would open three messages in sequence.
-

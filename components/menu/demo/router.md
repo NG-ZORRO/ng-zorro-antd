@@ -1,8 +1,8 @@
 ---
 order: 6
 title:
-    zh-CN: 配合路由使用
-    en-US: Router
+  zh-CN: 配合路由使用
+  en-US: Router
 ---
 
 ## zh-CN

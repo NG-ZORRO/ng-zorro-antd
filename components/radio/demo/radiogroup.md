@@ -12,5 +12,3 @@ title:
 ## en-US
 
 A group of `nz-radio` components.
-
-

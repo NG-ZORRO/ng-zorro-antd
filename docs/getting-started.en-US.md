@@ -91,22 +91,20 @@ Import the pre-built stylesheet in `angular.json`
 
 ```json
 {
-  "styles": [
-    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
-  ]
+  "styles": ["node_modules/ng-zorro-antd/ng-zorro-antd.min.css"]
 }
 ```
 
 Import the pre-built stylesheet in `style.css`
 
 ```css
-@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import '~ng-zorro-antd/ng-zorro-antd.min.css';
 ```
 
 Import the less stylesheet in `style.less`
 
 ```less
-@import "~ng-zorro-antd/ng-zorro-antd.less";
+@import '~ng-zorro-antd/ng-zorro-antd.less';
 ```
 
 #### Use only certain component styles
@@ -118,15 +116,15 @@ It is necessary to import base styles (common to all components) before using ce
 Import the pre-build styles in `style.css`
 
 ```css
-@import "~ng-zorro-antd/style/index.min.css"; /* Import base styles */
-@import "~ng-zorro-antd/button/style/index.min.css";  /* Import one component's styles */
+@import '~ng-zorro-antd/style/index.min.css'; /* Import base styles */
+@import '~ng-zorro-antd/button/style/index.min.css'; /* Import one component's styles */
 ```
 
 Import the less styles in `style.less`
 
 ```less
-@import "~ng-zorro-antd/style/entry.less"; /* Import base styles */
-@import "~ng-zorro-antd/button/style/entry.less";  /* Import one component's styles */
+@import '~ng-zorro-antd/style/entry.less'; /* Import base styles */
+@import '~ng-zorro-antd/button/style/entry.less'; /* Import one component's styles */
 ```
 
 #### Import component module
@@ -140,9 +138,7 @@ import { Component } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
-  imports: [
-    NzButtonModule
-  ]
+  imports: [NzButtonModule]
 })
 export class AppComponent {}
 ```

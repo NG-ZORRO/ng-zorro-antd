@@ -7,7 +7,6 @@ experimental: true
 description: Code Editor based on monaco-editor.
 ---
 
-
 ## When To Use
 
 When you want to use monaco editor in Angular.
@@ -59,7 +58,7 @@ If you use static loading, you should not add assets of monaco editor to your pr
 ### nz-code-editor
 
 | Parameter               | Description                                                                                                                                        | Type                                               | Default  |
-|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|----------|
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
 | `[nzEditorMode]`        | Mode of monaco editor                                                                                                                              | `normal`\|`diff`                                   | `normal` |
 | `[nzLoading]`           | Show the loading spin                                                                                                                              | `boolean`                                          | `false`  |
 | `[nzOriginalText]`      | The content of the left editor in `diff` mode                                                                                                      | `boolean`                                          | `false`  |
@@ -71,7 +70,7 @@ If you use static loading, you should not add assets of monaco editor to your pr
 #### Methods
 
 | Method     | Description                             |
-|------------|-----------------------------------------|
+| ---------- | --------------------------------------- |
 | `layout()` | Force monaco editor to re-render itself |
 
 ### Global Configuration
@@ -81,7 +80,7 @@ You can set the default configuration of the `CodeEditor` component through the 
 #### CodeEditorConfig
 
 | Parameter             | Description                                                                                                                                                                                                                                                 | Type                         | Default |
-|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------|---------|
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------- |
 | `assetsRoot`          | Where should the component load resource of monaco editor                                                                                                                                                                                                   | `string` \| `SafeUrl`        | -       |
 | `defaultEditorOption` | Default options. [Please refer to the doc of monaco editor](https://microsoft.github.io/monaco-editor/docs.html#interfaces/editor.IEditorConstructionOptions.html)                                                                                          | `IEditorConstructionOptions` | `{}`    |
 | `onLoad`              | The hook invoked when the resource of monaco editor is loaded. At this moment and afterwards the global variable `monaco` is usable (`window.MonacoEnvironment = { globalAPI: true }` is required if monaco-editor's version is greater or equal to 0.22.0) | `() => void`                 | -       |

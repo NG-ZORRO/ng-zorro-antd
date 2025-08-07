@@ -44,5 +44,3 @@ This example shows how to fetch and present data from remote server, and how to 
 ```
 
 **Note, this example uses a [Mock API](https://randomuser.me) that you can look up in Network Console.**
-
-

@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Vertical `nz-radio-group`, with more radios.
-

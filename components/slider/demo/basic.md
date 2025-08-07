@@ -12,6 +12,3 @@ title:
 ## en-US
 
 Basic slider. When `nzRange` is `true`, display as dual thumb mode. When `nzDisabled` is `true`, the slider will not be interactive.
-
-
-

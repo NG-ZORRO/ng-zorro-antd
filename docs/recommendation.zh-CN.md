@@ -9,32 +9,32 @@ title: 资源推荐
 
 `ng-zorro-antd` 是 Ant Design 设计规范的 Angular 实现，我们推荐使用以下社区已有的优秀实现和网站，希望能为你的开发过程提供帮助。
 
-| 类型    | 名称                                                               | 描述                                                                           |
-|-------|------------------------------------------------------------------|------------------------------------------------------------------------------|
-| 组件库   | [NG ALAIN](https://ng-alain.com/)                                | [cipchk](https://github.com/cipchk) 个人开发的基于 `ng-zorro-antd` 的 Admin 系统解决方案   |
-| 组件库   | [ng-antd-admin](https://github.com/huajian123/ng-antd-admin)     | [华舰](https://github.com/huajian123) 个人开发的仿 Ant Design Pro 的 Admin 模板      |
-| 组件库   | [Material Design](https://material.angular.io)                   | Angular 官方 Material 组件库                                                      |
-| 组件库   | [Clarity](https://github.com/vmware/clarity)                     | Vmware Angular 组件库                                                           |
-| 组件库   | [Nebular](https://github.com/akveo/nebular/)                     | Nebular Angular 组件库                                                          |
-| 组件库   | [Bootstrap](https://github.com/ng-bootstrap/ng-bootstrap)        | Bootstrap Angular 组件库                                                        |
-| 组件库   | [ng-zorro-mobile](https://ng.mobile.ant.design/)                 | Ant Design Mobile 设计规范的 Angular 实现                                           |
-| 组件库   | [DevUI](https://github.com/DevCloudFE/ng-devui)                  | 华为 Angular 组件库                                                               |
-| 组件库   | [Jigsaw](https://github.com/rdkmaster/jigsaw)                    | 中兴 Angular 组件库                                                               |
-| 组件库   | [ag-Grid](https://www.ag-grid.com/angular-grid/)                 | Angular 表格综合解决方案                                                             |
-| 组件库   | [ngx-datatable](https://github.com/swimlane/ngx-datatable)       | Swimlane 的 Table 解决方案                                                        |
-| 组件库   | [ngx-charts](https://swimlane.github.io/ngx-charts/)             | 基于 D3 的Angular 可视化组件库                                                        |
-| 组件库   | [ngx-graph](https://swimlane.github.io/ngx-graph/)               | 基于 Dagre 的有向无环图可视化组件库                                                        |
-| 组件库   | [ngx-formly](https://github.com/ngx-formly/ngx-formly)           | 基于 JSON Schema 的表单方案                                                         |
-| 开发工具  | [Component Dev Kit](https://material.angular.io/cdk/categories)  | Angular 官方的提供的组件库工具，包含拖拽、浮层、虚拟滚动等大量功能                                        |
-| 开发工具  | [Spectator](https://github.com/ngneat/spectator)                 | Angular 测试工具库                                                                |
-| 开发工具  | [Scully](https://github.com/scullyio/scully)                     | 基于 Angular 的静态博客生成器                                                          |
-| 开发工具  | [Angular CLI](https://angular.cn/tools/cli)                      | Angular 的配套打包工具                                                              |
-| 开发工具  | [Angular Builders](https://github.com/just-jeb/angular-builders) | Angular CLI 的 Webpack 拓展工具                                                   |
-| 开发工具  | [ngx-planet](https://github.com/worktile/ngx-planet)             | Angular 的微前端方案                                                               |
-| 开发工具  | [@angular/ssr](https://angular.cn/guide/ssr)                     | Angular 服务端渲染工具                                                              |
-| 数据流方案 | [Akita](https://datorama.github.io/akita/)                       | Akita 数据流方案                                                                  |
-| 数据流方案 | [ngxs](https://ngxs.io/)                                         | NGXS 数据流方案                                                                   |
-| 数据流方案 | [ngrx](https://ngrx.io/)                                         | NGRX 数据流方案                                                                   |
+| 类型       | 名称                                                             | 描述                                                                                     |
+| ---------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| 组件库     | [NG ALAIN](https://ng-alain.com/)                                | [cipchk](https://github.com/cipchk) 个人开发的基于 `ng-zorro-antd` 的 Admin 系统解决方案 |
+| 组件库     | [ng-antd-admin](https://github.com/huajian123/ng-antd-admin)     | [华舰](https://github.com/huajian123) 个人开发的仿 Ant Design Pro 的 Admin 模板          |
+| 组件库     | [Material Design](https://material.angular.io)                   | Angular 官方 Material 组件库                                                             |
+| 组件库     | [Clarity](https://github.com/vmware/clarity)                     | Vmware Angular 组件库                                                                    |
+| 组件库     | [Nebular](https://github.com/akveo/nebular/)                     | Nebular Angular 组件库                                                                   |
+| 组件库     | [Bootstrap](https://github.com/ng-bootstrap/ng-bootstrap)        | Bootstrap Angular 组件库                                                                 |
+| 组件库     | [ng-zorro-mobile](https://ng.mobile.ant.design/)                 | Ant Design Mobile 设计规范的 Angular 实现                                                |
+| 组件库     | [DevUI](https://github.com/DevCloudFE/ng-devui)                  | 华为 Angular 组件库                                                                      |
+| 组件库     | [Jigsaw](https://github.com/rdkmaster/jigsaw)                    | 中兴 Angular 组件库                                                                      |
+| 组件库     | [ag-Grid](https://www.ag-grid.com/angular-grid/)                 | Angular 表格综合解决方案                                                                 |
+| 组件库     | [ngx-datatable](https://github.com/swimlane/ngx-datatable)       | Swimlane 的 Table 解决方案                                                               |
+| 组件库     | [ngx-charts](https://swimlane.github.io/ngx-charts/)             | 基于 D3 的Angular 可视化组件库                                                           |
+| 组件库     | [ngx-graph](https://swimlane.github.io/ngx-graph/)               | 基于 Dagre 的有向无环图可视化组件库                                                      |
+| 组件库     | [ngx-formly](https://github.com/ngx-formly/ngx-formly)           | 基于 JSON Schema 的表单方案                                                              |
+| 开发工具   | [Component Dev Kit](https://material.angular.io/cdk/categories)  | Angular 官方的提供的组件库工具，包含拖拽、浮层、虚拟滚动等大量功能                       |
+| 开发工具   | [Spectator](https://github.com/ngneat/spectator)                 | Angular 测试工具库                                                                       |
+| 开发工具   | [Scully](https://github.com/scullyio/scully)                     | 基于 Angular 的静态博客生成器                                                            |
+| 开发工具   | [Angular CLI](https://angular.cn/tools/cli)                      | Angular 的配套打包工具                                                                   |
+| 开发工具   | [Angular Builders](https://github.com/just-jeb/angular-builders) | Angular CLI 的 Webpack 拓展工具                                                          |
+| 开发工具   | [ngx-planet](https://github.com/worktile/ngx-planet)             | Angular 的微前端方案                                                                     |
+| 开发工具   | [@angular/ssr](https://angular.cn/guide/ssr)                     | Angular 服务端渲染工具                                                                   |
+| 数据流方案 | [Akita](https://datorama.github.io/akita/)                       | Akita 数据流方案                                                                         |
+| 数据流方案 | [ngxs](https://ngxs.io/)                                         | NGXS 数据流方案                                                                          |
+| 数据流方案 | [ngrx](https://ngrx.io/)                                         | NGRX 数据流方案                                                                          |
 
 ## 博客及网站
 
