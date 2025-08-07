@@ -15,6 +15,4 @@ import './tasks/site';
 
 task('build:release', series('clean', 'build:library', 'build:release-site'));
 
-task('build:preview', series('clean', 'init:site', 'build:site-doc-preview'));
-
 task('start:dev', series('clean', 'start:site'));

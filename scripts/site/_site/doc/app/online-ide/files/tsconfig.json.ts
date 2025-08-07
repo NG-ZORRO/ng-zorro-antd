@@ -1,29 +1,23 @@
 export default {
   compileOnSave: false,
   compilerOptions: {
-    outDir: './dist/out-tsc',
-    forceConsistentCasingInFileNames: true,
     strict: true,
     noImplicitOverride: true,
     noPropertyAccessFromIndexSignature: true,
     noImplicitReturns: true,
     noFallthroughCasesInSwitch: true,
-    esModuleInterop: true,
-    sourceMap: true,
-    declaration: false,
-    downlevelIteration: true,
+    skipLibCheck: true,
+    isolatedModules: true,
     experimentalDecorators: true,
-    moduleResolution: 'node',
     importHelpers: true,
     target: 'ES2022',
-    module: 'ES2022',
-    useDefineForClassFields: false,
-    lib: ['ES2022', 'dom']
+    module: 'preserve'
   },
   angularCompilerOptions: {
     enableI18nLegacyMessageIdFormat: false,
     strictInjectionParameters: true,
     strictInputAccessModifiers: true,
+    typeCheckHostBindings: true,
     strictTemplates: true
   }
 };

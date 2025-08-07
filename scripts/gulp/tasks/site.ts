@@ -24,8 +24,6 @@ const demoGlob = join(buildConfig.componentsDir, `**/demo/*.+(md|ts)`);
 const issueHelperScriptFile = join(buildConfig.scriptsDir, 'release-helper.sh');
 const tsconfigFile = join(buildConfig.projectDir, 'site/tsconfig.app.json');
 
-const CI = process.env.CI;
-
 /**
  * Development app watch task,
  * to ensures the demos and docs have changes are rebuild.
@@ -67,18 +65,6 @@ task(
   execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=production'])
 );
 
-/** Run `ng build ng-zorro-antd-doc --configuration=pre-production` */
-task(
-  'build:site-doc/pre-production',
-  execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=pre-production'])
-);
-
-/** Run `ng build ng-zorro-antd-doc --configuration=preview` */
-task(
-  'build:site-doc-preview',
-  execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=preview'])
-);
-
 /** Replace the library paths to publish/ directory */
 task('site:replace-path', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -89,16 +75,13 @@ task('site:replace-path', () => {
 });
 
 /** Run sitemap script on the output directory, to create sitemap.xml */
-task('site:sitemap', done => {
-  generateSitemap();
-  done();
-});
+task('site:sitemap', () => generateSitemap());
 
 /** Regenerate the ngsw-config to fix https://github.com/angular/angular/issues/23613 */
 task('site:regen-ngsw-config', generate);
 
 /** Run release-helper.sh
- * Clone issue-helper builds from github and copy to the output directory.
+ * Clone issue-helper builds from GitHub and copy to the output directory.
  */
 task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 
@@ -110,11 +93,6 @@ task(
 
 /** Init site directory, and start watch and ng-serve */
 task('start:site', series('init:site', parallel('watch:site', 'serve:site')));
-
-/** Task that use source code to build ng-zorro-antd-doc project,
- * output not included issue-helper and prerender.
- */
-task('build:simple-site', series('init:site', CI ? 'build:site-doc/pre-production' : 'build:site-doc'));
 
 /** Task that use publish code to build ng-zorro-antd-doc project,
  * output included issue-helper and prerender.

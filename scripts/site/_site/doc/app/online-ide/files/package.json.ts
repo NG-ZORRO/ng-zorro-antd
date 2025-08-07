@@ -23,11 +23,11 @@ export default (nzVersion: string, ngVersion: string) => {
       '@angular/cdk': ngVersion,
       '@angular/platform-browser-dynamic': ngVersion,
       '@ant-design/icons-angular': ngVersion,
-      rxjs: '~7.8.1',
       'date-fns': '^2.16.1',
+      rxjs: '~7.8.1',
       tslib: '^2.0.0',
-      'zone.js': '~0.15.0',
       'ng-zorro-antd': nzVersion,
+      'zone.js': '~0.15.0',
       // demo needs
       d3: '^6.3.1',
       dagre: '^0.8.5',
@@ -36,7 +36,7 @@ export default (nzVersion: string, ngVersion: string) => {
       'monaco-editor': '^0.33.0'
     },
     devDependencies: {
-      '@angular-devkit/build-angular': ngVersion,
+      '@angular/build': ngVersion,
       '@angular/cli': ngVersion,
       '@angular/compiler-cli': ngVersion,
       typescript: '~5.8.2'

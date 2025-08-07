@@ -64,18 +64,6 @@
               ],
               "outputHashing": "all"
             },
-            "pre-production": {
-              "fileReplacements": [
-                {
-                  "replace": "site/doc/environments/environment.ts",
-                  "with": "site/doc/environments/environment.pre-prod.ts"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "preview": {
-              "outputHashing": "all"
-            },
             "development": {
               "optimization": false,
               "extractLicenses": false,

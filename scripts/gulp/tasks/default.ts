@@ -11,10 +11,9 @@ task('help', done => {
   console.log('Please specify a gulp task you want to run.');
   console.log(yellow('start:dev    '), 'Start development.');
   console.log(yellow('build:library'), 'Build ng-zorro-antd-lib to publish/ directory.');
-  console.log(yellow('build:preview'), 'Build preview site to dist/ directory.');
   console.log(
     yellow('build:release'),
-    'Build releaseable library to publish/ directory and deployable site to dist/ directory.'
+    'Build releasable library to publish/ directory and deployable site to dist/ directory.'
   );
   console.log();
   done();

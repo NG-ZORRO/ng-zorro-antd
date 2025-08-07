@@ -9,7 +9,6 @@ if (environment.production) {
   enableProdMode();
 }
 
-
 const bootstrap = () => bootstrapApplication(AppComponent, config);
 
 export default bootstrap;
