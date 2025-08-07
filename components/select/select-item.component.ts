@@ -26,9 +26,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   template: `
     <ng-container *nzStringTemplateOutlet="contentTemplateOutlet; context: templateOutletContext">
       @if (displayLabelInHtml) {
-        <div [class.ant-select-selection-item-content]="deletable" [innerHTML]="label"></div>
+        <span [class.ant-select-selection-item-content]="deletable" [innerHTML]="label"></span>
       } @else {
-        <div [class.ant-select-selection-item-content]="deletable">{{ label }}</div>
+        <span [class.ant-select-selection-item-content]="deletable">{{ label }}</span>
       }
     </ng-container>
     @if (deletable && !disabled) {
