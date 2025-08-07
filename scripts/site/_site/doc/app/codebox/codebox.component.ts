@@ -134,6 +134,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
 
   getDemoCode(): Observable<DemoCode> {
     return this.appService.getCode(this.nzId).pipe(
+      takeUntil(this.destroy$),
       tap(data => {
         if (data) {
           this.highlightCode = data.highlightCode;
