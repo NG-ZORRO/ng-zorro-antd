@@ -1,3 +1,12 @@
+## [20.1.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.1.1...20.1.2) (2025-08-08)
+
+### Bug Fixes
+
+* **input-number:** make sure the displayed value is correct ([#9312](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9312)) ([7a2d3b6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7a2d3b6f97bf80f2f517626f5e02625c4488be80))
+* **select,tree-select,cascader:** selected item with long label displayed in ellipsis ([#9316](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9316)) ([30672d7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/30672d7978f0ca4b24ec04c196c967b69e614525))
+* **table:** add cdkScrollable to internal scrolling element ([#9308](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9308)) ([8cb4113](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cb411332b90b55bab3ec742c455e3aaaf4618d7))
+
+
 ## [20.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.1.0...20.1.1) (2025-08-05)
 
 ### Bug Fixes
