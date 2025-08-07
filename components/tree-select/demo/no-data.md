@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Use `nzNotFoundContent` to customize empty data style
-

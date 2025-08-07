@@ -12,5 +12,3 @@ title:
 ## en-US
 
 There are four positions available.
-
-

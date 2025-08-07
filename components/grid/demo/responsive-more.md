@@ -15,5 +15,3 @@ title:
 
 `span` `pull` `push` `offset` `order` property can be embedded into `nzXs` `nzSm` `nzMd` `nzLg` `nzXl` `nzXXl` properties to use,
 where `nzXs="6"` is equivalent to `[nzXs]="{ span: 6 }"`.
-
-

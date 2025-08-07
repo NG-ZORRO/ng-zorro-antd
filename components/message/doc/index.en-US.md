@@ -7,12 +7,10 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/hAkKTIW0K/Message.svg'
 description: Display global messages as feedback in response to user operations.
 ---
 
-
 ## When To Use
 
 - To provide feedback such as success, warning, error etc.
 - A message is displayed at top and center and will be dismissed automatically, as a non-interrupting light-weighted prompt.
-
 
 ## API
 
@@ -33,12 +31,12 @@ This components provides some service methods, with usage and arguments as follo
 
 The parameters that are set by the `options` support are as follows:
 
-| Argument      | Description                                                           | Type        |
-|---------------|-----------------------------------------------------------------------|-------------|
-| nzDuration    | Duration (milliseconds), does not disappear when set to 0             | `number`    |
+| Argument       | Description                                                            | Type        |
+| -------------- | ---------------------------------------------------------------------- | ----------- |
+| nzDuration     | Duration (milliseconds), does not disappear when set to 0              | `number`    |
 | nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean`   |
-| nzAnimate     | Whether to turn on animation                                          | `boolean`   |
-| nzData        | Data to pass to custom template                                       | `NzSafeAny` |
+| nzAnimate      | Whether to turn on animation                                           | `boolean`   |
+| nzData         | Data to pass to custom template                                        | `NzSafeAny` |
 
 Methods for destruction are also provided:
 

@@ -1,8 +1,8 @@
 ---
 order: 1
 title:
-    zh-CN: 三种大小
-    en-US: Sizes
+  zh-CN: 三种大小
+  en-US: Sizes
 ---
 
 ## zh-CN
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 There are three sizes available to a numeric input box. By default, the `nzSize` is `32px`. The two additional sizes are `large` and `small` which means `40px` and `24px`, respectively.
-

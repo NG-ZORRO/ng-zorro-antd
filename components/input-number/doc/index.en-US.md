@@ -7,18 +7,16 @@ tag: 19.0.0
 description: Enter a number within certain range with the mouse or keyboard.
 ---
 
-
 ## When To Use
 
 When a numeric value needs to be provided.
-
 
 ## API
 
 ### nz-input-number
 
 | property           | description                                                                     | type                                                                    | default                                                                                                                             |
-|--------------------|---------------------------------------------------------------------------------|-------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------ | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `[ngModel]`        | current value, two way binding                                                  | `number`                                                                | -                                                                                                                                   |
 | `[nzId]`           | ID of the input box                                                             | `string`                                                                | -                                                                                                                                   |
 | `[nzPlaceHolder]`  | placeholder                                                                     | `string`                                                                | -                                                                                                                                   |
@@ -46,7 +44,7 @@ When a numeric value needs to be provided.
 You can get instance by `ViewChild`
 
 | Name    | Description  |
-|---------|--------------|
+| ------- | ------------ |
 | focus() | get focus    |
 | blur()  | remove focus |
 

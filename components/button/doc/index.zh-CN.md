@@ -7,7 +7,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/fNUKzY1sk/Button.svg'
 description: 按钮用于开始一个即时操作。
 ---
 
-
 ## 何时使用
 
 标记了一个（或封装一组）操作命令，响应用户点击行为，触发相应的业务逻辑。
@@ -27,7 +26,6 @@ description: 按钮用于开始一个即时操作。
 - 🚫 禁用：行动点不可用的时候，一般需要文案解释。
 - 🔃 加载中：用于异步操作等待反馈的时候，也可以避免多次提交。
 
-
 ## API
 
 ### [nz-button]
@@ -44,7 +42,7 @@ description: 按钮用于开始一个即时操作。
 | `[nzGhost]`   | 幽灵属性，使按钮背景透明                                         | `boolean`                             | `false`     |
 | `[nzLoading]` | 设置按钮载入状态                                                 | `boolean`                             | `false`     |
 | `[nzShape]`   | 设置按钮形状，可选值为 `circle` `round` 或者不设                 | `'circle'\|'round'`                   | -           |              |
-| `[nzSize]`    | 设置按钮大小，可选值为 `small` `large` 或者不设                  | `'large'\|'small'\|'default'`         | `'default'` | ✅            |
+| `[nzSize]`    | 设置按钮大小，可选值为 `small` `large` 或者不设                  | `'large'\|'small'\|'default'`         | `'default'` | ✅           |
 | `[nzType]`    | 设置按钮类型，可选值为 `primary` `dashed` `text` `link` 或者不设 | `'primary'\|'dashed'\|'link'\|'text'` | -           |
 | `[nzBlock]`   | 将按钮宽度调整为其父宽度的选项                                   | `boolean`                             | `false`     |
 | `[nzDanger]`  | 设置危险按钮                                                     | boolean                               | `false`     |              |

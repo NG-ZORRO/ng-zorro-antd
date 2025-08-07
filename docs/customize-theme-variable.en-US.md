@@ -37,10 +37,8 @@ const ngZorroConfig: NzConfig = {
 };
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzConfig(ngZorroConfig)
-  ]
-}
+  providers: [provideNzConfig(ngZorroConfig)]
+};
 ```
 
 These global configurations would be injected and stored in a service named `NzConfigService`.
@@ -59,7 +57,7 @@ export class ChangeZorroConfigComponent {
   private nzConfigService = inject(NzConfigService);
 
   onChangeConfig() {
-    this.nzConfigService.set('theme', { primaryColor: '#1890ff' })
+    this.nzConfigService.set('theme', { primaryColor: '#1890ff' });
   }
 }
 ```

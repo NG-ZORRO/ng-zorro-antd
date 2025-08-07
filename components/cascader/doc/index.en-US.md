@@ -6,13 +6,11 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/UdS8y8xyZ/Cascader.svg'
 description: Cascade selection box.
 ---
 
-
 ## When To Use
 
 - When you need to select from a set of a hierarchical structure. Such as province/city/district, company level, and classification.
 - When selecting from a large data set, with multi-stage classification separated for easy selection.
 - Chooses cascade items in one float layer for a better user experience.
-
 
 ## API
 
@@ -23,7 +21,7 @@ description: Cascade selection box.
 ### nz-cascader
 
 | Property              | Description                                                                                                                            | Type                                                                  | Default           | Global Config |
-|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|-------------------|---------------|
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------- | ------------- |
 | `[ngModel]`           | selected value                                                                                                                         | `any[]`                                                               | -                 |
 | `[nzAllowClear]`      | whether allow clear                                                                                                                    | `boolean`                                                             | `true`            |
 | `[nzAutoFocus]`       | whether auto focus the input box                                                                                                       | `boolean`                                                             | `false`           |
@@ -50,11 +48,11 @@ description: Cascade selection box.
 | `[nzShowArrow]`       | whether show arrow                                                                                                                     | `boolean`                                                             | `true`            |
 | `[nzShowInput]`       | whether show input                                                                                                                     | `boolean`                                                             | `true`            |
 | `[nzShowSearch]`      | whether support search. Cannot be used with `[nzLoadData]` at the same time                                                            | `boolean \| NzShowSearchOptions`                                      | `false`           |
-| `[nzSize]`            | input size, one of `large` `default` `small`                                                                                           | `'large' \| 'small' \| 'default'`                                     | `'default'`       | ✅             |
+| `[nzSize]`            | input size, one of `large` `default` `small`                                                                                           | `'large' \| 'small' \| 'default'`                                     | `'default'`       | ✅            |
 | `[nzStatus]`          | set validation status                                                                                                                  | `'error' \| 'warning'`                                                | -                 |
 | `[nzSuffixIcon]`      | custom suffix icon                                                                                                                     | `string\|TemplateRef<void>`                                           | -                 |
 | `[nzValueProperty]`   | value property name of options                                                                                                         | `string`                                                              | `'value'`         |
-| `[nzVariant]`         | Variants of Cascader                                                                                                                   | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'`              | `'outlined'`      | ✅             |
+| `[nzVariant]`         | Variants of Cascader                                                                                                                   | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'`              | `'outlined'`      | ✅            |
 | `(ngModelChange)`     | emit on values change                                                                                                                  | `EventEmitter<any[]>`                                                 | -                 |
 | `(nzClear)`           | emit on clear values                                                                                                                   | `EventEmitter<void>`                                                  | -                 |
 | `(nzVisibleChange)`   | emit on popup menu visible or hide                                                                                                     | `EventEmitter<boolean>`                                               | -                 |
@@ -85,7 +83,7 @@ export interface NzCascaderOption {
 When `nzShowSearch` is an object it should implement `NzShowSearchOptions`:
 
 | Params   | Explanation                                                            | Type                                                                         | Default |
-|----------|------------------------------------------------------------------------|------------------------------------------------------------------------------|---------|
+| -------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------- |
 | `filter` | Optional. Be aware that all non-leaf CascaderOptions would be filtered | `(inputValue: string, path: NzCascaderOption[]): boolean`                    | -       |
 | `sorter` | Optional                                                               | `(a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string): number` | -       |
 
@@ -114,7 +112,7 @@ const filter: NzCascaderFilter = (i, p) => {
 #### Methods
 
 | Name          | Description   |
-|---------------|---------------|
+| ------------- | ------------- |
 | `blur()`      | remove focus  |
 | `focus()`     | get focus     |
 | `closeMenu()` | hide the menu |

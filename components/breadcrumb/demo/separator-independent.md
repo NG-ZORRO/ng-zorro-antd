@@ -12,4 +12,3 @@ title:
 ## en-US
 
 The separator can be customized by using the component `nz-breadcrumb-separator`.
-

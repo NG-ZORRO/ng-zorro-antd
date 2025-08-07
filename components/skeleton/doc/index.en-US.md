@@ -7,14 +7,12 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/KpcciCJgv/Skeleton.svg'
 description: Provide a placeholder while you wait for content to load or visualize content that doesn't exist yet.
 ---
 
-
 ## When To Use
 
 - When resource needs long time loading, like low network speed.
 - The component contains information, such as a List or Card.
 - Only works when loading data for the first time.
 - Could be replaced by Spin in any situation but can provide a better user experience.
-
 
 ## API
 
@@ -52,7 +50,7 @@ description: Provide a placeholder while you wait for content to load or visuali
 ### nz-skeleton-element [nzType="button"]
 
 | Property     | Description           | Type                                           | Default     |
-|--------------|-----------------------|------------------------------------------------|-------------|
+| ------------ | --------------------- | ---------------------------------------------- | ----------- |
 | `[nzActive]` | Show animation effect | `boolean`                                      | `false`     |
 | `[nzSize]`   | Set the size          | `'large' \| 'small' \| 'default'`              | `'default'` |
 | `[nzShape]`  | Set the shape         | `'square' \| 'circle' \| 'round' \| 'default'` | `'default'` |
@@ -60,7 +58,7 @@ description: Provide a placeholder while you wait for content to load or visuali
 ### nz-skeleton-element [nzType="avatar"]
 
 | Property     | Description           | Type                                        | Default     |
-|--------------|-----------------------|---------------------------------------------|-------------|
+| ------------ | --------------------- | ------------------------------------------- | ----------- |
 | `[nzActive]` | Show animation effect | `boolean`                                   | `false`     |
 | `[nzSize]`   | Set the size          | `number \| 'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzShape]`  | Set the shape         | `'circle' \| 'square'`                      | `'square'`  |
@@ -68,12 +66,12 @@ description: Provide a placeholder while you wait for content to load or visuali
 ### nz-skeleton-element [nzType="input"]
 
 | Property     | Description           | Type                              | Default     |
-|--------------|-----------------------|-----------------------------------|-------------|
+| ------------ | --------------------- | --------------------------------- | ----------- |
 | `[nzActive]` | Show animation effect | `boolean`                         | `false`     |
 | `[nzSize]`   | Set the size          | `'large' \| 'small' \| 'default'` | `'default'` |
 
 ### nz-skeleton-element [nzType="image"]
 
 | Property     | Description           | Type      | Default |
-|--------------|-----------------------|-----------|---------|
+| ------------ | --------------------- | --------- | ------- |
 | `[nzActive]` | Show animation effect | `boolean` | `false` |

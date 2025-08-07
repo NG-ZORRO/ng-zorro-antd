@@ -2,7 +2,9 @@
 order: 2
 title: Schematics
 ---
+
 Using a CLI helps initialize projects, generate template codes and reduce development time.
+
 > The`ng-zorro-antd` scaffolding is essentially based on [schematics](https://blog.angular.dev/schematics-an-introduction-dc1dfbc2a2b2).
 
 ## Initialize A Project

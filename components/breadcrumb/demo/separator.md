@@ -1,6 +1,6 @@
 ---
 order: 4
-title: 
+title:
   zh-CN: 分隔符
   en-US: Configuring the Separator
 ---
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 The separator can be customized by setting the separator property: `nzSeparator`
-

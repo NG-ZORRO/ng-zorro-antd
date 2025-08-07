@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Fill in this form to create a new account for you.
-

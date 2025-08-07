@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-Basic Usage, set `nzDataSource`  of `nz-autocomplete` with dataSource property.
+Basic Usage, set `nzDataSource` of `nz-autocomplete` with dataSource property.

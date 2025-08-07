@@ -12,5 +12,3 @@ title:
 ## en-US
 
 By setting like this: `<nz-steps nzSize="small">`, you can get a mini version.
-
-

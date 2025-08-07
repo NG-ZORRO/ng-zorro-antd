@@ -12,5 +12,3 @@ title:
 ## en-US
 
 A button is on the left, and a related functional menu is on the right.
-
-

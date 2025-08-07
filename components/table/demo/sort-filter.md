@@ -16,4 +16,3 @@ title:
 Filter: Use `[nzFilters]` to define options of the filter menu, `[nzFilterFn]` to determine filtered result, and `[nzFilterMultiple]` to indicate whether it's multiple or single selection, you can enable a filter by default by setting a `[nzFilters]` object's property: `{ byDefault: true }`.
 
 Sort: Use `[nzSortOrder]` to make a column sorted by default, use `[nzSortFn]` to determine sort result, and `[nzSortDirections]` to define available sort methods.
-

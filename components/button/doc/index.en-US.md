@@ -6,7 +6,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/fNUKzY1sk/Button.svg'
 description: To trigger an operation.
 ---
 
-
 ## When To Use
 
 A button means an operation (or a series of operations). Clicking a button will trigger corresponding business logic.
@@ -26,7 +25,6 @@ And 4 other properties additionally.
 - 🚫 `disabled`: when actions are not available.
 - 🔃 `loading`: add loading spinner in button, avoiding multiple submit.
 
-
 ## API
 
 ### [nz-button]
@@ -41,7 +39,7 @@ To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`di
 | `[nzGhost]`   | make background transparent and invert text and border colors                 | `boolean`                             | `false`     |
 | `[nzLoading]` | set the loading status of button                                              | `boolean`                             | `false`     |
 | `[nzShape]`   | can be set to `circle` `round` or omitted                                     | `'circle'\|'round'`                   | -           |               |
-| `[nzSize]`    | can be set to `small` `large` or omitted                                      | `'large'\|'small'\|'default'`         | `'default'` | ✅             |
+| `[nzSize]`    | can be set to `small` `large` or omitted                                      | `'large'\|'small'\|'default'`         | `'default'` | ✅            |
 | `[nzType]`    | can be set to `primary` `dashed` `text` `link` or omitted (meaning `default`) | `'primary'\|'dashed'\|'link'\|'text'` | -           |
 | `[nzBlock]`   | option to fit button width to its parent width                                | `boolean`                             | `false`     |
 | `[nzDanger]`  | set the danger status of button                                               | boolean                               | `false`     |               |

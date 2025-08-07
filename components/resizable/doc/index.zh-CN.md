@@ -8,7 +8,6 @@ experimental: true
 description: 调整元素尺寸。
 ---
 
-
 ## 何时使用
 
 当你想调整元素尺寸时.
@@ -39,22 +38,22 @@ interface NzResizeEvent {
 }
 ```
 
-| 参数                    | 说明             | 类型                                                | 默认值      |
-|-----------------------|----------------|---------------------------------------------------|----------|
-| `[nzBounds]`          | 调整尺寸的边界        | `'window' \| 'parent' \| ElementRef<HTMLElement>` | `parent` |
+| 参数                  | 说明                       | 类型                                              | 默认值   |
+| --------------------- | -------------------------- | ------------------------------------------------- | -------- |
+| `[nzBounds]`          | 调整尺寸的边界             | `'window' \| 'parent' \| ElementRef<HTMLElement>` | `parent` |
 | `[nzMaxHeight]`       | 最大高度(超过边界部分忽略) | `number`                                          | -        |
 | `[nzMaxWidth]`        | 最大宽度(超过边界部分忽略) | `number`                                          | -        |
-| `[nzMinHeight]`       | 最小高度           | `number`                                          | `40`     |
-| `[nzMinWidth]`        | 最小宽度           | `number`                                          | `40`     |
-| `[nzGridColumnCount]` | 栅格列数(-1 为不栅格)  | `number`                                          | `-1`     |
-| `[nzMaxColumn]`       | 栅格最大列数         | `number`                                          | -        |
-| `[nzMinColumn]`       | 栅格最小列数         | `number`                                          | -        |
-| `[nzLockAspectRatio]` | 锁定宽高比          | `boolean`                                         | `false`  |
-| `[nzPreview]`         | 开启预览           | `boolean`                                         | `false`  |
-| `[nzDisabled]`        | 禁用             | `boolean`                                         | `false`  |
-| `(nzResize)`          | 调整尺寸时的事件       | `EventEmitter<NzResizeEvent>`                     | -        |
-| `(nzResizeStart)`     | 开始调整尺寸时的事件     | `EventEmitter<NzResizeEvent>`                     | -        |
-| `(nzResizeEnd)`       | 结束调整尺寸时的事件     | `EventEmitter<NzResizeEvent>`                     | -        |
+| `[nzMinHeight]`       | 最小高度                   | `number`                                          | `40`     |
+| `[nzMinWidth]`        | 最小宽度                   | `number`                                          | `40`     |
+| `[nzGridColumnCount]` | 栅格列数(-1 为不栅格)      | `number`                                          | `-1`     |
+| `[nzMaxColumn]`       | 栅格最大列数               | `number`                                          | -        |
+| `[nzMinColumn]`       | 栅格最小列数               | `number`                                          | -        |
+| `[nzLockAspectRatio]` | 锁定宽高比                 | `boolean`                                         | `false`  |
+| `[nzPreview]`         | 开启预览                   | `boolean`                                         | `false`  |
+| `[nzDisabled]`        | 禁用                       | `boolean`                                         | `false`  |
+| `(nzResize)`          | 调整尺寸时的事件           | `EventEmitter<NzResizeEvent>`                     | -        |
+| `(nzResizeStart)`     | 开始调整尺寸时的事件       | `EventEmitter<NzResizeEvent>`                     | -        |
+| `(nzResizeEnd)`       | 结束调整尺寸时的事件       | `EventEmitter<NzResizeEvent>`                     | -        |
 
 ### nz-resize-handle
 
@@ -65,9 +64,9 @@ type NzResizeDirection = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bot
 type NzCursorType = 'window' | 'grid';
 ```
 
-| 参数               | 说明      | 类型                  | 默认值             |
-|------------------|---------|---------------------|-----------------|
-| `[nzDirection]`  | 调整方向    | `NzResizeDirection` | `'bottomRight'` |
+| 参数             | 说明           | 类型                | 默认值          |
+| ---------------- | -------------- | ------------------- | --------------- |
+| `[nzDirection]`  | 调整方向       | `NzResizeDirection` | `'bottomRight'` |
 | `[nzCursorType]` | 手柄的光标类型 | `NzCursorType`      | `'window'`      |
 
 ### nz-resize-handles
@@ -81,8 +80,8 @@ interface NzResizeHandleOption {
 }
 ```
 
-| 参数               | 说明           | 类型                                              | 默认值  |
-|------------------|--------------|-------------------------------------------------|------|
+| 参数             | 说明                     | 类型                                            | 默认值   |
+| ---------------- | ------------------------ | ----------------------------------------------- | -------- |
 | `[nzDirections]` | 需要的手柄方向或手柄选项 | `<NzResizeDirection \| NzResizeHandleOption>[]` | 所有方向 |
 
 ### 样式

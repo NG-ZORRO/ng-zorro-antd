@@ -7,7 +7,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/QAXskNI4G/Transfer.svg'
 description: Double column transfer choice box.
 ---
 
-
 ## When To Use
 
 - It is a select control essentially which can be use for selecting multiple items.
@@ -16,7 +15,6 @@ description: Double column transfer choice box.
 Transfer the elements between two columns intuitively and efficiently.
 
 One or more elements can be selected from either column, one click on the proper `direction` button, and the transfer is done. The left column is considered the `source` and the right column is considered the `target`. As you can see in the API description, these names are reflected in.
-
 
 ## API
 

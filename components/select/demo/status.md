@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Add status to Select with `nzStatus`, which could be `error` or `warning`.
-

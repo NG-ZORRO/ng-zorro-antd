@@ -8,11 +8,9 @@ cover: 'https://gw.alipayobjects.com/zos/antfincdn/dPQmLq08DI/Calendar.svg'
 description: 按照日历形式展示数据的容器。
 ---
 
-
 ## 何时使用
 
 当数据是日期或按照日期划分时，例如日程、课表、价格日历等，农历等。目前支持年/月切换。
-
 
 ## API
 

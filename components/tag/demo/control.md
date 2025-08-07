@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Generating a set of Tags by array, you can add and remove dynamically.
-
-

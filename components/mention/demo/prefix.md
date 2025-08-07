@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Customize Trigger Token by `nzPrefix` props. Default to `@`, `Array<string>` also supported.
-

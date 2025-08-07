@@ -1,8 +1,8 @@
 ---
 order: 4
 title:
-    zh-CN: 命名空间
-    en-US: Namespace
+  zh-CN: 命名空间
+  en-US: Namespace
 ---
 
 ## zh-CN

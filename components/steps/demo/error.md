@@ -12,4 +12,3 @@ title:
 ## en-US
 
 By using `nzStatus` of `nz-steps`, you can specify the state for current step.
-

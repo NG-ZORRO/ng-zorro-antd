@@ -33,12 +33,15 @@ import { BidiModule } from '@angular/cdk/bidi';
 
 ```typescript
 class MyComponent {
-  constructor(private modalService: NzModalService, private configService: NzConfigService) { }
+  constructor(
+    private modalService: NzModalService,
+    private configService: NzConfigService
+  ) {}
 
   openModal(): void {
     this.modal.create({
       nzDirection: 'rtl'
-    })
+    });
   }
 
   setDirWithConfig(): void {
@@ -46,7 +49,6 @@ class MyComponent {
   }
 }
 ```
-
 
 ### 参考
 

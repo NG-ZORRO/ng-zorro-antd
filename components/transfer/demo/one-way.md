@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Use `nzOneWay` to make Transfer the one way style.
-
-

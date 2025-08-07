@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-The value of `ngModel` comes from the `nzValue` of `nz-option`, when the `nzValue` of `nz-option`  is an object, the `ngModel` will be an object too, the usage of `compareWith` is the same as [SelectControlValueAccessor](https://angular.dev/api/forms/SelectControlValueAccessor).
+The value of `ngModel` comes from the `nzValue` of `nz-option`, when the `nzValue` of `nz-option` is an object, the `ngModel` will be an object too, the usage of `compareWith` is the same as [SelectControlValueAccessor](https://angular.dev/api/forms/SelectControlValueAccessor).

@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     // ...
     provideNoopAnimations()
   ]
-}
+};
 ```
 
 ### 在模版中关闭
@@ -38,8 +38,7 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 在想关闭动画的组件上添加 `nzNoAnimation` 指令。
 
 ```html
-<nz-modal nzNoAnimation></nz-modal>
-<ul nz-menu nzNoAnimation></ul>
+<nz-modal nzNoAnimation></nz-modal> <ul nz-menu nzNoAnimation></ul>
 ```
 
 ### 在服务中关闭
@@ -73,8 +72,6 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { provideNzWave } from 'ng-zorro-antd/core/wave';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzWave({ disabled: true })
-  ]
-}
+  providers: [provideNzWave({ disabled: true })]
+};
 ```

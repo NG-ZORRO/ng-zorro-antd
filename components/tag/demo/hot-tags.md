@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Select your favourite topics.
-
-

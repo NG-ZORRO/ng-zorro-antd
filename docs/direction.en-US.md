@@ -33,12 +33,15 @@ For example, the modal service.
 
 ```typescript
 class MyComponent {
-  constructor(private modalService: NzModalService, private configService: NzConfigService) { }
+  constructor(
+    private modalService: NzModalService,
+    private configService: NzConfigService
+  ) {}
 
   openModal(): void {
     this.modal.create({
       nzDirection: 'rtl'
-    })
+    });
   }
 
   setDirWithConfig(): void {

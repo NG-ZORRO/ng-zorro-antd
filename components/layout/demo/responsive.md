@@ -18,4 +18,3 @@ nz-sider 支持响应式布局。
 Layout.Sider supports responsive layout.
 
 > Note: You can get a responsive layout by setting `nzBreakpoint`, the `nz-sider` will collapse to the width of `nzCollapsedWidth` when window width is below the `nzBreakpoint`. And a special trigger will appear if the `nzCollapsedWidth` is set to `0`.
-

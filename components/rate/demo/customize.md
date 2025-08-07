@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Each character can be customized by index.
-
-

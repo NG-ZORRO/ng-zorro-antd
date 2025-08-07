@@ -8,7 +8,6 @@ tag: 17.1.0
 description: A flex layout container for alignment.
 ---
 
-
 ## When To Use
 
 - Good for setting spacing between elements.
@@ -20,7 +19,6 @@ description: A flex layout container for alignment.
   inline alignment. Suitable for equidistant arrangement of multiple child elements in rows and columns.
 - Flex is used to set the layout of block-level elements. It does not add a wrapper element. Suitable for layout of
   child elements in vertical or horizontal direction, and provides more flexibility and control.
-
 
 ## API
 

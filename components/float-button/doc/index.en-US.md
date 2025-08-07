@@ -12,13 +12,12 @@ description: A button that floats at the top of the page.
 - For global functionality on the site.
 - Buttons that can be seen wherever you browse.
 
-
 ## API
 
 ### common API
 
 | Property          | Description                               | Type                          | Default     |
-|-------------------|-------------------------------------------|-------------------------------|-------------|
+| ----------------- | ----------------------------------------- | ----------------------------- | ----------- |
 | `[nzIcon]`        | Set the icon component of button          | `TemplateRef<void>`           | -           |
 | `[nzDescription]` | Text and other                            | `TemplateRef<void> \| string` | -           |
 | `[nzType]`        | Setting button type                       | `'default' \| 'primary'`      | `'default'` |
@@ -30,7 +29,7 @@ description: A button that floats at the top of the page.
 ### nz-float-button-group
 
 | Property           | Description                                   | Type                                     | Default    |
-|--------------------|-----------------------------------------------|------------------------------------------|------------|
+| ------------------ | --------------------------------------------- | ---------------------------------------- | ---------- |
 | `[nzShape]`        | Set button group shape                        | `'circle' \| 'square'`                   | `'circle'` |
 | `[nzTrigger]`      | Which action can trigger menu open/close      | `'click' \| 'hover'`                     | -          |
 | `[nzOpen]`         | Whether the menu is visible or not            | `boolean`                                | -          |
@@ -40,8 +39,8 @@ description: A button that floats at the top of the page.
 ### nz-float-button-top
 
 | Property               | Description                                                                               | Type                    | Default  | Global Config |
-|------------------------|-------------------------------------------------------------------------------------------|-------------------------|----------|---------------|
-| `[nzVisibilityHeight]` | the `nz-float-button-top` button will not show until the scroll height reaches this value | `number`                | `400`    | ✅             |
+| ---------------------- | ----------------------------------------------------------------------------------------- | ----------------------- | -------- | ------------- |
+| `[nzVisibilityHeight]` | the `nz-float-button-top` button will not show until the scroll height reaches this value | `number`                | `400`    | ✅            |
 | `[nzTarget]`           | specifies the scrollable area dom node                                                    | `string \| Element`     | `window` |
 | `[nzDuration]`         | Time to return to top (ms)                                                                | `number`                | `450`    |
 | `(nzOnClick)`          | a callback function, which can be executed when you click the button                      | `EventEmitter<boolean>` | -        |

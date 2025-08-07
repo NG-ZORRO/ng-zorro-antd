@@ -12,6 +12,3 @@ title:
 ## en-US
 
 Resize with grid.
-
-
-

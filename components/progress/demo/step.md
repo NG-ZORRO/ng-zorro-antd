@@ -3,7 +3,6 @@ order: 11
 title:
   zh-CN: 步骤进度条
   en-US: Progress bar with steps
-
 ---
 
 ## zh-CN

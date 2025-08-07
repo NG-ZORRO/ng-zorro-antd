@@ -6,23 +6,21 @@ cover: 'https://gw.alipayobjects.com/zos/bmw-prod/a3ff040f-24ba-43e0-92e9-c845df
 description: Display multiple options and allow users to select a single option.
 ---
 
-
 ## When To Use
 
 - When displaying multiple options and user can select a single option;
 - When switching the selected option, the content of the associated area changes.
-
 
 ## API
 
 ### nz-segmented
 
 | Property          | Description                                               | Type                                                                                                          | Default | Global Config |
-|-------------------|-----------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|---------|---------------|
+| ----------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------- | ------------- |
 | `[nzBlock]`       | Option to fit width to its parent\'s width                | `boolean`                                                                                                     | `false` |               |
 | `[nzDisabled]`    | Disable all segments                                      | `boolean`                                                                                                     | `false` |               |
 | `[nzOptions]`     | Set children optional                                     | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean }>` | -       |               |
-| `[nzSize]`        | The size of the Segmented                                 | `large \| default \| small`                                                                                   | -       | ✅             |
+| `[nzSize]`        | The size of the Segmented                                 | `large \| default \| small`                                                                                   | -       | ✅            |
 | `[ngModel]`       | Value of the currently selected option                    | `string \| number`                                                                                            | -       |               |
 | `(nzValueChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -       |               |
 | `(ngModelChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -       |               |
@@ -30,7 +28,7 @@ description: Display multiple options and allow users to select a single option.
 ### label[nz-segmented-item]
 
 | Property       | Description                | Type               | Default | Global Config |
-|----------------|----------------------------|--------------------|---------|---------------|
+| -------------- | -------------------------- | ------------------ | ------- | ------------- |
 | `[nzIcon]`     | Icon in segmented item     | `string`           | -       |               |
 | `[nzValue]`    | Value of segmented item    | `string \| number` | -       |               |
 | `[nzDisabled]` | Disable the segmented item | `boolean`          | `false` |               |

@@ -6,11 +6,9 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/jPE-itMFM/Mentions.svg'
 description: Used to mention someone or something in an input.
 ---
 
-
 ## When To Use
 
 When need to mention someone or something.
-
 
 ## API
 

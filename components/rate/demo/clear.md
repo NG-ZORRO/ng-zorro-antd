@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Support set allow to clear star when click again.
-

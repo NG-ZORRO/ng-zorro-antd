@@ -1,8 +1,8 @@
 ---
 order: 0
 title:
-    zh-CN: 无边框
-    en-US: Borderless
+  zh-CN: 无边框
+  en-US: Borderless
 ---
 
 ## zh-CN
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Borderless input number.
-

@@ -12,4 +12,3 @@ title:
 ## en-US
 
 With the help of virtual scroll, select component can deal with Large amounts of data.
-

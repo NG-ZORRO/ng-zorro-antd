@@ -1,6 +1,6 @@
 ---
 order: 6
-title: 
+title:
   zh-CN: 排序
   en-US: Order
 ---

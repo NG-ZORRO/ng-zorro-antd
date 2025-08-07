@@ -12,4 +12,3 @@ title:
 ## en-US
 
 `nzTooltipTitle` accept the type of `TemplateRef<any>`
-

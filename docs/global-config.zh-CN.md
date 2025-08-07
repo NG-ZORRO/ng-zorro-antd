@@ -19,10 +19,8 @@ const ngZorroConfig: NzConfig = {
 };
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzConfig(ngZorroConfig)
-  ]
-}
+  providers: [provideNzConfig(ngZorroConfig)]
+};
 ```
 
 这些全局配置项将会被注入 `NzConfigService` 当中并保存。
@@ -82,14 +80,14 @@ const nzConfigFactory = (): NzConfig => {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    { // The FactoryProvider
+    {
+      // The FactoryProvider
       provide: NZ_CONFIG,
       useFactory: nzConfigFactory
     }
   ]
-}
+};
 ```
-
 
 ## 局部生效
 
@@ -155,7 +153,7 @@ export class ChangeZorroConfigComponent {
   private nzConfigService = inject(NzConfigService);
 
   onChangeConfig() {
-    this.nzConfigService.set('button', { nzSize: 'large' })
+    this.nzConfigService.set('button', { nzSize: 'large' });
   }
 }
 ```
@@ -166,7 +164,7 @@ export class ChangeZorroConfigComponent {
 
 对于任何一个属性来说，各个来源的值的优先级如下：
 
-**为组件的某个实例单独设置的值（通过模板或类似于 `service.create` 的方法）> 通过 `NZ_CONFIG` 提供的全局默认值（包括 `set` 方法）  > NG-ZORRO 内置的默认值。**
+**为组件的某个实例单独设置的值（通过模板或类似于 `service.create` 的方法）> 通过 `NZ_CONFIG` 提供的全局默认值（包括 `set` 方法） > NG-ZORRO 内置的默认值。**
 
 例如，你想创建一个 NzNotification 组件：
 

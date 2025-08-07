@@ -10,13 +10,12 @@ description: Tree view component with better performance and customizability.
 
 More basic Tree component, allowing each of its parts to be defined in the template, and state to be managed manually.
 
-
 ## API
 
 ### nz-tree-view
 
 | Property            | Description                                        | Type                                                                                                               | Default |
-|---------------------|----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|---------|
+| ------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------- |
 | `[nzTreeControl]`   | The tree controller                                | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                                | -       |
 | `[nzDataSource]`    | The data array to render                           | `DataSource<T> \| Observable<T[]> \| T[]`, [DataSource](https://material.angular.io/cdk/tree/overview#data-source) | -       |
 | `[nzDirectoryTree]` | Whether nodes are displayed as directory style     | `boolean`                                                                                                          | `false` |
@@ -29,7 +28,7 @@ the [CdkVirtualScrollViewport](https://material.angular.io/cdk/scrolling/api#Cdk
 the `virtualScrollViewport` member of the component instance.
 
 | Property            | Description                                                                    | Type                                                                                                               | Default   |
-|---------------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|-----------|
+| ------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | --------- |
 | `[nzTreeControl]`   | The tree controller                                                            | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                                | -         |
 | `[nzDataSource]`    | The data array to render                                                       | `DataSource<T> \| Observable<T[]> \| T[]`, [DataSource](https://material.angular.io/cdk/tree/overview#data-source) | -         |
 | `[nzDirectoryTree]` | Whether nodes are displayed as directory style                                 | `boolean`                                                                                                          | `false`   |
@@ -43,7 +42,7 @@ the `virtualScrollViewport` member of the component instance.
 Directive to define `nz-tree-node`.
 
 | Property              | Description                                                                                                                                                                                                                                                                 | Type                                      | Default |
-|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|---------|
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ------- |
 | `[nzTreeNodeDefWhen]` | A matching function which indicates whether inputted node should be used. It matches the very first node that makes this function return `true`. If no nodes that makes this function return `true`, the node which does not define this function would be matched instead. | `(index: number, nodeData: T) => boolean` | -       |
 
 ### nz-tree-node
@@ -71,7 +70,7 @@ Show node indentation by adding indent lines.
 A toggle which is used to expand / collapse the node.
 
 | Property                      | Description                         | Type      | Default |
-|-------------------------------|-------------------------------------|-----------|---------|
+| ----------------------------- | ----------------------------------- | --------- | ------- |
 | `[nzTreeNodeToggleRecursive]` | Is it recursively expand / collapse | `boolean` | `false` |
 
 ### nz-tree-node-toggle[nzTreeNodeNoopToggle]
@@ -91,7 +90,7 @@ Define an icon in the toggle for an active style, which it can be used for the l
 Define the selectable feature of a node.
 
 | Property       | Description                    | Type                       | Default |
-|----------------|--------------------------------|----------------------------|---------|
+| -------------- | ------------------------------ | -------------------------- | ------- |
 | `[nzSelected]` | Whether the option is selected | `boolean`                  | `false` |
 | `[nzDisabled]` | Whether the option is disabled | `boolean`                  | `false` |
 | `(nzClick)`    | Event on click                 | `EventEmitter<MouseEvent>` | -       |
@@ -101,7 +100,7 @@ Define the selectable feature of a node.
 Define the checkbox feature of a node.
 
 | Property            | Description                           | Type                       | Default |
-|---------------------|---------------------------------------|----------------------------|---------|
+| ------------------- | ------------------------------------- | -------------------------- | ------- |
 | `[nzChecked]`       | Whether the checkbox is checked       | `boolean`                  | `false` |
 | `[nzDisabled]`      | Whether the checkbox is disabled      | `boolean`                  | `false` |
 | `[nzIndeterminate]` | Whether the checkbox is indeterminate | `boolean`                  | `false` |
@@ -114,7 +113,7 @@ Define the checkbox feature of a node.
 **Construction Parameters**
 
 | Name                                      | Description                                                      |
-|-------------------------------------------|------------------------------------------------------------------|
+| ----------------------------------------- | ---------------------------------------------------------------- |
 | `treeControl: FlatTreeControl<F, K>`      | The tree controller.                                             |
 | `treeFlattener: NzTreeFlattener<T, F, K>` | Flattener for convert nested nodes `T` into flattened nodes `F`. |
 | `initialData: T[] = []`                   | Initialized data.                                                |
@@ -122,7 +121,7 @@ Define the checkbox feature of a node.
 **Methods**
 
 | Name                                                           | Description                                                  |
-|----------------------------------------------------------------|--------------------------------------------------------------|
+| -------------------------------------------------------------- | ------------------------------------------------------------ |
 | `connect(collectionViewer: CollectionViewer): Observable<F[]>` | Call from the TreeView component to listen for data updates. |
 | `disconnect(): void`                                           | Call when TreeView component is destroyed.                   |
 | `setData(value: T[]): void`                                    | Set the origin data                                          |
@@ -135,7 +134,7 @@ Convert nested data with child nodes into node data with level information.
 **Construction Parameters**
 
 | Name                                                                    | Description                                           |
-|-------------------------------------------------------------------------|-------------------------------------------------------|
+| ----------------------------------------------------------------------- | ----------------------------------------------------- |
 | `transformFunction: (node: T, level: number) => F`                      | Receive a nested node and return a flattened node     |
 | `getLevel: (node: F) => number`                                         | Define the method to get the `level` property         |
 | `isExpandable: (node: F) => boolean`                                    | Methods for defining whether a node is expandable     |
@@ -144,6 +143,6 @@ Convert nested data with child nodes into node data with level information.
 **Methods**
 
 | Name                                                                    | Description                                       |
-|-------------------------------------------------------------------------|---------------------------------------------------|
+| ----------------------------------------------------------------------- | ------------------------------------------------- |
 | `flattenNodes(structuredData: T[]): F[]`                                | Receive nested data and return flattened data     |
 | `expandFlattenedNodes(nodes: F[], treeControl: TreeControl<F, K>): F[]` | Get flattened node data based on expansion status |

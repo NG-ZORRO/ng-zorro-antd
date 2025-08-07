@@ -21,9 +21,7 @@ We are using [Less](https://lesscss.org/) as the development language for stylin
 {
   "build": {
     "options": {
-      "styles": [
-        "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
-      ]
+      "styles": ["./node_modules/ng-zorro-antd/ng-zorro-antd.min.css"]
     }
   }
 }
@@ -45,7 +43,7 @@ Import `ng-zorro-antd.less`, `ng-zorro-antd.dark.less`, `ng-zorro-antd.compact.l
 
 ```less
 // Import the official default less style file
-@import "~ng-zorro-antd/ng-zorro-antd.less";
+@import '~ng-zorro-antd/ng-zorro-antd.less';
 
 // Import the official dark less style file
 //@import "~ng-zorro-antd/ng-zorro-antd.dark.less";
@@ -57,7 +55,6 @@ Import `ng-zorro-antd.less`, `ng-zorro-antd.dark.less`, `ng-zorro-antd.compact.l
 //@import "~ng-zorro-antd/ng-zorro-antd.aliyun.less";
 ```
 
-
 #### Method 2: CSS
 
 If the project does not use Less, you can include `ng-zorro-antd.css`, `ng-zorro-antd.dark.css`, `ng-zorro-antd.compact.css` or `ng-zorro-antd.aliyun.css` in the CSS file or add to the `angular.json` config.
@@ -65,7 +62,7 @@ If the project does not use Less, you can include `ng-zorro-antd.css`, `ng-zorro
 CSS file:
 
 ```css
-@import "~ng-zorro-antd/ng-zorro-antd.css";
+@import '~ng-zorro-antd/ng-zorro-antd.css';
 /*@import "~ng-zorro-antd/ng-zorro-antd.dark.css";*/
 /*@import "~ng-zorro-antd/ng-zorro-antd.compact.css";*/
 /*@import "~ng-zorro-antd/ng-zorro-antd.aliyun.css";*/
@@ -77,9 +74,7 @@ In `angular.json`:
 {
   "build": {
     "options": {
-      "styles": [
-        "node_modules/ng-zorro-antd/ng-zorro-antd.css"
-      ]
+      "styles": ["node_modules/ng-zorro-antd/ng-zorro-antd.css"]
     }
   }
 }
@@ -106,7 +101,7 @@ After importing the theme file, override the values of theme style variables bas
 
 ```less
 // -------- import official less file -----------
-@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+@import '../node_modules/ng-zorro-antd/ng-zorro-antd.less';
 
 // -------- override less variables -----------
 @primary-color: #f5222d;
@@ -125,11 +120,11 @@ module.exports = {
   module: {
     rules: [
       {
-        test   : /\.less$/,
+        test: /\.less$/,
         loader: 'less-loader',
         options: {
           modifyVars: {
-            'hack': `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
+            hack: `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
             ...darkThemeVars,
             ...compactThemeVars
           },
@@ -139,7 +134,6 @@ module.exports = {
     ]
   }
 };
-
 ```
 
 #### Override by customized style variables
@@ -148,76 +142,73 @@ Angular CLI provide [custom-webpack-builder](https://www.npmjs.com/package/@angu
 
 1. Import `ng-zorro-antd.less` in `angular.json`
 
-    ```json
-    {
-      "styles": [
-        "node_modules/ng-zorro-antd/ng-zorro-antd.less"
-      ]
-    }
-    ```
+   ```json
+   {
+     "styles": ["node_modules/ng-zorro-antd/ng-zorro-antd.less"]
+   }
+   ```
 
 2. Install `@angular-builders/custom-webpack` builder
 
-    ```bash
-    npm i -D @angular-builders/custom-webpack
-    ```
+   ```bash
+   npm i -D @angular-builders/custom-webpack
+   ```
 
 3. create `extra-webpack.config.js`
 
-    ```javascript
-    module.exports = {
-      module: {
-        rules: [
-          {
-            test   : /\.less$/,
-            loader: 'less-loader',
-            options: {
-              modifyVars: { // modify theme variable
-                'primary-color': '#1DA57A',
-                'link-color': '#1DA57A',
-                'border-radius-base': '2px'
-              },
-              javascriptEnabled: true
-            }
-          }
-        ]
-      }
-    };
-    ```
+   ```javascript
+   module.exports = {
+     module: {
+       rules: [
+         {
+           test: /\.less$/,
+           loader: 'less-loader',
+           options: {
+             modifyVars: {
+               // modify theme variable
+               'primary-color': '#1DA57A',
+               'link-color': '#1DA57A',
+               'border-radius-base': '2px'
+             },
+             javascriptEnabled: true
+           }
+         }
+       ]
+     }
+   };
+   ```
 
 4. Customize builder in `angular.json`
 
-    ```diff
-      "architect": {
-        "build": {
-    -     "builder": "@angular-devkit/build-angular:browser",
-    +     "builder": "@angular-builders/custom-webpack:browser",
-          "options": {
-    +        "customWebpackConfig": {
-    +          "path": "./extra-webpack.config.js",
-    +          "mergeStrategies": {
-    +            "module.rules": "append"
-    +          },
-    +          "replaceDuplicatePlugins": true
-    +        }
-          },
-        },
-        "serve": {
-    -      "builder": "@angular-devkit/build-angular:dev-server",
-    +      "builder": "@angular-builders/custom-webpack:dev-server",
-        }
-      }
-    ```
+   ```diff
+     "architect": {
+       "build": {
+   -     "builder": "@angular-devkit/build-angular:browser",
+   +     "builder": "@angular-builders/custom-webpack:browser",
+         "options": {
+   +        "customWebpackConfig": {
+   +          "path": "./extra-webpack.config.js",
+   +          "mergeStrategies": {
+   +            "module.rules": "append"
+   +          },
+   +          "replaceDuplicatePlugins": true
+   +        }
+         },
+       },
+       "serve": {
+   -      "builder": "@angular-devkit/build-angular:dev-server",
+   +      "builder": "@angular-builders/custom-webpack:dev-server",
+       }
+     }
+   ```
 
 You can get more information about custom-webpack builder following the articles
 
-* [Angular Builder Document](https://www.npmjs.com/package/@angular-builders/custom-webpack)
-* [Angular CLI: Custom webpack Config](https://alligator.io/angular/custom-webpack-config/)
-* [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
+- [Angular Builder Document](https://www.npmjs.com/package/@angular-builders/custom-webpack)
+- [Angular CLI: Custom webpack Config](https://alligator.io/angular/custom-webpack-config/)
+- [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
 
 All less variables can be viewed [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less) is a sample of theme define file.
-
-
 
 ## Theme Dynamic Switching
 
@@ -227,44 +218,44 @@ We have prepared you a demonstration project illustrating how theme dynamic swit
 
 1. Style preprocessor option `stylePreprocessorOptions`
 
-    Add path in a style preprocessor option called `stylePreprocessorOptions` in `angular.json`:
+   Add path in a style preprocessor option called `stylePreprocessorOptions` in `angular.json`:
 
-    ```json
-    "stylePreprocessorOptions": {
-      "includePaths": [
-        "src/path-to-mixin"
-      ]
-    },
-    ```
+   ```json
+   "stylePreprocessorOptions": {
+     "includePaths": [
+       "src/path-to-mixin"
+     ]
+   },
+   ```
 
-    As such, this config allows you to import `.themeMixin(@rules)` definition file which is under `src/path-to-mixin` path anywhere in the project without the need of using relative path:
+   As such, this config allows you to import `.themeMixin(@rules)` definition file which is under `src/path-to-mixin` path anywhere in the project without the need of using relative path:
 
-    ```css
-    // A relative path works
-    @import 'src/path-to-mixin/mixin';
-    // But now this works as well
-    @import 'mixin';
-    ```
+   ```css
+   // A relative path works
+   @import 'src/path-to-mixin/mixin';
+   // But now this works as well
+   @import 'mixin';
+   ```
 
 2. `bundleName` and `inject` in styles
 
-    If you intend to dynamically switch the pre-defined themes at runtime, you would need to configure every theme's bundling strategy for the bundler. For example, if your app has default and dark themes, the `styles` option of `angular.json` needs to be configured as below:
+   If you intend to dynamically switch the pre-defined themes at runtime, you would need to configure every theme's bundling strategy for the bundler. For example, if your app has default and dark themes, the `styles` option of `angular.json` needs to be configured as below:
 
-    ```json
-    "styles": [
-      "src/styles.less",
-      {
-        "input": "src/styles/default.less",
-        "bundleName": "default",
-        "inject": false
-      },
-      {
-        "input": "src/styles/dark.less",
-        "bundleName": "dark",
-        "inject": false
-      }
-    ],
-    ```
+   ```json
+   "styles": [
+     "src/styles.less",
+     {
+       "input": "src/styles/default.less",
+       "bundleName": "default",
+       "inject": false
+     },
+     {
+       "input": "src/styles/dark.less",
+       "bundleName": "dark",
+       "inject": false
+     }
+   ],
+   ```
 
 `bundleName` refers to the CSS bundle filename which is used for the href attribute in link tag for switching the pre-defined themes in the later section. `inject`'s default value is `true`, which the bundle is injected by default. For the purpose of theme dynamic switching, you need to set it to false to exclude the bundle from injection.
 
@@ -287,7 +278,7 @@ Stylesheets under `src/styles/` are entry files which are used to import the pre
 
 ```less
 @import '../../node_modules/ng-zorro-antd/ng-zorro-antd';
-@import "./themes/dark";
+@import './themes/dark';
 ```
 
 Accordingly, `src/styles/themes/dark.less` is in charge of customizing dark theme:
@@ -325,12 +316,12 @@ html {
   &.default {
     @import 'default';
     // Component styles
-    ...
+    ...;
   }
   &.dark {
     @import 'dark';
     // Component styles
-    ...
+    ...;
   }
 }
 ```
@@ -357,7 +348,7 @@ A better way to achieve this is to define a Mixin called `.themeMixin(@rules)` i
 Then, wrap all the component styles in the `.themeMixin(@rules)`:
 
 ```less
-@import "mixin"; // Similarly, no need for relative path
+@import 'mixin'; // Similarly, no need for relative path
 
 .themeMixin({
   :host {

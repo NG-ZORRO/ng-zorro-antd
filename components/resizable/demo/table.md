@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Resize the table header.
-
-

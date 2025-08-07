@@ -1,8 +1,8 @@
 ---
 order: 4
 title:
-    zh-CN: 全选
-    en-US: Check all
+  zh-CN: 全选
+  en-US: Check all
 ---
 
 ## zh-CN
@@ -12,5 +12,3 @@ title:
 ## en-US
 
 The `nzIndeterminate` property can help you to achieve a 'check all' effect.
-
-

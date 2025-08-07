@@ -1,8 +1,8 @@
 ---
 order: 2
 title:
-    zh-CN: 自定义图标
-    en-US: Custom icon
+  zh-CN: 自定义图标
+  en-US: Custom icon
 ---
 
 ## zh-CN

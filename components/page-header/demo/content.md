@@ -2,7 +2,7 @@
 order: 4
 title:
   zh-CN: 组合示例
-  en-US:  Complete example
+  en-US: Complete example
 ---
 
 ## zh-CN

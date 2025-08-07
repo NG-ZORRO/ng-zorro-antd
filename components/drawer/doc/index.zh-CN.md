@@ -14,7 +14,6 @@ description: 屏幕边缘滑出的浮层面板。
 - 当需要一个附加的面板来控制父窗体内容，这个面板在需要时呼出。比如，控制界面展示样式，往界面中添加内容。
 - 当需要在当前任务流中插入临时任务，创建或预览附加内容。比如展示协议条款，创建子对象。
 
-
 ## API
 
 ### nz-drawer
@@ -24,9 +23,9 @@ description: 屏幕边缘滑出的浮层面板。
 | `[nzClosable]`          | 是否显示左上角的关闭按钮                                                                                     | `boolean`                                | `true`      |
 | `[nzCloseIcon]`         | 自定义关闭图标                                                                                               | `string \| TemplateRef<void> \| null`    | `'close'`   |
 | `[nzExtra]`             | 抽屉右上角的操作区域                                                                                         | `string \| TemplateRef<void> \| null`    | -           |
-| `[nzMaskClosable]`      | 点击蒙层是否允许关闭                                                                                         | `boolean`                                | `true`      | ✅        |
-| `[nzMask]`              | 是否展示遮罩                                                                                                 | `boolean`                                | `true`      | ✅        |
-| `[nzCloseOnNavigation]` | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。 | `boolean`                                | `true`      | ✅        |
+| `[nzMaskClosable]`      | 点击蒙层是否允许关闭                                                                                         | `boolean`                                | `true`      | ✅       |
+| `[nzMask]`              | 是否展示遮罩                                                                                                 | `boolean`                                | `true`      | ✅       |
+| `[nzCloseOnNavigation]` | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。 | `boolean`                                | `true`      | ✅       |
 | `[nzMaskStyle]`         | 遮罩样式                                                                                                     | `object`                                 | `{}`        |
 | `[nzKeyboard]`          | 是否支持键盘 esc 关闭                                                                                        | `boolean`                                | `true`      |
 | `[nzBodyStyle]`         | Drawer body 样式                                                                                             | `object`                                 | `{}`        |
@@ -59,10 +58,10 @@ description: 屏幕边缘滑出的浮层面板。
 | nzClosable          | 是否显示左上角的关闭按钮                                                                                               | `boolean`                                                          | `true`      |
 | nzCloseIcon         | 自定义关闭图标                                                                                                         | `string \| TemplateRef<void> \| null`                              | `'close'`   |
 | nzExtra             | 抽屉右上角的操作区域                                                                                                   | `string \| TemplateRef<void> \| null`                              | -           |
-| nzMaskClosable      | 点击蒙层是否允许关闭                                                                                                   | `boolean`                                                          | `true`      | ✅        |
-| nzMask              | 是否展示遮罩                                                                                                           | `boolean`                                                          | `true`      | ✅        |
-| nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。           | `boolean`                                                          | `true`      | ✅        |
-| nzDirection         | 文字方向                                                                                                               | `'ltr' \| 'rtl'`                                                   | -           | ✅        |
+| nzMaskClosable      | 点击蒙层是否允许关闭                                                                                                   | `boolean`                                                          | `true`      | ✅       |
+| nzMask              | 是否展示遮罩                                                                                                           | `boolean`                                                          | `true`      | ✅       |
+| nzCloseOnNavigation | 当用户在历史中前进/后退时是否关闭抽屉组件。注意，这通常不包括点击链接（除非用户使用 HashLocationStrategy）。           | `boolean`                                                          | `true`      | ✅       |
+| nzDirection         | 文字方向                                                                                                               | `'ltr' \| 'rtl'`                                                   | -           | ✅       |
 | nzKeyboard          | 是否支持键盘 esc 关闭                                                                                                  | `boolean`                                                          | `true`      |
 | nzMaskStyle         | 遮罩样式                                                                                                               | `object`                                                           | `{}`        |
 | nzBodyStyle         | Modal body 样式                                                                                                        | `object`                                                           | `{}`        |

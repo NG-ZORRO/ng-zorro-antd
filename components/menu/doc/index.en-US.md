@@ -7,7 +7,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/3XZcjGpvK/Menu.svg'
 description: A versatile menu for navigation.
 ---
 
-
 ## When To Use
 
 Navigation menu is important for a website, it helps users jump from one site section to another quickly.
@@ -15,7 +14,6 @@ Mostly, it includes top navigation and side navigation. Top navigation provides 
 Side navigation provides the multi-level structure of the website.
 
 More layouts with navigation: [layout](/components/layout/en).
-
 
 ## API
 
@@ -35,19 +33,19 @@ More layouts with navigation: [layout](/components/layout/en).
 
 ### [nz-menu]
 
-| Param                 | Description                                                                  | Type                                     | Default value |
-|-----------------------|------------------------------------------------------------------------------|------------------------------------------|---------------|
-| `[nzInlineCollapsed]` | specifies the collapsed status when menu is `inline` mode                    | `boolean`                                | -             |
-| `[nzInlineIndent]`    | indent px of `inline` menu item on each level                                | `number`                                 | `24`          |
+| Param                 | Description                                                                   | Type                                     | Default value |
+| --------------------- | ----------------------------------------------------------------------------- | ---------------------------------------- | ------------- |
+| `[nzInlineCollapsed]` | specifies the collapsed status when menu is `inline` mode                     | `boolean`                                | -             |
+| `[nzInlineIndent]`    | indent px of `inline` menu item on each level                                 | `number`                                 | `24`          |
 | `[nzMode]`            | type of the menu; `vertical`、 `horizontal`, and `inline` modes are supported | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'`  |
-| `[nzSelectable]`      | allow selecting menu items                                                   | `boolean`                                | `true`        |
-| `[nzTheme]`           | color theme of the menu                                                      | `'light' \| 'dark'`                      | `'light'`     |
-| `(nzClick)`           | the Output when click `nz-menu-item` inside nz-menu                          | `EventEmitter<NzMenuItemComponent>`      |               |
+| `[nzSelectable]`      | allow selecting menu items                                                    | `boolean`                                | `true`        |
+| `[nzTheme]`           | color theme of the menu                                                       | `'light' \| 'dark'`                      | `'light'`     |
+| `(nzClick)`           | the Output when click `nz-menu-item` inside nz-menu                           | `EventEmitter<NzMenuItemComponent>`      |               |
 
 ### [nz-menu-item]
 
 | Param                  | Description                                                                                                                                                  | Type      | Default value |
-|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|---------------|
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------------- |
 | `[nzDisabled]`         | whether menu item is disabled or not                                                                                                                         | `boolean` | `false`       |
 | `[nzSelected]`         | whether menu item is selected or not                                                                                                                         | `boolean` | `false`       |
 | `[nzMatchRouter]`      | whether auto set `nzSelected` according to [routerLink](https://www.angular.io/api/router/RouterLink)                                                        | `boolean` | `false`       |
@@ -76,7 +74,7 @@ You can set the title of `[nz-submenu]` in the following ways.
 ```
 
 | Param                      | Description                                     | Type                                                                                        | Default value  |
-|----------------------------|-------------------------------------------------|---------------------------------------------------------------------------------------------|----------------|
+| -------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
 | `[nzPlacement]`            | placement of pop menu                           | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
 | `[nzOpen]`                 | whether sub menu is open or not, double binding | `boolean`                                                                                   | `false`        |
 | `[nzDisabled]`             | whether sub menu is disabled or not             | `boolean`                                                                                   | `false`        |
@@ -108,7 +106,7 @@ You can set the title of `[nz-menu-group]` in the following ways.
 ```
 
 | Param       | Description          | Type                          | Default value |
-|-------------|----------------------|-------------------------------|---------------|
+| ----------- | -------------------- | ----------------------------- | ------------- |
 | `[nzTitle]` | set menu group title | `string \| TemplateRef<void>` | -             |
 
 ### [nz-menu-divider]

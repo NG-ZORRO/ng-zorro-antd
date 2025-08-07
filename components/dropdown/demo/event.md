@@ -12,5 +12,3 @@ title:
 ## en-US
 
 An event will be triggered when you click menu items, in which you can make different operations by adding events to item.
-
-

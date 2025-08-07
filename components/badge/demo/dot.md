@@ -12,4 +12,3 @@ title:
 ## en-US
 
 This will simply display a red badge, without a specific count.
-

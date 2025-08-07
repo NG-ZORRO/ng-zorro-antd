@@ -18,11 +18,10 @@ export const appConfig: ApplicationConfig = {
     // ...
     provideNoopAnimations()
   ]
-}
+};
 ```
 
 ### Turn Off In Templates
-
 
 Import `NzNoAnimationModule`.
 
@@ -40,8 +39,7 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 Add the `nzNoAnimation` directive to the component.
 
 ```html
-<nz-modal nzNoAnimation></nz-modal>
-<ul nz-menu nzNoAnimation></ul>
+<nz-modal nzNoAnimation></nz-modal> <ul nz-menu nzNoAnimation></ul>
 ```
 
 ### Turn Off In Services
@@ -53,7 +51,7 @@ Add the following configuration while invoking components' services.
 ```ts
 {
   // ...
-  nzNoAnimation: true
+  nzNoAnimation: true;
 }
 ```
 
@@ -62,7 +60,7 @@ Add the following configuration while invoking components' services.
 ```ts
 {
   // ...
-  nzAnimate: false
+  nzAnimate: false;
 }
 ```
 
@@ -75,8 +73,6 @@ Instead, you can use `provideNzWave` or use `NoopAnimationsModule` to turn off t
 import { provideNzWave } from 'ng-zorro-antd/core/wave';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzWave({ disabled: true })
-  ]
-}
+  providers: [provideNzWave({ disabled: true })]
+};
 ```

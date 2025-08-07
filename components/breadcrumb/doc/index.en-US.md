@@ -6,7 +6,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/9Ltop8JwH/Breadcrumb.svg'
 description: Displays the current location within a hierarchy. And allow going back to states higher up in the hierarchy.
 ---
 
-
 ## When To Use
 
 - When the system has more than two layers in a hierarchy.
@@ -14,13 +13,12 @@ description: Displays the current location within a hierarchy. And allow going b
 - When the user may need to navigate back to a higher level.
 - When the application has multi-layer architecture.
 
-
 ## API
 
 ### nz-breadcrumb
 
 | Property           | Description                                                                                                                                                                                                      | Type                                  | Default          |
-|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|------------------|
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ---------------- |
 | `[nzSeparator]`    | Custom separator                                                                                                                                                                                                 | `string \| TemplateRef<void> \| null` | `'/'`            |
 | `[nzAutoGenerate]` | Auto generate breadcrumb                                                                                                                                                                                         | `boolean`                             | `false`          |
 | `[nzRouteLabel]`   | Name of property that determines displayed text in routing config. It should be used when `nzAutoGenerate` is `true`                                                                                             | `string`                              | `'breadcrumb'`   |
@@ -70,7 +68,11 @@ Use `nzRouteLabel` to custom `data` breadcrumb label:
 Use `nzRouteLabelFn` to format breadcrumb label in international application:
 
 ```html
-<nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'breadcrumbI18nKey'" [nzRouteLabelFn]="translateFn"></nz-breadcrumb>
+<nz-breadcrumb
+  [nzAutoGenerate]="true"
+  [nzRouteLabel]="'breadcrumbI18nKey'"
+  [nzRouteLabelFn]="translateFn"
+></nz-breadcrumb>
 ```
 
 ```ts
@@ -90,7 +92,12 @@ translateFn = (key:string) => this.yourI18nService.translate(key);
 Use `nzRouteFn` to format or bind params and query strings to the route it self in international application:
 
 ```html
-<nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'breadcrumbI18nKey'" [nzRouteLabelFn]="translateFn" [nzRouteFn]="customRoute"></nz-breadcrumb>
+<nz-breadcrumb
+  [nzAutoGenerate]="true"
+  [nzRouteLabel]="'breadcrumbI18nKey'"
+  [nzRouteLabelFn]="translateFn"
+  [nzRouteFn]="customRoute"
+></nz-breadcrumb>
 ```
 
 ```ts

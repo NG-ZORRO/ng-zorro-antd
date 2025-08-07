@@ -6,19 +6,17 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/Vyyeu8jq2/Tooltp.svg'
 description: Simple text popup box.
 ---
 
-
 ## When To Use
 
 - The Tooltip doesn't support complex text or operations. The tip is shown on mouse enter and is hidden on mouse leave.
 - To provide an explanation fo a `button/text/operation`. It's often used instead of the HTML `title` attribute to explain `button/text/operation`.
-
 
 ## API
 
 ### [nz-tooltip]
 
 | Property                        | Description                                                      | Type                                                                                                                                                                              | Default   |
-|---------------------------------|------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| ------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | `[nzTooltipArrowPointAtCenter]` | Arrow point at center of the origin                              | `boolean`                                                                                                                                                                         | `false`   |
 | `[nzTooltipTitle]`              | The text shown in the tooltip                                    | `string \| TemplateRef<void>`                                                                                                                                                     | -         |
 | `[nzTooltipTitleContext]`       | The context of tooltip title                                     | `object`                                                                                                                                                                          | -         |
@@ -38,7 +36,7 @@ description: Simple text popup box.
 The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.
 
 | Method             | Description     |
-|--------------------|-----------------|
+| ------------------ | --------------- |
 | `show()`           | Show            |
 | `hide()`           | Hide            |
 | `updatePosition()` | Update position |

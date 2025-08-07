@@ -11,25 +11,24 @@ description: Convert text into QR codes, and support custom color and logo.
 
 Used when the text needs to be converted into a QR Code.
 
-
 ## API
 
 ### nz-qrcode
 
-| Property           | Description                         | Type                            | Default     |
-|--------------------|-------------------------------------|---------------------------------|-------------|
-| `[nzValue]`        | scanned text                        | `string`                        | -           |
-| `[nzColor]`        | QR code Color                       | `string`                        | `'#000000'` |
-| `[nzBgColor]`      | QR code background color            | `string`                        | `'#FFFFFF'` |
-| `[nzSize]`         | QR code Size                        | `number`                        | `160`       |
-| `[nzPadding]`      | QR code Padding                     | `number \| number[]`            | `0`         |
-| `[nzIcon]`         | Icon address in QR code             | `string`                        | -           |
-| `[nzIconSize]`     | The size of the icon in the QR code | `number`                        | `40`        |
-| `[nzBordered]`     | Whether has border style            | `boolean`                       | `true`      |
+| Property           | Description                         | Type                              | Default     |
+| ------------------ | ----------------------------------- | --------------------------------- | ----------- |
+| `[nzValue]`        | scanned text                        | `string`                          | -           |
+| `[nzColor]`        | QR code Color                       | `string`                          | `'#000000'` |
+| `[nzBgColor]`      | QR code background color            | `string`                          | `'#FFFFFF'` |
+| `[nzSize]`         | QR code Size                        | `number`                          | `160`       |
+| `[nzPadding]`      | QR code Padding                     | `number \| number[]`              | `0`         |
+| `[nzIcon]`         | Icon address in QR code             | `string`                          | -           |
+| `[nzIconSize]`     | The size of the icon in the QR code | `number`                          | `40`        |
+| `[nzBordered]`     | Whether has border style            | `boolean`                         | `true`      |
 | `[nzStatus]`       | QR code status                      | `'active'｜'expired' ｜'loading'` | `'active'`  |
-| `[nzStatusRender]` | custom status                       | `TemplateRef<void> \| string`   | -           |
-| `[nzLevel]`        | Error Code Level                    | `'L'｜'M'｜'Q'｜'H'`               | `'M'`       |
-| `(nzRefresh)`      | callback                            | `EventEmitter<string>`          | -           |
+| `[nzStatusRender]` | custom status                       | `TemplateRef<void> \| string`     | -           |
+| `[nzLevel]`        | Error Code Level                    | `'L'｜'M'｜'Q'｜'H'`              | `'M'`       |
+| `(nzRefresh)`      | callback                            | `EventEmitter<string>`            | -           |
 
 ## Note
 
