@@ -2,13 +2,13 @@
 
 import eslint from '@eslint/js';
 import markdown from '@eslint/markdown';
-import tseslint from 'typescript-eslint';
 import angular from 'angular-eslint';
+import tseslint from 'typescript-eslint';
 
-import jsdoc from 'eslint-plugin-jsdoc';
-import prettier from 'eslint-plugin-prettier';
 import header from 'eslint-plugin-header';
 import importPlugin from 'eslint-plugin-import';
+import jsdoc from 'eslint-plugin-jsdoc';
+import prettier from 'eslint-plugin-prettier';
 import unusedImports from 'eslint-plugin-unused-imports';
 
 header.rules.header.meta.schema = false;
@@ -221,10 +221,12 @@ export default tseslint.config(
   {
     files: ['**/*.md'],
     plugins: {
+      prettier,
       markdown
     },
     extends: [markdown.configs.recommended],
     rules: {
+      'prettier/prettier': 'error',
       'markdown/no-missing-label-refs': 'off'
     }
   }

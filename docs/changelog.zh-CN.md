@@ -21,9 +21,9 @@ timeline: true
 
 ### Bug Fixes
 
-* **input-number:** 修复展示值不正确的问题 ([#9312](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9312)) ([7a2d3b6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7a2d3b6f97bf80f2f517626f5e02625c4488be80))
-* **select,tree-select,cascader:** 已选项文本超出时展示省略号 ([#9316](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9316)) ([30672d7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/30672d7978f0ca4b24ec04c196c967b69e614525))
-* **table:** 内部滚动元素增加 `cdkScrollable` 指令 ([#9308](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9308)) ([8cb4113](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cb411332b90b55bab3ec742c455e3aaaf4618d7))
+- **input-number:** 修复展示值不正确的问题 ([#9312](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9312)) ([7a2d3b6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7a2d3b6f97bf80f2f517626f5e02625c4488be80))
+- **select,tree-select,cascader:** 已选项文本超出时展示省略号 ([#9316](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9316)) ([30672d7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/30672d7978f0ca4b24ec04c196c967b69e614525))
+- **table:** 内部滚动元素增加 `cdkScrollable` 指令 ([#9308](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9308)) ([8cb4113](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cb411332b90b55bab3ec742c455e3aaaf4618d7))
 
 ## 20.1.1
 
@@ -310,7 +310,6 @@ timeline: true
 ### BREAKING CHANGES
 
 - **All**
-
   - `nzClass` / `nzStyle` 属性不再支持下列值：
     - `Set()`： 使用数组代替
     - 键分隔的多个类名或样式：使用空格分隔的多个键代替
@@ -365,7 +364,6 @@ timeline: true
   在 v19 中，我们将移除该特性，如果您已经在代码中运用了该特性，请考虑增加一个 `map` 方法将其映射到实际的值。
 
 - **checkbox** Redesign the checkbox group component.
-
   - 移除 `NzCheckBoxOptionInterface['checked]` 字段，另外 `NzCheckBoxOptionInterface` 被标记为弃用，请使用 `NzCheckboxOption` 替代
   - `nz-checkbox-group`: `ngModel` 类型从 `NzCheckBoxOptionInterface[]` 改为选项值的类型 `NzCheckboxOption['value'][]`
 
