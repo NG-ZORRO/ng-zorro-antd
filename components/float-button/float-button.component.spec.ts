@@ -62,6 +62,13 @@ describe('nz-float-button', () => {
       expect(view.getAttribute('nztype') === 'question-circle').toBe(true);
     });
 
+    it('should nzIcon support passing nzType string only', () => {
+      testComponent.nzIcon = 'file-search';
+      fixture.detectChanges();
+      const view = resultEl.nativeElement.getElementsByClassName('anticon-question-circle')[0];
+      expect(view.getAttribute('nztype') === 'file-search').toBe(true);
+    });
+
     it('nzOnClick', () => {
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
       fixture.detectChanges();
@@ -112,7 +119,7 @@ export class NzTestFloatButtonBasicComponent {
   nzTarget: string | null = null;
   nzType: 'default' | 'primary' = 'default';
   nzShape: 'circle' | 'square' = 'circle';
-  nzIcon: TemplateRef<void> | null = null;
+  nzIcon: string | TemplateRef<void> | null = null;
   nzDescription: TemplateRef<void> | null = null;
 
   @ViewChild('icon', { static: false }) icon!: TemplateRef<void>;
