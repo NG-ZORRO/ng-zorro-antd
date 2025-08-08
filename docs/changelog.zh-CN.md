@@ -15,6 +15,16 @@ timeline: true
 
 ---
 
+## 20.1.2
+
+`2025-08-08`
+
+### Bug Fixes
+
+* **input-number:** 修复展示值不正确的问题 ([#9312](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9312)) ([7a2d3b6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7a2d3b6f97bf80f2f517626f5e02625c4488be80))
+* **select,tree-select,cascader:** 已选项文本超出时展示省略号 ([#9316](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9316)) ([30672d7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/30672d7978f0ca4b24ec04c196c967b69e614525))
+* **table:** 内部滚动元素增加 `cdkScrollable` 指令 ([#9308](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9308)) ([8cb4113](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cb411332b90b55bab3ec742c455e3aaaf4618d7))
+
 ## 20.1.1
 
 `2025-08-05`
