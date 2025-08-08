@@ -187,14 +187,18 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
             <div>
               <div class="ant-popover-inner-content">
                 <div class="ant-popover-message">
-                  <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">
-                    <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
-                      <span class="ant-popover-message-icon">
+                  @if (nzIcon !== null) {
+                    <span class="ant-popover-message-icon">
+                      <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
                         <nz-icon [nzType]="icon || 'exclamation-circle'" nzTheme="fill" />
-                      </span>
+                      </ng-container>
+                    </span>
+                  }
+                  <div class="ant-popover-message-title">
+                    <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">
+                      {{ nzTitle }}
                     </ng-container>
-                    <div class="ant-popover-message-title">{{ nzTitle }}</div>
-                  </ng-container>
+                  </div>
                 </div>
                 <div class="ant-popover-buttons">
                   <button
@@ -250,7 +254,7 @@ export class NzPopconfirmComponent extends NzTooltipComponent {
 
   nzCondition = false;
   nzPopconfirmShowArrow = true;
-  nzIcon?: string | TemplateRef<void>;
+  nzIcon?: string | TemplateRef<void> | null;
   nzAutoFocus: NzAutoFocusType = null;
   nzBeforeConfirm: (() => Observable<boolean> | Promise<boolean> | boolean) | null = null;
 
