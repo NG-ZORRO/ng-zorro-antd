@@ -23,15 +23,10 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import {
-  isPresetColor,
-  isStatusColor,
-  NzPresetColor,
-  NzStatusColor,
-  presetColors,
-  statusColors
-} from 'ng-zorro-antd/core/color';
+import { isPresetColor, isStatusColor, presetColors, statusColors } from 'ng-zorro-antd/core/color';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzTagColor } from './typings';
 
 @Component({
   selector: 'nz-tag',
@@ -64,7 +59,7 @@ export class NzTagComponent implements OnChanges, OnInit {
   private destroyRef = inject(DestroyRef);
 
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
-  @Input() nzColor?: string | NzStatusColor | NzPresetColor;
+  @Input() nzColor?: NzTagColor;
   @Input({ transform: booleanAttribute }) nzChecked = false;
   @Input({ transform: booleanAttribute }) nzBordered = true;
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
