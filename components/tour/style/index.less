@@ -4,5 +4,26 @@
 @tour-prefix-cls: ~'@{ant-prefix}-tour';
 
 .@{tour-prefix-cls} {
-  // noop
+  // ====================== Mask ======================
+  &-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: @zindex-modal;
+    background: @modal-mask-bg;
+    pointer-events: auto;
+  }
+
+  &-inner {
+    position: relative;
+    text-align: start;
+    text-decoration: none;
+    background-color: @component-background;
+    background-clip: padding-box;
+    border: none;
+    border-radius: @border-radius-base;
+    box-shadow: @box-shadow-base;
+  }
 }

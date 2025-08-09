@@ -6,14 +6,10 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  standalone: true,
   selector: 'nz-tour-step',
   exportAs: 'nzTourStep',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   template: ``,
-  preserveWhitespaces: false
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
-export class NzTourStepComponent {
-  constructor() {}
-}
+export class NzTourStepComponent {}
