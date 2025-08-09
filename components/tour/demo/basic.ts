@@ -1,50 +1,55 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, signal, viewChild } from '@angular/core';
 
-import { NzTourStep } from 'ng-zorro-antd/tour';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzTourModule, NzTourStep } from 'ng-zorro-antd/tour';
 
 @Component({
   selector: 'nz-demo-tour-basic',
+  imports: [NzButtonModule, NzDividerModule, NzIconModule, NzSpaceModule, NzTourModule],
   template: `
     <button nz-button (click)="startTour()">Begin Tour</button>
     <nz-divider></nz-divider>
-    <button #upload nz-button>Upload</button>
-    <button #save nz-button nzType="primary">Save</button>
-    <button #otherActions nz-button>
-      <span nz-icon nzType="ellipsis" nzTheme="outline"></span>
-    </button>
+    <nz-space>
+      <button *nzSpaceItem #upload nz-button>Upload</button>
+      <button *nzSpaceItem #save nz-button nzType="primary">Save</button>
+      <button *nzSpaceItem #otherActions nz-button>
+        <nz-icon nzType="ellipsis" nzTheme="outline" />
+      </button>
+    </nz-space>
 
-    <nz-tour [nzOpen]="open" [nzSteps]="steps"></nz-tour>
+    <nz-tour [nzOpen]="open()" [nzSteps]="steps()"></nz-tour>
   `
 })
 export class NzDemoTourBasicComponent {
-  open = false;
+  open = signal(false);
 
-  @ViewChild('upload') private uploadBtn!: ElementRef;
-  @ViewChild('save') private saveBtn!: ElementRef;
-  @ViewChild('otherActions') private otherActionsBtn!: ElementRef;
+  private uploadBtn = viewChild('upload', { read: ElementRef });
+  private saveBtn = viewChild('save', { read: ElementRef });
+  private otherActionsBtn = viewChild('otherActions', { read: ElementRef });
 
-  readonly steps: NzTourStep[] = [
+  startTour(): void {
+    this.open.set(true);
+  }
+
+  readonly steps = computed<NzTourStep[]>(() => [
     {
       title: 'Upload',
-      content: 'Click here to upload your files.',
-      target: this.uploadBtn
+      description: 'Click here to upload your files.',
+      cover: 'https://user-images.githubusercontent.com/5378891/197385811-55df8480-7ff4-44bd-9d43-a7dade598d70.png',
+      target: this.uploadBtn()
     },
     {
       title: 'Save',
-      content: 'Click here to save your files.',
-      target: this.saveBtn
+      description: 'Click here to save your files.',
+      target: this.saveBtn()
     },
     {
       title: 'Other Actions',
-      content: 'Click here to see more actions.',
-      target: this.otherActionsBtn
+      description: 'Click here to see more actions.',
+      target: this.otherActionsBtn()
     }
-  ];
-
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  startTour(): void {
-    this.open = true;
-    this.cdr.markForCheck();
-  }
+  ]);
 }

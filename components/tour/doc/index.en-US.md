@@ -1,22 +1,21 @@
 ---
-type: Data Display
 category: Components
+type: Data Display
 subtitle: Tour
 title: Tour
-cover: https://gw.alipayobjects.com/zos/alicdn/7z8NJQhFb/Drawer.svg
-tag: 18.1.0
+cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*NMvqRZpuJfQAAAAAAAAAAAAADrJ8AQ/original
+description: A popup component for guiding users through a product.
+tag: 20.2.0
 ---
-
-A popup component for guiding users through a product.
 
 ## When To Use
 
 Use when you want to guide users through a product.
 
-```ts
-import { NzTourModule } from 'ng-zorro-antd/tour';
-```
-
 ## API
 
 ### nz-tour
+
+| Property   | Description                         | Type      | Default |
+| ---------- | ----------------------------------- | --------- | ------- |
+| `[nzOpen]` | Arrow point at center of the origin | `boolean` | `false` |

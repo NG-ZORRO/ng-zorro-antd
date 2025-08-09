@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './index';
 export * from './tour';
 export * from './tour-step';
 export * from './tour.module';
 export * from './tour.service';
+export * from './types';

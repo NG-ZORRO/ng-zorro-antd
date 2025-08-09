@@ -6,6 +6,4 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class NzTourService {
-  constructor() {}
-}
+export class NzTourService {}
