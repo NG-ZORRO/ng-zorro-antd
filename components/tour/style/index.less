@@ -6,7 +6,7 @@
 .@{tour-prefix-cls} {
   // ====================== Mask ======================
   &-mask {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
@@ -25,5 +25,13 @@
     border: none;
     border-radius: @border-radius-base;
     box-shadow: @box-shadow-base;
+  }
+
+  &-cover {
+    text-align: center;
+
+    img {
+      width: 100%;
+    }
   }
 }

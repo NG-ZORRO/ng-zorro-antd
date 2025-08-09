@@ -3,32 +3,159 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  input,
+  signal,
+  ViewEncapsulation
+} from '@angular/core';
+
+type HoleRect = { x: number; y: number; width: number; height: number } | null;
 
 const getRandomId = (): string => Math.random().toString(36).slice(2);
 
 @Component({
   selector: 'nz-tour-mask',
   template: `
-    <div class="ant-tour-mask">
-      <svg>
-        <defs>
-          <mask [attr.id]="maskId">
-            <rect x="0" y="0" [attr.width]="maskRectSize.width" [attr.height]="maskRectSize.height" fill="white"></rect>
-          </mask>
-        </defs>
-        <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.5)" [attr.mask]="maskUrl" />
-      </svg>
-    </div>
+    @if (open() && showMask()) {
+      <div
+        class="ant-tour-mask"
+        [style.position]="'fixed'"
+        [style.left]="'0'"
+        [style.right]="'0'"
+        [style.top]="'0'"
+        [style.bottom]="'0'"
+        [style.zIndex]="zIndex() ?? null"
+        [style.pointerEvents]="hole() && !disabledInteraction() ? 'none' : 'auto'"
+      >
+        <svg [style.width]="'100%'" [style.height]="'100%'">
+          <defs>
+            <mask [attr.id]="maskId">
+              <rect x="0" y="0" [attr.width]="maskRectSize.width" [attr.height]="maskRectSize.height" fill="white" />
+              @if (hole(); as r) {
+                <rect
+                  [attr.x]="r.x"
+                  [attr.y]="r.y"
+                  [attr.width]="r.width"
+                  [attr.height]="r.height"
+                  fill="black"
+                  [attr.rx]="radius()"
+                  [attr.ry]="radius()"
+                  [class.ant-tour-placeholder-animated]="animated()"
+                />
+              }
+            </mask>
+          </defs>
+
+          <!-- dim background with hole -->
+          <rect x="0" y="0" width="100%" height="100%" [attr.fill]="fill()" [attr.mask]="maskUrl" />
+
+          <!-- Block click region: capture clicks outside the hole when interaction is enabled for the hole -->
+          @if (hole(); as r) {
+            <!-- Top -->
+            <rect
+              fill="transparent"
+              [attr.pointer-events]="'auto'"
+              x="0"
+              y="0"
+              width="100%"
+              [attr.height]="max0(r.y)"
+            />
+            <!-- Left -->
+            <rect
+              fill="transparent"
+              [attr.pointer-events]="'auto'"
+              x="0"
+              y="0"
+              [attr.width]="max0(r.x)"
+              height="100%"
+            />
+            <!-- Bottom -->
+            <rect
+              fill="transparent"
+              [attr.pointer-events]="'auto'"
+              x="0"
+              [attr.y]="r.y + r.height"
+              width="100%"
+              [attr.height]="calc100Minus(r.y + r.height)"
+            />
+            <!-- Right -->
+            <rect
+              fill="transparent"
+              [attr.pointer-events]="'auto'"
+              [attr.x]="r.x + r.width"
+              y="0"
+              [attr.width]="calc100Minus(r.x + r.width)"
+              height="100%"
+            />
+          }
+        </svg>
+      </div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    '(window:resize)': 'computeHoleRect()',
+    '(window:scroll)': 'computeHoleRect()'
+  }
 })
 export class NzTourMaskComponent {
-  private id = getRandomId();
-  maskId = `ant-tour-mask-${this.id}`;
-  maskUrl = `url(#${this.maskId})`;
+  // Inputs (signals)
+  target = input<HTMLElement | null>(null);
+  padding = input(8);
+  radius = input(4);
+  fill = input('rgba(0,0,0,0.5)');
+  zIndex = input<number | null>(null);
+  disabledInteraction = input(false, { transform: booleanAttribute });
+  showMask = input(true, { transform: booleanAttribute });
+  open = input(true, { transform: booleanAttribute });
+  animated = input(false, { transform: booleanAttribute });
 
-  private isSafari = typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  maskRectSize = this.isSafari ? { width: '100%', height: '100%' } : { width: '100vw', height: '100vh' };
+  // Derived state
+  private readonly id = getRandomId();
+  readonly maskId = `ant-tour-mask-${this.id}`;
+  readonly maskUrl = `url(#${this.maskId})`;
+
+  private readonly isSafari =
+    typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  readonly maskRectSize = this.isSafari ? { width: '100%', height: '100%' } : { width: '100vw', height: '100vh' };
+
+  // Hole rectangle (x, y in viewport, width/height)
+  private readonly holeRect = signal<HoleRect>(null);
+  readonly hole = computed(() => this.holeRect());
+
+  // Utility bindings for SVG calc strings
+  max0 = (v: number): number => Math.max(0, v);
+  calc100Minus = (v: number): string => `calc(100% - ${Math.max(0, v)}px)`;
+
+  // Recompute when inputs change (Angular will call this via change detection; we just read the latest values)
+  protected computeHoleRect(): void {
+    const el = this.target();
+    if (!el) {
+      this.holeRect.set(null);
+      return;
+    }
+    const rect = el.getBoundingClientRect();
+    const p = this.padding();
+    this.holeRect.set({
+      x: Math.max(0, rect.left - p),
+      y: Math.max(0, rect.top - p),
+      width: Math.max(0, rect.width + p * 2),
+      height: Math.max(0, rect.height + p * 2)
+    });
+  }
+
+  // Ensure initial compute once the component is instantiated and whenever target/padding toggles
+  readonly _recompute = effect(() => {
+    // read dependencies to trigger recompute
+    void this.target();
+    void this.padding();
+    void this.open();
+    this.computeHoleRect();
+  });
 }
