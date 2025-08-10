@@ -30,8 +30,6 @@ export class NzTourService {
       animated?: boolean;
     }
   ): void {
-    const desiredZ = (typeof zIndex === 'number' ? zIndex : 1001) - 1;
-
     if (!this.overlayRef) {
       this.overlayRef = this.overlay.create({
         hasBackdrop: false,
@@ -43,21 +41,20 @@ export class NzTourService {
       pane.style.height = '100%';
     }
 
-    overlayZIndexSetter(this.overlayRef, desiredZ);
+    overlayZIndexSetter(this.overlayRef, zIndex);
 
     if (!this.maskRef || !this.overlayRef.hasAttached()) {
       this.maskRef = this.overlayRef.attach(new ComponentPortal(NzTourMaskComponent));
     }
 
-    this.maskRef!.setInput('zIndex', desiredZ);
+    this.maskRef!.setInput('zIndex', zIndex);
     this.maskRef!.setInput('target', target);
-    if (opts) {
-      if (opts.padding != null) this.maskRef!.setInput('padding', opts.padding);
-      if (opts.radius != null) this.maskRef!.setInput('radius', opts.radius);
-      if (opts.fill != null) this.maskRef!.setInput('fill', opts.fill);
-      if (opts.disabledInteraction != null) this.maskRef!.setInput('disabledInteraction', opts.disabledInteraction);
-      if (opts.animated != null) this.maskRef!.setInput('animated', opts.animated);
-    }
+    const { padding, radius, fill, disabledInteraction, animated } = opts || {};
+    if (padding != null) this.maskRef!.setInput('padding', padding);
+    if (radius != null) this.maskRef!.setInput('radius', radius);
+    if (fill != null) this.maskRef!.setInput('fill', fill);
+    if (disabledInteraction != null) this.maskRef!.setInput('disabledInteraction', disabledInteraction);
+    if (animated != null) this.maskRef!.setInput('animated', animated);
   }
 
   detachMask(): void {
