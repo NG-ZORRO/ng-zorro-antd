@@ -107,6 +107,7 @@ export class NzTourComponent {
   nzSteps = input.required<NzTourStep[]>();
   nzOpen = input(false, { transform: booleanAttribute });
   nzZIndex = input(1001, { transform: numberAttribute });
+  nzMask = input(true, { transform: booleanAttribute });
   readonly nzClose = output<void>();
 
   readonly tourTemplate = viewChild.required('tourTemplate', { read: TemplateRef });
@@ -139,11 +140,8 @@ export class NzTourComponent {
   constructor() {
     // Attach or detach mask overlay when open state or zIndex changes
     effect(() => {
-      const open = this.isOpen();
-      const zIndex = this.nzZIndex();
-      const target = this.currentStepTarget();
-      if (open) {
-        this.tourService.attachOrUpdateMask(zIndex, target);
+      if (this.isOpen() && this.nzMask()) {
+        this.tourService.attachOrUpdateMask(this.nzZIndex(), this.currentStepTarget());
       } else {
         this.tourService.detachMask();
       }
