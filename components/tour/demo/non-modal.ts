@@ -7,7 +7,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTourModule, NzTourStep } from 'ng-zorro-antd/tour';
 
 @Component({
-  selector: 'nz-demo-tour-basic',
+  selector: 'nz-demo-tour-non-modal',
   imports: [NzButtonModule, NzDividerModule, NzIconModule, NzSpaceModule, NzTourModule],
   template: `
     <button nz-button (click)="open.set(true)">Begin Tour</button>
@@ -23,7 +23,7 @@ import { NzTourModule, NzTourStep } from 'ng-zorro-antd/tour';
     <nz-tour [nzOpen]="open()" [nzSteps]="steps()" (nzClose)="open.set(false)"></nz-tour>
   `
 })
-export class NzDemoTourBasicComponent {
+export class NzDemoTourNonModalComponent {
   readonly open = signal(false);
 
   private uploadBtn = viewChild('upload', { read: ElementRef });
