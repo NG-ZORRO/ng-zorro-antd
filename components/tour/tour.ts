@@ -10,9 +10,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
+  inject,
   input,
   linkedSignal,
   numberAttribute,
+  output,
   signal,
   TemplateRef,
   viewChild,
@@ -23,19 +26,14 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 
-import { NzTourMaskComponent } from './mask';
+import { NzTourService } from './tour.service';
 import { NzTourStep } from './types';
 
 @Component({
   selector: 'nz-tour',
   exportAs: 'nzTour',
-  imports: [NzButtonModule, CdkConnectedOverlay, NzTourMaskComponent, NzOverlayModule],
+  imports: [NzButtonModule, CdkConnectedOverlay, NzOverlayModule],
   template: `
-    <!-- Global mask overlay (attached via OverlayRef) -->
-    @if (isOpen()) {
-      <nz-tour-mask [target]="currentStepTarget()" [zIndex]="nzZIndex()" />
-    }
-
     <!-- Connected overlay for the tour panel -->
     <ng-template
       #tourTemplate
@@ -87,13 +85,11 @@ import { NzTourStep } from './types';
                     Previous
                   </button>
                 }
-                <button nz-button nzType="primary" (click)="next()">
-                  @if (currentStepIndex() < totalSteps() - 1) {
-                    Next
-                  } @else {
-                    Finish
-                  }
-                </button>
+                @if (currentStepIndex() < totalSteps() - 1) {
+                  <button nz-button nzType="primary" (click)="next()">Next</button>
+                } @else {
+                  <button nz-button nzType="primary" (click)="close()">Finish</button>
+                }
               </div>
             </div>
           </div>
@@ -105,11 +101,14 @@ import { NzTourStep } from './types';
   encapsulation: ViewEncapsulation.None
 })
 export class NzTourComponent {
+  // ====== Separate Mask Overlay management ======
+  private readonly tourService = inject(NzTourService);
+
   nzSteps = input.required<NzTourStep[]>();
   nzOpen = input(false, { transform: booleanAttribute });
   nzZIndex = input(1001, { transform: numberAttribute });
+  readonly nzClose = output<void>();
 
-  readonly maskTemplate = viewChild.required('maskTemplate', { read: TemplateRef });
   readonly tourTemplate = viewChild.required('tourTemplate', { read: TemplateRef });
 
   readonly isOpen = linkedSignal(this.nzOpen);
@@ -137,6 +136,20 @@ export class NzTourComponent {
   ];
   readonly placement = signal<'bottom' | 'top' | 'left' | 'right'>('bottom');
 
+  constructor() {
+    // Attach or detach mask overlay when open state or zIndex changes
+    effect(() => {
+      const open = this.isOpen();
+      const zIndex = this.nzZIndex();
+      const target = this.currentStepTarget();
+      if (open) {
+        this.tourService.attachOrUpdateMask(zIndex, target);
+      } else {
+        this.tourService.detachMask();
+      }
+    });
+  }
+
   protected onPositionChange(position: ConnectedOverlayPositionChange): void {
     const { originX, originY, overlayX, overlayY } = position.connectionPair;
     if (overlayY === 'top' && originY === 'bottom') {
@@ -152,6 +165,12 @@ export class NzTourComponent {
 
   close(): void {
     this.isOpen.set(false);
+    // reset current step index to 0
+    this.currentStepIndex.set(0);
+    // Detach mask overlay if it exists
+    this.tourService.detachMask();
+    // Emit close event
+    this.nzClose.emit();
   }
 
   next(): void {

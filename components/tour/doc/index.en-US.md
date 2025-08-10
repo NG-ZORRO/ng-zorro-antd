@@ -1,7 +1,6 @@
 ---
 category: Components
 type: Data Display
-subtitle: Tour
 title: Tour
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*NMvqRZpuJfQAAAAAAAAAAAAADrJ8AQ/original
 description: A popup component for guiding users through a product.
