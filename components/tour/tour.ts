@@ -4,7 +4,7 @@
  */
 
 import { coerceElement } from '@angular/cdk/coercion';
-import { CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectedPosition } from '@angular/cdk/overlay';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -32,7 +32,7 @@ import { NzTourStep } from './types';
   template: `
     <!-- Global mask overlay (attached via OverlayRef) -->
     @if (isOpen()) {
-      <nz-tour-mask [target]="currentStepTarget()" />
+      <nz-tour-mask [target]="currentStepTarget()" [zIndex]="nzZIndex()" />
     }
 
     <!-- Connected overlay for the tour panel -->
@@ -41,9 +41,19 @@ import { NzTourStep } from './types';
       cdkConnectedOverlay
       [cdkConnectedOverlayOrigin]="currentStepTarget()!"
       [cdkConnectedOverlayOpen]="isOpen()"
+      [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayPush]="true"
+      (positionChange)="onPositionChange($event)"
       (detach)="close()"
     >
-      <div class="ant-tour">
+      <div
+        class="ant-tour"
+        [style.zIndex]="nzZIndex()"
+        [class.ant-tour-placement-bottom]="placement() === 'bottom'"
+        [class.ant-tour-placement-top]="placement() === 'top'"
+        [class.ant-tour-placement-left]="placement() === 'left'"
+        [class.ant-tour-placement-right]="placement() === 'right'"
+      >
         <div class="ant-tour-arrow"></div>
         <div class="ant-tour-content">
           <div class="ant-tour-inner">
@@ -60,11 +70,20 @@ import { NzTourStep } from './types';
               {{ currentStep().description }}
             </div>
             <div class="ant-tour-footer">
-              <div class="ant-tour-indicators"> {{ currentStepIndex() + 1 }} / {{ totalSteps() }} </div>
+              <div class="ant-tour-indicators">
+                @for (item of nzSteps(); let index = $index; track item) {
+                  <div
+                    class="ant-tour-indicator"
+                    [class.ant-tour-indicator-active]="currentStepIndex() === index"
+                  ></div>
+                }
+              </div>
               <div class="ant-tour-buttons">
-                <button nz-button nzType="default" (click)="prev()" [disabled]="currentStepIndex() === 0">
-                  Previous
-                </button>
+                @if (currentStepIndex() > 0) {
+                  <button nz-button nzType="default" (click)="prev()" [disabled]="currentStepIndex() === 0">
+                    Previous
+                  </button>
+                }
                 <button nz-button nzType="primary" (click)="next()">
                   @if (currentStepIndex() < totalSteps() - 1) {
                     Next
@@ -85,7 +104,7 @@ import { NzTourStep } from './types';
 export class NzTourComponent {
   nzSteps = input.required<NzTourStep[]>();
   nzOpen = input(false, { transform: booleanAttribute });
-  nzZIndex = input(99, { transform: numberAttribute });
+  nzZIndex = input(1001, { transform: numberAttribute });
 
   readonly maskTemplate = viewChild.required('maskTemplate', { read: TemplateRef });
   readonly tourTemplate = viewChild.required('tourTemplate', { read: TemplateRef });
@@ -101,6 +120,32 @@ export class NzTourComponent {
     }
     return null;
   });
+
+  // Positioning and placement state
+  readonly positions: ConnectedPosition[] = [
+    // Below target (default)
+    { originX: 'center', originY: 'bottom', overlayX: 'center', overlayY: 'top', offsetY: 8 },
+    // Above target
+    { originX: 'center', originY: 'top', overlayX: 'center', overlayY: 'bottom', offsetY: -8 },
+    // Right side
+    { originX: 'end', originY: 'center', overlayX: 'start', overlayY: 'center', offsetX: 8 },
+    // Left side
+    { originX: 'start', originY: 'center', overlayX: 'end', overlayY: 'center', offsetX: -8 }
+  ];
+  readonly placement = signal<'bottom' | 'top' | 'left' | 'right'>('bottom');
+
+  protected onPositionChange(position: ConnectedOverlayPositionChange): void {
+    const { originX, originY, overlayX, overlayY } = position.connectionPair;
+    if (overlayY === 'top' && originY === 'bottom') {
+      this.placement.set('bottom');
+    } else if (overlayY === 'bottom' && originY === 'top') {
+      this.placement.set('top');
+    } else if (overlayX === 'start' && originX === 'end') {
+      this.placement.set('right');
+    } else if (overlayX === 'end' && originX === 'start') {
+      this.placement.set('left');
+    }
+  }
 
   close(): void {
     this.isOpen.set(false);

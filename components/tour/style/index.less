@@ -2,18 +2,28 @@
 @import '../../style/mixins/index';
 
 @tour-prefix-cls: ~'@{ant-prefix}-tour';
+@tour-close-btn-size: 22px;
+@tour-indicator-height: 6px;
+@tour-indicator-width: 6px;
 
 .@{tour-prefix-cls} {
+  position: absolute;;
+  width: 520px;
+  margin: 0;
+  padding: 0;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  list-style: none;
+  // max-width: fit-content;
+  visibility: visible;
+
   // ====================== Mask ======================
   &-mask {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     z-index: @zindex-modal;
     background: @modal-mask-bg;
     pointer-events: auto;
+    inset: 0;
   }
 
   &-inner {
@@ -28,10 +38,57 @@
   }
 
   &-cover {
+    padding: calc(@padding-md + @tour-close-btn-size + @padding-xs) @padding-md 0;
     text-align: center;
 
     img {
       width: 100%;
+    }
+  }
+
+  &-header {
+    width: calc(100% - @tour-close-btn-size);
+    padding: @padding-md @padding-md @padding-xs;
+    word-break: break-word;
+
+    .@{tour-prefix-cls}-title {
+      font-weight: 600;
+    }
+  }
+
+  &-description {
+    padding: 0 @padding-md;
+    word-wrap: break-word;
+  }
+
+  &-footer {
+    display: flex;
+    padding: @padding-xs @padding-md @padding-md;
+    text-align: end;
+    border-radius: 0 0 @border-radius-sm @border-radius-sm;
+
+    .@{tour-prefix-cls}-indicators {
+      display: inline-block;
+
+      .@{tour-prefix-cls}-indicator {
+        display: inline-block;
+        width: @tour-indicator-width;
+        height: @tour-indicator-height;
+        background: @fill-color;
+        border-radius: 50%;
+
+        &:not(:last-child) {
+          margin-inline-end: @tour-indicator-height;
+        }
+
+        &-active {
+          background: @primary-color;
+        }
+      }
+    }
+
+    .@{tour-prefix-cls}-buttons {
+      margin-inline-start: auto;
     }
   }
 }
