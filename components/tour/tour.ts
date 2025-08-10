@@ -20,6 +20,7 @@ import {
 } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 
 import { NzTourMaskComponent } from './mask';
@@ -28,7 +29,7 @@ import { NzTourStep } from './types';
 @Component({
   selector: 'nz-tour',
   exportAs: 'nzTour',
-  imports: [NzButtonModule, CdkConnectedOverlay, NzTourMaskComponent],
+  imports: [NzButtonModule, CdkConnectedOverlay, NzTourMaskComponent, NzOverlayModule],
   template: `
     <!-- Global mask overlay (attached via OverlayRef) -->
     @if (isOpen()) {
@@ -45,6 +46,8 @@ import { NzTourStep } from './types';
       [cdkConnectedOverlayPush]="true"
       (positionChange)="onPositionChange($event)"
       (detach)="close()"
+      nzConnectedOverlay
+      [nzZIndex]="nzZIndex()"
     >
       <div
         class="ant-tour"
