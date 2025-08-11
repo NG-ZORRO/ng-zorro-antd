@@ -204,7 +204,7 @@ export type NzSelectSizeType = NzSizeLDSType;
     '[class.ant-select-sm]': 'finalSize() === "small"',
     '[class.ant-select-show-arrow]': `nzShowArrow`,
     '[class.ant-select-disabled]': 'nzDisabled',
-    '[class.ant-select-show-search]': `(nzShowSearch || nzMode !== 'default') && !nzDisabled`,
+    '[class.ant-select-show-search]': `nzShowSearch && !nzDisabled`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
     '[class.ant-select-filled]': `nzVariant === 'filled'`,
