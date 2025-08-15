@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const options: NzCascaderOption[] = [
@@ -47,15 +48,14 @@ const options: NzCascaderOption[] = [
 
 @Component({
   selector: 'nz-demo-cascader-prefix-and-suffix',
-  imports: [NzCascaderModule, NzIconModule],
+  imports: [NzCascaderModule, NzFlexModule, NzIconModule],
   template: `
-    <nz-cascader [nzOptions]="nzOptions" nzSuffixIcon="smile"></nz-cascader>
-    <br />
-    <br />
-    <nz-cascader [nzOptions]="nzOptions" [nzPrefix]="prefix"></nz-cascader>
-    <ng-template #prefix>
-      <nz-icon nzType="smile" />
-    </ng-template>
+    <nz-flex nzVertical nzGap="small">
+      <nz-cascader [nzOptions]="nzOptions" nzSuffixIcon="smile"></nz-cascader>
+      <nz-cascader [nzOptions]="nzOptions" nzExpandIcon="smile"></nz-cascader>
+      <nz-cascader [nzOptions]="nzOptions" [nzPrefix]="smile"></nz-cascader>
+    </nz-flex>
+    <ng-template #smile><nz-icon nzType="smile" /></ng-template>
   `
 })
 export class NzDemoCascaderPrefixAndSuffixComponent {

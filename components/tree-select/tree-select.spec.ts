@@ -7,7 +7,7 @@ import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
-import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
+import { Component, DebugElement, NgZone, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -27,7 +27,7 @@ import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NzTreeSelectComponent } from './tree-select.component';
 import { NzTreeSelectModule } from './tree-select.module';
 
-describe('tree-select component', () => {
+describe('tree-select', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let zone: MockNgZone;
@@ -379,6 +379,25 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.isComposing).toBe(true);
       expect(treeSelectComponent.inputValue).toBe('');
     }));
+
+    it('should nzPrefix work', () => {
+      const host = fixture.debugElement.nativeElement;
+      testComponent.prefix = 'prefix';
+      fixture.detectChanges();
+      expect(host.querySelector('.ant-select-prefix')!.textContent?.trim()).toBe('prefix');
+
+      testComponent.prefix = testComponent.affixTemplate;
+      fixture.detectChanges();
+      expect(host.querySelector('.ant-select-prefix')!.textContent?.trim()).toBe('icon');
+    });
+
+    it('should nzSuffixIcon work', () => {
+      const host = fixture.debugElement.nativeElement;
+      expect(host.querySelector('.anticon-down')).toBeTruthy();
+      testComponent.suffixIcon = testComponent.affixTemplate;
+      fixture.detectChanges();
+      expect(host.querySelector('nz-select-arrow')!.textContent?.trim()).toBe('icon');
+    });
   });
 
   describe('checkable', () => {
@@ -747,10 +766,12 @@ describe('tree-select component', () => {
       [nzBackdrop]="hasBackdrop"
       nzDropdownClassName="class1 class2"
     ></nz-tree-select>
+    <ng-template #affixTemplate>icon</ng-template>
   `
 })
 export class NzTestTreeSelectBasicComponent {
   @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent!: NzTreeSelectComponent;
+  @ViewChild('affixTemplate', { static: false }) affixTemplate!: TemplateRef<void>;
   expandKeys = ['1001', '10001'];
   value: string | string[] | null = '10001';
   size: NzSizeLDSType = 'default';
@@ -761,6 +782,8 @@ export class NzTestTreeSelectBasicComponent {
   dropdownMatchSelectWidth = true;
   multiple = false;
   maxTagCount = Infinity;
+  prefix: string | TemplateRef<void> | null = null;
+  suffixIcon: string | TemplateRef<void> | null = null;
   nodes: NzTreeNodeOptions[] = [
     {
       title: 'root1',
