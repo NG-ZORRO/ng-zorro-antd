@@ -33,13 +33,15 @@
     min-width: 111px;
     height: 180px;
     margin: 0;
-    margin: -@dropdown-edge-child-vertical-padding 0;
     padding: @cascader-dropdown-edge-child-vertical-padding 0;
     overflow: auto;
     vertical-align: top;
     list-style: none;
-    border-right: @border-width-base @border-style-base @cascader-menu-border-color-split;
     -ms-overflow-style: -ms-autohiding-scrollbar; // https://github.com/ant-design/ant-design/issues/11857
+
+    &:not(:last-child) {
+      border-inline-end: @border-width-base @border-style-base @cascader-menu-border-color-split;
+    }
 
     &-item {
       display: flex;

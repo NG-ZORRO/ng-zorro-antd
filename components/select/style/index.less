@@ -6,8 +6,6 @@
 @import './status';
 
 @select-prefix-cls: ~'@{ant-prefix}-select';
-@select-height-without-border: @input-height-base - 2 * @border-width-base;
-@select-dropdown-edge-child-vertical-padding: @dropdown-edge-child-vertical-padding;
 
 .select-selector() {
   position: relative;
@@ -20,6 +18,24 @@
     cursor: pointer;
   }
 
+  .@{select-prefix-cls}-prefix {
+    flex: none;
+    margin-inline-end: @select-select-affix-padding;
+  }
+
+  .@{select-prefix-cls}-selection-wrap {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+
+    &::after {
+      width: 0;
+      overflow: hidden;
+      content: '\a0';
+    }
+  }
+
   .@{select-prefix-cls}-show-search& {
     cursor: text;
 
@@ -28,7 +44,7 @@
     }
   }
 
-  .@{select-prefix-cls}-focused:not(.@{select-prefix-cls}-disabled)& {
+  .@{select-prefix-cls}-focused:not(.@{select-prefix-cls}-disabled) & {
     .active();
   }
 
@@ -52,6 +68,7 @@
   .@{select-prefix-cls}-selection-search-input {
     margin: 0;
     padding: 0;
+    font-family: inherit;
     background: transparent;
     border: none;
     outline: none;
@@ -59,8 +76,7 @@
 
     &::-webkit-search-cancel-button {
       display: none;
-      /* stylelint-disable-next-line property-no-vendor-prefix */
-      -webkit-appearance: none;
+      appearance: none;
     }
   }
 }
@@ -68,7 +84,7 @@
 .@{select-prefix-cls} {
   .reset-component();
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   cursor: pointer;
 
   &:not(&-customize-input) &-selector {
@@ -87,6 +103,7 @@
     font-weight: normal;
     white-space: nowrap;
     text-overflow: ellipsis;
+    user-select: none;
 
     // IE11 css hack. `*::-ms-backdrop,` is a must have
     @media all and (-ms-high-contrast: none) {
@@ -120,7 +137,8 @@
     .iconfont-mixin();
     position: absolute;
     top: 50%;
-    right: @control-padding-horizontal - 1px;
+    inset-inline-start: auto;
+    inset-inline-end: @input-padding-horizontal-base;
     display: flex;
     align-items: center;
     height: @font-size-sm;
@@ -157,7 +175,8 @@
   &-clear {
     position: absolute;
     top: 50%;
-    right: @control-padding-horizontal - 1px;
+    inset-inline-start: auto;
+    inset-inline-end: @input-padding-horizontal-base;
     z-index: 1;
     display: inline-block;
     width: @font-size-sm;
@@ -195,10 +214,9 @@
     .reset-component();
     position: absolute;
     top: -9999px;
-    left: -9999px;
     z-index: @zindex-dropdown;
     box-sizing: border-box;
-    padding: @select-dropdown-edge-child-vertical-padding 0;
+    padding: @padding-xss;
     overflow: hidden;
     font-size: @font-size-base;
     // Fix select render lag of long text in chrome
@@ -301,12 +319,13 @@
         &.@{select-prefix-cls}-item-option-selected {
           background-color: @select-multiple-disabled-background;
         }
+
         color: @disabled-color;
         cursor: not-allowed;
       }
 
       &-grouped {
-        padding-left: @control-padding-horizontal * 2;
+        padding-inline-start: @control-padding-horizontal * 2;
       }
     }
   }
@@ -356,7 +375,7 @@
   &-underlined:focus &-selector,
   &-underlined&-focused &-selector,
   &-underlined&-disabled &-selector,
-  &-underlined&[disabled] &-selector{
+  &-underlined&[disabled] &-selector {
     background-color: transparent !important;
     border-width: 0 0 @border-width-base !important;
     border-radius: 0 !important;
