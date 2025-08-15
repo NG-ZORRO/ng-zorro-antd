@@ -1,29 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
-  selector: 'nz-demo-tree-select-multiple',
+  selector: 'nz-demo-tree-select-prefix-and-suffix',
   imports: [FormsModule, NzTreeSelectModule],
   template: `
-    <nz-tree-select
-      style="width: 250px"
-      nzPlaceHolder="Please select"
-      [(ngModel)]="value"
-      [nzMaxTagCount]="3"
-      [nzMaxTagPlaceholder]="omittedPlaceHolder"
-      [nzNodes]="nodes"
-      nzDefaultExpandAll
-      [nzAllowClear]="false"
-      [nzMultiple]="true"
-      (ngModelChange)="onChange($event)"
-    ></nz-tree-select>
-    <ng-template #omittedPlaceHolder let-omittedValues>and {{ omittedValues.length }} more...</ng-template>
+    <nz-tree-select [nzNodes]="nodes" nzSuffixIcon="smile" [(ngModel)]="value" nzDefaultExpandAll></nz-tree-select>
+    <br />
+    <br />
+    <nz-tree-select [nzNodes]="nodes" nzPrefix="Prefix" [(ngModel)]="value" nzDefaultExpandAll></nz-tree-select>
+  `,
+  styles: `
+    nz-tree-select {
+      width: 100%;
+    }
   `
 })
-export class NzDemoTreeSelectMultipleComponent {
-  value: string[] = [];
+export class NzDemoTreeSelectPrefixAndSuffixComponent {
+  readonly value = model();
   readonly nodes = [
     {
       title: 'parent 1',
@@ -45,8 +41,4 @@ export class NzDemoTreeSelectMultipleComponent {
       ]
     }
   ];
-
-  onChange($event: string[]): void {
-    console.log($event);
-  }
 }
