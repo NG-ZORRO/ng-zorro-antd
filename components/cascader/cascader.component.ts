@@ -49,6 +49,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import {
   DEFAULT_CASCADER_POSITIONS,
   getPlacementName,
@@ -103,46 +104,72 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   template: `
     @if (nzShowInput) {
       <div #selectContainer class="ant-select-selector">
-        @if (nzMultiple) {
-          @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node) {
-            <nz-select-item
-              deletable
+        @if (nzPrefix) {
+          <div class="ant-select-prefix">
+            <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
+          </div>
+        }
+        <span class="ant-select-selection-wrap">
+          @if (nzMultiple) {
+            <div class="ant-select-selection-overflow">
+              @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node) {
+                <div class="ant-select-selection-overflow-item">
+                  <nz-select-item
+                    deletable
+                    [disabled]="nzDisabled"
+                    [label]="nzDisplayWith(getAncestorOptionList(node))"
+                    (delete)="removeSelected(node)"
+                  ></nz-select-item>
+                </div>
+              }
+              @if (selectedNodes.length > nzMaxTagCount) {
+                <div class="ant-select-selection-overflow-item">
+                  <nz-select-item [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"></nz-select-item>
+                </div>
+              }
+
+              <div class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix">
+                <nz-select-search
+                  [showInput]="!!nzShowSearch"
+                  (isComposingChange)="isComposingChange($event)"
+                  [value]="inputValue"
+                  (valueChange)="inputValue = $event"
+                  [mirrorSync]="true"
+                  [disabled]="nzDisabled"
+                  [autofocus]="nzAutoFocus"
+                  [focusTrigger]="menuVisible"
+                ></nz-select-search>
+              </div>
+            </div>
+          } @else {
+            <nz-select-search
+              [showInput]="!!nzShowSearch"
+              (isComposingChange)="isComposingChange($event)"
+              [value]="inputValue"
+              (valueChange)="inputValue = $event"
+              [mirrorSync]="false"
               [disabled]="nzDisabled"
-              [label]="nzDisplayWith(getAncestorOptionList(node))"
-              (delete)="removeSelected(node)"
-            ></nz-select-item>
+              [autofocus]="nzAutoFocus"
+              [focusTrigger]="menuVisible"
+            ></nz-select-search>
+
+            @if (showLabelRender) {
+              <nz-select-item
+                [disabled]="nzDisabled"
+                [label]="labelRenderText"
+                [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
+                [contentTemplateOutletContext]="labelRenderContext"
+              ></nz-select-item>
+            }
           }
-          @if (selectedNodes.length > nzMaxTagCount) {
-            <nz-select-item [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"></nz-select-item>
+
+          @if (showPlaceholder) {
+            <nz-select-placeholder
+              [placeholder]="nzPlaceHolder || locale?.placeholder!"
+              [style.display]="inputValue || isComposing ? 'none' : 'block'"
+            ></nz-select-placeholder>
           }
-        }
-
-        <nz-select-search
-          [showInput]="!!nzShowSearch"
-          (isComposingChange)="isComposingChange($event)"
-          [value]="inputValue"
-          (valueChange)="inputValue = $event"
-          [mirrorSync]="nzMultiple"
-          [disabled]="nzDisabled"
-          [autofocus]="nzAutoFocus"
-          [focusTrigger]="menuVisible"
-        ></nz-select-search>
-
-        @if (showPlaceholder) {
-          <nz-select-placeholder
-            [placeholder]="nzPlaceHolder || locale?.placeholder!"
-            [style.display]="inputValue || isComposing ? 'none' : 'block'"
-          ></nz-select-placeholder>
-        }
-
-        @if (showLabelRender) {
-          <nz-select-item
-            [disabled]="nzDisabled"
-            [label]="labelRenderText"
-            [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
-            [contentTemplateOutletContext]="labelRenderContext"
-          ></nz-select-item>
-        }
+        </span>
       </div>
 
       @if (nzShowArrow) {
@@ -284,7 +311,8 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     NzSelectItemComponent,
     NzSelectPlaceholderComponent,
     NzSelectSearchComponent,
-    NzCascaderOptionComponent
+    NzCascaderOptionComponent,
+    NzStringTemplateOutletDirective
   ]
 })
 export class NzCascaderComponent
@@ -361,6 +389,7 @@ export class NzCascaderComponent
     return defaultDisplayRender(nodes.map(n => this.cascaderService.getOptionLabel(n!)));
   };
   // TODO: RTL
+  @Input() nzPrefix: string | TemplateRef<void> | null = null;
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
   @Input() nzExpandIcon: string | TemplateRef<void> = '';
 
@@ -465,7 +494,7 @@ export class NzCascaderComponent
   }
 
   get showLabelRender(): boolean {
-    return !this.hasInput && !this.nzMultiple && !!this.selectedNodes.length;
+    return !this.hasInput && !!this.selectedNodes.length;
   }
 
   get showPlaceholder(): boolean {
