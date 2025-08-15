@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-自定义前缀 `nzPrefix` 和后缀图标 `nzSuffixIcon`。
+通过 `nzPrefix` 自定前缀，通过 `nzSuffixIcon` 自定义选择框后缀图标，通过 `nzExpandIcon` 自定义次级菜单展开图标。
 
 ## en-US
 
-Custom `nzPrefix` and `nzSuffixIcon`.
+Use `nzPrefix` to customize the prefix content, use `nzSuffixIcon` to customize the selection box suffix icon, and use `nzExpandIcon` to customize the current item expand icon.
