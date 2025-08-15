@@ -1,22 +1,24 @@
 @import (reference) '../../style/themes/index';
+
 @select-prefix-cls: ~'@{ant-prefix}-select';
 
 @selection-item-padding: ceil(@font-size-base * 1.25);
 
 .@{select-prefix-cls}-single {
+  @select-height-without-border: @input-height-base - 2 * @border-width-base;
+
   // ========================= Selector =========================
   .@{select-prefix-cls}-selector {
     display: flex;
 
     .@{select-prefix-cls}-selection-search {
       position: absolute;
-      top: 0;
-      right: @input-padding-horizontal-base;
-      bottom: 0;
-      left: @input-padding-horizontal-base;
+      width: 100%;
+      inset: 0;
 
       &-input {
         width: 100%;
+        appearance: textfield;
       }
     }
 
@@ -39,9 +41,9 @@
 
     // For common baseline align
     &::after,
-    /* For '' value baseline align */
+      /* For '' value baseline align */
     .@{select-prefix-cls}-selection-item::after,
-    /* For undefined value baseline align */
+      /* For undefined value baseline align */
     .@{select-prefix-cls}-selection-placeholder::after {
       display: inline-block;
       width: 0;
@@ -50,14 +52,11 @@
     }
   }
 
-  // With arrow should provides `padding-right` to show the arrow
-  &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-search {
-    right: @input-padding-horizontal-base + @font-size-base;
-  }
-
+  // With arrow should provides `padding-inline-end` to show the arrow
   &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-item,
+  &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-search,
   &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-placeholder {
-    padding-right: @selection-item-padding;
+    padding-inline-end: @selection-item-padding;
   }
 
   // Opacity selection if open
@@ -71,12 +70,14 @@
   // Not customize
   &:not(.@{select-prefix-cls}-customize-input) {
     .@{select-prefix-cls}-selector {
+      align-items: center;
       width: 100%;
-      height: @input-height-base;
+      height: 100%;
       padding: 0 @input-padding-horizontal-base;
 
       .@{select-prefix-cls}-selection-search-input {
         height: @select-height-without-border;
+        font-size: @font-size-base;
       }
 
       &::after {
@@ -98,8 +99,8 @@
 
       .@{select-prefix-cls}-selection-placeholder {
         position: absolute;
-        right: 0;
-        left: 0;
+        inset-inline-start: 0;
+        inset-inline-end: 0;
         padding: 0 @input-padding-horizontal-base;
 
         &::after {
@@ -114,10 +115,16 @@
   // ============================================================
   .select-size(@suffix, @input-height) {
     @merged-cls: ~'@{select-prefix-cls}-@{suffix}';
+    @select-height-without-border: @input-height - 2 * @line-width;
 
     &.@{merged-cls}:not(.@{select-prefix-cls}-customize-input) {
       .@{select-prefix-cls}-selector {
+        flex: 1 1 auto;
         height: @input-height;
+
+        .@{select-prefix-cls}-selection-wrap::after {
+          line-height: @select-height-without-border;
+        }
 
         &::after,
         .@{select-prefix-cls}-selection-item,
@@ -136,28 +143,24 @@
   }
 
   .select-size('lg', @select-single-item-height-lg);
+  // stylelint-disable-next-line less/no-duplicate-variables
   .select-size('sm', @input-height-sm);
 
   // Size small need additional set padding
   &.@{select-prefix-cls}-sm {
     &:not(.@{select-prefix-cls}-customize-input) {
-      .@{select-prefix-cls}-selection-search {
-        right: @input-padding-horizontal-sm;
-        left: @input-padding-horizontal-sm;
-      }
-
       .@{select-prefix-cls}-selector {
         padding: 0 @input-padding-horizontal-sm;
       }
 
-      // With arrow should provides `padding-right` to show the arrow
+      // With arrow should provides `padding-inline-end` to show the arrow
       &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-search {
-        right: @input-padding-horizontal-sm + @font-size-base * 1.5;
+        padding-inline-end: @input-padding-horizontal-sm + @font-size-base * 1.5;
       }
 
       &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-item,
       &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-placeholder {
-        padding-right: @font-size-base * 1.5;
+        padding-inline-end: @font-size-base * 1.5;
       }
     }
   }

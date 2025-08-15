@@ -29,9 +29,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         }
       } @else {
         <ng-container *nzStringTemplateOutlet="suffixIcon; let suffixIcon">
-          @if (suffixIcon) {
-            <nz-icon [nzType]="suffixIcon" />
-          }
+          <nz-icon [nzType]="suffixIcon" />
         </ng-container>
       }
     }
