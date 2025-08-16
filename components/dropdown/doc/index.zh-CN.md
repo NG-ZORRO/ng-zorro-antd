@@ -26,6 +26,7 @@ description: 向下弹出的列表。
 | `[nzOverlayClassName]` | 下拉根元素的类名称                       | `string`                                                                                    | -              |
 | `[nzOverlayStyle]`     | 下拉根元素的样式                         | `object`                                                                                    | -              |
 | `(nzVisibleChange)`    | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>`                                                                     | -              |
+| `[nzArrow]`            | 下拉框箭头是否显示                       | `boolean`                                                                                   | `false`        |
 
 菜单使用 [nz-menu](/components/menu/zh)，还包括菜单项 `[nz-menu-item]`，分割线 `[nz-menu-divider]`。
 
