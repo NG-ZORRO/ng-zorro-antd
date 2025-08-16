@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDropDownModule, NzPlacementType } from 'ng-zorro-antd/dropdown';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
 
 @Component({
   selector: 'nz-demo-dropdown-arrow',
-  imports: [NzDropDownModule, NzButtonModule],
+  imports: [NzDropDownModule, NzButtonModule, NzFlexModule],
   template: `
-    <div>
+    <div nz-flex [nzGap]="8" nzWrap="wrap">
       @for (position of listOfPosition; track position) {
         <button nz-button nz-dropdown [nzDropdownMenu]="menu" [nzPlacement]="position" nzArrow>{{ position }}</button>
         <nz-dropdown-menu #menu="nzDropdownMenu">
@@ -19,15 +20,7 @@ import { NzDropDownModule, NzPlacementType } from 'ng-zorro-antd/dropdown';
         </nz-dropdown-menu>
       }
     </div>
-  `,
-  styles: [
-    `
-      [nz-button] {
-        margin-right: 8px;
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoDropdownArrowComponent {
   listOfPosition: NzPlacementType[] = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
