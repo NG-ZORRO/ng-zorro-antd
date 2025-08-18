@@ -14,6 +14,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NZ_TOUR_MASK_GAP_DEFAULT } from 'ng-zorro-antd/tour/types';
+
 type HoleRect = { x: number; y: number; width: number; height: number } | null;
 
 const getRandomId = (): string => Math.random().toString(36).slice(2);
@@ -87,8 +89,8 @@ export class NzTourMaskComponent {
   // Inputs (signals)
   zIndex = input.required<number>();
   target = input<HTMLElement | null>(null);
-  padding = input(8);
-  radius = input(4);
+  padding = input<number | [number, number]>(NZ_TOUR_MASK_GAP_DEFAULT.offset);
+  radius = input(NZ_TOUR_MASK_GAP_DEFAULT.radius);
   fill = input('rgba(0,0,0,0.5)');
   disabledInteraction = input(false, { transform: booleanAttribute });
   animated = input(false, { transform: booleanAttribute });
@@ -120,17 +122,18 @@ export class NzTourMaskComponent {
 
   protected computeHoleRect(): void {
     const el = this.target();
-    if (!el) {
+    if (!el || !(el instanceof Element)) {
       this.holeRect.set(null);
       return;
     }
     const rect = el.getBoundingClientRect();
-    const p = this.padding();
+    const padding = this.padding();
+    const [px, py] = Array.isArray(padding) ? padding : [padding, padding];
     this.holeRect.set({
-      x: Math.max(0, rect.left - p),
-      y: Math.max(0, rect.top - p),
-      width: Math.max(0, rect.width + p * 2),
-      height: Math.max(0, rect.height + p * 2)
+      x: Math.max(0, rect.left - px),
+      y: Math.max(0, rect.top - py),
+      width: Math.max(0, rect.width + py * 2),
+      height: Math.max(0, rect.height + py * 2)
     });
   }
 }

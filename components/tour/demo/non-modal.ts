@@ -1,16 +1,16 @@
-import { Component, computed, ElementRef, signal, viewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, viewChild } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzTourModule, NzTourStep } from 'ng-zorro-antd/tour';
+import { NzTourModule, NzTourService, NzTourStep } from 'ng-zorro-antd/tour';
 
 @Component({
   selector: 'nz-demo-tour-non-modal',
   imports: [NzButtonModule, NzDividerModule, NzIconModule, NzSpaceModule, NzTourModule],
   template: `
-    <button nz-button (click)="open.set(true)">Begin Non-modal Tour</button>
+    <button nz-button (click)="start()">Begin Non-modal Tour</button>
     <nz-divider></nz-divider>
     <nz-space>
       <button *nzSpaceItem #upload nz-button>Upload</button>
@@ -19,12 +19,10 @@ import { NzTourModule, NzTourStep } from 'ng-zorro-antd/tour';
         <nz-icon nzType="ellipsis" nzTheme="outline" />
       </button>
     </nz-space>
-
-    <nz-tour [nzOpen]="open()" [nzSteps]="steps()" [nzMask]="false" (nzClose)="open.set(false)"></nz-tour>
   `
 })
 export class NzDemoTourNonModalComponent {
-  readonly open = signal(false);
+  readonly nzTourService = inject(NzTourService);
 
   private uploadBtn = viewChild('upload', { read: ElementRef });
   private saveBtn = viewChild('save', { read: ElementRef });
@@ -48,4 +46,11 @@ export class NzDemoTourNonModalComponent {
       target: this.otherActionsBtn()
     }
   ]);
+
+  start(): void {
+    this.nzTourService.start({
+      steps: this.steps(),
+      mask: false
+    });
+  }
 }
