@@ -17,7 +17,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzDropDownDirective } from './dropdown.directive';
 import { NzDropDownModule } from './dropdown.module';
 
-fdescribe('dropdown', () => {
+describe('dropdown', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   function createComponent<T>(component: Type<T>, providers: Provider[] = []): ComponentFixture<T> {
