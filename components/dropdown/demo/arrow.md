@@ -1,7 +1,7 @@
 ---
 order: 9
 title:
-  zh-CN: 箭
+  zh-CN: 箭头
   en-US: Arrow
 ---
 
