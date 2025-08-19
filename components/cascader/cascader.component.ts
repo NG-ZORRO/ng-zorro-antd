@@ -104,9 +104,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   template: `
     @if (nzShowInput) {
       <div #selectContainer class="ant-select-selector">
-        @if (nzPrefix) {
+        @if (nzPrefix; as prefix) {
           <div class="ant-select-prefix">
-            <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
+            <ng-container *nzStringTemplateOutlet="prefix">{{ prefix }}</ng-container>
           </div>
         }
         <span class="ant-select-selection-wrap">
@@ -119,12 +119,12 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                     [disabled]="nzDisabled"
                     [label]="nzDisplayWith(getAncestorOptionList(node))"
                     (delete)="removeSelected(node)"
-                  ></nz-select-item>
+                  />
                 </div>
               }
               @if (selectedNodes.length > nzMaxTagCount) {
                 <div class="ant-select-selection-overflow-item">
-                  <nz-select-item [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"></nz-select-item>
+                  <nz-select-item [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'" />
                 </div>
               }
 
@@ -138,7 +138,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                   [disabled]="nzDisabled"
                   [autofocus]="nzAutoFocus"
                   [focusTrigger]="menuVisible"
-                ></nz-select-search>
+                />
               </div>
             </div>
           } @else {
@@ -151,7 +151,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               [disabled]="nzDisabled"
               [autofocus]="nzAutoFocus"
               [focusTrigger]="menuVisible"
-            ></nz-select-search>
+            />
 
             @if (showLabelRender) {
               <nz-select-item
@@ -159,7 +159,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                 [label]="labelRenderText"
                 [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
                 [contentTemplateOutletContext]="labelRenderContext"
-              ></nz-select-item>
+              />
             }
           }
 
@@ -167,7 +167,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
             <nz-select-placeholder
               [placeholder]="nzPlaceHolder || locale?.placeholder!"
               [style.display]="inputValue || isComposing ? 'none' : 'block'"
-            ></nz-select-placeholder>
+            />
           }
         </span>
       </div>
@@ -186,7 +186,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         </span>
       }
       @if (clearIconVisible) {
-        <nz-select-clear (clear)="clearSelection($event)"></nz-select-clear>
+        <nz-select-clear (clear)="clearSelection($event)" />
       }
     }
     <ng-content></ng-content>

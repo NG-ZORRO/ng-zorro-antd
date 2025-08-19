@@ -133,7 +133,7 @@ export type NzSelectSizeType = NzSizeLDSType;
       (tokenize)="onTokenSeparate($event)"
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
-    ></nz-select-top-control>
+    />
     @if (showArrow || (hasFeedback && !!status) || isMaxMultipleCountSet) {
       <nz-select-arrow
         [showArrow]="nzShowArrow"
@@ -147,14 +147,14 @@ export type NzSelectSizeType = NzSizeLDSType;
       >
         <ng-template #feedbackIconTpl>
           @if (hasFeedback && !!status) {
-            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+            <nz-form-item-feedback-icon [status]="status" />
           }
         </ng-template>
       </nz-select-arrow>
     }
 
     @if (nzAllowClear && !nzDisabled && listOfValue.length) {
-      <nz-select-clear [clearIcon]="nzClearIcon" (clear)="onClearSelection()"></nz-select-clear>
+      <nz-select-clear [clearIcon]="nzClearIcon" (clear)="onClearSelection()" />
     }
     <ng-template
       cdkConnectedOverlay
@@ -195,7 +195,7 @@ export type NzSelectSizeType = NzSizeLDSType;
         (keydown)="onKeyDown($event)"
         (itemClick)="onItemClick($event)"
         (scrollToBottom)="nzScrollToBottom.emit()"
-      ></nz-option-container>
+      />
     </ng-template>
   `,
   host: {

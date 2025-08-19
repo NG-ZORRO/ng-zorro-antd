@@ -65,14 +65,14 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
             [focusTrigger]="open"
             (isComposingChange)="isComposingChange($event)"
             (valueChange)="onInputValueChange($event)"
-          ></nz-select-search>
+          />
           @if (isShowSingleLabel) {
             <nz-select-item
               [removeIcon]="removeIcon"
               [label]="listOfTopItem[0].nzLabel"
               [contentTemplateOutlet]="customTemplate"
               [contentTemplateOutletContext]="listOfTopItem[0]"
-            ></nz-select-item>
+            />
           }
         }
         @default {
@@ -88,7 +88,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
                   deletable
                   [contentTemplateOutletContext]="item.contentTemplateOutletContext"
                   (delete)="onDeleteItem(item.contentTemplateOutletContext)"
-                ></nz-select-item>
+                />
               </div>
             }
             <div class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix">
@@ -102,13 +102,13 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
                 [focusTrigger]="open"
                 (isComposingChange)="isComposingChange($event)"
                 (valueChange)="onInputValueChange($event)"
-              ></nz-select-search>
+              />
             </div>
           </div>
         }
       }
       @if (isShowPlaceholder) {
-        <nz-select-placeholder [placeholder]="placeHolder"></nz-select-placeholder>
+        <nz-select-placeholder [placeholder]="placeHolder" />
       }
     </span>
   `,
