@@ -3,6 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NzTourMaskOptions } from 'ng-zorro-antd/tour/types';
+
+import { NZ_TOUR_MASK_DEFAULT_COLOR } from './constant';
+
 export const enum ElementSides {
   Top,
   Bottom,
@@ -24,4 +28,12 @@ export function isInViewport(htmlElement: HTMLElement, sidesToCheck: ElementSide
   }
 
   return isTopInViewport && isBottomInViewport && areCornersInViewport;
+}
+
+export function normalizeMaskColor(mask: boolean | NzTourMaskOptions): string {
+  return typeof mask === 'boolean' ? NZ_TOUR_MASK_DEFAULT_COLOR : mask.color || NZ_TOUR_MASK_DEFAULT_COLOR;
+}
+
+export function normalizeGapOffset(offset: number | [number, number]): [number, number] {
+  return Array.isArray(offset) ? offset : [offset, offset];
 }

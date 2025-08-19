@@ -4,42 +4,52 @@
  */
 
 import { coerceElement } from '@angular/cdk/coercion';
-import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
-import { computed, signal, WritableSignal } from '@angular/core';
+import {
+  ConnectionPositionPair,
+  FlexibleConnectedPositionStrategy,
+  FlexibleConnectedPositionStrategyOrigin,
+  Overlay,
+  OverlayRef
+} from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { type ComponentRef, computed, Injector, signal, WritableSignal } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { DEFAULT_TOUR_POSITIONS, overlayZIndexSetter, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
 import { isNotNil, scrollIntoView } from 'ng-zorro-antd/core/util';
+import { NZ_TOUR_MASK_GAP_DEFAULT } from 'ng-zorro-antd/tour/constant';
+import { NzTourMaskComponent } from 'ng-zorro-antd/tour/mask';
+import { NzTourComponent } from 'ng-zorro-antd/tour/tour';
 
-import { DEFAULT_PLACEMENT, NzTourService } from './tour.service';
-import {
-  NZ_TOUR_MASK_GAP_DEFAULT,
-  NzTourMaskGap,
-  NzTourOptions,
-  NzTourPlacement,
-  NzTourStep,
-  TourPlacements
-} from './types';
-import { isInViewport } from './utils';
+import { DEFAULT_PLACEMENT } from './tour.service';
+import { NzTourMaskGap, NzTourMaskOptions, NzTourOptions, NzTourPlacement, NzTourStep, TourPlacements } from './types';
+import { isInViewport, normalizeGapOffset, normalizeMaskColor } from './utils';
 
 export class NzTourRef {
+  private tourRef?: NzTourRef | null;
+  private overlayRef?: OverlayRef | null;
+  private stepRef?: ComponentRef<NzTourComponent> | null;
+  private maskOverlayRef?: OverlayRef | null;
+  private maskRef?: ComponentRef<NzTourMaskComponent> | null;
+
   steps!: NzTourStep[];
   zIndex: number = 1001;
-  mask: boolean = true;
+  mask: boolean | NzTourMaskOptions = true;
   gap: NzTourMaskGap;
   placement: NzTourPlacement = DEFAULT_PLACEMENT;
 
   private readonly destroy$ = new Subject<void>();
 
   // ====== Tour Step State ======
-
   currentStepIndex!: WritableSignal<number>;
   readonly currentStep = computed(() => this.steps[this.currentStepIndex()]);
   readonly currentStepTarget$ = new ReplaySubject<FlexibleConnectedPositionStrategyOrigin | null>(1);
   currentPlacement: NzTourPlacement = DEFAULT_PLACEMENT;
 
   constructor(
-    private readonly tourService: NzTourService,
+    private readonly overlay: Overlay,
+    private readonly injector: Injector,
     readonly options: NzTourOptions
   ) {
     const { steps, zIndex = 1001, mask = true, gap, placement = DEFAULT_PLACEMENT } = options;
@@ -58,7 +68,7 @@ export class NzTourRef {
           scrollIntoView(targetEl);
         }
       }
-      this.tourService.attachOrUpdateStep(target, this);
+      this.attachOrUpdateStep(target);
     });
   }
 
@@ -67,8 +77,16 @@ export class NzTourRef {
     const target = this.getOriginTarget();
 
     this.currentPlacement = this.normalizePlacement(step.placement, step.target);
-    if (this.mask) {
-      this.tourService.attachOrUpdateMask(target, { zIndex: this.zIndex });
+    const mergedMask = step.mask ?? this.mask;
+    if (mergedMask) {
+      this.attachOrUpdateMask(target, {
+        zIndex: this.zIndex,
+        radius: this.gap.radius,
+        offset: normalizeGapOffset(this.gap.offset),
+        fill: normalizeMaskColor(mergedMask)
+      });
+    } else {
+      this.maskRef?.destroy();
     }
 
     this.currentStepTarget$.next(target);
@@ -90,6 +108,145 @@ export class NzTourRef {
     this.loadStep();
   }
 
+  close(): void {
+    this.tourRef?.dispose();
+    this.tourRef = null;
+
+    // Detach mask overlay if it exists
+    this.detachMask();
+    this.detachStep();
+  }
+
+  private createInjector(tourRef: NzTourRef): Injector {
+    return Injector.create({
+      parent: this.injector,
+      providers: [{ provide: NzTourRef, useValue: tourRef }]
+    });
+  }
+
+  attachOrUpdateStep(target: FlexibleConnectedPositionStrategyOrigin | null): void {
+    const positionStrategy = target
+      ? this.overlay
+          .position()
+          .flexibleConnectedTo(target)
+          .withPositions(this.getPositions(this.currentPlacement, this.gap.offset))
+      : this.overlay.position().global().top('0').left('0');
+
+    if (!this.overlayRef) {
+      this.overlayRef = this.overlay.create({
+        hasBackdrop: false,
+        positionStrategy,
+        scrollStrategy: this.overlay.scrollStrategies.block()
+      });
+    } else {
+      this.overlayRef.updatePositionStrategy(positionStrategy);
+    }
+
+    overlayZIndexSetter(this.overlayRef, this.zIndex);
+
+    if (target === null) {
+      this.overlayRef.addPanelClass('ant-tour-container-centered');
+    } else {
+      this.overlayRef.removePanelClass('ant-tour-container-centered');
+    }
+
+    if (this.overlayRef.hasAttached()) {
+      this.detachStep();
+    }
+
+    this.stepRef = this.overlayRef.attach(new ComponentPortal(NzTourComponent, null, this.createInjector(this)));
+  }
+
+  attachOrUpdateMask(
+    target: FlexibleConnectedPositionStrategyOrigin | null,
+    opts: {
+      zIndex: number;
+      offset?: number | [number, number];
+      radius?: number;
+      fill?: string;
+    }
+  ): void {
+    if (!this.maskOverlayRef) {
+      this.maskOverlayRef = this.overlay.create({
+        hasBackdrop: false,
+        positionStrategy: this.overlay.position().global().top('0').left('0'),
+        scrollStrategy: this.overlay.scrollStrategies.reposition()
+      });
+      const pane = this.maskOverlayRef.hostElement as HTMLElement;
+      pane.style.width = '100%';
+      pane.style.height = '100%';
+    }
+
+    const { zIndex, offset, radius, fill } = opts || {};
+
+    overlayZIndexSetter(this.maskOverlayRef, zIndex);
+
+    if (!this.maskRef || !this.maskOverlayRef.hasAttached()) {
+      this.maskRef = this.maskOverlayRef.attach(new ComponentPortal(NzTourMaskComponent));
+    }
+
+    this.maskRef.setInput('target', target);
+    if (offset != null) this.maskRef.setInput('offset', offset);
+    if (radius != null) this.maskRef.setInput('radius', radius);
+    if (fill != null) this.maskRef.setInput('fill', fill);
+  }
+
+  getPositions(placement: NzTourPlacement, offset: number | [number, number]): ConnectionPositionPair[] {
+    if (TourPlacements.includes(placement)) {
+      if (placement === 'center') {
+        return [
+          new ConnectionPositionPair(
+            { originX: 'center', originY: 'center' },
+            { overlayX: 'center', overlayY: 'center' }
+          )
+        ];
+      }
+      return [this.setPositionOffset(POSITION_MAP[placement as POSITION_TYPE], offset)];
+    } else {
+      return DEFAULT_TOUR_POSITIONS.map(pos => this.setPositionOffset(pos, offset));
+    }
+  }
+
+  private setPositionOffset(
+    position: ConnectionPositionPair,
+    offset: number | [number, number]
+  ): ConnectionPositionPair {
+    const [offsetX, offsetY] = normalizeGapOffset(offset);
+    // return new object
+    return {
+      ...position,
+      offsetX: offsetX,
+      offsetY: offsetY
+    };
+  }
+
+  detachStep(): void {
+    this.overlayRef?.detach();
+    this.stepRef?.destroy();
+    this.stepRef = null;
+  }
+
+  detachMask(): void {
+    this.maskOverlayRef?.detach();
+  }
+
+  updateMaskGap(options: NzTourMaskGap): void {
+    this.gap = options;
+    if (this.maskRef) {
+      this.maskRef.setInput('offset', this.gap.offset);
+      this.maskRef.setInput('radius', this.gap.radius);
+    }
+    if (this.overlayRef) {
+      const positionStrategy = this.overlayRef.getConfig().positionStrategy;
+      if (positionStrategy instanceof FlexibleConnectedPositionStrategy) {
+        this.overlayRef.updatePositionStrategy(
+          positionStrategy.withPositions(this.getPositions(this.currentPlacement, this.gap.offset))
+        );
+        this.overlayRef.updatePosition();
+      }
+    }
+  }
+
   private getOriginTarget(): FlexibleConnectedPositionStrategyOrigin | null {
     const rawTarget = this.currentStep().target;
     const target = typeof rawTarget === 'function' ? rawTarget() : rawTarget;
@@ -109,6 +266,5 @@ export class NzTourRef {
   dispose(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.tourService.dispose();
   }
 }

@@ -21,10 +21,12 @@
   // ====================== Mask ======================
   &-mask {
     position: fixed;
-    z-index: @zindex-modal;
-    background: @modal-mask-bg;
-    pointer-events: auto;
+    pointer-events: none;
     inset: 0;
+
+    .@{tour-prefix-cls}-placeholder-animated {
+      transition: all @animation-duration-slow;
+    }
   }
 
   &-inner {

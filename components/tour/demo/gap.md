@@ -1,8 +1,8 @@
 ---
-order: 3
+order: 6
 title:
-  zh-CN: 间隙与圆角
-  en-US: Gap & Radius
+  zh-CN: 自定义高亮区域
+  en-US: Custom highlighted area style
 ---
 
 ## zh-CN

@@ -79,7 +79,7 @@ export class NzTourComponent {
   protected readonly currentStep = this.tourRef.currentStep;
 
   close(): void {
-    this.tourRef.dispose();
+    this.tourRef.close();
     // Emit close event
     this.nzClose.emit();
   }
