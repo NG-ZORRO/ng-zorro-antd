@@ -8,3 +8,5 @@ export * from './tour-step';
 export * from './tour.module';
 export * from './tour.service';
 export * from './types';
+export { NZ_TOUR_MASK_DEFAULT_COLOR } from 'ng-zorro-antd/tour/constant';
+export { NZ_TOUR_MASK_GAP_DEFAULT } from 'ng-zorro-antd/tour/constant';

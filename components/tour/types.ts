@@ -11,6 +11,16 @@ export interface NzTourStep {
   target?: Element | ElementRef<Element> | null | (() => Element | ElementRef<Element> | null);
   cover?: string;
   placement?: NzTourPlacement;
+  mask?: boolean | NzTourMaskOptions;
+}
+
+export interface NzTourMaskGap {
+  offset: number | [number, number];
+  radius: number;
+}
+
+export interface NzTourMaskOptions {
+  color?: string;
 }
 
 export const TourPlacements = [
@@ -30,20 +40,10 @@ export const TourPlacements = [
 ] as const;
 export type NzTourPlacement = (typeof TourPlacements)[number];
 
-export interface NzTourMaskGap {
-  offset: number | [number, number];
-  radius: number;
-}
-
-export const NZ_TOUR_MASK_GAP_DEFAULT = {
-  offset: 6,
-  radius: 2
-};
-
 export interface NzTourOptions {
   steps: NzTourStep[];
   zIndex?: number;
-  mask?: boolean;
+  mask?: boolean | NzTourMaskOptions;
   placement?: NzTourPlacement;
   gap?: Partial<NzTourMaskGap>;
 }

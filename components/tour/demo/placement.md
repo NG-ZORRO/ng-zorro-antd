@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 2
 title:
   zh-CN: 位置
   en-US: Placement
