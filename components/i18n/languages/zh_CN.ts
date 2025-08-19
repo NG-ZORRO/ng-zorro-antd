@@ -198,5 +198,10 @@ export default {
     ok: '确定',
     cancel: '取消',
     checkListCheckOther: '以后不再需要操作清单'
+  },
+  Tour: {
+    nextStepText: '下一步',
+    prevStepText: '上一步',
+    finishText: '结束导览'
   }
 };

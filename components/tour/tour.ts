@@ -7,6 +7,7 @@ import { ChangeDetectionStrategy, Component, inject, input, output, ViewEncapsul
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzI18nPipe } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzTourRef } from './tour-ref';
@@ -15,7 +16,7 @@ import { NzTourPlacement } from './types';
 
 @Component({
   selector: 'nz-tour',
-  imports: [NzButtonModule, NzIconModule, NzOutletModule],
+  imports: [NzButtonModule, NzIconModule, NzOutletModule, NzI18nPipe],
   template: `
     <div class="ant-tour-arrow"></div>
     <div class="ant-tour-content">
@@ -45,13 +46,17 @@ import { NzTourPlacement } from './types';
           <div class="ant-tour-buttons">
             @if (currentStepIndex() > 0) {
               <button nz-button nzSize="small" nzType="default" (click)="prev()" [disabled]="currentStepIndex() === 0">
-                Previous
+                {{ 'Tour.prevStepText' | nzI18n }}
               </button>
             }
             @if (currentStepIndex() < totalSteps - 1) {
-              <button nz-button nzSize="small" nzType="primary" (click)="next()">Next</button>
+              <button nz-button nzSize="small" nzType="primary" (click)="next()">
+                {{ 'Tour.nextStepText' | nzI18n }}
+              </button>
             } @else {
-              <button nz-button nzSize="small" nzType="primary" (click)="close()">Finish</button>
+              <button nz-button nzSize="small" nzType="primary" (click)="close()">
+                {{ 'Tour.finishText' | nzI18n }}
+              </button>
             }
           </div>
         </div>
@@ -75,7 +80,7 @@ export class NzTourComponent {
   readonly nzClose = output<void>();
 
   protected readonly totalSteps = this.tourRef.steps.length;
-  protected readonly currentStepIndex = this.tourRef.currentStepIndex.asReadonly();
+  protected readonly currentStepIndex = this.tourRef.current.asReadonly();
   protected readonly currentStep = this.tourRef.currentStep;
 
   close(): void {

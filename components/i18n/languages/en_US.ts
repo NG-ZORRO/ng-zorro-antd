@@ -202,5 +202,10 @@ export default {
     ok: 'OK',
     cancel: 'Cancel',
     checkListCheckOther: 'No longer required to show'
+  },
+  Tour: {
+    prevStepText: 'Previous',
+    nextStepText: 'Next',
+    finishText: 'Finish'
   }
 };
