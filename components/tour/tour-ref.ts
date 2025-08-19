@@ -41,9 +41,9 @@ export class NzTourRef {
 
   private readonly destroy$ = new Subject<void>();
 
-  // ====== Tour Step State ======
-  currentStepIndex!: WritableSignal<number>;
-  readonly currentStep = computed(() => this.steps[this.currentStepIndex()]);
+  // current step index
+  current!: WritableSignal<number>;
+  readonly currentStep = computed(() => this.steps[this.current()]);
   readonly currentStepTarget$ = new ReplaySubject<FlexibleConnectedPositionStrategyOrigin | null>(1);
   currentPlacement: NzTourPlacement = DEFAULT_PLACEMENT;
 
@@ -72,7 +72,7 @@ export class NzTourRef {
     });
   }
 
-  protected loadStep(index: number = this.currentStepIndex()): void {
+  protected loadStep(index: number = this.current()): void {
     const step = this.steps[index];
     const target = this.getOriginTarget();
 
@@ -93,18 +93,18 @@ export class NzTourRef {
   }
 
   start(): void {
-    this.currentStepIndex = signal(0);
+    this.current = signal(0);
     this.loadStep();
     this.subscribeTargetChange();
   }
 
   next(): void {
-    this.currentStepIndex.update(index => (index < this.steps.length - 1 ? index + 1 : index));
+    this.current.update(index => (index < this.steps.length - 1 ? index + 1 : index));
     this.loadStep();
   }
 
   prev(): void {
-    this.currentStepIndex.update(index => (index > 0 ? index - 1 : index));
+    this.current.update(index => (index > 0 ? index - 1 : index));
     this.loadStep();
   }
 
