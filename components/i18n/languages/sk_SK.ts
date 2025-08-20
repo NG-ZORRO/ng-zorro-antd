@@ -8,20 +8,28 @@ export default {
   Pagination: {
     items_per_page: '/ strana',
     jump_to: 'Choď na',
-    jump_to_confirm: 'potvrdit',
-    page: '',
+    jump_to_confirm: 'potvrdiť',
+    page: 'strana',
     prev_page: 'Predchádzajúca strana',
     next_page: 'Nasledujúca strana',
     prev_5: 'Predchádzajúcich 5 strán',
     next_5: 'Nasledujúcich 5 strán',
     prev_3: 'Predchádzajúce 3 strany',
     next_3: 'Nasledujúce 3 strany',
-    page_size: 'Page Size'
+    page_size: 'Veľkosť strany'
   },
   DatePicker: {
     lang: {
       placeholder: 'Vybrať dátum',
+      yearPlaceholder: 'Vybrať rok',
+      quarterPlaceholder: 'Vybrať štvrťrok',
+      monthPlaceholder: 'Vybrať mesiac',
+      weekPlaceholder: 'Vybrať týždeň',
       rangePlaceholder: ['Od', 'Do'],
+      rangeYearPlaceholder: ['Začiatočný rok', 'Koncový rok'],
+      rangeQuarterPlaceholder: ['Začiatočný štvrťrok', 'Koncový štvrťrok'],
+      rangeMonthPlaceholder: ['Začiatočný mesiac', 'Koncový mesiac'],
+      rangeWeekPlaceholder: ['Začiatočný týždeň', 'Koncový týždeň'],
       locale: 'sk_SK',
       today: 'Dnes',
       now: 'Teraz',
@@ -32,6 +40,7 @@ export default {
       year: 'Rok',
       timeSelect: 'Vybrať čas',
       dateSelect: 'Vybrať dátum',
+      weekSelect: 'Vybrať týždeň',
       monthSelect: 'Vybrať mesiac',
       yearSelect: 'Vybrať rok',
       decadeSelect: 'Vybrať dekádu',
@@ -50,16 +59,25 @@ export default {
       nextCentury: 'Nasledujúce storočie'
     },
     timePickerLocale: {
-      placeholder: 'Vybrať čas'
+      placeholder: 'Vybrať čas',
+      rangePlaceholder: ['Začiatočný čas', 'Koncový čas']
     }
   },
   TimePicker: {
-    placeholder: 'Vybrať čas'
+    placeholder: 'Vybrať čas',
+    rangePlaceholder: ['Začiatočný čas', 'Koncový čas']
   },
   Calendar: {
     lang: {
       placeholder: 'Vybrať dátum',
+      yearPlaceholder: 'Vybrať rok',
+      quarterPlaceholder: 'Vybrať štvrťrok',
+      monthPlaceholder: 'Vybrať mesiac',
+      weekPlaceholder: 'Vybrať týždeň',
       rangePlaceholder: ['Od', 'Do'],
+      rangeYearPlaceholder: ['Začiatočný rok', 'Koncový rok'],
+      rangeMonthPlaceholder: ['Začiatočný mesiac', 'Koncový mesiac'],
+      rangeWeekPlaceholder: ['Začiatočný týždeň', 'Koncový týždeň'],
       locale: 'sk_SK',
       today: 'Dnes',
       now: 'Teraz',
@@ -70,6 +88,7 @@ export default {
       year: 'Rok',
       timeSelect: 'Vybrať čas',
       dateSelect: 'Vybrať dátum',
+      weekSelect: 'Vybrať týždeň',
       monthSelect: 'Vybrať mesiac',
       yearSelect: 'Vybrať rok',
       decadeSelect: 'Vybrať dekádu',
@@ -88,7 +107,8 @@ export default {
       nextCentury: 'Nasledujúce storočie'
     },
     timePickerLocale: {
-      placeholder: 'Vybrať čas'
+      placeholder: 'Vybrať čas',
+      rangePlaceholder: ['Začiatočný čas', 'Koncový čas']
     }
   },
   global: {
@@ -98,11 +118,20 @@ export default {
     filterTitle: 'Filter',
     filterConfirm: 'OK',
     filterReset: 'Obnoviť',
+    filterEmptyText: 'Žiadne filtre',
+    emptyText: 'Žiadne dáta',
     selectAll: 'Vybrať všetko',
     selectInvert: 'Vybrať opačné',
+    selectionAll: 'Vybrať všetky dáta',
     sortTitle: 'Zoradiť',
     expand: 'Rozbaliť riadok',
-    collapse: 'Zbaliť riadok'
+    collapse: 'Zbaliť riadok',
+    triggerDesc: 'Kliknite pre zoradenie zostupne',
+    triggerAsc: 'Kliknite pre zoradenie vzostupne',
+    cancelSort: 'Kliknite pre zrušenie zoradenia',
+    filterCheckall: 'Vybrať všetky položky',
+    filterSearchPlaceholder: 'Hľadať vo filtroch',
+    selectNone: 'Zrušiť výber všetkých dát'
   },
   Modal: {
     okText: 'OK',
@@ -117,7 +146,13 @@ export default {
     titles: ['', ''],
     searchPlaceholder: 'Vyhľadávanie',
     itemUnit: 'položka',
-    itemsUnit: 'položiek'
+    itemsUnit: 'položiek',
+    remove: 'Odstrániť',
+    selectCurrent: 'Vybrať aktuálnu stranu',
+    removeCurrent: 'Odstrániť aktuálnu stranu',
+    selectAll: 'Vybrať všetky dáta',
+    removeAll: 'Odstrániť všetky dáta',
+    selectInvert: 'Invertovať aktuálnu stranu'
   },
   Upload: {
     uploading: 'Nahrávanie...',
@@ -140,5 +175,8 @@ export default {
   },
   PageHeader: {
     back: 'Späť'
+  },
+  Image: {
+    preview: 'Náhľad'
   }
 };
