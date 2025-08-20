@@ -15,8 +15,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       [nzMaxTagPlaceholder]="omittedPlaceHolder"
       [nzNodes]="nodes"
       nzDefaultExpandAll
-      [nzAllowClear]="false"
-      [nzMultiple]="true"
+      nzMultiple
       (ngModelChange)="onChange($event)"
     ></nz-tree-select>
     <ng-template #omittedPlaceHolder let-omittedValues>and {{ omittedValues.length }} more...</ng-template>

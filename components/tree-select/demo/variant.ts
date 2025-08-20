@@ -51,8 +51,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzVariant="outlined"
           [nzNodes]="nodes"
           [nzMaxTagCount]="3"
-          [nzAllowClear]="true"
-          [nzMultiple]="true"
+          nzMultiple
           [ngModel]="defaultValue"
           nzDefaultExpandAll
         ></nz-tree-select>
@@ -62,8 +61,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzVariant="filled"
           [nzNodes]="nodes"
           [nzMaxTagCount]="3"
-          [nzAllowClear]="true"
-          [nzMultiple]="true"
+          nzMultiple
           [ngModel]="defaultValue"
           nzDefaultExpandAll
         ></nz-tree-select>
@@ -73,8 +71,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzVariant="borderless"
           [nzNodes]="nodes"
           [nzMaxTagCount]="3"
-          [nzAllowClear]="true"
-          [nzMultiple]="true"
+          nzMultiple
           [ngModel]="defaultValue"
           nzDefaultExpandAll
         ></nz-tree-select>
@@ -84,8 +81,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzVariant="underlined"
           [nzNodes]="nodes"
           [nzMaxTagCount]="3"
-          [nzAllowClear]="true"
-          [nzMultiple]="true"
+          nzMultiple
           [ngModel]="defaultValue"
           nzDefaultExpandAll
         ></nz-tree-select>
