@@ -3,20 +3,28 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, input, output, ViewEncapsulation } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzI18nPipe } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzTourRef } from './tour-ref';
 import { DEFAULT_PLACEMENT } from './tour.service';
-import { NzTourPlacement } from './types';
+import { NzTourPlacement, NzTourTemplateContext } from './types';
 
 @Component({
   selector: 'nz-tour',
-  imports: [NzButtonModule, NzIconModule, NzOutletModule, NzI18nPipe],
+  imports: [NgTemplateOutlet, NzButtonModule, NzIconModule, NzI18nPipe],
   template: `
     <div class="ant-tour-arrow"></div>
     <div class="ant-tour-content">
@@ -39,8 +47,15 @@ import { NzTourPlacement } from './types';
         </div>
         <div class="ant-tour-footer">
           <div class="ant-tour-indicators">
-            @for (_ of tourRef.steps; track $index) {
-              <div class="ant-tour-indicator" [class.ant-tour-indicator-active]="currentStepIndex() === $index"></div>
+            @if (nzIndicatorsRender(); as indicatorsRender) {
+              <ng-container
+                *ngTemplateOutlet="indicatorsRender; context: { current: currentStepIndex(), total: totalSteps }"
+              >
+              </ng-container>
+            } @else {
+              @for (_ of tourRef.steps; track $index) {
+                <div class="ant-tour-indicator" [class.ant-tour-indicator-active]="currentStepIndex() === $index"></div>
+              }
             }
           </div>
           <div class="ant-tour-buttons">
@@ -76,6 +91,7 @@ import { NzTourPlacement } from './types';
 export class NzTourComponent {
   protected readonly tourRef = inject(NzTourRef);
 
+  nzIndicatorsRender = input<TemplateRef<NzTourTemplateContext>>();
   nzPlacement = input<NzTourPlacement>(DEFAULT_PLACEMENT);
   readonly nzClose = output<void>();
 
