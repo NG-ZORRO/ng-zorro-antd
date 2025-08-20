@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ElementRef } from '@angular/core';
+import { ElementRef, TemplateRef } from '@angular/core';
 
 export interface NzTourStep {
   title: string;
@@ -40,10 +40,16 @@ export const TourPlacements = [
 ] as const;
 export type NzTourPlacement = (typeof TourPlacements)[number];
 
+export interface NzTourTemplateContext {
+  current: number;
+  total: number;
+}
+
 export interface NzTourOptions {
   steps: NzTourStep[];
   zIndex?: number;
   mask?: boolean | NzTourMaskOptions;
   placement?: NzTourPlacement;
   gap?: Partial<NzTourMaskGap>;
+  indicatorsRender?: TemplateRef<NzTourTemplateContext>;
 }

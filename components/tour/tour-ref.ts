@@ -12,7 +12,7 @@ import {
   OverlayRef
 } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { type ComponentRef, computed, Injector, signal, WritableSignal } from '@angular/core';
+import { type ComponentRef, computed, Injector, signal, TemplateRef, WritableSignal } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -23,7 +23,15 @@ import { NzTourMaskComponent } from 'ng-zorro-antd/tour/mask';
 import { NzTourComponent } from 'ng-zorro-antd/tour/tour';
 
 import { DEFAULT_PLACEMENT } from './tour.service';
-import { NzTourMaskGap, NzTourMaskOptions, NzTourOptions, NzTourPlacement, NzTourStep, TourPlacements } from './types';
+import {
+  NzTourMaskGap,
+  NzTourMaskOptions,
+  NzTourOptions,
+  NzTourPlacement,
+  NzTourStep,
+  NzTourTemplateContext,
+  TourPlacements
+} from './types';
 import { isInViewport, normalizeGapOffset, normalizeMaskColor } from './utils';
 
 export class NzTourRef {
@@ -38,6 +46,7 @@ export class NzTourRef {
   mask: boolean | NzTourMaskOptions = true;
   gap: NzTourMaskGap;
   placement: NzTourPlacement = DEFAULT_PLACEMENT;
+  indicatorsRender?: TemplateRef<NzTourTemplateContext>;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -52,12 +61,13 @@ export class NzTourRef {
     private readonly injector: Injector,
     readonly options: NzTourOptions
   ) {
-    const { steps, zIndex = 1001, mask = true, gap, placement = DEFAULT_PLACEMENT } = options;
+    const { steps, zIndex = 1001, mask = true, gap, placement = DEFAULT_PLACEMENT, indicatorsRender } = options;
     this.steps = steps;
     this.zIndex = zIndex;
     this.mask = mask;
     this.placement = placement;
     this.gap = { ...NZ_TOUR_MASK_GAP_DEFAULT, ...gap };
+    this.indicatorsRender = indicatorsRender;
   }
 
   private subscribeTargetChange(): void {
@@ -155,6 +165,8 @@ export class NzTourRef {
     }
 
     this.stepRef = this.overlayRef.attach(new ComponentPortal(NzTourComponent, null, this.createInjector(this)));
+    this.stepRef.setInput('nzPlacement', this.currentPlacement);
+    this.stepRef.setInput('nzIndicatorsRender', this.indicatorsRender);
   }
 
   attachOrUpdateMask(
