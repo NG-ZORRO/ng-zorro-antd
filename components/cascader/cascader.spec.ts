@@ -1494,7 +1494,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(testComponent.cascader.inSearchingMode).toBe(true);
-      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+      expect(itemEl1.innerText).toBe('Zhejiang New / Hangzhou New / West Lake New');
 
       itemEl1.click();
       fixture.detectChanges();
@@ -1504,6 +1504,29 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
+    }));
+
+    it('should support nzValueProperty', fakeAsync(() => {
+      testComponent.nzShowSearch = true;
+      testComponent.nzValueProperty = 'v';
+      fixture.detectChanges();
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      testComponent.cascader.inputValue = 'o';
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      expect(testComponent.cascader.inSearchingMode).toBe(true);
+      expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+
+      itemEl1.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.inSearchingMode).toBe(false);
+      expect(testComponent.cascader.menuVisible).toBe(false);
+      expect(testComponent.cascader.inputValue).toBe('');
+      expect(testComponent.values!.join(',')).toBe('zhejiang-new,hangzhou-new,xihu-new');
     }));
 
     it('should support custom filter', fakeAsync(() => {
@@ -2215,17 +2238,20 @@ const options1: NzCascaderOption[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
-    l: 'Zhejiang',
+    v: 'zhejiang-new',
+    l: 'Zhejiang New',
     children: [
       {
         value: 'hangzhou',
         label: 'Hangzhou',
-        l: 'Hangzhou',
+        v: 'hangzhou-new',
+        l: 'Hangzhou New',
         children: [
           {
             value: 'xihu',
-            l: 'West Lake',
             label: 'West Lake',
+            v: 'xihu-new',
+            l: 'West Lake New',
             isLeaf: true
           }
         ]
@@ -2233,7 +2259,8 @@ const options1: NzCascaderOption[] = [
       {
         value: 'ningbo',
         label: 'Ningbo',
-        l: 'Ningbo',
+        v: 'ningbo-new',
+        l: 'Ningbo New',
         isLeaf: true
       }
     ]
@@ -2241,17 +2268,20 @@ const options1: NzCascaderOption[] = [
   {
     value: 'jiangsu',
     label: 'Jiangsu',
-    l: 'Jiangsu',
+    v: 'jiangsu-new',
+    l: 'Jiangsu New',
     children: [
       {
         value: 'nanjing',
         label: 'Nanjing',
-        l: 'Nanjing',
+        v: 'nanjing-new',
+        l: 'Nanjing New',
         children: [
           {
             value: 'zhonghuamen',
             label: 'Zhong Hua Men',
-            l: 'Zhong Hua Men',
+            v: 'zhonghuamen-new',
+            l: 'Zhong Hua Men New',
             isLeaf: true
           }
         ]
@@ -2407,6 +2437,7 @@ const options5: NzSafeAny[] = [];
   template: `
     <nz-cascader
       [(ngModel)]="values"
+      [nzOptions]="nzOptions"
       [nzAllowClear]="nzAllowClear"
       [nzAutoFocus]="nzAutoFocus"
       [nzChangeOn]="nzChangeOn"
@@ -2416,12 +2447,12 @@ const options5: NzSafeAny[] = [];
       [nzExpandIcon]="nzExpandIcon"
       [nzExpandTrigger]="nzExpandTrigger"
       [nzLabelProperty]="nzLabelProperty"
+      [nzValueProperty]="nzValueProperty"
       [nzLabelRender]="nzLabelRender"
       [nzMenuClassName]="nzMenuClassName"
       [nzMenuStyle]="nzMenuStyle"
       [nzMouseEnterDelay]="nzMouseEnterDelay"
       [nzMouseLeaveDelay]="nzMouseLeaveDelay"
-      [nzOptions]="nzOptions"
       [nzPlaceHolder]="nzPlaceHolder"
       [nzShowArrow]="nzShowArrow"
       [nzShowInput]="nzShowInput"
@@ -2429,7 +2460,6 @@ const options5: NzSafeAny[] = [];
       [nzSize]="nzSize"
       [nzTriggerAction]="nzTriggerAction"
       [nzSuffixIcon]="nzSuffixIcon"
-      [nzValueProperty]="nzValueProperty"
       [nzBackdrop]="nzBackdrop"
       [nzPlacement]="nzPlacement"
       [nzVariant]="nzVariant"
@@ -2488,7 +2518,6 @@ export class NzDemoCascaderDefaultComponent {
   imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader
-      [nzOptions]="nzOptions"
       [(ngModel)]="values"
       [nzLoadData]="nzLoadData"
       (ngModelChange)="onValueChanges($event)"
@@ -2499,7 +2528,6 @@ export class NzDemoCascaderDefaultComponent {
 export class NzDemoCascaderLoadDataComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
 
-  nzOptions: NzSafeAny[] | null = null;
   values: string[] | null = null;
 
   nzLoadData = (node: NzSafeAny, index: number): PromiseLike<NzSafeAny> => {
