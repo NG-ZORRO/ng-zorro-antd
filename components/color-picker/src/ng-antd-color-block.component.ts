@@ -5,6 +5,7 @@
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { Color } from './interfaces/color';
 import { defaultColor, generateColor } from './util/util';
 
 @Component({
@@ -23,7 +24,7 @@ import { defaultColor, generateColor } from './util/util';
 })
 export class NgAntdColorBlockComponent {
   @Input() color: string = defaultColor.toHsbString();
-  @Input() value: string = '';
+  @Input() value: Color | null = null;
   @Output() readonly nzOnClick = new EventEmitter<boolean>();
 
   get isChecked(): boolean {
