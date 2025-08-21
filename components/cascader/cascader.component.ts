@@ -319,6 +319,7 @@ export class NzCascaderComponent
   @ViewChild(CdkConnectedOverlay, { static: false }) overlay!: CdkConnectedOverlay;
   @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
 
+  @Input() nzOptions: NzCascaderOption[] | null = [];
   @Input() nzOptionRender: TemplateRef<{ $implicit: NzCascaderOption; index: number }> | null = null;
   @Input({ transform: booleanAttribute }) nzShowInput = true;
   @Input({ transform: booleanAttribute }) nzShowArrow = true;
@@ -363,23 +364,6 @@ export class NzCascaderComponent
   // TODO: RTL
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
   @Input() nzExpandIcon: string | TemplateRef<void> = '';
-
-  @Input()
-  get nzOptions(): NzCascaderOption[] | null {
-    return this.cascaderService.nzOptions;
-  }
-
-  set nzOptions(options: NzCascaderOption[] | null) {
-    const nodes = this.coerceTreeNodes(options || []);
-    this.treeService.initTree(nodes);
-    this.cascaderService.columns = [nodes];
-    this.updateSelectedNodes(true);
-
-    if (this.inSearchingMode) {
-      this.cascaderService.setSearchingMode(this.inSearchingMode);
-      this.cascaderService.prepareSearchOptions(this.inputValue);
-    }
-  }
 
   get treeService(): NzCascaderTreeService {
     return this.nzTreeService as NzCascaderTreeService;
@@ -569,7 +553,10 @@ export class NzCascaderComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzStatus, nzSize, nzPlacement } = changes;
+    const { nzStatus, nzSize, nzPlacement, nzOptions } = changes;
+    if (nzOptions) {
+      this.updateOptions();
+    }
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
@@ -964,6 +951,18 @@ export class NzCascaderComponent
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     const placement = getPlacementName(position);
     this.dropdownPosition = placement as NzSelectPlacementType;
+  }
+
+  private updateOptions(): void {
+    const nodes = this.coerceTreeNodes(this.nzOptions || []);
+    this.treeService.initTree(nodes);
+    this.cascaderService.setColumnData(nodes, 0);
+    this.updateSelectedNodes(true);
+
+    if (this.inSearchingMode) {
+      this.cascaderService.setSearchingMode(this.inSearchingMode);
+      this.cascaderService.prepareSearchOptions(this.inputValue);
+    }
   }
 
   private isActionTrigger(action: 'click' | 'hover'): boolean {
