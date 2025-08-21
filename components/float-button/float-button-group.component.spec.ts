@@ -9,6 +9,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzFourDirectionType, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -197,11 +198,11 @@ describe('nz-float-button-group RTL', () => {
   `
 })
 export class NzTestFloatButtonGroupBasicComponent {
-  nzShape: 'circle' | 'square' = 'circle';
+  nzShape: NzShapeSCType = 'circle';
   nzTrigger: 'click' | 'hover' | null = null;
   nzOpen: boolean | null = null;
   nzIcon: TemplateRef<void> | null = null;
-  nzPlacement: 'top' | 'right' | 'bottom' | 'left' = 'top';
+  nzPlacement: NzFourDirectionType = 'top';
   @ViewChild('icon', { static: false }) icon!: TemplateRef<void>;
 
   isClick: boolean = false;

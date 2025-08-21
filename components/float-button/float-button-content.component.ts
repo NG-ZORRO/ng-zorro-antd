@@ -4,9 +4,10 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, TemplateRef } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
+import { NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -17,16 +18,16 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   template: `
     <div class="ant-float-btn-body">
       <div class="ant-float-btn-content">
-        @if (nzDescription || nzIcon) {
-          @if (nzIcon) {
+        @if (nzDescription() || nzIcon()) {
+          @if (nzIcon()) {
             <div class="ant-float-btn-icon">
-              <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
+              <ng-template [ngTemplateOutlet]="nzIcon()"></ng-template>
             </div>
           }
-          @if (nzDescription && nzShape === 'square') {
+          @if (nzDescription() && nzShape() === 'square') {
             <div class="ant-float-btn-description">
-              <ng-container *nzStringTemplateOutlet="nzDescription">
-                {{ nzDescription }}
+              <ng-container *nzStringTemplateOutlet="nzDescription()">
+                {{ nzDescription() }}
               </ng-container>
             </div>
           }
@@ -40,7 +41,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `
 })
 export class NzFloatButtonContentComponent {
-  @Input() nzIcon: TemplateRef<void> | null = null;
-  @Input() nzDescription: string | TemplateRef<void> | null = null;
-  @Input() nzShape: 'circle' | 'square' = 'circle';
+  nzIcon = input<TemplateRef<void> | null>(null);
+  nzDescription = input<string | TemplateRef<void> | null>(null);
+  nzShape = input<NzShapeSCType>('circle');
 }
