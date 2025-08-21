@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ComponentPortal, Portal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
+import { ComponentPortal, Portal, PortalModule } from '@angular/cdk/portal';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 
 import { NzConfigService, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize } from './config';
@@ -50,8 +51,10 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
   exportAs: 'nzEmbedEmpty',
   template: `
     @if (content) {
-      @if (contentType === 'string') {
-        {{ content }}
+      @if (contentType === 'template' || contentType === 'string') {
+        <ng-container *nzStringTemplateOutlet="content; context: { $implicit: this.nzComponentName }">{{
+          content
+        }}</ng-container>
       } @else {
         <ng-template [cdkPortalOutlet]="contentPortal" />
       }
@@ -71,7 +74,7 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
       }
     }
   `,
-  imports: [NzEmptyComponent, PortalModule]
+  imports: [NzEmptyComponent, PortalModule, NzOutletModule]
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit {
   private configService = inject(NzConfigService);
@@ -116,9 +119,8 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit {
     if (typeof content === 'string') {
       this.contentType = 'string';
     } else if (content instanceof TemplateRef) {
-      const context = { $implicit: this.nzComponentName } as NzSafeAny;
       this.contentType = 'template';
-      this.contentPortal = new TemplatePortal(content, this.viewContainerRef, context);
+      this.contentPortal = undefined;
     } else if (content instanceof Type) {
       const injector = Injector.create({
         parent: this.injector,
