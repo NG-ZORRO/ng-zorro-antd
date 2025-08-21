@@ -44,6 +44,7 @@ description: 级联选择框。
 | `[nzNotFoundContent]` | 当下拉列表为空时显示的内容                                                                 | `string \| TemplateRef<void>`                                         | -              |
 | `[nzOptionRender]`    | 选项的渲染模板                                                                             | `TemplateRef<{ $implicit: NzCascaderOption, index: number }>`         |                |
 | `[nzOptions]`         | 可选项数据源                                                                               | `object[]`                                                            | -              |
+| `[nzOpen]`            | 控制浮层显隐                                                                               | `boolean`                                                             | `false`        |
 | `[nzPlaceHolder]`     | 输入框占位文本                                                                             | `string`                                                              | `'请选择'`     |
 | `[nzPlacement]`       | 浮层弹出位置                                                                               | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'`            | `'bottomLeft'` |
 | `[nzShowArrow]`       | 是否显示箭头                                                                               | `boolean`                                                             | `true`         |

@@ -1754,6 +1754,23 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.values).toEqual(['zhejiang', 'hangzhou', 'xihu']);
     }));
+
+    it('should nzOpen works', fakeAsync(() => {
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(false);
+      expect(testComponent.nzDisabled).toBe(false);
+      testComponent.nzOpen = true;
+      tick(200);
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(true);
+      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+
+      testComponent.nzOpen = false;
+      tick(200);
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(false);
+      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
+    }));
   });
 
   describe('multiple', () => {
@@ -2443,6 +2460,7 @@ const options5: NzSafeAny[] = [];
   template: `
     <nz-cascader
       [(ngModel)]="values"
+      [nzOpen]="nzOpen"
       [nzOptions]="nzOptions"
       [nzAllowClear]="nzAllowClear"
       [nzAutoFocus]="nzAutoFocus"
@@ -2489,6 +2507,7 @@ export class NzDemoCascaderDefaultComponent {
   nzOptions: NzSafeAny[] | null = options1;
   values: string[] | number[] | null = null;
 
+  nzOpen = false;
   nzAllowClear = true;
   nzAutoFocus = false;
   nzMenuClassName = 'menu-classA menu-classB';
