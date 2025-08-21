@@ -311,4 +311,49 @@
       }
     }
   }
+
+  &-presets {
+    border-top: @border-width-base solid @border-color-split;
+
+    &-wrapper {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    &-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: @margin-xs;
+      padding: @padding-xs 0;
+    }
+
+    // Preset color block extra styles
+    &-color {
+      position: relative;
+    }
+
+    // Show a tick on selected preset - full overlay, centered
+    &-color-checked::after {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      font-size: 18px; // scaled for default 28px block
+      line-height: 1;
+      text-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+      content: '\2713'; // check mark
+      pointer-events: none;
+      inset: 0;
+    }
+
+    // For bright backgrounds, use dark tick for contrast
+    &-color-bright&-color-checked::after,
+    &-color-checked&-color-bright::after {
+      color: rgba(0, 0, 0, 0.88);
+      text-shadow: none;
+    }
+  }
 }

@@ -19,17 +19,19 @@ import {
   inject
 } from '@angular/core';
 
+import { NzColorPickerPresetsItem } from '../typings';
 import { PickerComponent } from './components/picker.component';
 import { SliderComponent } from './components/slider.component';
 import { Color } from './interfaces/color';
 import { ColorGenInput, ColorValue, HsbaColorType } from './interfaces/type';
 import { NgAntdColorBlockComponent } from './ng-antd-color-block.component';
+import { NgAntdColorPresetComponent } from './ng-antd-color-preset.component';
 import { defaultColor, generateColor } from './util/util';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-antd-color-picker',
-  imports: [PickerComponent, SliderComponent, NgAntdColorBlockComponent, NgTemplateOutlet],
+  imports: [PickerComponent, SliderComponent, NgAntdColorBlockComponent, NgTemplateOutlet, NgAntdColorPresetComponent],
   template: `
     <div class="ant-color-picker-inner-content">
       <div class="ant-color-picker-panel" [class.ant-color-picker-panel-disabled]="disabled">
@@ -70,6 +72,9 @@ import { defaultColor, generateColor } from './util/util';
           <ng-antd-color-block [color]="toRgbString"></ng-antd-color-block>
         </div>
       </div>
+      @if (presets && presets.length > 0) {
+        <ng-antd-color-preset [value]="colorValue" [presets]="presets" (presetSelect)="handleChange($event)" />
+      }
       @if (panelRenderFooter) {
         <ng-template [ngTemplateOutlet]="panelRenderFooter"></ng-template>
       }
@@ -83,7 +88,7 @@ import { defaultColor, generateColor } from './util/util';
 export class NgAntdColorPickerComponent implements OnInit, OnChanges {
   private cdr = inject(ChangeDetectorRef);
 
-  @Input() value: ColorValue;
+  @Input() value: string = '';
   @Input() defaultValue: ColorValue;
   @Output() readonly nzOnChange = new EventEmitter<{ color: Color; type?: HsbaColorType }>();
   @Output() readonly nzOnChangeComplete = new EventEmitter<HsbaColorType>();
@@ -91,6 +96,7 @@ export class NgAntdColorPickerComponent implements OnInit, OnChanges {
   @Input() panelRenderFooter: TemplateRef<void> | null = null;
   @Input({ transform: booleanAttribute }) disabledAlpha: boolean = false;
   @Input({ transform: booleanAttribute }) disabled: boolean = false;
+  @Input() presets: NzColorPickerPresetsItem[] | null = null;
 
   colorValue: Color | null = null;
   alphaColor: string = '';
