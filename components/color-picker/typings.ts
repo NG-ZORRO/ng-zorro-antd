@@ -30,13 +30,6 @@ export interface NzColor extends Color {}
 export interface NzColorPickerPresetsItem {
   label: TemplateRef<void> | string;
   colors: Array<string | NzColor>;
-  /**
-   * Whether the initial state is collapsed
-   * @default true
-   */
   defaultOpen?: boolean;
-  /**
-   * The key of the preset panel
-   */
   key?: string | number;
 }
