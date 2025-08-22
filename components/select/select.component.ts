@@ -128,12 +128,13 @@ export type NzSelectSizeType = NzSizeLDSType;
       [showSearch]="nzShowSearch"
       [autofocus]="nzAutoFocus"
       [listOfTopItem]="listOfTopItem"
+      [prefix]="nzPrefix"
       (inputValueChange)="onInputValueChange($event)"
       (tokenize)="onTokenSeparate($event)"
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
-    ></nz-select-top-control>
-    @if (nzShowArrow || (hasFeedback && !!status) || isMaxMultipleCountSet) {
+    />
+    @if (showArrow || (hasFeedback && !!status) || isMaxMultipleCountSet) {
       <nz-select-arrow
         [showArrow]="nzShowArrow"
         [loading]="nzLoading"
@@ -146,14 +147,14 @@ export type NzSelectSizeType = NzSizeLDSType;
       >
         <ng-template #feedbackIconTpl>
           @if (hasFeedback && !!status) {
-            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+            <nz-form-item-feedback-icon [status]="status" />
           }
         </ng-template>
       </nz-select-arrow>
     }
 
     @if (nzAllowClear && !nzDisabled && listOfValue.length) {
-      <nz-select-clear [clearIcon]="nzClearIcon" (clear)="onClearSelection()"></nz-select-clear>
+      <nz-select-clear [clearIcon]="nzClearIcon" (clear)="onClearSelection()" />
     }
     <ng-template
       cdkConnectedOverlay
@@ -194,7 +195,7 @@ export type NzSelectSizeType = NzSizeLDSType;
         (keydown)="onKeyDown($event)"
         (itemClick)="onItemClick($event)"
         (scrollToBottom)="nzScrollToBottom.emit()"
-      ></nz-option-container>
+      />
     </ng-template>
   `,
   host: {
@@ -202,7 +203,7 @@ export type NzSelectSizeType = NzSizeLDSType;
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'finalSize() === "large"',
     '[class.ant-select-sm]': 'finalSize() === "small"',
-    '[class.ant-select-show-arrow]': `nzShowArrow`,
+    '[class.ant-select-show-arrow]': `showArrow`,
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-show-search]': `(nzShowSearch || nzMode !== 'default') && !nzDisabled`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
@@ -255,6 +256,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzMaxTagCount = Infinity;
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
+  @Input() nzPrefix: TemplateRef<NzSafeAny> | string | null = null;
   @Input()
   @WithConfig()
   nzSuffixIcon: TemplateRef<NzSafeAny> | string | null = null;
@@ -282,13 +284,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input({ transform: booleanAttribute }) nzSelectOnTab = false;
   @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
+  @Input({ transform: booleanAttribute }) nzShowArrow: boolean = true;
 
-  @Input({ transform: booleanAttribute })
-  set nzShowArrow(value: boolean) {
-    this._nzShowArrow = value;
-  }
-  get nzShowArrow(): boolean {
-    return this._nzShowArrow === undefined ? this.nzMode === 'default' : this._nzShowArrow;
+  get showArrow(): boolean {
+    return this.nzShowArrow || !!this.nzSuffixIcon;
   }
 
   get isMultiple(): boolean {
@@ -334,7 +333,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private searchValue: string = '';
   private isReactiveDriven = false;
   private value: NzSafeAny | NzSafeAny[];
-  private _nzShowArrow: boolean | undefined;
   private requestId: number = -1;
   private isNzDisableFirstChange: boolean = true;
 

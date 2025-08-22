@@ -16,20 +16,14 @@ import { NzTreeSelectModule, NzPlacementType } from 'ng-zorro-antd/tree-select';
     <br />
     <br />
     <nz-tree-select
-      style="width: 120px"
       nzPlaceHolder="Please select"
       [nzPlacement]="placement"
       [(ngModel)]="value"
-      [nzMaxTagCount]="3"
-      [nzMaxTagPlaceholder]="omittedPlaceHolder"
       [nzNodes]="nodes"
       [nzDropdownStyle]="{ width: '300px' }"
-      [nzDefaultExpandAll]="true"
-      [nzAllowClear]="false"
-      [nzMultiple]="true"
+      nzDefaultExpandAll
       (ngModelChange)="onChange($event)"
     ></nz-tree-select>
-    <ng-template #omittedPlaceHolder let-omittedValues>and {{ omittedValues.length }} more...</ng-template>
   `
 })
 export class NzDemoTreeSelectPlacementComponent {

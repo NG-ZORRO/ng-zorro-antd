@@ -1683,6 +1683,12 @@ describe('cascader', () => {
       expect(itemEl1.innerText).toBe('Option1 / Option11');
     });
 
+    it('should nzPrefix work', () => {
+      testComponent.nzPrefix = 'prefix';
+      fixture.detectChanges();
+      expect(cascader.nativeElement.querySelector('.ant-select-prefix')!.textContent?.trim()).toBe('prefix');
+    });
+
     it('should support changing icon', () => {
       testComponent.nzSuffixIcon = 'home';
       testComponent.nzExpandIcon = 'home';
@@ -2459,6 +2465,7 @@ const options5: NzSafeAny[] = [];
       [nzShowSearch]="nzShowSearch"
       [nzSize]="nzSize"
       [nzTriggerAction]="nzTriggerAction"
+      [nzPrefix]="nzPrefix"
       [nzSuffixIcon]="nzSuffixIcon"
       [nzBackdrop]="nzBackdrop"
       [nzPlacement]="nzPlacement"
@@ -2502,6 +2509,7 @@ export class NzDemoCascaderDefaultComponent {
   nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = 'click';
   nzMouseEnterDelay = 150; // ms
   nzMouseLeaveDelay = 150; // ms
+  nzPrefix: string | null = null;
   nzSuffixIcon = 'down';
   nzExpandIcon = 'right';
   nzBackdrop = false;

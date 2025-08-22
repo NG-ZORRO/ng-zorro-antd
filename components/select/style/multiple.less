@@ -1,14 +1,31 @@
 @import (reference) '../../style/themes/index';
+
 @select-prefix-cls: ~'@{ant-prefix}-select';
 
 @select-overflow-prefix-cls: ~'@{select-prefix-cls}-selection-overflow';
-@select-multiple-item-border-width: 1px;
 
-@select-multiple-padding: max(
-  @input-padding-vertical-base - @select-multiple-item-border-width -
-    @select-multiple-item-spacing-half,
-  0
-);
+
+/**
+ * Get multiple selector needed style. The calculation:
+ *
+ * ContainerPadding = BasePadding - ItemMargin
+ *
+ * Border:                    ╔═══════════════════════════╗                 ┬
+ * ContainerPadding:          ║                           ║                 │
+ *                            ╟───────────────────────────╢     ┬           │
+ * Item Margin:               ║                           ║     │           │
+ *                            ║             ┌──────────┐  ║     │           │
+ * Item(multipleItemHeight):  ║ BasePadding │   Item   │  ║  Overflow  Container(ControlHeight)
+ *                            ║             └──────────┘  ║     │           │
+ * Item Margin:               ║                           ║     │           │
+ *                            ╟───────────────────────────╢     ┴           │
+ * ContainerPadding:          ║                           ║                 │
+ * Border:                    ╚═══════════════════════════╝                 ┴
+ */
+@select-internal_fixed_item_margin: calc(@padding-xss / 2);
+@select-item-dist: calc(calc(@input-height-base - @select-multiple-item-height) / 2 - @line-width);
+@select-multiple-base-padding: max(calc(@padding-xss - @line-width), 0px);
+@select-multiple-container-padding: max(calc(@select-multiple-base-padding - @select-internal_fixed_item_margin), 0px);
 
 /**
  * Do not merge `height` & `line-height` under style with `selection` & `search`,
@@ -35,10 +52,43 @@
     // ========================= Selector =========================
     .@{select-prefix-cls}-selector {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
+      width: 100%;
+      height: 100%;
+      border-radius: @border-radius-base;
       // Multiple is little different that horizontal is follow the vertical
-      padding: @select-multiple-padding @input-padding-vertical-base;
+      padding-inline: @select-multiple-base-padding;
+      padding-block: @select-multiple-container-padding;
+
+      .@{select-prefix-cls}-prefix {
+        margin-inline-start: calc(@input-padding-horizontal-base - @select-multiple-base-padding);
+      }
+
+      .@{select-prefix-cls}-selection-wrap {
+        align-self: flex-start;
+      }
+
+      .@{select-prefix-cls}-selection-overflow {
+        position: relative;
+        display: flex;
+        flex: auto;
+        flex-wrap: wrap;
+        max-width: 100%;
+
+        &-item {
+          display: inline-flex;
+          flex: none;
+          align-self: center;
+          max-width: calc(100% - 4px);
+        }
+
+        // https://github.com/ant-design/ant-design/issues/44754
+        // Same as `wrap:after`
+        &-item-suffix {
+          min-height: @select-multiple-item-height;
+          margin-block: @select-internal_fixed_item_margin;
+        }
+      }
 
       .@{select-prefix-cls}-show-search& {
         cursor: text;
@@ -61,7 +111,7 @@
 
     &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selector,
     &.@{select-prefix-cls}-allow-clear .@{select-prefix-cls}-selector {
-      padding-right: @font-size-sm + @control-padding-horizontal;
+      padding-inline-end: @font-size-sm + @control-padding-horizontal;
     }
 
     // ======================== Selections ========================
@@ -75,7 +125,7 @@
       height: @select-multiple-item-height;
       margin-top: @select-multiple-item-spacing-half;
       margin-bottom: @select-multiple-item-spacing-half;
-      line-height: @select-multiple-item-height - @select-multiple-item-border-width * 2;
+      line-height: @select-multiple-item-height - @line-width * 2;
       background: @select-selection-item-bg;
       border: 1px solid @select-selection-item-border-color;
       border-radius: @border-radius-base;
@@ -95,7 +145,7 @@
       // It's ok not to do this, but 24px makes bottom narrow in view should adjust
       &-content {
         display: inline-block;
-        margin-right: (@padding-xs / 2);
+        margin-inline-end: (@padding-xs / 2);
         overflow: hidden;
         white-space: pre; // fix whitespace wrapping. custom tags display all whitespace within.
         text-overflow: ellipsis;
@@ -122,16 +172,21 @@
     }
 
     // ========================== Input ==========================
-    .@{select-overflow-prefix-cls}-item + .@{select-overflow-prefix-cls}-item {
+    .@{select-overflow-prefix-cls}-item + .@{select-overflow-prefix-cls}-item,
+    .@{select-prefix-cls}-prefix + .@{select-prefix-cls}-selection-wrap {
       .@{select-prefix-cls}-selection-search {
+        margin-inline-start: 0;
+      }
+      .@{select-prefix-cls}-selection-placeholder {
         margin-inline-start: 0;
       }
     }
 
     .@{select-prefix-cls}-selection-search {
       position: relative;
+      display: inline-flex;
       max-width: 100%;
-      margin-inline-start: @input-padding-horizontal-base - @input-padding-vertical-base;
+      margin-inline-start: calc(@input-padding-horizontal-base - @select-item-dist);
 
       &-input,
       &-mirror {
@@ -160,8 +215,8 @@
     .@{select-prefix-cls}-selection-placeholder {
       position: absolute;
       top: 50%;
-      right: @input-padding-horizontal;
-      left: @input-padding-horizontal;
+      inset-inline-start: calc(@input-padding-horizontal-base - @select-multiple-base-padding);
+      inset-inline-end: @input-padding-horizontal-base;
       transform: translateY(-50%);
       transition: all 0.3s;
     }
@@ -198,6 +253,7 @@
     }
 
     .select-size('lg', @input-height-lg);
+    // stylelint-disable-next-line less/no-duplicate-variables
     .select-size('sm', @input-height-sm);
 
     // Size small need additional set padding
@@ -205,9 +261,10 @@
       .@{select-prefix-cls}-selection-placeholder {
         left: @input-padding-horizontal-sm;
       }
+
       // https://github.com/ant-design/ant-design/issues/29559
       .@{select-prefix-cls}-selection-search {
-        margin-inline-start: 3px;
+        margin-inline-start: 2px; // magic number
       }
     }
   }

@@ -45,6 +45,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import {
@@ -57,6 +58,7 @@ import {
 import {
   NgClassInterface,
   NgStyleInterface,
+  NzSafeAny,
   NzSizeLDSType,
   NzStatus,
   NzValidateStatus,
@@ -94,7 +96,8 @@ const listOfPositions = [
     CdkOverlayOrigin,
     SlicePipe,
     NzSelectModule,
-    NzFormItemFeedbackIconComponent
+    NzFormItemFeedbackIconComponent,
+    NzStringTemplateOutletDirective
   ],
   animations: [slideMotion],
   template: `
@@ -158,69 +161,93 @@ const listOfPositions = [
         ></nz-tree>
         @if (nzNodes.length === 0 || isNotFound) {
           <span class="ant-select-not-found">
-            <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
+            <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent" />
           </span>
         }
       </div>
     </ng-template>
 
     <div cdkOverlayOrigin class="ant-select-selector">
-      @if (isMultiple) {
-        @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node.key) {
-          <nz-select-item
-            deletable
-            [disabled]="node.isDisabled || nzDisabled"
-            [label]="nzDisplayWith(node)"
-            displayLabelInHtml
-            (delete)="removeSelected(node, true)"
-          ></nz-select-item>
-        }
-        @if (selectedNodes.length > nzMaxTagCount) {
-          <nz-select-item
-            [contentTemplateOutlet]="nzMaxTagPlaceholder"
-            [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
-            [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
-          ></nz-select-item>
-        }
+      @if (nzPrefix; as prefix) {
+        <div class="ant-select-prefix">
+          <ng-container *nzStringTemplateOutlet="prefix">{{ prefix }}</ng-container>
+        </div>
       }
 
-      <nz-select-search
-        [nzId]="nzId"
-        [showInput]="nzShowSearch"
-        (keydown)="onKeyDownInput($event)"
-        (isComposingChange)="isComposingChange($event)"
-        (valueChange)="setInputValue($event)"
-        [value]="inputValue"
-        [mirrorSync]="isMultiple"
-        [disabled]="nzDisabled"
-        [focusTrigger]="nzOpen"
-      ></nz-select-search>
-
-      @if (nzPlaceHolder && selectedNodes.length === 0) {
-        <nz-select-placeholder
-          [placeholder]="nzPlaceHolder"
-          [style.display]="placeHolderDisplay"
-        ></nz-select-placeholder>
-      }
-
-      @if (!isMultiple && selectedNodes.length === 1 && !isComposing && inputValue === '') {
-        <nz-select-item [label]="nzDisplayWith(selectedNodes[0])" displayLabelInHtml></nz-select-item>
-      }
-
-      @if (!isMultiple) {
-        <nz-select-arrow></nz-select-arrow>
-      }
-      @if (!isMultiple || (hasFeedback && !!status)) {
-        <nz-select-arrow [showArrow]="!isMultiple" [feedbackIcon]="feedbackIconTpl">
-          <ng-template #feedbackIconTpl>
-            @if (hasFeedback && !!status) {
-              <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+      <span class="ant-select-selection-wrap">
+        @if (isMultiple) {
+          <div class="ant-select-selection-overflow">
+            @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node.key) {
+              <div class="ant-select-selection-overflow-item">
+                <nz-select-item
+                  deletable
+                  [disabled]="node.isDisabled || nzDisabled"
+                  [label]="nzDisplayWith(node)"
+                  displayLabelInHtml
+                  (delete)="removeSelected(node, true)"
+                />
+              </div>
             }
-          </ng-template>
-        </nz-select-arrow>
-      }
+            @if (selectedNodes.length > nzMaxTagCount) {
+              <div class="ant-select-selection-overflow-item">
+                <nz-select-item
+                  [contentTemplateOutlet]="nzMaxTagPlaceholder"
+                  [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
+                  [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
+                />
+              </div>
+            }
+            <div class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix">
+              <nz-select-search
+                [nzId]="nzId"
+                [showInput]="nzShowSearch"
+                (keydown)="onKeyDownInput($event)"
+                (isComposingChange)="isComposingChange($event)"
+                (valueChange)="setInputValue($event)"
+                [value]="inputValue"
+                [mirrorSync]="true"
+                [disabled]="nzDisabled"
+                [focusTrigger]="nzOpen"
+              />
+            </div>
+          </div>
+        } @else {
+          <nz-select-search
+            [nzId]="nzId"
+            [showInput]="nzShowSearch"
+            (keydown)="onKeyDownInput($event)"
+            (isComposingChange)="isComposingChange($event)"
+            (valueChange)="setInputValue($event)"
+            [value]="inputValue"
+            [mirrorSync]="false"
+            [disabled]="nzDisabled"
+            [focusTrigger]="nzOpen"
+          />
+          @if (selectedNodes.length === 1 && !isComposing && inputValue === '') {
+            <nz-select-item [label]="nzDisplayWith(selectedNodes[0])" displayLabelInHtml />
+          }
+        }
+
+        @if (nzPlaceHolder && selectedNodes.length === 0) {
+          <nz-select-placeholder [placeholder]="nzPlaceHolder" [style.display]="placeHolderDisplay" />
+        }
+      </span>
+
+      <nz-select-arrow
+        [showArrow]="true"
+        [search]="nzOpen && nzShowSearch"
+        [suffixIcon]="nzSuffixIcon"
+        [feedbackIcon]="feedbackIconTpl"
+      >
+        <ng-template #feedbackIconTpl>
+          @if (hasFeedback && !!status) {
+            <nz-form-item-feedback-icon [status]="status" />
+          }
+        </ng-template>
+      </nz-select-arrow>
+
       @if (nzAllowClear && !nzDisabled && selectedNodes.length) {
-        <nz-select-clear (clear)="onClearSelection()"></nz-select-clear>
+        <nz-select-clear (clear)="onClearSelection()" />
       }
     </div>
   `,
@@ -307,6 +334,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     return this.expandedKeys;
   }
 
+  @Input() nzPrefix: TemplateRef<NzSafeAny> | string | null = null;
+  @Input() nzSuffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
   @Input({ transform: numberAttribute }) nzMaxTagCount!: number;
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }> | null = null;

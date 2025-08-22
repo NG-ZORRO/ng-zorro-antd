@@ -7,24 +7,25 @@ import { BACKSPACE } from '@angular/cdk/keycodes';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  inject,
-  numberAttribute,
-  DestroyRef
+  ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
@@ -36,64 +37,84 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
 @Component({
   selector: 'nz-select-top-control',
   exportAs: 'nzSelectTopControl',
+  imports: [
+    NzSelectSearchComponent,
+    NzSelectItemComponent,
+    NzSelectPlaceholderComponent,
+    NzStringTemplateOutletDirective
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <!--single mode-->
-    @switch (mode) {
-      @case ('default') {
-        <nz-select-search
-          [nzId]="nzId"
-          [disabled]="disabled"
-          [value]="inputValue!"
-          [showInput]="showSearch"
-          [mirrorSync]="false"
-          [autofocus]="autofocus"
-          [focusTrigger]="open"
-          (isComposingChange)="isComposingChange($event)"
-          (valueChange)="onInputValueChange($event)"
-        ></nz-select-search>
-        @if (isShowSingleLabel) {
-          <nz-select-item
-            [removeIcon]="removeIcon"
-            [label]="listOfTopItem[0].nzLabel"
-            [contentTemplateOutlet]="customTemplate"
-            [contentTemplateOutletContext]="listOfTopItem[0]"
-          ></nz-select-item>
+    @if (prefix) {
+      <div class="ant-select-prefix">
+        <ng-container *nzStringTemplateOutlet="prefix">{{ prefix }}</ng-container>
+      </div>
+    }
+    <span class="ant-select-selection-wrap">
+      <!--single mode-->
+      @switch (mode) {
+        @case ('default') {
+          <nz-select-search
+            [nzId]="nzId"
+            [disabled]="disabled"
+            [value]="inputValue!"
+            [showInput]="showSearch"
+            [mirrorSync]="false"
+            [autofocus]="autofocus"
+            [focusTrigger]="open"
+            (isComposingChange)="isComposingChange($event)"
+            (valueChange)="onInputValueChange($event)"
+          />
+          @if (isShowSingleLabel) {
+            <nz-select-item
+              [removeIcon]="removeIcon"
+              [label]="listOfTopItem[0].nzLabel"
+              [contentTemplateOutlet]="customTemplate"
+              [contentTemplateOutletContext]="listOfTopItem[0]"
+            />
+          }
+        }
+        @default {
+          <div class="ant-select-selection-overflow">
+            <!--multiple or tags mode-->
+            @for (item of listOfSlicedItem; track item.nzValue) {
+              <div class="ant-select-selection-overflow-item">
+                <nz-select-item
+                  [removeIcon]="removeIcon"
+                  [label]="item.nzLabel"
+                  [disabled]="item.nzDisabled || disabled"
+                  [contentTemplateOutlet]="item.contentTemplateOutlet"
+                  deletable
+                  [contentTemplateOutletContext]="item.contentTemplateOutletContext"
+                  (delete)="onDeleteItem(item.contentTemplateOutletContext)"
+                />
+              </div>
+            }
+            <div class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix">
+              <nz-select-search
+                [nzId]="nzId"
+                [disabled]="disabled"
+                [value]="inputValue!"
+                [autofocus]="autofocus"
+                [showInput]="true"
+                [mirrorSync]="true"
+                [focusTrigger]="open"
+                (isComposingChange)="isComposingChange($event)"
+                (valueChange)="onInputValueChange($event)"
+              />
+            </div>
+          </div>
         }
       }
-      @default {
-        <!--multiple or tags mode-->
-        @for (item of listOfSlicedItem; track item.nzValue) {
-          <nz-select-item
-            [removeIcon]="removeIcon"
-            [label]="item.nzLabel"
-            [disabled]="item.nzDisabled || disabled"
-            [contentTemplateOutlet]="item.contentTemplateOutlet"
-            deletable
-            [contentTemplateOutletContext]="item.contentTemplateOutletContext"
-            (delete)="onDeleteItem(item.contentTemplateOutletContext)"
-          ></nz-select-item>
-        }
-        <nz-select-search
-          [nzId]="nzId"
-          [disabled]="disabled"
-          [value]="inputValue!"
-          [autofocus]="autofocus"
-          [showInput]="true"
-          [mirrorSync]="true"
-          [focusTrigger]="open"
-          (isComposingChange)="isComposingChange($event)"
-          (valueChange)="onInputValueChange($event)"
-        ></nz-select-search>
+      @if (isShowPlaceholder) {
+        <nz-select-placeholder [placeholder]="placeHolder" />
       }
-    }
-    @if (isShowPlaceholder) {
-      <nz-select-placeholder [placeholder]="placeHolder"></nz-select-placeholder>
-    }
+    </span>
   `,
-  host: { class: 'ant-select-selector' },
-  imports: [NzSelectSearchComponent, NzSelectItemComponent, NzSelectPlaceholderComponent]
+  host: {
+    class: 'ant-select-selector'
+  }
 })
 export class NzSelectTopControlComponent implements OnChanges, OnInit {
   private readonly destroyRef = inject(DestroyRef);
@@ -114,6 +135,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   @Input() removeIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() listOfTopItem: NzSelectItemInterface[] = [];
   @Input() tokenSeparators: string[] = [];
+  @Input() prefix: TemplateRef<NzSafeAny> | string | null = null;
   @Output() readonly tokenize = new EventEmitter<string[]>();
   @Output() readonly inputValueChange = new EventEmitter<string>();
   @Output() readonly deleteItem = new EventEmitter<NzSelectItemInterface>();
@@ -172,21 +194,15 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   }
 
   clearInputValue(): void {
-    if (this.nzSelectSearchComponent) {
-      this.nzSelectSearchComponent.clearInputValue();
-    }
+    this.nzSelectSearchComponent?.clearInputValue();
   }
 
   focus(): void {
-    if (this.nzSelectSearchComponent) {
-      this.nzSelectSearchComponent.focus();
-    }
+    this.nzSelectSearchComponent?.focus();
   }
 
   blur(): void {
-    if (this.nzSelectSearchComponent) {
-      this.nzSelectSearchComponent.blur();
-    }
+    this.nzSelectSearchComponent?.blur();
   }
 
   onDeleteItem(item: NzSelectItemInterface): void {

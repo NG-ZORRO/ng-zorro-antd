@@ -182,9 +182,19 @@ describe('select', () => {
       expect(selectElement.querySelector('nz-select-arrow')).toBeFalsy();
     });
 
+    it('should nzPrefix works', () => {
+      component.nzPrefix = 'prefix';
+      fixture.detectChanges();
+      expect(selectElement.querySelector('.ant-select-prefix')!.textContent?.trim()).toBe('prefix');
+
+      component.nzPrefix = component.affixTemplate;
+      fixture.detectChanges();
+      expect(selectElement.querySelector('.ant-select-prefix')!.textContent?.trim()).toBe('icon');
+    });
+
     it('should nzSuffixIcon works', () => {
       expect(selectElement.querySelector('.anticon-down')).toBeTruthy();
-      component.nzSuffixIcon = component.suffixIconTemplate;
+      component.nzSuffixIcon = component.affixTemplate;
       fixture.detectChanges();
       expect(selectElement.querySelector('nz-select-arrow')!.textContent?.trim()).toBe('icon');
     });
@@ -197,7 +207,7 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(selectElement.querySelector('.anticon-close-circle')).toBeTruthy();
-      component.nzClearIcon = component.suffixIconTemplate;
+      component.nzClearIcon = component.affixTemplate;
       fixture.detectChanges();
       expect(selectElement.querySelector('nz-select-clear')!.textContent?.trim()).toBe('icon');
     }));
@@ -1820,6 +1830,7 @@ describe('select', () => {
       [nzPlaceHolder]="nzPlaceHolder"
       [nzDropdownRender]="nzDropdownRender"
       [nzCustomTemplate]="nzCustomTemplate ?? null"
+      [nzPrefix]="nzPrefix"
       [nzSuffixIcon]="nzSuffixIcon"
       [nzClearIcon]="nzClearIcon"
       [nzShowArrow]="nzShowArrow"
@@ -1867,13 +1878,13 @@ describe('select', () => {
     </nz-select>
     <ng-template #dropdownTemplate><div class="dropdown-render">dropdownRender</div></ng-template>
     <ng-template #customTemplate let-selected>selected: {{ selected.nzLabel }}</ng-template>
-    <ng-template #suffixIconTemplate>icon</ng-template>
+    <ng-template #affixTemplate>icon</ng-template>
   `
 })
 export class TestSelectTemplateDefaultComponent {
   @ViewChild('dropdownTemplate') dropdownTemplate!: TemplateRef<NzSafeAny>;
   @ViewChild('customTemplate') customTemplate!: TemplateRef<NzSafeAny>;
-  @ViewChild('suffixIconTemplate') suffixIconTemplate!: TemplateRef<NzSafeAny>;
+  @ViewChild('affixTemplate') affixTemplate!: TemplateRef<NzSafeAny>;
   value: NzSafeAny | null = null;
   valueChange = jasmine.createSpy<NzSafeAny>('valueChange');
   openChange = jasmine.createSpy<NzSafeAny>('openChange');
@@ -1885,7 +1896,8 @@ export class TestSelectTemplateDefaultComponent {
   nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
   nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   nzCustomTemplate?: TemplateRef<{ $implicit: NzSelectItemInterface }>;
-  nzSuffixIcon: TemplateRef<NzSafeAny> | null = null;
+  nzPrefix: string | TemplateRef<NzSafeAny> | null = null;
+  nzSuffixIcon: string | TemplateRef<NzSafeAny> | null = null;
   nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   nzShowArrow = true;
   nzMaxMultipleCount: number = Infinity;
