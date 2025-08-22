@@ -34,10 +34,11 @@ If the current page business logic is too complex, and with a more mandatory seq
 
 #### NzItemProps
 
-| Property      | Description                           | Type         | Default |
-| ------------- | ------------------------------------- | ------------ | ------- |
-| `key`         | unique identifier                     | `string`     | -       |
-| `description` | description content                   | `string`     | -       |
-| `onClick`     | method triggered by clicking the step | `() => void` | -       |
+| Property      | Description                           | Type                          | Default |
+| ------------- | ------------------------------------- | ----------------------------- | ------- |
+| `key`         | unique identifier                     | `string`                      | -       |
+| `description` | description content                   | `string`                      | -       |
+| `checked`     | Current inventory status              | `boolean`                     | -       |
+| `onClick`     | method triggered by clicking the step | `(item: NzItemProps) => void` | -       |
 
 > `key` is the unique identifier of the current item. If not set, `description` will be used as the key.

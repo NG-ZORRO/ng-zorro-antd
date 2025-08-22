@@ -65,15 +65,14 @@ import { NzItemProps } from './typings';
       <div class="ant-check-list-steps-content">
         @for (item of items(); track item.key || item.description; let i = $index) {
           @let itemHighlight = index() === i + 1;
-          @let itemChecked = index() > i + 1;
           <div
             class="ant-check-list-steps"
             [class.ant-check-list-highlight]="itemHighlight"
-            [class.ant-check-list-checked]="itemChecked"
+            [class.ant-check-list-checked]="item?.checked"
           >
             <div class="ant-check-list-steps-item">
               <div class="ant-check-list-steps-item-circle">
-                @if (itemChecked) {
+                @if (item?.checked) {
                   <nz-icon nzType="check" nzTheme="outline" class="ant-check-list-steps-checkoutlined" />
                 } @else {
                   <div class="ant-check-list-steps-number">{{ i + 1 }}</div>
@@ -81,12 +80,12 @@ import { NzItemProps } from './typings';
               </div>
               <div class="ant-check-list-steps-item-description">{{ item.description }}</div>
             </div>
-            @if (itemHighlight && !!item.onClick) {
+            @if (itemHighlight && !!item?.onClick) {
               <nz-icon
                 nzType="arrow-right"
                 nzTheme="outline"
                 class="ant-check-list-steps-item-arrows"
-                (click)="item.onClick()"
+                (click)="item.onClick?.(item)"
               />
             }
           </div>
