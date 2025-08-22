@@ -15,6 +15,18 @@ timeline: true
 
 ---
 
+## 20.1.3
+
+`2025-08-22`
+
+### Bug Fixes
+
+- **i18n:** 更新 `cs_CZ` 国际化文案 ([#9334](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9334)) ([93e486e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/93e486eeb848fb3cbb2073f107ae7be4bba2457b))
+- **i18n:** 更新 `sk_SK` 国际化文案 ([#9335](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9335)) ([ddefc7f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ddefc7f9e95cde34101896fd5bfe587ff1dd8a89))
+- **cascader:** 动态绑定时 value 和 label 不正确的问题 ([#9338](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9338)) ([324ab5b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/324ab5b2ad281abb77344b9ca0dd66d4ca55e794))
+- **popconfirm:** 正确渲染标题和图标 ([#9322](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9322)) ([2c83788](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2c837883853a77a5a8fe1c2245daa0548a7bb2d9))
+- **select:** 修复使用 `TemplateRef` 作为 `nzNotFoundContent` 时关闭下拉框时抖动的问题 ([#9336](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9336)) ([366f8eb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/366f8ebcd79900a4d6a512b72094af3494c55871))
+
 ## 20.1.2
 
 `2025-08-08`

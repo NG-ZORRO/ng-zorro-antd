@@ -55,3 +55,9 @@ nz-input 可以使用所有的 W3C 标准下的所有 [使用方式](https://www
 | `[nzLength]`    | 输入元素数量                                      | `number`                          | `6`         |
 | `[nzStatus]`    | 设置校验状态                                      | `'error' \| 'warning'`            | -           |
 | `[nzSize]`      | 输入框大小                                        | `'large' \| 'small' \| 'default'` | `'default'` |
+
+## Q&A
+
+### 如何使用紧凑型输入框组合？
+
+从 v20 版本开始，`nz-input-group` 不再直接支持紧凑模式，你可以使用 [nz-space-compact](/components/space/zh#components-space-demo-compact) 替代。
