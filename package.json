@@ -67,7 +67,7 @@
     "@types/less": "^3.0.7",
     "@types/lodash": "^4.17.20",
     "@types/node": "^20.11.1",
-    "angular-eslint": "^20.1.0",
+    "angular-eslint": "^20.2.0",
     "chalk": "^4.1.0",
     "codecov": "^3.8.1",
     "conventional-changelog-cli": "^5.0.0",
