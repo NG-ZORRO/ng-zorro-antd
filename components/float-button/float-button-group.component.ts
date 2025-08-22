@@ -64,7 +64,7 @@ export class NzFloatButtonGroupComponent {
   readonly nzHref = input<string | null>(null);
   readonly nzTarget = input<string | null>(null);
   readonly nzType = input<'default' | 'primary'>('default');
-  readonly nzIcon = input<TemplateRef<void> | null>(null);
+  readonly nzIcon = input<string | TemplateRef<void> | null>(null);
   readonly nzDescription = input<TemplateRef<void> | null>(null);
   readonly nzShape = input<'circle' | 'square'>('circle');
   readonly nzTrigger = input<'click' | 'hover' | null>(null);
