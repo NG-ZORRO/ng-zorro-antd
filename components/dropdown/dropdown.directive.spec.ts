@@ -39,6 +39,59 @@ describe('dropdown', () => {
     overlayContainer.ngOnDestroy();
   }));
 
+  it('should render arrow when nzArrow is true and apply placement classes', fakeAsync(() => {
+    const fixture = createComponent(NzTestDropdownArrowComponent);
+    fixture.componentInstance.arrow = true;
+    fixture.componentInstance.placement = 'bottomLeft';
+    fixture.detectChanges();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    tick(1000);
+    fixture.detectChanges();
+    const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
+    expect(dropdown).not.toBeNull();
+    expect(dropdown.classList.contains('ant-dropdown-show-arrow')).toBeTrue();
+    expect(dropdown.classList.contains('ant-dropdown-placement-bottomLeft')).toBeTrue();
+    expect(dropdown.querySelector('.ant-dropdown-arrow')).not.toBeNull();
+
+    // Change placement while open should update placement class
+    fixture.componentInstance.placement = 'topRight';
+    fixture.detectChanges();
+    tick(0);
+    fixture.detectChanges();
+    expect(dropdown.classList.contains('ant-dropdown-placement-topRight')).toBeTrue();
+  }));
+
+  it('should map center placements to top/bottom classes', fakeAsync(() => {
+    const fixture = createComponent(NzTestDropdownArrowComponent);
+    fixture.componentInstance.arrow = true;
+    fixture.componentInstance.placement = 'bottomCenter';
+    fixture.detectChanges();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    tick(1000);
+    fixture.detectChanges();
+    const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
+    expect(dropdown).not.toBeNull();
+    expect(dropdown.classList.contains('ant-dropdown-show-arrow')).toBeTrue();
+    const isBottomFamily =
+      dropdown.classList.contains('ant-dropdown-placement-bottom') ||
+      dropdown.classList.contains('ant-dropdown-placement-bottomLeft') ||
+      dropdown.classList.contains('ant-dropdown-placement-bottomRight');
+    expect(isBottomFamily).toBeTrue();
+
+    // Switch to topCenter
+    fixture.componentInstance.placement = 'topCenter';
+    fixture.detectChanges();
+    tick(0);
+    fixture.detectChanges();
+    const isTopFamily =
+      dropdown.classList.contains('ant-dropdown-placement-top') ||
+      dropdown.classList.contains('ant-dropdown-placement-topLeft') ||
+      dropdown.classList.contains('ant-dropdown-placement-topRight');
+    expect(isTopFamily).toBeTrue();
+  }));
+
   it('should hover correct', fakeAsync(() => {
     const fixture = createComponent(NzTestDropdownComponent);
     fixture.componentInstance.trigger = 'hover';
@@ -240,4 +293,22 @@ export class NzTestDropdownComponent {
 export class NzTestDropdownVisibleComponent {
   visible = false;
   triggerVisible = jasmine.createSpy('visibleChange');
+}
+
+@Component({
+  imports: [NzDropDownModule, NzMenuModule],
+  template: `
+    <a nz-dropdown [nzDropdownMenu]="menu" [nzArrow]="arrow" [nzPlacement]="placement" [nzTrigger]="'hover'">
+      Trigger
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item>1st menu item</li>
+      </ul>
+    </nz-dropdown-menu>
+  `
+})
+export class NzTestDropdownArrowComponent {
+  arrow = false;
+  placement: NzPlacementType = 'bottomLeft';
 }

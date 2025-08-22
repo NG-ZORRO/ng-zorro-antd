@@ -48,6 +48,13 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
       <div
         class="ant-dropdown"
         [class.ant-dropdown-rtl]="dir === 'rtl'"
+        [class.ant-dropdown-show-arrow]="nzArrow"
+        [class.ant-dropdown-placement-bottomLeft]="placement === 'bottomLeft'"
+        [class.ant-dropdown-placement-bottomRight]="placement === 'bottomRight'"
+        [class.ant-dropdown-placement-bottom]="placement === 'bottom'"
+        [class.ant-dropdown-placement-topLeft]="placement === 'topLeft'"
+        [class.ant-dropdown-placement-topRight]="placement === 'topRight'"
+        [class.ant-dropdown-placement-top]="placement === 'top'"
         [class]="nzOverlayClassName"
         [style]="nzOverlayStyle"
         @slideMotion
@@ -57,6 +64,9 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"
       >
+        @if (nzArrow) {
+          <div class="ant-dropdown-arrow"></div>
+        }
         <ng-content></ng-content>
       </div>
     </ng-template>
@@ -79,6 +89,8 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   animationStateChange$ = new EventEmitter<AnimationEvent>();
   nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
+  nzArrow: boolean = false;
+  placement: NzPlacementType | 'bottom' | 'top' = 'bottomLeft';
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
   dir: Direction = 'ltr';
