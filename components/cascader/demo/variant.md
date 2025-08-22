@@ -1,5 +1,5 @@
 ---
-order: 21
+order: 20
 title:
   zh-CN: 形态变体
   en-US: Variants

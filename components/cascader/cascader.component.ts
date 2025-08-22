@@ -347,6 +347,7 @@ export class NzCascaderComponent
   @ViewChild(CdkConnectedOverlay, { static: false }) overlay!: CdkConnectedOverlay;
   @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
 
+  @Input() nzOpen: boolean = false;
   @Input() nzOptions: NzCascaderOption[] | null = [];
   @Input() nzOptionRender: TemplateRef<{ $implicit: NzCascaderOption; index: number }> | null = null;
   @Input({ transform: booleanAttribute }) nzShowInput = true;
@@ -582,7 +583,10 @@ export class NzCascaderComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzStatus, nzSize, nzPlacement, nzOptions } = changes;
+    const { nzOpen, nzStatus, nzSize, nzPlacement, nzOptions } = changes;
+    if (nzOpen) {
+      this.setMenuVisible(this.nzOpen);
+    }
     if (nzOptions) {
       this.updateOptions();
     }
