@@ -40,8 +40,8 @@ function generateUrls(lang: 'zh' | 'en'): SitemapItemLoose[] {
   });
 }
 
-export function generateSitemap(hostname = 'https://ng.ant.design'): void {
-  const sms = new SitemapStream({ hostname });
+export function generateSitemap(): void {
+  const sms = new SitemapStream({ hostname: 'https://ng.ant.design' });
   sms.pipe(createWriteStream(resolve(`${buildConfig.outputDir}/browser`, 'sitemap.xml')));
 
   const urls: SitemapItemLoose[] = [
