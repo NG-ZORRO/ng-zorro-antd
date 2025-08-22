@@ -54,3 +54,9 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 | `[nzLength]`    | The number of input elements                            | `number`                          | `6`         |
 | `[nzStatus]`    | Set validation status                                   | `'error' \| 'warning'`            | -           |
 | `[nzSize]`      | The size of the input box                               | `'large' \| 'small' \| 'default'` | `'default'` |
+
+## Q&A
+
+### How to use compact input group?
+
+`nz-input-group` is no longer support compact mode directly in v20, you can use [nz-space-compact](/components/space/en#components-space-demo-compact) instead.

@@ -1,3 +1,13 @@
+## [20.1.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.1.2...20.1.3) (2025-08-21)
+
+### Bug Fixes
+
+- **i18n:** add missing translations to `cs_CZ` ([#9334](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9334)) ([93e486e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/93e486eeb848fb3cbb2073f107ae7be4bba2457b))
+- **i18n:** add missing translations to `sk_SK` ([#9335](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9335)) ([ddefc7f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ddefc7f9e95cde34101896fd5bfe587ff1dd8a89))
+- **cascader:** invalid value and label when binding dynamically ([#9338](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9338)) ([324ab5b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/324ab5b2ad281abb77344b9ca0dd66d4ca55e794))
+- **popconfirm:** correctly render icon & title ([#9322](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9322)) ([2c83788](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2c837883853a77a5a8fe1c2245daa0548a7bb2d9))
+- **select:** shaking when closing dropdown if use a TemplateRef as `nzNotFoundContent` ([#9336](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9336)) ([366f8eb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/366f8ebcd79900a4d6a512b72094af3494c55871))
+
 ## [20.1.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.1.1...20.1.2) (2025-08-08)
 
 ### Bug Fixes
