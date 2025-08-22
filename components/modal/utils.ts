@@ -56,7 +56,8 @@ export function getConfigFromComponent<T extends ModalOptions>(component: T): Mo
     nzAfterOpen,
     nzAfterClose,
     nzCloseOnNavigation,
-    nzAutofocus
+    nzAutofocus,
+    nzLoading
   } = component;
   return {
     nzCentered,
@@ -92,6 +93,7 @@ export function getConfigFromComponent<T extends ModalOptions>(component: T): Mo
     nzAfterOpen,
     nzAfterClose,
     nzCloseOnNavigation,
-    nzAutofocus
+    nzAutofocus,
+    nzLoading
   };
 }

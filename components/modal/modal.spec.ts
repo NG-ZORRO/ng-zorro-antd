@@ -237,6 +237,29 @@ describe('NzModal', () => {
     modalRef.close();
   });
 
+  it('should show skeleton and hide content when nzLoading is true, then reveal content when nzLoading becomes false', () => {
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzLoading: true
+    });
+    fixture.detectChanges();
+    const skeleton = overlayContainerElement.querySelector('.ant-skeleton');
+    expect(skeleton).toBeTruthy();
+    const hiddenContainer = overlayContainerElement.querySelector('.ant-modal-body > div[hidden]');
+    expect(hiddenContainer).toBeTruthy();
+    const contentWhileLoading = overlayContainerElement.querySelector('.modal-content');
+    expect(contentWhileLoading).toBeTruthy();
+    modalRef.updateConfig({ nzLoading: false });
+    fixture.detectChanges();
+    const skeletonAfter = overlayContainerElement.querySelector('.ant-skeleton');
+    expect(skeletonAfter).toBeFalsy();
+    const hiddenContainerAfter = overlayContainerElement.querySelector('.ant-modal-body > div[hidden]');
+    expect(hiddenContainerAfter).toBeFalsy();
+    const contentAfter = overlayContainerElement.querySelector('.modal-content');
+    expect(contentAfter).toBeTruthy();
+    modalRef.close();
+  });
+
   it('should emit when modal opening animation is complete', fakeAsync(() => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent

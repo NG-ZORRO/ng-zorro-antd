@@ -59,6 +59,7 @@ description: 展示一个对话框，提供标题、内容区、操作区。
 | `nzContent`           | 内容                                                                                                                                                                                                                                                                                | `string \| TemplateRef<{}> \| Component \| ng-content`      | -                   |
 | `nzIconType`          | 图标 Icon 类型。<i>仅 确认框模式 下有效</i>                                                                                                                                                                                                                                         | `string`                                                    | `'question-circle'` |
 | `nzAutofocus`         | 自动聚焦及聚焦位置，为 `null` 时禁用                                                                                                                                                                                                                                                | `'ok' \| 'cancel' \| 'auto' \| null`                        | `'auto'`            |
+| `nzLoading`           | 显示骨架屏                                                                                                                                                                                                                                                                          | `boolean`                                                   | -                   |
 
 #### 采用服务方式创建普通模式对话框
 
