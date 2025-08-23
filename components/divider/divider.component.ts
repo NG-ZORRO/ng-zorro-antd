@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import type { NzSizeLMSType } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-divider',
@@ -47,7 +48,7 @@ export class NzDividerComponent {
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
   @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';
   @Input() nzVariant: 'dashed' | 'dotted' | 'solid' = 'solid';
-  @Input() nzSize: 'small' | 'middle' | 'large' | undefined;
+  @Input() nzSize: NzSizeLMSType | undefined;
   @Input({ transform: booleanAttribute }) nzDashed = false;
   @Input({ transform: booleanAttribute }) nzPlain = false;
 }
