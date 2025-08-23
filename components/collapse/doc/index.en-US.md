@@ -16,12 +16,13 @@ description: A content area which can be collapsed and expanded.
 
 ### nz-collapse
 
-| Property                 | Description                                                 | Type               | Default   | Global Config |
-| ------------------------ | ----------------------------------------------------------- | ------------------ | --------- | ------------- |
-| `[nzAccordion]`          | Accordion mode                                              | `boolean`          | `false`   | ✅            |
-| `[nzBordered]`           | Set border style                                            | `boolean`          | `true`    | ✅            |
-| `[nzGhost]`              | Make the collapse borderless and its background transparent | `boolean`          | `false`   | ✅            |
-| `[nzExpandIconPosition]` | Set expand icon position                                    | `'start' \| 'end'` | `'start'` | -             |
+| Property                 | Description                                                 | Type                 | Default    | Global Config |
+| ------------------------ | ----------------------------------------------------------- | -------------------- | ---------- | ------------- |
+| `[nzAccordion]`          | Accordion mode                                              | `boolean`            | `false`    | ✅            |
+| `[nzBordered]`           | Set border style                                            | `boolean`            | `true`     | ✅            |
+| `[nzGhost]`              | Make the collapse borderless and its background transparent | `boolean`            | `false`    | ✅            |
+| `[nzExpandIconPosition]` | Set expand icon position                                    | `'start' \| 'end'`   | `'start'`  | -             |
+| `[nzSize]`               | Set size of collapse                                        | `'small' \| 'large'` | `'middle'` | -             |
 
 ### nz-collapse-panel
 

@@ -30,7 +30,9 @@
       color: @heading-color;
       line-height: @line-height-base;
       cursor: pointer;
-      transition: all 0.3s, visibility 0s;
+      transition:
+        all 0.3s,
+        visibility 0s;
 
       .@{collapse-prefix-cls}-arrow {
         display: inline-block;
@@ -167,6 +169,36 @@
     & > .arrow {
       color: @disabled-color;
       cursor: not-allowed;
+    }
+  }
+
+  &-small {
+    > .@{collapse-prefix-cls}-item {
+      > .@{collapse-prefix-cls}-header {
+        padding: 8px 12px;
+        padding-inline-start: 8px;
+      }
+      > .@{collapse-prefix-cls}-content {
+        > .@{collapse-prefix-cls}-content-box {
+          padding: 12px;
+        }
+      }
+    }
+  }
+
+  &-large {
+    > .@{collapse-prefix-cls}-item {
+      font-size: 16px;
+      line-height: 1.5;
+      > .@{collapse-prefix-cls}-header {
+        padding: 16px 24px;
+        padding-inline-start: 16px;
+      }
+      > .@{collapse-prefix-cls}-content {
+        > .@{collapse-prefix-cls}-content-box {
+          padding: 24px;
+        }
+      }
     }
   }
 }
