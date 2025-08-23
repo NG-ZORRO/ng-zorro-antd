@@ -49,7 +49,6 @@ task('watch:site', () => {
 task('init:site', async done => {
   siteGenerate('init');
   await themeGenerate();
-  await generateLLms();
   done();
 });
 
@@ -65,17 +64,19 @@ task(
   execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=production'])
 );
 
+/** Generate llms.txt and llms-full.txt */
+task('site:llms-txt', generateLLms);
+
 /** Replace the library paths to publish/ directory */
 task('site:replace-path', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tsconfig: any = fs.readJSONSync(tsconfigFile);
+  const tsconfig = fs.readJSONSync(tsconfigFile);
   tsconfig.compilerOptions.paths['ng-zorro-antd'] = ['../publish'];
   tsconfig.compilerOptions.paths['ng-zorro-antd/*'] = ['../publish/*'];
   return fs.writeJSON(tsconfigFile, tsconfig);
 });
 
 /** Run sitemap script on the output directory, to create sitemap.xml */
-task('site:sitemap', () => generateSitemap());
+task('site:sitemap', generateSitemap);
 
 /** Regenerate the ngsw-config to fix https://github.com/angular/angular/issues/23613 */
 task('site:regen-ngsw-config', generate);
@@ -97,4 +98,4 @@ task('start:site', series('init:site', parallel('watch:site', 'serve:site')));
 /** Task that use publish code to build ng-zorro-antd-doc project,
  * output included issue-helper and prerender.
  */
-task('build:release-site', series('init:site', 'site:replace-path', 'build:site'));
+task('build:release-site', series('init:site', 'site:replace-path', 'site:llms-txt', 'build:site'));

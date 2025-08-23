@@ -1936,7 +1936,7 @@ We have upgraded `date-fns` to v2. When you switch to` date-fns`, some date form
 providers: [{ provide: NZ_DATE_FNS_COMPATIBLE, useValue: true }];
 ```
 
-** `NZ_DATE_FNS_COMPATIBLE` won't be kept for too long, we will remove the support for `date-fns` v1 format until ` ng-zorro-antd` v10**, we hope you can update the `date-fns` date format in time. For `date-fns` upgrade guide, see [here](https://github.com/date-fns/date-fns-upgrade).
+**`NZ_DATE_FNS_COMPATIBLE` won't be kept for too long, we will remove the support for `date-fns` v1 format until ` ng-zorro-antd` v10**, we hope you can update the `date-fns` date format in time. For `date-fns` upgrade guide, see [here](https://github.com/date-fns/date-fns-upgrade).
 
 #### Angular Ivy Supported
 
