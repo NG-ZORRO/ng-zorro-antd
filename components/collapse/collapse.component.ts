@@ -18,6 +18,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
+import type { NzSizeLMSType } from 'ng-zorro-antd/core/types';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
 
@@ -51,7 +52,7 @@ export class NzCollapseComponent implements OnInit {
   @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = true;
   @Input({ transform: booleanAttribute }) @WithConfig() nzGhost: boolean = false;
   @Input() nzExpandIconPosition: 'start' | 'end' = 'start';
-  @Input() nzSize: 'small' | 'middle' | 'large' = 'middle';
+  @Input() nzSize: NzSizeLMSType = 'middle';
 
   dir: Direction = 'ltr';
 
