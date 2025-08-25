@@ -5,19 +5,20 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  inject,
   Input,
   OnInit,
-  ViewEncapsulation,
-  booleanAttribute,
-  inject,
-  DestroyRef
+  ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
+import type { NzSizeLMSType } from 'ng-zorro-antd/core/types';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
 
@@ -35,7 +36,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
     '[class.ant-collapse-icon-position-end]': `nzExpandIconPosition === 'end'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered',
-    '[class.ant-collapse-rtl]': "dir === 'rtl'"
+    '[class.ant-collapse-rtl]': "dir === 'rtl'",
+    '[class.ant-collapse-small]': `nzSize === 'small'`,
+    '[class.ant-collapse-large]': `nzSize === 'large'`
   }
 })
 export class NzCollapseComponent implements OnInit {
@@ -49,6 +52,7 @@ export class NzCollapseComponent implements OnInit {
   @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = true;
   @Input({ transform: booleanAttribute }) @WithConfig() nzGhost: boolean = false;
   @Input() nzExpandIconPosition: 'start' | 'end' = 'start';
+  @Input() nzSize: NzSizeLMSType = 'middle';
 
   dir: Direction = 'ltr';
 

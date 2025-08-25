@@ -17,12 +17,13 @@ description: 可以折叠/展开的内容区域。
 
 ### nz-collapse
 
-| 参数                     | 说明                   | 类型               | 默认值    | 全局配置 |
-| ------------------------ | ---------------------- | ------------------ | --------- | -------- |
-| `[nzAccordion]`          | 是否每次只打开一个 tab | `boolean`          | `false`   | ✅       |
-| `[nzBordered]`           | 是否有边框             | `boolean`          | `true`    | ✅       |
-| `[nzGhost]`              | 使折叠面板透明且无边框 | `boolean`          | `false`   | ✅       |
-| `[nzExpandIconPosition]` | 设置图标位置           | `'start' \| 'end'` | `'start'` | -        |
+| 参数                     | 说明                   | 类型                 | 默认值     | 全局配置 |
+| ------------------------ | ---------------------- | -------------------- | ---------- | -------- |
+| `[nzAccordion]`          | 是否每次只打开一个 tab | `boolean`            | `false`    | ✅       |
+| `[nzBordered]`           | 是否有边框             | `boolean`            | `true`     | ✅       |
+| `[nzGhost]`              | 使折叠面板透明且无边框 | `boolean`            | `false`    | ✅       |
+| `[nzExpandIconPosition]` | 设置图标位置           | `'start' \| 'end'`   | `'start'`  | -        |
+| `[nzSize]`               | 设置折叠面板大小       | `'small' \| 'large'` | `'middle'` | -        |
 
 ### nz-collapse-panel
 
