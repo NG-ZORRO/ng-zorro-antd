@@ -81,6 +81,7 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalTypes = 'default';
   @Input() nzAutofocus: 'ok' | 'cancel' | 'auto' | null = 'auto';
+  @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
 
   // TODO(@hsuanxyz) Input will not be supported
   @Input()
