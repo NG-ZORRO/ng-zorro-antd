@@ -3,13 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   input,
   linkedSignal,
   output,
+  signal,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -29,7 +32,14 @@ import { NzItemProps } from './typings';
   selector: 'nz-check-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [NzPopoverModule, NzIconModule, NzOutletModule, NzCheckListButtonComponent, NzCheckListContentComponent],
+  imports: [
+    NzPopoverModule,
+    NzIconModule,
+    NzOutletModule,
+    NzCheckListButtonComponent,
+    NzCheckListContentComponent,
+    DecimalPipe
+  ],
   template: `
     <nz-check-list-button
       nz-popover
@@ -45,6 +55,11 @@ import { NzItemProps } from './typings';
       } @else {
         <nz-icon nzType="check-circle" nzTheme="outline" class="ant-check-list-icon" />
         <div class="ant-check-list-description">{{ locale().checkList }}</div>
+      }
+      @if (!visible() && !!unfinished()) {
+        <div class="ant-check-list-trigger-dot">
+          <div class="ant-check-list-trigger-dot-text">{{ unfinished() | number: '1.0-0' }}</div>
+        </div>
       }
     </nz-check-list-button>
     <ng-template #checklistTemplate>
@@ -73,11 +88,19 @@ export class NzCheckListComponent {
   nzTitle = input<TemplateRef<void> | string | null>(null);
   nzFooter = input<TemplateRef<void> | string | null>(null);
   readonly nzHide = output<boolean>();
-
+  protected unfinished = signal(0);
   protected visible = linkedSignal(this.nzVisible);
   private i18n = inject(NzI18nService);
   locale = toSignal<NzCheckListI18nInterface>(
     this.i18n.localeChange.pipe(map(() => this.i18n.getLocaleData('CheckList'))),
     { requireSync: true }
   );
+
+  constructor() {
+    effect(() => {
+      this.visible();
+      const items = this.nzItems();
+      this.unfinished.set(items.filter(item => !item.checked).length);
+    });
+  }
 }
