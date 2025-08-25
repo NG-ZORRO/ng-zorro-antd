@@ -90,6 +90,52 @@ describe('divider', () => {
       expect(context.comp.nzVariant).toEqual('solid');
     });
   });
+
+  describe('#nzPlain', () => {
+    for (const value of [true, false]) {
+      it(`[${value}]`, () => {
+        context.comp.nzPlain = value;
+        fixture.detectChanges();
+        expect(dl.query(By.css('.ant-divider-plain')) != null).toBe(value);
+      });
+    }
+  });
+
+  describe('#nzSize', () => {
+    it('should not have size class by default', () => {
+      fixture.detectChanges();
+      const el = dl.query(By.css('.ant-divider'))!.nativeElement as HTMLElement;
+      expect(el.classList.contains('ant-divider-sm')).toBe(false);
+      expect(el.classList.contains('ant-divider-md')).toBe(false);
+      expect(el.classList.contains('ant-divider-lg')).toBe(false);
+    });
+
+    (['small', 'middle', 'large'] as const).forEach(size => {
+      it(`with ${size}`, () => {
+        context.comp.nzSize = size;
+        fixture.detectChanges();
+        const el = dl.query(By.css('.ant-divider'))!.nativeElement as HTMLElement;
+        expect(el.classList.contains('ant-divider-sm')).toBe(size === 'small');
+        expect(el.classList.contains('ant-divider-md')).toBe(size === 'middle');
+        // Large size does not have a specific class; ensure no lg class is added
+        expect(el.classList.contains('ant-divider-lg')).toBe(false);
+      });
+    });
+  });
+
+  describe('#with text class', () => {
+    it('should have ant-divider-with-text when nzText set', () => {
+      context.nzText = 'text';
+      fixture.detectChanges();
+      expect(dl.query(By.css('.ant-divider-with-text')) != null).toBe(true);
+    });
+
+    it('should not have ant-divider-with-text when nzText removed', () => {
+      context.nzText = undefined;
+      fixture.detectChanges();
+      expect(dl.query(By.css('.ant-divider-with-text')) == null).toBe(true);
+    });
+  });
 });
 
 @Component({

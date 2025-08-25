@@ -1,3 +1,5 @@
+@import '../../style/themes/index';
+
 .@{divider-prefix-cls} {
   &-dotted {
     background: none;
@@ -15,5 +17,13 @@
 
   &-vertical&-dotted {
     border-width: 0 0 0 @border-width-base;
+  }
+
+  &-sm {
+    margin-block: @margin-xs;
+  }
+
+  &-md {
+    margin-block: @margin-md;
   }
 }

@@ -23,3 +23,4 @@ description: A divider line separates different content.
 | `[nzPlain]`       | Divider text show as plain style        | `boolean`                         | `false`        |
 | `[nzOrientation]` | inner text orientation                  | `'center' \| 'left' \| 'right'`   | `'center'`     |
 | `[nzVariant]`     | Whether line is dashed, dotted or solid | `'dashed' \| 'dotted' \| 'solid'` | `'solid'`      |
+| `[nzSize]`        | Divider size                            | `'small' \| 'middle' \| 'large'`  | -              |

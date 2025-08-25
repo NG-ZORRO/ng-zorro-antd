@@ -24,3 +24,4 @@ description: 区隔内容的分割线。
 | `[nzPlain]`       | 文字是否显示为普通正文样式 | `boolean`                         | `false`        |
 | `[nzOrientation]` | 中间文字方向               | `'center' \| 'left' \| 'right'`   | `'center'`     |
 | `[nzVariant]`     | 分割线是虚线、点线还是实线 | `'dashed' \| 'dotted' \| 'solid'` | `'solid'`      |
+| `[nzSize]`        | 分割线大小                 | `'small' \| 'middle' \| 'large'`  | -              |
