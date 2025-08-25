@@ -20,28 +20,29 @@ import { NzStatisticValueType } from './typings';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  selector: 'nz-statistic-number',
-  exportAs: 'nzStatisticNumber',
+  selector: 'nz-statistic-content-value',
+  exportAs: 'nzStatisticContentValue',
   template: `
-    <span class="ant-statistic-content-value">
-      @if (nzValueTemplate) {
-        <ng-container
-          [ngTemplateOutlet]="nzValueTemplate"
-          [ngTemplateOutletContext]="{ $implicit: nzValue }"
-        ></ng-container>
-      } @else {
-        @if (displayInt) {
-          <span class="ant-statistic-content-value-int">{{ displayInt }}</span>
-        }
-        @if (displayDecimal) {
-          <span class="ant-statistic-content-value-decimal">{{ displayDecimal }}</span>
-        }
+    @if (nzValueTemplate) {
+      <ng-container
+        [ngTemplateOutlet]="nzValueTemplate"
+        [ngTemplateOutletContext]="{ $implicit: nzValue }"
+      ></ng-container>
+    } @else {
+      @if (displayInt) {
+        <span class="ant-statistic-content-value-int">{{ displayInt }}</span>
       }
-    </span>
+      @if (displayDecimal) {
+        <span class="ant-statistic-content-value-decimal">{{ displayDecimal }}</span>
+      }
+    }
   `,
-  imports: [NgTemplateOutlet]
+  imports: [NgTemplateOutlet],
+  host: {
+    class: 'ant-statistic-content-value'
+  }
 })
-export class NzStatisticNumberComponent implements OnChanges {
+export class NzStatisticContentValueComponent implements OnChanges {
   @Input() nzValue?: NzStatisticValueType;
   @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
 
