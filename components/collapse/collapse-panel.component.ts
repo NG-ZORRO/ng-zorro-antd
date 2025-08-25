@@ -4,24 +4,25 @@
  */
 
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
+  NgZone,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
-  booleanAttribute,
-  inject,
-  NgZone,
-  ChangeDetectorRef,
-  DestroyRef
+  type AfterViewInit
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
@@ -41,9 +42,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
   encapsulation: ViewEncapsulation.None,
   animations: [collapseMotion],
   template: `
-    <div #collapseHeader role="button" [attr.aria-expanded]="nzActive" class="ant-collapse-header">
+    <div
+      #collapseHeader
+      role="button"
+      [attr.aria-expanded]="nzActive"
+      class="ant-collapse-header"
+      [class.ant-collapse-collapsible-icon]="nzCollapsible === 'icon'"
+      [class.ant-collapse-collapsible-header]="nzCollapsible === 'header'"
+      [class.ant-collapse-collapsible-only]="nzCollapsible === 'disabled'"
+    >
       @if (nzShowArrow) {
-        <div>
+        <div role="button" #collapseIcon class="ant-collapse-expand-icon">
           <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
             <nz-icon [nzType]="expandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="nzActive ? 90 : 0" />
           </ng-container>
@@ -73,11 +82,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
     class: 'ant-collapse-item',
     '[class.ant-collapse-no-arrow]': '!nzShowArrow',
     '[class.ant-collapse-item-active]': 'nzActive',
-    '[class.ant-collapse-item-disabled]': 'nzDisabled'
+    '[class.ant-collapse-item-disabled]': 'nzDisabled || nzCollapsible === "disabled"'
   },
   imports: [NzOutletModule, NzIconModule]
 })
-export class NzCollapsePanelComponent implements OnInit {
+export class NzCollapsePanelComponent implements OnInit, AfterViewInit {
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
@@ -87,14 +96,19 @@ export class NzCollapsePanelComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input({ transform: booleanAttribute }) nzActive = false;
+  /**
+   * @deprecated Use `nzCollapsible` instead with the value `'disabled'`.
+   */
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) @WithConfig() nzShowArrow: boolean = true;
   @Input() nzExtra?: string | TemplateRef<void>;
   @Input() nzHeader?: string | TemplateRef<void>;
   @Input() nzExpandedIcon?: string | TemplateRef<void>;
+  @Input() nzCollapsible?: 'disabled' | 'header' | 'icon';
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
 
-  @ViewChild('collapseHeader', { static: true }) collapseHeader!: ElementRef<HTMLElement>;
+  @ViewChild('collapseHeader') collapseHeader!: ElementRef<HTMLElement>;
+  @ViewChild('collapseIcon') collapseIcon?: ElementRef<HTMLElement>;
 
   markForCheck(): void {
     this.cdr.markForCheck();
@@ -110,10 +124,16 @@ export class NzCollapsePanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.nzCollapseComponent.addPanel(this);
+  }
 
-    fromEventOutsideAngular(this.collapseHeader.nativeElement, 'click')
+  ngAfterViewInit(): void {
+    let fromEvent$ = fromEventOutsideAngular(this.collapseHeader.nativeElement, 'click');
+    if (this.nzShowArrow && this.nzCollapsible === 'icon' && this.collapseIcon) {
+      fromEvent$ = fromEventOutsideAngular(this.collapseIcon!.nativeElement, 'click');
+    }
+    fromEvent$
       .pipe(
-        filter(() => !this.nzDisabled),
+        filter(() => !this.nzDisabled && this.nzCollapsible !== 'disabled'),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
