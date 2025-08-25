@@ -32,7 +32,7 @@ import { PREFIX_CLASS } from './util';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div [class.ant-picker-datetime-panel]="showTimePicker">
+    <div (mouseleave)="onLeave()" [class.ant-picker-datetime-panel]="showTimePicker">
       <div class="{{ prefixCls }}-{{ panelMode }}-panel">
         @switch (panelMode) {
           @case ('decade') {
@@ -221,6 +221,12 @@ export class InnerPopupComponent implements OnChanges {
       panelMode === this.endPanelMode &&
       ((this.partType === 'left' && direction === 'next') || (this.partType === 'right' && direction === 'prev'))
     );
+  }
+
+  onLeave(): void {
+    const lastSelectedDate = this.selectedValue.length > 0 ? this.selectedValue[this.selectedValue.length - 1] : void 0;
+
+    this.cellHover.emit(lastSelectedDate);
   }
 
   onSelectTime(date: Date): void {
