@@ -247,8 +247,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     this.changeValueFromSelect(value, !this.showTime);
   }
 
-  onCellHover(value: CandyDate): void {
+  onCellHover(value: CandyDate | null): void {
     if (!this.isRange) {
+      return;
+    }
+    if (value === null) {
+      this.hoverValue = [];
       return;
     }
     const otherInputIndex = { left: 1, right: 0 }[this.datePickerService.activeInput];
