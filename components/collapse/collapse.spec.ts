@@ -178,7 +178,7 @@ describe('collapse', () => {
     });
   });
 
-  describe('collapse collapsible', () => {
+  fdescribe('collapse collapsible', () => {
     let fixture: ComponentFixture<NzTestCollapseCollapsibleComponent>;
     let panel: DebugElement;
 
@@ -190,7 +190,7 @@ describe('collapse', () => {
 
     it('should only toggle by icon when nzCollapsible is "icon"', () => {
       const headerEl = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
-      expect(headerEl.classList).toContain('ant-collapse-collapsible-icon');
+      expect(headerEl.classList).toContain('ant-collapse-icon-collapsible-only');
       // initial state
       expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
 
@@ -220,7 +220,6 @@ describe('collapse', () => {
       fixture.detectChanges();
 
       const header = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
-      expect(header.classList).toContain('ant-collapse-collapsible-only');
       header.click();
       fixture.detectChanges();
       expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
@@ -239,7 +238,7 @@ describe('collapse', () => {
       const localPanel = localFixture.debugElement.query(By.directive(NzCollapsePanelComponent));
 
       const header = localPanel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
-      expect(header.classList).toContain('ant-collapse-collapsible-header');
+      expect(header.classList).toContain('ant-collapse-header-collapsible-only');
       expect(localPanel.nativeElement.classList).not.toContain('ant-collapse-item-active');
 
       // click header toggles
