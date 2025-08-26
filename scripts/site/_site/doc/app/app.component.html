@@ -1,26 +1,10 @@
 <div id="ng-content" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null">
-  <div class="page-wrapper" [class.page-wrapper-rtl]="direction === 'rtl'" [dir]="direction">
-    <app-header
-      [windowWidth]="windowWidth"
-      [page]="page"
-      [(language)]="language"
-      (languageChange)="switchLanguage($event)"
-      (versionChange)="navigateToVersion($event)"
-      (directionChange)="switchDirection($event)"
-    ></app-header>
+  <div class="page-wrapper" [class.page-wrapper-rtl]="dir() === 'rtl'" [dir]="dir()">
+    <app-header />
     <div class="main-wrapper">
       <div nz-row>
-        @if (!showDrawer) {
-          <div
-            nz-col
-            [nzXs]="24"
-            [nzSm]="24"
-            [nzMd]="6"
-            [nzLg]="6"
-            [nzXl]="5"
-            [nzXXl]="4"
-            class="main-menu"
-          >
+        @if (!app.isMobile()) {
+          <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="5" [nzXXl]="4" class="main-menu">
             <nz-affix [nzOffsetTop]="0">
               <section class="main-menu-inner">
                 <ng-template [ngTemplateOutlet]="sideOrDrawerTpl"></ng-template>
@@ -38,8 +22,8 @@
           [nzXl]="19"
           [nzXXl]="20"
         >
-          <router-outlet></router-outlet>
-          <nz-contributors-list></nz-contributors-list>
+          <router-outlet />
+          <app-contributors-list />
         </div>
       </div>
       <div nz-row>
@@ -52,31 +36,20 @@
           [nzXl]="{ span: 19, offset: 5 }"
           [nzXXl]="{ span: 20, offset: 4 }"
         >
-          <app-fixed-widgets
-            [theme]="theme"
-            (themeChange)="onThemeChange($event)"
-            [language]="language"
-          ></app-fixed-widgets>
-          <nz-nav-bottom></nz-nav-bottom>
-          <app-footer
-            [colorHex]="color"
-            [language]="language"
-            (colorChange)="changeColor($event)"
-          ></app-footer>
+          <app-fixed-widgets (themeChange)="onThemeChange($event)" />
+          <app-nav-bottom />
+          <app-footer [colorHex]="color" (colorChange)="changeColor($event)" />
         </div>
       </div>
     </div>
   </div>
 </div>
 
-@if (showDrawer) {
+@if (app.isMobile()) {
   <div class="drawer-wrapper">
     <div class="drawer drawer-left" [class.drawer-open]="isDrawerOpen">
       <div class="drawer-mask" (click)="isDrawerOpen = false"></div>
-      <div
-        class="drawer-content-wrapper"
-        [style.transform]="isDrawerOpen ? null : 'translateX(-100%)'"
-      >
+      <div class="drawer-content-wrapper" [style.transform]="isDrawerOpen ? null : 'translateX(-100%)'">
         <div class="drawer-content">
           <ng-container [ngTemplateOutlet]="sideOrDrawerTpl"></ng-container>
         </div>
@@ -89,10 +62,5 @@
 }
 
 <ng-template #sideOrDrawerTpl>
-  <app-side
-    [direction]="direction"
-    [page]="page"
-    [routerList]="routerList"
-    [language]="language"
-  ></app-side>
+  <app-side />
 </ng-template>

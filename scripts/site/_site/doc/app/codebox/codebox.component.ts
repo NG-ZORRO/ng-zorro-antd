@@ -2,21 +2,24 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  computed,
+  DestroyRef,
+  inject,
   Input,
-  OnDestroy,
-  OnInit,
+  signal,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { AppService, DemoCode } from '../app.service';
+import { APP_LANGUAGE } from '../app.token';
 import { OnlineIdeService } from '../online-ide/online-ide.service';
 import { NzHighlightComponent } from './highlight.component';
 
@@ -26,24 +29,30 @@ import { NzHighlightComponent } from './highlight.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzIconModule, NzTooltipModule, NzHighlightComponent],
   templateUrl: './codebox.component.html',
-  styleUrls: ['./codebox.component.less'],
+  styleUrl: './codebox.component.less',
   host: {
     ngSkipHydration: ''
   }
 })
-export class NzCodeBoxComponent implements OnInit, OnDestroy {
-  highlightCode?: string;
-  copied = false;
-  commandCopied = false;
+export class NzCodeBoxComponent {
+  protected readonly language = inject(APP_LANGUAGE);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly appService = inject(AppService);
+  private readonly platform = inject(Platform);
+  private readonly clipboard = inject(Clipboard);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly onlineIdeService = inject(OnlineIdeService);
+
   iframe?: SafeUrl;
-  language = 'zh';
-  theme = 'default';
-  destroy$ = new Subject<void>();
-  codeLoaded = false;
-  onlineIDELoading = false;
-  copyLoading = false;
+  readonly highlightCode = signal<string>(null!);
+  readonly commandCopied = signal(false);
+  readonly codeLoaded = computed(() => !!this.highlightCode());
+  readonly onlineIDELoading = signal(false);
+  readonly copied = signal(false);
+  readonly codeLoading = signal(false);
+  readonly expanded = signal(false);
+
   @Input() nzTitle!: string;
-  @Input() nzExpanded = false;
   @Input() nzHref!: string;
   @Input() nzLink!: string;
   @Input() nzId!: string;
@@ -67,86 +76,42 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   }
 
   copyCode(): void {
-    setTimeout(() => {
-      this.copyLoading = !this.codeLoaded;
-      this.cdr.markForCheck();
-    }, 120);
+    setTimeout(() => this.codeLoading.set(!this.codeLoaded()), 100);
     this.getDemoCode().subscribe(data => {
-      this.copyLoading = false;
-      this.cdr.markForCheck();
+      this.codeLoading.set(false);
       this.clipboard.copy(data.rawCode);
-      this.copied = true;
-      setTimeout(() => {
-        this.copied = false;
-        this.cdr.markForCheck();
-      }, 1000);
+      this.copied.set(true);
+      setTimeout(() => this.copied.set(false), 1000);
     });
   }
 
   copyGenerateCommand(command: string): void {
     this.clipboard.copy(command);
-    this.commandCopied = true;
-    setTimeout(() => {
-      this.commandCopied = false;
-      this.cdr.markForCheck();
-    }, 1000);
+    this.commandCopied.set(true);
+    setTimeout(() => this.commandCopied.set(false), 1000);
   }
 
   expandCode(expanded: boolean): void {
-    this.nzExpanded = expanded;
+    this.expanded.set(expanded);
     if (expanded) {
       this.getDemoCode().subscribe();
     }
-    this.cdr.markForCheck();
   }
 
   openOnlineIDE(): void {
-    setTimeout(() => {
-      this.onlineIDELoading = !this.codeLoaded;
-      this.cdr.markForCheck();
-    }, 120);
+    setTimeout(() => this.onlineIDELoading.set(!this.codeLoaded()), 100);
     this.getDemoCode().subscribe(data => {
-      this.onlineIDELoading = false;
-      this.cdr.markForCheck();
+      this.onlineIDELoading.set(false);
       this.onlineIdeService.openOnStackBlitz(this.nzComponentName, data.rawCode, this.nzSelector);
     });
   }
 
-  constructor(
-    private sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
-    private appService: AppService,
-    private platform: Platform,
-    private clipboard: Clipboard,
-    private onlineIdeService: OnlineIdeService
-  ) {}
-
-  ngOnInit(): void {
-    this.appService.theme$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      this.theme = data;
-      this.cdr.markForCheck();
-    });
-    this.appService.language$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      this.language = data;
-      this.cdr.markForCheck();
-    });
-  }
-
-  getDemoCode(): Observable<DemoCode> {
+  private getDemoCode(): Observable<DemoCode> {
     return this.appService.getCode(this.nzId).pipe(
-      takeUntil(this.destroy$),
+      takeUntilDestroyed(this.destroyRef),
       tap(data => {
-        if (data) {
-          this.highlightCode = data.highlightCode;
-          this.codeLoaded = true;
-          this.cdr.markForCheck();
-        }
+        this.highlightCode.set(data.highlightCode);
       })
     );
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -1,15 +1,6 @@
-import { Direction } from '@angular/cdk/bidi';
-import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import { Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -22,13 +13,11 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { VERSION } from 'ng-zorro-antd/version';
 
+import { AppService } from '../app.service';
+import { APP_LANGUAGE } from '../app.token';
 import { GithubButtonComponent } from './github-button.component';
-import { LogoComponent } from './logo.component';
-import { SearchbarComponent } from './searchbar.component';
 import { NavigationComponent } from './navigation.component';
-
-const RESPONSIVE_XS = 1120;
-const RESPONSIVE_SM = 1200;
+import { SearchbarComponent } from './searchbar.component';
 
 @Component({
   selector: 'app-header',
@@ -36,7 +25,6 @@ const RESPONSIVE_SM = 1200;
   imports: [
     FormsModule,
     NgTemplateOutlet,
-    UpperCasePipe,
     NzGridModule,
     NzIconModule,
     NzMenuModule,
@@ -45,25 +33,19 @@ const RESPONSIVE_SM = 1200;
     NzDropDownModule,
     NzPopoverModule,
     GithubButtonComponent,
-    LogoComponent,
     SearchbarComponent,
     NavigationComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnChanges {
-  @Input() language: 'zh' | 'en' = 'zh';
-  @Input() windowWidth = 1400;
-  @Input() page: 'docs' | 'components' | 'experimental' | string = 'docs';
-  @Output() versionChange = new EventEmitter<string>();
-  @Output() languageChange = new EventEmitter<'zh' | 'en'>();
-  @Output() directionChange = new EventEmitter<Direction>();
+export class HeaderComponent {
+  private readonly nzConfigService = inject(NzConfigService);
+  protected readonly app = inject(AppService);
+  protected readonly language = inject(APP_LANGUAGE);
+  protected readonly dir = inject(Directionality).valueSignal;
 
-  searching = false;
-  isMobile = false;
-  mode = 'horizontal';
-  responsive: null | 'narrow' | 'crowded' = null;
-  oldVersionList = [
+  readonly searching = signal(false);
+  readonly oldVersionList = [
     '19.3.x',
     '18.2.x',
     '17.4.x',
@@ -81,52 +63,30 @@ export class HeaderComponent implements OnChanges {
     '0.7.x',
     '0.5.x'
   ];
-  currentVersion = VERSION.full;
-  nextDirection: Direction = 'rtl';
-
-  constructor(private nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
-
-  onChangeVersion(version: string): void {
-    this.versionChange.emit(version);
-  }
+  readonly currentVersion = VERSION.full;
 
   onFocusChange(focus: boolean): void {
-    this.searching = focus;
+    this.searching.set(focus);
   }
 
-  onChangeLanguage(language: 'en' | 'zh'): void {
-    this.languageChange.emit(language);
+  toggleLanguage(): void {
+    this.language.update(lang => lang === 'zh' ? 'en' : 'zh');
   }
 
   toggleDirection(): void {
-    this.directionChange.emit(this.nextDirection);
-    this.nzConfigService.set('modal', { nzDirection: this.nextDirection });
-    this.nzConfigService.set('drawer', { nzDirection: this.nextDirection });
-    this.nzConfigService.set('message', { nzDirection: this.nextDirection });
-    this.nzConfigService.set('notification', { nzDirection: this.nextDirection });
-    this.nzConfigService.set('image', { nzDirection: this.nextDirection });
-    if (this.nextDirection === 'rtl') {
-      this.nextDirection = 'ltr';
+    this.dir.update(dir => dir === 'rtl' ? 'ltr' : 'rtl');
+    this.nzConfigService.set('modal', { nzDirection: this.dir() });
+    this.nzConfigService.set('drawer', { nzDirection: this.dir() });
+    this.nzConfigService.set('message', { nzDirection: this.dir() });
+    this.nzConfigService.set('notification', { nzDirection: this.dir() });
+    this.nzConfigService.set('image', { nzDirection: this.dir() });
+  }
+
+  navigateToVersion(version: string): void {
+    if (version !== this.currentVersion) {
+      window.location.href = `${window.location.origin}/version/${version}`;
     } else {
-      this.nextDirection = 'rtl';
-    }
-    this.cdr.markForCheck();
-  }
-
-  updateResponsive(): void {
-    this.responsive = null;
-    this.isMobile = this.windowWidth <= 768;
-    if (this.windowWidth < RESPONSIVE_XS) {
-      this.responsive = 'crowded';
-    } else if (this.windowWidth < RESPONSIVE_SM) {
-      this.responsive = 'narrow';
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const { windowWidth } = changes;
-    if (windowWidth) {
-      this.updateResponsive();
+      window.location.href = window.location.origin;
     }
   }
 }

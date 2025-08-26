@@ -1,28 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+
+import { NzSanitizerPipe } from 'ng-zorro-antd/pipes';
 
 @Component({
-    selector: 'nz-highlight',
+  selector: 'nz-highlight',
+  imports: [NzSanitizerPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <pre class="language-angular">
-      <code [innerHTML]="code"></code>
+      <code [innerHTML]="nzCode() | nzSanitizer: 'html'"></code>
     </pre>
   `
 })
 export class NzHighlightComponent {
-  code: SafeHtml | string = '';
-  @ViewChild('code', { static: true }) codeElement!: ElementRef;
-  @Input() nzLanguage?: string;
-
-  @Input()
-  get nzCode(): string | SafeHtml {
-    return this.code || '';
-  }
-
-  set nzCode(value: string | SafeHtml) {
-    this.code = this.sanitizer.bypassSecurityTrustHtml(value as string);
-  }
-
-  constructor(private sanitizer: DomSanitizer) {}
+  nzCode = input<string>();
 }

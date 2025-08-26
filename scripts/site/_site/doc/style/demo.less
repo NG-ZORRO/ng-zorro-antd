@@ -2,11 +2,6 @@
   width: 100%;
 }
 
-.code-boxes-col-2-1 {
-  display: inline-block;
-  vertical-align: top;
-}
-
 .code-box {
   position: relative;
   display: inline-block;
@@ -53,7 +48,7 @@
 
   &-expand-trigger {
     position: relative;
-    margin-left: 12px;
+    margin-inline-start: 12px;
     color: #3b4357;
     font-size: 20px;
     cursor: pointer;
@@ -63,26 +58,20 @@
     &:hover {
       opacity: 1;
     }
-
-    .ant-row-rtl & {
-      margin-right: 8px;
-      margin-left: 0;
-    }
   }
 
   &-title {
     position: absolute;
     top: -14px;
-    margin-left: 16px;
+    margin-inline-start: 16px;
     padding: 1px 8px;
     color: #777;
     background: @body-background;
+
     border-radius: @border-radius-base @border-radius-base 0 0;
     transition: background-color 0.4s;
 
     .ant-row-rtl & {
-      margin-right: 16px;
-      margin-left: 0;
       border-radius: @border-radius-base 0 0 @border-radius-base;
     }
 
@@ -101,19 +90,12 @@
   a.edit-button {
     position: absolute;
     top: 7px;
-    right: -16px;
-    padding-right: 6px;
+    inset-inline-end: -16px;
+    padding-inline-end: 6px;
     font-size: 12px;
     text-decoration: none;
     background: inherit;
     transform: scale(0.9);
-
-    .ant-row-rtl & {
-      right: auto;
-      left: -21px;
-      padding-right: 0;
-      padding-left: 6px;
-    }
 
     .anticon {
       color: @site-text-color-secondary;
@@ -122,14 +104,6 @@
       &:hover {
         color: @site-text-color;
       }
-    }
-
-    .ant-row.ant-row-rtl & {
-      right: auto;
-      left: -22px;
-      margin-right: 0;
-      padding-right: 8px;
-      padding-left: 6px;
     }
   }
 
@@ -165,14 +139,9 @@
     > p {
       width: 100%;
       margin: 0.5em 0;
-      padding-right: 25px;
+      padding-inline-end: 25px;
       font-size: 12px;
       word-break: break-word;
-
-      .ant-row-rtl & {
-        padding-right: 0;
-        padding-left: 25px;
-      }
     }
   }
 
@@ -181,26 +150,17 @@
     border-radius: 0;
   }
 
-  .code-expand-icon {
-    cursor: pointer;
-  }
-
   .code-expand-icon-show,
   .code-expand-icon-hide {
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-end: 0;
     width: 100%;
     max-width: 100%;
     margin: 0;
     box-shadow: none;
     transition: all 0.4s;
     user-select: none;
-
-    .ant-row-rtl & {
-      right: 0;
-      left: auto;
-    }
   }
 
   .code-expand-icon-show {
@@ -261,31 +221,23 @@
       opacity: 1;
     }
 
-    > form,
-    > span {
+    > * {
       position: relative;
       display: inline-block;
       width: 16px;
-      height: 16px;
-      margin-left: 16px;
       vertical-align: top;
-
-      .ant-row-rtl & {
-        margin-right: 16px;
-        margin-left: 0;
-      }
+      cursor: pointer;
+      inset-inline-end: 16px;
+      margin-inline-start: 16px;
 
       &:first-child {
-        margin-left: 0;
-
-        .ant-row-rtl & {
-          margin-right: 0;
-        }
+        margin-inline-start: 0;
       }
     }
 
-    > form {
-      top: -2px;
+    .anticon-check {
+      color: @green-6 !important;
+      font-weight: bold;
     }
   }
 
@@ -300,29 +252,6 @@
 
     &:hover {
       color: @icon-color-hover;
-    }
-  }
-
-  &-code-copy {
-    width: 20px;
-    height: 20px;
-    color: @site-text-color-secondary;
-    font-size: 14px;
-    line-height: 20px;
-    text-align: center;
-    background: @component-background;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.24s;
-
-    &:hover {
-      color: @icon-color-hover;
-      transform: scale(1.2);
-    }
-
-    &.anticon-check {
-      color: @green-6 !important;
-      font-weight: bold;
     }
   }
 
@@ -349,18 +278,6 @@
 
   &-debug &-title a {
     color: @purple-6;
-  }
-}
-
-.show-riddle-button .code-box-riddle {
-  display: block;
-}
-
-.all-code-box-controls {
-  float: right;
-
-  .ant-row-rtl & {
-    float: left;
   }
 }
 
