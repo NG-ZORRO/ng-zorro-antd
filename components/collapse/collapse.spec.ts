@@ -178,7 +178,7 @@ describe('collapse', () => {
     });
   });
 
-  fdescribe('collapse collapsible', () => {
+  describe('collapse collapsible', () => {
     let fixture: ComponentFixture<NzTestCollapseCollapsibleComponent>;
     let panel: DebugElement;
 
