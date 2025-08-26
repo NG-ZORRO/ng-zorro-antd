@@ -178,6 +178,86 @@ describe('collapse', () => {
     });
   });
 
+  describe('collapse collapsible', () => {
+    let fixture: ComponentFixture<NzTestCollapseCollapsibleComponent>;
+    let panel: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestCollapseCollapsibleComponent);
+      fixture.detectChanges();
+      panel = fixture.debugElement.query(By.directive(NzCollapsePanelComponent));
+    });
+
+    it('should only toggle by icon when nzCollapsible is "icon"', () => {
+      const headerEl = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      expect(headerEl.classList).toContain('ant-collapse-icon-collapsible-only');
+      // initial state
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      // click header text should NOT toggle
+      (panel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      // click icon should toggle open
+      (panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement).click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).toContain('ant-collapse-item-active');
+
+      // click header text again should NOT toggle
+      (panel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).toContain('ant-collapse-item-active');
+
+      // click icon should toggle close
+      (panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement).click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+    });
+
+    it('should not toggle when nzCollapsible is "disabled"', () => {
+      fixture.componentInstance.collapsible = 'disabled';
+      fixture.detectChanges();
+
+      const header = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      header.click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      const icon = panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement;
+      icon.click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+    });
+
+    it('should toggle by header when nzCollapsible is "header"', () => {
+      // Recreate fixture and set mode BEFORE first detectChanges so listeners bind to header
+      const localFixture = TestBed.createComponent(NzTestCollapseCollapsibleComponent);
+      localFixture.componentInstance.collapsible = 'header';
+      localFixture.detectChanges();
+      const localPanel = localFixture.debugElement.query(By.directive(NzCollapsePanelComponent));
+
+      const header = localPanel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      expect(header.classList).toContain('ant-collapse-header-collapsible-only');
+      expect(localPanel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      // click header toggles
+      (localPanel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      localFixture.detectChanges();
+      expect(localPanel.nativeElement.classList).toContain('ant-collapse-item-active');
+
+      // click header toggles again (close)
+      (localPanel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      localFixture.detectChanges();
+      expect(localPanel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      // clicking icon (which is inside header) should also toggle because header listens
+      (localPanel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement).click();
+      localFixture.detectChanges();
+      expect(localPanel.nativeElement.classList).toContain('ant-collapse-item-active');
+    });
+  });
+
   describe('RTL', () => {
     it('should className correct on dir change', () => {
       const fixture = TestBed.createComponent(NzTestCollapseRtlComponent);
@@ -289,6 +369,27 @@ export class NzTestCollapseTemplateComponent {}
   `
 })
 export class NzTestCollapseIconComponent {}
+
+@Component({
+  imports: [NzCollapseModule],
+  template: `
+    <nz-collapse>
+      <nz-collapse-panel
+        [(nzActive)]="active"
+        [nzCollapsible]="collapsible"
+        [nzShowArrow]="showArrow"
+        nzHeader="Header"
+      >
+        <p>Content</p>
+      </nz-collapse-panel>
+    </nz-collapse>
+  `
+})
+export class NzTestCollapseCollapsibleComponent {
+  active = false;
+  collapsible: 'disabled' | 'header' | 'icon' = 'icon';
+  showArrow = true;
+}
 
 @Component({
   imports: [BidiModule, NzTestCollapseBasicComponent],
