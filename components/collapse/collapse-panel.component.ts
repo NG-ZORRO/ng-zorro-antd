@@ -22,7 +22,7 @@ import {
   type AfterViewInit
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { filter } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
@@ -47,9 +47,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
       role="button"
       [attr.aria-expanded]="nzActive"
       class="ant-collapse-header"
-      [class.ant-collapse-collapsible-icon]="nzCollapsible === 'icon'"
-      [class.ant-collapse-collapsible-header]="nzCollapsible === 'header'"
-      [class.ant-collapse-collapsible-only]="nzCollapsible === 'disabled'"
+      [class.ant-collapse-icon-collapsible-only]="nzCollapsible === 'icon'"
+      [class.ant-collapse-header-collapsible-only]="nzCollapsible === 'header'"
     >
       @if (nzShowArrow) {
         <div role="button" #collapseIcon class="ant-collapse-expand-icon">
