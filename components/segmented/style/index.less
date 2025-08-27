@@ -23,6 +23,25 @@
     width: 100%;
   }
 
+  &-vertical {
+    .@{segmented-prefix-cls}-group {
+      flex-direction: column;
+    }
+
+    .@{segmented-prefix-cls}-thumb {
+      width: 100%;
+      height: 0;
+    }
+
+    .@{segmented-prefix-cls}-thumb-motion-appear-active {
+      transition:
+        transform 0.3s @ease-in-out,
+        width 0.3s @ease-in-out,
+        height 0.3s @ease-in-out;
+      will-change: transform, width, height;
+    }
+  }
+
   // block styles
   &&-block {
     display: flex;
@@ -114,7 +133,9 @@
 
   // transition effect when `appear-active`
   &-thumb-motion-appear-active {
-    transition: transform 0.3s @ease-in-out, width 0.3s @ease-in-out;
+    transition:
+      transform 0.3s @ease-in-out,
+      width 0.3s @ease-in-out;
     will-change: transform, width;
   }
 }
