@@ -1,5 +1,5 @@
 <header id="header" class="clearfix">
-  @if (isMobile) {
+  @if (app.isMobile()) {
     <nz-icon
       class="nav-phone-icon"
       nzType="unordered-list"
@@ -12,16 +12,14 @@
 
   <div nz-row style="flex-flow: nowrap">
     <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="5" [nzXXl]="4">
-      <app-logo></app-logo>
+      <a href="/" id="logo">
+        <img width="32" height="28.27" alt="logo" src="./assets/img/logo.svg" />
+        <strong>NG-ZORRO</strong>
+      </a>
     </div>
     <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="18" [nzLg]="18" [nzXl]="19" [nzXXl]="20" class="menu-row">
-      <div
-        app-searchbar
-        [language]="language"
-        [responsive]="responsive"
-        (focusChange)="onFocusChange($event)"
-      ></div>
-      @if (!isMobile) {
+      <div app-searchbar (focusChange)="onFocusChange($event)"></div>
+      @if (!app.isMobile()) {
         <ng-container [ngTemplateOutlet]="menu"></ng-container>
       }
     </div>
@@ -29,50 +27,43 @@
 </header>
 
 <ng-template #menu>
-  @if (!searching || windowWidth > 1200) {
+  @if (!searching() || !app.responsive()) {
     <ul
       nz-menu
       app-navigation
       class="menu-site"
-      [responsive]="responsive"
-      [page]="page"
-      [isMobile]="isMobile"
-      [nzMode]="isMobile ? 'inline' : 'horizontal'"
+      [nzMode]="app.isMobile() ? 'inline' : 'horizontal'"
       [nzSelectable]="false"
-      [(language)]="language"
-      (languageChange)="onChangeLanguage($event)"
+      (languageChange)="toggleLanguage()"
     ></ul>
-    @if (windowWidth >= 1120) {
+
+    @if (app.responsive() !== 'crowded') {
       <nz-select
         nzSize="small"
-        class="version"
         style="max-width: 126px"
         [ngModel]="currentVersion"
-        (ngModelChange)="onChangeVersion($event)"
+        (ngModelChange)="navigateToVersion($event)"
       >
-        <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
+        <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion" />
         @for (version of oldVersionList; track version) {
-          <nz-option [nzLabel]="version" [nzValue]="version"></nz-option>
+          <nz-option [nzLabel]="version" [nzValue]="version" />
         }
       </nz-select>
       <button
         nz-button
         nzSize="small"
-        class="header-button header-lang-butto"
-        (click)="onChangeLanguage(language === 'zh' ? 'en' : 'zh')"
+        (click)="toggleLanguage()"
       >
-        {{ language == 'zh' ? 'English' : '中文' }}
+        {{ language() === 'zh' ? 'English' : '中文' }}
       </button>
       <button
         nz-button
-        nzGhost
         nzSize="small"
-        class="header-button header-direction-button"
         (click)="toggleDirection()"
       >
-        {{ nextDirection | uppercase }}
+        {{ dir() === 'rtl' ? 'LTR' : 'RTL' }}
       </button>
-      <app-github-btn [responsive]="responsive"></app-github-btn>
+      <app-github-btn />
     }
   }
 </ng-template>

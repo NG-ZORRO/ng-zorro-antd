@@ -1,21 +1,33 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { BidiModule, Directionality } from '@angular/cdk/bidi';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 
-import { RouterList } from '../types';
+import { APP_LANGUAGE, APP_PAGE } from '../app.token';
+import { ROUTER_LIST } from '../router';
 
 @Component({
   selector: 'app-side',
-  imports: [RouterLink, NzMenuModule, NzTagModule],
+  imports: [RouterLink, NgTemplateOutlet, NzMenuModule, NzTagModule, BidiModule],
   templateUrl: './side.component.html',
-  styleUrl: './side.component.less',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SideComponent {
-  @Input() direction: 'ltr' | 'rtl' = 'ltr';
-  @Input() page: 'docs' | 'components' | 'experimental' | string = 'docs';
-  @Input() routerList: RouterList = {} as RouterList;
-  @Input() language: 'zh' | 'en' = 'en';
+  protected readonly routerList = ROUTER_LIST;
+  protected readonly dir = inject(Directionality).valueSignal;
+  protected readonly page = inject(APP_PAGE).asReadonly();
+  protected readonly language = inject(APP_LANGUAGE).asReadonly();
+  protected readonly intro = computed(() =>
+    this.routerList.intro.filter(intro => intro.language === this.language() && !intro.hidden)
+  );
+  protected readonly componentList = computed(() =>
+    this.routerList.components.filter(
+      group =>
+        group.language === this.language() &&
+        !(this.page() === 'experimental' && group.experimentalChildren.length === 0)
+    )
+  );
 }

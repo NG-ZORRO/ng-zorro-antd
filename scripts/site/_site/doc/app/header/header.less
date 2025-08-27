@@ -11,6 +11,10 @@
   background: @component-background;
   box-shadow: 0 2px 8px rgba(240, 241, 242, 65);
 
+  #logo strong {
+    font-weight: 500;
+  }
+
   .menu-row {
     display: flex;
     align-items: center;
@@ -21,22 +25,8 @@
       margin: 0 16px 0 0;
 
       &:last-child {
-        margin-right: 40px;
-
-        .page-wrapper-rtl & {
-          margin-right: 16px;
-          margin-left: 40px;
-        }
+        margin-inline-end: 40px;
       }
-    }
-  }
-
-  // Buttons
-  .header-button {
-    color: @text-color;
-    border-color: @border-color-base;
-    &:hover {
-      border-color: @primary-color;
     }
   }
 }
@@ -90,7 +80,7 @@
 
 #logo {
   height: @header-height;
-  padding-left: 40px;
+  padding-inline-start: 40px;
   overflow: hidden;
   color: @site-heading-color;
   font-size: 18px;
@@ -99,30 +89,18 @@
   white-space: nowrap;
   text-decoration: none;
 
-  .page-wrapper-rtl & {
-    float: right;
-    padding-right: 40px;
-    padding-left: 0;
-  }
-
   img {
     position: relative;
     top: -1.5px;
     width: 28.27px;
     height: 32px;
-    margin-right: 16px;
-
-    .page-wrapper-rtl & {
-      margin-right: 0;
-      margin-left: 16px;
-    }
+    margin-inline-end: 16px;
   }
 }
 
 @media only screen and (max-width: @mobile-max-width) {
   #logo {
-    padding-right: 0;
-    padding-left: 0;
+    padding-inline: 0;
   }
 }
 
@@ -139,15 +117,13 @@
     & > .ant-menu-submenu {
       min-width: (40px + 12px * 2);
       height: @header-height;
-      padding-right: 12px;
-      padding-left: 12px;
+      padding-inline: 12px;
       line-height: @header-height;
 
       &::after {
+        inset-inline: 12px;
         top: 0;
-        right: 12px;
         bottom: auto;
-        left: 12px;
         border-width: @menu-item-border;
       }
     }
@@ -191,7 +167,7 @@
       }
 
       .ant-menu-item-group-title {
-        padding-left: 24px;
+        padding-inline-start: 24px;
       }
 
       .ant-menu-item-group-list {
@@ -214,25 +190,12 @@
   flex: auto !important;
   align-items: center;
   height: 22px;
-  margin: 0 auto 0 0 !important;
-  padding-left: 16px;
+  margin-inline-end: auto;
+  padding-inline-start: 16px;
   line-height: 22px;
   white-space: nowrap;
-  border-left: 1px solid @site-border-color-split;
+  border-inline-start: 1px solid @site-border-color-split;
   transition: width 0.5s;
-
-  .page-wrapper-rtl & {
-    margin: 0 0 0 auto !important;
-    padding-right: 16px;
-    padding-left: 0;
-    border-right: 1px solid @site-border-color-split;
-    border-left: none;
-
-    input {
-      padding-right: 20px;
-      padding-left: 11px;
-    }
-  }
 
   > * {
     flex: auto;
@@ -251,7 +214,7 @@
   input {
     width: 100%;
     max-width: 200px;
-    padding-left: 20px;
+    padding-inline-start: 20px;
     font-size: 14px;
     background: transparent;
     border: 0;
@@ -274,25 +237,15 @@
     }
 
     .anticon {
-      right: 0;
-      left: auto;
-
-      .page-wrapper-rtl & {
-        right: auto;
-        left: 0;
-      }
+      inset-inline-end: 0;
+      inset-inline-start: auto;
     }
 
     input {
       max-width: none;
-      padding-right: 20px;
-      padding-left: 11px;
+      padding-inline-start: 11px;
+      padding-inline-end: 20px;
       cursor: pointer;
-
-      .page-wrapper-rtl & {
-        padding-right: 11px;
-        padding-left: 20px;
-      }
     }
 
     &.focused {
@@ -323,18 +276,6 @@
 
   .ant-select-dropdown-menu-item {
     border-radius: 0 !important;
-  }
-
-  .ant-component-decs {
-    position: absolute;
-    right: 16px;
-    color: #aaa;
-    font-size: 12px;
-
-    .page-wrapper-rtl & {
-      right: auto;
-      left: 16px;
-    }
   }
 }
 

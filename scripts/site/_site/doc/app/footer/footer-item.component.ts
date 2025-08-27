@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -7,40 +7,28 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   imports: [NzIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <a [href]="link" target="_blank" rel="noopener">
-      @if (icon || imgSrc) {
-        <span class="rc-footer-item-icon">
-          @if (icon) {
-            <nz-icon [nzType]="icon" />
-          } @else {
-            <img [src]="imgSrc" [attr.alt]="imgAlt" />
-          }
-        </span>
-      }
-      {{ title }}
-      <ng-content></ng-content>
-    </a>
-    @if (description) {
-      <span class="rc-footer-item-separator">-</span>
-      <span class="rc-footer-item-description">{{ description }}</span>
+    @if (link()) {
+      <a [attr.href]="link()" target="_blank" rel="noopener">
+        @if (icon()) {
+          <nz-icon [nzType]="icon()!" class="rc-footer-item-icon" />
+        }
+        {{ title() }}
+      </a>
     }
+    @if (description()) {
+      <span class="rc-footer-item-separator">-</span>
+      <span class="rc-footer-item-description">{{ description() }}</span>
+    }
+    <ng-content></ng-content>
   `,
   host: {
-    class: 'rc-footer-item'
-  },
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `
-  ]
+    class: 'rc-footer-item',
+    '[style.display]': '"block"'
+  }
 })
 export class FooterItemComponent {
-  @Input() imgSrc!: string;
-  @Input() imgAlt!: string;
-  @Input() icon!: string;
-  @Input() link!: string;
-  @Input() title!: string;
-  @Input() description!: string;
+  icon = input<string>();
+  link = input<string>();
+  title = input<string>();
+  description = input<string>();
 }

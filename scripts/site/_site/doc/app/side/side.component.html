@@ -1,31 +1,25 @@
 <ul
+  class="aside-container"
   nz-menu
-  [nzMode]="'inline'"
-  class="aside-container menu-site"
+  nzMode="inline"
   [nzInlineIndent]="40"
-  [class.ant-menu-rtl]="direction === 'rtl'"
+  [dir]="dir()"
 >
-  @if (page === 'docs') {
-    @for (intro of routerList.intro; track $index) {
-      <li nz-menu-item nzMatchRouter [hidden]="intro.language !== language || intro.hidden">
+  @if (page() === 'docs') {
+    @for (intro of intro(); track $index) {
+      <li nz-menu-item nzMatchRouter>
         <a routerLink="{{ intro.path }}">{{ intro.label }}</a>
       </li>
     }
-  }
-
-  @if (page === 'components') {
+  } @else if (page() === 'components') {
     <li nz-menu-item nzMatchRouter>
-      <a routerLink="components/overview/{{ language }}">
-        @if (language === 'zh') {
-          <span>组件总览</span>
-        } @else {
-          <span>Components Overview</span>
-        }
+      <a routerLink="components/overview/{{ language() }}">
+        <span>{{ language() === 'zh' ? '组件总览' : 'Components Overview' }}</span>
       </a>
     </li>
 
-    @for (group of routerList.components; track $index) {
-      <li nz-menu-group [hidden]="group.language !== language" [nzTitle]="group.name">
+    @for (group of componentList(); track $index) {
+      <li nz-menu-group [nzTitle]="group.name">
         <ul>
           @for (component of group.children; track $index) {
             <li nz-menu-item nzMatchRouter>
@@ -35,13 +29,7 @@
                   <span class="chinese">{{ component.zh }}</span>
                 </span>
                 @if (component.tag) {
-                  @if (component.tag === 'deprecated') {
-                    <nz-tag nzColor="warning" [nzBordered]="false">
-                      {{ language === 'zh' ? '弃用' : 'Deprecated' }}
-                    </nz-tag>
-                  } @else {
-                    <nz-tag nzColor="success" [nzBordered]="false">{{ component.tag }}</nz-tag>
-                  }
+                  <ng-container *ngTemplateOutlet="tag; context: { $implicit: component.tag }"></ng-container>
                 }
               </a>
             </li>
@@ -49,13 +37,9 @@
         </ul>
       </li>
     }
-  } @else if (page === 'experimental') {
+  } @else if (page() === 'experimental') {
     @for (group of routerList.components; track $index) {
-      <li
-        nz-menu-group
-        [hidden]="group.language !== language || group.experimentalChildren.length === 0"
-        [nzTitle]="group.name"
-      >
+      <li nz-menu-group [nzTitle]="group.name">
         <ul>
           @for (component of group.experimentalChildren; track $index) {
             <li nz-menu-item nzMatchRouter>
@@ -64,8 +48,8 @@
                   {{ component.label }}
                   <span class="chinese">{{ component.zh }}</span>
                 </span>
-                @if (!!component.tag) {
-                  <span class="ant-tag ant-tag-warning ant-tag-borderless">{{ component.tag }}</span>
+                @if (component.tag) {
+                  <ng-container *ngTemplateOutlet="tag; context: { $implicit: component.tag }"></ng-container>
                 }
               </a>
             </li>
@@ -75,3 +59,13 @@
     }
   }
 </ul>
+
+<ng-template #tag let-tag>
+  @if (tag === 'deprecated') {
+    <nz-tag nzColor="warning" [nzBordered]="false">
+      <span>{{ language() ? '废弃' : 'Deprecated' }}</span>
+    </nz-tag>
+  } @else {
+    <nz-tag nzColor="success" [nzBordered]="false">{{ tag }}</nz-tag>
+  }
+</ng-template>

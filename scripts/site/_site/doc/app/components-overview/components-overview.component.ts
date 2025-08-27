@@ -1,14 +1,16 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  OnInit,
-  ViewChild,
+  inject,
+  signal,
+  viewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
@@ -22,6 +24,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 import { ROUTER_LIST } from '../router';
+import { APP_LANGUAGE } from '../app.token';
 
 @Component({
   selector: 'app-components-overview',
@@ -38,30 +41,23 @@ import { ROUTER_LIST } from '../router';
     NzInputModule
   ],
   templateUrl: './components-overview.component.html',
-  styleUrls: ['./components-overview.component.less'],
+  styleUrl: './components-overview.component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class ComponentsOverviewComponent implements OnInit {
-  routerList = ROUTER_LIST;
-  language = 'en';
+export class ComponentsOverviewComponent {
+  protected readonly language = inject(APP_LANGUAGE);
+  readonly routerList = signal(ROUTER_LIST.components);
   affixed = false;
-  searchChange$ = new BehaviorSubject('');
-  @ViewChild('componentsList', { static: true }) componentsList!: ElementRef<HTMLElement>;
-  @ViewChild('searchBox', { static: true }) searchBox!: ElementRef<HTMLInputElement>;
+  readonly searchChange$ = new Subject<string>();
+  readonly componentsList = viewChild.required<ElementRef<HTMLElement>>('componentsList');
+  readonly searchBox = viewChild.required<ElementRef<HTMLInputElement>>('searchBox');
 
-  constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {}
-
-  ngOnInit(): void {
-    this.route.url.subscribe(url => {
-      this.language = url[0].path;
-      this.cdr.detectChanges();
-    });
-
+  constructor() {
     this.searchChange$
       .asObservable()
-      .pipe(debounceTime(20))
-      .subscribe((searchValue: string) => {
+      .pipe(debounceTime(20), takeUntilDestroyed())
+      .subscribe(searchValue => {
         this.filterComponents(searchValue);
         if (this.affixed) {
           this.scrollIntoView();
@@ -69,8 +65,8 @@ export class ComponentsOverviewComponent implements OnInit {
       });
 
     // autofocus
-    Promise.resolve().then(() => {
-      this.searchBox.nativeElement.focus();
+    afterNextRender(() => {
+      this.searchBox().nativeElement.focus();
     });
   }
 
@@ -83,23 +79,22 @@ export class ComponentsOverviewComponent implements OnInit {
   }
 
   filterComponents(searchValue: string): void {
-    this.routerList = JSON.parse(JSON.stringify(ROUTER_LIST));
+    const routerList = JSON.parse(JSON.stringify(ROUTER_LIST.components)) as typeof ROUTER_LIST['components'];
+    const groups = routerList.filter(({ language }) => language === this.language());
     if (searchValue) {
-      for (const group of this.routerList.components) {
-        group.children = group.children.filter(component => {
-          return component.label.toLowerCase().includes(searchValue) || component.zh.includes(searchValue);
-        });
+      for (const group of groups) {
+        group.children = group.children.filter(
+          component => component.label.toLowerCase().includes(searchValue) || component.zh.includes(searchValue)
+        );
       }
     }
-    this.cdr.detectChanges();
+    this.routerList.set(groups.filter(g => g.children.length > 0));
   }
 
   private scrollIntoView(): void {
-    if (this.componentsList) {
-      this.componentsList.nativeElement.scrollIntoView({
-        block: 'start',
-        behavior: 'smooth'
-      });
-    }
+    this.componentsList().nativeElement.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth'
+    });
   }
 }

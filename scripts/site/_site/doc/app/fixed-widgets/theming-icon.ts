@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'theming-icon',
+  selector: 'theming-icon',
   template: `
     <svg width="21" height="21" viewBox="0 0 21 21" fill="currentColor">
       <g fill-rule="evenodd">

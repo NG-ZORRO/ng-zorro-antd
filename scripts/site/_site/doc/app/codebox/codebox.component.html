@@ -1,4 +1,4 @@
-<section class="code-box" [class.expand]="nzExpanded" [attr.id]="nzId">
+<section class="code-box" [class.expand]="expanded()" [attr.id]="nzId">
   <section class="code-box-demo">
     @if (!nzIframe || !iframe) {
       @let simulateIframe = nzIframe && !iframe;
@@ -28,93 +28,76 @@
       <ng-content select="[intro]"></ng-content>
     </div>
     <div class="code-box-actions">
-      <span
-        nz-icon
+      <nz-icon
+        nz-tooltip
         [nzTooltipTitle]="
-          !onlineIDELoading
-            ? language === 'zh'
+          !onlineIDELoading()
+            ? language() === 'zh'
               ? '在 StackBlitz 上打开'
               : 'Edit On StackBlitz'
-            : language === 'zh'
+            : language() === 'zh'
               ? '加载中...'
               : 'Loading...'
         "
-        nz-tooltip
         nzType="thunderbolt"
-        nzTheme="fill"
-        class="code-box-code-copy"
         (click)="openOnlineIDE()"
-      ></span>
-      <span
-        nz-icon
-        [nzTooltipTitle]="
-          !copyLoading ? (language === 'zh' ? '复制代码' : 'Copy Code') : language === 'zh' ? '加载中...' : 'Loading...'
-        "
+      />
+      <nz-icon
         nz-tooltip
-        [nzType]="copied ? 'check' : 'snippets'"
-        class="code-box-code-copy"
-        [class.ant-tooltip-open]="copied"
+        [nzTooltipTitle]="
+          !codeLoading()
+            ? language() === 'zh'
+              ? '复制代码'
+              : 'Copy Code'
+            : language() === 'zh'
+              ? '加载中...'
+              : 'Loading...'
+        "
+        [nzType]="copied() ? 'check' : 'snippets'"
+        [class.ant-tooltip-open]="copied()"
         (click)="copyCode()"
-      ></span>
+      />
       @if (nzGenerateCommand) {
-        <span
-          nz-icon
-          [nzTooltipTitle]="language === 'zh' ? '复制生成代码命令' : 'Copy Generate Command'"
+        <nz-icon
           nz-tooltip
-          [nzType]="commandCopied ? 'check' : 'code'"
-          class="code-box-code-copy"
-          [class.ant-tooltip-open]="commandCopied"
+          [nzTooltipTitle]="language() === 'zh' ? '复制生成代码命令' : 'Copy Generate Command'"
+          [nzType]="commandCopied() ? 'check' : 'code'"
+          [class.ant-tooltip-open]="commandCopied()"
           (click)="copyGenerateCommand(nzGenerateCommand)"
-        ></span>
+        />
       }
       <span
-        class="code-expand-icon"
         nz-tooltip
         [nzTooltipTitle]="
-          nzExpanded ? (language === 'zh' ? '收起代码' : 'Hide Code') : language === 'zh' ? '显示代码' : 'Show Code'
+          expanded() ? (language() === 'zh' ? '收起代码' : 'Hide Code') : language() === 'zh' ? '显示代码' : 'Show Code'
         "
-        (click)="expandCode(!nzExpanded)"
+        (click)="expandCode(!expanded())"
       >
-        @switch (theme) {
-          @case ('dark') {
-            <img
-              alt="expand code"
-              src="https://gw.alipayobjects.com/zos/antfincdn/btT3qDZn1U/wSAkBuJFbdxsosKKpqyq.svg"
-              [class.code-expand-icon-show]="nzExpanded"
-              [class.code-expand-icon-hide]="!nzExpanded"
-            />
-            <img
-              alt="expand code"
-              src="https://gw.alipayobjects.com/zos/antfincdn/CjZPwcKUG3/OpROPHYqWmrMDBFMZtKF.svg"
-              [class.code-expand-icon-show]="!nzExpanded"
-              [class.code-expand-icon-hide]="nzExpanded"
-            />
-          }
-          @default {
-            <img
-              alt="expand code"
-              src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg"
-              [class.code-expand-icon-show]="nzExpanded"
-              [class.code-expand-icon-hide]="!nzExpanded"
-            />
-            <img
-              alt="expand code"
-              src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg"
-              [class.code-expand-icon-show]="!nzExpanded"
-              [class.code-expand-icon-hide]="nzExpanded"
-            />
-          }
-        }
+        <nz-icon [class.code-expand-icon-show]="expanded()" [class.code-expand-icon-hide]="!expanded()">
+          <svg viewBox="0 0 1024 1024" fill="currentColor">
+            <path
+              d="M1018.645 531.298c8.635-18.61 4.601-41.42-11.442-55.864l-205.108-184.68c-19.7-17.739-50.05-16.148-67.789 3.552-17.738 19.7-16.148 50.051 3.553 67.79l166.28 149.718-167.28 150.62c-19.7 17.738-21.291 48.088-3.553 67.789 17.739 19.7 48.089 21.291 67.79 3.553l205.107-184.68a47.805 47.805 0 0 0 12.442-17.798zM119.947 511.39l166.28-149.719c19.7-17.738 21.29-48.088 3.552-67.789-17.738-19.7-48.088-21.291-67.789-3.553L16.882 475.01C.84 489.456-3.194 512.264 5.44 530.874a47.805 47.805 0 0 0 12.442 17.798l205.108 184.68c19.7 17.739 50.05 16.148 67.79-3.552 17.738-19.7 16.147-50.051-3.553-67.79l-167.28-150.62z"
+              fill-rule="evenodd"
+              opacity="0.78"
+            ></path>
+          </svg>
+        </nz-icon>
+        <nz-icon [class.code-expand-icon-show]="!expanded()" [class.code-expand-icon-hide]="expanded()">
+          <svg viewBox="0 0 1024 1024" fill="currentColor">
+            <path
+              d="M1018.645 531.298c8.635-18.61 4.601-41.42-11.442-55.864l-205.108-184.68c-19.7-17.739-50.05-16.148-67.789 3.552-17.738 19.7-16.148 50.051 3.553 67.79l166.28 149.718-167.28 150.62c-19.7 17.738-21.291 48.088-3.553 67.789 17.739 19.7 48.089 21.291 67.79 3.553l205.107-184.68a47.805 47.805 0 0 0 12.442-17.798zM119.947 511.39l166.28-149.719c19.7-17.738 21.29-48.088 3.552-67.789-17.738-19.7-48.088-21.291-67.789-3.553L16.882 475.01C.84 489.456-3.194 512.264 5.44 530.874a47.805 47.805 0 0 0 12.442 17.798l205.108 184.68c19.7 17.739 50.05 16.148 67.79-3.552 17.738-19.7 16.147-50.051-3.553-67.79l-167.28-150.62zm529.545-377.146c24.911 9.066 37.755 36.61 28.688 61.522L436.03 861.068c-9.067 24.911-36.611 37.755-61.522 28.688-24.911-9.066-37.755-36.61-28.688-61.522l242.15-665.302c9.067-24.911 36.611-37.755 61.522-28.688z"
+              fill-rule="evenodd"
+              opacity="0.78"
+            ></path>
+          </svg>
+        </nz-icon>
       </span>
     </div>
   </section>
-  <section class="highlight-wrapper" [class.highlight-wrapper-expand]="nzExpanded">
+  <section class="highlight-wrapper" [class.highlight-wrapper-expand]="expanded()">
     <div class="highlight">
       <ng-content select="[code]"></ng-content>
-      <nz-highlight
-        [nzCode]="codeLoaded ? highlightCode! : language === 'zh' ? '加载中' : 'Loading...'"
-        [nzLanguage]="'typescript'"
-      ></nz-highlight>
+      <nz-highlight [nzCode]="codeLoaded() ? highlightCode()! : language() === 'zh' ? '加载中' : 'Loading...'" />
     </div>
   </section>
 </section>
