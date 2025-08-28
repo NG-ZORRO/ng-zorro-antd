@@ -69,7 +69,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
     '[class.ant-segmented-rtl]': `dir === 'rtl'`,
     '[class.ant-segmented-lg]': `nzSize === 'large'`,
     '[class.ant-segmented-sm]': `nzSize === 'small'`,
-    '[class.ant-segmented-block]': `nzBlock`
+    '[class.ant-segmented-block]': `nzBlock`,
+    '[class.ant-segmented-vertical]': `nzVertical`
   },
   providers: [
     NzSegmentedService,
@@ -93,6 +94,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzOptions: NzSegmentedOptions = [];
+  @Input({ transform: booleanAttribute }) nzVertical: boolean = false;
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
 
   @Output() readonly nzValueChange = new EventEmitter<number | string>();
@@ -127,17 +129,31 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
     });
 
     this.service.activated$.pipe(bufferCount(2, 1), takeUntilDestroyed()).subscribe(elements => {
-      this.animationState = {
-        value: 'from',
-        params: thumbAnimationParamsOf(elements[0])
-      };
-      this.cdr.detectChanges();
+      if (this.nzVertical) {
+        this.animationState = {
+          value: 'fromVertical',
+          params: thumbAnimationParamsOf(elements[0], true)
+        };
+        this.cdr.detectChanges();
 
-      this.animationState = {
-        value: 'to',
-        params: thumbAnimationParamsOf(elements[1])
-      };
-      this.cdr.detectChanges();
+        this.animationState = {
+          value: 'toVertical',
+          params: thumbAnimationParamsOf(elements[1], true)
+        };
+        this.cdr.detectChanges();
+      } else {
+        this.animationState = {
+          value: 'from',
+          params: thumbAnimationParamsOf(elements[0])
+        };
+        this.cdr.detectChanges();
+
+        this.animationState = {
+          value: 'to',
+          params: thumbAnimationParamsOf(elements[1])
+        };
+        this.cdr.detectChanges();
+      }
     });
 
     effect(() => {
@@ -167,7 +183,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   }
 
   handleThumbAnimationDone(event: AnimationEvent): void {
-    if (event.toState === 'to') {
+    if (event.toState === 'to' || event.toState === 'toVertical') {
       this.animationState = null;
     }
     this.service.animationDone$.next(event);
@@ -191,7 +207,15 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   }
 }
 
-function thumbAnimationParamsOf(element?: HTMLElement): ThumbAnimationProps {
+function thumbAnimationParamsOf(element?: HTMLElement, vertical: boolean = false): ThumbAnimationProps {
+  if (vertical) {
+    return {
+      transform: element?.offsetTop ?? 0,
+      width: element?.clientWidth ?? 0,
+      height: element?.clientHeight ?? 0,
+      vertical
+    };
+  }
   return {
     transform: element?.offsetLeft ?? 0,
     width: element?.clientWidth ?? 0

@@ -77,7 +77,7 @@ export class NzSegmentedItemComponent implements OnInit {
         }),
         switchMap(value =>
           this.service.animationDone$.pipe(
-            filter(event => event.toState === 'to'),
+            filter(event => event.toState === 'to' || event.toState === 'toVertical'),
             take(1),
             map(() => value)
           )

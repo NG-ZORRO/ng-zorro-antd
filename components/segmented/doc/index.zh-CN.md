@@ -22,6 +22,7 @@ description: 用于展示多个选项并允许用户选择其中单个选项。
 | `[nzDisabled]`    | 是否禁用                     | `boolean`                                                                                                      | `false` |          |
 | `[nzOptions]`     | 数据化配置选项内容           | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean; }>` | -       |          |
 | `[nzSize]`        | 控件尺寸                     | `large \| default \| small`                                                                                    | -       | ✅       |
+| `[nzVertical]`    | 排列方向                     | `boolean`                                                                                                      | `false` | -        |
 | `[ngModel]`       | 当前选中项目的 value         | `string \| number`                                                                                             | -       |          |
 | `(nzValueChange)` | 当前选中项目变化时触发回调   | `EventEmitter<string \| number>`                                                                               | -       |          |
 | `(ngModelChange)` | 当前选中项目变化时触发回调   | `EventEmitter<string \| number>`                                                                               | -       |          |
