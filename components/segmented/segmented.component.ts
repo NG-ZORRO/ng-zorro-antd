@@ -165,9 +165,9 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
 
       if (
         this.value === undefined || // If no value is set, select the first item
-        !itemCmps.some(item => item.nzValue === this.value) // handle value not in options
+        !itemCmps.some(item => item.nzValue() === this.value) // handle value not in options
       ) {
-        this.service.selected$.next(itemCmps[0].nzValue);
+        this.service.selected$.next(itemCmps[0].nzValue());
       }
     });
   }

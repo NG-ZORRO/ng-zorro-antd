@@ -5,14 +5,15 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   ElementRef,
   inject,
-  Input,
+  input,
   OnInit,
+  signal,
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
@@ -27,13 +28,13 @@ import { NzSegmentedService } from './segmented.service';
   exportAs: 'nzSegmentedItem',
   imports: [NzIconModule, NgTemplateOutlet],
   template: `
-    <input class="ant-segmented-item-input" type="radio" [checked]="isChecked" (click)="$event.stopPropagation()" />
-    <div class="ant-segmented-item-label">
-      @if (nzIcon) {
-        <span class="ant-segmented-item-icon"><nz-icon [nzType]="nzIcon" /></span>
-        <span>
-          <ng-template [ngTemplateOutlet]="content" />
+    <input class="ant-segmented-item-input" type="radio" [checked]="isChecked()" (click)="$event.stopPropagation()" />
+    <div class="ant-segmented-item-label" [attr.aria-selected]="isChecked()">
+      @if (nzIcon(); as icon) {
+        <span class="ant-segmented-item-icon">
+          <nz-icon [nzType]="icon" />
         </span>
+        <span *ngTemplateOutlet="content"></span>
       } @else {
         <ng-template [ngTemplateOutlet]="content" />
       }
@@ -45,8 +46,8 @@ import { NzSegmentedService } from './segmented.service';
   `,
   host: {
     class: 'ant-segmented-item',
-    '[class.ant-segmented-item-selected]': 'isChecked',
-    '[class.ant-segmented-item-disabled]': 'nzDisabled || parentDisabled()',
+    '[class.ant-segmented-item-selected]': 'isChecked()',
+    '[class.ant-segmented-item-disabled]': 'nzDisabled() || parentDisabled()',
     '(click)': 'handleClick()'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,24 +55,22 @@ import { NzSegmentedService } from './segmented.service';
 })
 export class NzSegmentedItemComponent implements OnInit {
   private readonly service = inject(NzSegmentedService);
-  private readonly cdr = inject(ChangeDetectorRef);
   private readonly elementRef = inject(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
 
-  @Input() nzIcon?: string;
-  @Input() nzValue!: string | number;
-  @Input() nzDisabled?: boolean;
+  nzValue = input.required<string | number>();
+  nzIcon = input<string>();
+  nzDisabled = input(false, { transform: booleanAttribute });
 
-  protected isChecked = false;
+  protected readonly isChecked = signal(false);
   readonly parentDisabled = toSignal(this.service.disabled$, { initialValue: false });
 
   ngOnInit(): void {
     this.service.selected$
       .pipe(
         tap(value => {
-          this.isChecked = false;
-          this.cdr.markForCheck();
-          if (value === this.nzValue) {
+          this.isChecked.set(false);
+          if (value === this.nzValue()) {
             this.service.activated$.next(this.elementRef.nativeElement);
           }
         }),
@@ -82,19 +81,16 @@ export class NzSegmentedItemComponent implements OnInit {
             map(() => value)
           )
         ),
-        filter(value => value === this.nzValue),
+        filter(value => value === this.nzValue()),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(() => {
-        this.isChecked = true;
-        this.cdr.markForCheck();
-      });
+      .subscribe(() => this.isChecked.set(true));
   }
 
   handleClick(): void {
-    if (!this.nzDisabled && !this.parentDisabled()) {
-      this.service.selected$.next(this.nzValue);
-      this.service.change$.next(this.nzValue);
+    if (!this.nzDisabled() && !this.parentDisabled()) {
+      this.service.selected$.next(this.nzValue());
+      this.service.change$.next(this.nzValue());
     }
   }
 }

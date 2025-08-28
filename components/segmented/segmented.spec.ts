@@ -17,6 +17,12 @@ import { NzSegmentedModule } from './segmented.module';
 import { NzSegmentedOptions } from './types';
 
 describe('nz-segmented', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
+    });
+  });
+
   describe('basic', () => {
     let fixture: ComponentFixture<NzSegmentedTestComponent>;
     let component: NzSegmentedTestComponent;
@@ -27,9 +33,6 @@ describe('nz-segmented', () => {
     }
 
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [provideNoopAnimations()]
-      });
       fixture = TestBed.createComponent(NzSegmentedTestComponent);
       component = fixture.componentInstance;
       spyOn(component, 'handleValueChange');
@@ -169,6 +172,24 @@ describe('nz-segmented', () => {
     }));
   });
 
+  describe('icon-only', () => {
+    let fixture: ComponentFixture<NzSegmentedIconOnlyTestComponent>;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzSegmentedIconOnlyTestComponent);
+    });
+
+    it('should render only one element in .ant-segmented-item-label if the item is icon-only', () => {
+      const items = fixture.debugElement.queryAll(By.css('.ant-segmented-item-label'));
+      expect(items.length).toBe(2);
+      expect(items[0].children.length).toBe(2);
+      expect(items[0].children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
+      expect(items[0].children[1].nativeElement.tagName).toBe('SPAN');
+      expect(items[1].children.length).toBe(1);
+      expect(items[1].children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
+    });
+  });
+
   describe('ng model', () => {
     let fixture: ComponentFixture<NzSegmentedNgModelTestComponent>;
     let component: NzSegmentedNgModelTestComponent;
@@ -179,9 +200,6 @@ describe('nz-segmented', () => {
     }
 
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [provideNoopAnimations()]
-      });
       fixture = TestBed.createComponent(NzSegmentedNgModelTestComponent);
       component = fixture.componentInstance;
       spyOn(component, 'handleValueChange');
@@ -229,9 +247,6 @@ describe('nz-segmented', () => {
     }
 
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [provideNoopAnimations()]
-      });
       fixture = TestBed.createComponent(NzSegmentedInReactiveFormTestComponent);
       component = fixture.componentInstance;
       segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
@@ -263,9 +278,6 @@ describe('nz-segmented', () => {
     }
 
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [provideNoopAnimations()]
-      });
       fixture = TestBed.createComponent(NzSegmentedVerticalTestComponent);
       component = fixture.componentInstance;
       spyOn(component, 'handleValueChange');
@@ -329,6 +341,17 @@ export class NzSegmentedTestComponent {
 
 @Component({
   imports: [FormsModule, NzSegmentedModule],
+  template: `<nz-segmented [nzOptions]="options" />`
+})
+export class NzSegmentedIconOnlyTestComponent {
+  options: NzSegmentedOptions = [
+    { value: 'List', label: 'List', icon: 'bars' },
+    { value: 'Kanban', icon: 'appstore' }
+  ];
+}
+
+@Component({
+  imports: [FormsModule, NzSegmentedModule],
   template: `<nz-segmented [nzOptions]="options" [(ngModel)]="value" (ngModelChange)="handleValueChange($event)" />`
 })
 export class NzSegmentedNgModelTestComponent {
@@ -351,12 +374,12 @@ export class NzSegmentedInReactiveFormTestComponent {
 
 @Component({
   imports: [FormsModule, NzSegmentedModule],
-  template: ` <nz-segmented [nzOptions]="options" [nzVertical]="true" (nzValueChange)="handleValueChange($event)" /> `
+  template: `<nz-segmented [nzOptions]="options" [nzVertical]="true" (nzValueChange)="handleValueChange($event)" /> `
 })
 export class NzSegmentedVerticalTestComponent {
   options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
 
   handleValueChange(_e: string | number): void {
-    return void 0;
+    // empty
   }
 }
