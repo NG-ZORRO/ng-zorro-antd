@@ -27,19 +27,20 @@ import { BehaviorSubject, EMPTY, Subject, combineLatest, fromEvent, merge } from
 import { auditTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { POSITION_MAP, getPlacementName } from 'ng-zorro-antd/core/overlay';
+import {
+  POSITION_MAP,
+  getPlacementName,
+  POSITION_TYPE,
+  setConnectedPositionOffset,
+  TOOLTIP_OFFSET_MAP
+} from 'ng-zorro-antd/core/overlay';
 import { IndexableObject } from 'ng-zorro-antd/core/types';
 
 import { NzDropdownMenuComponent, NzPlacementType } from './dropdown-menu.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'dropDown';
 
-const listOfPositions = [
-  POSITION_MAP.bottomLeft,
-  POSITION_MAP.bottomRight,
-  POSITION_MAP.topRight,
-  POSITION_MAP.topLeft
-];
+const listOfPositions: POSITION_TYPE[] = ['bottomLeft', 'bottomRight', 'topRight', 'topLeft'];
 
 const normalizePlacementForClass = (p: NzPlacementType): NzDropdownMenuComponent['placement'] => {
   // Map center placements to generic top/bottom classes for styling
@@ -191,7 +192,12 @@ export class NzDropDownDirective implements AfterViewInit, OnChanges {
               overlayConfig.minWidth = triggerWidth;
             }
             /** open dropdown with animation **/
-            this.positionStrategy.withPositions([POSITION_MAP[this.nzPlacement], ...listOfPositions]);
+            const positions = [this.nzPlacement, ...listOfPositions].map(position => {
+              return this.nzArrow
+                ? setConnectedPositionOffset(POSITION_MAP[position], TOOLTIP_OFFSET_MAP[position])
+                : POSITION_MAP[position];
+            });
+            this.positionStrategy.withPositions(positions);
             /** reset portal if needed **/
             if (!this.portal || this.portal.templateRef !== this.nzDropdownMenu!.templateRef) {
               this.portal = new TemplatePortal(this.nzDropdownMenu!.templateRef, this.viewContainerRef);

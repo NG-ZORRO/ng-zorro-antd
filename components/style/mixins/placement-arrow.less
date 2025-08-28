@@ -1,0 +1,110 @@
+.placementArrow(
+  @arrow-size,
+  @border-radius-outer,
+  @border-radius-inner,
+  @bg-color: var(--antd-arrow-background-color),
+  @box-shadow: none
+) {
+  // internal variables
+  @arrow-distance: 0px;
+  @arrow-offset-horizontal: 16px;
+
+  // ============================ Basic ============================
+  &-arrow {
+    position: absolute;
+    z-index: 1; // lift it up so the menu wouldn't cask shadow on it
+    display: block;
+
+    .roundedArrow(@arrow-size, @border-radius-outer, @border-radius-inner, @bg-color, @box-shadow);
+
+    &::before {
+      background: @bg-color;
+    }
+  }
+
+  // ========================== Placement ==========================
+  // Here handle the arrow position and rotate stuff
+  // >>>>> Top
+  &-placement-top > &-arrow,
+  &-placement-topLeft > &-arrow,
+  &-placement-topRight > &-arrow {
+    bottom: @arrow-distance;
+    transform: translateY(100%) rotate(180deg);
+  }
+
+  &-placement-top > &-arrow {
+    left: 50%;
+    transform: translateX(-50%) translateY(100%) rotate(180deg);
+  }
+
+  &-placement-topLeft > &-arrow {
+    left: @arrow-offset-horizontal;
+  }
+
+  &-placement-topRight > &-arrow {
+    right: @arrow-offset-horizontal;
+  }
+
+  // >>>>> Bottom
+  &-placement-bottom > &-arrow,
+  &-placement-bottomLeft > &-arrow,
+  &-placement-bottomRight > &-arrow {
+    top: @arrow-distance;
+    transform: translateY(-100%);
+  }
+
+  &-placement-bottom > &-arrow {
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+  }
+
+  &-placement-bottomLeft > &-arrow {
+    left: @arrow-offset-horizontal;
+  }
+
+  &-placement-bottomRight > &-arrow {
+    right: @arrow-offset-horizontal;
+  }
+
+  // >>>>> Left
+  &-placement-left > &-arrow,
+  &-placement-leftTop > &-arrow,
+  &-placement-leftBottom > &-arrow {
+    right: @arrow-distance;
+    transform: translateX(100%) rotate(90deg);
+  }
+
+  &-placement-left > &-arrow {
+    top: 50%;
+    transform: translateY(-50%) translateX(100%) rotate(90deg);
+  }
+
+  &-placement-leftTop > &-arrow {
+    top: @arrow-offset-horizontal;
+  }
+
+  &-placement-leftBottom > &-arrow {
+    bottom: @arrow-offset-horizontal;
+  }
+
+  // >>>>> Right
+  &-placement-right > &-arrow,
+  &-placement-rightTop > &-arrow,
+  &-placement-rightBottom > &-arrow {
+    left: @arrow-distance;
+    transform: translateX(-100%) rotate(-90deg);
+  }
+
+  &-placement-right > &-arrow {
+    top: 50%;
+    transform: translateY(-50%) translateX(-100%) rotate(-90deg);
+  }
+
+  &-placement-rightTop > &-arrow {
+    top: @arrow-offset-horizontal;
+  }
+
+  &-placement-rightBottom > &-arrow {
+    bottom: @arrow-offset-horizontal;
+  }
+}
