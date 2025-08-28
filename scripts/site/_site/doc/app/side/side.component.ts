@@ -8,6 +8,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 
 import { APP_LANGUAGE, APP_PAGE } from '../app.token';
 import { ROUTER_LIST } from '../router';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-side',
@@ -17,7 +18,7 @@ import { ROUTER_LIST } from '../router';
 })
 export class SideComponent {
   protected readonly routerList = ROUTER_LIST;
-  protected readonly dir = inject(Directionality).valueSignal;
+  protected readonly dir = inject(AppService).directionality.valueSignal;
   protected readonly page = inject(APP_PAGE).asReadonly();
   protected readonly language = inject(APP_LANGUAGE).asReadonly();
   protected readonly intro = computed(() =>

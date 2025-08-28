@@ -262,6 +262,45 @@
   }
 }
 
+#language {
+  position: relative;
+  width: 1.2em;
+  height: 1.2em;
+  transition: all 0.2s;
+
+  span {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.88);
+    font-size: 1.2em;
+    line-height: 1;
+    border: 1px solid rgba(0, 0, 0, 0.88);
+  }
+
+  span.active {
+    top: -5%;
+    z-index: 1;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.88);
+    transform: scale(0.7);
+    transform-origin: 0 0;
+    inset-inline-start: -5%;
+  }
+
+  span:not(.active) {
+    inset-inline-end: -5%;
+    bottom: -5%;
+    z-index: 0;
+    transform: scale(0.5);
+    transform-origin: 100% 100%;
+  }
+}
+
+#direction.rtl {
+  svg {
+    transform: scaleX(-1);
+  }
+}
+
 .component-select {
   &.ant-select-dropdown {
     font-size: 14px;

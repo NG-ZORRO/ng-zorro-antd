@@ -13,14 +13,13 @@ import {
   ElementRef,
   inject,
   Input,
-  NgZone,
   OnChanges,
   OnInit,
   Renderer2,
   SimpleChanges
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { IndexableObject } from 'ng-zorro-antd/core/types';
@@ -49,7 +48,6 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit {
   private elementRef = inject(ElementRef);
   private renderer = inject(Renderer2);
   private mediaMatcher = inject(MediaMatcher);
-  private ngZone = inject(NgZone);
   private platform = inject(Platform);
   private breakpointService = inject(NzBreakpointService);
   private directionality = inject(Directionality);
@@ -62,7 +60,6 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit {
   readonly actualGutter$ = new ReplaySubject<[number | null, number | null]>(1);
 
   dir: Direction = 'ltr';
-  private readonly destroy$ = new Subject<boolean>();
 
   getGutter(): [number | null, number | null] {
     const results: [number | null, number | null] = [null, null];

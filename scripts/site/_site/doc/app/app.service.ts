@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Directionality } from '@angular/cdk/bidi';
 
 export interface DemoCode {
   rawCode: string;
@@ -21,6 +22,7 @@ export class AppService {
   private readonly http = inject(HttpClient);
   private readonly codeMap = new Map<string, DemoCode>();
 
+  readonly directionality = inject(Directionality);
   readonly theme = signal<SiteTheme>('default');
   readonly windowWidth = signal(1400);
   /**
