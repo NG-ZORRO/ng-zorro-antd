@@ -1,5 +1,4 @@
-import { Directionality } from '@angular/cdk/bidi';
-import { NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -9,8 +8,9 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzGridModule } from "ng-zorro-antd/grid";
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { VERSION } from 'ng-zorro-antd/version';
 
 import { AppService } from '../app.service';
@@ -32,9 +32,11 @@ import { SearchbarComponent } from './searchbar.component';
     NzButtonModule,
     NzDropDownModule,
     NzPopoverModule,
+    NzTooltipModule,
     GithubButtonComponent,
     SearchbarComponent,
-    NavigationComponent
+    NavigationComponent,
+    UpperCasePipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -42,7 +44,7 @@ export class HeaderComponent {
   private readonly nzConfigService = inject(NzConfigService);
   protected readonly app = inject(AppService);
   protected readonly language = inject(APP_LANGUAGE);
-  protected readonly dir = inject(Directionality).valueSignal;
+  protected readonly dir = this.app.directionality.valueSignal;
 
   readonly searching = signal(false);
   readonly oldVersionList = [
@@ -70,11 +72,11 @@ export class HeaderComponent {
   }
 
   toggleLanguage(): void {
-    this.language.update(lang => lang === 'zh' ? 'en' : 'zh');
+    this.language.update(lang => (lang === 'zh' ? 'en' : 'zh'));
   }
 
   toggleDirection(): void {
-    this.dir.update(dir => dir === 'rtl' ? 'ltr' : 'rtl');
+    this.dir.update(dir => (dir === 'rtl' ? 'ltr' : 'rtl'));
     this.nzConfigService.set('modal', { nzDirection: this.dir() });
     this.nzConfigService.set('drawer', { nzDirection: this.dir() });
     this.nzConfigService.set('message', { nzDirection: this.dir() });

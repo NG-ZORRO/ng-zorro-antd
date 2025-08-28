@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-slider-reverse',
-  imports: [FormsModule, NzSliderModule],
+  imports: [FormsModule, NzSliderModule, NzSwitchModule],
   template: `
     <nz-slider [ngModel]="30" [nzReverse]="reverse"></nz-slider>
     <nz-slider nzRange [ngModel]="[20, 50]" [nzReverse]="reverse"></nz-slider>

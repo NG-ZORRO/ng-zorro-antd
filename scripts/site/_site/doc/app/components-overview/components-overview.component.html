@@ -34,7 +34,7 @@
 
     <nz-divider></nz-divider>
 
-    @for (group of routerList(); track group.name) {
+    @for (group of displayedComponents(); track group.name) {
       <div class="components-overview">
         <h3 nz-typography class="components-overview-group-title">
           {{ group.name }}

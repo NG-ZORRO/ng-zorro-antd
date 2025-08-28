@@ -82,7 +82,7 @@ export class AppComponent implements OnInit {
   private readonly meta = inject(Meta);
   private readonly renderer = inject(Renderer2);
   private readonly document = inject(DOCUMENT);
-  protected readonly dir = inject(Directionality).valueSignal.asReadonly();
+  protected readonly dir = this.app.directionality.valueSignal.asReadonly();
 
   isDrawerOpen = false;
   routerList = ROUTER_LIST;

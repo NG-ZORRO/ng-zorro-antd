@@ -2,6 +2,8 @@ import {
   afterNextRender,
   ChangeDetectionStrategy,
   Component,
+  computed,
+  effect,
   ElementRef,
   inject,
   signal,
@@ -49,20 +51,40 @@ export class ComponentsOverviewComponent {
   protected readonly language = inject(APP_LANGUAGE);
   readonly routerList = signal(ROUTER_LIST.components);
   affixed = false;
+  readonly searchValue = signal('');
   readonly searchChange$ = new Subject<string>();
+
   readonly componentsList = viewChild.required<ElementRef<HTMLElement>>('componentsList');
   readonly searchBox = viewChild.required<ElementRef<HTMLInputElement>>('searchBox');
+
+  readonly displayedComponents = computed(() => {
+    const routerList = JSON.parse(JSON.stringify(ROUTER_LIST.components)) as typeof ROUTER_LIST['components'];
+    const language = this.language();
+    const searchValue = this.searchValue();
+
+    const groups = routerList.filter(group => group.language === language);
+    if (searchValue) {
+      for (const group of groups) {
+        group.children = group.children.filter(
+          component => component.label.toLowerCase().includes(searchValue) || component.zh.includes(searchValue)
+        );
+      }
+    }
+
+    return groups.filter(g => g.children.length > 0);
+  });
 
   constructor() {
     this.searchChange$
       .asObservable()
       .pipe(debounceTime(20), takeUntilDestroyed())
-      .subscribe(searchValue => {
-        this.filterComponents(searchValue);
-        if (this.affixed) {
-          this.scrollIntoView();
-        }
-      });
+      .subscribe(searchValue => this.searchValue.set(searchValue));
+
+    effect(() => {
+      if (this.affixed && this.displayedComponents()) {
+        this.scrollIntoView();
+      }
+    });
 
     // autofocus
     afterNextRender(() => {
@@ -76,19 +98,6 @@ export class ComponentsOverviewComponent {
 
   onSearch(searchValue: string): void {
     this.searchChange$.next(searchValue.toLowerCase());
-  }
-
-  filterComponents(searchValue: string): void {
-    const routerList = JSON.parse(JSON.stringify(ROUTER_LIST.components)) as typeof ROUTER_LIST['components'];
-    const groups = routerList.filter(({ language }) => language === this.language());
-    if (searchValue) {
-      for (const group of groups) {
-        group.children = group.children.filter(
-          component => component.label.toLowerCase().includes(searchValue) || component.zh.includes(searchValue)
-        );
-      }
-    }
-    this.routerList.set(groups.filter(g => g.children.length > 0));
   }
 
   private scrollIntoView(): void {
