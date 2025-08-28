@@ -7,6 +7,8 @@
 .@{dropdown-prefix-cls} {
   .reset-component();
 
+  --antd-arrow-background-color: @dropdown-menu-bg;
+
   position: absolute;
   top: -9999px;
   left: -9999px;
@@ -15,13 +17,10 @@
 
   &::before {
     position: absolute;
-    top: -@popover-distance + @popover-arrow-width;
-    right: 0;
-    bottom: -@popover-distance + @popover-arrow-width;
-    left: -7px;
+    inset-block: calc(@popover-arrow-width / 2 - @popover-distance);
     z-index: -9999;
     opacity: 0.0001;
-    content: ' ';
+    content: '';
   }
 
   &-wrap {
@@ -48,72 +47,8 @@
     display: none;
   }
 
-  // Offset the popover to account for the dropdown arrow
-  &-show-arrow&-placement-topLeft,
-  &-show-arrow&-placement-top,
-  &-show-arrow&-placement-topRight {
-    padding-bottom: @popover-distance;
-  }
-
-  &-show-arrow&-placement-bottomLeft,
-  &-show-arrow&-placement-bottom,
-  &-show-arrow&-placement-bottomRight {
-    padding-top: @popover-distance;
-  }
-
-  // Arrows
-  // .popover-arrow is outer, .popover-arrow:after is inner
-
-  &-arrow {
-    position: absolute;
-    z-index: 1; // lift it up so the menu wouldn't cask shadow on it
-    display: block;
-    width: @popover-arrow-width;
-    height: @popover-arrow-width;
-    .roundedArrow(@popover-arrow-width, 5px, @popover-bg);
-  }
-
-  &-placement-top > &-arrow,
-  &-placement-topLeft > &-arrow,
-  &-placement-topRight > &-arrow {
-    bottom: @popover-arrow-width * sqrt((1 / 2)) + 2px;
-    box-shadow: 3px 3px 7px -3px fade(@black, 10%);
-    transform: rotate(45deg);
-  }
-
-  &-placement-top > &-arrow {
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-  }
-
-  &-placement-topLeft > &-arrow {
-    left: 16px;
-  }
-
-  &-placement-topRight > &-arrow {
-    right: 16px;
-  }
-
-  &-placement-bottom > &-arrow,
-  &-placement-bottomLeft > &-arrow,
-  &-placement-bottomRight > &-arrow {
-    top: (@popover-arrow-width + 2px) * sqrt((1 / 2));
-    box-shadow: 2px 2px 5px -2px fade(@black, 10%);
-    transform: rotate(-135deg) translateY(-0.5px);
-  }
-
-  &-placement-bottom > &-arrow {
-    left: 50%;
-    transform: translateX(-50%) rotate(-135deg) translateY(-0.5px);
-  }
-
-  &-placement-bottomLeft > &-arrow {
-    left: 16px;
-  }
-
-  &-placement-bottomRight > &-arrow {
-    right: 16px;
-  }
+  // Arrow Style
+  .placementArrow(@popover-arrow-width, 4px, @arrow-border-radius, var(--antd-arrow-background-color), @popover-arrow-box-shadow);
 
   &-menu {
     position: relative;

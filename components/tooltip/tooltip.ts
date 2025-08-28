@@ -79,6 +79,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   exportAs: 'nzTooltipComponent',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  // todo: currently the animation will cause small shake for the arrow (< 1px) when the tooltip is shown
   animations: [zoomBigMotion],
   template: `
     <ng-template
@@ -103,10 +104,8 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@zoomBigMotion]="'active'"
       >
+        <div class="ant-tooltip-arrow" [style]="_arrowStyleMap"></div>
         <div class="ant-tooltip-content">
-          <div class="ant-tooltip-arrow">
-            <span class="ant-tooltip-arrow-content" [style]="_contentStyleMap"></span>
-          </div>
           <div class="ant-tooltip-inner" [style]="_contentStyleMap">
             <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">{{ nzTitle }}</ng-container>
           </div>
@@ -122,7 +121,8 @@ export class NzTooltipComponent extends NzTooltipBaseComponent {
 
   nzColor?: string | NzPresetColor;
 
-  _contentStyleMap: NgStyleInterface = {};
+  protected _arrowStyleMap: NgStyleInterface = {};
+  protected _contentStyleMap: NgStyleInterface = {};
 
   protected isEmpty(): boolean {
     return isTooltipEmpty(this.nzTitle);
@@ -138,8 +138,11 @@ export class NzTooltipComponent extends NzTooltipBaseComponent {
     };
 
     this._contentStyleMap = {
-      backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null,
-      '--antd-arrow-background-color': this.nzColor
+      backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null
+    };
+
+    this._arrowStyleMap = {
+      '--antd-arrow-background-color': !!this.nzColor && !isColorPreset ? this.nzColor : null
     };
   }
 }

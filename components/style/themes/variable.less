@@ -583,7 +583,7 @@
 // Tooltip background color
 @tooltip-bg: rgba(0, 0, 0, 0.75);
 // Tooltip arrow width
-@tooltip-arrow-width: 8px * sqrt(2);
+@tooltip-arrow-width: 16px;
 // Tooltip distance with trigger
 @tooltip-distance: @tooltip-arrow-width - 1px + 4px;
 // Tooltip arrow color
@@ -603,11 +603,12 @@
 @popover-arrow-width: @tooltip-arrow-width;
 // Popover arrow color
 @popover-arrow-color: @popover-bg;
-// Popover outer arrow width
+// Popover arrow box shadow
+@popover-arrow-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
 // Popover outer arrow color
 @popover-arrow-outer-color: @popover-bg;
 // Popover distance with trigger
-@popover-distance: @popover-arrow-width + 4px;
+@popover-distance: calc(@popover-arrow-width / 2 + @margin-xss);
 @popover-padding-horizontal: @padding-md;
 
 // Modal

@@ -1,44 +1,64 @@
-.roundedArrow(@width, @outer-radius, @bg-color: var(--antd-arrow-background-color)) {
-  @corner-height: unit(((@outer-radius) * (1 - 1 / sqrt(2))));
+.roundedArrow(
+  @arrow-size,
+  @border-radius-outer,
+  @border-radius-inner,
+  @bg-color: var(--antd-arrow-background-color),
+  @box-shadow: none
+) {
+  @unit-width: (unit(@arrow-size) / 2);
+  @border-radius-outer-without-unit: unit(@border-radius-outer);
+  @border-radius-inner-without-unit: unit(@border-radius-inner);
 
-  @width-without-unit: unit(@width);
-  @outer-radius-without-unit: unit(@outer-radius);
-  @inner-radius-without-unit: unit(@arrow-border-radius);
+  @a-x: 0;
+  @a-y: @unit-width;
+  @b-x: ((@border-radius-outer-without-unit * 1) / sqrt(2));
+  @b-y: (@unit-width - @border-radius-outer-without-unit * (1 - 1 / sqrt(2)));
+  @c-x: (@unit-width - @border-radius-inner-without-unit * (1 / sqrt(2)));
+  @c-y: (@border-radius-outer-without-unit * (sqrt(2) - 1) + @border-radius-inner-without-unit * (1 / sqrt(2)));
+  @d-x: 2 * @unit-width - @c-x;
+  @d-y: @c-y;
+  @e-x: 2 * @unit-width - @b-x;
+  @e-y: @b-y;
+  @f-x: 2 * @unit-width - @a-x;
+  @f-y: @a-y;
 
-  @a-x: @width-without-unit - @corner-height;
-  @a-y: 2 * @width-without-unit + @corner-height;
-  @b-x: @a-x + @outer-radius-without-unit * (1 / sqrt(2));
-  @b-y: 2 * @width-without-unit;
-  @c-x: 2 * @width-without-unit - @inner-radius-without-unit;
-  @c-y: 2 * @width-without-unit;
-  @d-x: 2 * @width-without-unit;
-  @d-y: 2 * @width-without-unit - @inner-radius-without-unit;
-  @e-x: 2 * @width-without-unit;
-  @e-y: @f-y + @outer-radius-without-unit * (1 / sqrt(2));
-  @f-x: 2 * @width-without-unit + @corner-height;
-  @f-y: @width-without-unit - @corner-height;
-  @g-x: @f-x - 1;
-  @g-y: @f-y;
-  @h-x: @a-x;
-  @h-y: @a-y - 1;
+  @arrow-shadow-width: @unit-width * sqrt(2) + @border-radius-outer * (sqrt(2) - 2);
 
-  border-radius: 0 0 @arrow-border-radius;
+  // polygon offset
+  @polygon-offset: @border-radius-outer * (sqrt(2) - 1);
+  @polygon-right: @arrow-size - @polygon-offset;
+  @arrow-polygon: polygon(@polygon-offset 100%, 50% @polygon-offset, @polygon-right 100%, @polygon-offset 100%);
+  @arrow-path: path('M @{a-x} @{a-y} A @{border-radius-outer-without-unit} @{border-radius-outer-without-unit} 0 0 0 @{b-x} @{b-y} L @{c-x} @{c-y} A @{border-radius-inner-without-unit} @{border-radius-inner-without-unit} 0 0 1 @{d-x} @{d-y} L @{e-x} @{e-y} A @{border-radius-outer-without-unit} @{border-radius-outer-without-unit} 0 0 0 @{f-x} @{f-y} Z');
+
+  width: @arrow-size;
+  height: @arrow-size;
+  overflow: hidden;
   pointer-events: none;
 
   &::before {
     position: absolute;
-    top: -@width;
-    left: -@width;
-    width: @width * 3;
-    height: @width * 3;
+    bottom: 0;
+    width: @arrow-size;
+    height: calc(@arrow-size / 2);
     background: @bg-color;
-    // Hack firefox: https://github.com/ant-design/ant-design/pull/33710#issuecomment-1015287825
-    background-repeat: no-repeat;
-    background-position: ceil(-@width + 1px) ceil(-@width + 1px);
     content: '';
-    clip-path: inset(33% 33%); // For browsers that do not support path()
-    clip-path: path(
-      'M @{a-x} @{a-y} A @{outer-radius-without-unit} @{outer-radius-without-unit} 0 0 1 @{b-x} @{b-y} L @{c-x} @{c-y} A @{inner-radius-without-unit} @{inner-radius-without-unit} 0 0 0 @{d-x} @{d-y} L @{e-x} @{e-y} A @{outer-radius-without-unit} @{outer-radius-without-unit} 0 0 1 @{f-x} @{f-y} L @{g-x} @{g-y} L @{h-x} @{h-y} Z'
-    );
+    clip-path: @arrow-polygon; // For browser that do not support path()
+    clip-path: @arrow-path;
+    inset-inline-start: 0;
+  }
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    z-index: 0;
+    width: @arrow-shadow-width;
+    height: @arrow-shadow-width;
+    margin: auto;
+    background: transparent;
+    border-radius: 0 0 @border-radius-inner;
+    box-shadow: @box-shadow;
+    transform: translateY(50%) rotate(-135deg);
+    content: '';
+    inset-inline: 0;
   }
 }

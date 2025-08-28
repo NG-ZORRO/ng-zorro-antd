@@ -177,12 +177,10 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@zoomBigMotion]="'active'"
       >
+        @if (nzPopconfirmShowArrow) {
+          <div class="ant-popover-arrow"></div>
+        }
         <div class="ant-popover-content">
-          @if (nzPopconfirmShowArrow) {
-            <div class="ant-popover-arrow">
-              <span class="ant-popover-arrow-content"></span>
-            </div>
-          }
           <div class="ant-popover-inner">
             <div>
               <div class="ant-popover-inner-content">

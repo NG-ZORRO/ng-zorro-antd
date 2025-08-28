@@ -109,10 +109,8 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@zoomBigMotion]="'active'"
       >
+        <div class="ant-popover-arrow"></div>
         <div class="ant-popover-content">
-          <div class="ant-popover-arrow">
-            <span class="ant-popover-arrow-content"></span>
-          </div>
           <div class="ant-popover-inner" role="tooltip">
             <div>
               @if (nzTitle) {

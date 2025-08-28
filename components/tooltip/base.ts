@@ -31,7 +31,14 @@ import { delay, distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
+import {
+  DEFAULT_TOOLTIP_POSITIONS,
+  POSITION_MAP,
+  POSITION_TYPE,
+  getPlacementName,
+  setConnectedPositionOffset,
+  TOOLTIP_OFFSET_MAP
+} from 'ng-zorro-antd/core/overlay';
 import { NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 
@@ -381,7 +388,9 @@ export abstract class NzTooltipBaseComponent implements OnInit {
   protected _trigger: NzTooltipTrigger = 'hover';
 
   set nzPlacement(value: POSITION_TYPE[]) {
-    const preferredPosition = value.map(placement => POSITION_MAP[placement]);
+    const preferredPosition = value.map(placement =>
+      setConnectedPositionOffset(POSITION_MAP[placement], TOOLTIP_OFFSET_MAP[placement])
+    );
     this._positions = [...preferredPosition, ...DEFAULT_TOOLTIP_POSITIONS];
   }
 

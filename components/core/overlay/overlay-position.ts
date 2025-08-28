@@ -42,7 +42,36 @@ export type POSITION_TYPE_HORIZONTAL = Extract<
   'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight'
 >;
 
-export const DEFAULT_TOOLTIP_POSITIONS = [POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left];
+/**
+ * @internal
+ * @param offset offset in pixels which should not be less than 0.
+ * The default value is `12`, which means `(arrow-size / 2) + 4`
+ */
+const positionOffsetMapFactory = (offset: number = 12): Record<string, [number, number]> => ({
+  top: [0, -offset],
+  topCenter: [0, -offset],
+  topLeft: [0, -offset],
+  topRight: [0, -offset],
+  right: [offset, 0],
+  rightTop: [offset, 0],
+  rightBottom: [offset, 0],
+  bottom: [0, offset],
+  bottomCenter: [0, offset],
+  bottomLeft: [0, offset],
+  bottomRight: [0, offset],
+  left: [-offset, 0],
+  leftTop: [-offset, 0],
+  leftBottom: [-offset, 0]
+});
+
+export const TOOLTIP_OFFSET_MAP = positionOffsetMapFactory();
+
+export const DEFAULT_TOOLTIP_POSITIONS = [
+  setConnectedPositionOffset(POSITION_MAP.top, TOOLTIP_OFFSET_MAP.top),
+  setConnectedPositionOffset(POSITION_MAP.right, TOOLTIP_OFFSET_MAP.right),
+  setConnectedPositionOffset(POSITION_MAP.bottom, TOOLTIP_OFFSET_MAP.bottom),
+  setConnectedPositionOffset(POSITION_MAP.left, TOOLTIP_OFFSET_MAP.left)
+];
 
 export const DEFAULT_CASCADER_POSITIONS = [
   POSITION_MAP.bottomLeft,
@@ -108,3 +137,20 @@ export const DEFAULT_DATE_PICKER_POSITIONS = [
   DATE_PICKER_POSITION_MAP.bottomRight,
   DATE_PICKER_POSITION_MAP.topRight
 ];
+
+export function normalizeConnectedPositionOffset(offset: number | [number, number]): [number, number] {
+  return Array.isArray(offset) ? offset : [offset, offset];
+}
+
+export function setConnectedPositionOffset(
+  position: ConnectionPositionPair,
+  offset: number | [number, number]
+): ConnectionPositionPair {
+  const [offsetX, offsetY] = normalizeConnectedPositionOffset(offset);
+  // return new object
+  return {
+    ...position,
+    offsetX: offsetX,
+    offsetY: offsetY
+  };
+}
