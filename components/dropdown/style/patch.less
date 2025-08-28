@@ -11,7 +11,7 @@
   inset: 0;
 
   &:not(:has(.ant-dropdown-arrow)) {
-    margin-block: 4px;
+    margin-block: calc(@popover-distance - @popover-arrow-width / 2)
   }
 }
 

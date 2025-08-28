@@ -3,13 +3,10 @@
 
 @popover-prefix-cls: ~'@{ant-prefix}-popover';
 
-@popover-arrow-rotate-width: sqrt(@popover-arrow-width * @popover-arrow-width * 2) + 6px;
-
-@popover-arrow-offset-vertical: 12px;
-@popover-arrow-offset-horizontal: 16px;
-
 .@{popover-prefix-cls} {
   .reset-component();
+
+  --antd-arrow-background-color: @popover-bg;
 
   position: absolute;
   top: 0;
@@ -91,7 +88,7 @@
   }
 
   // Arrow Style
-  .placementArrow(@popover-arrow-width, 4px, @arrow-border-radius, @popover-bg, @popover-arrow-box-shadow);
+  .placementArrow(@popover-arrow-width, 4px, @arrow-border-radius, var(--antd-arrow-background-color), @popover-arrow-box-shadow);
 }
 
 .generator-popover-preset-color(@i: length(@preset-colors)) when (@i > 0) {
