@@ -14,6 +14,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -29,8 +30,7 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   inject,
-  numberAttribute,
-  DestroyRef
+  numberAttribute
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -142,19 +142,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
    */
   @Input() nzStrategyOptions: NzSafeAny = undefined;
 
-  @Input()
-  // @ts-ignore
-  @WithConfig()
-  set nzDotPosition(value: NzCarouselDotPosition) {
-    this._dotPosition = value;
-    this.vertical = value === 'left' || value === 'right';
-  }
-
-  get nzDotPosition(): NzCarouselDotPosition {
-    return this._dotPosition;
-  }
-
-  private _dotPosition: NzCarouselDotPosition = 'bottom';
+  @Input() @WithConfig() nzDotPosition: NzCarouselDotPosition = 'bottom';
 
   @Output() readonly nzBeforeChange = new EventEmitter<FromToInterface>();
   @Output() readonly nzAfterChange = new EventEmitter<number>();
@@ -256,10 +244,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
       this.layout();
     }
 
-    if (nzDotPosition && !nzDotPosition.isFirstChange()) {
-      this.switchStrategy();
-      this.markContentActive(0);
-      this.layout();
+    if (nzDotPosition) {
+      this.vertical = nzDotPosition.currentValue === 'left' || nzDotPosition.currentValue === 'right';
+      if (!nzDotPosition.isFirstChange()) {
+        this.switchStrategy();
+        this.markContentActive(0);
+        this.layout();
+      }
     }
 
     if (!this.nzAutoPlay || !this.nzAutoPlaySpeed) {
