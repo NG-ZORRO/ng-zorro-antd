@@ -9,6 +9,10 @@
 .ant-dropdown {
   position: relative;
   inset: 0;
+
+  &:not(:has(.ant-dropdown-arrow)) {
+    margin-block: 6px;
+  }
 }
 
 .@{dropdown-prefix-cls} {
