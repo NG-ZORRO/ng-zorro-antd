@@ -3,7 +3,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './config.service';
-export * from './config';
-export * from './css-variables';
-export * from './with-config-signal';
+export type NzFloatButtonType = 'primary' | 'default';
