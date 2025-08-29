@@ -8,6 +8,8 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzShapeSCType } from 'ng-zorro-antd/core/types';
+import { NzFloatButtonType } from 'ng-zorro-antd/float-button/typings';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -65,8 +67,8 @@ describe('nz-float-button', () => {
     it('should nzIcon support passing nzType string only', () => {
       testComponent.nzIcon = 'file-search';
       fixture.detectChanges();
-      const view = resultEl.nativeElement.getElementsByClassName('anticon-question-circle')[0];
-      expect(view.getAttribute('nztype') === 'file-search').toBe(true);
+      const view = resultEl.nativeElement.querySelector('nz-icon');
+      expect(view.classList).toContain('anticon-file-search');
     });
 
     it('nzOnClick', () => {
@@ -117,8 +119,8 @@ describe('nz-float-button RTL', () => {
 export class NzTestFloatButtonBasicComponent {
   nzHref: string | null = null;
   nzTarget: string | null = null;
-  nzType: 'default' | 'primary' = 'default';
-  nzShape: 'circle' | 'square' = 'circle';
+  nzType: NzFloatButtonType = 'default';
+  nzShape: NzShapeSCType = 'circle';
   nzIcon: string | TemplateRef<void> | null = null;
   nzDescription: TemplateRef<void> | null = null;
 
