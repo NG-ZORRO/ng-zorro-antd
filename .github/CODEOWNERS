@@ -76,6 +76,7 @@ components/hash-code/**                   @OriginRing
 components/flex/**                        @ParsaArvanehPA
 components/float-button/**                @OriginRing
 components/check-list/**                  @OriginRing
+components/tour/**                        @laffery
 
 # The `components/core/*` owners
 components/core/config/**                 @simplejason

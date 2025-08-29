@@ -90,6 +90,21 @@ export const DEFAULT_MENTION_BOTTOM_POSITIONS = [
   new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'end', overlayY: 'top' })
 ];
 
+export const DEFAULT_TOUR_POSITIONS = [
+  POSITION_MAP.left,
+  POSITION_MAP.leftTop,
+  POSITION_MAP.leftBottom,
+  POSITION_MAP.right,
+  POSITION_MAP.rightTop,
+  POSITION_MAP.rightBottom,
+  POSITION_MAP.top,
+  POSITION_MAP.topLeft,
+  POSITION_MAP.topRight,
+  POSITION_MAP.bottom,
+  POSITION_MAP.bottomLeft,
+  POSITION_MAP.bottomRight
+];
+
 export function getPlacementName(position: ConnectedOverlayPositionChange): string | undefined {
   for (const placement in POSITION_MAP) {
     if (
