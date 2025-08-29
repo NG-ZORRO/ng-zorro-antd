@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 8
 title:
   zh-CN: 弹出方向
   en-US: Placement
