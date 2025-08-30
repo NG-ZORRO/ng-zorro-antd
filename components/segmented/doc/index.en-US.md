@@ -15,16 +15,17 @@ description: Display multiple options and allow users to select a single option.
 
 ### nz-segmented
 
-| Property          | Description                                               | Type                                                                                                          | Default | Global Config |
-| ----------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------- | ------------- |
-| `[nzBlock]`       | Option to fit width to its parent\'s width                | `boolean`                                                                                                     | `false` |               |
-| `[nzDisabled]`    | Disable all segments                                      | `boolean`                                                                                                     | `false` |               |
-| `[nzOptions]`     | Set children optional                                     | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean }>` | -       |               |
-| `[nzSize]`        | The size of the Segmented                                 | `large \| default \| small`                                                                                   | -       | ✅            |
-| `[nzVertical]`    | Orientation                                               | `boolean`                                                                                                     | `false` | -             |
-| `[ngModel]`       | Value of the currently selected option                    | `string \| number`                                                                                            | -       |               |
-| `(nzValueChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -       |               |
-| `(ngModelChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -       |               |
+| Property          | Description                                                                                                          | Type                                                                                                          | Default | Global Config |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------- | ------------- |
+| `[nzBlock]`       | Option to fit width to its parent\'s width                                                                           | `boolean`                                                                                                     | `false` |               |
+| `[nzDisabled]`    | Disable all segments                                                                                                 | `boolean`                                                                                                     | `false` |               |
+| `[nzOptions]`     | Set children optional                                                                                                | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean }>` | -       |               |
+| `[nzSize]`        | The size of the Segmented                                                                                            | `large \| default \| small`                                                                                   | -       | ✅            |
+| `[nzVertical]`    | Orientation                                                                                                          | `boolean`                                                                                                     | `false` | -             |
+| `[ngModel]`       | Value of the currently selected option                                                                               | `string \| number`                                                                                            | -       |               |
+| `[nzName]`        | The `name` property of all `input[type="radio"]` children. if not set, it will fallback to a randomly generated name | `string`                                                                                                      |         |               |
+| `(nzValueChange)` | Emits when value of the currently selected option changes                                                            | `EventEmitter<string \| number>`                                                                              | -       |               |
+| `(ngModelChange)` | Emits when value of the currently selected option changes                                                            | `EventEmitter<string \| number>`                                                                              | -       |               |
 
 ### label[nz-segmented-item]
 

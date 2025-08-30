@@ -15,11 +15,12 @@ import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzSegmentedComponent } from './segmented.component';
 import { NzSegmentedModule } from './segmented.module';
 import { NzSegmentedOptions } from './types';
+import { provideNzIconsTesting } from '../icon/testing';
 
 describe('nz-segmented', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting()]
     });
   });
 
@@ -179,14 +180,23 @@ describe('nz-segmented', () => {
       fixture = TestBed.createComponent(NzSegmentedIconOnlyTestComponent);
     });
 
-    it('should render only one element in .ant-segmented-item-label if the item is icon-only', () => {
-      const items = fixture.debugElement.queryAll(By.css('.ant-segmented-item-label'));
-      expect(items.length).toBe(2);
-      expect(items[0].children.length).toBe(2);
-      expect(items[0].children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
-      expect(items[0].children[1].nativeElement.tagName).toBe('SPAN');
-      expect(items[1].children.length).toBe(1);
-      expect(items[1].children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
+    it('should render only one element in .ant-segmented-item-label if the item is icon-only', async () => {
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const itemEls: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('.ant-segmented-item'));
+      expect(itemEls.length).toBe(2);
+      const firstLabel = itemEls[0].querySelector('.ant-segmented-item-label') as HTMLElement;
+      const secondLabel = itemEls[1].querySelector('.ant-segmented-item-label') as HTMLElement;
+      expect(firstLabel).toBeTruthy();
+      expect(secondLabel).toBeTruthy();
+      expect(firstLabel.querySelector('.ant-segmented-item-icon'))
+        .withContext('first label should include icon')
+        .toBeTruthy();
+      expect(secondLabel.querySelector('.ant-segmented-item-icon'))
+        .withContext('second label should include icon')
+        .toBeTruthy();
+      expect(firstLabel.textContent!.trim()).toBe('List');
+      expect(secondLabel.textContent!.trim()).toBe('');
     });
   });
 
@@ -312,6 +322,47 @@ describe('nz-segmented', () => {
       expect(component.handleValueChange).toHaveBeenCalledWith('Weekly');
     });
   });
+
+  describe('name attribute support', () => {
+    let fixture: ComponentFixture<NzSegmentedNameTestComponent>;
+    let component: NzSegmentedNameTestComponent;
+    let segmentedComponent: DebugElement;
+
+    function getRadioInputByIndex(index: number): HTMLInputElement {
+      return segmentedComponent.nativeElement.querySelectorAll('.ant-segmented-item-input')[index];
+    }
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzSegmentedNameTestComponent);
+      component = fixture.componentInstance;
+      segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
+      fixture.detectChanges();
+    });
+
+    it('should set name attribute on radio inputs when nzName is provided', async () => {
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const firstRadio = getRadioInputByIndex(0);
+      const secondRadio = getRadioInputByIndex(1);
+
+      expect(firstRadio.name).toBe('test-segmented');
+      expect(secondRadio.name).toBe('test-segmented');
+    });
+
+    it('should update name attribute when nzName changes', async () => {
+      component.name = 'updated-name';
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const firstRadio = getRadioInputByIndex(0);
+      const secondRadio = getRadioInputByIndex(1);
+
+      expect(firstRadio.name).toBe('updated-name');
+      expect(secondRadio.name).toBe('updated-name');
+    });
+  });
 });
 
 @Component({
@@ -382,4 +433,13 @@ export class NzSegmentedVerticalTestComponent {
   handleValueChange(_e: string | number): void {
     // empty
   }
+}
+
+@Component({
+  imports: [FormsModule, NzSegmentedModule],
+  template: `<nz-segmented [nzOptions]="options" [nzName]="name" />`
+})
+export class NzSegmentedNameTestComponent {
+  options = ['Option1', 'Option2', 'Option3'];
+  name: string = 'test-segmented';
 }

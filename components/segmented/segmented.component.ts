@@ -38,6 +38,16 @@ import { normalizeOptions, NzSegmentedOption, NzSegmentedOptions } from './types
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
 
+function generateRandomString(length: number): string {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -56,7 +66,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
 
       <ng-content>
         @for (item of normalizedOptions; track item.value) {
-          <label nz-segmented-item [nzIcon]="item.icon" [nzValue]="item.value" [nzDisabled]="item.disabled">
+          <label
+            nz-segmented-item
+            [nzIcon]="item.icon"
+            [nzValue]="item.value"
+            [nzDisabled]="item.disabled"
+            [nzName]="nzName"
+          >
             {{ item.label }}
           </label>
         }
@@ -65,6 +81,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
   `,
   host: {
     class: 'ant-segmented',
+    role: 'radiogroup',
     '[class.ant-segmented-disabled]': 'nzDisabled',
     '[class.ant-segmented-rtl]': `dir === 'rtl'`,
     '[class.ant-segmented-lg]': `nzSize === 'large'`,
@@ -95,6 +112,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzOptions: NzSegmentedOptions = [];
   @Input({ transform: booleanAttribute }) nzVertical: boolean = false;
+  @Input() nzName = generateRandomString(4);
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
 
   @Output() readonly nzValueChange = new EventEmitter<number | string>();

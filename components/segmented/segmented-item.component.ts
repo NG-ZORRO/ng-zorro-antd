@@ -28,7 +28,13 @@ import { NzSegmentedService } from './segmented.service';
   exportAs: 'nzSegmentedItem',
   imports: [NzIconModule, NgTemplateOutlet],
   template: `
-    <input class="ant-segmented-item-input" type="radio" [checked]="isChecked()" (click)="$event.stopPropagation()" />
+    <input
+      type="radio"
+      class="ant-segmented-item-input"
+      [checked]="isChecked()"
+      (click)="$event.stopPropagation()"
+      [name]="nzName()"
+    />
     <div class="ant-segmented-item-label" [attr.aria-selected]="isChecked()">
       @if (nzIcon(); as icon) {
         <span class="ant-segmented-item-icon">
@@ -60,6 +66,7 @@ export class NzSegmentedItemComponent implements OnInit {
 
   nzValue = input.required<string | number>();
   nzIcon = input<string>();
+  nzName = input.required<string>();
   nzDisabled = input(false, { transform: booleanAttribute });
 
   protected readonly isChecked = signal(false);
