@@ -34,6 +34,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -55,6 +56,7 @@ import {
 } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectClearComponent } from 'ng-zorro-antd/select';
 
 import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
@@ -117,6 +119,9 @@ export type MentionPlacement = 'top' | 'bottom';
     @if (hasFeedback && !!status) {
       <nz-form-item-feedback-icon class="ant-mentions-suffix" [status]="status" />
     }
+    @if (nzAllowClear && hasValue()) {
+      <nz-select-clear class="ant-mentions-suffix" [clearIcon]="nzClearIcon" (clear)="clear()" />
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzMentionService],
@@ -124,7 +129,7 @@ export type MentionPlacement = 'top' | 'bottom';
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir === 'rtl'`
   },
-  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
+  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent, NzSelectClearComponent]
 })
 export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private ngZone = inject(NgZone);
@@ -143,8 +148,11 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
   @Input() nzStatus: NzStatus = '';
+  @Input({ transform: booleanAttribute }) nzAllowClear = false;
+  @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Output() readonly nzOnSelect = new EventEmitter<NzSafeAny>();
   @Output() readonly nzOnSearchChange = new EventEmitter<MentionOnSearchTypes>();
+  @Output() readonly nzOnClear = new EventEmitter<void>();
 
   trigger!: NzMentionTriggerDirective;
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;
@@ -168,6 +176,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   statusCls: NgClassInterface = {};
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
+  protected hasValue = signal(false);
 
   private previousValue: string | null = null;
   private cursorMention: string | null = null;
@@ -219,6 +228,10 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
       this.bindTriggerEvents();
       this.closeDropdown();
       this.overlayRef = null;
+      // Use Promise.resolve to check value after trigger is fully initialized
+      Promise.resolve().then(() => {
+        this.updateHasValue();
+      });
     });
 
     this.dir = this.directionality.value;
@@ -286,10 +299,28 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
     this.activeIndex = -1;
   }
 
+  clear(): void {
+    this.closeDropdown();
+    this.trigger.clear();
+    this.hasValue.set(false);
+    this.nzOnClear.emit();
+  }
+
+  private updateHasValue(): void {
+    if (!this.trigger) return;
+
+    const triggerValue = this.trigger.value || '';
+    const elementValue = this.trigger.elementRef?.nativeElement?.value || '';
+    const currentValue = triggerValue || elementValue;
+
+    this.hasValue.set(!!currentValue.trim());
+  }
+
   private handleInput(event: KeyboardEvent): void {
     const target = event.target as HTMLInputElement | HTMLTextAreaElement;
     this.trigger.onChange(target.value);
     this.trigger.value = target.value;
+    this.updateHasValue();
     this.resetDropdown();
   }
 

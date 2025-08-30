@@ -538,6 +538,154 @@ describe('mention', () => {
     });
   });
 
+  describe('clear functionality', () => {
+    let fixture: ComponentFixture<NzTestClearMentionComponent>;
+    let textarea: HTMLTextAreaElement;
+    let mentionComponent: NzMentionComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestClearMentionComponent);
+      fixture.detectChanges();
+      textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
+      mentionComponent = fixture.componentInstance.mention;
+    });
+
+    it('should display clear icon when nzAllowClear is true and has value', () => {
+      fixture.componentInstance.allowClear = true;
+      fixture.componentInstance.inputValue = '@test';
+      textarea.value = '@test';
+      fixture.detectChanges();
+
+      dispatchFakeEvent(textarea, 'input');
+      fixture.detectChanges();
+
+      const clearIcon = fixture.debugElement.query(By.css('.ant-select-clear'));
+      expect(clearIcon).toBeTruthy();
+    });
+
+    it('should not display clear icon when nzAllowClear is false', () => {
+      fixture.componentInstance.allowClear = false;
+      fixture.componentInstance.inputValue = '@test';
+      fixture.detectChanges();
+
+      const clearIcon = fixture.debugElement.query(By.css('.ant-select-clear'));
+      expect(clearIcon).toBeFalsy();
+    });
+
+    it('should not display clear icon when nzAllowClear is true but no value', () => {
+      fixture.componentInstance.allowClear = true;
+      fixture.componentInstance.inputValue = '';
+      textarea.value = '';
+      fixture.detectChanges();
+
+      const clearIcon = fixture.debugElement.query(By.css('.ant-select-clear'));
+      expect(clearIcon).toBeFalsy();
+    });
+
+    it('should clear input value when clear icon is clicked', () => {
+      fixture.componentInstance.allowClear = true;
+      fixture.componentInstance.inputValue = '@test value';
+      textarea.value = '@test value';
+      fixture.detectChanges();
+
+      dispatchFakeEvent(textarea, 'input');
+      fixture.detectChanges();
+
+      const clearIcon = fixture.debugElement.query(By.css('.ant-select-clear'));
+      expect(clearIcon).toBeTruthy();
+
+      clearIcon.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(textarea.value).toBe('');
+      expect(fixture.componentInstance.inputValue).toBeUndefined();
+    });
+
+    it('should emit nzOnClear event when clear icon is clicked', () => {
+      spyOn(fixture.componentInstance, 'onClear');
+      fixture.componentInstance.allowClear = true;
+      fixture.componentInstance.inputValue = '@test';
+      textarea.value = '@test';
+      fixture.detectChanges();
+
+      dispatchFakeEvent(textarea, 'input');
+      fixture.detectChanges();
+
+      const clearIcon = fixture.debugElement.query(By.css('.ant-select-clear'));
+      clearIcon.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.onClear).toHaveBeenCalled();
+    });
+
+    it('should close dropdown when clear is triggered', fakeAsync(() => {
+      fixture.componentInstance.allowClear = true;
+      fixture.componentInstance.inputValue = '@ang';
+      textarea.value = '@ang';
+      fixture.detectChanges();
+
+      dispatchFakeEvent(textarea, 'input');
+      fixture.detectChanges();
+
+      dispatchFakeEvent(textarea, 'click');
+      fixture.detectChanges();
+      flush();
+
+      const clearIcon = fixture.debugElement.query(By.css('.ant-select-clear'));
+      clearIcon.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(mentionComponent.isOpen).toBe(false);
+    }));
+
+    it('should work with custom clear icon template', () => {
+      fixture.componentInstance.allowClear = true;
+      fixture.componentInstance.customClearIcon = true;
+      fixture.componentInstance.inputValue = '@test';
+      textarea.value = '@test';
+      fixture.detectChanges();
+
+      // Trigger input event to update the signal
+      dispatchFakeEvent(textarea, 'input');
+      fixture.detectChanges();
+
+      const clearIcon = fixture.debugElement.query(By.css('.ant-select-clear'));
+      expect(clearIcon).toBeTruthy();
+
+      const customIcon = fixture.debugElement.query(By.css('.custom-clear-icon'));
+      expect(customIcon).toBeTruthy();
+      expect(customIcon.nativeElement.textContent.trim()).toBe('✕');
+    });
+
+    it('should call trigger.clear() method when component clear() is called', () => {
+      const trigger = fixture.componentInstance.trigger;
+      spyOn(trigger, 'clear');
+
+      mentionComponent.clear();
+
+      expect(trigger.clear).toHaveBeenCalled();
+    });
+
+    it('should handle clear when trigger value is undefined', () => {
+      const trigger = fixture.componentInstance.trigger;
+      trigger.value = 'some value';
+
+      trigger.clear();
+
+      expect(trigger.value).toBeUndefined();
+      expect(textarea.value).toBe('');
+    });
+
+    it('should call onChange with undefined when trigger is cleared', () => {
+      const trigger = fixture.componentInstance.trigger;
+      spyOn(trigger, 'onChange');
+
+      trigger.clear();
+
+      expect(trigger.onChange).toHaveBeenCalledWith(undefined);
+    });
+  });
+
   describe('in form', () => {
     let fixture: ComponentFixture<NzTestMentionInFormComponent>;
     let mention: DebugElement;
@@ -672,6 +820,33 @@ class NzTestDirMentionComponent {
 })
 class NzTestStatusMentionComponent {
   status: NzStatus = 'error';
+}
+
+@Component({
+  imports: [FormsModule, NzInputModule, NzMentionModule],
+  template: `
+    <nz-mention
+      [nzSuggestions]="suggestions"
+      [nzAllowClear]="allowClear"
+      [nzClearIcon]="customClearIcon ? clearIconTemplate : null"
+      (nzOnClear)="onClear()"
+    >
+      <textarea rows="1" nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+    </nz-mention>
+    <ng-template #clearIconTemplate>
+      <span class="custom-clear-icon">✕</span>
+    </ng-template>
+  `
+})
+class NzTestClearMentionComponent {
+  inputValue = '';
+  allowClear = false;
+  customClearIcon = false;
+  suggestions = ['angular', 'ant-design', 'mention'];
+  @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
+  @ViewChild(NzMentionTriggerDirective, { static: false }) trigger!: NzMentionTriggerDirective;
+
+  onClear(): void {}
 }
 
 @Component({

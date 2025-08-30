@@ -97,6 +97,12 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, AfterVie
     this.value = newValue;
   }
 
+  clear(): void {
+    this.value = undefined;
+    this.elementRef.nativeElement.value = '';
+    this.onChange(undefined);
+  }
+
   writeValue(value: string): void {
     this.value = value;
     if (typeof value === 'string') {
