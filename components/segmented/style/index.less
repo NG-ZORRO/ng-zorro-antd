@@ -31,6 +31,7 @@
     .@{segmented-prefix-cls}-thumb {
       width: 100%;
       height: 0;
+      border-radius: 9999px;
     }
 
     .@{segmented-prefix-cls}-thumb-motion-appear-active {
@@ -39,6 +40,18 @@
         width 0.3s @ease-in-out,
         height 0.3s @ease-in-out;
       will-change: transform, width, height;
+    }
+  }
+
+  &-shape-round {
+    border-radius: 9999px;
+
+    .@{segmented-prefix-cls}-item {
+      border-radius: 9999px;
+    }
+
+    .@{segmented-prefix-cls}-thumb {
+      border-radius: 9999px;
     }
   }
 
