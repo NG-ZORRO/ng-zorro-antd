@@ -70,7 +70,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
     '[class.ant-segmented-lg]': `nzSize === 'large'`,
     '[class.ant-segmented-sm]': `nzSize === 'small'`,
     '[class.ant-segmented-block]': `nzBlock`,
-    '[class.ant-segmented-vertical]': `nzVertical`
+    '[class.ant-segmented-vertical]': `nzVertical`,
+    '[class.ant-segmented-shape-round]': `nzShape === 'round'`
   },
   providers: [
     NzSegmentedService,
@@ -95,6 +96,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzOptions: NzSegmentedOptions = [];
   @Input({ transform: booleanAttribute }) nzVertical: boolean = false;
+  @Input() nzShape: 'default' | 'round' = 'default';
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
 
   @Output() readonly nzValueChange = new EventEmitter<number | string>();

@@ -11,6 +11,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzSegmentedComponent } from './segmented.component';
 import { NzSegmentedModule } from './segmented.module';
@@ -19,7 +20,7 @@ import { NzSegmentedOptions } from './types';
 describe('nz-segmented', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting()]
     });
   });
 
@@ -65,6 +66,21 @@ describe('nz-segmented', () => {
       fixture.detectChanges();
       expect(segmentedElement.classList).toContain('ant-segmented-vertical');
     });
+
+    it('should support round shape and trigger animation state on interaction', fakeAsync(() => {
+      const segmentedElement: HTMLElement = segmentedComponent.nativeElement;
+      expect(segmentedElement.classList).not.toContain('ant-segmented-shape-round');
+      component.shape = 'round';
+      fixture.detectChanges();
+      expect(segmentedElement.classList).toContain('ant-segmented-shape-round');
+      const theSecondElement = getSegmentedOptionByIndex(1);
+      tick(0);
+      fixture.detectChanges();
+      dispatchMouseEvent(theSecondElement, 'click');
+      tick(100);
+      fixture.detectChanges();
+      expect(segmentedElement.classList).toContain('ant-segmented-shape-round');
+    }));
 
     it('should be auto selected the first option when if no value is set', async () => {
       const theFirstElement = getSegmentedOptionByIndex(0);
@@ -177,16 +193,26 @@ describe('nz-segmented', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzSegmentedIconOnlyTestComponent);
+      fixture.detectChanges();
     });
 
-    it('should render only one element in .ant-segmented-item-label if the item is icon-only', () => {
-      const items = fixture.debugElement.queryAll(By.css('.ant-segmented-item-label'));
-      expect(items.length).toBe(2);
-      expect(items[0].children.length).toBe(2);
-      expect(items[0].children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
-      expect(items[0].children[1].nativeElement.tagName).toBe('SPAN');
-      expect(items[1].children.length).toBe(1);
-      expect(items[1].children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
+    it('should render only one element in .ant-segmented-item-label if the item is icon-only', async () => {
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const itemEls: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('.ant-segmented-item'));
+      expect(itemEls.length).toBe(2);
+      const firstLabel = itemEls[0].querySelector('.ant-segmented-item-label') as HTMLElement;
+      const secondLabel = itemEls[1].querySelector('.ant-segmented-item-label') as HTMLElement;
+      expect(firstLabel).toBeTruthy();
+      expect(secondLabel).toBeTruthy();
+      expect(firstLabel.querySelector('.ant-segmented-item-icon'))
+        .withContext('first label should include icon')
+        .toBeTruthy();
+      expect(secondLabel.querySelector('.ant-segmented-item-icon'))
+        .withContext('second label should include icon')
+        .toBeTruthy();
+      expect(firstLabel.textContent!.trim()).toBe('List');
+      expect(secondLabel.textContent!.trim()).toBe('');
     });
   });
 
@@ -323,6 +349,7 @@ describe('nz-segmented', () => {
       [nzDisabled]="disabled"
       [nzBlock]="block"
       [nzVertical]="vertical"
+      [nzShape]="shape"
       (nzValueChange)="handleValueChange($event)"
     />
   `
@@ -333,6 +360,7 @@ export class NzSegmentedTestComponent {
   block = false;
   disabled = false;
   vertical = false;
+  shape: 'default' | 'round' = 'default';
 
   handleValueChange(_e: string | number): void {
     // empty
