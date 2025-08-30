@@ -8,12 +8,15 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   ElementRef,
   inject,
   input,
   OnInit,
   signal,
+  TemplateRef,
+  viewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
@@ -34,7 +37,11 @@ import { NzSegmentedService } from './segmented.service';
         <span class="ant-segmented-item-icon">
           <nz-icon [nzType]="icon" />
         </span>
-        <span *ngTemplateOutlet="content"></span>
+        @if (hasLabel()) {
+          <span>
+            <ng-template [ngTemplateOutlet]="content" />
+          </span>
+        }
       } @else {
         <ng-template [ngTemplateOutlet]="content" />
       }
@@ -57,10 +64,16 @@ export class NzSegmentedItemComponent implements OnInit {
   private readonly service = inject(NzSegmentedService);
   private readonly elementRef = inject(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly templateRef = viewChild.required('content', { read: TemplateRef });
 
-  nzValue = input.required<string | number>();
-  nzIcon = input<string>();
-  nzDisabled = input(false, { transform: booleanAttribute });
+  readonly nzValue = input.required<string | number>();
+  readonly nzIcon = input<string>();
+  readonly nzDisabled = input(false, { transform: booleanAttribute });
+  readonly hasLabel = computed(() =>
+    this.templateRef()
+      .createEmbeddedView({})
+      .rootNodes.some(node => node.textContent.trim().length > 0)
+  );
 
   protected readonly isChecked = signal(false);
   readonly parentDisabled = toSignal(this.service.disabled$, { initialValue: false });
