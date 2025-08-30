@@ -172,21 +172,32 @@ describe('nz-segmented', () => {
     }));
   });
 
-  describe('icon-only', () => {
-    let fixture: ComponentFixture<NzSegmentedIconOnlyTestComponent>;
+  describe('DOM structure', () => {
+    let fixture: ComponentFixture<NzSegmentedDomStructureTestComponent>;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzSegmentedIconOnlyTestComponent);
+      fixture = TestBed.createComponent(NzSegmentedDomStructureTestComponent);
+      fixture.detectChanges();
     });
 
-    it('should render only one element in .ant-segmented-item-label if the item is icon-only', () => {
-      const items = fixture.debugElement.queryAll(By.css('.ant-segmented-item-label'));
-      expect(items.length).toBe(2);
-      expect(items[0].children.length).toBe(2);
-      expect(items[0].children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
-      expect(items[0].children[1].nativeElement.tagName).toBe('SPAN');
-      expect(items[1].children.length).toBe(1);
-      expect(items[1].children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
+    it('should render an icon element and a text node with a wrapper element if the item is label-with-icon', () => {
+      const [withIcon] = fixture.debugElement.queryAll(By.css('.ant-segmented-item-label'));
+      expect(withIcon.children.length).toBe(2);
+      expect(withIcon.children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
+      expect(withIcon.children[1].nativeElement.tagName).toBe('SPAN');
+      expect(withIcon.children[1].nativeElement.textContent.trim()).toBe('WithIcon');
+    });
+
+    it('should render a text node without wrapping elements if the item is label-only', () => {
+      const [, labelOnly] = fixture.debugElement.queryAll(By.css('.ant-segmented-item-label'));
+      expect(labelOnly.children.length).toBe(0);
+      expect(labelOnly.nativeElement.textContent.trim()).toBe('LabelOnly');
+    });
+
+    it('should render only one icon element if the item is icon-only', () => {
+      const [, , iconOnly] = fixture.debugElement.queryAll(By.css('.ant-segmented-item-label'));
+      expect(iconOnly.children.length).toBe(1);
+      expect(iconOnly.children[0].nativeElement.classList).toContain('ant-segmented-item-icon');
     });
   });
 
@@ -343,10 +354,11 @@ export class NzSegmentedTestComponent {
   imports: [FormsModule, NzSegmentedModule],
   template: `<nz-segmented [nzOptions]="options" />`
 })
-export class NzSegmentedIconOnlyTestComponent {
+export class NzSegmentedDomStructureTestComponent {
   options: NzSegmentedOptions = [
-    { value: 'List', label: 'List', icon: 'bars' },
-    { value: 'Kanban', icon: 'appstore' }
+    { value: 'WithIcon', label: 'WithIcon', icon: 'bars' },
+    { value: 'LabelOnly', label: 'LabelOnly' },
+    { value: 'IconOnly', icon: 'bars' }
   ];
 }
 
