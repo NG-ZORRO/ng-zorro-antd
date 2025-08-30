@@ -24,9 +24,11 @@ import {
   ContentChild,
   DestroyRef,
   DOCUMENT,
+  effect,
   ElementRef,
   EventEmitter,
   inject,
+  Injector,
   Input,
   NgZone,
   OnChanges,
@@ -34,7 +36,6 @@ import {
   Output,
   QueryList,
   Renderer2,
-  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -119,7 +120,7 @@ export type MentionPlacement = 'top' | 'bottom';
     @if (hasFeedback && !!status) {
       <nz-form-item-feedback-icon class="ant-mentions-suffix" [status]="status" />
     }
-    @if (nzAllowClear && hasValue()) {
+    @if (nzAllowClear && trigger?.value()?.trim()) {
       <nz-select-clear class="ant-mentions-suffix" [clearIcon]="nzClearIcon" (clear)="clear()" />
     }
   `,
@@ -176,7 +177,6 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   statusCls: NgClassInterface = {};
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
-  protected hasValue = signal(false);
 
   private previousValue: string | null = null;
   private cursorMention: string | null = null;
@@ -187,6 +187,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private positionStrategy!: FlexibleConnectedPositionStrategy;
   private overlayOutsideClickSubscription!: Subscription;
   private document: Document = inject(DOCUMENT);
+  private injector = inject(Injector);
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.elementRef.nativeElement;
@@ -228,10 +229,22 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
       this.bindTriggerEvents();
       this.closeDropdown();
       this.overlayRef = null;
-      // Use Promise.resolve to check value after trigger is fully initialized
-      Promise.resolve().then(() => {
-        this.updateHasValue();
-      });
+
+      /**
+       * this part is a little bit tricky
+       * Create effect to react to trigger value changes for clear icon visibility
+       * when the trigger is initialized we enter the writeValue method of the trigger directive
+       * at the moment we set the value of the signal, we enter the effect, and we update the clear icon visibility
+       * finally we destroy the effect to avoid memory leaks and to trigger the change detection too much time
+       */
+      const effectRef = effect(
+        () => {
+          this.trigger.value();
+          this.cdr.markForCheck();
+          effectRef.destroy();
+        },
+        { injector: this.injector, manualCleanup: true }
+      );
     });
 
     this.dir = this.directionality.value;
@@ -284,7 +297,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getMentions(): string[] {
-    return this.trigger ? getMentions(this.trigger.value!, this.nzPrefix) : [];
+    return this.trigger ? getMentions(this.trigger.value(), this.nzPrefix) : [];
   }
 
   selectSuggestion(suggestion: string | {}): void {
@@ -302,25 +315,13 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   clear(): void {
     this.closeDropdown();
     this.trigger.clear();
-    this.hasValue.set(false);
     this.nzOnClear.emit();
-  }
-
-  private updateHasValue(): void {
-    if (!this.trigger) return;
-
-    const triggerValue = this.trigger.value || '';
-    const elementValue = this.trigger.elementRef?.nativeElement?.value || '';
-    const currentValue = triggerValue || elementValue;
-
-    this.hasValue.set(!!currentValue.trim());
   }
 
   private handleInput(event: KeyboardEvent): void {
     const target = event.target as HTMLInputElement | HTMLTextAreaElement;
     this.trigger.onChange(target.value);
-    this.trigger.value = target.value;
-    this.updateHasValue();
+    this.trigger.value.set(target.value);
     this.resetDropdown();
   }
 

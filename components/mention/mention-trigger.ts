@@ -14,7 +14,8 @@ import {
   forwardRef,
   inject,
   NgZone,
-  Output
+  Output,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -62,7 +63,7 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, AfterVie
   @Output() readonly onKeydown = new EventEmitter<KeyboardEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() readonly onClick = new EventEmitter<MouseEvent>();
-  value?: string;
+  value = signal<string>('');
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -94,22 +95,19 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, AfterVie
     this.elementRef.nativeElement.value = newValue;
     this.focus(mention.startPos + insertValue.length + 1);
     this.onChange(newValue);
-    this.value = newValue;
+    this.value.set(newValue);
   }
 
   clear(): void {
-    this.value = undefined;
+    this.value.set('');
     this.elementRef.nativeElement.value = '';
-    this.onChange(undefined);
+    this.onChange('');
   }
 
   writeValue(value: string): void {
-    this.value = value;
-    if (typeof value === 'string') {
-      this.elementRef.nativeElement.value = value;
-    } else {
-      this.elementRef.nativeElement.value = '';
-    }
+    const val = value || '';
+    this.value.set(val);
+    this.elementRef.nativeElement.value = val;
   }
 
   onChange: OnChangeType = () => {};

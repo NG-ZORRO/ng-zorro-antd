@@ -598,7 +598,7 @@ describe('mention', () => {
       fixture.detectChanges();
 
       expect(textarea.value).toBe('');
-      expect(fixture.componentInstance.inputValue).toBeUndefined();
+      expect(fixture.componentInstance.inputValue).toBe('');
     });
 
     it('should emit nzOnClear event when clear icon is clicked', () => {
@@ -668,11 +668,11 @@ describe('mention', () => {
 
     it('should handle clear when trigger value is undefined', () => {
       const trigger = fixture.componentInstance.trigger;
-      trigger.value = 'some value';
+      trigger.value.set('some value');
 
       trigger.clear();
 
-      expect(trigger.value).toBeUndefined();
+      expect(trigger.value()).toBe('');
       expect(textarea.value).toBe('');
     });
 
@@ -682,7 +682,7 @@ describe('mention', () => {
 
       trigger.clear();
 
-      expect(trigger.onChange).toHaveBeenCalledWith(undefined);
+      expect(trigger.onChange).toHaveBeenCalledWith('');
     });
   });
 
