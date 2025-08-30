@@ -24,9 +24,11 @@ import {
   ContentChild,
   DestroyRef,
   DOCUMENT,
+  effect,
   ElementRef,
   EventEmitter,
   inject,
+  Injector,
   Input,
   NgZone,
   OnChanges,
@@ -55,6 +57,7 @@ import {
 } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectClearComponent } from 'ng-zorro-antd/select';
 
 import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
@@ -117,6 +120,9 @@ export type MentionPlacement = 'top' | 'bottom';
     @if (hasFeedback && !!status) {
       <nz-form-item-feedback-icon class="ant-mentions-suffix" [status]="status" />
     }
+    @if (nzAllowClear && trigger?.value()?.trim()) {
+      <nz-select-clear class="ant-mentions-suffix" [clearIcon]="nzClearIcon" (clear)="clear()" />
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzMentionService],
@@ -124,7 +130,7 @@ export type MentionPlacement = 'top' | 'bottom';
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir === 'rtl'`
   },
-  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
+  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent, NzSelectClearComponent]
 })
 export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private ngZone = inject(NgZone);
@@ -143,8 +149,11 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
   @Input() nzStatus: NzStatus = '';
+  @Input({ transform: booleanAttribute }) nzAllowClear = false;
+  @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Output() readonly nzOnSelect = new EventEmitter<NzSafeAny>();
   @Output() readonly nzOnSearchChange = new EventEmitter<MentionOnSearchTypes>();
+  @Output() readonly nzOnClear = new EventEmitter<void>();
 
   trigger!: NzMentionTriggerDirective;
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;
@@ -178,6 +187,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private positionStrategy!: FlexibleConnectedPositionStrategy;
   private overlayOutsideClickSubscription!: Subscription;
   private document: Document = inject(DOCUMENT);
+  private injector = inject(Injector);
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.elementRef.nativeElement;
@@ -219,6 +229,22 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
       this.bindTriggerEvents();
       this.closeDropdown();
       this.overlayRef = null;
+
+      /**
+       * this part is a little bit tricky
+       * Create effect to react to trigger value changes for clear icon visibility
+       * when the trigger is initialized we enter the writeValue method of the trigger directive
+       * at the moment we set the value of the signal, we enter the effect, and we update the clear icon visibility
+       * finally we destroy the effect to avoid memory leaks and to trigger the change detection too much time
+       */
+      const effectRef = effect(
+        () => {
+          this.trigger.value();
+          this.cdr.markForCheck();
+          effectRef.destroy();
+        },
+        { injector: this.injector, manualCleanup: true }
+      );
     });
 
     this.dir = this.directionality.value;
@@ -271,7 +297,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getMentions(): string[] {
-    return this.trigger ? getMentions(this.trigger.value!, this.nzPrefix) : [];
+    return this.trigger ? getMentions(this.trigger.value(), this.nzPrefix) : [];
   }
 
   selectSuggestion(suggestion: string | {}): void {
@@ -286,10 +312,16 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
     this.activeIndex = -1;
   }
 
+  clear(): void {
+    this.closeDropdown();
+    this.trigger.clear();
+    this.nzOnClear.emit();
+  }
+
   private handleInput(event: KeyboardEvent): void {
     const target = event.target as HTMLInputElement | HTMLTextAreaElement;
     this.trigger.onChange(target.value);
-    this.trigger.value = target.value;
+    this.trigger.value.set(target.value);
     this.resetDropdown();
   }
 

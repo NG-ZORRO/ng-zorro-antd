@@ -30,9 +30,12 @@ When need to mention someone or something.
 | `[nzPrefix]`            | Character which will trigger Mention to show mention list                                 | `string \| string[]`                           | `'@'`                            |
 | `[nzSuggestions]`       | Suggestion content                                                                        | `any[]`                                        | `[]`                             |
 | `[nzStatus]`            | Set validation status                                                                     | `'error' \| 'warning'`                         | -                                |
+| `[nzAllowClear]`        | If allow to remove mentions content with clear icon                                       | `boolean`                                      | `false`                          |
+| `[nzClearIcon]`         | The custom clear icon                                                                     | `TemplateRef<any>`                             | -                                |
 | `[nzValueWith]`         | Function that maps an suggestion's value                                                  | `(any) => string \| (value: string) => string` |
 | `(nzOnSelect)`          | Callback function called when select from suggestions                                     | `EventEmitter<any>`                            | -                                |
 | `(nzOnSearchChange)`    | Callback function called when search content changes                                      | `EventEmitter<MentionOnSearchTypes>`           | -                                |
+| `(nzOnClear)`           | Callback when click the clear button                                                      | `EventEmitter<void>`                           | -                                |
 
 #### Methods
 
