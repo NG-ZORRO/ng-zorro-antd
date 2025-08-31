@@ -85,13 +85,13 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestSimpleMentionComponent>;
     let textarea: HTMLTextAreaElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestSimpleMentionComponent);
       fixture.detectChanges();
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       textarea.value = '@angular';
-      fixture.detectChanges();
-    });
+      tick();
+    }));
 
     it('should open the dropdown when the input is click', () => {
       dispatchFakeEvent(textarea, 'click');
@@ -193,6 +193,7 @@ describe('mention', () => {
     it('should support switch trigger', fakeAsync(() => {
       fixture.componentInstance.inputTrigger = true;
       fixture.detectChanges();
+      tick(); // Wait for afterNextRender
       const textareaWithSingleLine = fixture.debugElement.query(By.css('textarea')).nativeElement;
       const mention = fixture.componentInstance.mention;
       expect(textareaWithSingleLine).toBeTruthy();
@@ -206,6 +207,7 @@ describe('mention', () => {
       expect(mention.isOpen).toBe(true);
 
       const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
+      expect(option).toBeTruthy(); // Ensure option exists before clicking
       option.click();
       fixture.detectChanges();
 
@@ -398,12 +400,9 @@ describe('mention', () => {
       textarea.value = '@';
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
-
       expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeTruthy();
-
       dispatchKeyboardEvent(textarea, 'keydown', TAB);
       fixture.detectChanges();
-
       tick(500);
       expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeFalsy();
     }));
@@ -426,11 +425,18 @@ describe('mention', () => {
   describe('property', () => {
     let fixture: ComponentFixture<NzTestPropertyMentionComponent>;
     let textarea: HTMLTextAreaElement;
+    let spyNzOnSearch: jasmine.Spy;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestPropertyMentionComponent);
       fixture.detectChanges();
+      tick();
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
+      spyNzOnSearch = spyOn(fixture.componentInstance, 'onSearchChange');
+    }));
+
+    afterEach(() => {
+      spyNzOnSearch.calls.reset();
     });
 
     it('should open the dropdown when the async load suggestions', fakeAsync(() => {
@@ -463,24 +469,22 @@ describe('mention', () => {
     });
 
     it('should emit nzOnSearchChange when type in @ prefix', () => {
-      spyOn(fixture.componentInstance, 'onSearchChange');
-
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       typeInElement('@test', textarea);
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledTimes(1);
+      expect(spyNzOnSearch).toHaveBeenCalledTimes(1);
 
       typeInElement('@test  @', textarea);
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledTimes(2);
+      expect(spyNzOnSearch).toHaveBeenCalledTimes(2);
 
       typeInElement('@test  @ @', textarea);
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledTimes(3);
+      expect(spyNzOnSearch).toHaveBeenCalledTimes(3);
     });
 
     it('should open the dropdown when the type in # prefix', () => {
@@ -518,11 +522,12 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestStatusMentionComponent>;
     let mention: DebugElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestStatusMentionComponent);
       mention = fixture.debugElement.query(By.directive(NzMentionComponent));
       fixture.detectChanges();
-    });
+      tick();
+    }));
 
     it('should className with status correct', () => {
       fixture.detectChanges();
@@ -542,11 +547,12 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestMentionInFormComponent>;
     let mention: DebugElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestMentionInFormComponent);
       mention = fixture.debugElement.query(By.directive(NzMentionComponent));
       fixture.detectChanges();
-    });
+      tick();
+    }));
 
     it('should className correct', () => {
       fixture.detectChanges();
