@@ -15,6 +15,16 @@ timeline: true
 
 ---
 
+## 20.2.1
+
+`2025-08-31`
+
+## [20.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.2.0...20.2.1) (2025-08-31)
+
+### Bug Fixes
+
+- **segmented:** correctly render with-icon & icon-only ([#9367](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9367)) ([9d42b42](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9d42b42ad103e8ca498e65e7aa6ad7e72075d609))
+
 ## 20.2.0
 
 `2025-08-29`
