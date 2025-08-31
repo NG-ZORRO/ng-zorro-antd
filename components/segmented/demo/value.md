@@ -1,8 +1,8 @@
 ---
-order: 0
+order: 5
 title:
-  zh-CN: ngModel
-  en-US: ngModel
+  zh-CN: 受控模式
+  en-US: Controlled mode
 ---
 
 ## zh-CN

@@ -4,12 +4,14 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
+import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   contentChildren,
   effect,
   EventEmitter,
@@ -24,7 +26,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { bufferCount } from 'rxjs/operators';
+import { bufferCount, filter } from 'rxjs/operators';
 
 import { ThumbAnimationProps, thumbMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -66,11 +68,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
   host: {
     class: 'ant-segmented',
     '[class.ant-segmented-disabled]': 'nzDisabled',
-    '[class.ant-segmented-rtl]': `dir === 'rtl'`,
+    '[class.ant-segmented-rtl]': `dir() === 'rtl'`,
     '[class.ant-segmented-lg]': `nzSize === 'large'`,
     '[class.ant-segmented-sm]': `nzSize === 'small'`,
     '[class.ant-segmented-block]': `nzBlock`,
-    '[class.ant-segmented-vertical]': `nzVertical`
+    '[class.ant-segmented-vertical]': `nzVertical`,
+    // a11y
+    role: 'radiogroup',
+    'aria-label': 'segmented control',
+    '[attr.tabindex]': 'nzDisabled ? undefined : 0'
   },
   providers: [
     NzSegmentedService,
@@ -88,7 +94,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
 
   public readonly nzConfigService = inject(NzConfigService);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private readonly service = inject(NzSegmentedService);
 
   @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
@@ -97,13 +103,19 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   @Input({ transform: booleanAttribute }) nzVertical: boolean = false;
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
 
+  // todo: add a method to generate hash id for the segmented instance as default value of `nzName`
+  /**
+   * @description set the `name` attribute of the segmented item native `input[type="radio"]`
+   */
+  @Input() nzName?: string;
+
   @Output() readonly nzValueChange = new EventEmitter<number | string>();
 
   private viewItemCmps = viewChildren(NzSegmentedItemComponent);
   private contentItemCmps = contentChildren(NzSegmentedItemComponent);
+  private renderedItemCmps = computed(() => this.viewItemCmps().concat(this.contentItemCmps()));
   private isDisabledFirstChange = true;
 
-  protected dir: Direction = 'ltr';
   protected value?: number | string;
   protected animationState: null | { value: string; params: ThumbAnimationProps } = {
     value: 'to',
@@ -114,11 +126,6 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   protected onTouched: OnTouchedType = () => {};
 
   constructor() {
-    this.directionality.change.pipe(takeUntilDestroyed()).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.markForCheck();
-    });
-
     this.service.selected$.pipe(takeUntilDestroyed()).subscribe(value => {
       this.value = value;
     });
@@ -156,8 +163,15 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
       }
     });
 
+    this.service.keydown$
+      .pipe(
+        filter(() => !this.nzDisabled),
+        takeUntilDestroyed()
+      )
+      .subscribe(event => this.onKeyDown(event));
+
     effect(() => {
-      const itemCmps = this.viewItemCmps().concat(this.contentItemCmps());
+      const itemCmps = this.renderedItemCmps();
 
       if (!itemCmps.length) {
         return;
@@ -173,7 +187,10 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOptions, nzDisabled } = changes;
+    const { nzName, nzOptions, nzDisabled } = changes;
+    if (nzName) {
+      this.service.name.set(this.nzName || null);
+    }
     if (nzOptions) {
       this.normalizedOptions = normalizeOptions(nzOptions.currentValue);
     }
@@ -187,6 +204,46 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
       this.animationState = null;
     }
     this.service.animationDone$.next(event);
+  }
+
+  private onOffset(offset: number): void {
+    const items = this.renderedItemCmps();
+    const total = items.length;
+    const originIndex = items.findIndex(item => item.nzValue() === this.value);
+    let nextIndex = (originIndex + offset + total) % total;
+
+    // find out the next non-disabled item
+    while (items[nextIndex].nzDisabled()) {
+      nextIndex = (nextIndex + Math.sign(offset) + total) % total;
+      // avoid circular loop
+      if (nextIndex === originIndex) {
+        break;
+      }
+    }
+
+    const nextOption = items[nextIndex];
+    if (nextOption) {
+      this.service.selected$.next(nextOption.nzValue());
+      this.service.change$.next(nextOption.nzValue());
+    }
+  }
+
+  // change selected item by direction keyboard interaction
+  private onKeyDown(event: KeyboardEvent): void {
+    switch (event.keyCode) {
+      case UP_ARROW:
+        this.onOffset(-1);
+        break;
+      case LEFT_ARROW:
+        this.onOffset(this.dir() === 'rtl' ? 1 : -1);
+        break;
+      case DOWN_ARROW:
+        this.onOffset(1);
+        break;
+      case RIGHT_ARROW:
+        this.onOffset(this.dir() === 'rtl' ? -1 : 1);
+        break;
+    }
   }
 
   writeValue(value: number | string): void {

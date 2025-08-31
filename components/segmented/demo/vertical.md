@@ -1,5 +1,5 @@
 ---
-order: 13
+order: 1
 title:
   zh-CN: 垂直方向
   en-US: Vertical direction
