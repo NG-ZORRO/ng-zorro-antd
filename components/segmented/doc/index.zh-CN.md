@@ -24,6 +24,7 @@ description: 用于展示多个选项并允许用户选择其中单个选项。
 | `[nzSize]`        | 控件尺寸                     | `large \| default \| small`                                                                                    | -         | ✅       |
 | `[nzShape]`       | 形状                         | `default \| round`                                                                                             | `default` | -        |
 | `[nzVertical]`    | 排列方向                     | `boolean`                                                                                                      | `false`   | -        |
+| `[nzName]`        | 所有 `input[type="radio"]` 的 `name` 属性 | `string`                                                                                                       | -         |          |
 | `[ngModel]`       | 当前选中项目的 value         | `string \| number`                                                                                             | -         |          |
 | `(nzValueChange)` | 当前选中项目变化时触发回调   | `EventEmitter<string \| number>`                                                                               | -         |          |
 | `(ngModelChange)` | 当前选中项目变化时触发回调   | `EventEmitter<string \| number>`                                                                               | -         |          |

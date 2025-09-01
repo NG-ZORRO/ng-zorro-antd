@@ -9,7 +9,7 @@ const defaultOptions = ['Daily', 'Weekly', 'Monthly'];
   selector: 'nz-demo-segmented-dynamic',
   imports: [NzButtonModule, NzSegmentedModule],
   template: `
-    <nz-segmented [nzOptions]="options"></nz-segmented>
+    <nz-segmented [nzOptions]="options" />
     <br />
     <button nz-button nzType="primary" [disabled]="moreLoaded" (click)="handleLoadMore()"> Load more options </button>
   `,
