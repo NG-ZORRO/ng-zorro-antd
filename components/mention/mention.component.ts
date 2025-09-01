@@ -156,7 +156,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  trigger = contentChild.required(NzMentionTriggerDirective);
+  readonly trigger = contentChild.required(NzMentionTriggerDirective);
 
   isOpen = false;
   filteredSuggestions: string[] = [];
@@ -446,7 +446,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
       const clickTarget = event.target as HTMLElement;
       return (
         this.isOpen &&
-        clickTarget !== this.trigger().elementRef.nativeElement &&
+        clickTarget !== this.triggerNativeElement &&
         !this.overlayRef?.overlayElement.contains(clickTarget)
       );
     };
