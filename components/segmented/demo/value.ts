@@ -11,13 +11,11 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
     <br />
     Selected value: {{ selectedValue }}
   `,
-  styles: [
-    `
-      .ant-segmented {
-        margin-bottom: 10px;
-      }
-    `
-  ]
+  styles: `
+    .ant-segmented {
+      margin-bottom: 10px;
+    }
+  `
 })
 export class NzDemoSegmentedValueComponent {
   selectedValue = 'Weekly';

@@ -6,11 +6,11 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   selector: 'nz-demo-segmented-size',
   imports: [NzSegmentedModule],
   template: `
-    <nz-segmented [nzOptions]="options" nzSize="small"></nz-segmented>
+    <nz-segmented [nzOptions]="options" nzSize="small" />
     <br />
-    <nz-segmented [nzOptions]="options"></nz-segmented>
+    <nz-segmented [nzOptions]="options" />
     <br />
-    <nz-segmented [nzOptions]="options" nzSize="large"></nz-segmented>
+    <nz-segmented [nzOptions]="options" nzSize="large" />
   `,
   styles: [
     `
