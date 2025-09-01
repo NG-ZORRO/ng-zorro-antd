@@ -73,7 +73,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
     '[class.ant-segmented-sm]': `nzSize === 'small'`,
     '[class.ant-segmented-block]': `nzBlock`,
     '[class.ant-segmented-vertical]': `nzVertical`,
-    '[class.ant-segmented-shape-round]': `nzShape === 'round'`
+    '[class.ant-segmented-shape-round]': `nzShape === 'round'`,
     // a11y
     role: 'radiogroup',
     'aria-label': 'segmented control',

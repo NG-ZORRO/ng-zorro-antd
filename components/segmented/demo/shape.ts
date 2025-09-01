@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -8,7 +8,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   selector: 'nz-demo-segmented-shape',
   imports: [NzSegmentedModule, FormsModule],
   template: `
-    <nz-segmented [nzOptions]="optionsSize" (nzValueChange)="changeSize($event)" [ngModel]="currentSize()" />
+    <nz-segmented [nzOptions]="optionsSize" [(ngModel)]="currentSize" />
     <nz-segmented [nzOptions]="options" nzShape="round" [nzSize]="currentSize()" />
   `,
   styles: `
@@ -20,7 +20,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   `
 })
 export class NzDemoSegmentedShapeComponent {
-  currentSize = signal<NzSizeLDSType>('default');
+  currentSize = model<NzSizeLDSType>('default');
 
   optionsSize = [
     { value: 'small', label: 'Small' },
@@ -31,8 +31,4 @@ export class NzDemoSegmentedShapeComponent {
     { value: 'List', icon: 'bars' },
     { value: 'Kanban', icon: 'appstore' }
   ];
-
-  changeSize(value: string | number): void {
-    this.currentSize.set(value as NzSizeLDSType);
-  }
 }
