@@ -59,6 +59,7 @@ import {
 } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectClearComponent } from 'ng-zorro-antd/select';
 
 import { NzSelectClearComponent } from '../select';
 import { NZ_MENTION_CONFIG } from './config';
