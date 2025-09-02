@@ -191,6 +191,63 @@ describe('nz-badge', () => {
       tick();
       expect(component.presetColor).toEqual(null);
     }));
+
+    it('should display correct of nzColor related change', fakeAsync(() => {
+      let color: string | undefined;
+      testComponent.count = 0;
+      testComponent.status = 'success';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
+        `ant-badge-status-success`
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      color = 'blue';
+      testComponent.color = color;
+      testComponent.status = '';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      testComponent.text = 'test';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
+        `ant-badge-status-${color}`
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      color = '#f5222d';
+      testComponent.color = color;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).not.toContain(
+        `ant-badge-status-`
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').style.backgroundColor).toBe(
+        'rgb(245, 34, 45)'
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      testComponent.text = '';
+      testComponent.showZero = true;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
+
+      testComponent.count = 5;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
+    }));
   });
 
   describe('ribbon', () => {
@@ -275,6 +332,7 @@ describe('nz-badge', () => {
       [nzTitle]="title"
       [nzStandalone]="!inner"
       [nzSize]="size"
+      [nzColor]="color"
     >
       @if (inner) {
         <a></a>
@@ -295,6 +353,7 @@ export class NzTestBadgeBasicComponent {
   offset?: [number, number];
   size: NzSizeDSType = 'default';
   noAnimation = true;
+  color?: string;
 }
 
 @Component({
