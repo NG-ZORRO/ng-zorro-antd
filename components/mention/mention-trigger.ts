@@ -61,7 +61,8 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
   @Output() readonly onKeydown = new EventEmitter<KeyboardEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() readonly onClick = new EventEmitter<MouseEvent>();
-  value?: string;
+
+  value = signal<string>('');
 
   readonly disabled = signal(false);
 
@@ -103,16 +104,18 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
     this.elementRef.nativeElement.value = newValue;
     this.focus(mention.startPos + insertValue.length + 1);
     this.onChange(newValue);
-    this.value = newValue;
+    this.value.set(newValue);
+  }
+
+  clear(): void {
+    this.value.set('');
+    this.elementRef.nativeElement.value = '';
+    this.onChange('');
   }
 
   writeValue(value: string): void {
-    this.value = value;
-    if (typeof value === 'string') {
-      this.elementRef.nativeElement.value = value;
-    } else {
-      this.elementRef.nativeElement.value = '';
-    }
+    this.value.set(value || '');
+    this.elementRef.nativeElement.value = this.value();
   }
 
   onChange: OnChangeType = () => {};

@@ -60,6 +60,7 @@ import {
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzSelectClearComponent } from '../select';
 import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
@@ -120,6 +121,9 @@ export type MentionPlacement = 'top' | 'bottom';
     @if (hasFeedback && !!status) {
       <nz-form-item-feedback-icon class="ant-mentions-suffix" [status]="status" />
     }
+    @if (nzAllowClear && hasValue()) {
+      <nz-select-clear class="ant-mentions-suffix" [clearIcon]="nzClearIcon" (clear)="clear()" />
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -131,7 +135,7 @@ export type MentionPlacement = 'top' | 'bottom';
     '[class.ant-mentions-focused]': `focused()`,
     '[class.ant-mentions-disabled]': `disabled()`
   },
-  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
+  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent, NzSelectClearComponent]
 })
 export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private ngZone = inject(NgZone);
@@ -150,8 +154,11 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzSuggestions: NzSafeAny[] = [];
   @Input() nzStatus: NzStatus = '';
   @Input() nzVariant: NzVariant = 'outlined';
+  @Input({ transform: booleanAttribute }) nzAllowClear = false;
+  @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Output() readonly nzOnSelect = new EventEmitter<NzSafeAny>();
   @Output() readonly nzOnSearchChange = new EventEmitter<MentionOnSearchTypes>();
+  @Output() readonly nzOnClear = new EventEmitter<void>();
 
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;
   @ViewChildren('items', { read: ElementRef })
@@ -180,6 +187,9 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
 
   readonly disabled = computed(() => {
     return this.trigger().disabled();
+  });
+  readonly hasValue = computed(() => {
+    return !!this.trigger()?.value().trim();
   });
 
   private previousValue: string | null = null;
@@ -285,7 +295,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getMentions(): string[] {
-    return this.trigger() ? getMentions(this.trigger().value!, this.nzPrefix) : [];
+    return this.trigger() ? getMentions(this.trigger().value(), this.nzPrefix) : [];
   }
 
   selectSuggestion(suggestion: string | {}): void {
@@ -300,10 +310,16 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
     this.activeIndex = -1;
   }
 
+  clear(): void {
+    this.closeDropdown();
+    this.trigger().clear();
+    this.nzOnClear.emit();
+  }
+
   private handleInput(event: KeyboardEvent): void {
     const target = event.target as HTMLInputElement | HTMLTextAreaElement;
     this.trigger().onChange(target.value);
-    this.trigger().value = target.value;
+    this.trigger().value.set(target.value);
     this.resetDropdown();
   }
 

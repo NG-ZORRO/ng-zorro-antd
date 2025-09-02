@@ -31,10 +31,13 @@ description: 用于在输入中提及某人或某事。
 | `[nzPrefix]`            | 触发弹出下拉框的字符              | `string \| string[]`                                     | `'@'`                            |
 | `[nzSuggestions]`       | 建议内容                          | `any[]`                                                  | `[]`                             |
 | `[nzStatus]`            | 设置校验状态                      | `'error' \| 'warning'`                                   | -                                |
+| `[nzAllowClear]`        | 支持清除                          | `boolean`                                                | `false`                          |
+| `[nzClearIcon]`         | 自定义的多选框清空图标            | `TemplateRef<void>`                                      | -                                |
 | `[nzVariant]`           | 形态变体                          | `'outlined' \| 'filled' \| 'borderless' \| 'underlined'` | `'outlined'`                     |
-| `[nzValueWith]`         | 建议选项的取值方法                | `(any) => string \| (value: string) => string`           |
+| `[nzValueWith]`         | 建议选项的取值方法                | `(any) => string \| (value: string) => string`           | -                                |
 | `(nzOnSelect)`          | 下拉框选择建议时回调              | `EventEmitter<any>`                                      | -                                |
 | `(nzOnSearchChange)`    | 输入框中 @ 变化时回调             | `EventEmitter<MentionOnSearchTypes>`                     | -                                |
+| `(nzOnClear)`           | 清空已选项时触发的回调函数        | `EventEmitter<void>`                                     | -                                |
 
 #### 方法
 
