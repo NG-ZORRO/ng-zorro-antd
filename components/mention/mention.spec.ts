@@ -682,7 +682,7 @@ describe('mention', () => {
       typeInElement('test value', textarea);
       fixture.detectChanges();
       tick();
-      expect(fixture.debugElement.query(By.css('nz-select-clear'))).toBeNull();
+      expect(fixture.debugElement.query(By.css('.ant-mentions-clear-icon'))).toBeNull();
     }));
 
     it('should show clear button when nzAllowClear is true and has value', fakeAsync(() => {
@@ -691,7 +691,7 @@ describe('mention', () => {
       typeInElement('test value', textarea);
       fixture.detectChanges();
       tick();
-      expect(fixture.debugElement.query(By.css('nz-select-clear'))).toBeTruthy();
+      expect(fixture.debugElement.query(By.css('.ant-mentions-clear-icon'))).toBeTruthy();
     }));
 
     it('should not show clear button when nzAllowClear is true but has no value', fakeAsync(() => {
@@ -700,7 +700,7 @@ describe('mention', () => {
       typeInElement('', textarea);
       fixture.detectChanges();
       tick();
-      expect(fixture.debugElement.query(By.css('nz-select-clear'))).toBeNull();
+      expect(fixture.debugElement.query(By.css('.ant-mentions-clear-icon'))).toBeNull();
     }));
 
     it('should clear input value when clear button is clicked', fakeAsync(() => {
@@ -710,7 +710,7 @@ describe('mention', () => {
       fixture.detectChanges();
       tick();
 
-      const clearButton = fixture.debugElement.query(By.css('nz-select-clear')).nativeElement;
+      const clearButton = fixture.debugElement.query(By.css('.ant-mentions-clear-icon')).nativeElement;
       clearButton.click();
       fixture.detectChanges();
       tick();
@@ -727,7 +727,7 @@ describe('mention', () => {
       fixture.detectChanges();
       tick();
 
-      const clearButton = fixture.debugElement.query(By.css('nz-select-clear')).nativeElement;
+      const clearButton = fixture.debugElement.query(By.css('.ant-mentions-clear-icon')).nativeElement;
       clearButton.click();
       fixture.detectChanges();
 

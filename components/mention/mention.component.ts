@@ -48,7 +48,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge, of as observableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import {
@@ -59,9 +61,7 @@ import {
 } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSelectClearComponent } from 'ng-zorro-antd/select';
 
-import { NzSelectClearComponent } from '../select';
 import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
@@ -123,7 +123,13 @@ export type MentionPlacement = 'top' | 'bottom';
       <nz-form-item-feedback-icon class="ant-mentions-suffix" [status]="status" />
     }
     @if (nzAllowClear && hasValue()) {
-      <nz-select-clear class="ant-mentions-suffix" [clearIcon]="nzClearIcon" (clear)="clear()" />
+      <span class="ant-mentions-suffix">
+        <button nz-button nzType="text" class="ant-mentions-clear-icon" (click)="clear()">
+          <ng-template [nzStringTemplateOutlet]="nzClearIcon">
+            <nz-icon nzType="close-circle" nzTheme="fill" class="ant-select-close-icon" />
+          </ng-template>
+        </button>
+      </span>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -136,7 +142,14 @@ export type MentionPlacement = 'top' | 'bottom';
     '[class.ant-mentions-focused]': `focused()`,
     '[class.ant-mentions-disabled]': `disabled()`
   },
-  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent, NzSelectClearComponent]
+  imports: [
+    NgTemplateOutlet,
+    NzIconModule,
+    NzEmptyModule,
+    NzFormItemFeedbackIconComponent,
+    NzButtonComponent,
+    NzStringTemplateOutletDirective
+  ]
 })
 export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private ngZone = inject(NgZone);

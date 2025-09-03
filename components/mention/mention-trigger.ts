@@ -62,7 +62,7 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() readonly onClick = new EventEmitter<MouseEvent>();
 
-  value = signal<string>('');
+  readonly value = signal<string>('');
 
   readonly disabled = signal(false);
 

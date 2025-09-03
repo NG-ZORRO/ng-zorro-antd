@@ -176,8 +176,34 @@
     margin: auto;
   }
 
-  .ant-select-clear {
-    opacity: 1;
+  &-clear-icon {
+    position: static;
+    right: auto;
+    width: @font-size-sm;
+    height: @font-size-sm;
+    padding: 0;
+    color: @disabled-color;
+    font-size: @font-size-sm;
+    line-height: 1;
+    text-align: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      color: @text-color-secondary;
+      background: transparent;
+    }
+
+    &:focus {
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .@{iconfont-css-prefix} {
+      display: block;
+      font-size: @font-size-sm;
+    }
   }
 }
 
