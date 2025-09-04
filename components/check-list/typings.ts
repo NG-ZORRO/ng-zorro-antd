@@ -5,6 +5,7 @@
 
 export interface NzItemProps {
   description: string;
-  onClick?: () => void;
+  checked?: boolean;
+  onClick?: (item: NzItemProps) => void;
   key?: string;
 }

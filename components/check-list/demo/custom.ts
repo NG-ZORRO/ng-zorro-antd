@@ -107,7 +107,7 @@ export class NzDemoCheckListCustomComponent {
   readonly options = this.nzItems.map((_, index) => index).concat(this.nzItems.length + 1);
   form = this.fb.group({
     nzProgress: true,
-    nzVisible: true,
+    nzVisible: false,
     nzIndex: 0,
     nzTriggerRender: 'Open List',
     nzTitle: 'Customize task lists',
