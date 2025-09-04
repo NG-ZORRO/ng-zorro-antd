@@ -10,12 +10,15 @@ import {
   afterNextRender,
   assertInInjectionContext,
   inject,
-  InputSignal,
   Signal,
-  computed
+  computed,
+  WritableSignal,
+  signal,
+  InputSignalWithTransform,
+  InputSignal
 } from '@angular/core';
 import { SIGNAL } from '@angular/core/primitives/signals';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -30,13 +33,18 @@ const isDefined = function (value?: NzSafeAny): boolean {
 
 const defaultPrefixCls = 'ant';
 
-// todo: use nested signal to refactor the whole config service
-
 @Injectable({
   providedIn: 'root'
 })
 export class NzConfigService {
   private configUpdated$ = new Subject<keyof NzConfig>();
+
+  /**
+   * Sharing config signals for all components, used for {@link withConfigFactory}
+   * @internal
+   * @todo use nested signal to refactor the whole config service
+   */
+  private readonly _configMap = new Map<NzConfigKey, WritableSignal<NzConfig[NzConfigKey]>>();
 
   /** Global config holding property. */
   private readonly config: NzConfig = inject(NZ_CONFIG, { optional: true }) || {};
@@ -50,19 +58,23 @@ export class NzConfigService {
     }
   }
 
+  private _getConfigValue<T extends NzConfigKey>(componentName: T): WritableSignal<NzConfig[T]> {
+    let configValue = this._configMap.get(componentName) as WritableSignal<NzConfig[T]>;
+    if (configValue) {
+      return configValue;
+    }
+
+    configValue = signal(this.config[componentName]);
+    this._configMap.set(componentName, configValue);
+    return configValue;
+  }
+
   getConfig(): NzConfig {
     return this.config;
   }
 
   getConfigForComponent<T extends NzConfigKey>(componentName: T): NzConfig[T] {
     return this.config[componentName];
-  }
-
-  getConfigForComponentChange<T extends NzConfigKey>(componentName: T): Observable<NzConfig[T]> {
-    return this.configUpdated$.pipe(
-      filter(n => n === componentName),
-      map(() => this.getConfigForComponent(componentName))
-    );
   }
 
   getConfigChangeEventForComponent(componentName: NzConfigKey): Observable<void> {
@@ -74,6 +86,7 @@ export class NzConfigService {
 
   set<T extends NzConfigKey>(componentName: T, value: NzConfig[T]): void {
     this.config[componentName] = { ...this.config[componentName], ...value };
+    this._configMap.get(componentName)?.set(this.config[componentName]);
     if (componentName === 'theme' && this.config.theme) {
       registerTheme(this.getConfig().prefixCls?.prefixCls || defaultPrefixCls, this.config.theme, this.cspNonce);
     }
@@ -95,7 +108,7 @@ export class NzConfigService {
  * @throws If called outside of an Angular injection context (in dev mode).
  */
 export function onConfigChangeEventForComponent(componentName: NzConfigKey, callback: () => void): () => void {
-  if (ngDevMode) {
+  if (typeof ngDevMode !== 'undefined' && ngDevMode) {
     assertInInjectionContext(onConfigChangeEventForComponent);
   }
 
@@ -129,10 +142,6 @@ export function onConfigChangeEventForComponent(componentName: NzConfigKey, call
  * ```
  */
 export function WithConfig<This, Value>() {
-  if (ngDevMode) {
-    assertInInjectionContext(WithConfig);
-  }
-
   return function (_value: undefined, context: ClassFieldDecoratorContext<This, Value>) {
     context.addInitializer(function () {
       const nzConfigService = inject(NzConfigService);
@@ -169,62 +178,42 @@ export function WithConfig<This, Value>() {
   };
 }
 
-type SignalValue<T> = T extends Signal<infer U> ? U : T;
-
 /**
- * This decorator is used to decorate class field as an inner state of a bounding `input` field.
- * It would try to load default value from `NZ_CONFIG` if the `input` property is not assigned by user.
+ * Generate a `withConfig` function for a specific component, which would try to load default value from `NZ_CONFIG`
+ * if the `input` property is not assigned by user.
  *
- * @param name The name of the target input property.
- * @note that the class must have `_nzModuleName`({@link NzConfigKey}) property. And the target input property should be defined with `input` function rather than `@Input` decorator
+ * @param componentName The name of component (as defined in {@link NzConfigKey}) to listen for config changes.
  * @example
  * ```ts
- * class ExampleComponent {
- *   private readonly _nzModuleName: NzConfigKey = 'button';
- *   readonly nzSize = input<NzButtonSize>('default');
+ * const withConfig = withConfigFactory('button');
  *
- *   @WithConfigSignal('nzSize')
- *   readonly size: WritableSignal<NzButtonSize>;
+ * class ExampleComponent {
+ *   readonly nzSize = input<NzButtonSize>('default');
+ *   protected readonly size = withConfig('nzSize', this.nzSize);
  * }
  * ```
  */
-export function WithConfigSignal<This, Value extends Signal<T>, T = SignalValue<Value>>(name: keyof This) {
-  if (ngDevMode) {
-    assertInInjectionContext(WithConfigSignal);
-  }
+export function withConfigFactory<T extends NzConfigKey>(componentName: T) {
+  return <N extends keyof NonNullable<NzConfig[T]>, V = NonNullable<NzConfig[T]>[N]>(
+    name: N,
+    inputSignal: InputSignal<V> | InputSignalWithTransform<V, unknown>
+  ): Signal<V> => {
+    const originalValue = inputSignal();
+    const configValueSignal = inject(NzConfigService)['_getConfigValue'](componentName);
 
-  return function (_value: undefined, context: ClassFieldDecoratorContext<This, Value>) {
-    context.addInitializer(function () {
-      const nzConfigService = inject(NzConfigService);
-      const inputSignal = this[name] as InputSignal<T>;
-      const originalValue = inputSignal();
-      const configKey = this['_nzModuleName' as keyof This] as NzConfigKey;
-      const configValueSignal = toSignal<T | undefined>(
-        nzConfigService
-          .getConfigForComponentChange(configKey)
-          .pipe(map(config => config?.[name as keyof NzConfig[NzConfigKey]]))
-      );
+    return computed<V>(() => {
+      const configValue = configValueSignal()?.[name] as V | undefined;
+      const inputValue = inputSignal();
+      // if the version of the inputSignal is 0 or the inputValue is undefined, we consider it as not assigned by user
+      const assignedByUser = inputSignal[SIGNAL].version > 0 && isDefined(inputValue);
 
-      const value = computed<T>(() => {
-        const configValue = configValueSignal();
-        const inputValue = inputSignal();
-        // if the version of the inputSignal is 0 or the inputValue is undefined, we consider it as not assigned by user
-        const assignedByUser = inputSignal[SIGNAL].version > 0 && isDefined(inputValue);
+      if (assignedByUser) {
+        return inputValue;
+      } else if (configValue !== undefined) {
+        return configValue;
+      }
 
-        if (assignedByUser) {
-          return inputValue;
-        } else if (configValue !== undefined) {
-          return configValue;
-        }
-
-        return originalValue;
-      });
-
-      Object.defineProperty(this, context.name, {
-        get: () => value,
-        enumerable: true,
-        configurable: false
-      });
+      return originalValue;
     });
   };
 }
