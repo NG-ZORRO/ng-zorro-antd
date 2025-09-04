@@ -68,6 +68,21 @@ describe('nz-segmented', () => {
       expect(segmentedElement.classList).toContain('ant-segmented-vertical');
     });
 
+    it('should support round shape and trigger animation state on interaction', fakeAsync(() => {
+      const segmentedElement: HTMLElement = segmentedComponent.nativeElement;
+      expect(segmentedElement.classList).not.toContain('ant-segmented-shape-round');
+      component.shape = 'round';
+      fixture.detectChanges();
+      expect(segmentedElement.classList).toContain('ant-segmented-shape-round');
+      const theSecondElement = getSegmentedOptionByIndex(1);
+      tick(0);
+      fixture.detectChanges();
+      dispatchMouseEvent(theSecondElement, 'click');
+      tick(100);
+      fixture.detectChanges();
+      expect(segmentedElement.classList).toContain('ant-segmented-shape-round');
+    }));
+
     it('should be auto selected the first option when if no value is set', async () => {
       const theFirstElement = getSegmentedOptionByIndex(0);
       await fixture.whenStable();
@@ -586,6 +601,7 @@ describe('nz-segmented', () => {
       [nzDisabled]="disabled"
       [nzBlock]="block"
       [nzVertical]="vertical"
+      [nzShape]="shape"
       (nzValueChange)="handleValueChange($event)"
     />
   `
@@ -596,6 +612,7 @@ export class NzSegmentedTestComponent {
   block = false;
   disabled = false;
   vertical = false;
+  shape: 'default' | 'round' = 'default';
 
   handleValueChange(_e: string | number): void {
     // empty

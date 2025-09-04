@@ -73,6 +73,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
     '[class.ant-segmented-sm]': `nzSize === 'small'`,
     '[class.ant-segmented-block]': `nzBlock`,
     '[class.ant-segmented-vertical]': `nzVertical`,
+    '[class.ant-segmented-shape-round]': `nzShape === 'round'`,
     // a11y
     role: 'radiogroup',
     'aria-label': 'segmented control',
@@ -101,6 +102,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzOptions: NzSegmentedOptions = [];
   @Input({ transform: booleanAttribute }) nzVertical: boolean = false;
+  @Input() nzShape: 'default' | 'round' = 'default';
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
 
   // todo: add a method to generate hash id for the segmented instance as default value of `nzName`
