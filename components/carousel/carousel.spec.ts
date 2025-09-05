@@ -584,7 +584,6 @@ export class NzTestCarouselActiveIndexComponent {
 
 @Component({
   selector: 'nz-test-carousel-arrows',
-  standalone: true,
   imports: [NzCarouselModule],
   template: `
     <nz-carousel [nzArrows]="true" [nzLoop]="loop">
@@ -604,7 +603,6 @@ export class NzTestCarouselArrowsComponent {
 
 @Component({
   selector: 'nz-test-carousel-no-swipe',
-  standalone: true,
   imports: [NzCarouselModule],
   template: `
     <nz-carousel [nzEnableSwipe]="false">
