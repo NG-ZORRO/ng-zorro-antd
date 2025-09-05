@@ -7,11 +7,11 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectionPositionPair,
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  createRepositionScrollStrategy,
   FlexibleConnectedPositionStrategy,
-  Overlay,
-  OverlayConfig,
-  OverlayRef,
-  PositionStrategy
+  OverlayRef
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { NgTemplateOutlet } from '@angular/common';
@@ -30,6 +30,7 @@ import {
   ElementRef,
   EventEmitter,
   inject,
+  Injector,
   Input,
   NgZone,
   OnChanges,
@@ -137,7 +138,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private ngZone = inject(NgZone);
   private directionality = inject(Directionality);
   private cdr = inject(ChangeDetectorRef);
-  private overlay = inject(Overlay);
+  private injector = inject(Injector);
   private viewContainerRef = inject(ViewContainerRef);
   private elementRef = inject(ElementRef);
   private renderer = inject(Renderer2);
@@ -188,7 +189,16 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private cursorMentionEnd?: number;
   private overlayRef: OverlayRef | null = null;
   private portal?: TemplatePortal<void>;
-  private positionStrategy!: FlexibleConnectedPositionStrategy;
+  private positionStrategy: FlexibleConnectedPositionStrategy = createFlexibleConnectedPositionStrategy(
+    this.injector,
+    this.trigger().elementRef
+  )
+    .withPositions([
+      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+    ])
+    .withFlexibleDimensions(false)
+    .withPush(false);
   private overlayOutsideClickSubscription!: Subscription;
   private document: Document = inject(DOCUMENT);
 
@@ -484,35 +494,17 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private attachOverlay(): void {
     if (!this.overlayRef) {
       this.portal = new TemplatePortal(this.suggestionsTemp!, this.viewContainerRef);
-      this.overlayRef = this.overlay.create(this.getOverlayConfig());
+      this.overlayRef = createOverlayRef(this.injector, {
+        positionStrategy: this.positionStrategy,
+        scrollStrategy: createRepositionScrollStrategy(this.injector),
+        disposeOnNavigation: true
+      });
     }
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
       this.overlayOutsideClickSubscription = this.subscribeOverlayOutsideClick();
     }
     this.updatePositions();
-  }
-
-  private getOverlayConfig(): OverlayConfig {
-    return new OverlayConfig({
-      positionStrategy: this.getOverlayPosition(),
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      disposeOnNavigation: true
-    });
-  }
-
-  private getOverlayPosition(): PositionStrategy {
-    const positions = [
-      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
-      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
-    ];
-    this.positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.trigger().elementRef)
-      .withPositions(positions)
-      .withFlexibleDimensions(false)
-      .withPush(false);
-    return this.positionStrategy;
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {

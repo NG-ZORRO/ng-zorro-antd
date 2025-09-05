@@ -6,11 +6,11 @@
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectionPositionPair,
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  createRepositionScrollStrategy,
   FlexibleConnectedPositionStrategy,
-  Overlay,
-  OverlayConfig,
-  OverlayRef,
-  PositionStrategy
+  OverlayRef
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
@@ -22,6 +22,7 @@ import {
   ExistingProvider,
   forwardRef,
   inject,
+  Injector,
   Input,
   NgZone,
   ViewContainerRef
@@ -72,9 +73,9 @@ export function getNzAutocompleteMissingPanelError(): Error {
   }
 })
 export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor {
+  private injector = inject(Injector);
   private ngZone = inject(NgZone);
   private elementRef = inject(ElementRef<HTMLElement>);
-  private overlay = inject(Overlay);
   private viewContainerRef = inject(ViewContainerRef);
   private destroyRef = inject(DestroyRef);
   /** Bind nzAutocomplete component */
@@ -95,7 +96,17 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
   private overlayRef: OverlayRef | null = null;
   private portal: TemplatePortal<{}> | null = null;
-  private positionStrategy!: FlexibleConnectedPositionStrategy;
+  private positionStrategy: FlexibleConnectedPositionStrategy = createFlexibleConnectedPositionStrategy(
+    this.injector,
+    this.getConnectedElement()
+  )
+    .withFlexibleDimensions(false)
+    .withPush(false)
+    .withPositions([
+      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+    ])
+    .withTransformOriginOn('.ant-select-dropdown');
   private previousValue: string | number | null = null;
   private selectionChangeSubscription!: Subscription;
   private optionsChangeSubscription!: Subscription;
@@ -277,7 +288,13 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     }
 
     if (!this.overlayRef) {
-      this.overlayRef = this.overlay.create(this.getOverlayConfig());
+      this.overlayRef = createOverlayRef(this.injector, {
+        positionStrategy: this.positionStrategy,
+        disposeOnNavigation: true,
+        scrollStrategy: createRepositionScrollStrategy(this.injector),
+        // default host element width
+        width: this.nzAutocomplete.nzWidth || this.getHostWidth()
+      });
     }
 
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
@@ -312,37 +329,12 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     }
   }
 
-  private getOverlayConfig(): OverlayConfig {
-    return new OverlayConfig({
-      positionStrategy: this.getOverlayPosition(),
-      disposeOnNavigation: true,
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      // default host element width
-      width: this.nzAutocomplete.nzWidth || this.getHostWidth()
-    });
-  }
-
   private getConnectedElement(): ElementRef {
     return this.nzInputGroupWhitSuffixOrPrefixDirective?.elementRef ?? this.elementRef;
   }
 
   private getHostWidth(): number {
     return this.getConnectedElement().nativeElement.getBoundingClientRect().width;
-  }
-
-  private getOverlayPosition(): PositionStrategy {
-    const positions = [
-      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
-      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
-    ];
-    this.positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.getConnectedElement())
-      .withFlexibleDimensions(false)
-      .withPush(false)
-      .withPositions(positions)
-      .withTransformOriginOn('.ant-select-dropdown');
-    return this.positionStrategy;
   }
 
   private resetActiveItem(): void {

@@ -3,9 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { createOverlayRef, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -17,16 +17,12 @@ import { NzDrawerComponent } from './drawer.component';
 
 export class DrawerBuilderForService<T extends {}, R> {
   private drawerRef: NzDrawerComponent<T, R> | null;
-  private overlayRef: OverlayRef;
+  private overlayRef: OverlayRef = createOverlayRef(inject(Injector));
   private unsubscribe$ = new Subject<void>();
 
-  constructor(
-    private overlay: Overlay,
-    private options: NzDrawerOptions
-  ) {
+  constructor(private options: NzDrawerOptions) {
     /** pick {@link NzDrawerOptions.nzOnCancel} and omit this option */
     const { nzOnCancel, ...componentOption } = this.options;
-    this.overlayRef = this.overlay.create();
     this.drawerRef = this.overlayRef.attach(new ComponentPortal(NzDrawerComponent)).instance;
     this.updateOptions(componentOption);
     // Prevent repeatedly open drawer when tap focus element.
@@ -65,11 +61,9 @@ export class DrawerBuilderForService<T extends {}, R> {
 
 @Injectable()
 export class NzDrawerService {
-  private overlay = inject(Overlay);
-
   create<T extends {} = NzSafeAny, D = undefined, R = NzSafeAny>(
     options: NzDrawerOptions<T, D extends undefined ? {} : D>
   ): NzDrawerRef<T, R> {
-    return new DrawerBuilderForService<T, R>(this.overlay, options).getInstance();
+    return new DrawerBuilderForService<T, R>(options).getInstance();
   }
 }

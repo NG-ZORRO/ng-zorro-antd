@@ -4,32 +4,38 @@
  */
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import {
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  createRepositionScrollStrategy,
+  OverlayRef
+} from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
+  booleanAttribute,
   DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
+  inject,
+  Injector,
   Input,
   OnChanges,
   Output,
   Renderer2,
   SimpleChanges,
-  ViewContainerRef,
-  booleanAttribute,
-  inject
+  ViewContainerRef
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, EMPTY, Subject, combineLatest, fromEvent, merge } from 'rxjs';
+import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
 import { auditTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import {
-  POSITION_MAP,
   getPlacementName,
+  POSITION_MAP,
   POSITION_TYPE,
   setConnectedPositionOffset,
   TOOLTIP_OFFSET_MAP
@@ -68,14 +74,12 @@ export class NzDropDownDirective implements AfterViewInit, OnChanges {
   private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   public elementRef = inject(ElementRef);
-  private overlay = inject(Overlay);
+  private injector = inject(Injector);
 
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
 
-  private positionStrategy = this.overlay
-    .position()
-    .flexibleConnectedTo(this.elementRef.nativeElement)
+  private positionStrategy = createFlexibleConnectedPositionStrategy(this.injector, this.elementRef.nativeElement)
     .withLockedPosition()
     .withTransformOriginOn('.ant-dropdown');
   private inputVisible$ = new BehaviorSubject<boolean>(false);
@@ -160,12 +164,12 @@ export class NzDropDownDirective implements AfterViewInit, OnChanges {
             /** set up overlayRef **/
             if (!this.overlayRef) {
               /** new overlay **/
-              this.overlayRef = this.overlay.create({
+              this.overlayRef = createOverlayRef(this.injector, {
                 positionStrategy: this.positionStrategy,
                 minWidth: triggerWidth,
                 disposeOnNavigation: true,
                 hasBackdrop: this.nzBackdrop && this.nzTrigger === 'click',
-                scrollStrategy: this.overlay.scrollStrategies.reposition()
+                scrollStrategy: createRepositionScrollStrategy(this.injector)
               });
               // Listen for placement changes to update the menu classes (arrow position)
               this.positionStrategy.positionChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(change => {

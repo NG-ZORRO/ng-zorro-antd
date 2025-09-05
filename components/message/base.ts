@@ -4,9 +4,14 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { ComponentType, Overlay } from '@angular/cdk/overlay';
+import {
+  ComponentType,
+  createGlobalPositionStrategy,
+  createNoopScrollStrategy,
+  createOverlayRef
+} from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnInit, inject, DestroyRef } from '@angular/core';
+import { ChangeDetectorRef, DestroyRef, Directive, EventEmitter, inject, Injector, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
@@ -21,7 +26,6 @@ export abstract class NzMNService<T extends NzMNContainerComponent> {
   protected abstract componentPrefix: string;
   protected container?: T;
   protected nzSingletonService = inject(NzSingletonService);
-  protected overlay = inject(Overlay);
   protected injector = inject(Injector);
 
   remove(id?: string): void {
@@ -44,10 +48,10 @@ export abstract class NzMNService<T extends NzMNContainerComponent> {
       return containerInstance as T;
     }
 
-    const overlayRef = this.overlay.create({
+    const overlayRef = createOverlayRef(this.injector, {
       hasBackdrop: false,
-      scrollStrategy: this.overlay.scrollStrategies.noop(),
-      positionStrategy: this.overlay.position().global()
+      scrollStrategy: createNoopScrollStrategy(),
+      positionStrategy: createGlobalPositionStrategy(this.injector)
     });
     const componentPortal = new ComponentPortal(ctor, null, this.injector);
     const componentRef = overlayRef.attach(componentPortal);
