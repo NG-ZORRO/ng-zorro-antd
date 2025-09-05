@@ -63,7 +63,7 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
   @Output() readonly onClick = new EventEmitter<MouseEvent>();
   value?: string;
 
-  readonly isDisabled = signal(false);
+  readonly disabled = signal(false);
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -126,7 +126,7 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.isDisabled.set(isDisabled);
+    this.disabled.set(isDisabled);
   }
 
   private setupEventListener<TEvent extends Event>(eventName: string, eventEmitter: EventEmitter<TEvent>): void {

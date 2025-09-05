@@ -128,8 +128,8 @@ export type MentionPlacement = 'top' | 'bottom';
     '[class.ant-mentions-borderless]': `nzVariant === 'borderless'`,
     '[class.ant-mentions-filled]': `nzVariant === 'filled'`,
     '[class.ant-mentions-underlined]': `nzVariant === 'underlined'`,
-    '[class.ant-mentions-focused]': `hasFocus()`,
-    '[class.ant-mentions-disabled]': `isDisabled()`
+    '[class.ant-mentions-focused]': `focused()`,
+    '[class.ant-mentions-disabled]': `disabled()`
   },
   imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
 })
@@ -176,10 +176,10 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   statusCls: NgClassInterface = {};
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
-  readonly hasFocus = signal(false);
+  readonly focused = signal(false);
 
-  readonly isDisabled = computed(() => {
-    return this.trigger().isDisabled();
+  readonly disabled = computed(() => {
+    return this.trigger().disabled();
   });
 
   private previousValue: string | null = null;
@@ -340,8 +340,8 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private bindTriggerEvents(): void {
-    this.trigger().onFocusin.subscribe(() => this.hasFocus.set(true));
-    this.trigger().onBlur.subscribe(() => this.hasFocus.set(false));
+    this.trigger().onFocusin.subscribe(() => this.focused.set(true));
+    this.trigger().onBlur.subscribe(() => this.focused.set(false));
     this.trigger().onInput.subscribe((e: KeyboardEvent) => this.handleInput(e));
     this.trigger().onKeydown.subscribe((e: KeyboardEvent) => this.handleKeydown(e));
     this.trigger().onClick.subscribe(() => this.handleClick());
