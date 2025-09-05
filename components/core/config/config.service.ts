@@ -3,7 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CSP_NONCE, DestroyRef, Injectable, afterNextRender, assertInInjectionContext, inject } from '@angular/core';
+import {
+  CSP_NONCE,
+  DestroyRef,
+  Injectable,
+  afterNextRender,
+  assertInInjectionContext,
+  inject,
+  Signal,
+  computed,
+  WritableSignal,
+  signal,
+  InputSignalWithTransform,
+  InputSignal
+} from '@angular/core';
+import { SIGNAL } from '@angular/core/primitives/signals';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -25,6 +39,13 @@ const defaultPrefixCls = 'ant';
 export class NzConfigService {
   private configUpdated$ = new Subject<keyof NzConfig>();
 
+  /**
+   * Sharing config signals for all components, used for {@link withConfigFactory}
+   * @internal
+   * @todo use nested signal to refactor the whole config service
+   */
+  private readonly _configMap = new Map<NzConfigKey, WritableSignal<NzConfig[NzConfigKey]>>();
+
   /** Global config holding property. */
   private readonly config: NzConfig = inject(NZ_CONFIG, { optional: true }) || {};
 
@@ -35,6 +56,17 @@ export class NzConfigService {
       // If theme is set with NZ_CONFIG, register theme to make sure css variables work
       registerTheme(this.getConfig().prefixCls?.prefixCls || defaultPrefixCls, this.config.theme, this.cspNonce);
     }
+  }
+
+  private _getConfigValue<T extends NzConfigKey>(componentName: T): WritableSignal<NzConfig[T]> {
+    let configValue = this._configMap.get(componentName) as WritableSignal<NzConfig[T]>;
+    if (configValue) {
+      return configValue;
+    }
+
+    configValue = signal(this.config[componentName]);
+    this._configMap.set(componentName, configValue);
+    return configValue;
   }
 
   getConfig(): NzConfig {
@@ -54,6 +86,7 @@ export class NzConfigService {
 
   set<T extends NzConfigKey>(componentName: T, value: NzConfig[T]): void {
     this.config[componentName] = { ...this.config[componentName], ...value };
+    this._configMap.get(componentName)?.set(this.config[componentName]);
     if (componentName === 'theme' && this.config.theme) {
       registerTheme(this.getConfig().prefixCls?.prefixCls || defaultPrefixCls, this.config.theme, this.cspNonce);
     }
@@ -141,6 +174,46 @@ export function WithConfig<This, Value>() {
         enumerable: true,
         configurable: true
       });
+    });
+  };
+}
+
+/**
+ * Generate a `withConfig` function for a specific component, which would try to load default value from `NZ_CONFIG`
+ * if the `input` property is not assigned by user.
+ *
+ * @param componentName The name of component (as defined in {@link NzConfigKey}) to listen for config changes.
+ * @example
+ * ```ts
+ * const withConfig = withConfigFactory('button');
+ *
+ * class ExampleComponent {
+ *   readonly nzSize = input<NzButtonSize>('default');
+ *   protected readonly size = withConfig('nzSize', this.nzSize);
+ * }
+ * ```
+ */
+export function withConfigFactory<T extends NzConfigKey>(componentName: T) {
+  return <N extends keyof NonNullable<NzConfig[T]>, V = NonNullable<NzConfig[T]>[N]>(
+    name: N,
+    inputSignal: InputSignal<V> | InputSignalWithTransform<V, unknown>
+  ): Signal<V> => {
+    const originalValue = inputSignal();
+    const configValueSignal = inject(NzConfigService)['_getConfigValue'](componentName);
+
+    return computed<V>(() => {
+      const configValue = configValueSignal()?.[name] as V | undefined;
+      const inputValue = inputSignal();
+      // if the version of the inputSignal is 0 or the inputValue is undefined, we consider it as not assigned by user
+      const assignedByUser = inputSignal[SIGNAL].version > 0 && isDefined(inputValue);
+
+      if (assignedByUser) {
+        return inputValue;
+      } else if (configValue !== undefined) {
+        return configValue;
+      }
+
+      return originalValue;
     });
   };
 }
