@@ -17,7 +17,6 @@ import {
   InputSignalWithTransform,
   InputSignal
 } from '@angular/core';
-import { SIGNAL } from '@angular/core/primitives/signals';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -204,8 +203,8 @@ export function withConfigFactory<T extends NzConfigKey>(componentName: T) {
     return computed<V>(() => {
       const configValue = configValueSignal()?.[name] as V | undefined;
       const inputValue = inputSignal();
-      // if the version of the inputSignal is 0 or the inputValue is undefined, we consider it as not assigned by user
-      const assignedByUser = inputSignal[SIGNAL].version > 0 && isDefined(inputValue);
+      // if the inputValue is undefined, we consider it as not assigned by user
+      const assignedByUser = isDefined(inputValue);
 
       if (assignedByUser) {
         return inputValue;

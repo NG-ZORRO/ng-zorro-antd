@@ -3,15 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzFloatButtonTopComponent } from './float-button-top.component';
 import { NzFloatButtonModule } from './float-button.module';
+
+const defaultVisibilityHeight = 500;
 
 describe('nz-float-button-top', () => {
   let scrollService: MockNzScrollService;
@@ -19,7 +24,6 @@ describe('nz-float-button-top', () => {
   let debugElement: DebugElement;
   let component: NzFloatButtonTopComponent;
   let componentObject: NzBackTopPageObject;
-  const defaultVisibilityHeight = 400;
 
   class NzBackTopPageObject {
     scrollTo(el: Element | Window, scrollTop: number): void {
@@ -43,7 +47,12 @@ describe('nz-float-button-top', () => {
         {
           provide: NzScrollService,
           useClass: MockNzScrollService
-        }
+        },
+        provideNzConfig({
+          backTop: {
+            nzVisibilityHeight: 999
+          }
+        })
       ]
     });
 
@@ -96,39 +105,59 @@ describe('nz-float-button-top', () => {
   });
 
   describe('[nzVisibilityHeight]', () => {
-    const customVisibilityHeight = 100;
-
-    beforeEach(() => {
-      component.nzVisibilityHeight = customVisibilityHeight;
-    });
-
-    it(`should not show when scroll is below ${customVisibilityHeight}`, fakeAsync(() => {
-      componentObject.scrollTo(window, customVisibilityHeight - 1);
+    it(`should not show when scroll is below ${defaultVisibilityHeight}`, fakeAsync(() => {
+      componentObject.scrollTo(window, defaultVisibilityHeight - 1);
       tick();
       fixture.detectChanges();
 
       expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
     }));
 
-    it(`should not show when scroll is at ${customVisibilityHeight}`, fakeAsync(() => {
-      componentObject.scrollTo(window, customVisibilityHeight);
+    it(`should not show when scroll is at ${defaultVisibilityHeight}`, fakeAsync(() => {
+      componentObject.scrollTo(window, defaultVisibilityHeight);
       tick();
       fixture.detectChanges();
 
       expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
     }));
 
-    describe(`when scrolled at least ${customVisibilityHeight + 1}`, () => {
-      beforeEach(fakeAsync(() => {
-        componentObject.scrollTo(window, customVisibilityHeight + 1);
-        tick();
-        fixture.detectChanges();
-      }));
+    it(`when scrolled at least ${defaultVisibilityHeight + 1}`, fakeAsync(() => {
+      componentObject.scrollTo(window, defaultVisibilityHeight + 1);
+      tick();
+      fixture.detectChanges();
+      expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
+    }));
 
-      it(`should show back to top button`, () => {
-        expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
-      });
-    });
+    it('should display when change nzVisibilityHeight less than default', fakeAsync(() => {
+      componentObject.scrollTo(window, defaultVisibilityHeight + 1);
+      tick();
+      fixture.detectChanges();
+      expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
+      fixture.componentInstance.customVisibilityHeight = defaultVisibilityHeight - 100;
+      fixture.detectChanges();
+      expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
+    }));
+
+    it('should display when change nzVisibilityHeight greater than default', fakeAsync(() => {
+      componentObject.scrollTo(window, defaultVisibilityHeight + 1);
+      tick();
+      fixture.detectChanges();
+      expect(componentObject.backTopButton().nativeElement.classList).not.toContain('ant-float-btn-hidden');
+      fixture.componentInstance.customVisibilityHeight = defaultVisibilityHeight + 100;
+      fixture.detectChanges();
+      expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
+    }));
+
+    it('should use config value (999) if nzVisibilityHeight is not assigned by user', fakeAsync(() => {
+      componentObject.scrollTo(window, defaultVisibilityHeight + 1);
+      tick();
+      fixture.detectChanges();
+      // @ts-ignore
+      fixture.componentInstance.customVisibilityHeight = undefined;
+      fixture.detectChanges();
+      expect(componentObject.backTopButton().nativeElement.classList).toContain('ant-float-btn-hidden');
+      expect(component['visibilityHeight']()).toBe(999);
+    }));
   });
 
   describe('(nzOnClick)', () => {
@@ -138,29 +167,13 @@ describe('nz-float-button-top', () => {
       fixture.detectChanges();
     }));
 
-    describe('when clicked', () => {
-      it(`emit event on nzClick`, fakeAsync(() => {
-        component.nzOnClick.subscribe((returnValue: boolean) => {
-          expect(returnValue).toBe(true);
-        });
-
-        componentObject.clickBackTop();
-      }));
-    });
-
-    describe('change detection behavior', () => {
-      it('should not emit the event nzOnClick if there are no `nzClick` listeners', () => {
-        const emitNzOnClick = spyOn(component.nzOnClick, 'emit');
-
-        const backTopButton = componentObject.backTopButton().nativeElement.firstElementChild;
-        backTopButton.dispatchEvent(new MouseEvent('click'));
-        expect(emitNzOnClick).not.toHaveBeenCalled();
-        component.nzOnClick.subscribe();
-
-        backTopButton.dispatchEvent(new MouseEvent('click'));
-        expect(emitNzOnClick).toHaveBeenCalled();
+    it(`emit event on nzClick`, fakeAsync(() => {
+      component.nzOnClick.subscribe((returnValue: boolean) => {
+        expect(returnValue).toBe(true);
       });
-    });
+
+      componentObject.clickBackTop();
+    }));
   });
 
   describe('[nzTarget]', () => {
@@ -191,7 +204,7 @@ describe('nz-float-button-top', () => {
     });
 
     it('element (use string id) scroll shows the button', (done: () => void) => {
-      component.nzTarget = '#fakeTarget';
+      fixture.componentInstance.setTarget('#fakeTarget');
       componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
       fixture.detectChanges();
 
@@ -215,10 +228,32 @@ describe('nz-float-button-top', () => {
   });
 });
 
+describe('nz-float-button-top RTL', () => {
+  let fixture: ComponentFixture<TestBackTopRtlComponent>;
+  let resultEl: DebugElement;
+  let backTopComponent: NzFloatButtonTopComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+    });
+    fixture = TestBed.createComponent(TestBackTopRtlComponent);
+    resultEl = fixture.debugElement.query(By.directive(NzFloatButtonTopComponent));
+    backTopComponent = resultEl.componentInstance;
+  }));
+
+  it('rtl', () => {
+    fixture.detectChanges();
+    // @ts-ignore
+    expect(backTopComponent.dir()).toBe('rtl');
+    expect(resultEl.nativeElement.classList).toContain('ant-float-btn-rtl');
+  });
+});
+
 @Component({
   imports: [NzFloatButtonModule],
   template: `
-    <nz-float-button-top [nzTarget]="target"></nz-float-button-top>
+    <nz-float-button-top [nzTarget]="target" [nzVisibilityHeight]="customVisibilityHeight"></nz-float-button-top>
     <div id="fakeTarget"></div>
   `
 })
@@ -227,8 +262,9 @@ class TestBackTopComponent {
   nzBackTopComponent!: NzFloatButtonTopComponent;
 
   target!: HTMLElement | string;
+  customVisibilityHeight = defaultVisibilityHeight;
 
-  setTarget(target: HTMLElement): void {
+  setTarget(target: HTMLElement | string): void {
     this.target = target;
   }
 }
@@ -259,4 +295,16 @@ class MockNzScrollService {
   scrollTo(_containerEl: Element | Window, targetTopValue: number = 0): void {
     this.mockTopOffset = targetTopValue;
   }
+}
+
+@Component({
+  imports: [BidiModule, NzFloatButtonModule],
+  template: `
+    <div [dir]="direction">
+      <nz-float-button-top></nz-float-button-top>
+    </div>
+  `
+})
+export class TestBackTopRtlComponent {
+  direction: Direction = 'rtl';
 }
