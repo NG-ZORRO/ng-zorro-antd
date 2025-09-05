@@ -20,7 +20,7 @@
 
   // =================== Status ===================
   &-disabled {
-    > textarea {
+    > .@{ant-prefix}-input {
       .disabled();
     }
   }
@@ -30,7 +30,7 @@
   }
 
   // ================= Input Area =================
-  > textarea,
+  > .@{ant-prefix}-input,
   &-measure {
     min-height: @input-height-base - 2px;
     margin: 0;
@@ -58,8 +58,9 @@
     tab-size: inherit;
   }
 
-  > textarea {
+  > .@{ant-prefix}-input {
     width: 100%;
+    background-color: inherit;
     border: none;
     outline: none;
     resize: none;

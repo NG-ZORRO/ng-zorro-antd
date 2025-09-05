@@ -21,6 +21,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   contentChild,
   ContentChild,
   DestroyRef,
@@ -36,6 +37,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -48,7 +50,7 @@ import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
-import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import {
   fromEventOutsideAngular,
   getCaretCoordinates,
@@ -122,7 +124,12 @@ export type MentionPlacement = 'top' | 'bottom';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-mentions',
-    '[class.ant-mentions-rtl]': `dir === 'rtl'`
+    '[class.ant-mentions-rtl]': `dir === 'rtl'`,
+    '[class.ant-mentions-borderless]': `nzVariant === 'borderless'`,
+    '[class.ant-mentions-filled]': `nzVariant === 'filled'`,
+    '[class.ant-mentions-underlined]': `nzVariant === 'underlined'`,
+    '[class.ant-mentions-focused]': `focused()`,
+    '[class.ant-mentions-disabled]': `disabled()`
   },
   imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
 })
@@ -142,6 +149,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
   @Input() nzStatus: NzStatus = '';
+  @Input() nzVariant: NzVariant = 'outlined';
   @Output() readonly nzOnSelect = new EventEmitter<NzSafeAny>();
   @Output() readonly nzOnSearchChange = new EventEmitter<MentionOnSearchTypes>();
 
@@ -168,6 +176,11 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   statusCls: NgClassInterface = {};
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
+  readonly focused = signal(false);
+
+  readonly disabled = computed(() => {
+    return this.trigger().disabled();
+  });
 
   private previousValue: string | null = null;
   private cursorMention: string | null = null;
@@ -327,6 +340,8 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private bindTriggerEvents(): void {
+    this.trigger().onFocusin.subscribe(() => this.focused.set(true));
+    this.trigger().onBlur.subscribe(() => this.focused.set(false));
     this.trigger().onInput.subscribe((e: KeyboardEvent) => this.handleInput(e));
     this.trigger().onKeydown.subscribe((e: KeyboardEvent) => this.handleKeydown(e));
     this.trigger().onClick.subscribe(() => this.handleClick());

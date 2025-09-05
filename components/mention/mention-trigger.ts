@@ -14,7 +14,8 @@ import {
   forwardRef,
   inject,
   NgZone,
-  Output
+  Output,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -61,6 +62,8 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() readonly onClick = new EventEmitter<MouseEvent>();
   value?: string;
+
+  readonly disabled = signal(false);
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -120,6 +123,10 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled.set(isDisabled);
   }
 
   private setupEventListener<TEvent extends Event>(eventName: string, eventEmitter: EventEmitter<TEvent>): void {

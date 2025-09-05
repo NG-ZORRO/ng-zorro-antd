@@ -572,6 +572,98 @@ describe('mention', () => {
       expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
   });
+
+  describe('variant', () => {
+    let fixture: ComponentFixture<NzTestVariantMentionComponent>;
+    let mention: DebugElement;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestVariantMentionComponent);
+      mention = fixture.debugElement.query(By.directive(NzMentionComponent));
+      fixture.detectChanges();
+      tick();
+    }));
+
+    it('should have default outlined variant', () => {
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
+    });
+
+    it('should apply borderless variant correctly', () => {
+      fixture.componentInstance.variant = 'borderless';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
+    });
+
+    it('should apply filled variant correctly', () => {
+      fixture.componentInstance.variant = 'filled';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-filled');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
+    });
+
+    it('should apply underlined variant correctly', () => {
+      fixture.componentInstance.variant = 'underlined';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-underlined');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+    });
+
+    it('should switch between variants correctly', () => {
+      fixture.componentInstance.variant = 'filled';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-filled');
+
+      fixture.componentInstance.variant = 'borderless';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+
+      fixture.componentInstance.variant = 'outlined';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
+    });
+
+    it('should maintain functionality across different variants', fakeAsync(() => {
+      const variants: Array<'outlined' | 'filled' | 'borderless' | 'underlined'> = [
+        'outlined',
+        'filled',
+        'borderless',
+        'underlined'
+      ];
+
+      variants.forEach(variant => {
+        fixture.componentInstance.variant = variant;
+        fixture.detectChanges();
+
+        const textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
+        textarea.value = '@angular';
+        fixture.detectChanges();
+
+        dispatchFakeEvent(textarea, 'click');
+        fixture.detectChanges();
+        flush();
+
+        expect(fixture.componentInstance.mention.isOpen).toBe(true);
+
+        const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
+        if (option) {
+          option.click();
+          fixture.detectChanges();
+          tick(500);
+
+          expect(fixture.componentInstance.mention.isOpen).toBe(false);
+        }
+      });
+    }));
+  });
 });
 
 @Component({
@@ -697,6 +789,21 @@ class NzTestStatusMentionComponent {
 class NzTestMentionInFormComponent {
   status: NzFormControlStatusType = 'error';
   feedback = true;
+}
+
+@Component({
+  imports: [FormsModule, NzInputModule, NzMentionModule],
+  template: `
+    <nz-mention [nzSuggestions]="suggestions" [nzVariant]="variant">
+      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+    </nz-mention>
+  `
+})
+class NzTestVariantMentionComponent {
+  inputValue: string = '@angular';
+  variant: 'outlined' | 'filled' | 'borderless' | 'underlined' = 'outlined';
+  suggestions = ['angular', 'ant-design', 'mention'];
+  @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
 }
 
 class MockDirectionality {
