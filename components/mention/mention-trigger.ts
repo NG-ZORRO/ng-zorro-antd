@@ -114,8 +114,9 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
   }
 
   writeValue(value: string): void {
-    this.value.set(value || '');
-    this.elementRef.nativeElement.value = this.value();
+    const parsedValue = typeof value === 'string' ? value : '';
+    this.value.set(parsedValue);
+    this.elementRef.nativeElement.value = parsedValue;
   }
 
   onChange: OnChangeType = () => {};
