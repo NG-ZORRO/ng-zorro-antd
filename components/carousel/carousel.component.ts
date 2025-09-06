@@ -66,6 +66,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
       [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'"
       [dir]="'ltr'"
     >
+      @if (nzArrows) {
+        <button
+          type="button"
+          aria-label="prev"
+          class="slick-prev slick-arrow"
+          [class.slick-disabled]="this.activeIndex === 0"
+          (click)="pre()"
+        ></button>
+      }
       <div
         #slickList
         class="slick-list"
@@ -78,6 +87,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
           <ng-content></ng-content>
         </div>
       </div>
+      @if (nzArrows) {
+        <button
+          type="button"
+          aria-label="next"
+          class="slick-next slick-arrow"
+          [class.slick-disabled]="this.activeIndex === this.carouselContents.length - 1"
+          (click)="next()"
+        ></button>
+      }
       <!-- Render dots. -->
       @if (nzDots) {
         <ul
@@ -136,6 +154,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
   @Input({ transform: numberAttribute }) @WithConfig() nzAutoPlaySpeed: number = 3000;
   @Input({ transform: numberAttribute }) nzTransitionSpeed = 500;
   @Input() @WithConfig() nzLoop: boolean = true;
+  @Input({ transform: booleanAttribute }) nzArrows = false;
 
   /**
    * this property is passed directly to an NzCarouselBaseStrategy

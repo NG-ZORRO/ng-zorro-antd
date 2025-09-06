@@ -3,6 +3,11 @@
 
 @carousel-prefix-cls: ~'@{ant-prefix}-carousel';
 @carousel-dot-margin: 4px;
+@carousel-arrow-size: 16px;
+@carousel-arrow-offset: 12px;
+@carousel-arrow-bg: fade(#000, 20%);
+@carousel-arrow-bg-hover: fade(#000, 30%);
+@carousel-arrow-color: @white;
 
 .@{carousel-prefix-cls} {
   .reset-component();
@@ -126,52 +131,98 @@
   .slick-next {
     position: absolute;
     top: 50%;
-    display: block;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
+    z-index: 1;
+    display: inline-block;
+    width: @carousel-arrow-size;
+    height: @carousel-arrow-size;
+    margin: 0;
     padding: 0;
-    color: transparent;
-    font-size: 0;
+    color: @white;
+    font-size: 0; // keep no text
     line-height: 0;
     background: transparent;
     border: 0;
+    border-radius: 0;
     outline: none;
+    transform: translateY(-50%);
     cursor: pointer;
+    opacity: 0.3;
+    transition:
+      color 0.3s,
+      opacity 0.3s;
+
+    &::after {
+      position: absolute;
+      top: 2.3px;
+      display: inline-block;
+      box-sizing: border-box;
+      width: 11.3px;
+      height: 11.3px;
+      border: 0 solid currentcolor;
+      border-radius: 1px;
+      opacity: 1;
+      content: '';
+      inset-inline-start: 2.3px;
+      border-inline-start-width: 2px;
+      border-block-start-width: 2px;
+    }
 
     &:hover,
     &:focus {
-      color: transparent;
-      background: transparent;
+      color: @white;
       outline: none;
-
-      &::before {
-        opacity: 1;
-      }
+      opacity: 1;
     }
 
-    &.slick-disabled::before {
-      opacity: 0.25;
+    &.slick-disabled {
+      display: none;
     }
   }
 
   .slick-prev {
-    left: -25px;
+    right: auto;
+    left: @carousel-arrow-offset;
 
-    &::before {
-      content: '←';
+    &::after {
+      transform: rotate(-45deg);
     }
   }
 
   .slick-next {
-    right: -25px;
+    right: @carousel-arrow-offset;
+    left: auto;
 
-    &::before {
-      content: '→';
+    &::after {
+      transform: rotate(135deg);
     }
   }
 
-  // Dots
+  // Vertical mode (dots on left or right)
+  .slick-vertical {
+    .slick-prev {
+      top: @carousel-dot-margin * 3;
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+
+      &::after {
+        transform: rotate(45deg);
+      }
+    }
+
+    .slick-next {
+      top: auto;
+      right: auto;
+      bottom: @carousel-dot-margin * 3;
+      left: 50%;
+      transform: translateX(-50%);
+
+      &::after {
+        transform: rotate(-135deg);
+      }
+    }
+  }
+
   .slick-dots {
     position: absolute;
     right: 0;
