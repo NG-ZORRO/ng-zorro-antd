@@ -10,7 +10,8 @@ import {
   createOverlayRef,
   createRepositionScrollStrategy,
   FlexibleConnectedPositionStrategy,
-  OverlayRef
+  OverlayRef,
+  PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
@@ -96,17 +97,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
   private overlayRef: OverlayRef | null = null;
   private portal: TemplatePortal<{}> | null = null;
-  private positionStrategy: FlexibleConnectedPositionStrategy = createFlexibleConnectedPositionStrategy(
-    this.injector,
-    this.getConnectedElement()
-  )
-    .withFlexibleDimensions(false)
-    .withPush(false)
-    .withPositions([
-      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
-      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
-    ])
-    .withTransformOriginOn('.ant-select-dropdown');
+  private positionStrategy!: FlexibleConnectedPositionStrategy;
   private previousValue: string | number | null = null;
   private selectionChangeSubscription!: Subscription;
   private optionsChangeSubscription!: Subscription;
@@ -289,7 +280,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
     if (!this.overlayRef) {
       this.overlayRef = createOverlayRef(this.injector, {
-        positionStrategy: this.positionStrategy,
+        positionStrategy: this.getOverlayPosition(),
         disposeOnNavigation: true,
         scrollStrategy: createRepositionScrollStrategy(this.injector),
         // default host element width
@@ -331,6 +322,17 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
   private getConnectedElement(): ElementRef {
     return this.nzInputGroupWhitSuffixOrPrefixDirective?.elementRef ?? this.elementRef;
+  }
+
+  private getOverlayPosition(): PositionStrategy {
+    return (this.positionStrategy = createFlexibleConnectedPositionStrategy(this.injector, this.getConnectedElement())
+      .withFlexibleDimensions(false)
+      .withPush(false)
+      .withPositions([
+        new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+        new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+      ])
+      .withTransformOriginOn('.ant-select-dropdown'));
   }
 
   private getHostWidth(): number {

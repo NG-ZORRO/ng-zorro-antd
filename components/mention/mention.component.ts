@@ -11,7 +11,8 @@ import {
   createOverlayRef,
   createRepositionScrollStrategy,
   FlexibleConnectedPositionStrategy,
-  OverlayRef
+  OverlayRef,
+  PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { NgTemplateOutlet } from '@angular/common';
@@ -189,16 +190,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private cursorMentionEnd?: number;
   private overlayRef: OverlayRef | null = null;
   private portal?: TemplatePortal<void>;
-  private positionStrategy: FlexibleConnectedPositionStrategy = createFlexibleConnectedPositionStrategy(
-    this.injector,
-    this.trigger().elementRef
-  )
-    .withPositions([
-      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
-      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
-    ])
-    .withFlexibleDimensions(false)
-    .withPush(false);
+  private positionStrategy!: FlexibleConnectedPositionStrategy;
   private overlayOutsideClickSubscription!: Subscription;
   private document: Document = inject(DOCUMENT);
 
@@ -495,7 +487,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
     if (!this.overlayRef) {
       this.portal = new TemplatePortal(this.suggestionsTemp!, this.viewContainerRef);
       this.overlayRef = createOverlayRef(this.injector, {
-        positionStrategy: this.positionStrategy,
+        positionStrategy: this.getOverlayPosition(),
         scrollStrategy: createRepositionScrollStrategy(this.injector),
         disposeOnNavigation: true
       });
@@ -505,6 +497,16 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
       this.overlayOutsideClickSubscription = this.subscribeOverlayOutsideClick();
     }
     this.updatePositions();
+  }
+
+  private getOverlayPosition(): PositionStrategy {
+    return (this.positionStrategy = createFlexibleConnectedPositionStrategy(this.injector, this.trigger().elementRef)
+      .withPositions([
+        new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+        new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+      ])
+      .withFlexibleDimensions(false)
+      .withPush(false));
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
