@@ -9,6 +9,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzFourDirectionType, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -50,7 +51,7 @@ describe('nz-float-button-group', () => {
         ...groupComponent.nzFloatButtonTopComponents()
       ];
       innerButtons.forEach(btn => {
-        expect(btn.nzShape).toBe('square');
+        expect(btn.shape()).toBe('square');
       });
     });
 
@@ -190,10 +191,10 @@ describe('nz-float-button-group RTL', () => {
   `
 })
 export class NzTestFloatButtonGroupBasicComponent {
-  nzShape: 'circle' | 'square' = 'circle';
+  nzShape: NzShapeSCType = 'circle';
   nzTrigger: 'click' | 'hover' | null = null;
   nzOpen: boolean | null = null;
-  nzPlacement: 'top' | 'right' | 'bottom' | 'left' = 'top';
+  nzPlacement: NzFourDirectionType = 'top';
 
   isClick: boolean = false;
 
