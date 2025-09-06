@@ -57,8 +57,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
     <ng-container *nzStringTemplateOutlet="nzCount">
       @if (showSup) {
         <nz-badge-sup
-          [class]="(nzStatus || presetColor) && 'ant-badge-status-' + (nzStatus || presetColor)"
-          [style.background]="!presetColor && nzColor"
+          [isPresetColor]="nzStatus || presetColor"
+          [nzColor]="nzStatus || presetColor || nzColor"
           [nzOffset]="nzOffset"
           [nzSize]="nzSize"
           [nzTitle]="nzTitle"
