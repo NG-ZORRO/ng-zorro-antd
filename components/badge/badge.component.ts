@@ -42,9 +42,10 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   animations: [zoomBadgeMotion],
   imports: [NzBadgeSupComponent, NzOutletModule],
   template: `
-    @if (nzStatus || nzColor) {
+    @if ((nzStatus || nzColor) && !showSup && !nzCount) {
       <span
-        class="ant-badge-status-dot ant-badge-status-{{ nzStatus || presetColor }}"
+        class="ant-badge-status-dot"
+        [class]="(nzStatus || presetColor) && 'ant-badge-status-' + (nzStatus || presetColor)"
         [style.background]="!presetColor && nzColor"
         [style]="nzStyle"
       ></span>
@@ -56,6 +57,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
     <ng-container *nzStringTemplateOutlet="nzCount">
       @if (showSup) {
         <nz-badge-sup
+          [isPresetColor]="nzStatus || presetColor"
+          [nzColor]="nzStatus || presetColor || nzColor"
           [nzOffset]="nzOffset"
           [nzSize]="nzSize"
           [nzTitle]="nzTitle"
@@ -72,7 +75,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   host: {
     class: 'ant-badge',
     '[class.ant-badge-status]': 'nzStatus',
-    '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
+    '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || ((nzStatus || nzColor) && !showSup && !nzCount))'
   }
 })
 export class NzBadgeComponent implements OnChanges, OnInit {
