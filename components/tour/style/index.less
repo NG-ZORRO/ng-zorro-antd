@@ -1,0 +1,132 @@
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@tour-prefix-cls: ~'@{ant-prefix}-tour';
+@btn-prefix-cls: ~'@{ant-prefix}-btn';
+@tour-close-btn-size: 22px;
+@tour-indicator-height: 6px;
+@tour-indicator-width: 6px;
+
+.@{tour-prefix-cls} {
+  position: absolute;
+  width: 520px;
+  max-width: fit-content;
+  margin: 0;
+  padding: 0;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  list-style: none;
+  visibility: visible;
+
+  --antd-arrow-background-color: @popover-bg;
+
+  // ====================== Mask ======================
+  &-mask {
+    position: fixed;
+    pointer-events: none;
+    inset: 0;
+
+    .@{tour-prefix-cls}-placeholder-animated {
+      transition: all @animation-duration-slow;
+    }
+  }
+
+  &-inner {
+    position: relative;
+    text-align: start;
+    text-decoration: none;
+    background-color: @component-background;
+    background-clip: padding-box;
+    border: none;
+    border-radius: @border-radius-lg;
+    box-shadow: @box-shadow-base;
+  }
+
+  &-close {
+    position: absolute;
+    top: @padding-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: @tour-close-btn-size;
+    height: @tour-close-btn-size;
+    color: @text-color-secondary;
+    font-size: @font-size-sm;
+    background: none;
+    border: none;
+    border-radius: @border-radius-sm;
+    cursor: pointer;
+    transition: background-color @animation-duration-base, color @animation-duration-base;
+    inset-inline-end: @padding-md;
+
+    &:hover {
+      background-color: @btn-text-hover-bg
+    }
+
+    &:active {
+      background-color: fadein(@btn-text-hover-bg, 1%);
+    }
+  }
+
+  &-cover {
+    padding: calc(@padding-md + @tour-close-btn-size + @padding-xs) @padding-md 0;
+    text-align: center;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &-header {
+    width: calc(100% - @tour-close-btn-size);
+    padding: @padding-md @padding-md @padding-xs;
+    word-break: break-word;
+
+    .@{tour-prefix-cls}-title {
+      font-weight: 600;
+    }
+  }
+
+  &-description {
+    padding: 0 @padding-md;
+    word-wrap: break-word;
+  }
+
+  &-footer {
+    display: flex;
+    padding: @padding-xs @padding-md @padding-md;
+    text-align: end;
+    border-radius: 0 0 @border-radius-sm @border-radius-sm;
+
+    .@{tour-prefix-cls}-indicators {
+      display: inline-block;
+
+      .@{tour-prefix-cls}-indicator {
+        display: inline-block;
+        width: @tour-indicator-width;
+        height: @tour-indicator-height;
+        background: @fill-color;
+        border-radius: 50%;
+
+        &:not(:last-child) {
+          margin-inline-end: @tour-indicator-height;
+        }
+
+        &-active {
+          background: @primary-color;
+        }
+      }
+    }
+
+    .@{tour-prefix-cls}-buttons {
+      margin-inline-start: auto;
+
+      .@{btn-prefix-cls} {
+        margin-inline-start: @padding-xs;
+      }
+    }
+  }
+
+  // Arrow Style
+  .placementArrow(@popover-arrow-width, 4px, @arrow-border-radius, var(--antd-arrow-background-color), @popover-arrow-box-shadow);
+}

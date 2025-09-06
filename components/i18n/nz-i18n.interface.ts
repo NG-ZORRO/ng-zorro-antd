@@ -164,6 +164,12 @@ export interface NzCheckListI18nInterface {
   checkListCheckOther: string;
 }
 
+export interface NzTourI18nInterface {
+  prevStepText: string;
+  nextStepText: string;
+  finishText: string;
+}
+
 export interface NzI18nInterface {
   locale: string;
   Pagination: NzPaginationI18nInterface;
@@ -181,6 +187,7 @@ export interface NzI18nInterface {
   CronExpression?: NzCronExpressionI18nInterface;
   QRCode?: NzQRCodeI18nInterface;
   CheckList?: NzCheckListI18nInterface;
+  Tour?: NzTourI18nInterface;
 }
 
 export type DateLocale = Locale;
