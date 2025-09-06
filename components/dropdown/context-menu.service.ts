@@ -3,9 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ConnectionPositionPair, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import {
+  ConnectionPositionPair,
+  createCloseScrollStrategy,
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  OverlayRef
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { EmbeddedViewRef, inject, Injectable, NgZone } from '@angular/core';
+import { EmbeddedViewRef, inject, Injectable, Injector, NgZone } from '@angular/core';
 import { merge, Subscription } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
@@ -27,7 +33,7 @@ const LIST_OF_POSITIONS = [
 })
 export class NzContextMenuService {
   private ngZone = inject(NgZone);
-  private overlay = inject(Overlay);
+  private injector = inject(Injector);
   private overlayRef: OverlayRef | null = null;
   private closeSubscription = Subscription.EMPTY;
 
@@ -40,15 +46,13 @@ export class NzContextMenuService {
     if ($event instanceof MouseEvent) {
       $event.preventDefault();
     }
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo({ x, y })
-      .withPositions(LIST_OF_POSITIONS)
-      .withTransformOriginOn('.ant-dropdown');
-    this.overlayRef = this.overlay.create({
-      positionStrategy,
+
+    this.overlayRef = createOverlayRef(this.injector, {
+      positionStrategy: createFlexibleConnectedPositionStrategy(this.injector, { x, y })
+        .withPositions(LIST_OF_POSITIONS)
+        .withTransformOriginOn('.ant-dropdown'),
       disposeOnNavigation: true,
-      scrollStrategy: this.overlay.scrollStrategies.close()
+      scrollStrategy: createCloseScrollStrategy(this.injector)
     });
 
     this.closeSubscription = new Subscription();
