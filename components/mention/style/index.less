@@ -20,7 +20,7 @@
 
   // =================== Status ===================
   &-disabled {
-    >.@{ant-prefix}-input {
+    > .@{ant-prefix}-input {
       .disabled();
     }
   }
@@ -30,7 +30,7 @@
   }
 
   // ================= Input Area =================
-  >.@{ant-prefix}-input,
+  > .@{ant-prefix}-input,
   &-measure {
     min-height: @input-height-base - 2px;
     margin: 0;
@@ -58,14 +58,14 @@
     tab-size: inherit;
   }
 
-  >.@{ant-prefix}-input {
+  > .@{ant-prefix}-input {
     width: 100%;
     background-color: inherit;
     border: none;
     outline: none;
     resize: none;
 
-    & when (@theme =dark) {
+    & when (@theme = dark) {
       background-color: transparent;
     }
 
@@ -82,7 +82,7 @@
     color: transparent;
     pointer-events: none;
 
-    >span {
+    > span {
       display: inline-block;
       min-height: 1em;
     }
