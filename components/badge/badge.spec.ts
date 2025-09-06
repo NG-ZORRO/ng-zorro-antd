@@ -148,6 +148,7 @@ describe('nz-badge', () => {
 
     it('should status work', () => {
       testComponent.inner = false;
+      testComponent.count = 0;
       const statusList = ['success', 'processing', 'default', 'error', 'warning'];
       statusList.forEach(status => {
         testComponent.status = status;
@@ -194,6 +195,7 @@ describe('nz-badge', () => {
 
     it('should display correct of nzColor related change', fakeAsync(() => {
       let color: string | undefined;
+      testComponent.inner = false;
       testComponent.count = 0;
       testComponent.status = 'success';
       fixture.detectChanges();
@@ -204,16 +206,16 @@ describe('nz-badge', () => {
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('');
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
 
-      color = 'blue';
-      testComponent.color = color;
       testComponent.status = '';
+      testComponent.text = 'test';
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
 
-      testComponent.text = 'test';
+      color = 'blue';
+      testComponent.color = color;
       fixture.detectChanges();
       expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
@@ -222,6 +224,7 @@ describe('nz-badge', () => {
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
 
+      testComponent.inner = true;
       color = '#f5222d';
       testComponent.color = color;
       fixture.detectChanges();

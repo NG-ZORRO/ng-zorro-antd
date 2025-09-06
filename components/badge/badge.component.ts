@@ -42,7 +42,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   animations: [zoomBadgeMotion],
   imports: [NzBadgeSupComponent, NzOutletModule],
   template: `
-    @if (nzStatus || (nzColor && !!nzText)) {
+    @if ((nzStatus || nzColor) && !showSup && !nzCount) {
       <span
         class="ant-badge-status-dot"
         [class]="(nzStatus || presetColor) && 'ant-badge-status-' + (nzStatus || presetColor)"
@@ -75,7 +75,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   host: {
     class: 'ant-badge',
     '[class.ant-badge-status]': 'nzStatus',
-    '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || (nzColor && !!nzText))'
+    '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || ((nzStatus || nzColor) && !showSup && !nzCount))'
   }
 })
 export class NzBadgeComponent implements OnChanges, OnInit {
