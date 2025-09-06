@@ -48,7 +48,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge, of as observableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
@@ -124,9 +123,9 @@ export type MentionPlacement = 'top' | 'bottom';
     }
     @if (nzAllowClear && hasValue()) {
       <span class="ant-mentions-suffix">
-        <button nz-button nzType="text" class="ant-mentions-clear-icon" (click)="clear()">
+        <button type="button" tabindex="-1" class="ant-mentions-clear-icon" (click)="clear()">
           <ng-template [nzStringTemplateOutlet]="nzClearIcon">
-            <nz-icon nzType="close-circle" nzTheme="fill" class="ant-select-close-icon" />
+            <nz-icon nzType="close-circle" nzTheme="fill" />
           </ng-template>
         </button>
       </span>
@@ -147,7 +146,6 @@ export type MentionPlacement = 'top' | 'bottom';
     NzIconModule,
     NzEmptyModule,
     NzFormItemFeedbackIconComponent,
-    NzButtonComponent,
     NzStringTemplateOutletDirective
   ]
 })

@@ -11,6 +11,11 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
     <nz-mention [nzSuggestions]="suggestions" (nzOnSelect)="onSelect($event)" nzAllowClear (nzOnClear)="onClear()">
       <textarea rows="1" placeholder="input here" nzMentionTrigger nz-input [(ngModel)]="inputValue"></textarea>
     </nz-mention>
+    <br />
+    <br />
+    <nz-mention [nzSuggestions]="suggestions" (nzOnSelect)="onSelect($event)" nzAllowClear (nzOnClear)="onClear()">
+      <textarea rows="3" placeholder="input here" nzMentionTrigger nz-input [(ngModel)]="inputValue"></textarea>
+    </nz-mention>
   `
 })
 export class NzDemoMentionClearComponent {
