@@ -55,6 +55,7 @@ export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
   nzContent?: string | TemplateRef<NzSafeAny> | Type<T>;
   nzCloseOnNavigation?: boolean;
   nzViewContainerRef?: ViewContainerRef;
+  nzLoading?: boolean;
   // Template use only
   nzAfterOpen?: EventEmitter<void>;
   nzAfterClose?: EventEmitter<R>;

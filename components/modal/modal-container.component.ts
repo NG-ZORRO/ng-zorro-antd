@@ -9,6 +9,7 @@ import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 import { nzModalAnimations } from './modal-animations';
 import { NzModalCloseComponent } from './modal-close.component';
@@ -41,11 +42,17 @@ import { NzModalTitleComponent } from './modal-title.component';
         }
 
         <div class="ant-modal-body" [style]="config.nzBodyStyle!">
-          <ng-template cdkPortalOutlet />
-          @if (isStringContent) {
-            <div [innerHTML]="config.nzContent"></div>
+          <div [hidden]="config.nzLoading">
+            <ng-template cdkPortalOutlet />
+            @if (isStringContent) {
+              <div [innerHTML]="config.nzContent"></div>
+            }
+          </div>
+          @if (config.nzLoading) {
+            <nz-skeleton [nzActive]="true" />
           }
         </div>
+
         @if (config.nzFooter !== null) {
           <div
             nz-modal-footer
@@ -78,6 +85,7 @@ import { NzModalTitleComponent } from './modal-title.component';
     NzModalTitleComponent,
     PortalModule,
     NzModalFooterComponent,
+    NzSkeletonModule,
     NzPipesModule,
     CdkDrag,
     CdkDragHandle
