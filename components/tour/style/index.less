@@ -18,6 +18,8 @@
   list-style: none;
   visibility: visible;
 
+  --antd-arrow-background-color: @popover-bg;
+
   // ====================== Mask ======================
   &-mask {
     position: fixed;
@@ -124,4 +126,7 @@
       }
     }
   }
+
+  // Arrow Style
+  .placementArrow(@popover-arrow-width, 4px, @arrow-border-radius, var(--antd-arrow-background-color), @popover-arrow-box-shadow);
 }
