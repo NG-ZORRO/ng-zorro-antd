@@ -6,9 +6,13 @@
 import { coerceElement } from '@angular/cdk/coercion';
 import {
   ConnectionPositionPair,
+  createBlockScrollStrategy,
+  createFlexibleConnectedPositionStrategy,
+  createGlobalPositionStrategy,
+  createOverlayRef,
+  createRepositionScrollStrategy,
   FlexibleConnectedPositionStrategy,
   FlexibleConnectedPositionStrategyOrigin,
-  Overlay,
   OverlayRef
 } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
@@ -57,7 +61,6 @@ export class NzTourRef {
   currentPlacement: NzTourPlacement = DEFAULT_PLACEMENT;
 
   constructor(
-    private readonly overlay: Overlay,
     private readonly injector: Injector,
     readonly options: NzTourOptions
   ) {
@@ -136,17 +139,16 @@ export class NzTourRef {
 
   attachOrUpdateStep(target: FlexibleConnectedPositionStrategyOrigin | null): void {
     const positionStrategy = target
-      ? this.overlay
-          .position()
-          .flexibleConnectedTo(target)
-          .withPositions(this.getPositions(this.currentPlacement, this.gap.offset))
-      : this.overlay.position().global().top('0').left('0');
+      ? createFlexibleConnectedPositionStrategy(this.injector, target).withPositions(
+          this.getPositions(this.currentPlacement, this.gap.offset)
+        )
+      : createGlobalPositionStrategy(this.injector).top('0').left('0');
 
     if (!this.overlayRef) {
-      this.overlayRef = this.overlay.create({
+      this.overlayRef = createOverlayRef(this.injector, {
         hasBackdrop: false,
         positionStrategy,
-        scrollStrategy: this.overlay.scrollStrategies.block()
+        scrollStrategy: createBlockScrollStrategy(this.injector)
       });
     } else {
       this.overlayRef.updatePositionStrategy(positionStrategy);
@@ -179,10 +181,10 @@ export class NzTourRef {
     }
   ): void {
     if (!this.maskOverlayRef) {
-      this.maskOverlayRef = this.overlay.create({
+      this.maskOverlayRef = createOverlayRef(this.injector, {
         hasBackdrop: false,
-        positionStrategy: this.overlay.position().global().top('0').left('0'),
-        scrollStrategy: this.overlay.scrollStrategies.reposition()
+        positionStrategy: createGlobalPositionStrategy(this.injector).top('0').left('0'),
+        scrollStrategy: createRepositionScrollStrategy(this.injector)
       });
       const pane = this.maskOverlayRef.hostElement as HTMLElement;
       pane.style.width = '100%';

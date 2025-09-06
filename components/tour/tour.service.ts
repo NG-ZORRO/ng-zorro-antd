@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Overlay } from '@angular/cdk/overlay';
 import { Injectable, inject, DestroyRef, Injector } from '@angular/core';
 
 import { NzTourRef } from './tour-ref';
@@ -15,7 +14,6 @@ export const DEFAULT_PLACEMENT: NzTourPlacement = 'bottom';
   providedIn: 'root'
 })
 export class NzTourService {
-  private readonly overlay = inject(Overlay);
   private readonly injector = inject(Injector);
   private tourRef?: NzTourRef | null;
 
@@ -25,7 +23,7 @@ export class NzTourService {
 
   start(options: NzTourOptions): NzTourRef {
     this.dispose();
-    this.tourRef = new NzTourRef(this.overlay, this.injector, options);
+    this.tourRef = new NzTourRef(this.injector, options);
     this.tourRef.start();
     return this.tourRef;
   }
