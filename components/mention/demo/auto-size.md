@@ -1,5 +1,5 @@
 ---
-order: 14
+order: 8
 title:
   zh-CN: 自动大小
   en-US: autoSize
