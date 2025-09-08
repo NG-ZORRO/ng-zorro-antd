@@ -213,7 +213,7 @@ export function withConfigFactory<T extends NzConfigKey>(componentName: T) {
       if (assignedByUser) {
         return inputValue;
       }
-      
+
       if (isDefined(configValue)) {
         return configValue;
       }
