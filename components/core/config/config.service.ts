@@ -22,14 +22,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
 import { NZ_CONFIG, NzConfig, NzConfigKey } from './config';
 import { registerTheme } from './css-variables';
 
-const isDefined = function (value?: NzSafeAny): boolean {
+function isDefined<T>(value?: T): value is Exclude<T, undefined> {
   return value !== undefined;
-};
+}
 
 const defaultPrefixCls = 'ant';
 
@@ -194,11 +192,16 @@ export function WithConfig<This, Value>() {
  * ```
  */
 export function withConfigFactory<T extends NzConfigKey>(componentName: T) {
+  /**
+   * @param name The name of input property.
+   * @param inputSignal The input signal.
+   * @param defaultValue The default value.
+   */
   return <N extends keyof NonNullable<NzConfig[T]>, V = NonNullable<NzConfig[T]>[N]>(
     name: N,
-    inputSignal: InputSignal<V> | InputSignalWithTransform<V, unknown>
+    inputSignal: InputSignal<V | undefined> | InputSignalWithTransform<V | undefined, unknown>,
+    defaultValue: V
   ): Signal<V> => {
-    const originalValue = inputSignal();
     const configValueSignal = inject(NzConfigService)['_getConfigValue'](componentName);
 
     return computed<V>(() => {
@@ -209,11 +212,11 @@ export function withConfigFactory<T extends NzConfigKey>(componentName: T) {
 
       if (assignedByUser) {
         return inputValue;
-      } else if (configValue !== undefined) {
+      } else if (isDefined(configValue)) {
         return configValue;
       }
 
-      return originalValue;
+      return defaultValue;
     });
   };
 }

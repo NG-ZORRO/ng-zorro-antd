@@ -32,8 +32,8 @@ class NzWithConfigTestComponent {
 class NzWithConfigSignalTestComponent {
   readonly elementRef = inject(ElementRef);
 
-  readonly nzSize = input<NzButtonSize>('default');
-  readonly innerSize = withConfig('nzSize', this.nzSize);
+  readonly nzSize = input<NzButtonSize>();
+  readonly innerSize = withConfig('nzSize', this.nzSize, 'default');
 }
 
 describe('nz global config', () => {
