@@ -4,6 +4,7 @@
  */
 
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   Input,
@@ -49,11 +50,13 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
   `,
   host: {
     class: 'ant-scroll-number',
+    '[class]': `isPresetColor ? ('ant-badge-status-' + nzColor) : ''`,
     '[@.disabled]': `disableAnimation`,
     '[@zoomBadgeMotion]': '',
     '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
     '[style]': `nzStyle`,
     '[style.right.px]': `nzOffset && nzOffset[0] ? -nzOffset[0] : null`,
+    '[style.background]': `isPresetColor ? nzStyle?.background : nzColor`,
     '[style.margin-top.px]': `nzOffset && nzOffset[1] ? nzOffset[1] : null`,
     '[class.ant-badge-count]': `!nzDot`,
     '[class.ant-badge-count-sm]': `nzSize === 'small'`,
@@ -71,6 +74,8 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() noAnimation = false;
   @Input() nzSize: NzSizeDSType = 'default';
+  @Input({ transform: booleanAttribute }) isPresetColor = false;
+  @Input() nzColor?: string = undefined;
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;
