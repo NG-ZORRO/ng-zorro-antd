@@ -144,9 +144,7 @@ export class NzFloatButtonTopComponent implements OnInit {
 
     effect(() => {
       this.visibilityHeight();
-      if (this.platform.isBrowser) {
-        this.handleScroll();
-      }
+      this.handleScroll();
     });
   }
 
@@ -159,7 +157,10 @@ export class NzFloatButtonTopComponent implements OnInit {
   }
 
   private handleScroll(): void {
-    if (this.visible() === this.scrollSrv.getScroll(this.getTarget()) > this.visibilityHeight()) {
+    if (
+      !this.platform.isBrowser ||
+      this.visible() === this.scrollSrv.getScroll(this.getTarget()) > this.visibilityHeight()
+    ) {
       return;
     }
     this.visible.update(v => !v);
