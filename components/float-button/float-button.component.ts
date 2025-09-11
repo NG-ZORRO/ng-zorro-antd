@@ -75,9 +75,9 @@ export class NzFloatButtonComponent {
   readonly nzShape = input<NzShapeSCType>('circle');
   readonly nzOnClick = output<boolean>();
 
-  public shape = linkedSignal(() => this.nzShape());
-  protected dir = inject(Directionality).valueSignal;
-  protected class = computed<string[]>(() => {
+  readonly shape = linkedSignal(() => this.nzShape());
+  protected readonly dir = inject(Directionality).valueSignal;
+  protected readonly class = computed<string[]>(() => {
     const dir = this.dir();
     const classes = [CLASS_NAME, this.generateClass(this.shape())];
     if (dir === 'rtl') {

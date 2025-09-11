@@ -22,6 +22,7 @@ import {
   output,
   signal,
   TemplateRef,
+  untracked,
   viewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -93,9 +94,9 @@ export class NzFloatButtonTopComponent implements OnInit {
 
   // compact global config
   private readonly visibilityHeight = withConfig('nzVisibilityHeight', this.nzVisibilityHeight, 400);
-  public shape = linkedSignal(() => this.nzShape());
-  protected dir = this.directionality.valueSignal;
-  protected class = computed<string[]>(() => {
+  readonly shape = linkedSignal(() => this.nzShape());
+  protected readonly dir = this.directionality.valueSignal;
+  protected readonly class = computed<string[]>(() => {
     const dir = this.dir();
     const classes = [CLASS_NAME, `${CLASS_NAME}-top`, this.generateClass(this.shape())];
     if (dir === 'rtl') {
@@ -108,7 +109,7 @@ export class NzFloatButtonTopComponent implements OnInit {
   });
 
   private target?: HTMLElement | null = null;
-  private visible = signal<boolean>(false);
+  private readonly visible = signal<boolean>(false);
   private backTopClickSubscription = Subscription.EMPTY;
   private scrollListenerDestroy$ = new Subject<void>();
 
@@ -144,7 +145,7 @@ export class NzFloatButtonTopComponent implements OnInit {
 
     effect(() => {
       this.visibilityHeight();
-      this.handleScroll();
+      untracked(() => this.handleScroll());
     });
   }
 

@@ -42,7 +42,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `
 })
 export class NzFloatButtonContentComponent {
-  nzIcon = input<string | TemplateRef<void> | null>(null);
-  nzDescription = input<string | TemplateRef<void> | null>(null);
-  nzShape = input<NzShapeSCType>('circle');
+  readonly nzIcon = input<string | TemplateRef<void> | null>(null);
+  readonly nzDescription = input<string | TemplateRef<void> | null>(null);
+  readonly nzShape = input<NzShapeSCType>('circle');
 }
