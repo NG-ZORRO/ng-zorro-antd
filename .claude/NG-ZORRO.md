@@ -10,7 +10,7 @@ It's a community project that rewrites the Ant Design project to be used with An
 ## Project Structure
 
 ng-zorro-antd/
-├── components/ # Main NG-ZORRO components (50+ UI components)
+├── components/ # Main NG-ZORRO components (70+ UI components)
 │ ├── core/ # Core utilities and services
 │ │ ├── animation/
 │ │ ├── color/
@@ -30,7 +30,7 @@ ng-zorro-antd/
 │ │ ├── core/
 │ │ ├── mixins/
 │ │ └── themes/
-│ └── [50+ UI components]/ # Individual components (affix, alert, button, etc.)
+│ └── [70+ UI components]/ # Individual components (affix, alert, button, etc.)
 ├── docs/ # Documentation source files
 ├── node_modules/ # Dependencies (excluded from git)
 ├── schematics/ # Angular schematics
@@ -94,11 +94,11 @@ Each component located in the `components/` folder is composed of the following 
 - `public-api.ts`: The public API of the component
 - `index.ts`: The entry point of the component
 - `src/`: The source code of the component
-- `styles/`: The styles of the component
+- `style/`: The styles of the component
 - `demo/`: The demos of the component
 - `doc/`: The main documentation of the component
-- `nz-*\.component.ts`: The component file
-- `nz-*\.component.spec.ts`: The component tests
+- `*\.component.ts`: The component file
+- `*\.component.spec.ts`: The component tests
 
 ## Installation and Setup
 

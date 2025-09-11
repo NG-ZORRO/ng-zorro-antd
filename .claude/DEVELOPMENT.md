@@ -3,10 +3,10 @@
 ### Basic Coding Guidelines
 
 - Written in TypeScript and Angular.
-- Each template must be defined in the component "*.ts" file using the `template` property of the `@Component` decorator.
+- Each template must be defined in the component "\*.ts" file using the `template` property of the `@Component` decorator.
 - Each official style must be defined in the component's `index.less` file.
 - Each CSS patch must be defined in the component's `patch.less` file.
-- Templates must follow the structure of the associated Ant Design component. Documentation can be found [here](https://ant.design/components/{component_name}/).
+- Templates must follow the structure of the associated Ant Design component. Documentation can be found [here](ANT-DESIGN.md).
 - Support Server Side Rendering (SSR).
 - All imports of NG-ZORRO components need to be absolute. Example:
 
@@ -19,7 +19,7 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
 - All code added to a component must be covered by unit tests. For guidelines on how to write unit tests, see the [testing](./TESTING.md) file.
 - New development on existing components must respect the existing structure of the component; where possible, use modern Angular features.
 - New components must be developed using the latest Angular features.
-- New features must be documented and include a demo. Guidelines on how to document can be found [here](./DOCUMENTATION.md).
+- New features must be documented and include a demo. Guidelines on how to document can be found [here](https://ant.design/llms.txt) and [here](https://ant.design/llms-full.txt).
 
 ### TypeScript Guidelines
 

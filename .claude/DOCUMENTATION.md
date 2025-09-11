@@ -14,15 +14,14 @@
 
 - Use a table format to document the API.
 
-| Property  | Description | Type                       | Default      |
-| --------- | ----------- | -------------------------- | ------------ |
-| htmlType  | xxx         | string                     | `button`     |
-| type      | xxx         | `horizontal` \| `vertical` | `horizontal` |
-| disabled  | xxx         | boolean                    | false        |
-| minLength | xxx         | number                     | 0            |
+| Property  | Description | Type                       | Default      | Global Config |
+| --------- | ----------- | -------------------------- | ------------ | ------------- |
+| htmlType  | xxx         | string                     | `button`     | ✅            |
+| type      | xxx         | `horizontal` \| `vertical` | `horizontal` | ✅            |
+| disabled  | xxx         | boolean                    | false        | ✅            |
+| minLength | xxx         | number                     | 0            | ✅            |
 | style     | xxx         | CSSProperties              | -            |
 
 - Provide API documentation for each component.
 - Provide API documentation in Chinese and English.
 - API documentation is located in each component's `doc/` folder.
-
