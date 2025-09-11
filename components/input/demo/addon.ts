@@ -1,42 +1,56 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-input-addon',
-  imports: [FormsModule, NzInputModule, NzSelectModule],
+  imports: [NzInputModule, NzIconModule, NzSelectModule, NzCascaderModule, FormsModule],
   template: `
-    <nz-input-group nzAddOnBefore="Http://" nzAddOnAfter=".com">
-      <input type="text" nz-input [(ngModel)]="inputValue" />
-    </nz-input-group>
+    <nz-input-wrapper>
+      <span nzInputAddonBefore>http://</span>
+      <input nz-input [(ngModel)]="value" />
+      <span nzInputAddonAfter>.com</span>
+    </nz-input-wrapper>
     <br />
     <br />
-    <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" [nzAddOnAfter]="addOnAfterTemplate">
-      <input type="text" nz-input [(ngModel)]="inputValue" />
-    </nz-input-group>
-    <ng-template #addOnBeforeTemplate>
-      <nz-select [ngModel]="'Http://'">
+    <nz-input-wrapper>
+      <nz-select nzInputAddonBefore [ngModel]="'Http://'">
         <nz-option nzLabel="Http://" nzValue="Http://"></nz-option>
         <nz-option nzLabel="Https://" nzValue="Https://"></nz-option>
       </nz-select>
-    </ng-template>
-    <ng-template #addOnAfterTemplate>
-      <nz-select [ngModel]="'.com'">
+      <input nz-input [(ngModel)]="value" />
+      <nz-select nzInputAddonAfter [ngModel]="'.com'">
         <nz-option nzLabel=".com" nzValue=".com"></nz-option>
         <nz-option nzLabel=".jp" nzValue=".jp"></nz-option>
         <nz-option nzLabel=".cn" nzValue=".cn"></nz-option>
         <nz-option nzLabel=".org" nzValue=".org"></nz-option>
       </nz-select>
-    </ng-template>
+    </nz-input-wrapper>
     <br />
     <br />
-    <nz-input-group nzAddOnAfterIcon="setting">
-      <input type="text" nz-input [(ngModel)]="inputValue" />
-    </nz-input-group>
+    <nz-input-wrapper>
+      <input nz-input [(ngModel)]="value" />
+      <nz-icon nzInputAddonBefore nzType="setting" />
+    </nz-input-wrapper>
+    <br />
+    <br />
+    <nz-input-wrapper>
+      <span nzInputAddonBefore>http://</span>
+      <input nz-input [(ngModel)]="value" />
+      <span nzInputSuffix>.com</span>
+    </nz-input-wrapper>
+    <br />
+    <br />
+    <nz-input-wrapper>
+      <nz-cascader nzInputAddonBefore [nzOptions]="[]" nzPlaceHolder="cascader" [style.width.px]="150" />
+      <input nz-input [(ngModel)]="value" />
+    </nz-input-wrapper>
   `
 })
 export class NzDemoInputAddonComponent {
-  inputValue: string = 'my site';
+  readonly value = signal('mysite');
 }

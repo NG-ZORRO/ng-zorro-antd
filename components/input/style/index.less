@@ -32,6 +32,14 @@
     &:hover {
       color: @input-icon-hover-color;
     }
+
+    .@{input-prefix-cls}-disabled & {
+      cursor: not-allowed;
+
+      &:hover {
+        color: @text-color-secondary;
+      }
+    }
   }
 
   &[type='color'] {
