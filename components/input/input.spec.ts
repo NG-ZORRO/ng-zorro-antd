@@ -124,11 +124,13 @@ describe('input', () => {
       });
       it('should set disabled work', fakeAsync(() => {
         flush();
-        expect(inputElement.nativeElement.attributes.getNamedItem('disabled')).toBeNull();
+        expect(inputElement.nativeElement.classList).not.toContain('ant-input-disabled');
+        expect(inputElement.nativeElement.getAttribute('disabled')).toBeNull();
         testComponent.disable();
         flush();
         fixture.detectChanges();
-        expect(inputElement.nativeElement.attributes.getNamedItem('disabled')).toBeDefined();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-disabled');
+        expect(inputElement.nativeElement.getAttribute('disabled')).toBe('true');
       }));
     });
   });
