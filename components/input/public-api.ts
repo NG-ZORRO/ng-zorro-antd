@@ -9,6 +9,8 @@ export * from './input-affix.directive';
 export * from './input-group-slot.component';
 export * from './input-group.component';
 export * from './input-otp.component';
+export * from './input-wrapper.component';
 export * from './input.directive';
 export * from './input.module';
 export * from './textarea-count.component';
+export * from './tokens';

@@ -1,25 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-input-presuffix',
-  imports: [NzInputModule, NzIconModule, NzTooltipModule],
+  imports: [NzInputModule, NzIconModule, NzSelectModule, NzCascaderModule, FormsModule],
   template: `
-    <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">
-      <input type="text" nz-input placeholder="Enter your username" />
-    </nz-input-group>
-    <ng-template #prefixTemplateUser><nz-icon nzType="user" /></ng-template>
-    <ng-template #suffixTemplateInfo>
-      <nz-icon nz-tooltip nzTooltipTitle="Extra information" nzType="info-circle" />
-    </ng-template>
+    <nz-input-wrapper>
+      <nz-icon nzInputPrefix nzType="user" />
+      <input nz-input placeholder="Enter your username" />
+      <nz-icon nzInputSuffix nzType="info" />
+    </nz-input-wrapper>
     <br />
     <br />
-    <nz-input-group nzSuffix="RMB" nzPrefix="￥">
-      <input type="text" nz-input />
-    </nz-input-group>
+    <nz-input-wrapper>
+      <span nzInputPrefix>¥</span>
+      <input nz-input />
+      <span nzInputSuffix>RMB</span>
+    </nz-input-wrapper>
+    <br />
+    <br />
+    <nz-input-wrapper>
+      <span nzInputPrefix>¥</span>
+      <input nz-input disabled />
+      <span nzInputSuffix>RMB</span>
+    </nz-input-wrapper>
+    <br />
+    <br />
+    <nz-input-wrapper>
+      <input nz-input placeholder="input password support suffix" />
+      <nz-icon nzInputSuffix class="ant-input-password-icon" nzType="eye-invisible" />
+      <nz-icon nzInputSuffix nzType="lock" />
+    </nz-input-wrapper>
   `
 })
-export class NzDemoInputPresuffixComponent {}
+export class NzDemoInputPresuffixComponent {
+  readonly value = signal('mysite');
+}
