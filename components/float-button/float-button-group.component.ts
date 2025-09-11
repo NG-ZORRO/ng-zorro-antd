@@ -19,10 +19,15 @@ import {
 } from '@angular/core';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
+import { NzFourDirectionType, NzShapeSCType } from 'ng-zorro-antd/core/types';
+import { generateClassName } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzFloatButtonTopComponent } from './float-button-top.component';
 import { NzFloatButtonComponent } from './float-button.component';
+import { NzFloatButtonType } from './typings';
+
+const CLASS_NAME = 'ant-float-btn-group';
 
 @Component({
   selector: 'nz-float-button-group',
@@ -63,13 +68,13 @@ export class NzFloatButtonGroupComponent {
 
   readonly nzHref = input<string | null>(null);
   readonly nzTarget = input<string | null>(null);
-  readonly nzType = input<'default' | 'primary'>('default');
+  readonly nzType = input<NzFloatButtonType>('default');
   readonly nzIcon = input<string | TemplateRef<void> | null>(null);
-  readonly nzDescription = input<TemplateRef<void> | null>(null);
-  readonly nzShape = input<'circle' | 'square'>('circle');
+  readonly nzDescription = input<string | TemplateRef<void> | null>(null);
+  readonly nzShape = input<NzShapeSCType>('circle');
   readonly nzTrigger = input<'click' | 'hover' | null>(null);
   readonly nzOpen = input<boolean | null>(null);
-  readonly nzPlacement = input<'top' | 'right' | 'bottom' | 'left'>('top');
+  readonly nzPlacement = input<NzFourDirectionType>('top');
   readonly nzOnOpenChange = output<boolean>();
 
   protected dir = inject(Directionality).valueSignal;
@@ -79,7 +84,7 @@ export class NzFloatButtonGroupComponent {
   protected class = computed<string[]>(() => {
     const shape = this.nzShape();
     const dir = this.dir();
-    const classes = ['ant-float-btn-group', this.generateClass(shape)];
+    const classes = [CLASS_NAME, this.generateClass(shape)];
     if (!this.isMenuMode()) {
       classes.push(this.generateClass(`${shape}-shadow`));
     } else {
@@ -95,13 +100,12 @@ export class NzFloatButtonGroupComponent {
     effect(() => {
       if (this.nzFloatButtonComponents()) {
         this.nzFloatButtonComponents().forEach(item => {
-          item.nzShape = this.nzShape();
+          item.shape.set(this.nzShape());
         });
       }
       if (this.nzFloatButtonTopComponents()) {
         this.nzFloatButtonTopComponents().forEach(item => {
-          item.nzShape = this.nzShape();
-          item.detectChanges();
+          item.shape.set(this.nzShape());
         });
       }
     });
@@ -132,6 +136,6 @@ export class NzFloatButtonGroupComponent {
   }
 
   private generateClass(suffix: string): string {
-    return `ant-float-btn-group-${suffix}`;
+    return generateClassName(CLASS_NAME, suffix);
   }
 }

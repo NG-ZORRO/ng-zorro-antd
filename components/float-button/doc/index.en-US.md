@@ -18,7 +18,7 @@ description: A button that floats at the top of the page.
 
 | Property          | Description                               | Type                                  | Default     |
 | ----------------- | ----------------------------------------- | ------------------------------------- | ----------- |
-| `[nzIcon]`        | Set the icon component of button          | `string \| TemplateRef<void>`         | -           |
+| `[nzIcon]`        | Set the icon component of button          | `string \| TemplateRef<void> \| null` | -           |
 | `[nzDescription]` | Text and other content                    | `string \| TemplateRef<void> \| null` | -           |
 | `[nzType]`        | Button type                               | `'default' \| 'primary'`              | `'default'` |
 | `[nzShape]`       | Button shape                              | `'circle' \| 'square'`                | `'circle'`  |
