@@ -122,7 +122,7 @@ export class NzInputDirective implements OnInit {
 
   ngOnInit(): void {
     // statusChanges is only accessible in onInit
-    this.ngControl?.statusChanges?.pipe(startWith(null)).subscribe(() => {
+    this.ngControl?.statusChanges?.pipe(startWith(null), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.controlDisabled.set(!!this.ngControl!.disabled);
     });
   }
