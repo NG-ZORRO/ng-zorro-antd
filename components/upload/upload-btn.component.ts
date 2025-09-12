@@ -158,21 +158,29 @@ export class NzUploadBtnComponent implements OnInit {
       return this.post(file);
     }
     const before = this.options.beforeUpload(file, fileList);
+    const successBeforeLoadHook = (processedFile: NzUploadFile | boolean | Blob | File): void => {
+      const processedFileType = Object.prototype.toString.call(processedFile);
+      if (
+        typeof processedFile !== 'boolean' &&
+        (processedFileType === '[object File]' || processedFileType === '[object Blob]')
+      ) {
+        this.attachUid(processedFile as NzUploadFile);
+        this.post(processedFile as NzUploadFile);
+      } else if (processedFile) {
+        this.post(file);
+      }
+    };
+    const errorBeforeLoadHook = (error: NzSafeAny): void => {
+      warn(`Unhandled upload beforeUpload error`, error);
+    };
+
     if (before instanceof Observable) {
       before.subscribe({
-        next: (processedFile: NzUploadFile) => {
-          const processedFileType = Object.prototype.toString.call(processedFile);
-          if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
-            this.attachUid(processedFile);
-            this.post(processedFile);
-          } else if (processedFile) {
-            this.post(file);
-          }
-        },
-        error: e => {
-          warn(`Unhandled upload beforeUpload error`, e);
-        }
+        next: successBeforeLoadHook,
+        error: errorBeforeLoadHook
       });
+    } else if (before instanceof Promise) {
+      before.then(successBeforeLoadHook).catch(errorBeforeLoadHook);
     } else if (before) {
       return this.post(file);
     }
