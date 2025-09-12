@@ -100,18 +100,17 @@
 
   &-filled {
     background-color: @input-variant-filled-bg !important;
-    border-color: transparent;
+    border-color: transparent !important;
     box-shadow: none !important;
   }
 
-  &-filled:hover&:not(&-focused) {
+  &-filled:hover {
     background-color: @input-variant-filled-hover-bg !important;
-    border-color: transparent !important;
   }
 
   &-filled:focus,
   &-filled&-focused {
-    .active();
+    .active() !important;
     background-color: transparent !important;
     box-shadow: none !important;
   }
