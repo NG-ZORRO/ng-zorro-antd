@@ -142,7 +142,7 @@ export class NzDemoFormValidateReactiveComponent implements OnInit, OnDestroy {
   confirmValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) {
       return { error: true, required: true };
-    } else if (control.value !== this.validateForm.value.password) {
+    } else if (control.value !== control.parent!.value.password) {
       return { confirm: true, error: true };
     }
     return {};
