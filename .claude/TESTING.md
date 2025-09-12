@@ -15,5 +15,5 @@
 ```bash
 npm test # Run all tests
 npm test -- --watch # Watch mode
-npm run test -- --lintPattern="**/mention.spec.ts" # Run tests for a specific file (here: mention)
+npm run test -- --include="**/mention.spec.ts" # Run tests for a specific file (here: mention)
 ```
