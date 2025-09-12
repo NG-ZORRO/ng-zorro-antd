@@ -17,7 +17,6 @@ import {
   input,
   linkedSignal,
   OnInit,
-  Renderer2,
   signal,
   ViewContainerRef
 } from '@angular/core';
@@ -54,7 +53,6 @@ const PREFIX_CLS = 'ant-input';
   providers: [{ provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
 })
 export class NzInputDirective implements OnInit {
-  private renderer = inject(Renderer2);
   private elementRef = inject(ElementRef);
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private destroyRef = inject(DestroyRef);
