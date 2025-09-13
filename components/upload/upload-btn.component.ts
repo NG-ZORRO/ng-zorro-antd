@@ -164,7 +164,7 @@ export class NzUploadBtnComponent implements OnInit {
         typeof processedFile !== 'boolean' &&
         (processedFileType === '[object File]' || processedFileType === '[object Blob]')
       ) {
-        this.attachUid(processedFile as NzUploadFile);
+        (processedFile as NzUploadFile).uid = file.uid; // we are sure that the file is already attached uid, now nzBeforeUpload is used to transform the file, the transform file needs to have the same uid as the original file
         this.post(file, processedFile as NzUploadFile);
       } else if (processedFile) {
         this.post(file);
