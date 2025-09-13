@@ -458,6 +458,75 @@ describe('upload', () => {
             expect(warnMsg).toContain(`Unhandled upload beforeUpload error`);
           });
         });
+
+        describe('using promise', () => {
+          it('should upload when promise resolves to true', fakeAsync(() => {
+            let hookExecuted = false;
+            instance.beforeUpload = (): Promise<boolean> => {
+              hookExecuted = true;
+              return Promise.resolve(true);
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(hookExecuted).toBe(true);
+          }));
+
+          it('should upload when promise resolves to file', fakeAsync(() => {
+            let hookExecuted = false;
+            instance.beforeUpload = (file: NzUploadFile): Promise<NzUploadFile> => {
+              hookExecuted = true;
+              return Promise.resolve(file);
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(hookExecuted).toBe(true);
+          }));
+
+          it('should upload with blob when promise resolves to blob', fakeAsync(() => {
+            let hookExecuted = false;
+            const testBlob = new Blob(['test content'], { type: 'text/plain' });
+            instance.beforeUpload = (): Promise<Blob> => {
+              hookExecuted = true;
+              return Promise.resolve(testBlob);
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(hookExecuted).toBe(true);
+          }));
+
+          it('should cancel upload when promise resolves to false', fakeAsync(() => {
+            expect(instance._nzChange).toBeUndefined();
+            instance.beforeUpload = (): Promise<boolean> => Promise.resolve(false);
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(instance._nzChange).toBeUndefined();
+          }));
+
+          it('should work with promise that resolves to boolean true', fakeAsync(() => {
+            let hookCalled = false;
+            instance.beforeUpload = (): Promise<boolean> => {
+              hookCalled = true;
+              return Promise.resolve(true);
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(hookCalled).toBe(true);
+          }));
+
+          it('should cancel upload when promise rejects with false', fakeAsync(() => {
+            expect(instance._nzChange).toBeUndefined();
+            instance.beforeUpload = (): Promise<boolean> => Promise.reject(false);
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(instance._nzChange).toBeUndefined();
+          }));
+        });
       });
 
       describe('[nzFilter]', () => {
@@ -1309,6 +1378,57 @@ describe('upload', () => {
         expect(comp.options.beforeUpload).toHaveBeenCalled();
         expect(comp.options.onStart).not.toHaveBeenCalled();
       });
+
+      it('should handle promise-based beforeUpload that resolves to true', fakeAsync(() => {
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        comp.options.beforeUpload = (): Promise<boolean> => Promise.resolve(true);
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        tick();
+        const req = http.expectOne('/test');
+        expect(comp.options.onStart).toHaveBeenCalled();
+        req.flush('ok');
+      }));
+
+      it('should not start upload when promise-based beforeUpload resolves to false', fakeAsync(() => {
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        comp.options.beforeUpload = (): Promise<boolean> => Promise.resolve(false);
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        tick();
+        expect(comp.options.onStart).not.toHaveBeenCalled();
+        http.expectNone('/test');
+      }));
+
+      it('should handle promise-based beforeUpload with file transformation', fakeAsync(() => {
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        const baseFile = new File(['modified'], 'modified.txt', { type: 'text/plain' });
+        const transformedFile: NzUploadFile = {
+          ...baseFile,
+          uid: 'test-uid',
+          name: baseFile.name,
+          size: baseFile.size,
+          type: baseFile.type,
+          lastModified: baseFile.lastModified.toString(),
+          originFileObj: baseFile
+        };
+        comp.options.beforeUpload = (): Promise<NzUploadFile> => Promise.resolve(transformedFile);
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        tick();
+        const req = http.expectOne('/test');
+        expect(comp.options.onStart).toHaveBeenCalled();
+        req.flush('ok');
+      }));
+
+      it('should handle promise rejection in beforeUpload', fakeAsync(() => {
+        let warnMsg = '';
+        console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        comp.options.beforeUpload = (): Promise<boolean> => Promise.reject(new Error('Validation failed'));
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        tick();
+        expect(comp.options.onStart).not.toHaveBeenCalled();
+        expect(warnMsg).toContain('Unhandled upload beforeUpload error');
+        http.expectNone('/test');
+      }));
 
       it('should error when request error', fakeAsync(() => {
         spyOn<NzSafeAny>(comp.options, 'onStart');

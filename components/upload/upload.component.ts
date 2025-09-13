@@ -43,7 +43,8 @@ import {
   NzUploadType,
   NzUploadXHRArgs,
   UploadFilter,
-  ZipButtonOptions
+  ZipButtonOptions,
+  type NzBeforeUploadFileType
 } from './interface';
 import { NzUploadBtnComponent } from './upload-btn.component';
 import { NzUploadListComponent } from './upload-list.component';
@@ -84,7 +85,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzAction?: string | ((file: NzUploadFile) => string | Observable<string>);
   @Input({ transform: booleanAttribute }) nzDirectory = false;
   @Input({ transform: booleanAttribute }) nzOpenFileDialogOnClick = true;
-  @Input() nzBeforeUpload?: (file: NzUploadFile, fileList: NzUploadFile[]) => boolean | Observable<boolean>;
+  @Input() nzBeforeUpload?: (file: NzUploadFile, fileList: NzUploadFile[]) => NzBeforeUploadFileType;
   @Input() nzCustomRequest?: (item: NzUploadXHRArgs) => Subscription;
   @Input() nzData?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
   @Input() nzFilter: UploadFilter[] = [];
@@ -114,6 +115,10 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzPreview?: (file: NzUploadFile) => void;
   @Input() nzPreviewFile?: (file: NzUploadFile) => Observable<string>;
   @Input() nzPreviewIsImage?: (file: NzUploadFile) => boolean;
+  /**
+   * @deprecated will be removed in v22.0.0
+   * Use `nzBeforeUpload` instead.
+   */
   @Input() nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
   @Input() nzDownload?: (file: NzUploadFile) => void;
   @Input() nzIconRender: NzIconRenderTemplate | null = null;
