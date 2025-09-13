@@ -9,7 +9,7 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
   selector: 'nz-demo-upload-transform-file',
   imports: [NzButtonModule, NzIconModule, NzUploadModule],
   template: `
-    <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" [nzTransformFile]="transformFile">
+    <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" [nzBeforeUpload]="transformFile">
       <button nz-button>
         <nz-icon nzType="upload" />
         Upload

@@ -8,7 +8,7 @@ import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpRes
 import { Component, DestroyRef, ElementRef, inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, of, Subscription } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -165,7 +165,7 @@ export class NzUploadBtnComponent implements OnInit {
         (processedFileType === '[object File]' || processedFileType === '[object Blob]')
       ) {
         this.attachUid(processedFile as NzUploadFile);
-        this.post(processedFile as NzUploadFile);
+        this.post(file, processedFile as NzUploadFile);
       } else if (processedFile) {
         this.post(file);
       }
@@ -186,11 +186,11 @@ export class NzUploadBtnComponent implements OnInit {
     }
   }
 
-  private post(file: NzUploadFile): void {
+  private post(file: NzUploadFile, processedFile?: string | Blob | File | NzUploadFile): void {
     if (this.destroyed) {
       return;
     }
-    let process$: Observable<string | Blob | File | NzUploadFile> = of(file);
+    let process$: Observable<string | Blob | File | NzUploadFile> = of(processedFile || file);
     let transformedFile: string | Blob | File | NzUploadFile | undefined;
     const opt = this.options;
     const { uid } = file;
@@ -242,10 +242,21 @@ export class NzUploadBtnComponent implements OnInit {
       );
     }
 
+    /**
+     * TODO
+     * All this part of code needs to be removed in v 22.0.0 whe we will remove the `nzTransformFile` hook
+     */
     if (typeof data === 'function') {
       const dataResult = (data as (file: NzUploadFile) => {} | Observable<{}>)(file);
       if (dataResult instanceof Observable) {
         process$ = process$.pipe(
+          /**
+           * this is a little bit tricky but here is the explanation:
+           * Potentially, people can use the `beforeUpload` hook to transform the file, and also `nzTransformFile` hook to transform the file,
+           * if beforeUpload hook transform the file, so nzTransformFile hook must not be called, otherwise the file will be transformed twice
+           * Normally this can not happen, but it is possible until we remove the `nzTransformFile` hook
+           */
+          filter(() => !processedFile),
           switchMap(() => dataResult),
           map(res => {
             args.data = res;
