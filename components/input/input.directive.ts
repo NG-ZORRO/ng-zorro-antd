@@ -45,6 +45,7 @@ const PREFIX_CLS = 'ant-input';
     '[class.ant-input-lg]': `finalSize() === 'large'`,
     '[class.ant-input-sm]': `finalSize() === 'small'`,
     '[attr.disabled]': 'finalDisabled() || null',
+    '[attr.readonly]': 'readonly() || null',
     '[class.ant-input-rtl]': `dir() === 'rtl'`,
     '[class.ant-input-stepperless]': `nzStepperless()`,
     '[class.ant-input-focused]': 'focused()'
@@ -75,6 +76,7 @@ export class NzInputDirective implements OnInit {
   readonly nzStepperless = input(true, { transform: booleanAttribute });
   readonly nzStatus = input<NzStatus>('');
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly readonly = input(false, { transform: booleanAttribute });
 
   readonly controlDisabled = signal(false);
   readonly finalDisabled = this.ngControl ? this.controlDisabled : this.disabled;

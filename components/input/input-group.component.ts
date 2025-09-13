@@ -45,6 +45,9 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
   public readonly elementRef = inject(ElementRef);
 }
 
+/**
+ * @deprecated Will be removed in v22. It is recommended to use `<nz-input-wrapper>` instead.
+ */
 @Component({
   selector: 'nz-input-group',
   exportAs: 'nzInputGroup',
