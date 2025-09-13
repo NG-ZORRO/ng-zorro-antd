@@ -45,6 +45,9 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
   public readonly elementRef = inject(ElementRef);
 }
 
+/**
+ * @deprecated Will be removed in v22. It is recommended to use `<nz-input-wrapper>` instead.
+ */
 @Component({
   selector: 'nz-input-group',
   exportAs: 'nzInputGroup',
@@ -212,7 +215,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
       .pipe(
         switchMap(list => merge(...[listOfInputChange$, ...list.map((input: NzInputDirective) => input.disabled$)])),
         mergeMap(() => listOfInputChange$),
-        map(list => list.some((input: NzInputDirective) => input.disabled)),
+        map(list => list.some((input: NzInputDirective) => input.finalDisabled())),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(disabled => {
