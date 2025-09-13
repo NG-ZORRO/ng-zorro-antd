@@ -164,7 +164,7 @@ export class NzUploadBtnComponent implements OnInit {
         typeof processedFile !== 'boolean' &&
         (processedFileType === '[object File]' || processedFileType === '[object Blob]')
       ) {
-        (processedFile as NzUploadFile).uid = file.uid; // we are sure that the file is already attached uid, now nzBeforeUpload is used to transform the file, the transform file needs to have the same uid as the original file
+        (processedFile as NzUploadFile).uid = file.uid; // we are sure that the file has already an uid, now nzBeforeUpload is used to transform the file, the transform file needs to have the same uid as the original file
         this.post(file, processedFile as NzUploadFile);
       } else if (processedFile) {
         this.post(file);
@@ -244,7 +244,7 @@ export class NzUploadBtnComponent implements OnInit {
 
     /**
      * TODO
-     * All this part of code needs to be removed in v 22.0.0 whe we will remove the `nzTransformFile` hook
+     * All this part of code needs to be removed in v22.0.0 when we will remove the `nzTransformFile` hook
      */
     if (typeof data === 'function') {
       const dataResult = (data as (file: NzUploadFile) => {} | Observable<{}>)(file);
