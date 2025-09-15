@@ -153,6 +153,7 @@
 @font-size-base: 14px;
 @font-size-lg: @font-size-base + 2px;
 @font-size-sm: 12px;
+@font-size-icon: @font-size-sm;
 @heading-1-size: ceil(@font-size-base * 2.71);
 @heading-2-size: ceil(@font-size-base * 2.14);
 @heading-3-size: ceil(@font-size-base * 1.71);
@@ -163,6 +164,7 @@
 @line-width: 1px;
 @border-radius-base: 2px;
 @border-radius-sm: 2px;
+@border-radius-lg: 4px;
 
 // control border
 @control-border-radius: @border-radius-base;
@@ -486,9 +488,9 @@
 @input-height-base: @height-base;
 @input-height-lg: @height-lg;
 @input-height-sm: @height-sm;
-@input-padding-horizontal: @control-padding-horizontal - 1px;
+@input-padding-horizontal: @control-padding-horizontal - @line-width;
 @input-padding-horizontal-base: @input-padding-horizontal;
-@input-padding-horizontal-sm: @control-padding-horizontal-sm - 1px;
+@input-padding-horizontal-sm: @control-padding-horizontal-sm - @line-width;
 @input-padding-horizontal-lg: @input-padding-horizontal;
 @input-padding-vertical-base: max(
   (round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) -
@@ -529,6 +531,7 @@
 
 // Select
 // ---
+@select-height: @input-height-base;
 @select-border-color: @border-color-base;
 @select-item-selected-color: @text-color;
 @select-item-selected-font-weight: 600;
@@ -545,6 +548,7 @@
 @select-selection-item-border-color: @border-color-split;
 @select-single-item-height-lg: 40px;
 @select-multiple-item-height: @input-height-base - @input-padding-vertical-base * 2; // Normal 24px
+@select-multiple-item-height-sm: @input-height-sm - @input-padding-vertical-base * 2;
 @select-multiple-item-height-lg: 32px;
 @select-multiple-item-spacing-half: ceil((@input-padding-vertical-base / 2));
 @select-multiple-disabled-background: @input-disabled-bg;

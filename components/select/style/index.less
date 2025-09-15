@@ -141,10 +141,10 @@
     inset-inline-end: @input-padding-horizontal-base;
     display: flex;
     align-items: center;
-    height: @font-size-sm;
-    margin-top: (-@font-size-sm / 2);
+    height: @font-size-icon;
+    margin-top: (-@font-size-icon / 2);
     color: @disabled-color;
-    font-size: @font-size-sm;
+    font-size: @font-size-icon;
     line-height: 1;
     text-align: center;
     pointer-events: none;
@@ -175,25 +175,28 @@
   &-clear {
     position: absolute;
     top: 50%;
-    inset-inline-start: auto;
-    inset-inline-end: @input-padding-horizontal-base;
     z-index: 1;
     display: inline-block;
-    width: @font-size-sm;
-    height: @font-size-sm;
-    margin-top: (-@font-size-sm / 2);
+    width: @font-size-icon;
+    height: @font-size-icon;
+    margin-top: (-@font-size-icon / 2);
     color: @disabled-color;
-    font-size: @font-size-sm;
+    font-size: @font-size-icon;
     font-style: normal;
     line-height: 1;
     text-align: center;
     text-transform: none;
     background: @select-clear-background;
+    // https://github.com/ant-design/ant-design/issues/54205
+    // Force GPU compositing on Safari to prevent flickering on opacity/transform transitions
+    transform: translateZ(0);
     cursor: pointer;
     opacity: 0;
     transition:
       color 0.3s ease,
       opacity 0.15s ease;
+    inset-inline-start: auto;
+    inset-inline-end: @input-padding-horizontal-base;
     text-rendering: auto;
 
     &::before {
