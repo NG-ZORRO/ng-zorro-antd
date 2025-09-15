@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-`beforeUpload` only prevent upload behavior when return `false` or `Promise.reject()` or an `Observable` throw an error.
+`nzBeforeUpload` only prevent upload behavior when return `false` or `Promise.reject()` or an `Observable` throw an error.
