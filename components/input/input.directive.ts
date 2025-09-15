@@ -4,174 +4,129 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
+  booleanAttribute,
   ComponentRef,
+  computed,
   DestroyRef,
   Directive,
+  effect,
   ElementRef,
-  Input,
-  OnChanges,
-  OnInit,
-  Renderer2,
-  SimpleChanges,
-  ViewContainerRef,
-  booleanAttribute,
-  computed,
   inject,
-  signal
+  input,
+  linkedSignal,
+  OnInit,
+  signal,
+  ViewContainerRef
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { NgControl } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NgClassInterface, NzSizeLDSType, NzStatus, NzValidateStatus, NzVariant } from 'ng-zorro-antd/core/types';
+import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
+
+const PREFIX_CLS = 'ant-input';
 
 @Directive({
   selector: 'input[nz-input],textarea[nz-input]',
   exportAs: 'nzInput',
   host: {
     class: 'ant-input',
-    '[class.ant-input-disabled]': 'disabled',
-    '[class.ant-input-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
-    '[class.ant-input-filled]': `nzVariant === 'filled'`,
-    '[class.ant-input-underlined]': `nzVariant === 'underlined'`,
+    '[class]': 'classes()',
+    '[class.ant-input-disabled]': 'finalDisabled()',
+    '[class.ant-input-borderless]': `nzVariant() === 'borderless' || (nzVariant() === 'outlined' && nzBorderless())`,
+    '[class.ant-input-filled]': `nzVariant() === 'filled'`,
+    '[class.ant-input-underlined]': `nzVariant() === 'underlined'`,
     '[class.ant-input-lg]': `finalSize() === 'large'`,
     '[class.ant-input-sm]': `finalSize() === 'small'`,
-    '[attr.disabled]': 'disabled || null',
-    '[class.ant-input-rtl]': `dir=== 'rtl'`,
-    '[class.ant-input-stepperless]': `nzStepperless`,
+    '[attr.disabled]': 'finalDisabled() || null',
+    '[class.ant-input-rtl]': `dir() === 'rtl'`,
+    '[class.ant-input-stepperless]': `nzStepperless()`,
     '[class.ant-input-focused]': 'focused()'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   providers: [{ provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' }]
 })
-export class NzInputDirective implements OnChanges, OnInit {
-  private renderer = inject(Renderer2);
+export class NzInputDirective implements OnInit {
   private elementRef = inject(ElementRef);
-  protected hostView = inject(ViewContainerRef);
-  private directionality = inject(Directionality);
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private destroyRef = inject(DestroyRef);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
   private focusMonitor = inject(FocusMonitor);
+  protected hostView = inject(ViewContainerRef);
+
+  readonly ngControl = inject(NgControl, { self: true, optional: true });
 
   /**
    * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
    */
-  @Input({ transform: booleanAttribute }) nzBorderless = false;
-  @Input() nzVariant: NzVariant = 'outlined';
-  @Input() nzSize: NzSizeLDSType = 'default';
-  @Input({ transform: booleanAttribute }) nzStepperless: boolean = true;
-  @Input() nzStatus: NzStatus = '';
-  @Input({ transform: booleanAttribute })
-  get disabled(): boolean {
-    if (this.ngControl && this.ngControl.disabled !== null) {
-      return this.ngControl.disabled;
-    }
-    return this._disabled;
-  }
-  set disabled(value: boolean) {
-    this._disabled = value;
-  }
-  _disabled = false;
-  disabled$ = new Subject<boolean>();
+  readonly nzBorderless = input(false, { transform: booleanAttribute });
+  readonly nzVariant = input<NzVariant>('outlined');
+  readonly nzSize = input<NzSizeLDSType>('default');
+  /**
+   * @deprecated Will be removed in v22.
+   */
+  readonly nzStepperless = input(true, { transform: booleanAttribute });
+  readonly nzStatus = input<NzStatus>('');
+  readonly disabled = input(false, { transform: booleanAttribute });
 
-  dir: Direction = 'ltr';
-  // status
-  prefixCls: string = 'ant-input';
-  status: NzValidateStatus = '';
-  statusCls: NgClassInterface = {};
-  hasFeedback: boolean = false;
-  feedbackRef: ComponentRef<NzFormItemFeedbackIconComponent> | null = null;
-  components: Array<ComponentRef<NzFormItemFeedbackIconComponent>> = [];
-  ngControl = inject(NgControl, { self: true, optional: true });
+  readonly controlDisabled = signal(false);
+  readonly finalDisabled = this.ngControl ? this.controlDisabled : this.disabled;
+  readonly dir = inject(Directionality).valueSignal;
+  // TODO: When the input group is removed, we can remove this.
+  readonly size = linkedSignal(this.nzSize);
 
-  protected focused = signal<boolean>(false);
-  protected finalSize = computed(() => {
+  readonly status = this.nzFormStatusService
+    ? toSignal(this.nzFormStatusService.formStatusChanges.pipe(map(value => value.status)), { initialValue: '' })
+    : this.nzStatus;
+  readonly hasFeedback = toSignal(
+    this.nzFormStatusService?.formStatusChanges.pipe(map(value => value.hasFeedback)) ?? EMPTY,
+    { initialValue: false }
+  );
+  readonly classes = computed(() => getStatusClassNames(PREFIX_CLS, this.status(), this.hasFeedback()));
+
+  protected readonly focused = signal<boolean>(false);
+  protected readonly finalSize = computed(() => {
     if (this.compactSize) {
       return this.compactSize();
     }
     return this.size();
   });
 
-  private size = signal<NzSizeLDSType>(this.nzSize);
+  feedbackRef: ComponentRef<NzFormItemFeedbackIconComponent> | null = null;
+  // TODO: When the input group is removed, we can remove this.
+  disabled$ = toObservable(this.finalDisabled);
 
   constructor() {
     this.destroyRef.onDestroy(() => {
       this.focusMonitor.stopMonitoring(this.elementRef);
     });
-  }
-
-  ngOnInit(): void {
-    this.nzFormStatusService?.formStatusChanges
-      .pipe(
-        distinctUntilChanged((pre, cur) => {
-          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(({ status, hasFeedback }) => {
-        this.setStatusStyles(status, hasFeedback);
-      });
-
-    if (this.ngControl) {
-      this.ngControl.statusChanges
-        ?.pipe(
-          filter(() => this.ngControl!.disabled !== null),
-          takeUntilDestroyed(this.destroyRef)
-        )
-        .subscribe(() => {
-          this.disabled$.next(this.ngControl!.disabled!);
-        });
-    }
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-    });
 
     this.focusMonitor
       .monitor(this.elementRef, false)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(origin => this.focused.set(!!origin));
+
+    effect(() => {
+      this.renderFeedbackIcon();
+    });
   }
 
-  ngOnChanges({ disabled, nzStatus, nzSize }: SimpleChanges): void {
-    if (disabled) {
-      this.disabled$.next(this.disabled);
-    }
-    if (nzStatus) {
-      this.setStatusStyles(this.nzStatus, this.hasFeedback);
-    }
-    if (nzSize) {
-      this.size.set(nzSize.currentValue);
-    }
-  }
-
-  private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {
-    // set inner status
-    this.status = status;
-    this.hasFeedback = hasFeedback;
-    this.renderFeedbackIcon();
-    // render status if nzStatus is set
-    this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
-    Object.keys(this.statusCls).forEach(status => {
-      if (this.statusCls[status]) {
-        this.renderer.addClass(this.elementRef.nativeElement, status);
-      } else {
-        this.renderer.removeClass(this.elementRef.nativeElement, status);
-      }
+  ngOnInit(): void {
+    // statusChanges is only accessible in onInit
+    this.ngControl?.statusChanges?.pipe(startWith(null), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.controlDisabled.set(!!this.ngControl!.disabled);
     });
   }
 
   private renderFeedbackIcon(): void {
-    if (!this.status || !this.hasFeedback || !!this.nzFormNoStatusService) {
+    if (!this.status() || !this.hasFeedback() || !!this.nzFormNoStatusService) {
       // remove feedback
       this.hostView.clear();
       this.feedbackRef = null;
@@ -180,7 +135,7 @@ export class NzInputDirective implements OnChanges, OnInit {
 
     this.feedbackRef = this.feedbackRef || this.hostView.createComponent(NzFormItemFeedbackIconComponent);
     this.feedbackRef.location.nativeElement.classList.add('ant-input-suffix');
-    this.feedbackRef.instance.status = this.status;
+    this.feedbackRef.instance.status = this.status();
     this.feedbackRef.instance.updateIcon();
   }
 }
