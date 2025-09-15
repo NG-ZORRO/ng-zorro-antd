@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-`beforeUpload` 仅在返回 `false` 或 `Promise.reject()` 或 `Observable` 抛出错误时阻止上传行为。
+`nzBeforeUpload` 仅在返回 `false` 或 `Promise.reject()` 或 `Observable` 抛出错误时阻止上传行为。
 
 ## en-US
 
