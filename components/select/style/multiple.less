@@ -37,12 +37,12 @@
   @result-container-padding: @container-padding;
 }
 
-// Utility to calculate select item distance - equivalent to getSelectItemStyle function
+// Utility to calculate select item distance
 .getSelectItemStyle(@select-height, @multiple-item-height) {
   @select-item-dist: calc(calc(@select-height - @multiple-item-height) / 2 - @line-width);
 }
 
-// Overflow styles - equivalent to genOverflowStyle function
+// Overflow styles
 .genOverflowStyle() {
   // Overflow container
   .@{select-overflow-prefix-cls} {
@@ -117,8 +117,8 @@
   }
 }
 
-// Selection styles - equivalent to genSelectionStyle function
-.genSelectionStyle(@multiple-item-height, @base-padding, @container-padding, @border-radius) {
+// Selection styles
+.genSelectionStyle(@select-height, @multiple-item-height, @base-padding, @container-padding, @border-radius) {
   .getSelectItemStyle(@select-height, @multiple-item-height);
   .getMultipleSelectorUnit(@multiple-item-height, @base-padding, @container-padding);
 
@@ -246,7 +246,7 @@
     .genOverflowStyle();
 
     // Include selection styles with calculated values
-    .genSelectionStyle(@multiple-item-height, @base-padding, @container-padding, @border-radius);
+    .genSelectionStyle(@select-height, @multiple-item-height, @base-padding, @container-padding, @border-radius);
 
     // Selector specific styles
     .@{select-prefix-cls}-selector {
