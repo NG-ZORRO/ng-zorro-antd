@@ -13,6 +13,6 @@ title:
 
 ## en-US
 
-> The old `nzTransform` input has been deprecated.
+> The old `nzTransformFile` input has been deprecated.
 
 Use `nzBeforeUpload` to transform file before requesting it, for example to add a watermark.
