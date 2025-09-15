@@ -13,4 +13,6 @@ title:
 
 ## en-US
 
-Use `nzBeforeUpload`, since `nzTransform` is deprecated, for transform file before request such as add a watermark.
+> The old `nzTransform` input has been deprecated.
+
+Use `nzBeforeUpload` to transform file before requesting it, for example to add a watermark.
