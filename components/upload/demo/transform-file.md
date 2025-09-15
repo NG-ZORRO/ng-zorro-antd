@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-> 旧的 `nzTransform` 属性已被弃用.
+> 旧的 `nzTransformFile` 属性已被弃用.
 
 使用 `nzBeforeUpload` 在请求之前转换文件，例如添加水印。
 
