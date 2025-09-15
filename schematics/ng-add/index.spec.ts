@@ -10,6 +10,7 @@ import { Tree } from '@angular-devkit/schematics';
 import { NodePackageName } from '@angular-devkit/schematics/tasks/package-manager/options';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { readWorkspace } from '@schematics/angular/utility';
+import { getPackageJsonDependency } from '@schematics/angular/utility/dependencies';
 
 import { join } from 'path';
 
@@ -34,38 +35,32 @@ describe('ng-add schematic', () => {
   it('should update package.json', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add', options, appTree);
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
-    const dependencies = packageJson.dependencies;
-
-    expect(dependencies['ng-zorro-antd']).toBeDefined();
-
+    expect(getPackageJsonDependency(tree, 'ng-zorro-antd')).not.toBeNull();
     expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(true);
   });
 
   it('should add hammerjs to package.json', async () => {
     const options = { ...defaultOptions, gestures: true };
     const tree = await runner.runSchematic('ng-add', options, appTree);
-
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
-    const dependencies = packageJson.dependencies;
-
-    expect(dependencies.hammerjs).toBeDefined();
+    expect(getPackageJsonDependency(tree, 'hammerjs')).not.toBeNull();
   });
 
   it('should skip package.json', async () => {
     const options = { ...defaultOptions, skipPackageJson: true };
     const tree = await runner.runSchematic('ng-add', options, appTree);
-
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
-    const dependencies = packageJson.dependencies;
-
-    expect(dependencies['ng-zorro-antd']).toBeUndefined();
+    expect(getPackageJsonDependency(tree, 'ng-zorro-antd')).toBeNull();
   });
 
   it('should skip install dependency package', async () => {
     const options = { ...defaultOptions, skipInstall: true };
     await runner.runSchematic('ng-add', options, appTree);
     expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(false);
+  });
+
+  it('should add less as devDependencies when choosing custom theme in non-LESS project', async () => {
+    const options = { ...defaultOptions, theme: true };
+    const tree = await runner.runSchematic('ng-add', options, appTree);
+    expect(getPackageJsonDependency(tree, 'less')).not.toBeNull();
   });
 
   it('should add hammerjs import to project main file', async () => {
