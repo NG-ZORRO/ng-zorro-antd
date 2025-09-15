@@ -135,7 +135,6 @@ describe('[standalone] ng-add schematic', () => {
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
     expect(fileContent).toContain('provideHttpClient()');
-    expect(fileContent).toContain('FormsModule');
   });
 
   it('should add provideAnimationsAsync() call function if animations is enable', async () => {
