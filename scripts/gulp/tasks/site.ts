@@ -14,7 +14,7 @@ import { buildConfig } from '../../build-config';
 import { generateLLms } from '../../generate-llms';
 import { generate } from '../../prerender/ngsw-config';
 import { generateSitemap } from '../../prerender/sitemap';
-import { execNodeTask, execTask } from '../util/task-helpers';
+import { execTask } from '../util/task-helpers';
 
 const siteGenerate = require('../../site/generate-site');
 const themeGenerate = require('../../site/generate-theme');
@@ -55,14 +55,11 @@ task('init:site', async done => {
 /** Run `ng serve` */
 task('serve:site', async done => {
   const port = await detect(4200);
-  execNodeTask('@angular/cli', 'ng', ['serve', 'ng-zorro-antd-doc', '--port', port === 4200 ? '4200' : '0'])(done);
+  execTask('ng', ['serve', 'ng-zorro-antd-doc', '--port', port === 4200 ? '4200' : '0'])(done);
 });
 
 /** Run `ng build ng-zorro-antd-doc --configuration=production` */
-task(
-  'build:site-doc',
-  execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=production'])
-);
+task('build:site-doc', execTask('ng', ['build', 'ng-zorro-antd-doc', '--configuration=production']));
 
 /** Generate llms.txt and llms-full.txt */
 task('site:llms-txt', generateLLms);

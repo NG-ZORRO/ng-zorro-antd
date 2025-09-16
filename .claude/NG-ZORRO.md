@@ -50,7 +50,6 @@ ng-zorro-antd/
 │ └── utils/
 ├── scripts/ # Build and utility scripts
 │ ├── build/
-│ ├── code-check/
 │ ├── gulp/
 │ ├── prerender/
 │ ├── release/

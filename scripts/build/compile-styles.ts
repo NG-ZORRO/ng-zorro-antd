@@ -4,7 +4,7 @@
  */
 
 import * as fs from 'fs-extra';
-import * as less from 'less';
+import less from 'less';
 
 import * as path from 'path';
 
