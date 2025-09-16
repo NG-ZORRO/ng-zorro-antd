@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { confirm, input, select } from '@inquirer/prompts';
 import { bgBlue, bgGreen, bgRed, bgYellow, blue, green, red, yellow } from 'chalk';
 import * as fs from 'fs-extra';
 
@@ -13,7 +14,12 @@ import { buildConfig } from '../build-config';
 import { checkVersionNumber } from './parse-version';
 import { releaseSite } from './release-site';
 
-const read = require('readline-sync');
+const handleExitPromptError = (error: Error): void => {
+  if (error.name === 'ExitPromptError') {
+    log.info('Exited, see you next time :)');
+    process.exit(1);
+  }
+};
 
 /* Shortcut methods */
 const print = console.log;
@@ -28,10 +34,9 @@ const log = {
 };
 
 /* The whole process */
-
 run();
 
-function run(): void {
+async function run(): Promise<void> {
   const stages = [
     {
       name: 'Fetch upstream',
@@ -59,16 +64,22 @@ function run(): void {
     }
   ];
 
-  let index = read.keyInSelect(
-    stages.map(e => e.name),
-    'Where do you want to start?'
-  );
-  if (index === -1) {
-    return;
-  }
-  log.info('Starting publishing process...');
-  for (index; index < stages.length; index++) {
-    stages[index].fun();
+  try {
+    const selectedOption = await select({
+      message: 'Where do you want to start?',
+      choices: stages.map((stage, index) => ({
+        name: `[${index}] ${stage.name}`,
+        value: index
+      }))
+    });
+
+    let index = selectedOption;
+    log.info('Starting publishing process...');
+    for (index; index < stages.length; index++) {
+      await stages[index].fun();
+    }
+  } catch (e) {
+    handleExitPromptError(e);
   }
 }
 
@@ -84,7 +95,7 @@ function getUpstreamRemoteName(): string | null {
   const output = spawnSync('git', ['remote', 'show'], {
     encoding: 'utf-8'
   });
-  const names: string[] = (output.stdout as string).split('\n').map((e: string) => e.trim());
+  const names: string[] = (output.stdout as string).split('\n').map(e => e.trim());
   let i = 0;
   while (i < names.length) {
     const url = getRemoteUrl(names[i]);
@@ -107,7 +118,7 @@ function getRemoteUrl(remote: string): string {
 /**
  * Publisher should input the new version number. This script would check if the input is valid.
  */
-function bumpVersion(): void {
+async function bumpVersion(): Promise<void> {
   log.info('Updating version number...');
 
   const packageJsonPath = path.join(buildConfig.componentsDir, 'package.json');
@@ -118,7 +129,7 @@ function bumpVersion(): void {
   let version: string;
 
   while (!versionNumberValid) {
-    version = read.question(`${bgYellow.black('Please input the new version:')}  `);
+    version = await input({ message: 'Please input the new version:' });
     if (checkVersionNumber(currentVersion, version)) {
       versionNumberValid = true;
     } else {
@@ -157,7 +168,7 @@ function fetchUpstream(): void {
   log.success('Older versions fetched!');
 }
 
-function updateChangelog(): void {
+async function updateChangelog(): Promise<void> {
   log.info('Generating changelog...');
   execSync('npm run changelog');
   log.success('Changelog generated!');
@@ -165,10 +176,8 @@ function updateChangelog(): void {
   let completeEditing = false;
 
   while (!completeEditing) {
-    const result = read.question(
-      `${bgYellow.black('Please manually update docs/changelog. Press [Y] if you are done:')}  `
-    );
-    if (result.trim().toLowerCase() === 'y') {
+    const result = await confirm({ message: 'Please manually update docs/changelog. Press [Y] if you are done:' });
+    if (result) {
       completeEditing = true;
     }
   }
