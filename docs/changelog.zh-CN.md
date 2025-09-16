@@ -15,6 +15,21 @@ timeline: true
 
 ---
 
+## 20.3.0
+
+`2025-09-16`
+
+### Features
+
+- **carousel:** 新增 `nzArrows` 属性 ([#9355](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9355)) ([1b9714b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1b9714baf8d320b423f390d713af6533e0390f24))
+- **check-list:** 清单项支持定义默认是否完成 ([#9343](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9343)) ([235b493](https://github.com/NG-ZORRO/ng-zorro-antd/commit/235b493705d297ccff21969f2d770b7f4eba7fb5))
+- **i18n:** `provideNzI18n` 支持 factory function 作为参数 ([#9393](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9393)) ([1371265](https://github.com/NG-ZORRO/ng-zorro-antd/commit/13712654d1c3b5de2eabc577c22d0f98a59a8345))
+- **mention:** 新增 `nzClear` 属性 ([#9377](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9377)) ([cbecebf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cbecebfda401b2fd873163638d3e2cc4dfd638c1))
+- **mention:** 新增 `nzVariant` 属性 ([#9379](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9379)) ([d92568b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d92568b781bb16bfef55e645a15022ef54583ba1))
+- **segmented:** 新增 `nzShape` 属性 ([#9368](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9368)) ([ffce6c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ffce6c385a3c994132e096a33a83bd77d01a6b7b))
+- **segmented:** 新增 `nzName` 属性并支持键盘交互 ([#9373](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9373)) ([ebd8bdc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ebd8bdc9d0c71fc6f691c7c900e8b43e26cc0e84))
+- **upload:** `nzBeforeUpload` 支持 promise 返回类型 ([#9402](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9402)) ([cece107](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cece1077e5f375c225ae32973b863f8123520717))
+
 ## 20.2.1
 
 `2025-08-31`
