@@ -17,10 +17,12 @@ import { NzDrawerComponent } from './drawer.component';
 
 export class DrawerBuilderForService<T extends {}, R> {
   private drawerRef: NzDrawerComponent<T, R> | null;
-  private overlayRef: OverlayRef = createOverlayRef(inject(Injector));
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private options: NzDrawerOptions) {
+  constructor(
+    private overlayRef: OverlayRef,
+    private options: NzDrawerOptions
+  ) {
     /** pick {@link NzDrawerOptions.nzOnCancel} and omit this option */
     const { nzOnCancel, ...componentOption } = this.options;
     this.drawerRef = this.overlayRef.attach(new ComponentPortal(NzDrawerComponent)).instance;
@@ -61,9 +63,11 @@ export class DrawerBuilderForService<T extends {}, R> {
 
 @Injectable()
 export class NzDrawerService {
+  private injector = inject(Injector);
+
   create<T extends {} = NzSafeAny, D = undefined, R = NzSafeAny>(
     options: NzDrawerOptions<T, D extends undefined ? {} : D>
   ): NzDrawerRef<T, R> {
-    return new DrawerBuilderForService<T, R>(options).getInstance();
+    return new DrawerBuilderForService<T, R>(createOverlayRef(this.injector), options).getInstance();
   }
 }
