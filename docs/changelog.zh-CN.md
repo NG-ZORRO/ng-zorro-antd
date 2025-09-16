@@ -30,6 +30,14 @@ timeline: true
 - **segmented:** 新增 `nzName` 属性并支持键盘交互 ([#9373](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9373)) ([ebd8bdc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ebd8bdc9d0c71fc6f691c7c900e8b43e26cc0e84))
 - **upload:** `nzBeforeUpload` 支持 promise 返回类型 ([#9402](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9402)) ([cece107](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cece1077e5f375c225ae32973b863f8123520717))
 
+### Bug Fixes
+
+- **badge:** 设置 `nzColor` 后徽标渲染异常 ([#9376](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9376)) ([e9abf92](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e9abf9250ab8c7c902933688610e0f2c731b97b1))
+- **input:** 修复 `underline` 变体下 hover 时样式问题 ([#9400](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9400)) ([74c2173](https://github.com/NG-ZORRO/ng-zorro-antd/commit/74c217382ed191b26990082586796f588fdd73c8))
+- **segmented:** 修复 `NG0950` 错误 ([#9386](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9386)) ([e82fc01](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e82fc0186d2dc8061ff1db50aaa2e7b2f11beb9d))
+- **select:** 修复多选模式下样式异常 ([#9409](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9409)) ([38f9065](https://github.com/NG-ZORRO/ng-zorro-antd/commit/38f90653569b46e28e317e040040e98bee595761))
+- **schematics:** 在非 LESS 项目中，选择自定义主题后将 `less` 添加到 devDependencies ([#9412](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9412)) ([a18cffd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a18cffd8e2dd6e39836f00a42c95f1f5699d1829))
+
 ## 20.2.1
 
 `2025-08-31`
