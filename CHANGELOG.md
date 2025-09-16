@@ -1,3 +1,24 @@
+## [20.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.2.1...20.3.0) (2025-09-16)
+
+### Features
+
+- **carousel:** support `nzArrows` ([#9355](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9355)) ([1b9714b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1b9714baf8d320b423f390d713af6533e0390f24))
+- **check-list:** add badge and default checked ([#9343](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9343)) ([235b493](https://github.com/NG-ZORRO/ng-zorro-antd/commit/235b493705d297ccff21969f2d770b7f4eba7fb5))
+- **i18n:** enhance `provideNzI18n` to support factory function ([#9393](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9393)) ([1371265](https://github.com/NG-ZORRO/ng-zorro-antd/commit/13712654d1c3b5de2eabc577c22d0f98a59a8345))
+- **mention:** support `nzClear` ([#9377](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9377)) ([cbecebf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cbecebfda401b2fd873163638d3e2cc4dfd638c1))
+- **mention:** support `nzVariant` ([#9379](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9379)) ([d92568b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d92568b781bb16bfef55e645a15022ef54583ba1))
+- **segmented:** support `nzShape`([#9368](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9368)) ([ffce6c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ffce6c385a3c994132e096a33a83bd77d01a6b7b))
+- **segmented:** support `nzName` and keyboard interactions ([#9373](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9373)) ([ebd8bdc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ebd8bdc9d0c71fc6f691c7c900e8b43e26cc0e84))
+- **upload:** support promise return type for `nzBeforeUpload` ([#9402](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9402)) ([cece107](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cece1077e5f375c225ae32973b863f8123520717))
+
+### Bug Fixes
+
+- **badge:** after setting `nzColor`, display incorrect ([#9376](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9376)) ([e9abf92](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e9abf9250ab8c7c902933688610e0f2c731b97b1))
+- **input:** variant underline style on hover ([#9400](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9400)) ([74c2173](https://github.com/NG-ZORRO/ng-zorro-antd/commit/74c217382ed191b26990082586796f588fdd73c8))
+- **segmented:** fix `NG0950` error ([#9386](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9386)) ([e82fc01](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e82fc0186d2dc8061ff1db50aaa2e7b2f11beb9d))
+- **select:** refactor multiple select styles ([#9409](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9409)) ([38f9065](https://github.com/NG-ZORRO/ng-zorro-antd/commit/38f90653569b46e28e317e040040e98bee595761))
+- **schematics:** add `less` as devDependencies if choosing custom theme in non-less project ([#9412](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9412)) ([a18cffd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a18cffd8e2dd6e39836f00a42c95f1f5699d1829))
+
 ## [20.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.2.0...20.2.1) (2025-08-31)
 
 ### Bug Fixes
