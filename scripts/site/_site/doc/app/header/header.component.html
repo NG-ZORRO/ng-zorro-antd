@@ -41,7 +41,8 @@
       <nz-select
         nzSize="small"
         nzVariant="filled"
-        style="max-width: 126px"
+        [style.max-width.px]="126"
+        [style.min-width.px]="90"
         [ngModel]="currentVersion"
         (ngModelChange)="navigateToVersion($event)"
       >
