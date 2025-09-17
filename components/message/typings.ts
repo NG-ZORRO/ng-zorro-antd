@@ -19,6 +19,8 @@ export interface NzMessageDataOptions {
   nzAnimate?: boolean;
   nzPauseOnHover?: boolean;
   nzData?: NzSafeAny;
+  nzStyle?: Record<string, string>;
+  nzClassName?: string;
 }
 
 export interface NzMessageData {

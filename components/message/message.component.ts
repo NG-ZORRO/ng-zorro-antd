@@ -29,6 +29,8 @@ import { NzMessageData } from './typings';
   template: `
     <div
       class="ant-message-notice"
+      [class]="instance.options?.nzClassName"
+      [style]="instance.options?.nzStyle"
       [@moveUpMotion]="instance.state"
       (@moveUpMotion.done)="animationStateChanged.next($event)"
       (mouseenter)="onEnter()"
