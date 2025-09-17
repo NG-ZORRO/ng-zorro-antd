@@ -1,3 +1,9 @@
+## [20.3.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.3.0...20.3.1) (2025-09-17)
+
+### Bug Fixes
+
+- **drawer:** fix `NG0203` ([#9418](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9418)) ([7fb58ae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7fb58aea2f03902ce3b0ac626bed99b5d8de0c6b))
+
 ## [20.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.2.1...20.3.0) (2025-09-16)
 
 ### Features

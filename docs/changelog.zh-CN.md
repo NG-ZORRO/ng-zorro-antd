@@ -15,6 +15,14 @@ timeline: true
 
 ---
 
+## 20.3.1
+
+`2025-09-17`
+
+### Bug Fixes
+
+- **drawer:** 修复 `NG0203` 问题 ([#9418](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9418)) ([7fb58ae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7fb58aea2f03902ce3b0ac626bed99b5d8de0c6b))
+
 ## 20.3.0
 
 `2025-09-16`
