@@ -200,7 +200,7 @@ describe('message', () => {
 
   describe('custom styling', () => {
     it('should apply custom class', () => {
-      messageService.success('SUCCESS', { nzClassName: 'custom-message-class' });
+      messageService.success('SUCCESS', { nzClass: 'custom-message-class' });
       fixture.detectChanges();
       overlayContainerElement = overlayContainer.getContainerElement();
 
@@ -211,7 +211,7 @@ describe('message', () => {
     });
 
     it('should apply space-separated custom class', () => {
-      messageService.info('INFO', { nzClassName: 'class1 class2 class3' });
+      messageService.info('INFO', { nzClass: 'class1 class2 class3' });
       fixture.detectChanges();
       overlayContainerElement = overlayContainer.getContainerElement();
 
@@ -252,7 +252,7 @@ describe('message', () => {
 
     it('should combine custom class and style', () => {
       messageService.loading('LOADING', {
-        nzClassName: 'custom-loading-class',
+        nzClass: 'custom-loading-class',
         nzStyle: { 'font-weight': 'bold', opacity: '0.8' }
       });
       fixture.detectChanges();
@@ -266,7 +266,7 @@ describe('message', () => {
     });
 
     it('should handle empty class gracefully', () => {
-      messageService.success('SUCCESS', { nzClassName: '' });
+      messageService.success('SUCCESS', { nzClass: '' });
       fixture.detectChanges();
       overlayContainerElement = overlayContainer.getContainerElement();
 

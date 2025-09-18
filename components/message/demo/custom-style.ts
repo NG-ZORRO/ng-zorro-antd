@@ -16,7 +16,7 @@ export class NzDemoMessageCustomStyleComponent {
       nzStyle: {
         'margin-top': '20vh'
       },
-      nzClassName: 'custom-class'
+      nzClass: 'custom-class'
     });
   }
 }
