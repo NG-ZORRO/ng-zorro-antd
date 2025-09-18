@@ -32,6 +32,7 @@ yarn.lock
 
 # IDE - VSCode
 .vscode/*
+!.vscode/mcp.json
 
 # misc
 /.angular/cache
