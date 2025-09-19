@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-使用 `nzStyle` 和 `nzClassName` 来定义样式。
+使用 `nzStyle` 和 `nzClass` 来定义样式。
 
 ## en-US
 
