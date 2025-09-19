@@ -198,6 +198,93 @@ describe('message', () => {
     expect(messageContainerElement.style.top).toBe('24px');
   }));
 
+  describe('custom styling', () => {
+    it('should apply custom class', () => {
+      messageService.success('SUCCESS', { nzClass: 'custom-message-class' });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement).not.toBeNull();
+      expect(messageElement.classList.contains('custom-message-class')).toBe(true);
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+    });
+
+    it('should apply space-separated custom class', () => {
+      messageService.info('INFO', { nzClass: 'class1 class2 class3' });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+      expect(messageElement.classList.contains('class1')).toBe(true);
+      expect(messageElement.classList.contains('class2')).toBe(true);
+      expect(messageElement.classList.contains('class3')).toBe(true);
+    });
+
+    it('should apply custom styles', () => {
+      messageService.error('ERROR', {
+        nzStyle: {
+          'background-color': 'rgb(255, 0, 0)',
+          color: 'white',
+          border: '2px solid black'
+        }
+      });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement.style.backgroundColor).toBe('rgb(255, 0, 0)');
+      expect(messageElement.style.color).toBe('white');
+      expect(messageElement.style.border).toBe('2px solid black');
+    });
+
+    it('should work without custom class or style', () => {
+      messageService.warning('WARNING');
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement).not.toBeNull();
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+    });
+
+    it('should combine custom class and style', () => {
+      messageService.loading('LOADING', {
+        nzClass: 'custom-loading-class',
+        nzStyle: { 'font-weight': 'bold', opacity: '0.8' }
+      });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement.classList.contains('custom-loading-class')).toBe(true);
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+      expect(messageElement.style.fontWeight).toBe('bold');
+      expect(messageElement.style.opacity).toBe('0.8');
+    });
+
+    it('should handle empty class gracefully', () => {
+      messageService.success('SUCCESS', { nzClass: '' });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement).not.toBeNull();
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+    });
+
+    it('should handle empty style object gracefully', () => {
+      messageService.info('INFO', { nzStyle: {} });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement).not.toBeNull();
+    });
+  });
+
   describe('RTL', () => {
     it('should apply classname', () => {
       configService.set('message', { nzDirection: 'rtl' });

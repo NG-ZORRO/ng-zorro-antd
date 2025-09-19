@@ -32,12 +32,14 @@ description: 全局展示操作反馈信息。
 
 `options` 支持设置的参数如下：
 
-| 参数           | 说明                              | 类型        |
-| -------------- | --------------------------------- | ----------- |
-| nzDuration     | 持续时间(毫秒)，当设置为0时不消失 | `number`    |
-| nzPauseOnHover | 鼠标移上时禁止自动移除            | `boolean`   |
-| nzAnimate      | 开关动画效果                      | `boolean`   |
-| nzData         | 传递给自定义模板的数据            | `NzSafeAny` |
+| 参数           | 说明                              | 类型                         |
+| -------------- | --------------------------------- | ---------------------------- |
+| nzDuration     | 持续时间(毫秒)，当设置为0时不消失 | `number`                     |
+| nzPauseOnHover | 鼠标移上时禁止自动移除            | `boolean`                    |
+| nzAnimate      | 开关动画效果                      | `boolean`                    |
+| nzData         | 传递给自定义模板的数据            | `NzSafeAny`                  |
+| nzStyle        | 自定义内联样式                    | `NgStyleInterface \| string` |
+| nzClassName    | 自定义 CSS class                  | `NgClassInterface \| string` |
 
 还提供了全局销毁方法：
 
