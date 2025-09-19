@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 5
 title:
   zh-CN: 搜索框
   en-US: Search box

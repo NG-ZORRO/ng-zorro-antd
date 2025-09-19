@@ -1,5 +1,5 @@
 ---
-order: 14
+order: 8
 title:
   zh-CN: 一次性密码框
   en-US: OTP

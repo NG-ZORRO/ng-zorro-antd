@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 7
 title:
   zh-CN: 适应文本高度的文本域
   en-US: Autosizing the height to fit the content

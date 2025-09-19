@@ -8,6 +8,9 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+/**
+ * @deprecated Will be removed in v22.0.0. This component will be removed along with input-group.
+ */
 @Component({
   selector: '[nz-input-group-slot]',
   encapsulation: ViewEncapsulation.None,

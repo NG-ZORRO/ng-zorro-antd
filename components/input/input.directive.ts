@@ -30,6 +30,8 @@ import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
+import { NZ_INPUT_WRAPPER } from './tokens';
+
 const PREFIX_CLS = 'ant-input';
 
 @Directive({
@@ -45,6 +47,7 @@ const PREFIX_CLS = 'ant-input';
     '[class.ant-input-lg]': `finalSize() === 'large'`,
     '[class.ant-input-sm]': `finalSize() === 'small'`,
     '[attr.disabled]': 'finalDisabled() || null',
+    '[attr.readonly]': 'readonly() || null',
     '[class.ant-input-rtl]': `dir() === 'rtl'`,
     '[class.ant-input-stepperless]': `nzStepperless()`,
     '[class.ant-input-focused]': 'focused()'
@@ -58,6 +61,7 @@ export class NzInputDirective implements OnInit {
   private destroyRef = inject(DestroyRef);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+  private inputWrapper = inject(NZ_INPUT_WRAPPER, { host: true, optional: true });
   private focusMonitor = inject(FocusMonitor);
   protected hostView = inject(ViewContainerRef);
 
@@ -75,6 +79,7 @@ export class NzInputDirective implements OnInit {
   readonly nzStepperless = input(true, { transform: booleanAttribute });
   readonly nzStatus = input<NzStatus>('');
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly readonly = input(false, { transform: booleanAttribute });
 
   readonly controlDisabled = signal(false);
   readonly finalDisabled = this.ngControl ? this.controlDisabled : this.disabled;
@@ -126,7 +131,7 @@ export class NzInputDirective implements OnInit {
   }
 
   private renderFeedbackIcon(): void {
-    if (!this.status() || !this.hasFeedback() || !!this.nzFormNoStatusService) {
+    if (!this.status() || !this.hasFeedback() || this.inputWrapper || !!this.nzFormNoStatusService) {
       // remove feedback
       this.hostView.clear();
       this.feedbackRef = null;
