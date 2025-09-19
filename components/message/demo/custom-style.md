@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-The `nzStyle` and `nzClassName` are available to customize Message.
+The `nzStyle` and `nzClass` are available to customize Message.
