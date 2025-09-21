@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
-const prism = require('./prism');
+const prism = require('../markdown/prism');
 
 module.exports = function generateDemoCodeFiles(content, sitePath) {
   const lang = 'angular';

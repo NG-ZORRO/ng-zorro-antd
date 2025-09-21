@@ -1,4 +1,4 @@
-const { parse } = require('./marked');
+const md = require('../markdown');
 const YFM = require('yaml-front-matter');
 const angularNonBindAble = require('./angular-nonbindable');
 
@@ -66,9 +66,9 @@ module.exports = function parseDemoMd(file) {
     }
     if (!(child.type === 'heading' && child.depth === 2)) {
       if (!isAfterENHeading) {
-        zhPart += parse(remark.stringify(child), { async: false });
+        zhPart += md.parse(remark.stringify(child), { async: false });
       } else {
-        enPart += parse(remark.stringify(child), { async: false });
+        enPart += md.parse(remark.stringify(child), { async: false });
       }
     }
   }

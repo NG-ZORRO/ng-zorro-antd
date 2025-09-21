@@ -1,4 +1,4 @@
-const { parse } = require('./marked');
+const md = require('../markdown');
 const getMeta = require('./get-meta');
 const angularNonBindAble = require('./angular-nonbindable');
 const fs = require('fs');
@@ -37,7 +37,7 @@ function generateDoc(file, docsPath, name, language) {
   const meta = getMeta(file);
   const raw = meta.__content;
   delete meta.__content;
-  const content = parse(raw, { async: false });
+  const content = md.parse(raw, { async: false });
 
   // template.html
   fs.writeFileSync(

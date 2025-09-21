@@ -1,4 +1,4 @@
-const { parse } = require('./marked');
+const md = require('../markdown');
 const getMeta = require('./get-meta');
 const angularNonBindAble = require('./angular-nonbindable');
 
@@ -36,9 +36,9 @@ module.exports = function parseDocMd(file, path) {
       isAfterAPIHeading = true;
     }
     if (!isAfterAPIHeading) {
-      firstPart += parse(remark.stringify(child), { async: false });
+      firstPart += md.parse(remark.stringify(child), { async: false });
     } else {
-      secondPart += parse(remark.stringify(child), { async: false });
+      secondPart += md.parse(remark.stringify(child), { async: false });
     }
   }
   return {

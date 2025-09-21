@@ -1,5 +1,5 @@
 const YFM = require('yaml-front-matter');
-const { parse } = require('marked');
+const md = require('../markdown');
 const { parseFragment } = require('parse5');
 
 /**
@@ -58,7 +58,7 @@ module.exports = function getMeta(file) {
     return meta;
   }
 
-  const content = parse(meta.__content, { async: false });
+  const content = md.parse(meta.__content, { async: false });
   const fragment = parseFragment(content);
   /** @type DocumentFragment[] */
   const paragraphs = [];
