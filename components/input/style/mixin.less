@@ -87,54 +87,53 @@
     .disabled();
   }
 
-  &-borderless&,
-  &-borderless&:hover,
-  &-borderless&:focus,
-  &-borderless&-focused,
-  &-borderless&-disabled,
-  &-borderless&[disabled] {
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
+  &&-borderless,
+  &&-borderless:hover,
+  &&-borderless:focus,
+  &&-borderless&-focused,
+  &&-borderless&-disabled,
+  &&-borderless&[disabled] {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
   }
 
-  &-filled {
-    background-color: @input-variant-filled-bg !important;
+  &&-filled {
+    background-color: @input-variant-filled-bg;
     border-color: transparent;
-    box-shadow: none !important;
+    box-shadow: none;
   }
 
-  &-filled:hover&:not(&-focused) {
-    background-color: @input-variant-filled-hover-bg !important;
-    border-color: transparent !important;
+  &&-filled:hover {
+    background-color: @input-variant-filled-hover-bg;
   }
 
-  &-filled:focus,
-  &-filled&-focused {
+  &&-filled:focus,
+  &&-filled&-focused {
     .active();
-    background-color: transparent !important;
-    box-shadow: none !important;
+    background-color: transparent;
+    box-shadow: none;
   }
 
-  &-filled&-disabled,
-  &-filled&[disabled] {
-    .disabled() !important;
+  &&-filled&-disabled,
+  &&-filled&[disabled] {
+    .disabled();
   }
 
-  &-underlined&,
-  &-underlined:hover,
-  &-underlined:focus,
-  &-underlined&-focused,
-  &-underlined&-disabled,
-  &-underlined&[disabled] {
-    background-color: transparent !important;
-    border-width: 0 0 @border-width-base !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+  &&-underlined,
+  &&-underlined:hover,
+  &&-underlined:focus,
+  &&-underlined&-focused,
+  &&-underlined&-disabled,
+  &&-underlined&[disabled] {
+    background-color: transparent;
+    border-width: 0 0 @border-width-base;
+    border-radius: 0;
+    box-shadow: none;
   }
 
-  &-underlined:hover&:not(&-focused) {
-    border-color: @input-border-color !important;
+  &&-underlined:hover:not(&-focused):not(:focus) {
+    border-color: @input-border-color;
   }
 
   // Reset height for `textarea`s
