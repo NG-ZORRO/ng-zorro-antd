@@ -753,12 +753,7 @@ describe('mention', () => {
   template: `
     <nz-mention [nzSuggestions]="suggestions">
       @if (!inputTrigger) {
-        <textarea
-          nz-input
-          [nzAutosize]="{ minRows: 4, maxRows: 4 }"
-          [(ngModel)]="inputValue"
-          nzMentionTrigger
-        ></textarea>
+        <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       } @else {
         <textarea rows="1" nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       }
@@ -784,7 +779,7 @@ class NzTestSimpleMentionComponent {
       [nzLoading]="loading"
       (nzOnSearchChange)="onSearchChange()"
     >
-      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+      <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       <ng-container *nzMentionSuggestion="let framework">
         <span class="custom">{{ framework.name }} - {{ framework.type }}</span>
       </ng-container>
@@ -877,7 +872,7 @@ class NzTestMentionInFormComponent {
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="suggestions" [nzVariant]="variant">
-      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+      <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
     </nz-mention>
   `
 })
@@ -897,7 +892,7 @@ class NzTestVariantMentionComponent {
       [nzClearIcon]="useCustomClearIcon ? clearIconTemplate : null"
       (nzOnClear)="onClear()"
     >
-      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+      <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       <ng-template #clearIconTemplate>
         <span class="custom-clear-icon">×</span>
       </ng-template>
