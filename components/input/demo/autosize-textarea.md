@@ -7,9 +7,8 @@ title:
 
 ## zh-CN
 
-`nzAutosize` 属性适用于 `textarea` 节点，并且只有高度会自动变化。另外 `nzAutosize` 可以设定为一个对象，指定最小行数和最大行数。
+使用 `@angular/cdk` 提供的 [`CdkTextareaAutosize`](https://material.angular.dev/cdk/text-field/overview#automatically-resizing-a-lesstextareagreater) 指令实现文本域高度自适应。
 
 ## en-US
 
-`nzAutosize` prop for a `textarea` type of `nz-input` makes the height to automatically adjust based on the content.
-An options object can be provided to `nzAutosize` to specify the minimum and maximum number of lines the textarea will automatically adjust.
+Use [`CdkTextareaAutosize`](https://material.angular.dev/cdk/text-field/overview#automatically-resizing-a-lesstextareagreater) directive provided by `@angular/cdk` to achieve textarea height adaptation.
