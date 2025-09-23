@@ -4,7 +4,7 @@
  */
 
 import { detect } from 'detect-port';
-import * as fs from 'fs-extra';
+import { readJSONSync, writeJSON } from 'fs-extra';
 import { parallel, series, task, watch } from 'gulp';
 import { debounce } from 'lodash';
 
@@ -14,10 +14,9 @@ import { buildConfig } from '../../build-config';
 import { generateLLms } from '../../generate-llms';
 import { generate } from '../../prerender/ngsw-config';
 import { generateSitemap } from '../../prerender/sitemap';
+import siteGenerate from '../../site/generate-site';
+import themeGenerate from '../../site/generate-theme';
 import { execTask } from '../util/task-helpers';
-
-const siteGenerate = require('../../site/generate-site');
-const themeGenerate = require('../../site/generate-theme');
 
 const docsGlob = join(buildConfig.componentsDir, `**/doc/*.+(md|txt)`);
 const demoGlob = join(buildConfig.componentsDir, `**/demo/*.+(md|ts)`);
@@ -66,10 +65,10 @@ task('site:llms-txt', generateLLms);
 
 /** Replace the library paths to publish/ directory */
 task('site:replace-path', () => {
-  const tsconfig = fs.readJSONSync(tsconfigFile);
+  const tsconfig = readJSONSync(tsconfigFile);
   tsconfig.compilerOptions.paths['ng-zorro-antd'] = ['../publish'];
   tsconfig.compilerOptions.paths['ng-zorro-antd/*'] = ['../publish/*'];
-  return fs.writeJSON(tsconfigFile, tsconfig);
+  return writeJSON(tsconfigFile, tsconfig);
 });
 
 /** Run sitemap script on the output directory, to create sitemap.xml */

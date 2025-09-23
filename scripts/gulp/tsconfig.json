@@ -15,7 +15,8 @@
     "noImplicitAny": true,
     "target": "es5",
     "types": [
-      "node"
+      "node",
+      "../build/less.d.ts"
     ],
     "baseUrl": "."
   },

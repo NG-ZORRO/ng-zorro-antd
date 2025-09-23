@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import * as fs from 'fs-extra';
+import { readFile, writeFile } from 'fs-extra';
 import { minify as htmlMinifier } from 'html-minifier-terser';
 import { minify as jsMinifier, MinifyOptions } from 'terser';
 
@@ -40,8 +40,7 @@ async function minifyHtml(content: string): Promise<string> {
 }
 
 async function minifyJson(content: string): Promise<string> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let json: any = {};
+  let json: Record<string, unknown> = {};
   try {
     json = JSON.parse(content);
     if (json.$schema) {
@@ -55,7 +54,7 @@ async function minifyJson(content: string): Promise<string> {
 }
 
 export async function minifyFile(filePath: string, type: 'svg' | 'html' | 'json' | 'js' | string): Promise<void> {
-  const content = await fs.readFile(filePath, 'utf8');
+  const content = await readFile(filePath, 'utf8');
 
   let minified: Promise<string>;
   switch (type) {
@@ -73,5 +72,5 @@ export async function minifyFile(filePath: string, type: 'svg' | 'html' | 'json'
       throw new Error(`Unknown extension: ${type}`);
   }
   const result = await minified;
-  await fs.writeFile(filePath, result);
+  await writeFile(filePath, result);
 }
