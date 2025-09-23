@@ -55,11 +55,6 @@ ng-zorro-antd/
 │ ├── release/
 │ ├── schematics/
 │ └── site/
-├── site/ # Documentation site
-│ └── doc/
-│ ├── app/
-│ ├── assets/
-│ └── environments/
 ├── .editorconfig # Editor configuration
 ├── .gitignore # Git ignore rules
 ├── .lintstagedrc # Lint-staged configuration
@@ -116,6 +111,7 @@ Each component located in the `components/` folder is composed of the following 
 - Run `npm run build` to build the project
 - Run `npm run build:lib` to build the library
 - Run `npm run build:schematics` to build the schematics
+- Run `npm run test:schematics` to test the schematics
 - Run `npm run test` to run tests
 
 ## Coding Style Guide
