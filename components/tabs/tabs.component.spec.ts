@@ -1223,8 +1223,7 @@ export class RouterTabsTestComponent {
     </nz-tabs>
     <router-outlet></router-outlet>
   `,
-  imports: [RouterLink, RouterOutlet, NzTabsModule],
-  standalone: true
+  imports: [RouterLink, RouterOutlet, NzTabsModule]
 })
 export class DynamicRouterTabsTestComponent {
   selectedIdx = 0;

@@ -6,16 +6,12 @@ import { ShareModule } from '../share/share.module';
 
 @Component({
   selector     : 'nz-demo-{{component}}',
-  standalone   : true,
-  imports      : [
-    ShareModule,
-    {{declarations}}
-],
-templateUrl  : './{{language}}.html'
+  imports      : [ShareModule, {{declarations}}],
+  templateUrl  : './{{language}}.html'
 })
 export class {{componentName}} {
   expanded = false;
-@ViewChildren(NzCodeBoxComponent) codeBoxes!: QueryList<NzCodeBoxComponent>;
+  @ViewChildren(NzCodeBoxComponent) codeBoxes!: QueryList<NzCodeBoxComponent>;
 
   goLink(link: string): void {
     if (window) {
