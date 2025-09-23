@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import * as fs from 'fs-extra';
+import { ensureDir, readFile, writeFile } from 'fs-extra';
 import { glob } from 'glob';
 
 import { resolve, join } from 'path';
@@ -19,7 +19,7 @@ export async function generateLLms(): Promise<void> {
   const matchSuffix = '.en-US.md';
 
   // Ensure siteDir
-  await fs.ensureDir(siteDir);
+  await ensureDir(siteDir);
 
   const docs = await glob(`{${docsDir.join(',')}}/**/*.md`);
   const ignoreDocs = ['changelog', 'join', 'migration', 'recommendation'];
@@ -31,7 +31,7 @@ export async function generateLLms(): Promise<void> {
   for (const markdown of filteredDocs) {
     const mdPath = join(cwd, markdown);
 
-    const fsContent = (await fs.readFile(mdPath, 'utf-8')).trim();
+    const fsContent = (await readFile(mdPath, 'utf-8')).trim();
 
     // e.g. title: Button -> Button
     const title = fsContent.match(/title:\s*(.*)/)?.[1].trim();
@@ -83,8 +83,8 @@ export async function generateLLms(): Promise<void> {
 
   const docsBodyContent = docsBody.join('\n');
 
-  await fs.writeFile(join(siteDir, 'llms.txt'), docsIndexContent);
-  await fs.writeFile(join(siteDir, 'llms-full.txt'), docsBodyContent);
+  await writeFile(join(siteDir, 'llms.txt'), docsIndexContent);
+  await writeFile(join(siteDir, 'llms-full.txt'), docsBodyContent);
   console.log('Generated llms.txt and llms-full.txt');
 }
 

@@ -5,10 +5,10 @@
 
 import { confirm, input, select } from '@inquirer/prompts';
 import { bgBlue, bgGreen, bgRed, bgYellow, blue, green, red, yellow } from 'chalk';
-import * as fs from 'fs-extra';
+import { readFileSync, readJsonSync, writeFileSync } from 'fs-extra';
 
 import { execSync, spawnSync } from 'child_process';
-import * as path from 'path';
+import path from 'path';
 
 import { buildConfig } from '../build-config';
 import { checkVersionNumber } from './parse-version';
@@ -65,15 +65,13 @@ async function run(): Promise<void> {
   ];
 
   try {
-    const selectedOption = await select({
+    let index = await select({
       message: 'Where do you want to start?',
       choices: stages.map((stage, index) => ({
         name: `[${index}] ${stage.name}`,
         value: index
       }))
     });
-
-    let index = selectedOption;
     log.info('Starting publishing process...');
     for (index; index < stages.length; index++) {
       await stages[index].fun();
@@ -111,8 +109,8 @@ function getRemoteUrl(remote: string): string {
   const output = spawnSync('git', ['remote', 'get-url', remote], {
     encoding: 'utf-8'
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (output.stdout as any).trim();
+
+  return output.stdout.trim();
 }
 
 /**
@@ -122,7 +120,7 @@ async function bumpVersion(): Promise<void> {
   log.info('Updating version number...');
 
   const packageJsonPath = path.join(buildConfig.componentsDir, 'package.json');
-  const packageJson = fs.readJsonSync(packageJsonPath);
+  const packageJson = readJsonSync(packageJsonPath);
   const zorroVersionPath = path.join(buildConfig.componentsDir, 'version', 'version.ts');
   const currentVersion = packageJson.version;
   let versionNumberValid = false;
@@ -139,10 +137,10 @@ async function bumpVersion(): Promise<void> {
     }
   }
 
-  fs.writeJsonSync(packageJsonPath, { ...packageJson, version }, { spaces: 2 });
-  fs.writeFileSync(
+  writeJsonSync(packageJsonPath, { ...packageJson, version }, { spaces: 2 });
+  writeFileSync(
     zorroVersionPath,
-    fs.readFileSync(zorroVersionPath, 'utf-8').replace(/Version\('.+'\);/g, `Version('${version}');`)
+    readFileSync(zorroVersionPath, 'utf-8').replace(/Version\('.+'\);/g, `Version('${version}');`)
   );
   log.success('Version updated!');
 }
@@ -211,6 +209,6 @@ function pushSiteRelease(): void {
 
 function getCurrentVersion(): string {
   const packageJsonPath = path.join(buildConfig.componentsDir, 'package.json');
-  const packageJson = fs.readJsonSync(packageJsonPath);
+  const packageJson = readJsonSync(packageJsonPath);
   return packageJson.version;
 }

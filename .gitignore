@@ -7,7 +7,7 @@ dist/
 tmp/
 junit/
 out-tsc/
-site/
+/site
 publish/
 lib/
 schematics/demo

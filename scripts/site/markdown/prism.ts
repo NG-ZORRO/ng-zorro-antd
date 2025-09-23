@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 const prism = require('prismjs');
 const loadLanguages = require('prismjs/components/');
 
@@ -38,7 +43,7 @@ const insideString = {
         variable: /^\$\(|^`|\)$|`$/
       }
     },
-    /\$(?:[a-z0-9_#\?\*!@]+|\{[^}]+\})/i
+    /\$(?:[a-z0-9_#?*!@]+|\{[^}]+\})/i
   ]
 };
 
@@ -93,24 +98,24 @@ prism.languages.angular = prism.languages.extend('typescript', {});
 prism.languages.insertBefore('angular', 'string', {
   'template-string': {
     pattern: /template[\s]*:[\s]*`(?:\\[\s\S]|[^\\`])*`/,
-    greedy : true,
-    inside : {
-      'html': {
+    greedy: true,
+    inside: {
+      html: {
         pattern: /`(?:\\[\s\S]|[^\\`])*`/,
-        inside : prism.languages.html
+        inside: prism.languages.html
       }
     }
   },
-  'styles-string'   : {
+  'styles-string': {
     pattern: /styles[\s]*:[\s]*\[[\s]*`(?:\\[\s\S]|[^\\`])*`[\s]*\]/,
-    greedy : true,
-    inside : {
-      'css': {
+    greedy: true,
+    inside: {
+      css: {
         pattern: /`(?:\\[\s\S]|[^\\`])*`/,
-        inside : prism.languages.css
+        inside: prism.languages.css
       }
     }
   }
 });
 
-module.exports = prism;
+export default prism;
