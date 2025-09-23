@@ -17,7 +17,7 @@ import { NzI18nService } from 'ng-zorro-antd/i18n/nz-i18n.service';
 
 import { NzPaginationComponent } from './pagination.component';
 import { NzPaginationModule } from './pagination.module';
-import type { NzAlign } from './pagination.types';
+import type { NzPaginationAlign } from './pagination.types';
 
 declare const viewport: NzSafeAny;
 
@@ -316,10 +316,11 @@ describe('pagination', () => {
       expect((paginationElement.children[1] as HTMLElement).innerText).toBe('2');
     });
 
-    it("should add not have the class 'ant-pagination-center' or 'ant-pagination-end'", () => {
+    it("should add not have the class 'ant-pagination-center' or 'ant-pagination-end but have the class 'ant-pagination-start'", () => {
       fixture.detectChanges();
       expect(pagination.nativeElement.classList).not.toContain('ant-pagination-center');
       expect(pagination.nativeElement.classList).not.toContain('ant-pagination-end');
+      expect(pagination.nativeElement.classList).toContain('ant-pagination-start');
     });
 
     it("should add the class 'ant-pagination-center' when nzAlign is 'center'", () => {
@@ -495,7 +496,7 @@ export class NzTestPaginationComponent {
   `
 })
 export class NzTestPaginationRenderComponent {
-  nzAlign = signal<NzAlign>('start');
+  nzAlign = signal<NzPaginationAlign>('start');
 }
 
 @Component({

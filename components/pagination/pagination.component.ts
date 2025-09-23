@@ -32,7 +32,7 @@ import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { NzPaginationDefaultComponent } from './pagination-default.component';
 import { NzPaginationSimpleComponent } from './pagination-simple.component';
-import { PaginationItemRenderContext, type NzAlign } from './pagination.types';
+import { PaginationItemRenderContext, type NzPaginationAlign } from './pagination.types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
 
@@ -83,6 +83,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
     '[class.ant-pagination-disabled]': 'nzDisabled',
     '[class.ant-pagination-mini]': `!nzSimple && size === 'small'`,
     '[class.ant-pagination-rtl]': `dir === 'rtl'`,
+    '[class.ant-pagination-start]': 'nzAlign() === "start"',
     '[class.ant-pagination-center]': 'nzAlign() === "center"',
     '[class.ant-pagination-end]': 'nzAlign() === "end"'
   },
@@ -113,7 +114,7 @@ export class NzPaginationComponent implements OnInit, OnChanges {
   @Input({ transform: numberAttribute }) nzTotal = 0;
   @Input({ transform: numberAttribute }) nzPageIndex = 1;
   @Input({ transform: numberAttribute }) nzPageSize = 10;
-  readonly nzAlign = input<NzAlign>('start');
+  readonly nzAlign = input<NzPaginationAlign>('start');
 
   showPagination = true;
   locale!: NzPaginationI18nInterface;

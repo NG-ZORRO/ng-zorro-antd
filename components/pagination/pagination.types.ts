@@ -10,4 +10,4 @@ export interface PaginationItemRenderContext {
 
 export type PaginationItemType = 'page' | 'prev' | 'next' | 'prev_5' | 'next_5';
 
-export type NzAlign = 'start' | 'center' | 'end';
+export type NzPaginationAlign = 'start' | 'center' | 'end';
