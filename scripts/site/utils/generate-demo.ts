@@ -194,10 +194,10 @@ function wrapperHeader(
   ${pageDemo}
   <h2 id="${isZh ? '代码演示' : 'examples'}">
     <span>${isZh ? '代码演示' : 'Examples'}</span>
-    <a onclick="window.location.hash = '${isZh ? '代码演示' : 'examples'}'" class="anchor">#</a>
     <nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
       isZh ? '展开全部代码' : 'Expand All Code'
     }" (click)="expandAllCode()" />
+    <a onclick="window.location.hash = '${isZh ? '代码演示' : 'examples'}'" class="anchor">#</a>
   </h2>
 </section>
 ${example}`;
