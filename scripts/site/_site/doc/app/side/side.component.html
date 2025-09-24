@@ -38,7 +38,7 @@
       </li>
     }
   } @else if (page() === 'experimental') {
-    @for (group of routerList.components; track $index) {
+    @for (group of componentList(); track $index) {
       <li nz-menu-group [nzTitle]="group.name">
         <ul>
           @for (component of group.experimentalChildren; track $index) {

@@ -192,11 +192,12 @@ function wrapperHeader(
     ${whenToUse}
   </section>
   ${pageDemo}
-  <h2>
+  <h2 id="${isZh ? '代码演示' : 'examples'}">
     <span>${isZh ? '代码演示' : 'Examples'}</span>
     <nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
       isZh ? '展开全部代码' : 'Expand All Code'
     }" (click)="expandAllCode()" />
+    <a onclick="window.location.hash = '${isZh ? '代码演示' : 'examples'}'" class="anchor">#</a>
   </h2>
 </section>
 ${example}`;
@@ -216,16 +217,17 @@ function wrapperAll(toc: string, header: string, content: string): string {
 }
 
 function generateToc(language: keyof I18nTitle, name: string, demoMap: Record<string, ComponentDemoDoc>): string {
-  const linkArray = [];
-  for (const key in demoMap) {
-    linkArray.push({
-      content: `<nz-link nzHref="#components-${name}-demo-${key}" nzTitle="${demoMap[key].meta.title[language]}"></nz-link>`,
-      order: demoMap[key].meta.order
-    });
-  }
-  linkArray.sort((pre, next) => pre.order - next.order);
-  linkArray.push({ content: `<nz-link nzHref="#api" nzTitle="API"></nz-link>` });
-  const links = linkArray.map(link => link.content).join('');
+  const links = [
+    `<nz-link class="toc-indent-1" nzHref="#${language === 'zh-CN' ? '何时使用' : 'when_to_use'}" nzTitle="${language === 'zh-CN' ? '何时使用' : 'When To Use'}"></nz-link>`,
+    `<nz-link class="toc-indent-1" nzHref="#${language === 'zh-CN' ? '代码演示' : 'examples'}" nzTitle="${language === 'zh-CN' ? '代码演示' : 'Examples'}"></nz-link>`,
+    ...Object.values(demoMap)
+      .sort((pre, next) => pre.meta.order - next.meta.order)
+      .map(
+        demo =>
+          `<nz-link class="toc-indent-2" nzHref="#components-${name}-demo-${demo.key}" nzTitle="${demo.meta.title[language]}"></nz-link>`
+      ),
+    `<nz-link class="toc-indent-1" nzHref="#api" nzTitle="API"></nz-link>`
+  ].join('\n');
   return `
 <nz-affix class="toc-affix" [nzOffsetTop]="16">
   <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
