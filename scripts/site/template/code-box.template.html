@@ -1,17 +1,15 @@
 <nz-code-box
   nzTitle="{{title}}"
-  [nzId]="'components-{{component}}-demo-{{key}}'"
+  nzId="components-{{component}}-demo-{{key}}"
   nzSelector="nz-demo-{{component}}-{{key}}"
-  [nzLink]="'components-{{component}}-demo-{{key}}'"
+  nzLink="components-{{component}}-demo-{{key}}"
   nzGenerateCommand="{{nzGenerateCommand}}"
   nzComponentName="{{componentName}}"
   [nzIframe]="{{iframe}}"
   nzIframeSource="{{iframeSource}}"
   [nzIframeHeight]="{{iframeHeight}}"
-  [nzHref]="'https://github.com/NG-ZORRO/ng-zorro-antd/edit/master/components/{{component}}/demo/{{key}}.md'"
+  nzHref="https://github.com/NG-ZORRO/ng-zorro-antd/edit/master/components/{{component}}/demo/{{key}}.md"
 >
-	<nz-demo-{{component}}-{{key}} demo />
-	<div intro ngNonBindable>
-		{{doc}}
-	</div>
+	<nz-demo-{{component}}-{{key}} demo></nz-demo-{{component}}-{{key}}>
+	<div intro ngNonBindable>{{doc}}</div>
 </nz-code-box>

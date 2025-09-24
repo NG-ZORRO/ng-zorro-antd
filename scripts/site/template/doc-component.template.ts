@@ -7,7 +7,7 @@ import { ShareModule } from '../share/share.module';
   templateUrl  : './{{component}}-{{language}}.html'
 })
 export class NzDoc{{componentName}}Component {
-  goLink(link: string) {
+  goLink(link: string): void {
     if (window) {
       window.location.hash = link;
     }

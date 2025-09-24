@@ -33,15 +33,11 @@ import { BidiModule } from '@angular/cdk/bidi';
 
 ```typescript
 class MyComponent {
-  constructor(
-    private modalService: NzModalService,
-    private configService: NzConfigService
-  ) {}
+  private modalService = inject(NzModalService);
+  private nzConfigService = inject(NzConfigService);
 
   openModal(): void {
-    this.modal.create({
-      nzDirection: 'rtl'
-    });
+    this.modal.create({ nzDirection: 'rtl' });
   }
 
   setDirWithConfig(): void {
@@ -50,7 +46,7 @@ class MyComponent {
 }
 ```
 
-### 参考
+## 参考
 
 - [Angular CDK Bidirectionality](https://material.angular.io/cdk/bidi/api)
-- [dir - HTML（超文本标记语言） | MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/dir)
+- [dir - HTML | MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/dir)

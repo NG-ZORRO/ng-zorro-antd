@@ -62,17 +62,19 @@ function wrapperDocs(toc: string, title: string, content: string): string {
 
 function generateToc(raw: string): string {
   const ast = remark.parse(raw);
-  let links = '';
+  const linkArray: string[] = [];
   ast.children.forEach(child => {
-    if (child.type === 'heading' && child.depth === 2) {
+    if (child.type === 'heading' && (child.depth === 2 || child.depth === 3)) {
       const firstChild = child.children[0];
       if (firstChild.type === 'text') {
         const text = firstChild.value;
         const lowerText = text.toLowerCase().replace(/ /g, '-').replace(/\./g, '-').replace(/\?/g, '');
-        links += `<nz-link nzHref="#${lowerText}" nzTitle="${text}"></nz-link>`;
+        const indent = child.depth - 1;
+        linkArray.push(`<nz-link nzHref="#${lowerText}" class="toc-indent-${indent}" nzTitle="${text}"></nz-link>`);
       }
     }
   });
+  const links = linkArray.join('\n');
   return `
 <nz-affix class="toc-affix" [nzOffsetTop]="16">
   <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">

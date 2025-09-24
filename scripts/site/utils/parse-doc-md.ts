@@ -12,10 +12,6 @@ import { angularNonBindAble } from './angular-non-bindable';
 import { getMeta } from './get-meta';
 import { ComponentIndexDoc, ComponentDemoDoc, ComponentDemoDocMeta } from '../types';
 
-function getHeadingText(head: unknown): string {
-  return (head as { value: string }).value;
-}
-
 function stringifyInlineCode(node: RootContent): string {
   return remark.stringify(node as unknown as Root);
 }
@@ -31,15 +27,16 @@ export function parseDocMd(file: Buffer, path: string): ComponentIndexDoc {
   const ast = remark.parse(content);
   // 分离前后两部分
   let isAfterAPIHeading = false;
-
   let firstPart = '';
   let secondPart = '';
 
   ast.children.forEach(child => {
-    if (child.type === 'heading' && child.depth === 2 && getHeadingText(child.children[0])) {
-      isAfterAPIHeading = true;
-    }
-    if (!isAfterAPIHeading) {
+    if (child.type === 'heading' && child.depth === 2) {
+      const firstChild = child.children[0];
+      if (firstChild.type === 'text' && firstChild.value === 'API') {
+        isAfterAPIHeading = true;
+      }
+    } else if (!isAfterAPIHeading) {
       firstPart += md.parse(stringifyInlineCode(child));
     } else {
       secondPart += md.parse(stringifyInlineCode(child));
@@ -63,24 +60,21 @@ export function parseDemoMd(file: Buffer): Pick<ComponentDemoDoc, 'meta' | 'zh' 
   delete meta.__content;
 
   const ast = remark.parse(content);
-
   // 分离中英文
   let isAfterENHeading = false;
-
   let zhPart = '';
   let enPart = '';
 
   ast.children.forEach(child => {
     if (child.type === 'heading' && child.depth === 2) {
-      if (getHeadingText(child.children[0]) === 'en-US') {
+      const firstChild = child.children[0];
+      if (firstChild.type === 'text' && firstChild.value === 'en-US') {
         isAfterENHeading = true;
       }
+    } else if (!isAfterENHeading) {
+      zhPart += md.parse(stringifyInlineCode(child));
     } else {
-      if (!isAfterENHeading) {
-        zhPart += md.parse(stringifyInlineCode(child));
-      } else {
-        enPart += md.parse(stringifyInlineCode(child));
-      }
+      enPart += md.parse(stringifyInlineCode(child));
     }
   });
 

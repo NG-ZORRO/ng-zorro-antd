@@ -33,15 +33,11 @@ For example, the modal service.
 
 ```typescript
 class MyComponent {
-  constructor(
-    private modalService: NzModalService,
-    private configService: NzConfigService
-  ) {}
+  private modalService = inject(NzModalService);
+  private nzConfigService = inject(NzConfigService);
 
   openModal(): void {
-    this.modal.create({
-      nzDirection: 'rtl'
-    });
+    this.modal.create({ nzDirection: 'rtl' });
   }
 
   setDirWithConfig(): void {
@@ -50,7 +46,7 @@ class MyComponent {
 }
 ```
 
-### References
+## References
 
 - [Angular CDK Bidirectionality](https://material.angular.io/cdk/bidi/api)
-- [dir - HTML: HyperText Markup Language | MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir)
+- [dir - HTML | MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir)
