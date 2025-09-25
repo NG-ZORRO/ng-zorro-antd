@@ -1,0 +1,25 @@
+.cdk-overlay-pane.ant-tour-container-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+@tour-prefix-cls: ~'@{ant-prefix}-tour';
+
+.@{tour-prefix-cls} {
+  &-footer {
+    white-space: nowrap;
+  }
+}
+
+// connected position bounding box's width is not equal to the screen width,
+// which will cause the tour with a cover cannot grow its width as expected.
+.cdk-overlay-connected-position-bounding-box .cdk-overlay-pane {
+  .@{tour-prefix-cls} {
+    &:has(.@{tour-prefix-cls}-cover) {
+      max-width: unset;
+    }
+  }
+}

@@ -9,10 +9,11 @@ import {
   ConnectedOverlayPositionChange,
   FlexibleConnectedPositionStrategyOrigin
 } from '@angular/cdk/overlay';
-import { Directive, ElementRef, Input, booleanAttribute, inject } from '@angular/core';
+import { Directive, ElementRef, booleanAttribute, inject, input, numberAttribute } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { getPlacementName } from './overlay-position';
+import { overlayZIndexSetter } from './overlay-z-index';
 
 /** Equivalent of `DOMRect` without some of the properties we don't care about. */
 type Dimensions = Omit<DOMRect, 'x' | 'y' | 'toJSON'>;
@@ -23,14 +24,19 @@ type Dimensions = Omit<DOMRect, 'x' | 'y' | 'toJSON'>;
 })
 export class NzConnectedOverlayDirective {
   private readonly cdkConnectedOverlay = inject(CdkConnectedOverlay);
-  @Input({ transform: booleanAttribute }) nzArrowPointAtCenter: boolean = false;
+
+  nzArrowPointAtCenter = input(false, { transform: booleanAttribute });
+  nzZIndex = input(1000, { transform: numberAttribute });
 
   constructor() {
     this.cdkConnectedOverlay.backdropClass = 'nz-overlay-transparent-backdrop';
 
     this.cdkConnectedOverlay.positionChange.pipe(takeUntilDestroyed()).subscribe(position => {
-      if (this.nzArrowPointAtCenter) {
+      if (this.nzArrowPointAtCenter()) {
         this.updateArrowPosition(position);
+      }
+      if (this.nzZIndex()) {
+        overlayZIndexSetter(this.cdkConnectedOverlay.overlayRef, this.nzZIndex());
       }
     });
   }
