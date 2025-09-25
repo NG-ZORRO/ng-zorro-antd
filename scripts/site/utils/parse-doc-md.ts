@@ -36,7 +36,8 @@ export function parseDocMd(file: Buffer, path: string): ComponentIndexDoc {
       if (firstChild.type === 'text' && firstChild.value === 'API') {
         isAfterAPIHeading = true;
       }
-    } else if (!isAfterAPIHeading) {
+    }
+    if (!isAfterAPIHeading) {
       firstPart += md.parse(stringifyInlineCode(child));
     } else {
       secondPart += md.parse(stringifyInlineCode(child));

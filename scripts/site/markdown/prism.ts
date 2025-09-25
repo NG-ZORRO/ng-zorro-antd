@@ -3,7 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-const prism = require('prismjs');
+import { languages, highlight } from 'prismjs';
+
 const loadLanguages = require('prismjs/components/');
 
 loadLanguages(['bash', 'diff', 'markup-templating', 'json', 'less', 'typescript']);
@@ -22,11 +23,11 @@ const insideString = {
           },
           {
             pattern: /^\$\(\(/,
-            function: prism.languages.bash['function'],
-            keyword: prism.languages.bash.keyword,
-            boolean: prism.languages.bash.boolean,
-            operator: prism.languages.bash.operator,
-            punctuation: prism.languages.bash.punctuation
+            function: languages.bash['function'],
+            keyword: languages.bash.keyword,
+            boolean: languages.bash.boolean,
+            operator: languages.bash.operator,
+            punctuation: languages.bash.punctuation
           }
         ],
         number: /\b-?(?:0x[\dA-Fa-f]+|\d*\.?\d+(?:[Ee]-?\d+)?)\b/,
@@ -47,7 +48,7 @@ const insideString = {
   ]
 };
 
-prism.languages.bash = {
+languages.bash = {
   shebang: {
     pattern: /^#!\s*\/bin\/bash|^#!\s*\/bin\/sh/,
     alias: 'important'
@@ -93,16 +94,16 @@ prism.languages.bash = {
 /**
  * Extend Angular
  */
-prism.languages.angular = prism.languages.extend('typescript', {});
+languages.angular = languages.extend('typescript', {});
 
-prism.languages.insertBefore('angular', 'string', {
+languages.insertBefore('angular', 'string', {
   'template-string': {
     pattern: /template[\s]*:[\s]*`(?:\\[\s\S]|[^\\`])*`/,
     greedy: true,
     inside: {
       html: {
         pattern: /`(?:\\[\s\S]|[^\\`])*`/,
-        inside: prism.languages.html
+        inside: languages.html
       }
     }
   },
@@ -112,10 +113,10 @@ prism.languages.insertBefore('angular', 'string', {
     inside: {
       css: {
         pattern: /`(?:\\[\s\S]|[^\\`])*`/,
-        inside: prism.languages.css
+        inside: languages.css
       }
     }
   }
 });
 
-export default prism;
+export { languages, highlight };

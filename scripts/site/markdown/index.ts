@@ -6,7 +6,7 @@
 import { Marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 
-import prism from './prism';
+import * as prism from './prism';
 import { getRenderer } from './renderer';
 
 const highlight = markedHighlight({

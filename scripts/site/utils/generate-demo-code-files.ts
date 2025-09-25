@@ -7,25 +7,22 @@ import { ensureFileSync, writeJSONSync } from 'fs-extra';
 
 import path from 'path';
 
-import prism from '../markdown/prism';
+import { highlight, languages } from '../markdown/prism';
 import { ComponentDemo } from '../types';
 
+const lang = 'angular';
+
 export function generateDemoCodeFiles(content: ComponentDemo, sitePath: string): void {
-  const lang = 'angular';
   const demoMap = content.demoMap;
   for (const key in demoMap) {
     const rawCode = demoMap[key].ts;
-    const highlightCode = prism.highlight(rawCode, prism.languages[lang], lang);
+    const highlightCode = highlight(rawCode, languages[lang], lang);
     const targetPath = path.join(sitePath, 'doc/assets/codes', `${content.name}-demo-${key}.json`);
 
     ensureFileSync(targetPath);
-    writeJSONSync(
-      targetPath,
-      {
-        highlightCode,
-        rawCode
-      },
-      {}
-    );
+    writeJSONSync(targetPath, {
+      highlightCode,
+      rawCode
+    });
   }
 }
