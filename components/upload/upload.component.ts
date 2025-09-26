@@ -232,7 +232,11 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
 
   private onProgress = (e: { percent: number }, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
-    const targetItem = this.getFileItem(file, fileList) || this.fileToObject(file);
+    const targetItem = this.getFileItem(file, fileList);
+
+    if (!targetItem) {
+      return;
+    }
 
     targetItem.percent = e.percent;
     this.nzChange.emit({
@@ -246,7 +250,10 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
 
   private onSuccess = (res: {}, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
-    const targetItem = this.getFileItem(file, fileList) || this.fileToObject(file);
+    const targetItem = this.getFileItem(file, fileList);
+    if (!targetItem) {
+      return;
+    }
     targetItem.status = 'done';
     targetItem.response = res;
     this.nzChange.emit({
@@ -259,7 +266,12 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
 
   private onError = (err: {}, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
-    const targetItem = this.getFileItem(file, fileList) || this.fileToObject(file);
+    const targetItem = this.getFileItem(file, fileList);
+
+    if (!targetItem) {
+      return;
+    }
+
     targetItem.error = err;
     targetItem.status = 'error';
     this.nzChange.emit({
