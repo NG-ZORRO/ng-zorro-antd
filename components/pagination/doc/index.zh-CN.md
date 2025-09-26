@@ -36,5 +36,6 @@ description: 分页器用于分隔长列表，每次只加载一个页面。
 | `[nzItemRender]`       | 用于自定义页码的结构                                       | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next'\| 'prev_5'\| 'next_5', page: number }>` | -                  | -        |
 | `[nzShowTotal]`        | 用于显示数据总量和当前数据范围，具体使用方式见代码演示部分 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>`                              | -                  | -        |
 | `[nzHideOnSinglePage]` | 只有一页时是否隐藏分页器                                   | `boolean`                                                                                    | `false`            | -        |
+| `[nzAlign]`            | 对齐方式                                                   | `NzPaginationAlign`                                                                          | `start`            | -        |
 | `(nzPageIndexChange)`  | 页码改变的回调                                             | `EventEmitter<number>`                                                                       | -                  | -        |
 | `(nzPageSizeChange)`   | 每页条数改变的回调                                         | `EventEmitter<number>`                                                                       | -                  | -        |
