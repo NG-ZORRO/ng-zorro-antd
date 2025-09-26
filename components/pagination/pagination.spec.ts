@@ -316,7 +316,7 @@ describe('pagination', () => {
       expect((paginationElement.children[1] as HTMLElement).innerText).toBe('2');
     });
 
-    it("should add not have the class 'ant-pagination-center' or 'ant-pagination-end but have the class 'ant-pagination-start'", () => {
+    it("should not have the class 'ant-pagination-center' or 'ant-pagination-end' but have the class 'ant-pagination-start'", () => {
       fixture.detectChanges();
       expect(pagination.nativeElement.classList).not.toContain('ant-pagination-center');
       expect(pagination.nativeElement.classList).not.toContain('ant-pagination-end');
