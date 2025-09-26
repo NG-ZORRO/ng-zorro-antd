@@ -38,6 +38,9 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NzSpaceCompactItemDirective } from 'ng-zorr
 import { NzInputGroupSlotComponent } from './input-group-slot.component';
 import { NzInputDirective } from './input.directive';
 
+/**
+ * @deprecated Will be removed in v22.0.0. This component will be removed along with input-group.
+ */
 @Directive({
   selector: `nz-input-group[nzSuffix], nz-input-group[nzPrefix]`
 })
@@ -45,6 +48,9 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
   public readonly elementRef = inject(ElementRef);
 }
 
+/**
+ * @deprecated Will be removed in v22. It is recommended to use `<nz-input-wrapper>` instead.
+ */
 @Component({
   selector: 'nz-input-group',
   exportAs: 'nzInputGroup',

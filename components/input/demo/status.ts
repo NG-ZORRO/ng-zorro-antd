@@ -12,15 +12,14 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
     <nz-space nzDirection="vertical" style="width: 100%">
       <input *nzSpaceItem nz-input placeholder="Error" [(ngModel)]="value" nzStatus="error" />
       <input *nzSpaceItem nz-input placeholder="Warning" [(ngModel)]="value" nzStatus="warning" />
-      <nz-input-group *nzSpaceItem [nzPrefix]="prefixTemplateClock" nzStatus="error">
-        <input type="text" nz-input placeholder="Error with prefix" />
-      </nz-input-group>
-      <nz-input-group *nzSpaceItem [nzPrefix]="prefixTemplateClock" nzStatus="warning">
-        <input type="text" nz-input placeholder="Warning with prefix" />
-      </nz-input-group>
-      <ng-template #prefixTemplateClock>
-        <nz-icon nzType="clock-circle" nzTheme="outline" />
-      </ng-template>
+      <nz-input-wrapper *nzSpaceItem>
+        <nz-icon nzInputPrefix nzType="clock-circle" nzTheme="outline" />
+        <input type="text" nz-input placeholder="Error with prefix" nzStatus="error" />
+      </nz-input-wrapper>
+      <nz-input-wrapper *nzSpaceItem>
+        <nz-icon nzInputPrefix nzType="clock-circle" nzTheme="outline" />
+        <input type="text" nz-input placeholder="Warning with prefix" nzStatus="warning" />
+      </nz-input-wrapper>
     </nz-space>
   `
 })
