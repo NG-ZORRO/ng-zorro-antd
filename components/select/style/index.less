@@ -44,10 +44,6 @@
     }
   }
 
-  .@{select-prefix-cls}-focused:not(.@{select-prefix-cls}-disabled) & {
-    .active();
-  }
-
   .@{select-prefix-cls}-disabled& {
     color: @disabled-color;
     background: @input-disabled-bg;
@@ -94,6 +90,10 @@
 
   &:not(&-disabled):hover &-selector {
     .hover();
+  }
+
+  &:not(&-disabled)&-focused &-selector {
+    .active();
   }
 
   // ======================== Selection ========================
@@ -341,49 +341,67 @@
   }
 
   // no border style
-  &-borderless &-selector {
-    background-color: transparent !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
+  &&-borderless,
+  &&-borderless:hover,
+  &&-borderless:focus,
+  &&-borderless&-focused,
+  &&-borderless&-disabled,
+  &&-borderless&[disabled] {
+    .@{select-prefix-cls}-selector {
+      background-color: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
   }
 
   // filled style
-  &-filled &-selector {
-    background-color: @input-variant-filled-bg !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
+  &&-filled &-selector {
+    background-color: @input-variant-filled-bg;
+    border-color: transparent;
+    box-shadow: none;
   }
 
-  &-filled:hover &-selector {
-    background-color: @input-variant-filled-hover-bg !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
+  &&-filled:hover &-selector {
+    background-color: @input-variant-filled-hover-bg;
+    border-color: transparent;
+    box-shadow: none;
   }
 
-  &-filled:focus &-selector,
-  &-filled&-focused &-selector {
-    .active() !important;
-    background-color: transparent !important;
-    box-shadow: none !important;
+  &&-filled:focus,
+  &&-filled&-focused {
+    .@{select-prefix-cls}-selector {
+      .active();
+      background-color: transparent;
+      box-shadow: none;
+    }
   }
 
-  &-filled&-disabled &-selector,
-  &-filled&[disabled] &-selector {
-    .disabled() !important;
+  &&-filled&-disabled,
+  &&-filled&[disabled] {
+    .@{select-prefix-cls}-selector {
+      .disabled();
+    }
   }
 
   // underlined style
-  &-underlined &-selector,
-  &-underlined:hover &-selector,
-  &-underlined:focus &-selector,
-  &-underlined&-focused &-selector,
-  &-underlined&-disabled &-selector,
-  &-underlined&[disabled] &-selector {
-    background-color: transparent !important;
-    border-width: 0 0 @border-width-base !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+  &&-underlined,
+  &&-underlined:hover,
+  &&-underlined:focus,
+  &&-underlined&-focused,
+  &&-underlined&-disabled,
+  &&-underlined&[disabled] {
+    .@{select-prefix-cls}-selector {
+      background-color: transparent;
+      border-width: 0 0 @border-width-base;
+      border-radius: 0;
+      box-shadow: none;
+    }
   }
+
+  &&-underlined:hover:not(&-focused):not(:focus) &-selector {
+    border-color: @input-border-color;
+  }
+
 
   &&-in-form-item {
     width: 100%;
