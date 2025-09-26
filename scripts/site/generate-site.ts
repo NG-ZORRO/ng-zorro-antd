@@ -56,16 +56,13 @@ function getPageDemo(componentDirPath: string): ComponentDemoPage | undefined {
 
 export default function generate(target: string): void {
   const isSyncSpecific = target && target !== 'init';
-  if (!target) {
-    removeSync(`${showCasePath}/doc`);
-    copySync(path.resolve(__dirname, '_site/doc'), `${showCasePath}/doc`);
-  } else if (target === 'init') {
-    removeSync(`${showCasePath}`);
-    copySync(path.resolve(__dirname, '_site'), `${showCasePath}`);
+  if (!target || target === 'init') {
+    removeSync(showCasePath);
+    copySync(path.resolve(__dirname, 'doc'), `${showCasePath}`);
   } else {
-    removeSync(`${showCasePath}/doc/app/${target}`);
+    removeSync(`${showCasePath}/app/${target}`);
   }
-  const showCaseTargetPath = `${showCasePath}/doc/app/`;
+  const showCaseTargetPath = `${showCasePath}/app/`;
   // read components folder
   const rootPath = path.resolve(__dirname, '../../components');
   const rootDir = readdirSync(rootPath);

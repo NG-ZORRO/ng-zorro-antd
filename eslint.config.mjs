@@ -21,7 +21,7 @@ export default tseslint.config(
       'publish/',
       'lib/',
       'dist/',
-      'scripts/site/{_site,template}/**/*',
+      'scripts/site/{doc,template}/**/*',
       'junit/',
       'coverage-report/'
     ]

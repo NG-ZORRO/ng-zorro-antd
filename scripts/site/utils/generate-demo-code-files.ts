@@ -17,7 +17,7 @@ export function generateDemoCodeFiles(content: ComponentDemo, sitePath: string):
   for (const key in demoMap) {
     const rawCode = demoMap[key].ts;
     const highlightCode = highlight(rawCode, languages[lang], lang);
-    const targetPath = path.join(sitePath, 'doc/assets/codes', `${content.name}-demo-${key}.json`);
+    const targetPath = path.join(sitePath, 'assets/codes', `${content.name}-demo-${key}.json`);
 
     ensureFileSync(targetPath);
     writeJSONSync(targetPath, {
