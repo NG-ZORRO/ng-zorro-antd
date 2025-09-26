@@ -5,36 +5,36 @@
   "projects": {
     "ng-zorro-antd-doc": {
       "root": "",
-      "sourceRoot": "site/doc",
+      "sourceRoot": "site",
       "projectType": "application",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist",
-            "index": "site/doc/index.html",
-            "browser": "site/doc/main.ts",
-            "server": "site/doc/main.server.ts",
-            "tsConfig": "site/doc/tsconfig.app.json",
+            "index": "site/index.html",
+            "browser": "site/main.ts",
+            "server": "site/main.server.ts",
+            "tsConfig": "site/tsconfig.app.json",
             "serviceWorker": "ngsw-config.json",
             "prerender": {
               "routesFile": "scripts/prerender/route-paths.txt"
             },
             "ssr": {
-              "entry": "site/doc/server.ts"
+              "entry": "site/server.ts"
             },
             "polyfills": [
               "zone.js"
             ],
             "assets": [
-              "site/doc/assets",
-              "site/doc/manifest.json",
-              "site/doc/favicon.ico",
-              "site/doc/404.html",
-              "site/doc/google854eb8b183564acb.html",
-              "site/doc/robots.txt",
-              "site/doc/llms.txt",
-              "site/doc/llms-full.txt",
+              "site/assets",
+              "site/manifest.json",
+              "site/favicon.ico",
+              "site/404.html",
+              "site/google854eb8b183564acb.html",
+              "site/robots.txt",
+              "site/llms.txt",
+              "site/llms-full.txt",
               {
                 "glob": "**/*",
                 "input": "node_modules/@ant-design/icons-angular/src/inline-svg/",
@@ -47,7 +47,7 @@
               }
             ],
             "styles": [
-              "site/doc/styles.less"
+              "site/styles.less"
             ],
             "allowedCommonJsDependencies": [
               "@ant-design/colors",
@@ -58,8 +58,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "site/doc/environments/environment.ts",
-                  "with": "site/doc/environments/environment.prod.ts"
+                  "replace": "site/environments/environment.ts",
+                  "with": "site/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"

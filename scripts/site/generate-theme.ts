@@ -13,7 +13,7 @@ import { aliyunPaletteLess } from '../build/aliyun-vars';
 import { compactPaletteLess } from '../build/compact-vars';
 import { darkPaletteLess } from '../build/dark-vars';
 
-const themePath = path.join(__dirname, '../../site/doc/styles.less');
+const themePath = path.join(__dirname, '../../site/styles.less');
 const colorPalettePath = path.join(__dirname, '../../components/style/color/colorPalette.less');
 const themeContent = `
 @import '${themePath}';
@@ -30,7 +30,7 @@ async function generateTheme(vars: Record<string, string | number>, fileName: st
     }
   });
 
-  return writeFile(path.join(__dirname, `../../site/doc/assets/${fileName}`), data.css);
+  return writeFile(path.join(__dirname, `../../site/assets/${fileName}`), data.css);
 }
 
 export default function generateAllTheme(): Promise<void[]> {
