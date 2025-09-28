@@ -31,7 +31,7 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   template: `
     <div class="ant-message" [class.ant-message-rtl]="dir === 'rtl'" [style.top]="top">
       @for (instance of instances; track instance) {
-        <nz-message [instance]="instance" (destroyed)="remove($event.id, $event.userAction)"></nz-message>
+        <nz-message [instance]="instance" (destroyed)="remove($event.id, $event.userAction)" />
       }
     </div>
   `,

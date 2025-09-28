@@ -31,12 +31,14 @@ This components provides some service methods, with usage and arguments as follo
 
 The parameters that are set by the `options` support are as follows:
 
-| Argument       | Description                                                            | Type        |
-| -------------- | ---------------------------------------------------------------------- | ----------- |
-| nzDuration     | Duration (milliseconds), does not disappear when set to 0              | `number`    |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean`   |
-| nzAnimate      | Whether to turn on animation                                           | `boolean`   |
-| nzData         | Data to pass to custom template                                        | `NzSafeAny` |
+| Argument       | Description                                                            | Type                         |
+| -------------- | ---------------------------------------------------------------------- | ---------------------------- |
+| nzDuration     | Duration (milliseconds), does not disappear when set to 0              | `number`                     |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean`                    |
+| nzAnimate      | Whether to turn on animation                                           | `boolean`                    |
+| nzData         | Data to pass to custom template                                        | `NzSafeAny`                  |
+| nzStyle        | Customized inline style                                                | `NgStyleInterface \| string` |
+| nzClass        | Customized CSS class                                                   | `NgClassInterface \| string` |
 
 Methods for destruction are also provided:
 
