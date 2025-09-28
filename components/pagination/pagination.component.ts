@@ -9,6 +9,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -18,9 +19,9 @@ import {
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  numberAttribute,
-  DestroyRef,
-  inject
+  inject,
+  input,
+  numberAttribute
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReplaySubject } from 'rxjs';
@@ -31,7 +32,7 @@ import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { NzPaginationDefaultComponent } from './pagination-default.component';
 import { NzPaginationSimpleComponent } from './pagination-simple.component';
-import { PaginationItemRenderContext } from './pagination.types';
+import { PaginationItemRenderContext, type NzPaginationAlign } from './pagination.types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
 
@@ -58,7 +59,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
       [total]="nzTotal"
       [pageIndex]="nzPageIndex"
       (pageIndexChange)="onPageIndexChange($event)"
-    ></nz-pagination-simple>
+    />
     <nz-pagination-default
       #defaultPagination
       [nzSize]="size"
@@ -74,14 +75,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
       [pageSizeOptions]="nzPageSizeOptions"
       (pageIndexChange)="onPageIndexChange($event)"
       (pageSizeChange)="onPageSizeChange($event)"
-    ></nz-pagination-default>
+    />
   `,
   host: {
     class: 'ant-pagination',
     '[class.ant-pagination-simple]': 'nzSimple',
     '[class.ant-pagination-disabled]': 'nzDisabled',
     '[class.ant-pagination-mini]': `!nzSimple && size === 'small'`,
-    '[class.ant-pagination-rtl]': `dir === 'rtl'`
+    '[class.ant-pagination-rtl]': `dir === 'rtl'`,
+    '[class.ant-pagination-start]': 'nzAlign() === "start"',
+    '[class.ant-pagination-center]': 'nzAlign() === "center"',
+    '[class.ant-pagination-end]': 'nzAlign() === "end"'
   },
   imports: [NgTemplateOutlet, NzPaginationSimpleComponent, NzPaginationDefaultComponent]
 })
@@ -110,6 +114,7 @@ export class NzPaginationComponent implements OnInit, OnChanges {
   @Input({ transform: numberAttribute }) nzTotal = 0;
   @Input({ transform: numberAttribute }) nzPageIndex = 1;
   @Input({ transform: numberAttribute }) nzPageSize = 10;
+  readonly nzAlign = input<NzPaginationAlign>('start');
 
   showPagination = true;
   locale!: NzPaginationI18nInterface;

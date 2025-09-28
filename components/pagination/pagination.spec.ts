@@ -5,8 +5,8 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, signal, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -17,6 +17,7 @@ import { NzI18nService } from 'ng-zorro-antd/i18n/nz-i18n.service';
 
 import { NzPaginationComponent } from './pagination.component';
 import { NzPaginationModule } from './pagination.module';
+import type { NzPaginationAlign } from './pagination.types';
 
 declare const viewport: NzSafeAny;
 
@@ -314,6 +315,27 @@ describe('pagination', () => {
       expect((paginationElement.lastElementChild as HTMLElement).innerText).toBe('Next');
       expect((paginationElement.children[1] as HTMLElement).innerText).toBe('2');
     });
+
+    it("should not have the class 'ant-pagination-center' or 'ant-pagination-end' but have the class 'ant-pagination-start'", () => {
+      fixture.detectChanges();
+      expect(pagination.nativeElement.classList).not.toContain('ant-pagination-center');
+      expect(pagination.nativeElement.classList).not.toContain('ant-pagination-end');
+      expect(pagination.nativeElement.classList).toContain('ant-pagination-start');
+    });
+
+    it("should add the class 'ant-pagination-center' when nzAlign is 'center'", () => {
+      fixture.detectChanges();
+      fixture.componentInstance.nzAlign.set('center');
+      fixture.detectChanges();
+      expect(pagination.nativeElement.classList).toContain('ant-pagination-center');
+    });
+
+    it("should add the class 'ant-pagination-end' when nzAlign is 'end'", () => {
+      fixture.detectChanges();
+      fixture.componentInstance.nzAlign.set('end');
+      fixture.detectChanges();
+      expect(pagination.nativeElement.classList).toContain('ant-pagination-end');
+    });
   });
 
   describe('pagination total items', () => {
@@ -452,7 +474,12 @@ export class NzTestPaginationComponent {
 @Component({
   imports: [NzPaginationModule],
   template: `
-    <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate"></nz-pagination>
+    <nz-pagination
+      [nzPageIndex]="1"
+      [nzTotal]="50"
+      [nzItemRender]="renderItemTemplate"
+      [nzAlign]="nzAlign()"
+    ></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
       @switch (type) {
         @case ('prev') {
@@ -468,7 +495,9 @@ export class NzTestPaginationComponent {
     </ng-template>
   `
 })
-export class NzTestPaginationRenderComponent {}
+export class NzTestPaginationRenderComponent {
+  nzAlign = signal<NzPaginationAlign>('start');
+}
 
 @Component({
   imports: [NzPaginationModule],
