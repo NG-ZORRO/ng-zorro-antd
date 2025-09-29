@@ -30,7 +30,7 @@ export interface NzCarouselStrategyRegistryItem {
 }
 
 export const NZ_CAROUSEL_CUSTOM_STRATEGIES = new InjectionToken<NzCarouselStrategyRegistryItem[]>(
-  'nz-carousel-custom-strategies'
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-carousel-custom-strategies' : ''
 );
 
 export interface PointerVector {

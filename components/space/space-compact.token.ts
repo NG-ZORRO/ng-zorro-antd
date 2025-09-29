@@ -9,8 +9,12 @@ import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 import type { NzSpaceCompactItemDirective } from './space-compact-item.directive';
 
-export const NZ_SPACE_COMPACT_SIZE = new InjectionToken<Signal<NzSizeLDSType>>('NZ_SPACE_COMPACT_SIZE');
-export const NZ_SPACE_COMPACT_ITEMS = new InjectionToken<WritableSignal<NzSpaceCompactItemDirective[]>>(
-  'NZ_SPACE_COMPACT_ITEMS'
+export const NZ_SPACE_COMPACT_SIZE = new InjectionToken<Signal<NzSizeLDSType>>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-space-compact-size' : ''
 );
-export const NZ_SPACE_COMPACT_ITEM_TYPE = new InjectionToken<string>('NZ_SPACE_COMPACT_ITEM_TYPE');
+export const NZ_SPACE_COMPACT_ITEMS = new InjectionToken<WritableSignal<NzSpaceCompactItemDirective[]>>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-space-compact-items' : ''
+);
+export const NZ_SPACE_COMPACT_ITEM_TYPE = new InjectionToken<string>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-space-compact-item-type' : ''
+);

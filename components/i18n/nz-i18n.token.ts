@@ -7,7 +7,9 @@ import { InjectionToken, makeEnvironmentProviders, EnvironmentProviders } from '
 
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
 
-export const NZ_I18N = new InjectionToken<NzI18nInterface>('nz-i18n');
+export const NZ_I18N = new InjectionToken<NzI18nInterface>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-i18n' : ''
+);
 
 type FactoryLike<T> = T | (() => T);
 
@@ -23,4 +25,6 @@ export function provideNzI18n(config: FactoryLike<NzI18nInterface>): Environment
 }
 
 /** Locale for date operations, should import from date-fns, see example: https://github.com/date-fns/date-fns/blob/v1.30.1/src/locale/zh_cn/index.js */
-export const NZ_DATE_LOCALE = new InjectionToken<DateLocale>('nz-date-locale');
+export const NZ_DATE_LOCALE = new InjectionToken<DateLocale>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-date-locale' : ''
+);

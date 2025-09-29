@@ -29,7 +29,9 @@ export const NZ_WAVE_GLOBAL_DEFAULT_CONFIG: NzWaveConfig = {
   disabled: false
 };
 
-export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>('nz-wave-global-options');
+export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-wave-global-options' : ''
+);
 
 export function provideNzWave(config: NzWaveConfig): EnvironmentProviders {
   return makeEnvironmentProviders([{ provide: NZ_WAVE_GLOBAL_CONFIG, useValue: config }]);

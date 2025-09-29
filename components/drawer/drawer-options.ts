@@ -46,4 +46,6 @@ export interface NzDrawerOptions<T = NzSafeAny, D = NzSafeAny> extends NzDrawerO
   nzOnCancel?(): Promise<NzSafeAny>;
 }
 
-export const NZ_DRAWER_DATA = new InjectionToken<NzSafeAny>('NZ_DRAWER_DATA');
+export const NZ_DRAWER_DATA = new InjectionToken<NzSafeAny>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-drawer-data' : ''
+);
