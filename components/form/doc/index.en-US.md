@@ -59,6 +59,7 @@ A form consists of one or more form fields whose type includes input, textarea, 
 | `[nzTooltipIcon]`     | Set default props `[nzTooltipIcon]` value of `nz-form-label`                                            | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅            |
 | `[nzLabelAlign]`      | Set default props `[nzLabelAlign]` value of `nz-form-label`                                             | `'left' \| 'right'`                            | `'right'`                                       |
 | `[nzLabelWrap]`       | Set default props `[nzLabelWrap]` value of `nz-form-label`                                              | `boolean`                                      | `false`                                         |
+| `[nzRequiredMark]`    | Required mark style. Can use required mark or optional mark.                                            | `NzRequiredMark`                               | `true`                                          |
 
 ### nz-form-item
 
