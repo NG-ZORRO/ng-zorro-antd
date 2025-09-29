@@ -1,3 +1,4 @@
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -9,7 +10,15 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-drawer-from-drawer',
-  imports: [NzButtonModule, NzDrawerModule, NzDatePickerModule, NzFormModule, NzInputModule, NzSelectModule],
+  imports: [
+    NzButtonModule,
+    NzDrawerModule,
+    NzDatePickerModule,
+    NzFormModule,
+    NzInputModule,
+    NzSelectModule,
+    CdkTextareaAutosize
+  ],
   template: `
     <button nz-button nzType="primary" (click)="open()">Create</button>
     <nz-drawer
@@ -86,7 +95,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
                 <textarea
                   nz-input
                   placeholder="please enter url description"
-                  [nzAutosize]="{ minRows: 4, maxRows: 4 }"
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="4"
+                  cdkAutosizeMaxRows="4"
                 ></textarea>
               </nz-form-control>
             </nz-form-item>
