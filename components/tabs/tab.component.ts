@@ -31,7 +31,7 @@ import { NzTabDirective } from './tab.directive';
 /**
  * Used to provide a tab set to a tab without causing a circular dependency.
  */
-export const NZ_TAB_SET = new InjectionToken<NzSafeAny>('NZ_TAB_SET');
+export const NZ_TAB_SET = new InjectionToken<NzSafeAny>(typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-tabs' : '');
 
 @Component({
   selector: 'nz-tab',

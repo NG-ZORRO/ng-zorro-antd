@@ -18,8 +18,12 @@ export interface NzIconfontOption {
   scriptUrl: string;
 }
 
-export const NZ_ICONS = new InjectionToken<IconDefinition[]>('nz_icons');
-export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
+export const NZ_ICONS = new InjectionToken<IconDefinition[]>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-icons' : ''
+);
+export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-icon-default-twotone-color' : ''
+);
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 
 /**

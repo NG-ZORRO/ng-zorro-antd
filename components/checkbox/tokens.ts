@@ -7,4 +7,6 @@ import { InjectionToken } from '@angular/core';
 
 import type { NzCheckboxGroupComponent } from './checkbox-group.component';
 
-export const NZ_CHECKBOX_GROUP = new InjectionToken<NzCheckboxGroupComponent>('NZ_CHECKBOX_GROUP');
+export const NZ_CHECKBOX_GROUP = new InjectionToken<NzCheckboxGroupComponent>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-checkbox-group' : ''
+);

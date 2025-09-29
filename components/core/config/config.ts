@@ -385,7 +385,7 @@ export type NzConfigKey = keyof NzConfig;
 /**
  * User should provide an object implements this interface to set global configurations.
  */
-export const NZ_CONFIG = new InjectionToken<NzConfig>('nz-config');
+export const NZ_CONFIG = new InjectionToken<NzConfig>(typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-config' : '');
 
 export function provideNzConfig(config: NzConfig): EnvironmentProviders {
   return makeEnvironmentProviders([{ provide: NZ_CONFIG, useValue: config }]);
