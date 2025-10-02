@@ -5,16 +5,26 @@
 
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ApplicationRef, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, inject, tick } from '@angular/core/testing';
+import {
+  ApplicationRef,
+  Component,
+  provideZoneChangeDetection,
+  signal,
+  TemplateRef,
+  ViewChild,
+  WritableSignal
+} from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
+import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { NzSelectSearchComponent } from './select-search.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';
@@ -1645,6 +1655,52 @@ describe('select', () => {
   });
 });
 
+describe('select finalSize', () => {
+  let fixture: ComponentFixture<TestSelectFinalSizeComponent>;
+  let selectElement: HTMLElement;
+  let compactSizeSignal: WritableSignal<NzSizeLDSType>;
+  let formSizeSignal: WritableSignal<NzSizeLDSType>;
+
+  beforeEach(() => {
+    compactSizeSignal = signal<NzSizeLDSType>('large');
+    formSizeSignal = signal<NzSizeLDSType>('default');
+  });
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  it('should set correctly the size from the formSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: NZ_FORM_SIZE, useValue: formSizeSignal },
+        { provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }
+      ]
+    });
+    fixture = TestBed.createComponent(TestSelectFinalSizeComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.detectChanges();
+    formSizeSignal.set('large');
+    fixture.detectChanges();
+    expect(selectElement.classList).toContain('ant-select-lg');
+  });
+  it('should set correctly the size from the compactSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
+    });
+    fixture = TestBed.createComponent(TestSelectFinalSizeComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(selectElement.classList).toContain('ant-select-lg');
+  });
+  it('should set correctly the size from the component input', () => {
+    fixture = TestBed.createComponent(TestSelectFinalSizeComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.componentInstance.size = 'large';
+    fixture.detectChanges();
+    expect(selectElement.classList).toContain('ant-select-lg');
+  });
+});
+
 @Component({
   imports: [FormsModule, NzSelectModule],
   template: `
@@ -1988,4 +2044,12 @@ export class TestSelectInFormComponent {
   enable(): void {
     this.selectForm.enable();
   }
+}
+
+@Component({
+  imports: [NzSelectModule],
+  template: `<nz-select [nzSize]="size" />`
+})
+export class TestSelectFinalSizeComponent {
+  size: NzSelectSizeType = 'default';
 }

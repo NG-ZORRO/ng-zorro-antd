@@ -3,12 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationRef, Component, provideZoneChangeDetection, signal, type WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -17,6 +20,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
+import { NzSpaceCompactComponent } from './space-compact.component';
 import { NzSpaceModule } from './space.module';
 import { NzSpaceDirection } from './types';
 
@@ -275,3 +279,80 @@ class SpaceCompactTestComponent {
 class SpaceCompactDirectionTestComponent {
   direction: NzSpaceDirection = 'horizontal';
 }
+
+describe('finalSize', () => {
+  let fixture: ComponentFixture<SpaceCompactTestComponent>;
+  let spaceCompactElement: HTMLElement;
+  let formSizeSignal: WritableSignal<NzSizeLDSType>;
+
+  beforeEach(() => {
+    formSizeSignal = signal<NzSizeLDSType>('default');
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  it('should set correctly the size from the formSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideNzNoAnimation(),
+        provideZoneChangeDetection(),
+        { provide: NZ_FORM_SIZE, useValue: formSizeSignal }
+      ]
+    });
+    fixture = TestBed.createComponent(SpaceCompactTestComponent);
+    spaceCompactElement = fixture.debugElement.query(By.directive(NzSpaceCompactComponent)).nativeElement;
+    fixture.detectChanges();
+
+    formSizeSignal.set('small');
+    fixture.detectChanges();
+
+    const nzInput = spaceCompactElement.querySelector('input[nz-input]');
+    const nzButton = spaceCompactElement.querySelector('button[nz-button]');
+
+    expect(nzInput!.classList).toContain('ant-input-sm');
+    expect(nzButton!.classList).toContain('ant-btn-sm');
+  });
+
+  it('should set correctly the size from the component input', () => {
+    TestBed.configureTestingModule({
+      providers: [provideNzNoAnimation(), provideZoneChangeDetection()]
+    });
+    fixture = TestBed.createComponent(SpaceCompactTestComponent);
+    spaceCompactElement = fixture.debugElement.query(By.directive(NzSpaceCompactComponent)).nativeElement;
+    fixture.componentInstance.size = 'large';
+    fixture.detectChanges();
+
+    const nzInput = spaceCompactElement.querySelector('input[nz-input]');
+    const nzButton = spaceCompactElement.querySelector('button[nz-button]');
+
+    expect(nzInput!.classList).toContain('ant-input-lg');
+    expect(nzButton!.classList).toContain('ant-btn-lg');
+  });
+
+  it('should prioritize formSize over component input size', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideNzNoAnimation(),
+        provideZoneChangeDetection(),
+        { provide: NZ_FORM_SIZE, useValue: formSizeSignal }
+      ]
+    });
+    fixture = TestBed.createComponent(SpaceCompactTestComponent);
+    spaceCompactElement = fixture.debugElement.query(By.directive(NzSpaceCompactComponent)).nativeElement;
+    fixture.componentInstance.size = 'large';
+    fixture.detectChanges();
+
+    formSizeSignal.set('small');
+    fixture.detectChanges();
+
+    const nzInput = spaceCompactElement.querySelector('input[nz-input]');
+    const nzButton = spaceCompactElement.querySelector('button[nz-button]');
+
+    expect(nzInput!.classList).toContain('ant-input-sm');
+    expect(nzInput!.classList).not.toContain('ant-input-lg');
+    expect(nzButton!.classList).toContain('ant-btn-sm');
+    expect(nzButton!.classList).not.toContain('ant-btn-lg');
+  });
+});

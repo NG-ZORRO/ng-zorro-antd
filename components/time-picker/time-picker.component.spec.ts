@@ -7,18 +7,28 @@ import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, DebugElement, provideZoneChangeDetection, viewChild, ViewChild } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  signal,
+  viewChild,
+  ViewChild,
+  type WritableSignal
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
-import { NzPlacement, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
+import { NzPlacement, NzStatus, NzVariant, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { en_GB, NzI18nService } from '../i18n';
 import { NzTimePickerComponent } from './time-picker.component';
@@ -940,6 +950,51 @@ describe('time-picker', () => {
   }
 });
 
+describe('time-picker size', () => {
+  let fixture: ComponentFixture<NzTestTimePickerSizeComponent>;
+  let timePickerElement: HTMLElement;
+  let compactSizeSignal: WritableSignal<NzSizeLDSType>;
+  let formSizeSignal: WritableSignal<NzSizeLDSType>;
+
+  beforeEach(() => {
+    compactSizeSignal = signal<NzSizeLDSType>('large');
+    formSizeSignal = signal<NzSizeLDSType>('default');
+  });
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+  it('should set correctly the size from the formSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: NZ_FORM_SIZE, useValue: formSizeSignal },
+        { provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }
+      ]
+    });
+    fixture = TestBed.createComponent(NzTestTimePickerSizeComponent);
+    timePickerElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
+    fixture.detectChanges();
+    formSizeSignal.set('large');
+    fixture.detectChanges();
+    expect(timePickerElement.classList).toContain('ant-picker-large');
+  });
+  it('should set correctly the size from the compactSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestTimePickerSizeComponent);
+    timePickerElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(timePickerElement.classList).toContain('ant-picker-large');
+  });
+  it('should set correctly the size from the component input', () => {
+    fixture = TestBed.createComponent(NzTestTimePickerSizeComponent);
+    timePickerElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
+    fixture.componentInstance.size = 'large';
+    fixture.detectChanges();
+    expect(timePickerElement.classList).toContain('ant-picker-large');
+  });
+});
+
 @Component({
   imports: [NzTimePickerComponent, FormsModule],
   template: `
@@ -1061,4 +1116,12 @@ export class NzTestTimePickerPlacementComponent {
   nzPlacement: NzPlacement = 'bottomLeft';
   date: Date | null = null;
   nzTimePickerComponent = viewChild.required<NzTimePickerComponent>(NzTimePickerComponent);
+}
+
+@Component({
+  imports: [NzTimePickerComponent],
+  template: ` <nz-time-picker [nzSize]="size" /> `
+})
+class NzTestTimePickerSizeComponent {
+  size: NzSizeLDSType = 'default';
 }

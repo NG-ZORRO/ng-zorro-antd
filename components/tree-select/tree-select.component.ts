@@ -4,7 +4,7 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
@@ -18,6 +18,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -33,8 +34,7 @@ import {
   forwardRef,
   inject,
   numberAttribute,
-  signal,
-  DestroyRef
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -42,8 +42,13 @@ import { Subject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, filter, map, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
 import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzConfigKey, WithConfig, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
+import {
+  NZ_FORM_SIZE,
+  NzFormItemFeedbackIconComponent,
+  NzFormNoStatusService,
+  NzFormStatusService
+} from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
@@ -120,8 +125,8 @@ const listOfPositions = [
         [animate.leave]="slideAnimationLeave()"
         [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'top'"
-        [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
-        [dir]="dir"
+        [class.ant-tree-select-dropdown-rtl]="dir() === 'rtl'"
+        [dir]="dir()"
         [style]="nzDropdownStyle"
       >
         <nz-tree
@@ -265,7 +270,7 @@ const listOfPositions = [
   host: {
     class: 'ant-select ant-tree-select',
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
-    '[class.ant-select-rtl]': 'dir==="rtl"',
+    '[class.ant-select-rtl]': 'dir()==="rtl"',
     '[class.ant-select-lg]': 'finalSize() === "large"',
     '[class.ant-select-sm]': 'finalSize() === "small"',
     '[class.ant-select-disabled]': 'nzDisabled',
@@ -290,7 +295,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   private renderer = inject(Renderer2);
   private cdr = inject(ChangeDetectorRef);
   private elementRef = inject(ElementRef);
-  private directionality = inject(Directionality);
   private focusMonitor = inject(FocusMonitor);
   private destroyRef = inject(DestroyRef);
 
@@ -376,10 +380,13 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
-  dir: Direction = 'ltr';
+  protected readonly dir = inject(Directionality).valueSignal;
   positions: ConnectionPositionPair[] = [];
 
   protected finalSize = computed(() => {
+    if (this.formSize?.()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }
@@ -387,6 +394,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
+
+  private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private isNzDisableFirstChange: boolean = true;
   private isComposingChange$ = new Subject<boolean>();
@@ -437,12 +447,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       });
 
     this.subscribeSelectionChange();
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
 
     this.focusMonitor
       .monitor(this.elementRef, true)
