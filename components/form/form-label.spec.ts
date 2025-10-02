@@ -145,6 +145,45 @@ describe('nz-form-label', () => {
       expect(optionalLabel?.nativeElement.querySelector('label').classList).not.toContain('ant-form-item-required');
     });
 
+    it('should show optional text when nzRequiredMark is "optional" and field is not required', () => {
+      testComponent.requiredMark = 'optional';
+      fixture.detectChanges();
+
+      const requiredLabel = labels.find(l => l.nativeElement.classList.contains('required-label'));
+      const optionalLabel = labels.find(l => l.nativeElement.classList.contains('optional-label'));
+
+      // Required label should NOT show (optional) text
+      expect(requiredLabel?.nativeElement.querySelector('.ant-form-item-optional')).toBeNull();
+
+      // Optional label should show (optional) text
+      expect(optionalLabel?.nativeElement.querySelector('.ant-form-item-optional')).toBeTruthy();
+      expect(optionalLabel?.nativeElement.querySelector('.ant-form-item-optional').textContent?.trim()).toBe(
+        '(optional)'
+      );
+    });
+
+    it('should NOT show optional text when nzRequiredMark is false', () => {
+      testComponent.requiredMark = false;
+      fixture.detectChanges();
+
+      const requiredLabel = labels.find(l => l.nativeElement.classList.contains('required-label'));
+      const optionalLabel = labels.find(l => l.nativeElement.classList.contains('optional-label'));
+
+      expect(requiredLabel?.nativeElement.querySelector('.ant-form-item-optional')).toBeNull();
+      expect(optionalLabel?.nativeElement.querySelector('.ant-form-item-optional')).toBeNull();
+    });
+
+    it('should NOT show optional text when nzRequiredMark is true', () => {
+      testComponent.requiredMark = true;
+      fixture.detectChanges();
+
+      const requiredLabel = labels.find(l => l.nativeElement.classList.contains('required-label'));
+      const optionalLabel = labels.find(l => l.nativeElement.classList.contains('optional-label'));
+
+      expect(requiredLabel?.nativeElement.querySelector('.ant-form-item-optional')).toBeNull();
+      expect(optionalLabel?.nativeElement.querySelector('.ant-form-item-optional')).toBeNull();
+    });
+
     it('should use custom template when provided', () => {
       testComponent.useCustomTemplate = true;
       fixture.detectChanges();

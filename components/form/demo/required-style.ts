@@ -1,8 +1,8 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, model, type TemplateRef } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzFormModule, type NzRequiredMark } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzTagModule } from 'ng-zorro-antd/tag';
@@ -51,7 +51,5 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
   `
 })
 export class NzDemoFormRequiredStyleComponent {
-  requiredMarkStyle = model<boolean | 'optional' | TemplateRef<{ $implicit: TemplateRef<void>; required: boolean }>>(
-    'optional'
-  );
+  requiredMarkStyle = model<NzRequiredMark>('optional');
 }

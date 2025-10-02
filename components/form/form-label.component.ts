@@ -67,6 +67,10 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
           </ng-container>
         </span>
       }
+
+      @if (nzRequiredMark && nzRequiredMark() === 'optional' && !nzRequired) {
+        <span class="ant-form-item-optional">(optional)</span>
+      }
     </label>
   `,
   host: {
@@ -140,10 +144,7 @@ export class NzFormLabelComponent {
 
   protected readonly isNzRequiredMarkTemplate = computed(() => {
     const nzRequiredMark = this.nzFormDirective?.nzRequiredMark();
-    if (nzRequiredMark instanceof TemplateRef) {
-      return true;
-    }
-    return false;
+    return nzRequiredMark instanceof TemplateRef;
   });
 
   constructor() {
