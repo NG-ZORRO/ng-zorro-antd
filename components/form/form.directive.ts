@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   booleanAttribute,
   DestroyRef,
@@ -15,14 +15,14 @@ import {
   SimpleChange,
   SimpleChanges
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
-import { InputObservable } from 'ng-zorro-antd/core/types';
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
+import { InputObservable, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 import type { NzRequiredMark } from './types';
 
@@ -45,12 +45,14 @@ export const DefaultTooltipIcon = {
     '[class.ant-form-horizontal]': `nzLayout === 'horizontal'`,
     '[class.ant-form-vertical]': `nzLayout === 'vertical'`,
     '[class.ant-form-inline]': `nzLayout === 'inline'`,
-    '[class.ant-form-rtl]': `dir === 'rtl'`
-  }
+    '[class.ant-form-rtl]': `dir() === 'rtl'`,
+    '[class.ant-form-small]': `nzSize() === 'small'`,
+    '[class.ant-form-large]': `nzSize() === 'large'`
+  },
+  providers: [{ provide: NZ_FORM_SIZE, useFactory: () => inject(NzFormDirective).nzSize }]
 })
 export class NzFormDirective implements OnChanges, InputObservable {
   private destroyRef = inject(DestroyRef);
-  private directionality = inject(Directionality);
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -62,9 +64,11 @@ export class NzFormDirective implements OnChanges, InputObservable {
   @Input() nzLabelAlign: NzLabelAlignType = 'right';
   @Input({ transform: booleanAttribute }) @WithConfig() nzLabelWrap: boolean = false;
 
+  readonly nzSize = input<NzSizeLDSType>();
+
   readonly nzRequiredMark = input<NzRequiredMark>(true);
 
-  dir: Direction = 'ltr';
+  dir = inject(Directionality).valueSignal;
   private inputChanges$ = new Subject<SimpleChanges>();
 
   getInputObservable<K extends keyof this>(changeType: K): Observable<SimpleChange> {
@@ -75,10 +79,6 @@ export class NzFormDirective implements OnChanges, InputObservable {
   }
 
   constructor() {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed()).subscribe(direction => {
-      this.dir = direction;
-    });
     this.destroyRef.onDestroy(() => {
       this.inputChanges$.complete();
     });

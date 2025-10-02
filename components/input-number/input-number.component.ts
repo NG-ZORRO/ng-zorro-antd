@@ -29,10 +29,10 @@ import {
   viewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { NzFormItemFeedbackIconComponent, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NZ_FORM_SIZE, NzFormItemFeedbackIconComponent, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import {
   NzSizeLDSType,
   NzStatus,
@@ -240,7 +240,9 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   protected readonly value = signal<number | null>(null);
   protected readonly displayValue = signal('');
 
-  protected readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
+  private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+
+  protected readonly dir = inject(Directionality).valueSignal;
   protected readonly focused = signal(false);
   protected readonly hasFeedback = signal(false);
   protected readonly finalStatus = linkedSignal<NzValidateStatus>(() => this.nzStatus());
@@ -303,6 +305,9 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   });
 
   protected readonly finalSize = computed(() => {
+    if (this.formSize?.()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }
