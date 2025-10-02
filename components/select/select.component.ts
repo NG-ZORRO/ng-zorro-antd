@@ -15,40 +15,45 @@ import {
 import { _getEventTarget, Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  computed,
   ContentChildren,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  forwardRef,
+  inject,
   Input,
+  NgZone,
   OnChanges,
   OnInit,
   Output,
+  output,
   QueryList,
+  Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  booleanAttribute,
-  computed,
-  forwardRef,
-  inject,
-  signal,
-  output,
-  DestroyRef,
-  NgZone,
-  ChangeDetectorRef,
-  Renderer2
+  ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, combineLatest, merge, of as observableOf } from 'rxjs';
+import { BehaviorSubject, combineLatest, EMPTY, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
+import {
+  NzFormItemFeedbackIconComponent,
+  NzFormNoStatusService,
+  NzFormSizeService,
+  NzFormStatusService
+} from 'ng-zorro-antd/core/form';
+import { getPlacementName, NzOverlayModule, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
 import { cancelAnimationFrame, requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NgClassInterface,
@@ -314,6 +319,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   nzSelectTopControlComponentElement!: ElementRef;
 
   protected finalSize = computed(() => {
+    if (this.formSize()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }
@@ -321,6 +329,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
+  private readonly formSize = toSignal(inject(NzFormSizeService, { optional: true })?.formSize$ ?? EMPTY, {
+    initialValue: undefined
+  });
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private listOfValue$ = new BehaviorSubject<NzSafeAny[]>([]);
   private listOfTemplateItem$ = new BehaviorSubject<NzSelectItemInterface[]>([]);

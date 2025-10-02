@@ -31,8 +31,9 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { EMPTY } from 'rxjs';
 
-import { NzFormItemFeedbackIconComponent, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormItemFeedbackIconComponent, NzFormSizeService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import {
   NzSizeLDSType,
   NzStatus,
@@ -240,6 +241,10 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   protected readonly value = signal<number | null>(null);
   protected readonly displayValue = signal('');
 
+  protected readonly formSize = toSignal(inject(NzFormSizeService, { optional: true })?.formSize$ ?? EMPTY, {
+    initialValue: undefined
+  });
+
   protected readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
   protected readonly focused = signal(false);
   protected readonly hasFeedback = signal(false);
@@ -303,6 +308,9 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   });
 
   protected readonly finalSize = computed(() => {
+    if (this.formSize()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }

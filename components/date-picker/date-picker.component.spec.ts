@@ -5,16 +5,20 @@
 
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import {
   ApplicationRef,
   Component,
   DebugElement,
   inject,
   provideZoneChangeDetection,
+  signal,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  WritableSignal
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, inject as testingInject, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -23,22 +27,26 @@ import isEqual from 'date-fns/isEqual';
 import isSameDay from 'date-fns/isSameDay';
 import { enUS } from 'date-fns/locale';
 
+import { NzFormSizeService } from 'ng-zorro-antd/core/form';
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
-import { NgStyleInterface, NzSafeAny, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzSafeAny, NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NZ_DATE_LOCALE, NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
+import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { NzDatePickerComponent, NzDatePickerSizeType, NzPlacement } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
 import { CompatibleDate, NzPanelChangeType } from './standard-types';
 import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
 import { PREFIX_CLASS } from './util';
+
+registerLocaleData(zh);
 
 describe('NzDatePickerComponent', () => {
   let fixture: ComponentFixture<NzTestDatePickerComponent>;
@@ -1513,6 +1521,45 @@ describe('in form', () => {
   });
 });
 
+describe('finalSize', () => {
+  let fixture: ComponentFixture<TestDatePickerFinalSizeComponent>;
+  let datePickerElement: HTMLElement;
+  let component: TestDatePickerFinalSizeComponent;
+  let formSizeService: NzFormSizeService;
+  let compactSizeSignal: WritableSignal<NzSizeLDSType>;
+
+  beforeEach(() => {
+    compactSizeSignal = signal<NzSizeLDSType>('large');
+    formSizeService = new NzFormSizeService();
+
+    TestBed.configureTestingModule({
+      providers: [
+        provideZoneChangeDetection(),
+        provideNoopAnimations(),
+        { provide: NzFormSizeService, useValue: formSizeService },
+        { provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }
+      ]
+    });
+
+    fixture = TestBed.createComponent(TestDatePickerFinalSizeComponent);
+    component = fixture.componentInstance;
+    datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+    fixture.detectChanges();
+  });
+
+  it('should prioritize formSize > compactSize > nzSize', () => {
+    component.size = 'default';
+    compactSizeSignal.set('small');
+    formSizeService.setFormSize('large');
+    fixture.detectChanges();
+    expect(datePickerElement.classList).toContain('ant-picker-large');
+
+    formSizeService.setFormSize(undefined);
+    fixture.detectChanges();
+    expect(datePickerElement.classList).toContain('ant-picker-small');
+  });
+});
+
 @Component({
   imports: [ReactiveFormsModule, FormsModule, NzDatePickerModule],
   template: `
@@ -1658,4 +1705,12 @@ class NzTestDatePickerInFormComponent {
   validateForm = this.fb.group({
     demo: this.fb.control<Date | null>(null, Validators.required)
   });
+}
+
+@Component({
+  imports: [NzDatePickerModule],
+  template: `<nz-date-picker [nzSize]="size" />`
+})
+export class TestDatePickerFinalSizeComponent {
+  size: NzDatePickerSizeType = 'default';
 }

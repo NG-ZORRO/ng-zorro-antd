@@ -40,15 +40,20 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import {
+  NzFormItemFeedbackIconComponent,
+  NzFormNoStatusService,
+  NzFormSizeService,
+  NzFormStatusService
+} from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
@@ -384,6 +389,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   }
 
   protected finalSize = computed(() => {
+    if (this.formSize()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }
@@ -391,6 +399,11 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
+
+  private readonly formSize = toSignal(inject(NzFormSizeService, { optional: true })?.formSize$ ?? EMPTY, {
+    initialValue: undefined
+  });
+
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private document: Document = inject(DOCUMENT);
 

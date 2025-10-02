@@ -40,14 +40,19 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, merge, Observable, of } from 'rxjs';
+import { BehaviorSubject, EMPTY, merge, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import {
+  NzFormItemFeedbackIconComponent,
+  NzFormNoStatusService,
+  NzFormSizeService,
+  NzFormStatusService
+} from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import {
   DEFAULT_CASCADER_POSITIONS,
@@ -441,6 +446,9 @@ export class NzCascaderComponent
   }
 
   protected finalSize = computed(() => {
+    if (this.formSize()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }
@@ -448,6 +456,10 @@ export class NzCascaderComponent
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
+
+  private readonly formSize = toSignal(inject(NzFormSizeService, { optional: true })?.formSize$ ?? EMPTY, {
+    initialValue: undefined
+  });
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private inputString = '';
   private isOpening = false;

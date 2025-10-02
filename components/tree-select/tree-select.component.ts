@@ -18,6 +18,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -33,17 +34,21 @@ import {
   forwardRef,
   inject,
   numberAttribute,
-  signal,
-  DestroyRef
+  signal
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject, combineLatest, merge, of as observableOf } from 'rxjs';
+import { EMPTY, Subject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, filter, map, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, WithConfig, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
+import {
+  NzFormItemFeedbackIconComponent,
+  NzFormNoStatusService,
+  NzFormSizeService,
+  NzFormStatusService
+} from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
@@ -378,6 +383,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   positions: ConnectionPositionPair[] = [];
 
   protected finalSize = computed(() => {
+    if (this.formSize()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }
@@ -385,6 +393,11 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
+
+  private readonly formSize = toSignal(inject(NzFormSizeService, { optional: true })?.formSize$ ?? EMPTY, {
+    initialValue: undefined
+  });
+
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private isNzDisableFirstChange: boolean = true;
   private isComposingChange$ = new Subject<boolean>();

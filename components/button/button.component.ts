@@ -27,11 +27,12 @@ import {
   viewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Subject } from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { EMPTY, Subject } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzFormSizeService } from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
@@ -107,10 +108,18 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
 
   private readonly elementOnly = signal(false);
   private readonly size = signal<NzSizeLDSType>(this.nzSize);
+
+  private readonly formSize = toSignal(inject(NzFormSizeService, { optional: true })?.formSize$ ?? EMPTY, {
+    initialValue: undefined
+  });
+
   private readonly compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private readonly loading$ = new Subject<boolean>();
 
   protected readonly finalSize = computed(() => {
+    if (this.formSize()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }
