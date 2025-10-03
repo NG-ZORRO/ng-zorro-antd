@@ -1,5 +1,5 @@
 ---
-order: 11
+order: 12
 title:
   zh-CN: 带移除图标
   en-US: With clear icon

@@ -8,21 +8,37 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   selector: 'nz-demo-input-password-input',
   imports: [FormsModule, NzInputModule, NzIconModule],
   template: `
-    <nz-input-group [nzSuffix]="suffixTemplate">
+    <nz-input-wrapper>
       <input
-        [type]="passwordVisible ? 'text' : 'password'"
         nz-input
+        [type]="passwordVisible ? 'text' : 'password'"
         placeholder="input password"
         [(ngModel)]="password"
       />
-    </nz-input-group>
-    <ng-template #suffixTemplate>
       <nz-icon
+        nzInputSuffix
         class="ant-input-password-icon"
         [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
         (click)="passwordVisible = !passwordVisible"
       />
-    </ng-template>
+    </nz-input-wrapper>
+    <br />
+    <br />
+    <nz-input-wrapper>
+      <input
+        nz-input
+        [type]="passwordVisible ? 'text' : 'password'"
+        placeholder="input password"
+        [(ngModel)]="password"
+        disabled
+      />
+      <nz-icon
+        nzInputSuffix
+        class="ant-input-password-icon"
+        [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+        (click)="passwordVisible = !passwordVisible"
+      />
+    </nz-input-wrapper>
   `
 })
 export class NzDemoInputPasswordInputComponent {

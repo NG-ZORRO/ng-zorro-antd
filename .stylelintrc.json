@@ -56,7 +56,8 @@
           "plugin"
         ]
       }
-    ]
+    ],
+    "less/no-duplicate-variables": null
   },
   "ignoreFiles": [
     "components/style/color/{bezierEasing,colorPalette,tinyColor}.less"
