@@ -121,5 +121,8 @@ export default {
   },
   Empty: {
     description: 'Engin gögn'
+  },
+  Form: {
+    optional: '(valfrjálst)'
   }
 };

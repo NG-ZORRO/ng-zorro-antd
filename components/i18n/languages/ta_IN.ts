@@ -142,5 +142,8 @@ export default {
   },
   PageHeader: {
     back: 'பின் செல்லவும்'
+  },
+  Form: {
+    optional: '(தேர்வுமுறை)'
   }
 };

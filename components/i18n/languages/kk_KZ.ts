@@ -158,6 +158,9 @@ export default {
   Empty: {
     description: 'Деректер жоқ'
   },
+  Form: {
+    optional: '(міндетті емес)'
+  },
   Icon: {
     icon: 'белгішесі'
   },

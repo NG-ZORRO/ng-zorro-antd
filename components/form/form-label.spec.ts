@@ -11,6 +11,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzLabelAlignType } from 'ng-zorro-antd/form/form.directive';
 import { NzFormModule } from 'ng-zorro-antd/form/form.module';
+import { en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzFormLabelComponent, NzFormTooltipIcon } from './form-label.component';
 import { NzRequiredMark } from './types';
@@ -94,11 +95,14 @@ describe('nz-form-label', () => {
     let fixture: ComponentFixture<NzTestFormLabelRequiredMarkComponent>;
     let testComponent: NzTestFormLabelRequiredMarkComponent;
     let labels: DebugElement[];
+    let i18nService: NzI18nService;
 
     beforeEach(() => {
       TestBed.configureTestingModule(testBedOptions);
       fixture = TestBed.createComponent(NzTestFormLabelRequiredMarkComponent);
       testComponent = fixture.componentInstance;
+      i18nService = TestBed.inject(NzI18nService);
+      i18nService.setLocale(en_US);
       fixture.detectChanges();
       labels = fixture.debugElement.queryAll(By.directive(NzFormLabelComponent));
     });

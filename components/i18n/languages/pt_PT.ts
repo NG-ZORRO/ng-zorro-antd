@@ -131,5 +131,8 @@ export default {
   },
   Empty: {
     description: 'Sem resultados'
+  },
+  Form: {
+    optional: '(opcional)'
   }
 };

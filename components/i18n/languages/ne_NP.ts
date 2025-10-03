@@ -141,5 +141,8 @@ export default {
   },
   Empty: {
     description: 'डाटा छैन'
+  },
+  Form: {
+    optional: '(वैकल्पिक)'
   }
 };

@@ -160,6 +160,9 @@ export default {
   Empty: {
     description: '暂无数据'
   },
+  Form: {
+    optional: '(可选)'
+  },
   Icon: {
     icon: '图标'
   },

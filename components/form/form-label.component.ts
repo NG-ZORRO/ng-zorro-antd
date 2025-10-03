@@ -9,7 +9,6 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
-  TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
   computed,
@@ -22,6 +21,8 @@ import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTSType } from 'ng-zorro-antd/core/types';
+import { isTemplateRef } from 'ng-zorro-antd/core/util';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
@@ -52,9 +53,9 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
       <ng-template #labelTemplate>
         <ng-content />
       </ng-template>
-      @if (isNzRequiredMarkOptional() && isNzRequiredMarkTemplate() && nzRequiredMark) {
+      @if (isNzRequiredMarkOptional() && isNzRequiredMarkTemplate()) {
         <ng-container
-          *ngTemplateOutlet="$any(nzRequiredMark()); context: { required: nzRequired, $implicit: labelTemplate }"
+          *ngTemplateOutlet="$any(nzRequiredMark!()); context: { required: nzRequired, $implicit: labelTemplate }"
         />
       } @else {
         <ng-container *ngTemplateOutlet="labelTemplate" />
@@ -69,7 +70,7 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
       }
 
       @if (nzRequiredMark && nzRequiredMark() === 'optional' && !nzRequired) {
-        <span class="ant-form-item-optional">(optional)</span>
+        <span class="ant-form-item-optional">{{ 'Form.optional' | nzI18n }}</span>
       }
     </label>
   `,
@@ -78,7 +79,7 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
     '[class.ant-form-item-label-left]': `nzLabelAlign === 'left'`,
     '[class.ant-form-item-label-wrap]': `nzLabelWrap`
   },
-  imports: [NzOutletModule, NzTooltipDirective, NzIconModule, NgTemplateOutlet]
+  imports: [NzOutletModule, NzTooltipDirective, NzIconModule, NgTemplateOutlet, NzI18nModule]
 })
 export class NzFormLabelComponent {
   private cdr = inject(ChangeDetectorRef);
@@ -136,16 +137,10 @@ export class NzFormLabelComponent {
 
   protected readonly isNzRequiredMarkOptional = computed(() => {
     const nzRequiredMark = this.nzRequiredMark;
-    return (
-      nzRequiredMark &&
-      (nzRequiredMark() === 'optional' || !nzRequiredMark() || nzRequiredMark() instanceof TemplateRef)
-    );
+    return nzRequiredMark && (nzRequiredMark() === 'optional' || !nzRequiredMark() || isTemplateRef(nzRequiredMark()));
   });
 
-  protected readonly isNzRequiredMarkTemplate = computed(() => {
-    const nzRequiredMark = this.nzFormDirective?.nzRequiredMark();
-    return nzRequiredMark instanceof TemplateRef;
-  });
+  protected readonly isNzRequiredMarkTemplate = computed(() => isTemplateRef(this.nzFormDirective?.nzRequiredMark()));
 
   constructor() {
     if (this.nzFormDirective) {

@@ -169,6 +169,9 @@ export default {
   PageHeader: {
     back: 'Retour'
   },
+  Form: {
+    optional: '(optionnel)'
+  },
   Icon: {
     icon: 'icône'
   },
