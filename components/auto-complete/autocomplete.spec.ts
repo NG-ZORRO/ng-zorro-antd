@@ -16,6 +16,7 @@ import {
   NgZone,
   OnInit,
   QueryList,
+  signal,
   SimpleChanges,
   ViewChild,
   ViewChildren
@@ -1345,4 +1346,5 @@ describe('auto-complete', () => {
 class MockDirectionality {
   value = 'ltr';
   change = new Subject();
+  valueSignal = signal('ltr');
 }
