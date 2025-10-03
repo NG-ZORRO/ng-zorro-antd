@@ -52,8 +52,14 @@ const options: NzCascaderOption[] = [
   imports: [FormsModule, NzCascaderModule, NzFlexModule, NzSwitchModule],
   template: `
     <div nz-flex nzVertical nzGap="small">
-      <nz-switch nzSize="small" [(ngModel)]="open" nzCheckedChildren="open" nzUnCheckedChildren="close"></nz-switch>
-      <nz-cascader [nzOptions]="nzOptions" [ngModel]="values" [nzOpen]="open"></nz-cascader>
+      <nz-switch [(ngModel)]="open" nzCheckedChildren="open" nzUnCheckedChildren="close"></nz-switch>
+      <nz-cascader
+        [nzOptions]="nzOptions"
+        [ngModel]="values"
+        [nzOpen]="open"
+        (nzSelectionChange)="onSelectionChange($event)"
+        (nzVisibleChange)="onVisibleChange($event)"
+      ></nz-cascader>
     </div>
   `
 })
@@ -61,4 +67,12 @@ export class NzDemoCascaderOpenComponent {
   nzOptions = options;
   values = ['zhejiang', 'hangzhou', 'xihu'];
   open = false;
+
+  onSelectionChange(selectedOptions: NzCascaderOption[]): void {
+    console.log(selectedOptions);
+  }
+
+  onVisibleChange(visible: boolean): void {
+    console.log(visible);
+  }
 }
