@@ -10,10 +10,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   selector: 'nz-demo-input-addon',
   imports: [NzInputModule, NzIconModule, NzSelectModule, NzCascaderModule, FormsModule],
   template: `
-    <nz-input-wrapper>
-      <span nzInputAddonBefore>http://</span>
+    <nz-input-wrapper nzAddonBefore="http://" nzAddonAfter=".com">
       <input nz-input [(ngModel)]="value" />
-      <span nzInputAddonAfter>.com</span>
     </nz-input-wrapper>
     <br />
     <br />
@@ -38,10 +36,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     </nz-input-wrapper>
     <br />
     <br />
-    <nz-input-wrapper>
-      <span nzInputAddonBefore>http://</span>
+    <nz-input-wrapper nzAddonBefore="http://" nzSuffix=".com">
       <input nz-input [(ngModel)]="value" />
-      <span nzInputSuffix>.com</span>
     </nz-input-wrapper>
     <br />
     <br />

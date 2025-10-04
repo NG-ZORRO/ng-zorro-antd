@@ -30,6 +30,13 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 
 Used when you need to add prefixes and suffixes or pre- and post-tabs to `[nz-input]`.
 
+| Property          | Description                                                           | Type     | Default |
+| ----------------- | --------------------------------------------------------------------- | -------- | ------- |
+| `[nzAddonBefore]` | The label text displayed before (on the left side of) the input field | `string` | -       |
+| `[nzAddonAfter]`  | The label text displayed after (on the right side of) the input field | `string` | -       |
+| `[nzPrefix]`      | The prefix icon for the Input                                         | `string` | -       |
+| `[nzSuffix]`      | The suffix icon for the Input                                         | `string` | -       |
+
 ### nz-input-group
 
 > ⚠️ `nz-input-group` has been deprecated in `v20.0.0` and will be removed in `v22.0.0`. Please use the `nz-input-wrapper` component instead.
