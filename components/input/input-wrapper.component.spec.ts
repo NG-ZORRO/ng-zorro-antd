@@ -6,11 +6,11 @@
 import { Component, ElementRef, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NzVariant } from 'ng-zorro-antd/core/types';
+import { NzSizeLDSType, NzVariant } from 'ng-zorro-antd/core/types';
 
 import { NzInputModule } from './input.module';
 
-describe('input-wrapper with affixes or addons', () => {
+describe('input-wrapper', () => {
   let component: InputWithAffixesAndAddonsTestComponent;
   let fixture: ComponentFixture<InputWithAffixesAndAddonsTestComponent>;
 
@@ -21,16 +21,20 @@ describe('input-wrapper with affixes or addons', () => {
   });
 
   it('should be apply affix classes', () => {
-    expect(component.withAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper');
+    expect(component.withPropAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper');
+    expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper');
   });
 
   it('should be apply addon classes', () => {
-    expect(component.withAddons().nativeElement.classList).toContain('ant-input-group-wrapper');
+    expect(component.withPropAddons().nativeElement.classList).toContain('ant-input-group-wrapper');
+    expect(component.withContentAddons().nativeElement.classList).toContain('ant-input-group-wrapper');
   });
 
   it('should be apply mix classes', () => {
-    expect(component.withMix().nativeElement.classList).toContain('ant-input-group-wrapper');
-    expect(component.withMix().nativeElement.querySelector('.ant-input-affix-wrapper')).toBeTruthy();
+    expect(component.withPropMix().nativeElement.classList).toContain('ant-input-group-wrapper');
+    expect(component.withPropMix().nativeElement.classList).toContain('ant-input-group-wrapper');
+    expect(component.withContentMix().nativeElement.classList).toContain('ant-input-group-wrapper');
+    expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper')).toBeTruthy();
   });
 
   it('should be not apply affix or addon classes when only input is present', () => {
@@ -38,112 +42,147 @@ describe('input-wrapper with affixes or addons', () => {
     expect(component.onlyInput().nativeElement.classList).not.toContain('ant-input-affix-wrapper');
   });
 
+  it('should be apply size class', () => {
+    component.size = 'large';
+    fixture.detectChanges();
+    expect(component.withPropAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-lg');
+    expect(component.withPropAddons().nativeElement.classList).toContain('ant-input-group-wrapper-lg');
+    component.size = 'small';
+    fixture.detectChanges();
+    expect(component.withPropAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-sm');
+    expect(component.withPropAddons().nativeElement.classList).toContain('ant-input-group-wrapper-sm');
+  });
+
   it('should be apply disabled class', () => {
     component.disabled = true;
     fixture.detectChanges();
-    expect(component.withAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-disabled');
+    expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-disabled');
   });
 
   it('should be apply readonly class', () => {
     component.readonly = true;
     fixture.detectChanges();
-    expect(component.withAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-readonly');
+    expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-readonly');
   });
 
   describe('should be apply variant class', () => {
     it('filled', () => {
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).not.toContain('ant-input-affix-wrapper-filled');
-      expect(component.withAddons().nativeElement.classList).not.toContain('ant-input-group-wrapper-filled');
-      expect(component.withMix().nativeElement.classList).not.toContain('ant-input-group-wrapper-filled');
-      expect(component.withMix().nativeElement.querySelector('.ant-input-affix-wrapper-filled')).toBeFalsy();
+      expect(component.withContentAffixes().nativeElement.classList).not.toContain('ant-input-affix-wrapper-filled');
+      expect(component.withContentAddons().nativeElement.classList).not.toContain('ant-input-group-wrapper-filled');
+      expect(component.withContentMix().nativeElement.classList).not.toContain('ant-input-group-wrapper-filled');
+      expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-filled')).toBeFalsy();
       component.variant = 'filled';
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-filled');
-      expect(component.withAddons().nativeElement.classList).toContain('ant-input-group-wrapper-filled');
-      expect(component.withMix().nativeElement.classList).toContain('ant-input-group-wrapper-filled');
-      expect(component.withMix().nativeElement.querySelector('.ant-input-affix-wrapper-filled')).toBeTruthy();
+      expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-filled');
+      expect(component.withContentAddons().nativeElement.classList).toContain('ant-input-group-wrapper-filled');
+      expect(component.withContentMix().nativeElement.classList).toContain('ant-input-group-wrapper-filled');
+      expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-filled')).toBeTruthy();
     });
 
     it('borderless', () => {
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).not.toContain('ant-input-affix-wrapper-borderless');
-      expect(component.withAddons().nativeElement.classList).not.toContain('ant-input-group-wrapper-borderless');
-      expect(component.withMix().nativeElement.classList).not.toContain('ant-input-group-wrapper-borderless');
-      expect(component.withMix().nativeElement.querySelector('.ant-input-affix-wrapper-borderless')).toBeFalsy();
+      expect(component.withContentAffixes().nativeElement.classList).not.toContain(
+        'ant-input-affix-wrapper-borderless'
+      );
+      expect(component.withContentAddons().nativeElement.classList).not.toContain('ant-input-group-wrapper-borderless');
+      expect(component.withContentMix().nativeElement.classList).not.toContain('ant-input-group-wrapper-borderless');
+      expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-borderless')).toBeFalsy();
       component.variant = 'borderless';
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-borderless');
-      expect(component.withAddons().nativeElement.classList).toContain('ant-input-group-wrapper-borderless');
-      expect(component.withMix().nativeElement.classList).toContain('ant-input-group-wrapper-borderless');
-      expect(component.withMix().nativeElement.querySelector('.ant-input-affix-wrapper-borderless')).toBeTruthy();
+      expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-borderless');
+      expect(component.withContentAddons().nativeElement.classList).toContain('ant-input-group-wrapper-borderless');
+      expect(component.withContentMix().nativeElement.classList).toContain('ant-input-group-wrapper-borderless');
+      expect(
+        component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-borderless')
+      ).toBeTruthy();
     });
 
     it('underlined', () => {
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).not.toContain('ant-input-affix-wrapper-underlined');
-      expect(component.withAddons().nativeElement.classList).not.toContain('ant-input-group-wrapper-underlined');
-      expect(component.withMix().nativeElement.classList).not.toContain('ant-input-group-wrapper-underlined');
-      expect(component.withMix().nativeElement.querySelector('.ant-input-affix-wrapper-underlined')).toBeFalsy();
+      expect(component.withContentAffixes().nativeElement.classList).not.toContain(
+        'ant-input-affix-wrapper-underlined'
+      );
+      expect(component.withContentAddons().nativeElement.classList).not.toContain('ant-input-group-wrapper-underlined');
+      expect(component.withContentMix().nativeElement.classList).not.toContain('ant-input-group-wrapper-underlined');
+      expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-underlined')).toBeFalsy();
       component.variant = 'underlined';
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-underlined');
-      expect(component.withAddons().nativeElement.classList).toContain('ant-input-group-wrapper-underlined');
-      expect(component.withMix().nativeElement.classList).toContain('ant-input-group-wrapper-underlined');
-      expect(component.withMix().nativeElement.querySelector('.ant-input-affix-wrapper-underlined')).toBeTruthy();
+      expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-underlined');
+      expect(component.withContentAddons().nativeElement.classList).toContain('ant-input-group-wrapper-underlined');
+      expect(component.withContentMix().nativeElement.classList).toContain('ant-input-group-wrapper-underlined');
+      expect(
+        component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-underlined')
+      ).toBeTruthy();
     });
   });
 
   it('should be handle focus / blur', () => {
-    let inputElement = component.withAffixes().nativeElement.querySelector('input')!;
+    let inputElement = component.withContentAffixes().nativeElement.querySelector('input')!;
     inputElement.focus();
-    expect(component.withAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-focused');
+    expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-focused');
     inputElement.blur();
-    expect(component.withAffixes().nativeElement.classList).not.toContain('ant-input-affix-wrapper-focused');
+    expect(component.withContentAffixes().nativeElement.classList).not.toContain('ant-input-affix-wrapper-focused');
 
-    inputElement = component.withMix().nativeElement.querySelector('input')!;
+    inputElement = component.withContentMix().nativeElement.querySelector('input')!;
     inputElement.focus();
-    expect(component.withMix().nativeElement.querySelector('.ant-input-affix-wrapper-focused')).toBeTruthy();
+    expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-focused')).toBeTruthy();
     inputElement.blur();
-    expect(component.withMix().nativeElement.querySelector('.ant-input-affix-wrapper-focused')).toBeFalsy();
+    expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-focused')).toBeFalsy();
   });
 });
 
 @Component({
   imports: [NzInputModule],
   template: `
-    <nz-input-wrapper #withAffixes>
+    <nz-input-wrapper #withPropAffixes nzPrefix="Prefix" nzSuffix="Suffix">
+      <input nz-input [nzSize]="size" [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
+    </nz-input-wrapper>
+
+    <nz-input-wrapper #withContentAffixes>
       <span nzInputPrefix>Prefix</span>
-      <input nz-input [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
+      <input nz-input [nzSize]="size" [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
       <span nzInputSuffix>Suffix</span>
     </nz-input-wrapper>
 
-    <nz-input-wrapper #withAddons>
+    <nz-input-wrapper #withPropAddons nzAddonBefore="Before" nzAddonAfter="After">
+      <input nz-input [nzSize]="size" [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
+    </nz-input-wrapper>
+
+    <nz-input-wrapper #withContentAddons>
       <span nzInputAddonBefore>Before</span>
-      <input nz-input [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
+      <input nz-input [nzSize]="size" [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
       <span nzInputAddonAfter>After</span>
     </nz-input-wrapper>
 
-    <nz-input-wrapper #withMix>
+    <nz-input-wrapper #withPropMix nzAddonBefore="Before" nzAddonAfter="After" nzPrefix="Prefix" nzSuffix="Suffix">
+      <input nz-input [nzSize]="size" [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
+    </nz-input-wrapper>
+
+    <nz-input-wrapper #withContentMix>
       <span nzInputAddonBefore>Before</span>
       <span nzInputPrefix>Prefix</span>
-      <input nz-input [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
+      <input nz-input [nzSize]="size" [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
       <span nzInputSuffix>Suffix</span>
       <span nzInputAddonAfter>After</span>
     </nz-input-wrapper>
 
     <nz-input-wrapper #onlyInput>
-      <input nz-input [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
+      <input nz-input [nzSize]="size" [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
     </nz-input-wrapper>
   `
 })
 class InputWithAffixesAndAddonsTestComponent {
+  size: NzSizeLDSType = 'default';
   disabled = false;
   readonly = false;
   variant: NzVariant = 'outlined';
 
-  readonly withAffixes = viewChild.required('withAffixes', { read: ElementRef });
-  readonly withAddons = viewChild.required('withAddons', { read: ElementRef });
-  readonly withMix = viewChild.required('withMix', { read: ElementRef });
+  readonly withPropAffixes = viewChild.required('withPropAffixes', { read: ElementRef });
+  readonly withContentAffixes = viewChild.required('withContentAffixes', { read: ElementRef });
+  readonly withPropAddons = viewChild.required('withPropAddons', { read: ElementRef });
+  readonly withContentAddons = viewChild.required('withContentAddons', { read: ElementRef });
+  readonly withPropMix = viewChild.required('withPropMix', { read: ElementRef });
+  readonly withContentMix = viewChild.required('withContentMix', { read: ElementRef });
   readonly onlyInput = viewChild.required('onlyInput', { read: ElementRef });
 }

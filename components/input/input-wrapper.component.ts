@@ -16,6 +16,7 @@ import {
   ElementRef,
   forwardRef,
   inject,
+  input,
   signal,
   ViewEncapsulation
 } from '@angular/core';
@@ -46,9 +47,9 @@ import { NZ_INPUT_WRAPPER } from './tokens';
 
     <ng-template #inputWithAddonInner>
       <span class="ant-input-wrapper ant-input-group">
-        @if (addonBefore()) {
+        @if (hasAddonBefore()) {
           <span class="ant-input-group-addon">
-            <ng-content select="[nzInputAddonBefore]" />
+            <ng-content select="[nzInputAddonBefore]">{{ nzAddonBefore() }}</ng-content>
           </span>
         }
 
@@ -58,9 +59,9 @@ import { NZ_INPUT_WRAPPER } from './tokens';
           <ng-template [ngTemplateOutlet]="input" />
         }
 
-        @if (addonAfter()) {
+        @if (hasAddonAfter()) {
           <span class="ant-input-group-addon">
-            <ng-content select="[nzInputAddonAfter]" />
+            <ng-content select="[nzInputAddonAfter]">{{ nzAddonAfter() }}</ng-content>
           </span>
         }
       </span>
@@ -73,15 +74,15 @@ import { NZ_INPUT_WRAPPER } from './tokens';
     </ng-template>
 
     <ng-template #inputWithAffixInner>
-      @if (prefix()) {
+      @if (hasPrefix()) {
         <span class="ant-input-prefix">
-          <ng-content select="[nzInputPrefix]" />
+          <ng-content select="[nzInputPrefix]">{{ nzPrefix() }}</ng-content>
         </span>
       }
       <ng-template [ngTemplateOutlet]="input" />
-      @if (suffix() || hasFeedback()) {
+      @if (hasSuffix()) {
         <span class="ant-input-suffix">
-          <ng-content select="[nzInputSuffix]" />
+          <ng-content select="[nzInputSuffix]">{{ nzSuffix() }}</ng-content>
           @if (hasFeedback() && status()) {
             <nz-form-item-feedback-icon [status]="status()" />
           }
@@ -110,10 +111,16 @@ export class NzInputWrapperComponent {
 
   private readonly inputDir = contentChild.required(NzInputDirective);
   private readonly inputRef = contentChild.required(NzInputDirective, { read: ElementRef });
+
   protected readonly prefix = contentChild(NzInputPrefixDirective);
   protected readonly suffix = contentChild(NzInputSuffixDirective);
   protected readonly addonBefore = contentChild(NzInputAddonBeforeDirective);
   protected readonly addonAfter = contentChild(NzInputAddonAfterDirective);
+
+  readonly nzPrefix = input<string>();
+  readonly nzSuffix = input<string>();
+  readonly nzAddonBefore = input<string>();
+  readonly nzAddonAfter = input<string>();
 
   readonly size = computed(() => this.inputDir().nzSize());
   readonly variant = computed(() => this.inputDir().nzVariant());
@@ -122,8 +129,12 @@ export class NzInputWrapperComponent {
   readonly status = computed(() => this.inputDir().status());
   readonly hasFeedback = computed(() => this.inputDir().hasFeedback());
 
-  protected readonly hasAffix = computed(() => !!this.prefix() || !!this.suffix() || this.hasFeedback());
-  protected readonly hasAddon = computed(() => !!this.addonBefore() || !!this.addonAfter());
+  protected readonly hasPrefix = computed(() => !!this.nzPrefix() || !!this.prefix());
+  protected readonly hasSuffix = computed(() => !!this.nzSuffix() || !!this.suffix() || this.hasFeedback());
+  protected readonly hasAffix = computed(() => this.hasPrefix() || this.hasSuffix());
+  protected readonly hasAddonBefore = computed(() => !!this.nzAddonBefore() || !!this.addonBefore());
+  protected readonly hasAddonAfter = computed(() => !!this.nzAddonAfter() || !!this.addonAfter());
+  protected readonly hasAddon = computed(() => this.hasAddonBefore() || this.hasAddonAfter());
 
   private readonly compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   protected readonly dir = inject(Directionality).valueSignal;

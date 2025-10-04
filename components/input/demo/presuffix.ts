@@ -13,21 +13,17 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     <nz-input-wrapper>
       <nz-icon nzInputPrefix nzType="user" />
       <input nz-input placeholder="Enter your username" />
-      <nz-icon nzInputSuffix nzType="info" />
+      <nz-icon nzInputSuffix nzType="info-circle" />
     </nz-input-wrapper>
     <br />
     <br />
-    <nz-input-wrapper>
-      <span nzInputPrefix>¥</span>
+    <nz-input-wrapper nzPrefix="¥" nzSuffix="RMB">
       <input nz-input />
-      <span nzInputSuffix>RMB</span>
     </nz-input-wrapper>
     <br />
     <br />
-    <nz-input-wrapper>
-      <span nzInputPrefix>¥</span>
+    <nz-input-wrapper nzPrefix="¥" nzSuffix="RMB">
       <input nz-input disabled />
-      <span nzInputSuffix>RMB</span>
     </nz-input-wrapper>
     <br />
     <br />
