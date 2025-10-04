@@ -66,9 +66,9 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
 
     <ng-template #inputNumberWithAddonInner>
       <div class="ant-input-number-wrapper ant-input-number-group">
-        @if (addonBefore()) {
+        @if (hasAddonBefore()) {
           <div class="ant-input-number-group-addon">
-            <ng-content select="[nzInputAddonBefore]"></ng-content>
+            <ng-content select="[nzInputAddonBefore]">{{ nzAddonBefore() }}</ng-content>
           </div>
         }
 
@@ -78,9 +78,9 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
           <ng-template [ngTemplateOutlet]="inputNumber" />
         }
 
-        @if (addonAfter()) {
+        @if (hasAddonAfter()) {
           <div class="ant-input-number-group-addon">
-            <ng-content select="[nzInputAddonAfter]"></ng-content>
+            <ng-content select="[nzInputAddonAfter]">{{ nzAddonAfter() }}</ng-content>
           </div>
         }
       </div>
@@ -93,15 +93,15 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     </ng-template>
 
     <ng-template #inputNumberWithAffixInner>
-      @if (prefix()) {
+      @if (hasPrefix()) {
         <span class="ant-input-number-prefix">
-          <ng-content select="[nzInputPrefix]"></ng-content>
+          <ng-content select="[nzInputPrefix]">{{ nzPrefix() }}</ng-content>
         </span>
       }
       <ng-template [ngTemplateOutlet]="inputNumber" />
-      @if (suffix() || hasFeedback()) {
+      @if (hasSuffix()) {
         <span class="ant-input-number-suffix">
-          <ng-content select="[nzInputSuffix]"></ng-content>
+          <ng-content select="[nzInputSuffix]">{{ nzSuffix() }}</ng-content>
           @if (hasFeedback() && finalStatus()) {
             <nz-form-item-feedback-icon [status]="finalStatus()" />
           }
@@ -202,6 +202,10 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzBordered = input(true, { transform: booleanAttribute });
   readonly nzKeyboard = input(true, { transform: booleanAttribute });
   readonly nzControls = input(true, { transform: booleanAttribute });
+  readonly nzPrefix = input<string>();
+  readonly nzSuffix = input<string>();
+  readonly nzAddonBefore = input<string>();
+  readonly nzAddonAfter = input<string>();
 
   readonly nzBlur = output<void>();
   readonly nzFocus = output<void>();
@@ -228,23 +232,28 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     return value.toString();
   };
 
-  protected value = signal<number | null>(null);
-  protected displayValue = signal('');
+  protected readonly value = signal<number | null>(null);
+  protected readonly displayValue = signal('');
 
-  protected dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
-  protected focused = signal(false);
-  protected hasFeedback = signal(false);
-  protected finalStatus = linkedSignal<NzValidateStatus>(() => this.nzStatus());
-  protected finalDisabled = linkedSignal(() => this.nzDisabled());
+  protected readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
+  protected readonly focused = signal(false);
+  protected readonly hasFeedback = signal(false);
+  protected readonly finalStatus = linkedSignal<NzValidateStatus>(() => this.nzStatus());
+  protected readonly finalDisabled = linkedSignal(() => this.nzDisabled());
 
-  protected prefix = contentChild(NzInputPrefixDirective);
-  protected suffix = contentChild(NzInputSuffixDirective);
-  protected addonBefore = contentChild(NzInputAddonBeforeDirective);
-  protected addonAfter = contentChild(NzInputAddonAfterDirective);
-  protected hasAffix = computed(() => !!this.prefix() || !!this.suffix() || this.hasFeedback());
-  protected hasAddon = computed(() => !!this.addonBefore() || !!this.addonAfter());
+  protected readonly prefix = contentChild(NzInputPrefixDirective);
+  protected readonly suffix = contentChild(NzInputSuffixDirective);
+  protected readonly addonBefore = contentChild(NzInputAddonBeforeDirective);
+  protected readonly addonAfter = contentChild(NzInputAddonAfterDirective);
 
-  protected class = computed(() => {
+  protected readonly hasPrefix = computed(() => !!this.nzPrefix() || !!this.prefix());
+  protected readonly hasSuffix = computed(() => !!this.nzSuffix() || !!this.suffix() || this.hasFeedback());
+  protected readonly hasAffix = computed(() => this.hasPrefix() || this.hasSuffix());
+  protected readonly hasAddonBefore = computed(() => !!this.nzAddonBefore() || !!this.addonBefore());
+  protected readonly hasAddonAfter = computed(() => !!this.nzAddonAfter() || !!this.addonAfter());
+  protected readonly hasAddon = computed(() => this.hasAddonBefore() || this.hasAddonAfter());
+
+  protected readonly class = computed(() => {
     if (this.hasAddon()) {
       return this.groupWrapperClass();
     }
@@ -253,7 +262,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     }
     return this.inputNumberClass();
   });
-  protected inputNumberClass = computed(() => {
+  protected readonly inputNumberClass = computed(() => {
     return {
       'ant-input-number': true,
       'ant-input-number-lg': this.finalSize() === 'large',
@@ -268,7 +277,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       ...getStatusClassNames('ant-input-number', this.finalStatus(), this.hasFeedback())
     };
   });
-  protected affixWrapperClass = computed(() => {
+  protected readonly affixWrapperClass = computed(() => {
     return {
       'ant-input-number-affix-wrapper': true,
       'ant-input-number-affix-wrapper-disabled': this.finalDisabled(),
@@ -279,25 +288,26 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       ...getVariantClassNames('ant-input-number-affix-wrapper', this.nzVariant(), !this.nzBordered())
     };
   });
-  protected groupWrapperClass = computed(() => {
+  protected readonly groupWrapperClass = computed(() => {
     return {
       'ant-input-number-group-wrapper': true,
       'ant-input-number-group-wrapper-rtl': this.dir() === 'rtl',
-      ...getStatusClassNames('ant-input-number-group-wrapper', this.finalStatus(), this.hasFeedback())
+      ...getStatusClassNames('ant-input-number-group-wrapper', this.finalStatus(), this.hasFeedback()),
+      ...getVariantClassNames('ant-input-number-group-wrapper', this.nzVariant(), !this.nzBordered())
     };
   });
 
-  protected finalSize = computed(() => {
+  protected readonly finalSize = computed(() => {
     if (this.compactSize) {
       return this.compactSize();
     }
     return this.nzSize();
   });
 
-  protected upDisabled = computed(() => {
+  protected readonly upDisabled = computed(() => {
     return !isNil(this.value()) && this.value()! >= this.nzMax();
   });
-  protected downDisabled = computed(() => {
+  protected readonly downDisabled = computed(() => {
     return !isNil(this.value()) && this.value()! <= this.nzMin();
   });
 

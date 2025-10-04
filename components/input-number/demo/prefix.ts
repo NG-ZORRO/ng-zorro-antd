@@ -8,6 +8,8 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
   selector: 'nz-demo-input-number-prefix',
   imports: [FormsModule, NzInputNumberModule, NzIconModule],
   template: `
+    <nz-input-number nzPrefix="￥" [style.width.%]="100" />
+
     <nz-input-number [style.width.%]="100">
       <span nzInputPrefix>￥</span>
     </nz-input-number>
@@ -17,9 +19,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
       <span nzInputPrefix>￥</span>
     </nz-input-number>
 
-    <nz-input-number nzDisabled [style.width.%]="100">
-      <span nzInputPrefix>￥</span>
-    </nz-input-number>
+    <nz-input-number nzPrefix="￥" nzDisabled [style.width.%]="100" />
   `,
   styles: [
     `

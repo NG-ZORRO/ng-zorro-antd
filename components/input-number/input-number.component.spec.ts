@@ -520,63 +520,75 @@ describe('input-number with affixes or addons', () => {
   });
 
   it('should be apply affix classes', () => {
-    expect(component.withAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper');
+    expect(component.withPropAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper');
+    expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper');
   });
 
   it('should be apply addon classes', () => {
-    expect(component.withAddons().nativeElement.classList).toContain('ant-input-number-group-wrapper');
+    expect(component.withPropAddons().nativeElement.classList).toContain('ant-input-number-group-wrapper');
+    expect(component.withContentAddons().nativeElement.classList).toContain('ant-input-number-group-wrapper');
   });
 
   it('should be apply mix classes', () => {
-    expect(component.withMix().nativeElement.classList).toContain('ant-input-number-group-wrapper');
-    expect(component.withMix().nativeElement.querySelector('.ant-input-number-affix-wrapper')).toBeTruthy();
+    expect(component.withPropMix().nativeElement.classList).toContain('ant-input-number-group-wrapper');
+    expect(component.withContentMix().nativeElement.classList).toContain('ant-input-number-group-wrapper');
+    expect(component.withPropMix().nativeElement.querySelector('.ant-input-number-affix-wrapper')).toBeTruthy();
+    expect(component.withContentMix().nativeElement.querySelector('.ant-input-number-affix-wrapper')).toBeTruthy();
   });
 
   it('should be apply disabled class', () => {
     component.disabled = true;
     fixture.detectChanges();
-    expect(component.withAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper-disabled');
+    expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper-disabled');
   });
 
   it('should be apply readonly class', () => {
     component.readonly = true;
     fixture.detectChanges();
-    expect(component.withAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper-readonly');
+    expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper-readonly');
   });
 
   it('should be apply borderless class', () => {
     component.bordered = false;
     fixture.detectChanges();
-    expect(component.withAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper-borderless');
+    expect(component.withContentAffixes().nativeElement.classList).toContain(
+      'ant-input-number-affix-wrapper-borderless'
+    );
   });
 
   describe('should be apply nzVariant class', () => {
     it('filled', () => {
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).not.toContain('ant-input-number-affix-wrapper-filled');
+      expect(component.withContentAffixes().nativeElement.classList).not.toContain(
+        'ant-input-number-affix-wrapper-filled'
+      );
       component.variant = 'filled';
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper-filled');
+      expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper-filled');
     });
 
     it('borderless', () => {
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).not.toContain(
+      expect(component.withContentAffixes().nativeElement.classList).not.toContain(
         'ant-input-number-affix-wrapper-borderless'
       );
       component.variant = 'borderless';
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper-borderless');
+      expect(component.withContentAffixes().nativeElement.classList).toContain(
+        'ant-input-number-affix-wrapper-borderless'
+      );
     });
 
     it('underlined', () => {
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).not.toContain(
+      expect(component.withContentAffixes().nativeElement.classList).not.toContain(
         'ant-input-number-affix-wrapper-borderless'
       );
       component.variant = 'underlined';
       fixture.detectChanges();
-      expect(component.withAffixes().nativeElement.classList).toContain('ant-input-number-affix-wrapper-underlined');
+      expect(component.withContentAffixes().nativeElement.classList).toContain(
+        'ant-input-number-affix-wrapper-underlined'
+      );
     });
   });
 });
@@ -637,7 +649,17 @@ class InputNumberTestComponent {
   imports: [NzInputNumberModule],
   template: `
     <nz-input-number
-      #withAffixes
+      #withPropAffixes
+      nzPrefix="Prefix"
+      nzSuffix="Suffix"
+      [nzDisabled]="disabled"
+      [nzReadOnly]="readonly"
+      [nzBordered]="bordered"
+      [nzVariant]="variant"
+    />
+
+    <nz-input-number
+      #withContentAffixes
       [nzDisabled]="disabled"
       [nzReadOnly]="readonly"
       [nzBordered]="bordered"
@@ -648,7 +670,17 @@ class InputNumberTestComponent {
     </nz-input-number>
 
     <nz-input-number
-      #withAddons
+      #withPropAddons
+      nzAddonBefore="Before"
+      nzAddonAfter="After"
+      [nzDisabled]="disabled"
+      [nzReadOnly]="readonly"
+      [nzBordered]="bordered"
+      [nzVariant]="variant"
+    />
+
+    <nz-input-number
+      #withContentAddons
       [nzDisabled]="disabled"
       [nzReadOnly]="readonly"
       [nzBordered]="bordered"
@@ -659,7 +691,19 @@ class InputNumberTestComponent {
     </nz-input-number>
 
     <nz-input-number
-      #withMix
+      #withPropMix
+      nzPrefix="Prefix"
+      nzSuffix="Suffix"
+      nzAddonBefore="Before"
+      nzAddonAfter="After"
+      [nzDisabled]="disabled"
+      [nzReadOnly]="readonly"
+      [nzBordered]="bordered"
+      [nzVariant]="variant"
+    />
+
+    <nz-input-number
+      #withContentMix
       [nzDisabled]="disabled"
       [nzReadOnly]="readonly"
       [nzBordered]="bordered"
@@ -678,7 +722,10 @@ class InputNumberWithAffixesAndAddonsTestComponent {
   bordered = true;
   variant: NzVariant = 'outlined';
 
-  withAffixes = viewChild.required('withAffixes', { read: ElementRef });
-  withAddons = viewChild.required('withAddons', { read: ElementRef });
-  withMix = viewChild.required('withMix', { read: ElementRef });
+  readonly withPropAffixes = viewChild.required('withPropAffixes', { read: ElementRef });
+  readonly withContentAffixes = viewChild.required('withContentAffixes', { read: ElementRef });
+  readonly withPropAddons = viewChild.required('withPropAddons', { read: ElementRef });
+  readonly withContentAddons = viewChild.required('withContentAddons', { read: ElementRef });
+  readonly withPropMix = viewChild.required('withPropMix', { read: ElementRef });
+  readonly withContentMix = viewChild.required('withContentMix', { read: ElementRef });
 }
