@@ -10,6 +10,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   selector: 'nz-demo-input-number-addon',
   imports: [FormsModule, NzSelectModule, NzCascaderModule, NzInputNumberModule, NzIconModule],
   template: `
+    <nz-input-number nzAddonBefore="+" nzAddonAfter="$" [(ngModel)]="value" />
+
     <nz-input-number [(ngModel)]="value">
       <span nzInputAddonBefore>+</span>
       <span nzInputAddonAfter>$</span>
