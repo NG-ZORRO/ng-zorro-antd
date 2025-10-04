@@ -126,6 +126,9 @@ export default {
   Empty: {
     description: 'Ei kohteita'
   },
+  Form: {
+    optional: '(valinnainen)'
+  },
   Text: {
     edit: 'Muokkaa',
     copy: 'Kopioi',

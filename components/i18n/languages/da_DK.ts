@@ -134,5 +134,8 @@ export default {
   },
   Empty: {
     description: 'Ingen data'
+  },
+  Form: {
+    optional: '(valgfrit)'
   }
 };

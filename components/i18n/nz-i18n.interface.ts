@@ -164,6 +164,10 @@ export interface NzCheckListI18nInterface {
   checkListCheckOther: string;
 }
 
+export interface NzFormI18nInterface {
+  optional: string;
+}
+
 export interface NzI18nInterface {
   locale: string;
   Pagination: NzPaginationI18nInterface;
@@ -177,6 +181,7 @@ export interface NzI18nInterface {
   Transfer: NzTransferI18nInterface;
   Upload: NzUploadI18nInterface;
   Empty: NzEmptyI18nInterface;
+  Form: NzFormI18nInterface;
   Text?: NzTextI18nInterface;
   CronExpression?: NzCronExpressionI18nInterface;
   QRCode?: NzQRCodeI18nInterface;

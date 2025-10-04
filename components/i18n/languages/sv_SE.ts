@@ -170,5 +170,8 @@ export default {
   },
   Image: {
     preview: 'Förhandsgranska'
+  },
+  Form: {
+    optional: '(valfritt)'
   }
 };

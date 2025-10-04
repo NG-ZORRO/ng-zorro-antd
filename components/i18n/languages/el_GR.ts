@@ -140,5 +140,8 @@ export default {
   },
   Empty: {
     description: 'Δεν υπάρχουν δεδομένα'
+  },
+  Form: {
+    optional: '(ανάγκη)'
   }
 };

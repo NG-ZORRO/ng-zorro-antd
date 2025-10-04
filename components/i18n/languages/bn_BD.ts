@@ -161,6 +161,9 @@ export default {
   Empty: {
     description: 'কোনও ডেটা নেই'
   },
+  Form: {
+    optional: '(বাছাইযোগ্য)'
+  },
   Icon: {
     icon: 'আইকন'
   },

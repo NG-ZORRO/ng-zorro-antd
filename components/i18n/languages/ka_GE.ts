@@ -161,6 +161,9 @@ export default {
   Empty: {
     description: 'ინფორმაცია არაა'
   },
+  Form: {
+    optional: '(არასავალდებულო)'
+  },
   Icon: {
     icon: 'ხატულა'
   },

@@ -138,5 +138,8 @@ export default {
   },
   Empty: {
     description: 'データがありません'
+  },
+  Form: {
+    optional: '(任意)'
   }
 };

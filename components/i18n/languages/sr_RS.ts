@@ -172,5 +172,8 @@ export default {
   },
   Image: {
     preview: 'Pregled'
+  },
+  Form: {
+    optional: '(neobavezno)'
   }
 };

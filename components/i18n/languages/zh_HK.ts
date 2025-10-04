@@ -169,5 +169,8 @@ export default {
   },
   Image: {
     preview: '預覽'
+  },
+  Form: {
+    optional: '(可選)'
   }
 };

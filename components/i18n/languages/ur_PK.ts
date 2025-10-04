@@ -175,5 +175,8 @@ export default {
   },
   Image: {
     preview: 'پیش نظارہ'
+  },
+  Form: {
+    optional: '(اختیاری)'
   }
 };

@@ -130,6 +130,9 @@ export default {
   Empty: {
     description: 'Տվյալներ չկան'
   },
+  Form: {
+    optional: '(ընտրելի)'
+  },
   Icon: {
     icon: 'պատկեր'
   },

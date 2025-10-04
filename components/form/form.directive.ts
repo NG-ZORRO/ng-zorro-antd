@@ -5,14 +5,15 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
-  Directive,
-  Input,
-  OnChanges,
-  SimpleChange,
-  SimpleChanges,
   booleanAttribute,
   DestroyRef,
-  inject
+  Directive,
+  inject,
+  Input,
+  input,
+  OnChanges,
+  SimpleChange,
+  SimpleChanges
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
@@ -22,6 +23,8 @@ import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { InputObservable } from 'ng-zorro-antd/core/types';
+
+import type { NzRequiredMark } from './types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
 
@@ -58,6 +61,8 @@ export class NzFormDirective implements OnChanges, InputObservable {
   @Input() @WithConfig() nzTooltipIcon: string | { type: string; theme: ThemeType } = DefaultTooltipIcon;
   @Input() nzLabelAlign: NzLabelAlignType = 'right';
   @Input({ transform: booleanAttribute }) @WithConfig() nzLabelWrap: boolean = false;
+
+  readonly nzRequiredMark = input<NzRequiredMark>(true);
 
   dir: Direction = 'ltr';
   private inputChanges$ = new Subject<SimpleChanges>();

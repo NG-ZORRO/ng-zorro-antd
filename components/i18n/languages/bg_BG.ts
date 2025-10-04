@@ -121,5 +121,8 @@ export default {
   },
   Empty: {
     description: 'Няма данни'
+  },
+  Form: {
+    optional: '(незадължително)'
   }
 };

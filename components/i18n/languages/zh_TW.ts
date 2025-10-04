@@ -188,5 +188,8 @@ export default {
     expired: '二維條碼已過期',
     refresh: '點擊刷新',
     scanned: '已掃描'
+  },
+  Form: {
+    optional: '(可選)'
   }
 };

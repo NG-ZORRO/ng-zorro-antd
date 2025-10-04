@@ -161,6 +161,9 @@ export default {
   Empty: {
     description: 'គ្មានទិន្នន័យ'
   },
+  Form: {
+    optional: '(ជំរុញ)'
+  },
   Icon: {
     icon: 'icon'
   },

@@ -158,6 +158,9 @@ export default {
   Empty: {
     description: 'No Data'
   },
+  Form: {
+    optional: '(optional)'
+  },
   Icon: {
     icon: 'icon'
   },

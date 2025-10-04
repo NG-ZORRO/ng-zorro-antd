@@ -125,5 +125,8 @@ export default {
     removeFile: 'Faylı sil',
     uploadError: 'Yükləmə xətası',
     previewFile: 'Fayla önbaxış'
+  },
+  Form: {
+    optional: '(məcburi)'
   }
 };

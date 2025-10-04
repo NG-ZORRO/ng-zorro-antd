@@ -138,5 +138,8 @@ export default {
   },
   Empty: {
     description: 'Trống'
+  },
+  Form: {
+    optional: '(tùy chọn)'
   }
 };

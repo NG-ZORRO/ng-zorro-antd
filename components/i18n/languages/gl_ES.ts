@@ -126,6 +126,9 @@ export default {
   Empty: {
     description: 'Non hai datos'
   },
+  Form: {
+    optional: '(opcional)'
+  },
   Icon: {
     icon: 'icona'
   },

@@ -142,5 +142,8 @@ export default {
   },
   PageHeader: {
     back: 'Назад'
+  },
+  Form: {
+    optional: '(необовʼязково)'
   }
 };

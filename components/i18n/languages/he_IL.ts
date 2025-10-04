@@ -134,6 +134,9 @@ export default {
   Empty: {
     description: 'אין מידע'
   },
+  Form: {
+    optional: '(אופציונלי)'
+  },
   Icon: {
     icon: 'סמל'
   },

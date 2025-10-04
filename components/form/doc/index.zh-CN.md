@@ -60,6 +60,7 @@ description: 高性能表单控件，自带数据域管理。包含数据录入�
 | `[nzTooltipIcon]`     | 配置 `nz-form-label` 的 `[nzTooltipIcon]` 的默认值                                  | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅       |
 | `[nzLabelAlign]`      | 配置 `nz-form-label` 的 `[nzLabelAlign]` 的默认值                                   | `'left' \| 'right'`                            | `'right'`                                       |
 | `[nzLabelWrap]`       | 配置 `nz-form-label` 的 `[nzLabelWrap]` 的默认值                                    | `boolean`                                      | `false`                                         |
+| `[nzRequiredMark]`    | 必填标记样式。可使用必填标记或可选标记。                                            | `NzRequiredMark`                               | `true`                                          |
 
 ### nz-form-item
 

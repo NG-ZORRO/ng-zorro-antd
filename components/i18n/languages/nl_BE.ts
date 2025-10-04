@@ -173,5 +173,8 @@ export default {
   },
   Image: {
     preview: 'Voorbeeld'
+  },
+  Form: {
+    optional: '(optioneel)'
   }
 };

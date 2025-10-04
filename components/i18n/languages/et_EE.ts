@@ -144,6 +144,9 @@ export default {
   global: {
     placeholder: 'Palun vali'
   },
+  Form: {
+    optional: '(valikuline)'
+  },
   Icon: {
     icon: 'ikoon'
   },

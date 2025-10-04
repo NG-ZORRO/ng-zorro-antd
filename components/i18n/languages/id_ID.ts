@@ -125,5 +125,8 @@ export default {
   },
   Empty: {
     description: 'Tidak ada data'
+  },
+  Form: {
+    optional: '(pilihan)'
   }
 };

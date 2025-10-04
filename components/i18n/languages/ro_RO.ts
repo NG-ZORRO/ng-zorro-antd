@@ -158,5 +158,8 @@ export default {
   },
   Image: {
     preview: 'Preview'
+  },
+  Form: {
+    optional: '(opțional)'
   }
 };

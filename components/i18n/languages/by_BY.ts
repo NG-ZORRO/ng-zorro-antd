@@ -157,6 +157,9 @@ export default {
     previewFile: 'Прадпрагляд файла',
     downloadFile: 'Загрузіць файл'
   },
+  Form: {
+    optional: '(неабавязковы)'
+  },
   Empty: {
     description: 'Няма дадзеных'
   },
