@@ -28,6 +28,7 @@ Used when the user needs to customize the color selection.
 | `[nzDisabled]`       | Disable ColorPicker                   | `boolean`                                          | `false`     |
 | `[nzDisabledAlpha]`  | Disable Alpha                         | `boolean`                                          | `false`     |
 | `[nzTitle]`          | Setting the title of the color picker | `TemplateRef<void> \| string`                      | -           |
+| `[nzPresets]`        | Preset colors                         | `NzColorPickerPresetsItem[]`                       | -           |
 | `(nzOnChange)`       | Callback when value is changed        | `EventEmitter<{ color: NzColor; format: string }>` | -           |
 | `(nzOnClear)`        | Called when clear                     | `EventEmitter<boolean>`                            | -           |
 | `(nzOnFormatChange)` | Callback when `format` is changed     | `EventEmitter<'rgb'｜'hex'｜'hsb'>`                | -           |
