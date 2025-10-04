@@ -1,0 +1,49 @@
+/* stylelint-disable less/no-duplicate-variables */
+@import '../../style/themes/index';
+
+@float-btn-prefix-cls: ~'@{ant-prefix}-float-btn';
+@animation-duration: 0.3s;
+@slide-distance: 40px;
+
+.animation(@direction, @type) {
+  &-@{type}-@{direction} {
+    animation: ~"@{type}-@{direction}" @animation-duration ease-in-out;
+  }
+}
+
+.keyframes(@name; @from-opacity; @to-opacity; @from-transform; @to-transform) {
+  @keyframes @name {
+    from {
+      transform: @from-transform;
+      opacity: @from-opacity;
+    }
+
+    to {
+      transform: @to-transform;
+      opacity: @to-opacity;
+    }
+  }
+}
+
+.@{float-btn-prefix-cls} {
+  // animation class
+  .animation(top, enter);
+  .animation(top, leave);
+  .animation(bottom, enter);
+  .animation(bottom, leave);
+  .animation(left, enter);
+  .animation(left, leave);
+  .animation(right, enter);
+  .animation(right, leave);
+
+  // keyframes
+  .keyframes(enter-top; 0; 1; translateY(@slide-distance); translateY(0));
+  .keyframes(leave-top; 1; 0; translateY(0); translateY(@slide-distance));
+  .keyframes(enter-bottom; 0; 1; translateY(-@slide-distance); translateY(0));
+  .keyframes(leave-bottom; 1; 0; translateY(0); translateY(-@slide-distance));
+  .keyframes(enter-left; 0; 1; translateX(@slide-distance); translateX(0));
+  .keyframes(leave-left; 1; 0; translateX(0); translateX(@slide-distance));
+  .keyframes(enter-right; 0; 1; translateX(-@slide-distance); translateX(0));
+  .keyframes(leave-right; 1; 0; translateX(0); translateX(-@slide-distance));
+}
+
