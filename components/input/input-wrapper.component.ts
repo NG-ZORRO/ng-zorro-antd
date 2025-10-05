@@ -8,6 +8,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   afterNextRender,
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -17,6 +18,7 @@ import {
   forwardRef,
   inject,
   input,
+  output,
   signal,
   ViewEncapsulation
 } from '@angular/core';
@@ -82,6 +84,20 @@ import { NZ_INPUT_WRAPPER } from './tokens';
       <ng-template [ngTemplateOutlet]="input" />
       @if (hasSuffix()) {
         <span class="ant-input-suffix">
+          @if (nzAllowClear()) {
+            <span
+              class="ant-input-clear-icon"
+              [class.ant-input-clear-icon-has-suffix]="nzSuffix() || suffix() || hasFeedback()"
+              [class.ant-input-clear-icon-hidden]="!inputDir().value() || disabled() || readOnly()"
+              role="button"
+              tabindex="-1"
+              (click)="clear()"
+            >
+              <ng-content select="[nzInputClearIcon]">
+                <nz-icon nzType="close-circle" nzTheme="fill" />
+              </ng-content>
+            </span>
+          }
           <ng-content select="[nzInputSuffix]">{{ nzSuffix() }}</ng-content>
           @if (hasFeedback() && status()) {
             <nz-form-item-feedback-icon [status]="status()" />
@@ -103,24 +119,28 @@ import { NZ_INPUT_WRAPPER } from './tokens';
   hostDirectives: [NzSpaceCompactItemDirective],
   host: {
     '[class]': 'class()',
-    '[class.ant-input-disabled]': 'disabled()'
+    '[class.ant-input-disabled]': 'disabled()',
+    '[class.ant-input-affix-wrapper-textarea-with-clear-btn]': 'nzAllowClear() && isTextarea()'
   }
 })
 export class NzInputWrapperComponent {
   private readonly focusMonitor = inject(FocusMonitor);
 
-  private readonly inputDir = contentChild.required(NzInputDirective);
-  private readonly inputRef = contentChild.required(NzInputDirective, { read: ElementRef });
+  protected readonly inputRef = contentChild.required(NzInputDirective, { read: ElementRef });
+  protected readonly inputDir = contentChild.required(NzInputDirective);
 
   protected readonly prefix = contentChild(NzInputPrefixDirective);
   protected readonly suffix = contentChild(NzInputSuffixDirective);
   protected readonly addonBefore = contentChild(NzInputAddonBeforeDirective);
   protected readonly addonAfter = contentChild(NzInputAddonAfterDirective);
 
+  readonly nzAllowClear = input(false, { transform: booleanAttribute });
   readonly nzPrefix = input<string>();
   readonly nzSuffix = input<string>();
   readonly nzAddonBefore = input<string>();
   readonly nzAddonAfter = input<string>();
+
+  readonly nzClear = output<void>();
 
   readonly size = computed(() => this.inputDir().nzSize());
   readonly variant = computed(() => this.inputDir().nzVariant());
@@ -130,7 +150,9 @@ export class NzInputWrapperComponent {
   readonly hasFeedback = computed(() => this.inputDir().hasFeedback());
 
   protected readonly hasPrefix = computed(() => !!this.nzPrefix() || !!this.prefix());
-  protected readonly hasSuffix = computed(() => !!this.nzSuffix() || !!this.suffix() || this.hasFeedback());
+  protected readonly hasSuffix = computed(
+    () => !!this.nzSuffix() || !!this.suffix() || this.nzAllowClear() || this.hasFeedback()
+  );
   protected readonly hasAffix = computed(() => this.hasPrefix() || this.hasSuffix());
   protected readonly hasAddonBefore = computed(() => !!this.nzAddonBefore() || !!this.addonBefore());
   protected readonly hasAddonAfter = computed(() => !!this.nzAddonAfter() || !!this.addonAfter());
@@ -139,6 +161,7 @@ export class NzInputWrapperComponent {
   private readonly compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   protected readonly dir = inject(Directionality).valueSignal;
   protected readonly focused = signal(false);
+  protected readonly isTextarea = computed(() => this.inputRef().nativeElement instanceof HTMLTextAreaElement);
 
   protected readonly finalSize = computed(() => {
     if (this.compactSize) {
@@ -196,5 +219,10 @@ export class NzInputWrapperComponent {
         this.focusMonitor.stopMonitoring(element);
       });
     });
+  }
+
+  clear(): void {
+    this.inputDir().ngControl?.control?.setValue('');
+    this.nzClear.emit();
   }
 }

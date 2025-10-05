@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -10,7 +10,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   imports: [FormsModule, NzButtonModule, NzInputModule, NzIconModule],
   template: `
     <nz-input-wrapper class="ant-input-search">
-      <input nz-input type="search" placeholder="input search text" />
+      <input nz-input [(ngModel)]="value" type="search" placeholder="input search text" />
       <button nzInputAddonAfter nz-button class="ant-input-search-button">
         <nz-icon nzType="search" />
       </button>
@@ -18,7 +18,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     <br />
     <br />
     <nz-input-wrapper nzAllowClear class="ant-input-search">
-      <input nz-input type="search" placeholder="input search text" />
+      <input nz-input [(ngModel)]="value" type="search" placeholder="input search text" />
       <button nzInputAddonAfter nz-button class="ant-input-search-button">
         <nz-icon nzType="search" />
       </button>
@@ -27,7 +27,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     <br />
     <nz-input-wrapper class="ant-input-search">
       <span nzInputAddonBefore>https://</span>
-      <input nz-input type="search" placeholder="input search text" />
+      <input nz-input [(ngModel)]="value" type="search" placeholder="input search text" />
       <button nzInputAddonAfter nz-button class="ant-input-search-button">
         <nz-icon nzType="search" />
       </button>
@@ -35,7 +35,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     <br />
     <br />
     <nz-input-wrapper class="ant-input-search ant-input-search-with-button">
-      <input nz-input type="search" placeholder="input search text" />
+      <input nz-input [(ngModel)]="value" type="search" placeholder="input search text" />
       <button nzInputAddonAfter nz-button nzType="primary" class="ant-input-search-button">
         <nz-icon nzType="search" />
       </button>
@@ -43,7 +43,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     <br />
     <br />
     <nz-input-wrapper class="ant-input-search ant-input-search-large ant-input-search-with-button">
-      <input nz-input type="search" placeholder="input search text" nzSize="large" />
+      <input nz-input [(ngModel)]="value" type="search" placeholder="input search text" nzSize="large" />
       <button nzInputAddonAfter nz-button nzType="primary" nzSize="large" class="ant-input-search-button"
         >Submit</button
       >
@@ -51,12 +51,14 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     <br />
     <br />
     <nz-input-wrapper class="ant-input-search ant-input-search-large ant-input-search-with-button">
-      <input nz-input type="search" placeholder="input search text" nzSize="large" />
+      <input nz-input [(ngModel)]="value" type="search" placeholder="input search text" nzSize="large" />
       <nz-icon nzInputSuffix nzType="audio" [style.font-size.px]="16" [style.color]="'#1677ff'" />
-      <button nzInputAddonAfter nz-button nzType="primary" nzSize="large" class="ant-input-search-button"
-        >Submit</button
-      >
+      <button nzInputAddonAfter nz-button nzType="primary" nzSize="large" class="ant-input-search-button">
+        Submit
+      </button>
     </nz-input-wrapper>
   `
 })
-export class NzDemoInputSearchInputComponent {}
+export class NzDemoInputSearchInputComponent {
+  readonly value = signal('');
+}
