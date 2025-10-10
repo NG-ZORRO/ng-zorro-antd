@@ -96,8 +96,12 @@ export class NzModalService implements OnDestroy {
   }
 
   private open<T, D, R>(componentOrTemplateRef: ContentType<T>, config?: ModalOptions<T, D, R>): NzModalRef<T, R> {
+    const globalConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
+    if (config) {
+      config.nzCentered = getValueWithConfig(config.nzCentered, globalConfig.nzCentered, false);
+    }
     const configMerged = applyConfigDefaults(config || {}, new ModalOptions());
-    const overlayRef = this.createOverlay(configMerged);
+    const overlayRef = this.createOverlay(configMerged, globalConfig);
     const modalContainer = this.attachModalContainer(overlayRef, configMerged);
     const modalRef = this.attachModalContent<T, D, R>(componentOrTemplateRef, modalContainer, overlayRef, configMerged);
     modalContainer.modalRef = modalRef;
@@ -131,9 +135,7 @@ export class NzModalService implements OnDestroy {
     }
   }
 
-  private createOverlay(config: ModalOptions): OverlayRef {
-    const globalConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
-
+  private createOverlay(config: ModalOptions, globalConfig: NzSafeAny): OverlayRef {
     return createOverlayRef(this.injector, {
       hasBackdrop: true,
       scrollStrategy: createBlockScrollStrategy(this.injector),
