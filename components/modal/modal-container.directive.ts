@@ -81,6 +81,12 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     return !!getValueWithConfig<boolean>(this.config.nzMaskClosable, defaultConfig.nzMaskClosable, true);
   }
 
+  get centered(): boolean {
+    const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
+
+    return !!getValueWithConfig<boolean>(this.config.nzCentered, defaultConfig.nzCentered, false);
+  }
+
   constructor() {
     super();
     this.dir = this.overlayRef.getDirection();
