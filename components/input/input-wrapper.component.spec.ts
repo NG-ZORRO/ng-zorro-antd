@@ -5,6 +5,7 @@
 
 import { Component, ElementRef, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
 import { NzSizeLDSType, NzVariant } from 'ng-zorro-antd/core/types';
 
@@ -131,6 +132,86 @@ describe('input-wrapper', () => {
     expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-focused')).toBeFalsy();
   });
 });
+
+describe('input-wrapper allow clear', () => {
+  let component: InputAllowClearTestComponent;
+  let fixture: ComponentFixture<InputAllowClearTestComponent>;
+  let clearIconElement: HTMLElement;
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(InputAllowClearTestComponent);
+    component = fixture.componentInstance;
+    fixture.autoDetectChanges();
+    clearIconElement = fixture.nativeElement.querySelector('.ant-input-clear-icon');
+  });
+
+  it('should be show clear icon when input has value', async () => {
+    expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
+    component.value = 'test';
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(clearIconElement.classList).not.toContain('ant-input-clear-icon-hidden');
+    component.value = '';
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
+  });
+
+  it('should be clear input value when click clear icon', () => {
+    component.value = 'test';
+    fixture.detectChanges();
+    clearIconElement.click();
+    fixture.detectChanges();
+    expect(component.value).toBe('');
+    expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
+  });
+
+  it('should be not show clear icon when input is disabled or readonly', () => {
+    component.value = 'test';
+    component.disabled = true;
+    component.readonly = false;
+    fixture.detectChanges();
+    expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
+    component.disabled = false;
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
+  });
+
+  it('should be not show clear icon when nzAllowClear is false', () => {
+    component.value = 'test';
+    component.allowClear = false;
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.ant-input-clear-icon')).toBeFalsy();
+  });
+
+  it('should be emit nzClear event when click clear icon', () => {
+    spyOn(component, 'onClear');
+    component.value = 'test';
+    fixture.detectChanges();
+    expect(component.onClear).not.toHaveBeenCalled();
+    clearIconElement.click();
+    fixture.detectChanges();
+    expect(component.onClear).toHaveBeenCalled();
+  });
+});
+
+@Component({
+  imports: [NzInputModule, FormsModule],
+  template: `
+    <nz-input-wrapper [nzAllowClear]="allowClear" (nzClear)="onClear()">
+      <input nz-input [(ngModel)]="value" [disabled]="disabled" [readonly]="readonly" />
+    </nz-input-wrapper>
+  `
+})
+class InputAllowClearTestComponent {
+  allowClear = true;
+  disabled = false;
+  readonly = false;
+  value = '';
+
+  onClear(): void {}
+}
 
 @Component({
   imports: [NzInputModule],

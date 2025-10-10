@@ -28,14 +28,16 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 
 ### nz-input-wrapper
 
-Used when you need to add prefixes and suffixes or pre- and post-tabs to `[nz-input]`.
+Use when you need to add extra functionality to `[nz-input]`.
 
-| Property          | Description                                                           | Type     | Default |
-| ----------------- | --------------------------------------------------------------------- | -------- | ------- |
-| `[nzAddonBefore]` | The label text displayed before (on the left side of) the input field | `string` | -       |
-| `[nzAddonAfter]`  | The label text displayed after (on the right side of) the input field | `string` | -       |
-| `[nzPrefix]`      | The prefix icon for the Input                                         | `string` | -       |
-| `[nzSuffix]`      | The suffix icon for the Input                                         | `string` | -       |
+| Property          | Description                                                           | Type                     | Default |
+| ----------------- | --------------------------------------------------------------------- | ------------------------ | ------- |
+| `[nzAddonBefore]` | The label text displayed before (on the left side of) the input field | `string`                 | -       |
+| `[nzAddonAfter]`  | The label text displayed after (on the right side of) the input field | `string`                 | -       |
+| `[nzPrefix]`      | The prefix icon for the Input                                         | `string`                 | -       |
+| `[nzSuffix]`      | The suffix icon for the Input                                         | `string`                 | -       |
+| `[nzAllowClear]`  | If allow to remove input content with clear icon                      | `boolean`                | `false` |
+| `(nzClear)`       | Event emitted when the clear icon is clicked                          | `OutputEmitterRef<void>` | -       |
 
 ### nz-input-group
 

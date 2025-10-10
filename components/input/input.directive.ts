@@ -66,6 +66,7 @@ export class NzInputDirective implements OnInit {
   protected hostView = inject(ViewContainerRef);
 
   readonly ngControl = inject(NgControl, { self: true, optional: true });
+  readonly value = signal<string>(this.elementRef.nativeElement.value);
 
   /**
    * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
@@ -127,6 +128,10 @@ export class NzInputDirective implements OnInit {
     // statusChanges is only accessible in onInit
     this.ngControl?.statusChanges?.pipe(startWith(null), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.controlDisabled.set(!!this.ngControl!.disabled);
+    });
+
+    this.ngControl?.valueChanges?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+      this.value.set(value);
     });
   }
 

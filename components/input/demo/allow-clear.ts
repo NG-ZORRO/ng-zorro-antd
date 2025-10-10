@@ -10,27 +10,17 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   template: `
     <nz-input-wrapper nzAllowClear>
       <input nz-input [(ngModel)]="inputValue" placeholder="input with clear icon" />
-      <nz-icon
-        nzInputSuffix
-        class="ant-input-clear-icon"
-        nzType="close-circle"
-        nzTheme="fill"
-        [hidden]="!inputValue"
-        (click)="inputValue = null"
-      />
     </nz-input-wrapper>
     <br />
     <br />
-    <nz-input-wrapper nzAllowClear class="ant-input-affix-wrapper-textarea-with-clear-btn">
+    <nz-input-wrapper nzAllowClear>
+      <input nz-input [(ngModel)]="inputValue" placeholder="input with custom clear icon" />
+      <nz-icon nzInputClearIcon nzType="close" />
+    </nz-input-wrapper>
+    <br />
+    <br />
+    <nz-input-wrapper nzAllowClear>
       <textarea nz-input [(ngModel)]="textValue" placeholder="textarea with clear icon"></textarea>
-      <nz-icon
-        nzInputSuffix
-        class="ant-input-clear-icon"
-        nzType="close-circle"
-        nzTheme="fill"
-        [hidden]="!textValue"
-        (click)="inputValue = null"
-      />
     </nz-input-wrapper>
   `
 })
