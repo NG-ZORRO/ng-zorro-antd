@@ -764,18 +764,15 @@ describe('cascader', () => {
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
-      fixture.detectChanges();
       itemEl1 = getItemAtColumnAndRow(1, 1)!;
       itemEl2 = getItemAtColumnAndRow(2, 1)!;
       itemEl3 = getItemAtColumnAndRow(3, 1)!;
-      expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(itemEl2).toBeNull();
+      expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl3).toBeNull();
-      expect(getAllColumns().length).toBe(1);
+      expect(getAllColumns().length).toBe(2);
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
 
-      itemEl1.click();
       const itemEl4 = getItemAtColumnAndRow(2, 2)!;
       itemEl4.click(); // 选中一个叶子
       fixture.detectChanges();
@@ -1039,6 +1036,20 @@ describe('cascader', () => {
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
+    }));
+
+    it('when there is only one column activated, pressing LEFT should fold the menu', fakeAsync(() => {
+      testComponent.values = ['zhejiang', 'ningbo'];
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getAllColumns().length).toBe(2);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBeFalse();
     }));
 
     it('should select option when press ENTER', fakeAsync(() => {

@@ -1056,10 +1056,12 @@ export class NzCascaderComponent
   }
 
   private prevColumn(): void {
-    const options = this.cascaderService.activatedNodes;
-    if (options.length) {
-      options.pop(); // Remove the last one
-      this.cascaderService.setNodeDeactivatedSinceColumn(options.length); // collapse menu
+    if (this.cascaderService.activatedNodes.length) {
+      this.cascaderService.activatedNodes.pop(); // Remove the last one
+      this.cascaderService.setNodeDeactivatedSinceColumn(this.cascaderService.activatedNodes.length); // collapse menu
+      if (!this.cascaderService.activatedNodes.length) {
+        this.setMenuVisible(false);
+      }
     }
   }
 
