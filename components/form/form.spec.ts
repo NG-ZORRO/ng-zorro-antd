@@ -151,9 +151,9 @@ describe('nz-form', () => {
       const optionalLabel = form.nativeElement.querySelector('.optional-label label');
 
       expect(requiredLabel.classList).toContain('ant-form-item-required');
-      expect(requiredLabel.classList).toContain('ant-form-item-required-mark-optional');
+      expect(requiredLabel.classList).toContain('ant-form-item-required-mark-hidden');
       expect(optionalLabel.classList).not.toContain('ant-form-item-required');
-      expect(optionalLabel.classList).toContain('ant-form-item-required-mark-optional');
+      expect(optionalLabel.classList).toContain('ant-form-item-required-mark-hidden');
     });
 
     it('should handle optional required mark', () => {

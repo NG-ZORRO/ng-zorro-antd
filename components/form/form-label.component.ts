@@ -48,29 +48,29 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
       [attr.for]="nzFor"
       [class.ant-form-item-no-colon]="nzNoColon"
       [class.ant-form-item-required]="nzRequired"
-      [class.ant-form-item-required-mark-optional]="isNzRequiredMarkOptional()"
+      [class.ant-form-item-required-mark-optional]="nzRequiredMark?.() === 'optional' || isNzRequiredMarkTemplate()"
+      [class.ant-form-item-required-mark-hidden]="nzRequiredMark?.() === false"
     >
       <ng-template #labelTemplate>
         <ng-content />
+        @if (nzTooltipTitle) {
+          <span class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
+            <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
+              <nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme" />
+            </ng-container>
+          </span>
+        }
+        @if (nzRequiredMark?.() === 'optional' && !nzRequired) {
+          <span class="ant-form-item-optional">{{ 'Form.optional' | nzI18n }}</span>
+        }
       </ng-template>
-      @if (isNzRequiredMarkOptional() && isNzRequiredMarkTemplate()) {
+
+      @if (isNzRequiredMarkTemplate()) {
         <ng-container
           *ngTemplateOutlet="$any(nzRequiredMark!()); context: { required: nzRequired, $implicit: labelTemplate }"
         />
       } @else {
         <ng-container *ngTemplateOutlet="labelTemplate" />
-      }
-
-      @if (nzTooltipTitle) {
-        <span class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
-          <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
-            <nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme" />
-          </ng-container>
-        </span>
-      }
-
-      @if (nzRequiredMark && nzRequiredMark() === 'optional' && !nzRequired) {
-        <span class="ant-form-item-optional">{{ 'Form.optional' | nzI18n }}</span>
       }
     </label>
   `,
@@ -135,12 +135,7 @@ export class NzFormLabelComponent {
 
   protected readonly nzRequiredMark = this.nzFormDirective?.nzRequiredMark;
 
-  protected readonly isNzRequiredMarkOptional = computed(() => {
-    const nzRequiredMark = this.nzRequiredMark;
-    return nzRequiredMark && (nzRequiredMark() === 'optional' || !nzRequiredMark() || isTemplateRef(nzRequiredMark()));
-  });
-
-  protected readonly isNzRequiredMarkTemplate = computed(() => isTemplateRef(this.nzFormDirective?.nzRequiredMark()));
+  protected readonly isNzRequiredMarkTemplate = computed(() => isTemplateRef(this.nzRequiredMark?.()));
 
   constructor() {
     if (this.nzFormDirective) {

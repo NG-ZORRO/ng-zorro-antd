@@ -127,11 +127,11 @@ describe('nz-form-label', () => {
 
       expect(requiredLabel?.nativeElement.querySelector('label').classList).toContain('ant-form-item-required');
       expect(requiredLabel?.nativeElement.querySelector('label').classList).toContain(
-        'ant-form-item-required-mark-optional'
+        'ant-form-item-required-mark-hidden'
       );
       expect(optionalLabel?.nativeElement.querySelector('label').classList).not.toContain('ant-form-item-required');
       expect(optionalLabel?.nativeElement.querySelector('label').classList).toContain(
-        'ant-form-item-required-mark-optional'
+        'ant-form-item-required-mark-hidden'
       );
     });
 

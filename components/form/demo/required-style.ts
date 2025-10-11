@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, model } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzFormModule, type NzRequiredMark } from 'ng-zorro-antd/form';
@@ -51,5 +51,5 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
   `
 })
 export class NzDemoFormRequiredStyleComponent {
-  requiredMarkStyle = model<NzRequiredMark>('optional');
+  readonly requiredMarkStyle = signal<NzRequiredMark>('optional');
 }
