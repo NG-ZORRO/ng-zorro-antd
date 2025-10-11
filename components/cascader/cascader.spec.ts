@@ -5,6 +5,7 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
+  BACKSPACE,
   COMMA,
   DELETE,
   DOWN_ARROW,
@@ -14,6 +15,7 @@ import {
   HOME,
   LEFT_ARROW,
   NINE,
+  O,
   PAGE_DOWN,
   PAGE_UP,
   RIGHT_ARROW,
@@ -762,18 +764,15 @@ describe('cascader', () => {
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
-      fixture.detectChanges();
       itemEl1 = getItemAtColumnAndRow(1, 1)!;
       itemEl2 = getItemAtColumnAndRow(2, 1)!;
       itemEl3 = getItemAtColumnAndRow(3, 1)!;
-      expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(itemEl2).toBeNull();
+      expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl3).toBeNull();
-      expect(getAllColumns().length).toBe(1);
+      expect(getAllColumns().length).toBe(2);
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
 
-      itemEl1.click();
       const itemEl4 = getItemAtColumnAndRow(2, 2)!;
       itemEl4.click(); // 选中一个叶子
       fixture.detectChanges();
@@ -1015,6 +1014,42 @@ describe('cascader', () => {
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl2).toBeNull();
       expect(getAllColumns().length).toBe(1);
+    }));
+
+    it('should navigate left when press BACKSPACE', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      flush(); // wait for cdk-overlay to open
+      fixture.detectChanges();
+      expect(getAllColumns().length).toBe(3);
+
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
+      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
+      expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', BACKSPACE);
+      fixture.detectChanges();
+      expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
+      expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
+    }));
+
+    it('when there is only one column activated, pressing LEFT should fold the menu', fakeAsync(() => {
+      testComponent.values = ['zhejiang', 'ningbo'];
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getAllColumns().length).toBe(2);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBeFalse();
     }));
 
     it('should select option when press ENTER', fakeAsync(() => {
@@ -1647,6 +1682,19 @@ describe('cascader', () => {
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
     });
 
+    it('should not preventDefault BACKSPACE in search mode', fakeAsync(() => {
+      testComponent.nzShowSearch = true;
+      dispatchMouseEvent(cascader.nativeElement, 'click');
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', O);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', BACKSPACE);
+      flush();
+      fixture.detectChanges();
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(itemEl1.innerText).toBe('Zhejiang');
+      expect(testComponent.cascader.inputValue).toBe('');
+    }));
+
     it('should support search a root node have no children ', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.nzShowSearch = true;
@@ -1755,22 +1803,59 @@ describe('cascader', () => {
       expect(testComponent.values).toEqual(['zhejiang', 'hangzhou', 'xihu']);
     }));
 
-    it('should nzOpen works', fakeAsync(() => {
-      fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible).toBe(false);
-      expect(testComponent.nzDisabled).toBe(false);
-      testComponent.nzOpen = true;
-      tick(200);
-      fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible).toBe(true);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+    describe('should nzOpen works', () => {
+      beforeEach(fakeAsync(() => {
+        testComponent.nzOpen = true;
+        flush();
+        fixture.detectChanges();
+      }));
 
-      testComponent.nzOpen = false;
-      tick(200);
-      fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
-    }));
+      it('should nzOpen can control the visibility of menu', fakeAsync(() => {
+        expect(testComponent.cascader.menuVisible).toBe(true);
+        expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+        testComponent.nzOpen = false;
+        flush();
+        fixture.detectChanges();
+        expect(testComponent.cascader.menuVisible).toBe(false);
+        expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
+      }));
+
+      it('should not hide menu by click leaf option or outside place when nzOpen is true', fakeAsync(() => {
+        expect(testComponent.cascader.menuVisible).toBe(true);
+        getItemAtColumnAndRow(1, 1)!.click();
+        getItemAtColumnAndRow(2, 1)!.click();
+        getItemAtColumnAndRow(3, 1)!.click(); // zhejiang, hangzhou, xihu
+        flush();
+        fixture.detectChanges();
+        expect(testComponent.onValueChanges).toHaveBeenCalled();
+        expect(testComponent.cascader.menuVisible).toBe(true);
+        spyOn(testComponent.cascader, 'onClickOutside');
+        dispatchFakeEvent(document.body, 'click');
+        expect(testComponent.cascader.onClickOutside).toHaveBeenCalled();
+        expect(testComponent.cascader.menuVisible).toBe(true);
+      }));
+
+      it('should not hide menu by clear options under multiple mode when nzOpen is true', fakeAsync(() => {
+        testComponent.nzMultiple = true;
+        fixture.detectChanges();
+        getItemAtColumnAndRow(1, 1)!.click();
+        getItemAtColumnAndRow(2, 1)!.click();
+        getItemAtColumnAndRow(3, 1)!.click(); // zhejiang, hangzhou, xihu
+        getItemAtColumnAndRow(1, 2)!.click();
+        getItemAtColumnAndRow(2, 1)!.click();
+        getItemAtColumnAndRow(3, 1)!.click(); // jiangsu, nanjing, zhonghuamen
+        console.log(testComponent.values);
+        expect(testComponent.values).toEqual([['zhejiang', 'hangzhou'], ['jiangsu']]);
+        flush();
+        fixture.detectChanges();
+        expect(testComponent.cascader.menuVisible).toBe(true);
+        spyOn(testComponent.cascader, 'clearSelection');
+        expect(cascader.nativeElement.querySelector('.ant-select-clear .anticon')).toBeDefined();
+        cascader.nativeElement.querySelector('.ant-select-clear .anticon').click();
+        expect(cascader.componentInstance.clearSelection).toHaveBeenCalled();
+        expect(testComponent.cascader.menuVisible).toBe(true);
+      }));
+    });
   });
 
   describe('multiple', () => {
@@ -2169,6 +2254,23 @@ describe('cascader', () => {
       const itemEl21 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-left');
     }));
+
+    it('should pressing the left and right keys can correctly expand and collapse content', fakeAsync(() => {
+      testComponent.nzOptions = options3;
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+      fixture.detectChanges();
+      const zhejiangItemEl = getItemAtColumnAndRow(1, 1)!;
+      const hangzhouItemEl = getItemAtColumnAndRow(2, 1)!;
+      expect(zhejiangItemEl.classList).toContain('ant-cascader-menu-item-active');
+      expect(hangzhouItemEl.classList).toContain('ant-cascader-menu-item-active');
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+      expect(hangzhouItemEl.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(zhejiangItemEl.classList).toContain('ant-cascader-menu-item-active');
+    }));
   });
 
   describe('Status', () => {
@@ -2475,6 +2577,7 @@ const options5: NzSafeAny[] = [];
       [nzLabelRender]="nzLabelRender"
       [nzMenuClassName]="nzMenuClassName"
       [nzMenuStyle]="nzMenuStyle"
+      [nzMultiple]="nzMultiple"
       [nzMouseEnterDelay]="nzMouseEnterDelay"
       [nzMouseLeaveDelay]="nzMouseLeaveDelay"
       [nzPlaceHolder]="nzPlaceHolder"
@@ -2505,9 +2608,10 @@ export class NzDemoCascaderDefaultComponent {
   @ViewChild('renderTpl', { static: true }) renderTpl!: TemplateRef<NzSafeAny>;
 
   nzOptions: NzSafeAny[] | null = options1;
-  values: string[] | number[] | null = null;
+  values: string[] | string[][] | number[] | null = null;
 
-  nzOpen = false;
+  nzOpen: boolean | undefined;
+  nzMultiple = false;
   nzAllowClear = true;
   nzAutoFocus = false;
   nzMenuClassName = 'menu-classA menu-classB';

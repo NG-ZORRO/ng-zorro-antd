@@ -347,7 +347,7 @@ export class NzCascaderComponent
   @ViewChild(CdkConnectedOverlay, { static: false }) overlay!: CdkConnectedOverlay;
   @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
 
-  @Input() nzOpen: boolean = false;
+  @Input() nzOpen?: boolean;
   @Input() nzOptions: NzCascaderOption[] | null = [];
   @Input() nzOptionRender: TemplateRef<{ $implicit: NzCascaderOption; index: number }> | null = null;
   @Input({ transform: booleanAttribute }) nzShowInput = true;
@@ -494,6 +494,10 @@ export class NzCascaderComponent
     return !!this.nzLabelRender;
   }
 
+  private get openControlled(): boolean {
+    return this.nzOpen !== undefined;
+  }
+
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
@@ -550,7 +554,9 @@ export class NzCascaderComponent
       } else {
         const shouldClose =
           // keep menu opened if multiple mode
-          !this.nzMultiple && (node.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover'));
+          !this.nzMultiple &&
+          (node.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover')) &&
+          !this.openControlled;
         if (shouldClose) {
           this.delaySetMenuVisible(false);
         }
@@ -584,8 +590,8 @@ export class NzCascaderComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzOpen, nzStatus, nzSize, nzPlacement, nzOptions } = changes;
-    if (nzOpen) {
-      this.setMenuVisible(this.nzOpen);
+    if (nzOpen && this.openControlled) {
+      this.setMenuVisible(nzOpen.currentValue);
     }
     if (nzOptions) {
       this.updateOptions();
@@ -699,7 +705,9 @@ export class NzCascaderComponent
     this.labelRenderText = '';
     this.labelRenderContext = {};
     this.inputValue = '';
-    this.setMenuVisible(false);
+    if (!this.openControlled) {
+      this.setMenuVisible(false);
+    }
     this.cascaderService.clear();
     this.nzClear.emit();
   }
@@ -757,7 +765,7 @@ export class NzCascaderComponent
 
   @HostListener('click')
   onTriggerClick(): void {
-    if (this.nzDisabled) {
+    if (this.nzDisabled || this.openControlled) {
       return;
     }
     if (this.nzShowSearch) {
@@ -771,7 +779,7 @@ export class NzCascaderComponent
 
   @HostListener('mouseenter')
   onTriggerMouseEnter(): void {
-    if (this.nzDisabled || !this.isActionTrigger('hover')) {
+    if (this.nzDisabled || !this.isActionTrigger('hover') || this.openControlled) {
       return;
     }
 
@@ -780,7 +788,13 @@ export class NzCascaderComponent
 
   @HostListener('mouseleave', ['$event'])
   onTriggerMouseLeave(event: MouseEvent): void {
-    if (this.nzDisabled || !this.menuVisible || this.isOpening || !this.isActionTrigger('hover')) {
+    if (
+      this.nzDisabled ||
+      !this.menuVisible ||
+      this.isOpening ||
+      !this.isActionTrigger('hover') ||
+      this.openControlled
+    ) {
       event.preventDefault();
       return;
     }
@@ -976,7 +990,7 @@ export class NzCascaderComponent
 
   onClickOutside(event: MouseEvent): void {
     const target = _getEventTarget(event);
-    if (!this.el.contains(target as Node)) {
+    if (!this.el.contains(target as Node) && !this.openControlled) {
       this.closeMenu();
     }
   }
@@ -1041,15 +1055,17 @@ export class NzCascaderComponent
     }
   }
 
-  private moveLeft(): void {
-    const options = this.cascaderService.activatedNodes;
-    if (options.length) {
-      options.pop(); // Remove the last one
-      this.cascaderService.setNodeDeactivatedSinceColumn(options.length); // collapse menu
+  private prevColumn(): void {
+    if (this.cascaderService.activatedNodes.length) {
+      this.cascaderService.activatedNodes.pop(); // Remove the last one
+      this.cascaderService.setNodeDeactivatedSinceColumn(this.cascaderService.activatedNodes.length); // collapse menu
+      if (!this.cascaderService.activatedNodes.length) {
+        this.setMenuVisible(false);
+      }
     }
   }
 
-  private moveRight(): void {
+  private nextColumn(): void {
     const length = this.cascaderService.activatedNodes.length;
     const options = this.cascaderService.columns[length];
     if (options && options.length) {
@@ -1239,7 +1255,7 @@ export class NzCascaderComponent
         }
 
         // Press any keys above to reopen menu.
-        if (!this.menuVisible && keyCode !== BACKSPACE && keyCode !== ESCAPE) {
+        if (!this.menuVisible && keyCode !== BACKSPACE && keyCode !== ESCAPE && !this.openControlled) {
           // The `setMenuVisible` runs `detectChanges()`, so we don't need to run `markForCheck()` additionally.
           return this.ngZone.run(() => this.setMenuVisible(true));
         }
@@ -1257,16 +1273,33 @@ export class NzCascaderComponent
 
         this.ngZone.run(() => {
           // Interact with the component.
-          if (keyCode === DOWN_ARROW) {
-            this.moveUpOrDown(false);
-          } else if (keyCode === UP_ARROW) {
-            this.moveUpOrDown(true);
-          } else if (keyCode === LEFT_ARROW) {
-            this.moveLeft();
-          } else if (keyCode === RIGHT_ARROW) {
-            this.moveRight();
-          } else if (keyCode === ENTER) {
-            this.onEnter();
+          switch (keyCode) {
+            case DOWN_ARROW:
+              this.moveUpOrDown(false);
+              break;
+            case UP_ARROW:
+              this.moveUpOrDown(true);
+              break;
+            case LEFT_ARROW:
+              if (this.dir === 'rtl') {
+                this.nextColumn();
+              } else {
+                this.prevColumn();
+              }
+              break;
+            case RIGHT_ARROW:
+              if (this.dir === 'rtl') {
+                this.prevColumn();
+              } else {
+                this.nextColumn();
+              }
+              break;
+            case ENTER:
+              this.onEnter();
+              break;
+            case BACKSPACE:
+              this.prevColumn();
+              break;
           }
           // `@HostListener`s run `markForCheck()` internally before calling the actual handler so
           // we call `markForCheck()` to be backwards-compatible.
