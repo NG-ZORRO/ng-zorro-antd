@@ -164,5 +164,8 @@ export default {
   },
   Image: {
     preview: 'Podgląd'
+  },
+  Form: {
+    optional: '(opcjonalne)'
   }
 };

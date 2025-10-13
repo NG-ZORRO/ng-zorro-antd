@@ -157,6 +157,9 @@ export default {
     previewFile: 'Pogledaj datoteku',
     downloadFile: 'Preuzmi datoteku'
   },
+  Form: {
+    optional: '(neobavezno)'
+  },
   Empty: {
     description: 'Nema podataka'
   },

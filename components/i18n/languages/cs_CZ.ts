@@ -164,6 +164,9 @@ export default {
   Empty: {
     description: 'Žádná data'
   },
+  Form: {
+    optional: '(nepovinné)'
+  },
   Icon: {
     icon: 'ikona'
   },

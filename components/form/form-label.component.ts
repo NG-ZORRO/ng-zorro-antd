@@ -3,14 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   ViewEncapsulation,
   booleanAttribute,
-  inject,
-  ChangeDetectorRef
+  computed,
+  inject
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs/operators';
@@ -19,6 +21,8 @@ import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTSType } from 'ng-zorro-antd/core/types';
+import { isTemplateRef } from 'ng-zorro-antd/core/util';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
@@ -40,14 +44,33 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <label [attr.for]="nzFor" [class.ant-form-item-no-colon]="nzNoColon" [class.ant-form-item-required]="nzRequired">
-      <ng-content></ng-content>
-      @if (nzTooltipTitle) {
-        <span class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
-          <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
-            <nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme" />
-          </ng-container>
-        </span>
+    <label
+      [attr.for]="nzFor"
+      [class.ant-form-item-no-colon]="nzNoColon"
+      [class.ant-form-item-required]="nzRequired"
+      [class.ant-form-item-required-mark-optional]="nzRequiredMark?.() === 'optional' || isNzRequiredMarkTemplate()"
+      [class.ant-form-item-required-mark-hidden]="nzRequiredMark?.() === false"
+    >
+      <ng-template #labelTemplate>
+        <ng-content />
+        @if (nzTooltipTitle) {
+          <span class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
+            <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
+              <nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme" />
+            </ng-container>
+          </span>
+        }
+        @if (nzRequiredMark?.() === 'optional' && !nzRequired) {
+          <span class="ant-form-item-optional">{{ 'Form.optional' | nzI18n }}</span>
+        }
+      </ng-template>
+
+      @if (isNzRequiredMarkTemplate()) {
+        <ng-container
+          *ngTemplateOutlet="$any(nzRequiredMark!()); context: { required: nzRequired, $implicit: labelTemplate }"
+        />
+      } @else {
+        <ng-container *ngTemplateOutlet="labelTemplate" />
       }
     </label>
   `,
@@ -56,7 +79,7 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
     '[class.ant-form-item-label-left]': `nzLabelAlign === 'left'`,
     '[class.ant-form-item-label-wrap]': `nzLabelWrap`
   },
-  imports: [NzOutletModule, NzTooltipDirective, NzIconModule]
+  imports: [NzOutletModule, NzTooltipDirective, NzIconModule, NgTemplateOutlet, NzI18nModule]
 })
 export class NzFormLabelComponent {
   private cdr = inject(ChangeDetectorRef);
@@ -109,6 +132,10 @@ export class NzFormLabelComponent {
   private labelWrap: boolean | 'default' = 'default';
 
   private nzFormDirective = inject(NzFormDirective, { skipSelf: true, optional: true });
+
+  protected readonly nzRequiredMark = this.nzFormDirective?.nzRequiredMark;
+
+  protected readonly isNzRequiredMarkTemplate = computed(() => isTemplateRef(this.nzRequiredMark?.()));
 
   constructor() {
     if (this.nzFormDirective) {

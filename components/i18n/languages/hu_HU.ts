@@ -159,6 +159,9 @@ export default {
     previewFile: 'Fájl előnézet',
     downloadFile: 'Fájl letöltése'
   },
+  Form: {
+    optional: '(nem kötelező)'
+  },
   Empty: {
     description: 'Nincs adat'
   },

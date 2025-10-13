@@ -166,5 +166,8 @@ export default {
   },
   PageHeader: {
     back: 'Atgal'
+  },
+  Form: {
+    optional: '(neprivaloma)'
   }
 };

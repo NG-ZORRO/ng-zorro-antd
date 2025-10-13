@@ -164,6 +164,9 @@ export default {
   Empty: {
     description: 'No hay datos'
   },
+  Form: {
+    optional: '(opcional)'
+  },
   Icon: {
     icon: 'icono'
   },

@@ -165,6 +165,9 @@ export default {
   Empty: {
     description: 'कोई आकड़ा उपलब्ध नहीं है'
   },
+  Form: {
+    optional: '(वैकल्पिक)'
+  },
   Icon: {
     icon: 'आइकन'
   },

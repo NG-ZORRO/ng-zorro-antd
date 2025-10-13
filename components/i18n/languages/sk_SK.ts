@@ -178,5 +178,8 @@ export default {
   },
   Image: {
     preview: 'Náhľad'
+  },
+  Form: {
+    optional: '(nepovinné)'
   }
 };

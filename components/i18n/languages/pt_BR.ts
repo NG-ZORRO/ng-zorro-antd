@@ -188,5 +188,8 @@ export default {
     day: 'Dia',
     month: 'Mês',
     week: 'Semana'
+  },
+  Form: {
+    optional: '(opcional)'
   }
 };

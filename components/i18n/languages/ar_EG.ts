@@ -156,6 +156,9 @@ export default {
   Empty: {
     description: 'لا توجد بيانات'
   },
+  Form: {
+    optional: '(اختياري)'
+  },
   Icon: {
     icon: 'أيقونة'
   },
