@@ -191,7 +191,7 @@ export class NzDemoFormRegisterComponent implements OnInit, OnDestroy {
   confirmationValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) {
       return { required: true };
-    } else if (control.value !== this.validateForm.controls.password.value) {
+    } else if (control.value !== control.parent!.value.password) {
       return { confirm: true, error: true };
     }
     return {};
