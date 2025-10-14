@@ -20,6 +20,7 @@ import {
   input,
   output,
   signal,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -31,11 +32,12 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
 
 import { NzInputAddonAfterDirective, NzInputAddonBeforeDirective } from './input-addon.directive';
 import { NzInputPrefixDirective, NzInputSuffixDirective } from './input-affix.directive';
+import { NzInputPasswordDirective, NzInputPasswordIconDirective } from './input-password.directive';
 import { NzInputDirective } from './input.directive';
 import { NZ_INPUT_WRAPPER } from './tokens';
 
 @Component({
-  selector: 'nz-input-wrapper',
+  selector: 'nz-input-wrapper,nz-input-password',
   exportAs: 'nzInputWrapper',
   imports: [NzIconModule, NzFormItemFeedbackIconComponent, NgTemplateOutlet],
   template: `
@@ -87,7 +89,9 @@ import { NZ_INPUT_WRAPPER } from './tokens';
           @if (nzAllowClear()) {
             <span
               class="ant-input-clear-icon"
-              [class.ant-input-clear-icon-has-suffix]="nzSuffix() || suffix() || hasFeedback()"
+              [class.ant-input-clear-icon-has-suffix]="
+                nzSuffix() || suffix() || hasFeedback() || inputPasswordDir?.nzVisibilityToggle()
+              "
               [class.ant-input-clear-icon-hidden]="!inputDir().value() || disabled() || readOnly()"
               role="button"
               tabindex="-1"
@@ -96,6 +100,23 @@ import { NZ_INPUT_WRAPPER } from './tokens';
               <ng-content select="[nzInputClearIcon]">
                 <nz-icon nzType="close-circle" nzTheme="fill" />
               </ng-content>
+            </span>
+          }
+          @if (inputPasswordDir && inputPasswordDir.nzVisibilityToggle()) {
+            <span
+              class="ant-input-password-icon"
+              role="button"
+              tabindex="-1"
+              (click)="inputPasswordDir.toggleVisible()"
+            >
+              @if (inputPasswordIconTmpl(); as tmpl) {
+                <ng-template
+                  [ngTemplateOutlet]="tmpl"
+                  [ngTemplateOutletContext]="{ $implicit: inputPasswordDir.nzVisible() }"
+                />
+              } @else {
+                <nz-icon [nzType]="inputPasswordDir.nzVisible() ? 'eye' : 'eye-invisible'" nzTheme="outline" />
+              }
             </span>
           }
           <ng-content select="[nzInputSuffix]">{{ nzSuffix() }}</ng-content>
@@ -120,11 +141,14 @@ import { NZ_INPUT_WRAPPER } from './tokens';
   host: {
     '[class]': 'class()',
     '[class.ant-input-disabled]': 'disabled()',
+    '[class.ant-input-password]': 'inputPasswordDir',
     '[class.ant-input-affix-wrapper-textarea-with-clear-btn]': 'nzAllowClear() && isTextarea()'
   }
 })
 export class NzInputWrapperComponent {
   private readonly focusMonitor = inject(FocusMonitor);
+
+  protected readonly inputPasswordDir = inject(NzInputPasswordDirective, { self: true, optional: true });
 
   protected readonly inputRef = contentChild.required(NzInputDirective, { read: ElementRef });
   protected readonly inputDir = contentChild.required(NzInputDirective);
@@ -133,6 +157,7 @@ export class NzInputWrapperComponent {
   protected readonly suffix = contentChild(NzInputSuffixDirective);
   protected readonly addonBefore = contentChild(NzInputAddonBeforeDirective);
   protected readonly addonAfter = contentChild(NzInputAddonAfterDirective);
+  protected readonly inputPasswordIconTmpl = contentChild(NzInputPasswordIconDirective, { read: TemplateRef });
 
   readonly nzAllowClear = input(false, { transform: booleanAttribute });
   readonly nzPrefix = input<string>();
@@ -151,7 +176,7 @@ export class NzInputWrapperComponent {
 
   protected readonly hasPrefix = computed(() => !!this.nzPrefix() || !!this.prefix());
   protected readonly hasSuffix = computed(
-    () => !!this.nzSuffix() || !!this.suffix() || this.nzAllowClear() || this.hasFeedback()
+    () => !!this.nzSuffix() || !!this.suffix() || this.nzAllowClear() || this.hasFeedback() || this.inputPasswordDir
   );
   protected readonly hasAffix = computed(() => this.hasPrefix() || this.hasSuffix());
   protected readonly hasAddonBefore = computed(() => !!this.nzAddonBefore() || !!this.addonBefore());

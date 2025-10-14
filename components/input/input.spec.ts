@@ -218,6 +218,36 @@ describe('input', () => {
       expect(inputElement.nativeElement.nextSibling?.classList).not.toContain('ant-form-item-feedback-icon');
     });
   });
+
+  describe('input with type', () => {
+    let fixture: ComponentFixture<NzTestInputWithTypeComponent>;
+    let inputElement: DebugElement;
+    let component: NzTestInputWithTypeComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestInputWithTypeComponent);
+      fixture.detectChanges();
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should type correct', () => {
+      expect(inputElement.nativeElement.type).toEqual('text');
+
+      component.type = 'password';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.type).toEqual('password');
+
+      component.type = 'number';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.type).toEqual('number');
+
+      component.type = '';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.type).toEqual('text');
+    });
+  });
 });
 
 @Component({
@@ -300,4 +330,12 @@ export class NzTestInputWithStatusComponent {
 export class NzTestInputInFormComponent {
   status: NzFormControlStatusType = 'error';
   feedback = true;
+}
+
+@Component({
+  imports: [NzInputModule],
+  template: `<input nz-input [type]="type" />`
+})
+export class NzTestInputWithTypeComponent {
+  type: string | null = null;
 }
