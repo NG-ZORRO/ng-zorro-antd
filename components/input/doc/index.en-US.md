@@ -17,12 +17,12 @@ description: Through mouse or keyboard input content, it is the most basic form 
 
 All props of input supported by [w3c standards](https://www.w3schools.com/tags/tag_input.asp) and Angular can used in `[nz-input]`.
 
-| Property              | Description                                                                                                          | Type                                                     | Default      |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------ |
+| Property              | Description                                                                                                          | Type                                                     | Default      | Version |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------ | ------- |
 | `[nzSize]`            | The size of the input box. Note: in the context of a form, the `large` size is used.                                 | `'large' \| 'small' \| 'default'`                        | `'default'`  |
 | `[nzAutosize]`        | Only used for `textarea`, height autosize feature, can be set to `boolean` or an object `{ minRows: 2, maxRows: 6 }` | `boolean \| { minRows: number, maxRows: number }`        | `false`      |
 | ~~`[nzBorderless]`~~  | ~~Whether hide border~~                                                                                              | ~~`boolean`~~                                            | ~~`false`~~  |
-| `[nzVariant]`         | Variants of Input                                                                                                    | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'` | `'outlined'` |
+| `[nzVariant]`         | Variants of Input                                                                                                    | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'` | `'outlined'` | 20.0.0  |
 | `[nzStatus]`          | Set validation status                                                                                                | `'error' \| 'warning'`                                   | -            |
 | ~~`[nzStepperless]`~~ | ~~Whether hide stepper when input type is number~~                                                                   | ~~`boolean`~~                                            | ~~`true`~~   |
 

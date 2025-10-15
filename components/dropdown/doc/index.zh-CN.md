@@ -15,8 +15,8 @@ description: 向下弹出的列表。
 
 ### [nz-dropdown]
 
-| 参数                   | 说明                                     | 类型                                                                                        | 默认值         |
-| ---------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
+| 参数                   | 说明                                     | 类型                                                                                        | 默认值         | 版本   |
+| ---------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- | ------ |
 | `[nzDropdownMenu]`     | Dropdown 下拉菜单组件                    | `NzDropdownMenuComponent`                                                                   | -              |
 | `[nzDisabled]`         | 菜单是否禁用                             | `boolean`                                                                                   | -              |
 | `[nzPlacement]`        | 菜单弹出位置                             | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
@@ -26,7 +26,7 @@ description: 向下弹出的列表。
 | `[nzOverlayClassName]` | 下拉根元素的类名称                       | `string`                                                                                    | -              |
 | `[nzOverlayStyle]`     | 下拉根元素的样式                         | `object`                                                                                    | -              |
 | `(nzVisibleChange)`    | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>`                                                                     | -              |
-| `[nzArrow]`            | 下拉框箭头是否显示                       | `boolean`                                                                                   | `false`        |
+| `[nzArrow]`            | 下拉框箭头是否显示                       | `boolean`                                                                                   | `false`        | 20.2.0 |
 
 菜单使用 [nz-menu](/components/menu/zh)，还包括菜单项 `[nz-menu-item]`，分割线 `[nz-menu-divider]`。
 

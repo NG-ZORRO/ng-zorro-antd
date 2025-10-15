@@ -15,8 +15,8 @@ description: 输入或选择时间的控件。
 
 ### nz-time-picker
 
-| 参数                      | 说明                                                    | 类型                                                     | 默认值         | 全局配置 |
-| ------------------------- | ------------------------------------------------------- | -------------------------------------------------------- | -------------- | -------- |
+| 参数                      | 说明                                                    | 类型                                                     | 默认值         | 全局配置 | 版本   |
+| ------------------------- | ------------------------------------------------------- | -------------------------------------------------------- | -------------- | -------- | ------ |
 | `[nzId]`                  | 组件内部 input 的 id 值                                 | `string`                                                 | -              |
 | `[ngModel]`               | 当前时间                                                | `Date`                                                   | -              |
 | `[nzAddOn]`               | 选择框底部显示自定义的内容                              | `TemplateRef<void>`                                      | -              |
@@ -39,7 +39,7 @@ description: 输入或选择时间的控件。
 | `[nzSize]`                | 时间选择框大小                                          | `'large' \| 'small' \| 'default'`                        | `'default'`    |
 | `[nzStatus]`              | 设置校验状态                                            | `'error' \| 'warning'`                                   | -              |
 | ~~`[nzBorderless]`~~      | ~~移除边框~~                                            | ~~`boolean`~~                                            | ~~`false`~~    | -        |
-| `[nzVariant]`             | 形态变体                                                | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'` | `'outlined'`   | ✅       |
+| `[nzVariant]`             | 形态变体                                                | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'` | `'outlined'`   | ✅       | 20.0.0 |
 | `[nzInputReadOnly]`       | 为 input 标签设置只读属性（避免在移动设备上触发小键盘） | `boolean`                                                | `false`        | -        |
 | `[nzOpen]`                | 面板是否打开，可双向绑定                                | `boolean`                                                | `false`        |
 | `[nzPlaceHolder]`         | 没有值的时候显示的内容                                  | `string`                                                 | `'请选择时间'` |

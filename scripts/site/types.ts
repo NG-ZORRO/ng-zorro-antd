@@ -121,6 +121,10 @@ export interface ComponentDemoDocMeta {
    */
   title: I18nTitle;
   /**
+   * API support version
+   */
+  version: string;
+  /**
    * iframe configuration
    */
   iframe?: IframeMeta;

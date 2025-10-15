@@ -15,15 +15,15 @@ description: Display multiple options and allow users to select a single option.
 
 ### nz-segmented
 
-| Property          | Description                                               | Type                                                                                                          | Default   | Global Config |
-| ----------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | --------- | ------------- |
+| Property          | Description                                               | Type                                                                                                          | Default   | Global Config | Version |
+| ----------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | --------- | ------------- | ------- |
 | `[nzBlock]`       | Option to fit width to its parent\'s width                | `boolean`                                                                                                     | `false`   |               |
 | `[nzDisabled]`    | Disable all segments                                      | `boolean`                                                                                                     | `false`   |               |
 | `[nzOptions]`     | Set children optional                                     | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean }>` | -         |               |
 | `[nzSize]`        | The size of the Segmented                                 | `large \| default \| small`                                                                                   | -         | ✅            |
-| `[nzShape]`       | Shape of Segmented                                        | `default \| round`                                                                                            | `default` | -             |
-| `[nzVertical]`    | Orientation                                               | `boolean`                                                                                                     | `false`   | -             |
-| `[nzName]`        | The name property of all `input[type="radio"]` children   | `string`                                                                                                      | -         |               |
+| `[nzShape]`       | Shape of Segmented                                        | `default \| round`                                                                                            | `default` | -             | 20.3.0  |
+| `[nzVertical]`    | Orientation                                               | `boolean`                                                                                                     | `false`   | -             | 20.2.0  |
+| `[nzName]`        | The name property of all `input[type="radio"]` children   | `string`                                                                                                      | -         |               | 20.3.0  |
 | `[ngModel]`       | Value of the currently selected option                    | `string \| number`                                                                                            | -         |               |
 | `(nzValueChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -         |               |
 | `(ngModelChange)` | Emits when value of the currently selected option changes | `EventEmitter<string \| number>`                                                                              | -         |               |

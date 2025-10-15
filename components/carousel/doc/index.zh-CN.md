@@ -17,8 +17,8 @@ description: 一组轮播的区域。
 
 ### nz-carousel
 
-| 参数                | 说明                                               | 类型                                         | 默认值      | 支持全局配置 |
-| ------------------- | -------------------------------------------------- | -------------------------------------------- | ----------- | ------------ |
+| 参数                | 说明                                               | 类型                                         | 默认值      | 支持全局配置 | 版本   |
+| ------------------- | -------------------------------------------------- | -------------------------------------------- | ----------- | ------------ | ------ |
 | `[nzAutoPlay]`      | 是否自动切换                                       | `boolean`                                    | `false`     | ✅           |
 | `[nzAutoPlaySpeed]` | 切换时间(毫秒)，当设置为 0 时不切换                | `number`                                     | `3000`      | ✅           |
 | `[nzDotRender]`     | Dot 渲染模板                                       | `TemplateRef<{ $implicit: number }>`         | -           |
@@ -27,7 +27,7 @@ description: 一组轮播的区域。
 | `[nzEffect]`        | 动画效果函数，可取 `scrollx`, `fade`               | `'scrollx' \| 'fade'`                        | `'scrollx'` | ✅           |
 | `[nzEnableSwipe]`   | 是否支持手势划动切换                               | `boolean`                                    | `true`      | ✅           |
 | `[nzLoop]`          | 是否支持循环                                       | `boolean`                                    | `true`      | ✅           |
-| `[nzArrows]`        | 是否显示箭头按钮                                   | `boolean`                                    | `false`     | -            |
+| `[nzArrows]`        | 是否显示箭头按钮                                   | `boolean`                                    | `false`     | -            | 20.3.0 |
 | `(nzAfterChange)`   | 切换面板的回调                                     | `EventEmitter<number>`                       | -           |
 | `(nzBeforeChange)`  | 切换面板的回调                                     | `EventEmitter<{ from: number; to: number }>` | -           |
 

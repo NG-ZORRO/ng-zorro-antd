@@ -113,6 +113,7 @@ export default function generate(target: string): void {
                 name,
                 nameKey,
                 demoMeta.meta.title['en-US'],
+                demoMeta.meta.version,
                 demoMeta.en,
                 demoMeta.meta.iframe
               ),
@@ -121,6 +122,7 @@ export default function generate(target: string): void {
                 name,
                 nameKey,
                 demoMeta.meta.title['zh-CN'],
+                demoMeta.meta.version,
                 demoMeta.zh,
                 demoMeta.meta.iframe
               ),

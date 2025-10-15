@@ -53,6 +53,7 @@ export class NzCodeBoxComponent {
   readonly expanded = signal(false);
 
   @Input() nzTitle!: string;
+  @Input() nzVersion!: string;
   @Input() nzHref!: string;
   @Input() nzLink!: string;
   @Input() nzId!: string;

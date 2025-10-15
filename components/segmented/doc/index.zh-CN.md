@@ -16,15 +16,15 @@ description: 用于展示多个选项并允许用户选择其中单个选项。
 
 ### nz-segmented
 
-| 参数              | 说明                                      | 类型                                                                                                           | 默认值    | 全局配置 |
-| ----------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------- | -------- |
+| 参数              | 说明                                      | 类型                                                                                                           | 默认值    | 全局配置 | 版本   |
+| ----------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------- | -------- | ------ |
 | `[nzBlock]`       | 将宽度调整为父元素宽度的选项              | `boolean`                                                                                                      | `false`   |          |
 | `[nzDisabled]`    | 是否禁用                                  | `boolean`                                                                                                      | `false`   |          |
 | `[nzOptions]`     | 数据化配置选项内容                        | `string[] \| number[] \| Array<{ label: string; value: string \| number; icon: string; disabled?: boolean; }>` | -         |          |
 | `[nzSize]`        | 控件尺寸                                  | `large \| default \| small`                                                                                    | -         | ✅       |
-| `[nzShape]`       | 形状                                      | `default \| round`                                                                                             | `default` | -        |
-| `[nzVertical]`    | 排列方向                                  | `boolean`                                                                                                      | `false`   | -        |
-| `[nzName]`        | 所有 `input[type="radio"]` 的 `name` 属性 | `string`                                                                                                       | -         |          |
+| `[nzShape]`       | 形状                                      | `default \| round`                                                                                             | `default` | -        | 20.3.0 |
+| `[nzVertical]`    | 排列方向                                  | `boolean`                                                                                                      | `false`   | -        | 20.2.0 |
+| `[nzName]`        | 所有 `input[type="radio"]` 的 `name` 属性 | `string`                                                                                                       | -         |          | 20.3.0 |
 | `[ngModel]`       | 当前选中项目的 value                      | `string \| number`                                                                                             | -         |          |
 | `(nzValueChange)` | 当前选中项目变化时触发回调                | `EventEmitter<string \| number>`                                                                               | -         |          |
 | `(ngModelChange)` | 当前选中项目变化时触发回调                | `EventEmitter<string \| number>`                                                                               | -         |          |

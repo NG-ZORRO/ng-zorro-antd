@@ -21,8 +21,8 @@ description: 用于在输入中提及某人或某事。
 
 ### nz-mention
 
-| 参数                    | 说明                              | 类型                                                     | 默认值                           |
-| ----------------------- | --------------------------------- | -------------------------------------------------------- | -------------------------------- |
+| 参数                    | 说明                              | 类型                                                     | 默认值                           | 版本   |
+| ----------------------- | --------------------------------- | -------------------------------------------------------- | -------------------------------- | ------ |
 | `[nzMentionTrigger]`    | 用于指定提及的触发元素 **(必须)** | `HTMLTextAreaElement \| HTMLInputElement`                | -                                |
 | `[nzMentionSuggestion]` | 自定义建议渲染模板                | `TemplateRef<any>`                                       | -                                |
 | `[nzLoading]`           | 加载中                            | `boolean`                                                | `false`                          |
@@ -31,9 +31,9 @@ description: 用于在输入中提及某人或某事。
 | `[nzPrefix]`            | 触发弹出下拉框的字符              | `string \| string[]`                                     | `'@'`                            |
 | `[nzSuggestions]`       | 建议内容                          | `any[]`                                                  | `[]`                             |
 | `[nzStatus]`            | 设置校验状态                      | `'error' \| 'warning'`                                   | -                                |
-| `[nzAllowClear]`        | 支持清除                          | `boolean`                                                | `false`                          |
-| `[nzClearIcon]`         | 自定义的多选框清空图标            | `TemplateRef<void>`                                      | -                                |
-| `[nzVariant]`           | 形态变体                          | `'outlined' \| 'filled' \| 'borderless' \| 'underlined'` | `'outlined'`                     |
+| `[nzAllowClear]`        | 支持清除                          | `boolean`                                                | `false`                          | 20.3.0 |
+| `[nzClearIcon]`         | 自定义的多选框清空图标            | `TemplateRef<void>`                                      | -                                | 20.3.0 |
+| `[nzVariant]`           | 形态变体                          | `'outlined' \| 'filled' \| 'borderless' \| 'underlined'` | `'outlined'`                     | 20.3.0 |
 | `[nzValueWith]`         | 建议选项的取值方法                | `(any) => string \| (value: string) => string`           | -                                |
 | `(nzOnSelect)`          | 下拉框选择建议时回调              | `EventEmitter<any>`                                      | -                                |
 | `(nzOnSearchChange)`    | 输入框中 @ 变化时回调             | `EventEmitter<MentionOnSearchTypes>`                     | -                                |

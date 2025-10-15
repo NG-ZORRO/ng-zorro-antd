@@ -1,5 +1,6 @@
 ---
 order: 7
+version: 20.0.0
 title:
   zh-CN: 形态变体
   en-US: Variants

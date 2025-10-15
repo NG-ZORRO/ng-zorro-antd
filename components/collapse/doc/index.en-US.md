@@ -16,23 +16,23 @@ description: A content area which can be collapsed and expanded.
 
 ### nz-collapse
 
-| Property                 | Description                                                 | Type                 | Default    | Global Config |
-| ------------------------ | ----------------------------------------------------------- | -------------------- | ---------- | ------------- |
+| Property                 | Description                                                 | Type                 | Default    | Global Config | Version |
+| ------------------------ | ----------------------------------------------------------- | -------------------- | ---------- | ------------- | ------- |
 | `[nzAccordion]`          | Accordion mode                                              | `boolean`            | `false`    | ✅            |
 | `[nzBordered]`           | Set border style                                            | `boolean`            | `true`     | ✅            |
 | `[nzGhost]`              | Make the collapse borderless and its background transparent | `boolean`            | `false`    | ✅            |
 | `[nzExpandIconPosition]` | Set expand icon position                                    | `'start' \| 'end'`   | `'start'`  | -             |
-| `[nzSize]`               | Set size of collapse                                        | `'small' \| 'large'` | `'middle'` | -             |
+| `[nzSize]`               | Set size of collapse                                        | `'small' \| 'large'` | `'middle'` | -             | 20.2.0  |
 
 ### nz-collapse-panel
 
-| Property           | Description                                 | Type                               | Default | Global Config |
-| ------------------ | ------------------------------------------- | ---------------------------------- | ------- | ------------- |
+| Property           | Description                                 | Type                               | Default | Global Config | Version |
+| ------------------ | ------------------------------------------- | ---------------------------------- | ------- | ------------- | ------- |
 | `[nzDisabled]`     | If `true`, panel cannot be opened or closed | `boolean`                          | `false` | -             |
 | `[nzHeader]`       | Title of the panel                          | `string \| TemplateRef<void>`      | -       | -             |
 | `[nzExpandedIcon]` | Customize an icon for toggle                | `string \| TemplateRef<void>`      | -       | -             |
 | `[nzExtra]`        | Extra element in the corner                 | `string \| TemplateRef<void>`      | -       | -             |
 | `[nzShowArrow]`    | Display arrow or not                        | `boolean`                          | `true`  | ✅            |
 | `[nzActive]`       | Active status of panel, double binding      | `boolean`                          | -       | -             |
-| `[nzCollapsible]`  | Set collapsible trigger area                | `'header' \| 'icon' \| 'disabled'` | -       | -             |
+| `[nzCollapsible]`  | Set collapsible trigger area                | `'header' \| 'icon' \| 'disabled'` | -       | -             | 20.2.0  |
 | `(nzActiveChange)` | Callback function of the active status      | `EventEmitter<boolean>`            | -       | -             |

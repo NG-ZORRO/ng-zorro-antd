@@ -15,12 +15,12 @@ description: A divider line separates different content.
 
 ### nz-divider
 
-| Property          | Description                             | Type                              | Default        |
-| ----------------- | --------------------------------------- | --------------------------------- | -------------- |
+| Property          | Description                             | Type                              | Default        | Version |
+| ----------------- | --------------------------------------- | --------------------------------- | -------------- | ------- |
 | `[nzDashed]`      | whether line is dashed                  | `boolean`                         | `false`        |
 | `[nzType]`        | direction type of divider               | `'horizontal' \| 'vertical'`      | `'horizontal'` |
 | `[nzText]`        | inner text of divider                   | `string \| TemplateRef<void>`     | -              |
 | `[nzPlain]`       | Divider text show as plain style        | `boolean`                         | `false`        |
 | `[nzOrientation]` | inner text orientation                  | `'center' \| 'left' \| 'right'`   | `'center'`     |
 | `[nzVariant]`     | Whether line is dashed, dotted or solid | `'dashed' \| 'dotted' \| 'solid'` | `'solid'`      |
-| `[nzSize]`        | Divider size                            | `'small' \| 'middle' \| 'large'`  | -              |
+| `[nzSize]`        | Divider size                            | `'small' \| 'middle' \| 'large'`  | -              | 20.2.0  |

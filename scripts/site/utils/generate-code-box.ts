@@ -16,11 +16,13 @@ export function generateCodeBox(
   demoName: string,
   key: string,
   title: string,
+  version: string,
   doc: string,
   iframe?: IframeMeta
 ): string {
   let output = template;
   output = output.replace(/{{title}}/g, title);
+  output = output.replace(/{{version}}/g, version ?? '');
   output = output.replace(/{{component}}/g, component);
   output = output.replace(/{{componentName}}/g, demoName);
   output = output.replace(/{{key}}/g, key);

@@ -16,12 +16,12 @@ description: 区隔内容的分割线。
 
 ### nz-divider
 
-| 参数              | 说明                       | 类型                              | 默认值         |
-| ----------------- | -------------------------- | --------------------------------- | -------------- |
+| 参数              | 说明                       | 类型                              | 默认值         | 版本   |
+| ----------------- | -------------------------- | --------------------------------- | -------------- | ------ |
 | `[nzDashed]`      | 是否虚线                   | `boolean`                         | `false`        |
 | `[nzType]`        | 水平还是垂直类型           | `'horizontal' \| 'vertical'`      | `'horizontal'` |
 | `[nzText]`        | 中间文字                   | `string \| TemplateRef<void>`     | -              |
 | `[nzPlain]`       | 文字是否显示为普通正文样式 | `boolean`                         | `false`        |
 | `[nzOrientation]` | 中间文字方向               | `'center' \| 'left' \| 'right'`   | `'center'`     |
 | `[nzVariant]`     | 分割线是虚线、点线还是实线 | `'dashed' \| 'dotted' \| 'solid'` | `'solid'`      |
-| `[nzSize]`        | 分割线大小                 | `'small' \| 'middle' \| 'large'`  | -              |
+| `[nzSize]`        | 分割线大小                 | `'small' \| 'middle' \| 'large'`  | -              | 20.2.0 |
