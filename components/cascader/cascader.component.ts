@@ -677,7 +677,7 @@ export class NzCascaderComponent
     }
     if (visible) {
       this.cascaderService.$redraw.next();
-      this.updateSelectedNodes(!!this.nzLoadData);
+      this.updateSelectedNodes(true);
       this.scrollToActivatedOptions();
     } else {
       this.inputValue = '';
