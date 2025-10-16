@@ -25,7 +25,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
       </nz-space-compact>
       <nz-space-compact>
         <button nz-button disabled>DropDown</button>
-        <button nz-button disabled nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
+        <button nz-button disabled nz-dropdown [nzDropdownMenu]="menu" nzDisabled nzPlacement="bottomRight">
           <nz-icon nzType="ellipsis" />
         </button>
       </nz-space-compact>
