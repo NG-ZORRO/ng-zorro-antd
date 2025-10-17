@@ -1,5 +1,6 @@
 ---
 order: 21
+version: 20.2.0
 title:
   zh-CN: 控制浮层显隐
   en-US: Controlled Opening

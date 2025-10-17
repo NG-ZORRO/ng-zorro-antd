@@ -1,5 +1,6 @@
 ---
 order: 5
+version: 20.2.0
 title:
   zh-CN: 分割线大小
   en-US: Size

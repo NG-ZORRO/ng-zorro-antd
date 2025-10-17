@@ -21,8 +21,8 @@ description: 级联选择框。
 
 ### nz-cascader
 
-| 参数                  | 说明                                                                                       | 类型                                                                  | 默认值         | 支持全局配置 |
-| --------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- | -------------- | ------------ |
+| 参数                  | 说明                                                                                       | 类型                                                                  | 默认值         | 支持全局配置 | 版本   |
+| --------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- | -------------- | ------------ | ------ |
 | `[ngModel]`           | 指定选中项                                                                                 | `any[]`                                                               | -              |
 | `[nzAllowClear]`      | 是否支持清除                                                                               | `boolean`                                                             | `true`         |
 | `[nzAutoFocus]`       | 是否自动聚焦，当存在输入框时                                                               | `boolean`                                                             | `false`        |
@@ -44,7 +44,7 @@ description: 级联选择框。
 | `[nzNotFoundContent]` | 当下拉列表为空时显示的内容                                                                 | `string \| TemplateRef<void>`                                         | -              |
 | `[nzOptionRender]`    | 选项的渲染模板                                                                             | `TemplateRef<{ $implicit: NzCascaderOption, index: number }>`         |                |
 | `[nzOptions]`         | 可选项数据源                                                                               | `object[]`                                                            | -              |
-| `[nzOpen]`            | 控制浮层显隐                                                                               | `boolean`                                                             | `false`        |
+| `[nzOpen]`            | 控制浮层显隐                                                                               | `boolean`                                                             | `false`        | -            | 20.2.0 |
 | `[nzPlaceHolder]`     | 输入框占位文本                                                                             | `string`                                                              | `'请选择'`     |
 | `[nzPlacement]`       | 浮层弹出位置                                                                               | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'`            | `'bottomLeft'` |
 | `[nzShowArrow]`       | 是否显示箭头                                                                               | `boolean`                                                             | `true`         |
@@ -55,7 +55,7 @@ description: 级联选择框。
 | `[nzPrefix]`          | 自定义的选择框前缀                                                                         | `string \| TemplateRef<void>`                                         | -              |
 | `[nzSuffixIcon]`      | 自定义的选择框后缀图标                                                                     | `string \| TemplateRef<void>`                                         | -              |
 | `[nzValueProperty]`   | 选项的实际值的属性名                                                                       | `string`                                                              | `'value'`      |
-| `[nzVariant]`         | 形态变体                                                                                   | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'`              | `'outlined'`   | ✅           |
+| `[nzVariant]`         | 形态变体                                                                                   | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'`              | `'outlined'`   | ✅           | 20.0.0 |
 | `(ngModelChange)`     | 值发生变化时触发                                                                           | `EventEmitter<any[]>`                                                 | -              |
 | `(nzClear)`           | 清除值时触发                                                                               | `EventEmitter<void>`                                                  | -              |
 | `(nzVisibleChange)`   | 菜单浮层的显示/隐藏                                                                        | `EventEmitter<boolean>`                                               | -              |

@@ -1,5 +1,6 @@
 ---
 order: 14
+version: 20.3.0
 title:
   zh-CN: 胶囊形状
   en-US: Round Shape

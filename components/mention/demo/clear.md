@@ -1,5 +1,6 @@
 ---
 order: 11
+version: 20.3.0
 title:
   zh-CN: 带移除图标
   en-US: With clear icon

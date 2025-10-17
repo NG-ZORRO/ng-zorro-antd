@@ -1,5 +1,6 @@
 ---
 order: 8
+version: 20.2.0
 title:
   zh-CN: 可折叠
   en-US: Collapsible

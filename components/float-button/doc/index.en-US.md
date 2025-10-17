@@ -28,11 +28,11 @@ description: A button that floats at the top of the page.
 
 ### nz-float-button-group
 
-| Property           | Description                                   | Type                                     | Default    |
-| ------------------ | --------------------------------------------- | ---------------------------------------- | ---------- |
+| Property           | Description                                   | Type                                     | Default    | Version |
+| ------------------ | --------------------------------------------- | ---------------------------------------- | ---------- | ------- |
 | `[nzShape]`        | Shape of button group                         | `'circle' \| 'square'`                   | `'circle'` |
 | `[nzTrigger]`      | Which action can trigger menu open/close      | `'click' \| 'hover'`                     | -          |
-| `[nzPlacement]`    | Customize menu animation placement            | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'`    |
+| `[nzPlacement]`    | Customize menu animation placement            | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'`    | 20.1.0  |
 | `[nzOpen]`         | Whether the menu is visible or not            | `boolean`                                | -          |
 | `(nzOnOpenChange)` | Callback executed when active menu is changed | `EventEmitter<boolean>`                  | -          |
 

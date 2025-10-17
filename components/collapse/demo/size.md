@@ -1,5 +1,6 @@
 ---
 order: 1
+version: 20.2.0
 title:
   zh-CN: 大小
   en-US: Size

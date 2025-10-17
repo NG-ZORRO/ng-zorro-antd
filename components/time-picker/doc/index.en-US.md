@@ -14,8 +14,8 @@ By clicking the input box, you can select a time from a popup panel.
 
 ### nz-time-picker
 
-| Property                  | Description                                                                            | Type                                                     | Default           | Global Config |
-| ------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------- | ----------------- | ------------- |
+| Property                  | Description                                                                            | Type                                                     | Default           | Global Config | Version |
+| ------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------- | ----------------- | ------------- | ------- |
 | `[nzId]`                  | input id attribute inside the component                                                | `string`                                                 | -                 |
 | `[ngModel]`               | to set time                                                                            | `Date`                                                   | -                 |
 | `[nzAddOn]`               | called from timepicker panel to render some addon to its bottom                        | `TemplateRef<void>`                                      | -                 |
@@ -38,7 +38,7 @@ By clicking the input box, you can select a time from a popup panel.
 | `[nzSize]`                | width of time picker box                                                               | `'large' \| 'small' \| 'default'`                        | `'default'`       |
 | `[nzStatus]`              | Set validation status                                                                  | `'error' \| 'warning'`                                   | -                 |
 | ~~`[nzBorderless]`~~      | ~~remove the border~~                                                                  | ~~`boolean`~~                                            | ~~`false`~~       | -             |
-| `[nzVariant]`             | Variants of TimePicker                                                                 | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'` | `'outlined'`      | ✅            |
+| `[nzVariant]`             | Variants of TimePicker                                                                 | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'` | `'outlined'`      | ✅            | 20.0.0  |
 | `[nzInputReadOnly]`       | set the readonly attribute of the input tag (avoids virtual keyboard on touch devices) | `boolean`                                                | `false`           | -             |
 | `[nzOpen]`                | whether to popup panel, double binding                                                 | `boolean`                                                | `false`           |
 | `[nzPlaceHolder]`         | display when there's no value                                                          | `string`                                                 | `'Select a time'` |

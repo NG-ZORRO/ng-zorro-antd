@@ -1,5 +1,6 @@
 ---
 order: 9
+version: 20.2.0
 title:
   zh-CN: 箭头
   en-US: Arrow
