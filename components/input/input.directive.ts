@@ -30,6 +30,7 @@ import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
+import { NzInputPasswordDirective } from './input-password.directive';
 import { NZ_INPUT_WRAPPER } from './tokens';
 
 const PREFIX_CLS = 'ant-input';
@@ -39,6 +40,7 @@ const PREFIX_CLS = 'ant-input';
   exportAs: 'nzInput',
   host: {
     class: 'ant-input',
+    '[attr.type]': 'type()',
     '[class]': 'classes()',
     '[class.ant-input-disabled]': 'finalDisabled()',
     '[class.ant-input-borderless]': `nzVariant() === 'borderless' || (nzVariant() === 'outlined' && nzBorderless())`,
@@ -64,6 +66,7 @@ export class NzInputDirective implements OnInit {
   private inputWrapper = inject(NZ_INPUT_WRAPPER, { host: true, optional: true });
   private focusMonitor = inject(FocusMonitor);
   protected hostView = inject(ViewContainerRef);
+  protected readonly inputPasswordDir = inject(NzInputPasswordDirective, { host: true, optional: true });
 
   readonly ngControl = inject(NgControl, { self: true, optional: true });
   readonly value = signal<string>(this.elementRef.nativeElement.value);
@@ -96,6 +99,12 @@ export class NzInputDirective implements OnInit {
     { initialValue: false }
   );
   readonly classes = computed(() => getStatusClassNames(PREFIX_CLS, this.status(), this.hasFeedback()));
+  readonly type = computed(() => {
+    if (this.inputPasswordDir) {
+      return this.inputPasswordDir.nzVisible() ? 'text' : 'password';
+    }
+    return this.elementRef.nativeElement.getAttribute('type') || 'text';
+  });
 
   protected readonly focused = signal<boolean>(false);
   protected readonly finalSize = computed(() => {

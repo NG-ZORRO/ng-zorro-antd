@@ -11,6 +11,7 @@ import { NzInputPrefixDirective, NzInputSuffixDirective } from './input-affix.di
 import { NzInputGroupSlotComponent } from './input-group-slot.component';
 import { NzInputGroupComponent, NzInputGroupWhitSuffixOrPrefixDirective } from './input-group.component';
 import { NzInputOtpComponent } from './input-otp.component';
+import { NzInputPasswordDirective, NzInputPasswordIconDirective } from './input-password.directive';
 import { NzInputWrapperComponent } from './input-wrapper.component';
 import { NzInputDirective } from './input.directive';
 import { NzTextareaCountComponent } from './textarea-count.component';
@@ -20,6 +21,8 @@ import { NzTextareaCountComponent } from './textarea-count.component';
     NzTextareaCountComponent,
     NzInputDirective,
     NzInputWrapperComponent,
+    NzInputPasswordDirective,
+    NzInputPasswordIconDirective,
     NzInputAddonBeforeDirective,
     NzInputAddonAfterDirective,
     NzInputPrefixDirective,
@@ -34,6 +37,8 @@ import { NzTextareaCountComponent } from './textarea-count.component';
     NzTextareaCountComponent,
     NzInputDirective,
     NzInputWrapperComponent,
+    NzInputPasswordDirective,
+    NzInputPasswordIconDirective,
     NzInputAddonBeforeDirective,
     NzInputAddonAfterDirective,
     NzInputPrefixDirective,

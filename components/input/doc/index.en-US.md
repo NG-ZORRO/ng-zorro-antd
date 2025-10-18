@@ -39,6 +39,16 @@ Use when you need to add extra functionality to `[nz-input]`.
 | `[nzAllowClear]`  | If allow to remove input content with clear icon                      | `boolean`                | `false` |
 | `(nzClear)`       | Event emitted when the clear icon is clicked                          | `OutputEmitterRef<void>` | -       |
 
+### nz-input-password
+
+All properties of `nz-input-wrapper` can be used.
+
+| Property               | Description                                               | Type                        | Default |
+| ---------------------- | --------------------------------------------------------- | --------------------------- | ------- |
+| `[nzVisibilityToggle]` | Whether to show the toggle button                         | `boolean`                   | `true`  |
+| `[nzVisible]`          | Whether the password is visible, supports two-way binding | `boolean`                   | `false` |
+| `(nzVisibleChange)`    | Event emitted when the visibility of the password changes | `OutputEmitterRef<boolean>` | -       |
+
 ### nz-input-group
 
 > ⚠️ `nz-input-group` has been deprecated in `v20.0.0` and will be removed in `v22.0.0`. Please use the `nz-input-wrapper` component instead.
