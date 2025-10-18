@@ -2085,6 +2085,71 @@ describe('cascader', () => {
       expect(testComponent.onChanges).toHaveBeenCalledWith([['light']]);
     }));
 
+    it('should support ENTER key to toggle option checked state in multiple mode', fakeAsync(() => {
+      cascader.componentInstance.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      getItemAtColumnAndRow(1, 1)!.click();
+      fixture.detectChanges();
+      const optionEl = getItemAtColumnAndRow(2, 1)!;
+      const checkboxEl = getCheckboxAtColumnAndRow(2, 1)!;
+      // Initially, the option should not be checked
+      expect(checkboxEl.classList).not.toContain('ant-cascader-checkbox-checked');
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+      expect(optionEl.classList).toContain('ant-cascader-menu-item-active');
+      // Press ENTER to toggle the option checked state
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ENTER);
+      fixture.detectChanges();
+      // The option should now be checked
+      expect(checkboxEl.classList).toContain('ant-cascader-checkbox-checked');
+      // Press ENTER again to toggle the option unchecked state
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ENTER);
+      fixture.detectChanges();
+      // The option should now be unchecked
+      expect(checkboxEl.classList).not.toContain('ant-cascader-checkbox-checked');
+    }));
+
+    it('should not activate option with isDisableCheckbox by pressing RIGHT ARROW key', fakeAsync(() => {
+      cascader.componentInstance.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      getItemAtColumnAndRow(1, 2)!.click();
+      fixture.detectChanges();
+      getItemAtColumnAndRow(2, 1)!.click();
+      fixture.detectChanges();
+      // Try to navigate to a disabled checkbox option using keyboard
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+      // The option with disableCheckbox should not be activatable via keyboard
+      expect(getItemAtColumnAndRow(3, 1)!.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(getCheckboxAtColumnAndRow(3, 1)!.classList).toContain('ant-cascader-checkbox-disabled');
+      // activate item (3, 2)
+      expect(getItemAtColumnAndRow(3, 2)!.classList).toContain('ant-cascader-menu-item-active');
+      expect(getCheckboxAtColumnAndRow(3, 2)!.classList).not.toContain('ant-cascader-checkbox-disabled');
+    }));
+
+    it('should not activate option with isDisableCheckbox in moveUpOrDown method', fakeAsync(() => {
+      cascader.componentInstance.setMenuVisible(true);
+      fixture.detectChanges();
+      tick(600);
+      fixture.detectChanges();
+      getItemAtColumnAndRow(1, 2)!.click();
+      fixture.detectChanges();
+      getItemAtColumnAndRow(2, 1)!.click();
+      fixture.detectChanges();
+      getItemAtColumnAndRow(3, 2)!.click();
+      fixture.detectChanges();
+      expect(getItemAtColumnAndRow(3, 2)!.classList).toContain('ant-cascader-menu-item-active');
+      // Up key
+      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
+      // The option with disableCheckbox should not be activatable via keyboard
+      expect(getItemAtColumnAndRow(3, 1)!.classList).not.toContain('ant-cascader-menu-item-active');
+      expect(getItemAtColumnAndRow(3, 2)!.classList).toContain('ant-cascader-menu-item-active');
+    }));
+
     describe('should cascade work when the value of ngModel includes nodes that are not existed in options', () => {
       it('should remove item work', fakeAsync(() => {
         setValues(2);
