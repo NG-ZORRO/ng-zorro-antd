@@ -63,7 +63,7 @@
 <ng-template #tag let-tag>
   @if (tag === 'deprecated') {
     <nz-tag nzColor="warning" [nzBordered]="false">
-      <span>{{ language() ? '废弃' : 'Deprecated' }}</span>
+      <span>{{ language() === 'zh' ? '废弃' : 'Deprecated' }}</span>
     </nz-tag>
   } @else {
     <nz-tag nzColor="success" [nzBordered]="false">{{ tag }}</nz-tag>

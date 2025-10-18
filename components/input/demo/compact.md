@@ -1,5 +1,6 @@
 ---
 order: 4
+version: 20.4.0
 title:
   zh-CN: 紧凑模式
   en-US: Compact Style
