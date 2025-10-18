@@ -116,6 +116,17 @@ describe('check-list', () => {
     expect(overlayContainerElement.querySelectorAll('.ant-check-list-steps-item-arrows').length).toBe(1);
 
     testComponent.index = 2;
+    testComponent.items = [
+      {
+        description: 'Step 1',
+        checked: true,
+        onClick: () => {}
+      },
+      {
+        description: 'Step 2',
+        onClick: () => {}
+      }
+    ];
     fixture.detectChanges();
     expect(
       (
@@ -134,6 +145,18 @@ describe('check-list', () => {
     expect((overlayContainerElement.querySelector('.ant-progress-text') as HTMLElement).innerText).toBe('50%');
 
     testComponent.index = 3;
+    testComponent.items = [
+      {
+        description: 'Step 1',
+        checked: true,
+        onClick: () => {}
+      },
+      {
+        description: 'Step 2',
+        checked: true,
+        onClick: () => {}
+      }
+    ];
     fixture.detectChanges();
     expect(!overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBeTrue();
     expect(!!overlayContainerElement.querySelector('.ant-check-list-header-finish')).toBeTrue();
