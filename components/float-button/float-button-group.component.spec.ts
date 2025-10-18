@@ -149,6 +149,18 @@ describe('nz-float-button-group', () => {
         fixture.detectChanges();
         expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-right');
       });
+
+      it('should get correct animation class according to nzPlacement', () => {
+        fixture.detectChanges();
+        // @ts-ignore
+        const { enterAnimation, leaveAnimation } = groupComponent;
+        expect(enterAnimation()).toBe('ant-float-btn-enter-top');
+        expect(leaveAnimation()).toBe('ant-float-btn-leave-top');
+        testComponent.nzPlacement = 'right';
+        fixture.detectChanges();
+        expect(enterAnimation()).toBe('ant-float-btn-enter-right');
+        expect(leaveAnimation()).toBe('ant-float-btn-leave-right');
+      });
     });
   });
 });
