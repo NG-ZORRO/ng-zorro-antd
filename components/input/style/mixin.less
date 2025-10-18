@@ -457,6 +457,51 @@
   }
 }
 
+.input-group-wrapper-compact(@inputClass) {
+  // Fix the issue of using icons in Space Compact mode
+  // https://github.com/ant-design/ant-design/issues/42122
+  &:not(.@{inputClass}-compact-first-item):not(.@{inputClass}-compact-last-item).@{inputClass}-compact-item {
+    .@{inputClass},
+    .@{inputClass}-group-addon {
+      border-radius: 0,
+    }
+  }
+
+  &:not(.@{inputClass}-compact-last-item).@{inputClass}-compact-first-item {
+    .@{inputClass},
+    .@{inputClass}-group-addon {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+  }
+
+  &:not(.@{inputClass}-compact-first-item).@{inputClass}-compact-last-item {
+    .@{inputClass},
+    .@{inputClass}-group-addon {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
+  }
+
+  // Fix the issue of input use show-count param in space compact mode
+  // https://github.com/ant-design/ant-design/issues/46872
+  &:not(.@{inputClass}-compact-last-item).@{inputClass}-compact-item {
+    .@{inputClass}-affix-wrapper {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+  }
+
+  // Fix the issue of input use `addonAfter` param in space compact mode
+  // https://github.com/ant-design/ant-design/issues/52483
+  &:not(.@{inputClass}-compact-first-item).@{inputClass}-compact-item {
+    .@{inputClass}-affix-wrapper {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
+  }
+}
+
 .status-color(
   @prefix-cls: @input-prefix-cls;
   @text-color: @input-color;
