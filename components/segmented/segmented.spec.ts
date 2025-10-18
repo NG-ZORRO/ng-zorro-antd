@@ -590,6 +590,35 @@ describe('nz-segmented', () => {
       }));
     });
   });
+
+  describe('a11y', () => {
+    let fixture: ComponentFixture<NzSegmentedTestComponent>;
+    let component: NzSegmentedTestComponent;
+    let segmentedComponent: DebugElement;
+
+    function getSegmentedOptionByIndex(index: number): HTMLElement {
+      return segmentedComponent.nativeElement.querySelectorAll('.ant-segmented-item')[index];
+    }
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzSegmentedTestComponent);
+      component = fixture.componentInstance;
+      segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
+      fixture.detectChanges();
+    });
+
+    it('should have default radio group name', () => {
+      const theFirstElement = getSegmentedOptionByIndex(0);
+      expect(theFirstElement.querySelector('input')?.getAttribute('name')?.startsWith('segmented_')).toBe(true);
+    });
+
+    it('should support custom radio group name', () => {
+      component.name = 'custom_name';
+      fixture.detectChanges();
+      const theFirstElement = getSegmentedOptionByIndex(0);
+      expect(theFirstElement.querySelector('input')?.getAttribute('name')).toBe('custom_name');
+    });
+  });
 });
 
 @Component({
@@ -602,6 +631,7 @@ describe('nz-segmented', () => {
       [nzBlock]="block"
       [nzVertical]="vertical"
       [nzShape]="shape"
+      [nzName]="name"
       (nzValueChange)="handleValueChange($event)"
     />
   `
@@ -613,6 +643,7 @@ export class NzSegmentedTestComponent {
   disabled = false;
   vertical = false;
   shape: 'default' | 'round' = 'default';
+  name?: string;
 
   handleValueChange(_e: string | number): void {
     // empty
@@ -655,7 +686,7 @@ export class NzSegmentedInReactiveFormTestComponent {
 
 @Component({
   imports: [FormsModule, NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" nzVertical (nzValueChange)="handleValueChange($event)" /> `
+  template: `<nz-segmented [nzOptions]="options" nzVertical (nzValueChange)="handleValueChange($event)" />`
 })
 export class NzSegmentedVerticalTestComponent {
   options: NzSegmentedOptions = [1, 2, 3];
@@ -667,7 +698,7 @@ export class NzSegmentedVerticalTestComponent {
 
 @Component({
   imports: [BidiModule, NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" dir="rtl" /> `
+  template: `<nz-segmented [nzOptions]="options" dir="rtl" />`
 })
 export class NzSegmentedRtlTestComponent {
   options: NzSegmentedOptions = [1, 2, 3];

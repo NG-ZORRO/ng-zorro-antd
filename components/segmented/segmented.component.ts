@@ -108,9 +108,9 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   @Input() nzShape: 'default' | 'round' = 'default';
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
 
-  // todo: add a method to generate hash id for the segmented instance as default value of `nzName`
   /**
    * @description set the `name` attribute of the segmented item native `input[type="radio"]`
+   * @since 20.3.0
    */
   @Input() nzName?: string;
 
@@ -199,7 +199,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   ngOnChanges(changes: SimpleChanges): void {
     const { nzName, nzOptions, nzDisabled } = changes;
     if (nzName) {
-      this.service.name.set(this.nzName || null);
+      this.service.setName(this.nzName);
     }
     if (nzOptions) {
       this.normalizedOptions = normalizeOptions(nzOptions.currentValue);
