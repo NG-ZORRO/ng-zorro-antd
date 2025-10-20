@@ -65,3 +65,10 @@ description: 树型选择控件。
 | `getHalfCheckedNodeList` | 获取组件半选状态节点               | `NzTreeNode[]` |
 | `getExpandedNodeList`    | 获取组件展开状态节点               | `NzTreeNode[]` |
 | `getMatchedNodeList`     | 获取组搜索匹配到的节点             | `NzTreeNode[]` |
+
+## FAQ
+
+### Q：滚动时浮层元素没有跟随滚动位置
+
+默认情况下，浮层元素使用 `body` 作为滚动容器，如果使用了其他滚动容器，在自定义滚动容器元素上添加 [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) 指令。
+注意：您需要从 `@angular/cdk/scrolling` 导入 `CdkScrollable` 指令或 `ScrollingModule` 模块。

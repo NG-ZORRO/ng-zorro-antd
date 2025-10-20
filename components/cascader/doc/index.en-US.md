@@ -126,3 +126,8 @@ const filter: NzCascaderFilter = (i, p) => {
 When you pass a function to `nzLoadData`, the function becomes a `NzCascaderComponent` property.
 When the component calls the `nzLoadData` function, `this` is bound to nothing. You have to pass an arrow function or use `Function.bind` to bind `this` to the parent component.
 [see example](https://stackoverflow.com/questions/60320913/ng-zorro-cascader-lazy-load-data-nzloaddata-function-got-this-undefined/60928983#60928983).
+
+### Q: The overlay layer element does not follow the scroll position when scrolling
+
+By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
+Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.

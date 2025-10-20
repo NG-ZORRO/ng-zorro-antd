@@ -138,3 +138,8 @@ const filter: NzCascaderFilter = (i, p) => {
 对传递给 Cascader 组件的 `nzLoadData` 参数会成为 `NzCasacderComponent` 对象的一个属性，调用这个函数时，函数中的 `this` 没有指向任何对象。
 因此，正确的做法是传递剪头函数，或者使用 `Function.bind` 将 `nzLoadData` 参数和你的对象绑定。
 [这里](https://stackoverflow.com/questions/60320913/ng-zorro-cascader-lazy-load-data-nzloaddata-function-got-this-undefined/60928983#60928983)是一个比较有代表性的例子。
+
+### Q：滚动时浮层元素没有跟随滚动位置
+
+默认情况下，浮层元素使用 `body` 作为滚动容器，如果使用了其他滚动容器，在自定义滚动容器元素上添加 [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) 指令。
+注意：您需要从 `@angular/cdk/scrolling` 导入 `CdkScrollable` 指令或 `ScrollingModule` 模块。
