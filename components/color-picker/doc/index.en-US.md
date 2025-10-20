@@ -51,3 +51,10 @@ Used when the user needs to customize the color selection.
 | `toHsbString` | Convert to `hsb` format color string, the return type like: `hsb(215, 91%, 100%)` | `() => string`                                          | -       |
 | `toRgb`       | Convert to `rgb` object                                                           | `() => ({ r: number, g: number, b: number, a number })` | -       |
 | `toRgbString` | Convert to `rgb` format color string, the return type like: `rgb(22, 119, 255)`   | `() => string`                                          | -       |
+
+## FAQ
+
+### Q: The overlay layer element does not follow the scroll position when scrolling
+
+By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
+Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.

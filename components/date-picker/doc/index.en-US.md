@@ -114,3 +114,8 @@ You need to use `date-fns`. Date formatting currently supports two methods: `Dat
 default, [syntax reference](https://angular.dev/api/common/DatePipe)) and `date-fns` (
 see [`How to format a date using date-fns`](/docs/i18n/en#How%20to%20format%20a%20date%20using%20Date-fns)).NG-ZORRO
 takes the function provided by `date-fns` to implement date deserialization after using it.
+
+### Q: The overlay layer element does not follow the scroll position when scrolling
+
+By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
+Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.

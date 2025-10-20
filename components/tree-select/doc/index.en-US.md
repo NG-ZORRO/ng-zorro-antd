@@ -65,3 +65,10 @@ Any data whose entries are defined in a hierarchical manner is fit to use this c
 | `getHalfCheckedNodeList` | get half checked nodes                            | `NzTreeNode[]` |
 | `getExpandedNodeList`    | get expanded nodes                                | `NzTreeNode[]` |
 | `getMatchedNodeList`     | get matched nodes(if `nzSearchValue` is not null) | `NzTreeNode[]` |
+
+## FAQ
+
+### Q: The overlay layer element does not follow the scroll position when scrolling
+
+By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
+Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.
