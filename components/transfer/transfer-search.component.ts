@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,7 +11,9 @@ import {
   Input,
   OnChanges,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -21,10 +22,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 @Component({
   selector: '[nz-transfer-search]',
   exportAs: 'nzTransferSearch',
-  preserveWhitespaces: false,
   template: `
     <span class="ant-input-prefix">
-      <span nz-icon nzType="search"></span>
+      <nz-icon nzType="search" />
     </span>
     <input
       [(ngModel)]="value"
@@ -32,36 +32,36 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       [disabled]="disabled"
       [placeholder]="placeholder"
       class="ant-input"
-      [ngClass]="{ 'ant-input-disabled': disabled }"
+      [class.ant-input-disabled]="disabled"
     />
-    <span *ngIf="value && value.length > 0" class="ant-input-suffix" (click)="_clear()">
-      <span nz-icon nzType="close-circle" class="ant-input-clear-icon"></span>
-    </span>
+    @if (value && value.length > 0) {
+      <span class="ant-input-suffix" (click)="_clear()">
+        <nz-icon nzType="close-circle" nzTheme="fill" class="ant-input-clear-icon" />
+      </span>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NzIconModule, NgClass, NgIf],
-  standalone: true
+  imports: [FormsModule, NzIconModule]
 })
 export class NzTransferSearchComponent implements OnChanges {
   // region: fields
+  private cdr = inject(ChangeDetectorRef);
 
   @Input() placeholder?: string;
   @Input() value?: string;
-  @Input() disabled: boolean = false;
+  @Input({ transform: booleanAttribute }) disabled: boolean = false;
 
   @Output() readonly valueChanged = new EventEmitter<string>();
   @Output() readonly valueClear = new EventEmitter<void>();
 
   // endregion
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  _handle(): void {
+  protected _handle(): void {
     this.valueChanged.emit(this.value);
   }
 
-  _clear(): void {
+  protected _clear(): void {
     if (this.disabled) {
       return;
     }

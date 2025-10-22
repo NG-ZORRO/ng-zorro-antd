@@ -1,17 +1,20 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigService, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
-import { NzMessageModule } from './message.module';
+import { NzMessageComponent } from './message.component';
 import { NzMessageService } from './message.service';
 
 describe('message', () => {
-  let testBed: ComponentBed<NzTestMessageComponent>;
   let messageService: NzMessageService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
@@ -20,23 +23,12 @@ describe('message', () => {
   let configService: NzConfigService;
 
   beforeEach(fakeAsync(() => {
-    testBed = createComponentBed(NzTestMessageComponent, {
-      imports: [NzMessageModule, NoopAnimationsModule],
-      providers: [
-        {
-          provide: NZ_CONFIG,
-          useValue: {
-            message: {
-              nzMaxStack: 2,
-              nzTop: 24
-            }
-          }
-        }
-      ]
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations(), provideNzConfig({ message: { nzMaxStack: 2, nzTop: 24 } }), NzMessageService]
     });
 
-    fixture = testBed.fixture;
-    testComponent = testBed.component;
+    fixture = TestBed.createComponent(NzTestMessageComponent);
+    testComponent = fixture.componentInstance;
   }));
 
   beforeEach(inject(
@@ -100,11 +92,11 @@ describe('message', () => {
   });
 
   it('should support template', fakeAsync(() => {
-    messageService.info(testComponent.template);
+    messageService.info(testComponent.template, { nzData: 'from template' });
     fixture.detectChanges();
     overlayContainerElement = overlayContainer.getContainerElement();
 
-    expect(overlayContainerElement.textContent).toContain('Content in template');
+    expect(overlayContainerElement.textContent).toContain('Content in templatefrom template');
     tick(10000);
   }));
 
@@ -204,9 +196,94 @@ describe('message', () => {
     overlayContainerElement = overlayContainer.getContainerElement();
     const messageContainerElement = overlayContainerElement.querySelector('.ant-message') as HTMLElement;
     expect(messageContainerElement.style.top).toBe('24px');
-
-    tick(50000);
   }));
+
+  describe('custom styling', () => {
+    it('should apply custom class', () => {
+      messageService.success('SUCCESS', { nzClass: 'custom-message-class' });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement).not.toBeNull();
+      expect(messageElement.classList.contains('custom-message-class')).toBe(true);
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+    });
+
+    it('should apply space-separated custom class', () => {
+      messageService.info('INFO', { nzClass: 'class1 class2 class3' });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+      expect(messageElement.classList.contains('class1')).toBe(true);
+      expect(messageElement.classList.contains('class2')).toBe(true);
+      expect(messageElement.classList.contains('class3')).toBe(true);
+    });
+
+    it('should apply custom styles', () => {
+      messageService.error('ERROR', {
+        nzStyle: {
+          'background-color': 'rgb(255, 0, 0)',
+          color: 'white',
+          border: '2px solid black'
+        }
+      });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement.style.backgroundColor).toBe('rgb(255, 0, 0)');
+      expect(messageElement.style.color).toBe('white');
+      expect(messageElement.style.border).toBe('2px solid black');
+    });
+
+    it('should work without custom class or style', () => {
+      messageService.warning('WARNING');
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement).not.toBeNull();
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+    });
+
+    it('should combine custom class and style', () => {
+      messageService.loading('LOADING', {
+        nzClass: 'custom-loading-class',
+        nzStyle: { 'font-weight': 'bold', opacity: '0.8' }
+      });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement.classList.contains('custom-loading-class')).toBe(true);
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+      expect(messageElement.style.fontWeight).toBe('bold');
+      expect(messageElement.style.opacity).toBe('0.8');
+    });
+
+    it('should handle empty class gracefully', () => {
+      messageService.success('SUCCESS', { nzClass: '' });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement).not.toBeNull();
+      expect(messageElement.classList.contains('ant-message-notice')).toBe(true);
+    });
+
+    it('should handle empty style object gracefully', () => {
+      messageService.info('INFO', { nzStyle: {} });
+      fixture.detectChanges();
+      overlayContainerElement = overlayContainer.getContainerElement();
+
+      const messageElement = overlayContainerElement.querySelector('.ant-message-notice') as HTMLElement;
+      expect(messageElement).not.toBeNull();
+    });
+  });
 
   describe('RTL', () => {
     it('should apply classname', () => {
@@ -221,8 +298,11 @@ describe('message', () => {
 });
 
 @Component({
-  template: ` <ng-template #contentTemplate>Content in template</ng-template> `
+  template: `<ng-template #contentTemplate let-data="data">Content in template{{ data }}</ng-template>`
 })
 export class NzTestMessageComponent {
-  @ViewChild('contentTemplate', { static: true }) template!: TemplateRef<void>;
+  @ViewChild('contentTemplate', { static: true }) template!: TemplateRef<{
+    $implicit: NzMessageComponent;
+    data: string;
+  }>;
 }

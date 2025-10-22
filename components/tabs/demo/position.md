@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Tab's position: left, right, top or bottom.
-
-

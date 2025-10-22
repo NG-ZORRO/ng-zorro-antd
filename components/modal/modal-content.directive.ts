@@ -3,13 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, TemplateRef } from '@angular/core';
+import { Directive, inject, TemplateRef } from '@angular/core';
 
 @Directive({
   selector: '[nzModalContent]',
-  exportAs: 'nzModalContent',
-  standalone: true
+  exportAs: 'nzModalContent'
 })
 export class NzModalContentDirective {
-  constructor(public templateRef: TemplateRef<{}>) {}
+  public readonly templateRef: TemplateRef<{}> = inject(TemplateRef);
 }

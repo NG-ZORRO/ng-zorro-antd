@@ -1,24 +1,20 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
   selector: 'nz-demo-input-number-formatter',
+  imports: [FormsModule, NzInputNumberModule],
   template: `
+    <nz-input-number [(ngModel)]="dollarValue" [nzFormatter]="formatterDollar" [nzParser]="parserDollar" />
     <nz-input-number
-      [(ngModel)]="demoValue"
-      [nzMin]="1"
-      [nzMax]="100"
-      [nzStep]="1"
-      [nzFormatter]="formatterDollar"
-      [nzParser]="parserDollar"
-    ></nz-input-number>
-    <nz-input-number
-      [(ngModel)]="demoValue"
-      [nzMin]="1"
-      [nzMax]="100"
-      [nzStep]="1"
+      [(ngModel)]="percentValue"
+      nzMin="1"
+      nzMax="100"
       [nzFormatter]="formatterPercent"
       [nzParser]="parserPercent"
-    ></nz-input-number>
+    />
   `,
   styles: [
     `
@@ -29,9 +25,10 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoInputNumberFormatterComponent {
-  demoValue = 100;
-  formatterPercent = (value: number): string => `${value} %`;
-  parserPercent = (value: string): string => value.replace(' %', '');
-  formatterDollar = (value: number): string => `$ ${value}`;
-  parserDollar = (value: string): string => value.replace('$ ', '');
+  dollarValue = 1000;
+  percentValue = 100;
+  formatterDollar = (value: number): string => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  parserDollar = (value: string): number => +value?.replace(/\$\s?|(,*)/g, '');
+  formatterPercent = (value: number): string => `${value}%`;
+  parserPercent = (value: string): number => +value?.replace('%', '');
 }

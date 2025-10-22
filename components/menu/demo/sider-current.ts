@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-menu-sider-current',
+  imports: [NzMenuModule],
   template: `
     <ul nz-menu nzMode="inline" style="width: 240px;">
       <li

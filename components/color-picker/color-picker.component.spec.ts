@@ -1,233 +1,237 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, tick, discardPeriodicTasks } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzColorPickerComponent, NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from 'ng-zorro-antd/color-picker/typings';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzFormModule } from 'ng-zorro-antd/form';
 
 describe('nz-color-picker', () => {
-  describe('basic', () => {
-    let testBed: ComponentBed<NzTestColorPickerComponent>;
-    let fixture: ComponentFixture<NzTestColorPickerComponent>;
-    let testComponent: NzTestColorPickerComponent;
-    let resultEl: DebugElement;
-    let overlayContainer: OverlayContainer;
-    let overlayContainerElement: HTMLElement;
+  let fixture: ComponentFixture<NzTestColorPickerComponent>;
+  let testComponent: NzTestColorPickerComponent;
+  let resultEl: DebugElement;
+  let overlayContainer: OverlayContainer;
+  let overlayContainerElement: HTMLElement;
 
-    function waitingForTooltipToggling(): void {
+  function waitingForTooltipToggling(): void {
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+  }
+
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
+    });
+    fixture = TestBed.createComponent(NzTestColorPickerComponent);
+    fixture.detectChanges();
+    testComponent = fixture.componentInstance;
+    resultEl = fixture.debugElement.query(By.directive(NzColorPickerComponent));
+  }));
+
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
+  }));
+
+  afterEach(() => {
+    overlayContainer.ngOnDestroy();
+  });
+
+  it('color-picker basic', () => {
+    fixture.detectChanges();
+    const colorDom = resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner');
+    expect(colorDom.style.backgroundColor).toBe('rgb(22, 119, 255)');
+  });
+
+  it('color-picker nzValue', () => {
+    testComponent.nzValue = '#ff6600';
+    fixture.detectChanges();
+    const colorDom = resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner');
+    expect(colorDom.style.backgroundColor).toBe('rgb(255, 102, 0)');
+  });
+
+  it('color-picker nzDefaultValue', () => {
+    testComponent.nzDefaultValue = '#ff6600';
+    fixture.detectChanges();
+    const colorDom = resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner');
+    expect(colorDom.style.backgroundColor).toBe('rgb(255, 102, 0)');
+  });
+
+  it('color-picker nzSize', () => {
+    testComponent.nzSize = 'small';
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger').classList).toContain(
+      'ant-color-picker-sm'
+    );
+    testComponent.nzSize = 'large';
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger').classList).toContain(
+      'ant-color-picker-lg'
+    );
+  });
+
+  it('color-picker nzDisabled', () => {
+    testComponent.nzDisabled = true;
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.classList).toContain('ant-color-picker-disabled');
+  });
+
+  it('color-picker nzShowText', () => {
+    testComponent.nzShowText = true;
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger-text').innerText).toBe('#1677ff');
+  });
+
+  it('color-picker nzTrigger click', fakeAsync(() => {
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
+  }));
+
+  it('color-picker nzTrigger hover', fakeAsync(() => {
+    testComponent.nzTrigger = 'hover';
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'mouseenter');
+    waitingForTooltipToggling();
+    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
+  }));
+
+  it('color-picker nzOpen', () => {
+    testComponent.nzOpen = true;
+    fixture.detectChanges();
+    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
+  });
+
+  it('color-picker nzAllowClear', fakeAsync(() => {
+    testComponent.nzAllowClear = true;
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    expect(!!overlayContainerElement.querySelector('.ant-color-picker-clear')).toBeTrue();
+  }));
+
+  it('color-picker nzTitle', fakeAsync(() => {
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.querySelector('.ant-color-picker-title-content')?.textContent?.trim()).toBe(
+      'Color Picker'
+    );
+  }));
+
+  it('color-picker nzFlipFlop', () => {
+    testComponent.isFlipFlop = true;
+    fixture.detectChanges();
+    expect(!!resultEl.nativeElement.querySelector('button')).toBeTrue();
+  });
+
+  it('color-picker nzFormat', fakeAsync(() => {
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    expect(!!overlayContainerElement.querySelector('.ant-color-picker-hex-input')).toBeTrue();
+    testComponent.nzFormat = 'hsb';
+    fixture.detectChanges();
+    waitingForTooltipToggling();
+    expect(!!overlayContainerElement.querySelector('.ant-color-picker-hsb-input')).toBeTrue();
+    testComponent.nzFormat = 'rgb';
+    fixture.detectChanges();
+    waitingForTooltipToggling();
+    expect(!!overlayContainerElement.querySelector('.ant-color-picker-rgb-input')).toBeTrue();
+  }));
+
+  it('color-picker nzOnOpenChange', fakeAsync(() => {
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    expect(testComponent.openChange).toBeTrue();
+  }));
+
+  it('color-picker nzOnClear', fakeAsync(() => {
+    testComponent.nzAllowClear = true;
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    const clear = overlayContainerElement.querySelector('.ant-color-picker-clear');
+    if (clear) {
+      dispatchMouseEvent(clear, 'click');
       fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
+      waitingForTooltipToggling();
+      const colorDom = resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner');
+      expect(colorDom.style.backgroundColor).toBe('rgba(22, 119, 255, 0)');
+      discardPeriodicTasks();
     }
+  }));
 
-    beforeEach(fakeAsync(() => {
-      testBed = createComponentBed(NzTestColorPickerComponent, {
-        imports: [NzColorPickerModule]
-      });
-      fixture = testBed.fixture;
-      fixture.detectChanges();
-      testComponent = testBed.component;
-      resultEl = fixture.debugElement.query(By.directive(NzColorPickerComponent));
-    }));
+  it('color-picker nzOnChange', fakeAsync(() => {
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    const select = overlayContainerElement.querySelector('nz-select') as Element;
+    dispatchMouseEvent(select, 'click');
+    waitingForTooltipToggling();
+    const item = overlayContainerElement.querySelectorAll('nz-option-item')[1];
+    dispatchMouseEvent(item, 'click');
+    waitingForTooltipToggling();
+    expect(testComponent.colorChange?.format).toBe('hsb');
+    expect(testComponent.colorChange?.color.toHsbString()).toBe('hsb(215, 91%, 100%)');
+    discardPeriodicTasks();
+  }));
 
-    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    }));
+  it('color-picker disableAlpha', fakeAsync(() => {
+    testComponent.nzAlphaDisabled = true;
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    const alphaSlider = overlayContainerElement.querySelector('.ant-color-picker-slider-alpha') as Element;
+    expect(alphaSlider).toBeFalsy();
+    discardPeriodicTasks();
+  }));
 
-    afterEach(() => {
-      overlayContainer.ngOnDestroy();
-    });
-
-    it('color-picker basic', () => {
-      fixture.detectChanges();
-      const colorDom = resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner');
-      expect(colorDom.style.backgroundColor).toBe('rgb(22, 119, 255)');
-    });
-
-    it('color-picker nzValue', () => {
-      testComponent.nzValue = '#ff6600';
-      fixture.detectChanges();
-      const colorDom = resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner');
-      expect(colorDom.style.backgroundColor).toBe('rgb(255, 102, 0)');
-    });
-
-    it('color-picker nzDefaultValue', () => {
-      testComponent.nzDefaultValue = '#ff6600';
-      fixture.detectChanges();
-      const colorDom = resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner');
-      expect(colorDom.style.backgroundColor).toBe('rgb(255, 102, 0)');
-    });
-
-    it('color-picker nzSize', () => {
-      testComponent.nzSize = 'small';
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger').classList).toContain(
-        'ant-color-picker-sm'
-      );
-      testComponent.nzSize = 'large';
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger').classList).toContain(
-        'ant-color-picker-lg'
-      );
-    });
-
-    it('color-picker nzDisabled', () => {
-      testComponent.nzDisabled = true;
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.classList).toContain('ant-color-picker-disabled');
-    });
-
-    it('color-picker nzShowText', () => {
-      testComponent.nzShowText = true;
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger-text').innerText).toBe('#1677ff');
-    });
-
-    it('color-picker nzTrigger click', fakeAsync(() => {
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
-    }));
-
-    it('color-picker nzTrigger hover', fakeAsync(() => {
-      testComponent.nzTrigger = 'hover';
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'mouseenter');
-      waitingForTooltipToggling();
-      expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
-    }));
-
-    it('color-picker nzOpen', () => {
-      testComponent.nzOpen = true;
-      fixture.detectChanges();
-      expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
-    });
-
-    it('color-picker nzAllowClear', fakeAsync(() => {
-      testComponent.nzAllowClear = true;
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      expect(!!overlayContainerElement.querySelector('.ant-color-picker-clear')).toBeTrue();
-    }));
-
-    it('color-picker nzTitle', fakeAsync(() => {
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      expect(
-        overlayContainerElement.querySelector('.ant-color-picker-title-content')?.querySelector('span')?.innerText
-      ).toBe('Color Picker');
-    }));
-
-    it('color-picker nzFlipFlop', () => {
-      testComponent.isFlipFlop = true;
-      fixture.detectChanges();
-      expect(!!resultEl.nativeElement.querySelector('button')).toBeTrue();
-    });
-
-    it('color-picker nzFormat', fakeAsync(() => {
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      expect(!!overlayContainerElement.querySelector('.ant-color-picker-hex-input')).toBeTrue();
-      testComponent.nzFormat = 'hsb';
-      fixture.detectChanges();
-      waitingForTooltipToggling();
-      expect(!!overlayContainerElement.querySelector('.ant-color-picker-hsb-input')).toBeTrue();
-      testComponent.nzFormat = 'rgb';
-      fixture.detectChanges();
-      waitingForTooltipToggling();
-      expect(!!overlayContainerElement.querySelector('.ant-color-picker-rgb-input')).toBeTrue();
-    }));
-
-    it('color-picker nzOnOpenChange', fakeAsync(() => {
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      expect(testComponent.openChange).toBeTrue();
-    }));
-
-    it('color-picker nzOnClear', fakeAsync(() => {
-      testComponent.nzAllowClear = true;
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      const clear = overlayContainerElement.querySelector('.ant-color-picker-clear');
-      if (!!clear) {
-        dispatchMouseEvent(clear, 'click');
-        fixture.detectChanges();
-        waitingForTooltipToggling();
-        const colorDom = resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner');
-        expect(colorDom.style.backgroundColor).toBe('rgba(22, 119, 255, 0)');
-        discardPeriodicTasks();
-      }
-    }));
-
-    it('color-picker nzOnChange', fakeAsync(() => {
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      const select = overlayContainerElement.querySelector('nz-select') as Element;
-      dispatchMouseEvent(select, 'click');
-      waitingForTooltipToggling();
-      const item = overlayContainerElement.querySelectorAll('nz-option-item')[1];
+  it('nz-color-format disableAlpha', fakeAsync(() => {
+    testComponent.nzAlphaDisabled = true;
+    fixture.detectChanges();
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    const select = overlayContainerElement.querySelector('nz-select') as Element;
+    dispatchMouseEvent(select, 'click');
+    waitingForTooltipToggling();
+    const items = overlayContainerElement.querySelectorAll('nz-option-item');
+    items.forEach(item => {
       dispatchMouseEvent(item, 'click');
       waitingForTooltipToggling();
-      expect(testComponent.colorChange?.format).toBe('hsb');
-      expect(testComponent.colorChange?.color.toHsbString()).toBe('hsb(215, 91%, 100%)');
-      discardPeriodicTasks();
-    }));
-
-    it('color-picker disableAlpha', fakeAsync(() => {
-      testComponent.nzAlphaDisabled = true;
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      const alphaSlider = overlayContainerElement.querySelector('.ant-color-picker-slider-alpha') as Element;
-      expect(alphaSlider).toBeFalsy();
-      discardPeriodicTasks();
-    }));
-
-    it('nz-color-format disableAlpha', fakeAsync(() => {
-      testComponent.nzAlphaDisabled = true;
-      fixture.detectChanges();
-      const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
-      dispatchMouseEvent(dom, 'click');
-      waitingForTooltipToggling();
-      const select = overlayContainerElement.querySelector('nz-select') as Element;
-      dispatchMouseEvent(select, 'click');
-      waitingForTooltipToggling();
-      const items = overlayContainerElement.querySelectorAll('nz-option-item');
-      items.forEach(item => {
-        dispatchMouseEvent(item, 'click');
-        waitingForTooltipToggling();
-        let alphaInputElement = overlayContainerElement.querySelector('.ant-color-picker-alpha-input') as Element;
-        expect(alphaInputElement).toBeFalsy();
-      });
-      discardPeriodicTasks();
-    }));
-  });
+      const alphaInputElement = overlayContainerElement.querySelector('.ant-color-picker-alpha-input') as Element;
+      expect(alphaInputElement).toBeFalsy();
+    });
+    discardPeriodicTasks();
+  }));
 });
 
 @Component({
+  imports: [NzButtonModule, NzColorPickerModule],
   template: `
     <nz-color-picker
       [nzValue]="nzValue"
@@ -285,41 +289,39 @@ export class NzTestColorPickerComponent {
 }
 
 describe('nz-color-picker form', () => {
-  describe('basic', () => {
-    let testBed: ComponentBed<NzTestColorPickerFormComponent>;
-    let fixture: ComponentFixture<NzTestColorPickerFormComponent>;
-    let testComponent: NzTestColorPickerFormComponent;
-    let resultEl: DebugElement;
+  let fixture: ComponentFixture<NzTestColorPickerFormComponent>;
+  let component: NzTestColorPickerFormComponent;
+  let resultEl: DebugElement;
 
-    beforeEach(fakeAsync(() => {
-      testBed = createComponentBed(NzTestColorPickerFormComponent, {
-        imports: [NzColorPickerModule, NzFormModule, ReactiveFormsModule, FormsModule]
-      });
-      fixture = testBed.fixture;
-      fixture.detectChanges();
-      testComponent = testBed.component;
-      resultEl = fixture.debugElement.query(By.directive(NzColorPickerComponent));
-    }));
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
+    });
+    fixture = TestBed.createComponent(NzTestColorPickerFormComponent);
+    fixture.detectChanges();
+    component = fixture.componentInstance;
+    resultEl = fixture.debugElement.query(By.directive(NzColorPickerComponent));
+  }));
 
-    it('color-picker form base', fakeAsync(() => {
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
-        'rgb(255, 102, 0)'
-      );
-    }));
+  it('color-picker form base', fakeAsync(() => {
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
+      'rgb(255, 102, 0)'
+    );
+  }));
 
-    it('color-picker form disable', fakeAsync(() => {
-      testComponent.disable();
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.classList).toContain('ant-color-picker-disabled');
-      testComponent.enable();
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.classList).not.toContain('ant-color-picker-disabled');
-    }));
-  });
+  it('color-picker form disable', fakeAsync(() => {
+    component.disable();
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.classList).toContain('ant-color-picker-disabled');
+    component.enable();
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.classList).not.toContain('ant-color-picker-disabled');
+  }));
 });
 
 @Component({
+  imports: [NzColorPickerModule, NzFormModule, ReactiveFormsModule],
   template: `
     <form nz-form [formGroup]="validateForm">
       <nz-form-item>

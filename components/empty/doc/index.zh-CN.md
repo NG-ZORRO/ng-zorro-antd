@@ -4,22 +4,17 @@ type: 数据展示
 subtitle: 空状态
 title: Empty
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg'
+description: 空状态时的展示占位图。
 ---
-
-空状态时的展示占位图。
 
 ## 何时使用
 
 当目前没有数据时，用于显式的用户提示。
 
-```ts
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-```
-
 ## API
 
-### nz-empty:standalone
+### nz-empty
 
 | 参数                  | 说明                                           | 类型                                  | 默认值 |
 | --------------------- | ---------------------------------------------- | ------------------------------------- | ------ |
@@ -31,9 +26,9 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 `nzEmpty` 接口有如下字段：
 
-| 参数                    | 说明                                                                | 类型                                                |
-| ----------------------- | ------------------------------------------------------------------- | --------------------------------------------------- |
-| `nzDefaultEmptyContent` | 用户自定义的全局空组件，可通过 `undefined` 来取消自定义的全局空组件 | `Type<any>\|TemplateRef<string>\|string\|undefined` |
+| 参数                    | 说明                                                                | 类型                                                      |
+| ----------------------- | ------------------------------------------------------------------- | --------------------------------------------------------- |
+| `nzDefaultEmptyContent` | 用户自定义的全局空组件，可通过 `undefined` 来取消自定义的全局空组件 | `Type<any> \| TemplateRef<string> \| string \| undefined` |
 
 ### InjectionToken
 
@@ -44,3 +39,14 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 ### 全局自定义空组件
 
 你或许知道或者用过一些类似 `nzNotFoundContent` 的属性来自定义组件数据为空时的内容，现在它们都会使用 `Empty` 组件。你可以通过在 `NZ_CONFIG` 中提供 `{ empty: { nzDefaultEmptyContent: something } }` 来定义一个自定义的全局空组件。
+
+```ts
+{
+  provide: NZ_CONFIG,
+  useValue: {
+    empty: {
+      nzDefaultEmptyContent
+    }
+  }
+}
+```

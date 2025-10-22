@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 
 import { differenceInCalendarDays, setHours } from 'date-fns';
 
-import { DisabledTimeFn, DisabledTimePartial } from 'ng-zorro-antd/date-picker';
+import { DisabledTimeFn, DisabledTimePartial, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'nz-demo-date-picker-disabled-date',
+  imports: [NzDatePickerModule],
   template: `
     <nz-date-picker
       nzFormat="yyyy-MM-dd HH:mm:ss"
@@ -15,6 +16,8 @@ import { DisabledTimeFn, DisabledTimePartial } from 'ng-zorro-antd/date-picker';
     ></nz-date-picker>
     <br />
     <nz-date-picker nzMode="month" [nzDisabledDate]="disabledDate"></nz-date-picker>
+    <br />
+    <nz-date-picker nzMode="quarter" [nzDisabledDate]="disabledDate"></nz-date-picker>
     <br />
     <nz-date-picker nzMode="year" [nzDisabledDate]="disabledDate"></nz-date-picker>
     <br />

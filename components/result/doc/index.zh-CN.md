@@ -4,30 +4,25 @@ type: 反馈
 title: Result
 subtitle: 结果
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/9nepwjaLa/Result.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/9nepwjaLa/Result.svg'
+description: 用于反馈一系列操作任务的处理结果。
 ---
-
-用于反馈一系列操作任务的处理结果。
 
 ## 何时使用
 
 当有重要操作需告知用户处理结果，且反馈内容较为复杂时使用。
 
-```ts
-import { NzResultModule } from 'ng-zorro-antd/result';
-```
-
 ## API
 
-### nz-result:standalone
+### nz-result
 
-| 属性         | 说明                       | 类型                                                                              | 默认值   |
-| ------------ | -------------------------- | --------------------------------------------------------------------------------- | -------- |
-| `nzTitle`    | 标题                       | `TemplateRef<void>` \| `string`                                                   | -        |
-| `nzSubTitle` | 副标题                     | `TemplateRef<void>` \| `string`                                                   | -        |
-| `nzStatus`   | 结果的状态，决定图标和颜色 | `'success' \| 'error' \| 'info' \| 'warning'\| '404' \| '403' \| '500'` \| 'info' | `'info'` |
-| `nzIcon`     | 自定义 icon                | `TemplateRef<void>` \| `string`                                                   | -        |
-| `nzExtra`    | 操作区域                   | `TemplateRef<void>` \| `string`                                                   | -        |
+| 属性         | 说明                       | 类型                                                                    | 默认值   |
+| ------------ | -------------------------- | ----------------------------------------------------------------------- | -------- |
+| `nzTitle`    | 标题                       | `TemplateRef<void> \| string`                                           | -        |
+| `nzSubTitle` | 副标题                     | `TemplateRef<void> \| string`                                           | -        |
+| `nzStatus`   | 结果的状态，决定图标和颜色 | `'success' \| 'error' \| 'info' \| 'warning'\| '404' \| '403' \| '500'` | `'info'` |
+| `nzIcon`     | 自定义 icon                | `TemplateRef<void> \| string`                                           | -        |
+| `nzExtra`    | 操作区域                   | `TemplateRef<void> \| string`                                           | -        |
 
 ### 子元素
 

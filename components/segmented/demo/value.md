@@ -1,13 +1,13 @@
 ---
-order: 0
+order: 5
 title:
-  zh-CN: ngModel
-  en-US: ngModel
+  zh-CN: 受控模式
+  en-US: Controlled mode
 ---
 
 ## zh-CN
 
-通过 ngModel 指定选中的 index
+通过 ngModel 指定选中的 value
 
 ## en-US
 

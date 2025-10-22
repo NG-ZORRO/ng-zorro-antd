@@ -4,63 +4,82 @@
  */
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import {
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  createRepositionScrollStrategy,
+  OverlayRef
+} from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
+  booleanAttribute,
+  DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
+  inject,
+  Injector,
   Input,
   OnChanges,
-  OnDestroy,
   Output,
   Renderer2,
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-import { BehaviorSubject, EMPTY, Subject, combineLatest, fromEvent, merge } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
+import { auditTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import {
+  getPlacementName,
+  POSITION_MAP,
+  POSITION_TYPE,
+  setConnectedPositionOffset,
+  TOOLTIP_OFFSET_MAP
+} from 'ng-zorro-antd/core/overlay';
+import { IndexableObject } from 'ng-zorro-antd/core/types';
 
 import { NzDropdownMenuComponent, NzPlacementType } from './dropdown-menu.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'dropDown';
 
-const listOfPositions = [
-  POSITION_MAP.bottomLeft,
-  POSITION_MAP.bottomRight,
-  POSITION_MAP.topRight,
-  POSITION_MAP.topLeft
-];
+const listOfPositions: POSITION_TYPE[] = ['bottomLeft', 'bottomRight', 'topRight', 'topLeft'];
+
+const normalizePlacementForClass = (p: NzPlacementType): NzDropdownMenuComponent['placement'] => {
+  // Map center placements to generic top/bottom classes for styling
+  if (p === 'topCenter') {
+    return 'top';
+  }
+  if (p === 'bottomCenter') {
+    return 'bottom';
+  }
+  return p as NzDropdownMenuComponent['placement'];
+};
 
 @Directive({
   selector: '[nz-dropdown]',
   exportAs: 'nzDropdown',
   host: {
     class: 'ant-dropdown-trigger'
-  },
-  standalone: true
+  }
 })
-export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges {
+export class NzDropDownDirective implements AfterViewInit, OnChanges {
+  public readonly nzConfigService = inject(NzConfigService);
+  private renderer = inject(Renderer2);
+  private viewContainerRef = inject(ViewContainerRef);
+  private platform = inject(Platform);
+  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-
-  static ngAcceptInputType_nzBackdrop: BooleanInput;
-  static ngAcceptInputType_nzClickHide: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzVisible: BooleanInput;
+  public elementRef = inject(ElementRef);
+  private injector = inject(Injector);
 
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
-  private destroy$ = new Subject<boolean>();
-  private positionStrategy = this.overlay
-    .position()
-    .flexibleConnectedTo(this.elementRef.nativeElement)
+
+  private positionStrategy = createFlexibleConnectedPositionStrategy(this.injector, this.elementRef.nativeElement)
     .withLockedPosition()
     .withTransformOriginOn('.ant-dropdown');
   private inputVisible$ = new BehaviorSubject<boolean>(false);
@@ -69,14 +88,22 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() nzDropdownMenu: NzDropdownMenuComponent | null = null;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
-  @Input() @WithConfig<boolean>() @InputBoolean() nzBackdrop = false;
-  @Input() @InputBoolean() nzClickHide = true;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzVisible = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
+  @Input({ transform: booleanAttribute }) nzClickHide = true;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzVisible = false;
+  @Input({ transform: booleanAttribute }) nzArrow = false;
   @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
-  @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.overlayRef?.dispose();
+      this.overlayRef = null;
+    });
+  }
 
   setDropdownMenuValue<T extends keyof NzDropdownMenuComponent>(key: T, value: NzDropdownMenuComponent[T]): void {
     if (this.nzDropdownMenu) {
@@ -84,22 +111,13 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     }
   }
 
-  constructor(
-    public readonly nzConfigService: NzConfigService,
-    public elementRef: ElementRef,
-    private overlay: Overlay,
-    private renderer: Renderer2,
-    private viewContainerRef: ViewContainerRef,
-    private platform: Platform
-  ) {}
-
   ngAfterViewInit(): void {
     if (this.nzDropdownMenu) {
       const nativeElement: HTMLElement = this.elementRef.nativeElement;
       /** host mouse state **/
       const hostMouseState$ = merge(
-        fromEvent(nativeElement, 'mouseenter').pipe(mapTo(true)),
-        fromEvent(nativeElement, 'mouseleave').pipe(mapTo(false))
+        fromEvent(nativeElement, 'mouseenter').pipe(map(() => true)),
+        fromEvent(nativeElement, 'mouseleave').pipe(map(() => false))
       );
       /** menu mouse state **/
       const menuMouseState$ = this.nzDropdownMenu.mouseState$;
@@ -121,7 +139,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
       );
       const descendantMenuItemClick$ = this.nzDropdownMenu.descendantMenuItemClick$.pipe(
         filter(() => this.nzClickHide),
-        mapTo(false)
+        map(() => false)
       );
       const domTriggerVisible$ = merge(visibleStateByTrigger$, descendantMenuItemClick$, this.overlayClose$).pipe(
         filter(() => !this.nzDisabled)
@@ -133,7 +151,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
           auditTime(150),
           distinctUntilChanged(),
           filter(() => this.platform.isBrowser),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed(this.destroyRef)
         )
         .subscribe((visible: boolean) => {
           const element = this.nzMatchWidthElement ? this.nzMatchWidthElement.nativeElement : nativeElement;
@@ -146,12 +164,19 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
             /** set up overlayRef **/
             if (!this.overlayRef) {
               /** new overlay **/
-              this.overlayRef = this.overlay.create({
+              this.overlayRef = createOverlayRef(this.injector, {
                 positionStrategy: this.positionStrategy,
                 minWidth: triggerWidth,
                 disposeOnNavigation: true,
                 hasBackdrop: this.nzBackdrop && this.nzTrigger === 'click',
-                scrollStrategy: this.overlay.scrollStrategies.reposition()
+                scrollStrategy: createRepositionScrollStrategy(this.injector)
+              });
+              // Listen for placement changes to update the menu classes (arrow position)
+              this.positionStrategy.positionChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(change => {
+                const placement = getPlacementName(change) as NzPlacementType | undefined;
+                if (placement) {
+                  this.setDropdownMenuValue('placement', normalizePlacementForClass(placement));
+                }
               });
               merge(
                 this.overlayRef.backdropClick(),
@@ -161,7 +186,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
                   .pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target))),
                 this.overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e)))
               )
-                .pipe(takeUntil(this.destroy$))
+                .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe(() => {
                   this.overlayClose$.next(false);
                 });
@@ -171,11 +196,19 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
               overlayConfig.minWidth = triggerWidth;
             }
             /** open dropdown with animation **/
-            this.positionStrategy.withPositions([POSITION_MAP[this.nzPlacement], ...listOfPositions]);
+            const positions = [this.nzPlacement, ...listOfPositions].map(position => {
+              return this.nzArrow
+                ? setConnectedPositionOffset(POSITION_MAP[position], TOOLTIP_OFFSET_MAP[position])
+                : POSITION_MAP[position];
+            });
+            this.positionStrategy.withPositions(positions);
             /** reset portal if needed **/
             if (!this.portal || this.portal.templateRef !== this.nzDropdownMenu!.templateRef) {
               this.portal = new TemplatePortal(this.nzDropdownMenu!.templateRef, this.viewContainerRef);
             }
+            // Initialize arrow and placement on open
+            this.setDropdownMenuValue('nzArrow', this.nzArrow);
+            this.setDropdownMenuValue('placement', normalizePlacementForClass(this.nzPlacement));
             this.overlayRef.attach(this.portal);
           } else {
             /** detach overlayRef if needed **/
@@ -185,7 +218,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
           }
         });
 
-      this.nzDropdownMenu!.animationStateChange$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+      this.nzDropdownMenu!.animationStateChange$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
         if (event.toState === 'void') {
           if (this.overlayRef) {
             this.overlayRef.dispose();
@@ -196,17 +229,8 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-      this.overlayRef = null;
-    }
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
+    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzArrow, nzPlacement } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -227,6 +251,12 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     }
     if (nzOverlayStyle) {
       this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
+    }
+    if (nzArrow) {
+      this.setDropdownMenuValue('nzArrow', this.nzArrow);
+    }
+    if (nzPlacement) {
+      this.setDropdownMenuValue('placement', normalizePlacementForClass(this.nzPlacement));
     }
   }
 }

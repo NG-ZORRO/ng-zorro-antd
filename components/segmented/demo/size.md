@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 8
 title:
   zh-CN: 三种大小
   en-US: Three sizes of Segmented
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 There are three sizes of an Segmented: `large` (40px), `default` (32px) and `small` (24px).
-

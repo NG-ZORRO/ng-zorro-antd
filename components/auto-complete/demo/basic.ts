@@ -1,7 +1,12 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-auto-complete-basic',
+  imports: [FormsModule, NzAutocompleteModule, NzInputModule],
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="example-input">

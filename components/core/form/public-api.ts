@@ -6,4 +6,3 @@
 export * from './nz-form-status.service';
 export * from './nz-form-no-status.service';
 export * from './nz-form-item-feedback-icon.component';
-export * from './nz-form-patch.module';

@@ -3,18 +3,40 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  DestroyRef,
+  DOCUMENT,
+  inject,
+  Input,
+  OnInit,
+  PLATFORM_ID,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
 
 import { manifest, ThemeType } from '@ant-design/icons-angular';
 import { AccountBookFill } from '@ant-design/icons-angular/icons';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzIconService } from 'ng-zorro-antd/icon';
+import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadChangeParam, NzUploadFile, NzUploadXHRArgs } from 'ng-zorro-antd/upload';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
+import { NzUploadFile, NzUploadModule, NzUploadXHRArgs } from 'ng-zorro-antd/upload';
 
 export interface Categories {
   direction: string[];
@@ -32,8 +54,8 @@ declare global {
 }
 
 interface AntdIconClassifier {
-  load: Function;
-  predict: Function;
+  load: () => Promise<void>;
+  predict: (element: HTMLElement) => Result[];
 }
 
 interface Result {
@@ -195,21 +217,22 @@ const logo = [
   'Android',
   'Apple',
   'Windows',
+  'Linux',
   'Ie',
   'Chrome',
   'Github',
   'Aliwangwang',
   'Dingding',
+  'Dingtalk',
   'WeiboSquare',
   'WeiboCircle',
-  'TaobaoCircle',
-  'Html5',
   'Weibo',
+  'Taobao',
+  'TaobaoCircle',
   'Twitter',
   'Wechat',
   'Youtube',
   'AlipayCircle',
-  'Taobao',
   'Skype',
   'Qq',
   'MediumWorkmark',
@@ -219,6 +242,14 @@ const logo = [
   'GooglePlus',
   'Dropbox',
   'Facebook',
+  'Html5',
+  'Java',
+  'JavaScript',
+  'Python',
+  'Docker',
+  'Kubernetes',
+  'Ruby',
+  'DotNet',
   'Codepen',
   'CodeSandbox',
   'CodeSandboxCircle',
@@ -241,7 +272,19 @@ const logo = [
   'Alibaba',
   'Yahoo',
   'Reddit',
-  'Sketch'
+  'Discord',
+  'Sketch',
+  'Baidu',
+  'Bilibili',
+  'HarmonyOS',
+  'OpenAI',
+  'Pinterest',
+  'Spotify',
+  'TikTok',
+  'Twitch',
+  'WechatWork',
+  'WhatsApp',
+  'X'
 ];
 
 const categories: Categories = {
@@ -272,38 +315,53 @@ declare const locale: NzSafeAny;
 
 @Component({
   selector: 'nz-page-demo-icon',
+  imports: [
+    FormsModule,
+    NzBadgeModule,
+    NzButtonModule,
+    NzIconModule,
+    NzInputModule,
+    NzModalModule,
+    NzPopoverModule,
+    NzRadioModule,
+    NzResultModule,
+    NzSpinModule,
+    NzTooltipModule,
+    NzProgressModule,
+    NzUploadModule
+  ],
   template: `
     <h3>{{ localeObj.chooseTheme }}</h3>
     <div class="icon-selector">
       <nz-radio-group [ngModel]="currentTheme" (ngModelChange)="setIconsShouldBeDisplayed($event)">
         <label nz-radio-button nzValue="outline">
-          <span nz-icon>
+          <nz-icon>
             <svg>
               <path
                 d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z m-12 800H172c-6.6 0-12-5.4-12-12V172c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v680c0 6.6-5.4 12-12 12z"
               ></path>
             </svg>
-          </span>
+          </nz-icon>
           Outlined
         </label>
         <label nz-radio-button nzValue="fill">
-          <span nz-icon>
+          <nz-icon>
             <svg>
               <path
                 d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z"
               ></path>
             </svg>
-          </span>
+          </nz-icon>
           Filled
         </label>
         <label nz-radio-button nzValue="twotone">
-          <span nz-icon>
+          <nz-icon>
             <svg>
               <path
                 d="M16 512c0 273.932 222.066 496 496 496s496-222.068 496-496S785.932 16 512 16 16 238.066 16 512z m496 368V144c203.41 0 368 164.622 368 368 0 203.41-164.622 368-368 368z"
               ></path>
             </svg>
-          </span>
+          </nz-icon>
           Two Tone
         </label>
       </nz-radio-group>
@@ -317,9 +375,8 @@ declare const locale: NzSafeAny;
       </nz-input-group>
       <ng-template #suffixIconCamera>
         <div class="icon-pic-searcher">
-          <span
+          <nz-icon
             class="icon-pic-btn"
-            nz-icon
             nz-popover
             [nzPopoverTrigger]="null"
             [(nzPopoverVisible)]="popoverVisible"
@@ -331,21 +388,21 @@ declare const locale: NzSafeAny;
                 d="M864 248H728l-32.4-90.8a32.07 32.07 0 00-30.2-21.2H358.6c-13.5 0-25.6 8.5-30.1 21.2L296 248H160c-44.2 0-80 35.8-80 80v456c0 44.2 35.8 80 80 80h704c44.2 0 80-35.8 80-80V328c0-44.2-35.8-80-80-80zm8 536c0 4.4-3.6 8-8 8H160c-4.4 0-8-3.6-8-8V328c0-4.4 3.6-8 8-8h186.7l17.1-47.8 22.9-64.2h250.5l22.9 64.2 17.1 47.8H864c4.4 0 8 3.6 8 8v456zM512 384c-88.4 0-160 71.6-160 160s71.6 160 160 160 160-71.6 160-160-71.6-160-160-160zm0 256c-53 0-96-43-96-96s43-96 96-96 96 43 96 96-43 96-96 96z"
               ></path>
             </svg>
-          </span>
+          </nz-icon>
         </div>
       </ng-template>
       <ng-template #addOnAfterIconSearch>
         <button nz-button nzType="default" nzSearch>
-          <span nz-icon nzType="search"></span>
+          <nz-icon nzType="search"></nz-icon>
         </button>
       </ng-template>
     </div>
     @for (category of categoryNames; track category; let i = $index) {
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
-        @for (icon of displayedNames[i].icons; track trackByFn) {
+        @for (icon of displayedNames[i].icons; track trackByFn(icon)) {
           <li (click)="onIconClick($event, icon)">
-            <span nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></span>
+            <nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></nz-icon>
             <span class="anticon-class">
               @if (isNewIcon(icon)) {
                 <nz-badge nzDot>
@@ -376,7 +433,7 @@ declare const locale: NzSafeAny;
             [nzShowUploadList]="{ showPreviewIcon: false, showRemoveIcon: false }"
           >
             <p class="ant-upload-drag-icon">
-              <span nz-icon nzType="inbox" nzTheme="outline"></span>
+              <nz-icon nzType="inbox" nzTheme="outline"></nz-icon>
             </p>
             <p class="ant-upload-text">{{ localeObj.picSearcherUploadText }}</p>
             <p class="ant-upload-hint">{{ localeObj.picSearcherUploadHint }}</p>
@@ -400,8 +457,7 @@ declare const locale: NzSafeAny;
                     @for (icon of icons; track icon) {
                       <tr>
                         <td class="col-icon">
-                          <span
-                            nz-icon
+                          <nz-icon
                             nz-tooltip
                             [nzTooltipTitle]="icon.type"
                             nzTooltipPlacement="right"
@@ -409,7 +465,7 @@ declare const locale: NzSafeAny;
                             [nzTheme]="currentTheme"
                             (click)="onIconClick($event, icon.type)"
                           >
-                          </span>
+                          </nz-icon>
                         </td>
                         <td>
                           <nz-progress nzStrokeLinecap="round" [nzPercent]="icon.score"></nz-progress>
@@ -438,13 +494,11 @@ declare const locale: NzSafeAny;
         margin: 1.6em 0 0.6em;
         font-size: 18px;
       }
-    `,
-    `
+
       ul.anticons-list li .anticon {
         font-size: 24px;
       }
-    `,
-    `
+
       .icon-selector {
         display: flex;
         justify-content: space-between;
@@ -452,16 +506,20 @@ declare const locale: NzSafeAny;
 
       nz-input-group {
         margin-left: 10px;
-        flex: 1 1 0%;
+        flex: 1 1 0;
       }
     `
   ]
 })
-export class NzPageDemoIconComponent implements OnInit, OnDestroy {
+export class NzPageDemoIconComponent implements OnInit {
+  private platformId = inject(PLATFORM_ID);
+  private message = inject(NzMessageService);
+  private viewContainerRef = inject(ViewContainerRef);
+
   displayedNames: Array<{ name: string; icons: string[] }> = [];
   categoryNames: string[] = [];
   currentTheme: ThemeType = 'outline';
-  localeObj: { [key: string]: string } = locale;
+  localeObj: Record<string, string> = locale;
   searchingString = '';
 
   error = false;
@@ -472,7 +530,9 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   fileList: NzUploadFile[] = [];
   icons: Icon[] = [];
 
-  trackByFn = (_index: number, item: string): string => `${item}-${this.currentTheme}`;
+  private document: Document = inject(DOCUMENT);
+
+  trackByFn = (item: string): string => `${item}-${this.currentTheme}`;
 
   kebabCase = (str: string): string => kebabCase(str);
 
@@ -480,7 +540,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
 
   onIconClick(e: MouseEvent, icon: string): void {
     const target = e.target as HTMLElement;
-    const copiedString = `<span nz-icon nzType="${kebabCase(icon)}" nzTheme="${this.currentTheme}"></span>`;
+    const copiedString = `<nz-icon nzType="${kebabCase(icon)}" nzTheme="${this.currentTheme}" />`;
     target.classList.add('copied');
     this._copy(copiedString).then(() => {
       setTimeout(() => {
@@ -493,17 +553,17 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
   }
 
   private _copy(value: string): Promise<string> {
-    const promise = new Promise<string>((resolve): void => {
+    return new Promise<string>((resolve): void => {
       let copyTextArea: HTMLTextAreaElement | null = null;
       try {
-        copyTextArea = this.dom.createElement('textarea') as HTMLTextAreaElement;
+        copyTextArea = this.document.createElement('textarea') as HTMLTextAreaElement;
         copyTextArea.style.height = '0px';
         copyTextArea.style.opacity = '0';
         copyTextArea.style.width = '0px';
-        this.dom.body.appendChild(copyTextArea);
+        this.document.body.appendChild(copyTextArea);
         copyTextArea.value = value;
         copyTextArea.select();
-        this.dom.execCommand('copy');
+        this.document.execCommand('copy');
         resolve(value);
       } finally {
         if (copyTextArea && copyTextArea.parentNode) {
@@ -511,8 +571,6 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
         }
       }
     });
-
-    return promise;
   }
 
   prepareIcons(): void {
@@ -564,7 +622,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const script = this.dom.createElement('script');
+    const script = this.document.createElement('script');
     const source = 'https://cdn.jsdelivr.net/gh/lewis617/antd-icon-classifier@0.0/dist/main.js';
     script.type = 'text/javascript';
     script.src = source;
@@ -576,23 +634,25 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       throw new Error(`${PREFIX} cannot load assets of antd icon classifier from source "${source}".`);
     };
 
-    this.dom.head.appendChild(script);
+    this.document.head.appendChild(script);
   }
 
   private onLoad(): void {
     this.modelLoaded = true;
-    this.dom.addEventListener('paste', this.onPaste as EventListener);
+    this.document.addEventListener('paste', this.onPaste as EventListener);
   }
 
   private onPaste = (event: ClipboardEvent): void => {
     const items = event.clipboardData && event.clipboardData.items;
     let file = null;
     if (items && items.length) {
-      for (let i = 0; i < items.length; i += 1) {
+      let i = 0;
+      while (i < items.length) {
         if (items[i].type.indexOf('image') !== -1) {
           file = items[i].getAsFile();
           break;
         }
+        i++;
       }
     }
     if (file) this.uploadFile(file);
@@ -635,7 +695,7 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       }));
       this.loading = false;
       this.error = false;
-    } catch (err) {
+    } catch {
       this.loading = false;
       this.error = true;
     }
@@ -652,34 +712,23 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleChange({ file, fileList }: NzUploadChangeParam): void {
-    if (file.status === 'uploading' || file.status === 'error') {
-      this.fileList = fileList;
-    } else if (file.status === 'done') {
-      this.uploadFile(file.originFileObj!);
-    }
-  }
-
-  constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    @Inject(DOCUMENT) private dom: any,
-    private _iconService: NzIconService,
-    private message: NzMessageService,
-    private viewContainerRef: ViewContainerRef
-  ) {
+  constructor() {
     // This is to test that tree shake works!
-    this._iconService.addIcon(AccountBookFill);
+    inject(NzIconService).addIcon(AccountBookFill);
+
+    inject(DestroyRef).onDestroy(() => {
+      this.document.removeEventListener('paste', this.onPaste as EventListener);
+      this.viewContainerRef.clear();
+    });
   }
 
   ngOnInit(): void {
     this.setIconsShouldBeDisplayed('outline');
-    this.loadModel();
-    this.popoverVisible = !localStorage.getItem('disableIconTip');
-  }
-
-  ngOnDestroy(): void {
-    this.dom.removeEventListener('paste', this.onPaste as EventListener);
-    this.viewContainerRef.clear();
+    // load model in browser
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadModel();
+      this.popoverVisible = !localStorage.getItem('disableIconTip');
+    }
   }
 }
 
@@ -710,6 +759,7 @@ function upperCamelCase(value: string): string {
 function kebabCase(value: string): string {
   return value
     .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z])([A-Z])/g, '$1-$2')
     .replace(/([0-9])([a-zA-Z]+)$/g, '-$1-$2')
     .replace(/[\s_]+/g, '-')
     .toLowerCase();

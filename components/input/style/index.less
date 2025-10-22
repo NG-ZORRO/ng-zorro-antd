@@ -4,7 +4,6 @@
 @import './affix';
 @import './allow-clear';
 @import './status';
-
 @input-prefix-cls: ~'@{ant-prefix}-input';
 
 // Input styles
@@ -22,16 +21,26 @@
       width: 100%;
       text-align: start;
       vertical-align: top; // https://github.com/ant-design/ant-design/issues/6403
+
+      .input-group-wrapper-compact(~'@{input-prefix-cls}');
     }
   }
 
-  &-password-icon.@{iconfont-css-prefix} {
+  &-password-icon {
     color: @text-color-secondary;
     cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
       color: @input-icon-hover-color;
+    }
+
+    .@{input-prefix-cls}-disabled & {
+      cursor: not-allowed;
+
+      &:hover {
+        color: @text-color-secondary;
+      }
     }
   }
 
@@ -79,6 +88,11 @@
     align-items: center;
     margin: auto;
   }
+
+  // ===================== Compact Item Styles =====================
+  .compact-item(@input-prefix-cls);
+  .compact-item(~'@{input-prefix-cls}-affix-wrapper');
+  .compact-item(~'@{input-prefix-cls}-group-wrapper', ~'@{input-prefix-cls}-group-addon');
 }
 
 @import './search-input';

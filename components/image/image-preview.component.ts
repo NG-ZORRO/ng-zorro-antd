@@ -4,31 +4,33 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
-import { OverlayRef } from '@angular/cdk/overlay';
+import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { ESCAPE } from '@angular/cdk/keycodes';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
+  inject,
   NgZone,
   OnInit,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isNotNil } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { FADE_CLASS_NAME_MAP, NZ_CONFIG_MODULE_NAME } from './image-config';
+import { NZ_CONFIG_MODULE_NAME } from './image-config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
 import { NzImageScaleStep, NzImageUrl } from './image.directive';
@@ -37,7 +39,7 @@ import { getClientSize, getFitContentPosition, getOffset } from './utils';
 export interface NzImageContainerOperation {
   icon: string;
   type: string;
-
+  rotate?: number;
   onClick(): void;
 }
 
@@ -54,88 +56,109 @@ const NZ_DEFAULT_ROTATE = 0;
   selector: 'nz-image-preview',
   exportAs: 'nzImagePreview',
   animations: [fadeMotion],
-  standalone: true,
   template: `
-    <div class="ant-image-preview">
-      <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
-      <div class="ant-image-preview-content">
-        <div class="ant-image-preview-body">
-          <ul class="ant-image-preview-operations">
-            @for (option of operations; track option) {
-              <li
-                class="ant-image-preview-operations-operation"
-                [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
-                (click)="option.onClick()"
-              >
-                <span class="ant-image-preview-operations-icon" nz-icon [nzType]="option.icon" nzTheme="outline"></span>
-              </li>
-            }
-          </ul>
-          <div
-            class="ant-image-preview-img-wrapper"
-            #imagePreviewWrapper
-            cdkDrag
-            [style.transform]="previewImageWrapperTransform"
-            [cdkDragFreeDragPosition]="position"
-            (cdkDragReleased)="onDragReleased()"
-          >
-            @for (image of images; track image; let imageIndex = $index) {
-              @if (imageIndex === index) {
-                <img
-                  cdkDragHandle
-                  class="ant-image-preview-img"
-                  #imgRef
-                  [attr.src]="sanitizerResourceUrl(image.src)"
-                  [attr.srcset]="image.srcset"
-                  [attr.alt]="image.alt"
-                  [style.width]="image.width"
-                  [style.height]="image.height"
-                  [style.transform]="previewImageTransform"
-                />
-              }
-            }
-          </div>
-          @if (images.length > 1) {
-            <ng-container>
-              <div
-                class="ant-image-preview-switch-left"
-                [class.ant-image-preview-switch-left-disabled]="index <= 0"
-                (click)="onSwitchLeft($event)"
-              >
-                <span nz-icon nzType="left" nzTheme="outline"></span>
-              </div>
-              <div
-                class="ant-image-preview-switch-right"
-                [class.ant-image-preview-switch-right-disabled]="index >= images.length - 1"
-                (click)="onSwitchRight($event)"
-              >
-                <span nz-icon nzType="right" nzTheme="outline"></span>
-              </div>
-            </ng-container>
-          }
+    <div class="ant-image-preview-mask"></div>
+
+    <div class="ant-image-preview-operations-wrapper">
+      @if (images.length > 1) {
+        <div
+          class="ant-image-preview-switch-left"
+          [class.ant-image-preview-switch-left-disabled]="index <= 0"
+          (click)="onSwitchLeft($event)"
+        >
+          <nz-icon nzType="left" nzTheme="outline" />
         </div>
+        <div
+          class="ant-image-preview-switch-right"
+          [class.ant-image-preview-switch-right-disabled]="index >= images.length - 1"
+          (click)="onSwitchRight($event)"
+        >
+          <nz-icon nzType="right" nzTheme="outline" />
+        </div>
+      }
+
+      <ul class="ant-image-preview-operations">
+        @if (images.length > 1) {
+          <li class="ant-image-preview-operations-progress">{{ index + 1 }} / {{ images.length }}</li>
+        }
+
+        @for (option of operations; track option) {
+          <li
+            class="ant-image-preview-operations-operation"
+            [class.ant-image-preview-operations-operation-disabled]="zoomOutDisabled && option.type === 'zoomOut'"
+            (click)="option.onClick()"
+          >
+            <nz-icon
+              class="ant-image-preview-operations-icon"
+              [nzType]="option.icon"
+              [nzRotate]="option.rotate ?? 0"
+              nzTheme="outline"
+            />
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div
+      class="ant-image-preview-wrap"
+      tabindex="-1"
+      (click)="maskClosable && $event.target === $event.currentTarget && onClose()"
+    >
+      <div class="ant-image-preview" role="dialog" aria-modal="true">
+        <div tabindex="0" aria-hidden="true" class="ant-image-preview-focus-trap"></div>
+        <div class="ant-image-preview-content">
+          <div class="ant-image-preview-body">
+            <div
+              class="ant-image-preview-img-wrapper"
+              #imagePreviewWrapper
+              cdkDrag
+              [style.transform]="previewImageWrapperTransform"
+              [cdkDragFreeDragPosition]="position"
+              (cdkDragEnded)="onDragEnd($event)"
+            >
+              @for (image of images; track image; let imageIndex = $index) {
+                @if (imageIndex === index) {
+                  <img
+                    cdkDragHandle
+                    class="ant-image-preview-img"
+                    #imgRef
+                    [attr.src]="sanitizerResourceUrl(image.src)"
+                    [attr.srcset]="image.srcset"
+                    [attr.alt]="image.alt"
+                    [style.width]="image.width"
+                    [style.height]="image.height"
+                    [style.transform]="previewImageTransform"
+                  />
+                }
+              }
+            </div>
+          </div>
+        </div>
+        <div tabindex="0" aria-hidden="true" class="ant-image-preview-focus-trap"></div>
       </div>
-      <div tabindex="0" aria-hidden="true" style="width: 0; height: 0; overflow: hidden; outline: none;"></div>
     </div>
   `,
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'ant-image-preview-wrap',
+    class: 'ant-image-preview-root',
     '[class.ant-image-preview-moving]': 'isDragging',
     '[style.zIndex]': 'config.nzZIndex',
     '[@.disabled]': 'config.nzNoAnimation',
-    '[@fadeMotion]': 'animationState',
+    '[@fadeMotion]': `visible ? 'enter' : 'leave'`,
     '(@fadeMotion.start)': 'onAnimationStart($event)',
-    '(@fadeMotion.done)': 'onAnimationDone($event)',
-    tabindex: '-1',
-    role: 'document'
+    '(@fadeMotion.done)': 'onAnimationDone($event)'
   },
-  imports: [NzIconModule, CdkDragHandle, CdkDrag],
-  providers: [NzDestroyService]
+  imports: [NzIconModule, CdkDragHandle, CdkDrag]
 })
 export class NzImagePreviewComponent implements OnInit {
+  private document = inject(DOCUMENT);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  public nzConfigService = inject(NzConfigService);
+  public config = inject(NzImagePreviewOptions);
+  private sanitizer = inject(DomSanitizer);
+  private destroyRef = inject(DestroyRef);
   readonly _defaultNzZoom = NZ_DEFAULT_ZOOM;
   readonly _defaultNzScaleStep = NZ_DEFAULT_SCALE_STEP;
   readonly _defaultNzRotate = NZ_DEFAULT_ROTATE;
@@ -144,7 +167,6 @@ export class NzImagePreviewComponent implements OnInit {
   index = 0;
   isDragging = false;
   visible = true;
-  animationState: 'void' | 'enter' | 'leave' = 'enter';
   animationStateChanged = new EventEmitter<AnimationEvent>();
   scaleStepMap: Map<NzImageUrl, NzImageScaleStep> = new Map<NzImageUrl, NzImageScaleStep>();
 
@@ -185,21 +207,37 @@ export class NzImagePreviewComponent implements OnInit {
         this.onRotateLeft();
       },
       type: 'rotateLeft'
+    },
+    {
+      icon: 'swap',
+      onClick: () => {
+        this.onHorizontalFlip();
+      },
+      type: 'flipHorizontally'
+    },
+    {
+      icon: 'swap',
+      onClick: () => {
+        this.onVerticalFlip();
+      },
+      type: 'flipVertically',
+      rotate: 90
     }
   ];
 
   zoomOutDisabled = false;
   position = { ...initialPosition };
   previewRef!: NzImagePreviewRef;
-  containerClick = new EventEmitter<void>();
   closeClick = new EventEmitter<void>();
 
   @ViewChild('imgRef') imageRef!: ElementRef<HTMLImageElement>;
   @ViewChild('imagePreviewWrapper', { static: true }) imagePreviewWrapper!: ElementRef<HTMLElement>;
 
-  private zoom: number;
-  private rotate: number;
-  private scaleStep: number;
+  private zoom = this.config.nzZoom ?? this._defaultNzZoom;
+  private rotate = this.config.nzRotate ?? this._defaultNzRotate;
+  private scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
+  private flipHorizontally = this.config.nzFlipHorizontally ?? false;
+  private flipVertically = this.config.nzFlipVertically ?? false;
 
   get animationDisabled(): boolean {
     return this.config.nzNoAnimation ?? false;
@@ -210,51 +248,47 @@ export class NzImagePreviewComponent implements OnInit {
     return this.config.nzMaskClosable ?? defaultConfig.nzMaskClosable ?? true;
   }
 
-  constructor(
-    private ngZone: NgZone,
-    private host: ElementRef<HTMLElement>,
-    private cdr: ChangeDetectorRef,
-    public nzConfigService: NzConfigService,
-    public config: NzImagePreviewOptions,
-    private overlayRef: OverlayRef,
-    private destroy$: NzDestroyService,
-    private sanitizer: DomSanitizer
-  ) {
-    this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
-    this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
-    this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
+  constructor() {
     this.updateZoomOutDisabled();
     this.updatePreviewImageTransform();
     this.updatePreviewImageWrapperTransform();
   }
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.host.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          if (event.target === event.currentTarget && this.maskClosable && this.containerClick.observers.length) {
-            this.ngZone.run(() => this.containerClick.emit());
-          }
-        });
+    fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mousedown')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.isDragging = true;
+      });
 
-      fromEvent(this.imagePreviewWrapper.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.isDragging = true;
+    fromEventOutsideAngular<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(event => {
+        this.ngZone.run(() => this.wheelZoomEventHandler(event));
+      });
+
+    fromEventOutsideAngular<KeyboardEvent>(this.document, 'keydown')
+      .pipe(
+        filter(event => event.keyCode === ESCAPE),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        this.ngZone.run(() => {
+          this.onClose();
+          this.markForCheck();
         });
-    });
+      });
   }
 
   setImages(images: NzImage[], scaleStepMap?: Map<string, number>): void {
     if (scaleStepMap) this.scaleStepMap = scaleStepMap;
     this.images = images;
-    this.cdr.markForCheck();
+    this.markForCheck();
   }
 
   switchTo(index: number): void {
     this.index = index;
-    this.cdr.markForCheck();
+    this.markForCheck();
   }
 
   next(): void {
@@ -264,7 +298,7 @@ export class NzImagePreviewComponent implements OnInit {
       this.updatePreviewImageTransform();
       this.updatePreviewImageWrapperTransform();
       this.updateZoomOutDisabled();
-      this.cdr.markForCheck();
+      this.markForCheck();
     }
   }
 
@@ -275,7 +309,7 @@ export class NzImagePreviewComponent implements OnInit {
       this.updatePreviewImageTransform();
       this.updatePreviewImageWrapperTransform();
       this.updateZoomOutDisabled();
-      this.cdr.markForCheck();
+      this.markForCheck();
     }
   }
 
@@ -284,6 +318,7 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   onClose(): void {
+    this.visible = false;
     this.closeClick.emit();
   }
 
@@ -293,7 +328,6 @@ export class NzImagePreviewComponent implements OnInit {
     this.zoom += zoomStep;
     this.updatePreviewImageTransform();
     this.updateZoomOutDisabled();
-    this.position = { ...initialPosition };
   }
 
   onZoomOut(): void {
@@ -303,7 +337,10 @@ export class NzImagePreviewComponent implements OnInit {
       this.zoom -= zoomStep;
       this.updatePreviewImageTransform();
       this.updateZoomOutDisabled();
-      this.position = { ...initialPosition };
+
+      if (this.zoom <= 1) {
+        this.reCenterImage();
+      }
     }
   }
 
@@ -329,31 +366,38 @@ export class NzImagePreviewComponent implements OnInit {
     this.next();
   }
 
-  onAnimationStart(event: AnimationEvent): void {
-    if (event.toState === 'enter') {
-      this.setEnterAnimationClass();
-    } else if (event.toState === 'leave') {
-      this.setLeaveAnimationClass();
-    }
+  onHorizontalFlip(): void {
+    this.flipHorizontally = !this.flipHorizontally;
+    this.updatePreviewImageTransform();
+  }
 
+  onVerticalFlip(): void {
+    this.flipVertically = !this.flipVertically;
+    this.updatePreviewImageTransform();
+  }
+
+  wheelZoomEventHandler(event: WheelEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.handlerImageTransformationWhileZoomingWithMouse(event, event.deltaY);
+    this.handleImageScaleWhileZoomingWithMouse(event.deltaY);
+
+    this.updatePreviewImageWrapperTransform();
+    this.updatePreviewImageTransform();
+
+    this.markForCheck();
+  }
+
+  onAnimationStart(event: AnimationEvent): void {
     this.animationStateChanged.emit(event);
   }
 
   onAnimationDone(event: AnimationEvent): void {
-    if (event.toState === 'enter') {
-      this.setEnterAnimationClass();
-    } else if (event.toState === 'leave') {
-      this.setLeaveAnimationClass();
-    }
     this.animationStateChanged.emit(event);
   }
 
-  startLeaveAnimation(): void {
-    this.animationState = 'leave';
-    this.cdr.markForCheck();
-  }
-
-  onDragReleased(): void {
+  onDragEnd(event: CdkDragEnd): void {
     this.isDragging = false;
     const width = this.imageRef.nativeElement.offsetWidth * this.zoom;
     const height = this.imageRef.nativeElement.offsetHeight * this.zoom;
@@ -371,6 +415,11 @@ export class NzImagePreviewComponent implements OnInit {
     const fitContentPos = getFitContentPosition(fitContentParams);
     if (isNotNil(fitContentPos.x) || isNotNil(fitContentPos.y)) {
       this.position = { ...this.position, ...fitContentPos };
+    } else if (!isNotNil(fitContentPos.x) && !isNotNil(fitContentPos.y)) {
+      this.position = {
+        x: event.source.getFreeDragPosition().x,
+        y: event.source.getFreeDragPosition().y
+      };
     }
   }
 
@@ -379,7 +428,9 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private updatePreviewImageTransform(): void {
-    this.previewImageTransform = `scale3d(${this.zoom}, ${this.zoom}, 1) rotate(${this.rotate}deg)`;
+    this.previewImageTransform = `scale3d(${this.zoom * (this.flipHorizontally ? -1 : 1)}, ${
+      this.zoom * (this.flipVertically ? -1 : 1)
+    }, 1) rotate(${this.rotate}deg)`;
   }
 
   private updatePreviewImageWrapperTransform(): void {
@@ -390,32 +441,53 @@ export class NzImagePreviewComponent implements OnInit {
     this.zoomOutDisabled = this.zoom <= 1;
   }
 
-  private setEnterAnimationClass(): void {
-    if (this.animationDisabled) {
-      return;
+  private handlerImageTransformationWhileZoomingWithMouse(event: WheelEvent, deltaY: number): void {
+    let scaleValue: number;
+    const imageElement = this.imageRef.nativeElement;
+
+    const elementTransform = getComputedStyle(imageElement).transform;
+    const matrixValue = elementTransform.match(/matrix.*\((.+)\)/);
+
+    if (matrixValue) {
+      scaleValue = +matrixValue[1].split(', ')[0];
+    } else {
+      scaleValue = this.zoom;
     }
-    const backdropElement = this.overlayRef.backdropElement;
-    if (backdropElement) {
-      backdropElement.classList.add(FADE_CLASS_NAME_MAP.enter);
-      backdropElement.classList.add(FADE_CLASS_NAME_MAP.enterActive);
+
+    const x = (event.clientX - imageElement.getBoundingClientRect().x) / scaleValue;
+    const y = (event.clientY - imageElement.getBoundingClientRect().y) / scaleValue;
+    const halfOfScaleStepValue = deltaY < 0 ? this.scaleStep / 2 : -this.scaleStep / 2;
+
+    this.position.x += -x * halfOfScaleStepValue * 2 + imageElement.offsetWidth * halfOfScaleStepValue;
+    this.position.y += -y * halfOfScaleStepValue * 2 + imageElement.offsetHeight * halfOfScaleStepValue;
+  }
+
+  private handleImageScaleWhileZoomingWithMouse(deltaY: number): void {
+    if (this.isZoomedInWithMouseWheel(deltaY)) {
+      this.onZoomIn();
+    } else {
+      this.onZoomOut();
+    }
+
+    if (this.zoom <= 1) {
+      this.reCenterImage();
     }
   }
 
-  private setLeaveAnimationClass(): void {
-    if (this.animationDisabled) {
-      return;
-    }
-    const backdropElement = this.overlayRef.backdropElement;
-    if (backdropElement) {
-      backdropElement.classList.add(FADE_CLASS_NAME_MAP.leave);
-      backdropElement.classList.add(FADE_CLASS_NAME_MAP.leaveActive);
-    }
+  private isZoomedInWithMouseWheel(delta: number): boolean {
+    return delta < 0;
   }
 
   private reset(): void {
     this.zoom = this.config.nzZoom ?? this._defaultNzZoom;
     this.scaleStep = this.config.nzScaleStep ?? this._defaultNzScaleStep;
     this.rotate = this.config.nzRotate ?? this._defaultNzRotate;
+    this.flipHorizontally = false;
+    this.flipVertically = false;
+    this.reCenterImage();
+  }
+
+  private reCenterImage(): void {
     this.position = { ...initialPosition };
   }
 }

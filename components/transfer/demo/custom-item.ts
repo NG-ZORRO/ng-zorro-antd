@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { TransferItem } from 'ng-zorro-antd/transfer';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-custom-item',
+  imports: [NzIconModule, NzTransferModule],
   template: `
     <nz-transfer
       [nzDataSource]="list"
@@ -14,7 +15,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
       (nzChange)="change($event)"
     >
       <ng-template #render let-item>
-        <span nz-icon nzType="{{ item.icon }}"></span>
+        <nz-icon nzType="{{ item.icon }}" />
         {{ item.title }}
       </ng-template>
     </nz-transfer>
@@ -48,6 +49,4 @@ export class NzDemoTransferCustomItemComponent implements OnInit {
   change(ret: {}): void {
     console.log('nzChange', ret);
   }
-
-  constructor(public msg: NzMessageService) {}
 }

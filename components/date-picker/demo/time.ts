@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'nz-demo-date-picker-time',
+  imports: [FormsModule, NzDatePickerModule],
   template: `
     <nz-date-picker
       nzShowTime

@@ -4,6 +4,7 @@
  */
 
 import { TemplateRef } from '@angular/core';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export interface PanelSelector {
@@ -39,8 +40,6 @@ export interface DateCell {
   isRangeEndNearHover?: boolean;
   isFirstCellInPanel?: boolean;
   isLastCellInPanel?: boolean;
-  isTemplateRef ?: boolean;
-  isNonEmptyString ?: boolean;
 }
 
 export interface DateBodyRow {

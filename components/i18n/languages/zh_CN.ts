@@ -27,6 +27,7 @@ export default {
       weekPlaceholder: '请选择周',
       rangePlaceholder: ['开始日期', '结束日期'],
       rangeYearPlaceholder: ['开始年份', '结束年份'],
+      rangeQuarterPlaceholder: ['开始季度', '结束季度'],
       rangeMonthPlaceholder: ['开始月份', '结束月份'],
       rangeWeekPlaceholder: ['开始周', '结束周'],
       locale: 'zh_CN',
@@ -159,6 +160,9 @@ export default {
   Empty: {
     description: '暂无数据'
   },
+  Form: {
+    optional: '(可选)'
+  },
   Icon: {
     icon: '图标'
   },
@@ -185,6 +189,17 @@ export default {
   },
   QRCode: {
     expired: '二维码过期',
-    refresh: '点击刷新'
+    refresh: '点击刷新',
+    scanned: '已扫描'
+  },
+  CheckList: {
+    checkList: '任务清单',
+    checkListFinish: '你已成功完成任务清单！',
+    checkListClose: '关闭',
+    checkListFooter: '不需要操作指引',
+    checkListCheck: '你要关闭操作清单吗',
+    ok: '确定',
+    cancel: '取消',
+    checkListCheckOther: '以后不再需要操作清单'
   }
 };

@@ -1,0 +1,71 @@
+<ul
+  class="aside-container"
+  nz-menu
+  nzMode="inline"
+  [nzInlineIndent]="40"
+  [dir]="dir()"
+>
+  @if (page() === 'docs') {
+    @for (intro of intro(); track $index) {
+      <li nz-menu-item nzMatchRouter>
+        <a routerLink="{{ intro.path }}">{{ intro.label }}</a>
+      </li>
+    }
+  } @else if (page() === 'components') {
+    <li nz-menu-item nzMatchRouter>
+      <a routerLink="components/overview/{{ language() }}">
+        <span>{{ language() === 'zh' ? '组件总览' : 'Components Overview' }}</span>
+      </a>
+    </li>
+
+    @for (group of componentList(); track $index) {
+      <li nz-menu-group [nzTitle]="group.name">
+        <ul>
+          @for (component of group.children; track $index) {
+            <li nz-menu-item nzMatchRouter>
+              <a class="menu-title-content-link" [routerLink]="component.path">
+                <span>
+                  {{ component.label }}
+                  <span class="chinese">{{ component.zh }}</span>
+                </span>
+                @if (component.tag) {
+                  <ng-container *ngTemplateOutlet="tag; context: { $implicit: component.tag }"></ng-container>
+                }
+              </a>
+            </li>
+          }
+        </ul>
+      </li>
+    }
+  } @else if (page() === 'experimental') {
+    @for (group of componentList(); track $index) {
+      <li nz-menu-group [nzTitle]="group.name">
+        <ul>
+          @for (component of group.experimentalChildren; track $index) {
+            <li nz-menu-item nzMatchRouter>
+              <a class="menu-title-content-link" [routerLink]="component.path">
+                <span>
+                  {{ component.label }}
+                  <span class="chinese">{{ component.zh }}</span>
+                </span>
+                @if (component.tag) {
+                  <ng-container *ngTemplateOutlet="tag; context: { $implicit: component.tag }"></ng-container>
+                }
+              </a>
+            </li>
+          }
+        </ul>
+      </li>
+    }
+  }
+</ul>
+
+<ng-template #tag let-tag>
+  @if (tag === 'deprecated') {
+    <nz-tag nzColor="warning" [nzBordered]="false">
+      <span>{{ language() === 'zh' ? '废弃' : 'Deprecated' }}</span>
+    </nz-tag>
+  } @else {
+    <nz-tag nzColor="success" [nzBordered]="false">{{ tag }}</nz-tag>
+  }
+</ng-template>

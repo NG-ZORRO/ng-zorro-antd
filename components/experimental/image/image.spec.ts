@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, NgModule } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 import {
@@ -25,10 +25,8 @@ describe('Experimental', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [TestExperimentalImageModule],
       providers: [NzImageService]
     });
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -128,6 +126,7 @@ describe('NzSrcLoader', () => {
 });
 
 @Component({
+  imports: [NzImageModule],
   template: `
     <nz-image
       [nzSrc]="src"
@@ -145,12 +144,3 @@ export class TestImageExperimentalBaseComponent {
   loader = defaultImageSrcLoader;
   width = 200;
 }
-
-const TEST_COMPONENTS = [TestImageExperimentalBaseComponent];
-
-@NgModule({
-  imports: [NzImageModule],
-  declarations: [...TEST_COMPONENTS],
-  exports: [...TEST_COMPONENTS]
-})
-export class TestExperimentalImageModule {}

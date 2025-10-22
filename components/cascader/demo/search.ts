@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
 
-const options = [
+const options: NzCascaderOption[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -84,6 +85,7 @@ const otherOptions = [
 
 @Component({
   selector: 'nz-demo-cascader-search',
+  imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader
       [nzOptions]="nzOptions"
@@ -91,15 +93,14 @@ const otherOptions = [
       [nzShowSearch]="true"
       (ngModelChange)="onChanges($event)"
     ></nz-cascader>
-    &nbsp;
-    <a href="javascript:;" (click)="changeNzOptions()" class="change-options">Change Options</a>
+    <a (click)="changeNzOptions()" class="change-options">Change Options</a>
   `,
   styles: [
     `
       .change-options {
         display: inline-block;
         font-size: 12px;
-        margin-top: 8px;
+        margin-left: 8px;
       }
     `
   ]

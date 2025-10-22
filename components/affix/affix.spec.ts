@@ -1,12 +1,19 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, discardPeriodicTasks, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform } from '@angular/cdk/platform';
+import { Component, DebugElement, DOCUMENT, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Subject, Subscription } from 'rxjs';
 
 import { NzScrollService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzAffixComponent } from './affix.component';
-import { NzAffixModule } from './affix.module';
 
 interface Offset {
   top: number;
@@ -44,15 +51,13 @@ describe('affix', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzAffixModule],
-      declarations: [TestAffixComponent],
       providers: [
         {
           provide: NzScrollService,
           useClass: NzScrollService
         }
       ]
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(TestAffixComponent);
     context = fixture.componentInstance;
@@ -354,7 +359,7 @@ describe('affix', () => {
       discardPeriodicTasks();
     }));
 
-    it(`emit false when is unaffixed`, fakeAsync(() => {
+    it(`emit false when isn't affixed`, fakeAsync(() => {
       setupInitialState();
       emitScroll(window, defaultOffsetTop + startOffset + 1);
       emitScroll(window, defaultOffsetTop + startOffset - 1);
@@ -366,8 +371,8 @@ describe('affix', () => {
   });
 
   class NzAffixPageObject {
-    offsets: { [key: string]: Offset };
-    scrolls: { [key: string]: Scroll };
+    offsets: Record<string, Offset>;
+    scrolls: Record<string, Scroll>;
 
     constructor() {
       spyOn(component, 'getOffset').and.callFake(this.getOffset.bind(this));
@@ -462,10 +467,6 @@ describe('affix-extra', () => {
   let dl: DebugElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzAffixModule],
-      declarations: [TestAffixComponent]
-    }).compileComponents();
     fixture = TestBed.createComponent(TestAffixComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -511,17 +512,12 @@ describe('affix RTL', () => {
   let dl: DebugElement;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzAffixModule],
-      declarations: [TestAffixRtlComponent]
-    }).compileComponents();
     fixture = TestBed.createComponent(TestAffixRtlComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;
   }));
   it('should className correct on dir change', fakeAsync(() => {
-    const value = 10;
-    context.newOffsetBottom = value;
+    context.newOffsetBottom = 10;
     context.fakeTarget = window;
     fixture.detectChanges();
     const el = dl.query(By.css('nz-affix')).nativeElement as HTMLElement;
@@ -541,7 +537,9 @@ describe('affix RTL', () => {
     fixture.destroy();
   }));
 });
+
 @Component({
+  imports: [NzAffixComponent],
   template: `
     <nz-affix id="affix" [nzTarget]="fakeTarget" [nzOffsetTop]="newOffset" [nzOffsetBottom]="newOffsetBottom">
       <button id="content">Affix Button</button>
@@ -551,12 +549,13 @@ describe('affix RTL', () => {
 })
 class TestAffixComponent {
   @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;
-  fakeTarget: string | Element | Window | null = null;
+  fakeTarget?: string | Element | Window;
   newOffset!: number;
   newOffsetBottom!: number;
 }
 
 @Component({
+  imports: [NzAffixComponent, BidiModule],
   template: `
     <div [dir]="direction">
       <nz-affix id="affix" [nzTarget]="fakeTarget" [nzOffsetTop]="newOffset" [nzOffsetBottom]="newOffsetBottom">
@@ -568,10 +567,188 @@ class TestAffixComponent {
 })
 export class TestAffixRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 
   @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;
-  fakeTarget: string | Element | Window | null = null;
+  fakeTarget?: string | Element | Window;
   newOffset!: number;
   newOffsetBottom!: number;
 }
+
+class MockDirectionality {
+  value = 'ltr';
+  change = new Subject();
+}
+
+describe('NzAffixComponent', () => {
+  let component: NzAffixComponent;
+  let fixture: ComponentFixture<NzAffixComponent>;
+  let mockRenderer: Renderer2;
+  let mockPlatform: Platform;
+  let mockDirectionality: MockDirectionality;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        NzAffixComponent,
+        NzScrollService,
+        { provide: Renderer2, useValue: jasmine.createSpyObj('Renderer2', ['setStyle', 'addClass', 'removeClass']) },
+        { provide: ElementRef, useValue: new ElementRef(document.createElement('div')) },
+        { provide: DOCUMENT, useValue: document },
+        { provide: Directionality, useClass: MockDirectionality },
+        { provide: Platform, useValue: { isBrowser: true } }
+      ]
+    });
+
+    fixture = TestBed.createComponent(NzAffixComponent);
+    component = fixture.componentInstance;
+    mockRenderer = TestBed.inject(Renderer2);
+    mockPlatform = TestBed.inject(Platform);
+    mockDirectionality = TestBed.inject(Directionality) as unknown as MockDirectionality;
+  });
+
+  afterEach(() => {
+    mockDirectionality.change.complete();
+  });
+
+  it('should handle directionality change', () => {
+    mockDirectionality.value = 'ltr';
+    component.ngOnInit();
+
+    spyOn<NzSafeAny>(component, 'registerListeners');
+    spyOn(component, 'updatePosition');
+    spyOn(component['cdr'], 'detectChanges');
+
+    mockDirectionality.change.next('rtl');
+
+    expect(component.dir).toBe('rtl');
+    expect(component['registerListeners']).toHaveBeenCalled();
+    expect(component.updatePosition).toHaveBeenCalled();
+    expect(component['cdr'].detectChanges).toHaveBeenCalled();
+  });
+
+  it('should register listeners if platform is browser', () => {
+    spyOn(component as NzSafeAny, 'removeListeners').and.callThrough();
+    spyOn(mockRenderer, 'setStyle');
+
+    component.ngOnInit();
+    component.ngAfterViewInit();
+
+    expect(component['removeListeners']).toHaveBeenCalled();
+    expect(component['positionChangeSubscription']).toBeDefined();
+    expect(component['timeout']).toBeDefined();
+  });
+
+  it('should not register listeners if platform is not browser', () => {
+    mockPlatform.isBrowser = false;
+
+    component.ngOnInit();
+    component.ngAfterViewInit();
+
+    expect(component['positionChangeSubscription']).toEqual(Subscription.EMPTY);
+  });
+
+  it('should remove listeners on destroy', () => {
+    spyOn(component as NzSafeAny, 'removeListeners').and.callThrough();
+    fixture.destroy();
+    expect(component['removeListeners']).toHaveBeenCalled();
+  });
+
+  it('should update position correctly', () => {
+    spyOn<NzSafeAny>(component, 'setAffixStyle').and.callThrough();
+    spyOn<NzSafeAny>(component, 'setPlaceholderStyle').and.callThrough();
+
+    const event = new Event('scroll');
+    component.updatePosition(event);
+
+    expect(component['setAffixStyle']).toHaveBeenCalled();
+    expect(component['setPlaceholderStyle']).toHaveBeenCalled();
+  });
+
+  it('should update RTL class when direction changes', () => {
+    component['fixedEl'].nativeElement.classList.add('ant-affix');
+    component.dir = 'ltr';
+    component['updateRtlClass']();
+    fixture.detectChanges();
+
+    expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
+
+    component.dir = 'rtl';
+    component['updateRtlClass']();
+    fixture.detectChanges();
+
+    expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeTrue();
+
+    component.dir = 'ltr';
+    component['updateRtlClass']();
+    fixture.detectChanges();
+
+    expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
+
+    component.dir = 'rtl';
+    component['fixedEl'].nativeElement.classList.remove('ant-affix');
+    component['fixedEl'].nativeElement.classList.add('ant-affix-rtl');
+    component['updateRtlClass']();
+    fixture.detectChanges();
+
+    expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
+  });
+
+  it('should not perform position updates if platform is not browser', () => {
+    mockPlatform.isBrowser = false;
+    spyOn<NzSafeAny>(component, 'getOffset');
+
+    component.updatePosition(new Event('scroll'));
+
+    expect(component['getOffset']).not.toHaveBeenCalled();
+  });
+
+  it('should update affixStyle with new width on resize event', () => {
+    mockPlatform.isBrowser = true;
+    spyOn(component, 'getOffset').and.returnValue({
+      top: 0,
+      left: 0,
+      width: 100,
+      height: 50
+    });
+    spyOn<NzSafeAny>(component, 'setAffixStyle').and.callThrough();
+    component.nzOffsetTop = 10;
+    component.nzOffsetBottom = 10;
+
+    component.updatePosition(new Event('resize'));
+
+    expect(component['setAffixStyle']).toHaveBeenCalledWith(
+      jasmine.any(Event),
+      jasmine.objectContaining({ width: 100 })
+    );
+  });
+
+  it('should update the affix style with the correct width on resize', () => {
+    spyOn<NzSafeAny>(component, 'setAffixStyle').and.callThrough();
+
+    const scrollTop = 40;
+    spyOn(component['scrollSrv'], 'getScroll').and.returnValue(scrollTop);
+    const elemOffset = { top: 200, left: 0, width: 200, height: 50 };
+    spyOn(component, 'getOffset').and.returnValue(elemOffset);
+    component['nzOffsetTop'] = 150;
+    component['nzOffsetBottom'] = 50;
+    spyOnProperty(component['placeholderNode'], 'offsetWidth').and.returnValue(120);
+
+    component['affixStyle'] = {
+      position: 'fixed',
+      top: '10px',
+      left: '10px',
+      width: '100px'
+    };
+
+    const mockEvent = new Event('resize');
+    component.updatePosition(mockEvent);
+
+    expect(component['setAffixStyle']).toHaveBeenCalledWith(mockEvent, {
+      position: 'fixed',
+      top: '10px',
+      left: '10px',
+      width: 120
+    });
+  });
+});

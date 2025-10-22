@@ -8,47 +8,39 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
-  OnDestroy,
+  DestroyRef,
+  inject,
   OnInit,
-  Optional,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzSiderComponent } from './sider.component';
 
 @Component({
   selector: 'nz-layout',
   exportAs: 'nzLayout',
+  template: `<ng-content></ng-content>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-layout',
     '[class.ant-layout-rtl]': `dir === 'rtl'`,
     '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0'
-  },
-  standalone: true
+  }
 })
-export class NzLayoutComponent implements OnDestroy, OnInit {
+export class NzLayoutComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
+  private directionality = inject(Directionality);
   @ContentChildren(NzSiderComponent) listOfNzSiderComponent!: QueryList<NzSiderComponent>;
 
   dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
 
-  constructor(@Optional() private directionality: Directionality) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

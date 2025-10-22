@@ -20,10 +20,8 @@ import { badgePresetColors } from './preset-colors';
 @Component({
   selector: 'nz-ribbon',
   exportAs: 'nzRibbon',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [NzOutletModule],
   template: `
     <ng-content></ng-content>
@@ -47,8 +45,6 @@ export class NzRibbonComponent implements OnChanges {
   @Input() nzPlacement: 'start' | 'end' = 'end';
   @Input() nzText: string | TemplateRef<void> | null = null;
   presetColor: string | null = null;
-
-  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzColor } = changes;

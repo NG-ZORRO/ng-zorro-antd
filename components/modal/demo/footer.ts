@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+
 @Component({
   selector: 'nz-demo-modal-footer',
+  imports: [NzButtonModule, NzModalModule],
   template: `
     <button nz-button nzType="primary" (click)="showModal()">
       <span>Show Modal</span>
@@ -34,8 +38,6 @@ import { Component } from '@angular/core';
 export class NzDemoModalFooterComponent {
   isVisible = false;
   isConfirmLoading = false;
-
-  constructor() {}
 
   showModal(): void {
     this.isVisible = true;

@@ -3,22 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'nz-header',
   exportAs: 'nzHeader',
+  template: `<ng-content></ng-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `,
-  standalone: true
-})
-export class NzHeaderComponent {
-  constructor(
-    public elementRef: ElementRef,
-    private renderer: Renderer2
-  ) {
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-layout-header');
+  host: {
+    class: 'ant-layout-header'
   }
-}
+})
+export class NzHeaderComponent {}

@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Usually used for messages remind.
-
-

@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+
 @Component({
   selector: 'nz-demo-timeline-alternate',
+  imports: [NzIconModule, NzTimelineModule],
   template: `
     <nz-timeline nzMode="alternate">
       <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
@@ -15,7 +19,7 @@ import { Component } from '@angular/core';
       <nz-timeline-item [nzDot]="dotTemplate">Technical testing 2015-09-01</nz-timeline-item>
     </nz-timeline>
     <ng-template #dotTemplate>
-      <span nz-icon nzType="clock-circle-o" style="font-size: 16px;"></span>
+      <nz-icon nzType="clock-circle-o" style="font-size: 16px;" />
     </ng-template>
   `
 })

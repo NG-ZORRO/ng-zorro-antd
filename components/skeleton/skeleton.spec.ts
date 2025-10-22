@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -9,6 +14,7 @@ import {
   NzSkeletonAvatarSize,
   NzSkeletonButtonShape,
   NzSkeletonButtonSize,
+  NzSkeletonInputSize,
   NzSkeletonParagraph,
   NzSkeletonTitle
 } from './skeleton.type';
@@ -19,10 +25,6 @@ describe('skeleton', () => {
   let dl: DebugElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzSkeletonModule],
-      declarations: [NzTestSkeletonComponent]
-    }).compileComponents();
     fixture = TestBed.createComponent(NzTestSkeletonComponent);
     testComp = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -158,10 +160,6 @@ describe('skeleton element', () => {
   let dl: DebugElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzSkeletonModule],
-      declarations: [NzTestSkeletonElementComponent]
-    }).compileComponents();
     fixture = TestBed.createComponent(NzTestSkeletonElementComponent);
     testComp = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -220,6 +218,7 @@ describe('skeleton element', () => {
 });
 
 @Component({
+  imports: [NzSkeletonModule],
   template: `
     <nz-skeleton
       [nzActive]="nzActive"
@@ -239,35 +238,37 @@ export class NzTestSkeletonComponent {
 }
 
 @Component({
+  imports: [NzSkeletonModule],
   template: `
-    <ng-container [ngSwitch]="useSuite">
-      <nz-skeleton-element
-        *ngSwitchCase="1"
-        nzType="avatar"
-        [nzActive]="nzActive"
-        [nzSize]="nzSize"
-        [nzShape]="nzShape"
-      ></nz-skeleton-element>
-      <nz-skeleton-element
-        *ngSwitchCase="2"
-        nzType="button"
-        [nzActive]="nzActive"
-        [nzSize]="nzSize"
-        [nzShape]="nzShape"
-      ></nz-skeleton-element>
-      <nz-skeleton-element
-        *ngSwitchCase="3"
-        nzType="input"
-        [nzActive]="nzActive"
-        [nzSize]="nzSize"
-      ></nz-skeleton-element>
-      <nz-skeleton-element *ngSwitchCase="4" nzType="image" [nzActive]="nzActive"></nz-skeleton-element>
-    </ng-container>
+    @switch (useSuite) {
+      @case (1) {
+        <nz-skeleton-element
+          nzType="avatar"
+          [nzActive]="nzActive"
+          [nzSize]="nzSize"
+          [nzShape]="nzShape"
+        ></nz-skeleton-element>
+      }
+      @case (2) {
+        <nz-skeleton-element
+          nzType="button"
+          [nzActive]="nzActive"
+          [nzSize]="nzSize"
+          [nzShape]="nzShape"
+        ></nz-skeleton-element>
+      }
+      @case (3) {
+        <nz-skeleton-element nzType="input" [nzActive]="nzActive" [nzSize]="nzSize"></nz-skeleton-element>
+      }
+      @case (4) {
+        <nz-skeleton-element nzType="image" [nzActive]="nzActive"></nz-skeleton-element>
+      }
+    }
   `
 })
 export class NzTestSkeletonElementComponent {
   useSuite = 1;
   nzActive: boolean = false;
-  nzSize: NzSkeletonAvatarSize | NzSkeletonButtonSize = 'default';
+  nzSize: NzSkeletonAvatarSize | NzSkeletonButtonSize | NzSkeletonInputSize = 'default';
   nzShape: NzSkeletonAvatarShape | NzSkeletonButtonShape = 'default';
 }

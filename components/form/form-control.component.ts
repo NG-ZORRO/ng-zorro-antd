@@ -3,31 +3,31 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChild,
-  Host,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Optional,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject,
+  DestroyRef,
+  ChangeDetectorRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { filter, startWith, tap } from 'rxjs/operators';
 
 import { helpMotion } from 'ng-zorro-antd/core/animation';
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -37,7 +37,6 @@ import { NzFormDirective } from './form.directive';
 @Component({
   selector: 'nz-form-control',
   exportAs: 'nzFormControl',
-  preserveWhitespaces: false,
   animations: [helpMotion],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,7 +48,7 @@ import { NzFormDirective } from './form.directive';
     </div>
     @if (innerTip) {
       <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected">
-        <div role="alert" [ngClass]="['ant-form-item-explain-' + status]">
+        <div role="alert" [class]="['ant-form-item-explain-' + status]">
           <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
             innerTip
           }}</ng-container>
@@ -67,26 +66,24 @@ import { NzFormDirective } from './form.directive';
   host: {
     class: 'ant-form-item-control'
   },
-  imports: [NgClass, NzOutletModule],
-  standalone: true
+  imports: [NzOutletModule]
 })
-export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {
-  static ngAcceptInputType_nzHasFeedback: BooleanInput;
-  static ngAcceptInputType_nzRequired: BooleanInput;
-  static ngAcceptInputType_nzNoColon: BooleanInput;
-  static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
+export class NzFormControlComponent implements OnChanges, OnInit, AfterContentInit {
+  private cdr = inject(ChangeDetectorRef);
+  public i18n = inject(NzI18nService);
+  private nzFormStatusService = inject(NzFormStatusService);
+  private destroyRef = inject(DestroyRef);
 
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null = null;
-  private destroyed$ = new Subject<void>();
   private localeId!: string;
   private autoErrorTip?: string;
 
   private get disableAutoTips(): boolean {
-    return this.nzDisableAutoTips !== 'default'
+    return this.nzDisableAutoTips !== undefined
       ? toBoolean(this.nzDisableAutoTips)
-      : this.nzFormDirective?.nzDisableAutoTips;
+      : !!this.nzFormDirective?.nzDisableAutoTips;
   }
 
   status: NzFormControlStatusType = '';
@@ -100,11 +97,11 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   @Input() nzValidatingTip?: string | TemplateRef<{ $implicit: AbstractControl | NgModel }>;
   @Input() nzExtra?: string | TemplateRef<void>;
   @Input() nzAutoTips: Record<string, Record<string, string>> = {};
-  @Input() nzDisableAutoTips: boolean | 'default' = 'default';
+  @Input({ transform: booleanAttribute }) nzDisableAutoTips?: boolean;
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   set nzHasFeedback(value: boolean) {
-    this._hasFeedback = toBoolean(value);
+    this._hasFeedback = value;
     this.nzFormStatusService.formStatusChanges.next({ status: this.status, hasFeedback: this._hasFeedback });
     if (this.nzFormItemComponent) {
       this.nzFormItemComponent.setHasFeedback(this._hasFeedback);
@@ -137,7 +134,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
       this.validateChanges = (this.validateControl.statusChanges as Observable<NzSafeAny>)
-        .pipe(startWith(null), takeUntil(this.destroyed$))
+        .pipe(startWith(null), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           if (!this.disableAutoTips) {
             this.updateAutoErrorTip();
@@ -221,7 +218,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
             this.nzFormDirective?.nzAutoTips?.[this.localeId]?.[key] ??
             this.nzFormDirective?.nzAutoTips.default?.[key];
         }
-        if (!!autoErrorTip) {
+        if (autoErrorTip) {
           break;
         }
       }
@@ -229,8 +226,8 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     }
   }
 
-  private subscribeAutoTips(observable: Observable<NzSafeAny>): void {
-    observable?.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+  private subscribeAutoTips(observable?: Observable<NzSafeAny>): void {
+    observable?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       if (!this.disableAutoTips) {
         this.updateAutoErrorTip();
         this.setStatus();
@@ -239,19 +236,16 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     });
   }
 
-  constructor(
-    @Optional() @Host() private nzFormItemComponent: NzFormItemComponent,
-    private cdr: ChangeDetectorRef,
-    i18n: NzI18nService,
-    @Optional() private nzFormDirective: NzFormDirective,
-    private nzFormStatusService: NzFormStatusService
-  ) {
-    this.subscribeAutoTips(i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));
+  private nzFormItemComponent = inject(NzFormItemComponent, { host: true, optional: true });
+  private nzFormDirective = inject(NzFormDirective, { optional: true });
+
+  constructor() {
+    this.subscribeAutoTips(this.i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));
     this.subscribeAutoTips(this.nzFormDirective?.getInputObservable('nzAutoTips'));
     this.subscribeAutoTips(
       this.nzFormDirective
         ?.getInputObservable('nzDisableAutoTips')
-        .pipe(filter(() => this.nzDisableAutoTips === 'default'))
+        .pipe(filter(() => this.nzDisableAutoTips === undefined))
     );
   }
 
@@ -268,11 +262,6 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
 
   ngOnInit(): void {
     this.setStatus();
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 
   ngAfterContentInit(): void {

@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
+
 @Component({
   selector: 'nz-demo-cron-expression-size',
+  imports: [NzCronExpressionModule],
   template: `
     <div class="example-cron-expression">
       <nz-cron-expression nzSize="small"></nz-cron-expression>

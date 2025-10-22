@@ -1,7 +1,8 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
 
-import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTreeFlatDataSource, NzTreeFlattener, NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 interface FoodNode {
   name: string;
@@ -36,6 +37,7 @@ interface ExampleFlatNode {
 
 @Component({
   selector: 'nz-demo-tree-view-virtual-scroll',
+  imports: [NzIconModule, NzTreeViewModule],
   template: `
     <nz-tree-virtual-scroll-view class="virtual-scroll-tree" [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
@@ -45,7 +47,7 @@ interface ExampleFlatNode {
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
         <nz-tree-node-toggle>
-          <span nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon></span>
+          <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
         {{ node.name }}
       </nz-tree-node>
@@ -86,8 +88,4 @@ export class NzDemoTreeViewVirtualScrollComponent {
   }
 
   hasChild = (_: number, node: ExampleFlatNode): boolean => node.expandable;
-
-  getNode(name: string): ExampleFlatNode | null {
-    return this.treeControl.dataNodes.find(n => n.name === name) || null;
-  }
 }

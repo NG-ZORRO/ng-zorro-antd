@@ -1,28 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, computed, model, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 const userList = ['Lucy', 'U', 'Tom', 'Edward'];
 const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 
 @Component({
   selector: 'nz-demo-avatar-dynamic',
+  imports: [FormsModule, NzAvatarModule, NzButtonModule, NzInputNumberModule],
   template: `
     <div>
-      <label>
-        Gap:
-        <nz-input-number [nzMin]="0" [nzMax]="16" [nzStep]="1" [(ngModel)]="gap"></nz-input-number>
-      </label>
-      <button nz-button (click)="change()">
-        <span>Change Text</span>
-      </button>
+      <label>Gap: </label>
+      <nz-input-number [nzMin]="0" [nzMax]="16" [nzStep]="1" [(ngModel)]="gap"></nz-input-number>
+      <button nz-button (click)="change()">Change Text</button>
     </div>
 
-    <nz-avatar
-      [nzGap]="gap"
-      [ngStyle]="{ 'background-color': color }"
-      [nzText]="text"
-      nzSize="large"
-      style="vertical-align: middle;"
-    ></nz-avatar>
+    <nz-avatar [nzGap]="gap()" [nzText]="text()" nzSize="large" [style.background-color]="color()"></nz-avatar>
   `,
   styles: [
     `
@@ -36,16 +32,11 @@ const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
   ]
 })
 export class NzDemoAvatarDynamicComponent {
-  text: string = userList[3];
-  color: string = colorList[3];
-  gap = 4;
+  index = signal(3);
+  text = computed(() => userList[this.index()]);
+  color = computed(() => colorList[this.index()]);
+  gap = model(4);
   change(): void {
-    let idx = userList.indexOf(this.text);
-    ++idx;
-    if (idx === userList.length) {
-      idx = 0;
-    }
-    this.text = userList[idx];
-    this.color = colorList[idx];
+    this.index.update(idx => (idx + 1) % userList.length);
   }
 }

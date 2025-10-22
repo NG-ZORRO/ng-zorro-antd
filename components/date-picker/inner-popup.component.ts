@@ -4,6 +4,7 @@
  */
 
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -22,17 +23,16 @@ import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 import { LibPackerModule } from './lib';
-import { DisabledDateFn, NzDateMode, RangePartType, SupportTimeOptions } from './standard-types';
+import { DisabledDateFn, NzDateMode, NzPanelChangeType, RangePartType, SupportTimeOptions } from './standard-types';
 import { PREFIX_CLASS } from './util';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'inner-popup',
-  exportAs: 'innerPopup',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div [class.ant-picker-datetime-panel]="showTimePicker">
+    <div (mouseleave)="onLeave()" [class.ant-picker-datetime-panel]="showTimePicker">
       <div class="{{ prefixCls }}-{{ panelMode }}-panel">
         @switch (panelMode) {
           @case ('decade') {
@@ -43,7 +43,7 @@ import { PREFIX_CLASS } from './util';
               [showSuperNextBtn]="enablePrevNext('next', 'decade')"
               [showNextBtn]="false"
               [showPreBtn]="false"
-              (panelModeChange)="panelModeChange.emit($event)"
+              (panelChange)="panelChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
             />
             <div class="{{ prefixCls }}-body">
@@ -64,7 +64,7 @@ import { PREFIX_CLASS } from './util';
               [showSuperNextBtn]="enablePrevNext('next', 'year')"
               [showNextBtn]="false"
               [showPreBtn]="false"
-              (panelModeChange)="panelModeChange.emit($event)"
+              (panelChange)="panelChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
             />
             <div class="{{ prefixCls }}-body">
@@ -88,7 +88,7 @@ import { PREFIX_CLASS } from './util';
               [showSuperNextBtn]="enablePrevNext('next', 'month')"
               [showNextBtn]="false"
               [showPreBtn]="false"
-              (panelModeChange)="panelModeChange.emit($event)"
+              (panelChange)="panelChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
             />
             <div class="{{ prefixCls }}-body">
@@ -104,6 +104,31 @@ import { PREFIX_CLASS } from './util';
               />
             </div>
           }
+          @case ('quarter') {
+            <quarter-header
+              [(value)]="activeDate"
+              [locale]="locale"
+              [showSuperPreBtn]="enablePrevNext('prev', 'month')"
+              [showSuperNextBtn]="enablePrevNext('next', 'month')"
+              [showNextBtn]="false"
+              [showPreBtn]="false"
+              (panelChange)="panelChange.emit($event)"
+              (valueChange)="headerChange.emit($event)"
+            />
+            <div class="{{ prefixCls }}-body">
+              <quarter-table
+                [value]="value"
+                [activeDate]="activeDate"
+                [locale]="locale"
+                [disabledDate]="disabledDate"
+                [selectedValue]="selectedValue"
+                [hoverValue]="hoverValue"
+                (valueChange)="onChooseQuarter($event)"
+                (cellHover)="cellHover.emit($event)"
+                [cellRender]="dateRender"
+              />
+            </div>
+          }
           @default {
             <date-header
               [(value)]="activeDate"
@@ -114,7 +139,7 @@ import { PREFIX_CLASS } from './util';
               "
               [showPreBtn]="panelMode === 'week' ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
               [showNextBtn]="panelMode === 'week' ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')"
-              (panelModeChange)="panelModeChange.emit($event)"
+              (panelChange)="panelChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
             />
             <div class="{{ prefixCls }}-body">
@@ -128,6 +153,7 @@ import { PREFIX_CLASS } from './util';
                 [selectedValue]="selectedValue"
                 [hoverValue]="hoverValue"
                 [canSelectWeek]="panelMode === 'week'"
+                [format]="format"
                 (valueChange)="onSelectDate($event)"
                 (cellHover)="cellHover.emit($event)"
               />
@@ -155,16 +181,15 @@ import { PREFIX_CLASS } from './util';
       }
     </div>
   `,
-  imports: [LibPackerModule, NzTimePickerModule, FormsModule],
-  standalone: true
+  imports: [LibPackerModule, NzTimePickerModule, FormsModule]
 })
 export class InnerPopupComponent implements OnChanges {
   @Input() activeDate!: CandyDate;
   @Input() endPanelMode!: NzDateMode;
   @Input() panelMode!: NzDateMode;
-  @Input() showWeek!: boolean;
+  @Input({ transform: booleanAttribute }) showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface;
-  @Input() showTimePicker!: boolean;
+  @Input({ transform: booleanAttribute }) showTimePicker!: boolean;
   @Input() timeOptions!: SupportTimeOptions | null;
   @Input() disabledDate?: DisabledDateFn;
   @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
@@ -172,13 +197,14 @@ export class InnerPopupComponent implements OnChanges {
   @Input() hoverValue!: CandyDate[]; // Range ONLY
   @Input() value!: CandyDate;
   @Input() partType!: RangePartType;
+  @Input() format?: string;
 
-  @Output() readonly panelModeChange = new EventEmitter<NzDateMode>();
+  @Output() readonly panelChange = new EventEmitter<NzPanelChangeType>();
   // TODO: name is not proper
   @Output() readonly headerChange = new EventEmitter<CandyDate>(); // Emitted when user changed the header's value
   @Output() readonly selectDate = new EventEmitter<CandyDate>(); // Emitted when the date is selected by click the date panel
   @Output() readonly selectTime = new EventEmitter<CandyDate>();
-  @Output() readonly cellHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
+  @Output() readonly cellHover = new EventEmitter<CandyDate | null>(); // Emitted when hover on a day by mouse enter
 
   prefixCls: string = PREFIX_CLASS;
 
@@ -195,6 +221,10 @@ export class InnerPopupComponent implements OnChanges {
       panelMode === this.endPanelMode &&
       ((this.partType === 'left' && direction === 'next') || (this.partType === 'right' && direction === 'prev'))
     );
+  }
+
+  onLeave(): void {
+    this.cellHover.emit(null);
   }
 
   onSelectTime(date: Date): void {
@@ -221,8 +251,14 @@ export class InnerPopupComponent implements OnChanges {
       this.selectDate.emit(value);
     } else {
       this.headerChange.emit(value);
-      this.panelModeChange.emit(this.endPanelMode);
+      this.panelChange.emit({ mode: this.endPanelMode, date: value.nativeDate });
     }
+  }
+
+  onChooseQuarter(value: CandyDate): void {
+    this.activeDate = this.activeDate.setQuarter(value.getQuarter());
+    this.value = value;
+    this.selectDate.emit(value);
   }
 
   onChooseYear(value: CandyDate): void {
@@ -232,7 +268,7 @@ export class InnerPopupComponent implements OnChanges {
       this.selectDate.emit(value);
     } else {
       this.headerChange.emit(value);
-      this.panelModeChange.emit(this.endPanelMode);
+      this.panelChange.emit({ mode: this.endPanelMode, date: value.nativeDate });
     }
   }
 
@@ -243,7 +279,7 @@ export class InnerPopupComponent implements OnChanges {
       this.selectDate.emit(value);
     } else {
       this.headerChange.emit(value);
-      this.panelModeChange.emit('year');
+      this.panelChange.emit({ mode: 'year', date: value.nativeDate });
     }
   }
 

@@ -12,5 +12,3 @@ title:
 ## en-US
 
 `nzSize="small"` represents a small sized switch.
-
-

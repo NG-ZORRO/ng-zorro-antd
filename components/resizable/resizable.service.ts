@@ -3,18 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+import { DOCUMENT, inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isTouchEvent } from 'ng-zorro-antd/core/util';
 
 import { NzResizeHandleMouseDownEvent } from './resize-handle.component';
 
 @Injectable()
 export class NzResizableService implements OnDestroy {
-  private document: Document;
+  private readonly document: Document = inject(DOCUMENT);
+  private readonly ngZone = inject(NgZone);
   private listeners = new Map<string, (event: MouseEvent | TouchEvent) => void>();
 
   /**
@@ -31,13 +30,6 @@ export class NzResizableService implements OnDestroy {
   documentMouseUpOutsideAngular$ = new Subject<MouseEvent | TouchEvent | null>();
   documentMouseMoveOutsideAngular$ = new Subject<MouseEvent | TouchEvent>();
   mouseEnteredOutsideAngular$ = new Subject<boolean>();
-
-  constructor(
-    private ngZone: NgZone,
-    @Inject(DOCUMENT) document: NzSafeAny
-  ) {
-    this.document = document;
-  }
 
   startResizing(event: MouseEvent | TouchEvent): void {
     const _isTouchEvent = isTouchEvent(event);

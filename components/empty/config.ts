@@ -16,4 +16,6 @@ export type NzEmptySize = 'normal' | 'small' | '';
 
 export type NzEmptyCustomContent = Type<NzSafeAny> | TemplateRef<NzSafeAny> | string | null;
 
-export const NZ_EMPTY_COMPONENT_NAME = new InjectionToken<string>('nz-empty-component-name');
+export const NZ_EMPTY_COMPONENT_NAME = new InjectionToken<string>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-empty-component-name' : ''
+);

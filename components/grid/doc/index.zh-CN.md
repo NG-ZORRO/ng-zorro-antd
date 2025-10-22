@@ -4,10 +4,9 @@ subtitle: 栅格
 type: 布局
 cols: 1
 title: Grid
-cover: https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg'
+description: 24 栅格系统。
 ---
-
-24 栅格系统。
 
 ## 设计理念
 
@@ -77,21 +76,17 @@ cover: https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg
 
 布局是基于 24 栅格来定义每一个『盒子』的宽度，但不拘泥于栅格。
 
-```ts
-import { NzGridModule } from 'ng-zorro-antd/grid';
-```
-
 ## API
 
-### [nz-row]:standalone
+### [nz-row]
 
-| 成员          | 说明                                                                                                                                       | 类型                                                                | 默认值 |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- | ------ |
-| `[nzAlign]`   | 垂直对齐方式                                                                                                                               | `'top' \| 'middle' \| 'bottom'`                                     | -      |
-| `[nzGutter]`  | 栅格间隔，可以写成像素值或支持响应式的对象写法来设置水平间隔 `{ xs: 8, sm: 16, md: 24}`。或者使用数组形式同时设置 `[水平间距, 垂直间距]`。 | `string\|number\|object\|[number, number]\|[object, object]`        | -      |
-| `[nzJustify]` | 水平排列方式                                                                                                                               | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'` | -      |
+| 成员          | 说明                                                                                                                                       | 类型                                                                 | 默认值 |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- | ------ |
+| `[nzAlign]`   | 垂直对齐方式                                                                                                                               | `'top' \| 'middle' \| 'bottom'`                                      | -      |
+| `[nzGutter]`  | 栅格间隔，可以写成像素值或支持响应式的对象写法来设置水平间隔 `{ xs: 8, sm: 16, md: 24}`。或者使用数组形式同时设置 `[水平间距, 垂直间距]`。 | `string \| number \| object \| [number, number] \| [object, object]` | -      |
+| `[nzJustify]` | 水平排列方式                                                                                                                               | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'`  | -      |
 
-### [nz-col]:standalone
+### [nz-col]
 
 | 成员         | 说明                                                     | 类型               | 默认值 |
 | ------------ | -------------------------------------------------------- | ------------------ | ------ |

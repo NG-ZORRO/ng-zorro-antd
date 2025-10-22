@@ -1,5 +1,5 @@
 ---
-order: 8
+order: 9
 title:
   zh-CN: 自定义状态
   en-US: Status
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Add status to TreeSelect with `nzStatus`, which could be `error` or `warning`.
-

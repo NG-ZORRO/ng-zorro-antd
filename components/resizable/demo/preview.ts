@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
-import { NzResizeEvent } from 'ng-zorro-antd/resizable';
+import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-preview',
+  imports: [NzResizableModule],
   template: `
     <div
       class="box"

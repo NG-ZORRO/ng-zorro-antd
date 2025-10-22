@@ -1,7 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzSelectModule } from 'ng-zorro-antd/select';
+
+function alphabet(): string[] {
+  const children: string[] = [];
+  for (let i = 10; i < 36; i++) {
+    children.push(i.toString(36) + i);
+  }
+  return children;
+}
 
 @Component({
   selector: 'nz-demo-select-automatic-tokenization',
+  imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
       [(ngModel)]="listOfTagOptions"
@@ -9,7 +21,9 @@ import { Component, OnInit } from '@angular/core';
       [nzTokenSeparators]="[',']"
       nzPlaceHolder="automatic tokenization"
     >
-      <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      @for (option of listOfOption; track option.value) {
+        <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      }
     </nz-select>
   `,
   styles: [
@@ -20,15 +34,10 @@ import { Component, OnInit } from '@angular/core';
     `
   ]
 })
-export class NzDemoSelectAutomaticTokenizationComponent implements OnInit {
-  listOfOption: Array<{ label: string; value: string }> = [];
-  listOfTagOptions = [];
-
-  ngOnInit(): void {
-    const children: Array<{ label: string; value: string }> = [];
-    for (let i = 10; i < 36; i++) {
-      children.push({ label: i.toString(36) + i, value: i.toString(36) + i });
-    }
-    this.listOfOption = children;
-  }
+export class NzDemoSelectAutomaticTokenizationComponent {
+  readonly listOfOption: Array<{ label: string; value: string }> = alphabet().map(item => ({
+    label: item,
+    value: item
+  }));
+  listOfTagOptions: string[] = [];
 }

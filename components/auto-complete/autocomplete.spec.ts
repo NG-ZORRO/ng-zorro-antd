@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -11,6 +16,8 @@ import {
   NgZone,
   OnInit,
   QueryList,
+  signal,
+  SimpleChanges,
   ViewChild,
   ViewChildren
 } from '@angular/core';
@@ -26,7 +33,7 @@ import {
 } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import {
@@ -36,6 +43,7 @@ import {
   MockNgZone,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { getNzAutocompleteMissingPanelError } from './autocomplete-trigger.directive';
@@ -43,7 +51,8 @@ import {
   NzAutocompleteComponent,
   NzAutocompleteModule,
   NzAutocompleteOptionComponent,
-  NzAutocompleteTriggerDirective
+  NzAutocompleteTriggerDirective,
+  NzOptionSelectionChange
 } from './index';
 
 describe('auto-complete', () => {
@@ -53,22 +62,10 @@ describe('auto-complete', () => {
   let zone: MockNgZone;
 
   beforeEach(waitForAsync(() => {
-    const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzInputModule],
-      declarations: [
-        NzTestSimpleAutocompleteComponent,
-        NzTestAutocompletePropertyComponent,
-        NzTestAutocompleteWithoutPanelComponent,
-        NzTestAutocompleteGroupComponent,
-        NzTestAutocompleteWithOnPushDelayComponent,
-        NzTestAutocompleteWithFormComponent,
-        NzTestAutocompleteWithObjectOptionComponent,
-        NzTestAutocompleteDifferentValueWithFormComponent,
-        NzTestAutocompleteWithGroupInputComponent
-      ],
       providers: [
-        { provide: Directionality, useFactory: () => ({ value: dir }) },
+        provideNoopAnimations(),
+        { provide: Directionality, useClass: MockDirectionality },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
@@ -79,8 +76,6 @@ describe('auto-complete', () => {
         }
       ]
     });
-
-    TestBed.compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
@@ -222,6 +217,23 @@ describe('auto-complete', () => {
       tick(500);
       expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
       expect(overlayContainerElement.textContent).toEqual('');
+    }));
+
+    it('should open the panel when the input that has already been focused is clicked', fakeAsync(() => {
+      dispatchFakeEvent(input, 'focusin');
+      fixture.detectChanges();
+      flush();
+
+      const option = overlayContainerElement.querySelector('nz-auto-option') as HTMLElement;
+      option.click();
+      fixture.detectChanges();
+
+      tick(500);
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
+
+      dispatchFakeEvent(input, 'click');
+      fixture.detectChanges();
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
     }));
 
     it('should close the panel when an option is tap', fakeAsync(() => {
@@ -630,9 +642,9 @@ describe('auto-complete', () => {
 
       let options = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
       options[0].click();
-      fixture.detectChanges();
-      zone.simulateZoneExit();
-      fixture.detectChanges();
+
+      // `tick()` will handle over after next render hooks.
+      TestBed.inject(ApplicationRef).tick();
 
       const componentOptions = fixture.componentInstance.optionComponents.toArray();
       expect(componentOptions[0].selected).toBe(true);
@@ -655,9 +667,9 @@ describe('auto-complete', () => {
 
       let options = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
       options[0].click();
-      fixture.detectChanges();
-      zone.simulateZoneExit();
-      fixture.detectChanges();
+
+      // `tick()` will handle over after next render hooks.
+      TestBed.inject(ApplicationRef).tick();
 
       const componentOptions = fixture.componentInstance.optionComponents.toArray();
       expect(componentOptions[0].selected).toBe(true);
@@ -874,6 +886,25 @@ describe('auto-complete', () => {
       tick(500);
       expect(overlayContainerElement.querySelector('.ant-select-dropdown')).toBeFalsy();
     }));
+
+    it('should call closePanel on correct circumstances', () => {
+      const trigger = fixture.componentInstance.trigger;
+
+      trigger.panelOpen = true;
+      trigger.nzAutocomplete.showPanel = true;
+      const event = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        code: 'Enter',
+        which: 13,
+        keyCode: 13
+      });
+      spyOnProperty(trigger, 'activeOption', 'get').and.returnValue(null);
+      spyOn(trigger, 'closePanel');
+
+      trigger.handleKeydown(event);
+
+      expect(trigger.closePanel).toHaveBeenCalled();
+    });
   });
 
   // TODO: Implement this test case
@@ -951,6 +982,7 @@ describe('auto-complete', () => {
 });
 
 @Component({
+  imports: [ReactiveFormsModule, NzAutocompleteModule, NzInputModule],
   template: `
     <div>
       <input
@@ -958,7 +990,7 @@ describe('auto-complete', () => {
         nz-input
         [formControl]="inputControl"
         [nzAutocomplete]="auto"
-        (input)="onInput($event.target?.value)"
+        (input)="onInput($any($event).target?.value)"
       />
       <nz-autocomplete #auto>
         @for (option of filteredOptions; track option) {
@@ -988,6 +1020,7 @@ class NzTestSimpleAutocompleteComponent {
 }
 
 @Component({
+  imports: [FormsModule, NzAutocompleteModule],
   template: `
     <div>
       <input [(ngModel)]="inputValue" [nzAutocomplete]="auto" />
@@ -1011,18 +1044,18 @@ class NzTestAutocompletePropertyComponent {
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
   @ViewChild(NzAutocompleteComponent, { static: false }) panel!: NzAutocompleteComponent;
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-
-  constructor() {}
 }
 
 @Component({
-  template: ` <input [nzAutocomplete]="auto" /> `
+  imports: [NzAutocompleteModule],
+  template: `<input [nzAutocomplete]="auto" />`
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
 }
 
 @Component({
+  imports: [NzAutocompleteModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div>
@@ -1046,6 +1079,7 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
 }
 
 @Component({
+  imports: [FormsModule, NzAutocompleteModule],
   template: `
     <input [nzAutocomplete]="auto" [(ngModel)]="inputValue" />
     <nz-autocomplete #auto>
@@ -1070,7 +1104,7 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
 })
 class NzTestAutocompleteGroupComponent {
   inputValue!: string;
-  optionGroups = [
+  optionGroups: Array<{ title: string; children: Array<{ title: string; count: number; disabled?: boolean }> }> = [
     {
       title: '话题',
       children: [
@@ -1113,6 +1147,7 @@ class NzTestAutocompleteGroupComponent {
 }
 
 @Component({
+  imports: [ReactiveFormsModule, NzAutocompleteModule],
   template: `
     <form>
       <input [formControl]="formControl" [nzAutocomplete]="auto" />
@@ -1131,6 +1166,7 @@ class NzTestAutocompleteWithFormComponent {
 }
 
 @Component({
+  imports: [ReactiveFormsModule, NzAutocompleteModule],
   template: `
     <input [formControl]="formControl" [nzAutocomplete]="auto" />
     <nz-autocomplete #auto>
@@ -1152,6 +1188,7 @@ class NzTestAutocompleteDifferentValueWithFormComponent {
 }
 
 @Component({
+  imports: [ReactiveFormsModule, NzAutocompleteModule],
   template: `
     <input [formControl]="formControl" [nzAutocomplete]="auto" />
     <nz-autocomplete #auto [compareWith]="compareFun">
@@ -1171,8 +1208,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
   ];
   @ViewChild(NzAutocompleteTriggerDirective) trigger!: NzAutocompleteTriggerDirective;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  compareFun = (o1: any, o2: any): boolean => {
+  compareFun = (o1: NzSafeAny, o2: NzSafeAny): boolean => {
     if (o1) {
       return typeof o1 === 'string' ? o1 === o2.label : o1.value === o2.value;
     } else {
@@ -1182,6 +1218,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
 }
 
 @Component({
+  imports: [NzAutocompleteModule, NzInputModule],
   template: `
     <nz-input-group #inputGroupComponent nzSize="large" [nzSuffix]="suffixIcon">
       <input placeholder="input here" nz-input [nzAutocomplete]="auto" />
@@ -1195,4 +1232,119 @@ class NzTestAutocompleteWithObjectOptionComponent {
 class NzTestAutocompleteWithGroupInputComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
   @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent!: ElementRef;
+}
+
+describe('auto-complete', () => {
+  let component: NzAutocompleteComponent;
+  let fixture: ComponentFixture<NzAutocompleteComponent>;
+  let mockDirectionality: MockDirectionality;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: Directionality, useClass: MockDirectionality }]
+    });
+
+    fixture = TestBed.createComponent(NzAutocompleteComponent);
+    component = fixture.componentInstance;
+    mockDirectionality = TestBed.inject(Directionality) as unknown as MockDirectionality;
+  });
+
+  it('should change dir', fakeAsync(() => {
+    spyOn(component['changeDetectorRef'], 'detectChanges');
+    mockDirectionality.value = 'ltr';
+    component.ngOnInit();
+    expect(component.dir).toEqual('ltr');
+    mockDirectionality.change.next('rtl');
+    tick();
+    expect(component.dir).toEqual('rtl');
+    expect(component['changeDetectorRef'].detectChanges).toHaveBeenCalled();
+  }));
+
+  it('should normalizeDataSource return correct value', () => {
+    let changes: SimpleChanges = {
+      nzDataSource: {
+        currentValue: [1, 2],
+        firstChange: false,
+        previousValue: undefined,
+        isFirstChange: function (): boolean {
+          throw new Error('Function not implemented.');
+        }
+      }
+    };
+    component.ngOnChanges(changes);
+    expect(component.normalizedDataSource).toEqual([
+      {
+        label: '1',
+        value: '1'
+      },
+      {
+        label: '2',
+        value: '2'
+      }
+    ]);
+
+    changes = {
+      nzDataSource: {
+        currentValue: ['1', '2'],
+        firstChange: false,
+        previousValue: undefined,
+        isFirstChange: function (): boolean {
+          throw new Error('Function not implemented.');
+        }
+      }
+    };
+    component.ngOnChanges(changes);
+    expect(component.normalizedDataSource).toEqual([
+      {
+        label: '1',
+        value: '1'
+      },
+      {
+        label: '2',
+        value: '2'
+      }
+    ]);
+
+    changes = {
+      nzDataSource: {
+        currentValue: [
+          {
+            label: '1',
+            value: '1'
+          },
+          {
+            label: '2',
+            value: '2'
+          }
+        ],
+        firstChange: false,
+        previousValue: undefined,
+        isFirstChange: function (): boolean {
+          throw new Error('Function not implemented.');
+        }
+      }
+    };
+    component.ngOnChanges(changes);
+    expect(component.normalizedDataSource).toEqual([
+      {
+        label: '1',
+        value: '1'
+      },
+      {
+        label: '2',
+        value: '2'
+      }
+    ]);
+  });
+
+  it('NzOptionSelectionChange should have correct initial value for isUserInput', () => {
+    const nzOptionSelectionChange = new NzOptionSelectionChange({} as NzSafeAny);
+    expect(nzOptionSelectionChange.isUserInput).toBeFalsy();
+  });
+});
+
+class MockDirectionality {
+  value = 'ltr';
+  change = new Subject();
+  valueSignal = signal('ltr');
 }

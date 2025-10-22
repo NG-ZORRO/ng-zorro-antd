@@ -1,38 +1,41 @@
 <table class="ant-picker-content" cellspacing="0" role="grid">
-  @if(headRow && headRow.length > 0) {
+  @if (headRow && headRow.length > 0) {
     <thead>
       <tr role="row">
-        @if(showWeek) {
+        @if (showWeek) {
           <th role="columnheader"></th>
         }
-        @for(cell of headRow; track cell) {
-          <th role="columnheader" title="{{ cell.title }}"> {{ cell.content }} </th>
+        @for (cell of headRow; track $index) {
+          <th role="columnheader" [title]="cell.title"> {{ cell.content }}</th>
         }
       </tr>
     </thead>
   }
 
   <tbody>
-    @for(row of bodyRows; track row.trackByIndex) {
-      <tr [ngClass]="row.classMap!" role="row">
-        @if(row.weekNum) {
-          <td role="gridcell" class="{{ prefixCls }}-cell-week"> {{ row.weekNum }} </td>
+    @for (row of bodyRows; track row.trackByIndex) {
+      <tr [class]="row.classMap!" role="row">
+        @if (row.weekNum) {
+          <td role="gridcell" class="{{ prefixCls }}-cell-week"> {{ row.weekNum }}</td>
         }
-        @for(cell of row.dateCells; track cell.trackByIndex) {
+        @for (cell of row.dateCells; track cell.trackByIndex) {
           <td
-            title="{{ cell.title }}"
+            [title]="cell.title"
             role="gridcell"
-            [ngClass]="cell.classMap!"
+            [class]="cell.classMap!"
             (click)="cell.isDisabled ? null : cell.onClick()"
             (mouseenter)="cell.onMouseEnter()"
           >
             @switch (prefixCls) {
-              @case('ant-picker') {
-                @if(cell.isTemplateRef) {
-                  <ng-container *ngTemplateOutlet="$any(cell.cellRender); context: { $implicit: cell.value }" />
-                }@else if(cell.isNonEmptyString) {
-                  <span [innerHTML]="cell.cellRender"></span>
-                }@else {
+              @case ('ant-picker') {
+                @if (cell.cellRender) {
+                  <ng-template
+                    [nzStringTemplateOutlet]="cell.cellRender"
+                    [nzStringTemplateOutletContext]="{ $implicit: cell.value }"
+                  >
+                    {{ cell.cellRender }}
+                  </ng-template>
+                } @else {
                   <div
                     class="{{ prefixCls }}-cell-inner"
                     [attr.aria-selected]="cell.isSelected"
@@ -42,17 +45,20 @@
                   </div>
                 }
               }
-              @case('ant-picker-calendar') {
+              @case ('ant-picker-calendar') {
                 <div
                   class="{{ prefixCls }}-date ant-picker-cell-inner"
                   [class.ant-picker-calendar-date-today]="cell.isToday"
                 >
-                  @if(cell.fullCellRender) {
-                    <ng-container *ngTemplateOutlet="$any(cell.fullCellRender); context: { $implicit: cell.value }" />
-                  }@else() {
+                  @if (cell.fullCellRender) {
+                    <ng-container *nzStringTemplateOutlet="cell.fullCellRender; context: { $implicit: cell.value }">
+                      {{ cell.fullCellRender }}
+                    </ng-container>
+                  } @else {
                     <div class="{{ prefixCls }}-date-value">{{ cell.content }}</div>
                     <div class="{{ prefixCls }}-date-content">
-                      <ng-container *ngTemplateOutlet="$any(cell.cellRender); context: { $implicit: cell.value }">
+                      <ng-container *nzStringTemplateOutlet="cell.cellRender; context: { $implicit: cell.value }">
+                        {{ cell.cellRender }}
                       </ng-container>
                     </div>
                   }
@@ -61,7 +67,6 @@
             }
           </td>
         }
-
       </tr>
     }
   </tbody>

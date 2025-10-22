@@ -1,9 +1,12 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { NzCodeBoxComponent } from '../share/codebox/codebox.component';
+import { NzCodeBoxComponent } from '../codebox/codebox.component';
+import { ShareModule } from '../share/share.module';
+
+{{imports}}
 
 @Component({
   selector     : 'nz-demo-{{component}}',
-  preserveWhitespaces: false,
+  imports      : [ShareModule, {{declarations}}],
   templateUrl  : './{{language}}.html'
 })
 export class {{componentName}} {
@@ -18,11 +21,6 @@ export class {{componentName}} {
 
   expandAllCode(): void {
     this.expanded = !this.expanded;
-    this.codeBoxes.forEach(code => {
-      code.nzExpanded = this.expanded;
-      code.expandCode(this.expanded);
-      code.check();
-    });
+    this.codeBoxes.forEach(code => code.expandCode(this.expanded));
   }
-
 }

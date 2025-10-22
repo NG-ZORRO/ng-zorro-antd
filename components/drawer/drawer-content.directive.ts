@@ -3,15 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, TemplateRef } from '@angular/core';
+import { Directive, inject, TemplateRef } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Directive({
   selector: '[nzDrawerContent]',
-  exportAs: 'nzDrawerContent',
-  standalone: true
+  exportAs: 'nzDrawerContent'
 })
 export class NzDrawerContentDirective {
-  constructor(public templateRef: TemplateRef<NzSafeAny>) {}
+  public templateRef = inject(TemplateRef<NzSafeAny>);
 }

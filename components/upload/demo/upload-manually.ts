@@ -2,25 +2,29 @@ import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { filter } from 'rxjs/operators';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-upload-manually',
+  imports: [NzButtonModule, NzIconModule, NzUploadModule],
   template: `
     <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
       <button nz-button>
-        <span nz-icon nzType="upload"></span>
+        <nz-icon nzType="upload" />
         Select File
       </button>
     </nz-upload>
+    <br />
+    <br />
     <button
       nz-button
-      [nzType]="'primary'"
+      nzType="primary"
       [nzLoading]="uploading"
       (click)="handleUpload()"
       [disabled]="fileList.length === 0"
-      style="margin-top: 16px"
     >
       {{ uploading ? 'Uploading' : 'Start Upload' }}
     </button>
@@ -32,7 +36,7 @@ export class NzDemoUploadUploadManuallyComponent {
 
   constructor(
     private http: HttpClient,
-    private msg: NzMessageService
+    private messageService: NzMessageService
   ) {}
 
   beforeUpload = (file: NzUploadFile): boolean => {
@@ -54,16 +58,16 @@ export class NzDemoUploadUploadManuallyComponent {
     this.http
       .request(req)
       .pipe(filter(e => e instanceof HttpResponse))
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           this.uploading = false;
           this.fileList = [];
-          this.msg.success('upload successfully.');
+          this.messageService.success('upload successfully.');
         },
-        () => {
+        error: () => {
           this.uploading = false;
-          this.msg.error('upload failed.');
+          this.messageService.error('upload failed.');
         }
-      );
+      });
   }
 }

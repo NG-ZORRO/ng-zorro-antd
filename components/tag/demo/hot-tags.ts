@@ -1,19 +1,23 @@
 import { Component } from '@angular/core';
 
+import { NzTagModule } from 'ng-zorro-antd/tag';
+
 const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
 
 @Component({
   selector: 'nz-demo-tag-hot-tags',
+  imports: [NzTagModule],
   template: `
     <strong>Categories:</strong>
-    <nz-tag
-      *ngFor="let tag of hotTags"
-      nzMode="checkable"
-      [nzChecked]="selectedTags.indexOf(tag) > -1"
-      (nzCheckedChange)="handleChange($event, tag)"
-    >
-      {{ tag }}
-    </nz-tag>
+    @for (tag of hotTags; track $index) {
+      <nz-tag
+        nzMode="checkable"
+        [nzChecked]="selectedTags.indexOf(tag) > -1"
+        (nzCheckedChange)="handleChange($event, tag)"
+      >
+        {{ tag }}
+      </nz-tag>
+    }
   `
 })
 export class NzDemoTagHotTagsComponent {

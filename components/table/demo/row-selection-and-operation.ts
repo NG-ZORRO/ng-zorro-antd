@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 export interface Data {
   id: number;
   name: string;
@@ -10,6 +13,7 @@ export interface Data {
 
 @Component({
   selector: 'nz-demo-table-row-selection-and-operation',
+  imports: [NzButtonModule, NzTableModule],
   template: `
     <div class="send-request">
       <button
@@ -44,21 +48,22 @@ export interface Data {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of rowSelectionTable.data">
-          <td
-            [nzChecked]="setOfCheckedId.has(data.id)"
-            [nzDisabled]="data.disabled"
-            [nzLabel]="data.name"
-            (nzCheckedChange)="onItemChecked(data.id, $event)"
-          ></td>
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-        </tr>
+        @for (data of rowSelectionTable.data; track data) {
+          <tr>
+            <td
+              [nzChecked]="setOfCheckedId.has(data.id)"
+              [nzDisabled]="data.disabled"
+              [nzLabel]="data.name"
+              (nzCheckedChange)="onItemChecked(data.id, $event)"
+            ></td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `,
-
   styles: [
     `
       .send-request {

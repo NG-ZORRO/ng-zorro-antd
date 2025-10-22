@@ -1,4 +1,9 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
@@ -6,7 +11,9 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzSwitchComponent } from './switch.component';
 import { NzSwitchModule } from './switch.module';
@@ -14,15 +21,8 @@ import { NzSwitchModule } from './switch.module';
 describe('switch', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzSwitchModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-      declarations: [
-        NzTestSwitchBasicComponent,
-        NzTestSwitchFormComponent,
-        NzTestSwitchTemplateComponent,
-        NzTestSwitchRtlComponent
-      ]
+      providers: [provideNzIconsTesting()]
     });
-    TestBed.compileComponents();
   }));
 
   describe('basic switch', () => {
@@ -313,10 +313,12 @@ describe('switch', () => {
     });
   });
 });
+
 @Component({
+  imports: [FormsModule, NzIconModule, NzSwitchModule],
   template: `
-    <ng-template #checkedChildrenTemplate><span nz-icon nzType="check"></span></ng-template>
-    <ng-template #unCheckedChildrenTemplate><span nz-icon nzType="closs"></span></ng-template>
+    <ng-template #checkedChildrenTemplate><nz-icon nzType="check" /></ng-template>
+    <ng-template #unCheckedChildrenTemplate><nz-icon nzType="closs" /></ng-template>
     <nz-switch
       [(ngModel)]="value"
       (ngModelChange)="modelChange($event)"
@@ -338,15 +340,16 @@ export class NzTestSwitchBasicComponent {
   value = false;
   control = false;
   disabled = false;
-  size = 'default';
+  size: NzSizeDSType = 'default';
   loading = false;
   modelChange = jasmine.createSpy('model change callback');
 }
 
 @Component({
+  imports: [NzIconModule, NzSwitchModule],
   template: `
-    <ng-template #checkedChildrenTemplate><span nz-icon nzType="check"></span></ng-template>
-    <ng-template #unCheckedChildrenTemplate><span nz-icon nzType="close"></span></ng-template>
+    <ng-template #checkedChildrenTemplate><nz-icon nzType="check" /></ng-template>
+    <ng-template #unCheckedChildrenTemplate><nz-icon nzType="close" /></ng-template>
     <nz-switch
       [nzCheckedChildren]="checkedChildrenTemplate"
       [nzUnCheckedChildren]="unCheckedChildrenTemplate"
@@ -356,6 +359,7 @@ export class NzTestSwitchBasicComponent {
 export class NzTestSwitchTemplateComponent {}
 
 @Component({
+  imports: [ReactiveFormsModule, NzSwitchModule],
   template: `
     <form>
       <nz-switch [formControl]="formControl" [nzDisabled]="disabled"></nz-switch>
@@ -377,6 +381,7 @@ export class NzTestSwitchFormComponent {
 }
 
 @Component({
+  imports: [BidiModule, FormsModule, NzSwitchModule],
   template: `
     <div [dir]="direction">
       <nz-switch [(ngModel)]="switchValue"></nz-switch>
@@ -385,6 +390,6 @@ export class NzTestSwitchFormComponent {
 })
 export class NzTestSwitchRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
   switchValue = false;
 }

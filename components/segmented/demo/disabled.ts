@@ -1,21 +1,20 @@
 import { Component } from '@angular/core';
 
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
+
 @Component({
   selector: 'nz-demo-segmented-disabled',
-  template: `<nz-segmented [nzOptions]="['Map', 'Transit', 'Satellite']" nzDisabled></nz-segmented>
+  imports: [NzSegmentedModule],
+  template: `
+    <nz-segmented [nzOptions]="['Map', 'Transit', 'Satellite']" nzDisabled />
     <br />
-    <nz-segmented [nzOptions]="options"></nz-segmented>`,
-  styles: [
-    `
-      .code-box-demo {
-        overflow-x: auto;
-      }
-
-      .ant-segmented {
-        margin-bottom: 10px;
-      }
-    `
-  ]
+    <nz-segmented [nzOptions]="options" />
+  `,
+  styles: `
+    .ant-segmented {
+      margin-bottom: 10px;
+    }
+  `
 })
 export class NzDemoSegmentedDisabledComponent {
   options = [

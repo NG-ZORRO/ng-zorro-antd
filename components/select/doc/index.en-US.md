@@ -2,19 +2,15 @@
 category: Components
 type: Data Entry
 title: Select
-cover: https://gw.alipayobjects.com/zos/alicdn/_0XzgOis7/Select.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/_0XzgOis7/Select.svg'
+description: A dropdown menu for displaying choices.
 ---
-
-Select component to select value from options.
 
 ## When To Use
 
 - A dropdown menu for displaying choices - an elegant alternative to the native `<select>` element.
 - Utilizing [Radio](/components/radio/en) is recommended when there are fewer total options (less than 5).
-
-```ts
-import { NzSelectModule } from 'ng-zorro-antd/select';
-```
+- You probably need [AutoComplete](/components/auto-complete) if you're looking for an input box that can be typed or selected.
 
 ## API
 
@@ -24,17 +20,18 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 </nz-select>
 ```
 
-### nz-select:standalone
+### nz-select
 
-| Property                       | Description                                                                                                                                                                                                     | Type                                                                                                                                                                      | Default                                                 | Global Config |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | ------------- |
+| Property                       | Description                                                                                                                                                                                                     | Type                                                                                                                                                                      | Default                                                 | Global Config | Version |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | ------------- | ------- |
 | `[nzId]`                       | input id attribute inside the component                                                                                                                                                                         | `string`                                                                                                                                                                  | -                                                       |
 | `[ngModel]`                    | Current selected nz-option value, double binding.                                                                                                                                                               | `any \| any[]`                                                                                                                                                            | -                                                       |
-| `[compareWith]`                | Same as [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection)                                                                                           | `(o1: any, o2: any) => boolean`                                                                                                                                           | `(o1: any, o2: any) => o1===o2`                         |
+| `[compareWith]`                | Same as [SelectControlValueAccessor](https://angular.dev/api/forms/SelectControlValueAccessor)                                                                                                                  | `(o1: any, o2: any) => boolean`                                                                                                                                           | `(o1: any, o2: any) => o1===o2`                         |
 | `[nzAutoClearSearchValue]`     | Whether the current search will be cleared on selecting an item. Only applies when `mode` is set to `multiple` or `tags`.                                                                                       | `boolean`                                                                                                                                                                 | `true`                                                  |
 | `[nzAllowClear]`               | Show clear button.                                                                                                                                                                                              | `boolean`                                                                                                                                                                 | `false`                                                 |
 | `[nzBackdrop]`                 | whether or not the overlay should attach a backdrop                                                                                                                                                             | `boolean`                                                                                                                                                                 | `false`                                                 |
-| `[nzBorderless]`               | whether has borderless style                                                                                                                                                                                    | `boolean`                                                                                                                                                                 | `false`                                                 | ✅            |
+| ~~`[nzBorderless]`~~           | ~~whether has borderless style~~                                                                                                                                                                                | ~~`boolean`~~                                                                                                                                                             | ~~`false`~~                                             | ~~✅~~        |
+| `[nzVariant]`                  | Variants of Select                                                                                                                                                                                              | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'`                                                                                                                  | `'outlined'`                                            | ✅            | 20.0.0  |
 | `[nzOpen]`                     | dropdown expand state, double binding                                                                                                                                                                           | `boolean`                                                                                                                                                                 | `false`                                                 |
 | `[nzAutoFocus]`                | Get focus by default                                                                                                                                                                                            | `boolean`                                                                                                                                                                 | `false`                                                 |
 | `[nzDisabled]`                 | Whether disabled select                                                                                                                                                                                         | `boolean`                                                                                                                                                                 | `false`                                                 |
@@ -52,6 +49,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzShowSearch]`               | Whether show search input in single mode.                                                                                                                                                                       | `boolean`                                                                                                                                                                 | `false`                                                 |
 | `[nzSize]`                     | Size of Select input                                                                                                                                                                                            | `'large' \| 'small' \| 'default'`                                                                                                                                         | `'default'`                                             |
 | `[nzStatus]`                   | Set validation status                                                                                                                                                                                           | `'error' \| 'warning'`                                                                                                                                                    | -                                                       |
+| `[nzPrefix]`                   | The custom prefix                                                                                                                                                                                               | `TemplateRef<any> \| string`                                                                                                                                              | -                                                       |
 | `[nzSuffixIcon]`               | The custom suffix icon                                                                                                                                                                                          | `TemplateRef<any> \| string`                                                                                                                                              | -                                                       | ✅            |
 | `[nzRemoveIcon]`               | The custom remove icon                                                                                                                                                                                          | `TemplateRef<any>`                                                                                                                                                        | -                                                       |
 | `[nzClearIcon]`                | The custom clear icon                                                                                                                                                                                           | `TemplateRef<any>`                                                                                                                                                        | -                                                       |
@@ -61,29 +59,30 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzMaxTagCount]`              | Max tag count to show                                                                                                                                                                                           | `number`                                                                                                                                                                  | -                                                       |
 | `[nzOptions]`                  | use nzOptions or `nz-option` to pass options to the select                                                                                                                                                      | `Array<{ label: string \| number \| TemplateRef<any>; value: any; key?: string \| number; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | -                                                       |
 | `[nzMaxTagPlaceholder]`        | Placeholder for not showing tags                                                                                                                                                                                | `TemplateRef<{ $implicit: any[] }>`                                                                                                                                       | -                                                       |
-| `[nzOptionHeightPx]`           | Each option height inside the dropdown                                                                                                                                                                          | `number`                                                                                                                                                                  | `32`                                                    | ✅
+| `[nzOptionHeightPx]`           | Each option height inside the dropdown                                                                                                                                                                          | `number`                                                                                                                                                                  | `32`                                                    | ✅            |
 | `[nzOptionOverflowSize]`       | Max option size inside the dropdown, overflow when exceed the size                                                                                                                                              | `number`                                                                                                                                                                  | `8`                                                     |
 | `[nzSelectOnTab]`              | Allows to select an item with TAB key                                                                                                                                                                           | `boolean`                                                                                                                                                                 | `false`                                                 |
 | `(ngModelChange)`              | Current selected nz-option value change callback.                                                                                                                                                               | `EventEmitter<any[]>`                                                                                                                                                     | -                                                       |
 | `(nzOpenChange)`               | dropdown expand change callback                                                                                                                                                                                 | `EventEmitter<boolean>`                                                                                                                                                   | `false`                                                 |
 | `(nzScrollToBottom)`           | Called when dropdown scrolls to bottom                                                                                                                                                                          | `EventEmitter<any>`                                                                                                                                                       | -                                                       |
 | `(nzOnSearch)`                 | Callback function that is fired when input changed.                                                                                                                                                             | `EventEmitter<string>`                                                                                                                                                    | -                                                       |
+| `(nzOnClear)`                  | Callback function that clear the selected items                                                                                                                                                                 | `EventEmitter<any>`                                                                                                                                                       | -                                                       | -             | 20.0.0  |
 | `(nzFocus)`                    | focus callback                                                                                                                                                                                                  | `EventEmitter<any>`                                                                                                                                                       | -                                                       |
 | `(nzBlur)`                     | blur callback                                                                                                                                                                                                   | `EventEmitter<any>`                                                                                                                                                       | -                                                       |
 
-### nz-option:standalone
+### nz-option
 
-| Property            | Description                                                                                                                | Type                | Default |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------- | ------- |
-| `[nzDisabled]`      | Disable this option                                                                                                        | `boolean`           | `false` |
-| `[nzTitle]`         | Native title hint on this option                                                                                           | `string \| number`  | -       |
-| `[nzLabel]`         | The text show in nz-select and dropdown menu                                                                               | `string \| number`  | -       |
-| `[nzValue]`         | The value passed to ngModel of nz-select                                                                                   | `any `              | -       |
-| `[nzKey]`           | Should be passed when typeof nzValue - Object. Key will be used for performance optimizations                              | `string \| number ` | -       |
-| `[nzHide]`          | Whether hide the option in the option list                                                                                 | `boolean`           | `false` |
-| `[nzCustomContent]` | Whether custom nz-option content in drodown menu, the ng-content in nz-option will replace nzLabel when it was set to true | `boolean`           | `false` |
+| Property            | Description                                                                                                                 | Type                | Default |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------- | ------- |
+| `[nzDisabled]`      | Disable this option                                                                                                         | `boolean`           | `false` |
+| `[nzTitle]`         | Native title hint on this option                                                                                            | `string \| number`  | -       |
+| `[nzLabel]`         | The text show in nz-select and dropdown menu                                                                                | `string \| number`  | -       |
+| `[nzValue]`         | The value passed to ngModel of nz-select                                                                                    | `any `              | -       |
+| `[nzKey]`           | Should be passed when typeof nzValue - Object. Key will be used for performance optimizations                               | `string \| number ` | -       |
+| `[nzHide]`          | Whether hide the option in the option list                                                                                  | `boolean`           | `false` |
+| `[nzCustomContent]` | Whether custom nz-option content in dropdown menu, the ng-content in nz-option will replace nzLabel when it was set to true | `boolean`           | `false` |
 
-### nz-option-group:standalone
+### nz-option-group
 
 | Property    | Description | Type                                    | Default |
 | ----------- | ----------- | --------------------------------------- | ------- |
@@ -91,9 +90,16 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 ## Methods
 
-### nz-select:standalone
+### nz-select
 
-| Name    | Description  |
-| ------- | ------------ |
-| blur()  | Remove focus |
-| focus() | Get focus    |
+| Name      | Description  |
+| --------- | ------------ |
+| `blur()`  | Remove focus |
+| `focus()` | Get focus    |
+
+## FAQ
+
+### Q: The overlay layer element does not follow the scroll position when scrolling
+
+By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
+Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.

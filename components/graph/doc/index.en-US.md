@@ -4,24 +4,14 @@ type: Data Display
 title: Graph
 cols: 1
 experimental: true
+description: Render graph.
 ---
-
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
-<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
-</blockquote>
 
 ## When To Use
 
 When you want to use graph in Angular.
 
-### Import Module
-
-> Now, the graph depends on d3-drag d3-zoom d3-selection d3-transition d3-shape (may be removed in next major version)
-
-```ts
-import { NzGraphModule } from 'ng-zorro-antd/graph';
-```
+> The graph depends on d3-drag d3-zoom d3-selection d3-transition d3-shape (may be removed in next major version)
 
 ### Import Style
 
@@ -37,7 +27,7 @@ Dependencies:
 npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
 ```
 
-### nz-graph:standalone
+### nz-graph
 
 | Parameter               | Description                                                                      | Type                                 | Default |
 | ----------------------- | -------------------------------------------------------------------------------- | ------------------------------------ | ------- |
@@ -52,7 +42,7 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 | ------------- | ----------------------------------------------------------------------- |
 | `fitCenter()` | Move graph to center(use `nz-graph-zoom` instead if zooming is enabled) |
 
-### [nz-graph-zoom]:standalone
+### [nz-graph-zoom]
 
 | Parameter            | Description                | Type                                         | Default |
 | -------------------- | -------------------------- | -------------------------------------------- | ------- |

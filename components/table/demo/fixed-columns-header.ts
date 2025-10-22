@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 interface ItemData {
   name: string;
   age: number;
@@ -8,6 +10,7 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-fixed-columns-header',
+  imports: [NzTableModule],
   template: `
     <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1150px', y: '240px' }">
       <thead>
@@ -26,21 +29,23 @@ interface ItemData {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of fixedTable.data">
-          <td nzLeft>{{ data.name }}</td>
-          <td nzLeft>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td>{{ data.address }}</td>
-          <td nzRight>
-            <a>action</a>
-          </td>
-        </tr>
+        @for (data of fixedTable.data; track data) {
+          <tr>
+            <td nzLeft>{{ data.name }}</td>
+            <td nzLeft>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td>{{ data.address }}</td>
+            <td nzRight>
+              <a>action</a>
+            </td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `

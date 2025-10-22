@@ -62,11 +62,8 @@
 
   margin-bottom: @form-item-margin-bottom;
   vertical-align: top;
-  // We delay one frame (0.017s) here to let CSSMotion goes
-  transition: margin-bottom @animation-duration-slow 0.017s linear;
 
   &-with-help {
-    margin-bottom: 0;
     transition: none;
   }
 
@@ -112,7 +109,9 @@
       }
 
       // Required mark
-      &.@{form-item-prefix-cls}-required:not(.@{form-item-prefix-cls}-required-mark-optional)::before {
+      &.@{form-item-prefix-cls}-required:not(.@{form-item-prefix-cls}-required-mark-optional):not(
+          .@{form-item-prefix-cls}-required-mark-hidden
+        )::before {
         display: inline-block;
         margin-right: 4px;
         color: @label-required-color;
@@ -203,9 +202,7 @@
   }
 
   &-explain-connected {
-    height: 0;
-    min-height: 0;
-    opacity: 0;
+    width: 100%;
   }
 
   &-extra {
@@ -214,7 +211,7 @@
 
   &-with-help &-explain {
     height: auto;
-    min-height: @form-item-margin-bottom;
+    // min-height: @form-item-margin-bottom;
     opacity: 1;
   }
 
@@ -249,15 +246,22 @@
 // >>>>>>>>>> Motion <<<<<<<<<<
 // Explain holder
 .@{ant-prefix}-show-help {
-  transition: height @animation-duration-slow linear, min-height @animation-duration-slow linear,
-    margin-bottom @animation-duration-slow @ease-in-out,
-    opacity @animation-duration-slow @ease-in-out;
+  transition: opacity @animation-duration-slow @ease-in-out;
 
-  &-leave {
-    min-height: @form-item-margin-bottom;
+  &-appear,
+  &-enter {
+    opacity: 0;
 
     &-active {
-      min-height: 0;
+      opacity: 1;
+    }
+  }
+
+  &-leave {
+    opacity: 1;
+
+    &-active {
+      opacity: 0;
     }
   }
 }
@@ -265,8 +269,10 @@
 // Explain
 .@{ant-prefix}-show-help-item {
   overflow: hidden;
-  transition: height @animation-duration-slow @ease-in-out,
-    opacity @animation-duration-slow @ease-in-out, transform @animation-duration-slow @ease-in-out !important;
+  transition:
+    height @animation-duration-slow @ease-in-out,
+    opacity @animation-duration-slow @ease-in-out,
+    transform @animation-duration-slow @ease-in-out !important;
 
   &-appear,
   &-enter {
@@ -277,6 +283,13 @@
       transform: translateY(0);
       opacity: 1;
     }
+  }
+
+  &-leave {
+    transition:
+      height @animation-duration-base @ease-in-out,
+      opacity @animation-duration-base @ease-in-out,
+      transform @animation-duration-base @ease-in-out !important;
   }
 
   &-leave-active {

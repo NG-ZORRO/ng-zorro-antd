@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+
 @Component({
   selector: 'nz-demo-anchor-target-offset',
+  imports: [NzAnchorModule],
   template: `
     <nz-anchor [nzTargetOffset]="targetOffset">
       <nz-link nzHref="#components-anchor-demo-basic" nzTitle="Basic demo"></nz-link>

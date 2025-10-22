@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-menu-theme',
+  imports: [FormsModule, NzMenuModule, NzSwitchModule],
   template: `
     <nz-switch [(ngModel)]="theme">
       <span checked>Dark</span>

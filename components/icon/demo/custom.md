@@ -1,8 +1,8 @@
 ---
 order: 2
 title:
-    zh-CN: 自定义图标
-    en-US: Custom icon
+  zh-CN: 自定义图标
+  en-US: Custom icon
 ---
 
 ## zh-CN
@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-You can just put a `svg` element inside of a `nz-icon` to render custom content. We would take care of size and color things for you.
+You can just put a `svg` element inside a `nz-icon` to render custom content. We would take care of size and color for you.

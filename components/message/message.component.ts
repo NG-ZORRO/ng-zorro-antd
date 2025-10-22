@@ -3,14 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   ViewEncapsulation
@@ -28,40 +25,49 @@ import { NzMessageData } from './typings';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-message',
   exportAs: 'nzMessage',
-  preserveWhitespaces: false,
   animations: [moveUpMotion],
   template: `
     <div
       class="ant-message-notice"
+      [class]="instance.options?.nzClass"
+      [style]="instance.options?.nzStyle"
       [@moveUpMotion]="instance.state"
       (@moveUpMotion.done)="animationStateChanged.next($event)"
       (mouseenter)="onEnter()"
       (mouseleave)="onLeave()"
     >
       <div class="ant-message-notice-content">
-        <div class="ant-message-custom-content" [ngClass]="'ant-message-' + instance.type">
-          <ng-container [ngSwitch]="instance.type">
-            <span *ngSwitchCase="'success'" nz-icon nzType="check-circle"></span>
-            <span *ngSwitchCase="'info'" nz-icon nzType="info-circle"></span>
-            <span *ngSwitchCase="'warning'" nz-icon nzType="exclamation-circle"></span>
-            <span *ngSwitchCase="'error'" nz-icon nzType="close-circle"></span>
-            <span *ngSwitchCase="'loading'" nz-icon nzType="loading"></span>
-          </ng-container>
-          <ng-container *nzStringTemplateOutlet="instance.content">
+        <div class="ant-message-custom-content" [class]="'ant-message-' + instance.type">
+          @switch (instance.type) {
+            @case ('success') {
+              <nz-icon nzType="check-circle" />
+            }
+            @case ('info') {
+              <nz-icon nzType="info-circle" />
+            }
+            @case ('warning') {
+              <nz-icon nzType="exclamation-circle" />
+            }
+            @case ('error') {
+              <nz-icon nzType="close-circle" />
+            }
+            @case ('loading') {
+              <nz-icon nzType="loading" />
+            }
+          }
+          <ng-container
+            *nzStringTemplateOutlet="instance.content; context: { $implicit: this, data: instance.options?.nzData }"
+          >
             <span [innerHTML]="instance.content"></span>
           </ng-container>
         </div>
       </div>
     </div>
   `,
-  imports: [NgClass, NgSwitch, NgSwitchCase, NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule]
 })
-export class NzMessageComponent extends NzMNComponent implements OnInit, OnDestroy {
+export class NzMessageComponent extends NzMNComponent implements OnInit {
   @Input() override instance!: Required<NzMessageData>;
   @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
-
-  constructor(cdr: ChangeDetectorRef) {
-    super(cdr);
-  }
+  index?: number;
 }

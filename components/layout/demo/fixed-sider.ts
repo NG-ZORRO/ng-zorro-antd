@@ -1,42 +1,47 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-layout-fixed-sider',
+  imports: [NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout class="layout">
       <nz-sider>
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-menu-item>
-            <span nz-icon nzType="file"></span>
+            <nz-icon nzType="file" />
             <span>nav 1</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="video-camera"></span>
+            <nz-icon nzType="video-camera" />
             <span>nav 2</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="upload"></span>
+            <nz-icon nzType="upload" />
             <span>nav 3</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="bar-chart"></span>
+            <nz-icon nzType="bar-chart" />
             <span>nav 4</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="cloud-o"></span>
+            <nz-icon nzType="cloud-o" />
             <span>nav 5</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="appstore-o"></span>
+            <nz-icon nzType="appstore-o" />
             <span>nav 6</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="team"></span>
+            <nz-icon nzType="team" />
             <span>nav 7</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="shop"></span>
+            <nz-icon nzType="shop" />
             <span>nav 8</span>
           </li>
         </ul>
@@ -142,7 +147,7 @@ import { Component } from '@angular/core';
             content
           </div>
         </nz-content>
-        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,
@@ -191,4 +196,6 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoLayoutFixedSiderComponent {}
+export class NzDemoLayoutFixedSiderComponent {
+  protected readonly date = new Date();
+}

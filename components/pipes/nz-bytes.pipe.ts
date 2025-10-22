@@ -11,11 +11,10 @@ import { isNumberFinite, toDecimal } from 'ng-zorro-antd/core/util';
 export type ByteUnit = 'B' | 'kB' | 'KB' | 'MB' | 'GB' | 'TB';
 
 @Pipe({
-  name: 'nzBytes',
-  standalone: true
+  name: 'nzBytes'
 })
 export class NzBytesPipe implements PipeTransform {
-  static formats: { [key in ByteUnit]: { max: number; prev?: ByteUnit } } = {
+  static formats: Record<ByteUnit, { max: number; prev?: ByteUnit }> = {
     B: { max: 1024 },
     kB: { max: Math.pow(1024, 2), prev: 'B' },
     KB: { max: Math.pow(1024, 2), prev: 'B' },

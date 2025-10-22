@@ -1,15 +1,19 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 
-import { NzDemoCodeEditorBasicComponent } from './demo/basic';
-
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 declare const monaco: any;
 
 @Component({
+  imports: [FormsModule, NzCodeEditorModule],
   template: `
     <nz-code-editor
       class="editor"
@@ -33,31 +37,24 @@ export class NzTestCodeEditorFullControlComponent {
 }
 
 describe('code editor', () => {
-  describe('basic', () => {
-    // let fixture: ComponentFixture<NzDemoCodeEditorBasicComponent>;
+  // describe('basic', () => {
+  //   // let fixture: ComponentFixture<NzDemoCodeEditorBasicComponent>;
 
-    beforeEach(waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NzCodeEditorModule],
-        declarations: [NzDemoCodeEditorBasicComponent]
-      }).compileComponents();
-    }));
+  //   beforeEach(waitForAsync(() => {
+  //     TestBed.configureTestingModule({
+  //       imports: [FormsModule, NzCodeEditorModule],
+  //       declarations: [NzDemoCodeEditorBasicComponent]
+  //     });
+  //   }));
 
-    beforeEach(() => {
-      // fixture = TestBed.createComponent(NzDemoCodeEditorBasicComponent);
-    });
-  });
+  //   beforeEach(() => {
+  //     // fixture = TestBed.createComponent(NzDemoCodeEditorBasicComponent);
+  //   });
+  // });
 
   describe('full control', () => {
     let fixture: ComponentFixture<NzTestCodeEditorFullControlComponent>;
     let testComponent: NzTestCodeEditorFullControlComponent;
-
-    beforeEach(waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NzCodeEditorModule],
-        declarations: [NzTestCodeEditorFullControlComponent]
-      }).compileComponents();
-    }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCodeEditorFullControlComponent);

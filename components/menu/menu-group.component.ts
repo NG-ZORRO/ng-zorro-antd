@@ -3,13 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Inject,
   inject,
   Input,
   Renderer2,
@@ -29,7 +27,6 @@ export function MenuGroupFactory(): boolean {
 @Component({
   selector: '[nz-menu-group]',
   exportAs: 'nzMenuGroup',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     /** check if menu inside dropdown-menu component **/
     {
@@ -37,7 +34,6 @@ export function MenuGroupFactory(): boolean {
       useFactory: MenuGroupFactory
     }
   ],
-  encapsulation: ViewEncapsulation.None,
   template: `
     <div
       [class.ant-menu-item-group-title]="!isMenuInsideDropDown"
@@ -45,26 +41,26 @@ export function MenuGroupFactory(): boolean {
       #titleElement
     >
       <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-      <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+      @if (!nzTitle) {
+        <ng-content select="[title]" />
+      }
     </div>
     <ng-content></ng-content>
   `,
-  preserveWhitespaces: false,
-  imports: [NzOutletModule, NgIf],
-  standalone: true
+  imports: [NzOutletModule],
+  host: {
+    '[class.ant-menu-item-group]': '!isMenuInsideDropDown',
+    '[class.ant-dropdown-menu-item-group]': 'isMenuInsideDropDown'
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzMenuGroupComponent implements AfterViewInit {
+  private readonly renderer = inject(Renderer2);
+  protected readonly isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
+
   @Input() nzTitle?: string | TemplateRef<void>;
   @ViewChild('titleElement') titleElement?: ElementRef;
-
-  constructor(
-    public elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean
-  ) {
-    const className = this.isMenuInsideDropDown ? 'ant-dropdown-menu-item-group' : 'ant-menu-item-group';
-    this.renderer.addClass(elementRef.nativeElement, className);
-  }
 
   ngAfterViewInit(): void {
     const ulElement = this.titleElement!.nativeElement.nextElementSibling;

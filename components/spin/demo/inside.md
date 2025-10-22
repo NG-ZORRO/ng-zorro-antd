@@ -1,6 +1,6 @@
 ---
 order: 2
-title: 
+title:
   zh-CN: 容器
   en-US: Inside a container
 ---
@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Spin in a container.
-

@@ -166,5 +166,8 @@ export default {
   },
   PageHeader: {
     back: 'ย้อนกลับ'
+  },
+  Form: {
+    optional: '(ไม่จำเป็น)'
   }
 };

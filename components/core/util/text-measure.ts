@@ -34,11 +34,15 @@ export function pxToNumber(value: string | null): number {
   return match ? Number(match[0]) : 0;
 }
 
-function styleToString(style: CSSStyleDeclaration): string {
+function styleToObject(style: CSSStyleDeclaration): Record<string, string> {
   // There are some different behavior between Firefox & Chrome.
   // We have to handle this ourself.
+  const styles: Record<string, string> = {};
   const styleNames: string[] = Array.prototype.slice.apply(style);
-  return styleNames.map(name => `${name}: ${style.getPropertyValue(name)};`).join('');
+  for (const name of styleNames) {
+    styles[name] = style.getPropertyValue(name);
+  }
+  return styles;
 }
 
 function mergeChildren(children: Node[]): Node[] {
@@ -72,13 +76,16 @@ export function measure(
 
   // Get origin style
   const originStyle = window.getComputedStyle(originEle);
-  const originCSS = styleToString(originStyle);
+  const originCSS = styleToObject(originStyle);
   const lineHeight = pxToNumber(originStyle.lineHeight);
   const maxHeight = Math.round(
     lineHeight * (rows + 1) + pxToNumber(originStyle.paddingTop) + pxToNumber(originStyle.paddingBottom)
   );
   // Set shadow
-  ellipsisContainer.setAttribute('style', originCSS);
+  for (const [name, value] of Object.entries(originCSS)) {
+    // setAttribute('style', ...) is not allowed when strict CSP is in place.
+    ellipsisContainer.style.setProperty(name, value);
+  }
   ellipsisContainer.style.position = 'fixed';
   ellipsisContainer.style.left = '0';
   ellipsisContainer.style.height = 'auto';

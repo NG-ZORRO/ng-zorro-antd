@@ -9,17 +9,18 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzCheckboxComponent } from './checkbox.component';
 
+/**
+ * @deprecated Will be removed in v21. It is recommended to use `<nz-checkbox-group>`.
+ */
 @Component({
   selector: 'nz-checkbox-wrapper',
   exportAs: 'nzCheckboxWrapper',
-  preserveWhitespaces: false,
+  template: `<ng-content></ng-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-checkbox-group'
-  },
-  standalone: true
+  }
 })
 export class NzCheckboxWrapperComponent {
   @Output() readonly nzOnChange = new EventEmitter<NzSafeAny[]>();

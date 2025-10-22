@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-breadcrumb-separator',
   exportAs: 'nzBreadcrumbSeparator',
-  standalone: true,
   template: `<ng-content></ng-content>`,
   host: {
     class: 'ant-breadcrumb-separator'

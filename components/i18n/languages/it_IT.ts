@@ -160,6 +160,9 @@ export default {
     previewFile: 'Anteprima file',
     downloadFile: 'Download file'
   },
+  Form: {
+    optional: '(opzionale)'
+  },
   Empty: {
     description: 'Nessun dato'
   },

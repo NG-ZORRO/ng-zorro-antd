@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { numberAttributeWithInfinityFallback } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -15,33 +15,39 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span nz-icon nzType="loading" *ngIf="loading; else defaultArrow"></span>
-    <ng-template #defaultArrow>
-      <ng-container *ngIf="showArrow && !suffixIcon; else suffixTemplate">
-        <span nz-icon nzType="down" *ngIf="!search"></span>
-        <span nz-icon nzType="search" *ngIf="search"></span>
-      </ng-container>
-      <ng-template #suffixTemplate>
+    @if (isMaxMultipleCountSet) {
+      <span>{{ listOfValue.length }} / {{ nzMaxMultipleCount }}</span>
+    }
+    @if (loading) {
+      <nz-icon nzType="loading" />
+    } @else {
+      @if (showArrow && !suffixIcon) {
+        @if (search) {
+          <nz-icon nzType="search" />
+        } @else {
+          <nz-icon nzType="down" />
+        }
+      } @else {
         <ng-container *nzStringTemplateOutlet="suffixIcon; let suffixIcon">
-          <span *ngIf="suffixIcon" nz-icon [nzType]="suffixIcon"></span>
+          <nz-icon [nzType]="suffixIcon" />
         </ng-container>
-      </ng-template>
-    </ng-template>
+      }
+    }
     <ng-container *nzStringTemplateOutlet="feedbackIcon">{{ feedbackIcon }}</ng-container>
   `,
   host: {
     class: 'ant-select-arrow',
     '[class.ant-select-arrow-loading]': 'loading'
   },
-  imports: [NzIconModule, NgIf, NzOutletModule],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule]
 })
 export class NzSelectArrowComponent {
+  @Input() listOfValue: NzSafeAny[] = [];
   @Input() loading = false;
   @Input() search = false;
   @Input() showArrow = false;
+  @Input() isMaxMultipleCountSet = false;
   @Input() suffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() feedbackIcon: TemplateRef<NzSafeAny> | string | null = null;
-
-  constructor() {}
+  @Input({ transform: numberAttributeWithInfinityFallback }) nzMaxMultipleCount = Infinity;
 }

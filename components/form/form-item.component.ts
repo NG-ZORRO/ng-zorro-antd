@@ -3,8 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, ViewEncapsulation } from '@angular/core';
 
 export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | '';
 
@@ -12,7 +11,6 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
 @Component({
   selector: 'nz-form-item',
   exportAs: 'nzFormItem',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
@@ -24,15 +22,14 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
     '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
     '[class.ant-form-item-with-help]': 'withHelpClass'
   },
-  template: ` <ng-content></ng-content> `,
-  standalone: true
+  template: `<ng-content></ng-content>`
 })
-export class NzFormItemComponent implements OnDestroy, OnDestroy {
+export class NzFormItemComponent {
+  private cdr = inject(ChangeDetectorRef);
+
   status: NzFormControlStatusType = '';
   hasFeedback = false;
   withHelpClass = false;
-
-  private destroy$ = new Subject<boolean>();
 
   setWithHelpViaTips(value: boolean): void {
     this.withHelpClass = value;
@@ -47,12 +44,5 @@ export class NzFormItemComponent implements OnDestroy, OnDestroy {
   setHasFeedback(hasFeedback: boolean): void {
     this.hasFeedback = hasFeedback;
     this.cdr.markForCheck();
-  }
-
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

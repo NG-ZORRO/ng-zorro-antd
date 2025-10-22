@@ -1,14 +1,21 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NzDatePickerSizeType } from 'ng-zorro-antd/date-picker/date-picker.component';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
+import { NzDatePickerI18nInterface, NzDatePickerLangI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzDatePickerModule } from './date-picker.module';
@@ -21,12 +28,8 @@ describe('NzYearPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzInputModule],
-      providers: [],
-      declarations: [NzTestYearPickerComponent]
+      providers: [provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
@@ -132,7 +135,7 @@ describe('NzYearPickerComponent', () => {
     }));
 
     it('should nz-year-picker work', fakeAsync(() => {
-      fixtureInstance.useSuite = 5;
+      fixtureInstance.useSuite = 4;
       fixture.whenRenderingDone().then(() => {
         tick(500);
         fixture.detectChanges();
@@ -141,16 +144,6 @@ describe('NzYearPickerComponent', () => {
         expect(pickerInput).not.toBeNull();
       });
     }));
-
-    it('should support nzCompact', () => {
-      fixtureInstance.useSuite = 4;
-      fixture.detectChanges();
-      const pickerInput = getPickerInput(fixture.debugElement);
-      expect(pickerInput).not.toBeNull();
-      const compStyles = window.getComputedStyle(pickerInput);
-      expect(compStyles.getPropertyValue('border-top-right-radius') === '0px').toBeTruthy();
-      expect(compStyles.getPropertyValue('border-bottom-right-radius') === '0px').toBeTruthy();
-    });
 
     it('should support nzDisabledDate', fakeAsync(() => {
       fixture.detectChanges();
@@ -169,13 +162,17 @@ describe('NzYearPickerComponent', () => {
 
     it('should support nzLocale', () => {
       const featureKey = 'TEST_PLACEHOLDER';
-      fixtureInstance.nzLocale = { lang: { yearPlaceholder: featureKey } };
+      fixtureInstance.nzLocale = {
+        lang: { yearPlaceholder: featureKey } as unknown as NzDatePickerLangI18nInterface,
+        timePickerLocale: {}
+      };
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
 
     it('should support nzPlaceHolder', () => {
-      const featureKey = (fixtureInstance.nzPlaceHolder = 'TEST_PLACEHOLDER');
+      const featureKey = 'TEST_PLACEHOLDER';
+      fixtureInstance.nzPlaceHolder = featureKey;
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
@@ -293,10 +290,10 @@ describe('NzYearPickerComponent', () => {
     }));
   }); // /specified date picker testing
 
-  describe('ngModel value accesors', () => {
+  describe('ngModel value accessors', () => {
     beforeEach(() => (fixtureInstance.useSuite = 3));
 
-    it('should specified date provide by "modelValue" be choosed', fakeAsync(() => {
+    it('should specified date provide by "modelValue" be chosen', fakeAsync(() => {
       fixtureInstance.modelValue = new Date('2018-11');
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done
@@ -350,6 +347,7 @@ describe('NzYearPickerComponent', () => {
 });
 
 @Component({
+  imports: [FormsModule, NzDatePickerModule, NzInputModule],
   template: `
     <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
     @switch (useSuite) {
@@ -362,7 +360,7 @@ describe('NzYearPickerComponent', () => {
           [nzDisabledDate]="nzDisabledDate"
           [nzLocale]="nzLocale"
           [nzPlaceHolder]="nzPlaceHolder"
-          [nzPopupStyle]="nzPopupStyle"
+          [nzPopupStyle]="nzPopupStyle ?? {}"
           [nzDropdownClassName]="nzDropdownClassName"
           [nzSize]="nzSize"
           (nzOnOpenChange)="nzOnOpenChange($event)"
@@ -378,19 +376,13 @@ describe('NzYearPickerComponent', () => {
         <nz-date-picker nzMode="year" nzOpen [(ngModel)]="modelValue" />
       }
       @case (4) {
-        <nz-input-group nzCompact>
-          <nz-date-picker nzMode="year" style="width: 200px;" />
-          <input nz-input type="text" style="width: 200px;" />
-        </nz-input-group>
-      }
-      @case (5) {
         <nz-year-picker nzOpen [(ngModel)]="modelValue" />
       }
     }
   `
 })
 class NzTestYearPickerComponent {
-  useSuite?: 1 | 2 | 3 | 4 | 5;
+  useSuite?: 1 | 2 | 3 | 4;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
   // --- Suite 1
@@ -398,11 +390,11 @@ class NzTestYearPickerComponent {
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
   nzDisabledDate?: (d: Date) => boolean;
-  nzLocale: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  nzPlaceHolder?: string;
+  nzLocale!: NzDatePickerI18nInterface;
+  nzPlaceHolder!: string;
   nzPopupStyle?: NgStyleInterface;
   nzDropdownClassName?: string;
-  nzSize?: string;
+  nzSize!: NzDatePickerSizeType;
 
   nzOnOpenChange(_: boolean): void {}
 

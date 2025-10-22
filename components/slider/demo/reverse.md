@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Using `nzReverse` to render slider reversely.
-

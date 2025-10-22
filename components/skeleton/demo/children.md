@@ -5,10 +5,10 @@ title:
   en-US: Contains sub component
 ---
 
- ## zh-CN
+## zh-CN
 
- 加载占位图包含子组件。
+加载占位图包含子组件。
 
- ## en-US
+## en-US
 
- Skeleton contains sub component.
+Skeleton contains sub component.

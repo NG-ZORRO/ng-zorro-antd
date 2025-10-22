@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
 
-import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
+import { NzFormatEmitEvent, NzTreeModule, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-dynamic',
+  imports: [NzTreeModule],
   template: `
     <nz-tree [nzData]="nodes" nzAsyncData (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)"></nz-tree>
   `
 })
 export class NzDemoTreeDynamicComponent {
-  nodes = [
+  readonly nodes = [
     { title: 'Expand to load', key: '0' },
     { title: 'Expand to load', key: '1' },
     { title: 'Tree Node', key: '2', isLeaf: true }
   ];
 
   nzEvent(event: NzFormatEmitEvent): void {
-    console.log(event);
     // load child async
     if (event.eventName === 'expand') {
       const node = event.node;

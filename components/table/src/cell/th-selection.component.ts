@@ -13,17 +13,16 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute
 } from '@angular/core';
 
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTableSelectionComponent } from '../addon/selection.component';
 
 @Component({
   selector: 'th[nzSelections],th[nzChecked],th[nzShowCheckbox],th[nzShowRowSelection]',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -40,26 +39,20 @@ import { NzTableSelectionComponent } from '../addon/selection.component';
     <ng-content></ng-content>
   `,
   host: { class: 'ant-table-selection-column' },
-  imports: [NzTableSelectionComponent],
-  standalone: true
+  imports: [NzTableSelectionComponent]
 })
 export class NzThSelectionComponent implements OnChanges {
-  static ngAcceptInputType_nzShowCheckbox: BooleanInput;
-  static ngAcceptInputType_nzShowRowSelection: BooleanInput;
-
   @Input() nzSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];
-  @Input() nzChecked = false;
-  @Input() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzChecked = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input() nzIndeterminate = false;
   @Input() nzLabel: string | null = null;
-  @Input() @InputBoolean() nzShowCheckbox = false;
-  @Input() @InputBoolean() nzShowRowSelection = false;
+  @Input({ transform: booleanAttribute }) nzShowCheckbox = false;
+  @Input({ transform: booleanAttribute }) nzShowRowSelection = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
 
   private isNzShowExpandChanged = false;
   private isNzShowCheckboxChanged = false;
-
-  constructor() {}
 
   onCheckedChange(checked: boolean): void {
     this.nzChecked = checked;

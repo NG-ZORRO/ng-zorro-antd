@@ -3,23 +3,18 @@ category: Components
 subtitle: 单选框
 type: 数据录入
 title: Radio
-cover: https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg'
+description: 用于在多个备选项中选中单个状态。
 ---
-
-单选框。
 
 ## 何时使用
 
 - 用于在多个备选项中选中单个状态。
 - 和 Select 的区别是，Radio 所有选项默认可见，方便用户在比较中选择，因此选项不宜过多。
 
-```ts
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-```
-
 ## API
 
-### [nz-radio] | [nz-radio-button]:standalone
+### [nz-radio] | [nz-radio-button]
 
 | 参数              | 说明                                     | 类型                    | 默认值  |
 | ----------------- | ---------------------------------------- | ----------------------- | ------- |
@@ -29,7 +24,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 | `[nzValue]`       | 设置 value，与 `nz-radio-group` 配合使用 | `any`                   | -       |
 | `(ngModelChange)` | 选中变化时回调                           | `EventEmitter<boolean>` | -       |
 
-### nz-radio-group:standalone
+### nz-radio-group
 
 单选框组合，用于包裹一组 `nz-radio`。
 
@@ -44,11 +39,11 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 ## 方法
 
-### [nz-radio]:standalone
+### [nz-radio]
 
 可以通过 `ViewChild` 等其他方式获取 `NzRadioComponent` 使用以下方法
 
-| 名称    | 描述     |
-| ------- | -------- |
-| blur()  | 移除焦点 |
-| focus() | 获取焦点 |
+| 名称      | 描述     |
+| --------- | -------- |
+| `blur()`  | 移除焦点 |
+| `focus()` | 获取焦点 |

@@ -11,31 +11,29 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
+export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
 
 @Component({
   selector: 'nz-alert',
   exportAs: 'nzAlert',
   animations: [slideAlertMotion],
-  standalone: true,
   imports: [NzIconModule, NzOutletModule],
   template: `
     @if (!closed) {
@@ -59,7 +57,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
             @if (nzIcon) {
               <ng-container *nzStringTemplateOutlet="nzIcon"></ng-container>
             } @else {
-              <span nz-icon [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme"></span>
+              <nz-icon [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme" />
             }
           </div>
         }
@@ -92,7 +90,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
                 <span class="ant-alert-close-text">{{ nzCloseText }}</span>
               </ng-container>
             } @else {
-              <span nz-icon nzType="close"></span>
+              <nz-icon nzType="close" />
             }
           </button>
         }
@@ -100,15 +98,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false
+  encapsulation: ViewEncapsulation.None
 })
-export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
+export class NzAlertComponent implements OnChanges, OnInit {
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzCloseable: BooleanInput;
-  static ngAcceptInputType_nzShowIcon: BooleanInput;
-  static ngAcceptInputType_nzBanner: BooleanInput;
-  static ngAcceptInputType_nzNoAnimation: BooleanInput;
 
   @Input() nzAction: string | TemplateRef<void> | null = null;
   @Input() nzCloseText: string | TemplateRef<void> | null = null;
@@ -116,10 +112,10 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzMessage: string | TemplateRef<void> | null = null;
   @Input() nzDescription: string | TemplateRef<void> | null = null;
   @Input() nzType: 'success' | 'info' | 'warning' | 'error' = 'info';
-  @Input() @WithConfig() @InputBoolean() nzCloseable: boolean = false;
-  @Input() @WithConfig() @InputBoolean() nzShowIcon: boolean = false;
-  @Input() @InputBoolean() nzBanner = false;
-  @Input() @InputBoolean() nzNoAnimation = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzCloseable: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowIcon: boolean = false;
+  @Input({ transform: booleanAttribute }) nzBanner = false;
+  @Input({ transform: booleanAttribute }) nzNoAnimation = false;
   @Input() nzIcon: string | TemplateRef<void> | null = null;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
   closed = false;
@@ -128,23 +124,13 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   dir: Direction = 'ltr';
   private isTypeSet = false;
   private isShowIconSet = false;
-  private destroy$ = new Subject<boolean>();
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
-  ) {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -195,9 +181,5 @@ export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
         this.nzShowIcon = true;
       }
     }
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

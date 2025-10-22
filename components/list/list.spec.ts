@@ -1,12 +1,19 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { AsyncPipe } from '@angular/common';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzDirectionVHType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzListComponent } from './list.component';
 import { NzListModule } from './list.module';
@@ -17,9 +24,8 @@ describe('list', () => {
   let dl: DebugElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzListModule, NzIconTestModule],
-      declarations: [TestListComponent, TestListWithTemplateComponent, TestListItemComponent]
-    }).compileComponents();
+      providers: [provideNzIconsTesting()]
+    });
     fixture = TestBed.createComponent(TestListComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -33,7 +39,7 @@ describe('list', () => {
         { type: 'vertical', ret: true }
       ]) {
         it(`[${item.type}]`, () => {
-          context.nzItemLayout = item.type;
+          context.nzItemLayout = item.type as NzDirectionVHType;
           fixture.detectChanges();
           expect(dl.query(By.css(`.ant-list-${item.type}`)) != null).toBe(item.ret);
         });
@@ -62,20 +68,21 @@ describe('list', () => {
     });
 
     describe('#nzFooter', () => {
+      let fixtureTemp: ComponentFixture<TestListWithTemplateComponent>;
+      beforeEach(() => {
+        fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
+        fixtureTemp.detectChanges();
+      });
       it('with string', () => {
         expect(dl.query(By.css('.ant-list-footer')) != null).toBe(true);
       });
       it('with custom template', () => {
-        const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
-        fixtureTemp.detectChanges();
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
         expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(
           fixtureTemp.componentInstance.footer as string
         );
       });
       it('change string to template', () => {
-        const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
-        fixtureTemp.detectChanges();
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
         expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(
           fixtureTemp.componentInstance.footer as string
@@ -93,7 +100,7 @@ describe('list', () => {
         { type: 'large', cls: '.ant-list-lg' }
       ]) {
         it(`[${item.type}]`, () => {
-          context.nzSize = item.type;
+          context.nzSize = item.type as NzSizeLDSType;
           fixture.detectChanges();
           expect(dl.query(By.css(item.cls)) != null).toBe(true);
         });
@@ -139,7 +146,7 @@ describe('list', () => {
         expect(dl.queryAll(By.css('.ant-list-empty-text')).length).toBe(1);
       });
 
-      it('should be ingore empty text when unspecified data source', () => {
+      it('should be ignore empty text when unspecified data source', () => {
         context.data = undefined;
         fixture.detectChanges();
         expect(dl.queryAll(By.css('.ant-list-empty-text')).length).toBe(0);
@@ -218,17 +225,15 @@ describe('list', () => {
 });
 
 describe('list RTL', () => {
-  let testBed: ComponentBed<NzTestListRtlComponent>;
   let fixture: ComponentFixture<NzTestListRtlComponent>;
   let componentElement: HTMLElement;
 
   beforeEach(() => {
-    testBed = createComponentBed(NzTestListRtlComponent, {
-      declarations: [TestListComponent, NzTestListRtlComponent],
-      imports: [NzListModule, NzIconTestModule, BidiModule]
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting()]
     });
-    componentElement = testBed.debugElement.query(By.directive(NzListComponent)).nativeElement;
-    fixture = testBed.fixture;
+    fixture = TestBed.createComponent(NzTestListRtlComponent);
+    componentElement = fixture.debugElement.query(By.directive(NzListComponent)).nativeElement;
     fixture.detectChanges();
   });
 
@@ -241,7 +246,7 @@ describe('list RTL', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
+  imports: [NzListModule, AsyncPipe],
   selector: 'nz-test-list',
   template: `
     <nz-list
@@ -267,12 +272,14 @@ describe('list RTL', () => {
             nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
           ></nz-list-item-meta>
           <ul nz-list-item-actions>
-            <nz-list-item-action *ngFor="let action of actions$ | async">{{ action }}</nz-list-item-action>
+            @for (action of actions$ | async; track action) {
+              <nz-list-item-action>{{ action }}</nz-list-item-action>
+            }
           </ul>
         </nz-list-item>
       </ng-template>
       <ng-template #loadMore>
-        <div class="loadmore">loadmore</div>
+        <div class="loadmore">load more</div>
       </ng-template>
       <ng-template #pagination>
         <div class="pagination">pagination</div>
@@ -285,12 +292,12 @@ describe('list RTL', () => {
 })
 class TestListComponent {
   @ViewChild('comp', { static: false }) comp!: NzListComponent;
-  nzItemLayout = 'horizontal';
+  nzItemLayout: NzDirectionVHType = 'horizontal';
   nzBordered = false;
   nzFooter = 'footer';
   nzHeader = 'header';
   nzLoading = false;
-  nzSize = 'default';
+  nzSize: NzSizeLDSType = 'default';
   nzSplit = true;
   data?: string[] = [
     'Racing car sprays burning fuel into crowd.',
@@ -304,6 +311,7 @@ class TestListComponent {
 }
 
 @Component({
+  imports: [NzListModule],
   template: `
     <button (click)="footer = nzFooter" id="change">change</button>
     <nz-list [nzFooter]="footer" [nzHeader]="nzHeader">
@@ -319,11 +327,12 @@ class TestListWithTemplateComponent {
 }
 
 @Component({
+  imports: [NzIconModule, NzListModule],
   template: `
     <nz-list id="item-string">
       <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra" [nzNoFlex]="noFlex">
         <ng-template #action>
-          <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
+          <nz-icon nzType="star-o" style="margin-right: 8px;" />
           156
         </ng-template>
         <ng-template #extra>
@@ -358,6 +367,7 @@ class TestListItemComponent {
 }
 
 @Component({
+  imports: [BidiModule, TestListComponent],
   template: `
     <div [dir]="direction">
       <nz-test-list></nz-test-list>
@@ -366,5 +376,5 @@ class TestListItemComponent {
 })
 export class NzTestListRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

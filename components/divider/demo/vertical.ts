@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+
 @Component({
   selector: 'nz-demo-divider-vertical',
+  imports: [NzDividerModule],
   template: `
     <div>
       Text

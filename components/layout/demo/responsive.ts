@@ -1,26 +1,31 @@
 import { Component } from '@angular/core';
 
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-layout-responsive',
+  imports: [NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
-    <nz-layout class="layout">
+    <nz-layout>
       <nz-sider nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-menu-item>
-            <span nz-icon nzType="user"></span>
+            <nz-icon nzType="user" />
             <span>nav 1</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="video-camera"></span>
+            <nz-icon nzType="video-camera" />
             <span>nav 2</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="upload"></span>
+            <nz-icon nzType="upload" />
             <span>nav 3</span>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="user"></span>
+            <nz-icon nzType="user" />
             <span>nav 4</span>
           </li>
         </ul>
@@ -30,16 +35,12 @@ import { Component } from '@angular/core';
         <nz-content>
           <div class="inner-content">Content</div>
         </nz-content>
-        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,
   styles: [
     `
-      .layout {
-        min-height: 100vh;
-      }
-
       .logo {
         height: 32px;
         background: rgba(255, 255, 255, 0.2);
@@ -67,4 +68,6 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoLayoutResponsiveComponent {}
+export class NzDemoLayoutResponsiveComponent {
+  protected readonly date = new Date();
+}

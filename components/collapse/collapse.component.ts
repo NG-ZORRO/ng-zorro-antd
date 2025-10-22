@@ -5,20 +5,20 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  inject,
   Input,
   OnInit,
-  Optional,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
+import type { NzSizeLMSType } from 'ng-zorro-antd/core/types';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
 
@@ -29,49 +29,41 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
   exportAs: 'nzCollapse',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: {
     class: 'ant-collapse',
-    '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
-    '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
+    '[class.ant-collapse-icon-position-start]': `nzExpandIconPosition === 'start'`,
+    '[class.ant-collapse-icon-position-end]': `nzExpandIconPosition === 'end'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered',
-    '[class.ant-collapse-rtl]': "dir === 'rtl'"
-  },
-  providers: [NzDestroyService],
-  standalone: true
+    '[class.ant-collapse-rtl]': "dir === 'rtl'",
+    '[class.ant-collapse-small]': `nzSize === 'small'`,
+    '[class.ant-collapse-large]': `nzSize === 'large'`
+  }
 })
 export class NzCollapseComponent implements OnInit {
-  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzAccordion: BooleanInput;
-  static ngAcceptInputType_nzBordered: BooleanInput;
-  static ngAcceptInputType_nzGhost: BooleanInput;
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
 
-  @Input() @WithConfig() @InputBoolean() nzAccordion: boolean = false;
-  @Input() @WithConfig() @InputBoolean() nzBordered: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzGhost: boolean = false;
-  @Input() nzExpandIconPosition: 'left' | 'right' = 'left';
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  @Input({ transform: booleanAttribute }) @WithConfig() nzAccordion: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzGhost: boolean = false;
+  @Input() nzExpandIconPosition: 'start' | 'end' = 'start';
+  @Input() nzSize: NzSizeLMSType = 'middle';
 
   dir: Direction = 'ltr';
 
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    private destroy$: NzDestroyService
-  ) {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });

@@ -1,13 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-inferrable-types, @typescript-eslint/no-explicit-any, prefer-const */
-import { DOCUMENT, PlatformLocation } from '@angular/common';
-import { ApplicationRef, Injector, NgZone } from '@angular/core';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { PlatformLocation } from '@angular/common';
+import { ApplicationRef, DOCUMENT, NgZone } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzScrollService } from './scroll';
 
 describe('NzScrollService', () => {
-  const TOP: number = 10;
-  let injector: Injector;
+  const TOP = 10;
   let document: MockDocument;
   let scrollService: NzScrollService;
 
@@ -33,7 +38,7 @@ describe('NzScrollService', () => {
   });
 
   beforeEach(() => {
-    injector = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       providers: [
         NzScrollService,
         { provide: DOCUMENT, useClass: MockDocument },
@@ -41,8 +46,8 @@ describe('NzScrollService', () => {
       ]
     });
 
-    document = injector.get<MockDocument>(DOCUMENT);
-    scrollService = injector.get(NzScrollService);
+    document = TestBed.inject<MockDocument>(DOCUMENT);
+    scrollService = TestBed.inject(NzScrollService);
   });
 
   describe('#setScrollTop', () => {
@@ -53,7 +58,7 @@ describe('NzScrollService', () => {
     });
 
     it(`should scroll to dom element ${TOP} x`, () => {
-      let el: Element = new MockElement() as any;
+      const el: Element = new MockElement() as NzSafeAny;
       scrollService.setScrollTop(el, TOP);
       expect(el.scrollTop).toBe(TOP);
       scrollService.setScrollTop(el, 0);
@@ -71,13 +76,13 @@ describe('NzScrollService', () => {
         },
         getClientRects: () => [0],
         getBoundingClientRect: () => ({ top: 10, left: 10, width: 100, height: 100 })
-      } as any);
+      } as NzSafeAny);
       expect(ret.left).toBe(9);
       expect(ret.top).toBe(9);
     });
 
     it(`should be return 0 when is no getClientRects`, () => {
-      const ret = scrollService.getOffset({ getClientRects: () => [] } as any);
+      const ret = scrollService.getOffset({ getClientRects: () => [] } as NzSafeAny);
       expect(ret.left).toBe(0);
       expect(ret.top).toBe(0);
     });
@@ -86,7 +91,7 @@ describe('NzScrollService', () => {
       const ret = scrollService.getOffset({
         getClientRects: () => [0],
         getBoundingClientRect: () => ({ top: 1, left: 1 })
-      } as any);
+      } as NzSafeAny);
       expect(ret.left).toBe(1);
       expect(ret.top).toBe(1);
     });
@@ -94,12 +99,12 @@ describe('NzScrollService', () => {
 
   describe('#getScroll', () => {
     it('should be return scrollTop when target is window', () => {
-      const mockWin: any = { pageYOffset: 10 };
+      const mockWin: NzSafeAny = { pageYOffset: 10 };
       mockWin.window = mockWin;
       expect(scrollService.getScroll(mockWin)).toBe(10);
     });
     it('should be return scrollTop when target is html element', () => {
-      const mockEl: any = { scrollTop: 10 };
+      const mockEl: NzSafeAny = { scrollTop: 10 };
       expect(scrollService.getScroll(mockEl)).toBe(10);
     });
   });

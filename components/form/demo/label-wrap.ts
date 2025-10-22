@@ -1,14 +1,19 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-label-wrap',
+  imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" nzNoColon nzLabelAlign="left" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-label nzRequired nzFor="user" nzSpan="3"> Normal text label </nz-form-label>
         <nz-form-control nzErrorTip="Please input your username!" nzSpan="8">
-          <input formControlName="userName" nz-input id="user" />
+          <input formControlName="username" nz-input id="user" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -28,19 +33,14 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
   `
 })
 export class NzDemoFormLabelWrapComponent {
-  validateForm: FormGroup<{
-    userName: FormControl<string>;
-    password: FormControl<string>;
-    remember: FormControl<boolean>;
-  }> = this.fb.group({
-    userName: ['', [Validators.required]],
-    password: ['', [Validators.required]],
-    remember: [true]
+  private fb = inject(NonNullableFormBuilder);
+  validateForm = this.fb.group({
+    username: this.fb.control('', [Validators.required]),
+    password: this.fb.control('', [Validators.required]),
+    remember: this.fb.control(true)
   });
 
   submitForm(): void {
     console.log('submit', this.validateForm.value);
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 }

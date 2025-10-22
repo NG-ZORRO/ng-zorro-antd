@@ -8,25 +8,25 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-text-copy',
@@ -42,26 +42,28 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
       (click)="onClick()"
     >
       <ng-container *nzStringTemplateOutlet="copied ? copedIcon : copyIcon; let icon">
-        <span nz-icon [nzType]="icon"></span>
+        <nz-icon [nzType]="icon" />
       </ng-container>
     </button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
-  imports: [NzToolTipModule, NzTransButtonModule, NzIconModule, NzOutletModule],
-  standalone: true
+  imports: [NzTooltipModule, NzTransButtonModule, NzIconModule, NzOutletModule]
 })
-export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
+export class NzTextCopyComponent implements OnInit, OnChanges {
+  private cdr = inject(ChangeDetectorRef);
+  private clipboard = inject(Clipboard);
+  private i18n = inject(NzI18nService);
+  private destroyRef = inject(DestroyRef);
+
   copied = false;
-  copyId: number = -1;
+  copyId?: ReturnType<typeof setTimeout>;
   locale!: NzTextI18nInterface;
-  nativeElement = this.host.nativeElement;
+  nativeElement = inject(ElementRef).nativeElement;
   copyTooltip: NzTSType | null = null;
   copedTooltip: NzTSType | null = null;
   copyIcon: NzTSType = 'copy';
   copedIcon: NzTSType = 'check';
-  private destroy$ = new Subject<boolean>();
 
   @Input() text!: string;
   @Input() tooltips?: [NzTSType, NzTSType] | null;
@@ -69,15 +71,14 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output() readonly textCopy = new EventEmitter<string>();
 
-  constructor(
-    private host: ElementRef,
-    private cdr: ChangeDetectorRef,
-    private clipboard: Clipboard,
-    private i18n: NzI18nService
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      clearTimeout(this.copyId);
+    });
+  }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Text');
       this.updateTooltips();
       this.cdr.markForCheck();
@@ -92,12 +93,6 @@ export class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
     if (icons) {
       this.updateIcons();
     }
-  }
-
-  ngOnDestroy(): void {
-    clearTimeout(this.copyId);
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 
   onClick(): void {

@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 @Component({
   selector: 'nz-demo-menu-switch-mode',
+  imports: [FormsModule, NzDividerModule, NzMenuModule, NzSwitchModule],
   template: `
     <nz-switch [(ngModel)]="mode"></nz-switch>
     Change Mode

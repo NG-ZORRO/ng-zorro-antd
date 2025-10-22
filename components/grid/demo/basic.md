@@ -16,4 +16,3 @@ title:
 From the stack to the horizontal arrangement.
 
 You can create a basic grid system by using a single set of `nz-row` and `nz-col` grid assembly, all of the columns (`nz-col`) must be placed in `nz-row`.
-

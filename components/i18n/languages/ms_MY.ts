@@ -141,5 +141,8 @@ export default {
     uploadError: 'Masalah muat naik',
     previewFile: 'Tengok fail',
     downloadFile: 'Muat turun fail'
+  },
+  Form: {
+    optional: '(pilihan)'
   }
 };

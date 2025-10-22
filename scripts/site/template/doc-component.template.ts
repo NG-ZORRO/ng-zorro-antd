@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
+import { ShareModule } from '../share/share.module';
 
 @Component({
   selector     : 'nz-doc-{{component}}-{{language}}',
-  templateUrl  : './{{component}}-{{language}}.html',
-  preserveWhitespaces: false
+  imports      : [ShareModule],
+  templateUrl  : './{{component}}-{{language}}.html'
 })
 export class NzDoc{{componentName}}Component {
-  goLink(link: string) {
+  goLink(link: string): void {
     if (window) {
       window.location.hash = link;
     }

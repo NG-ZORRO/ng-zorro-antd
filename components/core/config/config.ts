@@ -151,7 +151,6 @@ export interface CardConfig {
   nzSize?: NzSizeDSType;
   nzHoverable?: boolean;
   nzBordered?: boolean;
-  nzBorderless?: boolean;
 }
 
 export interface CarouselConfig {
@@ -187,7 +186,7 @@ export interface DatePickerConfig {
 
 export interface DescriptionsConfig {
   nzBordered?: boolean;
-  nzColumn?: { [key in NzBreakpointEnum]?: number } | number;
+  nzColumn?: Partial<Record<NzBreakpointEnum, number>> | number;
   nzSize?: 'default' | 'middle' | 'small';
   nzColon?: boolean;
 }
@@ -277,7 +276,7 @@ export interface SegmentedConfig {
 }
 
 export interface SpaceConfig {
-  nzSize?: 'small' | 'middle' | 'large' | number;
+  nzSize?: 'small' | 'middle' | 'large' | number | Array<'small' | 'middle' | 'large' | number>;
 }
 
 export interface SpinConfig {
@@ -297,6 +296,10 @@ export interface TableConfig {
   nzSimple?: boolean;
   nzHideOnSinglePage?: boolean;
   nzVirtualItemSize?: number;
+  /**
+   * @see {@link NzTableSortOrder}
+   */
+  nzSortDirections?: Array<string | 'ascend' | 'descend' | null>;
 }
 
 export interface TabsConfig {
@@ -384,7 +387,7 @@ export type NzConfigKey = keyof NzConfig;
 /**
  * User should provide an object implements this interface to set global configurations.
  */
-export const NZ_CONFIG = new InjectionToken<NzConfig>('nz-config');
+export const NZ_CONFIG = new InjectionToken<NzConfig>(typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-config' : '');
 
 export function provideNzConfig(config: NzConfig): EnvironmentProviders {
   return makeEnvironmentProviders([{ provide: NZ_CONFIG, useValue: config }]);

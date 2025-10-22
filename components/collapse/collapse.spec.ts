@@ -1,8 +1,17 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
 import { NzCollapseComponent } from './collapse.component';
@@ -11,15 +20,8 @@ import { NzCollapseModule } from './collapse.module';
 describe('collapse', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzCollapseModule, NoopAnimationsModule],
-      declarations: [
-        NzTestCollapseBasicComponent,
-        NzTestCollapseTemplateComponent,
-        NzTestCollapseIconComponent,
-        NzTestCollapseRtlComponent
-      ]
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
     });
-    TestBed.compileComponents();
   }));
   describe('collapse basic', () => {
     let fixture: ComponentFixture<NzTestCollapseBasicComponent>;
@@ -176,6 +178,86 @@ describe('collapse', () => {
     });
   });
 
+  describe('collapse collapsible', () => {
+    let fixture: ComponentFixture<NzTestCollapseCollapsibleComponent>;
+    let panel: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestCollapseCollapsibleComponent);
+      fixture.detectChanges();
+      panel = fixture.debugElement.query(By.directive(NzCollapsePanelComponent));
+    });
+
+    it('should only toggle by icon when nzCollapsible is "icon"', () => {
+      const headerEl = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      expect(headerEl.classList).toContain('ant-collapse-icon-collapsible-only');
+      // initial state
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      // click header text should NOT toggle
+      (panel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      // click icon should toggle open
+      (panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement).click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).toContain('ant-collapse-item-active');
+
+      // click header text again should NOT toggle
+      (panel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).toContain('ant-collapse-item-active');
+
+      // click icon should toggle close
+      (panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement).click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+    });
+
+    it('should not toggle when nzCollapsible is "disabled"', () => {
+      fixture.componentInstance.collapsible = 'disabled';
+      fixture.detectChanges();
+
+      const header = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      header.click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      const icon = panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement;
+      icon.click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+    });
+
+    it('should toggle by header when nzCollapsible is "header"', () => {
+      // Recreate fixture and set mode BEFORE first detectChanges so listeners bind to header
+      const localFixture = TestBed.createComponent(NzTestCollapseCollapsibleComponent);
+      localFixture.componentInstance.collapsible = 'header';
+      localFixture.detectChanges();
+      const localPanel = localFixture.debugElement.query(By.directive(NzCollapsePanelComponent));
+
+      const header = localPanel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      expect(header.classList).toContain('ant-collapse-header-collapsible-only');
+      expect(localPanel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      // click header toggles
+      (localPanel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      localFixture.detectChanges();
+      expect(localPanel.nativeElement.classList).toContain('ant-collapse-item-active');
+
+      // click header toggles again (close)
+      (localPanel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      localFixture.detectChanges();
+      expect(localPanel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      // clicking icon (which is inside header) should also toggle because header listens
+      (localPanel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement).click();
+      localFixture.detectChanges();
+      expect(localPanel.nativeElement.classList).toContain('ant-collapse-item-active');
+    });
+  });
+
   describe('RTL', () => {
     it('should className correct on dir change', () => {
       const fixture = TestBed.createComponent(NzTestCollapseRtlComponent);
@@ -188,11 +270,40 @@ describe('collapse', () => {
       expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-rtl');
     });
   });
+
+  describe('collapse size', () => {
+    let fixture: ComponentFixture<NzTestCollapseSizeSpecComponent>;
+    let collapse: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestCollapseSizeSpecComponent);
+      fixture.detectChanges();
+      collapse = fixture.debugElement.query(By.directive(NzCollapseComponent));
+    });
+
+    it('should apply correct host classes for nzSize', () => {
+      // default is middle: no small/large classes
+      expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-small');
+      expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-large');
+
+      // small
+      fixture.componentInstance.size = 'small';
+      fixture.detectChanges();
+      expect(collapse.nativeElement!.classList).toContain('ant-collapse-small');
+      expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-large');
+
+      // large
+      fixture.componentInstance.size = 'large';
+      fixture.detectChanges();
+      expect(collapse.nativeElement!.classList).toContain('ant-collapse-large');
+      expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-small');
+    });
+  });
 });
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-basic-collapse',
+  imports: [NzCollapseModule],
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse [nzAccordion]="accordion" [nzBordered]="bordered">
@@ -221,11 +332,12 @@ export class NzTestCollapseBasicComponent {
   showArrow = true;
   showExtra = '';
   header = 'string';
-  active01Change = jasmine.createSpy('active01 callback');
-  active02Change = jasmine.createSpy('active02 callback');
+  active01Change = jasmine.createSpy<NzSafeAny>('active01 callback');
+  active02Change = jasmine.createSpy<NzSafeAny>('active02 callback');
 }
 
 @Component({
+  imports: [NzCollapseModule],
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse>
@@ -238,6 +350,7 @@ export class NzTestCollapseBasicComponent {
 export class NzTestCollapseTemplateComponent {}
 
 @Component({
+  imports: [NzIconModule, NzCollapseModule],
   template: `
     <nz-collapse>
       <nz-collapse-panel>
@@ -250,7 +363,7 @@ export class NzTestCollapseTemplateComponent {}
         <p>Panel01</p>
       </nz-collapse-panel>
       <ng-template #expandedIcon>
-        <span nz-icon nzType="caret-right" class="ant-collapse-arrow"></span>
+        <nz-icon nzType="caret-right" class="ant-collapse-arrow" />
       </ng-template>
     </nz-collapse>
   `
@@ -258,6 +371,28 @@ export class NzTestCollapseTemplateComponent {}
 export class NzTestCollapseIconComponent {}
 
 @Component({
+  imports: [NzCollapseModule],
+  template: `
+    <nz-collapse>
+      <nz-collapse-panel
+        [(nzActive)]="active"
+        [nzCollapsible]="collapsible"
+        [nzShowArrow]="showArrow"
+        nzHeader="Header"
+      >
+        <p>Content</p>
+      </nz-collapse-panel>
+    </nz-collapse>
+  `
+})
+export class NzTestCollapseCollapsibleComponent {
+  active = false;
+  collapsible: 'disabled' | 'header' | 'icon' = 'icon';
+  showArrow = true;
+}
+
+@Component({
+  imports: [BidiModule, NzTestCollapseBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-basic-collapse></nz-test-basic-collapse>
@@ -266,5 +401,19 @@ export class NzTestCollapseIconComponent {}
 })
 export class NzTestCollapseRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
+}
+
+@Component({
+  imports: [NzCollapseModule],
+  template: `
+    <nz-collapse [nzSize]="size">
+      <nz-collapse-panel nzHeader="header" nzActive>
+        <p>content</p>
+      </nz-collapse-panel>
+    </nz-collapse>
+  `
+})
+export class NzTestCollapseSizeSpecComponent {
+  size: 'small' | 'middle' | 'large' = 'middle';
 }

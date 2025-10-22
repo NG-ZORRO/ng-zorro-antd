@@ -11,7 +11,7 @@
 ) {
   &.@{picker-prefix-cls} {
     &,
-    &:not([disabled]):hover {
+    &:not(.@{picker-prefix-cls}-disabled):hover {
       background-color: @background-color;
       border-color: @border-color;
     }
@@ -19,6 +19,10 @@
     &-focused,
     &:focus {
       .active(@text-color, @hoverBorderColor, @outlineColor);
+    }
+
+    .@{picker-prefix-cls}-active-bar {
+      background: @hoverBorderColor;
     }
   }
 }

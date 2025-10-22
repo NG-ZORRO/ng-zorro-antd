@@ -14,7 +14,7 @@ An enterprise-class Angular UI component library based on Ant Design, all compon
 ## Features
 
 - An enterprise-class UI design language for Angular applications.
-- 60+ high-quality Angular components out of the box.
+- 70+ high-quality Angular components out of the box.
 - Written in TypeScript with complete defined types.
 - Support OnPush mode, high performance.
 - Powerful theme customization in every detail.
@@ -22,13 +22,13 @@ An enterprise-class Angular UI component library based on Ant Design, all compon
 
 ## Environment Support
 
-- Modern browsers, [Browser support](https://angular.io/guide/browser-support)
+- Modern browsers, [Browser support](https://angular.dev/reference/versions#browser-support)
 - Server-side Rendering
-- [Electron](https://electron.atom.io/)
+- [Electron](https://www.electronjs.org/)
 
 | [<img src="https://img.alicdn.com/tfs/TB1G5ewZuL2gK0jSZPhXXahvXXa-48-48.png" alt="Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges//)<br>Edge | [<img src="https://img.alicdn.com/tfs/TB1Dx73o79l0K4jSZFKXXXFjpXa-48-48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://img.alicdn.com/tfs/TB1mY9FZrr1gK0jSZFDXXb9yVXa-48-48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://img.alicdn.com/tfs/TB1Vas5o79l0K4jSZFKXXXFjpXa-48-48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Safari | [<img src="https://img.alicdn.com/tfs/TB12EmNZET1gK0jSZFrXXcNCXXa-48-48.png" alt="Opera" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Opera | [<img src="https://img.alicdn.com/tfs/TB1TMW8paNj0u4jSZFyXXXgMVXa-48-48.png" alt="Electron" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Electron |
-| --- | --- | --- | --- | --- | --- |
-| last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| last 2 versions                                                                                                                                                                    | last 2 versions                                                                                                                                                                         | last 2 versions                                                                                                                                                                       | last 2 versions                                                                                                                                                                       | last 2 versions                                                                                                                                                                     | last 2 versions                                                                                                                                                                           |
 
 ## Version
 
@@ -36,12 +36,11 @@ An enterprise-class Angular UI component library based on Ant Design, all compon
 
 ## Angular Support
 
-`ng-zorro-antd` keeps the same major version with `@angular/core`, now supports Angular `^17.0.0`.
+`ng-zorro-antd` keeps the same major version with `@angular/core`, now supports Angular `^20.0.0`.
 
 ## Design Specification
 
 `ng-zorro-antd` synchronizes design specification with [Ant Design](https://ant.design/docs/spec/introduce) on a regular basis, you can check the [log](https://github.com/NG-ZORRO/ng-zorro-antd/actions?query=workflow:"styles-sync") online.
-
 
 ## Installation
 
@@ -90,7 +89,7 @@ Please read our [CONTRIBUTING.md](https://github.com/NG-ZORRO/ng-zorro-antd/blob
 
 If you'd like to help us improve ng-zorro-antd, just create a [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls). Feel free to report bugs and issues [here](https://ng.ant.design/issue-helper/#/en).
 
-> If you're new to posting issues, we ask that you read [*How To Ask Questions The Smart Way*](https://www.catb.org/~esr/faqs/smart-questions.html)(This guide does not provide actual support services for this project!) and [How to Ask a Question in Open Source Community](https://github.com/seajs/seajs/issues/545) and [How to Report Bugs Effectively](https://www.chiark.greenend.org.uk/~sgtatham/bugs.html) prior to posting. Well written bug reports help us help you!
+> If you're new to posting issues, we ask that you read [_How To Ask Questions The Smart Way_](https://www.catb.org/~esr/faqs/smart-questions.html)(This guide does not provide actual support services for this project!) and [How to Ask a Question in Open Source Community](https://github.com/seajs/seajs/issues/545) and [How to Report Bugs Effectively](https://www.chiark.greenend.org.uk/~sgtatham/bugs.html) prior to posting. Well written bug reports help us help you!
 
 ## Need Help?
 

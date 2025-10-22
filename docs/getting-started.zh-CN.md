@@ -44,8 +44,7 @@ $ ng new PROJECT-NAME
 $ ng add ng-zorro-antd
 ```
 
-<img style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);" src="https://img.alicdn.com/tfs/TB19fFHdkxz61VjSZFtXXaDSVXa-680-243.svg">
-
+<img alt="CLI" style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);" src="https://img.alicdn.com/tfs/TB19fFHdkxz61VjSZFtXXaDSVXa-680-243.svg">
 
 开发者可以通过增加参数来完成个性化的初始化配置，例如国际化或者自定义主题等，详细可以参考 [脚手架](/docs/schematics/zh) 部分。
 
@@ -57,8 +56,7 @@ $ ng add ng-zorro-antd
 $ ng serve --port 0 --open
 ```
 
-<img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
-
+<img alt="welcome" style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 
 ### 构建和部署
 
@@ -88,22 +86,20 @@ $ npm install ng-zorro-antd --save
 
 ```json
 {
-  "styles": [
-    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
-  ]
+  "styles": ["node_modules/ng-zorro-antd/ng-zorro-antd.min.css"]
 }
 ```
 
 在 `style.css` 中引入预构建样式文件
 
 ```css
-@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import '~ng-zorro-antd/ng-zorro-antd.min.css';
 ```
 
 在 `style.less` 中引入 less 样式文件
 
 ```less
-@import "~ng-zorro-antd/ng-zorro-antd.less";
+@import '~ng-zorro-antd/ng-zorro-antd.less';
 ```
 
 #### 使用特定组件样式
@@ -115,36 +111,31 @@ $ npm install ng-zorro-antd --save
 在 `style.css` 中引入预构建样式文件
 
 ```css
-@import "~ng-zorro-antd/style/index.min.css"; /* 引入基本样式 */
-@import "~ng-zorro-antd/button/style/index.min.css"; /* 引入组件样式 */
+@import '~ng-zorro-antd/style/index.min.css'; /* 引入基本样式 */
+@import '~ng-zorro-antd/button/style/index.min.css'; /* 引入组件样式 */
 ```
 
 在 `style.less` 中引入 less 样式文件
+
 ```less
-@import "~ng-zorro-antd/style/entry.less"; /* 引入基本样式 */
-@import "~ng-zorro-antd/button/style/entry.less"; /* 引入组件样式 */
+@import '~ng-zorro-antd/style/entry.less'; /* 引入基本样式 */
+@import '~ng-zorro-antd/button/style/entry.less'; /* 引入组件样式 */
 ```
 
 ### 引入组件模块
 
-最后你需要将想要使用的组件模块引入到你的 `app.module.ts` 文件和[特性模块](https://angular.cn/guide/feature-modules)中。
+最后你需要将想要使用的组件模块引入到你的组件中。
 
-以下面的 `NzButtonModule` 模块为例，先引入组件模块：
+以下面的 `NzButtonModule` 模块为例：
 
 ```ts
-import { NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { AppComponent } from './app.component';
 
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    NzButtonModule
-  ]
+@Component({
+  imports: [NzButtonModule]
 })
-export class AppModule { }
+export class AppComponent {}
 ```
 
 然后在模板中使用：

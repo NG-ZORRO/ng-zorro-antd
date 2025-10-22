@@ -22,18 +22,17 @@ import { NzTableContentComponent } from './table-content.component';
         [tableLayout]="tableLayout"
         [listOfColWidth]="listOfColWidth"
         [theadTemplate]="theadTemplate"
+        [tfootTemplate]="tfootTemplate"
       ></table>
     </div>
   `,
   host: { class: 'ant-table-container' },
-  imports: [NzTableContentComponent],
-  standalone: true
+  imports: [NzTableContentComponent]
 })
 export class NzTableInnerDefaultComponent {
   @Input() tableLayout: NzTableLayout = 'auto';
   @Input() listOfColWidth: ReadonlyArray<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
-
-  constructor() {}
+  @Input() tfootTemplate: TemplateRef<NzSafeAny> | null = null;
 }

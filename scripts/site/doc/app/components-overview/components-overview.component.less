@@ -1,0 +1,48 @@
+.components-overview {
+  padding: 0;
+
+  &-group-title {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 24px !important;
+  }
+
+  &-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 152px;
+  }
+
+  &-card {
+    padding: 12px;
+    cursor: pointer;
+  }
+}
+
+nz-input-group.components-overview-search {
+  width: 100%;
+  padding: 0;
+  font-size: 20px;
+  border: 0;
+  box-shadow: none;
+
+  input {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 20px;
+  }
+
+  .anticon {
+    color: #bbb;
+  }
+}
+
+.ant-affix {
+  .components-overview-search {
+    margin: -8px;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0 6px 12px -2px, rgba(0, 0, 0, 0.3) 0 3px 7px -3px;
+  }
+}

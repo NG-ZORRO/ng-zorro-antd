@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
-import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-upload-with-aliyun-oss',
+  imports: [NzButtonModule, NzIconModule, NzUploadModule],
   template: `
     <nz-upload
       nzName="file"
@@ -15,7 +18,7 @@ import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
     >
       Photos:
       <button nz-button>
-        <span nz-icon nzType="upload"></span>
+        <nz-icon nzType="upload" />
         Click to Upload
       </button>
     </nz-upload>
@@ -36,7 +39,6 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     const suffix = file.name.slice(file.name.lastIndexOf('.'));
     const filename = Date.now() + suffix;
     file.url = this.mockOSSData.dir + filename;
-
     return file;
   };
 

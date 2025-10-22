@@ -13,7 +13,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   selector: 'nz-tab-close-button, button[nz-tab-close-button]',
   template: `
     <ng-container *nzStringTemplateOutlet="closeIcon; let icon">
-      <span nz-icon [nzType]="icon" nzTheme="outline"></span>
+      <nz-icon [nzType]="icon" nzTheme="outline" />
     </ng-container>
   `,
   host: {
@@ -21,11 +21,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     'aria-label': 'Close tab',
     type: 'button'
   },
-  imports: [NzOutletModule, NzIconModule],
-  standalone: true
+  imports: [NzOutletModule, NzIconModule]
 })
 export class NzTabCloseButtonComponent {
   @Input() closeIcon: string | TemplateRef<NzSafeAny> = 'close';
-
-  constructor() {}
 }

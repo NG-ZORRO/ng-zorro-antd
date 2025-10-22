@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
 
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-tabs-disabled',
+  imports: [NzTabsModule],
   template: `
-    <nz-tabset>
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.name" [nzDisabled]="tab.disabled">
-        {{ tab.name }}
-      </nz-tab>
-    </nz-tabset>
+    <nz-tabs>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzTitle]="tab.name" [nzDisabled]="tab.disabled">
+          {{ tab.name }}
+        </nz-tab>
+      }
+    </nz-tabs>
   `
 })
 export class NzDemoTabsDisabledComponent {

@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 6
 debug: true
 title:
   zh-CN: 二次校验
@@ -13,4 +13,3 @@ title:
 ## en-US
 
 Can use `nzCanMove` to do two-verification.
-

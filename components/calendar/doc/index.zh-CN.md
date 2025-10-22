@@ -4,22 +4,17 @@ type: 数据展示
 subtitle: 日历
 cols: 1
 title: Calendar
-cover: https://gw.alipayobjects.com/zos/antfincdn/dPQmLq08DI/Calendar.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/dPQmLq08DI/Calendar.svg'
+description: 按照日历形式展示数据的容器。
 ---
-
-按照日历形式展示数据的容器。
 
 ## 何时使用
 
 当数据是日期或按照日期划分时，例如日程、课表、价格日历等，农历等。目前支持年/月切换。
 
-```ts
-import { NzCalendarModule } from 'ng-zorro-antd/calendar';
-```
-
 ## API
 
-**注意：**Calendar 的部分 locale 来自于 Angular 自身的国际化支持，需要在 app.module.ts 文件中 引入相应的 Angular 语言包。
+**注意：**Calendar 的部分 locale 来自于 Angular 自身的国际化支持，需要在 `app.config.ts` 文件中 引入相应的 Angular 语言包。
 
 例如：
 
@@ -44,7 +39,7 @@ registerLocaleData(zh);
 <ng-template #dateCellTpl let-date><span>{{ date | date:'d'}}</span></ng-template>
 ```
 
-### nz-calendar:standalone
+### nz-calendar
 
 | 参数                | 说明                                                         | 类型                                                    | 默认值    |
 | ------------------- | ------------------------------------------------------------ | ------------------------------------------------------- | --------- |
@@ -55,6 +50,7 @@ registerLocaleData(zh);
 | `[nzDateFullCell]`  | （可作为内容）自定义渲染日期单元格，模版内容覆盖单元格       | `TemplateRef<Date>`                                     | -         |
 | `[nzMonthCell]`     | （可作为内容）自定义渲染月单元格，模版内容会被追加到单元格   | `TemplateRef<Date>`                                     | -         |
 | `[nzMonthFullCell]` | （可作为内容）自定义渲染月单元格，模版内容覆盖单元格         | `TemplateRef<Date>`                                     | -         |
+| `[nzCustomHeader]`  | 自定义头部内容                                               | `string \| TemplateRef<void>`                           | -         |
 | `[nzDisabledDate]`  | 不可选择的日期                                               | `(current: Date) => boolean`                            | -         |
 | `(nzPanelChange)`   | 面板变化的回调                                               | `EventEmitter<{ date: Date, mode: 'month' \| 'year' }>` | -         |
 | `(nzSelectChange)`  | 选择日期的回调                                               | `EventEmitter<Date>`                                    | -         |

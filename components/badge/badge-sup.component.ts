@@ -4,9 +4,11 @@
  */
 
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   Input,
+  numberAttribute,
   OnChanges,
   OnInit,
   SimpleChanges,
@@ -21,11 +23,9 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 @Component({
   selector: 'nz-badge-sup',
   exportAs: 'nzBadgeSup',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
-  standalone: true,
   imports: [NzNoAnimationDirective],
   template: `
     @if (count <= nzOverflowCount) {
@@ -50,11 +50,13 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
   `,
   host: {
     class: 'ant-scroll-number',
+    '[class]': `isPresetColor ? ('ant-badge-status-' + nzColor) : ''`,
     '[@.disabled]': `disableAnimation`,
     '[@zoomBadgeMotion]': '',
     '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
     '[style]': `nzStyle`,
     '[style.right.px]': `nzOffset && nzOffset[0] ? -nzOffset[0] : null`,
+    '[style.background]': `isPresetColor ? nzStyle?.background : nzColor`,
     '[style.margin-top.px]': `nzOffset && nzOffset[1] ? nzOffset[1] : null`,
     '[class.ant-badge-count]': `!nzDot`,
     '[class.ant-badge-count-sm]': `nzSize === 'small'`,
@@ -65,22 +67,25 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzOffset?: [number, number];
   @Input() nzTitle?: string | null | undefined;
-  @Input() nzStyle: { [key: string]: string } | null = null;
+  @Input() nzStyle: Record<string, string> | null = null;
   @Input() nzDot = false;
-  @Input() nzOverflowCount: number = 99;
+  @Input({ transform: numberAttribute }) nzOverflowCount: number = 99;
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() noAnimation = false;
   @Input() nzSize: NzSizeDSType = 'default';
+  @Input({ transform: booleanAttribute }) isPresetColor = false;
+  @Input() nzColor?: string = undefined;
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  constructor() {}
-
   generateMaxNumberArray(): void {
-    this.maxNumberArray = this.nzOverflowCount.toString().split('');
+    this.maxNumberArray = this.nzOverflowCount
+      .toString()
+      .split('')
+      .map((value: string, index: number) => `${value}-${index}`);
   }
 
   ngOnInit(): void {

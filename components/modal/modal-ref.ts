@@ -5,7 +5,7 @@
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
-import { EventEmitter } from '@angular/core';
+import { ComponentRef, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
@@ -16,25 +16,30 @@ import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { ModalOptions } from './modal-types';
 
-export const enum NzModalState {
-  OPEN,
-  CLOSING,
-  CLOSED
-}
+export const NzModalState = {
+  OPEN: 0,
+  CLOSING: 1,
+  CLOSED: 2
+} as const;
 
-export const enum NzTriggerAction {
-  CANCEL = 'cancel',
-  OK = 'ok'
-}
+export type NzModalState = (typeof NzModalState)[keyof typeof NzModalState];
+
+export const NzTriggerAction = {
+  CANCEL: 'cancel',
+  OK: 'ok'
+} as const;
+
+export type NzTriggerAction = (typeof NzTriggerAction)[keyof typeof NzTriggerAction];
 
 export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAPI<T, R> {
   componentInstance: T | null = null;
+  componentRef: ComponentRef<T> | null = null;
   result?: R;
   state: NzModalState = NzModalState.OPEN;
-  afterClose: Subject<R | undefined> = new Subject();
-  afterOpen: Subject<void> = new Subject();
+  afterClose = new Subject<R | undefined>();
+  afterOpen = new Subject<void>();
 
-  private closeTimeout?: number;
+  private closeTimeout?: ReturnType<typeof setTimeout>;
 
   private destroy$ = new Subject<void>();
 
@@ -66,7 +71,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         this._finishDialogClose();
       });
 
-    containerInstance.containerClick.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
+    containerInstance.containerClick.pipe(takeUntil(this.destroy$)).subscribe(() => {
       const cancelable = !this.config.nzCancelLoading && !this.config.nzOkLoading;
       if (cancelable) {
         this.trigger(NzTriggerAction.CANCEL);
@@ -103,12 +108,17 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         config.nzAfterClose.emit(this.result);
       }
       this.componentInstance = null;
+      this.componentRef = null;
       this.overlayRef.dispose();
     });
   }
 
   getContentComponent(): T {
     return this.componentInstance as T;
+  }
+
+  getContentComponentRef(): Readonly<ComponentRef<T> | null> {
+    return this.componentRef as Readonly<ComponentRef<T> | null>;
   }
 
   getElement(): HTMLElement {
@@ -170,10 +180,12 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     if (this.state === NzModalState.CLOSING) {
       return;
     }
-    const trigger = { ok: this.config.nzOnOk, cancel: this.config.nzOnCancel }[action];
-    const loadingKey = { ok: 'nzOkLoading', cancel: 'nzCancelLoading' }[action] as 'nzOkLoading' | 'nzCancelLoading';
-    const loading = this.config[loadingKey];
-    if (loading) {
+    const actionMap = {
+      [NzTriggerAction.OK]: { trigger: this.config.nzOnOk, loadingKey: 'nzOkLoading' },
+      [NzTriggerAction.CANCEL]: { trigger: this.config.nzOnCancel, loadingKey: 'nzCancelLoading' }
+    } as const;
+    const { trigger, loadingKey } = actionMap[action];
+    if (this.config[loadingKey]) {
       return;
     }
     if (trigger instanceof EventEmitter) {

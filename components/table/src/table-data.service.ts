@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject, Injectable } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap } from 'rxjs/operators';
 
 import {
   NzCustomColumn,
@@ -17,8 +18,8 @@ import {
 } from './table.types';
 
 @Injectable()
-export class NzTableDataService<T> implements OnDestroy {
-  private destroy$ = new Subject<boolean>();
+export class NzTableDataService<T> {
+  private destroyRef = inject(DestroyRef);
   private pageIndex$ = new BehaviorSubject<number>(1);
   private frontPagination$ = new BehaviorSubject<boolean>(true);
   private pageSize$ = new BehaviorSubject<number>(10);
@@ -100,7 +101,7 @@ export class NzTableDataService<T> implements OnDestroy {
     this.pageSizeDistinct$,
     this.listOfDataAfterCalc$
   ]).pipe(
-    takeUntil(this.destroy$),
+    takeUntilDestroyed(this.destroyRef),
     filter(value => {
       const [pageIndex, pageSize, listOfData] = value;
       const maxPageIndex = Math.ceil(listOfData.length / pageSize) || 1;
@@ -131,10 +132,5 @@ export class NzTableDataService<T> implements OnDestroy {
   }
   updateListOfCustomColumn(list: NzCustomColumn[]): void {
     this.listOfCustomColumn$.next(list);
-  }
-  constructor() {}
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

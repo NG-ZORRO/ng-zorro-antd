@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
+import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'nz-demo-date-picker-start-end',
+  imports: [FormsModule, NzDatePickerModule],
   template: `
     <nz-date-picker
       [nzDisabledDate]="disabledStartDate"

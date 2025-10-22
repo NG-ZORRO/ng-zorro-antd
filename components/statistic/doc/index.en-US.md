@@ -2,23 +2,18 @@
 category: Components
 type: Data Display
 title: Statistic
-cover: https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg'
+description: Display statistic number.
 ---
-
-Display statistic number.
 
 ## When To Use
 
 - When want to highlight some data.
 - When want to display statistic data with description.
 
-```ts
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-```
-
 ## API
 
-### nz-statistic:standalone
+### nz-statistic
 
 | Property            | Description                        | Type                                           | Default |
 | ------------------- | ---------------------------------- | ---------------------------------------------- | ------- |
@@ -28,12 +23,13 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 | `[nzValue]`         | Value                              | `string \| number`                             | -       |
 | `[nzValueStyle]`    | Value CSS style                    | `Object`                                       | -       |
 | `[nzValueTemplate]` | Custom template to render a number | `TemplateRef<{ $implicit: string \| number }>` | -       |
+| `[nzLoading]`       | Loading status of Statistic        | `boolean`                                      | `false` |
 
-### nz-countdown:standalone
+### nz-countdown
 
 | Property              | Description                      | Type                                 | Default      |
 | --------------------- | -------------------------------- | ------------------------------------ | ------------ |
-| `[nzFormat]`          | Format string                    | `string`                             | `"HH:mm:ss"` |
+| `[nzFormat]`          | Format string                    | `string`                             | `'HH:mm:ss'` |
 | `[nzPrefix]`          | Prefix of Value                  | `string \| TemplateRef<void>`        | -            |
 | `[nzSuffix]`          | Suffix of Value                  | `string \| TemplateRef<void>`        | -            |
 | `[nzTitle]`           | Title                            | `string \| TemplateRef<void>`        | -            |

@@ -1,14 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Component, DebugElement, TemplateRef, ViewChild, inject } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
+import en_US from 'ng-zorro-antd/i18n/languages/en_US';
+import { NzListModule } from 'ng-zorro-antd/list';
 
-import { ComponentBed, createComponentBed } from '../core/testing/component-bed';
-import { NzI18nService } from '../i18n';
-import en_US from '../i18n/languages/en_US';
-import { NzListModule } from '../list';
 import { NZ_EMPTY_COMPONENT_NAME } from './config';
 import { NzEmbedEmptyComponent } from './embed-empty.component';
 import { NzEmptyComponent } from './empty.component';
@@ -16,18 +19,13 @@ import { NzEmptyModule } from './empty.module';
 
 describe('nz-empty', () => {
   describe('basic', () => {
-    let testBed: ComponentBed<NzEmptyTestBasicComponent>;
     let fixture: ComponentFixture<NzEmptyTestBasicComponent>;
     let testComponent: NzEmptyTestBasicComponent;
     let emptyComponent: DebugElement;
 
     beforeEach(() => {
-      testBed = createComponentBed(NzEmptyTestBasicComponent, {
-        imports: [NzEmptyModule]
-      });
-
-      fixture = testBed.fixture;
-      testComponent = testBed.component;
+      fixture = TestBed.createComponent(NzEmptyTestBasicComponent);
+      testComponent = fixture.debugElement.componentInstance;
       emptyComponent = fixture.debugElement.query(By.directive(NzEmptyComponent));
 
       fixture.detectChanges();
@@ -112,7 +110,7 @@ describe('nz-empty', () => {
       const contentEl = emptyComponent.nativeElement.lastElementChild;
       expect(contentEl.innerText.trim()).toBe('暂无数据');
 
-      testBed.bed.inject(NzI18nService).setLocale(en_US);
+      TestBed.inject(NzI18nService).setLocale(en_US);
       fixture.detectChanges();
       expect(contentEl.innerText.trim()).toBe('No Data');
     });
@@ -129,10 +127,6 @@ describe('nz-empty', () => {
 
     describe('service method', () => {
       beforeEach(() => {
-        TestBed.configureTestingModule({
-          imports: [NzEmptyTestServiceModule]
-        }).compileComponents();
-
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
         testComponent = fixture.debugElement.componentInstance;
       });
@@ -167,7 +161,7 @@ describe('nz-empty', () => {
         expect(embedComponent.nativeElement.innerText).toBe('list');
 
         // Null.
-        testComponent.noResult = null;
+        testComponent.noResult = null!;
         refresh();
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
@@ -232,9 +226,17 @@ describe('nz-empty', () => {
     describe('service injection', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [NzEmptyTestInjectionModule]
-        }).compileComponents();
-
+          providers: [
+            {
+              provide: NZ_CONFIG,
+              useValue: {
+                empty: {
+                  nzDefaultEmptyContent: NzEmptyTestCustomComponent
+                }
+              }
+            }
+          ]
+        });
         fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
         testComponent = fixture.debugElement.componentInstance;
       });
@@ -264,6 +266,7 @@ describe('nz-empty', () => {
 });
 
 @Component({
+  imports: [NzEmptyModule],
   template: `
     <nz-empty [nzNotFoundImage]="image" [nzNotFoundContent]="content" [nzNotFoundFooter]="footer">
       <ng-template #imageTpl>Image</ng-template>
@@ -277,12 +280,13 @@ export class NzEmptyTestBasicComponent {
   @ViewChild('contentTpl', { static: false }) contentTpl!: TemplateRef<void>;
   @ViewChild('footerTpl', { static: false }) footerTpl!: TemplateRef<void>;
 
-  image?: TemplateRef<void> | string;
+  image!: TemplateRef<void> | string;
   content?: TemplateRef<void> | string;
   footer?: TemplateRef<void> | string;
 }
 
 @Component({
+  imports: [NzListModule],
   template: `
     <nz-list [nzDataSource]="[]" [nzNoResult]="noResult"></nz-list>
     <ng-template #tpl let-component>
@@ -293,7 +297,7 @@ export class NzEmptyTestBasicComponent {
 export class NzEmptyTestServiceComponent {
   @ViewChild('tpl', { static: false }) template!: TemplateRef<string>;
 
-  noResult?: string | null;
+  noResult!: string;
 
   constructor(public configService: NzConfigService) {}
 
@@ -307,34 +311,9 @@ export class NzEmptyTestServiceComponent {
 }
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-empty-test-custom',
-  template: ` <div>I'm in component {{ name }}</div> `
+  template: `<div>I'm in component {{ name }}</div>`
 })
 export class NzEmptyTestCustomComponent {
-  constructor(@Inject(NZ_EMPTY_COMPONENT_NAME) public name: string) {}
+  name = inject(NZ_EMPTY_COMPONENT_NAME);
 }
-
-@NgModule({
-  imports: [CommonModule, NzEmptyModule, NzListModule],
-  declarations: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
-  exports: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent]
-})
-export class NzEmptyTestServiceModule {}
-
-@NgModule({
-  imports: [CommonModule, NzEmptyModule, NzListModule],
-  declarations: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
-  exports: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
-  providers: [
-    {
-      provide: NZ_CONFIG,
-      useValue: {
-        empty: {
-          nzDefaultEmptyContent: NzEmptyTestCustomComponent
-        }
-      }
-    }
-  ]
-})
-export class NzEmptyTestInjectionModule {}

@@ -41,12 +41,11 @@ export type Locale =
   | 'zh_CN'
   | 'zh_TW';
 
-// eslint-disable-next-line no-shadow
 export enum ProjectTemplate {
-  Blank    = 'blank',
+  Blank = 'blank',
   Sidemenu = 'sidemenu',
-  Topnav   = 'topnav',
-  None     = 'none'
+  Topnav = 'topnav',
+  None = 'none'
 }
 
 export interface Schema {

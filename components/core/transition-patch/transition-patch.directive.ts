@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AfterViewInit, Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, inject, Input, OnChanges, Renderer2 } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -14,10 +14,11 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
  */
 @Directive({
   selector:
-    '[nz-button], nz-button-group, [nz-icon], [nz-menu-item], [nz-submenu], nz-select-top-control, nz-select-placeholder, nz-input-group',
-  standalone: true
+    '[nz-button], [nz-icon], nz-icon, [nz-menu-item], [nz-submenu], nz-select-top-control, nz-select-placeholder, nz-input-group'
 })
 export class NzTransitionPatchDirective implements AfterViewInit, OnChanges {
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private renderer = inject(Renderer2);
   @Input() hidden: NzSafeAny = null;
   setHiddenAttribute(): void {
     if (this.hidden) {
@@ -31,10 +32,7 @@ export class NzTransitionPatchDirective implements AfterViewInit, OnChanges {
     }
   }
 
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2
-  ) {
+  constructor() {
     this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', '');
   }
 

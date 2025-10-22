@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Use `nzTipFormatter` to format content of `Toolip`. If `nzTipFormatter` is null, hide it.
-
-

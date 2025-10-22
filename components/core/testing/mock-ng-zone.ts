@@ -17,17 +17,17 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
  */
 @Injectable()
 export class MockNgZone extends NgZone {
-  override onStable: EventEmitter<NzSafeAny> = new EventEmitter(false);
+  override onStable = new EventEmitter<NzSafeAny>(false);
 
   constructor() {
     super({ enableLongStackTrace: false });
   }
 
-  override run(fn: Function): NzSafeAny {
+  override run(fn: () => NzSafeAny): NzSafeAny {
     return fn();
   }
 
-  override runOutsideAngular(fn: Function): NzSafeAny {
+  override runOutsideAngular(fn: () => NzSafeAny): NzSafeAny {
     return fn();
   }
 

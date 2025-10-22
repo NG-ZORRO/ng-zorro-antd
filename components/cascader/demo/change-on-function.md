@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Allow select option only on `nzChangeOn` return true.
-

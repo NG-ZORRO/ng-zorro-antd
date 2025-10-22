@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { NzTabPosition } from 'ng-zorro-antd/tabs';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-slide',
+  imports: [FormsModule, NzInputNumberModule, NzRadioModule, NzTabsModule],
   template: `
     <nz-radio-group [(ngModel)]="nzTabPosition" style="margin-bottom: 8px;">
       <label nz-radio-button [nzValue]="'top'">Horizontal</label>
@@ -11,24 +15,25 @@ import { NzTabPosition } from 'ng-zorro-antd/tabs';
     </nz-radio-group>
     <nz-input-number style="float:right;" [nzMin]="0" [nzMax]="29" [(ngModel)]="selectedIndex"></nz-input-number>
 
-    <nz-tabset
+    <nz-tabs
       style="height:220px;"
       [nzTabPosition]="nzTabPosition"
       [(nzSelectedIndex)]="selectedIndex"
       (nzSelectChange)="log([$event])"
     >
-      <nz-tab
-        *ngFor="let tab of tabs"
-        [nzTitle]="tab.name"
-        [nzDisabled]="tab.disabled"
-        (nzSelect)="log(['select', tab])"
-        (nzClick)="log(['click', tab])"
-        (nzContextmenu)="log(['contextmenu', tab])"
-        (nzDeselect)="log(['deselect', tab])"
-      >
-        {{ tab.content }}
-      </nz-tab>
-    </nz-tabset>
+      @for (tab of tabs; track tab) {
+        <nz-tab
+          [nzTitle]="tab.name"
+          [nzDisabled]="tab.disabled"
+          (nzSelect)="log(['select', tab])"
+          (nzClick)="log(['click', tab])"
+          (nzContextmenu)="log(['contextmenu', tab])"
+          (nzDeselect)="log(['deselect', tab])"
+        >
+          {{ tab.content }}
+        </nz-tab>
+      }
+    </nz-tabs>
   `
 })
 export class NzDemoTabsSlideComponent implements OnInit {

@@ -1,24 +1,16 @@
 import { Component } from '@angular/core';
 
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
+
 @Component({
   selector: 'nz-demo-segmented-basic',
-  template: `<nz-segmented [nzOptions]="options" (nzValueChange)="handleIndexChange($event)"></nz-segmented>`,
-  styles: [
-    `
-      .code-box-demo {
-        overflow-x: auto;
-      }
-
-      .code-box-demo .ant-segmented {
-        margin-bottom: 10px;
-      }
-    `
-  ]
+  imports: [NzSegmentedModule],
+  template: `<nz-segmented [nzOptions]="options" (nzValueChange)="handleValueChange($event)"></nz-segmented>`
 })
 export class NzDemoSegmentedBasicComponent {
   options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
 
-  handleIndexChange(e: number): void {
+  handleValueChange(e: string | number): void {
     console.log(e);
   }
 }

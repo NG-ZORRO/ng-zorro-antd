@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Only card type Tabs support adding & closable.
-
-

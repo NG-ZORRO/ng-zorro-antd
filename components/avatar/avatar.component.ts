@@ -3,43 +3,56 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform, PlatformModule } from '@angular/cdk/platform';
 import {
+  afterEveryRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
+  input,
   Input,
-  NgZone,
+  numberAttribute,
   OnChanges,
   Output,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgClassInterface, NumberInput, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputNumber } from 'ng-zorro-antd/core/util';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
 
+/** https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-loading */
+type NzAvatarLoading = 'eager' | 'lazy';
+
+/** https://wicg.github.io/priority-hints/#idl-index */
+type NzAvatarFetchPriority = 'high' | 'low' | 'auto';
+
 @Component({
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
-  standalone: true,
-  imports: [NzIconModule, PlatformModule],
+  imports: [NzIconModule],
   template: `
     @if (nzIcon && hasIcon) {
-      <span nz-icon [nzType]="nzIcon"></span>
-    }
-    @if (nzSrc && hasSrc) {
-      <img [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
-    }
-    @if (nzText && hasText) {
+      <nz-icon [nzType]="nzIcon" />
+    } @else if (nzSrc && hasSrc) {
+      <img
+        [src]="nzSrc"
+        [attr.srcset]="nzSrcSet"
+        [attr.alt]="nzAlt"
+        [attr.loading]="nzLoading() || 'eager'"
+        [attr.fetchpriority]="nzFetchPriority() || 'auto'"
+        (error)="imgError($event)"
+      />
+    } @else if (nzText && hasText) {
       <span class="ant-avatar-string" #textEl>{{ nzText }}</span>
     }
+    <ng-content></ng-content>
   `,
   host: {
     class: 'ant-avatar',
@@ -55,45 +68,40 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
     // nzSize type is number when customSize is true
     '[style.font-size.px]': '(hasIcon && customSize) ? $any(nzSize) / 2 : null'
   },
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {
-  static ngAcceptInputType_nzGap: NumberInput;
-
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   @Input() @WithConfig() nzShape: NzShapeSCType = 'circle';
   @Input() @WithConfig() nzSize: NzSizeLDSType | number = 'default';
-  @Input() @WithConfig() @InputNumber() nzGap = 4;
+  @Input({ transform: numberAttribute }) @WithConfig() nzGap = 4;
   @Input() nzText?: string;
   @Input() nzSrc?: string;
   @Input() nzSrcSet?: string;
   @Input() nzAlt?: string;
   @Input() nzIcon?: string;
+  readonly nzLoading = input<NzAvatarLoading>();
+  readonly nzFetchPriority = input<NzAvatarFetchPriority>();
   @Output() readonly nzError = new EventEmitter<Event>();
 
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
-  classMap: NgClassInterface = {};
   customSize: string | null = null;
 
   @ViewChild('textEl', { static: false }) textEl?: ElementRef<HTMLSpanElement>;
 
-  private el: HTMLElement = this.elementRef.nativeElement;
+  private el: HTMLElement = inject(ElementRef).nativeElement;
+  private cdr = inject(ChangeDetectorRef);
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
-    private platform: Platform,
-    private ngZone: NgZone
-  ) {}
+  constructor() {
+    afterEveryRender(() => this.calcStringSize());
+  }
 
-  imgError($event: Event): void {
-    this.nzError.emit($event);
-    if (!$event.defaultPrevented) {
+  imgError(event: Event): void {
+    this.nzError.emit(event);
+    if (!event.defaultPrevented) {
       this.hasSrc = false;
       this.hasIcon = false;
       this.hasText = false;
@@ -104,7 +112,7 @@ export class NzAvatarComponent implements OnChanges {
       }
       this.cdr.detectChanges();
       this.setSizeStyle();
-      this.notifyCalc();
+      this.calcStringSize();
     }
   }
 
@@ -114,17 +122,17 @@ export class NzAvatarComponent implements OnChanges {
     this.hasSrc = !!this.nzSrc;
 
     this.setSizeStyle();
-    this.notifyCalc();
+    this.calcStringSize();
   }
 
   private calcStringSize(): void {
-    if (!this.hasText) {
+    if (!this.hasText || !this.textEl) {
       return;
     }
 
-    const textEl = this.textEl!.nativeElement;
+    const textEl = this.textEl.nativeElement;
     const childrenWidth = textEl.offsetWidth;
-    const avatarWidth = this.el.getBoundingClientRect().width;
+    const avatarWidth = this.el.getBoundingClientRect?.().width ?? 0;
     const offset = this.nzGap * 2 < avatarWidth ? this.nzGap * 2 : 8;
     const scale = avatarWidth - offset < childrenWidth ? (avatarWidth - offset) / childrenWidth : 1;
 
@@ -132,23 +140,13 @@ export class NzAvatarComponent implements OnChanges {
     textEl.style.lineHeight = this.customSize || '';
   }
 
-  private notifyCalc(): void {
-    // If use ngAfterViewChecked, always demands more computations, so......
-    if (this.platform.isBrowser) {
-      this.ngZone.runOutsideAngular(() => {
-        setTimeout(() => {
-          this.calcStringSize();
-        });
-      });
-    }
-  }
-
   private setSizeStyle(): void {
     if (typeof this.nzSize === 'number') {
-      this.customSize = `${this.nzSize}px`;
+      this.customSize = toCssPixel(this.nzSize);
     } else {
       this.customSize = null;
     }
+
     this.cdr.markForCheck();
   }
 }

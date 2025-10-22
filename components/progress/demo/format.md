@@ -12,4 +12,3 @@ title:
 ## en-US
 
 You can custom text format by setting `nzFormat`.
-

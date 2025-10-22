@@ -13,34 +13,29 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { transCompatFormat } from './lib/util';
 import { PREFIX_CLASS } from './util';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'calendar-footer',
-  exportAs: 'calendarFooter',
+  imports: [NgTemplateOutlet, NzButtonModule, NzStringTemplateOutletDirective],
   template: `
     <div class="{{ prefixCls }}-footer">
       @if (extraFooter) {
         <div class="{{ prefixCls }}-footer-extra">
-          @if (isExtraFooterTemplateRef) {
-            <ng-container *ngTemplateOutlet="$any(extraFooter)" />
-          }
-          @if (isExtraFooterNonEmptyString) {
-            <span [innerHTML]="extraFooter"></span>
-          }
+          <ng-template [nzStringTemplateOutlet]="extraFooter">{{ extraFooter }}</ng-template>
         </div>
       }
 
@@ -84,17 +79,18 @@ import { PREFIX_CLASS } from './util';
       }
     </div>
   `,
-  imports: [NgTemplateOutlet, NzButtonModule],
-  standalone: true
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CalendarFooterComponent implements OnChanges {
+  private dateHelper = inject(DateHelperService);
   @Input() locale!: NzCalendarI18nInterface;
-  @Input() showToday: boolean = false;
-  @Input() showNow: boolean = false;
-  @Input() hasTimePicker: boolean = false;
-  @Input() isRange: boolean = false;
+  @Input({ transform: booleanAttribute }) showToday: boolean = false;
+  @Input({ transform: booleanAttribute }) showNow: boolean = false;
+  @Input({ transform: booleanAttribute }) hasTimePicker: boolean = false;
+  @Input({ transform: booleanAttribute }) isRange: boolean = false;
 
-  @Input() okDisabled: boolean = false;
+  @Input({ transform: booleanAttribute }) okDisabled: boolean = false;
   @Input() disabledDate?: (d: Date) => boolean;
   @Input() extraFooter?: TemplateRef<void> | string;
   @Input() rangeQuickSelector: TemplateRef<NzSafeAny> | null = null;
@@ -103,12 +99,8 @@ export class CalendarFooterComponent implements OnChanges {
   @Output() readonly clickToday = new EventEmitter<CandyDate>();
 
   prefixCls: string = PREFIX_CLASS;
-  isTemplateRef = isTemplateRef;
-  isNonEmptyString = isNonEmptyString;
   isTodayDisabled: boolean = false;
   todayTitle: string = '';
-
-  constructor(private dateHelper: DateHelperService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const now: Date = new Date();
@@ -125,13 +117,5 @@ export class CalendarFooterComponent implements OnChanges {
   onClickToday(): void {
     const now: CandyDate = new CandyDate();
     this.clickToday.emit(now.clone()); // To prevent the "now" being modified from outside, we use clone
-  }
-
-  get isExtraFooterTemplateRef(): boolean {
-    return isTemplateRef(this.extraFooter);
-  }
-
-  get isExtraFooterNonEmptyString(): boolean {
-    return isNonEmptyString(this.extraFooter);
   }
 }

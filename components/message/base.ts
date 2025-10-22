@@ -4,9 +4,14 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { ComponentType, Overlay } from '@angular/cdk/overlay';
+import {
+  ComponentType,
+  createGlobalPositionStrategy,
+  createNoopScrollStrategy,
+  createOverlayRef
+} from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, DestroyRef, Directive, EventEmitter, inject, Injector, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
@@ -17,15 +22,11 @@ import { NzMessageData, NzMessageDataOptions } from './typings';
 
 let globalCounter = 0;
 
-export abstract class NzMNService {
+export abstract class NzMNService<T extends NzMNContainerComponent> {
   protected abstract componentPrefix: string;
-  protected container?: NzMNContainerComponent;
-
-  constructor(
-    protected nzSingletonService: NzSingletonService,
-    protected overlay: Overlay,
-    private injector: Injector
-  ) {}
+  protected container?: T;
+  protected nzSingletonService = inject(NzSingletonService);
+  protected injector = inject(Injector);
 
   remove(id?: string): void {
     if (this.container) {
@@ -41,16 +42,16 @@ export abstract class NzMNService {
     return `${this.componentPrefix}-${globalCounter++}`;
   }
 
-  protected withContainer<T extends NzMNContainerComponent>(ctor: ComponentType<T>): T {
+  protected withContainer(ctor: ComponentType<T>): T {
     let containerInstance = this.nzSingletonService.getSingletonWithKey(this.componentPrefix);
     if (containerInstance) {
       return containerInstance as T;
     }
 
-    const overlayRef = this.overlay.create({
+    const overlayRef = createOverlayRef(this.injector, {
       hasBackdrop: false,
-      scrollStrategy: this.overlay.scrollStrategies.noop(),
-      positionStrategy: this.overlay.position().global()
+      scrollStrategy: createNoopScrollStrategy(),
+      positionStrategy: createGlobalPositionStrategy(this.injector)
     });
     const componentPortal = new ComponentPortal(ctor, null, this.injector);
     const componentRef = overlayRef.attach(componentPortal);
@@ -72,36 +73,28 @@ export abstract class NzMNService {
 }
 
 @Directive()
-export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
-  config?: Required<MessageConfig>;
-  instances: Array<Required<NzMessageData>> = [];
+export abstract class NzMNContainerComponent<
+  C extends MessageConfig = MessageConfig,
+  D extends NzMessageData = NzMessageData
+> {
+  config?: Required<C>;
+  instances: Array<Required<D>> = [];
 
   private readonly _afterAllInstancesRemoved = new Subject<void>();
 
   readonly afterAllInstancesRemoved = this._afterAllInstancesRemoved.asObservable();
 
-  protected readonly destroy$ = new Subject<void>();
+  protected cdr = inject(ChangeDetectorRef);
+  protected nzConfigService = inject(NzConfigService);
 
-  constructor(
-    protected cdr: ChangeDetectorRef,
-    protected nzConfigService: NzConfigService
-  ) {
-    this.updateConfig();
-  }
-
-  ngOnInit(): void {
+  constructor() {
     this.subscribeConfigChange();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  create(data: NzMessageData): Required<NzMessageData> {
+  create(data: D): Required<D> {
     const instance = this.onCreate(data);
 
-    if (this.instances.length >= this.config!.nzMaxStack) {
+    if (this.instances.length >= this.config!.nzMaxStack!) {
       this.instances = this.instances.slice(1);
     }
 
@@ -136,15 +129,15 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
     this.onAllInstancesRemoved();
   }
 
-  protected onCreate(instance: NzMessageData): Required<NzMessageData> {
+  protected onCreate(instance: D): Required<D> {
     instance.options = this.mergeOptions(instance.options);
     instance.onClose = new Subject<boolean>();
-    return instance as Required<NzMessageData>;
+    return instance as Required<D>;
   }
 
-  protected onRemove(instance: Required<NzMessageData>, userAction: boolean): void {
-    instance.onClose.next(userAction);
-    instance.onClose.complete();
+  protected onRemove(instance: Required<D>, userAction: boolean): void {
+    instance.onClose!.next(userAction);
+    instance.onClose!.complete();
   }
 
   private onAllInstancesRemoved(): void {
@@ -156,33 +149,40 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  protected abstract updateConfig(): void;
-
   protected abstract subscribeConfigChange(): void;
 
-  protected mergeOptions(options?: NzMessageDataOptions): NzMessageDataOptions {
+  protected mergeOptions(options?: D['options']): D['options'] {
     const { nzDuration, nzAnimate, nzPauseOnHover } = this.config!;
     return { nzDuration, nzAnimate, nzPauseOnHover, ...options };
   }
 }
 
 @Directive()
-export abstract class NzMNComponent implements OnInit, OnDestroy {
-  instance!: Required<NzMessageData>;
-  index?: number;
+export abstract class NzMNComponent implements OnInit {
+  abstract instance: Required<NzMessageData>;
+  abstract index?: number;
+  abstract destroyed: EventEmitter<{ id: string; userAction: boolean }>;
 
-  readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+  protected cdr = inject(ChangeDetectorRef);
+  protected destroyRef = inject(DestroyRef);
   readonly animationStateChanged: Subject<AnimationEvent> = new Subject<AnimationEvent>();
 
   protected options!: Required<NzMessageDataOptions>;
   protected autoClose?: boolean;
-  protected closeTimer?: number;
+  protected closeTimer?: ReturnType<typeof setTimeout>;
   protected userAction: boolean = false;
-  protected eraseTimer: number | null = null;
+  protected eraseTimer?: ReturnType<typeof setTimeout>;
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
 
-  protected constructor(protected cdr: ChangeDetectorRef) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      if (this.autoClose) {
+        this.clearEraseTimeout();
+      }
+      this.animationStateChanged.complete();
+    });
+  }
 
   ngOnInit(): void {
     this.options = this.instance.options as Required<NzMessageDataOptions>;
@@ -206,13 +206,6 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
       this.initErase();
       this.startEraseTimeout();
     }
-  }
-
-  ngOnDestroy(): void {
-    if (this.autoClose) {
-      this.clearEraseTimeout();
-    }
-    this.animationStateChanged.complete();
   }
 
   onEnter(): void {
@@ -266,7 +259,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   private clearEraseTimeout(): void {
     if (this.eraseTimer !== null) {
       clearTimeout(this.eraseTimer);
-      this.eraseTimer = null;
+      this.eraseTimer = undefined;
     }
   }
 }

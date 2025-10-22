@@ -11,10 +11,8 @@ import { NzImageDirective } from './image.directive';
   selector: 'nz-image-group',
   exportAs: 'nzImageGroup',
   template: '<ng-content></ng-content>',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  standalone: true
+  encapsulation: ViewEncapsulation.None
 })
 export class NzImageGroupComponent {
   @Input() nzScaleStep: number | null = null;

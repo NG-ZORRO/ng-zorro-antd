@@ -3,12 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subscription } from 'rxjs';
+import { DOCUMENT, inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { CodeEditorConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { CodeEditorConfig, NzConfigService, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { PREFIX, warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -34,44 +33,35 @@ function tryTriggerFunc(fn?: (...args: NzSafeAny[]) => NzSafeAny): (...args: NzS
 // We can't make the `NzCodeEditorService` to be a platform provider (`@Injectable({ providedIn: 'platform' })`)
 // since it depends on other root providers.
 const loaded$ = new ReplaySubject<boolean>(1);
-let loadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
+let loadingStatus: NzCodeEditorLoadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
 
 @Injectable({
   providedIn: 'root'
 })
-export class NzCodeEditorService implements OnDestroy {
-  private document: Document;
+export class NzCodeEditorService {
+  private readonly nzConfigService = inject(NzConfigService);
+  private document: Document = inject(DOCUMENT);
   private firstEditorInitialized = false;
   private option: JoinedEditorOptions = {};
   private config: CodeEditorConfig;
-  private subscription: Subscription | null;
 
   option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
 
-  constructor(
-    private readonly nzConfigService: NzConfigService,
-    @Inject(DOCUMENT) _document: NzSafeAny
-  ) {
+  constructor() {
     const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
 
-    this.document = _document;
     this.config = { ...globalConfig };
     if (this.config.monacoEnvironment) {
       window.MonacoEnvironment = { ...this.config.monacoEnvironment };
     }
     this.option = this.config.defaultEditorOption || {};
 
-    this.subscription = this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME).subscribe(() => {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
       const newGlobalConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
       if (newGlobalConfig) {
         this._updateDefaultOption(newGlobalConfig.defaultEditorOption);
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription!.unsubscribe();
-    this.subscription = null;
   }
 
   private _updateDefaultOption(option: JoinedEditorOptions): void {

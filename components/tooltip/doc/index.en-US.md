@@ -2,23 +2,18 @@
 category: Components
 type: Data Display
 title: Tooltip
-cover: https://gw.alipayobjects.com/zos/alicdn/Vyyeu8jq2/Tooltp.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/Vyyeu8jq2/Tooltp.svg'
+description: Simple text popup box.
 ---
-
-A simple text popup tip.
 
 ## When To Use
 
 - The Tooltip doesn't support complex text or operations. The tip is shown on mouse enter and is hidden on mouse leave.
-- It's often used instead of the HTML `title` attribute to explain `button/text/operation`.
-
-```ts
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-```
+- To provide an explanation fo a `button/text/operation`. It's often used instead of the HTML `title` attribute to explain `button/text/operation`.
 
 ## API
 
-### [nz-tooltip]:standalone
+### [nz-tooltip]
 
 | Property                        | Description                                                      | Type                                                                                                                                                                              | Default   |
 | ------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
@@ -40,16 +35,23 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.
 
-| Method           | Description     |
-| ---------------- | --------------- |
-| `show`           | Show            |
-| `hide`           | Hide            |
-| `updatePosition` | Update position |
+| Method             | Description     |
+| ------------------ | --------------- |
+| `show()`           | Show            |
+| `hide()`           | Hide            |
+| `updatePosition()` | Update position |
 
 ## Exclude body element's scroll event need to refresh the position of CDK
 
-In using the tooltip (including popconfirm、popover), the body element's scroll event will update the position of the tooltip. It will never update the tooltip's position if the scroll event happens in a custom element. You can add the `cdkScrollable` directive to achieve the goal. Take notice that you need to import relative package `import {ScrollingModule} from '@angular/cdk/scrolling';`, for more information you can visit [scrolling/api](https://material.angular.io/cdk/scrolling/api).
+In using the tooltip (including popconfirm、popover), the body element's scroll event will update the position of the tooltip. It will never update the tooltip's position if the scroll event happens in a custom element. You can add the `cdkScrollable` directive to achieve the goal. Take notice that you need to import relative package `import { ScrollingModule } from '@angular/cdk/scrolling';`, for more information you can visit [scrolling/api](https://material.angular.io/cdk/scrolling/api).
 
 ## Note
 
 Please ensure that the node of `[nz-tooltip]` accepts `onMouseEnter`, `onMouseLeave`, `onFocus`, `onClick` events.
+
+## FAQ
+
+### Q: The overlay layer element does not follow the scroll position when scrolling
+
+By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
+Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.

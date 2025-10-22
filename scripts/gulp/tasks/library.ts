@@ -7,14 +7,14 @@ import { dest, parallel, series, src, task } from 'gulp';
 
 import { join } from 'path';
 
-import { buildConfig } from '../../build-config';
 import { compile as compileLess } from '../../build/compile-styles';
 import { generateLessVars } from '../../build/generate-less-vars';
 import { copyStylesToSrc } from '../../build/migration-styles';
-import { execNodeTask } from '../util/task-helpers';
+import { buildConfig } from '../../build-config';
+import { execTask } from '../util/task-helpers';
 
 /** Run `ng build ng-zorro-antd-lib` */
-task('library:build-zorro', execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-lib']));
+task('library:build-zorro', execTask('ng', ['build', 'ng-zorro-antd-lib']));
 
 // Compile less to the public directory.
 task('library:compile-less', done => {

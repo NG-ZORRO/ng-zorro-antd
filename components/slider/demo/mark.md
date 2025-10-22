@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Using `nzMarks` property to mark a graduated slider, use `ngModel` to specify the position of thumb. When `nzIncluded` is false, means that different thumbs are coordinated. When `nzStep` is null, users can only slide the thumbs onto marks.
-
-

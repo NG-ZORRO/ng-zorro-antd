@@ -2,10 +2,9 @@
 category: Components
 type: Data Display
 title: Tag
-cover: https://gw.alipayobjects.com/zos/alicdn/cH1BOLfxC/Tag.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/cH1BOLfxC/Tag.svg'
+description: Used for marking and categorization.
 ---
-
-Tag for categorizing or markup.
 
 ## When To Use
 
@@ -13,13 +12,9 @@ Tag for categorizing or markup.
 
 - When categorizing.
 
-```ts
-import { NzTagModule } from 'ng-zorro-antd/tag';
-```
-
 ## API
 
-### nz-tag:standalone
+### nz-tag
 
 | Property            | Description                                                                 | Type                                      | Default     |
 | ------------------- | --------------------------------------------------------------------------- | ----------------------------------------- | ----------- |

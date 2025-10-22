@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 2
 title:
   zh-CN: 带搜索框
   en-US: Search
@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Transfer with a search box.
-
-

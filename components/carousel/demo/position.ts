@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-carousel-position',
+  imports: [FormsModule, NzCarouselModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="dotPosition">
       <label nz-radio-button nzValue="bottom">Bottom</label>

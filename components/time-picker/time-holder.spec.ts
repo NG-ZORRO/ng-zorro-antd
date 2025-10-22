@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { TimeHolder } from './time-holder';
 
 function mathSecondRound(value: Date): number {
@@ -63,12 +68,14 @@ describe('time holder', () => {
     const date = new Date(0, 0, 0, 15, 0, 0, 0);
     expect(mathSecondRound(holder.value!)).toEqual(mathSecondRound(date));
   });
+
   it('should set default selected 12-hours with value', () => {
     const holderPM = new TimeHolder().setValue(new Date(0, 0, 0, 15, 2, 3), true);
     expect(holderPM.selected12Hours).toBe('PM');
     const holderAM = new TimeHolder().setValue(new Date(0, 0, 0, 0, 2, 3), true);
     expect(holderAM.selected12Hours).toBe('AM');
   });
+
   it('should transform special value in 12-hour', () => {
     const holder = new TimeHolder().setValue(new Date(), true);
     holder.setSelected12Hours('am');

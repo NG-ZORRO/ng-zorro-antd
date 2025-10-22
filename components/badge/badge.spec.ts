@@ -1,25 +1,30 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement, SimpleChange, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
+import { badgePresetColors } from 'ng-zorro-antd/badge/preset-colors';
+import { NzRibbonComponent } from 'ng-zorro-antd/badge/ribbon.component';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
 
-describe('badge', () => {
-  beforeEach(fakeAsync(() => {
+describe('nz-badge', () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzBadgeModule, NzNoAnimationDirective, BrowserAnimationsModule],
-      declarations: [NzTestBadgeBasicComponent, NzTestBadgeRtlComponent]
+      providers: [provideAnimationsAsync()]
     });
-    TestBed.compileComponents();
-  }));
+  });
 
-  describe('basic badge', () => {
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestBadgeBasicComponent>;
     let testComponent: NzTestBadgeBasicComponent;
     let badgeElement: DebugElement;
@@ -143,6 +148,7 @@ describe('badge', () => {
 
     it('should status work', () => {
       testComponent.inner = false;
+      testComponent.count = 0;
       const statusList = ['success', 'processing', 'default', 'error', 'warning'];
       statusList.forEach(status => {
         testComponent.status = status;
@@ -163,6 +169,131 @@ describe('badge', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count-sm');
     });
+
+    it('should set presetColor of nzColor change', fakeAsync(() => {
+      let color: string | undefined;
+      const fixture = TestBed.createComponent(NzBadgeComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      color = badgePresetColors[0];
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(color);
+
+      color = undefined;
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(null);
+    }));
+
+    it('should display correct of nzColor related change', fakeAsync(() => {
+      let color: string | undefined;
+      testComponent.inner = false;
+      testComponent.count = 0;
+      testComponent.status = 'success';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
+        `ant-badge-status-success`
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      testComponent.status = '';
+      testComponent.text = 'test';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      color = 'blue';
+      testComponent.color = color;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
+        `ant-badge-status-${color}`
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      testComponent.inner = true;
+      color = '#f5222d';
+      testComponent.color = color;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).not.toContain(
+        `ant-badge-status-`
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').style.backgroundColor).toBe(
+        'rgb(245, 34, 45)'
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      testComponent.text = '';
+      testComponent.showZero = true;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
+
+      testComponent.count = 5;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
+    }));
+  });
+
+  describe('ribbon', () => {
+    let fixture: ComponentFixture<NzRibbonComponent>;
+    let component: NzRibbonComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzRibbonComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('default value for nzPlacement', () => {
+      expect(component.nzPlacement).toEqual('end');
+    });
+
+    it('default value for nzText', () => {
+      expect(component.nzText).toEqual(null);
+    });
+
+    it('default value for presetColor', () => {
+      expect(component.presetColor).toEqual(null);
+    });
+
+    it('should set presetColor on nzColor change', fakeAsync(() => {
+      let color: string | undefined;
+
+      color = badgePresetColors[1];
+
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(color);
+
+      color = undefined;
+      component.nzColor = color;
+      component.ngOnChanges({
+        nzColor: new SimpleChange(undefined, color, false)
+      });
+      tick();
+      expect(component.presetColor).toEqual(null);
+    }));
   });
 
   describe('RTL', () => {
@@ -189,6 +320,7 @@ describe('badge', () => {
 });
 
 @Component({
+  imports: [NzNoAnimationDirective, NzBadgeModule],
   template: `
     <nz-badge
       [nzCount]="count"
@@ -203,6 +335,7 @@ describe('badge', () => {
       [nzTitle]="title"
       [nzStandalone]="!inner"
       [nzSize]="size"
+      [nzColor]="color"
     >
       @if (inner) {
         <a></a>
@@ -221,11 +354,13 @@ export class NzTestBadgeBasicComponent {
   text!: string;
   title?: string | null;
   offset?: [number, number];
-  size?: NzSizeDSType = 'default';
+  size: NzSizeDSType = 'default';
   noAnimation = true;
+  color?: string;
 }
 
 @Component({
+  imports: [BidiModule, NzBadgeModule],
   template: `
     <div [dir]="direction">
       <nz-badge [nzCount]="count"></nz-badge>
@@ -234,6 +369,6 @@ export class NzTestBadgeBasicComponent {
 })
 export class NzTestBadgeRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
   count = 5;
 }

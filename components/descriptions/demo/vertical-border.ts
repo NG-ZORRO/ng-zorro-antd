@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+
 @Component({
   selector: 'nz-demo-descriptions-vertical-border',
+  imports: [NzBadgeModule, NzDescriptionsModule],
   template: `
     <nz-descriptions nzTitle="User Info" nzBordered nzLayout="vertical">
       <nz-descriptions-item nzTitle="Product">Cloud Database</nz-descriptions-item>

@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable @angular-eslint/component-selector */
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -13,18 +13,19 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  OnDestroy,
   OnInit,
-  Optional,
   Output,
   QueryList,
   Renderer2,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { EMPTY, merge, Observable, of, Subject } from 'rxjs';
-import { delay, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { EMPTY, Observable, merge, of } from 'rxjs';
+import { delay, map, mergeMap, startWith, switchMap } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -41,31 +42,26 @@ import { NzTrDirective } from './tr.directive';
     <ng-template #contentTemplate>
       <ng-content></ng-content>
     </ng-template>
-    <ng-container *ngIf="!isInsideTable">
+    @if (!isInsideTable) {
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-    </ng-container>
+    }
   `,
-  imports: [NgIf, NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
-export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {
-  private destroy$ = new Subject<void>();
-  isInsideTable = false;
+export class NzTheadComponent<T> implements AfterContentInit, AfterViewInit, OnInit {
+  private nzTableStyleService = inject(NzTableStyleService, { optional: true });
+  private nzTableDataService: NzTableDataService<T> | null = inject(NzTableDataService, { optional: true });
+  private destroyRef = inject(DestroyRef);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private renderer = inject(Renderer2);
+
+  isInsideTable = !!this.nzTableStyleService;
   @ViewChild('contentTemplate', { static: true }) templateRef!: TemplateRef<NzSafeAny>;
   @ContentChildren(NzTrDirective, { descendants: true }) listOfNzTrDirective!: QueryList<NzTrDirective>;
   @ContentChildren(NzThAddOnComponent, { descendants: true }) listOfNzThAddOnComponent!: QueryList<
     NzThAddOnComponent<T>
   >;
   @Output() readonly nzSortOrderChange = new EventEmitter<{ key: NzSafeAny; value: string | null }>();
-
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Optional() private nzTableStyleService: NzTableStyleService,
-    @Optional() private nzTableDataService: NzTableDataService<T>
-  ) {
-    this.isInsideTable = !!this.nzTableStyleService;
-  }
 
   ngOnInit(): void {
     if (this.nzTableStyleService) {
@@ -77,42 +73,41 @@ export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterVi
     if (this.nzTableStyleService) {
       const firstTableRow$ = this.listOfNzTrDirective.changes.pipe(
         startWith(this.listOfNzTrDirective),
-        map(item => item && item.first)
+        map(item => item && item.first),
+        takeUntilDestroyed(this.destroyRef)
       ) as Observable<NzTrDirective>;
       const listOfColumnsChanges$ = firstTableRow$.pipe(
-        switchMap(firstTableRow => (firstTableRow ? firstTableRow.listOfColumnsChanges$ : EMPTY)),
-        takeUntil(this.destroy$)
+        switchMap(firstTableRow => (firstTableRow ? firstTableRow.listOfColumnsChanges$ : EMPTY))
       );
-      listOfColumnsChanges$.subscribe(data => this.nzTableStyleService.setListOfTh(data));
+      listOfColumnsChanges$.subscribe(data => this.nzTableStyleService!.setListOfTh(data));
       /** TODO: need reset the measure row when scrollX change **/
       this.nzTableStyleService.enableAutoMeasure$
         .pipe(switchMap(enable => (enable ? listOfColumnsChanges$ : of([]))))
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(data => this.nzTableStyleService.setListOfMeasureColumn(data));
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(data => this.nzTableStyleService!.setListOfMeasureColumn(data));
       const listOfFixedLeftColumnChanges$ = firstTableRow$.pipe(
-        switchMap(firstTr => (firstTr ? firstTr.listOfFixedLeftColumnChanges$ : EMPTY)),
-        takeUntil(this.destroy$)
+        switchMap(firstTr => (firstTr ? firstTr.listOfFixedLeftColumnChanges$ : EMPTY))
       );
       const listOfFixedRightColumnChanges$ = firstTableRow$.pipe(
-        switchMap(firstTr => (firstTr ? firstTr.listOfFixedRightColumnChanges$ : EMPTY)),
-        takeUntil(this.destroy$)
+        switchMap(firstTr => (firstTr ? firstTr.listOfFixedRightColumnChanges$ : EMPTY))
       );
       listOfFixedLeftColumnChanges$.subscribe(listOfFixedLeftColumn => {
-        this.nzTableStyleService.setHasFixLeft(listOfFixedLeftColumn.length !== 0);
+        this.nzTableStyleService!.setHasFixLeft(listOfFixedLeftColumn.length !== 0);
       });
       listOfFixedRightColumnChanges$.subscribe(listOfFixedRightColumn => {
-        this.nzTableStyleService.setHasFixRight(listOfFixedRightColumn.length !== 0);
+        this.nzTableStyleService!.setHasFixRight(listOfFixedRightColumn.length !== 0);
       });
     }
+
     if (this.nzTableDataService) {
       const listOfColumn$ = this.listOfNzThAddOnComponent.changes.pipe(
         startWith(this.listOfNzThAddOnComponent)
       ) as Observable<QueryList<NzThAddOnComponent<T>>>;
       const manualSort$ = listOfColumn$.pipe(
         switchMap(() => merge(...this.listOfNzThAddOnComponent.map(th => th.manualClickOrder$))),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       );
-      manualSort$.subscribe((data: NzThAddOnComponent<T>) => {
+      manualSort$.subscribe(data => {
         const emitValue = { key: data.nzColumnKey, value: data.sortOrder };
         this.nzSortOrderChange.emit(emitValue);
         if (data.nzSortFn && data.nzSortPriority === false) {
@@ -121,9 +116,7 @@ export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterVi
       });
       const listOfCalcOperator$ = listOfColumn$.pipe(
         switchMap(list =>
-          merge(...[listOfColumn$, ...list.map((c: NzThAddOnComponent<T>) => c.calcOperatorChange$)]).pipe(
-            mergeMap(() => listOfColumn$)
-          )
+          merge(listOfColumn$, ...list.map(c => c.calcOperatorChange$)).pipe(mergeMap(() => listOfColumn$))
         ),
         map(list =>
           list
@@ -142,22 +135,17 @@ export class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterVi
         ),
         // TODO: after checked error here
         delay(0),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       );
       listOfCalcOperator$.subscribe(list => {
-        this.nzTableDataService.listOfCalcOperator$.next(list);
+        this.nzTableDataService?.listOfCalcOperator$.next(list);
       });
     }
   }
 
   ngAfterViewInit(): void {
     if (this.nzTableStyleService) {
-      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
+      this.renderer.removeChild(this.renderer.parentNode(this.el), this.el);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

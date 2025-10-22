@@ -175,5 +175,8 @@ export default {
   },
   Image: {
     preview: 'പ്രിവ്യൂ'
+  },
+  Form: {
+    optional: '(ആവശ്യകമായ)'
   }
 };

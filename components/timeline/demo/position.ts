@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+
 @Component({
   selector: 'nz-demo-timeline-position',
+  imports: [NzTimelineModule],
   template: `
     <nz-timeline nzMode="custom">
       <nz-timeline-item nzPosition="left" [nzDot]="soccerTemplate">Alice 20'</nz-timeline-item>

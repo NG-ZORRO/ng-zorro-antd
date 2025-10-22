@@ -6,14 +6,17 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  booleanAttribute,
+  inject
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   FormBuilder,
@@ -23,23 +26,19 @@ import {
   ValidationErrors,
   ValidatorFn
 } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 
-import { generateColor } from 'ng-antd-color-picker';
-
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
 import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
-import { NzColorPickerFormatType } from './typings';
+import { generateColor } from './src/util/util';
+import { NzColorPickerFormatType, ValidFormKey } from './typings';
 
 @Component({
   selector: 'nz-color-format',
-  exportAs: 'NzColorFormat',
+  exportAs: 'nzColorFormat',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [ReactiveFormsModule, NzSelectModule, NzInputDirective, NzInputGroupComponent, NzInputNumberComponent],
   template: `
     <div [formGroup]="validateForm" class="ant-color-picker-input-container">
@@ -128,15 +127,15 @@ import { NzColorPickerFormatType } from './typings';
     </div>
   `
 })
-export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
+export class NzColorFormatComponent implements OnChanges, OnInit {
+  private destroyRef = inject(DestroyRef);
+  private formBuilder = inject(FormBuilder);
   @Input() format: NzColorPickerFormatType | null = null;
   @Input() colorValue: string = '';
-  @Input() clearColor: boolean = false;
-  @Input() @InputBoolean() nzDisabledAlpha: boolean = false;
+  @Input({ transform: booleanAttribute }) clearColor: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabledAlpha: boolean = false;
   @Output() readonly formatChange = new EventEmitter<{ color: string; format: NzColorPickerFormatType }>();
   @Output() readonly nzOnFormatChange = new EventEmitter<NzColorPickerFormatType>();
-
-  private destroy$ = new Subject<void>();
 
   validatorFn(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -160,31 +159,30 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
     rgbG: FormControl<number>;
     rgbB: FormControl<number>;
     roundA: FormControl<number>;
-  }>;
+  }> = this.formBuilder.nonNullable.group({
+    isFormat: this.formBuilder.control<NzColorPickerFormatType>('hex'),
+    hex: this.formBuilder.control<string>('1677FF', this.validatorFn()),
+    hsbH: 215,
+    hsbS: 91,
+    hsbB: 100,
+    rgbR: 22,
+    rgbG: 119,
+    rgbB: 255,
+    roundA: 100
+  });
 
   formatterPercent = (value: number): string => `${value} %`;
-  parserPercent = (value: string): string => value.replace(' %', '');
-
-  constructor(private formBuilder: FormBuilder) {
-    this.validateForm = this.formBuilder.nonNullable.group({
-      isFormat: this.formBuilder.control<NzColorPickerFormatType>('hex'),
-      hex: this.formBuilder.control<string>('1677FF', this.validatorFn()),
-      hsbH: 215,
-      hsbS: 91,
-      hsbB: 100,
-      rgbR: 22,
-      rgbG: 119,
-      rgbB: 255,
-      roundA: 100
-    });
-  }
+  parserPercent = (value: string): number => +value.replace(' %', '');
 
   ngOnInit(): void {
     this.validateForm.valueChanges
       .pipe(
         filter(() => this.validateForm.valid),
         debounceTime(200),
-        takeUntil(this.destroy$)
+        distinctUntilChanged((prev, current) =>
+          Object.keys(prev).every(key => prev[key as ValidFormKey] === current[key as ValidFormKey])
+        ),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(value => {
         let color = '';
@@ -205,7 +203,7 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
               a: Number(value.roundA) / 100
             }).toRgbString();
             break;
-          default:
+          default: {
             const hex = generateColor(value.hex as NzColorPickerFormatType);
             const hexColor = generateColor({
               r: hex.r,
@@ -215,13 +213,14 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
             });
             color = hexColor.getAlpha() < 1 ? hexColor.toHex8String() : hexColor.toHexString();
             break;
+          }
         }
         this.formatChange.emit({ color, format: value.isFormat || this.format || 'hex' });
       });
 
     this.validateForm
       .get('isFormat')
-      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(value => {
         this.nzOnFormatChange.emit(value as NzColorPickerFormatType);
       });
@@ -250,10 +249,5 @@ export class NzColorFormatComponent implements OnChanges, OnInit, OnDestroy {
     if (clearColor && this.clearColor) {
       this.validateForm.get('roundA')?.patchValue(0);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

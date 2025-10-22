@@ -1,10 +1,12 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { MentionOnSearchTypes } from 'ng-zorro-antd/mention';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { MentionOnSearchTypes, NzMentionModule } from 'ng-zorro-antd/mention';
 
 @Component({
   selector: 'nz-demo-mention-async',
-  encapsulation: ViewEncapsulation.None,
+  imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="suggestions" [nzLoading]="loading" (nzOnSearchChange)="onSearchChange($event)">
       <textarea rows="1" nzMentionTrigger nz-input [(ngModel)]="inputValue"></textarea>

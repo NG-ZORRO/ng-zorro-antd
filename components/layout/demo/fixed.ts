@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-layout-fixed',
+  imports: [NzBreadCrumbModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout class="layout">
       <nz-header>
@@ -20,7 +25,7 @@ import { Component } from '@angular/core';
         </nz-breadcrumb>
         <div class="inner-content">Content</div>
       </nz-content>
-      <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+      <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
     </nz-layout>
   `,
   styles: [
@@ -67,4 +72,6 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoLayoutFixedComponent {}
+export class NzDemoLayoutFixedComponent {
+  protected readonly date = new Date();
+}

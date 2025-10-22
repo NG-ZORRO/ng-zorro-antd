@@ -6,21 +6,23 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
+  booleanAttribute,
+  DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   NgZone,
+  numberAttribute,
   OnDestroy,
   Output,
   Renderer2
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
+import { ensureInBounds, fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
 import { NzResizableService } from './resizable.service';
@@ -37,50 +39,45 @@ export interface NzResizeEvent {
 @Directive({
   selector: '[nz-resizable]',
   exportAs: 'nzResizable',
-  providers: [NzResizableService, NzDestroyService],
+  providers: [NzResizableService],
   host: {
     class: 'nz-resizable',
     '[class.nz-resizable-resizing]': 'resizing',
     '[class.nz-resizable-disabled]': 'nzDisabled'
-  },
-  standalone: true
+  }
 })
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
-  static ngAcceptInputType_nzLockAspectRatio: BooleanInput;
-  static ngAcceptInputType_nzPreview: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly renderer = inject(Renderer2);
+  private readonly nzResizableService = inject(NzResizableService);
+  private readonly platform = inject(Platform);
+  private readonly ngZone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';
   @Input() nzMaxHeight?: number;
   @Input() nzMaxWidth?: number;
-  @Input() nzMinHeight: number = 40;
-  @Input() nzMinWidth: number = 40;
-  @Input() nzGridColumnCount: number = -1;
-  @Input() nzMaxColumn: number = -1;
-  @Input() nzMinColumn: number = -1;
-  @Input() @InputBoolean() nzLockAspectRatio: boolean = false;
-  @Input() @InputBoolean() nzPreview: boolean = false;
-  @Input() @InputBoolean() nzDisabled: boolean = false;
+  @Input({ transform: numberAttribute }) nzMinHeight: number = 40;
+  @Input({ transform: numberAttribute }) nzMinWidth: number = 40;
+  @Input({ transform: numberAttribute }) nzGridColumnCount: number = -1;
+  @Input({ transform: numberAttribute }) nzMaxColumn: number = -1;
+  @Input({ transform: numberAttribute }) nzMinColumn: number = -1;
+  @Input({ transform: booleanAttribute }) nzLockAspectRatio: boolean = false;
+  @Input({ transform: booleanAttribute }) nzPreview: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
   @Output() readonly nzResize = new EventEmitter<NzResizeEvent>();
   @Output() readonly nzResizeEnd = new EventEmitter<NzResizeEvent>();
   @Output() readonly nzResizeStart = new EventEmitter<NzResizeEvent>();
 
   resizing = false;
-  private elRect!: ClientRect | DOMRect;
+  private elRect!: DOMRect;
   private currentHandleEvent: NzResizeHandleMouseDownEvent | null = null;
   private ghostElement: HTMLDivElement | null = null;
   private el!: HTMLElement;
   private sizeCache: NzResizeEvent | null = null;
 
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    private renderer: Renderer2,
-    private nzResizableService: NzResizableService,
-    private platform: Platform,
-    private ngZone: NgZone,
-    private destroy$: NzDestroyService
-  ) {
-    this.nzResizableService.handleMouseDownOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+  constructor() {
+    this.nzResizableService.handleMouseDownOutsideAngular$.pipe(takeUntilDestroyed()).subscribe(event => {
       if (this.nzDisabled) {
         return;
       }
@@ -94,7 +91,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     });
 
     this.nzResizableService.documentMouseUpOutsideAngular$
-      .pipe(takeUntil(this.destroy$), filter(Boolean))
+      .pipe(takeUntilDestroyed(), filter(Boolean))
       .subscribe(event => {
         if (this.resizing) {
           this.resizing = false;
@@ -103,7 +100,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
         }
       });
 
-    this.nzResizableService.documentMouseMoveOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+    this.nzResizableService.documentMouseMoveOutsideAngular$.pipe(takeUntilDestroyed()).subscribe(event => {
       if (this.resizing) {
         this.resize(event);
       }
@@ -146,6 +143,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     }
 
     maxWidth = ensureInBounds(this.nzMaxWidth!, boundWidth);
+    // eslint-disable-next-line prefer-const
     maxHeight = ensureInBounds(this.nzMaxHeight!, boundHeight);
 
     if (this.nzGridColumnCount !== -1) {
@@ -223,7 +221,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     }
     const size = this.calcSize(width, height, ratio);
     this.sizeCache = { ...size };
-    // Re-enter the Angular zone and run the change detection only if there're any `nzResize` listeners,
+    // Re-enter the Angular zone and run the change detection only if there are any `nzResize` listeners,
     // e.g.: `<div nz-resizable (nzResize)="..."></div>`.
     if (this.nzResize.observers.length) {
       this.ngZone.run(() => {
@@ -247,7 +245,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
           width: this.elRect.width,
           height: this.elRect.height
         };
-    // Re-enter the Angular zone and run the change detection only if there're any `nzResizeEnd` listeners,
+    // Re-enter the Angular zone and run the change detection only if there are any `nzResizeEnd` listeners,
     // e.g.: `<div nz-resizable (nzResizeEnd)="..."></div>`.
     if (this.nzResizeEnd.observers.length) {
       this.ngZone.run(() => {
@@ -290,19 +288,17 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     this.el = this.elementRef.nativeElement;
     this.setPosition();
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.el, 'mouseenter')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.nzResizableService.mouseEnteredOutsideAngular$.next(true);
-        });
+    fromEventOutsideAngular(this.el, 'mouseenter')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.nzResizableService.mouseEnteredOutsideAngular$.next(true);
+      });
 
-      fromEvent(this.el, 'mouseleave')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.nzResizableService.mouseEnteredOutsideAngular$.next(false);
-        });
-    });
+    fromEventOutsideAngular(this.el, 'mouseleave')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.nzResizableService.mouseEnteredOutsideAngular$.next(false);
+      });
   }
 
   ngOnDestroy(): void {

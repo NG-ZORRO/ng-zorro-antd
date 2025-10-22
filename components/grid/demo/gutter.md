@@ -16,4 +16,3 @@ title:
 You can use the `nzGutter` property of `nzRow` as grid spacing, we recommend set it to `(16 + 8n) px`. (`n` stands for natural number.)
 
 You can set it to a object like `{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }` for responsive design.
-

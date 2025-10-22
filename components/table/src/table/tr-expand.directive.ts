@@ -3,18 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Input } from '@angular/core';
+import { booleanAttribute, Directive, Input } from '@angular/core';
 
 @Directive({
   selector: 'tr[nzExpand]',
   host: {
     class: 'ant-table-expanded-row',
     '[hidden]': `!nzExpand`
-  },
-  standalone: true
+  }
 })
 export class NzTrExpandDirective {
-  @Input() nzExpand = true;
-
-  constructor() {}
+  @Input({ transform: booleanAttribute }) nzExpand = true;
 }

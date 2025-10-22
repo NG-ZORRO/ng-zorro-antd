@@ -4,19 +4,14 @@ cols: 1
 type: 数据展示
 title: Table
 subtitle: 表格
-cover: https://gw.alipayobjects.com/zos/alicdn/f-SbcX2Lx/Table.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/f-SbcX2Lx/Table.svg'
+description: 展示行列数据。
 ---
-
-展示行列数据。
 
 ## 何时使用
 
 - 当有大量结构化的数据需要展现时；
 - 当需要对数据进行排序、搜索、分页、自定义操作等复杂行为时。
-
-```ts
-import { NzTableModule } from 'ng-zorro-antd/table';
-```
 
 ## 如何使用
 
@@ -32,7 +27,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 ### 数据处理
 
-将数据传入`[nzData]`，经过组件处理之后（包括分页、排序、筛选等），通过 [模板变量](https://angular.io/guide/template-syntax#statement-context) 获取当前展示表格部分的数据，使用 `*ngFor` 依据需求将数据渲染。
+将数据传入`[nzData]`，经过组件处理之后（包括分页、排序、筛选等），通过 [模板变量](https://angular.cn/guide/templates/template-statements#statement-context) 获取当前展示表格部分的数据，使用 `*ngFor` 依据需求将数据渲染。
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
@@ -61,7 +56,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 ## API
 
-### nz-table:standalone
+### nz-table
 
 | 参数                        | 说明                                                                                                                 | 类型                                                                   | 默认值                   | 全局配置 |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------ | -------- |
@@ -72,8 +67,8 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzPageIndex]`             | 当前页码，可双向绑定                                                                                                 | `number`                                                               | -                        |
 | `[nzPageSize]`              | 每页展示多少数据，可双向绑定                                                                                         | `number`                                                               | -                        |
 | `[nzShowPagination]`        | 是否显示分页器                                                                                                       | `boolean`                                                              | `true`                   |
-| `[nzPaginationPosition]`    | 指定分页显示的位置                                                                                                   | `'top' \| 'bottom' \| 'both'`                                          | `bottom`                 |
-| `[nzPaginationType]`        | 指定分页显示的尺寸                                                                                                   | `'default' \| 'small'`                                                 | `default`                |
+| `[nzPaginationPosition]`    | 指定分页显示的位置                                                                                                   | `'top' \| 'bottom' \| 'both'`                                          | `'bottom'`               |
+| `[nzPaginationType]`        | 指定分页显示的尺寸                                                                                                   | `'default' \| 'small'`                                                 | `'default'`              |
 | `[nzBordered]`              | 是否展示外边框和列边框                                                                                               | `boolean`                                                              | `false`                  | ✅       |
 | `[nzOuterBordered]`         | 是否显示外边框                                                                                                       | `boolean`                                                              | `false`                  | -        |
 | `[nzWidthConfig]`           | 表头分组时指定每列宽度，与 `th` 的 `[nzWidth]` 不可混用                                                              | `string[]`                                                             | `[]`                     |
@@ -130,18 +125,19 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzShowSort]`        | 是否显示排序                                                                              | `boolean`                                     | -                             |
 | `[nzSortFn]`          | 排序函数，前端排序使用一个函数(参考 Array.sort 的 compareFunction)，服务端排序时传入 true | `NzTableSortFn<T> \| boolean`                 | -                             |
 | `[nzSortDirections]`  | 支持的排序方式，取值为 `'ascend'`, `'descend'`, `null`                                    | `Array<'ascend' \| 'descend' \| null>`        | `['ascend', 'descend', null]` |
-| `[nzSortOrder]`       | 当前排序状态，可双向绑定                                                                  | 'descend' \| 'ascend' \| null                 | null                          |
-| `(nzSortOrderChange)` | 排序状态改变回调                                                                          | `EventEmitter<'descend' \| 'ascend' \| null>` | -                             |
+| `[nzSortOrder]`       | 当前排序状态，可双向绑定                                                                  | `'ascend' \| 'descend' \| null`               | null                          |
+| `(nzSortOrderChange)` | 排序状态改变回调                                                                          | `EventEmitter<'ascend' \| 'descend' \| null>` | -                             |
 
 过滤属性
 
-| 参数                 | 说明                                                                                   | 类型                                                       | 默认值 |
-| -------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------ |
-| `[nzShowFilter]`     | 是否显示过滤                                                                           | `boolean`                                                  | -      |
-| `[nzFilterFn]`       | 前端排序时，确定筛选的运行函数，服务端排序时，传入 true                                | `NzTableFilterFn<T> \| boolean`                            | -      |
-| `[nzFilters]`        | 过滤器内容, 显示数据 `text`，回调函数传出 `value`，设置 `byDefault` 以默认应用过滤规则 | `Array<{ text: string; value: any; byDefault?: boolean }>` | -      |
-| `[nzFilterMultiple]` | 是否为多选过滤器                                                                       | `boolean`                                                  | `true` |
-| `(nzFilterChange)`   | 过滤器内容选择的 value 数据回调                                                        | `EventEmitter<any[] \| any>`                               | -      |
+| 参数                    | 说明                                                                                   | 类型                                                       | 默认值    |
+| ----------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------- | --------- |
+| `[nzShowFilter]`        | 是否显示过滤                                                                           | `boolean`                                                  | -         |
+| `[nzFilterFn]`          | 前端排序时，确定筛选的运行函数，服务端排序时，传入 true                                | `NzTableFilterFn<T> \| boolean`                            | -         |
+| `[noDataVirtualHeight]` | 没有数据时内部滚动的高度，如果没有传递任何内容，则使用默认值。                         | `string`                                                   | `'182px'` |
+| `[nzFilters]`           | 过滤器内容, 显示数据 `text`，回调函数传出 `value`，设置 `byDefault` 以默认应用过滤规则 | `Array<{ text: string; value: any; byDefault?: boolean }>` | -         |
+| `[nzFilterMultiple]`    | 是否为多选过滤器                                                                       | `boolean`                                                  | `true`    |
+| `(nzFilterChange)`      | 过滤器内容选择的 value 数据回调                                                        | `EventEmitter<any[] \| any>`                               | -         |
 
 样式属性
 
@@ -204,13 +200,26 @@ Table 组件同时具备了易用性和高度可定制性
 | ---------------- | -------------------------------------------- | -------- | ------ |
 | `[nzIndentSize]` | 展示树形数据时，每层缩进的宽度，以 px 为单位 | `number` | -      |
 
+### thead
+
+| 参数                  | 说明                                                      | 类型                                                                  | 默认值 |
+| --------------------- | --------------------------------------------------------- | --------------------------------------------------------------------- | ------ |
+| `(nzSortOrderChange)` | 排序状态改变回调，需要与 `th` 上的 `nzColumnKey` 同时使用 | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | -      |
+
 ### tr
 
 | 参数         | 说明                                                 | 类型      | 默认值 |
 | ------------ | ---------------------------------------------------- | --------- | ------ |
 | `[nzExpand]` | 当前列是否展开，与 `td` 上的 `nzExpand` 属性配合使用 | `boolean` | -      |
 
-### nz-filter-trigger:standalone
+### tfoot
+
+| 参数          | 说明                                       | 类型                           | 默认值  |
+| ------------- | ------------------------------------------ | ------------------------------ | ------- |
+| `[nzSummary]` | 总结栏                                     | `boolean`                      | -       |
+| `[nzFixed]`   | 总结栏是否固定，与 `nzScroll` 属性配合使用 | `boolean \| 'top' \| 'bottom'` | `false` |
+
+### nz-filter-trigger
 
 用于自定义筛选功能
 
@@ -222,13 +231,13 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzHasBackdrop]`   | 是否附带背景板                           | `boolean`                 | `false` |
 | `(nzVisibleChange)` | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>`   | -       |
 
-### [nz-virtual-scroll]:standalone
+### [nz-virtual-scroll]
 
-虚拟滚动时配合 `ng-template` 使用, 格式为： `TemplateRef<{ $implicit: T, index: number }>`.
+虚拟滚动时配合 `ng-template` 使用, 格式为： `TemplateRef<{ $implicit: T, index: number }>`。
 
 ## 注意
 
-为了获得更好的性能，NG-ZORRO 所有组件都运行在 [OnPush](https://angular.io/api/core/ChangeDetectionStrategy) 模式下，这意味着对 `@Input()` 数据的 mutate 将不会生效，请使用 immutable 方式操作数组或者对象。
+为了获得更好的性能，NG-ZORRO 所有组件都运行在 [OnPush](https://angular.cn/guide/components/advanced-configuration#changedetectionstrategy) 模式下，这意味着对 `@Input()` 数据的 mutate 将不会生效，请使用 immutable 方式操作数组或者对象。
 
 ```typescript
 // 增加数据
@@ -245,4 +254,4 @@ this.dataSet = [
 this.dataSet = this.dataSet.filter(d => d.key !== i);
 ```
 
-开发者也可以使用 [immer](https://immerjs.github.io/immer/docs/introduction) 获得更好的操作体验
+开发者也可以使用 [immer](https://immerjs.github.io/immer/docs/introduction) 获得更好的操作体验。

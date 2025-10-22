@@ -46,9 +46,51 @@
   }
 
   &&-borderless {
-    background-color: transparent !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  // filled style
+  &&-filled {
+    background-color: @input-variant-filled-bg;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  &&-filled:hover {
+    background-color: @input-variant-filled-hover-bg;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  &&-filled:focus,
+  &&-filled&-focused {
+    .active();
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  &&-filled&-disabled,
+  &&-filled&[disabled] {
+    .disabled();
+  }
+
+  // underlined style
+  &&-underlined,
+  &&-underlined:hover,
+  &&-underlined:focus,
+  &&-underlined&-focused,
+  &&-underlined&-disabled,
+  &&-underlined&[disabled] {
+    background-color: transparent;
+    border-width: 0 0 @border-width-base;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  &&-underlined:hover:not(&-focused):not(:focus) {
+    border-color: @input-border-color;
   }
 
   // ======================== Input =========================
@@ -219,6 +261,9 @@
   // ======================= Dropdown =======================
   &-dropdown {
     .reset-component();
+
+    --antd-arrow-background-color: @calendar-bg;
+
     position: absolute;
     // Fix incorrect position of picker popup
     // https://github.com/ant-design/ant-design/issues/35590
@@ -230,19 +275,19 @@
       display: none;
     }
 
-    &-placement-bottomLeft {
+    &-placement-bottomLeft, &-placement-bottomRight {
       .@{picker-prefix-cls}-range-arrow {
-        top: (@arrow-size / 2) - (@arrow-size / 3) + 0.7px;
+        top: 0;
         display: block;
-        transform: rotate(-135deg) translateY(1px);
+        transform: translateY(-100%);
       }
     }
 
-    &-placement-topLeft {
+    &-placement-topLeft, &-placement-topRight {
       .@{picker-prefix-cls}-range-arrow {
-        bottom: (@arrow-size / 2) - (@arrow-size / 3) + 0.7px;
+        bottom: 0;
         display: block;
-        transform: rotate(45deg);
+        transform: translateY(100%) rotate(180deg);
       }
     }
 
@@ -272,7 +317,7 @@
   }
 
   &-dropdown-range {
-    padding: (@arrow-size * 2 / 3) 0;
+    margin-block: (@arrow-size * 2 / 3);
 
     &-hidden {
       display: none;
@@ -318,18 +363,10 @@
   &-range-arrow {
     position: absolute;
     z-index: 1;
-    display: none;
-    width: @arrow-size;
-    height: @arrow-size;
+    box-sizing: content-box;
     margin-left: @input-padding-horizontal-base * 1.5;
-    background: linear-gradient(
-      135deg,
-      transparent 40%,
-      @calendar-bg 40%
-    ); // Use linear-gradient to prevent arrow from covering text
-    box-shadow: 2px 2px 6px -2px fade(@black, 10%); // use spread radius to hide shadow over popover
     transition: left @animation-duration-slow ease-out;
-    .roundedArrow(@arrow-size, 5px, @calendar-bg);
+    .roundedArrow(@arrow-size, 4px, @arrow-border-radius, var(--antd-arrow-background-color), @popover-arrow-box-shadow);
   }
 
   &-panel-container {
@@ -349,19 +386,18 @@
     .@{picker-prefix-cls}-panel {
       vertical-align: top;
       background: transparent;
-      border-width: 0 0 @border-width-base 0;
+      border: none;
       border-radius: 0;
 
       .@{picker-prefix-cls}-content,
       table {
         text-align: center;
       }
-
-      &-focused {
-        border-color: @border-color-split;
-      }
     }
   }
+
+  // ===================== Compact Item Styles =====================
+  .compact-item(@picker-prefix-cls, null, ~'@{picker-prefix-cls}-focused');
 }
 
 @import './panel';

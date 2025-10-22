@@ -11,12 +11,14 @@ import {
   ElementRef,
   OnInit,
   AfterContentInit,
-  OnDestroy,
   ContentChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
-import { filter, map, pairwise, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, pairwise, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 
@@ -26,14 +28,20 @@ import { NzOverflowSuffixDirective } from './overflow-suffix.directive';
 
 @Component({
   selector: 'nz-overflow-container',
-  template: ` <ng-content></ng-content>
+  template: `
+    <ng-content></ng-content>
     <ng-content select="[appOverflowRest]"></ng-content>
-    <ng-content select="[appOverflowSuffix]"></ng-content>`,
+    <ng-content select="[appOverflowSuffix]"></ng-content>
+  `,
   providers: [NzResizeObserver],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzOverflowContainerComponent implements OnInit, AfterContentInit, OnDestroy {
+export class NzOverflowContainerComponent implements OnInit, AfterContentInit {
+  private nzResizeObserver = inject(NzResizeObserver);
+  private elementRef = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
+
   contentInit$ = new Subject<void>();
   @ContentChildren(NzOverflowItemDirective)
   overflowItems: QueryList<NzOverflowItemDirective> | undefined = undefined;
@@ -41,7 +49,7 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
   overflowSuffix: NzOverflowSuffixDirective | undefined = undefined;
   @ContentChild(NzOverflowRestDirective) overflowRest: NzOverflowRestDirective | undefined = undefined;
   overflowItems$ = new ReplaySubject<QueryList<NzOverflowItemDirective>>(1);
-  destroy$ = new Subject<void>();
+
   containerWidth$ = this.nzResizeObserver
     .observe(this.elementRef.nativeElement)
     .pipe(map(([item]) => item.target.clientWidth || 0));
@@ -69,17 +77,11 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
     }
   }
 
-  constructor(
-    private nzResizeObserver: NzResizeObserver,
-    private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef
-  ) {}
-
   ngOnInit(): void {
     const overflowItemsWidth$ = this.overflowItems$.pipe(
       switchMap(items => combineLatest(items.map(item => item.itemWidth$)))
     ) as Observable<number[]>;
-    this.overflowItems$.pipe(takeUntil(this.destroy$)).subscribe(overflowItems => {
+    this.overflowItems$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(overflowItems => {
       if (!overflowItems.length) {
         this.displayCount$.next(0);
         this.suffixFixedStart$.next(null);
@@ -88,7 +90,7 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
     combineLatest([overflowItemsWidth$, this.containerWidth$, this.maxRestWith$, this.restWidth$, this.suffixWidth$])
       .pipe(
         filter(([, containerWidth, maxRestWith]) => !!(containerWidth && maxRestWith)),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([overflowItemsWidth, containerWidth, maxRestWith, restWidth, suffixWidth]) => {
         let totalWidth = suffixWidth;
@@ -136,29 +138,25 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit, O
         this.cdr.detectChanges();
       });
     combineLatest([this.suffixFixedStart$, this.displayCount$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([suffixFixedStart, displayCount]) => {
         this.overflowSuffix?.setSuffixStyle(suffixFixedStart, displayCount);
       });
     combineLatest([this.displayCount$, this.overflowItems$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([displayCount, overflowItems]) =>
         overflowItems.forEach((item, index) => item.setItemStyle(index <= displayCount, index))
       );
     combineLatest([this.displayRest$, this.displayCount$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([displayRest, displayCount]) => {
         this.overflowRest?.setRestStyle(displayRest, displayRest ? displayCount : Number.MAX_SAFE_INTEGER);
       });
   }
   ngAfterContentInit(): void {
     this.overflowItems?.changes.pipe(startWith(this.overflowItems)).subscribe(this.overflowItems$);
-    this.overflowSuffix?.suffixWidth$.pipe(takeUntil(this.destroy$)).subscribe(this.suffixWidth$);
-    this.overflowRest?.restWidth$.pipe(takeUntil(this.destroy$)).subscribe(this.restWidth$);
+    this.overflowSuffix?.suffixWidth$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.suffixWidth$);
+    this.overflowRest?.restWidth$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.restWidth$);
     this.contentInit$.next();
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

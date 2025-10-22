@@ -3,24 +3,24 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
@@ -42,35 +42,34 @@ interface NzThItemInterface {
 
 @Component({
   selector: 'nz-table-filter',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <span class="ant-table-column-title">
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     </span>
-    <ng-container *ngIf="!customFilter; else extraTemplate">
+    @if (!customFilter) {
       <nz-filter-trigger
         [nzVisible]="isVisible"
         [nzActive]="isChecked"
         [nzDropdownMenu]="filterMenu"
         (nzVisibleChange)="onVisibleChange($event)"
       >
-        <span nz-icon nzType="filter" nzTheme="fill"></span>
+        <nz-icon nzType="filter" nzTheme="fill" />
       </nz-filter-trigger>
       <nz-dropdown-menu #filterMenu="nzDropdownMenu">
         <div class="ant-table-filter-dropdown">
           <ul nz-menu>
-            <li
-              nz-menu-item
-              [nzSelected]="f.checked"
-              *ngFor="let f of listOfParsedFilter; trackBy: trackByValue"
-              (click)="check(f)"
-            >
-              <label nz-radio *ngIf="!filterMultiple" [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
-              <label nz-checkbox *ngIf="filterMultiple" [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
-              <span>{{ f.text }}</span>
-            </li>
+            @for (f of listOfParsedFilter; track f.value) {
+              <li nz-menu-item [nzSelected]="f.checked" (click)="check(f)">
+                @if (!filterMultiple) {
+                  <label nz-radio [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
+                } @else {
+                  <label nz-checkbox [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
+                }
+                <span>{{ f.text }}</span>
+              </li>
+            }
           </ul>
           <div class="ant-table-filter-dropdown-btns">
             <button nz-button nzType="link" nzSize="small" (click)="reset()" [disabled]="!isChecked">
@@ -80,40 +79,38 @@ interface NzThItemInterface {
           </div>
         </div>
       </nz-dropdown-menu>
-    </ng-container>
+    } @else {
+      <ng-container [ngTemplateOutlet]="extraTemplate"></ng-container>
+    }
   `,
   host: { class: 'ant-table-filter-column' },
   imports: [
     NgTemplateOutlet,
-    NgIf,
     NzFilterTriggerComponent,
     NzIconModule,
     NzDropDownModule,
-    NgForOf,
     NzRadioComponent,
     NzCheckboxModule,
     FormsModule,
     NzButtonModule
-  ],
-  standalone: true
+  ]
 })
-export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
+export class NzTableFilterComponent implements OnChanges, OnInit {
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly i18n = inject(NzI18nService);
+  private readonly destroyRef = inject(DestroyRef);
+
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() customFilter = false;
   @Input() extraTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() filterMultiple = true;
   @Input() listOfFilter: NzTableFilterList = [];
   @Output() readonly filterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
-  private destroy$ = new Subject<boolean>();
   locale!: NzTableI18nInterface;
   isChecked = false;
   isVisible = false;
   listOfParsedFilter: NzThItemInterface[] = [];
   listOfChecked: NzSafeAny[] = [];
-
-  trackByValue(_: number, item: NzThItemInterface): NzSafeAny {
-    return item.value;
-  }
 
   check(filter: NzThItemInterface): void {
     if (this.filterMultiple) {
@@ -174,13 +171,8 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
     return listOfParsedFilter.some(item => item.checked);
   }
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService
-  ) {}
-
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Table');
       this.cdr.markForCheck();
     });
@@ -192,9 +184,5 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
       this.listOfParsedFilter = this.parseListOfFilter(this.listOfFilter);
       this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
     }
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

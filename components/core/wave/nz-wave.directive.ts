@@ -3,24 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Platform } from '@angular/cdk/platform';
 import {
   CSP_NONCE,
   Directive,
   ElementRef,
-  Inject,
+  EnvironmentProviders,
   InjectionToken,
   Input,
-  makeEnvironmentProviders,
-  EnvironmentProviders,
   NgZone,
   OnDestroy,
   OnInit,
-  Optional,
-  PLATFORM_ID
+  inject,
+  makeEnvironmentProviders
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
-
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzWaveRenderer } from './nz-wave-renderer';
 
@@ -32,7 +29,9 @@ export const NZ_WAVE_GLOBAL_DEFAULT_CONFIG: NzWaveConfig = {
   disabled: false
 };
 
-export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>('nz-wave-global-options');
+export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-wave-global-options' : ''
+);
 
 export function provideNzWave(config: NzWaveConfig): EnvironmentProviders {
   return makeEnvironmentProviders([{ provide: NZ_WAVE_GLOBAL_CONFIG, useValue: config }]);
@@ -40,8 +39,7 @@ export function provideNzWave(config: NzWaveConfig): EnvironmentProviders {
 
 @Directive({
   selector: '[nz-wave],button[nz-button]:not([nzType="link"]):not([nzType="text"])',
-  exportAs: 'nzWave',
-  standalone: true
+  exportAs: 'nzWave'
 })
 export class NzWaveDirective implements OnInit, OnDestroy {
   @Input() nzWaveExtraNode = false;
@@ -57,14 +55,14 @@ export class NzWaveDirective implements OnInit, OnDestroy {
     return this.waveRenderer;
   }
 
-  constructor(
-    private ngZone: NgZone,
-    private elementRef: ElementRef,
-    @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private config: NzWaveConfig,
-    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string,
-    @Inject(PLATFORM_ID) private platformId: NzSafeAny,
-    @Optional() @Inject(CSP_NONCE) private cspNonce?: string | null
-  ) {
+  private cspNonce = inject(CSP_NONCE, { optional: true });
+  private platform = inject(Platform);
+  private config = inject(NZ_WAVE_GLOBAL_CONFIG, { optional: true });
+  private animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
+  private ngZone = inject(NgZone);
+  private elementRef = inject(ElementRef<HTMLElement>);
+
+  constructor() {
     this.waveDisabled = this.isConfigDisabled();
   }
 
@@ -95,7 +93,7 @@ export class NzWaveDirective implements OnInit, OnDestroy {
         this.elementRef.nativeElement,
         this.ngZone,
         this.nzWaveExtraNode,
-        this.platformId,
+        this.platform,
         this.cspNonce
       );
     }

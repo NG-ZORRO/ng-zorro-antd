@@ -3,16 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  TemplateRef,
+  ViewEncapsulation,
+  booleanAttribute
+} from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import type { NzSizeLMSType } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-divider',
   exportAs: 'nzDivider',
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -31,20 +36,19 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-divider-with-text-left]': `nzText && nzOrientation === 'left'`,
     '[class.ant-divider-with-text-right]': `nzText && nzOrientation === 'right'`,
     '[class.ant-divider-with-text-center]': `nzText && nzOrientation === 'center'`,
-    '[class.ant-divider-dashed]': `nzDashed`
+    '[class.ant-divider-dashed]': `nzDashed || nzVariant === 'dashed'`,
+    '[class.ant-divider-dotted]': `nzVariant === 'dotted'`,
+    '[class.ant-divider-sm]': `nzSize === 'small'`,
+    '[class.ant-divider-md]': `nzSize === 'middle'`
   },
-  imports: [NzOutletModule],
-  standalone: true
+  imports: [NzOutletModule]
 })
 export class NzDividerComponent {
-  static ngAcceptInputType_nzDashed: BooleanInput;
-  static ngAcceptInputType_nzPlain: BooleanInput;
-
   @Input() nzText?: string | TemplateRef<void>;
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
   @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';
-  @Input() @InputBoolean() nzDashed = false;
-  @Input() @InputBoolean() nzPlain = false;
-
-  constructor() {}
+  @Input() nzVariant: 'dashed' | 'dotted' | 'solid' = 'solid';
+  @Input() nzSize: NzSizeLMSType | undefined;
+  @Input({ transform: booleanAttribute }) nzDashed = false;
+  @Input({ transform: booleanAttribute }) nzPlain = false;
 }

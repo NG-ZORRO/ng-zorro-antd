@@ -3,38 +3,34 @@ category: Components
 title: Statistic
 subtitle: 统计
 type: 数据展示
-cover: https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg
+cover: 'https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg'
+description: 展示统计数字。
 ---
-
-展示统计数字。
 
 ## 何时使用
 
 - 当需要突出某个或某组数字时。
 - 当需要展示带描述的统计类数据时使用。
 
-```ts
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-```
-
 ## API
 
-### nz-statistic:standalone
+### nz-statistic
 
-| 参数                | 说明           | 类型                                           | 默认值 |
-| ------------------- | -------------- | ---------------------------------------------- | ------ |
-| `[nzPrefix]`        | 设置数值的前缀 | `string \| TemplateRef<void>`                  | -      |
-| `[nzSuffix]`        | 设置数值的后缀 | `string \| TemplateRef<void>`                  | -      |
-| `[nzTitle]`         | 数值的标题     | `string \| TemplateRef<void>`                  | -      |
-| `[nzValue]`         | 数值内容       | `string \| number`                             | -      |
-| `[nzValueStyle]`    | 设置数值的样式 | `Object`                                       | -      |
-| `[nzValueTemplate]` | 自定义数值展示 | `TemplateRef<{ $implicit: string \| number }>` | -      |
+| 参数                | 说明           | 类型                                           | 默认值  |
+| ------------------- | -------------- | ---------------------------------------------- | ------- |
+| `[nzPrefix]`        | 设置数值的前缀 | `string \| TemplateRef<void>`                  | -       |
+| `[nzSuffix]`        | 设置数值的后缀 | `string \| TemplateRef<void>`                  | -       |
+| `[nzTitle]`         | 数值的标题     | `string \| TemplateRef<void>`                  | -       |
+| `[nzValue]`         | 数值内容       | `string \| number`                             | -       |
+| `[nzValueStyle]`    | 设置数值的样式 | `Object`                                       | -       |
+| `[nzValueTemplate]` | 自定义数值展示 | `TemplateRef<{ $implicit: string \| number }>` | -       |
+| `[nzLoading]`       | 数值是否加载中 | `boolean`                                      | `false` |
 
-### nz-countdown:standalone
+### nz-countdown
 
 | 参数                  | 说明                   | 类型                                 | 默认值       |
 | --------------------- | ---------------------- | ------------------------------------ | ------------ |
-| `[nzFormat]`          | 格式化倒计时展示       | `string`                             | `"HH:mm:ss"` |
+| `[nzFormat]`          | 格式化倒计时展示       | `string`                             | `'HH:mm:ss'` |
 | `[nzPrefix]`          | 设置数值的前缀         | `string \| TemplateRef<void>`        | -            |
 | `[nzSuffix]`          | 设置数值的后缀         | `string \| TemplateRef<void>`        | -            |
 | `[nzTitle]`           | 数值的标题             | `string \| TemplateRef<void>`        | -            |

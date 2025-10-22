@@ -7,25 +7,25 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChildren,
-  Inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject,
+  DestroyRef,
+  ChangeDetectorRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { Subject, combineLatest } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
 
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
@@ -36,7 +36,6 @@ import { NzSubmenuService } from './submenu.service';
   exportAs: 'nzMenuItem',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   template: `
     <span class="ant-menu-title-content">
       <ng-content></ng-content>
@@ -54,27 +53,28 @@ import { NzSubmenuService } from './submenu.service';
     '[style.paddingLeft.px]': `dir === 'rtl' ? null : nzPaddingLeft || inlinePaddingLeft`,
     '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : null`,
     '(click)': 'clickMenuItem($event)'
-  },
-  standalone: true
+  }
 })
-export class NzMenuItemComponent implements OnInit, OnChanges, OnDestroy, AfterContentInit {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzSelected: BooleanInput;
-  static ngAcceptInputType_nzDanger: BooleanInput;
-  static ngAcceptInputType_nzMatchRouterExact: BooleanInput;
-  static ngAcceptInputType_nzMatchRouter: BooleanInput;
+export class NzMenuItemComponent implements OnInit, OnChanges, AfterContentInit {
+  private readonly nzMenuService = inject(MenuService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly nzSubmenuService = inject(NzSubmenuService, { optional: true });
+  private readonly directionality = inject(Directionality);
+  private readonly routerLink = inject(RouterLink, { optional: true });
+  private readonly router = inject(Router, { optional: true });
+  protected readonly isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
 
-  private destroy$ = new Subject<boolean>();
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
   dir: Direction = 'ltr';
-  @Input() nzPaddingLeft?: number;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzSelected = false;
-  @Input() @InputBoolean() nzDanger = false;
-  @Input() @InputBoolean() nzMatchRouterExact = false;
-  @Input() @InputBoolean() nzMatchRouter = false;
+  @Input({ transform: numberAttributeWithZeroFallback }) nzPaddingLeft?: number;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzSelected = false;
+  @Input({ transform: booleanAttribute }) nzDanger = false;
+  @Input({ transform: booleanAttribute }) nzMatchRouterExact = false;
+  @Input({ transform: booleanAttribute }) nzMatchRouter = false;
   @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink!: QueryList<RouterLink>;
 
   /** clear all item selected status except this */
@@ -82,15 +82,15 @@ export class NzMenuItemComponent implements OnInit, OnChanges, OnDestroy, AfterC
     if (this.nzDisabled) {
       e.preventDefault();
       e.stopPropagation();
+      return;
+    }
+    this.nzMenuService.onDescendantMenuItemClick(this);
+    if (this.nzSubmenuService) {
+      /** menu item inside the submenu **/
+      this.nzSubmenuService.onChildMenuItemClick(this);
     } else {
-      this.nzMenuService.onDescendantMenuItemClick(this);
-      if (this.nzSubmenuService) {
-        /** menu item inside the submenu **/
-        this.nzSubmenuService.onChildMenuItemClick(this);
-      } else {
-        /** menu item inside the root menu **/
-        this.nzMenuService.onChildMenuItemClick(this);
-      }
+      /** menu item inside the root menu **/
+      this.nzMenuService.onChildMenuItemClick(this);
     }
   }
 
@@ -128,52 +128,38 @@ export class NzMenuItemComponent implements OnInit, OnChanges, OnDestroy, AfterC
       });
   }
 
-  constructor(
-    private nzMenuService: MenuService,
-    private cdr: ChangeDetectorRef,
-    @Optional() private nzSubmenuService: NzSubmenuService,
-    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
-    @Optional() private directionality: Directionality,
-    @Optional() private routerLink?: RouterLink,
-    @Optional() private router?: Router
-  ) {
-    if (router) {
-      this.router!.events.pipe(
-        takeUntil(this.destroy$),
+  constructor() {
+    this.router?.events
+      .pipe(
+        takeUntilDestroyed(),
         filter(e => e instanceof NavigationEnd)
-      ).subscribe(() => {
-        this.updateRouterActive();
-      });
-    }
+      )
+      .subscribe(() => this.updateRouterActive());
   }
 
   ngOnInit(): void {
     /** store origin padding in padding */
     combineLatest([this.nzMenuService.mode$, this.nzMenuService.inlineIndent$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([mode, inlineIndent]) => {
         this.inlinePaddingLeft = mode === 'inline' ? this.level * inlineIndent : null;
       });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
   }
 
   ngAfterContentInit(): void {
-    this.listOfRouterLink.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
+    this.listOfRouterLink.changes.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.updateRouterActive());
     this.updateRouterActive();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzSelected) {
+    const { nzSelected } = changes;
+    if (nzSelected) {
       this.setSelectedState(this.nzSelected);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

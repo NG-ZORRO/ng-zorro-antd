@@ -27,8 +27,8 @@ title: 贡献指南
 
 如果你还不清楚怎么在 GitHub 上提 Pull Request ，可以阅读下面这些文章来学习：
 
-* [如何为开源做贡献](https://opensource.guide/zh-cn/how-to-contribute/)
-* [第一次参与开源](https://github.com/firstcontributions/first-contributions/blob/master/translations/README.chs.md)
+- [如何为开源做贡献](https://opensource.guide/zh-cn/how-to-contribute/)
+- [第一次参与开源](https://github.com/firstcontributions/first-contributions/blob/master/translations/README.chs.md)
 
 为了能帮助你开始你的第一次尝试，我们用 [Good First Issue](https://github.com/NG-ZORRO/ng-zorro-antd/labels/good%20first%20issue) 标记了一些比较比较容易修复的 bug 和小功能。这些 issue 可以很好地做为你的首次尝试。
 
@@ -49,7 +49,6 @@ NG ZORRO 团队会关注所有的 Pull Request，我们会 review 以及合并�
 5. 确保你的代码在提交之前经过了正确的 [Rebase](https://www.digitalocean.com/community/tutorials/how-to-rebase-and-update-a-pull-request)。
 6. 确保你的提交信息符合[我们的 commit 规范](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md#-commit-message-guidelines)。
 
-
 ## 如何提出 Pull Request
 
 1. fork `ng-zorro-antd` 仓库，以下所有操作均在 fork 之后的仓库上执行
@@ -64,12 +63,12 @@ NG ZORRO 团队会关注所有的 Pull Request，我们会 review 以及合并�
 
 ## 开发流程
 
-在你 clone 了 `ng-zorro-antd`  的代码并且使用 `npm install` 安装完依赖后，你还可以运行下面几个常用的命令：
+在你 clone 了 `ng-zorro-antd` 的代码并且使用 `npm install` 安装完依赖后，你还可以运行下面几个常用的命令：
 
-* `npm start` 在本地运行 `NG-ZORRO` 的网站。
-* `npm run lint` 检查代码风格。
-* `npm test` 运行测试。
-* `npm run test:watch [name]` 运行某文件测试，并监视变化。
-* `npm run build:lib` 构建 `ng-zorro-antd` 到 `publish` 目录。
+- `npm start` 在本地运行 `NG-ZORRO` 的网站。
+- `npm run lint` 检查代码风格。
+- `npm test` 运行测试。
+- `npm run test:watch [name]` 运行某文件测试，并监视变化。
+- `npm run build:lib` 构建 `ng-zorro-antd` 到 `publish` 目录。
 
 如果在开发过程中遇到问题，可查看 GitHub 上的[开发指南](https://github.com/NG-ZORRO/ng-zorro-antd/wiki/%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97)。

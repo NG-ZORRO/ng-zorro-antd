@@ -15,40 +15,40 @@
 // -------- Colors -----------
 // >>> Primary
 @primary-color: @blue-6;
-@primary-color-hover: color(~`colorPalette('@{primary-color}', 5) `);
-@primary-color-active: color(~`colorPalette('@{primary-color}', 7) `);
+@primary-color-hover: color(colorPalette('@{primary-color}', 5));
+@primary-color-active: color(colorPalette('@{primary-color}', 7));
 @primary-color-outline: fade(@primary-color, @outline-fade);
 
 @processing-color: @blue-6;
 
 // >>> Info
 @info-color: @primary-color;
-@info-color-deprecated-bg: color(~`colorPalette('@{info-color}', 1) `);
-@info-color-deprecated-border: color(~`colorPalette('@{info-color}', 3) `);
+@info-color-deprecated-bg: color(colorPalette('@{info-color}', 1));
+@info-color-deprecated-border: color(colorPalette('@{info-color}', 3));
 
 // >>> Success
 @success-color: @green-6;
-@success-color-hover: color(~`colorPalette('@{success-color}', 5) `);
-@success-color-active: color(~`colorPalette('@{success-color}', 7) `);
+@success-color-hover: color(colorPalette('@{success-color}', 5));
+@success-color-active: color(colorPalette('@{success-color}', 7));
 @success-color-outline: fade(@success-color, @outline-fade);
-@success-color-deprecated-bg: color(~`colorPalette('@{success-color}', 1) `);
-@success-color-deprecated-border: color(~`colorPalette('@{success-color}', 3) `);
+@success-color-deprecated-bg: color(colorPalette('@{success-color}', 1));
+@success-color-deprecated-border: color(colorPalette('@{success-color}', 3));
 
 // >>> Warning
 @warning-color: @gold-6;
-@warning-color-hover: color(~`colorPalette('@{warning-color}', 5) `);
-@warning-color-active: color(~`colorPalette('@{warning-color}', 7) `);
+@warning-color-hover: color(colorPalette('@{warning-color}', 5));
+@warning-color-active: color(colorPalette('@{warning-color}', 7));
 @warning-color-outline: fade(@warning-color, @outline-fade);
-@warning-color-deprecated-bg: color(~`colorPalette('@{warning-color}', 1) `);
-@warning-color-deprecated-border: color(~`colorPalette('@{warning-color}', 3) `);
+@warning-color-deprecated-bg: color(colorPalette('@{warning-color}', 1));
+@warning-color-deprecated-border: color(colorPalette('@{warning-color}', 3));
 
 // >>> Error
 @error-color: @red-5;
-@error-color-hover: color(~`colorPalette('@{error-color}', 5) `);
-@error-color-active: color(~`colorPalette('@{error-color}', 7) `);
+@error-color-hover: color(colorPalette('@{error-color}', 5));
+@error-color-active: color(colorPalette('@{error-color}', 7));
 @error-color-outline: fade(@error-color, @outline-fade);
-@error-color-deprecated-bg: color(~`colorPalette('@{error-color}', 1) `);
-@error-color-deprecated-border: color(~`colorPalette('@{error-color}', 3) `);
+@error-color-deprecated-bg: color(colorPalette('@{error-color}', 1));
+@error-color-deprecated-border: color(colorPalette('@{error-color}', 3));
 
 @highlight-color: @red-5;
 @normal-color: #d9d9d9;
@@ -57,18 +57,18 @@
 
 // Color used by default to control hover and active backgrounds and for
 // alert info backgrounds.
-@primary-1: color(~`colorPalette('@{primary-color}', 1) `); // replace tint(@primary-color, 90%)
-@primary-2: color(~`colorPalette('@{primary-color}', 2) `); // replace tint(@primary-color, 80%)
-@primary-3: color(~`colorPalette('@{primary-color}', 3) `); // unused
-@primary-4: color(~`colorPalette('@{primary-color}', 4) `); // unused
+@primary-1: color(colorPalette('@{primary-color}', 1)); // replace tint(@primary-color, 90%)
+@primary-2: color(colorPalette('@{primary-color}', 2)); // replace tint(@primary-color, 80%)
+@primary-3: color(colorPalette('@{primary-color}', 3)); // unused
+@primary-4: color(colorPalette('@{primary-color}', 4)); // unused
 @primary-5: color(
-  ~`colorPalette('@{primary-color}', 5) `
+  colorPalette('@{primary-color}', 5)
 ); // color used to control the text color in many active and hover states, replace tint(@primary-color, 20%)
 @primary-6: @primary-color; // color used to control the text color of active buttons, don't use, use @primary-color
-@primary-7: color(~`colorPalette('@{primary-color}', 7) `); // replace shade(@primary-color, 5%)
-@primary-8: color(~`colorPalette('@{primary-color}', 8) `); // unused
-@primary-9: color(~`colorPalette('@{primary-color}', 9) `); // unused
-@primary-10: color(~`colorPalette('@{primary-color}', 10) `); // unused
+@primary-7: color(colorPalette('@{primary-color}', 7)); // replace shade(@primary-color, 5%)
+@primary-8: color(colorPalette('@{primary-color}', 8)); // unused
+@primary-9: color(colorPalette('@{primary-color}', 9)); // unused
+@primary-10: color(colorPalette('@{primary-color}', 10)); // unused
 
 // Base Scaffolding Variables
 // ---
@@ -98,6 +98,7 @@
 @font-size-base: 14px;
 @font-size-lg: @font-size-base + 2px;
 @font-size-sm: 12px;
+@font-size-icon: @font-size-sm;
 @heading-1-size: ceil(@font-size-base * 2.71);
 @heading-2-size: ceil(@font-size-base * 2.14);
 @heading-3-size: ceil(@font-size-base * 1.71);
@@ -105,8 +106,10 @@
 @heading-5-size: ceil(@font-size-base * 1.14);
 // https://github.com/ant-design/ant-design/issues/20210
 @line-height-base: 1.5715;
+@line-width: 1px;
 @border-radius-base: 2px;
-@border-radius-sm: @border-radius-base;
+@border-radius-sm: 2px;
+@border-radius-lg: 4px;
 
 // control border
 @control-border-radius: @border-radius-base;
@@ -141,14 +144,15 @@
 // list items or table cells.
 @item-active-bg: @primary-1;
 @item-hover-bg: #f5f5f5;
+@fill-color: rgba(0, 0, 0, 0.15);
 
 // ICONFONT
 @iconfont-css-prefix: anticon;
 
 // LINK
 @link-color: @primary-color;
-@link-hover-color: color(~`colorPalette('@{link-color}', 5) `);
-@link-active-color: color(~`colorPalette('@{link-color}', 7) `);
+@link-hover-color: color(colorPalette('@{link-color}', 5));
+@link-active-color: color(colorPalette('@{link-color}', 7));
 @link-decoration: none;
 @link-hover-decoration: none;
 @link-focus-decoration: none;
@@ -185,6 +189,7 @@
 
 @background-color-light: hsv(0, 0, 98%); // background of header and selected item
 @background-color-base: hsv(0, 0, 96%); // Default grey background color
+@background-color-dark: hsv(0, 0, 94%); // dark grey background color
 
 // Disabled states
 @disabled-color: fade(#000, 25%);
@@ -270,7 +275,7 @@
 @checkbox-check-color: #fff;
 @checkbox-check-bg: @checkbox-check-color;
 @checkbox-border-width: @border-width-base;
-@checkbox-border-radius: @border-radius-base;
+@checkbox-border-radius: @border-radius-sm;
 @checkbox-group-item-margin-right: 8px;
 
 // Descriptions
@@ -428,9 +433,9 @@
 @input-height-base: @height-base;
 @input-height-lg: @height-lg;
 @input-height-sm: @height-sm;
-@input-padding-horizontal: @control-padding-horizontal - 1px;
+@input-padding-horizontal: @control-padding-horizontal - @line-width;
 @input-padding-horizontal-base: @input-padding-horizontal;
-@input-padding-horizontal-sm: @control-padding-horizontal-sm - 1px;
+@input-padding-horizontal-sm: @control-padding-horizontal-sm - @line-width;
 @input-padding-horizontal-lg: @input-padding-horizontal;
 @input-padding-vertical-base: max(
   (round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) -
@@ -461,6 +466,8 @@
 @input-outline-offset: 0 0;
 @input-icon-hover-color: fade(@black, 85%);
 @input-disabled-color: @disabled-color;
+@input-variant-filled-bg: @background-color-base;
+@input-variant-filled-hover-bg: @background-color-dark;
 
 // Mentions
 // ---
@@ -469,6 +476,7 @@
 
 // Select
 // ---
+@select-height: @input-height-base;
 @select-border-color: @border-color-base;
 @select-item-selected-color: @text-color;
 @select-item-selected-font-weight: 600;
@@ -485,11 +493,14 @@
 @select-selection-item-border-color: @border-color-split;
 @select-single-item-height-lg: 40px;
 @select-multiple-item-height: @input-height-base - @input-padding-vertical-base * 2; // Normal 24px
+@select-multiple-item-height-sm: @input-height-sm - @input-padding-vertical-base * 2;
 @select-multiple-item-height-lg: 32px;
 @select-multiple-item-spacing-half: ceil((@input-padding-vertical-base / 2));
 @select-multiple-disabled-background: @input-disabled-bg;
 @select-multiple-item-disabled-color: #bfbfbf;
 @select-multiple-item-disabled-border-color: @select-border-color;
+@select-multiple-item-filled-bg: @component-background;
+@select-select-affix-padding: 4px;
 
 // Cascader
 // ---
@@ -522,7 +533,7 @@
 // Tooltip background color
 @tooltip-bg: rgba(0, 0, 0, 0.75);
 // Tooltip arrow width
-@tooltip-arrow-width: 8px * sqrt(2);
+@tooltip-arrow-width: 16px;
 // Tooltip distance with trigger
 @tooltip-distance: @tooltip-arrow-width - 1px + 4px;
 // Tooltip arrow color
@@ -542,11 +553,12 @@
 @popover-arrow-width: @tooltip-arrow-width;
 // Popover arrow color
 @popover-arrow-color: @popover-bg;
-// Popover outer arrow width
+// Popover arrow box shadow
+@popover-arrow-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
 // Popover outer arrow color
 @popover-arrow-outer-color: @popover-bg;
 // Popover distance with trigger
-@popover-distance: @popover-arrow-width + 4px;
+@popover-distance: calc(@popover-arrow-width / 2 + @margin-xss);
 @popover-padding-horizontal: @padding-md;
 
 // Modal
@@ -561,7 +573,7 @@
 @modal-header-title-line-height: 22px;
 @modal-header-title-font-size: @font-size-lg;
 @modal-header-border-color-split: @border-color-split;
-@modal-header-close-size: 56px;
+@modal-header-close-size: @modal-header-title-line-height + 2 * @modal-header-padding-vertical;
 @modal-content-bg: @component-background;
 @modal-heading-color: @heading-color;
 @modal-close-color: @text-color-secondary;
@@ -574,6 +586,7 @@
 @modal-mask-bg: fade(@black, 45%);
 @modal-confirm-body-padding: 32px 32px 24px;
 @modal-confirm-title-font-size: @font-size-lg;
+@modal-border-radius: @border-radius-base;
 
 // Progress
 // --
@@ -629,6 +642,17 @@
 @spin-dot-size-sm: 14px;
 @spin-dot-size: 20px;
 @spin-dot-size-lg: 32px;
+
+// Splitter
+// ---
+@splitter-split-bar-size: 2px;
+@splitter-split-trigger-size: 6px;
+@splitter-split-bar-draggable-size: 20px;
+@splitter-split-bar-collapsible-size: 24px;
+@splitter-resize-spinner-size: 20px;
+@splitter-bar-bg: rgba(0, 0, 0, 0.04);
+@splitter-bar-hover-bg: #e6f4ff;
+@splitter-bar-active-bg: #bae0ff;
 
 // Table
 // --
@@ -892,6 +916,7 @@
 @slider-handle-color-tooltip-open: @primary-color;
 @slider-handle-size: 14px;
 @slider-handle-margin-top: -5px;
+@slider-handle-margin-left: -5px;
 @slider-handle-shadow: 0;
 @slider-dot-border-color: @border-color-split;
 @slider-dot-border-color-active: tint(@primary-color, 50%);
@@ -948,22 +973,24 @@
 
 // Alert
 // ---
-@alert-success-border-color: ~`colorPalette('@{success-color}', 3) `;
-@alert-success-bg-color: ~`colorPalette('@{success-color}', 1) `;
+@alert-success-border-color: colorPalette('@{success-color}', 3);
+@alert-success-bg-color: colorPalette('@{success-color}', 1);
 @alert-success-icon-color: @success-color;
-@alert-info-border-color: ~`colorPalette('@{info-color}', 3) `;
-@alert-info-bg-color: ~`colorPalette('@{info-color}', 1) `;
+@alert-info-border-color: colorPalette('@{info-color}', 3);
+@alert-info-bg-color: colorPalette('@{info-color}', 1);
 @alert-info-icon-color: @info-color;
-@alert-warning-border-color: ~`colorPalette('@{warning-color}', 3) `;
-@alert-warning-bg-color: ~`colorPalette('@{warning-color}', 1) `;
+@alert-warning-border-color: colorPalette('@{warning-color}', 3);
+@alert-warning-bg-color: colorPalette('@{warning-color}', 1);
 @alert-warning-icon-color: @warning-color;
-@alert-error-border-color: ~`colorPalette('@{error-color}', 3) `;
-@alert-error-bg-color: ~`colorPalette('@{error-color}', 1) `;
+@alert-error-border-color: colorPalette('@{error-color}', 3);
+@alert-error-bg-color: colorPalette('@{error-color}', 1);
 @alert-error-icon-color: @error-color;
 @alert-message-color: @heading-color;
 @alert-text-color: @text-color;
 @alert-close-color: @text-color-secondary;
 @alert-close-hover-color: @icon-color-hover;
+@alert-padding-vertical: @padding-xs;
+@alert-padding-horizontal: @padding-md - 1px;
 @alert-no-icon-padding-vertical: @padding-xs;
 @alert-with-description-no-icon-padding-vertical: @padding-md - 1px;
 @alert-with-description-padding-vertical: @padding-md - 1px;

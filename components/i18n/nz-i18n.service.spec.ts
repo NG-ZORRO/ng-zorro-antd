@@ -1,16 +1,17 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Component, inject, OnDestroy } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 
 import { NZ_I18N, provideNzI18n } from 'ng-zorro-antd/i18n/nz-i18n.token';
 
-import cs_CZ from './languages/cs_CZ';
-import de_DE from './languages/de_DE';
 import en_US from './languages/en_US';
-import ka_GE from './languages/ka_GE';
 import zh_CN from './languages/zh_CN';
 import { NzI18nInterface } from './nz-i18n.interface';
-import { NzI18nModule } from './nz-i18n.module';
 import { NzI18nService } from './nz-i18n.service';
 
 describe('i18n service', () => {
@@ -19,30 +20,15 @@ describe('i18n service', () => {
   let testComponent: NzI18nTestComponent;
   const DEFAULT_LAN = zh_CN;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [NzI18nTestComponent],
-      imports: [NzI18nModule],
-      providers: [provideNzI18n(DEFAULT_LAN)]
-    }).compileComponents();
-  });
-
   describe('#setLocale', () => {
     beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [provideNzI18n(DEFAULT_LAN)]
+      });
+
       fixture = TestBed.createComponent(NzI18nTestComponent);
       testComponent = fixture.debugElement.componentInstance;
-    });
-
-    beforeEach(inject([NzI18nService], (s: NzI18nService) => {
-      srv = s;
-    }));
-
-    it('should interface be right', () => {
-      const i18nEN: NzI18nInterface = en_US;
-      const i18nDE: NzI18nInterface = de_DE;
-      const i18nCS: NzI18nInterface = cs_CZ;
-      const i18nKA: NzI18nInterface = ka_GE;
-      console.log(i18nEN, i18nDE, i18nCS, i18nKA);
+      srv = TestBed.inject(NzI18nService);
     });
 
     it('should be provide interface be right', () => {
@@ -81,6 +67,22 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
       );
     });
   });
+
+  describe('provideNzI18n', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [provideNzI18n(() => en_US)]
+      });
+
+      fixture = TestBed.createComponent(NzI18nTestComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      srv = TestBed.inject(NzI18nService);
+    });
+
+    it('should factory work', () => {
+      expect(testComponent.locale.locale).toBe(en_US.locale);
+    });
+  });
 });
 
 @Component({
@@ -88,11 +90,9 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
 })
 export class NzI18nTestComponent implements OnDestroy {
   private localeSubscription: Subscription;
+  locale = inject(NZ_I18N);
 
-  constructor(
-    private nzI18nService: NzI18nService,
-    @Inject(NZ_I18N) public locale: NzI18nInterface
-  ) {
+  constructor(private nzI18nService: NzI18nService) {
     this.localeSubscription = this.nzI18nService.localeChange.subscribe(locale => {
       this.updateLocale(locale);
     });

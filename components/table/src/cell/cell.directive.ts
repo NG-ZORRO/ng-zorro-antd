@@ -3,20 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Optional } from '@angular/core';
+import { Directive, inject } from '@angular/core';
 
 import { NzTableStyleService } from '../table-style.service';
 
 @Directive({
-  selector: 'th:not(.nz-disable-th):not([mat-cell]), td:not(.nz-disable-td):not([mat-cell])',
+  selector: 'th:not(.nz-disable-th), td:not(.nz-disable-td)',
   host: {
     '[class.ant-table-cell]': 'isInsideTable'
-  },
-  standalone: true
+  }
 })
 export class NzTableCellDirective {
-  isInsideTable = false;
-  constructor(@Optional() nzTableStyleService: NzTableStyleService) {
-    this.isInsideTable = !!nzTableStyleService;
-  }
+  isInsideTable = !!inject(NzTableStyleService, { optional: true });
 }

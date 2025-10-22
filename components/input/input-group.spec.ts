@@ -1,11 +1,18 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
-import { NzStatus } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSizeLDSType, NzStatus } from 'ng-zorro-antd/core/types';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputGroupComponent } from './input-group.component';
@@ -14,19 +21,10 @@ import { NzInputModule } from './input.module';
 describe('input-group', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-      declarations: [
-        NzTestInputGroupAddonComponent,
-        NzTestInputGroupAffixComponent,
-        NzTestInputGroupMultipleComponent,
-        NzTestInputGroupColComponent,
-        NzTestInputGroupMixComponent,
-        NzTestInputGroupWithStatusComponent,
-        NzTestInputGroupInFormComponent
-      ],
-      providers: []
-    }).compileComponents();
+      providers: [provideNzIconsTesting()]
+    });
   }));
+
   describe('input group', () => {
     describe('addon', () => {
       let testComponent: NzTestInputGroupAddonComponent;
@@ -39,10 +37,12 @@ describe('input-group', () => {
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
+
       it('should not show addon without before and after content', () => {
         expect(inputGroupElement.firstElementChild!.classList).not.toContain('ant-input-group');
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input');
       });
+
       it('should before content string work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -51,6 +51,7 @@ describe('input-group', () => {
         expect(inputGroupElement.firstElementChild!.lastElementChild!.classList).toContain('ant-input');
         expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe('before');
       });
+
       it('should before content template work', () => {
         testComponent.beforeContent = testComponent.beforeTemplate;
         fixture.detectChanges();
@@ -61,6 +62,7 @@ describe('input-group', () => {
           'beforeTemplate'
         );
       });
+
       it('should after content string work', () => {
         testComponent.afterContent = 'after';
         fixture.detectChanges();
@@ -69,6 +71,7 @@ describe('input-group', () => {
         expect(inputGroupElement.firstElementChild!.firstElementChild!.classList).toContain('ant-input');
         expect((inputGroupElement.firstElementChild!.lastElementChild as HTMLElement).innerText).toBe('after');
       });
+
       it('should after content template work', () => {
         testComponent.afterContent = testComponent.afterTemplate;
         fixture.detectChanges();
@@ -77,6 +80,7 @@ describe('input-group', () => {
         expect(inputGroupElement.firstElementChild!.firstElementChild!.classList).toContain('ant-input');
         expect((inputGroupElement.firstElementChild!.lastElementChild as HTMLElement).innerText).toBe('afterTemplate');
       });
+
       it('should size work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -89,6 +93,7 @@ describe('input-group', () => {
         expect(inputGroupElement.classList).toContain('ant-input-group-wrapper-sm');
       });
     });
+
     describe('affix', () => {
       let fixture: ComponentFixture<NzTestInputGroupAffixComponent>;
       let testComponent: NzTestInputGroupAffixComponent;
@@ -152,6 +157,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         expect(inputGroupElement.classList).toContain('ant-input-affix-wrapper-sm');
       });
+
       it('should disabled work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -160,6 +166,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         expect(inputGroupElement.classList).toContain('ant-input-affix-wrapper-disabled');
       });
+
       it('should focus work', () => {
         testComponent.beforeContent = 'before';
         fixture.detectChanges();
@@ -169,6 +176,7 @@ describe('input-group', () => {
         expect(inputGroupElement.classList).toContain('ant-input-affix-wrapper-focused');
       });
     });
+
     describe('multiple', () => {
       let fixture: ComponentFixture<NzTestInputGroupMultipleComponent>;
       let testComponent: NzTestInputGroupMultipleComponent;
@@ -179,12 +187,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
-      it('should compact work', () => {
-        expect(inputGroupElement.classList).not.toContain('ant-input-group-compact');
-        testComponent.compact = true;
-        fixture.detectChanges();
-        expect(inputGroupElement.classList).toContain('ant-input-group-compact');
-      });
+
       it('should search work', () => {
         expect(inputGroupElement.classList).not.toContain('ant-input-search-enter-button');
         expect(inputGroupElement.classList).not.toContain('ant-input-search');
@@ -193,6 +196,7 @@ describe('input-group', () => {
         expect(inputGroupElement.classList).toContain('ant-input-search-enter-button');
         expect(inputGroupElement.classList).toContain('ant-input-search');
       });
+
       it('should size work', () => {
         expect(inputGroupElement.classList).toContain('ant-input-group');
         testComponent.size = 'large';
@@ -202,6 +206,7 @@ describe('input-group', () => {
         fixture.detectChanges();
         expect(inputGroupElement.classList).toContain('ant-input-group-sm');
       });
+
       it('should search size work', () => {
         testComponent.search = true;
         fixture.detectChanges();
@@ -214,18 +219,7 @@ describe('input-group', () => {
         expect(inputGroupElement.classList).toContain('ant-input-search-sm');
       });
     });
-    describe('col', () => {
-      let fixture: ComponentFixture<NzTestInputGroupColComponent>;
-      let inputGroupElement: HTMLElement;
-      beforeEach(() => {
-        fixture = TestBed.createComponent(NzTestInputGroupColComponent);
-        fixture.detectChanges();
-        inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
-      });
-      it('should compact work', () => {
-        expect(inputGroupElement.classList).toContain('ant-input-group');
-      });
-    });
+
     describe('mix', () => {
       let fixture: ComponentFixture<NzTestInputGroupMixComponent>;
       let inputGroupElement: HTMLElement;
@@ -235,12 +229,14 @@ describe('input-group', () => {
         fixture.detectChanges();
         inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent)).nativeElement;
       });
+
       it('should mix work', () => {
         expect(inputGroupElement.querySelector('.ant-input-affix-wrapper')!.nextElementSibling!.classList).toContain(
           'ant-input-group-addon'
         );
       });
     });
+
     describe('status', () => {
       let fixture: ComponentFixture<NzTestInputGroupWithStatusComponent>;
       let inputElement: DebugElement;
@@ -280,6 +276,7 @@ describe('input-group', () => {
         expect(inputElement.nativeElement.className).not.toContain('ant-input-group-wrapper-status-warning');
       });
     });
+
     describe('in form', () => {
       let fixture: ComponentFixture<NzTestInputGroupInFormComponent>;
       let inputElement: DebugElement;
@@ -321,6 +318,7 @@ describe('input-group', () => {
 });
 
 @Component({
+  imports: [NzInputModule],
   template: `
     <nz-input-group [nzAddOnBefore]="beforeContent" [nzAddOnAfter]="afterContent" [nzSize]="size">
       <input type="text" nz-input />
@@ -334,10 +332,11 @@ export class NzTestInputGroupAddonComponent {
   @ViewChild('afterTemplate', { static: false }) afterTemplate!: TemplateRef<void>;
   beforeContent?: string | TemplateRef<void>;
   afterContent?: string | TemplateRef<void>;
-  size = 'default';
+  size: NzSizeLDSType = 'default';
 }
 
 @Component({
+  imports: [NzInputModule],
   template: `
     <nz-input-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
       <input type="text" nz-input [disabled]="disabled" />
@@ -351,26 +350,27 @@ export class NzTestInputGroupAffixComponent {
   @ViewChild('afterTemplate', { static: false }) afterTemplate!: TemplateRef<void>;
   beforeContent?: string | TemplateRef<void>;
   afterContent?: string | TemplateRef<void>;
-  size = 'default';
+  size: NzSizeLDSType = 'default';
   disabled = false;
 }
 
 @Component({
+  imports: [NzInputModule],
   template: `
-    <nz-input-group [nzCompact]="compact" [nzSearch]="search" [nzSize]="size">
+    <nz-input-group [nzSearch]="search" [nzSize]="size">
       <input type="text" nz-input />
       <input type="text" nz-input />
     </nz-input-group>
   `
 })
 export class NzTestInputGroupMultipleComponent {
-  compact = false;
   search = false;
-  size = 'default';
+  size: NzSizeLDSType = 'default';
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1795 **/
 @Component({
+  imports: [NzInputModule],
   template: `
     <nz-input-group nzPrefixIcon="user" nzAddOnAfter="@example.com">
       <input type="text" nz-input placeholder="邮箱地址" />
@@ -380,6 +380,7 @@ export class NzTestInputGroupMultipleComponent {
 export class NzTestInputGroupMixComponent {}
 
 @Component({
+  imports: [FormsModule, NzGridModule, NzInputModule],
   template: `
     <nz-input-group>
       <div nz-col nzSpan="4">
@@ -394,12 +395,15 @@ export class NzTestInputGroupMixComponent {}
 export class NzTestInputGroupColComponent {}
 
 @Component({
+  imports: [NzInputModule, NzIconModule],
   template: `
     @if (!isAddon) {
       <nz-input-group [nzPrefix]="prefixTemplateClock" [nzStatus]="status">
         <input type="text" nz-input />
       </nz-input-group>
-      <ng-template #prefixTemplateClock><span nz-icon nzType="clock-circle" nzTheme="outline"></span></ng-template>
+      <ng-template #prefixTemplateClock>
+        <nz-icon nzType="clock-circle" nzTheme="outline" />
+      </ng-template>
     } @else {
       <nz-input-group nzAddOnAfterIcon="setting" [nzStatus]="status">
         <input type="text" nz-input />
@@ -413,6 +417,7 @@ export class NzTestInputGroupWithStatusComponent {
 }
 
 @Component({
+  imports: [ReactiveFormsModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form>
       <nz-form-item>

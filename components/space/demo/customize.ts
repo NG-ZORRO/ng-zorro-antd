@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-space-customize',
+  imports: [FormsModule, NzButtonModule, NzSpaceModule, NzSliderModule],
   template: `
     <nz-slider [(ngModel)]="size"></nz-slider>
     <nz-space [nzSize]="size">

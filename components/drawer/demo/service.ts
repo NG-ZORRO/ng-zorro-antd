@@ -1,11 +1,15 @@
-/* declarations: NzDrawerCustomComponent */
+import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { Component, Inject, TemplateRef, ViewChild } from '@angular/core';
-
-import { NZ_DRAWER_DATA, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NZ_DRAWER_DATA, NzDrawerModule, NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-drawer-service',
+  imports: [FormsModule, NzButtonModule, NzDrawerModule, NzFormModule, NzInputModule],
   template: `
     <ng-template #drawerTemplate let-data let-drawerRef="drawerRef">
       value: {{ data?.value }}
@@ -81,6 +85,7 @@ export class NzDemoDrawerServiceComponent {
 
 @Component({
   selector: 'nz-drawer-custom-component',
+  imports: [FormsModule, NzButtonModule, NzDividerModule, NzInputModule],
   template: `
     <div>
       <input nz-input [(ngModel)]="nzData.value" />
@@ -91,11 +96,9 @@ export class NzDemoDrawerServiceComponent {
 })
 export class NzDrawerCustomComponent {
   // @Input() value = '';
+  nzData: { value: string } = inject(NZ_DRAWER_DATA);
 
-  constructor(
-    private drawerRef: NzDrawerRef<string>,
-    @Inject(NZ_DRAWER_DATA) public nzData: { value: string }
-  ) {}
+  constructor(private drawerRef: NzDrawerRef<string>) {}
 
   close(): void {
     this.drawerRef.close(this.nzData);

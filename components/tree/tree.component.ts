@@ -5,7 +5,7 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { NgForOf, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -13,28 +13,26 @@ import {
   Component,
   ContentChild,
   EventEmitter,
-  forwardRef,
-  Host,
-  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Optional,
   Output,
-  SimpleChange,
+  SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  booleanAttribute,
+  forwardRef,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import {
-  flattenTreeData,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
   NzTreeBase,
@@ -42,10 +40,10 @@ import {
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeKey,
-  NzTreeNodeOptions
+  NzTreeNodeOptions,
+  flattenTreeData
 } from 'ng-zorro-antd/core/tree';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTreeNodeBuiltinComponent } from './tree-node.component';
 import { NzTreeService } from './tree.service';
@@ -64,40 +62,46 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
   animations: [treeCollapseMotion],
   template: `
     <div>
-      <input [ngStyle]="HIDDEN_STYLE" />
+      <input [style]="HIDDEN_STYLE" />
     </div>
-    <div class="ant-tree-treenode" [ngStyle]="HIDDEN_NODE_STYLE">
+    <div class="ant-tree-treenode" [style]="HIDDEN_NODE_STYLE">
       <div class="ant-tree-indent">
         <div class="ant-tree-indent-unit"></div>
       </div>
     </div>
     <div class="ant-tree-list" [class.ant-select-tree-list]="nzSelectMode" style="position: relative">
-      <cdk-virtual-scroll-viewport
-        *ngIf="nzVirtualHeight"
-        [class.ant-select-tree-list-holder-inner]="nzSelectMode"
-        [class.ant-tree-list-holder-inner]="!nzSelectMode"
-        [itemSize]="nzVirtualItemSize"
-        [minBufferPx]="nzVirtualMinBufferPx"
-        [maxBufferPx]="nzVirtualMaxBufferPx"
-        [style.height]="nzVirtualHeight"
-      >
-        <ng-container *cdkVirtualFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
-          <ng-template [ngTemplateOutlet]="nodeTemplate" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
-        </ng-container>
-      </cdk-virtual-scroll-viewport>
-
-      <div
-        *ngIf="!nzVirtualHeight"
-        [class.ant-select-tree-list-holder-inner]="nzSelectMode"
-        [class.ant-tree-list-holder-inner]="!nzSelectMode"
-        [@.disabled]="beforeInit || !!noAnimation?.nzNoAnimation"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation"
-        [@treeCollapseMotion]="nzFlattenNodes.length"
-      >
-        <ng-container *ngFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
-          <ng-template [ngTemplateOutlet]="nodeTemplate" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
-        </ng-container>
-      </div>
+      @if (nzVirtualHeight) {
+        <cdk-virtual-scroll-viewport
+          [class.ant-select-tree-list-holder-inner]="nzSelectMode"
+          [class.ant-tree-list-holder-inner]="!nzSelectMode"
+          [itemSize]="nzVirtualItemSize"
+          [minBufferPx]="nzVirtualMinBufferPx"
+          [maxBufferPx]="nzVirtualMaxBufferPx"
+          [style.height]="nzVirtualHeight"
+        >
+          <ng-container *cdkVirtualFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
+            <ng-template
+              [ngTemplateOutlet]="nodeTemplate"
+              [ngTemplateOutletContext]="{ $implicit: node }"
+            ></ng-template>
+          </ng-container>
+        </cdk-virtual-scroll-viewport>
+      } @else {
+        <div
+          [class.ant-select-tree-list-holder-inner]="nzSelectMode"
+          [class.ant-tree-list-holder-inner]="!nzSelectMode"
+          [@.disabled]="beforeInit || !!noAnimation?.nzNoAnimation"
+          [nzNoAnimation]="noAnimation?.nzNoAnimation"
+          [@treeCollapseMotion]="nzFlattenNodes.length"
+        >
+          @for (node of nzFlattenNodes; track trackByFlattenNode($index, node)) {
+            <ng-template
+              [ngTemplateOutlet]="nodeTemplate"
+              [ngTemplateOutletContext]="{ $implicit: node }"
+            ></ng-template>
+          }
+        </div>
+      }
     </div>
     <ng-template #nodeTemplate let-treeNode>
       <nz-tree-node
@@ -134,7 +138,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
         (nzClick)="eventTriggerChanged($event)"
         (nzDblClick)="eventTriggerChanged($event)"
         (nzContextMenu)="eventTriggerChanged($event)"
-        (nzCheckBoxChange)="eventTriggerChanged($event)"
+        (nzCheckboxChange)="eventTriggerChanged($event)"
         (nzOnDragStart)="eventTriggerChanged($event)"
         (nzOnDragEnter)="eventTriggerChanged($event)"
         (nzOnDragOver)="eventTriggerChanged($event)"
@@ -170,49 +174,35 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     '[class.draggable-tree]': `nzDraggable`
   },
   imports: [
-    NgStyle,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
-    NgIf,
     CdkVirtualForOf,
     NgTemplateOutlet,
     NzNoAnimationDirective,
-    NgForOf,
     NzTreeNodeBuiltinComponent
-  ],
-  standalone: true
+  ]
 })
-export class NzTreeComponent
-  extends NzTreeBase
-  implements OnInit, OnDestroy, ControlValueAccessor, OnChanges, AfterViewInit
-{
+export class NzTreeComponent extends NzTreeBase implements OnInit, ControlValueAccessor, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzShowIcon: BooleanInput;
-  static ngAcceptInputType_nzHideUnMatched: BooleanInput;
-  static ngAcceptInputType_nzBlockNode: BooleanInput;
-  static ngAcceptInputType_nzExpandAll: BooleanInput;
-  static ngAcceptInputType_nzSelectMode: BooleanInput;
-  static ngAcceptInputType_nzCheckStrictly: BooleanInput;
-  static ngAcceptInputType_nzShowExpand: BooleanInput;
-  static ngAcceptInputType_nzShowLine: BooleanInput;
-  static ngAcceptInputType_nzCheckable: BooleanInput;
-  static ngAcceptInputType_nzAsyncData: BooleanInput;
-  static ngAcceptInputType_nzDraggable: BooleanInput;
-  static ngAcceptInputType_nzMultiple: BooleanInput;
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
 
-  @Input() @InputBoolean() @WithConfig() nzShowIcon: boolean = false;
-  @Input() @InputBoolean() @WithConfig() nzHideUnMatched: boolean = false;
-  @Input() @InputBoolean() @WithConfig() nzBlockNode: boolean = false;
-  @Input() @InputBoolean() nzExpandAll = false;
-  @Input() @InputBoolean() nzSelectMode = false;
-  @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() @InputBoolean() nzShowExpand: boolean = true;
-  @Input() @InputBoolean() nzShowLine = false;
-  @Input() @InputBoolean() nzCheckable = false;
-  @Input() @InputBoolean() nzAsyncData = false;
-  @Input() @InputBoolean() nzDraggable: boolean = false;
-  @Input() @InputBoolean() nzMultiple = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzShowIcon: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzHideUnMatched: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBlockNode: boolean = false;
+  @Input({ transform: booleanAttribute }) nzExpandAll = false;
+  @Input({ transform: booleanAttribute }) nzSelectMode = false;
+  @Input({ transform: booleanAttribute }) nzCheckStrictly = false;
+  @Input({ transform: booleanAttribute }) nzShowExpand: boolean = true;
+  @Input({ transform: booleanAttribute }) nzShowLine = false;
+  @Input({ transform: booleanAttribute }) nzCheckable = false;
+  @Input({ transform: booleanAttribute }) nzAsyncData = false;
+  @Input({ transform: booleanAttribute }) nzDraggable: boolean = false;
+  @Input({ transform: booleanAttribute }) nzMultiple = false;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() @WithConfig() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
@@ -243,7 +233,7 @@ export class NzTreeComponent
   @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzContextMenu = new EventEmitter<NzFormatEmitEvent>();
-  @Output() readonly nzCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzCheckboxChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzOnDragStart = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzOnDragEnter = new EventEmitter<NzFormatEmitEvent>();
@@ -271,8 +261,6 @@ export class NzTreeComponent
     overflow: 'hidden'
   };
 
-  destroy$ = new Subject<boolean>();
-
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
 
@@ -291,9 +279,9 @@ export class NzTreeComponent
   /**
    * Render all properties of nzTree
    *
-   * @param changes: all changes from @Input
+   * @param changes all changes from @Input
    */
-  renderTreeProperties(changes: { [propertyName: string]: SimpleChange }): void {
+  renderTreeProperties(changes: SimpleChanges): void {
     let useDefaultExpandedKeys = false;
     let expandAll = false;
     const {
@@ -393,7 +381,7 @@ export class NzTreeComponent
       if (searchFunc) {
         return searchFunc(node.origin);
       }
-      return !value || !node.title.toLowerCase().includes(value.toLowerCase()) ? false : true;
+      return !!value && node.title.toLowerCase().includes(value.toLowerCase());
     };
     dataList.forEach(v => {
       v.isMatched = checkIfMatched(v);
@@ -431,7 +419,7 @@ export class NzTreeComponent
       case 'contextmenu':
         this.nzContextMenu.emit(event);
         break;
-      case 'check':
+      case 'check': {
         // Render checked state with nodes' property `isChecked`
         this.nzTreeService.setCheckedNodeList(node);
         if (!this.nzCheckStrictly) {
@@ -439,10 +427,11 @@ export class NzTreeComponent
         }
         // Cause check method will rerender list, so we need recover it and next the new event to user
         const eventNext = this.nzTreeService.formatEvent('check', node, event.event!);
-        this.nzCheckBoxChange.emit(eventNext);
+        this.nzCheckboxChange.emit(eventNext);
         const checkedKeys = this.nzTreeService.getCheckedNodeKeys();
         this.nzCheckedKeysChange.emit(checkedKeys);
         break;
+      }
       case 'dragstart':
         // if node is expanded
         if (node.isExpanded) {
@@ -451,7 +440,7 @@ export class NzTreeComponent
         }
         this.nzOnDragStart.emit(event);
         break;
-      case 'dragenter':
+      case 'dragenter': {
         const selectedNode = this.nzTreeService.getSelectedNode();
         if (selectedNode && selectedNode.key !== node.key && !node.isExpanded && !node.isLeaf) {
           node.setExpanded(true);
@@ -459,6 +448,7 @@ export class NzTreeComponent
         }
         this.nzOnDragEnter.emit(event);
         break;
+      }
       case 'dragover':
         this.nzOnDragOver.emit(event);
         break;
@@ -485,20 +475,13 @@ export class NzTreeComponent
     );
     this.cdr.markForCheck();
   }
-  // Handle emit event end
 
-  constructor(
-    nzTreeService: NzTreeBaseService,
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-    super(nzTreeService);
+  constructor() {
+    super(inject(NzTreeBaseService));
   }
 
   ngOnInit(): void {
-    this.nzTreeService.flattenNodes$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+    this.nzTreeService.flattenNodes$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.nzFlattenNodes =
         !!this.nzVirtualHeight && this.nzHideUnMatched && this.nzSearchValue?.length > 0
           ? data.filter(d => !d.canHide)
@@ -507,22 +490,17 @@ export class NzTreeComponent
     });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
   }
 
-  ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.renderTreeProperties(changes);
   }
 
   ngAfterViewInit(): void {
     this.beforeInit = false;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

@@ -3,15 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { outputFileSync } from 'fs-extra';
+
+import path from 'path';
+
 import { buildConfig } from '../build-config';
 
-const fs = require('fs-extra');
-
-const path = require('path');
-
-
 export function setVersion(): void {
-  fs.outputFileSync(
+  outputFileSync(
     path.join(buildConfig.projectDir, `schematics/utils/version-names.ts`),
     `
 export const zorroVersion = '^${buildConfig.projectVersion}';

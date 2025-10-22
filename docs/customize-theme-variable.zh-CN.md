@@ -17,8 +17,8 @@ title: 动态主题（实验性）
 替换当前项目引入样式文件为 CSS Variable 版本：
 
 ```diff
--- @import "~ng-zorro-antd/ng-zorro-antd.min.css";
-++ @import "~ng-zorro-antd/ng-zorro-antd.variable.min.css";
+- @import "~ng-zorro-antd/ng-zorro-antd.min.css";
++ @import "~ng-zorro-antd/ng-zorro-antd.variable.min.css";
 ```
 
 注：如果你使用了 `babel-plugin-import`，需要将其去除。
@@ -28,7 +28,7 @@ title: 动态主题（实验性）
 利用全局配置项功能，在根注入器中根据注入令牌 `NZ_CONFIG` 提供一个符合 `NzConfig` 接口的对象，例如：
 
 ```typescript
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 
 const ngZorroConfig: NzConfig = {
   // 注意组件名称没有 nz 前缀
@@ -37,22 +37,15 @@ const ngZorroConfig: NzConfig = {
   }
 };
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    CommonModule
-  ],
-  providers: [
-    { provide: NZ_CONFIG, useValue:  ngZorroConfig  }
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
+export const appConfig: ApplicationConfig = {
+  providers: [provideNzConfig(ngZorroConfig)]
+};
 ```
 
 这些全局配置项将会被注入 `NzConfigService` 当中并保存。
 
 ### 动态变更
+
 你可以通过调用 `NzConfigService` 的 `set` 方法来改变 CSS Variable 样式配置项，例如：
 
 ```typescript
@@ -62,10 +55,10 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
   selector: 'app-change-zorro-config'
 })
 export class ChangeZorroConfigComponent {
-  constructor(private nzConfigService: NzConfigService) {}
+  private nzConfigService = inject(NzConfigService);
 
   onChangeConfig() {
-    this.nzConfigService.set('theme', { primaryColor: '#1890ff' })
+    this.nzConfigService.set('theme', { primaryColor: '#1890ff' });
   }
 }
 ```

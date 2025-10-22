@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+
 @Component({
   selector: 'nz-demo-steps-step-next',
+  imports: [NzButtonModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
       <nz-step nzTitle="Finished"></nz-step>
@@ -11,15 +15,21 @@ import { Component } from '@angular/core';
 
     <div class="steps-content">{{ index }}</div>
     <div class="steps-action">
-      <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
-        <span>Previous</span>
-      </button>
-      <button nz-button nzType="default" (click)="next()" *ngIf="current < 2">
-        <span>Next</span>
-      </button>
-      <button nz-button nzType="primary" (click)="done()" *ngIf="current === 2">
-        <span>Done</span>
-      </button>
+      @if (current > 0) {
+        <button nz-button nzType="default" (click)="pre()">
+          <span>Previous</span>
+        </button>
+      }
+      @if (current < 2) {
+        <button nz-button nzType="default" (click)="next()">
+          <span>Next</span>
+        </button>
+      }
+      @if (current === 2) {
+        <button nz-button nzType="primary" (click)="done()">
+          <span>Done</span>
+        </button>
+      }
     </div>
   `,
   styles: [
@@ -82,6 +92,4 @@ export class NzDemoStepsStepNextComponent {
       }
     }
   }
-
-  constructor() {}
 }

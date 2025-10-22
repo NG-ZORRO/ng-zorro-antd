@@ -1,7 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+
 @Component({
   selector: 'nz-demo-anchor-static',
+  imports: [NzAnchorModule],
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-anchor [nzAffix]="false">

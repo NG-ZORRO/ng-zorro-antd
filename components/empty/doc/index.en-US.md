@@ -3,22 +3,17 @@ category: Components
 type: Data Display
 title: Empty
 cols: 1
-cover: https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg'
+description: Empty state placeholder.
 ---
-
-Empty state placeholder.
 
 ## When To Use
 
 When there is no data provided, display for friendly tips.
 
-```ts
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-```
-
 ## API
 
-### nz-empty:standalone
+### nz-empty
 
 | Property              | Description                                                   | Type                                  | Default |
 | --------------------- | ------------------------------------------------------------- | ------------------------------------- | ------- |
@@ -30,9 +25,9 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 The `nzEmpty` interface has properties as follows:
 
-| Properties              | Description                                                                                             | Type                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| `nzDefaultEmptyContent` | User default empty component. You can restore the system default empty content by providing `undefined` | `Type<any>\|TemplateRef<string>\|string\|undefined` |
+| Properties              | Description                                                                                             | Type                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `nzDefaultEmptyContent` | User default empty component. You can restore the system default empty content by providing `undefined` | `Type<any> \| TemplateRef<string> \| string \| undefined` |
 
 ### InjectionToken
 

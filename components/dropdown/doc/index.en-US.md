@@ -2,25 +2,20 @@
 category: Components
 type: Navigation
 title: Dropdown
-cover: https://gw.alipayobjects.com/zos/alicdn/eedWN59yJ/Dropdown.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/eedWN59yJ/Dropdown.svg'
+description: A dropdown list.
 ---
-
-A dropdown list.
 
 ## When To Use
 
 If there are too many operations to display, you can wrap them in a `Dropdown`. By clicking/hovering on the trigger, a dropdown menu should appear, which allows you to choose one option and execute relevant actions.
 
-```ts
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-```
-
 ## API
 
-### [nz-dropdown]:standalone
+### [nz-dropdown]
 
-| Property               | Description                                                                                       | Type                                                                                        | Default        |
-| ---------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
+| Property               | Description                                                                                       | Type                                                                                        | Default        | Version |
+| ---------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- | ------- |
 | `[nzDropdownMenu]`     | Dropdown menu                                                                                     | `NzDropdownMenuComponent`                                                                   | -              |
 | `[nzDisabled]`         | whether the dropdown menu is disabled                                                             | `boolean`                                                                                   | -              |
 | `[nzPlacement]`        | placement of pop menu                                                                             | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
@@ -30,6 +25,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 | `[nzOverlayClassName]` | Class name of the dropdown root element                                                           | `string`                                                                                    | -              |
 | `[nzOverlayStyle]`     | Style of the dropdown root element                                                                | `object`                                                                                    | -              |
 | `(nzVisibleChange)`    | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>`                                                                     | -              |
+| `[nzArrow]`            | Whether the dropdown arrow should be visible                                                      | `boolean`                                                                                   | `false`        | 20.2.0  |
 
 You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items and dividers are also available by using `nz-menu-item` and `nz-menu-divider`.
 
@@ -37,7 +33,7 @@ You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items a
 >
 > The `nzMode` of `[nz-menu]` inside `nz-dropdown-menu` can only be the default value `vertical`.
 
-### nz-dropdown-menu:standalone
+### nz-dropdown-menu
 
 Wrap Dropdown Menu and pass to `[nz-dropdown]` and `NzContextMenuService`, you can export it via Template Syntax `nzDropdownMenu`
 
@@ -62,3 +58,10 @@ Create dropdown with contextmenu, the detail can be found in the example above
 | -------- | --------------- | --------------------------------------------------------------------------- | ---------------------- |
 | create   | create dropdown | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | `EmbeddedViewRef<any>` |
 | close    | close dropdown  | -                                                                           | -                      |
+
+## FAQ
+
+### Q: The overlay layer element does not follow the scroll position when scrolling
+
+By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
+Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.

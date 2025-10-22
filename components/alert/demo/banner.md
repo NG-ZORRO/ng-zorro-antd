@@ -14,5 +14,3 @@ title:
 ## en-US
 
 Display Alert as a banner at top of page.
-
-

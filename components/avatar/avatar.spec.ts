@@ -1,9 +1,15 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { createFakeEvent } from 'ng-zorro-antd/core/testing';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzAvatarGroupComponent } from './avatar-group.component';
 import { NzAvatarComponent } from './avatar.component';
@@ -22,13 +28,10 @@ function getType(dl: DebugElement): string {
   }
   return el.innerText.trim().length === 0 ? '' : 'text';
 }
+
 describe('avatar group', () => {
   let fixture: ComponentFixture<TestAvatarGroupComponent>;
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NzAvatarModule],
-      declarations: [TestAvatarGroupComponent]
-    }).compileComponents();
     fixture = TestBed.createComponent(TestAvatarGroupComponent);
     fixture.detectChanges();
   });
@@ -39,15 +42,21 @@ describe('avatar group', () => {
     expect(avatarGroup.nativeElement.classList).toContain('ant-avatar-group');
   });
 });
+
 describe('avatar', () => {
   let fixture: ComponentFixture<TestAvatarComponent>;
   let context: TestAvatarComponent;
   let dl: DebugElement;
+
+  function getImageElement(): HTMLImageElement {
+    return dl.query(By.css('img')).nativeElement;
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzAvatarModule, NzIconTestModule],
-      declarations: [TestAvatarComponent]
-    }).compileComponents();
+      providers: [provideNzIconsTesting()]
+    });
+
     fixture = TestBed.createComponent(TestAvatarComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;
@@ -98,13 +107,13 @@ describe('avatar', () => {
     it('#nzSrcSet', () => {
       context.nzSrcSet = '1.png';
       fixture.detectChanges();
-      const el = dl.query(By.css(`img`)).nativeElement as HTMLImageElement;
+      const el = getImageElement();
       expect(el.srcset).toBe(context.nzSrcSet);
     });
     it('#nzAlt', () => {
       context.nzAlt = 'alt';
       fixture.detectChanges();
-      const el = dl.query(By.css(`img`)).nativeElement as HTMLImageElement;
+      const el = getImageElement();
       expect(el.alt).toBe(context.nzAlt);
     });
   });
@@ -136,6 +145,7 @@ describe('avatar', () => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
       tick();
+      context.comp['calcStringSize']();
       const scale = getScaleFromCSSTransform(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!);
       expect(scale).toBeLessThan(1);
     }));
@@ -149,6 +159,7 @@ describe('avatar', () => {
         fixture.detectChanges();
         tick();
         avatarText = dl.nativeElement.querySelector('.ant-avatar-string')!;
+        context.comp['calcStringSize']();
         firstScale = getScaleFromCSSTransform(avatarText.style.transform);
       }));
 
@@ -234,10 +245,66 @@ describe('avatar', () => {
       fixture.detectChanges();
       flush();
       const textEl = document.querySelector<HTMLElement>('.ant-avatar-string')!;
+      context.comp['calcStringSize']();
       const scale = getScaleFromCSSTransform(textEl.style.transform);
       expect(scale).toBeLessThan(1);
       expect(textEl.style.lineHeight).toEqual(`${size}px`);
     }));
+
+    it('should have 0 for avatarWidth if element.width is falsy`', fakeAsync(() => {
+      const size = 64;
+      context.nzIcon = null;
+      context.nzSrc = null;
+      context.nzSize = size;
+      context.nzText = 'LongUsername';
+      context.comp.hasText = true;
+
+      fixture.detectChanges();
+      flush();
+      const textEl = document.querySelector<HTMLElement>('.ant-avatar-string')!;
+      (context.comp as NzSafeAny)['el'] = {
+        getBoundingClientRect: function () {
+          return {
+            width: null
+          };
+        }
+      };
+
+      context.comp['calcStringSize']();
+
+      const scale = getScaleFromCSSTransform(textEl.style.transform);
+
+      // avatarWidth = 0
+      // childrenWidth = 86
+      // offset = 8
+      // avatarWidth = 0
+      // scale = (0 - 8) / 86
+      expect(scale).toBe(-0.0930233);
+    }));
+  });
+
+  describe('[nzLoading]', () => {
+    it('should set `loading` attribute to `eager` by default', () => {
+      expect(getImageElement().loading).toEqual('eager');
+    });
+
+    it('should allow providing a binding for the `loading` attribute', () => {
+      context.nzLoading = 'lazy';
+      fixture.detectChanges();
+      expect(getImageElement().loading).toEqual('lazy');
+    });
+  });
+
+  describe('[nzFetchPriority]', () => {
+    it('should set `fetchpriority` attribute to `auto` by default', () => {
+      expect(getImageElement().fetchPriority).toEqual('auto');
+    });
+
+    it('should allow providing a binding for the `fetchpriority` attribute', () => {
+      context.nzFetchPriority = 'high';
+      fixture.detectChanges();
+      expect(getImageElement().fetchPriority).toEqual('high');
+    });
   });
 
   describe('order: image > icon > text', () => {
@@ -281,6 +348,7 @@ function getScaleFromCSSTransform(transform: string): number {
 }
 
 @Component({
+  imports: [NzAvatarModule],
   template: `
     <nz-avatar
       #comp
@@ -292,9 +360,14 @@ function getScaleFromCSSTransform(transform: string): number {
       [nzSrc]="nzSrc"
       [nzSrcSet]="nzSrcSet"
       [nzAlt]="nzAlt"
+      [nzLoading]="nzLoading"
+      [nzFetchPriority]="nzFetchPriority"
     ></nz-avatar>
   `,
-  styleUrls: ['./style/index.less']
+  styles: `
+    @import '../style/testing.less';
+    @import './style/index.less';
+  `
 })
 class TestAvatarComponent {
   @ViewChild('comp', { static: false }) comp!: NzAvatarComponent;
@@ -306,9 +379,12 @@ class TestAvatarComponent {
   nzSrc: string | null = imageBase64;
   nzSrcSet?: string;
   nzAlt?: string;
+  nzLoading?: 'eager' | 'lazy';
+  nzFetchPriority?: 'high' | 'low' | 'auto';
 }
 
 @Component({
-  template: ` <nz-avatar-group></nz-avatar-group> `
+  imports: [NzAvatarModule],
+  template: `<nz-avatar-group></nz-avatar-group>`
 })
 class TestAvatarGroupComponent {}

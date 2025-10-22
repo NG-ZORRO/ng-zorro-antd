@@ -50,7 +50,16 @@ export interface NzShowUploadList {
   showDownloadIcon?: boolean;
 }
 
+/**
+ * @deprecated will be removed in v22.0.0
+ * Use `NzBeforeUploadFileType` instead.
+ */
 export type NzUploadTransformFileType = string | Blob | NzUploadFile | Observable<string | Blob | File>;
+
+export type NzBeforeUploadFileType =
+  | boolean
+  | Observable<boolean | NzUploadFile | Blob | File | boolean>
+  | Promise<boolean | NzUploadFile | Blob | File | boolean>;
 
 export interface ZipButtonOptions {
   disabled?: boolean;
@@ -58,7 +67,7 @@ export interface ZipButtonOptions {
   action?: string | ((file: NzUploadFile) => string | Observable<string>);
   directory?: boolean;
   openFileDialogOnClick?: boolean;
-  beforeUpload?(file: NzUploadFile, fileList: NzUploadFile[]): boolean | Observable<NzSafeAny>;
+  beforeUpload?(file: NzUploadFile, fileList: NzUploadFile[]): NzBeforeUploadFileType;
   customRequest?(item: NzSafeAny): Subscription;
   data?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
   headers?: {} | ((file: NzUploadFile) => {} | Observable<{}>);

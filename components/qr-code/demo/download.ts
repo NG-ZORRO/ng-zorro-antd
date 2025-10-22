@@ -1,7 +1,11 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
+
 @Component({
   selector: 'nz-demo-qr-code-download',
+  imports: [NzButtonModule, NzQRCodeModule],
   template: `
     <div id="download">
       <nz-qrcode nzValue="https://ng.ant.design/"></nz-qrcode>

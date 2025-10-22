@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Display large amounts of data in scrollable view via set `y` of `[nzScroll]`, you can specify column width via `[nzWidth]`.
-

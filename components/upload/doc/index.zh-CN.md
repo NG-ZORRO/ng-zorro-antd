@@ -3,10 +3,9 @@ category: Components
 subtitle: 上传
 type: 数据录入
 title: Upload
-cover: https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg'
+description: 文件选择上传和拖拽上传控件。
 ---
-
-文件选择上传和拖拽上传控件。
 
 ## 何时使用
 
@@ -16,15 +15,11 @@ cover: https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg
 - 当需要展现上传的进度时。
 - 当需要使用拖拽交互时。
 
-```ts
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-```
-
 ## API
 
 > 服务端上传接口实现可以参考 [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload/wiki)。
 
-### nz-upload:standalone
+### nz-upload
 
 | 参数                        | 说明                                                                                                                            | 类型                                                                                             | 默认值       |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------ |
@@ -54,7 +49,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 | `[nzRemove]`                | 点击移除文件时的回调，返回值为 false 时不移除。支持返回 `Observable` 对象；注意：务必使用 `=>` 定义处理方法。                   | `(file: NzUploadFile) => boolean \| Observable<boolean>`                                         | -            |
 | `(nzChange)`                | 上传文件改变时的状态                                                                                                            | `EventEmitter<NzUploadChangeParam>`                                                              | -            |
 | `[nzDownload]`              | 点击下载文件时的回调，如果没有指定，则默认跳转到文件 url 对应的标签页                                                           | `(file: NzUploadFile) => void`                                                                   | 跳转新标签页 |
-| `[nzTransformFile]`         | 在上传之前转换文件。支持返回一个 Observable 对象                                                                                | `(file: NzUploadFile) => NzUploadTransformFileType`                                              | -            |
+| ~~`[nzTransformFile]`~~     | ~~在上传之前转换文件。支持返回一个 Observable 对象~~                                                                            | ~~`(file: NzUploadFile) => NzUploadTransformFileType`~~                                          | -            |
 | `[nzIconRender]`            | 自定义显示 icon                                                                                                                 | `TemplateRef<{ $implicit: NzUploadFile }>`                                                       | -            |
 | `[nzFileListRender]`        | 自定义显示整个列表                                                                                                              | `TemplateRef<{ $implicit: NzUploadFile[] }>`                                                     | -            |
 

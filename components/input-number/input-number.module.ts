@@ -5,20 +5,29 @@
 
 import { NgModule } from '@angular/core';
 
-import { NzInputNumberGroupSlotComponent } from './input-number-group-slot.component';
 import {
-  NzInputNumberGroupComponent,
-  NzInputNumberGroupWhitSuffixOrPrefixDirective
-} from './input-number-group.component';
+  NzInputAddonAfterDirective,
+  NzInputAddonBeforeDirective,
+  NzInputPrefixDirective,
+  NzInputSuffixDirective
+} from 'ng-zorro-antd/input';
+
 import { NzInputNumberComponent } from './input-number.component';
 
 @NgModule({
   imports: [
     NzInputNumberComponent,
-    NzInputNumberGroupComponent,
-    NzInputNumberGroupWhitSuffixOrPrefixDirective,
-    NzInputNumberGroupSlotComponent
+    NzInputAddonBeforeDirective,
+    NzInputAddonAfterDirective,
+    NzInputPrefixDirective,
+    NzInputSuffixDirective
   ],
-  exports: [NzInputNumberComponent, NzInputNumberGroupComponent, NzInputNumberGroupWhitSuffixOrPrefixDirective]
+  exports: [
+    NzInputNumberComponent,
+    NzInputAddonBeforeDirective,
+    NzInputAddonAfterDirective,
+    NzInputPrefixDirective,
+    NzInputSuffixDirective
+  ]
 })
 export class NzInputNumberModule {}

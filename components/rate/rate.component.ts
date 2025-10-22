@@ -5,19 +5,21 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
-import { NgClass, NgForOf } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   forwardRef,
+  inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
   OnInit,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -25,15 +27,13 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NgClassType, NumberInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
+import { NgClassType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzRateItemComponent } from './rate-item.component';
 
@@ -44,64 +44,62 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-rate',
   exportAs: 'nzRate',
-  preserveWhitespaces: false,
   template: `
     <ul
       #ulElement
       class="ant-rate"
       [class.ant-rate-disabled]="nzDisabled"
       [class.ant-rate-rtl]="dir === 'rtl'"
-      [ngClass]="classMap"
+      [class]="classMap"
       (keydown)="onKeyDown($event); $event.preventDefault()"
       (mouseleave)="onRateLeave(); $event.stopPropagation()"
       [tabindex]="nzDisabled ? -1 : 1"
     >
-      <li
-        *ngFor="let star of starArray; let i = index"
-        class="ant-rate-star"
-        [ngClass]="starStyleArray[i] || ''"
-        nz-tooltip
-        [nzTooltipTitle]="nzTooltips[i]"
-      >
-        <div
-          nz-rate-item
-          [allowHalf]="nzAllowHalf"
-          [character]="nzCharacter"
-          [index]="i"
-          (itemHover)="onItemHover(i, $event)"
-          (itemClick)="onItemClick(i, $event)"
-        ></div>
-      </li>
+      @for (star of starArray; track star) {
+        <li
+          class="ant-rate-star"
+          [class]="starStyleArray[$index] || ''"
+          nz-tooltip
+          [nzTooltipTitle]="nzTooltips[$index]"
+        >
+          <div
+            nz-rate-item
+            [allowHalf]="nzAllowHalf"
+            [character]="nzCharacter"
+            [index]="$index"
+            (itemHover)="onItemHover($index, $event)"
+            (itemClick)="onItemClick($index, $event)"
+          ></div>
+        </li>
+      }
     </ul>
   `,
   providers: [
-    NzDestroyService,
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzRateComponent),
       multi: true
     }
   ],
-  imports: [NgClass, NgForOf, NzToolTipModule, NzRateItemComponent, NzToolTipModule],
-  standalone: true
+  imports: [NzTooltipModule, NzRateItemComponent]
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  static ngAcceptInputType_nzAllowClear: BooleanInput;
-  static ngAcceptInputType_nzAllowHalf: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzCount: NumberInput;
+  private readonly ngZone = inject(NgZone);
+  private readonly renderer = inject(Renderer2);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
 
   @ViewChild('ulElement', { static: true }) ulElement!: ElementRef<HTMLUListElement>;
 
-  @Input() @WithConfig() @InputBoolean() nzAllowClear: boolean = true;
-  @Input() @WithConfig() @InputBoolean() nzAllowHalf: boolean = false;
-  @Input() @InputBoolean() nzDisabled: boolean = false;
-  @Input() @InputBoolean() nzAutoFocus: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzAllowClear: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzAllowHalf: boolean = false;
+  @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus: boolean = false;
   @Input() nzCharacter!: TemplateRef<{ $implicit: number }>;
-  @Input() @InputNumber() nzCount: number = 5;
+  @Input({ transform: numberAttribute }) nzCount: number = 5;
   @Input() nzTooltips: string[] = [];
   @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();
   @Output() readonly nzOnFocus = new EventEmitter<FocusEvent>();
@@ -129,18 +127,13 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     }
 
     this._value = input;
-    this.hasHalf = !Number.isInteger(input);
+    this.hasHalf = !Number.isInteger(input) && this.nzAllowHalf;
     this.hoverValue = Math.ceil(input);
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private ngZone: NgZone,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality,
-    private destroy$: NzDestroyService
-  ) {}
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzAutoFocus, nzCount, nzValue } = changes;
@@ -164,37 +157,30 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   }
 
   ngOnInit(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.cdr.markForCheck());
-
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent<FocusEvent>(this.ulElement.nativeElement, 'focus')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          this.isFocused = true;
-          if (this.nzOnFocus.observers.length) {
-            this.ngZone.run(() => this.nzOnFocus.emit(event));
-          }
-        });
+    fromEventOutsideAngular<FocusEvent>(this.ulElement.nativeElement, 'focus')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(event => {
+        this.isFocused = true;
+        if (this.nzOnFocus.observers.length) {
+          this.ngZone.run(() => this.nzOnFocus.emit(event));
+        }
+      });
 
-      fromEvent<FocusEvent>(this.ulElement.nativeElement, 'blur')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          this.isFocused = false;
-          if (this.nzOnBlur.observers.length) {
-            this.ngZone.run(() => this.nzOnBlur.emit(event));
-          }
-        });
-    });
+    fromEventOutsideAngular<FocusEvent>(this.ulElement.nativeElement, 'blur')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(event => {
+        this.isFocused = false;
+        if (this.nzOnBlur.observers.length) {
+          this.ngZone.run(() => this.nzOnBlur.emit(event));
+        }
+      });
   }
 
   onItemClick(index: number, isHalf: boolean): void {
@@ -220,21 +206,21 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   }
 
   onItemHover(index: number, isHalf: boolean): void {
-    if (this.nzDisabled || (this.hoverValue === index + 1 && isHalf === this.hasHalf)) {
+    if (this.nzDisabled) {
       return;
     }
-
-    this.hoverValue = index + 1;
-    this.hasHalf = isHalf;
+    if (this.hoverValue !== index + 1 || isHalf !== this.hasHalf) {
+      this.hoverValue = index + 1;
+      this.hasHalf = isHalf;
+      this.updateStarStyle();
+    }
     this.nzOnHoverChange.emit(this.hoverValue);
-
-    this.updateStarStyle();
   }
 
   onRateLeave(): void {
     this.hasHalf = !Number.isInteger(this.nzValue);
     this.hoverValue = Math.ceil(this.nzValue);
-
+    this.nzOnHoverChange.emit(this.hoverValue);
     this.updateStarStyle();
   }
 
@@ -297,11 +283,11 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (_: number) => void): void {
+  registerOnChange(fn: OnChangeType): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: OnTouchedType): void {
     this.onTouched = fn;
   }
 

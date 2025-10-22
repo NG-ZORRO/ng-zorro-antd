@@ -1,0 +1,60 @@
+<section class="markdown">
+  <h1>{{ language() === 'en' ? 'Components Overview' : '组件总览' }}</h1>
+
+  <section>
+    @if (language() === 'zh') {
+      <p>
+        <span><code>ng-zorro-antd</code></span>
+        是 Ant Design 的 Angular 实现，为网页开发提供高质量的 UI 组件。
+      </p>
+    } @else {
+      <p>
+        <span><code>ng-zorro-antd</code></span>
+        is an Angular UI library, follows Ant Design specification, to provide high quantity UI components for web
+        development.
+      </p>
+    }
+  </section>
+
+  <section #componentsList>
+    <nz-divider></nz-divider>
+
+    <nz-affix [nzOffsetTop]="10" (nzChange)="onSearchAffixed($event)">
+      <nz-input-group nzSuffixIcon="search" class="components-overview-search">
+        <input
+          type="text"
+          #searchBox
+          nz-input
+          placeholder="{{ language() === 'en' ? 'Search components' : '搜索组件' }}"
+          nzSize="large"
+          (input)="onSearch(searchBox.value)"
+        />
+      </nz-input-group>
+    </nz-affix>
+
+    <nz-divider></nz-divider>
+
+    @for (group of displayedComponents(); track group.name) {
+      <div class="components-overview">
+        <h3 nz-typography class="components-overview-group-title">
+          {{ group.name }}
+          <nz-tag>{{ group.children.length }}</nz-tag>
+        </h3>
+
+        <div nz-row>
+          @for (component of group.children; track $index) {
+            <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="8" nzXl="6" nzXXl="6" class="components-overview-card">
+              <a routerLink="/{{ component.path }}">
+                <nz-card nzHoverable nzTitle="{{ component.label }} {{ component.zh }}">
+                  <div class="components-overview-img">
+                    <img [alt]="component.label" [src]="component.cover" />
+                  </div>
+                </nz-card>
+              </a>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+</section>

@@ -1,10 +1,16 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzMentionModule } from 'ng-zorro-antd/mention';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 @Component({
   selector: 'nz-demo-mention-preview',
-  encapsulation: ViewEncapsulation.None,
+  imports: [FormsModule, NzInputModule, NzMentionModule, NzTabsModule],
   template: `
-    <nz-tabset>
+    <nz-tabs>
       <nz-tab nzTitle="Write">
         <nz-mention [nzSuggestions]="suggestions">
           <textarea
@@ -19,7 +25,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
       <nz-tab nzTitle="Preview">
         <pre [innerHTML]="preview"></pre>
       </nz-tab>
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoMentionPreviewComponent {

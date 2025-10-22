@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+
 @Component({
   selector: 'nz-demo-drawer-basic-right',
+  imports: [NzButtonModule, NzDrawerModule],
   template: `
     <button nz-button nzType="primary" (click)="open()">Open</button>
     <nz-drawer

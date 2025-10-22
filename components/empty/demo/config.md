@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Use `NzEmptyService` set global Empty style.
-
-

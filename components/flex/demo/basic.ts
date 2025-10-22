@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzFlexModule } from 'ng-zorro-antd/flex';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-flex-basic',
+  imports: [FormsModule, NzFlexModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="isVertical">
       <label nz-radio [nzValue]="false">horizontal</label>
@@ -15,7 +20,6 @@ import { Component } from '@angular/core';
       <div class="flex-item even"></div>
     </div>
   `,
-
   styles: [
     `
       nz-radio-group {

@@ -20,8 +20,7 @@ import { TimeType } from './typings';
         {{ locale[type] }}
       </label>
     </div>
-  `,
-  standalone: true
+  `
 })
 export class NzCronExpressionLabelComponent {
   @Input() type: TimeType = 'second';

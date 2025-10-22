@@ -8,8 +8,8 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ComponentFactoryResolver,
   Directive,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -21,30 +21,23 @@ import {
 
 @Directive({
   selector: 'nz-avatar[nz-comment-avatar]',
-  exportAs: 'nzCommentAvatar',
-  standalone: true
+  exportAs: 'nzCommentAvatar'
 })
 export class NzCommentAvatarDirective {}
 
 @Directive({
   selector: 'nz-comment-content, [nz-comment-content]',
   exportAs: 'nzCommentContent',
-  host: { class: 'ant-comment-content-detail' },
-  standalone: true
+  host: { class: 'ant-comment-content-detail' }
 })
 export class NzCommentContentDirective {}
 
 @Directive({
   selector: '[nzCommentActionHost]',
-  exportAs: 'nzCommentActionHost',
-  standalone: true
+  exportAs: 'nzCommentActionHost'
 })
 export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnInit, OnDestroy, AfterViewInit {
   @Input() nzCommentActionHost?: TemplatePortal | null;
-
-  constructor(componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef) {
-    super(componentFactoryResolver, viewContainerRef);
-  }
 
   override ngOnInit(): void {
     super.ngOnInit();
@@ -62,20 +55,18 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
 @Component({
   selector: 'nz-comment-action',
   exportAs: 'nzCommentAction',
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-template><ng-content /></ng-template>',
-  standalone: true
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzCommentActionComponent implements OnInit {
   @ViewChild(TemplateRef, { static: true }) implicitContent!: TemplateRef<void>;
+  private viewContainerRef = inject(ViewContainerRef);
   private contentPortal: TemplatePortal | null = null;
 
   get content(): TemplatePortal | null {
     return this.contentPortal;
   }
-
-  constructor(private viewContainerRef: ViewContainerRef) {}
 
   ngOnInit(): void {
     this.contentPortal = new TemplatePortal(this.implicitContent, this.viewContainerRef);

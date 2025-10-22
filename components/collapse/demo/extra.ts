@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-collapse-extra',
+  imports: [FormsModule, NzCollapseModule, NzIconModule, NzSelectModule],
   template: `
     <nz-collapse [nzExpandIconPosition]="expandIconPosition">
       @for (panel of panels; track panel) {
@@ -20,18 +26,18 @@ import { Component } from '@angular/core';
     </nz-collapse>
     <ng-template #extraTpl>
       <!-- You can use stopPropagation if you don't want the panel to toggle -->
-      <span nz-icon nzType="setting" (click)="$event.stopPropagation()"></span>
+      <nz-icon nzType="setting" (click)="$event.stopPropagation()" />
     </ng-template>
     <br />
     <span>Expand Icon Position: </span>
     <nz-select [(ngModel)]="expandIconPosition">
-      <nz-option nzValue="left" nzLabel="left"></nz-option>
-      <nz-option nzValue="right" nzLabel="right"></nz-option>
+      <nz-option nzValue="start" nzLabel="start"></nz-option>
+      <nz-option nzValue="end" nzLabel="end"></nz-option>
     </nz-select>
   `
 })
 export class NzDemoCollapseExtraComponent {
-  expandIconPosition: 'left' | 'right' = 'left';
+  expandIconPosition: 'start' | 'end' = 'start';
 
   panels = [
     {

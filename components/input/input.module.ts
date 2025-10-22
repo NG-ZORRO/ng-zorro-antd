@@ -6,8 +6,13 @@
 import { NgModule } from '@angular/core';
 
 import { NzAutosizeDirective } from './autosize.directive';
+import { NzInputAddonAfterDirective, NzInputAddonBeforeDirective } from './input-addon.directive';
+import { NzInputPrefixDirective, NzInputSuffixDirective } from './input-affix.directive';
 import { NzInputGroupSlotComponent } from './input-group-slot.component';
 import { NzInputGroupComponent, NzInputGroupWhitSuffixOrPrefixDirective } from './input-group.component';
+import { NzInputOtpComponent } from './input-otp.component';
+import { NzInputPasswordDirective, NzInputPasswordIconDirective } from './input-password.directive';
+import { NzInputWrapperComponent } from './input-wrapper.component';
 import { NzInputDirective } from './input.directive';
 import { NzTextareaCountComponent } from './textarea-count.component';
 
@@ -15,17 +20,33 @@ import { NzTextareaCountComponent } from './textarea-count.component';
   imports: [
     NzTextareaCountComponent,
     NzInputDirective,
+    NzInputWrapperComponent,
+    NzInputPasswordDirective,
+    NzInputPasswordIconDirective,
+    NzInputAddonBeforeDirective,
+    NzInputAddonAfterDirective,
+    NzInputPrefixDirective,
+    NzInputSuffixDirective,
     NzInputGroupComponent,
     NzAutosizeDirective,
     NzInputGroupSlotComponent,
-    NzInputGroupWhitSuffixOrPrefixDirective
+    NzInputGroupWhitSuffixOrPrefixDirective,
+    NzInputOtpComponent
   ],
   exports: [
     NzTextareaCountComponent,
     NzInputDirective,
+    NzInputWrapperComponent,
+    NzInputPasswordDirective,
+    NzInputPasswordIconDirective,
+    NzInputAddonBeforeDirective,
+    NzInputAddonAfterDirective,
+    NzInputPrefixDirective,
+    NzInputSuffixDirective,
     NzInputGroupComponent,
     NzAutosizeDirective,
-    NzInputGroupWhitSuffixOrPrefixDirective
+    NzInputGroupWhitSuffixOrPrefixDirective,
+    NzInputOtpComponent
   ]
 })
 export class NzInputModule {}

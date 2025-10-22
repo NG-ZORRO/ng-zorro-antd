@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+
 @Component({
   selector: 'nz-demo-layout-basic',
+  imports: [NzLayoutModule],
   template: `
     <nz-layout>
       <nz-header>Header</nz-header>
@@ -39,39 +42,45 @@ import { Component } from '@angular/core';
   styles: [
     `
       :host {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
         text-align: center;
       }
 
       nz-header,
       nz-footer {
-        background: #7dbcea;
+        text-align: center;
+        background: #4096ff;
         color: #fff;
       }
 
-      nz-footer {
-        line-height: 1.5;
+      nz-header {
+        height: 64px;
+        padding-inline: 48px;
+        line-height: 64px;
       }
 
       nz-sider {
-        background: #3ba0e9;
+        text-align: center;
+        background: #1677ff;
         color: #fff;
         line-height: 120px;
       }
 
       nz-content {
-        background: rgba(16, 142, 233, 1);
+        text-align: center;
+        background: #0958d9;
         color: #fff;
         min-height: 120px;
         line-height: 120px;
       }
 
-      nz-layout {
-        margin-bottom: 48px;
-      }
-
-      nz-layout nz-layout,
-      nz-layout:last-child {
-        margin: 0;
+      :host > nz-layout {
+        width: calc(50% - 8px);
+        max-width: calc(50% - 8px);
+        border-radius: 8px;
+        overflow: hidden;
       }
     `
   ]

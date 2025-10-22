@@ -5,17 +5,17 @@
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { defaultColor, NgAntdColorPickerModule } from 'ng-antd-color-picker';
-
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+
+import { NgAntdColorPickerModule } from './src/ng-antd-color-picker.module';
+import { defaultColor } from './src/util/util';
 
 @Component({
   selector: 'nz-color-block',
-  exportAs: 'NzColorBlock',
+  exportAs: 'nzColorBlock',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [NgAntdColorPickerModule],
-  template: ` <ng-antd-color-block [color]="nzColor" (nzOnClick)="nzOnClick.emit($event)"></ng-antd-color-block> `,
+  template: `<ng-antd-color-block [color]="nzColor" (nzOnClick)="nzOnClick.emit($event)"></ng-antd-color-block>`,
   host: {
     class: 'ant-color-picker-inline',
     '[class.ant-color-picker-inline-sm]': `nzSize === 'small'`,
@@ -26,6 +26,4 @@ export class NzColorBlockComponent {
   @Input() nzColor: string = defaultColor.toHexString();
   @Input() nzSize: NzSizeLDSType = 'default';
   @Output() readonly nzOnClick = new EventEmitter<boolean>();
-
-  constructor() {}
 }

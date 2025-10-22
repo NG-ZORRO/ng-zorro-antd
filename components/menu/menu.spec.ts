@@ -1,13 +1,20 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
+import { NzSubmenuTrigger } from 'ng-zorro-antd/menu/menu.types';
 
 import { NzMenuItemComponent } from './menu-item.component';
 import { NzMenuDirective } from './menu.directive';
@@ -19,24 +26,8 @@ describe('menu', () => {
   let overlayContainerElement: HTMLElement;
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, BidiModule, NzMenuModule, NoopAnimationsModule, NzIconTestModule],
-      declarations: [
-        NzTestBasicMenuHorizontalComponent,
-        NzTestBasicMenuInlineComponent,
-        NzTestMenuInlineCollapsedComponent,
-        NzTestMenuSiderCurrentComponent,
-        NzTestMenuThemeComponent,
-        NzTestMenuSwitchModeComponent,
-        NzTestMenuHorizontalComponent,
-        NzTestMenuInlineComponent,
-        NzDemoMenuNgForComponent,
-        NzTestNgIfMenuComponent,
-        NzTestSubMenuSelectedComponent,
-        NzTestMenuRtlComponent
-      ]
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
     });
-
-    TestBed.compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
@@ -228,7 +219,7 @@ describe('menu', () => {
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-inline ant-menu-light');
       });
     });
-    describe('swich-mode', () => {
+    describe('switch-mode', () => {
       let fixture: ComponentFixture<NzTestMenuSwitchModeComponent>;
       let testComponent: NzTestMenuSwitchModeComponent;
       let submenus: DebugElement[];
@@ -284,6 +275,42 @@ describe('menu', () => {
         dispatchFakeEvent(title, 'mouseenter');
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledWith(true);
+        expect(mouseenterCallback).toHaveBeenCalledTimes(1);
+      });
+      it('should have "hover" as default trigger', () => {
+        fixture.detectChanges();
+        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const subs = testComponent.subs.toArray();
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+        dispatchFakeEvent(title, 'mouseenter');
+        fixture.detectChanges();
+        expect(mouseenterCallback).toHaveBeenCalledWith(true);
+        expect(mouseenterCallback).toHaveBeenCalledTimes(1);
+      });
+      it('should have not open with mouse hover if trigger is set to "click"', () => {
+        testComponent.nzTriggerSubMenuAction = 'click';
+        fixture.detectChanges();
+        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const subs = testComponent.subs.toArray();
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+        dispatchFakeEvent(title, 'mouseenter');
+        fixture.detectChanges();
+        expect(mouseenterCallback).toHaveBeenCalledTimes(0);
+      });
+      it('should open with mouse click if trigger is set to "click"', () => {
+        testComponent.nzTriggerSubMenuAction = 'click';
+        fixture.detectChanges();
+        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const subs = testComponent.subs.toArray();
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+        title.click();
+        fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledTimes(1);
       });
       it('should submenu mouseleave work', () => {
@@ -357,7 +384,7 @@ describe('menu', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (subs[1].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
-        testComponent.disableditem.nativeElement.click();
+        testComponent.disabledItem.nativeElement.click();
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(0);
       });
@@ -473,7 +500,7 @@ describe('menu', () => {
     describe('ng-for', () => {
       it('should ng for works fine', () => {
         expect(() => {
-          TestBed.createComponent(NzDemoMenuNgForComponent).detectChanges();
+          TestBed.createComponent(NzTestMenuNgForComponent).detectChanges();
         }).not.toThrowError();
       });
     });
@@ -494,6 +521,7 @@ describe('menu', () => {
       });
     });
   });
+
   describe('RTL', () => {
     let fixture: ComponentFixture<NzTestMenuRtlComponent>;
     let testComponent: NzTestMenuHorizontalComponent;
@@ -533,13 +561,19 @@ describe('menu', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-menu-horizontal',
+  imports: [NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
-      <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
+      <li
+        nz-submenu
+        [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
+        nzMenuClassName="submenu"
+        [nzOpen]="open"
+        [style.width.px]="width"
+      >
         <span title>
-          <span nz-icon nzType="setting"></span>
+          <nz-icon nzType="setting" />
           Navigation Three - Submenu
         </span>
         <ul>
@@ -559,7 +593,7 @@ describe('menu', () => {
                 <span title>Sub Menu</span>
                 <ul>
                   <li nz-menu-item #menuitem>Option 5</li>
-                  <li nz-menu-item #disableditem nzDisabled>Option 6</li>
+                  <li nz-menu-item #disabledItem nzDisabled>Option 6</li>
                 </ul>
               </li>
               <li nz-submenu nzDisabled>
@@ -580,22 +614,24 @@ export class NzTestMenuHorizontalComponent {
   width = 200;
   open = false;
   disabled = false;
+  nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
   @ViewChildren(NzSubMenuComponent) subs!: QueryList<NzSubMenuComponent>;
   @ViewChild('menuitem', { static: false, read: ElementRef }) menuitem!: ElementRef;
   @ViewChild('menuitem1', { static: false, read: ElementRef }) menuitem1!: ElementRef;
-  @ViewChild('disableditem', { static: false, read: ElementRef }) disableditem!: ElementRef;
+  @ViewChild('disabledItem', { static: false, read: ElementRef }) disabledItem!: ElementRef;
 }
 
 @Component({
+  imports: [NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
       <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
         <span title>
-          <span nz-icon nzType="mail"></span>
+          <nz-icon nzType="mail" />
           Navigation One
         </span>
         <ul>
-          <li nz-menu-item style="padding-left:0px;">Option 1</li>
+          <li nz-menu-item style="padding-left:0">Option 1</li>
           <li nz-menu-item>Option 2</li>
         </ul>
       </li>
@@ -606,31 +642,38 @@ export class NzTestMenuInlineComponent {
   disabled = false;
   collapse = false;
   submenuClassName = 'submenu';
-  @ViewChild(NzSubMenuComponent, { static: true }) subsmenu!: NzSubMenuComponent;
+  @ViewChild(NzSubMenuComponent, { static: true }) submenu!: NzSubMenuComponent;
   @ViewChild('menuitem', { static: false, read: ElementRef }) menuitem!: ElementRef;
 }
 
 @Component({
+  imports: [NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
-      <li *ngFor="let l1 of menus" nz-submenu>
-        <span title>
-          <span nz-icon nzType="appstore"></span>
-          {{ l1.text }}
-        </span>
-        <ul>
-          <li *ngFor="let l2 of l1.children" nz-submenu>
-            <span title>{{ l2.text }}</span>
-            <ul>
-              <li *ngFor="let l3 of l2.children" nz-menu-item>{{ l3.text }}</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
+      @for (l1 of menus; track l1) {
+        <li nz-submenu>
+          <span title>
+            <nz-icon nzType="appstore" />
+            {{ l1.text }}
+          </span>
+          <ul>
+            @for (l2 of l1.children; track l2) {
+              <li nz-submenu>
+                <span title>{{ l2.text }}</span>
+                <ul>
+                  @for (l3 of l2.children; track l3) {
+                    <li nz-menu-item>{{ l3.text }}</li>
+                  }
+                </ul>
+              </li>
+            }
+          </ul>
+        </li>
+      }
     </ul>
   `
 })
-export class NzDemoMenuNgForComponent {
+export class NzTestMenuNgForComponent {
   menus = [
     {
       text: 'level1',
@@ -645,14 +688,15 @@ export class NzDemoMenuNgForComponent {
 }
 
 @Component({
+  imports: [NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu nzMode="horizontal">
       <li nz-menu-item>
-        <span nz-icon nzType="mail"></span>
+        <nz-icon nzType="mail" />
         Navigation One
       </li>
       <li nz-menu-item nzDisabled>
-        <span nz-icon nzType="appstore"></span>
+        <nz-icon nzType="appstore" />
         Navigation Two
       </li>
       <li nz-submenu nzTitle="Navigation Three - Submenu" nzIcon="setting">
@@ -693,6 +737,7 @@ export class NzDemoMenuNgForComponent {
 export class NzTestBasicMenuHorizontalComponent {}
 
 @Component({
+  imports: [NzMenuModule],
   template: `
     <ul nz-menu nzMode="inline">
       <li nz-submenu nzTitle="Navigation One" nzIcon="mail">
@@ -743,14 +788,17 @@ export class NzTestBasicMenuInlineComponent {}
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/3023
 @Component({
+  imports: [NzMenuModule],
   template: `
     <ul nz-menu nzMode="horizontal">
-      <li *ngIf="display" nz-submenu>
-        <span title>{{ text }}</span>
-        <ul>
-          <li nz-menu-item>item</li>
-        </ul>
-      </li>
+      @if (display) {
+        <li nz-submenu>
+          <span title>{{ text }}</span>
+          <ul>
+            <li nz-menu-item>item</li>
+          </ul>
+        </li>
+      }
     </ul>
   `
 })
@@ -761,10 +809,11 @@ export class NzTestNgIfMenuComponent {
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/3345
 @Component({
+  imports: [NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu nzMode="inline" nzTheme="dark" nzInlineCollapsed>
       <li nz-menu-item>
-        <span nz-icon nzType="mail"></span>
+        <nz-icon nzType="mail" />
         <span>Navigation One</span>
       </li>
       <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
@@ -779,14 +828,15 @@ export class NzTestNgIfMenuComponent {
 export class NzTestSubMenuSelectedComponent {}
 
 @Component({
+  imports: [NzButtonModule, NzIconModule, NzMenuModule],
   template: `
     <div class="wrapper">
       <button nz-button nzType="primary" (click)="toggleCollapsed()">
-        <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+        <nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" />
       </button>
       <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
         <li nz-menu-item nzSelected>
-          <span nz-icon nzType="mail"></span>
+          <nz-icon nzType="mail" />
           <span>Navigation One</span>
         </li>
         <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
@@ -832,6 +882,7 @@ export class NzTestMenuInlineCollapsedComponent {
 }
 
 @Component({
+  imports: [NzMenuModule],
   template: `
     <ul nz-menu nzMode="inline" style="width: 240px;">
       <li
@@ -891,7 +942,7 @@ export class NzTestMenuInlineCollapsedComponent {
   `
 })
 export class NzTestMenuSiderCurrentComponent {
-  openMap: { [name: string]: boolean } = {
+  openMap: Record<string, boolean> = {
     sub1: true,
     sub2: false,
     sub3: false
@@ -907,6 +958,7 @@ export class NzTestMenuSiderCurrentComponent {
 }
 
 @Component({
+  imports: [NzMenuModule],
   template: `
     <ul nz-menu [nzMode]="mode ? 'vertical' : 'inline'" [nzTheme]="dark ? 'dark' : 'light'">
       <li nz-submenu nzTitle="Navigation One" nzIcon="mail">
@@ -960,6 +1012,7 @@ export class NzTestMenuSwitchModeComponent {
 }
 
 @Component({
+  imports: [NzMenuModule],
   template: `
     <ul nz-menu nzMode="inline" style="width: 240px;" [nzTheme]="theme ? 'dark' : 'light'">
       <li nz-submenu nzOpen nzTitle="Navigation One" nzIcon="mail">
@@ -1003,7 +1056,9 @@ export class NzTestMenuSwitchModeComponent {
 export class NzTestMenuThemeComponent {
   theme = true;
 }
+
 @Component({
+  imports: [BidiModule, NzTestMenuHorizontalComponent],
   template: `
     <div [dir]="direction">
       <nz-test-menu-horizontal></nz-test-menu-horizontal>
@@ -1012,5 +1067,5 @@ export class NzTestMenuThemeComponent {
 })
 export class NzTestMenuRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

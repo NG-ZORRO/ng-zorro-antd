@@ -11,10 +11,9 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 @Component({
   selector: 'nz-option-group',
   exportAs: 'nzOptionGroup',
+  template: `<ng-content></ng-content>`,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzOptionGroupComponent implements OnChanges {
   @Input() nzLabel: string | number | TemplateRef<NzSafeAny> | null = null;

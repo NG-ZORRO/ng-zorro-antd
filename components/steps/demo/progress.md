@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Asynchronous steps with circular progress bar.
-
-

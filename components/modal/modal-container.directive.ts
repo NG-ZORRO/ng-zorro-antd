@@ -9,23 +9,25 @@ import { Direction } from '@angular/cdk/bidi';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import {
+  ANIMATION_MODULE_TYPE,
   ChangeDetectorRef,
   ComponentRef,
+  DestroyRef,
   Directive,
+  DOCUMENT,
   ElementRef,
   EmbeddedViewRef,
   EventEmitter,
+  inject,
   NgZone,
-  OnDestroy,
   Renderer2
 } from '@angular/core';
-import { Subject, fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { NzConfigService, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
 import { NzModalRef } from './modal-ref';
@@ -37,7 +39,19 @@ export function throwNzModalContentAlreadyAttachedError(): never {
 }
 
 @Directive()
-export class BaseModalContainerComponent extends BasePortalOutlet implements OnDestroy {
+export class BaseModalContainerComponent extends BasePortalOutlet {
+  readonly document: Document = inject(DOCUMENT);
+  readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  readonly config: ModalOptions = inject(ModalOptions);
+  protected ngZone: NgZone = inject(NgZone);
+  protected host: ElementRef<HTMLElement> = inject(ElementRef);
+  protected focusTrapFactory: FocusTrapFactory = inject(FocusTrapFactory);
+  protected render: Renderer2 = inject(Renderer2);
+  protected overlayRef: OverlayRef = inject(OverlayRef);
+  protected nzConfigService: NzConfigService = inject(NzConfigService);
+  protected animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
+  protected destroyRef = inject(DestroyRef);
+
   portalOutlet!: CdkPortalOutlet;
   modalElementRef!: ElementRef<HTMLDivElement>;
 
@@ -47,15 +61,13 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   okTriggered = new EventEmitter<void>();
 
   state: 'void' | 'enter' | 'exit' = 'enter';
-  document: Document;
   modalRef!: NzModalRef;
   isStringContent: boolean = false;
   dir: Direction = 'ltr';
   private elementFocusedBeforeModalWasOpened: HTMLElement | null = null;
   private focusTrap!: FocusTrap;
   private mouseDown = false;
-  private oldMaskStyle: { [key: string]: string } | null = null;
-  protected destroy$ = new Subject<boolean>();
+  private oldMaskStyle: Record<string, string> | null = null;
 
   get showMask(): boolean {
     const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
@@ -69,28 +81,16 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     return !!getValueWithConfig<boolean>(this.config.nzMaskClosable, defaultConfig.nzMaskClosable, true);
   }
 
-  constructor(
-    protected ngZone: NgZone,
-    protected host: ElementRef<HTMLElement>,
-    protected focusTrapFactory: FocusTrapFactory,
-    public cdr: ChangeDetectorRef,
-    protected render: Renderer2,
-    protected overlayRef: OverlayRef,
-    protected nzConfigService: NzConfigService,
-    public config: ModalOptions,
-    document?: NzSafeAny,
-    protected animationType?: string
-  ) {
+  constructor() {
     super();
-    this.document = document;
-    this.dir = overlayRef.getDirection();
-    this.isStringContent = typeof config.nzContent === 'string';
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.updateMaskClassname();
-      });
+    this.dir = this.overlayRef.getDirection();
+    this.isStringContent = typeof this.config.nzContent === 'string';
+
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.updateMaskClassname());
+
+    this.destroyRef.onDestroy(() => {
+      this.setMaskExitAnimationClass(true);
+    });
   }
 
   onContainerClick(e: MouseEvent): void {
@@ -158,7 +158,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     if (this.document) {
       this.elementFocusedBeforeModalWasOpened = this.document.activeElement as HTMLElement;
       if (this.host.nativeElement.focus) {
-        this.ngZone.runOutsideAngular(() => reqAnimFrame(() => this.host.nativeElement.focus()));
+        this.ngZone.runOutsideAngular(() => requestAnimationFrame(() => this.host.nativeElement.focus()));
       }
     }
   }
@@ -266,7 +266,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     const backdropElement = this.overlayRef.backdropElement;
     if (backdropElement) {
       if (this.oldMaskStyle) {
-        const styles = this.oldMaskStyle as { [key: string]: string };
+        const styles = this.oldMaskStyle as Record<string, string>;
         Object.keys(styles).forEach(key => {
           this.render.removeStyle(backdropElement, key);
         });
@@ -276,7 +276,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
       this.setZIndexForBackdrop();
 
       if (typeof this.config.nzMaskStyle === 'object' && Object.keys(this.config.nzMaskStyle).length) {
-        const styles: { [key: string]: string } = { ...this.config.nzMaskStyle };
+        const styles: Record<string, string> = { ...this.config.nzMaskStyle };
         Object.keys(styles).forEach(key => {
           this.render.setStyle(backdropElement, key, styles[key]);
         });
@@ -321,29 +321,21 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     this.cdr.markForCheck();
   }
 
-  ngOnDestroy(): void {
-    this.setMaskExitAnimationClass(true);
-    this.destroy$.next(true);
-    this.destroy$.complete();
-  }
-
   protected setupMouseListeners(modalContainer: ElementRef<HTMLElement>): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.host.nativeElement, 'mouseup')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          if (this.mouseDown) {
-            setTimeout(() => {
-              this.mouseDown = false;
-            });
-          }
-        });
+    fromEventOutsideAngular(this.host.nativeElement, 'mouseup')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        if (this.mouseDown) {
+          setTimeout(() => {
+            this.mouseDown = false;
+          });
+        }
+      });
 
-      fromEvent(modalContainer.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.mouseDown = true;
-        });
-    });
+    fromEventOutsideAngular(modalContainer.nativeElement, 'mousedown')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.mouseDown = true;
+      });
   }
 }

@@ -4,9 +4,9 @@
  */
 
 import { formatDate } from '@angular/common';
-import { Inject, Injectable, Optional, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse } from 'date-fns';
+import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse, getQuarter } from 'date-fns';
 
 import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
 
@@ -15,8 +15,7 @@ import { NzI18nService } from './nz-i18n.service';
 
 export function DATE_HELPER_SERVICE_FACTORY(): DateHelperService {
   const i18n = inject(NzI18nService);
-  const config = inject(NZ_DATE_CONFIG, { optional: true });
-  return i18n.getDateLocale() ? new DateHelperByDateFns(i18n, config) : new DateHelperByDatePipe(i18n, config);
+  return i18n.getDateLocale() ? new DateHelperByDateFns(i18n) : new DateHelperByDatePipe(i18n);
 }
 
 /**
@@ -28,14 +27,9 @@ export function DATE_HELPER_SERVICE_FACTORY(): DateHelperService {
   useFactory: DATE_HELPER_SERVICE_FACTORY
 })
 export abstract class DateHelperService {
-  protected config: NzDateConfig;
+  protected config: NzDateConfig = mergeDateConfig(inject(NZ_DATE_CONFIG, { optional: true }));
 
-  constructor(
-    protected i18n: NzI18nService,
-    @Optional() @Inject(NZ_DATE_CONFIG) config: NzDateConfig | null
-  ) {
-    this.config = mergeDateConfig(config);
-  }
+  constructor(protected i18n: NzI18nService) {}
 
   abstract getISOWeek(date: Date): number;
   abstract getFirstDayOfWeek(): WeekDayIndex;
@@ -58,7 +52,7 @@ export class DateHelperByDateFns extends DateHelperService {
     let defaultWeekStartsOn: WeekDayIndex;
     try {
       defaultWeekStartsOn = this.i18n.getDateLocale().options!.weekStartsOn!;
-    } catch (e) {
+    } catch {
       defaultWeekStartsOn = 1;
     }
     return this.config.firstDayOfWeek == null ? defaultWeekStartsOn : this.config.firstDayOfWeek;
@@ -107,7 +101,8 @@ export class DateHelperByDatePipe extends DateHelperService {
   }
 
   format(date: Date | null, formatStr: string): string {
-    return date ? formatDate(date, formatStr, this.i18n.getLocaleId())! : '';
+    // angular formatDate does not support the quarter format parameter. This is to be compatible with the quarter format "Q" of date-fns.
+    return date ? this.replaceQuarter(formatDate(date, formatStr, this.i18n.getLocaleId())!, date) : '';
   }
 
   parseDate(text: string): Date {
@@ -117,5 +112,18 @@ export class DateHelperByDatePipe extends DateHelperService {
   parseTime(text: string, formatStr: string): Date {
     const parser = new ɵNgTimeParser(formatStr, this.i18n.getLocaleId());
     return parser.toDate(text);
+  }
+
+  private replaceQuarter(dateStr: string, date: Date): string {
+    const quarter = getQuarter(date).toString();
+    const record: Record<string, string> = { Q: quarter, QQ: `0${quarter}`, QQQ: `Q${quarter}` };
+    // Q Pattern format compatible with date-fns (quarter).
+    return (
+      dateStr
+        // Match Q+ outside of brackets, then replace it with the specified quarterly format
+        .replace(/Q+(?![^[]*])/g, match => record[match] ?? quarter)
+        // Match the Q+ surrounded by bracket, then remove bracket.
+        .replace(/\[(Q+)]/g, '$1')
+    );
   }
 }

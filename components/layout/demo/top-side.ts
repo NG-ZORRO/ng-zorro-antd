@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-layout-top-side',
+  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout>
       <nz-header>
@@ -49,7 +55,7 @@ import { Component } from '@angular/core';
           </nz-sider>
           <nz-content class="inner-content">Content</nz-content>
         </nz-layout>
-        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
       </nz-content>
     </nz-layout>
   `,
@@ -95,4 +101,6 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoLayoutTopSideComponent {}
+export class NzDemoLayoutTopSideComponent {
+  protected readonly date = new Date();
+}

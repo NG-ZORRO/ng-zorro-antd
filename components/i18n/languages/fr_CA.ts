@@ -169,6 +169,9 @@ export default {
   PageHeader: {
     back: 'Retour'
   },
+  Form: {
+    optional: '(optionnel)'
+  },
   Icon: {
     icon: 'icône'
   },
@@ -186,6 +189,7 @@ export default {
   },
   QRCode: {
     expired: 'QR code expiré',
-    refresh: 'Rafraîchir'
+    refresh: 'Rafraîchir',
+    scanned: 'Scanné'
   }
 };

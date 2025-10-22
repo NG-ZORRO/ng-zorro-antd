@@ -11,31 +11,31 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { auditTime, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { merge } from 'rxjs';
+import { auditTime, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzBreakpointEnum, NzBreakpointService, gridResponsiveMap } from 'ng-zorro-antd/core/services';
 
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'descriptions';
-const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
+const defaultColumnMap: Record<NzBreakpointEnum, number> = {
   xxl: 3,
   xl: 3,
   lg: 3,
@@ -49,7 +49,6 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-descriptions',
   exportAs: 'nzDescriptions',
-  preserveWhitespaces: false,
   template: `
     @if (nzTitle || nzExtra) {
       <div class="ant-descriptions-header">
@@ -161,40 +160,35 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
     '[class.ant-descriptions-small]': 'nzSize === "small"',
     '[class.ant-descriptions-rtl]': 'dir === "rtl"'
   },
-  imports: [NzOutletModule, NgTemplateOutlet],
-  standalone: true
+  imports: [NzOutletModule, NgTemplateOutlet]
 })
-export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit, OnInit {
+export class NzDescriptionsComponent implements OnChanges, AfterContentInit, OnInit {
+  public nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private breakpointService = inject(NzBreakpointService);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzBordered: BooleanInput;
-  static ngAcceptInputType_nzColon: BooleanInput;
 
   @ContentChildren(NzDescriptionsItemComponent) items!: QueryList<NzDescriptionsItemComponent>;
 
-  @Input() @InputBoolean() @WithConfig() nzBordered: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = false;
   @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
-  @Input() @WithConfig() nzColumn: number | { [key in NzBreakpointEnum]: number } = defaultColumnMap;
+  @Input() @WithConfig() nzColumn: number | Record<NzBreakpointEnum, number> = defaultColumnMap;
   @Input() @WithConfig() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
   @Input() nzExtra?: string | TemplateRef<void>;
-  @Input() @WithConfig() @InputBoolean() nzColon: boolean = true;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzColon: boolean = true;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;
   dir: Direction = 'ltr';
 
   private breakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
-  private destroy$ = new Subject<void>();
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private breakpointService: NzBreakpointService,
-    @Optional() private directionality: Directionality
-  ) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
     });
   }
@@ -206,23 +200,18 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   }
 
   ngAfterContentInit(): void {
-    const contentChange$ = this.items.changes.pipe(startWith(this.items), takeUntil(this.destroy$));
+    const contentChange$ = this.items.changes.pipe(startWith(this.items));
 
     merge(
       contentChange$,
       contentChange$.pipe(switchMap(() => merge(...this.items.map(i => i.inputChange$)).pipe(auditTime(16)))),
       this.breakpointService.subscribe(gridResponsiveMap).pipe(tap(bp => (this.breakpoint = bp)))
     )
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.prepareMatrix();
         this.cdr.markForCheck();
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   /**

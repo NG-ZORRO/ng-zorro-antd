@@ -4,28 +4,27 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types';
 
 @Component({
   selector: '[nz-submenu-none-inline-child]',
@@ -42,7 +41,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
       [class.ant-dropdown-menu-sub]="isMenuInsideDropDown"
       [class.ant-menu-sub]="!isMenuInsideDropDown"
       [class.ant-menu-rtl]="dir === 'rtl'"
-      [ngClass]="menuClass"
+      [class]="menuClass"
     >
       <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
     </div>
@@ -60,35 +59,32 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
   },
-  imports: [NgClass, NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
-export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnChanges {
+export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
+
   @Input() menuClass: string = '';
   @Input() theme: NzMenuThemeType = 'light';
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() isMenuInsideDropDown = false;
   @Input() mode: NzMenuModeType = 'vertical';
+  @Input() nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
   @Input() position = 'right';
   @Input() nzDisabled = false;
   @Input() nzOpen = false;
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
-  constructor(@Optional() private directionality: Directionality) {}
+  expandState = 'collapsed';
+  dir: Direction = 'ltr';
 
   setMouseState(state: boolean): void {
-    if (!this.nzDisabled) {
+    if (!this.nzDisabled && this.nzTriggerSubMenuAction === 'hover') {
       this.subMenuMouseState.next(state);
     }
   }
-  expandState = 'collapsed';
-  dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
   calcMotionState(): void {
     if (this.nzOpen) {
       if (this.mode === 'horizontal') {
@@ -100,14 +96,16 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
       this.expandState = 'collapsed';
     }
   }
+
   ngOnInit(): void {
     this.calcMotionState();
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { mode, nzOpen } = changes;
     if (mode || nzOpen) {

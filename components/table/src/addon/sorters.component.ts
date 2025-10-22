@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -21,33 +21,25 @@ import { NzTableSortOrder } from '../table.types';
 
 @Component({
   selector: 'nz-table-sorters',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <span class="ant-table-column-title"><ng-template [ngTemplateOutlet]="contentTemplate"></ng-template></span>
     <span class="ant-table-column-sorter" [class.ant-table-column-sorter-full]="isDown && isUp">
       <span class="ant-table-column-sorter-inner">
-        <span
-          nz-icon
-          nzType="caret-up"
-          *ngIf="isUp"
-          class="ant-table-column-sorter-up"
-          [class.active]="sortOrder === 'ascend'"
-        ></span>
-        <span
-          nz-icon
-          nzType="caret-down"
-          *ngIf="isDown"
-          class="ant-table-column-sorter-down"
-          [class.active]="sortOrder === 'descend'"
-        ></span>
+        @if (isUp) {
+          <nz-icon nzType="caret-up" class="ant-table-column-sorter-up" [class.active]="sortOrder === 'ascend'" />
+        }
+        @if (isDown) {
+          <nz-icon nzType="caret-down" class="ant-table-column-sorter-down" [class.active]="sortOrder === 'descend'" />
+        }
       </span>
     </span>
   `,
-  host: { class: 'ant-table-column-sorters' },
-  imports: [NzIconModule, NgTemplateOutlet, NgIf],
-  standalone: true
+  host: {
+    class: 'ant-table-column-sorters'
+  },
+  imports: [NzIconModule, NgTemplateOutlet]
 })
 export class NzTableSortersComponent implements OnChanges {
   @Input() sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
@@ -55,8 +47,6 @@ export class NzTableSortersComponent implements OnChanges {
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   isUp = false;
   isDown = false;
-
-  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { sortDirections } = changes;

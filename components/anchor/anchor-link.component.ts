@@ -9,9 +9,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
+  inject,
   Input,
-  OnDestroy,
   OnInit,
   Renderer2,
   TemplateRef,
@@ -19,22 +20,20 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzAnchorComponent } from './anchor.component';
 
 @Component({
   selector: 'nz-link',
   exportAs: 'nzLink',
-  preserveWhitespaces: false,
-  standalone: true,
   imports: [NgTemplateOutlet],
   template: `
     <a
       #linkTitle
       class="ant-anchor-link-title"
       [href]="nzHref"
-      [title]="titleStr"
+      [attr.title]="titleStr"
       [target]="nzTarget"
       (click)="goToClick($event)"
     >
@@ -44,7 +43,9 @@ import { NzAnchorComponent } from './anchor.component';
         <ng-template [ngTemplateOutlet]="titleTpl || nzTemplate" />
       }
     </a>
-    <ng-content></ng-content>
+    @if (nzDirection === 'vertical') {
+      <ng-content></ng-content>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,12 +53,19 @@ import { NzAnchorComponent } from './anchor.component';
     class: 'ant-anchor-link'
   }
 })
-export class NzAnchorLinkComponent implements OnInit, OnDestroy {
+export class NzAnchorLinkComponent implements OnInit {
+  public elementRef = inject(ElementRef<HTMLElement>);
+  private anchorComp = inject(NzAnchorComponent);
+  private platform = inject(Platform);
+  private renderer = inject(Renderer2);
+  private readonly destroyRef = inject(DestroyRef);
+
   @Input() nzHref = '#';
   @Input() nzTarget?: string;
 
   titleStr: string | null = '';
   titleTpl?: TemplateRef<NzSafeAny>;
+  nzDirection: NzDirectionVHType = 'vertical';
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -72,15 +80,15 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @ContentChild('nzTemplate', { static: false }) nzTemplate!: TemplateRef<void>;
   @ViewChild('linkTitle') linkTitle!: ElementRef<HTMLAnchorElement>;
 
-  constructor(
-    public elementRef: ElementRef,
-    private anchorComp: NzAnchorComponent,
-    private platform: Platform,
-    private renderer: Renderer2
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.anchorComp.unregisterLink(this);
+    });
+  }
 
   ngOnInit(): void {
     this.anchorComp.registerLink(this);
+    this.nzDirection = this.anchorComp.nzDirection;
   }
 
   getLinkTitleElement(): HTMLAnchorElement {
@@ -101,9 +109,5 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     if (this.platform.isBrowser) {
       this.anchorComp.handleScrollTo(this);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.anchorComp.unregisterLink(this);
   }
 }

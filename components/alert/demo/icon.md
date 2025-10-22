@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Decent icon make information more clear and more friendly.
-
-

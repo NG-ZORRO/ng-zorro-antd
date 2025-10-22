@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   Input,
   OnChanges,
   SimpleChanges,
@@ -14,6 +15,7 @@ import {
 } from '@angular/core';
 
 import { NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const iconTypeMap = {
   error: 'close-circle-fill',
@@ -25,10 +27,14 @@ const iconTypeMap = {
 @Component({
   selector: 'nz-form-item-feedback-icon',
   exportAs: 'nzFormFeedbackIcon',
-  preserveWhitespaces: false,
+  imports: [NzIconModule],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <span *ngIf="iconType" nz-icon [nzType]="iconType"></span> `,
+  template: `
+    @if (iconType) {
+      <nz-icon [nzType]="iconType" />
+    }
+  `,
   host: {
     class: 'ant-form-item-feedback-icon',
     '[class.ant-form-item-feedback-icon-error]': 'status==="error"',
@@ -38,8 +44,8 @@ const iconTypeMap = {
   }
 })
 export class NzFormItemFeedbackIconComponent implements OnChanges {
+  public cdr = inject(ChangeDetectorRef);
   @Input() status: NzValidateStatus = '';
-  constructor(public cdr: ChangeDetectorRef) {}
 
   iconType: (typeof iconTypeMap)[keyof typeof iconTypeMap] | null = null;
 

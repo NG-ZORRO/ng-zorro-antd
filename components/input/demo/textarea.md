@@ -1,8 +1,8 @@
 ---
-order: 5
+order: 6
 title:
-    zh-CN: 文本域
-    en-US: TextArea
+  zh-CN: 文本域
+  en-US: TextArea
 ---
 
 ## zh-CN

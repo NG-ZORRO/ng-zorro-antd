@@ -1,0 +1,42 @@
+#header {
+  // ===================== Home Page =====================
+  &.home-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    max-width: 1280px;
+    margin-right: auto;
+    margin-left: auto;
+    background: transparent;
+    box-shadow: none;
+
+    #logo {
+      padding-inline-start: 40px;
+      padding-inline-end: 16px;
+    }
+
+    .ant-menu {
+      background: transparent;
+    }
+  }
+}
+
+@media (max-width: @screen-sm-min) {
+  #header.home-header {
+    .ant-row {
+      .ant-col {
+        margin: 0 auto;
+
+        a {
+          padding-right: 0;
+          padding-left: 0;
+        }
+
+        &:last-child {
+          display: none;
+        }
+      }
+    }
+  }
+}

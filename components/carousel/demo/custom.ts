@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import {
   NZ_CAROUSEL_CUSTOM_STRATEGIES,
   NzCarouselFlipStrategy,
+  NzCarouselModule,
   NzCarouselTransformNoLoopStrategy
 } from 'ng-zorro-antd/carousel';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 @Component({
   selector: 'nz-demo-carousel-custom',
-  template: ` <nz-radio-group [(ngModel)]="strategy">
+  imports: [FormsModule, NzCarouselModule, NzRadioModule],
+  template: `
+    <nz-radio-group [(ngModel)]="strategy">
       <label nz-radio-button nzValue="transform-no-loop">Transform No Loop</label>
       <label nz-radio-button nzValue="flip">Flip</label>
       <label nz-radio-button nzValue="fade">Fade (built-in)</label>
@@ -19,7 +24,8 @@ import {
           <h3>{{ index }}</h3>
         </div>
       }
-    </nz-carousel>`,
+    </nz-carousel>
+  `,
   styles: [
     `
       nz-radio-group {
@@ -53,6 +59,6 @@ import {
   ]
 })
 export class NzDemoCarouselCustomComponent {
-  public strategy = 'transform-no-loop';
-  public array = [1, 2, 3, 4];
+  strategy = 'transform-no-loop';
+  array = [1, 2, 3, 4];
 }

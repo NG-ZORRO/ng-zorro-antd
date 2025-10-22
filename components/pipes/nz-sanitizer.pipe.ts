@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeStyle, SafeUrl } from '@angular/platform-browser';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -11,11 +11,11 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 type DomSanitizerType = 'html' | 'style' | 'url' | 'resourceUrl';
 
 @Pipe({
-  name: 'nzSanitizer',
-  standalone: true
+  name: 'nzSanitizer'
 })
 export class NzSanitizerPipe implements PipeTransform {
-  constructor(protected sanitizer: DomSanitizer) {}
+  protected sanitizer = inject(DomSanitizer);
+
   transform(value: NzSafeAny, type: 'html'): SafeHtml;
   transform(value: NzSafeAny, type: 'style'): SafeStyle;
   transform(value: NzSafeAny, type: 'url'): SafeUrl;

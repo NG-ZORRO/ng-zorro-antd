@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,10 +11,12 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  booleanAttribute,
+  inject
 } from '@angular/core';
 
-import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
+import { NzHighlightPipe } from 'ng-zorro-antd/core/highlight';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -27,34 +29,32 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
       [ngTemplateOutlet]="treeTemplate"
       [ngTemplateOutletContext]="{ $implicit: context, origin: context.origin }"
     ></ng-template>
-    <ng-container *ngIf="!treeTemplate">
-      <span
-        *ngIf="icon && showIcon"
-        [class.ant-tree-icon__open]="isSwitcherOpen"
-        [class.ant-tree-icon__close]="isSwitcherClose"
-        [class.ant-tree-icon_loading]="isLoading"
-        [class.ant-select-tree-iconEle]="selectMode"
-        [class.ant-tree-iconEle]="!selectMode"
-      >
+    @if (!treeTemplate) {
+      @if (icon && showIcon) {
         <span
+          [class.ant-tree-icon__open]="isSwitcherOpen"
+          [class.ant-tree-icon__close]="isSwitcherClose"
+          [class.ant-tree-icon_loading]="isLoading"
           [class.ant-select-tree-iconEle]="selectMode"
-          [class.ant-select-tree-icon__customize]="selectMode"
           [class.ant-tree-iconEle]="!selectMode"
-          [class.ant-tree-icon__customize]="!selectMode"
         >
-          <span nz-icon *ngIf="icon" [nzType]="icon"></span>
+          <span
+            [class.ant-select-tree-iconEle]="selectMode"
+            [class.ant-select-tree-icon__customize]="selectMode"
+            [class.ant-tree-iconEle]="!selectMode"
+            [class.ant-tree-icon__customize]="!selectMode"
+          >
+            <nz-icon [nzType]="icon" />
+          </span>
         </span>
-      </span>
+      }
       <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue : 'i' : 'font-highlight'"></span>
-    </ng-container>
-    <nz-tree-drop-indicator
-      *ngIf="showIndicator"
-      [dropPosition]="dragPosition"
-      [level]="context.level"
-    ></nz-tree-drop-indicator>
+    }
+    @if (showIndicator) {
+      <nz-tree-drop-indicator [dropPosition]="dragPosition" [level]="context.level"></nz-tree-drop-indicator>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false,
   host: {
     '[attr.title]': 'title',
     '[attr.draggable]': 'canDraggable',
@@ -69,24 +69,25 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
     '[class.ant-tree-node-content-wrapper-close]': `!selectMode && isSwitcherClose`,
     '[class.ant-tree-node-selected]': `!selectMode && isSelected`
   },
-  imports: [NgTemplateOutlet, NgIf, NzIconModule, NzHighlightModule, NzTreeDropIndicatorComponent],
-  standalone: true
+  imports: [NgTemplateOutlet, NzIconModule, NzHighlightPipe, NzTreeDropIndicatorComponent]
 })
 export class NzTreeNodeTitleComponent implements OnChanges {
+  private cdr = inject(ChangeDetectorRef);
+
   @Input() searchValue!: string;
   @Input() treeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> | null = null;
-  @Input() draggable!: boolean;
-  @Input() showIcon!: boolean;
+  @Input({ transform: booleanAttribute }) draggable!: boolean;
+  @Input({ transform: booleanAttribute }) showIcon!: boolean;
   @Input() selectMode = false;
   @Input() context!: NzTreeNode;
   @Input() icon!: string;
   @Input() title!: string;
-  @Input() isLoading!: boolean;
-  @Input() isSelected!: boolean;
-  @Input() isDisabled!: boolean;
-  @Input() isMatched!: boolean;
-  @Input() isExpanded!: boolean;
-  @Input() isLeaf!: boolean;
+  @Input({ transform: booleanAttribute }) isLoading!: boolean;
+  @Input({ transform: booleanAttribute }) isSelected!: boolean;
+  @Input({ transform: booleanAttribute }) isDisabled!: boolean;
+  @Input({ transform: booleanAttribute }) isMatched!: boolean;
+  @Input({ transform: booleanAttribute }) isExpanded!: boolean;
+  @Input({ transform: booleanAttribute }) isLeaf!: boolean;
   // Drag indicator
   @Input() showIndicator = true;
   @Input() dragPosition?: number;
@@ -106,8 +107,6 @@ export class NzTreeNodeTitleComponent implements OnChanges {
   get isSwitcherClose(): boolean {
     return !this.isExpanded && !this.isLeaf;
   }
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { showIndicator, dragPosition } = changes;

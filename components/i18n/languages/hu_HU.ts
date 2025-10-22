@@ -55,7 +55,8 @@ export default {
       previousDecade: 'Előző évtized',
       nextDecade: 'Következő évtized',
       previousCentury: 'Múlt évszázad',
-      nextCentury: 'Jövő évszázad'
+      nextCentury: 'Jövő évszázad',
+      rangeQuarterPlaceholder: ['Kezdő negyedév', 'Befejezés negyedéve']
     },
     timePickerLocale: {
       placeholder: 'Válasszon időt',
@@ -157,6 +158,9 @@ export default {
     uploadError: 'Feltöltési hiba',
     previewFile: 'Fájl előnézet',
     downloadFile: 'Fájl letöltése'
+  },
+  Form: {
+    optional: '(nem kötelező)'
   },
   Empty: {
     description: 'Nincs adat'

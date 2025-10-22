@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { TransferItem } from 'ng-zorro-antd/transfer';
+import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-advanced',
+  imports: [NzButtonModule, NzTransferModule],
   template: `
     <nz-transfer
       [nzDataSource]="list"
@@ -18,7 +20,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
     >
       <ng-template #render let-item>{{ item.title }}-{{ item.description }}</ng-template>
       <ng-template #footer let-direction>
-        <button nz-button (click)="reload(direction)" [nzSize]="'small'" style="float: right; margin: 5px;">
+        <button nz-button (click)="reload(direction)" nzSize="small" style="float: right; margin: 5px;">
           reload
         </button>
       </ng-template>
@@ -27,6 +29,8 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
 })
 export class NzDemoTransferAdvancedComponent implements OnInit {
   list: TransferItem[] = [];
+
+  constructor(private messageService: NzMessageService) {}
 
   ngOnInit(): void {
     this.getData();
@@ -47,7 +51,7 @@ export class NzDemoTransferAdvancedComponent implements OnInit {
 
   reload(direction: string): void {
     this.getData();
-    this.msg.success(`your clicked ${direction}!`);
+    this.messageService.success(`your clicked ${direction}!`);
   }
 
   select(ret: {}): void {
@@ -57,6 +61,4 @@ export class NzDemoTransferAdvancedComponent implements OnInit {
   change(ret: {}): void {
     console.log('nzChange', ret);
   }
-
-  constructor(public msg: NzMessageService) {}
 }

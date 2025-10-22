@@ -8,41 +8,43 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Input,
-  NgZone,
-  OnDestroy,
   OnInit,
-  Optional,
   Output,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  effect,
+  forwardRef,
+  inject,
+  NgZone,
+  ChangeDetectorRef,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
+import { NZ_CHECKBOX_GROUP } from './tokens';
 
 @Component({
   selector: '[nz-checkbox]',
   exportAs: 'nzCheckbox',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <span
       class="ant-checkbox"
       [class.ant-checkbox-checked]="nzChecked && !nzIndeterminate"
-      [class.ant-checkbox-disabled]="nzDisabled"
+      [class.ant-checkbox-disabled]="nzDisabled || checkboxGroupComponent?.finalDisabled()"
       [class.ant-checkbox-indeterminate]="nzIndeterminate"
     >
       <input
@@ -51,9 +53,10 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
         class="ant-checkbox-input"
         [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
         [attr.id]="nzId"
+        [attr.name]="nzName || checkboxGroupComponent?.nzName()"
         [checked]="nzChecked"
         [ngModel]="nzChecked"
-        [disabled]="nzDisabled"
+        [disabled]="nzDisabled || (checkboxGroupComponent?.finalDisabled() ?? false)"
         (ngModelChange)="innerCheckedChange($event)"
       />
       <span class="ant-checkbox-inner"></span>
@@ -69,18 +72,25 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
   ],
   host: {
     class: 'ant-checkbox-wrapper',
+    '[class.ant-checkbox-group-item]': '!!checkboxGroupComponent',
     '[class.ant-checkbox-wrapper-in-form-item]': '!!nzFormStatusService',
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
+    '[class.ant-checkbox-wrapper-disabled]': 'nzDisabled || checkboxGroupComponent?.finalDisabled()',
     '[class.ant-checkbox-rtl]': `dir === 'rtl'`
   },
-  imports: [FormsModule],
-  standalone: true
+  imports: [FormsModule]
 })
-export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDestroy, AfterViewInit {
-  static ngAcceptInputType_nzAutoFocus: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
-  static ngAcceptInputType_nzIndeterminate: BooleanInput;
-  static ngAcceptInputType_nzChecked: BooleanInput;
+export class NzCheckboxComponent implements OnInit, ControlValueAccessor, AfterViewInit {
+  private ngZone = inject(NgZone);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private cdr = inject(ChangeDetectorRef);
+  private focusMonitor = inject(FocusMonitor);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+  protected checkboxGroupComponent = inject(NZ_CHECKBOX_GROUP, { optional: true });
+  protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  /** @deprecated */
+  private nzCheckboxWrapperComponent = inject(NzCheckboxWrapperComponent, { optional: true });
 
   dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
@@ -91,20 +101,18 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: NzSafeAny | null = null;
-  @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzIndeterminate = false;
-  @Input() @InputBoolean() nzChecked = false;
+  @Input({ transform: booleanAttribute }) nzAutoFocus = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzIndeterminate = false;
+  @Input({ transform: booleanAttribute }) nzChecked = false;
   @Input() nzId: string | null = null;
+  @Input() nzName: string | null = null;
 
   innerCheckedChange(checked: boolean): void {
-    if (!this.nzDisabled) {
-      this.nzChecked = checked;
-      this.onChange(this.nzChecked);
-      this.nzCheckedChange.emit(this.nzChecked);
-      if (this.nzCheckboxWrapperComponent) {
-        this.nzCheckboxWrapperComponent.onChange();
-      }
+    if (!this.nzDisabled && !this.checkboxGroupComponent?.finalDisabled()) {
+      this.setValue(checked);
+      this.nzCheckboxWrapperComponent?.onChange();
+      this.checkboxGroupComponent?.onCheckedChange(this.nzValue, checked);
     }
   }
 
@@ -135,55 +143,56 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(
-    private ngZone: NgZone,
-    private elementRef: ElementRef<HTMLElement>,
-    @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent,
-    private cdr: ChangeDetectorRef,
-    private focusMonitor: FocusMonitor,
-    @Optional() private directionality: Directionality,
-    @Optional() public nzFormStatusService?: NzFormStatusService
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.focusMonitor.stopMonitoring(this.elementRef);
+      this.nzCheckboxWrapperComponent?.removeCheckbox(this);
+    });
+    if (this.checkboxGroupComponent) {
+      effect(() => {
+        const values = this.checkboxGroupComponent!.value() || [];
+        this.setValue(values.includes(this.nzValue));
+        this.cdr.markForCheck();
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.focusMonitor
       .monitor(this.elementRef, true)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {
           Promise.resolve().then(() => this.onTouched());
         }
       });
-    if (this.nzCheckboxWrapperComponent) {
-      this.nzCheckboxWrapperComponent.addCheckbox(this);
-    }
 
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.nzCheckboxWrapperComponent?.addCheckbox(this);
+
+    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.elementRef.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          event.preventDefault();
-          this.focus();
-          if (this.nzDisabled) {
-            return;
-          }
-          this.ngZone.run(() => {
-            this.innerCheckedChange(!this.nzChecked);
-            this.cdr.markForCheck();
-          });
+    fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(event => {
+        event.preventDefault();
+        this.focus();
+        if (this.nzDisabled) {
+          return;
+        }
+        this.ngZone.run(() => {
+          this.innerCheckedChange(!this.nzChecked);
+          this.cdr.markForCheck();
         });
+      });
 
-      fromEvent(this.inputElement.nativeElement, 'click')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => event.stopPropagation());
-    });
+    fromEventOutsideAngular(this.inputElement.nativeElement, 'click')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(event => event.stopPropagation());
   }
 
   ngAfterViewInit(): void {
@@ -192,13 +201,9 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     }
   }
 
-  ngOnDestroy(): void {
-    this.focusMonitor.stopMonitoring(this.elementRef);
-    if (this.nzCheckboxWrapperComponent) {
-      this.nzCheckboxWrapperComponent.removeCheckbox(this);
-    }
-
-    this.destroy$.next();
-    this.destroy$.complete();
+  private setValue(value: boolean): void {
+    this.nzChecked = value;
+    this.onChange(value);
+    this.nzCheckedChange.emit(value);
   }
 }

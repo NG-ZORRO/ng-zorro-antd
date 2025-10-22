@@ -12,6 +12,3 @@ title:
 ## en-US
 
 Preview before apply size.
-
-
-

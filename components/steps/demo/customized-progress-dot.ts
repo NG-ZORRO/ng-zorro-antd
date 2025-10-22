@@ -1,7 +1,12 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component } from '@angular/core';
+
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 @Component({
   selector: 'nz-demo-steps-customized-progress-dot',
+  imports: [NgTemplateOutlet, NzStepsModule, NzPopoverModule],
   template: `
     <nz-steps [nzCurrent]="1" [nzProgressDot]="progressTemplate">
       <nz-step nzTitle="Finished" nzDescription="You can hover on the dot."></nz-step>

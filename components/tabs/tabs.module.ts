@@ -6,6 +6,7 @@
 import { NgModule } from '@angular/core';
 
 import { NzTabAddButtonComponent } from './tab-add-button.component';
+import { NzTabBarExtraContentDirective } from './tab-bar-extra-content.directive';
 import { NzTabBodyComponent } from './tab-body.component';
 import { NzTabCloseButtonComponent } from './tab-close-button.component';
 import { NzTabLinkDirective, NzTabLinkTemplateDirective } from './tab-link.directive';
@@ -16,10 +17,10 @@ import { NzTabScrollListDirective } from './tab-scroll-list.directive';
 import { NzTabComponent } from './tab.component';
 import { NzTabDirective } from './tab.directive';
 import { NzTabsInkBarDirective } from './tabs-ink-bar.directive';
-import { NzTabSetComponent } from './tabset.component';
+import { NzTabsComponent } from './tabs.component';
 
 const DIRECTIVES = [
-  NzTabSetComponent,
+  NzTabsComponent,
   NzTabComponent,
   NzTabNavBarComponent,
   NzTabNavItemDirective,
@@ -31,7 +32,8 @@ const DIRECTIVES = [
   NzTabDirective,
   NzTabBodyComponent,
   NzTabLinkDirective,
-  NzTabLinkTemplateDirective
+  NzTabLinkTemplateDirective,
+  NzTabBarExtraContentDirective
 ];
 
 @NgModule({

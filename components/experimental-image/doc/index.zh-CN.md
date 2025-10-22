@@ -5,12 +5,8 @@ type: 数据展示
 title: Image
 cols: 1
 experimental: true
+description: 实验性的图片组件。
 ---
-
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO 实验性功能是指已发布但不稳定或者还未准备好用于生产环境的功能。</p>
-<p>开发者或用户可以选择在正式发布前使用这些功能，但是每次发布版本时都可能存在 <strong>breaking changes</strong>。</p>
-</blockquote>
 
 ## 何时使用
 
@@ -19,25 +15,21 @@ experimental: true
 - 使用图片 CDN 服务时。
 - 以及 [Image documentation](/components/image/zh) 中的功能
 - 下一步计划
-  * 添加 [sizes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes) 属性及响应式的支持
-
-```ts
-import { NzImageModule } from 'ng-zorro-antd/experimental/image';
-```
+  - 添加 [sizes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes) 属性及响应式的支持
 
 ## API
 
 ### nz-image
 
-| 参数 | 说明 | 类型 | 默认值 | 支持全局配置  |
-| --- | --- | --- | --- | --- |
-|nzSrc | url | `string` | - | |
-|nzAlt | alt | `string` | - | |
-|nzWidth | 宽度 | `number\|string` | `auto` | |
-|nzHeight | 高度 | `number\|string` | `auto` | |
-|nzAutoSrcset | 是否优化图片加载 | `boolean` | `false` | ✅ |
-|nzSrcLoader | 加载器 | `NzImageSrcLoader` | `defaultImageSrcLoader` | ✅ |
-|nzPriority | 是否添加 [preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content) | `boolean` | `false` |  |
+| 参数           | 说明                                                                                     | 类型               | 默认值                  | 支持全局配置 |
+| -------------- | ---------------------------------------------------------------------------------------- | ------------------ | ----------------------- | ------------ |
+| `nzSrc`        | url                                                                                      | `string`           | -                       |              |
+| `nzAlt`        | alt                                                                                      | `string`           | -                       |              |
+| `nzWidth`      | 宽度                                                                                     | `number\|string`   | `auto`                  |              |
+| `nzHeight`     | 高度                                                                                     | `number\|string`   | `auto`                  |              |
+| `nzAutoSrcset` | 是否优化图片加载                                                                         | `boolean`          | `false`                 | ✅           |
+| `nzSrcLoader`  | 加载器                                                                                   | `NzImageSrcLoader` | `defaultImageSrcLoader` | ✅           |
+| `nzPriority`   | 是否添加 [preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content) | `boolean`          | `false`                 |              |
 
 ### NzImageSrcLoader
 
@@ -60,7 +52,6 @@ export const defaultImageSrcLoader: NzImageSrcLoader = ({ src }) => {
 内置的图片 CND 创建方法
 
 ```ts
-
 /**
  * AliObjectsLoader return format
  * {domain}/{src}?x-oss-process=image/resize,w_{width}
@@ -80,9 +71,9 @@ export function createImgixLoader(domain: string): NzImageSrcLoader;
 export function createCloudinaryLoader(domain: string): NzImageSrcLoader;
 ```
 
-
 ### 响应式图片和预加载图片
 
 使用响应式图片可以帮助网页在不同的设备上显示良好的效果，预加载图片可以帮助你更快地加载图片，更多信息请参考：
+
 - [preloading responsive images](https://web.dev/preload-responsive-images/)
 - [next.js image component and image optimization](https://nextjs.org/docs/basic-features/image-optimization)

@@ -5,26 +5,24 @@
 
 import { AnimationEvent } from '@angular/animations';
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgClass, NgStyle } from '@angular/common';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
-  Host,
-  OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject } from 'rxjs';
 
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -50,8 +48,15 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
       <div
         class="ant-dropdown"
         [class.ant-dropdown-rtl]="dir === 'rtl'"
-        [ngClass]="nzOverlayClassName"
-        [ngStyle]="nzOverlayStyle"
+        [class.ant-dropdown-show-arrow]="nzArrow"
+        [class.ant-dropdown-placement-bottomLeft]="placement === 'bottomLeft'"
+        [class.ant-dropdown-placement-bottomRight]="placement === 'bottomRight'"
+        [class.ant-dropdown-placement-bottom]="placement === 'bottom'"
+        [class.ant-dropdown-placement-topLeft]="placement === 'topLeft'"
+        [class.ant-dropdown-placement-topRight]="placement === 'topRight'"
+        [class.ant-dropdown-placement-top]="placement === 'top'"
+        [class]="nzOverlayClassName"
+        [style]="nzOverlayStyle"
         @slideMotion
         (@slideMotion.done)="onAnimationEvent($event)"
         [@.disabled]="!!noAnimation?.nzNoAnimation"
@@ -59,27 +64,36 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"
       >
+        @if (nzArrow) {
+          <div class="ant-dropdown-arrow"></div>
+        }
         <ng-content></ng-content>
       </div>
     </ng-template>
   `,
-  preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, NgStyle, NzNoAnimationDirective],
-  standalone: true
+  imports: [NzNoAnimationDirective]
 })
-export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnInit {
+export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
+  private cdr = inject(ChangeDetectorRef);
+  private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  public viewContainerRef = inject(ViewContainerRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
   mouseState$ = new BehaviorSubject<boolean>(false);
+  public nzMenuService = inject(MenuService);
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
   animationStateChange$ = new EventEmitter<AnimationEvent>();
   nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
+  nzArrow: boolean = false;
+  placement: NzPlacementType | 'bottom' | 'top' = 'bottomLeft';
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
   dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
 
   onAnimationEvent(event: AnimationEvent): void {
     this.animationStateChange$.emit(event);
@@ -94,17 +108,10 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnI
     this.cdr.markForCheck();
   }
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    public viewContainerRef: ViewContainerRef,
-    public nzMenuService: MenuService,
-    @Optional() private directionality: Directionality,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -114,10 +121,5 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnI
 
   ngAfterContentInit(): void {
     this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -12,4 +12,3 @@ title:
 ## en-US
 
 You can show the total number of data by setting `nzShowTotal`.
-

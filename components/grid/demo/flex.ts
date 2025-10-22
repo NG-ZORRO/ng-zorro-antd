@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzGridModule } from 'ng-zorro-antd/grid';
+
 @Component({
   selector: 'nz-demo-grid-flex',
+  imports: [NzGridModule],
   template: `
     <div>
       <p>sub-element align left</p>

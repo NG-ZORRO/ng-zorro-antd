@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 @Component({
   selector: 'nz-demo-table-ellipsis',
+  imports: [NzTableModule],
   template: `
     <nz-table #fixedTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
@@ -15,14 +18,16 @@ import { Component, OnInit } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of fixedTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td nzEllipsis>{{ data.address }}</td>
-          <td nzEllipsis>{{ data.address }}</td>
-          <td nzEllipsis>{{ data.address }}</td>
-          <td nzEllipsis>{{ data.address }}</td>
-        </tr>
+        @for (data of fixedTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td nzEllipsis>{{ data.address }}</td>
+            <td nzEllipsis>{{ data.address }}</td>
+            <td nzEllipsis>{{ data.address }}</td>
+            <td nzEllipsis>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `

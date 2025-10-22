@@ -7,16 +7,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzEmptyI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
@@ -65,10 +65,13 @@ type NzEmptyNotFoundImageType = (typeof NzEmptyDefaultImages)[number] | null | s
   host: {
     class: 'ant-empty'
   },
-  imports: [NzOutletModule, NzEmptyDefaultComponent, NzEmptySimpleComponent],
-  standalone: true
+  imports: [NzOutletModule, NzEmptyDefaultComponent, NzEmptySimpleComponent]
 })
-export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
+export class NzEmptyComponent implements OnChanges, OnInit {
+  private i18n = inject(NzI18nService);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
+
   @Input() nzNotFoundImage: NzEmptyNotFoundImageType = 'default';
   @Input() nzNotFoundContent?: string | TemplateRef<void> | null;
   @Input() nzNotFoundFooter?: string | TemplateRef<void>;
@@ -76,13 +79,6 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
   isContentString = false;
   isImageBuildIn = true;
   locale!: NzEmptyI18nInterface;
-
-  private readonly destroy$ = new Subject<void>();
-
-  constructor(
-    private i18n: NzI18nService,
-    private cdr: ChangeDetectorRef
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzNotFoundContent, nzNotFoundImage } = changes;
@@ -99,14 +95,9 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Empty');
       this.cdr.markForCheck();
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

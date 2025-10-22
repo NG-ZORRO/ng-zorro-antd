@@ -20,6 +20,8 @@
       display: inline-block;
       text-align: start;
       vertical-align: top; // https://github.com/ant-design/ant-design/issues/6403
+
+      .input-group-wrapper-compact(~'@{input-number-prefix-cls}');
     }
   }
 
@@ -27,8 +29,8 @@
   width: 90px;
   margin: 0;
   padding: 0;
-  border: @border-width-base @border-style-base @border-color-base;
-  border-radius: @border-radius-base;
+  border: @border-width-base @border-style-base @input-border-color;
+  border-radius: @control-border-radius;
 
   &-handler {
     position: relative;
@@ -68,7 +70,6 @@
   }
 
   &:hover {
-    .hover(@input-number-hover-border-color);
     & + .@{form-item-prefix-cls}-children-icon {
       opacity: 0;
       transition: opacity 0.24s linear 0.24s;
@@ -102,7 +103,7 @@
     text-align: left;
     background-color: transparent;
     border: 0;
-    border-radius: @border-radius-base;
+    border-radius: @control-border-radius;
     outline: 0;
     transition: all 0.3s linear;
     appearance: textfield !important;
@@ -141,8 +142,8 @@
     right: 0;
     width: 22px;
     height: 100%;
-    background: @input-number-handler-bg;
-    border-radius: 0 @border-radius-base @border-radius-base 0;
+    background: transparent;
+    border-radius: 0 @control-border-radius @control-border-radius 0;
     opacity: 0;
     transition: opacity 0.24s linear 0.1s;
 
@@ -176,7 +177,7 @@
   }
 
   &-handler-up {
-    border-top-right-radius: @border-radius-base;
+    border-top-right-radius: @control-border-radius;
     cursor: pointer;
 
     &-inner {
@@ -192,8 +193,8 @@
 
   &-handler-down {
     top: 0;
-    border-top: @border-width-base @border-style-base @border-color-base;
-    border-bottom-right-radius: @border-radius-base;
+    border-top: @border-width-base @border-style-base @input-number-handler-border-color;
+    border-bottom-right-radius: @control-border-radius;
     cursor: pointer;
 
     &-inner {
@@ -210,6 +211,11 @@
     }
   }
 
+  &:hover:not(.@{input-number-prefix-cls}-borderless) &-handler-down,
+  &-focused:not(.@{input-number-prefix-cls}-borderless) &-handler-down {
+    border-top: @border-width-base @border-style-base @input-number-handler-border-color;
+  }
+
   &-handler-up-disabled,
   &-handler-down-disabled {
     cursor: not-allowed;
@@ -220,16 +226,18 @@
     color: @disabled-color;
   }
 
-  &-borderless {
-    box-shadow: none;
-  }
-
   // ===================== Out Of Range =====================
   &-out-of-range {
     input {
       color: @error-color;
     }
   }
+
+  // ===================== Compact Item Styles =====================
+  /* stylelint-disable less/no-duplicate-variables */
+  .compact-item(@input-number-prefix-cls, null, ~'@{input-number-prefix-cls}-focused');
+  .compact-item(~'@{input-number-prefix-cls}-affix-wrapper', null, ~'@{input-number-prefix-cls}-focused');
+  .compact-item(~'@{input-number-prefix-cls}-group-wrapper', ~'@{input-number-prefix-cls}-group-addon', ~'@{input-number-prefix-cls}-focused');
 }
 
 @import './rtl';

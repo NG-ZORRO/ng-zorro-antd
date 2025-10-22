@@ -3,18 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, inject, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[nz-carousel-content]',
   exportAs: 'nzCarouselContent',
   host: {
     class: 'slick-slide'
-  },
-  standalone: true
+  }
 })
 export class NzCarouselContentDirective {
-  readonly el: HTMLElement;
+  private renderer = inject(Renderer2);
+  readonly el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
 
   set isActive(value: boolean) {
     this._active = value;
@@ -30,11 +30,4 @@ export class NzCarouselContentDirective {
   }
 
   private _active = false;
-
-  constructor(
-    elementRef: ElementRef,
-    private renderer: Renderer2
-  ) {
-    this.el = elementRef.nativeElement;
-  }
 }

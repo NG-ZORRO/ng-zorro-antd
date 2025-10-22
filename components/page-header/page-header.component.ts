@@ -4,30 +4,30 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { Location, NgIf } from '@angular/common';
+import { Location } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
-  OnDestroy,
   OnInit,
-  Optional,
   Output,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
@@ -38,38 +38,48 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
   selector: 'nz-page-header',
   exportAs: 'nzPageHeader',
   template: `
-    <ng-content select="nz-breadcrumb[nz-page-header-breadcrumb]"></ng-content>
+    <ng-content select="nz-breadcrumb[nz-page-header-breadcrumb]" />
 
     <div class="ant-page-header-heading">
       <div class="ant-page-header-heading-left">
         <!--back-->
-        <div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
-          <div role="button" tabindex="0" class="ant-page-header-back-button">
-            <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
-              <span nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline"></span>
-            </ng-container>
+        @if (nzBackIcon !== null && enableBackButton) {
+          <div (click)="onBack()" class="ant-page-header-back">
+            <div role="button" tabindex="0" class="ant-page-header-back-button">
+              <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
+                <nz-icon [nzType]="backIcon || getBackIcon()" nzTheme="outline" />
+              </ng-container>
+            </div>
           </div>
-        </div>
+        }
+
         <!--avatar-->
-        <ng-content select="nz-avatar[nz-page-header-avatar]"></ng-content>
+        <ng-content select="nz-avatar[nz-page-header-avatar]" />
         <!--title-->
-        <span class="ant-page-header-heading-title" *ngIf="nzTitle">
-          <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-        </span>
-        <ng-content *ngIf="!nzTitle" select="nz-page-header-title, [nz-page-header-title]"></ng-content>
+        @if (nzTitle) {
+          <span class="ant-page-header-heading-title">
+            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+          </span>
+        } @else {
+          <ng-content select="nz-page-header-title, [nz-page-header-title]" />
+        }
+
         <!--subtitle-->
-        <span class="ant-page-header-heading-sub-title" *ngIf="nzSubtitle">
-          <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
-        </span>
-        <ng-content *ngIf="!nzSubtitle" select="nz-page-header-subtitle, [nz-page-header-subtitle]"></ng-content>
-        <ng-content select="nz-page-header-tags, [nz-page-header-tags]"></ng-content>
+        @if (nzSubtitle) {
+          <span class="ant-page-header-heading-sub-title">
+            <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+          </span>
+        } @else {
+          <ng-content select="nz-page-header-subtitle, [nz-page-header-subtitle]" />
+        }
+        <ng-content select="nz-page-header-tags, [nz-page-header-tags]" />
       </div>
 
-      <ng-content select="nz-page-header-extra, [nz-page-header-extra]"></ng-content>
+      <ng-content select="nz-page-header-extra, [nz-page-header-extra]" />
     </div>
 
-    <ng-content select="nz-page-header-content, [nz-page-header-content]"></ng-content>
-    <ng-content select="nz-page-header-footer, [nz-page-header-footer]"></ng-content>
+    <ng-content select="nz-page-header-content, [nz-page-header-content]" />
+    <ng-content select="nz-page-header-footer, [nz-page-header-footer]" />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -81,10 +91,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     '[class.ant-page-header-compact]': 'compact',
     '[class.ant-page-header-rtl]': `dir === 'rtl'`
   },
-  imports: [NgIf, NzOutletModule, NzIconModule],
-  standalone: true
+  imports: [NzOutletModule, NzIconModule]
 })
-export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
+export class NzPageHeaderComponent implements AfterViewInit, OnInit {
+  private location = inject(Location);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
@@ -99,33 +111,42 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
   compact = false;
-  destroy$ = new Subject<void>();
   dir: Direction = 'ltr';
 
+  enableBackButton = true;
+
   constructor(
-    @Optional() private location: Location,
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
     private nzResizeObserver: NzResizeObserver,
     private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
+    private directionality: Directionality
   ) {}
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
-
     this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {
+    if (!this.nzBack.observers.length) {
+      this.enableBackButton = (this.location.getState() as NzSafeAny)?.navigationId > 1;
+      // Location is not an RxJS construct, as a result, we can't pipe it.
+      const subscription = this.location.subscribe(() => {
+        this.enableBackButton = true;
+        this.cdr.detectChanges();
+      });
+      this.destroyRef.onDestroy(() => subscription.unsubscribe());
+    }
+
     this.nzResizeObserver
       .observe(this.elementRef)
       .pipe(
         map(([entry]) => entry.contentRect.width),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((width: number) => {
         this.compact = width < 768;
@@ -137,18 +158,8 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this.nzBack.observers.length) {
       this.nzBack.emit();
     } else {
-      if (!this.location) {
-        throw new Error(
-          `${PREFIX} you should import 'RouterModule' or register 'Location' if you want to use 'nzBack' default event!`
-        );
-      }
       this.location.back();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   getBackIcon(): string {

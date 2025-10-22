@@ -3,33 +3,29 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, YearCell } from './interface';
-import { NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'year-table',
-  exportAs: 'yearTable',
   templateUrl: 'abstract-table.html',
-  imports: [NgIf, NgForOf, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet, NgSwitchDefault],
-  standalone: true
+  imports: [NzStringTemplateOutletDirective]
 })
 export class YearTableComponent extends AbstractTable {
+  private readonly dateHelper = inject(DateHelperService);
+
   override MAX_ROW = 4;
   override MAX_COL = 3;
-
-  constructor(private dateHelper: DateHelperService) {
-    super();
-  }
 
   makeHeadRow(): DateCell[] {
     return [];
@@ -79,7 +75,7 @@ export class YearTableComponent extends AbstractTable {
     return years;
   }
 
-  override getClassMap(cell: YearCell): { [key: string]: boolean } {
+  override getClassMap(cell: YearCell): Record<string, boolean> {
     return {
       ...super.getClassMap(cell),
       [`ant-picker-cell-in-view`]: !!cell.isSameDecade

@@ -1,6 +1,5 @@
 {
   "lib": {
     "entryFile": "public-api.ts"
-  },
-  "allowedNonPeerDependencies": ["tslib", "date-fns"]
+  }
 }

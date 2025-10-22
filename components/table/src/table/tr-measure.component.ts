@@ -3,57 +3,49 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-/* eslint-disable @angular-eslint/component-selector */
-
-import { NgForOf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   NgZone,
-  OnDestroy,
   Output,
   QueryList,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, Subject, combineLatest } from 'rxjs';
-import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, combineLatest } from 'rxjs';
+import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 
 @Component({
   selector: 'tr[nz-table-measure-row]',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <td
-      #tdElement
-      class="nz-disable-td"
-      style="padding: 0px; border: 0px; height: 0px;"
-      *ngFor="let th of listOfMeasureColumn; trackBy: trackByFunc"
-    ></td>
+    @for (th of listOfMeasureColumn; track $index) {
+      <td #tdElement class="nz-disable-td" style="padding: 0; border: 0; height: 0;"></td>
+    }
   `,
-  host: { class: 'ant-table-measure-now' },
-  imports: [NgForOf],
-  standalone: true
+  host: {
+    class: 'ant-table-measure-now'
+  }
 })
-export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
+export class NzTrMeasureComponent implements AfterViewInit {
+  private nzResizeObserver = inject(NzResizeObserver);
+  private ngZone = inject(NgZone);
+  private destroyRef = inject(DestroyRef);
+
   @Input() listOfMeasureColumn: readonly string[] = [];
   @Output() readonly listOfAutoWidth = new EventEmitter<number[]>();
   @ViewChildren('tdElement') listOfTdElement!: QueryList<ElementRef>;
-  private destroy$ = new Subject<boolean>();
-  constructor(
-    private nzResizeObserver: NzResizeObserver,
-    private ngZone: NgZone
-  ) {}
-  trackByFunc(_: number, key: string): string {
-    return key;
-  }
+
   ngAfterViewInit(): void {
     this.listOfTdElement.changes
       .pipe(startWith(this.listOfTdElement))
@@ -72,7 +64,7 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
             ) as Observable<number[]>
         ),
         debounceTime(16),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(data => {
         // Caretaker note: we don't have to re-enter the Angular zone each time the stream emits.
@@ -87,9 +79,5 @@ export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
           this.ngZone.run(() => this.listOfAutoWidth.next(data));
         }
       });
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

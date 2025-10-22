@@ -3,10 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, NgZone } from '@angular/core';
+import { DOCUMENT, inject, Injectable, NgZone } from '@angular/core';
 
-import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type EasyingFn = (t: number, b: number, c: number, d: number) => number;
@@ -34,14 +33,8 @@ export interface NzScrollToOptions {
   providedIn: 'root'
 })
 export class NzScrollService {
-  private doc: Document;
-
-  constructor(
-    private ngZone: NgZone,
-    @Inject(DOCUMENT) doc: NzSafeAny
-  ) {
-    this.doc = doc;
-  }
+  private doc: Document = inject(DOCUMENT);
+  private ngZone = inject(NgZone);
 
   /** Set the position of the scroll bar of `el`. */
   setScrollTop(el: Element | Window, topValue: number = 0): void {
@@ -106,6 +99,7 @@ export class NzScrollService {
    *
    * @param containerEl container, `window` by default
    * @param y Scroll to `top`, 0 by default
+   * @param options Scroll animation options
    */
   scrollTo(
     containerEl?: Element | HTMLElement | Window | Document | null,
@@ -128,7 +122,7 @@ export class NzScrollService {
         (target as HTMLElement).scrollTop = nextScrollTop;
       }
       if (time < duration) {
-        reqAnimFrame(frameFunc);
+        requestAnimationFrame(frameFunc);
       } else if (typeof callback === 'function') {
         // Caretaker note: the `frameFunc` is called within the `<root>` zone, but we have to re-enter
         // the Angular zone when calling custom callback to be backwards-compatible.
@@ -137,6 +131,6 @@ export class NzScrollService {
     };
     // Caretaker note: the `requestAnimationFrame` triggers change detection, but updating a `scrollTop` property or
     // calling `window.scrollTo` doesn't require Angular to run `ApplicationRef.tick()`.
-    this.ngZone.runOutsideAngular(() => reqAnimFrame(frameFunc));
+    this.ngZone.runOutsideAngular(() => requestAnimationFrame(frameFunc));
   }
 }

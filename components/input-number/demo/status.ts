@@ -1,18 +1,28 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
   selector: 'nz-demo-input-number-status',
+  imports: [FormsModule, NzInputNumberModule, NzIconModule],
   template: `
-    <nz-space nzDirection="vertical" style="width: 100%">
-      <nz-input-number *nzSpaceItem [nzStep]="1" nzStatus="error" style="width: 100%"></nz-input-number>
-      <nz-input-number *nzSpaceItem [nzStep]="1" nzStatus="warning" style="width: 100%"></nz-input-number>
-      <nz-input-number-group *nzSpaceItem nzPrefixIcon="clock-circle" nzStatus="error" style="width: 100%">
-        <nz-input-number [nzStep]="1"></nz-input-number>
-      </nz-input-number-group>
-      <nz-input-number-group *nzSpaceItem nzPrefixIcon="clock-circle" nzStatus="warning" style="width: 100%">
-        <nz-input-number [nzStep]="1"></nz-input-number>
-      </nz-input-number-group>
-    </nz-space>
-  `
+    <nz-input-number nzStatus="error" [style.width.%]="100"></nz-input-number>
+    <nz-input-number nzStatus="warning" [style.width.%]="100"></nz-input-number>
+    <nz-input-number nzStatus="error" [style.width.%]="100">
+      <nz-icon nzInputPrefix nzType="clock-circle" />
+    </nz-input-number>
+    <nz-input-number nzStatus="warning" [style.width.%]="100">
+      <nz-icon nzInputPrefix nzType="clock-circle" />
+    </nz-input-number>
+  `,
+  styles: [
+    `
+      nz-input-number {
+        margin-bottom: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoInputNumberStatusComponent {}

@@ -4,22 +4,20 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
+  inject,
   Input,
-  OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
@@ -68,33 +66,25 @@ import { NzCommentActionComponent as CommentAction, NzCommentActionHostDirective
     '[class.ant-comment]': `true`,
     '[class.ant-comment-rtl]': `dir === "rtl"`
   },
-  imports: [NgIf, NzOutletModule, NgForOf, NzCommentActionHostDirective],
-  standalone: true
+  imports: [NzOutletModule, NzCommentActionHostDirective]
 })
-export class NzCommentComponent implements OnDestroy, OnInit {
+export class NzCommentComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+
   @Input() nzAuthor?: string | TemplateRef<void>;
   @Input() nzDatetime?: string | TemplateRef<void>;
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject<void>();
-
   @ContentChildren(CommentAction) actions!: QueryList<CommentAction>;
-  constructor(
-    private cdr: ChangeDetectorRef,
-    @Optional() private directionality: Directionality
-  ) {}
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

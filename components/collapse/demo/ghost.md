@@ -5,7 +5,6 @@ title:
   en-US: Ghost Collapse
 ---
 
-
 ## zh-CN
 
 将折叠面板的背景变成透明。

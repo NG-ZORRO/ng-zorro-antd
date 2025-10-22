@@ -1,8 +1,8 @@
 ---
-order: 12
+order: 13
 title:
-    zh-CN: 带数字提示的文本域
-    en-US: Textarea with character count
+  zh-CN: 带数字提示的文本域
+  en-US: Textarea with character count
 ---
 
 ## zh-CN

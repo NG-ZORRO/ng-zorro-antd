@@ -4,28 +4,31 @@
  */
 
 import {
-  AfterViewInit,
+  afterNextRender,
   ChangeDetectorRef,
+  DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
   ExistingProvider,
   forwardRef,
+  inject,
   NgZone,
-  OnDestroy,
-  Output
+  Output,
+  signal
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NZ_MENTION_CONFIG } from './config';
 import { Mention } from './mention.component';
-import { NzMentionService } from './mention.service';
 
+/**
+ * @deprecated Internally used, will be removed in v21, please do not use it.
+ */
 export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NzMentionTriggerDirective),
@@ -35,35 +38,47 @@ export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
 @Directive({
   selector: 'input[nzMentionTrigger], textarea[nzMentionTrigger]',
   exportAs: 'nzMentionTrigger',
-  providers: [NzDestroyService, NZ_MENTION_TRIGGER_ACCESSOR],
+  providers: [NZ_MENTION_TRIGGER_ACCESSOR],
   host: {
     autocomplete: 'off'
-  },
-  standalone: true
+  }
 })
-export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestroy, AfterViewInit {
-  onChange: OnChangeType = () => {};
-  onTouched: OnTouchedType = () => {};
+export class NzMentionTriggerDirective implements ControlValueAccessor {
+  public readonly elementRef: ElementRef<HTMLInputElement | HTMLTextAreaElement> = inject(
+    ElementRef<HTMLInputElement | HTMLTextAreaElement>
+  );
+  private readonly ngZone = inject(NgZone);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onFocusin: EventEmitter<void> = new EventEmitter();
+  @Output() readonly onFocusin = new EventEmitter<FocusEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onBlur: EventEmitter<void> = new EventEmitter();
+  @Output() readonly onBlur = new EventEmitter<FocusEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onInput: EventEmitter<KeyboardEvent> = new EventEmitter();
+  @Output() readonly onInput = new EventEmitter<KeyboardEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onKeydown: EventEmitter<KeyboardEvent> = new EventEmitter();
+  @Output() readonly onKeydown = new EventEmitter<KeyboardEvent>();
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() readonly onClick: EventEmitter<MouseEvent> = new EventEmitter();
-  value?: string;
+  @Output() readonly onClick = new EventEmitter<MouseEvent>();
 
-  constructor(
-    public el: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
-    private ngZone: NgZone,
-    private ref: ChangeDetectorRef,
-    private destroy$: NzDestroyService,
-    private nzMentionService: NzMentionService
-  ) {}
+  readonly value = signal<string>('');
+
+  readonly disabled = signal(false);
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.completeEvents();
+    });
+
+    afterNextRender(() => {
+      this.setupEventListener('blur', this.onBlur);
+      this.setupEventListener('focusin', this.onFocusin);
+      this.setupEventListener('input', this.onInput);
+      this.setupEventListener('click', this.onClick);
+      this.setupEventListener('keydown', this.onKeydown);
+    });
+  }
 
   completeEvents(): void {
     this.onFocusin.complete();
@@ -74,33 +89,38 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
   }
 
   focus(caretPos: number | null = null): void {
-    this.el.nativeElement.focus();
-    this.el.nativeElement.setSelectionRange(caretPos, caretPos);
+    this.elementRef.nativeElement.focus();
+    this.elementRef.nativeElement.setSelectionRange(caretPos, caretPos);
   }
 
   insertMention(mention: Mention): void {
-    const value: string = this.el.nativeElement.value;
+    const value: string = this.elementRef.nativeElement.value;
     const insertValue = `${mention.mention}${NZ_MENTION_CONFIG.split}`;
     const newValue = [
       value.slice(0, mention.startPos + 1),
       insertValue,
       value.slice(mention.endPos, value.length)
     ].join('');
-    this.el.nativeElement.value = newValue;
+    this.elementRef.nativeElement.value = newValue;
     this.focus(mention.startPos + insertValue.length + 1);
     this.onChange(newValue);
-    this.value = newValue;
+    this.value.set(newValue);
+  }
+
+  clear(): void {
+    this.value.set('');
+    this.elementRef.nativeElement.value = '';
+    this.onChange('');
   }
 
   writeValue(value: string): void {
-    this.value = value;
-    if (typeof value === 'string') {
-      this.el.nativeElement.value = value;
-    } else {
-      this.el.nativeElement.value = '';
-    }
+    const parsedValue = typeof value === 'string' ? value : '';
+    this.value.set(parsedValue);
+    this.elementRef.nativeElement.value = parsedValue;
   }
 
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
@@ -109,32 +129,20 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
     this.onTouched = fn;
   }
 
-  ngAfterViewInit(): void {
-    this.nzMentionService.registerTrigger(this);
-
-    this.setupEventListener('blur', this.onBlur);
-    this.setupEventListener('focusin', this.onFocusin);
-    this.setupEventListener('input', this.onInput, true);
-    this.setupEventListener('click', this.onClick, true);
-    this.setupEventListener('keydown', this.onKeydown, true);
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled.set(isDisabled);
   }
 
-  ngOnDestroy(): void {
-    this.completeEvents();
-  }
-
-  private setupEventListener<T>(eventName: string, eventEmitter: EventEmitter<T>, shouldPassEvent = false): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent<T>(this.el.nativeElement, eventName)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => {
-          if (eventEmitter.observers.length) {
-            this.ngZone.run(() => {
-              eventEmitter.emit(shouldPassEvent ? event : undefined);
-              this.ref.markForCheck();
-            });
-          }
-        });
-    });
+  private setupEventListener<TEvent extends Event>(eventName: string, eventEmitter: EventEmitter<TEvent>): void {
+    fromEventOutsideAngular<TEvent>(this.elementRef.nativeElement, eventName)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(event => {
+        if (eventEmitter.observers.length) {
+          this.ngZone.run(() => {
+            eventEmitter.emit(event);
+            this.cdr.markForCheck();
+          });
+        }
+      });
   }
 }

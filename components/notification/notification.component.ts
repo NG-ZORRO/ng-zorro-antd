@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgClass, NgIf, NgStyle, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
 import { notificationMotion } from 'ng-zorro-antd/core/animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -17,100 +17,103 @@ import { NzNotificationData } from './typings';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-notification',
   exportAs: 'nzNotification',
-  preserveWhitespaces: false,
   animations: [notificationMotion],
   template: `
     <div
       class="ant-notification-notice ant-notification-notice-closable"
-      [ngStyle]="instance.options?.nzStyle || null"
-      [ngClass]="instance.options?.nzClass || ''"
+      [style]="instance.options?.nzStyle || null"
+      [class]="instance.options?.nzClass || ''"
       [@notificationMotion]="state"
       (@notificationMotion.done)="animationStateChanged.next($event)"
       (click)="onClick($event)"
       (mouseenter)="onEnter()"
       (mouseleave)="onLeave()"
     >
-      <div *ngIf="!instance.template" class="ant-notification-notice-content">
+      @if (instance.template) {
+        <ng-template
+          [ngTemplateOutlet]="instance.template!"
+          [ngTemplateOutletContext]="{ $implicit: this, data: instance.options?.nzData }"
+        />
+      } @else {
         <div class="ant-notification-notice-content">
-          <div [class.ant-notification-notice-with-icon]="instance.type !== 'blank'">
-            <ng-container [ngSwitch]="instance.type">
-              <span
-                *ngSwitchCase="'success'"
-                nz-icon
-                nzType="check-circle"
-                class="ant-notification-notice-icon ant-notification-notice-icon-success"
-              ></span>
-              <span
-                *ngSwitchCase="'info'"
-                nz-icon
-                nzType="info-circle"
-                class="ant-notification-notice-icon ant-notification-notice-icon-info"
-              ></span>
-              <span
-                *ngSwitchCase="'warning'"
-                nz-icon
-                nzType="exclamation-circle"
-                class="ant-notification-notice-icon ant-notification-notice-icon-warning"
-              ></span>
-              <span
-                *ngSwitchCase="'error'"
-                nz-icon
-                nzType="close-circle"
-                class="ant-notification-notice-icon ant-notification-notice-icon-error"
-              ></span>
-            </ng-container>
-            <div class="ant-notification-notice-message">
-              <ng-container *nzStringTemplateOutlet="instance.title">
-                <div [innerHTML]="instance.title"></div>
-              </ng-container>
+          <div class="ant-notification-notice-content">
+            <div [class.ant-notification-notice-with-icon]="instance.type !== 'blank'">
+              @switch (instance.type) {
+                @case ('success') {
+                  <nz-icon
+                    nzType="check-circle"
+                    class="ant-notification-notice-icon ant-notification-notice-icon-success"
+                  />
+                }
+                @case ('info') {
+                  <nz-icon
+                    nzType="info-circle"
+                    class="ant-notification-notice-icon ant-notification-notice-icon-info"
+                  />
+                }
+                @case ('warning') {
+                  <nz-icon
+                    nzType="exclamation-circle"
+                    class="ant-notification-notice-icon ant-notification-notice-icon-warning"
+                  />
+                }
+                @case ('error') {
+                  <nz-icon
+                    nzType="close-circle"
+                    class="ant-notification-notice-icon ant-notification-notice-icon-error"
+                  />
+                }
+              }
+              <div class="ant-notification-notice-message">
+                <ng-container *nzStringTemplateOutlet="instance.title">
+                  <div [innerHTML]="instance.title"></div>
+                </ng-container>
+              </div>
+              <div class="ant-notification-notice-description">
+                <ng-container
+                  *nzStringTemplateOutlet="
+                    instance.content;
+                    context: { $implicit: this, data: instance.options?.nzData }
+                  "
+                >
+                  <div [innerHTML]="instance.content"></div>
+                </ng-container>
+              </div>
+              @if (instance.options?.nzButton; as btn) {
+                <span class="ant-notification-notice-btn">
+                  <ng-template [ngTemplateOutlet]="btn" [ngTemplateOutletContext]="{ $implicit: this }" />
+                </span>
+              }
             </div>
-            <div class="ant-notification-notice-description">
-              <ng-container *nzStringTemplateOutlet="instance.content">
-                <div [innerHTML]="instance.content"></div>
-              </ng-container>
-            </div>
-            <span *ngIf="instance.options?.nzButton as btn" class="ant-notification-notice-btn">
-              <ng-template [ngTemplateOutlet]="btn" [ngTemplateOutletContext]="{ $implicit: this }"></ng-template>
-            </span>
           </div>
         </div>
-      </div>
-      <ng-template
-        [ngIf]="instance.template"
-        [ngTemplateOutlet]="instance.template!"
-        [ngTemplateOutletContext]="{ $implicit: this, data: instance.options?.nzData }"
-      ></ng-template>
+      }
       <a tabindex="0" class="ant-notification-notice-close" (click)="close()">
         <span class="ant-notification-notice-close-x">
-          <ng-container *ngIf="instance.options?.nzCloseIcon; else iconTpl">
+          @if (instance.options?.nzCloseIcon) {
             <ng-container *nzStringTemplateOutlet="instance.options?.nzCloseIcon; let closeIcon">
-              <span nz-icon [nzType]="closeIcon"></span>
+              <nz-icon [nzType]="closeIcon" />
             </ng-container>
-          </ng-container>
-          <ng-template #iconTpl>
-            <span nz-icon nzType="close" class="ant-notification-close-icon"></span>
-          </ng-template>
+          } @else {
+            <nz-icon nzType="close" class="ant-notification-close-icon" />
+          }
         </span>
       </a>
     </div>
   `,
-  imports: [NgStyle, NgClass, NgIf, NgSwitch, NgSwitchCase, NzIconModule, NzOutletModule, NgTemplateOutlet],
-  standalone: true
+  imports: [NzIconModule, NzOutletModule, NgTemplateOutlet]
 })
-export class NzNotificationComponent extends NzMNComponent implements OnDestroy {
-  @Input() override instance!: Required<NzNotificationData>;
-  @Input() override index!: number;
+export class NzNotificationComponent extends NzMNComponent {
+  @Input() instance!: Required<NzNotificationData>;
+  @Input() index!: number;
   @Input() placement?: string;
+  @Output() readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
-  @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
-
-  constructor(cdr: ChangeDetectorRef) {
-    super(cdr);
-  }
-
-  override ngOnDestroy(): void {
-    super.ngOnDestroy();
-    this.instance.onClick.complete();
+  constructor() {
+    super();
+    this.destroyRef.onDestroy(() => {
+      this.instance.onClick.complete();
+    });
   }
 
   onClick(event: MouseEvent): void {

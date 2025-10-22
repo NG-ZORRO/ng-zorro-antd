@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+
 @Component({
   selector: 'nz-demo-badge-size',
+  imports: [NzBadgeModule],
   template: `
     <nz-badge nzSize="default" [nzCount]="5">
       <a class="head-example"></a>

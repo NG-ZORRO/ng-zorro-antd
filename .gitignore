@@ -4,20 +4,20 @@ __ngcc_entry_points__.json
 
 # compiled output
 dist/
-/site/
 tmp/
 junit/
 out-tsc/
-/publish/
-/lib/
+/site
+publish/
+lib/
 schematics/demo
 schematics/utils/version-names.ts
 ng-zorro.github.io/
+archive-docs/
 
 # dependencies
 node_modules
 node_modules.*/
-package-lock.json
 integration/**/package-lock.json
 yarn.lock
 
@@ -32,6 +32,7 @@ yarn.lock
 
 # IDE - VSCode
 .vscode/*
+!.vscode/mcp.json
 
 # misc
 /.angular/cache
@@ -58,5 +59,3 @@ report.*.json
 Thumbs.db
 
 monospace.json
-
-.nx

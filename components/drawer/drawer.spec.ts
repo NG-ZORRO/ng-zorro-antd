@@ -1,13 +1,28 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, Inject, Input, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Component, Input, TemplateRef, ViewChild, inject } from '@angular/core';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  inject as testingInject,
+  tick,
+  waitForAsync
+} from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
-import { NZ_DRAWER_DATA } from 'ng-zorro-antd/drawer/drawer-options';
+import { NZ_DRAWER_DATA, NzDrawerPlacement } from 'ng-zorro-antd/drawer/drawer-options';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';
@@ -17,10 +32,10 @@ import { NzDrawerService } from './drawer.service';
 describe('NzDrawerComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzDrawerModule, NoopAnimationsModule, NzNoAnimationDirective],
-      declarations: [NzTestDrawerComponent, NzTestDrawerRtlComponent]
-    }).compileComponents();
+      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+    });
   }));
+
   describe('default', () => {
     let component: NzTestDrawerComponent;
     let fixture: ComponentFixture<NzTestDrawerComponent>;
@@ -34,15 +49,17 @@ describe('NzDrawerComponent', () => {
       fixture.detectChanges();
     });
 
-    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-      forceScrollElement = document.createElement('div');
-      document.body.appendChild(forceScrollElement);
-      forceScrollElement.style.width = '100px';
-      forceScrollElement.style.height = '3000px';
-      forceScrollElement.style.background = 'rebeccapurple';
-    }));
+    beforeEach(
+      testingInject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+        forceScrollElement = document.createElement('div');
+        document.body.appendChild(forceScrollElement);
+        forceScrollElement.style.width = '100px';
+        forceScrollElement.style.height = '3000px';
+        forceScrollElement.style.background = 'rebeccapurple';
+      })
+    );
 
     afterEach(fakeAsync(() => {
       component.close();
@@ -517,7 +534,7 @@ describe('NzDrawerComponent', () => {
       ).toBe(false);
       component.close();
       fixture.detectChanges();
-      component.placement = 'Invalid';
+      component.placement = 'Invalid' as unknown as NzDrawerPlacement;
       fixture.detectChanges();
       component.open();
       expect(
@@ -543,12 +560,10 @@ describe('NzDrawerComponent', () => {
       expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('');
       component.placement = 'top';
       fixture.detectChanges();
-      expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe(
-        'none 0s ease 0s'
-      );
+      expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('none');
       expect(
         (overlayContainerElement.querySelector('.ant-drawer-content-wrapper') as HTMLElement).style.transition
-      ).toBe('none 0s ease 0s');
+      ).toBe('none');
       component.placement = 'right';
       fixture.detectChanges();
       component.close();
@@ -642,9 +657,11 @@ describe('NzDrawerComponent', () => {
       fixture.detectChanges();
     });
 
-    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainerElement = oc.getContainerElement();
-    }));
+    beforeEach(
+      testingInject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainerElement = oc.getContainerElement();
+      })
+    );
 
     it('should className correct on dir change', () => {
       component.open();
@@ -670,9 +687,7 @@ describe('NzDrawerService', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzDrawerModule, NoopAnimationsModule],
-      providers: [NzDrawerService],
-      declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
+      providers: [NzDrawerService, provideNoopAnimations()]
     });
   }));
 
@@ -682,11 +697,13 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
   }));
 
-  beforeEach(inject([OverlayContainer, NzDrawerService], (oc: OverlayContainer, ds: NzDrawerService) => {
-    overlayContainer = oc;
-    drawerService = ds;
-    overlayContainerElement = oc.getContainerElement();
-  }));
+  beforeEach(
+    testingInject([OverlayContainer, NzDrawerService], (oc: OverlayContainer, ds: NzDrawerService) => {
+      overlayContainer = oc;
+      drawerService = ds;
+      overlayContainerElement = oc.getContainerElement();
+    })
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -697,6 +714,7 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
     tick(300);
     expect(component.templateDrawerRef?.getContentComponent()).toBeNull();
+    expect(component.templateDrawerRef?.getContentComponentRef()).toBeNull();
     expect(component.templateOpenSpy).toHaveBeenCalled();
     fixture.detectChanges();
     (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).click();
@@ -719,6 +737,7 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
     expect(openSpy).not.toHaveBeenCalled();
     expect(drawerRef.getContentComponent()).not.toBeNull();
+    expect(drawerRef.getContentComponentRef()).not.toBeNull();
     tick(300);
     expect(openSpy).toHaveBeenCalled();
     (overlayContainerElement.querySelector('.ant-drawer .close-btn') as HTMLElement).click();
@@ -727,6 +746,7 @@ describe('NzDrawerService', () => {
     expect(closeSpy).toHaveBeenCalled();
     fixture.detectChanges();
     expect(drawerRef.getContentComponent()).toBeNull();
+    expect(drawerRef.getContentComponentRef()).toBeNull();
   }));
 
   it('should create a component drawer and use nzData instead of nzContentParams', fakeAsync(() => {
@@ -744,6 +764,7 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
     expect(openSpy).not.toHaveBeenCalled();
     expect(drawerRef.getContentComponent()).not.toBeNull();
+    expect(drawerRef.getContentComponentRef()).not.toBeNull();
     tick(300);
     expect(openSpy).toHaveBeenCalled();
     (overlayContainerElement.querySelector('.ant-drawer .close-btn') as HTMLElement).click();
@@ -752,6 +773,7 @@ describe('NzDrawerService', () => {
     expect(closeSpy).toHaveBeenCalled();
     fixture.detectChanges();
     expect(drawerRef.getContentComponent()).toBeNull();
+    expect(drawerRef.getContentComponentRef()).toBeNull();
   }));
 
   it('should `nzOnCancel` work', fakeAsync(() => {
@@ -783,9 +805,12 @@ describe('NzDrawerService', () => {
 });
 
 @Component({
+  imports: [NzDrawerModule, NzIconModule, NzNoAnimationDirective],
   template: `
     <button (click)="open()">Open</button>
-    <ng-template #closeIconTemplate><span nz-icon nzType="close-circle" nzTheme="outline"></span></ng-template>
+    <ng-template #closeIconTemplate>
+      <nz-icon nzType="close-square" nzTheme="outline" />
+    </ng-template>
     <ng-template #titleTemplate>
       <span class="custom-title">title</span>
       <button class="close-btn"></button>
@@ -830,23 +855,23 @@ class NzTestDrawerComponent {
   closable = true;
   maskClosable = true;
   showMask = true;
-  title: string | TemplateRef<void> = '';
-  extra: string | TemplateRef<void> = '';
-  footer: string | TemplateRef<void> = '';
+  title: string | TemplateRef<{}> = '';
+  extra: string | TemplateRef<{}> = '';
+  footer: string | TemplateRef<{}> = '';
   stringTitle = 'test';
   size: 'large' | 'default' = 'default';
   width?: string | number;
   height?: string | number;
-  placement = 'left';
+  placement: NzDrawerPlacement = 'left';
   noAnimation = false;
-  closeIcon?: TemplateRef<void> | string;
+  closeIcon!: TemplateRef<void> | string;
   offsetX = 0;
   offsetY = 0;
   triggerVisible = jasmine.createSpy('visibleChange');
 
-  @ViewChild('titleTemplate', { static: false }) titleTemplateRef!: TemplateRef<void>;
+  @ViewChild('titleTemplate', { static: false }) titleTemplateRef!: TemplateRef<{}>;
   @ViewChild('closeIconTemplate', { static: false }) closeIconTemplateRef!: TemplateRef<void>;
-  @ViewChild('customFooter', { static: false }) templateFooter!: TemplateRef<void>;
+  @ViewChild('customFooter', { static: false }) templateFooter!: TemplateRef<{}>;
   @ViewChild(NzDrawerComponent, { static: false }) drawerComponent!: NzDrawerComponent;
 
   open(): void {
@@ -888,6 +913,7 @@ class NzTestDrawerWithServiceComponent {
 }
 
 @Component({
+  imports: [NzButtonModule],
   template: `
     <div>
       <p>Custom Component</p>
@@ -897,11 +923,9 @@ class NzTestDrawerWithServiceComponent {
 })
 export class NzDrawerCustomComponent {
   @Input() value: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  nzData: { value: string } = inject(NZ_DRAWER_DATA);
 
-  constructor(
-    @Inject(NZ_DRAWER_DATA) public nzData: { value: string },
-    private drawerRef: NzDrawerRef
-  ) {}
+  constructor(private drawerRef: NzDrawerRef) {}
 
   close(): void {
     this.drawerRef.close(this.value);
@@ -909,6 +933,7 @@ export class NzDrawerCustomComponent {
 }
 
 @Component({
+  imports: [BidiModule, NzDrawerModule],
   template: `
     <div [dir]="direction">
       <nz-drawer [nzVisible]="visible" (nzOnClose)="close()">
@@ -923,7 +948,7 @@ export class NzDrawerCustomComponent {
 })
 export class NzTestDrawerRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
   visible = false;
 
   open(): void {

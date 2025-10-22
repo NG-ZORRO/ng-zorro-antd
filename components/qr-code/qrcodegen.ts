@@ -30,6 +30,7 @@
 
 'use strict';
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace qrcodegen {
   type bit = number;
   type byte = number;
@@ -70,7 +71,7 @@ namespace qrcodegen {
     // This function always encodes using the binary segment mode, not any text mode. The maximum number of
     // bytes allowed is 2953. The smallest possible QR Code version is automatically chosen for the output.
     // The ECC level of the result may be higher than the ecl argument if it can be done without increasing the version.
-    public static encodeBinary(data: Readonly<byte[]>, ecl: QrCode.Ecc): QrCode {
+    public static encodeBinary(data: readonly byte[], ecl: QrCode.Ecc): QrCode {
       const seg: QrSegment = qrcodegen.QrSegment.makeBytes(data);
       return QrCode.encodeSegments([seg], ecl);
     }
@@ -87,7 +88,7 @@ namespace qrcodegen {
     // between modes (such as alphanumeric and byte) to encode text in less space.
     // This is a mid-level API; the high-level API is encodeText() and encodeBinary().
     public static encodeSegments(
-      segs: Readonly<QrSegment[]>,
+      segs: readonly QrSegment[],
       ecl: QrCode.Ecc,
       minVersion: int = 1,
       maxVersion: int = 40,
@@ -123,7 +124,7 @@ namespace qrcodegen {
       }
 
       // Concatenate all segments to create the data bit string
-      let bb: bit[] = [];
+      const bb: bit[] = [];
       for (const seg of segs) {
         appendBits(seg.mode.modeBits, 4, bb);
         appendBits(seg.numChars, seg.mode.numCharCountBits(version), bb);
@@ -142,7 +143,7 @@ namespace qrcodegen {
       for (let padByte = 0xec; bb.length < dataCapacityBits; padByte ^= 0xec ^ 0x11) appendBits(padByte, 8, bb);
 
       // Pack bits into bytes in big endian
-      let dataCodewords: byte[] = [];
+      const dataCodewords: byte[] = [];
       while (dataCodewords.length * 8 < bb.length) dataCodewords.push(0);
       bb.forEach((b: bit, i: int) => (dataCodewords[i >>> 3] |= b << (7 - (i & 7))));
 
@@ -182,7 +183,7 @@ namespace qrcodegen {
       // The error correction level used in this QR Code.
       public readonly errorCorrectionLevel: QrCode.Ecc,
 
-      dataCodewords: Readonly<byte[]>,
+      dataCodewords: readonly byte[],
 
       msk: int
     ) {
@@ -193,7 +194,7 @@ namespace qrcodegen {
       this.size = version * 4 + 17;
 
       // Initialize both grids to be size*size arrays of Boolean false
-      let row: boolean[] = [];
+      const row: boolean[] = [];
       for (let i = 0; i < this.size; i++) row.push(false);
       for (let i = 0; i < this.size; i++) {
         this.modules.push(row.slice()); // Initially all light
@@ -352,7 +353,7 @@ namespace qrcodegen {
 
     // Returns a new byte string representing the given data with the appropriate error correction
     // codewords appended to it, based on this object's version and error correction level.
-    private addEccAndInterleave(data: Readonly<byte[]>): byte[] {
+    private addEccAndInterleave(data: readonly byte[]): byte[] {
       const ver: int = this.version;
       const ecl: QrCode.Ecc = this.errorCorrectionLevel;
       if (data.length != QrCode.getNumDataCodewords(ver, ecl)) throw new RangeError('Invalid argument');
@@ -365,10 +366,10 @@ namespace qrcodegen {
       const shortBlockLen: int = Math.floor(rawCodewords / numBlocks);
 
       // Split data into blocks and append ECC to each block
-      let blocks: byte[][] = [];
+      const blocks: byte[][] = [];
       const rsDiv: byte[] = QrCode.reedSolomonComputeDivisor(blockEccLen);
       for (let i = 0, k = 0; i < numBlocks; i++) {
-        let dat: byte[] = data.slice(k, k + shortBlockLen - blockEccLen + (i < numShortBlocks ? 0 : 1));
+        const dat: byte[] = data.slice(k, k + shortBlockLen - blockEccLen + (i < numShortBlocks ? 0 : 1));
         k += dat.length;
         const ecc: byte[] = QrCode.reedSolomonComputeRemainder(dat, rsDiv);
         if (i < numShortBlocks) dat.push(0);
@@ -376,7 +377,7 @@ namespace qrcodegen {
       }
 
       // Interleave (not concatenate) the bytes from every block into a single sequence
-      let result: byte[] = [];
+      const result: byte[] = [];
       for (let i = 0; i < blocks[0].length; i++) {
         blocks.forEach((block, j) => {
           // Skip the padding byte in short blocks
@@ -389,7 +390,7 @@ namespace qrcodegen {
 
     // Draws the given sequence of 8-bit codewords (data and error correction) onto the entire
     // data area of this QR Code. Function modules need to be marked off before this is called.
-    private drawCodewords(data: Readonly<byte[]>): void {
+    private drawCodewords(data: readonly byte[]): void {
       if (data.length != Math.floor(QrCode.getNumRawDataModules(this.version) / 8))
         throw new RangeError('Invalid argument');
       let i: int = 0; // Bit index into the data
@@ -467,7 +468,7 @@ namespace qrcodegen {
       for (let y = 0; y < this.size; y++) {
         let runColor = false;
         let runX = 0;
-        let runHistory = [0, 0, 0, 0, 0, 0, 0];
+        const runHistory = [0, 0, 0, 0, 0, 0, 0];
         for (let x = 0; x < this.size; x++) {
           if (this.modules[y][x] == runColor) {
             runX++;
@@ -486,7 +487,7 @@ namespace qrcodegen {
       for (let x = 0; x < this.size; x++) {
         let runColor = false;
         let runY = 0;
-        let runHistory = [0, 0, 0, 0, 0, 0, 0];
+        const runHistory = [0, 0, 0, 0, 0, 0, 0];
         for (let y = 0; y < this.size; y++) {
           if (this.modules[y][x] == runColor) {
             runY++;
@@ -532,8 +533,8 @@ namespace qrcodegen {
       if (this.version == 1) return [];
       else {
         const numAlign: int = Math.floor(this.version / 7) + 2;
-        const step: int = this.version == 32 ? 26 : Math.ceil((this.version * 4 + 4) / (numAlign * 2 - 2)) * 2;
-        let result: int[] = [6];
+        const step: int = Math.floor((this.version * 8 + numAlign * 3 + 5) / (numAlign * 4 - 4)) * 2;
+        const result: int[] = [6];
         for (let pos = this.size - 7; result.length < numAlign; pos -= step) result.splice(1, 0, pos);
         return result;
       }
@@ -570,7 +571,7 @@ namespace qrcodegen {
       if (degree < 1 || degree > 255) throw new RangeError('Degree out of range');
       // Polynomial coefficients are stored from highest to lowest power, excluding the leading term which is always 1.
       // For example the polynomial x^3 + 255x^2 + 8x + 93 is stored as the uint8 array [255, 8, 93].
-      let result: byte[] = [];
+      const result: byte[] = [];
       for (let i = 0; i < degree - 1; i++) result.push(0);
       result.push(1); // Start off with the monomial x^0
 
@@ -590,8 +591,8 @@ namespace qrcodegen {
     }
 
     // Returns the Reed-Solomon error correction codeword for the given data and divisor polynomials.
-    private static reedSolomonComputeRemainder(data: Readonly<byte[]>, divisor: Readonly<byte[]>): byte[] {
-      let result: byte[] = divisor.map(_ => 0);
+    private static reedSolomonComputeRemainder(data: readonly byte[], divisor: readonly byte[]): byte[] {
+      const result: byte[] = divisor.map(_ => 0);
       for (const b of data) {
         // Polynomial division
         const factor: byte = b ^ (result.shift() as byte);
@@ -617,7 +618,7 @@ namespace qrcodegen {
 
     // Can only be called immediately after a light run is added, and
     // returns either 0, 1, or 2. A helper function for getPenaltyScore().
-    private finderPenaltyCountPatterns(runHistory: Readonly<int[]>): int {
+    private finderPenaltyCountPatterns(runHistory: readonly int[]): int {
       const n: int = runHistory[1];
       assert(n <= this.size * 3);
       const core: boolean =
@@ -744,8 +745,8 @@ namespace qrcodegen {
     // Returns a segment representing the given binary data encoded in
     // byte mode. All input byte arrays are acceptable. Any text string
     // can be converted to UTF-8 bytes and encoded as a byte mode segment.
-    public static makeBytes(data: Readonly<byte[]>): QrSegment {
-      let bb: bit[] = [];
+    public static makeBytes(data: readonly byte[]): QrSegment {
+      const bb: bit[] = [];
       for (const b of data) appendBits(b, 8, bb);
       return new QrSegment(QrSegment.Mode.BYTE, data.length, bb);
     }
@@ -753,7 +754,7 @@ namespace qrcodegen {
     // Returns a segment representing the given string of decimal digits encoded in numeric mode.
     public static makeNumeric(digits: string): QrSegment {
       if (!QrSegment.isNumeric(digits)) throw new RangeError('String contains non-numeric characters');
-      let bb: bit[] = [];
+      const bb: bit[] = [];
       for (let i = 0; i < digits.length; ) {
         // Consume up to 3 digits per iteration
         const n: int = Math.min(digits.length - i, 3);
@@ -769,7 +770,7 @@ namespace qrcodegen {
     public static makeAlphanumeric(text: string): QrSegment {
       if (!QrSegment.isAlphanumeric(text))
         throw new RangeError('String contains unencodable characters in alphanumeric mode');
-      let bb: bit[] = [];
+      const bb: bit[] = [];
       let i: int;
       for (i = 0; i + 2 <= text.length; i += 2) {
         // Process groups of 2
@@ -796,7 +797,7 @@ namespace qrcodegen {
     // Returns a segment representing an Extended Channel Interpretation
     // (ECI) designator with the given assignment value.
     public static makeEci(assignVal: int): QrSegment {
-      let bb: bit[] = [];
+      const bb: bit[] = [];
       if (assignVal < 0) throw new RangeError('ECI assignment value out of range');
       else if (assignVal < 1 << 7) appendBits(assignVal, 8, bb);
       else if (assignVal < 1 << 14) {
@@ -852,7 +853,7 @@ namespace qrcodegen {
 
     // (Package-private) Calculates and returns the number of bits needed to encode the given segments at
     // the given version. The result is infinity if a segment has too many characters to fit its length field.
-    public static getTotalBits(segs: Readonly<QrSegment[]>, version: int): number {
+    public static getTotalBits(segs: readonly QrSegment[], version: int): number {
       let result = 0;
       for (const seg of segs) {
         const ccbits: int = seg.mode.numCharCountBits(version);
@@ -865,7 +866,7 @@ namespace qrcodegen {
     // Returns a new array of bytes representing the given string encoded in UTF-8.
     private static toUtf8ByteArray(str: string): byte[] {
       str = encodeURI(str);
-      let result: byte[] = [];
+      const result: byte[] = [];
       for (let i = 0; i < str.length; i++) {
         if (str.charAt(i) != '%') result.push(str.charCodeAt(i));
         else {
@@ -882,7 +883,7 @@ namespace qrcodegen {
     private static readonly NUMERIC_REGEX: RegExp = /^[0-9]*$/;
 
     // Describes precisely all strings that are encodable in alphanumeric mode.
-    private static readonly ALPHANUMERIC_REGEX: RegExp = /^[A-Z0-9 $%*+.\/:-]*$/;
+    private static readonly ALPHANUMERIC_REGEX: RegExp = /^[A-Z0-9 $%*+./:-]*$/;
 
     // The set of all legal characters in alphanumeric mode,
     // where each character value maps to the index in the string.
@@ -891,64 +892,70 @@ namespace qrcodegen {
 }
 
 /*---- Public helper enumeration ----*/
+// eslint-disable-next-line @typescript-eslint/no-namespace
+namespace qrcodegen {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  export namespace QrCode {
+    type int = number;
 
-namespace qrcodegen.QrCode {
-  type int = number;
+    /*
+     * The error correction level in a QR Code symbol. Immutable.
+     */
+    export class Ecc {
+      /*-- Constants --*/
 
-  /*
-   * The error correction level in a QR Code symbol. Immutable.
-   */
-  export class Ecc {
-    /*-- Constants --*/
+      public static readonly LOW = new Ecc(0, 1); // The QR Code can tolerate about  7% erroneous codewords
+      public static readonly MEDIUM = new Ecc(1, 0); // The QR Code can tolerate about 15% erroneous codewords
+      public static readonly QUARTILE = new Ecc(2, 3); // The QR Code can tolerate about 25% erroneous codewords
+      public static readonly HIGH = new Ecc(3, 2); // The QR Code can tolerate about 30% erroneous codewords
 
-    public static readonly LOW = new Ecc(0, 1); // The QR Code can tolerate about  7% erroneous codewords
-    public static readonly MEDIUM = new Ecc(1, 0); // The QR Code can tolerate about 15% erroneous codewords
-    public static readonly QUARTILE = new Ecc(2, 3); // The QR Code can tolerate about 25% erroneous codewords
-    public static readonly HIGH = new Ecc(3, 2); // The QR Code can tolerate about 30% erroneous codewords
+      /*-- Constructor and fields --*/
 
-    /*-- Constructor and fields --*/
-
-    private constructor(
-      // In the range 0 to 3 (unsigned 2-bit integer).
-      public readonly ordinal: int,
-      // (Package-private) In the range 0 to 3 (unsigned 2-bit integer).
-      public readonly formatBits: int
-    ) {}
+      private constructor(
+        // In the range 0 to 3 (unsigned 2-bit integer).
+        public readonly ordinal: int,
+        // (Package-private) In the range 0 to 3 (unsigned 2-bit integer).
+        public readonly formatBits: int
+      ) {}
+    }
   }
 }
 
 /*---- Public helper enumeration ----*/
+// eslint-disable-next-line @typescript-eslint/no-namespace
+namespace qrcodegen {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  export namespace QrSegment {
+    type int = number;
 
-namespace qrcodegen.QrSegment {
-  type int = number;
+    /*
+     * Describes how a segment's data bits are interpreted. Immutable.
+     */
+    export class Mode {
+      /*-- Constants --*/
 
-  /*
-   * Describes how a segment's data bits are interpreted. Immutable.
-   */
-  export class Mode {
-    /*-- Constants --*/
+      public static readonly NUMERIC = new Mode(0x1, [10, 12, 14]);
+      public static readonly ALPHANUMERIC = new Mode(0x2, [9, 11, 13]);
+      public static readonly BYTE = new Mode(0x4, [8, 16, 16]);
+      public static readonly KANJI = new Mode(0x8, [8, 10, 12]);
+      public static readonly ECI = new Mode(0x7, [0, 0, 0]);
 
-    public static readonly NUMERIC = new Mode(0x1, [10, 12, 14]);
-    public static readonly ALPHANUMERIC = new Mode(0x2, [9, 11, 13]);
-    public static readonly BYTE = new Mode(0x4, [8, 16, 16]);
-    public static readonly KANJI = new Mode(0x8, [8, 10, 12]);
-    public static readonly ECI = new Mode(0x7, [0, 0, 0]);
+      /*-- Constructor and fields --*/
 
-    /*-- Constructor and fields --*/
+      private constructor(
+        // The mode indicator bits, which is a uint4 value (range 0 to 15).
+        public readonly modeBits: int,
+        // Number of character count bits for three different version ranges.
+        private readonly numBitsCharCount: [int, int, int]
+      ) {}
 
-    private constructor(
-      // The mode indicator bits, which is a uint4 value (range 0 to 15).
-      public readonly modeBits: int,
-      // Number of character count bits for three different version ranges.
-      private readonly numBitsCharCount: [int, int, int]
-    ) {}
+      /*-- Method --*/
 
-    /*-- Method --*/
-
-    // (Package-private) Returns the bit width of the character count field for a segment in
-    // this mode in a QR Code at the given version number. The result is in the range [0, 16].
-    public numCharCountBits(ver: int): int {
-      return this.numBitsCharCount[Math.floor((ver + 7) / 17)];
+      // (Package-private) Returns the bit width of the character count field for a segment in
+      // this mode in a QR Code at the given version number. The result is in the range [0, 16].
+      public numCharCountBits(ver: int): int {
+        return this.numBitsCharCount[Math.floor((ver + 7) / 17)];
+      }
     }
   }
 }

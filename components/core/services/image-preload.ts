@@ -4,10 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { DOCUMENT, inject, Injectable } from '@angular/core';
 
 interface PreloadOption {
   src: string;
@@ -22,11 +19,8 @@ export type PreloadDisposeHandle = () => void;
 export class ImagePreloadService {
   private counter = new Map<string, number>();
   private linkRefs = new Map<string, HTMLLinkElement>();
-
-  constructor(
-    @Inject(DOCUMENT) private document: NzSafeAny,
-    private platform: Platform
-  ) {}
+  private document: Document = inject(DOCUMENT);
+  private platform: Platform = inject(Platform);
 
   addPreload(option: PreloadOption): PreloadDisposeHandle {
     if (this.platform.isBrowser) {

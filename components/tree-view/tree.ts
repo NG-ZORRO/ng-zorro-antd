@@ -7,37 +7,37 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DataSource } from '@angular/cdk/collections';
 import { CdkTree, TreeControl } from '@angular/cdk/tree';
 import {
-  ChangeDetectorRef,
   Component,
-  Host,
   Input,
   IterableDiffer,
-  IterableDiffers,
   OnDestroy,
   OnInit,
-  Optional,
-  ViewContainerRef
+  ViewContainerRef,
+  booleanAttribute,
+  inject,
+  DestroyRef,
+  ChangeDetectorRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
-  template: '',
-  standalone: true
+  template: ''
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
-  static ngAcceptInputType_nzDirectoryTree: BooleanInput;
-  static ngAcceptInputType_nzBlockNode: BooleanInput;
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  protected destroyRef = inject(DestroyRef);
+  protected directionality = inject(Directionality);
+  protected cdr = inject(ChangeDetectorRef);
 
-  private destroy$ = new Subject<boolean>();
   dir: Direction = 'ltr';
   _dataSourceChanged = new Subject<void>();
-  @Input('nzTreeControl') override treeControl!: TreeControl<T, NzSafeAny>;
+
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  @Input('nzTreeControl') override treeControl?: TreeControl<T, NzSafeAny> = undefined;
   @Input('nzDataSource')
   override get dataSource(): DataSource<T> | Observable<T[]> | T[] {
     return super.dataSource;
@@ -45,34 +45,17 @@ export class NzTreeView<T> extends CdkTree<T> implements OnInit, OnDestroy {
   override set dataSource(dataSource: DataSource<T> | Observable<T[]> | T[]) {
     super.dataSource = dataSource;
   }
-  @Input() @InputBoolean() nzDirectoryTree = false;
-  @Input() @InputBoolean() nzBlockNode = false;
-
-  constructor(
-    protected differs: IterableDiffers,
-    protected changeDetectorRef: ChangeDetectorRef,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() private directionality?: Directionality
-  ) {
-    super(differs, changeDetectorRef);
-  }
+  @Input({ transform: booleanAttribute }) nzDirectoryTree = false;
+  @Input({ transform: booleanAttribute }) nzBlockNode = false;
 
   override ngOnInit(): void {
     super.ngOnInit();
 
-    if (this.directionality) {
-      this.dir = this.directionality.value;
-      this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
-        this.dir = direction;
-        this.changeDetectorRef.detectChanges();
-      });
-    }
-  }
-
-  override ngOnDestroy(): void {
-    super.ngOnDestroy();
-    this.destroy$.next(true);
-    this.destroy$.complete();
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
   }
 
   override renderNodeChanges(

@@ -4,23 +4,19 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "downlevelIteration": true,
     "module": "es2020",
     "importHelpers": true,
+    "esModuleInterop": true,
     "rootDir": ".",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
     "target": "ES2022",
     "lib": [
       "es2020",
       "dom"
     ],
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -31,10 +27,11 @@
     "skipLibCheck": true,
     "types": [
       "jasmine"
-    ],
-    "useDefineForClassFields": false
+    ]
   },
   "angularCompilerOptions": {
+    "strictStandalone": true,
+    "typeCheckHostBindings": true,
     "extendedDiagnostics": {
       "checks": {
         "optionalChainNotNullable": "suppress"

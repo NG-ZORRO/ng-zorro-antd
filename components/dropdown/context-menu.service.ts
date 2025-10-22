@@ -3,13 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ConnectionPositionPair, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import {
+  ConnectionPositionPair,
+  createCloseScrollStrategy,
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  OverlayRef
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { EmbeddedViewRef, Injectable, NgZone } from '@angular/core';
-import { fromEvent, merge, Subscription } from 'rxjs';
+import { EmbeddedViewRef, inject, Injectable, Injector, NgZone } from '@angular/core';
+import { merge, Subscription } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzContextMenuServiceModule } from './context-menu.service.module';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
@@ -25,13 +32,10 @@ const LIST_OF_POSITIONS = [
   providedIn: NzContextMenuServiceModule
 })
 export class NzContextMenuService {
+  private ngZone = inject(NgZone);
+  private injector = inject(Injector);
   private overlayRef: OverlayRef | null = null;
   private closeSubscription = Subscription.EMPTY;
-
-  constructor(
-    private ngZone: NgZone,
-    private overlay: Overlay
-  ) {}
 
   create(
     $event: MouseEvent | { x: number; y: number },
@@ -42,15 +46,13 @@ export class NzContextMenuService {
     if ($event instanceof MouseEvent) {
       $event.preventDefault();
     }
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo({ x, y })
-      .withPositions(LIST_OF_POSITIONS)
-      .withTransformOriginOn('.ant-dropdown');
-    this.overlayRef = this.overlay.create({
-      positionStrategy,
+
+    this.overlayRef = createOverlayRef(this.injector, {
+      positionStrategy: createFlexibleConnectedPositionStrategy(this.injector, { x, y })
+        .withPositions(LIST_OF_POSITIONS)
+        .withTransformOriginOn('.ant-dropdown'),
       disposeOnNavigation: true,
-      scrollStrategy: this.overlay.scrollStrategies.close()
+      scrollStrategy: createCloseScrollStrategy(this.injector)
     });
 
     this.closeSubscription = new Subscription();
@@ -58,18 +60,16 @@ export class NzContextMenuService {
     this.closeSubscription.add(nzDropdownMenuComponent.descendantMenuItemClick$.subscribe(() => this.close()));
 
     this.closeSubscription.add(
-      this.ngZone.runOutsideAngular(() =>
-        merge(
-          fromEvent<MouseEvent>(document, 'click').pipe(
-            filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
-            /** handle firefox contextmenu event **/
-            filter(event => event.button !== 2)
-          ),
-          fromEvent<KeyboardEvent>(document, 'keydown').pipe(filter(event => event.key === 'Escape'))
-        )
-          .pipe(first())
-          .subscribe(() => this.ngZone.run(() => this.close()))
+      merge(
+        fromEventOutsideAngular<MouseEvent>(document, 'click').pipe(
+          filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target as HTMLElement)),
+          /** handle firefox contextmenu event **/
+          filter(event => event.button !== 2)
+        ),
+        fromEventOutsideAngular<KeyboardEvent>(document, 'keydown').pipe(filter(event => event.key === 'Escape'))
       )
+        .pipe(first())
+        .subscribe(() => this.ngZone.run(() => this.close()))
     );
 
     return this.overlayRef.attach(

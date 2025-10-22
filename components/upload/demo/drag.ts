@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-drag',
+  imports: [NzButtonModule, NzIconModule, NzUploadModule],
   template: `
     <nz-upload
       nzType="drag"
@@ -13,7 +16,7 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
       (nzChange)="handleChange($event)"
     >
       <p class="ant-upload-drag-icon">
-        <span nz-icon nzType="inbox"></span>
+        <nz-icon nzType="inbox" />
       </p>
       <p class="ant-upload-text">Click or drag file to this area to upload</p>
       <p class="ant-upload-hint">
@@ -23,7 +26,7 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadDragComponent {
-  constructor(private msg: NzMessageService) {}
+  constructor(private messageService: NzMessageService) {}
 
   handleChange({ file, fileList }: NzUploadChangeParam): void {
     const status = file.status;
@@ -31,9 +34,9 @@ export class NzDemoUploadDragComponent {
       console.log(file, fileList);
     }
     if (status === 'done') {
-      this.msg.success(`${file.name} file uploaded successfully.`);
+      this.messageService.success(`${file.name} file uploaded successfully.`);
     } else if (status === 'error') {
-      this.msg.error(`${file.name} file upload failed.`);
+      this.messageService.error(`${file.name} file upload failed.`);
     }
   }
 }

@@ -2,8 +2,14 @@ import { Component } from '@angular/core';
 
 import { formatDistance } from 'date-fns';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
+
 @Component({
   selector: 'nz-demo-comment-basic',
+  imports: [NzAvatarModule, NzCommentModule, NzIconModule, NzTooltipModule],
   template: `
     <nz-comment nzAuthor="Han Solo" [nzDatetime]="time">
       <nz-avatar
@@ -13,30 +19,28 @@ import { formatDistance } from 'date-fns';
       ></nz-avatar>
       <nz-comment-content>
         <p>
-          We supply a series of design principles, practical patterns and high quality design resources (Sketch and
+          We supply a series of design principles, practical patterns and high quality design resources(Sketch and
           Axure), to help people create their product prototypes beautifully and efficiently.
         </p>
       </nz-comment-content>
       <nz-comment-action>
-        <span
+        <nz-icon
           nz-tooltip
-          nzTitle="Like"
-          nz-icon
+          nzTooltipTitle="Like"
           nzType="like"
           [nzTheme]="likes > 0 ? 'twotone' : 'outline'"
           (click)="like()"
-        ></span>
+        />
         <span class="count like">{{ likes }}</span>
       </nz-comment-action>
       <nz-comment-action>
-        <span
+        <nz-icon
           nz-tooltip
-          nzTitle="Dislike"
-          nz-icon
+          nzTooltipTitle="Dislike"
           nzType="dislike"
           [nzTheme]="dislikes > 0 ? 'twotone' : 'outline'"
           (click)="dislike()"
-        ></span>
+        />
         <span class="count dislike">{{ dislikes }}</span>
       </nz-comment-action>
       <nz-comment-action>Reply to</nz-comment-action>

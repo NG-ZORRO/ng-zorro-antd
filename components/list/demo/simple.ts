@@ -1,39 +1,62 @@
 import { Component } from '@angular/core';
 
+import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'nz-demo-list-simple',
+  imports: [NzListModule, NzTypographyModule],
   template: `
-    <h3 [ngStyle]="{ 'margin-bottom.px': 16 }">Default Size</h3>
+    <h3>Default Size</h3>
     <nz-list nzBordered nzHeader="Header" nzFooter="Footer">
-      <nz-list-item *ngFor="let item of data">
-        <span nz-typography><mark>[ITEM]</mark></span>
-        {{ item }}
-      </nz-list-item>
+      @for (item of data; track item) {
+        <nz-list-item>
+          <span nz-typography><mark>[ITEM]</mark></span>
+          {{ item }}
+        </nz-list-item>
+      }
     </nz-list>
 
-    <h3 [ngStyle]="{ margin: '16px 0' }">Small Size</h3>
+    <h3>Small Size</h3>
     <nz-list nzBordered nzSize="small">
       <nz-list-header>Header</nz-list-header>
-      <nz-list-item *ngFor="let item of data">item</nz-list-item>
+      @for (item of data; track item) {
+        <nz-list-item>{{ item }}</nz-list-item>
+      }
+
       <nz-list-footer>Footer</nz-list-footer>
     </nz-list>
 
-    <h3 [ngStyle]="{ margin: '16px 0' }">Large Size</h3>
+    <h3>Large Size</h3>
     <ul nz-list [nzDataSource]="data" nzBordered nzSize="large">
       <nz-list-header>Header</nz-list-header>
-      <li nz-list-item *ngFor="let item of data" nzNoFlex>
-        <ul nz-list-item-actions>
-          <nz-list-item-action>
-            <a (click)="msg.info('edit')">edit</a>
-          </nz-list-item-action>
-        </ul>
-        {{ item }}
-      </li>
+      @for (item of data; track item) {
+        <li nz-list-item nzNoFlex>
+          <ul nz-list-item-actions>
+            <nz-list-item-action>
+              <a (click)="msg.info('edit')">edit</a>
+            </nz-list-item-action>
+          </ul>
+          {{ item }}
+        </li>
+      }
       <nz-list-footer>Footer</nz-list-footer>
     </ul>
-  `
+  `,
+  styles: [
+    `
+      h3 {
+        margin: 16px 0;
+      }
+      h3:first-child {
+        margin-top: 0;
+      }
+      h3:last-child {
+        margin-bottom: 0;
+      }
+    `
+  ]
 })
 export class NzDemoListSimpleComponent {
   data = [

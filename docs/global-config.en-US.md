@@ -17,17 +17,9 @@ const ngZorroConfig: NzConfig = {
   notification: { nzTop: 240 }
 };
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    CommonModule
-  ],
-  providers: [
-    provideNzConfig(ngZorroConfig)
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
+export const appConfig: ApplicationConfig = {
+  providers: [provideNzConfig(ngZorroConfig)]
+};
 ```
 
 These global configurations would be injected and stored in a service named `NzConfigService`.
@@ -39,11 +31,13 @@ Some components accept `TemplateRef<T>` as a default parameter.
 One of the easiest approaches is to invoke relevant functions from `NzConfigService` in the root component.
 
 ```typescript
+import { NzConfigService } from 'ng-zorro-antd/core/config';
+
 export class AppComponent implements OnInit {
+  private nzConfigService = inject(NzConfigService);
+
   @ViewChild('nzIndicatorTpl', { static: true })
   nzIndicator!: TemplateRef<void>;
-
-  constructor(private readonly nzConfigService: NzConfigService) {}
 
   ngOnInit(): void {
     this.nzConfigService.set('spin', { nzIndicator: this.nzIndicator });
@@ -62,7 +56,7 @@ To solve this, it is recommended to use a `FactoryProvider` instead of a `ValueP
   template: `
     <ng-template #nzIndicatorTpl>
       <span class="ant-spin-dot">
-        <span nz-icon [nzType]="'loading'"></span>
+        <nz-icon nzType="loading" />
       </span>
     </ng-template>
   `
@@ -83,22 +77,16 @@ const nzConfigFactory = (): NzConfig => {
   };
 };
 
-@NgModule({
-  imports: [],
-  declarations: [
-    AppComponent,
-    GlobalTemplatesComponent
-  ],
+export const appConfig: ApplicationConfig = {
   providers: [
-    { // The FactoryProvider
+    {
+      // The FactoryProvider
       provide: NZ_CONFIG,
       useFactory: nzConfigFactory
     }
   ]
-})
-export class AppModule {}
+};
 ```
-
 
 ## Overwrite inside Component
 
@@ -159,20 +147,17 @@ You can alter the global configuration of a specific component through the `set`
 ```typescript
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 
-@Component({
-  selector: 'app-change-zorro-config'
-})
+@Component({})
 export class ChangeZorroConfigComponent {
-  constructor(private nzConfigService: NzConfigService) {}
+  private nzConfigService = inject(NzConfigService);
 
   onChangeConfig() {
-    this.nzConfigService.set('button', { nzSize: 'large' })
+    this.nzConfigService.set('button', { nzSize: 'large' });
   }
 }
 ```
 
 All component instances is responsive to this configuration change (as long as they are not configured independently).
-
 
 ## Priority of Global Configurations
 
@@ -190,4 +175,4 @@ Consequently, this particular notification will be visible for 6000 milliseconds
 
 ## Check all Available Globally Configurable Parameters
 
-The interface `NzConfig` provide a complete information about all components and parameters that are globally configurable. You can also check each individual component's API for more details.
+The interface `NzConfig` provide complete information about all components and parameters that are globally configurable. You can also check each individual component's API for more details.

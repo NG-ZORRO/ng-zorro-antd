@@ -1,8 +1,7 @@
-/* declarations: NzModalCustomComponent */
-
 import { Component, inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
-import { NzModalRef, NzModalService, NZ_MODAL_DATA } from 'ng-zorro-antd/modal';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzModalRef, NzModalService, NZ_MODAL_DATA, NzModalModule } from 'ng-zorro-antd/modal';
 
 interface IModalData {
   favoriteLibrary: string;
@@ -11,6 +10,7 @@ interface IModalData {
 
 @Component({
   selector: 'nz-demo-modal-service',
+  imports: [NzButtonModule, NzModalModule],
   template: `
     <button nz-button nzType="primary" (click)="createModal()">
       <span>String</span>
@@ -25,7 +25,7 @@ interface IModalData {
     <ng-template #tplContent let-params>
       <p>some contents...</p>
       <p>some contents...</p>
-      <p>{{ params.value }}</p>
+      <p>{{ params?.value }}</p>
     </ng-template>
     <ng-template #tplFooter let-ref="modalRef">
       <button nz-button (click)="ref.destroy()">Destroy</button>
@@ -183,6 +183,7 @@ export class NzDemoModalServiceComponent {
 
 @Component({
   selector: 'nz-modal-custom-component',
+  imports: [NzButtonModule],
   template: `
     <div>
       <h2>{{ title }}</h2>

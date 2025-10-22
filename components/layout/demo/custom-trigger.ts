@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 @Component({
   selector: 'nz-demo-layout-custom-trigger',
+  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
     <nz-layout>
       <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
@@ -21,19 +27,18 @@ import { Component } from '@angular/core';
             </ul>
           </li>
           <li nz-menu-item>
-            <span nz-icon nzType="file"></span>
+            <nz-icon nzType="file" />
             <span>File</span>
           </li>
         </ul>
       </nz-sider>
       <nz-layout>
         <nz-header>
-          <span
+          <nz-icon
             class="trigger"
-            nz-icon
             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
             (click)="isCollapsed = !isCollapsed"
-          ></span>
+          />
         </nz-header>
         <nz-content>
           <nz-breadcrumb>
@@ -42,7 +47,7 @@ import { Component } from '@angular/core';
           </nz-breadcrumb>
           <div class="inner-content">Bill is a cat.</div>
         </nz-content>
-        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,
@@ -93,4 +98,5 @@ import { Component } from '@angular/core';
 })
 export class NzDemoLayoutCustomTriggerComponent {
   isCollapsed = false;
+  protected readonly date = new Date();
 }

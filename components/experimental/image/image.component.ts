@@ -10,20 +10,18 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { ImagePreloadService, PreloadDisposeHandle } from 'ng-zorro-antd/core/services';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzImageDirective } from 'ng-zorro-antd/image';
 
 import { defaultImageSrcLoader } from './image-loader';
@@ -51,28 +49,27 @@ const sizeBreakpoints = [16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080,
       [attr.alt]="nzAlt || null"
     />
   `,
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [NzImageDirective],
-  standalone: true
+  imports: [NzImageDirective]
 })
-export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
+export class NzImageViewComponent implements OnInit, OnChanges {
+  private cdr = inject(ChangeDetectorRef);
+  private imagePreloadService = inject(ImagePreloadService);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzAutoSrcset: BooleanInput;
-  static ngAcceptInputType_nzPriority: BooleanInput;
-  static ngAcceptInputType_nzDisablePreview: BooleanInput;
 
   @Input() nzSrc: string = '';
   @Input() nzAlt: string = '';
   @Input() nzWidth: string | number = 'auto';
   @Input() nzHeight: string | number = 'auto';
   @Input() @WithConfig() nzSrcLoader: NzImageSrcLoader = defaultImageSrcLoader;
-  @Input() @InputBoolean() @WithConfig() nzAutoSrcset: boolean = false;
-  @Input() @InputBoolean() nzPriority: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzAutoSrcset: boolean = false;
+  @Input({ transform: booleanAttribute }) nzPriority: boolean = false;
   @Input() @WithConfig() nzFallback: string | null = null;
   @Input() @WithConfig() nzPlaceholder: string | null = null;
-  @Input() @InputBoolean() @WithConfig() nzDisablePreview: boolean = false;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzDisablePreview: boolean = false;
   @ViewChild('imageRef') imageRef!: ElementRef<HTMLImageElement>;
 
   src = '';
@@ -80,23 +77,18 @@ export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
   width: string | number = 'auto';
   height: string | number = 'auto';
   srcset = '';
-  internalImage!: HTMLImageElement;
 
-  private destroy$ = new Subject<void>();
   private reloadDisposeHandler: PreloadDisposeHandle = () => void 0;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    public nzConfigService: NzConfigService,
-    private imagePreloadService: ImagePreloadService
-  ) {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.composeImageAttrs();
-        this.cdr.markForCheck();
-      });
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.composeImageAttrs();
+      this.cdr.markForCheck();
+    });
+
+    this.destroyRef.onDestroy(() => {
+      this.reloadDisposeHandler();
+    });
   }
 
   ngOnInit(): void {
@@ -111,12 +103,6 @@ export class NzImageViewComponent implements OnInit, OnChanges, OnDestroy {
     if (nzSrc || nzLoader || nzOptimize) {
       this.composeImageAttrs();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.reloadDisposeHandler();
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private preload(): void {

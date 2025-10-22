@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-validate-template',
+  imports: [FormsModule, NzFormModule, NzInputModule, NzInputModule],
   template: `
     <form nz-form>
       <nz-form-item>

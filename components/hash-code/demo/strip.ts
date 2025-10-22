@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
+
 @Component({
   selector: 'nz-demo-hash-code-strip',
+  imports: [NzHashCodeModule],
   template: `
     <nz-hash-code [nzValue]="value" nzMode="strip"></nz-hash-code>
     <br />

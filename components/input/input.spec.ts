@@ -1,11 +1,16 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzStatus } from 'ng-zorro-antd/core/types';
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
@@ -15,17 +20,8 @@ import { NzInputModule } from './input.module';
 describe('input', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzFormModule],
-      declarations: [
-        NzTestInputWithInputComponent,
-        NzTestInputWithTextAreaComponent,
-        NzTestInputFormComponent,
-        NzTestInputWithStatusComponent,
-        NzTestInputWithDirComponent,
-        NzTestInputInFormComponent
-      ],
-      providers: []
-    }).compileComponents();
+      providers: [provideNzIconsTesting()]
+    });
   }));
   describe('single input', () => {
     describe('input with input element', () => {
@@ -67,6 +63,34 @@ describe('input', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-stepperless');
       });
+      it('should nzBorderless work', () => {
+        testComponent.borderless = true;
+        fixture.detectChanges();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-borderless');
+      });
+      describe('should nzVariant work', () => {
+        it('filled', () => {
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).not.toContain('ant-input-filled');
+          testComponent.variant = 'filled';
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).toContain('ant-input-filled');
+        });
+        it('borderless', () => {
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).not.toContain('ant-input-borderless');
+          testComponent.variant = 'borderless';
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).toContain('ant-input-borderless');
+        });
+        it('underlined', () => {
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).not.toContain('ant-input-borderless');
+          testComponent.variant = 'underlined';
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).toContain('ant-input-underlined');
+        });
+      });
     });
 
     describe('input with textarea element', () => {
@@ -100,11 +124,13 @@ describe('input', () => {
       });
       it('should set disabled work', fakeAsync(() => {
         flush();
-        expect(inputElement.nativeElement.attributes.getNamedItem('disabled')).toBeNull();
+        expect(inputElement.nativeElement.classList).not.toContain('ant-input-disabled');
+        expect(inputElement.nativeElement.getAttribute('disabled')).toBeNull();
         testComponent.disable();
         flush();
         fixture.detectChanges();
-        expect(inputElement.nativeElement.attributes.getNamedItem('disabled')).toBeDefined();
+        expect(inputElement.nativeElement.classList).toContain('ant-input-disabled');
+        expect(inputElement.nativeElement.getAttribute('disabled')).toBe('true');
       }));
     });
   });
@@ -192,9 +218,40 @@ describe('input', () => {
       expect(inputElement.nativeElement.nextSibling?.classList).not.toContain('ant-form-item-feedback-icon');
     });
   });
+
+  describe('input with type', () => {
+    let fixture: ComponentFixture<NzTestInputWithTypeComponent>;
+    let inputElement: DebugElement;
+    let component: NzTestInputWithTypeComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestInputWithTypeComponent);
+      fixture.detectChanges();
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should type correct', () => {
+      expect(inputElement.nativeElement.type).toEqual('text');
+
+      component.type = 'password';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.type).toEqual('password');
+
+      component.type = 'number';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.type).toEqual('number');
+
+      component.type = '';
+      fixture.detectChanges();
+      expect(inputElement.nativeElement.type).toEqual('text');
+    });
+  });
 });
 
 @Component({
+  imports: [BidiModule, NzInputModule],
   template: `
     <div [dir]="dir">
       <input nz-input />
@@ -209,20 +266,32 @@ export class NzTestInputWithDirComponent {
 }
 
 @Component({
-  template: ` <input nz-input [nzSize]="size" [disabled]="disabled" [nzStepperless]="stepperless" /> `
+  imports: [NzInputModule],
+  template: `<input
+    nz-input
+    [nzSize]="size"
+    [disabled]="disabled"
+    [nzBorderless]="borderless"
+    [nzVariant]="variant"
+    [nzStepperless]="stepperless"
+  />`
 })
 export class NzTestInputWithInputComponent {
-  size = 'default';
+  size: NzSizeLDSType = 'default';
   disabled = false;
   stepperless = true;
+  borderless = false;
+  variant: NzVariant = 'outlined';
 }
 
 @Component({
-  template: ` <textarea nz-input></textarea> `
+  imports: [NzInputModule],
+  template: `<textarea nz-input></textarea>`
 })
 export class NzTestInputWithTextAreaComponent {}
 
 @Component({
+  imports: [ReactiveFormsModule, NzInputModule],
   template: `
     <form>
       <input nz-input [formControl]="formControl" />
@@ -239,13 +308,15 @@ export class NzTestInputFormComponent {
 
 // status
 @Component({
-  template: ` <input nz-input [nzStatus]="status" /> `
+  imports: [NzInputModule],
+  template: `<input nz-input [nzStatus]="status" />`
 })
 export class NzTestInputWithStatusComponent {
   status: NzStatus = 'error';
 }
 
 @Component({
+  imports: [NzFormModule, NzInputModule],
   template: `
     <form nz-form>
       <nz-form-item>
@@ -259,4 +330,12 @@ export class NzTestInputWithStatusComponent {
 export class NzTestInputInFormComponent {
   status: NzFormControlStatusType = 'error';
   feedback = true;
+}
+
+@Component({
+  imports: [NzInputModule],
+  template: `<input nz-input [type]="type" />`
+})
+export class NzTestInputWithTypeComponent {
+  type: string | null = null;
 }

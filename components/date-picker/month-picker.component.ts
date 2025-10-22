@@ -3,18 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Host, Optional } from '@angular/core';
+import { Directive, inject } from '@angular/core';
 
 import { NzDatePickerComponent } from './date-picker.component';
 
 @Directive({
   selector: 'nz-month-picker',
-  exportAs: 'nzMonthPicker',
-  standalone: true
+  exportAs: 'nzMonthPicker'
 })
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class NzMonthPickerComponent {
-  constructor(@Optional() @Host() public datePicker: NzDatePickerComponent) {
+  datePicker = inject(NzDatePickerComponent, { host: true });
+
+  constructor() {
     this.datePicker.nzMode = 'month';
   }
 }

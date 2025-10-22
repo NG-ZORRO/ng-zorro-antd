@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Synchronize with [InptNumber](/components/input-number/) component.
-
-

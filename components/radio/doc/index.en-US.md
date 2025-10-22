@@ -2,23 +2,18 @@
 category: Components
 type: Data Entry
 title: Radio
-cover: https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg'
+description: Used to select a single state from multiple options.
 ---
-
-Radio.
 
 ## When To Use
 
 - Used to select a single state in multiple options.
-- The difference between Select is that Radio is visible to user and can facilitate the comparison of choice. So, when you want to use Radio, option should not be too much.
-
-```ts
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-```
+- The difference from Select is that Radio is visible to the user and can facilitate the comparison of choice, which means there shouldn't be too many of them.
 
 ## API
 
-### [nz-radio] | [nz-radio-button]:standalone
+### [nz-radio] | [nz-radio-button]
 
 | Property          | Description                                                     | Type                    | Default |
 | ----------------- | --------------------------------------------------------------- | ----------------------- | ------- |
@@ -28,7 +23,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 | `[nzValue]`       | use with `nz-radio-group`                                       | `any`                   | -       |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<boolean>` | -       |
 
-### nz-radio-group:standalone
+### nz-radio-group
 
 radio group，wrap a group of `nz-radio`。
 
@@ -43,11 +38,11 @@ radio group，wrap a group of `nz-radio`。
 
 ## Methods
 
-### [nz-radio]:standalone
+### [nz-radio]
 
 you can get `NzRadioComponent` via `ViewChild`
 
-| Name    | Description  |
-| ------- | ------------ |
-| blur()  | remove focus |
-| focus() | get focus    |
+| Name      | Description  |
+| --------- | ------------ |
+| `blur()`  | remove focus |
+| `focus()` | get focus    |

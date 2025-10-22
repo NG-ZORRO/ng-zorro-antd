@@ -1,7 +1,12 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component } from '@angular/core';
+
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
 
 @Component({
   selector: 'nz-demo-comment-nested',
+  imports: [NgTemplateOutlet, NzAvatarModule, NzCommentModule],
   template: `
     <ng-template #commentTemplateRef let-comment="comment">
       <nz-comment [nzAuthor]="comment.author">

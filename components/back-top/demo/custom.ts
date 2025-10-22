@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzBackTopModule } from 'ng-zorro-antd/back-top';
+
 @Component({
   selector: 'nz-demo-back-top-custom',
+  imports: [NzBackTopModule],
   template: `
-    <nz-back-top [nzTemplate]="tpl" [nzVisibilityHeight]="100" (nzOnClick)="notify()">
+    <nz-back-top [nzTemplate]="tpl" [nzVisibilityHeight]="100" (nzClick)="notify()">
       <ng-template #tpl>
         <div class="ant-back-top-inner">UP</div>
       </ng-template>

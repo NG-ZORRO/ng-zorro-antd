@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 6
 title:
   zh-CN: 自定义渲染
   en-US: Custom Render
@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-使用 nzLabelTemplate 自定义渲染每一个 Segmented Item。
+自定义渲染每一个 Segmented Item。
 
 ## en-US
 
-Custom each Segmented Item by nzLabelTemplate.
+Custom render each Segmented Item.

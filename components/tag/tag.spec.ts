@@ -1,8 +1,13 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
@@ -10,11 +15,10 @@ import { NzTagModule } from './tag.module';
 describe('tag', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BidiModule, NzTagModule, NoopAnimationsModule],
-      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent, NzTestTagRtlComponent]
+      providers: [provideNoopAnimations()]
     });
-    TestBed.compileComponents();
   }));
+
   describe('basic tag', () => {
     let fixture: ComponentFixture<NzTestTagBasicComponent>;
     let testComponent: NzTestTagBasicComponent;
@@ -26,10 +30,12 @@ describe('tag', () => {
       testComponent = fixture.debugElement.componentInstance;
       tag = fixture.debugElement.query(By.directive(NzTagComponent));
     });
+
     it('should className correct', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag');
     });
+
     it('should checkable work', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-checkable');
@@ -46,6 +52,7 @@ describe('tag', () => {
       expect(tag.nativeElement.classList).toContain('ant-tag-checkable');
       expect(tag.nativeElement.classList).toContain('ant-tag-checkable-checked');
     });
+
     it('should closeable work', fakeAsync(() => {
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeNull();
@@ -59,6 +66,7 @@ describe('tag', () => {
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector('nz-tag')).toBeFalsy();
     }));
+
     it('should color work', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
@@ -87,7 +95,9 @@ describe('tag', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-invalid');
     });
-    it('issues #1176', () => {
+
+    // https://github.com/NG-ZORRO/ng-zorro-antd/issues/1176
+    it('should nzColor accept empty string', () => {
       testComponent.color = 'green';
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-green');
@@ -98,6 +108,7 @@ describe('tag', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
     });
+
     it('should have bordered by default', () => {
       expect(tag.nativeElement.classList).not.toContain('ant-tag-borderless');
       testComponent.bordered = false;
@@ -105,6 +116,7 @@ describe('tag', () => {
       expect(tag.nativeElement.classList).toContain('ant-tag-borderless');
     });
   });
+
   describe('prevent tag', () => {
     let fixture: ComponentFixture<NzTestTagPreventComponent>;
     let tag: DebugElement;
@@ -114,6 +126,7 @@ describe('tag', () => {
       fixture.detectChanges();
       tag = fixture.debugElement.query(By.directive(NzTagComponent));
     });
+
     it('should close prevent default', fakeAsync(() => {
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
@@ -124,6 +137,7 @@ describe('tag', () => {
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
     }));
   });
+
   describe('RTL', () => {
     it('should className correct on dir change', () => {
       const fixture = TestBed.createComponent(NzTestTagRtlComponent);
@@ -139,7 +153,7 @@ describe('tag', () => {
 });
 
 @Component({
-  // eslint-disable-next-line
+  imports: [NzTagModule],
   selector: 'nz-test-basic-tag',
   template: `
     <nz-tag
@@ -155,7 +169,7 @@ describe('tag', () => {
   `
 })
 export class NzTestTagBasicComponent {
-  mode = 'default';
+  mode: 'default' | 'closeable' | 'checkable' = 'default';
   color: string | undefined;
   checked = false;
   bordered = true;
@@ -165,7 +179,8 @@ export class NzTestTagBasicComponent {
 }
 
 @Component({
-  template: ` <nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag> `
+  imports: [NzTagModule],
+  template: `<nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>`
 })
 export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {
@@ -174,6 +189,7 @@ export class NzTestTagPreventComponent {
 }
 
 @Component({
+  imports: [BidiModule, NzTestTagBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-basic-tag></nz-test-basic-tag>
@@ -181,6 +197,5 @@ export class NzTestTagPreventComponent {
   `
 })
 export class NzTestTagRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }

@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzRateModule } from 'ng-zorro-antd/rate';
 
 @Component({
   selector: 'nz-demo-rate-customize',
+  imports: [FormsModule, NzIconModule, NzRateModule],
   template: `
     <nz-rate [ngModel]="2" [nzCharacter]="characterNumber"></nz-rate>
     <br />
@@ -11,13 +16,23 @@ import { Component } from '@angular/core';
       {{ index + 1 }}
     </ng-template>
     <ng-template #characterIcon let-index>
-      <ng-container [ngSwitch]="index">
-        <span nz-icon nzType="frown" *ngSwitchCase="0"></span>
-        <span nz-icon nzType="frown" *ngSwitchCase="1"></span>
-        <span nz-icon nzType="meh" *ngSwitchCase="2"></span>
-        <span nz-icon nzType="smile" *ngSwitchCase="3"></span>
-        <span nz-icon nzType="smile" *ngSwitchCase="4"></span>
-      </ng-container>
+      @switch (index) {
+        @case (0) {
+          <nz-icon nzType="frown" />
+        }
+        @case (1) {
+          <nz-icon nzType="frown" />
+        }
+        @case (2) {
+          <nz-icon nzType="meh" />
+        }
+        @case (3) {
+          <nz-icon nzType="smile" />
+        }
+        @case (4) {
+          <nz-icon nzType="smile" />
+        }
+      }
     </ng-template>
   `,
   styles: [

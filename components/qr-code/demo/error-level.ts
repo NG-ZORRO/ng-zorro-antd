@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'nz-demo-qr-code-error-level',
+  imports: [NzQRCodeModule, NzSegmentedModule, FormsModule],
   template: `
     <nz-qrcode nzValue="https://github.com/NG-ZORRO/ng-zorro-antd/issues" [nzLevel]="errorLevel"></nz-qrcode>
-    <nz-segmented [nzOptions]="options" (nzValueChange)="handleIndexChange($event)"></nz-segmented>
+    <nz-segmented [nzOptions]="options" [(ngModel)]="errorLevel"></nz-segmented>
   `,
   styles: [
     `
@@ -23,8 +28,4 @@ import { Component } from '@angular/core';
 export class NzDemoQrCodeErrorLevelComponent {
   options: Array<'L' | 'M' | 'Q' | 'H'> = ['L', 'M', 'Q', 'H'];
   errorLevel: 'L' | 'M' | 'Q' | 'H' = 'L';
-
-  handleIndexChange(e: number): void {
-    this.errorLevel = this.options[e];
-  }
 }

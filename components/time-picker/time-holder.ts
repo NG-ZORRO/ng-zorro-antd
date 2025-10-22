@@ -167,8 +167,6 @@ export class TimeHolder {
     return this;
   }
 
-  constructor() {}
-
   private calculateViewHour(value: number): number {
     const selected12Hours = this.selected12Hours;
     if (selected12Hours === 'PM' && value > 12) {

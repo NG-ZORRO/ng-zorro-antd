@@ -27,6 +27,7 @@ export default {
       weekPlaceholder: 'Select week',
       rangePlaceholder: ['Start date', 'End date'],
       rangeYearPlaceholder: ['Start year', 'End year'],
+      rangeQuarterPlaceholder: ['Start quarter', 'End quarter'],
       rangeMonthPlaceholder: ['Start month', 'End month'],
       rangeWeekPlaceholder: ['Start week', 'End week'],
       locale: 'en_US',
@@ -163,6 +164,9 @@ export default {
   Empty: {
     description: 'No Data'
   },
+  Form: {
+    optional: '(optional)'
+  },
   Icon: {
     icon: 'icon'
   },
@@ -189,6 +193,17 @@ export default {
   },
   QRCode: {
     expired: 'QR code expired',
-    refresh: 'Refresh'
+    refresh: 'Refresh',
+    scanned: 'Scanned'
+  },
+  CheckList: {
+    checkList: 'Check List',
+    checkListFinish: 'You have successfully completed the list!',
+    checkListClose: 'Close',
+    checkListFooter: 'Check list is no longer required',
+    checkListCheck: 'Do you want to close the list?',
+    ok: 'OK',
+    cancel: 'Cancel',
+    checkListCheckOther: 'No longer required to show'
   }
 };

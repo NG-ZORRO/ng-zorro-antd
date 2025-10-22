@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgIf } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,26 +22,21 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span
-      nz-icon
-      nzType="close-circle"
-      nzTheme="fill"
-      *ngIf="!clearIcon; else clearIcon"
-      class="ant-select-close-icon"
-    ></span>
+    @if (clearIcon) {
+      <ng-template [ngTemplateOutlet]="clearIcon"></ng-template>
+    } @else {
+      <nz-icon nzType="close-circle" nzTheme="fill" class="ant-select-close-icon" />
+    }
   `,
   host: {
     class: 'ant-select-clear',
     '(click)': 'onClick($event)'
   },
-  imports: [NzIconModule, NgIf],
-  standalone: true
+  imports: [NgTemplateOutlet, NzIconModule]
 })
 export class NzSelectClearComponent {
   @Input() clearIcon: TemplateRef<NzSafeAny> | null = null;
   @Output() readonly clear = new EventEmitter<MouseEvent>();
-
-  constructor() {}
 
   onClick(e: MouseEvent): void {
     e.preventDefault();

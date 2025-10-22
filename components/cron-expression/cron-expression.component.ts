@@ -5,9 +5,11 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   forwardRef,
   inject,
   Input,
@@ -17,6 +19,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   AsyncValidator,
@@ -31,13 +34,10 @@ import {
   Validators
 } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { CronExpression, parseExpression } from 'cron-parser';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzCronExpressionInputComponent } from './cron-expression-input.component';
@@ -118,28 +118,28 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzCronExpressionComponent),
       multi: true
-    },
-    NzDestroyService
+    }
   ],
   imports: [
     NzCronExpressionInputComponent,
     NzCronExpressionLabelComponent,
     NzCronExpressionPreviewComponent,
     NgTemplateOutlet
-  ],
-  standalone: true
+  ]
 })
 export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValueAccessor, AsyncValidator {
-  static ngAcceptInputType_nzBorderless: BooleanInput;
-  static ngAcceptInputType_nzDisabled: BooleanInput;
+  private formBuilder = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
+  private i18n = inject(NzI18nService);
+  private destroyRef = inject(DestroyRef);
 
   @Input() nzSize: NzCronExpressionSize = 'default';
   @Input() nzType: NzCronExpressionType = 'linux';
-  @Input() @InputBoolean() nzCollapseDisable: boolean = false;
+  @Input({ transform: booleanAttribute }) nzCollapseDisable: boolean = false;
   @Input() nzExtra?: TemplateRef<void> | null = null;
   @Input() nzSemantic: TemplateRef<void> | null = null;
-  @Input() @InputBoolean() nzBorderless = false;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzBorderless = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
 
   locale!: NzCronExpressionI18nInterface;
   focus: boolean = false;
@@ -148,7 +148,6 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
   interval!: CronExpression<false>;
   nextTimeList: Date[] = [];
   private isNzDisableFirstChange: boolean = true;
-  private destroy$ = inject(NzDestroyService);
 
   validateForm: FormGroup<Record<TimeType, FormControl<CronValue>>>;
 
@@ -192,11 +191,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
     this.cdr.markForCheck();
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService
-  ) {
+  constructor() {
     this.validateForm = this.formBuilder.nonNullable.group(
       {
         second: ['0', Validators.required],
@@ -211,14 +206,14 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
   }
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('CronExpression');
       this.cdr.markForCheck();
     });
     this.cronFormType();
     this.previewDate(this.validateForm.value);
 
-    this.validateForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
+    this.validateForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       this.onChange(Object.values(value).join(' '));
       this.previewDate(value);
       this.cdr.markForCheck();
@@ -252,7 +247,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
         this.interval.next().toDate(),
         this.interval.next().toDate()
       ];
-    } catch (err: NzSafeAny) {
+    } catch {
       return;
     }
   }
@@ -290,11 +285,9 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
     if (control.value) {
       try {
         const cron: string[] = [];
-        this.labels.forEach(label => {
-          cron.push(control.value[label]);
-        });
+        this.labels.forEach(label => cron.push(control.value[label]));
         parseExpression(cron.join(' '));
-      } catch (err: unknown) {
+      } catch {
         return { error: true };
       }
     }

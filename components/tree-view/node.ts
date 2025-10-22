@@ -4,19 +4,17 @@
  */
 
 import { CdkTreeNode, CdkTreeNodeDef, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
-import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Directive,
-  ElementRef,
   EmbeddedViewRef,
+  forwardRef,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Renderer2,
   SimpleChange,
   SimpleChanges,
   ViewContainerRef
@@ -27,7 +25,6 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzTreeNodeIndentsComponent } from './indent';
 import { NzNodeBase } from './node-base';
 import { NzTreeNodeNoopToggleDirective } from './toggle';
-import { NzTreeView } from './tree';
 
 export interface NzTreeVirtualNodeData<T> {
   data: T;
@@ -40,107 +37,94 @@ export interface NzTreeVirtualNodeData<T> {
   exportAs: 'nzTreeNode',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: CdkTreeNode, useExisting: NzTreeNodeComponent },
-    { provide: NzNodeBase, useExisting: NzTreeNodeComponent }
+    {
+      provide: CdkTreeNode,
+      useExisting: forwardRef(() => NzTreeNodeComponent)
+    },
+    {
+      provide: NzNodeBase,
+      useExisting: forwardRef(() => NzTreeNodeComponent)
+    }
   ],
   template: `
-    <nz-tree-node-indents [indents]="indents" *ngIf="indents.length"></nz-tree-node-indents>
+    @if (indents.length) {
+      <nz-tree-node-indents [indents]="indents"></nz-tree-node-indents>
+    }
     <ng-content select="nz-tree-node-toggle, [nz-tree-node-toggle]"></ng-content>
-    <nz-tree-node-toggle class="nz-tree-leaf-line-icon" *ngIf="indents.length && isLeaf" nzTreeNodeNoopToggle>
-      <span class="ant-tree-switcher-leaf-line"></span>
-    </nz-tree-node-toggle>
+    @if (indents.length && isLeaf) {
+      <nz-tree-node-toggle class="nz-tree-leaf-line-icon" nzTreeNodeNoopToggle>
+        <span class="ant-tree-switcher-leaf-line"></span>
+      </nz-tree-node-toggle>
+    }
     <ng-content select="nz-tree-node-checkbox"></ng-content>
     <ng-content select="nz-tree-node-option"></ng-content>
     <ng-content></ng-content>
   `,
   host: {
+    class: 'ant-tree-treenode',
     '[class.ant-tree-treenode-switcher-open]': 'isExpanded',
-    '[class.ant-tree-treenode-switcher-close]': '!isExpanded'
+    '[class.ant-tree-treenode-switcher-close]': '!isExpanded',
+    '[class.ant-tree-treenode-selected]': 'selected',
+    '[class.ant-tree-treenode-disabled]': 'disabled'
   },
-  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective, NgIf],
-  standalone: true
+  imports: [NzTreeNodeIndentsComponent, NzTreeNodeNoopToggleDirective]
 })
-export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnDestroy, OnInit {
+export class NzTreeNodeComponent<T> extends NzNodeBase<T> implements OnInit {
   indents: boolean[] = [];
   disabled = false;
   selected = false;
   isLeaf = false;
 
-  constructor(
-    protected elementRef: ElementRef<HTMLElement>,
-    protected tree: NzTreeView<T>,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef
-  ) {
-    super(elementRef, tree);
-    this._elementRef.nativeElement.classList.add('ant-tree-treenode');
-  }
+  private cdr = inject(ChangeDetectorRef);
 
   override ngOnInit(): void {
-    this.isLeaf = !this.tree.treeControl.isExpandable(this.data);
+    super.ngOnInit();
+    this.isLeaf = !this._tree.treeControl?.isExpandable(this.data);
   }
 
   disable(): void {
     this.disabled = true;
-    this.updateDisabledClass();
   }
 
   enable(): void {
     this.disabled = false;
-    this.updateDisabledClass();
   }
 
   select(): void {
     this.selected = true;
-    this.updateSelectedClass();
   }
 
   deselect(): void {
     this.selected = false;
-    this.updateSelectedClass();
   }
 
   setIndents(indents: boolean[]): void {
     this.indents = indents;
     this.cdr.markForCheck();
   }
-
-  private updateSelectedClass(): void {
-    if (this.selected) {
-      this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-treenode-selected');
-    } else {
-      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-tree-treenode-selected');
-    }
-  }
-
-  private updateDisabledClass(): void {
-    if (this.disabled) {
-      this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-treenode-disabled');
-    } else {
-      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-tree-treenode-disabled');
-    }
-  }
 }
 
 @Directive({
   selector: '[nzTreeNodeDef]',
-  providers: [{ provide: CdkTreeNodeDef, useExisting: NzTreeNodeDefDirective }],
-  standalone: true
+  providers: [
+    {
+      provide: CdkTreeNodeDef,
+      useExisting: forwardRef(() => NzTreeNodeDefDirective)
+    }
+  ]
 })
 export class NzTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
-  @Input('nzTreeNodeDefWhen') override when!: (index: number, nodeData: T) => boolean;
+  @Input('nzTreeNodeDefWhen') override when: (index: number, nodeData: T) => boolean = null!;
 }
 
 @Directive({
-  selector: '[nzTreeVirtualScrollNodeOutlet]',
-  standalone: true
+  selector: '[nzTreeVirtualScrollNodeOutlet]'
 })
 export class NzTreeVirtualScrollNodeOutletDirective<T> implements OnChanges {
   private _viewRef: EmbeddedViewRef<NzSafeAny> | null = null;
+  private _viewContainerRef = inject(ViewContainerRef);
   @Input() data!: NzTreeVirtualNodeData<T>;
   @Input() compareBy?: ((value: T) => T | string | number) | null;
-
-  constructor(private _viewContainerRef: ViewContainerRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const recreateView = this.shouldRecreateView(changes);

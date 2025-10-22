@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzImageModule } from 'ng-zorro-antd/image';
+
 @Component({
   selector: 'nz-demo-image-basic',
+  imports: [NzImageModule],
   template: `
     <img
       nz-image

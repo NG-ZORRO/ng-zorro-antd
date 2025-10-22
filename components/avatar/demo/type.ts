@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+
 @Component({
   selector: 'nz-demo-avatar-type',
+  imports: [NzAvatarModule],
   template: `
     <nz-avatar nzIcon="user"></nz-avatar>
     <nz-avatar nzText="U"></nz-avatar>

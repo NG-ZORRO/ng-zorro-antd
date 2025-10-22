@@ -11,17 +11,18 @@ import {
   EventEmitter,
   Input,
   NgZone,
-  OnDestroy,
   OnInit,
-  Optional,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  booleanAttribute,
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core/util';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { fromEventOutsideAngular, scrollIntoView } from 'ng-zorro-antd/core/util';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 
@@ -35,10 +36,8 @@ export class NzOptionSelectionChange {
 @Component({
   selector: 'nz-auto-option',
   exportAs: 'nzAutoOption',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   template: `
     <div class="ant-select-item-option-content">
       <ng-content></ng-content>
@@ -56,47 +55,35 @@ export class NzOptionSelectionChange {
     '(click)': 'selectViaInteraction()'
   }
 })
-export class NzAutocompleteOptionComponent implements OnInit, OnDestroy {
-  static ngAcceptInputType_nzDisabled: BooleanInput;
+export class NzAutocompleteOptionComponent implements OnInit {
+  private ngZone = inject(NgZone);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private element = inject(ElementRef<HTMLElement>);
+  private destroyRef = inject(DestroyRef);
 
   @Input() nzValue: NzSafeAny;
   @Input() nzLabel?: string;
-  @Input() @InputBoolean() nzDisabled = false;
+  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Output() readonly selectionChange = new EventEmitter<NzOptionSelectionChange>();
   @Output() readonly mouseEntered = new EventEmitter<NzAutocompleteOptionComponent>();
 
   active = false;
   selected = false;
-
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private ngZone: NgZone,
-    private changeDetectorRef: ChangeDetectorRef,
-    private element: ElementRef<HTMLElement>,
-    @Optional()
-    public nzAutocompleteOptgroupComponent: NzAutocompleteOptgroupComponent
-  ) {}
+  nzAutocompleteOptgroupComponent = inject(NzAutocompleteOptgroupComponent, { optional: true });
 
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.element.nativeElement, 'mouseenter')
-        .pipe(
-          filter(() => this.mouseEntered.observers.length > 0),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(() => {
-          this.ngZone.run(() => this.mouseEntered.emit(this));
-        });
+    fromEventOutsideAngular(this.element.nativeElement, 'mouseenter')
+      .pipe(
+        filter(() => this.mouseEntered.observers.length > 0),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        this.ngZone.run(() => this.mouseEntered.emit(this));
+      });
 
-      fromEvent(this.element.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(event => event.preventDefault());
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
+    fromEventOutsideAngular(this.element.nativeElement, 'mousedown')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(event => event.preventDefault());
   }
 
   select(emit: boolean = true): void {

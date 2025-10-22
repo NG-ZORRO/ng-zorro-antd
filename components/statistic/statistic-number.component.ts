@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { getLocaleNumberSymbol, NgIf, NgTemplateOutlet, NumberSymbol } from '@angular/common';
+import { getLocaleNumberSymbol, NgTemplateOutlet, NumberSymbol } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   Input,
   LOCALE_ID,
   OnChanges,
@@ -20,24 +20,26 @@ import { NzStatisticValueType } from './typings';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   selector: 'nz-statistic-number',
   exportAs: 'nzStatisticNumber',
   template: `
     <span class="ant-statistic-content-value">
-      <ng-container
-        *ngIf="nzValueTemplate"
-        [ngTemplateOutlet]="nzValueTemplate"
-        [ngTemplateOutletContext]="{ $implicit: nzValue }"
-      ></ng-container>
-      <ng-container *ngIf="!nzValueTemplate">
-        <span *ngIf="displayInt" class="ant-statistic-content-value-int">{{ displayInt }}</span>
-        <span *ngIf="displayDecimal" class="ant-statistic-content-value-decimal">{{ displayDecimal }}</span>
-      </ng-container>
+      @if (nzValueTemplate) {
+        <ng-container
+          [ngTemplateOutlet]="nzValueTemplate"
+          [ngTemplateOutletContext]="{ $implicit: nzValue }"
+        ></ng-container>
+      } @else {
+        @if (displayInt) {
+          <span class="ant-statistic-content-value-int">{{ displayInt }}</span>
+        }
+        @if (displayDecimal) {
+          <span class="ant-statistic-content-value-decimal">{{ displayDecimal }}</span>
+        }
+      }
     </span>
   `,
-  imports: [NgIf, NgTemplateOutlet],
-  standalone: true
+  imports: [NgTemplateOutlet]
 })
 export class NzStatisticNumberComponent implements OnChanges {
   @Input() nzValue?: NzStatisticValueType;
@@ -46,7 +48,7 @@ export class NzStatisticNumberComponent implements OnChanges {
   displayInt = '';
   displayDecimal = '';
 
-  constructor(@Inject(LOCALE_ID) private locale_id: string) {}
+  private locale_id = inject(LOCALE_ID);
 
   ngOnChanges(): void {
     this.formatNumber();

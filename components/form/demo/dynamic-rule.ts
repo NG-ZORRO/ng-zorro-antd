@@ -1,8 +1,16 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-form-dynamic-rule',
+  imports: [ReactiveFormsModule, NzButtonModule, NzCheckboxModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
@@ -21,9 +29,7 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
       </nz-form-item>
       <nz-form-item>
         <nz-form-control [nzSpan]="8" [nzOffset]="4">
-          <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)">
-            Nickname is required
-          </label>
+          <label nz-checkbox formControlName="required">Nickname is required</label>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -34,16 +40,25 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
     </form>
   `
 })
-export class NzDemoFormDynamicRuleComponent {
-  validateForm: FormGroup<{
-    name: FormControl<string>;
-    nickname: FormControl<string>;
-    required: FormControl<boolean>;
-  }> = this.fb.group({
-    name: ['', [Validators.required]],
-    nickname: [''],
-    required: [false]
+export class NzDemoFormDynamicRuleComponent implements OnInit, OnDestroy {
+  private fb = inject(NonNullableFormBuilder);
+  private destroy$ = new Subject<void>();
+  validateForm = this.fb.group({
+    name: this.fb.control('', [Validators.required]),
+    nickname: this.fb.control(''),
+    required: this.fb.control(false)
   });
+
+  ngOnInit(): void {
+    this.validateForm.controls.required.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
+      this.requiredChange(value);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   submitForm(): void {
     if (this.validateForm.valid) {
@@ -68,6 +83,4 @@ export class NzDemoFormDynamicRuleComponent {
     }
     this.validateForm.controls.nickname.updateValueAndValidity();
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 }

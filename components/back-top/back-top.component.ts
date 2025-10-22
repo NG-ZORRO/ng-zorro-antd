@@ -5,53 +5,56 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
-import { DOCUMENT, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
-  Inject,
+  inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
-  OnDestroy,
   OnInit,
-  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject, Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService, NzScrollService } from 'ng-zorro-antd/core/services';
-import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputNumber } from 'ng-zorro-antd/core/util';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
+import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 
 const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: true });
 
+/**
+ * @deprecated Will be removed in v21. It is recommended to use `<nz-float-button-top>` instead.
+ */
 @Component({
   selector: 'nz-back-top',
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
-  standalone: true,
-  imports: [NgIf, NgTemplateOutlet, NzIconModule],
+  imports: [NgTemplateOutlet, NzIconModule],
   template: `
     @if (visible) {
       <div #backTop class="ant-back-top" [class.ant-back-top-rtl]="dir === 'rtl'" @fadeMotion>
         <ng-template #defaultContent>
           <div class="ant-back-top-content">
             <div class="ant-back-top-icon">
-              <span nz-icon nzType="vertical-align-top"></span>
+              <nz-icon nzType="vertical-align-top" />
             </div>
           </div>
         </ng-template>
@@ -60,65 +63,60 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
-  providers: [NzDestroyService]
+  encapsulation: ViewEncapsulation.None
 })
-export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
+export class NzBackTopComponent implements OnInit, OnChanges {
+  public nzConfigService = inject(NzConfigService);
+  private scrollSrv = inject(NzScrollService);
+  private platform = inject(Platform);
+  private zone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
-  static ngAcceptInputType_nzVisibilityHeight: NumberInput;
-  static ngAcceptInputType_nzDuration: NumberInput;
 
   private scrollListenerDestroy$ = new Subject<boolean>();
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
-  dir: Direction = 'ltr';
+  dir: Direction = this.directionality.value || 'ltr';
 
   @Input() nzTemplate?: TemplateRef<void>;
-  @Input() @WithConfig() @InputNumber() nzVisibilityHeight: number = 400;
+  @Input({ transform: numberAttribute }) @WithConfig() nzVisibilityHeight: number = 400;
   @Input() nzTarget?: string | HTMLElement;
-  @Input() @InputNumber() nzDuration: number = 450;
-  @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
+  @Input({ transform: numberAttribute }) nzDuration: number = 450;
+  @Output() readonly nzClick = new EventEmitter<boolean>();
 
   @ViewChild('backTop', { static: false })
   set backTop(backTop: ElementRef<HTMLElement> | undefined) {
     if (backTop) {
       this.backTopClickSubscription.unsubscribe();
 
-      this.backTopClickSubscription = this.zone.runOutsideAngular(() =>
-        fromEvent(backTop.nativeElement, 'click')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
-            if (this.nzClick.observers.length) {
-              this.zone.run(() => this.nzClick.emit(true));
-            }
-          })
-      );
+      this.backTopClickSubscription = fromEventOutsideAngular(backTop.nativeElement, 'click')
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => {
+          this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
+          if (this.nzClick.observers.length) {
+            this.zone.run(() => this.nzClick.emit(true));
+          }
+        });
     }
   }
 
   private backTopClickSubscription = Subscription.EMPTY;
+  private doc: Document = inject(DOCUMENT);
 
-  constructor(
-    @Inject(DOCUMENT) private doc: NzSafeAny,
-    public nzConfigService: NzConfigService,
-    private scrollSrv: NzScrollService,
-    private platform: Platform,
-    private cd: ChangeDetectorRef,
-    private zone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private destroy$: NzDestroyService,
-    @Optional() private directionality: Directionality
-  ) {
-    this.dir = this.directionality.value;
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.scrollListenerDestroy$.next(true);
+      this.scrollListenerDestroy$.complete();
+    });
   }
 
   ngOnInit(): void {
     this.registerScrollEvent();
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -131,11 +129,11 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private handleScroll(): void {
-    if (this.visible === this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight) {
-      return;
+    const newVisible = this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight;
+    if (this.visible !== newVisible) {
+      this.visible = newVisible;
+      this.cdr.detectChanges();
     }
-    this.visible = !this.visible;
-    this.cd.detectChanges();
   }
 
   private registerScrollEvent(): void {
@@ -144,22 +142,15 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.scrollListenerDestroy$.next(true);
     this.handleScroll();
-    this.zone.runOutsideAngular(() => {
-      fromEvent(this.getTarget(), 'scroll', <AddEventListenerOptions>passiveEventListenerOptions)
-        .pipe(debounceTime(50), takeUntil(this.scrollListenerDestroy$))
-        .subscribe(() => this.handleScroll());
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.scrollListenerDestroy$.next(true);
-    this.scrollListenerDestroy$.complete();
+    fromEventOutsideAngular(this.getTarget(), 'scroll', passiveEventListenerOptions as AddEventListenerOptions)
+      .pipe(debounceTime(50), takeUntil(this.scrollListenerDestroy$))
+      .subscribe(() => this.handleScroll());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzTarget } = changes;
     if (nzTarget) {
-      this.target = typeof this.nzTarget === 'string' ? this.doc.querySelector(this.nzTarget) : this.nzTarget;
+      this.target = typeof this.nzTarget === 'string' ? this.doc.querySelector(this.nzTarget) : this.nzTarget!;
       this.registerScrollEvent();
     }
   }

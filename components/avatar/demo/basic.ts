@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+
 @Component({
   selector: 'nz-demo-avatar-basic',
+  imports: [NzAvatarModule],
   template: `
     <div>
       <nz-avatar [nzSize]="64" nzIcon="user"></nz-avatar>
@@ -10,10 +13,10 @@ import { Component } from '@angular/core';
       <nz-avatar nzSize="small" nzIcon="user"></nz-avatar>
     </div>
     <div>
-      <nz-avatar [nzShape]="'square'" [nzSize]="64" [nzIcon]="'user'"></nz-avatar>
-      <nz-avatar [nzShape]="'square'" [nzSize]="'large'" [nzIcon]="'user'"></nz-avatar>
-      <nz-avatar [nzShape]="'square'" [nzIcon]="'user'"></nz-avatar>
-      <nz-avatar [nzShape]="'square'" [nzSize]="'small'" [nzIcon]="'user'"></nz-avatar>
+      <nz-avatar nzShape="square" [nzSize]="64" nzIcon="user"></nz-avatar>
+      <nz-avatar nzShape="square" nzSize="large" nzIcon="user"></nz-avatar>
+      <nz-avatar nzShape="square" nzIcon="user"></nz-avatar>
+      <nz-avatar nzShape="square" nzSize="small" nzIcon="user"></nz-avatar>
     </div>
   `,
   styles: [

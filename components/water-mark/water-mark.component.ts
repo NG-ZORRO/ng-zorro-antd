@@ -3,22 +3,25 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DOCUMENT } from '@angular/common';
+import { isPlatformServer } from '@angular/common';
 import {
-  AfterViewInit,
+  afterNextRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  DOCUMENT,
   ElementRef,
-  Inject,
+  inject,
   Input,
+  numberAttribute,
   OnChanges,
-  OnDestroy,
   OnInit,
+  PLATFORM_ID,
   SimpleChanges
 } from '@angular/core';
 
-import { MarkStyleType, FontType } from './typings';
+import { FontType, MarkStyleType } from './typings';
 import { getPixelRatio, getStyleStr, reRendering, rotateWatermark } from './util';
 
 /**
@@ -30,56 +33,65 @@ const FontGap = 3;
 
 @Component({
   selector: 'nz-water-mark',
-  standalone: true,
-  exportAs: 'NzWaterMark',
+  exportAs: 'nzWaterMark',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `,
+  template: `<ng-content></ng-content>`,
   host: {
     class: 'ant-water-mark'
   }
 })
-export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
-  @Input() nzWidth: number = 120;
-  @Input() nzHeight: number = 64;
-  @Input() nzRotate: number = -22;
-  @Input() nzZIndex: number = 9;
+export class NzWaterMarkComponent implements OnInit, OnChanges {
+  @Input({ transform: numberAttribute }) nzWidth: number = 120;
+  @Input({ transform: numberAttribute }) nzHeight: number = 64;
+  @Input({ transform: numberAttribute }) nzRotate: number = -22;
+  @Input({ transform: numberAttribute }) nzZIndex: number = 9;
   @Input() nzImage: string = '';
   @Input() nzContent: string | string[] = '';
   @Input() nzFont: FontType = {};
   @Input() nzGap: [number, number] = [100, 100];
   @Input() nzOffset: [number, number] = [this.nzGap[0] / 2, this.nzGap[1] / 2];
 
+  private isServer = isPlatformServer(inject(PLATFORM_ID));
+
+  private document: Document = inject(DOCUMENT);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+
   waterMarkElement: HTMLDivElement = this.document.createElement('div');
   stopObservation: boolean = false;
 
-  observer = new MutationObserver(mutations => {
-    if (this.stopObservation) {
+  private observer: MutationObserver | null = null;
+
+  constructor() {
+    if (this.isServer) {
       return;
     }
-    mutations.forEach(mutation => {
-      if (reRendering(mutation, this.waterMarkElement)) {
-        this.destroyWatermark();
-        this.renderWatermark();
-      }
-    });
-  });
 
-  constructor(
-    private el: ElementRef,
-    @Inject(DOCUMENT) private document: Document,
-    private cdr: ChangeDetectorRef
-  ) {}
+    const observer = (this.observer = new MutationObserver(mutations => {
+      if (this.stopObservation) {
+        return;
+      }
+      mutations.forEach(mutation => {
+        if (reRendering(mutation, this.waterMarkElement)) {
+          this.destroyWatermark();
+          this.renderWatermark();
+        }
+      });
+    }));
+
+    afterNextRender(() => {
+      this.renderWatermark();
+    });
+
+    inject(DestroyRef).onDestroy(() => observer.disconnect());
+  }
 
   ngOnInit(): void {
-    this.observer.observe(this.el.nativeElement, {
+    this.observer?.observe(this.el, {
       subtree: true,
       childList: true,
       attributeFilter: ['style', 'class']
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.renderWatermark();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -163,7 +175,7 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
         backgroundSize: `${(this.nzGap[0] + markWidth) * BaseSize}px`
       })
     );
-    this.el.nativeElement.append(this.waterMarkElement);
+    this.el.append(this.waterMarkElement);
     this.cdr.markForCheck();
 
     // Delayed execution
@@ -223,6 +235,10 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
   }
 
   renderWatermark(): void {
+    if (this.isServer) {
+      return;
+    }
+
     if (!this.nzContent && !this.nzImage) {
       return;
     }
@@ -259,7 +275,10 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
 
       if (this.nzImage) {
         const img = new Image();
-        img.onload = () => {
+
+        const onLoad = (): void => {
+          cleanup();
+
           ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
 
           /** Draw interleaved pictures after rotation */
@@ -268,7 +287,10 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
           ctx.drawImage(img, alternateDrawX, alternateDrawY, drawWidth, drawHeight);
           this.appendWatermark(canvas.toDataURL(), markWidth);
         };
-        img.onerror = () =>
+
+        const onError = (): void => {
+          cleanup();
+
           this.drawText(
             canvas,
             ctx,
@@ -282,6 +304,16 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
             alternateDrawY,
             markWidth
           );
+        };
+
+        const cleanup = (): void => {
+          img.removeEventListener('load', onLoad);
+          img.removeEventListener('error', onError);
+        };
+
+        img.addEventListener('load', onLoad);
+        img.addEventListener('error', onError);
+
         img.crossOrigin = 'anonymous';
         img.referrerPolicy = 'no-referrer';
         img.src = this.nzImage;
@@ -301,9 +333,5 @@ export class NzWaterMarkComponent implements AfterViewInit, OnInit, OnChanges, O
         );
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.observer.disconnect();
   }
 }

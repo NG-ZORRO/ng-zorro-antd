@@ -1,0 +1,3 @@
+user-agent: *
+disallow: /version/
+sitemap: https://ng.ant.design/sitemap.xml

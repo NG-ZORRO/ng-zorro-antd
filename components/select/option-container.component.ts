@@ -5,7 +5,7 @@
 
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { isPlatformBrowser, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -36,12 +36,13 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
   exportAs: 'nzOptionContainer',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  preserveWhitespaces: false,
   template: `
     <div>
-      <div *ngIf="listOfContainerItem.length === 0" class="ant-select-item-empty">
-        <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent!"></nz-embed-empty>
-      </div>
+      @if (listOfContainerItem.length === 0) {
+        <div class="ant-select-item-empty">
+          <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent!"></nz-embed-empty>
+        </div>
+      }
       <cdk-virtual-scroll-viewport
         [class.full-width]="!matchWidth"
         [itemSize]="itemSize"
@@ -58,26 +59,31 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
           [cdkVirtualForTemplateCacheSize]="0"
           let-item
         >
-          <ng-container [ngSwitch]="item.type">
-            <nz-option-item-group *ngSwitchCase="'group'" [nzLabel]="item.groupLabel"></nz-option-item-group>
-            <nz-option-item
-              *ngSwitchCase="'item'"
-              [icon]="menuItemSelectedIcon"
-              [customContent]="item.nzCustomContent"
-              [template]="item.template"
-              [grouped]="!!item.groupLabel"
-              [disabled]="item.nzDisabled"
-              [showState]="mode === 'tags' || mode === 'multiple'"
-              [title]="item.nzTitle"
-              [label]="item.nzLabel"
-              [compareWith]="compareWith"
-              [activatedValue]="activatedValue"
-              [listOfSelectedValue]="listOfSelectedValue"
-              [value]="item.nzValue"
-              (itemHover)="onItemHover($event)"
-              (itemClick)="onItemClick($event)"
-            ></nz-option-item>
-          </ng-container>
+          @switch (item.type) {
+            @case ('group') {
+              <nz-option-item-group [nzLabel]="item.groupLabel ?? null"></nz-option-item-group>
+            }
+            @case ('item') {
+              <nz-option-item
+                [icon]="menuItemSelectedIcon"
+                [customContent]="item.nzCustomContent"
+                [template]="item.template ?? null"
+                [grouped]="!!item.groupLabel"
+                [disabled]="
+                  item.nzDisabled || (isMaxMultipleCountReached && !listOfSelectedValue.includes(item['nzValue']))
+                "
+                [showState]="mode === 'tags' || mode === 'multiple'"
+                [title]="item.nzTitle"
+                [label]="item.nzLabel"
+                [compareWith]="compareWith"
+                [activatedValue]="activatedValue"
+                [listOfSelectedValue]="listOfSelectedValue"
+                [value]="item.nzValue"
+                (itemHover)="onItemHover($event)"
+                (itemClick)="onItemClick($event)"
+              ></nz-option-item>
+            }
+          }
         </ng-template>
       </cdk-virtual-scroll-viewport>
       <ng-template [ngTemplateOutlet]="dropdownRender"></ng-template>
@@ -86,18 +92,17 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
   host: { class: 'ant-select-dropdown' },
   imports: [
     NzEmptyModule,
-    NgIf,
-    NgSwitch,
     NzOptionItemGroupComponent,
-    NgSwitchCase,
     NzOptionItemComponent,
     NgTemplateOutlet,
     OverlayModule,
     NzOverlayModule
-  ],
-  standalone: true
+  ]
 })
 export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
+  private readonly ngZone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
+
   @Input() notFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() menuItemSelectedIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() dropdownRender: TemplateRef<NzSafeAny> | null = null;
@@ -108,13 +113,12 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() matchWidth = true;
   @Input() itemSize = 32;
   @Input() maxItemLength = 8;
+  @Input() isMaxMultipleCountReached = false;
   @Input() listOfContainerItem: NzSelectItemInterface[] = [];
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly scrollToBottom = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   private scrolledIndex = 0;
-  private ngZone = inject(NgZone);
-  private platformId = inject(PLATFORM_ID);
 
   onItemClick(value: NzSafeAny): void {
     this.itemClick.emit(value);
@@ -131,7 +135,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
 
   onScrolledIndexChange(index: number): void {
     this.scrolledIndex = index;
-    if (index === this.listOfContainerItem.length - this.maxItemLength) {
+    if (index === this.listOfContainerItem.length - this.maxItemLength - 1) {
       this.scrollToBottom.emit();
     }
   }

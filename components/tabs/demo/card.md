@@ -12,6 +12,3 @@ title:
 ## en-US
 
 Another type Tabs, which doesn't support vertical mode.
-
-
-

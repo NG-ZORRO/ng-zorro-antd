@@ -1,0 +1,11 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: '<%= prefix %>-root',
+  standalone: false,
+  templateUrl: './app.html',
+  styleUrl: './app.<%= style %>'
+})
+export class App {
+  isCollapsed = false;
+}

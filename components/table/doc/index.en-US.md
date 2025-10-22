@@ -3,19 +3,14 @@ category: Components
 cols: 1
 type: Data Display
 title: Table
-cover: https://gw.alipayobjects.com/zos/alicdn/f-SbcX2Lx/Table.svg
+cover: 'https://gw.alipayobjects.com/zos/alicdn/f-SbcX2Lx/Table.svg'
+description: A table displays rows of data.
 ---
-
-A table displays rows of data.
 
 ## When To Use
 
 - To display a collection of structured data.
 - To sort, search, paginate and filter data.
-
-```ts
-import { NzTableModule } from 'ng-zorro-antd/table';
-```
 
 ## How To Use
 
@@ -31,7 +26,7 @@ The component in `nz-table` such as `th`, `td`, `thead` etc. are enhanced. Devel
 
 ### Data Processing
 
-The data passed to `[nzData]` is exported with [Template Context](https://angular.io/guide/template-syntax#statement-context) after processing (including paging, sorting and filtering). `*ngFor` can be used to render current page data in table.
+The data passed to `[nzData]` is exported with [Template Context](https://angular.dev/guide/templates/template-statements#statement-context) after processing (including paging, sorting and filtering). `*ngFor` can be used to render current page data in table.
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
@@ -60,7 +55,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 
 ## API
 
-### nz-table:standalone
+### nz-table
 
 | Property                    | Description                                                                                                                                                                              | Type                                                                   | Default            | Global Config |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------ | ------------- |
@@ -71,8 +66,8 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzPageIndex]`             | pageIndex , double binding                                                                                                                                                               | `number`                                                               | -                  |
 | `[nzPageSize]`              | pageSize, double binding                                                                                                                                                                 | `number`                                                               | -                  |
 | `[nzShowPagination]`        | Whether to show pagination component at bottom of the table                                                                                                                              | `boolean`                                                              | `true`             |
-| `[nzPaginationPosition]`    | Specify the position of pagination                                                                                                                                                       | `'top' \| 'bottom' \| 'both'`                                          | `bottom`           |
-| `[nzPaginationType]`        | Specify the size of pagination                                                                                                                                                           | `'default' \| 'small'`                                                 | `default`          |
+| `[nzPaginationPosition]`    | Specify the position of pagination                                                                                                                                                       | `'top' \| 'bottom' \| 'both'`                                          | `'bottom'`         |
+| `[nzPaginationType]`        | Specify the size of pagination                                                                                                                                                           | `'default' \| 'small'`                                                 | `'default'`        |
 | `[nzBordered]`              | Whether to show all table borders                                                                                                                                                        | `boolean`                                                              | `false`            | ✅            |
 | `[nzOuterBordered]`         | Whether to show table outer borders                                                                                                                                                      | `boolean`                                                              | `false`            | -             |
 | `[nzWidthConfig]`           | Set col width can not used with `[nzWidth]` of `th`                                                                                                                                      | `string[]`                                                             | `[]`               |
@@ -96,6 +91,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
 | `[nzVirtualMaxBufferPx]`    | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api)                                    | `number`                                                               | `200`              |
 | `[nzVirtualMinBufferPx]`    | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api)                                           | `number`                                                               | `100`              |
 | `[nzVirtualForTrackBy]`     | The TrackByFunction to be used for tracking changes.                                                                                                                                     | `TrackByFunction<T>`                                                   | -                  |
+| `[noDataVirtualHeight]`     | Height of inner scroll when having no data, if nothing is passed the default value is used.                                                                                              | `string`                                                               | `'182px'`          |
 | `(nzPageIndexChange)`       | Callback when `pageIndex` changes                                                                                                                                                        | `EventEmitter<number>`                                                 | -                  |
 | `(nzPageSizeChange)`        | Callback when `pageSize` changes                                                                                                                                                         | `EventEmitter<number>`                                                 | -                  |
 | `(nzCurrentPageDataChange)` | Callback when current pageData changes                                                                                                                                                   | `EventEmitter<T[]>`                                                    | -                  |
@@ -125,12 +121,12 @@ Selection property
 Sort property
 
 | Property              | Description                                                                                                                                    | Type                                          | Default                       |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------------------------- |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------------------------- | --- |
 | `[nzShowSort]`        | Whether to display sorting                                                                                                                     | `boolean`                                     | -                             |
 | `[nzSortFn]`          | Sort function used to sort the data on client side (ref to Array.sort compareFunction). Should be set to `true` when using server side sorting | `NzTableSortFn<T> \| boolean`                 | -                             |
-| `[nzSortOrder]`       | Sort direction                                                                                                                                 | `'ascend' \| 'descend' \| null`               | -                             |
-| `[nzSortDirections]`  | Supported sort order, could be `'ascend'`, `'descend'`, `null`                                                                                 | `Array<'ascend' \| 'descend' \| null>`        | `['ascend', 'descend', null]` |
-| `(nzSortOrderChange)` | Callback when sort direction changes                                                                                                           | `EventEmitter<'ascend' \| 'descend' \| null>` | -                             |
+| `[nzSortOrder]`       | Sort direction                                                                                                                                 | `'descend' \| 'ascend' \| null`               | -                             |
+| `[nzSortDirections]`  | Supported sort order, could be `'descend'`, `'ascend'`, `null`                                                                                 | `Array<'descend' \| 'ascend' \| null>`        | `['ascend', 'descend', null]` | ✅  |
+| `(nzSortOrderChange)` | Callback when sort direction changes                                                                                                           | `EventEmitter<'descend' \| 'ascend' \| null>` | -                             |
 
 Filter property
 
@@ -201,13 +197,26 @@ Other property
 | ---------------- | ---------------------------------- | -------- | ------- |
 | `[nzIndentSize]` | Indent size in pixels of tree data | `number` | -       |
 
+### thead
+
+| Property              | Description                                                  | Type                                                                  | Default |
+| --------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------- | ------- |
+| `(nzSortOrderChange)` | sort change callback，should used with `nzColumnKey` of `th` | `EventEmitter<{ key: string, value: 'descend' \| 'ascend' \| null }>` | -       |
+
 ### tr
 
 | Property     | Description                                              | Type      | Default |
 | ------------ | -------------------------------------------------------- | --------- | ------- |
 | `[nzExpand]` | Whether expand current row，used with `nzExpand` of `td` | `boolean` | -       |
 
-### nz-filter-trigger:standalone
+### tfoot
+
+| Property      | Description                         | Type                           | Default |
+| ------------- | ----------------------------------- | ------------------------------ | ------- |
+| `[nzSummary]` | Summary content                     | `boolean`                      | -       |
+| `[nzFixed]`   | Fixed summary, used with `nzScroll` | `boolean \| 'top' \| 'bottom'` | `false` |
+
+### nz-filter-trigger
 
 Customized filter panel
 
@@ -219,13 +228,13 @@ Customized filter panel
 | `[nzHasBackdrop]`   | Whether or not attach a backdrop.                                                                 | `boolean`                 | `false` |
 | `(nzVisibleChange)` | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>`   | -       |
 
-### [nz-virtual-scroll]:standalone
+### [nz-virtual-scroll]
 
 virtual scroll directive work with `ng-template`, type: `TemplateRef<{ $implicit: T, index: number }>`.
 
 ## Note
 
-In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.io/api/core/ChangeDetectionStrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
+In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.dev/guide/components/advanced-configuration#changedetectionstrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
 
 ```typescript
 // add data
@@ -242,4 +251,4 @@ this.dataSet = [
 this.dataSet = this.dataSet.filter(d => d.key !== i);
 ```
 
-Recommend using [immer](https://immerjs.github.io/immer/docs/introduction) for a better development experience
+Recommend using [immer](https://immerjs.github.io/immer/docs/introduction) for a better development experience.

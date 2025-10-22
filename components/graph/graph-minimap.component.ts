@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, NgZone, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, NgZone } from '@angular/core';
 
-import { ZoomBehavior } from 'd3-zoom';
+import type { ZoomBehavior } from 'd3-zoom';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import type { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { Minimap } from './core/minimap';
 import { NzZoomTransform } from './interface';
@@ -38,18 +38,18 @@ import { NzZoomTransform } from './interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.nz-graph-minimap]': 'true'
-  },
-  standalone: true
+  }
 })
-export class NzGraphMinimapComponent implements OnDestroy {
+export class NzGraphMinimapComponent {
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private ngZone = inject(NgZone);
+  private destroyRef = inject(DestroyRef);
   minimap?: Minimap;
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    private ngZone: NgZone
-  ) {}
 
-  ngOnDestroy(): void {
-    this.minimap?.destroy();
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.minimap?.destroy();
+    });
   }
 
   init(containerEle: ElementRef, zoomBehavior: ZoomBehavior<NzSafeAny, NzSafeAny>): void {

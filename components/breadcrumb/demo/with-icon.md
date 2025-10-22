@@ -12,4 +12,3 @@ title:
 ## en-US
 
 The icon should be placed in front of the text.
-

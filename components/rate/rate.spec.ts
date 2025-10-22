@@ -1,7 +1,12 @@
-import { BidiModule, Dir } from '@angular/cdk/bidi';
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -11,19 +16,6 @@ import { NzRateComponent } from './rate.component';
 import { NzRateModule } from './rate.module';
 
 describe('rate', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzRateModule, FormsModule, ReactiveFormsModule],
-      declarations: [
-        NzTestRateBasicComponent,
-        NzTestRateFormComponent,
-        NzTestRateRtlComponent,
-        NzTestRateCharacterComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
-
   describe('basic rate', () => {
     let fixture: ComponentFixture<NzTestRateBasicComponent>;
     let testComponent: NzTestRateBasicComponent;
@@ -61,9 +53,22 @@ describe('rate', () => {
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     }));
     it('should allow half work', fakeAsync(() => {
-      testComponent.allowHalf = true;
+      testComponent.allowHalf = false;
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
+      testComponent.value = 3.5;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-full');
+      expect(rate.nativeElement.firstElementChild.children[4].classList).toContain('ant-rate-star-zero');
+      flush();
+
+      testComponent.allowHalf = true;
+      testComponent.value = 0;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
       rate.nativeElement.firstElementChild.children[3].firstElementChild.children[1].click();
       fixture.detectChanges();
       flush();
@@ -159,11 +164,12 @@ describe('rate', () => {
       expect(testComponent.onHoverChange).toHaveBeenCalledTimes(1);
       dispatchFakeEvent(rate.nativeElement.firstElementChild, 'mouseleave');
       fixture.detectChanges();
+      expect(testComponent.onHoverChange).toHaveBeenCalledTimes(2);
       expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-zero');
       testComponent.disabled = true;
       fixture.detectChanges();
       dispatchFakeEvent(rate.nativeElement.firstElementChild.children[2].firstElementChild, 'mouseover');
-      expect(testComponent.onHoverChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.onHoverChange).toHaveBeenCalledTimes(2);
     });
     it('should keydown work', () => {
       fixture.detectChanges();
@@ -301,9 +307,10 @@ describe('rate', () => {
     });
   });
 });
+
 @Component({
-  // eslint-disable-next-line
   selector: 'nz-test-rate',
+  imports: [FormsModule, NzRateModule],
   template: `
     <nz-rate
       [(ngModel)]="value"
@@ -336,6 +343,7 @@ export class NzTestRateBasicComponent {
 }
 
 @Component({
+  imports: [ReactiveFormsModule, NzRateModule],
   template: `
     <form>
       <nz-rate [formControl]="formControl" [nzDisabled]="disabled"></nz-rate>
@@ -355,7 +363,9 @@ export class NzTestRateFormComponent {
     this.formControl.enable();
   }
 }
+
 @Component({
+  imports: [BidiModule, NzTestRateBasicComponent],
   template: `
     <div [dir]="direction">
       <nz-test-rate></nz-test-rate>
@@ -364,11 +374,12 @@ export class NzTestRateFormComponent {
 })
 export class NzTestRateRtlComponent {
   @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
+  direction: Direction = 'rtl';
 }
 
 @Component({
   selector: 'nz-test-rate-character',
+  imports: [FormsModule, NzRateModule],
   template: `
     <nz-rate [(ngModel)]="value" [nzCharacter]="characterTpl"></nz-rate>
     <ng-template #characterTpl let-index>

@@ -6,22 +6,30 @@
 import { TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { NzSafeAny, type NgClassInterface, type NgStyleInterface } from 'ng-zorro-antd/core/types';
+
+import { NzMNComponent } from './base';
+
 export type NzMessageType = 'success' | 'info' | 'warning' | 'error' | 'loading';
+
+export type NzMessageContentType = string | TemplateRef<void | { $implicit: NzMNComponent; data: NzSafeAny }>;
 
 export interface NzMessageDataOptions {
   nzDuration?: number;
   nzAnimate?: boolean;
   nzPauseOnHover?: boolean;
+  nzData?: NzSafeAny;
+  nzStyle?: NgStyleInterface | string;
+  nzClass?: NgClassInterface | string;
 }
 
 export interface NzMessageData {
   type?: NzMessageType | string;
-  content?: string | TemplateRef<void>;
+  content?: NzMessageContentType;
   messageId?: string;
   createdAt?: Date;
   options?: NzMessageDataOptions;
   state?: 'enter' | 'leave';
-
   onClose?: Subject<boolean>;
 }
 

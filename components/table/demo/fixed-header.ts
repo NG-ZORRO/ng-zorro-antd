@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NzTableModule } from 'ng-zorro-antd/table';
+
 interface ItemData {
   name: string;
   age: number;
@@ -8,6 +10,7 @@ interface ItemData {
 
 @Component({
   selector: 'nz-demo-table-fixed-header',
+  imports: [NzTableModule],
   template: `
     <nz-table #headerTable [nzData]="listOfData" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">
       <thead>
@@ -18,11 +21,13 @@ interface ItemData {
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of headerTable.data">
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
-        </tr>
+        @for (data of headerTable.data; track data) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+          </tr>
+        }
       </tbody>
     </nz-table>
   `
@@ -31,7 +36,7 @@ export class NzDemoTableFixedHeaderComponent implements OnInit {
   listOfData: ItemData[] = [];
 
   ngOnInit(): void {
-    const data = [];
+    const data: ItemData[] = [];
     for (let i = 0; i < 100; i++) {
       data.push({
         name: `Edward King ${i}`,

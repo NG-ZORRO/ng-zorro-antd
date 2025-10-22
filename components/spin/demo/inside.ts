@@ -1,19 +1,21 @@
 import { Component } from '@angular/core';
 
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+
 @Component({
   selector: 'nz-demo-spin-inside',
+  imports: [NzSpinModule],
   template: `
-    <div class="example">
+    <div class="container">
       <nz-spin nzSimple></nz-spin>
     </div>
   `,
   styles: [
     `
-      .example {
+      .container {
         text-align: center;
         background: rgba(0, 0, 0, 0.05);
         border-radius: 4px;
-        margin-bottom: 20px;
         padding: 30px 50px;
         margin: 20px 0;
       }

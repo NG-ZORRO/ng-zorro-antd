@@ -123,5 +123,8 @@ export default {
   },
   Empty: {
     description: 'Ni podatkov'
+  },
+  Form: {
+    optional: '(neobvezen)'
   }
 };

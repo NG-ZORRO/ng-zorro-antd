@@ -1,8 +1,8 @@
 ---
 order: 3
 title:
-    zh-CN: 使用 Iconfont.cn
-    en-US: Use iconfont.cn
+  zh-CN: 使用 Iconfont.cn
+  en-US: Use iconfont.cn
 ---
 
 ## zh-CN

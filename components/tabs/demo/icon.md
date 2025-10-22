@@ -12,6 +12,3 @@ title:
 ## en-US
 
 The Tab with Icon.
-
-
-

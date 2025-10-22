@@ -4,32 +4,16 @@ type: General
 title: Pipes
 cols: 1
 experimental: true
+description: Common Pipe Collections.
 ---
-
-<blockquote style="border-color: #faad14;">
-<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
-<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
-</blockquote>
-
-Common Pipe Collections in Projects
 
 ## When To Use
 
-- After introducing Pipe, use it like angular's default Pipe
-
-```ts
-import { NzPipesModule } from 'ng-zorro-antd/pipes';
-```
+After importing Pipe, use it like Angular's built-in Pipe
 
 ## API
 
-### **nzSafeNull**:standalone
-
-| Property  | Description       | Type     | Default |
-| --------- | ----------------- | -------- | ------- |
-| `replace` | Replace character | `string` | ''      |
-
-### **nzBytes**:standalone
+### nzBytes
 
 | Property  | Description                     | Type     | Default |
 | --------- | ------------------------------- | -------- | ------- |
@@ -37,26 +21,26 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 | `from`    | Unit of current value           | `string` | 'B'     |
 | `to`      | Units converted to target value | `string` | ''      |
 
-### **nzToCssUnit**:standalone
+### nzToCssUnit
 
 | Property      | Description  | Type     | Default |
 | ------------- | ------------ | -------- | ------- |
 | `defaultUnit` | Default Unit | `string` | 'px'    |
 
-### **nzEllipsis**:standalone
+### nzEllipsis
 
 | Property | Description       | Type     | Default |
 | -------- | ----------------- | -------- | ------- |
 | `length` | Truncate length   | `number` | ''      |
 | `suffix` | Replace character | `string` | ''      |
 
-### **nzAggregate**:standalone
+### nzAggregate
 
 | Property | Description | Type                               | Default |
 | -------- | ----------- | ---------------------------------- | ------- |
 | `method` | Aggregation | `'sum' \| 'max' \| 'min' \| 'avg'` | ''      |
 
-### **nzSanitizer**:standalone
+### nzSanitizer
 
 | Property | Description    | Type     | Default |
 | -------- | -------------- | -------- | ------- |

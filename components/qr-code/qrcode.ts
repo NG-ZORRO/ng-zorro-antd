@@ -5,7 +5,7 @@
 
 import qrcodegen from './qrcodegen';
 
-export const ERROR_LEVEL_MAP: { [index in 'L' | 'M' | 'Q' | 'H']: qrcodegen.QrCode.Ecc } = {
+export const ERROR_LEVEL_MAP: Record<'L' | 'M' | 'Q' | 'H', qrcodegen.QrCode.Ecc> = {
   L: qrcodegen.QrCode.Ecc.LOW,
   M: qrcodegen.QrCode.Ecc.MEDIUM,
   Q: qrcodegen.QrCode.Ecc.QUARTILE,
@@ -61,9 +61,11 @@ export function drawCanvas(
     iconImg.crossOrigin = 'anonymous';
     iconImg.width = iconSize * (canvas.width / size);
     iconImg.height = iconSize * (canvas.width / size);
-    iconImg.onload = () => {
+
+    const onLoad = (): void => {
+      cleanup();
       drawCanvasBackground(ctx, canvas.width, canvas.height, scale, backgroundColor);
-      drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
+      drawCanvasColor(ctx, value!, scale, formattedPadding, backgroundColor, color);
       const iconCoordinate = canvas.width / 2 - (iconSize * (canvas.width / size)) / 2;
 
       ctx.fillRect(iconCoordinate, iconCoordinate, iconSize * (canvas.width / size), iconSize * (canvas.width / size));
@@ -75,10 +77,20 @@ export function drawCanvas(
         iconSize * (canvas.width / size)
       );
     };
-    iconImg.onerror = () => {
+
+    const onError = (): void => {
+      cleanup();
       drawCanvasBackground(ctx, canvas.width, canvas.height, scale, backgroundColor);
       drawCanvasColor(ctx, value, scale, formattedPadding, backgroundColor, color);
     };
+
+    const cleanup = (): void => {
+      iconImg.removeEventListener('load', onLoad);
+      iconImg.removeEventListener('error', onError);
+    };
+
+    iconImg.addEventListener('load', onLoad);
+    iconImg.addEventListener('error', onError);
   }
 }
 
@@ -105,12 +117,8 @@ export function drawCanvasBackground(
   scale: number,
   backgroundColor: string
 ): void {
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      ctx.fillStyle = backgroundColor;
-      ctx.fillRect(x * scale, y * scale, scale, scale);
-    }
-  }
+  ctx.fillStyle = backgroundColor;
+  ctx.fillRect(0, 0, width * scale, height * scale);
 }
 
 export function formatPadding(padding: number | number[]): number[] {

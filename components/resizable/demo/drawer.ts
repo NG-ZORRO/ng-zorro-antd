@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
-import { NzResizeEvent } from 'ng-zorro-antd/resizable';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-drawer',
+  imports: [NzButtonModule, NzDrawerModule, NzResizableModule],
   template: `
     <button nz-button nzType="primary" (click)="open()">Open</button>
     <nz-drawer
@@ -19,19 +22,14 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
       (nzOnClose)="close()"
     >
       <ng-container *nzDrawerContent>
-        <div
-          *ngIf="visible"
-          class="drawer-body"
-          nz-resizable
-          nzBounds="window"
-          [nzMinWidth]="256"
-          (nzResize)="onResize($event)"
-        >
-          <nz-resize-handles [nzDirections]="['right']"></nz-resize-handles>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </div>
+        @if (visible) {
+          <div class="drawer-body" nz-resizable nzBounds="window" [nzMinWidth]="256" (nzResize)="onResize($event)">
+            <nz-resize-handles [nzDirections]="['right']" />
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </div>
+        }
       </ng-container>
     </nz-drawer>
   `,

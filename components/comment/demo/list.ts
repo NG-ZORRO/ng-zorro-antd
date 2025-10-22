@@ -2,8 +2,13 @@ import { Component } from '@angular/core';
 
 import { addDays, formatDistance } from 'date-fns';
 
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzListModule } from 'ng-zorro-antd/list';
+
 @Component({
   selector: 'nz-demo-comment-list',
+  imports: [NzAvatarModule, NzCommentModule, NzListModule],
   template: `
     <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
       <ng-template #item let-item>

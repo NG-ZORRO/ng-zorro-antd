@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+
 @Component({
   selector: 'nz-demo-alert-banner',
+  imports: [NzAlertModule],
   template: `
     <nz-alert nzBanner nzMessage="Warning text"></nz-alert>
     <nz-alert

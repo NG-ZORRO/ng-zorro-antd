@@ -3,29 +3,32 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { isPlatformBrowser, NgIf } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  ViewChild,
-  SimpleChanges,
-  Output,
-  EventEmitter,
-  OnInit,
   ChangeDetectorRef,
-  OnDestroy,
-  Inject,
-  PLATFORM_ID
+  Component,
+  DestroyRef,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  numberAttribute,
+  OnChanges,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzQRCodeI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
+import { NzI18nService, NzQRCodeI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
@@ -36,61 +39,73 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
   selector: 'nz-qrcode',
   exportAs: 'nzQRCode',
   template: `
-    <div class="ant-qrcode-mask" *ngIf="nzStatus !== 'active'">
-      <nz-spin *ngIf="nzStatus === 'loading'"></nz-spin>
-      <div *ngIf="nzStatus === 'expired'">
-        <p class="ant-qrcode-expired">{{ locale.expired }}</p>
-        <button nz-button nzType="link" (click)="reloadQRCode()">
-          <span nz-icon nzType="reload" nzTheme="outline"></span>
-          <span>{{ locale.refresh }}</span>
-        </button>
+    @if (!!nzStatusRender) {
+      <div class="ant-qrcode-mask">
+        <ng-container *nzStringTemplateOutlet="nzStatusRender">{{ nzStatusRender }}</ng-container>
       </div>
-    </div>
-    <ng-container *ngIf="isBrowser">
+    } @else if (nzStatus !== 'active') {
+      <div class="ant-qrcode-mask">
+        @switch (nzStatus) {
+          @case ('loading') {
+            <nz-spin />
+          }
+          @case ('expired') {
+            <div>
+              <p class="ant-qrcode-expired">{{ locale.expired }}</p>
+              <button nz-button nzType="link" (click)="reloadQRCode()">
+                <nz-icon nzType="reload" nzTheme="outline" />
+                <span>{{ locale.refresh }}</span>
+              </button>
+            </div>
+          }
+          @case ('scanned') {
+            <div>
+              <p class="ant-qrcode-expired">{{ locale.scanned }}</p>
+            </div>
+          }
+        }
+      </div>
+    }
+
+    @if (isBrowser) {
       <canvas #canvas></canvas>
-    </ng-container>
+    }
   `,
   host: {
     class: 'ant-qrcode',
     '[class.ant-qrcode-border]': `nzBordered`
   },
-  imports: [NzSpinModule, NgIf, NzButtonModule, NzIconModule],
-  standalone: true
+  imports: [NzSpinModule, NzButtonModule, NzIconModule, NzStringTemplateOutletDirective]
 })
-export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges {
+  private i18n = inject(NzI18nService);
+  private el = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
+  // https://github.com/angular/universal-starter/issues/538#issuecomment-365518693
+  // canvas is not supported by the SSR DOM
+  protected isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+
   @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
   @Input() nzValue: string = '';
   @Input() nzPadding: number | number[] = 0;
   @Input() nzColor: string = '#000000';
   @Input() nzBgColor: string = '#FFFFFF';
-  @Input() nzSize: number = 160;
+  @Input({ transform: numberAttribute }) nzSize: number = 160;
   @Input() nzIcon: string = '';
-  @Input() nzIconSize: number = 40;
-  @Input() nzBordered: boolean = true;
-  @Input() nzStatus: 'active' | 'expired' | 'loading' = 'active';
+  @Input({ transform: numberAttribute }) nzIconSize: number = 40;
+  @Input({ transform: booleanAttribute }) nzBordered: boolean = true;
+  @Input() nzStatus: 'active' | 'expired' | 'loading' | 'scanned' = 'active';
   @Input() nzLevel: keyof typeof ERROR_LEVEL_MAP = 'M';
+  @Input() nzStatusRender?: TemplateRef<void> | string | null = null;
 
   @Output() readonly nzRefresh = new EventEmitter<string>();
 
   locale!: NzQRCodeI18nInterface;
-  // https://github.com/angular/universal-starter/issues/538#issuecomment-365518693
-  // canvas is not supported by the SSR DOM
-  isBrowser = true;
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private i18n: NzI18nService,
-    private el: ElementRef,
-    private cdr: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-    this.cdr.markForCheck();
-  }
 
   ngOnInit(): void {
     this.el.nativeElement.style.backgroundColor = this.nzBgColor;
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('QRCode');
       this.cdr.markForCheck();
     });
@@ -130,10 +145,5 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.nzIcon
       );
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+
 @Component({
   selector: 'nz-demo-alert-action',
+  imports: [NzAlertModule, NzButtonModule, NzSpaceModule],
   template: `
     <nz-alert nzShowIcon nzType="success" nzMessage="Success Text" [nzAction]="actionTemplate1"></nz-alert>
     <ng-template #actionTemplate1>
