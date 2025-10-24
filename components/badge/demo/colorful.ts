@@ -1,22 +1,23 @@
 import { Component } from '@angular/core';
 
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 @Component({
   selector: 'nz-demo-badge-colorful',
-  imports: [NzBadgeModule],
+  imports: [NzBadgeModule, NzDividerModule],
   template: `
-    <h4>Presets:</h4>
+    <nz-divider nzOrientation="left" nzText="Presets" />
     @for (color of presets; track color) {
       <div>
-        <nz-badge [nzColor]="color" [nzText]="color"></nz-badge>
+        <nz-badge [nzColor]="color" [nzText]="color" />
       </div>
     }
-    <br />
-    <h4>Custom:</h4>
+
+    <nz-divider nzOrientation="left" nzText="Custom" />
     @for (color of customColors; track color) {
       <div>
-        <nz-badge [nzColor]="color" [nzText]="color"></nz-badge>
+        <nz-badge [nzColor]="color" [nzText]="color" />
       </div>
     }
   `
