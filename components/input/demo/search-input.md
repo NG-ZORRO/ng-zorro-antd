@@ -1,5 +1,6 @@
 ---
 order: 5
+version: 20.4.0
 title:
   zh-CN: 搜索框
   en-US: Search box

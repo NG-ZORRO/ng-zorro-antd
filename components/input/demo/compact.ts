@@ -23,13 +23,10 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
     <br />
     <br />
     <nz-space-compact>
-      <nz-input-wrapper class="ant-input-search">
+      <nz-input-search>
         <span nzInputAddonBefore>https://</span>
-        <input nz-input type="search" placeholder="input search text" />
-        <button nzInputAddonAfter nz-button class="ant-input-search-button">
-          <nz-icon nzType="search" />
-        </button>
-      </nz-input-wrapper>
+        <input nz-input placeholder="input search text" />
+      </nz-input-search>
     </nz-space-compact>
     <br />
     <br />
