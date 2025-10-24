@@ -18,7 +18,7 @@ import {
 
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-badge-sup',
@@ -67,7 +67,7 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzOffset?: [number, number];
   @Input() nzTitle?: string | null | undefined;
-  @Input() nzStyle: Record<string, string> | null = null;
+  @Input() nzStyle: NgStyleInterface | null = null;
   @Input() nzDot = false;
   @Input({ transform: numberAttribute }) nzOverflowCount: number = 99;
   @Input() disableAnimation = false;
@@ -75,7 +75,8 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() noAnimation = false;
   @Input() nzSize: NzSizeDSType = 'default';
   @Input({ transform: booleanAttribute }) isPresetColor = false;
-  @Input() nzColor?: string = undefined;
+  @Input() nzColor?: string;
+
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;

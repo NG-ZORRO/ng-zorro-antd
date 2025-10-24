@@ -24,7 +24,7 @@ import { badgePresetColors } from './preset-colors';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzOutletModule],
   template: `
-    <ng-content></ng-content>
+    <ng-content />
     <div
       class="ant-ribbon"
       [class]="presetColor && 'ant-ribbon-color-' + presetColor"
