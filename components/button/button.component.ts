@@ -7,22 +7,22 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   ContentChild,
   DestroyRef,
   ElementRef,
+  inject,
   Input,
   OnChanges,
   OnInit,
   Renderer2,
+  signal,
   SimpleChanges,
-  ViewEncapsulation,
-  booleanAttribute,
-  computed,
-  inject,
-  signal
+  ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
@@ -87,6 +87,9 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
   @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
   @Input({ transform: booleanAttribute }) nzGhost: boolean = false;
+  /**
+   * @deprecated Will be removed in v22.0.0. Please use `nz-input-search` instead.
+   */
   @Input({ transform: booleanAttribute }) nzSearch: boolean = false;
   @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
   @Input({ transform: booleanAttribute }) nzDanger: boolean = false;
