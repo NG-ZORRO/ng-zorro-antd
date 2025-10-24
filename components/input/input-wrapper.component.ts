@@ -141,7 +141,6 @@ import { NZ_INPUT_WRAPPER } from './tokens';
   host: {
     '[class]': 'class()',
     '[class.ant-input-disabled]': 'disabled()',
-    '[class.ant-input-password]': 'inputPasswordDir',
     '[class.ant-input-affix-wrapper-textarea-with-clear-btn]': 'nzAllowClear() && isTextarea()'
   }
 })
