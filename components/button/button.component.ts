@@ -92,6 +92,9 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
   @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
   @Input({ transform: booleanAttribute }) nzGhost: boolean = false;
+  /**
+   * @deprecated Will be removed in v22.0.0. Please use `nz-input-search` instead.
+   */
   @Input({ transform: booleanAttribute }) nzSearch: boolean = false;
   @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
   @Input({ transform: booleanAttribute }) nzDanger: boolean = false;
