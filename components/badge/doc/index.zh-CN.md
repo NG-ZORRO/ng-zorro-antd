@@ -13,16 +13,6 @@ description: 图标右上角的圆形徽标数字。
 
 ## API
 
-```html
-<nz-badge [nzCount]="5">
-  <a class="head-example"></a>
-</nz-badge>
-```
-
-```html
-<nz-badge [nzCount]="5" nzStandalone></nz-badge>
-```
-
 ### nz-badge
 
 | 参数                | 说明                                                                         | 类型                                                             | 默认值      | 全局配置 |
@@ -43,7 +33,7 @@ description: 图标右上角的圆形徽标数字。
 ### nz-ribbon
 
 | 参数            | 说明             | 类型                          | 默认值  |
-| --------------- | ---------------- | ----------------------------- | ------- | --- |
+| --------------- | ---------------- | ----------------------------- | ------- |
 | `[nzColor]`     | 自定义缎带的颜色 | `string`                      | -       |
 | `[nzPlacement]` | 缎带的位置       | `'start' \| 'end'`            | `'end'` |
-| `[nzText]`      | 缎带中填入的内容 | `string \| TemplateRef<void>` | -       |     |
+| `[nzText]`      | 缎带中填入的内容 | `string \| TemplateRef<void>` | -       |

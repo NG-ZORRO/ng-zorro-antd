@@ -6,21 +6,21 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
   selector: 'nz-demo-badge-status',
   imports: [NzBadgeModule],
   template: `
-    <nz-badge nzStatus="success"></nz-badge>
-    <nz-badge nzStatus="error"></nz-badge>
-    <nz-badge nzStatus="default"></nz-badge>
-    <nz-badge nzStatus="processing"></nz-badge>
-    <nz-badge nzStatus="warning"></nz-badge>
+    <nz-badge nzStatus="success" />
+    <nz-badge nzStatus="error" />
+    <nz-badge nzStatus="default" />
+    <nz-badge nzStatus="processing" />
+    <nz-badge nzStatus="warning" />
     <br />
-    <nz-badge nzStatus="success" nzText="Success"></nz-badge>
+    <nz-badge nzStatus="success" nzText="Success" />
     <br />
-    <nz-badge nzStatus="error" nzText="Error"></nz-badge>
+    <nz-badge nzStatus="error" nzText="Error" />
     <br />
-    <nz-badge nzStatus="default" nzText="Default"></nz-badge>
+    <nz-badge nzStatus="default" nzText="Default" />
     <br />
-    <nz-badge nzStatus="processing" nzText="Processing"></nz-badge>
+    <nz-badge nzStatus="processing" nzText="Processing" />
     <br />
-    <nz-badge nzStatus="warning" nzText="Warning"></nz-badge>
+    <nz-badge nzStatus="warning" nzText="Warning" />
     <br />
   `
 })

@@ -10,9 +10,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     <nz-badge nzDot>
       <nz-icon nzType="notification" />
     </nz-badge>
-    <nz-badge nzDot [nzShowDot]="false">
-      <nz-icon nzType="notification" />
-    </nz-badge>
     <nz-badge nzDot>
       <a>Link something</a>
     </nz-badge>
@@ -24,9 +21,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       }
 
       nz-icon {
-        width: 16px;
-        height: 16px;
-        line-height: 16px;
         font-size: 16px;
       }
     `
