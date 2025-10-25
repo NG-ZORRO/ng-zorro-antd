@@ -40,8 +40,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
       <span
         class="ant-badge-status-dot"
         [class]="(nzStatus || presetColor) && 'ant-badge-status-' + (nzStatus || presetColor)"
-        [style.background]="!presetColor && nzColor"
-        [style]="nzStyle"
+        [style]="mergedStyle"
       ></span>
       <span class="ant-badge-status-text">
         <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
@@ -83,12 +82,12 @@ export class NzBadgeComponent implements OnChanges {
   showSup = false;
   presetColor: string | null = null;
 
-  @Input({ transform: booleanAttribute }) nzShowZero: boolean = false;
+  @Input({ transform: booleanAttribute }) nzShowZero = false;
   @Input({ transform: booleanAttribute }) nzShowDot = true;
   @Input({ transform: booleanAttribute }) nzStandalone = false;
   @Input({ transform: booleanAttribute }) nzDot = false;
   @Input() @WithConfig() nzOverflowCount: number = 99;
-  @Input() @WithConfig() nzColor?: string = undefined;
+  @Input() @WithConfig() nzColor?: string;
   @Input() nzStyle: NgStyleInterface | null = null;
   @Input() nzText?: string | TemplateRef<void> | null = null;
   @Input() nzTitle?: string | null | undefined;
@@ -96,6 +95,10 @@ export class NzBadgeComponent implements OnChanges {
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() nzOffset?: [number, number];
   @Input() nzSize: NzSizeDSType = 'default';
+
+  protected get mergedStyle(): NgStyleInterface {
+    return { backgroundColor: !this.presetColor && this.nzColor, ...(this.nzStyle ?? {}) };
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzColor, nzShowDot, nzDot, nzCount, nzShowZero } = changes;

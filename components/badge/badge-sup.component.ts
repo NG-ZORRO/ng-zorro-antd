@@ -56,7 +56,6 @@ import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/ty
     '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
     '[style]': `nzStyle`,
     '[style.right.px]': `nzOffset && nzOffset[0] ? -nzOffset[0] : null`,
-    '[style.background]': `isPresetColor ? nzStyle?.background : nzColor`,
     '[style.margin-top.px]': `nzOffset && nzOffset[1] ? nzOffset[1] : null`,
     '[class.ant-badge-count]': `!nzDot`,
     '[class.ant-badge-count-sm]': `nzSize === 'small'`,
@@ -66,10 +65,10 @@ import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/ty
 })
 export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzOffset?: [number, number];
-  @Input() nzTitle?: string | null | undefined;
+  @Input() nzTitle?: string | null;
   @Input() nzStyle: NgStyleInterface | null = null;
   @Input() nzDot = false;
-  @Input({ transform: numberAttribute }) nzOverflowCount: number = 99;
+  @Input({ transform: numberAttribute }) nzOverflowCount = 99;
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() noAnimation = false;
@@ -86,7 +85,7 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
     this.maxNumberArray = this.nzOverflowCount
       .toString()
       .split('')
-      .map((value: string, index: number) => `${value}-${index}`);
+      .map((value, index) => `${value}-${index}`);
   }
 
   ngOnInit(): void {

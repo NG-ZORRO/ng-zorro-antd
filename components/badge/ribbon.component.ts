@@ -41,7 +41,7 @@ import { badgePresetColors } from './preset-colors';
   host: { class: 'ant-ribbon-wrapper' }
 })
 export class NzRibbonComponent implements OnChanges {
-  @Input() nzColor: string | undefined;
+  @Input() nzColor?: string;
   @Input() nzPlacement: 'start' | 'end' = 'end';
   @Input() nzText: string | TemplateRef<void> | null = null;
   presetColor: string | null = null;
