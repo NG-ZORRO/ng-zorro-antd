@@ -8,19 +8,10 @@ description: Small numerical value or status descriptor for UI elements.
 
 ## When To Use
 
-Badge normally appears in proximity to notifications or user avatars with eye-catching appeal, typically displaying unread messages count.
+Badge normally appears in proximity to notifications or user avatars with eye-catching appeal, typically displaying
+unread messages count.
 
 ## API
-
-```html
-<nz-badge [nzCount]="5">
-  <a class="head-example"></a>
-</nz-badge>
-```
-
-```html
-<nz-badge [nzCount]="5" nzStandalone></nz-badge>
-```
 
 ### nz-badge
 
@@ -42,7 +33,7 @@ Badge normally appears in proximity to notifications or user avatars with eye-ca
 ### nz-ribbon
 
 | Property        | Description                 | Type                          | Default |
-| --------------- | --------------------------- | ----------------------------- | ------- | --- |
+| --------------- | --------------------------- | ----------------------------- | ------- |
 | `[nzColor]`     | Customize Ribbon color      | `string`                      | -       |
 | `[nzPlacement]` | The placement of the Ribbon | `'start' \| 'end'`            | `'end'` |
-| `[nzText]`      | Content inside the Ribbon   | `string \| TemplateRef<void>` | -       |     |
+| `[nzText]`      | Content inside the Ribbon   | `string \| TemplateRef<void>` | -       |
