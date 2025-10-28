@@ -7,6 +7,7 @@ import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -14,12 +15,12 @@ import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzFloatButtonComponent } from './float-button.component';
 import { NzFloatButtonModule } from './float-button.module';
-import { NzFloatButtonType } from './typings';
+import { NzFloatButtonBadge, NzFloatButtonType } from './typings';
 
 describe('nz-float-button', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
     });
   }));
 
@@ -27,12 +28,14 @@ describe('nz-float-button', () => {
     let fixture: ComponentFixture<NzTestFloatButtonBasicComponent>;
     let testComponent: NzTestFloatButtonBasicComponent;
     let resultEl: DebugElement;
+    let floatButtonComponent: NzFloatButtonComponent;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFloatButtonBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzFloatButtonComponent));
+      floatButtonComponent = resultEl.componentInstance;
     });
 
     it('nzType', () => {
@@ -76,6 +79,17 @@ describe('nz-float-button', () => {
       fixture.detectChanges();
       expect(testComponent.isClick).toBe(true);
     });
+
+    it('nzBadge', () => {
+      expect(resultEl.nativeElement.querySelector('.ant-badge')).toBeNull();
+      expect(floatButtonComponent.nzBadge()).toBeNull();
+      testComponent.nzBadge = { nzCount: 5 };
+      fixture.detectChanges();
+      expect(floatButtonComponent.nzBadge()).toEqual({
+        nzCount: 5
+      });
+      expect(resultEl.nativeElement.querySelector('.ant-badge')).toBeTruthy();
+    });
   });
 });
 
@@ -108,6 +122,7 @@ describe('nz-float-button RTL', () => {
       [nzTarget]="nzTarget"
       [nzType]="nzType"
       [nzShape]="nzShape"
+      [nzBadge]="nzBadge"
       (nzOnClick)="onClick($event)"
     ></nz-float-button>
     <ng-template #icon>
@@ -123,6 +138,7 @@ export class NzTestFloatButtonBasicComponent {
   nzShape: NzShapeSCType = 'circle';
   nzIcon: string | TemplateRef<void> | null = null;
   nzDescription: TemplateRef<void> | null = null;
+  nzBadge: NzFloatButtonBadge | null = null;
 
   @ViewChild('icon', { static: false }) icon!: TemplateRef<void>;
   @ViewChild('description', { static: false }) description!: TemplateRef<void>;

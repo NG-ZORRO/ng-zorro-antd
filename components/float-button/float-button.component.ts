@@ -4,6 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,19 +16,20 @@ import {
   TemplateRef
 } from '@angular/core';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { generateClassName } from 'ng-zorro-antd/core/util';
 
 import { NzFloatButtonContentComponent } from './float-button-content.component';
-import { NzFloatButtonType } from './typings';
+import { NzFloatButtonBadge, NzFloatButtonType } from './typings';
 
 const CLASS_NAME = 'ant-float-btn';
 
 @Component({
   selector: 'nz-float-button',
   exportAs: 'nzFloatButton',
-  imports: [NzButtonModule, NzFloatButtonContentComponent],
+  imports: [NzButtonModule, NzFloatButtonContentComponent, NzBadgeModule, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (!!nzHref()) {
@@ -40,11 +42,7 @@ const CLASS_NAME = 'ant-float-btn';
         class="ant-float-btn-inner"
         (click)="nzOnClick.emit(true)"
       >
-        <nz-float-button-content
-          [nzIcon]="nzIcon()"
-          [nzDescription]="nzDescription()"
-          [nzShape]="shape()"
-        ></nz-float-button-content>
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
       </a>
     } @else {
       <button
@@ -54,13 +52,17 @@ const CLASS_NAME = 'ant-float-btn';
         class="ant-float-btn-inner"
         (click)="nzOnClick.emit(true)"
       >
-        <nz-float-button-content
-          [nzIcon]="nzIcon()"
-          [nzDescription]="nzDescription()"
-          [nzShape]="shape()"
-        ></nz-float-button-content>
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
       </button>
     }
+    <ng-template #contentTemplate>
+      <nz-float-button-content
+        [nzBadge]="nzBadge()"
+        [nzIcon]="nzIcon()"
+        [nzDescription]="nzDescription()"
+        [nzShape]="shape()"
+      ></nz-float-button-content>
+    </ng-template>
   `,
   host: {
     '[class]': 'class()'
@@ -73,6 +75,7 @@ export class NzFloatButtonComponent {
   readonly nzIcon = input<string | TemplateRef<void> | null>(null);
   readonly nzDescription = input<string | TemplateRef<void> | null>(null);
   readonly nzShape = input<NzShapeSCType>('circle');
+  readonly nzBadge = input<NzFloatButtonBadge | null>(null);
   readonly nzOnClick = output<boolean>();
 
   readonly shape = linkedSignal(() => this.nzShape());
