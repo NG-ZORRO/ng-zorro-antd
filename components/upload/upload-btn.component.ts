@@ -205,17 +205,17 @@ export class NzUploadBtnComponent implements OnInit {
       data,
       withCredentials: opt.withCredentials,
       onProgress: opt.onProgress
-        ? e => {
-            opt.onProgress!(e, file);
+        ? (e, argsFile) => {
+            opt.onProgress!(e, argsFile);
           }
         : undefined,
-      onSuccess: (ret, xhr) => {
+      onSuccess: (ret, argsFile, xhr) => {
         this.clean(uid);
-        opt.onSuccess!(ret, file, xhr);
+        opt.onSuccess!(ret, argsFile, xhr);
       },
-      onError: xhr => {
+      onError: (err, argsFile) => {
         this.clean(uid);
-        opt.onError!(xhr, file);
+        opt.onError!(err, argsFile);
       }
     };
 
