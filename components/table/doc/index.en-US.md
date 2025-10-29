@@ -120,13 +120,13 @@ Selection property
 
 Sort property
 
-| Property              | Description                                                                                                                                    | Type                                          | Default                       |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------------------------- | --- |
-| `[nzShowSort]`        | Whether to display sorting                                                                                                                     | `boolean`                                     | -                             |
-| `[nzSortFn]`          | Sort function used to sort the data on client side (ref to Array.sort compareFunction). Should be set to `true` when using server side sorting | `NzTableSortFn<T> \| boolean`                 | -                             |
-| `[nzSortOrder]`       | Sort direction                                                                                                                                 | `'descend' \| 'ascend' \| null`               | -                             |
-| `[nzSortDirections]`  | Supported sort order, could be `'descend'`, `'ascend'`, `null`                                                                                 | `Array<'descend' \| 'ascend' \| null>`        | `['ascend', 'descend', null]` | ✅  |
-| `(nzSortOrderChange)` | Callback when sort direction changes                                                                                                           | `EventEmitter<'descend' \| 'ascend' \| null>` | -                             |
+| Property              | Description                                                                                                                                      | Type                                          | Default                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------- | ----------------------------- |
+| `[nzShowSort]`        | Whether to display sorting                                                                                                                       | `boolean`                                     | -                             |
+| `[nzSortFn]`          | Sort function used to sort the data on client side (ref to `Array.sort` compareFunction). Should be set to `true` when using server side sorting | `NzTableSortFn<T> \| boolean`                 | -                             |
+| `[nzSortOrder]`       | Sort direction                                                                                                                                   | `'descend' \| 'ascend' \| null`               | -                             |
+| `[nzSortDirections]`  | Supported sort order, could be `'descend'`, `'ascend'`, `null`                                                                                   | `Array<'descend' \| 'ascend' \| null>`        | `['ascend', 'descend', null]` |
+| `(nzSortOrderChange)` | Callback when sort direction changes                                                                                                             | `EventEmitter<'descend' \| 'ascend' \| null>` | -                             |
 
 Filter property
 
