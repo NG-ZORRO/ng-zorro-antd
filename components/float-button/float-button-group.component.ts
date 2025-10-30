@@ -18,7 +18,6 @@ import {
   TemplateRef
 } from '@angular/core';
 
-import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzFourDirectionType, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { generateClassName } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -34,13 +33,18 @@ const CLASS_NAME = 'ant-float-btn-group';
   exportAs: 'nzFloatButtonGroup',
   imports: [NzFloatButtonComponent, NzIconModule, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [fadeMotion],
   template: `
     @if (!isMenuMode()) {
       <ng-container *ngTemplateOutlet="menu"></ng-container>
     } @else {
       @if (open()) {
-        <div class="ant-float-btn-group-wrap" @fadeMotion><ng-container *ngTemplateOutlet="menu"></ng-container></div>
+        <div
+          class="ant-float-btn-group-wrap"
+          animate.enter="ant-float-btn-group-wrap-enter"
+          animate.leave="ant-float-btn-group-wrap-leave"
+        >
+          <ng-container *ngTemplateOutlet="menu"></ng-container>
+        </div>
       }
       <nz-float-button
         class="ant-float-btn-group-trigger"

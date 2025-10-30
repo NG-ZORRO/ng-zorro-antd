@@ -164,6 +164,14 @@
     justify-content: center;
   }
 
+  &-wrap-enter {
+    animation: enter 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  &-wrap-leave {
+    animation: leave 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
   &&-rtl {
     direction: rtl;
   }
@@ -333,3 +341,31 @@
     }
   }
 }
+
+
+
+@keyframes enter {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes leave {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+}
+
+
