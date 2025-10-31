@@ -1,7 +1,6 @@
 ---
 category: Components
 type: Feedback
-noinstant: true
 title: Message
 cover: 'https://gw.alipayobjects.com/zos/alicdn/hAkKTIW0K/Message.svg'
 description: Display global messages as feedback in response to user operations.
@@ -10,7 +9,8 @@ description: Display global messages as feedback in response to user operations.
 ## When To Use
 
 - To provide feedback such as success, warning, error etc.
-- A message is displayed at top and center and will be dismissed automatically, as a non-interrupting light-weighted prompt.
+- A message is displayed at top and center and will be dismissed automatically, as a non-interrupting light-weighted
+  prompt.
 
 ## API
 
@@ -31,22 +31,24 @@ This components provides some service methods, with usage and arguments as follo
 
 The parameters that are set by the `options` support are as follows:
 
-| Argument       | Description                                                            | Type                         |
-| -------------- | ---------------------------------------------------------------------- | ---------------------------- |
-| nzDuration     | Duration (milliseconds), does not disappear when set to 0              | `number`                     |
-| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean`                    |
-| nzAnimate      | Whether to turn on animation                                           | `boolean`                    |
-| nzData         | Data to pass to custom template                                        | `NzSafeAny`                  |
-| nzStyle        | Customized inline style                                                | `NgStyleInterface \| string` |
-| nzClass        | Customized CSS class                                                   | `NgClassInterface \| string` |
+| Argument       | Description                                                            | Type                         | Version |
+| -------------- | ---------------------------------------------------------------------- | ---------------------------- | ------- |
+| nzDuration     | Duration (milliseconds), does not disappear when set to 0              | `number`                     |         |
+| nzPauseOnHover | Do not remove automatically when mouse is over while setting to `true` | `boolean`                    |         |
+| nzAnimate      | Whether to turn on animation                                           | `boolean`                    |         |
+| nzData         | Data to pass to custom template                                        | `NzSafeAny`                  |         |
+| nzStyle        | Customized inline style                                                | `NgStyleInterface \| string` | 20.4.0  |
+| nzClass        | Customized CSS class                                                   | `NgClassInterface \| string` | 20.4.0  |
 
 Methods for destruction are also provided:
 
-- `message.remove(id)` // Remove the message with the specified id. When the id is empty, remove all messages (the message id is returned by the above method)
+- `message.remove(id)` : Remove the message with the specified id. When the id is empty, remove all messages (the
+  message id is returned by the above method)
 
 ### Global Configuration
 
-You can use `NzConfigService` to configure this component globally. Please check the [Global Configuration](/docs/global-config/en) chapter for more information.
+You can use `NzConfigService` to configure this component globally. Please check
+the [Global Configuration](/docs/global-config/en) chapter for more information.
 
 | Argument       | Description                                                            | Type               | Default |
 | -------------- | ---------------------------------------------------------------------- | ------------------ | ------- |

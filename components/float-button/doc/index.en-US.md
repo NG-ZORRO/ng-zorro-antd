@@ -16,15 +16,15 @@ description: A button that floats at the top of the page.
 
 ### Common API
 
-| Property          | Description                               | Type                                  | Default     |
-| ----------------- | ----------------------------------------- | ------------------------------------- | ----------- |
+| Property          | Description                               | Type                                  | Default     | Version |
+| ----------------- | ----------------------------------------- | ------------------------------------- | ----------- | ------- |
 | `[nzIcon]`        | Set the icon component of button          | `string \| TemplateRef<void> \| null` | -           |
 | `[nzDescription]` | Text and other content                    | `string \| TemplateRef<void> \| null` | -           |
 | `[nzType]`        | Button type                               | `'default' \| 'primary'`              | `'default'` |
 | `[nzShape]`       | Button shape                              | `'circle' \| 'square'`                | `'circle'`  |
 | `[nzHref]`        | The target of hyperlink                   | `string`                              | -           |
 | `[nzTarget]`      | Specifies where to display the linked URL | `string`                              | -           |
-| `[nzBadge]`       | badge                                     | `NzFloatButtonBadge`                  | -           |
+| `[nzBadge]`       | badge                                     | `NzFloatButtonBadge`                  | -           | 20.4.0  |
 | `(nzOnClick)`     | Callback of `click` event                 | `EventEmitter<boolean>`               | -           |
 
 ### nz-float-button-group

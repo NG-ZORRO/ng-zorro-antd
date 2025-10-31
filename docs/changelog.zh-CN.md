@@ -15,6 +15,31 @@ timeline: true
 
 ---
 
+## 20.4.0
+
+`2025-10-31`
+
+### Features
+
+- **cascader:** 支持通过设置 `nzOpen` 使弹出面板完全受控 ([#9448](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9448)) ([4d5ec65](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4d5ec6536f64690319e0fd219dc4b07c724764db))
+- **cascader:** 多选模式下支持通过 `ENTER` 按钮改变选项 checkbox 值 ([#9457](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9457)) ([e02f1f4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e02f1f45f6ae1d5836b1b751bb23bfa55c5f1c33))
+- **float-button:** 新增 `nzBadge` 属性设置徽标 ([#9489](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9489)) ([12beec7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/12beec73fe3071e116788635ae17b1668d3b5ad8))
+- **form:** 新增 `nzRequiredMark` 属性自定义必选与可选样式 ([#9447](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9447)) ([800b6cf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/800b6cf960af7c4dfce0378eeb9fd361d21ac06b))
+- **input-number:** 新增前置和后置元素的 inputs 属性 ([#9451](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9451)) ([dbebd02](https://github.com/NG-ZORRO/ng-zorro-antd/commit/dbebd025cc5101d879301405f0e0ce4baca4bdf5))
+- **input:** 新增 `nzAllowClear` 属性以及 `nzClear` 回调 ([#9452](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9452)) ([830b4b3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/830b4b3cced07ecc484375ab62a3593ac7140b39))
+- **input:** 新增组件 `nz-input-wrapper` ([#9408](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9408)) ([a8e56ec](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a8e56ecbc5040dc36dd38881d2d3f7133c7c7991)), closes [#9403](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9403)
+- **input:** 为 `nz-input-wrapper` 新增前置和后置元素的 inputs 属性 ([#9450](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9450)) ([763f69e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/763f69e7e35ef3697245e9074034d17f110c5876))
+- **input:** 新增 `nz-input-search` 指令 ([#9483](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9483)) ([af6f590](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af6f590b30270205300e028287f205249b316efa))
+- **input:** 新增 `nz-input-password` 指令 ([#9460](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9460)) ([f80832a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f80832a7741a6efd9049372a8759d710dc72bde4))
+- **message:** 支持自定义样式 ([#9427](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9427)) ([2f866b3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2f866b31febe4c1f6dd784537fc8ca2b68a66a93))
+- **pagination:** 新增 `nzAlign` 属性 ([#9433](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9433)) ([88d0864](https://github.com/NG-ZORRO/ng-zorro-antd/commit/88d08648570756e35b989f55e15bcb116175dbc2))
+- **segmented:** `nzName` 未设置时支持默认 name ([#9466](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9466)) ([33f8142](https://github.com/NG-ZORRO/ng-zorro-antd/commit/33f8142626e337e1cef997bc99a289effcb64dd0))
+
+### Bug Fixes
+
+- **badge:** 修复 `nzColor` 未设置时 `nzStyle` 不生效的问题 ([#9486](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9486)) ([4424eb0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4424eb0a018c7d90fb74dfda6ceb5c54a080eb4d))
+- **cascader:** 重新打开弹出面板时正确展示激活的列 ([#9456](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9456)) ([7802a39](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7802a39167d0efaf1bca5e829fa4907f7af54650))
+
 ## 20.3.1
 
 `2025-09-17`

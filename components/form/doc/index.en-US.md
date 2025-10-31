@@ -12,7 +12,9 @@ description: High-performance form component with data domain management. Includ
 - When you need to create an instance or collect information.
 - When you need to validate fields in certain rules.
 
-> Form is totally based on [Angular Forms](https://angular.dev/guide/forms), you can use [reactive forms](https://angular.dev/guide/forms/reactive-forms) or [template-driven-forms](https://angular.dev/guide/forms/template-driven-forms).
+> Form is totally based on [Angular Forms](https://angular.dev/guide/forms), you can
+> use [reactive forms](https://angular.dev/guide/forms/reactive-forms)
+> or [template-driven-forms](https://angular.dev/guide/forms/template-driven-forms).
 > Please make sure you have read the official form document before using the component.
 
 ## Form
@@ -50,28 +52,28 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 ### [nz-form]
 
-| Property              | Description                                                                                             | Type                                           | Default Value                                   | Global Config |
-| --------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- | ------------- |
-| `[nzLayout]`          | Form layout                                                                                             | `'horizontal' \| 'vertical' \| 'inline'`       | `'horizontal'`                                  |
-| `[nzAutoTips]`        | Set default props `[nzAutoTips]` value of `nz-form-control`, please refer to the example: **Auto tips** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅            |
-| `[nzDisableAutoTips]` | Set default props `[nzDisableAutoTip]` value of `nz-form-control`                                       | `boolean`                                      | `false`                                         | ✅            |
-| `[nzNoColon]`         | Set default props `[nzNoColon]` value of `nz-form-label`                                                | `boolean`                                      | `false`                                         | ✅            |
-| `[nzTooltipIcon]`     | Set default props `[nzTooltipIcon]` value of `nz-form-label`                                            | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅            |
-| `[nzLabelAlign]`      | Set default props `[nzLabelAlign]` value of `nz-form-label`                                             | `'left' \| 'right'`                            | `'right'`                                       |
-| `[nzLabelWrap]`       | Set default props `[nzLabelWrap]` value of `nz-form-label`                                              | `boolean`                                      | `false`                                         |
-| `[nzRequiredMark]`    | Required mark style. Can use required mark or optional mark.                                            | `NzRequiredMark`                               | `true`                                          |
+| Property              | Description                                                                                             | Type                                           | Default Value                                   | Global Config | Version |
+| --------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- | ------------- | ------- |
+| `[nzLayout]`          | Form layout                                                                                             | `'horizontal' \| 'vertical' \| 'inline'`       | `'horizontal'`                                  |               |         |
+| `[nzAutoTips]`        | Set default props `[nzAutoTips]` value of `nz-form-control`, please refer to the example: **Auto tips** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅            |         |
+| `[nzDisableAutoTips]` | Set default props `[nzDisableAutoTip]` value of `nz-form-control`                                       | `boolean`                                      | `false`                                         | ✅            |         |
+| `[nzNoColon]`         | Set default props `[nzNoColon]` value of `nz-form-label`                                                | `boolean`                                      | `false`                                         | ✅            |         |
+| `[nzTooltipIcon]`     | Set default props `[nzTooltipIcon]` value of `nz-form-label`                                            | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅            |         |
+| `[nzLabelAlign]`      | Set default props `[nzLabelAlign]` value of `nz-form-label`                                             | `'left' \| 'right'`                            | `'right'`                                       |               |         |
+| `[nzLabelWrap]`       | Set default props `[nzLabelWrap]` value of `nz-form-label`                                              | `boolean`                                      | `false`                                         |               |         |
+| `[nzRequiredMark]`    | Required mark style. Can use required mark or optional mark.                                            | `NzRequiredMark`                               | `true`                                          |               | 20.4.0  |
 
 ### nz-form-item
 
 Used to separate the item in forms, contains label(optional) and control field.
 
-> All api in [nz-row](/components/grid/zh) can be used in `nz-form-item`.
+> All api in [nz-row](/components/grid/en) can be used in `nz-form-item`.
 
 ### nz-form-label
 
 The label of the form item, optional.
 
-> All api in [nz-col](/components/grid/zh) can be used in `nz-form-label`.
+> All api in [nz-col](/components/grid/en) can be used in `nz-form-label`.
 
 | Property           | Description                                  | Type                          | Default Value |
 | ------------------ | -------------------------------------------- | ----------------------------- | ------------- |
@@ -85,11 +87,13 @@ The label of the form item, optional.
 
 ### nz-form-control
 
-> Note：Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you have to notify `nz-form-control` to update its status with `updateValueAndValidity` when you update form status using methods like `markAsDirty`.
+> Note：Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you
+> have to notify `nz-form-control` to update its status with `updateValueAndValidity` when you update form status using
+> methods like `markAsDirty`.
 
 A form consists of one or more form fields whose type includes input, textarea, checkbox, radio, select, tag, and more.
 
-> All api in [nz-col](/components/grid/zh) can be used in `nz-form-control`.
+> All api in [nz-col](/components/grid/en) can be used in `nz-form-control`.
 
 | Property              | Description                                                                                                                                                | Type                                                                          | Default Value                                         |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------- |

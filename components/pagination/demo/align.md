@@ -1,5 +1,6 @@
 ---
 order: 10
+version: 20.4.0
 title:
   zh-CN: 基本
   en-US: Align
