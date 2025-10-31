@@ -9,6 +9,7 @@ import { NzInputDirective } from './input.directive';
 
 @Directive({
   selector: 'nz-input-search',
+  exportAs: 'nzInputSearch',
   host: {
     class: 'ant-input-search',
     '[class.ant-input-search-large]': `size() === 'large'`,
