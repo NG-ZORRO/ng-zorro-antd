@@ -13,7 +13,9 @@ description: 高性能表单控件，自带数据域管理。包含数据录入�
 - 用于创建一个实体或收集信息。
 - 需要对输入的数据类型进行校验时。
 
-> 该组件需要与 [Angular 表单](https://angular.cn/guide/forms) 结合使用，根据需要可以自由选择 [响应式表单](https://angular.cn/guide/forms/reactive-forms) 或 [模板驱动表单](https://angular.cn/guide/forms/template-driven-forms)。
+> 该组件需要与 [Angular 表单](https://angular.cn/guide/forms)
+> 结合使用，根据需要可以自由选择 [响应式表单](https://angular.cn/guide/forms/reactive-forms)
+> 或 [模板驱动表单](https://angular.cn/guide/forms/template-driven-forms)。
 > 使用该组件前请确保您已经阅读并掌握了 [Angular 表单](https://angular.cn/guide/forms) 的使用方式。
 
 ## 表单
@@ -51,16 +53,16 @@ description: 高性能表单控件，自带数据域管理。包含数据录入�
 
 ### [nz-form]
 
-| 参数                  | 说明                                                                                | 类型                                           | 默认值                                          | 全局配置 |
-| --------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- | -------- |
-| `[nzLayout]`          | 表单布局                                                                            | `'horizontal' \| 'vertical' \| 'inline'`       | `'horizontal'`                                  |
-| `[nzAutoTips]`        | 配置 `nz-form-control` 的 `[nzAutoTips]` 的默认值, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅       |
-| `[nzDisableAutoTips]` | 配置 `nz-form-control` 的 `[nzDisableAutoTips]` 的默认值                            | `boolean`                                      | `false`                                         | ✅       |
-| `[nzNoColon]`         | 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值                                      | `boolean`                                      | `false`                                         | ✅       |
-| `[nzTooltipIcon]`     | 配置 `nz-form-label` 的 `[nzTooltipIcon]` 的默认值                                  | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅       |
-| `[nzLabelAlign]`      | 配置 `nz-form-label` 的 `[nzLabelAlign]` 的默认值                                   | `'left' \| 'right'`                            | `'right'`                                       |
-| `[nzLabelWrap]`       | 配置 `nz-form-label` 的 `[nzLabelWrap]` 的默认值                                    | `boolean`                                      | `false`                                         |
-| `[nzRequiredMark]`    | 必填标记样式。可使用必填标记或可选标记。                                            | `NzRequiredMark`                               | `true`                                          |
+| 参数                  | 说明                                                                                | 类型                                           | 默认值                                          | 全局配置 | 版本   |
+| --------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- | -------- | ------ |
+| `[nzLayout]`          | 表单布局                                                                            | `'horizontal' \| 'vertical' \| 'inline'`       | `'horizontal'`                                  |          |        |
+| `[nzAutoTips]`        | 配置 `nz-form-control` 的 `[nzAutoTips]` 的默认值, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅       |        |
+| `[nzDisableAutoTips]` | 配置 `nz-form-control` 的 `[nzDisableAutoTips]` 的默认值                            | `boolean`                                      | `false`                                         | ✅       |        |
+| `[nzNoColon]`         | 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值                                      | `boolean`                                      | `false`                                         | ✅       |        |
+| `[nzTooltipIcon]`     | 配置 `nz-form-label` 的 `[nzTooltipIcon]` 的默认值                                  | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅       |        |
+| `[nzLabelAlign]`      | 配置 `nz-form-label` 的 `[nzLabelAlign]` 的默认值                                   | `'left' \| 'right'`                            | `'right'`                                       |          |        |
+| `[nzLabelWrap]`       | 配置 `nz-form-label` 的 `[nzLabelWrap]` 的默认值                                    | `boolean`                                      | `false`                                         |          |        |
+| `[nzRequiredMark]`    | 必填标记样式。可使用必填标记或可选标记。                                            | `NzRequiredMark`                               | `true`                                          |          | 20.4.0 |
 
 ### nz-form-item
 
@@ -86,7 +88,8 @@ description: 高性能表单控件，自带数据域管理。包含数据录入�
 
 ### nz-form-control
 
-> 注意：由于 Angular Form 目前提供的[状态变更订阅](https://github.com/angular/angular/issues/10887)不完整。手动更改表单状态时，例如 `markAsDirty` 后，需要执行 `updateValueAndValidity` 通知 `nz-form-control` 进行状态变更。
+> 注意：由于 Angular Form 目前提供的[状态变更订阅](https://github.com/angular/angular/issues/10887)不完整。手动更改表单状态时，例如
+> `markAsDirty` 后，需要执行 `updateValueAndValidity` 通知 `nz-form-control` 进行状态变更。
 
 表单一定会包含表单域，表单域可以是输入控件，标准表单域，标签，下拉菜单，文本域等。
 

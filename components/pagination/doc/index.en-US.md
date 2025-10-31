@@ -20,8 +20,8 @@ description: A long list can be divided into several pages by `Pagination`, and 
 
 ### nz-pagination
 
-| Property               | Description                                                    | Type                                                                                         | Default            | Global Config |
-| ---------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------ | ------------- |
+| Property               | Description                                                    | Type                                                                                         | Default            | Global Config | Version |
+| ---------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------ | ------------- | ------- |
 | `[nzTotal]`            | total number of data items                                     | `number`                                                                                     | `0`                | -             |
 | `[nzPageIndex]`        | current page number，double binding                            | `number`                                                                                     | `1`                | -             |
 | `[nzPageSize]`         | number of data items per page, double binding                  | `number`                                                                                     | `10`               | -             |
@@ -35,6 +35,6 @@ description: A long list can be divided into several pages by `Pagination`, and 
 | `[nzItemRender]`       | to customize item                                              | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next'\| 'prev_5'\| 'next_5', page: number }>` | -                  | -             |
 | `[nzShowTotal]`        | to display the total number and range                          | `TemplateRef<{ $implicit: number, range: [ number, number ] }>`                              | -                  | -             |
 | `[nzHideOnSinglePage]` | Whether to hide pager on single page                           | `boolean`                                                                                    | `false`            | -             |
-| `[nzAlign]`            | Align                                                          | `NzPaginationAlign`                                                                          | `start`            | -             |
+| `[nzAlign]`            | Align                                                          | `NzPaginationAlign`                                                                          | `start`            | -             | 20.4.0  |
 | `(nzPageIndexChange)`  | current page number change callback                            | `EventEmitter<number>`                                                                       | -                  | -             |
 | `(nzPageSizeChange)`   | number of data items per page change callback                  | `EventEmitter<number>`                                                                       | -                  | -             |

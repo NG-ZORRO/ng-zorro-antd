@@ -17,15 +17,15 @@ description: 悬浮于页面上方的按钮。
 
 ### 共同的 API
 
-| 参数              | 说明                                                  | 类型                                  | 默认值      |
-| ----------------- | ----------------------------------------------------- | ------------------------------------- | ----------- |
+| 参数              | 说明                                                  | 类型                                  | 默认值      | 版本   |
+| ----------------- | ----------------------------------------------------- | ------------------------------------- | ----------- | ------ |
 | `[nzIcon]`        | 自定义图标                                            | `string \| TemplateRef<void> \| null` | -           |
 | `[nzDescription]` | 文字及其它内容                                        | `string \| TemplateRef<void> \| null` | -           |
 | `[nzType]`        | 按钮类型                                              | `'default' \| 'primary'`              | `'default'` |
 | `[nzShape]`       | 按钮形状                                              | `'circle' \| 'square'`                | `'circle'`  |
 | `[nzHref]`        | 点击跳转的地址，指定此参数 button 的行为和 a 链接一致 | `string`                              | -           |
 | `[nzTarget]`      | 相当于 a 标签的 target 属性，`nzHref` 存在时生效      | `string`                              | -           |
-| `[nzBadge]`       | 徽标数                                                | `NzFloatButtonBadge`                  | -           |
+| `[nzBadge]`       | 徽标数                                                | `NzFloatButtonBadge`                  | -           | 20.4.0 |
 | `(nzOnClick)`     | 点击按钮时的回调                                      | `EventEmitter<boolean>`               | -           |
 
 ### nz-float-button-group

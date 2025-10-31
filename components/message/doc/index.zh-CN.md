@@ -2,7 +2,6 @@
 category: Components
 subtitle: 全局提示
 type: 反馈
-noinstant: true
 title: Message
 cover: 'https://gw.alipayobjects.com/zos/alicdn/hAkKTIW0K/Message.svg'
 description: 全局展示操作反馈信息。
@@ -32,18 +31,18 @@ description: 全局展示操作反馈信息。
 
 `options` 支持设置的参数如下：
 
-| 参数           | 说明                              | 类型                         |
-| -------------- | --------------------------------- | ---------------------------- |
-| nzDuration     | 持续时间(毫秒)，当设置为0时不消失 | `number`                     |
-| nzPauseOnHover | 鼠标移上时禁止自动移除            | `boolean`                    |
-| nzAnimate      | 开关动画效果                      | `boolean`                    |
-| nzData         | 传递给自定义模板的数据            | `NzSafeAny`                  |
-| nzStyle        | 自定义内联样式                    | `NgStyleInterface \| string` |
-| nzClassName    | 自定义 CSS class                  | `NgClassInterface \| string` |
+| 参数           | 说明                              | 类型                         | 版本   |
+| -------------- | --------------------------------- | ---------------------------- | ------ |
+| nzDuration     | 持续时间(毫秒)，当设置为0时不消失 | `number`                     |        |
+| nzPauseOnHover | 鼠标移上时禁止自动移除            | `boolean`                    |        |
+| nzAnimate      | 开关动画效果                      | `boolean`                    |        |
+| nzData         | 传递给自定义模板的数据            | `NzSafeAny`                  |        |
+| nzStyle        | 自定义内联样式                    | `NgStyleInterface \| string` | 20.4.0 |
+| nzClass        | 自定义 CSS class                  | `NgClassInterface \| string` | 20.4.0 |
 
 还提供了全局销毁方法：
 
-- `NzMessageService.remove(id)` // 移除特定id的消息，当id为空时，移除所有消息（该消息id通过上述方法返回值中得到）
+- `NzMessageService.remove(id)`: 移除特定id的消息，当id为空时，移除所有消息（该消息id通过上述方法返回值中得到）
 
 ### 全局配置
 

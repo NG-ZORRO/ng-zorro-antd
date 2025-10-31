@@ -15,6 +15,31 @@ timeline: true
 
 ---
 
+## 20.4.0
+
+`2025-10-31`
+
+### Features
+
+- **cascader:** control the visibility of popup panel by `nzOpen` ([#9448](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9448)) ([4d5ec65](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4d5ec6536f64690319e0fd219dc4b07c724764db))
+- **cascader:** toggle checkbox of option by `ENTER` key in multiple mode ([#9457](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9457)) ([e02f1f4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e02f1f45f6ae1d5836b1b751bb23bfa55c5f1c33))
+- **float-button:** support `nzBadge` ([#9489](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9489)) ([12beec7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/12beec73fe3071e116788635ae17b1668d3b5ad8))
+- **form:** support `nzRequiredMark` ([#9447](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9447)) ([800b6cf](https://github.com/NG-ZORRO/ng-zorro-antd/commit/800b6cf960af7c4dfce0378eeb9fd361d21ac06b))
+- **input-number:** add affix and addon inputs ([#9451](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9451)) ([dbebd02](https://github.com/NG-ZORRO/ng-zorro-antd/commit/dbebd025cc5101d879301405f0e0ce4baca4bdf5))
+- **input:** add `nzAllowClear` input and `nzClear` callback ([#9452](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9452)) ([830b4b3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/830b4b3cced07ecc484375ab62a3593ac7140b39))
+- **input:** introduce new component `nz-input-wrapper` ([#9408](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9408)) ([a8e56ec](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a8e56ecbc5040dc36dd38881d2d3f7133c7c7991)), closes [#9403](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9403)
+- **input:** add affix and addon inputs to `nz-input-wrapper` ([#9450](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9450)) ([763f69e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/763f69e7e35ef3697245e9074034d17f110c5876))
+- **input:** introduce `nz-input-search` directive ([#9483](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9483)) ([af6f590](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af6f590b30270205300e028287f205249b316efa))
+- **input:** introduce `nz-input-password` directive ([#9460](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9460)) ([f80832a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f80832a7741a6efd9049372a8759d710dc72bde4))
+- **message:** add support for custom styles and classes ([#9427](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9427)) ([2f866b3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2f866b31febe4c1f6dd784537fc8ca2b68a66a93))
+- **pagination:** support `nzAlign` ([#9433](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9433)) ([88d0864](https://github.com/NG-ZORRO/ng-zorro-antd/commit/88d08648570756e35b989f55e15bcb116175dbc2))
+- **segmented:** add default name if `nzName` is not provided ([#9466](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9466)) ([33f8142](https://github.com/NG-ZORRO/ng-zorro-antd/commit/33f8142626e337e1cef997bc99a289effcb64dd0))
+
+### Bug Fixes
+
+- **badge:** should `nzStyle` work even if `nzColor` is not provided ([#9486](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9486)) ([4424eb0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4424eb0a018c7d90fb74dfda6ceb5c54a080eb4d))
+- **cascader:** display activated column correctly when reopen the popup panel ([#9456](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9456)) ([7802a39](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7802a39167d0efaf1bca5e829fa4907f7af54650))
+
 ## 20.3.1
 
 `2025-09-17`

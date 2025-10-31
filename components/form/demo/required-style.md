@@ -1,5 +1,6 @@
 ---
 order: 16
+version: 20.4.0
 title:
   zh-CN: 必选样式
   en-US: Required style

@@ -1,5 +1,6 @@
 ---
 order: 10
+version: 20.4.0
 title:
   zh-CN: 徽标数
   en-US: Badge

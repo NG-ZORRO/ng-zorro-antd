@@ -1,7 +1,6 @@
 ---
 category: Components
 type: 反馈
-noinstant: true
 title: Notification
 subtitle: 通知提醒框
 cover: 'https://gw.alipayobjects.com/zos/alicdn/Jxm5nw61w/Notification.svg'
