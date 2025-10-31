@@ -8,7 +8,7 @@ import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core
 import { By } from '@angular/platform-browser';
 
 import { createFakeEvent } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzAvatarGroupComponent } from './avatar-group.component';
@@ -119,16 +119,16 @@ describe('avatar', () => {
   });
 
   it('#nzIcon', () => {
-    context.nzSrc = null;
-    context.nzText = null;
+    context.nzSrc = undefined;
+    context.nzText = undefined;
     fixture.detectChanges();
     expect(getType(dl)).toBe('icon');
   });
 
   describe('#nzText', () => {
     beforeEach(() => {
-      context.nzSrc = null;
-      context.nzIcon = null;
+      context.nzSrc = undefined;
+      context.nzIcon = undefined;
       fixture.detectChanges();
     });
     it('property', () => {
@@ -198,7 +198,7 @@ describe('avatar', () => {
   });
 
   describe('#nzShape', () => {
-    for (const type of ['square', 'circle']) {
+    for (const type of ['square', 'circle'] as const) {
       it(type, () => {
         context.nzShape = type;
         fixture.detectChanges();
@@ -211,7 +211,7 @@ describe('avatar', () => {
     for (const item of [
       { size: 'large', cls: 'lg' },
       { size: 'small', cls: 'sm' }
-    ]) {
+    ] as const) {
       it(item.size, () => {
         context.nzSize = item.size;
         fixture.detectChanges();
@@ -221,8 +221,8 @@ describe('avatar', () => {
 
     it('custom size', () => {
       context.nzSize = 64;
-      context.nzIcon = null;
-      context.nzSrc = null;
+      context.nzIcon = undefined;
+      context.nzSrc = undefined;
       fixture.detectChanges();
       const size = `${64}px`;
       const hostStyle = dl.nativeElement.querySelector('nz-avatar').style;
@@ -238,8 +238,8 @@ describe('avatar', () => {
 
     it('should set `lineHeight` on the text element considering `nzSize`', fakeAsync(() => {
       const size = 64;
-      context.nzIcon = null;
-      context.nzSrc = null;
+      context.nzIcon = undefined;
+      context.nzSrc = undefined;
       context.nzSize = size;
       context.nzText = 'LongUsername';
       fixture.detectChanges();
@@ -253,8 +253,8 @@ describe('avatar', () => {
 
     it('should have 0 for avatarWidth if element.width is falsy`', fakeAsync(() => {
       const size = 64;
-      context.nzIcon = null;
-      context.nzSrc = null;
+      context.nzIcon = undefined;
+      context.nzSrc = undefined;
       context.nzSize = size;
       context.nzText = 'LongUsername';
       context.comp.hasText = true;
@@ -322,7 +322,7 @@ describe('avatar', () => {
     it('should be show text when image loaded error and icon not exists', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
-      context.nzIcon = null;
+      context.nzIcon = undefined;
       fixture.detectChanges();
       context.comp.imgError(event);
       tick();
@@ -332,8 +332,8 @@ describe('avatar', () => {
     it('should be show empty when image loaded error and icon & text not exists', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
-      context.nzIcon = null;
-      context.nzText = null;
+      context.nzIcon = undefined;
+      context.nzText = undefined;
       fixture.detectChanges();
       context.comp.imgError(event);
       tick();
@@ -371,12 +371,12 @@ function getScaleFromCSSTransform(transform: string): number {
 })
 class TestAvatarComponent {
   @ViewChild('comp', { static: false }) comp!: NzAvatarComponent;
-  nzShape = 'square';
-  nzSize: string | number = 'large';
+  nzShape: NzShapeSCType = 'square';
+  nzSize: NzSizeLDSType | number = 'large';
   nzGap = 4;
-  nzIcon: string | null = 'user';
-  nzText: string | null = 'A';
-  nzSrc: string | null = imageBase64;
+  nzIcon?: string = 'user';
+  nzText?: string = 'A';
+  nzSrc?: string = imageBase64;
   nzSrcSet?: string;
   nzAlt?: string;
   nzLoading?: 'eager' | 'lazy';

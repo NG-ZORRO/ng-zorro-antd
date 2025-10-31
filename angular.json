@@ -114,6 +114,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            "aot": true,
             "inlineStyleLanguage": "less",
             "fileReplacements": [
               {
