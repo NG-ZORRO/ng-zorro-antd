@@ -4,20 +4,30 @@
 @float-btn-prefix-cls: ~'@{ant-prefix}-float-btn';
 @float-btn-group-prefix-cls: ~'@{ant-prefix}-float-btn-group';
 
+// patch variables
+@badge-offset: @padding-xss * 1.5;
+@dot-offset-in-circle: 5.6px;
+@dot-offset-in-square: 1px;
+@float-button-size: 40px;
+@float-button-body-size: @float-button-size - (@padding-xss * 2);
+@float-button-body-padding: @padding-xss;
+@float-button-inset-inline-end: 24px;
+@float-button-inset-block-end: @float-button-inset-inline-end * 2;
+@float-button-icon-size: @font-size-sm * 1.5;
+
 .@{float-btn-prefix-cls} {
   position: fixed;
+  bottom: @float-button-inset-block-end;
   z-index: 99;
   display: block;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  overflow: hidden;
+  width: @float-button-size;
+  height: @float-button-size;
   border: none;
   box-shadow: @shadow-2;
   cursor: pointer;
-  inset-inline-end: 24px;
-  inset-block-end: 48px;
+  inset-inline-end: @float-button-inset-inline-end;
 
   &-hidden {
     display: none;
@@ -30,6 +40,18 @@
 
   &:empty {
     display: none;
+  }
+
+  .@{ant-prefix}-badge {
+    width: 100%;
+    height: 100%;
+
+    .@{ant-prefix}-badge-count {
+      top: -@badge-offset;
+      transform: translate(0, 0);
+      transform-origin: center;
+      inset-inline-end: -@badge-offset;
+    }
   }
 
   &-body {
@@ -45,15 +67,15 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 40px;
-      padding: 2px @margin-xss;
+      min-height: @float-button-size;
+      padding: @float-button-body-padding / 2 @float-button-body-padding;
       overflow: hidden;
       text-align: center;
 
       .@{float-btn-prefix-cls}-icon {
-        width: 18px;
+        width: @float-button-icon-size;
         margin: auto;
-        font-size: @font-size-lg + 2px;
+        font-size: @float-button-icon-size;
         line-height: 1;
         text-align: center;
       }
@@ -76,18 +98,32 @@
 }
 
 .@{float-btn-prefix-cls}-circle {
-  height: 40px;
+  height: @float-button-size;
   border-radius: 50%;
 
-  .@{float-btn-prefix-cls}-body {
+  .@{ant-prefix}-badge {
+    .@{ant-prefix}-badge-dot {
+      top: @dot-offset-in-circle;
+      inset-inline-end: @dot-offset-in-circle;
+    }
+  }
+
+  .ant-float-btn-inner, .@{float-btn-prefix-cls}-body {
     border-radius: 50%;
   }
 }
 
 .@{float-btn-prefix-cls}-square {
   height: auto;
-  min-height: 40px;
+  min-height: @float-button-size;
   border-radius: @border-radius-base;
+
+  .@{ant-prefix}-badge {
+    .@{ant-prefix}-badge-dot {
+      top: @dot-offset-in-square;
+      inset-inline-end: @dot-offset-in-square;
+    }
+  }
 
   .@{float-btn-prefix-cls}-body {
     height: auto;
@@ -134,16 +170,16 @@
 
 .@{float-btn-group-prefix-cls} {
   position: fixed;
-  bottom: 48px;
+  bottom: @float-button-inset-block-end;
   z-index: 99;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  min-width: 40px;
+  min-width: @float-button-size;
   height: auto;
-  min-height: 40px;
+  min-height: @float-button-size;
   margin: 0;
   padding: 0;
   color: @text-color;
@@ -154,7 +190,7 @@
   border: none;
   border-radius: @border-radius-base;
   box-shadow: none;
-  inset-inline-end: 24px;
+  inset-inline-end: @float-button-inset-inline-end;
 
   &-wrap {
     position: absolute;
@@ -175,7 +211,7 @@
 
 .@{float-btn-group-prefix-cls}-top > .@{float-btn-group-prefix-cls}-wrap {
   top: auto;
-  bottom: calc(40px + @margin-md);
+  bottom: calc(@float-button-size + @margin-md);
   flex-direction: column;
 
   &::after {
@@ -187,7 +223,7 @@
   }
 }
 .@{float-btn-group-prefix-cls}-bottom > .@{float-btn-group-prefix-cls}-wrap {
-  top: calc(40px + @margin-md);
+  top: calc(@float-button-size + @margin-md);
   bottom: auto;
   flex-direction: column;
 
@@ -200,7 +236,7 @@
   }
 }
 .@{float-btn-group-prefix-cls}-left > .@{float-btn-group-prefix-cls}-wrap {
-  right: calc(40px + @margin-md);
+  right: calc(@float-button-size + @margin-md);
   left: auto;
   flex-direction: row;
 
@@ -214,7 +250,7 @@
 }
 .@{float-btn-group-prefix-cls}-right > .@{float-btn-group-prefix-cls}-wrap {
   right: auto;
-  left: calc(40px + @margin-md);
+  left: calc(@float-button-size + @margin-md);
   flex-direction: row;
 
   &::after {
@@ -234,8 +270,8 @@
   }
 
   .@{float-btn-prefix-cls}-body {
-    width: 40px;
-    height: 40px;
+    width: @float-button-size;
+    height: @float-button-size;
   }
 }
 
@@ -261,6 +297,13 @@
     &:not(:last-child) {
       border-bottom: 1px solid @border-color-base;
     }
+
+    .@{ant-prefix}-badge {
+      .@{ant-prefix}-badge-count {
+        top: -(@float-button-body-padding + @badge-offset);
+        inset-inline-end: -(@float-button-body-padding + @badge-offset);
+      }
+    }
   }
 
   .@{float-btn-group-prefix-cls}-wrap {
@@ -268,13 +311,13 @@
     box-shadow: @shadow-2;
 
     .@{float-btn-prefix-cls}-square {
-      padding: @padding-xss;
+      padding: @float-button-body-padding;
       border-radius: 0;
       box-shadow: none;
 
       .@{float-btn-prefix-cls}-body {
-        width: 32px;
-        height: 32px;
+        width: @float-button-body-size;
+        height: @float-button-body-size;
       }
     }
   }
@@ -325,11 +368,11 @@
   box-shadow: @shadow-2;
 
   .@{float-btn-prefix-cls}-square {
-    padding: @padding-xss;
+    padding: @float-button-body-padding;
     box-shadow: none;
     .@{float-btn-prefix-cls}-body {
-      width: 32px;
-      height: 32px;
+      width: @float-button-body-size;
+      height: @float-button-body-size;
     }
   }
 }

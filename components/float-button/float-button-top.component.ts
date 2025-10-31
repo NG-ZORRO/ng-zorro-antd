@@ -38,7 +38,7 @@ import { fromEventOutsideAngular, generateClassName } from 'ng-zorro-antd/core/u
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzFloatButtonComponent } from './float-button.component';
-import { NzFloatButtonType } from './typings';
+import { NzFloatButtonBadge, NzFloatButtonType } from './typings';
 
 const withConfig = withConfigFactory('backTop');
 const CLASS_NAME = 'ant-float-btn';
@@ -58,6 +58,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
         [nzHref]="nzHref()"
         [nzType]="nzType()"
         [nzShape]="shape()"
+        [nzBadge]="nzBadge()"
       ></nz-float-button>
       <ng-template #top>
         <nz-icon nzType="vertical-align-top" nzTheme="outline" />
@@ -90,6 +91,7 @@ export class NzFloatButtonTopComponent implements OnInit {
   readonly nzTemplate = input<TemplateRef<void> | null>(null);
   readonly nzTarget = input<string | HTMLElement | null>(null);
   readonly nzDuration = input(450, { transform: numberAttribute });
+  readonly nzBadge = input<NzFloatButtonBadge | null>(null);
   readonly nzOnClick = output<boolean>();
 
   // compact global config
