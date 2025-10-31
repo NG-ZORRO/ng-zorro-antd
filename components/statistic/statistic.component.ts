@@ -8,13 +8,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   Input,
   OnInit,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -22,7 +22,7 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
-import { NzStatisticNumberComponent } from './statistic-number.component';
+import { NzStatisticContentValueComponent } from './statistic-content-value.component';
 import { NzStatisticValueType } from './typings';
 
 @Component({
@@ -43,7 +43,7 @@ import { NzStatisticValueType } from './typings';
             <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
           </span>
         }
-        <nz-statistic-number [nzValue]="nzValue" [nzValueTemplate]="nzValueTemplate"></nz-statistic-number>
+        <nz-statistic-content-value [nzValue]="nzValue" [nzValueTemplate]="nzValueTemplate" />
         @if (nzSuffix) {
           <span class="ant-statistic-content-suffix">
             <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
@@ -56,7 +56,7 @@ import { NzStatisticValueType } from './typings';
     class: 'ant-statistic',
     '[class.ant-statistic-rtl]': `dir === 'rtl'`
   },
-  imports: [NzSkeletonModule, NzStatisticNumberComponent, NzOutletModule]
+  imports: [NzSkeletonModule, NzStatisticContentValueComponent, NzOutletModule]
 })
 export class NzStatisticComponent implements OnInit {
   @Input() nzPrefix?: string | TemplateRef<void>;
