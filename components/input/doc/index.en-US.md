@@ -50,6 +50,16 @@ All properties of `nz-input-wrapper` can be used.
 | `[nzVisible]`          | Whether the password is visible, supports two-way binding | `boolean`                   | `false` |
 | `(nzVisibleChange)`    | Event emitted when the visibility of the password changes | `OutputEmitterRef<boolean>` | -       |
 
+### nz-input-search
+
+All properties of `nz-input-wrapper` can be used.
+
+| Property          | Description                                                                                                                              | Type                                                          | Default |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------- |
+| `[nzEnterButton]` | false displays the default button color, true uses the primary color, or you can provide a custom button. Conflicts with `nzAddonAfter`. | `boolean \| string`                                           | `false` |
+| `[nzLoading]`     | Search box with loading                                                                                                                  | `boolean`                                                     | `false` |
+| `(nzSearch)`      | The event triggered when you click on the search-icon, the clear-icon or press the Enter key                                             | `{ value: string, event: Event, source: 'clear' \| 'input' }` |         |
+
 ### nz-input-group
 
 > ⚠️ `nz-input-group` has been deprecated in `v20.0.0` and will be removed in `v22.0.0`. Please use the `nz-input-wrapper` component instead.
