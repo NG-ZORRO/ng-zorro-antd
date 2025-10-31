@@ -5,7 +5,6 @@
 
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from './input.module';
 
@@ -65,10 +64,10 @@ describe('input-password', () => {
 });
 
 @Component({
-  imports: [NzInputModule, FormsModule],
+  imports: [NzInputModule],
   template: `
     <nz-input-password [nzVisibilityToggle]="visibilityToggle" [(nzVisible)]="visible">
-      <input nz-input [(ngModel)]="value" [disabled]="disabled" [readonly]="readonly" />
+      <input nz-input />
       @if (customeIcon) {
         <ng-template nzInputPasswordIcon let-visible>{{ visible ? 'hide' : 'show' }}</ng-template>
       }

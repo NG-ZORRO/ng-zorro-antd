@@ -1048,7 +1048,7 @@ class NzTestAutocompletePropertyComponent {
 
 @Component({
   imports: [NzAutocompleteModule],
-  template: `<input [nzAutocomplete]="auto" />`
+  template: `<input [nzAutocomplete]="null!" />`
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
