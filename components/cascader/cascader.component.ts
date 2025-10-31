@@ -1022,9 +1022,11 @@ export class NzCascaderComponent
     const columnIndex = Math.max(this.cascaderService.activatedNodes.length - 1, 0);
     const node = this.cascaderService.activatedNodes[columnIndex];
     if (node && !node.isDisabled) {
-      this.inSearchingMode
-        ? this.cascaderService.setSearchOptionSelected(node)
-        : this.cascaderService.setNodeActivated(node, columnIndex, true);
+      this.nzMultiple
+        ? this.onOptionCheck(node, columnIndex, true)
+        : this.inSearchingMode
+          ? this.cascaderService.setSearchOptionSelected(node)
+          : this.cascaderService.setNodeActivated(node, columnIndex, true);
     }
   }
 
@@ -1047,7 +1049,7 @@ export class NzCascaderComponent
         break;
       }
       const nextOption = options[nextIndex];
-      if (!nextOption || nextOption.isDisabled) {
+      if (!nextOption || nextOption.isDisabled || nextOption.isDisableCheckbox) {
         continue;
       }
       this.cascaderService.setNodeActivated(nextOption, columnIndex);
@@ -1069,7 +1071,7 @@ export class NzCascaderComponent
     const length = this.cascaderService.activatedNodes.length;
     const options = this.cascaderService.columns[length];
     if (options && options.length) {
-      const nextOpt = options.find(o => !o.isDisabled);
+      const nextOpt = options.find(o => !o.isDisabled && !o.isDisableCheckbox);
       if (nextOpt) {
         this.cascaderService.setNodeActivated(nextOpt, length);
       }
