@@ -246,19 +246,19 @@ export class NzTestSkeletonComponent {
           nzType="avatar"
           [nzActive]="nzActive"
           [nzSize]="nzSize"
-          [nzShape]="nzShape"
+          [nzShape]="$any(nzShape)"
         ></nz-skeleton-element>
       }
       @case (2) {
         <nz-skeleton-element
           nzType="button"
           [nzActive]="nzActive"
-          [nzSize]="nzSize"
+          [nzSize]="$any(nzSize)"
           [nzShape]="nzShape"
         ></nz-skeleton-element>
       }
       @case (3) {
-        <nz-skeleton-element nzType="input" [nzActive]="nzActive" [nzSize]="nzSize"></nz-skeleton-element>
+        <nz-skeleton-element nzType="input" [nzActive]="nzActive" [nzSize]="$any(nzSize)"></nz-skeleton-element>
       }
       @case (4) {
         <nz-skeleton-element nzType="image" [nzActive]="nzActive"></nz-skeleton-element>
