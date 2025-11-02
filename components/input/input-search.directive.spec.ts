@@ -75,6 +75,15 @@ describe('input-search', () => {
     expect(searchButtonElement.classList).toContain('ant-btn-primary');
   });
 
+  it('should be render search icon when enterButton is an empty string', async () => {
+    const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
+    component.enterButton = '';
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const searchIconElement = searchButtonElement.querySelector('.anticon-search');
+    expect(searchIconElement).toBeTruthy();
+  });
+
   it('should be apply size classes to search button', async () => {
     const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
     expect(searchButtonElement).toBeTruthy();
