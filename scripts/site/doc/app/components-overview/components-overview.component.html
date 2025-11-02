@@ -20,7 +20,7 @@
     <nz-divider></nz-divider>
 
     <nz-affix [nzOffsetTop]="10" (nzChange)="onSearchAffixed($event)">
-      <nz-input-group nzSuffixIcon="search" class="components-overview-search">
+      <nz-input-wrapper class="components-overview-search">
         <input
           type="text"
           #searchBox
@@ -29,7 +29,8 @@
           nzSize="large"
           (input)="onSearch(searchBox.value)"
         />
-      </nz-input-group>
+        <nz-icon nzInputSuffix nzType="search" />
+      </nz-input-wrapper>
     </nz-affix>
 
     <nz-divider></nz-divider>

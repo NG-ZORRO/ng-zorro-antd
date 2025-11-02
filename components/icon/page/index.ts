@@ -365,16 +365,14 @@ declare const locale: NzSafeAny;
           Two Tone
         </label>
       </nz-radio-group>
-      <nz-input-group nzSearch [nzSuffix]="suffixIconCamera" [nzAddOnAfter]="addOnAfterIconSearch">
+      <nz-input-search>
         <input
           nz-input
           [placeholder]="localeObj.search"
           [(ngModel)]="searchingString"
           (ngModelChange)="onSearchChange()"
         />
-      </nz-input-group>
-      <ng-template #suffixIconCamera>
-        <div class="icon-pic-searcher">
+        <div nzInputSuffix class="icon-pic-searcher">
           <nz-icon
             class="icon-pic-btn"
             nz-popover
@@ -390,12 +388,7 @@ declare const locale: NzSafeAny;
             </svg>
           </nz-icon>
         </div>
-      </ng-template>
-      <ng-template #addOnAfterIconSearch>
-        <button nz-button nzType="default" nzSearch>
-          <nz-icon nzType="search"></nz-icon>
-        </button>
-      </ng-template>
+      </nz-input-search>
     </div>
     @for (category of categoryNames; track category; let i = $index) {
       <h3>{{ localeObj[category] }}</h3>
@@ -504,7 +497,7 @@ declare const locale: NzSafeAny;
         justify-content: space-between;
       }
 
-      nz-input-group {
+      nz-input-search {
         margin-left: 10px;
         flex: 1 1 0;
       }

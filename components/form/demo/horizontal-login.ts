@@ -12,16 +12,18 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-control nzErrorTip="Please input your username!">
-          <nz-input-group nzPrefixIcon="user">
+          <nz-input-wrapper>
+            <nz-icon nzInputPrefix nzType="user" />
             <input formControlName="username" nz-input placeholder="username" />
-          </nz-input-group>
+          </nz-input-wrapper>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control nzErrorTip="Please input your Password!">
-          <nz-input-group nzPrefixIcon="lock">
-            <input formControlName="password" nz-input type="password" placeholder="Password" />
-          </nz-input-group>
+          <nz-input-password>
+            <nz-icon nzInputPrefix nzType="lock" />
+            <input formControlName="password" nz-input placeholder="Password" />
+          </nz-input-password>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

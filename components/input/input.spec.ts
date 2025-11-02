@@ -255,9 +255,10 @@ describe('input', () => {
   template: `
     <div [dir]="dir">
       <input nz-input />
-      <nz-input-group nzAddOnAfterIcon="setting">
+      <nz-input-wrapper>
         <input type="text" nz-input />
-      </nz-input-group>
+        <nz-icon nzInputAddonAfter nzType="setting" />
+      </nz-input-wrapper>
     </div>
   `
 })

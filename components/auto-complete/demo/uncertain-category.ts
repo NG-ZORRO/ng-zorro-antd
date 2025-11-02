@@ -11,20 +11,16 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   imports: [FormsModule, NzAutocompleteModule, NzButtonModule, NzIconModule, NzInputModule],
   encapsulation: ViewEncapsulation.None,
   template: `
-    <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixIconButton">
+    <nz-input-search nzEnterButton>
       <input
-        placeholder="input here"
         nz-input
+        placeholder="input here"
+        nzSize="large"
         [(ngModel)]="inputValue"
         (input)="onChange($event)"
         [nzAutocomplete]="auto"
       />
-    </nz-input-group>
-    <ng-template #suffixIconButton>
-      <button nz-button nzType="primary" nzSize="large" nzSearch>
-        <nz-icon nzType="search" nzTheme="outline" />
-      </button>
-    </ng-template>
+    </nz-input-search>
     <nz-autocomplete #auto>
       @for (option of options; track option.category) {
         <nz-auto-option class="search-item" [nzValue]="option.category">

@@ -17,7 +17,7 @@ interface AutocompleteOptionGroups {
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="example-input">
-      <nz-input-group nzSize="large" [nzSuffix]="suffixIcon">
+      <nz-input-wrapper>
         <input
           placeholder="input here"
           nz-input
@@ -25,10 +25,8 @@ interface AutocompleteOptionGroups {
           (ngModelChange)="onChange($event)"
           [nzAutocomplete]="auto"
         />
-      </nz-input-group>
-      <ng-template #suffixIcon>
-        <nz-icon nzType="search" />
-      </ng-template>
+        <nz-icon nzInputSuffix nzType="search" />
+      </nz-input-wrapper>
       <nz-autocomplete #auto>
         @for (group of optionGroups; track group.title) {
           <nz-auto-optgroup [nzLabel]="groupTitle">
