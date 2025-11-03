@@ -4,10 +4,11 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -128,12 +129,12 @@ describe('button', () => {
       buttonElement.click();
       fixture.detectChanges();
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(true);
-      expect(buttonElement.firstElementChild!.classList.contains('anticon-loading')).toBe(true);
+      expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(true);
       expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: none;');
-      tick(5000);
+      tick(1000);
       fixture.detectChanges();
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
-      expect(buttonElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
+      expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(false);
       expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('');
     }));
   });
@@ -145,57 +146,60 @@ describe('button', () => {
       fixture = TestBed.createComponent(TestButtonWithIconComponent);
     });
 
-    it('should insert span correctly', fakeAsync(() => {
+    it('should insert span correctly', () => {
       const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       fixture.detectChanges();
       expect(buttonElement.firstElementChild.tagName).toBe('SPAN');
-      tick(5000);
-      fixture.detectChanges();
-      expect(buttonElement.firstElementChild.innerText).toContain('button');
-    }));
+      expect(buttonElement.firstElementChild.innerText).toContain('text');
+    });
   });
 
   describe('icon only', () => {
-    it('should icon only works correctly', fakeAsync(() => {
+    it('should icon only works correctly', async () => {
       const fixture = TestBed.createComponent(TestButtonIconOnlyComponent);
       const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-      fixture.detectChanges();
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
-    }));
+    });
 
-    it('should icon only works correctly with any tag', fakeAsync(() => {
+    it('should icon only works correctly with any tag', async () => {
       const fixture = TestBed.createComponent(TestButtonIconOnlyWithAnyTagComponent);
       const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-      fixture.detectChanges();
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
-    }));
+    });
 
-    it('should icon only works correctly with any comments', fakeAsync(() => {
+    it('should icon only works correctly with any comments', async () => {
       const fixture = TestBed.createComponent(TestButtonIconOnlyWithCommentComponent);
       const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-      fixture.detectChanges();
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
-    }));
+    });
 
-    it('should icon only works correctly with any text', fakeAsync(() => {
+    it('should icon only works correctly with any text', async () => {
       const fixture = TestBed.createComponent(TestButtonIconOnlyWithTextComponent);
       const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-      fixture.detectChanges();
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
       expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
-    }));
+    });
 
-    it('should icon only works correctly without nz-icon', fakeAsync(() => {
+    it('should icon only works correctly without nz-icon', async () => {
       const fixture = TestBed.createComponent(TestButtonIconOnlyWithoutIconComponent);
       const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-      fixture.detectChanges();
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
       expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
-    }));
+    });
 
-    it('should icon only loading works correctly', () => {
+    it('should icon only loading works correctly', async () => {
       const fixture = TestBed.createComponent(TestButtonIconOnlyLoadingComponent);
-      fixture.detectChanges();
       const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-      fixture.detectChanges();
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
     });
   });
@@ -262,9 +266,9 @@ describe('button', () => {
 
     it('correct value for listOfNode', () => {
       component['elementRef'] = {
-        nativeElement: {}
+        nativeElement: {} as NzSafeAny
       };
-      expect(component.iconOnly).toBeFalsy();
+      expect(component.iconOnly()).toBeFalsy();
     });
   });
 });
@@ -335,7 +339,7 @@ export class TestButtonBindingComponent {
   loading = false;
   load(): void {
     this.loading = true;
-    setTimeout(() => (this.loading = false), 5000);
+    setTimeout(() => (this.loading = false), 1000);
   }
 }
 
@@ -344,17 +348,12 @@ export class TestButtonBindingComponent {
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button>
-      {{ title }}
+      text
       <nz-icon nzType="caret-down" />
     </button>
   `
 })
-export class TestButtonWithIconComponent implements OnInit {
-  title?: string;
-  ngOnInit(): void {
-    setTimeout(() => (this.title = 'button'), 5000);
-  }
-}
+export class TestButtonWithIconComponent {}
 
 @Component({
   imports: [NzIconModule, NzButtonModule],
@@ -380,7 +379,7 @@ export class TestButtonIconOnlyWithAnyTagComponent {}
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button>
-      <i nz-icon nzType="down"></i>
+      <nz-icon nzType="down" />
       <!-- comment -->
     </button>
   `
@@ -391,7 +390,7 @@ export class TestButtonIconOnlyWithCommentComponent {}
   imports: [NzIconModule, NzButtonModule],
   template: `
     <button nz-button>
-      <i nz-icon nzType="down"></i>
+      <nz-icon nzType="down" />
       text
     </button>
   `

@@ -27,7 +27,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
         <nz-badge [nzDot]="dot">
           <a class="head-example"></a>
         </nz-badge>
-        <nz-switch [(ngModel)]="dot"></nz-switch>
+        <nz-switch [(ngModel)]="dot" />
       </div>
     </div>
   `,

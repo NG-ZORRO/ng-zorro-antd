@@ -5,7 +5,7 @@
 
 import { confirm, input, select } from '@inquirer/prompts';
 import { bgBlue, bgGreen, bgRed, bgYellow, blue, green, red, yellow } from 'chalk';
-import { readFileSync, readJsonSync, writeFileSync } from 'fs-extra';
+import { readFileSync, readJsonSync, writeFileSync, writeJsonSync } from 'fs-extra';
 
 import { execSync, spawnSync } from 'child_process';
 import path from 'path';

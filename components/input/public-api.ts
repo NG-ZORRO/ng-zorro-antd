@@ -10,6 +10,7 @@ export * from './input-group-slot.component';
 export * from './input-group.component';
 export * from './input-otp.component';
 export * from './input-password.directive';
+export * from './input-search.directive';
 export * from './input-wrapper.component';
 export * from './input.directive';
 export * from './input.module';

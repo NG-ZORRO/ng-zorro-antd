@@ -25,6 +25,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormItemFeedbackIconComponent } from 'ng-zorro-antd/core/form';
 import { getStatusClassNames, getVariantClassNames } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -33,13 +34,14 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
 import { NzInputAddonAfterDirective, NzInputAddonBeforeDirective } from './input-addon.directive';
 import { NzInputPrefixDirective, NzInputSuffixDirective } from './input-affix.directive';
 import { NzInputPasswordDirective, NzInputPasswordIconDirective } from './input-password.directive';
+import { NzInputSearchDirective, NzInputSearchEnterButtonDirective } from './input-search.directive';
 import { NzInputDirective } from './input.directive';
 import { NZ_INPUT_WRAPPER } from './tokens';
 
 @Component({
-  selector: 'nz-input-wrapper,nz-input-password',
+  selector: 'nz-input-wrapper,nz-input-password,nz-input-search',
   exportAs: 'nzInputWrapper',
-  imports: [NzIconModule, NzFormItemFeedbackIconComponent, NgTemplateOutlet],
+  imports: [NzIconModule, NzButtonModule, NzFormItemFeedbackIconComponent, NgTemplateOutlet],
   template: `
     @if (hasAddon()) {
       <ng-template [ngTemplateOutlet]="inputWithAddonInner" />
@@ -65,6 +67,26 @@ import { NZ_INPUT_WRAPPER } from './tokens';
 
         @if (hasAddonAfter()) {
           <span class="ant-input-group-addon">
+            @if (inputSearchDir) {
+              @let hasEnterButton = inputSearchEnterButton() ?? inputSearchDir.nzEnterButton() !== false;
+              <button
+                nz-button
+                [nzType]="hasEnterButton ? 'primary' : 'default'"
+                [nzSize]="size()"
+                [nzLoading]="inputSearchDir.nzLoading()"
+                type="button"
+                class="ant-input-search-button"
+                (click)="inputSearchDir.search($event)"
+              >
+                <ng-content select="[nzInputSearchEnterButton]">
+                  @if (typeof inputSearchDir.nzEnterButton() === 'string') {
+                    {{ inputSearchDir.nzEnterButton() }}
+                  } @else {
+                    <nz-icon nzType="search" nzTheme="outline" />
+                  }
+                </ng-content>
+              </button>
+            }
             <ng-content select="[nzInputAddonAfter]">{{ nzAddonAfter() }}</ng-content>
           </span>
         }
@@ -95,7 +117,7 @@ import { NZ_INPUT_WRAPPER } from './tokens';
               [class.ant-input-clear-icon-hidden]="!inputDir().value() || disabled() || readOnly()"
               role="button"
               tabindex="-1"
-              (click)="clear()"
+              (click)="clear(); inputSearchDir?.search($event, 'clear')"
             >
               <ng-content select="[nzInputClearIcon]">
                 <nz-icon nzType="close-circle" nzTheme="fill" />
@@ -141,7 +163,6 @@ import { NZ_INPUT_WRAPPER } from './tokens';
   host: {
     '[class]': 'class()',
     '[class.ant-input-disabled]': 'disabled()',
-    '[class.ant-input-password]': 'inputPasswordDir',
     '[class.ant-input-affix-wrapper-textarea-with-clear-btn]': 'nzAllowClear() && isTextarea()'
   }
 })
@@ -149,6 +170,7 @@ export class NzInputWrapperComponent {
   private readonly focusMonitor = inject(FocusMonitor);
 
   protected readonly inputPasswordDir = inject(NzInputPasswordDirective, { self: true, optional: true });
+  protected readonly inputSearchDir = inject(NzInputSearchDirective, { self: true, optional: true });
 
   protected readonly inputRef = contentChild.required(NzInputDirective, { read: ElementRef });
   protected readonly inputDir = contentChild.required(NzInputDirective);
@@ -158,6 +180,7 @@ export class NzInputWrapperComponent {
   protected readonly addonBefore = contentChild(NzInputAddonBeforeDirective);
   protected readonly addonAfter = contentChild(NzInputAddonAfterDirective);
   protected readonly inputPasswordIconTmpl = contentChild(NzInputPasswordIconDirective, { read: TemplateRef });
+  protected readonly inputSearchEnterButton = contentChild(NzInputSearchEnterButtonDirective);
 
   readonly nzAllowClear = input(false, { transform: booleanAttribute });
   readonly nzPrefix = input<string>();
@@ -180,7 +203,9 @@ export class NzInputWrapperComponent {
   );
   protected readonly hasAffix = computed(() => this.hasPrefix() || this.hasSuffix());
   protected readonly hasAddonBefore = computed(() => !!this.nzAddonBefore() || !!this.addonBefore());
-  protected readonly hasAddonAfter = computed(() => !!this.nzAddonAfter() || !!this.addonAfter());
+  protected readonly hasAddonAfter = computed(
+    () => !!this.nzAddonAfter() || !!this.addonAfter() || !!this.inputSearchDir
+  );
   protected readonly hasAddon = computed(() => this.hasAddonBefore() || this.hasAddonAfter());
 
   private readonly compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });

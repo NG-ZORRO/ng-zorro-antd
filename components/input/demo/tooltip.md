@@ -1,5 +1,5 @@
 ---
-order: 9
+order: 10
 title:
   zh-CN: 输入时格式化展示
   en-US: Format Tooltip Input

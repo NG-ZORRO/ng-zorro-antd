@@ -1,5 +1,6 @@
 ---
 order: 7
+version: 20.4.0
 title:
   zh-CN: 自定义样式
   en-US: Customized style

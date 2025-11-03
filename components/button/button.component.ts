@@ -6,23 +6,26 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
+  afterEveryRender,
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
+  contentChild,
   ContentChild,
   DestroyRef,
   ElementRef,
+  inject,
   Input,
   OnChanges,
   OnInit,
   Renderer2,
+  signal,
   SimpleChanges,
-  ViewEncapsulation,
-  booleanAttribute,
-  computed,
-  inject,
-  signal
+  viewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
@@ -48,7 +51,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzLoading) {
-      <nz-icon nzType="loading" />
+      <span class="ant-btn-icon ant-btn-loading-icon">
+        <nz-icon nzType="loading" />
+      </span>
     }
     <ng-content></ng-content>
   `,
@@ -69,7 +74,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
     '[class.ant-btn-rtl]': `dir === 'rtl'`,
-    '[class.ant-btn-icon-only]': `iconOnly`,
+    '[class.ant-btn-icon-only]': `iconOnly()`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
   },
@@ -77,7 +82,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   providers: [{ provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'btn' }]
 })
 export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContentInit, OnInit {
-  private elementRef = inject(ElementRef);
+  private elementRef: ElementRef<HTMLButtonElement | HTMLAnchorElement> = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
   private renderer = inject(Renderer2);
   private directionality = inject(Directionality);
@@ -87,6 +92,9 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
   @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
   @Input({ transform: booleanAttribute }) nzGhost: boolean = false;
+  /**
+   * @deprecated Will be removed in v22.0.0. Please use `nz-input-search` instead.
+   */
   @Input({ transform: booleanAttribute }) nzSearch: boolean = false;
   @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
   @Input({ transform: booleanAttribute }) nzDanger: boolean = false;
@@ -97,20 +105,26 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
   dir: Direction = 'ltr';
 
-  protected finalSize = computed(() => {
+  private readonly elementOnly = signal(false);
+  private readonly size = signal<NzSizeLDSType>(this.nzSize);
+  private readonly compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
+  private readonly loading$ = new Subject<boolean>();
+
+  protected readonly finalSize = computed(() => {
     if (this.compactSize) {
       return this.compactSize();
     }
     return this.size();
   });
 
-  private size = signal<NzSizeLDSType>(this.nzSize);
-  private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
-  private loading$ = new Subject<boolean>();
+  readonly iconDir = contentChild(NzIconDirective);
+  readonly loadingIconDir = viewChild(NzIconDirective);
+
+  readonly iconOnly = computed(() => this.elementOnly() && (!!this.iconDir() || !!this.loadingIconDir()));
 
   insertSpan(nodes: NodeList, renderer: Renderer2): void {
     nodes.forEach(node => {
-      if (node.nodeName === '#text') {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent!.trim().length > 0) {
         const span = renderer.createElement('span');
         const parent = renderer.parentNode(node);
         renderer.insertBefore(parent, span, node);
@@ -119,21 +133,25 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
     });
   }
 
-  public get iconOnly(): boolean {
-    const listOfNode = Array.from((this.elementRef?.nativeElement as HTMLButtonElement)?.childNodes || []);
-    const noText = listOfNode.every(node => node.nodeName !== '#text');
-    // ignore icon and comment
-    const noSpan =
-      listOfNode.filter(node => {
-        return !(node.nodeName === '#comment' || !!(node as HTMLElement)?.classList?.contains('anticon'));
-      }).length == 0;
-    return !!this.nzIconDirectiveElement && noSpan && noText;
-  }
-
   constructor() {
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
       this.size.set(this.nzSize);
       this.cdr.markForCheck();
+    });
+
+    let elementOnly = false;
+    afterEveryRender({
+      read: () => {
+        const { childNodes, children } = this.elementRef.nativeElement;
+        const hasText = Array.from(childNodes).some(
+          node => node.nodeType === Node.TEXT_NODE && node.textContent!.trim().length > 0
+        );
+        const visibleElementCount = Array.from(children).filter(
+          element => (element as HTMLElement).style.display !== 'none'
+        ).length;
+        elementOnly = !hasText && visibleElementCount === 1;
+      },
+      write: () => this.elementOnly.set(elementOnly)
     });
   }
 

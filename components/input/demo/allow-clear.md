@@ -1,5 +1,5 @@
 ---
-order: 12
+order: 13
 version: 20.4.0
 title:
   zh-CN: 带移除图标

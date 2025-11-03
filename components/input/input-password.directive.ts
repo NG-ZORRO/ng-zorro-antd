@@ -6,7 +6,11 @@
 import { Directive, input, model } from '@angular/core';
 
 @Directive({
-  selector: 'nz-input-password'
+  selector: 'nz-input-password',
+  exportAs: 'nzInputPassword',
+  host: {
+    class: 'ant-input-password'
+  }
 })
 export class NzInputPasswordDirective {
   readonly nzVisibilityToggle = input(true);
