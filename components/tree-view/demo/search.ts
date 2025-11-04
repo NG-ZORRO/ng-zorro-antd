@@ -76,12 +76,10 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
   selector: 'nz-demo-tree-view-search',
   imports: [FormsModule, NzInputModule, NzIconModule, NzTreeViewModule, NzNoAnimationDirective, NzHighlightPipe],
   template: `
-    <nz-input-group [nzSuffix]="suffixIcon">
+    <nz-input-wrapper>
       <input type="text" nz-input placeholder="Search" ngModel (ngModelChange)="searchValue$.next($event)" />
-    </nz-input-group>
-    <ng-template #suffixIcon>
-      <nz-icon nzType="search" />
-    </ng-template>
+      <nz-icon nzInputSuffix nzType="search" />
+    </nz-input-wrapper>
 
     <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource" nzNoAnimation>
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>

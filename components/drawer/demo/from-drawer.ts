@@ -35,9 +35,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
             <nz-form-item>
               <nz-form-label>Url</nz-form-label>
               <nz-form-control>
-                <nz-input-group nzAddOnBefore="http://" nzAddOnAfter=".com">
+                <nz-input-wrapper nzAddonBefore="http://" nzAddonAfter=".com">
                   <input type="text" nz-input placeholder="please enter url" />
-                </nz-input-group>
+                </nz-input-wrapper>
               </nz-form-control>
             </nz-form-item>
           </div>

@@ -1220,18 +1220,17 @@ class NzTestAutocompleteWithObjectOptionComponent {
 @Component({
   imports: [NzAutocompleteModule, NzInputModule],
   template: `
-    <nz-input-group #inputGroupComponent nzSize="large" [nzSuffix]="suffixIcon">
-      <input placeholder="input here" nz-input [nzAutocomplete]="auto" />
-      <ng-template #suffixIcon></ng-template>
+    <nz-input-wrapper #inputGroupComponent>
+      <input placeholder="input here" nz-input nzSize="large" [nzAutocomplete]="auto" />
       <nz-autocomplete #auto>
         <nz-auto-option nzValue="value">label</nz-auto-option>
       </nz-autocomplete>
-    </nz-input-group>
+    </nz-input-wrapper>
   `
 })
 class NzTestAutocompleteWithGroupInputComponent {
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-  @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent!: ElementRef;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: true }) trigger!: NzAutocompleteTriggerDirective;
+  @ViewChild('inputGroupComponent', { static: true, read: ElementRef }) inputGroupComponent!: ElementRef;
 }
 
 describe('auto-complete', () => {

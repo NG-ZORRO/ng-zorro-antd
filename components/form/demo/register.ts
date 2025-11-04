@@ -68,15 +68,13 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
           [nzValidateStatus]="validateForm.controls['phoneNumber']"
           nzErrorTip="Please input your phone number!"
         >
-          <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
-            <ng-template #addOnBeforeTemplate>
-              <nz-select formControlName="phoneNumberPrefix" class="phone-select">
-                <nz-option nzLabel="+86" nzValue="+86"></nz-option>
-                <nz-option nzLabel="+87" nzValue="+87"></nz-option>
-              </nz-select>
-            </ng-template>
+          <nz-input-wrapper>
+            <nz-select nzInputAddonBefore formControlName="phoneNumberPrefix" class="phone-select">
+              <nz-option nzLabel="+86" nzValue="+86"></nz-option>
+              <nz-option nzLabel="+87" nzValue="+87"></nz-option>
+            </nz-select>
             <input formControlName="phoneNumber" id="'phoneNumber'" nz-input />
-          </nz-input-group>
+          </nz-input-wrapper>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

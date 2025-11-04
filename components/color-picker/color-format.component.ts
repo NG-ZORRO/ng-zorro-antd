@@ -28,8 +28,8 @@ import {
 } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 
-import { NzInputDirective, NzInputGroupComponent } from 'ng-zorro-antd/input';
-import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { generateColor } from './src/util/util';
@@ -39,7 +39,7 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
   selector: 'nz-color-format',
   exportAs: 'nzColorFormat',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, NzSelectModule, NzInputDirective, NzInputGroupComponent, NzInputNumberComponent],
+  imports: [ReactiveFormsModule, NzSelectModule, NzInputModule, NzInputNumberModule],
   template: `
     <div [formGroup]="validateForm" class="ant-color-picker-input-container">
       <div class="ant-color-picker-format-select">
@@ -54,9 +54,9 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
         @switch (validateForm.controls.isFormat.value) {
           @case ('hex') {
             <div class="ant-color-picker-hex-input">
-              <nz-input-group nzPrefix="#" nzSize="small">
+              <nz-input-wrapper nzPrefix="#">
                 <input nz-input nzSize="small" formControlName="hex" />
-              </nz-input-group>
+              </nz-input-wrapper>
             </div>
           }
           @case ('hsb') {
