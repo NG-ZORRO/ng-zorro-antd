@@ -43,7 +43,7 @@ function generateDoc(file: Buffer, docsPath: string, name: string, language: Lan
   // template.html
   writeFileSync(
     path.join(docsPath, `${filename}.html`),
-    wrapperDocs(generateToc(raw), generateTitle(meta), angularNonBindAble(content))
+    wrapperDocs((meta.toc ?? true) ? generateToc(raw) : '', generateTitle(meta), angularNonBindAble(content))
   );
   // component.ts
   const component = componentTemplate
