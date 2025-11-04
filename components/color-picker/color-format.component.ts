@@ -39,7 +39,7 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
   selector: 'nz-color-format',
   exportAs: 'nzColorFormat',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, NzSelectModule, NzInputDirective, NzInputWrapperComponent, NzInputNumberComponent],
+  imports: [ReactiveFormsModule, NzSelectModule, NzInputModule, NzInputNumberModule],
   template: `
     <div [formGroup]="validateForm" class="ant-color-picker-input-container">
       <div class="ant-color-picker-format-select">
