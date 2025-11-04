@@ -68,7 +68,8 @@ import { NZ_INPUT_WRAPPER } from './tokens';
         @if (hasAddonAfter()) {
           <span class="ant-input-group-addon">
             @if (inputSearchDir) {
-              @let hasEnterButton = inputSearchEnterButton() ?? inputSearchDir.nzEnterButton() !== false;
+              @let nzEnterButton = inputSearchDir.nzEnterButton();
+              @let hasEnterButton = inputSearchEnterButton() ?? nzEnterButton !== false;
               <button
                 nz-button
                 [nzType]="hasEnterButton ? 'primary' : 'default'"
@@ -79,8 +80,8 @@ import { NZ_INPUT_WRAPPER } from './tokens';
                 (click)="inputSearchDir.search($event)"
               >
                 <ng-content select="[nzInputSearchEnterButton]">
-                  @if (typeof inputSearchDir.nzEnterButton() === 'string') {
-                    {{ inputSearchDir.nzEnterButton() }}
+                  @if (nzEnterButton && typeof nzEnterButton === 'string') {
+                    {{ nzEnterButton }}
                   } @else {
                     <nz-icon nzType="search" nzTheme="outline" />
                   }
