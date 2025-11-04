@@ -85,6 +85,10 @@ export interface ComponentIndexDocMeta {
    */
   tag?: string;
   /**
+   * whether to generate toc
+   */
+  toc?: boolean;
+  /**
    * content of the component
    */
   __content?: string;
