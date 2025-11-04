@@ -29,7 +29,7 @@ import {
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { NzInputDirective, NzInputWrapperComponent } from 'ng-zorro-antd/input';
-import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { generateColor } from './src/util/util';
