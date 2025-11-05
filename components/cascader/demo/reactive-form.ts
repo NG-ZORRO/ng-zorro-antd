@@ -1,6 +1,6 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
@@ -52,7 +52,7 @@ const options: NzCascaderOption[] = [
   imports: [ReactiveFormsModule, NzButtonModule, NzCascaderModule],
   template: `
     <form [formGroup]="form" novalidate>
-      <nz-cascader [nzOptions]="nzOptions" formControlName="name"></nz-cascader>
+      <nz-cascader [nzOptions]="nzOptions" formControlName="name" />
     </form>
     <br />
     <button nz-button (click)="reset()">Reset</button>
@@ -66,16 +66,15 @@ const options: NzCascaderOption[] = [
     `
   ]
 })
-export class NzDemoCascaderReactiveFormComponent implements OnDestroy {
+export class NzDemoCascaderReactiveFormComponent {
   private fb = inject(FormBuilder);
   form = this.fb.group({
     name: this.fb.control<string[] | null>(null, Validators.required)
   });
-  nzOptions: NzCascaderOption[] = options;
-  changeSubscription: Subscription;
+  readonly nzOptions: NzCascaderOption[] = options;
 
   constructor() {
-    this.changeSubscription = this.form.controls.name.valueChanges.subscribe(data => {
+    this.form.controls.name.valueChanges.pipe(takeUntilDestroyed()).subscribe(data => {
       this.onChanges(data);
     });
   }
@@ -91,9 +90,5 @@ export class NzDemoCascaderReactiveFormComponent implements OnDestroy {
 
   onChanges(values: string[] | null): void {
     console.log(values);
-  }
-
-  ngOnDestroy(): void {
-    this.changeSubscription.unsubscribe();
   }
 }

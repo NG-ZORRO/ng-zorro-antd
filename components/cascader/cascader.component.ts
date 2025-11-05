@@ -137,7 +137,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                   [mirrorSync]="true"
                   [disabled]="nzDisabled"
                   [autofocus]="nzAutoFocus"
-                  [focusTrigger]="menuVisible"
+                  [focusTrigger]="menuVisible()"
                 />
               </div>
             </div>
@@ -150,7 +150,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               [mirrorSync]="false"
               [disabled]="nzDisabled"
               [autofocus]="nzAutoFocus"
-              [focusTrigger]="menuVisible"
+              [focusTrigger]="menuVisible()"
             />
 
             @if (showLabelRender) {
@@ -175,7 +175,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       @if (nzShowArrow) {
         <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
           @if (!isLoading) {
-            <nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible" />
+            <nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible()" />
           } @else {
             <nz-icon nzType="loading" />
           }
@@ -198,7 +198,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-dropdown'"
-      [cdkConnectedOverlayOpen]="menuVisible"
+      [cdkConnectedOverlayOpen]="menuVisible()"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="closeMenu()"
       (positionChange)="onPositionChange($event)"
@@ -220,7 +220,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           #menu
           class="ant-cascader-menus"
           [class.ant-cascader-rtl]="dir === 'rtl'"
-          [class.ant-cascader-menus-hidden]="!menuVisible"
+          [class.ant-cascader-menus-hidden]="!menuVisible()"
           [class.ant-cascader-menu-empty]="shouldShowEmpty"
           [class]="nzMenuClassName"
           [style]="nzMenuStyle"
@@ -291,7 +291,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-borderless]': `nzVariant === 'borderless'`,
     '[class.ant-select-filled]': `nzVariant === 'filled'`,
     '[class.ant-select-underlined]': `nzVariant === 'underlined'`,
-    '[class.ant-select-open]': 'menuVisible',
+    '[class.ant-select-open]': 'menuVisible()',
     '[class.ant-select-focused]': 'isFocused',
     '[class.ant-select-multiple]': 'nzMultiple',
     '[class.ant-select-single]': '!nzMultiple',
@@ -416,7 +416,7 @@ export class NzCascaderComponent
   shouldShowEmpty: boolean = false;
 
   el: HTMLElement = this.elementRef.nativeElement;
-  menuVisible = false;
+  readonly menuVisible = signal(false);
   isLoading = false;
   labelRenderText?: string;
   labelRenderContext = {};
@@ -528,9 +528,7 @@ export class NzCascaderComponent
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(({ status, hasFeedback }) => {
-        this.setStatusStyles(status, hasFeedback);
-      });
+      .subscribe(({ status, hasFeedback }) => this.setStatusStyles(status, hasFeedback));
 
     const srv = this.cascaderService;
 
@@ -570,9 +568,9 @@ export class NzCascaderComponent
       this.dropdownWidthStyle = '';
     });
 
-    this.i18nService.localeChange.pipe(startWith(), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.setLocale();
-    });
+    this.i18nService.localeChange
+      .pipe(startWith(), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.setLocale());
 
     this.size.set(this.nzSize);
 
@@ -672,7 +670,7 @@ export class NzCascaderComponent
   }
 
   setMenuVisible(visible: boolean): void {
-    if (this.nzDisabled || this.menuVisible === visible) {
+    if (this.nzDisabled || this.menuVisible() === visible) {
       return;
     }
     if (visible) {
@@ -683,7 +681,7 @@ export class NzCascaderComponent
       this.inputValue = '';
     }
 
-    this.menuVisible = visible;
+    this.menuVisible.set(visible);
     this.nzVisibleChange.emit(visible);
     this.cdr.detectChanges();
   }
@@ -752,7 +750,7 @@ export class NzCascaderComponent
   }
 
   handleInputBlur(): void {
-    this.menuVisible ? this.focus() : this.blur();
+    this.menuVisible() ? this.focus() : this.blur();
   }
 
   handleInputFocus(): void {
@@ -772,7 +770,7 @@ export class NzCascaderComponent
       this.focus();
     }
     if (this.isActionTrigger('click')) {
-      this.delaySetMenuVisible(!this.menuVisible, 100);
+      this.delaySetMenuVisible(!this.menuVisible(), 100);
     }
     this.onTouched();
   }
@@ -790,7 +788,7 @@ export class NzCascaderComponent
   onTriggerMouseLeave(event: MouseEvent): void {
     if (
       this.nzDisabled ||
-      !this.menuVisible ||
+      !this.menuVisible() ||
       this.isOpening ||
       !this.isActionTrigger('hover') ||
       this.openControlled
@@ -1130,7 +1128,7 @@ export class NzCascaderComponent
    * and may exceed the boundary of browser's window.
    */
   private reposition(): void {
-    if (this.overlay && this.overlay.overlayRef && this.menuVisible) {
+    if (this.overlay && this.overlay.overlayRef && this.menuVisible()) {
       Promise.resolve().then(() => {
         this.overlay.overlayRef.updatePosition();
         this.cdr.markForCheck();
@@ -1257,7 +1255,7 @@ export class NzCascaderComponent
         }
 
         // Press any keys above to reopen menu.
-        if (!this.menuVisible && keyCode !== BACKSPACE && keyCode !== ESCAPE && !this.openControlled) {
+        if (!this.menuVisible() && keyCode !== BACKSPACE && keyCode !== ESCAPE && !this.openControlled) {
           // The `setMenuVisible` runs `detectChanges()`, so we don't need to run `markForCheck()` additionally.
           return this.ngZone.run(() => this.setMenuVisible(true));
         }
@@ -1267,7 +1265,7 @@ export class NzCascaderComponent
           return;
         }
 
-        if (!this.menuVisible) {
+        if (!this.menuVisible()) {
           return;
         }
 

@@ -59,12 +59,12 @@ const options: NzCascaderOption[] = [
         [nzOpen]="open"
         (nzSelectionChange)="onSelectionChange($event)"
         (nzVisibleChange)="onVisibleChange($event)"
-      ></nz-cascader>
+      />
     </div>
   `
 })
 export class NzDemoCascaderOpenComponent {
-  nzOptions = options;
+  readonly nzOptions = options;
   values = ['zhejiang', 'hangzhou', 'xihu'];
   open = false;
 

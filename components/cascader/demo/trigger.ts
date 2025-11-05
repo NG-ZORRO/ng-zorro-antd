@@ -62,7 +62,7 @@ const options: NzCascaderOption[] = [
   `
 })
 export class NzDemoCascaderTriggerComponent {
-  nzOptions: NzCascaderOption[] = options;
+  readonly nzOptions: NzCascaderOption[] = options;
   values: string[] | null = null;
   text = 'Unselect';
 
