@@ -57,12 +57,7 @@ const options: NzCascaderOption[] = [
       (nzOnCancel)="handleCancel($event)"
       (nzOnOk)="handleOk($event)"
     >
-      <nz-cascader
-        *nzModalContent
-        [nzOptions]="nzOptions"
-        [(ngModel)]="values"
-        (ngModelChange)="onChanges($event)"
-      ></nz-cascader>
+      <nz-cascader *nzModalContent [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)" />
     </nz-modal>
 
     <button nz-button (click)="open()">Open Dialog</button>

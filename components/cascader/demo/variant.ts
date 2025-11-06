@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
 
 const options: NzCascaderOption[] = [
   {
@@ -47,16 +47,16 @@ const options: NzCascaderOption[] = [
 
 @Component({
   selector: 'nz-demo-cascader-variant',
-  imports: [NzCascaderModule, NzSpaceModule],
+  imports: [NzCascaderModule, NzFlexModule],
   template: `
-    <nz-space nzDirection="vertical" style="width: 100%">
-      <nz-cascader *nzSpaceItem [nzOptions]="options" nzVariant="outlined" />
-      <nz-cascader *nzSpaceItem [nzOptions]="options" nzVariant="filled" />
-      <nz-cascader *nzSpaceItem [nzOptions]="options" nzVariant="borderless" />
-      <nz-cascader *nzSpaceItem [nzOptions]="options" nzVariant="underlined" />
-    </nz-space>
+    <nz-flex nzVertical nzGap="middle">
+      <nz-cascader [nzOptions]="options" nzVariant="outlined" />
+      <nz-cascader [nzOptions]="options" nzVariant="filled" />
+      <nz-cascader [nzOptions]="options" nzVariant="borderless" />
+      <nz-cascader [nzOptions]="options" nzVariant="underlined" />
+    </nz-flex>
   `
 })
 export class NzDemoCascaderVariantComponent {
-  protected readonly options = options;
+  readonly options = options;
 }

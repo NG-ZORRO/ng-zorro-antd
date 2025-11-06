@@ -15,10 +15,6 @@ description: 级联选择框。
 
 ## API
 
-```html
-<nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
-```
-
 ### nz-cascader
 
 | 参数                  | 说明                                                                                       | 类型                                                                  | 默认值         | 支持全局配置 | 版本   |
@@ -52,7 +48,7 @@ description: 级联选择框。
 | `[nzShowSearch]`      | 是否支持搜索，默认情况下对 `label` 进行全匹配搜索，不能和 `[nzLoadData]` 同时使用          | `boolean \| NzShowSearchOptions`                                      | `false`        |
 | `[nzSize]`            | 输入框大小，可选 `large` `default` `small`                                                 | `'large' \| 'small' \| 'default'`                                     | `'default'`    | ✅           |
 | `[nzStatus]`          | 设置校验状态                                                                               | `'error' \| 'warning'`                                                | -              |
-| `[nzPrefix]`          | 自定义的选择框前缀                                                                         | `string \| TemplateRef<void>`                                         | -              |
+| `[nzPrefix]`          | 自定义的选择框前缀                                                                         | `string \| TemplateRef<void>`                                         | -              | -            | 20.2.0 |
 | `[nzSuffixIcon]`      | 自定义的选择框后缀图标                                                                     | `string \| TemplateRef<void>`                                         | -              |
 | `[nzValueProperty]`   | 选项的实际值的属性名                                                                       | `string`                                                              | `'value'`      |
 | `[nzVariant]`         | 形态变体                                                                                   | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'`              | `'outlined'`   | ✅           | 20.0.0 |

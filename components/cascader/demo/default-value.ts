@@ -48,25 +48,11 @@ const options: NzCascaderOption[] = [
 @Component({
   selector: 'nz-demo-cascader-default-value',
   imports: [FormsModule, NzCascaderModule],
-  template: `
-    <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)"></nz-cascader>
-  `
+  template: `<nz-cascader [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)" />`
 })
 export class NzDemoCascaderDefaultValueComponent {
-  nzOptions: NzCascaderOption[] = options;
-
+  readonly nzOptions: NzCascaderOption[] = options;
   values: string[] = ['zhejiang', 'hangzhou', 'xihu'];
-  /* // or like this:
-  values: any[] = [{
-    value: 'zhejiang',
-    label: 'Zhejiang'
-  }, {
-    value: 'hangzhou',
-    label: 'Hangzhou'
-  }, {
-    value: 'xihu',
-    label: 'West Lake'
-  }]; */
 
   onChanges(values: string[]): void {
     console.log(values, this.values);

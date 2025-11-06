@@ -14,10 +14,6 @@ description: Cascade selection box.
 
 ## API
 
-```html
-<nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
-```
-
 ### nz-cascader
 
 | Property              | Description                                                                                                                            | Type                                                                  | Default           | Global Config | Version |
@@ -51,7 +47,7 @@ description: Cascade selection box.
 | `[nzShowSearch]`      | whether support search. Cannot be used with `[nzLoadData]` at the same time                                                            | `boolean \| NzShowSearchOptions`                                      | `false`           |
 | `[nzSize]`            | input size, one of `large` `default` `small`                                                                                           | `'large' \| 'small' \| 'default'`                                     | `'default'`       | ✅            |
 | `[nzStatus]`          | set validation status                                                                                                                  | `'error' \| 'warning'`                                                | -                 |
-| `[nzPrefix]`          | custom prefix                                                                                                                          | `string\|TemplateRef<void>`                                           | -                 |
+| `[nzPrefix]`          | custom prefix                                                                                                                          | `string\|TemplateRef<void>`                                           | -                 | -             | 20.2.0  |
 | `[nzSuffixIcon]`      | custom suffix icon                                                                                                                     | `string\|TemplateRef<void>`                                           | -                 |
 | `[nzValueProperty]`   | value property name of options                                                                                                         | `string`                                                              | `'value'`         |
 | `[nzVariant]`         | Variants of Cascader                                                                                                                   | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'`              | `'outlined'`      | ✅            | 20.0.0  |

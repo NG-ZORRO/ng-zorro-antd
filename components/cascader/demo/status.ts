@@ -2,17 +2,18 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
 
 @Component({
   selector: 'nz-demo-cascader-status',
-  imports: [FormsModule, NzCascaderModule],
+  imports: [FormsModule, NzCascaderModule, NzFlexModule],
   template: `
-    <nz-cascader [nzOptions]="nzOptions" nzStatus="error"></nz-cascader>
-    <br />
-    <br />
-    <nz-cascader [nzOptions]="nzOptions" nzStatus="warning"></nz-cascader>
+    <nz-flex nzVertical nzGap="middle">
+      <nz-cascader [nzOptions]="nzOptions" nzStatus="error" />
+      <nz-cascader [nzOptions]="nzOptions" nzStatus="warning" />
+    </nz-flex>
   `
 })
 export class NzDemoCascaderStatusComponent {
-  nzOptions: NzCascaderOption[] = [];
+  readonly nzOptions: NzCascaderOption[] = [];
 }

@@ -52,11 +52,11 @@ const options: NzCascaderOption[] = [
     <nz-segmented [nzOptions]="placements" (nzValueChange)="setPlacement($event)"></nz-segmented>
     <br />
     <br />
-    <nz-cascader [nzOptions]="nzOptions" [nzPlacement]="placement"></nz-cascader>
+    <nz-cascader [nzOptions]="nzOptions" [nzPlacement]="placement" />
   `
 })
 export class NzDemoCascaderPlacementComponent {
-  nzOptions: NzCascaderOption[] = options;
+  readonly nzOptions: NzCascaderOption[] = options;
   placement: NzCascaderPlacement = 'topLeft';
   readonly placements: NzCascaderPlacement[] = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'];
 

@@ -51,9 +51,9 @@ const options: NzCascaderOption[] = [
   imports: [NzCascaderModule, NzFlexModule, NzIconModule],
   template: `
     <nz-flex nzVertical nzGap="small">
-      <nz-cascader [nzOptions]="nzOptions" nzSuffixIcon="smile"></nz-cascader>
-      <nz-cascader [nzOptions]="nzOptions" nzExpandIcon="smile"></nz-cascader>
-      <nz-cascader [nzOptions]="nzOptions" [nzPrefix]="smile"></nz-cascader>
+      <nz-cascader [nzOptions]="nzOptions" nzSuffixIcon="smile" />
+      <nz-cascader [nzOptions]="nzOptions" nzExpandIcon="smile" />
+      <nz-cascader [nzOptions]="nzOptions" [nzPrefix]="smile" />
     </nz-flex>
     <ng-template #smile><nz-icon nzType="smile" /></ng-template>
   `
