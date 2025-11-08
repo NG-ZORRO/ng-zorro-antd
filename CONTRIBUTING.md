@@ -27,7 +27,7 @@ Segmentfault / Stack Overflow is a much better place to ask questions since:
 
 To save your and our time, we will systematically close all issues that are requests for general support and redirect people to Segmentfault / Stack Overflow.
 
-If you would like to chat about the question in real-time, you can reach out via [![Discord](https://img.shields.io/discord/748677963142135818?label=Discord&style=flat-square)](https://discord.com/channels/748677963142135818/764322550712893451).
+If you would like to chat about the question in real-time, you can reach out via [![Discord](https://img.shields.io/discord/1433686455925870594?style=flat-square&logo=discord&label=Discord)](https://discord.com/channels/1433686455925870594/1433686456706138195).
 
 ## <a name="issue"></a> Found a Bug?
 

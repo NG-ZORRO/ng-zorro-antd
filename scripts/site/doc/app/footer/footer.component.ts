@@ -42,6 +42,7 @@ import { FooterItemComponent } from './footer-item.component';
             />
             <app-footer-item icon="global" title="Blog" link="https://ng.ant.design/blog" />
             <app-footer-item icon="x" title="X" link="https://x.com/ng_zorro" />
+            <app-footer-item icon="discord" title="Discord" link="https://discord.gg/Ga6Nd7aqVC" />
             @if (language() === 'zh') {
               <app-footer-item
                 icon="zhihu"
