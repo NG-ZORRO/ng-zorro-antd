@@ -17,6 +17,7 @@ describe('NzSanitizerPipe', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      providers: [NzSanitizerPipe],
       imports: [BrowserModule]
     });
     pipe = TestBed.inject(NzSanitizerPipe);
