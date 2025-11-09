@@ -295,24 +295,22 @@ describe('nz-tooltip', () => {
     it('should background work', fakeAsync(() => {
       const triggerElement = component.titleTemplate.nativeElement;
       component.color = 'pink';
-
       fixture.detectChanges();
 
       dispatchMouseEvent(triggerElement, 'click');
       waitingForTooltipToggling();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain(
-        'ant-tooltip-pink'
-      );
+      const tooltip = overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!;
+      expect(tooltip.classList).toContain('ant-tooltip-pink');
 
       component.color = '#f50';
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe(
-        'rgb(255, 85, 0)'
-      );
-      expect(
-        overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor
-      ).toBe('rgb(255, 85, 0)');
+      expect(tooltip.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe('rgb(255, 85, 0)');
+      const arrow = tooltip.querySelector<HTMLElement>('.ant-tooltip-arrow')!;
+      // Check that the CSS variable is correctly set on the arrow element
+      const arrowStyles = getComputedStyle(arrow);
+      const cssVarValue = arrowStyles.getPropertyValue('--antd-arrow-background-color').trim();
+      expect(cssVarValue).toBe('#f50');
     }));
   });
 
