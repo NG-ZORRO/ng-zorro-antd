@@ -24,7 +24,7 @@ export class NzResultTitleDirective {}
 export class NzResultSubtitleDirective {}
 
 @Directive({
-  selector: 'i[nz-result-icon], div[nz-result-icon]',
+  selector: 'i[nz-result-icon], nz-icon[nz-result-icon], div[nz-result-icon]',
   exportAs: 'nzResultIcon'
 })
 export class NzResultIconDirective {}
