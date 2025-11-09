@@ -21,6 +21,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -70,6 +72,7 @@ import { NzSegmentedService } from './segmented.service';
   encapsulation: ViewEncapsulation.None
 })
 export class NzSegmentedItemComponent implements OnInit {
+  private readonly animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
   private readonly service = inject(NzSegmentedService);
   private readonly elementRef = inject(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
@@ -98,13 +101,16 @@ export class NzSegmentedItemComponent implements OnInit {
             this.service.activated$.next(this.elementRef.nativeElement);
           }
         }),
-        switchMap(value =>
-          this.service.animationDone$.pipe(
+        switchMap(value => {
+          if (this.animationType === 'NoopAnimations') {
+            return of(value);
+          }
+          return this.service.animationDone$.pipe(
             filter(event => event.toState === 'to' || event.toState === 'toVertical'),
             take(1),
             map(() => value)
-          )
-        ),
+          );
+        }),
         filter(value => value === this.nzValue()),
         takeUntilDestroyed(this.destroyRef)
       )
