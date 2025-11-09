@@ -10,8 +10,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
-import { NzInputGroupComponent } from 'ng-zorro-antd/input/input-group.component';
+import { NzInputWrapperComponent } from 'ng-zorro-antd/input/input-wrapper.component';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputDirective } from './input.directive';
@@ -144,17 +145,17 @@ describe('input', () => {
       fixture = TestBed.createComponent(NzTestInputWithDirComponent);
       fixture.detectChanges();
       inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
-      inputGroupElement = fixture.debugElement.query(By.directive(NzInputGroupComponent));
+      inputGroupElement = fixture.debugElement.query(By.directive(NzInputWrapperComponent));
     });
 
     it('should className correct on dir change', () => {
       expect(inputElement.nativeElement.classList).not.toContain('ant-input-rtl');
-      expect(inputGroupElement.nativeElement.classList).not.toContain('ant-input-group-rtl');
+      expect(inputGroupElement.nativeElement.classList).not.toContain('ant-input-group-wrapper-rtl');
 
       fixture.componentInstance.dir = 'rtl';
       fixture.detectChanges();
       expect(inputElement.nativeElement.classList).toContain('ant-input-rtl');
-      expect(inputGroupElement.nativeElement.classList).toContain('ant-input-group-rtl');
+      expect(inputGroupElement.nativeElement.classList).toContain('ant-input-group-wrapper-rtl');
     });
   });
 
@@ -251,7 +252,7 @@ describe('input', () => {
 });
 
 @Component({
-  imports: [BidiModule, NzInputModule],
+  imports: [BidiModule, NzInputModule, NzIconModule],
   template: `
     <div [dir]="dir">
       <input nz-input />
@@ -268,14 +269,16 @@ export class NzTestInputWithDirComponent {
 
 @Component({
   imports: [NzInputModule],
-  template: `<input
-    nz-input
-    [nzSize]="size"
-    [disabled]="disabled"
-    [nzBorderless]="borderless"
-    [nzVariant]="variant"
-    [nzStepperless]="stepperless"
-  />`
+  template: `
+    <input
+      nz-input
+      [nzSize]="size"
+      [disabled]="disabled"
+      [nzBorderless]="borderless"
+      [nzVariant]="variant"
+      [nzStepperless]="stepperless"
+    />
+  `
 })
 export class NzTestInputWithInputComponent {
   size: NzSizeLDSType = 'default';
