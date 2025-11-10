@@ -102,7 +102,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   private selectionChangeSubscription!: Subscription;
   private optionsChangeSubscription!: Subscription;
   private overlayOutsideClickSubscription!: Subscription;
-  private document: Document = inject(DOCUMENT);
+  private document = inject(DOCUMENT);
   private nzInputGroupWhitSuffixOrPrefixDirective = inject(NzInputGroupWhitSuffixOrPrefixDirective, { optional: true });
 
   constructor() {
