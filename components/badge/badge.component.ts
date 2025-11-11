@@ -55,11 +55,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
           [nzOffset]="nzOffset"
           [nzSize]="nzSize"
           [nzTitle]="nzTitle"
-          [nzStyle]="nzStyle"
+          [nzStyle]="mergedStyle"
           [nzDot]="nzDot"
           [nzCount]="nzCount"
           [nzOverflowCount]="nzOverflowCount"
-          [disableAnimation]="!!(nzStandalone || nzStatus || nzColor || noAnimation?.nzNoAnimation)"
+          [disableAnimation]="!!(nzStandalone || nzStatus || presetColor || noAnimation?.nzNoAnimation)"
           [noAnimation]="!!noAnimation?.nzNoAnimation"
         />
       }

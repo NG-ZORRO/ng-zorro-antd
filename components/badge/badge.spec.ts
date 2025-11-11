@@ -3,19 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { BidiModule, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { badgePresetColors } from 'ng-zorro-antd/badge/preset-colors';
-import { NzRibbonComponent } from 'ng-zorro-antd/badge/ribbon.component';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
+import { badgePresetColors } from './preset-colors';
+import { NzRibbonComponent } from './ribbon.component';
+import { NzBadgeStatusType } from './types';
 
 describe('nz-badge', () => {
   beforeEach(() => {
@@ -242,8 +243,22 @@ describe('nz-badge', () => {
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
     }));
 
+    it('should hex nzColor work', () => {
+      testComponent.count = 0;
+      testComponent.color = '#f5222d';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').style.backgroundColor).toBe(
+        'rgb(245, 34, 45)'
+      );
+
+      testComponent.count = 5;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').style.backgroundColor).toBe('rgb(245, 34, 45)');
+    });
+
     it('should nzStyle work even if nzColor is not provided', () => {
       testComponent.color = undefined;
+      testComponent.status = 'success'; // must set nzStatus to make sure status dot is rendered
       testComponent.style = { backgroundColor: '#52c41a' };
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').style.backgroundColor).toBe('rgb(82, 196, 26)');
@@ -345,7 +360,7 @@ export class NzTestBadgeBasicComponent {
   standalone = false;
   overflow = 20;
   showZero = false;
-  status!: string;
+  status!: NzBadgeStatusType | string;
   style!: NgStyleInterface;
   text!: string;
   title?: string | null;
@@ -364,7 +379,6 @@ export class NzTestBadgeBasicComponent {
   `
 })
 export class NzTestBadgeRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
   direction: Direction = 'rtl';
   count = 5;
 }
