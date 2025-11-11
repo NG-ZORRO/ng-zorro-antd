@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development gulp start:dev",
-    "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI --code-coverage",
+    "test": "ng test --watch=false --progress=false --browsers=ChromeHeadlessCI --code-coverage",
     "test:watch": "gulp test:watch --tags",
     "test:schematics": "gulp build:schematics && gulp test:schematics",
     "build:schematics": "gulp build:schematics",
