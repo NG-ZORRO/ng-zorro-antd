@@ -57,9 +57,11 @@ stages:
         - task: Npm@1
           inputs:
             command: 'ci'
-        - script: |
-            npm run test
-            cat ./coverage-report/lcov.info | ./node_modules/.bin/codecov
+        - script: npm run test
+          displayName: 'Run tests'
+        - script: cat ./coverage-report/lcov.info | ./node_modules/.bin/codecov
+          displayName: 'Upload coverage to Codecov'
+          condition: succeededOrFailed()
 
         - task: PublishCodeCoverageResults@1
           displayName: 'publish code coverage results'
