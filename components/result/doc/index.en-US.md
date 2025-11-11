@@ -27,10 +27,10 @@ Use when important operations need to inform the user to process the results and
 
 You can use these directives as children of nz-result.
 
-| Directive                                | Description                              |
-| ---------------------------------------- | ---------------------------------------- |
-| `i[nz-result-icon], div[nz-result-icon]` | custom icon                              |
-| `div[nz-result-title]`                   | title                                    |
-| `div[nz-result-subtitle]`                | subtitle                                 |
-| `div[nz-result-content]`                 | contents, for detailed explanations      |
-| `div[nz-result-extra]`                   | extra content, usually an operating area |
+| Directive                 | Description                              |
+| ------------------------- | ---------------------------------------- |
+| `[nz-result-icon]`        | custom icon                              |
+| `div[nz-result-title]`    | title                                    |
+| `div[nz-result-subtitle]` | subtitle                                 |
+| `div[nz-result-content]`  | contents, for detailed explanations      |
+| `div[nz-result-extra]`    | extra content, usually an operating area |

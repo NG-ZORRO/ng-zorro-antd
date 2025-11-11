@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { BidiModule, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -37,14 +37,9 @@ export class NzTestResultBasicComponent {
 
 @Component({
   imports: [BidiModule, NzTestResultBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-basic-result></nz-test-basic-result>
-    </div>
-  `
+  template: `<nz-test-basic-result [dir]="direction" />`
 })
 export class NzTestResultRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
   direction: Direction = 'rtl';
 }
 
@@ -99,14 +94,14 @@ describe('nz-result', () => {
     });
 
     it('should icon overlap status', () => {
-      testComponent.icon = undefined;
+      testComponent.icon = 'smile-o';
       fixture.detectChanges();
 
       const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');
 
       expect(resultEl.nativeElement.classList).toContain('ant-result');
       expect(resultEl.nativeElement.classList).toContain('ant-result-error'); // should status work
-      expect(iconView.firstElementChild.classList).toContain('anticon-close-circle');
+      expect(iconView.firstElementChild.classList).toContain('anticon-smile-o');
     });
   });
 

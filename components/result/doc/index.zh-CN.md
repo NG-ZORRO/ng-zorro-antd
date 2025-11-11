@@ -28,10 +28,10 @@ description: 用于反馈一系列操作任务的处理结果。
 
 你可以在 nz-result 中加入如下指令，它们的优先级低于上面的参数。
 
-| 元素                                     | 说明                     |
-| ---------------------------------------- | ------------------------ |
-| `i[nz-result-icon], div[nz-result-icon]` | 在顶部展示的大图标       |
-| `div[nz-result-title]`                   | 标题                     |
-| `div[nz-result-subtitle]`                | 副标题                   |
-| `div[nz-result-content]`                 | 内容，可以展示详细的信息 |
-| `div[nz-result-extra]`                   | 操作区域                 |
+| 元素                      | 说明                     |
+| ------------------------- | ------------------------ |
+| `[nz-result-icon]`        | 在顶部展示的大图标       |
+| `div[nz-result-title]`    | 标题                     |
+| `div[nz-result-subtitle]` | 副标题                   |
+| `div[nz-result-content]`  | 内容，可以展示详细的信息 |
+| `div[nz-result-extra]`    | 操作区域                 |
