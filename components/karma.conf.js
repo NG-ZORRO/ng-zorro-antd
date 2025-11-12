@@ -32,7 +32,7 @@ module.exports = function (config) {
     },
     reporters: ['progress', 'kjhtml', 'spec', 'junit'],
     junitReporter: {
-      outputDir: '../junit'
+      outputDir: 'junit'
     },
     specReporter: {
       maxLogLines: 5,
