@@ -37,8 +37,8 @@ describe('dropdown', () => {
     overlayContainer.ngOnDestroy();
   }));
 
-  // todo: fix it: https://github.com/NG-ZORRO/ng-zorro-antd/pull/9515#discussion_r2517083778
-  xdescribe('placement and arrow', () => {
+  // TODO: why this works well with ChromeHeadless but fails with ChromeHeadlessCI?
+  describe('placement and arrow', () => {
     let fixture: ComponentFixture<NzTestDropdownArrowComponent>;
 
     beforeEach(() => {

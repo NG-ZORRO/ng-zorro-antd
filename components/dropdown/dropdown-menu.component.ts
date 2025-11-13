@@ -82,17 +82,19 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   public viewContainerRef = inject(ViewContainerRef);
   private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
-  mouseState$ = new BehaviorSubject<boolean>(false);
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   public nzMenuService = inject(MenuService);
+
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
+  mouseState$ = new BehaviorSubject<boolean>(false);
   animationStateChange$ = new EventEmitter<AnimationEvent>();
+  @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
+
   nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
   nzArrow: boolean = false;
   placement: NzPlacementType | 'bottom' | 'top' = 'bottomLeft';
-  @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
-
   dir: Direction = 'ltr';
 
   onAnimationEvent(event: AnimationEvent): void {
@@ -107,8 +109,6 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
     this[key] = value;
     this.cdr.markForCheck();
   }
-
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
