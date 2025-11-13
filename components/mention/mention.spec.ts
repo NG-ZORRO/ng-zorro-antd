@@ -7,11 +7,11 @@ import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, NgZone, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import {
@@ -34,21 +34,17 @@ describe('mention', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   const scrolledSubject = new Subject();
-  let zone: MockNgZone;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
       providers: [
+        provideNoopAnimations(),
         provideNzIconsTesting(),
         { provide: Directionality, useClass: MockDirectionality },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
-          useFactory: () => {
-            zone = new MockNgZone();
-            return zone;
-          }
+          useFactory: () => new MockNgZone()
         }
       ]
     });
@@ -58,6 +54,7 @@ describe('mention', () => {
       overlayContainerElement = oc.getContainerElement();
     })();
   }));
+
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
@@ -918,4 +915,5 @@ class NzTestClearMentionComponent {
 class MockDirectionality {
   value = 'ltr';
   change = new Subject();
+  valueSignal = signal('ltr');
 }
