@@ -235,6 +235,7 @@ export interface ModalConfig {
   nzMaskClosable?: boolean;
   nzCloseOnNavigation?: boolean;
   nzDirection?: Direction;
+  nzCentered?: boolean;
 }
 
 export interface NotificationConfig extends MessageConfig {
