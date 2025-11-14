@@ -17,3 +17,9 @@ import { NzDropdownDirective } from './dropdown.directive';
   exports: [NzMenuModule, NzDropdownDirective, NzDropdownADirective, NzDropdownMenuComponent]
 })
 export class NzDropdownModule {}
+
+/**
+ * @deprecated Use {@link NzDropdownModule} instead.
+ * This will be removed in v22.0.0.
+ */
+export const NzDropDownModule = NzDropdownModule;
