@@ -9,7 +9,7 @@ import { MenuService } from './menu.service';
 
 /**
  * A flag to mark if the menu is inside a dropdown.
- * @internal Internally used only, please do not use it.
+ * @note Internally used only, please do not use it.
  */
 export const NzIsMenuInsideDropdownToken = new InjectionToken<boolean>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-is-in-dropdown-menu' : ''
@@ -17,7 +17,7 @@ export const NzIsMenuInsideDropdownToken = new InjectionToken<boolean>(
 
 /**
  * A token to hold the local {@link MenuService} instance. This is used for nested menu.
- * @internal Internally used only, please do not use it.
+ * @note Internally used only, please do not use it.
  */
 export const NzMenuServiceLocalToken = new InjectionToken<MenuService>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-menu-service-local' : ''
