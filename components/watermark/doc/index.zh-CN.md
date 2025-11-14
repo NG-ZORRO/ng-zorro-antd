@@ -2,7 +2,7 @@
 category: Components
 type: 其他
 subtitle: 水印
-title: WaterMark
+title: Watermark
 cols: 1
 tag: 15.1.0
 cover: 'https://img.alicdn.com/imgextra/i2/O1CN01ozPPZp1wj9CwsVvDL_!!6000000006343-0-tps-1232-820.jpg'
@@ -16,7 +16,7 @@ description: 给页面的某个区域加上水印。
 
 ## API
 
-### nz-water-mark
+### nz-watermark
 
 | 参数        | 说明                                                        | 类型                 | 默认值                     |
 | ----------- | ----------------------------------------------------------- | -------------------- | -------------------------- |
@@ -47,12 +47,12 @@ description: 给页面的某个区域加上水印。
 当使用图片水印且图片加载异常时，可以同时添加 `nzContent` 防止水印失效。
 
 ```html
-<nz-water-mark
+<nz-watermark
   [nzWidth]="212"
   [nzHeight]="32"
   nzContent="NG Ant Design"
   nzImage="https://img.alicdn.com/imgextra/i3/O1CN01UR3Zkq1va9fnZsZcr_!!6000000006188-55-tps-424-64.svg"
 >
   <div style="height: 500px"></div>
-</nz-water-mark>
+</nz-watermark>
 ```

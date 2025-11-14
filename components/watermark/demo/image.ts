@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 
-import { NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
+import { NzWatermarkModule } from 'ng-zorro-antd/watermark';
 
 @Component({
-  selector: 'nz-demo-water-mark-image',
-  imports: [NzWaterMarkModule],
+  selector: 'nz-demo-watermark-image',
+  imports: [NzWatermarkModule],
   template: `
-    <nz-water-mark
+    <nz-watermark
       [nzWidth]="212"
       [nzHeight]="32"
       nzImage="https://img.alicdn.com/imgextra/i3/O1CN01UR3Zkq1va9fnZsZcr_!!6000000006188-55-tps-424-64.svg"
     >
       <div style="height: 500px"></div>
-    </nz-water-mark>
+    </nz-watermark>
   `
 })
-export class NzDemoWaterMarkImageComponent {}
+export class NzDemoWatermarkImageComponent {}
