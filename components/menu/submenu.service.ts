@@ -11,12 +11,13 @@ import { auditTime, distinctUntilChanged, filter, map, mergeMap } from 'rxjs/ope
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { MenuService } from './menu.service';
-import { NzIsMenuInsideDropDownToken } from './menu.token';
+import { NzIsMenuInsideDropdownToken } from './menu.token';
 import { NzMenuModeType } from './menu.types';
 
 @Injectable()
 export class NzSubmenuService {
   public readonly nzMenuService = inject(MenuService);
+  private readonly isMenuInsideDropdown = inject(NzIsMenuInsideDropdownToken);
   private readonly nzHostSubmenuService = inject(NzSubmenuService, { optional: true, skipSelf: true });
 
   mode$: Observable<NzMenuModeType> = this.nzMenuService.mode$.pipe(
@@ -32,7 +33,6 @@ export class NzSubmenuService {
     })
   );
   level = 1;
-  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
   isCurrentSubMenuOpen$ = new BehaviorSubject<boolean>(false);
   private isChildSubMenuOpen$ = new BehaviorSubject<boolean>(false);
   /** submenu title & overlay mouse enter status **/
@@ -59,7 +59,7 @@ export class NzSubmenuService {
     /** close if menu item clicked **/
     const isClosedByMenuItemClick = this.childMenuItemClick$.pipe(
       mergeMap(() => this.mode$),
-      filter(mode => mode !== 'inline' || this.isMenuInsideDropDown),
+      filter(mode => mode !== 'inline' || this.isMenuInsideDropdown),
       map(() => false)
     );
     const isCurrentSubmenuOpen$ = merge(this.isMouseEnterTitleOrOverlay$, isClosedByMenuItemClick);

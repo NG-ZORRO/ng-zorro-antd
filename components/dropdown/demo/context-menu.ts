@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
-import { NzContextMenuService, NzDropdownMenuComponent, NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzContextMenuService, NzDropdownMenuComponent, NzDropdownModule } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'nz-demo-dropdown-context-menu',
-  imports: [NzDropDownModule],
+  imports: [NzDropdownModule],
   template: `
     <div class="context-area" (contextmenu)="contextMenu($event, menu)">Right Click on here</div>
     <nz-dropdown-menu #menu="nzDropdownMenu">

@@ -44,7 +44,7 @@ import { IndexableObject } from 'ng-zorro-antd/core/types';
 
 import { NzDropdownMenuComponent, NzPlacementType } from './dropdown-menu.component';
 
-const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'dropDown';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'dropdown';
 
 const listOfPositions: POSITION_TYPE[] = ['bottomLeft', 'bottomRight', 'topRight', 'topLeft'];
 
@@ -66,7 +66,7 @@ const normalizePlacementForClass = (p: NzPlacementType): NzDropdownMenuComponent
     class: 'ant-dropdown-trigger'
   }
 })
-export class NzDropDownDirective implements AfterViewInit, OnChanges {
+export class NzDropdownDirective implements AfterViewInit, OnChanges {
   public readonly nzConfigService = inject(NzConfigService);
   private renderer = inject(Renderer2);
   private viewContainerRef = inject(ViewContainerRef);

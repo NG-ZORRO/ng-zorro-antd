@@ -26,7 +26,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { arraysEqual } from 'ng-zorro-antd/core/util';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzI18nService, NzTableI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzRadioComponent } from 'ng-zorro-antd/radio';
@@ -88,7 +88,7 @@ interface NzThItemInterface {
     NgTemplateOutlet,
     NzFilterTriggerComponent,
     NzIconModule,
-    NzDropDownModule,
+    NzDropdownModule,
     NzRadioComponent,
     NzCheckboxModule,
     FormsModule,

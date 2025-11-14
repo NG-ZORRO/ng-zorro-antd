@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -45,7 +45,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     }
   `,
   host: { class: 'ant-table-selection' },
-  imports: [FormsModule, NzCheckboxModule, NzDropDownModule, NzIconModule]
+  imports: [FormsModule, NzCheckboxModule, NzDropdownModule, NzIconModule]
 })
 export class NzTableSelectionComponent {
   @Input() listOfSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];

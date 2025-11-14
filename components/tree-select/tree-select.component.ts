@@ -112,7 +112,7 @@ const listOfPositions = [
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       (overlayOutsideClick)="onClickOutside($event)"
-      (detach)="closeDropDown()"
+      (detach)="closeDropdown()"
       (positionChange)="onPositionChange($event)"
     >
       <div
@@ -410,7 +410,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     super(inject(NzTreeSelectService));
 
     this.destroyRef.onDestroy(() => {
-      this.closeDropDown();
+      this.closeDropdown();
     });
 
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
@@ -477,7 +477,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = (this.isNzDisableFirstChange && this.nzDisabled) || isDisabled;
-    this.closeDropDown();
+    this.closeDropdown();
     this.isNzDisableFirstChange = false;
   }
 
@@ -556,7 +556,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
          */
         break;
       case TAB:
-        this.closeDropDown();
+        this.closeDropdown();
         break;
       default:
         if (!this.nzOpen) {
@@ -567,7 +567,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   trigger(): void {
     if (this.nzDisabled || (!this.nzDisabled && this.nzOpen)) {
-      this.closeDropDown();
+      this.closeDropdown();
     } else {
       this.openDropdown();
     }
@@ -584,10 +584,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     }
   }
 
-  closeDropDown(): void {
-    Promise.resolve().then(() => {
-      this.onTouched();
-    });
+  closeDropdown(): void {
+    Promise.resolve().then(() => this.onTouched());
     this.nzOpen = false;
     this.inputValue = '';
     this.isNotFound = false;
@@ -677,7 +675,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
           this.focusOnInput();
           this.updatePosition();
         } else {
-          this.closeDropDown();
+          this.closeDropdown();
           this.onChange(value.length ? value[0] : null);
         }
       });
@@ -734,7 +732,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   onClickOutside(event: MouseEvent): void {
     const target = _getEventTarget(event);
     if (!this.elementRef.nativeElement.contains(target)) {
-      this.closeDropDown();
+      this.closeDropdown();
     }
   }
 

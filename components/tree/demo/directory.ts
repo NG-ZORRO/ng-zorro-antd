@@ -1,13 +1,13 @@
 import { LowerCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 
-import { NzContextMenuService, NzDropdownMenuComponent, NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzContextMenuService, NzDropdownMenuComponent, NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-directory',
-  imports: [NzDropDownModule, NzIconModule, NzTreeModule, LowerCasePipe],
+  imports: [NzDropdownModule, NzIconModule, NzTreeModule, LowerCasePipe],
   template: `
     <nz-tree
       nzBlockNode

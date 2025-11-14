@@ -7,7 +7,7 @@ import { InjectionToken } from '@angular/core';
 
 import { MenuService } from './menu.service';
 
-export const NzIsMenuInsideDropDownToken = new InjectionToken<boolean>(
+export const NzIsMenuInsideDropdownToken = new InjectionToken<boolean>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-is-in-dropdown-menu' : ''
 );
 export const NzMenuServiceLocalToken = new InjectionToken<MenuService>(
