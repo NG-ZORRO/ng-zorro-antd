@@ -10,10 +10,10 @@ import { By } from '@angular/platform-browser';
 
 import { NzStatisticValueType } from 'ng-zorro-antd/statistic/typings';
 
-import { NzStatisticNumberComponent } from './statistic-number.component';
+import { NzStatisticContentValueComponent } from './statistic-content-value.component';
 import { NzStatisticModule } from './statistic.module';
 
-describe('nz-number', () => {
+describe('nz-statistic-content-value', () => {
   let fixture: ComponentFixture<NzTestNumberComponent>;
   let testComponent: NzTestNumberComponent;
   let numberEl: DebugElement;
@@ -22,12 +22,12 @@ describe('nz-number', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestNumberComponent);
       testComponent = fixture.componentInstance;
-      numberEl = fixture.debugElement.query(By.directive(NzStatisticNumberComponent));
+      numberEl = fixture.debugElement.query(By.directive(NzStatisticContentValueComponent));
     });
 
     it('should have correct class', () => {
       fixture.detectChanges();
-      expect(numberEl.nativeElement.firstElementChild!.classList.contains('ant-statistic-content-value')).toBeTruthy();
+      expect(numberEl.nativeElement.classList.contains('ant-statistic-content-value')).toBeTruthy();
     });
 
     it('should render number', () => {
@@ -52,7 +52,7 @@ describe('nz-number', () => {
 @Component({
   imports: [DecimalPipe, NzStatisticModule],
   template: `
-    <nz-statistic-number [nzValue]="(value | number)!" [nzValueTemplate]="template"></nz-statistic-number>
+    <nz-statistic-content-value [nzValue]="(value | number)!" [nzValueTemplate]="template" />
     <ng-template #tpl let-value>It's {{ value }}</ng-template>
   `
 })
