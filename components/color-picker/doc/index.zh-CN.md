@@ -40,7 +40,7 @@ description: 用于颜色选择。
 | ------------- | ---------------- | --------------------------------- | ----------- |
 | `[nzColor]`   | 模块的颜色       | `string`                          | `'#1677ff'` |
 | `[nzSize]`    | 色彩块的大小     | `'large' \| 'small' \| 'default'` | `'default'` |
-| `[nzOnClick]` | 点击色彩块的回调 | `EventEmitter<boolean>`           | -           |
+| `[nzOnClick]` | 点击色彩块的回调 | `EventEmitter<void>`              | -           |
 
 ### NzColor
 

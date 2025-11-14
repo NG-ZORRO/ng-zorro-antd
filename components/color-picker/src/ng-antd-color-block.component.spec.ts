@@ -31,20 +31,20 @@ describe('NgxColorBlockComponent', () => {
 
   it('color-block click', () => {
     fixture.detectChanges();
-    resultEl.nativeElement.querySelector('.ant-color-picker-color-block').click();
+    resultEl.nativeElement.click();
     expect(component.isClick).toBeTrue();
   });
 });
 
 @Component({
   imports: [NgAntdColorBlockComponent],
-  template: `<ng-antd-color-block [color]="color" (nzOnClick)="clickHandle($event)"></ng-antd-color-block>`
+  template: `<ng-antd-color-block [color]="color" (nzOnClick)="clickHandle()"></ng-antd-color-block>`
 })
 export class NzxTestColorBlockComponent {
   color = '#1677ff';
   isClick: boolean = false;
 
-  clickHandle(value: boolean): void {
-    this.isClick = value;
+  clickHandle(): void {
+    this.isClick = true;
   }
 }
