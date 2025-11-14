@@ -40,7 +40,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFloatButtonComponent } from './float-button.component';
 import { NzFloatButtonBadge, NzFloatButtonType } from './typings';
 
-const withConfig = withConfigFactory('backTop');
+const withConfig = withConfigFactory('floatButton');
 const CLASS_NAME = 'ant-float-btn';
 
 const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: true });
