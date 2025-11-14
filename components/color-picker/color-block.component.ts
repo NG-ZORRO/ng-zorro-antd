@@ -15,7 +15,7 @@ import { defaultColor } from './src/util/util';
   exportAs: 'nzColorBlock',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgAntdColorPickerModule],
-  template: `<ng-antd-color-block [color]="nzColor" (nzOnClick)="nzOnClick.emit($event)"></ng-antd-color-block>`,
+  template: `<ng-antd-color-block [color]="nzColor" (nzOnClick)="nzOnClick.emit()" />`,
   host: {
     class: 'ant-color-picker-inline',
     '[class.ant-color-picker-inline-sm]': `nzSize === 'small'`,
@@ -25,5 +25,5 @@ import { defaultColor } from './src/util/util';
 export class NzColorBlockComponent {
   @Input() nzColor: string = defaultColor.toHexString();
   @Input() nzSize: NzSizeLDSType = 'default';
-  @Output() readonly nzOnClick = new EventEmitter<boolean>();
+  @Output() readonly nzOnClick = new EventEmitter<void>();
 }

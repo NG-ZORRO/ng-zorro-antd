@@ -6,6 +6,7 @@
 import {
   AfterViewInit,
   booleanAttribute,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DOCUMENT,
@@ -20,8 +21,7 @@ import {
   ViewChild
 } from '@angular/core';
 
-import { HandlerComponent } from './handler.component';
-import { PaletteComponent } from './palette.component';
+import { HandlerDirective } from './handler.directive';
 import { Color } from '../interfaces/color';
 import { HsbaColorType, TransformOffset } from '../interfaces/type';
 import { calculateColor, calculateOffset } from '../util/util';
@@ -40,34 +40,28 @@ function getPosition(e: EventType): { pageX: number; pageY: number } {
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'color-picker',
-  imports: [HandlerComponent, PaletteComponent],
+  imports: [HandlerDirective],
   template: `
-    <div
-      #slider
-      class="ant-color-picker-select"
-      (mousedown)="dragStartHandle($event)"
-      (touchstart)="dragStartHandle($event)"
-    >
-      <color-palette>
-        <div
-          #transform
-          class="ant-color-picker-transform"
-          [style.left]="offsetValue.x + 'px'"
-          [style.top]="offsetValue.y + 'px'"
-        >
-          <color-handler [color]="toRgbString()" />
-        </div>
-        <div class="ant-color-picker-saturation" [style.background-color]="toHsb()"></div>
-      </color-palette>
+    <div class="ant-color-picker-palette">
+      <div #transform class="ant-color-picker-transform" [style.left.px]="offsetValue.x" [style.top.px]="offsetValue.y">
+        <color-handler [color]="toRgbString()" />
+      </div>
+      <div class="ant-color-picker-saturation" [style.background-color]="toHsb()"></div>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'ant-color-picker-select',
+    '(mousedown)': 'dragStartHandle($event)',
+    '(touchstart)': 'dragStartHandle($event)'
+  }
 })
 export class PickerComponent implements OnInit, AfterViewInit, OnChanges {
   private document = inject(DOCUMENT);
   private cdr = inject(ChangeDetectorRef);
+  containerRef = inject<ElementRef<HTMLDivElement>>(ElementRef);
 
-  @ViewChild('slider', { static: false }) containerRef!: ElementRef<HTMLDivElement>;
-  @ViewChild('transform', { static: false }) transformRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('transform', { static: true }) transformRef!: ElementRef<HTMLDivElement>;
 
   @Input() color: Color | null = null;
   @Output() readonly nzOnChange = new EventEmitter<Color>();
