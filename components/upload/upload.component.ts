@@ -235,11 +235,12 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
     this.detectChangesList();
   };
 
-  private onSuccess = (res: {}, file: NzUploadFile): void => {
+  private onSuccess = (res: {}, file: NzUploadFile, xhr: NzSafeAny): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
     targetItem.status = 'done';
     targetItem.response = res;
+    targetItem.xhr = xhr;
     this.nzChange.emit({
       file: { ...targetItem },
       fileList,
