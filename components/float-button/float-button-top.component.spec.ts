@@ -11,6 +11,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzFloatButtonTopComponent } from './float-button-top.component';
@@ -20,12 +21,12 @@ const defaultVisibilityHeight = 500;
 
 describe('nz-float-button-top', () => {
   let scrollService: MockNzScrollService;
-  let fixture: ComponentFixture<TestBackTopComponent>;
+  let fixture: ComponentFixture<TestFloatButtonTopComponent>;
   let debugElement: DebugElement;
   let component: NzFloatButtonTopComponent;
-  let componentObject: NzBackTopPageObject;
+  let componentObject: NzFloatButtonTopPageObject;
 
-  class NzBackTopPageObject {
+  class NzFloatButtonTopPageObject {
     scrollTo(el: Element | Window, scrollTop: number): void {
       scrollService.mockTopOffset = scrollTop;
       el.dispatchEvent(new Event('scroll'));
@@ -49,19 +50,18 @@ describe('nz-float-button-top', () => {
           useClass: MockNzScrollService
         },
         provideNzConfig({
-          backTop: {
+          floatButton: {
             nzVisibilityHeight: 999
           }
         })
       ]
     });
 
-    fixture = TestBed.createComponent(TestBackTopComponent);
-    component = fixture.componentInstance.nzBackTopComponent;
-    componentObject = new NzBackTopPageObject();
+    fixture = TestBed.createComponent(TestFloatButtonTopComponent);
+    component = fixture.componentInstance.floatButtonTopComponent;
+    componentObject = new NzFloatButtonTopPageObject();
     debugElement = fixture.debugElement;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    scrollService = TestBed.inject(NzScrollService) as any;
+    scrollService = TestBed.inject(NzScrollService) as NzSafeAny;
   });
 
   describe('[default]', () => {
@@ -218,7 +218,7 @@ describe('nz-float-button-top', () => {
 
   describe('#nzTemplate', () => {
     it(`should show custom template`, fakeAsync(() => {
-      const fixtureTemplate = TestBed.createComponent(TestBackTopTemplateComponent);
+      const fixtureTemplate = TestBed.createComponent(TestFloatTopTemplateComponent);
 
       componentObject.scrollTo(window, defaultVisibilityHeight + 1);
       tick();
@@ -229,23 +229,19 @@ describe('nz-float-button-top', () => {
 });
 
 describe('nz-float-button-top RTL', () => {
-  let fixture: ComponentFixture<TestBackTopRtlComponent>;
+  let fixture: ComponentFixture<TestFloatButtonTopRtlComponent>;
   let resultEl: DebugElement;
-  let backTopComponent: NzFloatButtonTopComponent;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations(), provideNzIconsTesting()]
     });
-    fixture = TestBed.createComponent(TestBackTopRtlComponent);
+    fixture = TestBed.createComponent(TestFloatButtonTopRtlComponent);
     resultEl = fixture.debugElement.query(By.directive(NzFloatButtonTopComponent));
-    backTopComponent = resultEl.componentInstance;
   }));
 
   it('rtl', () => {
     fixture.detectChanges();
-    // @ts-ignore
-    expect(backTopComponent.dir()).toBe('rtl');
     expect(resultEl.nativeElement.classList).toContain('ant-float-btn-rtl');
   });
 });
@@ -253,13 +249,13 @@ describe('nz-float-button-top RTL', () => {
 @Component({
   imports: [NzFloatButtonModule],
   template: `
-    <nz-float-button-top [nzTarget]="target" [nzVisibilityHeight]="customVisibilityHeight"></nz-float-button-top>
+    <nz-float-button-top [nzTarget]="target" [nzVisibilityHeight]="customVisibilityHeight" />
     <div id="fakeTarget"></div>
   `
 })
-class TestBackTopComponent {
+class TestFloatButtonTopComponent {
   @ViewChild(NzFloatButtonTopComponent, { static: true })
-  nzBackTopComponent!: NzFloatButtonTopComponent;
+  floatButtonTopComponent!: NzFloatButtonTopComponent;
 
   target!: HTMLElement | string;
   customVisibilityHeight = defaultVisibilityHeight;
@@ -280,9 +276,9 @@ class TestBackTopComponent {
     </nz-float-button-top>
   `
 })
-class TestBackTopTemplateComponent {
+class TestFloatTopTemplateComponent {
   @ViewChild(NzFloatButtonTopComponent, { static: false })
-  nzBackTopComponent!: NzFloatButtonTopComponent;
+  floatButtonTopComponent!: NzFloatButtonTopComponent;
 }
 
 class MockNzScrollService {
@@ -301,10 +297,10 @@ class MockNzScrollService {
   imports: [BidiModule, NzFloatButtonModule],
   template: `
     <div [dir]="direction">
-      <nz-float-button-top></nz-float-button-top>
+      <nz-float-button-top />
     </div>
   `
 })
-export class TestBackTopRtlComponent {
+export class TestFloatButtonTopRtlComponent {
   direction: Direction = 'rtl';
 }

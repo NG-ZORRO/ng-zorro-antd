@@ -11,8 +11,6 @@
 /components/auto-complete/zh
 /components/avatar/en
 /components/avatar/zh
-/components/back-top/en
-/components/back-top/zh
 /components/badge/en
 /components/badge/zh
 /components/breadcrumb/en

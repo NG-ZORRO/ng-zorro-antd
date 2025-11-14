@@ -1,7 +1,6 @@
 # The components owners
 components/affix/**                       @cipchk
 components/anchor/**                      @cipchk
-components/back-top/**                    @cipchk
 components/list/**                        @cipchk
 components/upload/**                      @cipchk
 components/auto-complete/**               @hsuanxyz

@@ -32,7 +32,7 @@ export interface NzConfig {
   alert?: AlertConfig;
   anchor?: AnchorConfig;
   avatar?: AvatarConfig;
-  backTop?: BackTopConfig;
+  floatButton?: FloatButtonConfig;
   badge?: BadgeConfig;
   button?: ButtonConfig;
   card?: CardConfig;
@@ -117,10 +117,6 @@ export interface AnchorConfig {
   nzOffsetBottom?: number;
   nzOffsetTop?: number;
   nzShowInkInFixed?: boolean;
-}
-
-export interface BackTopConfig {
-  nzVisibilityHeight?: number;
 }
 
 export interface BadgeConfig {
@@ -208,6 +204,10 @@ export interface EmptyConfig {
 
 export interface FilterTriggerConfig {
   nzBackdrop?: boolean;
+}
+
+export interface FloatButtonConfig {
+  nzVisibilityHeight?: number;
 }
 
 export interface FormConfig {
