@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-button-multiple',
-  imports: [NzButtonModule, NzDropDownModule, NzIconModule],
+  imports: [NzButtonModule, NzDropdownModule, NzIconModule],
   template: `
     <button nz-button nzType="primary">primary</button>
     <button nz-button nzType="default">secondary</button>

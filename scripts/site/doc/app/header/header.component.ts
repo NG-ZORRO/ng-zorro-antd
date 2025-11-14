@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzGridModule } from "ng-zorro-antd/grid";
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -30,7 +30,7 @@ import { SearchbarComponent } from './searchbar.component';
     NzMenuModule,
     NzSelectModule,
     NzButtonModule,
-    NzDropDownModule,
+    NzDropdownModule,
     NzPopoverModule,
     NzTooltipModule,
     GithubButtonComponent,

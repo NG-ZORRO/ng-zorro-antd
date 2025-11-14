@@ -167,7 +167,7 @@ describe('tree-select', () => {
       expect(treeSelectComponent.nzOpen).toBe(true);
       const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
       expect(overlayPane.style.width).toBe('250px');
-      treeSelectComponent.closeDropDown();
+      treeSelectComponent.closeDropdown();
       fixture.detectChanges();
       testComponent.dropdownMatchSelectWidth = false;
       fixture.detectChanges();

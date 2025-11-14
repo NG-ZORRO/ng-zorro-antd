@@ -1,30 +1,30 @@
 import { Component } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 @Component({
   selector: 'nz-demo-dropdown-dropdown-button',
-  imports: [NzButtonModule, NzDropDownModule, NzFlexModule, NzIconModule, NzSpaceModule],
+  imports: [NzButtonModule, NzDropdownModule, NzFlexModule, NzIconModule, NzSpaceModule],
   template: `
     <div nz-flex nzGap="small" nzWrap="wrap">
       <nz-space-compact>
-        <button nz-button (click)="log()">DropDown</button>
+        <button nz-button (click)="log()">Dropdown</button>
         <button nz-button nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
           <nz-icon nzType="ellipsis" />
         </button>
       </nz-space-compact>
       <nz-space-compact>
-        <button nz-button (click)="log()">DropDown</button>
+        <button nz-button (click)="log()">Dropdown</button>
         <button nz-button nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
           <nz-icon nzType="user" />
         </button>
       </nz-space-compact>
       <nz-space-compact>
-        <button nz-button disabled>DropDown</button>
+        <button nz-button disabled>Dropdown</button>
         <button nz-button disabled nz-dropdown [nzDropdownMenu]="menu" nzDisabled nzPlacement="bottomRight">
           <nz-icon nzType="ellipsis" />
         </button>

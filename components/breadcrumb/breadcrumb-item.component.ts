@@ -7,7 +7,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Input, ViewEncapsulation } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzDropdownMenuComponent, NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownMenuComponent, NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzBreadcrumb } from './breadcrumb';
@@ -18,7 +18,7 @@ import { NzBreadCrumbSeparatorComponent } from './breadcrumb-separator.component
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-breadcrumb-item',
   exportAs: 'nzBreadcrumbItem',
-  imports: [NgTemplateOutlet, NzBreadCrumbSeparatorComponent, NzDropDownModule, NzIconModule, NzOutletModule],
+  imports: [NgTemplateOutlet, NzBreadCrumbSeparatorComponent, NzDropdownModule, NzIconModule, NzOutletModule],
   template: `
     @if (!!nzOverlay) {
       <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">

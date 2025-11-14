@@ -37,7 +37,7 @@ import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
       <span class="ant-menu-title-content">{{ nzTitle }}</span>
     </ng-container>
     <ng-content />
-    @if (isMenuInsideDropDown) {
+    @if (isMenuInsideDropdown) {
       <span class="ant-dropdown-menu-submenu-expand-icon">
         @switch (dir) {
           @case ('rtl') {
@@ -53,8 +53,8 @@ import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
     }
   `,
   host: {
-    '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropDown',
-    '[class.ant-menu-submenu-title]': '!isMenuInsideDropDown',
+    '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropdown',
+    '[class.ant-menu-submenu-title]': '!isMenuInsideDropdown',
     '[style.paddingLeft.px]': `dir === 'rtl' ? null : paddingLeft `,
     '[style.paddingRight.px]': `dir === 'rtl' ? paddingLeft : null`,
     '(click)': 'clickTitle()',
@@ -70,7 +70,7 @@ export class NzSubMenuTitleComponent implements OnInit {
 
   @Input() nzIcon: string | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
-  @Input() isMenuInsideDropDown = false;
+  @Input() isMenuInsideDropdown = false;
   @Input() nzDisabled = false;
   @Input() paddingLeft: number | null = null;
   @Input() mode: NzMenuModeType = 'vertical';

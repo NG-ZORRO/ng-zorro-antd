@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzDropDownModule, NzPlacementType } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule, NzPlacementType } from 'ng-zorro-antd/dropdown';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 
 @Component({
   selector: 'nz-demo-dropdown-arrow',
-  imports: [NzDropDownModule, NzButtonModule, NzFlexModule],
+  imports: [NzDropdownModule, NzButtonModule, NzFlexModule],
   template: `
     <div nz-flex [nzGap]="8" nzWrap="wrap">
       @for (position of listOfPosition; track position) {

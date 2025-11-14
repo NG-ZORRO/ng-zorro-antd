@@ -34,12 +34,12 @@ import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types'
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
-      [class.ant-dropdown-menu]="isMenuInsideDropDown"
-      [class.ant-menu]="!isMenuInsideDropDown"
-      [class.ant-dropdown-menu-vertical]="isMenuInsideDropDown"
-      [class.ant-menu-vertical]="!isMenuInsideDropDown"
-      [class.ant-dropdown-menu-sub]="isMenuInsideDropDown"
-      [class.ant-menu-sub]="!isMenuInsideDropDown"
+      [class.ant-dropdown-menu]="isMenuInsideDropdown"
+      [class.ant-menu]="!isMenuInsideDropdown"
+      [class.ant-dropdown-menu-vertical]="isMenuInsideDropdown"
+      [class.ant-menu-vertical]="!isMenuInsideDropdown"
+      [class.ant-dropdown-menu-sub]="isMenuInsideDropdown"
+      [class.ant-menu-sub]="!isMenuInsideDropdown"
       [class.ant-menu-rtl]="dir === 'rtl'"
       [class]="menuClass"
     >
@@ -68,7 +68,7 @@ export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
   @Input() menuClass: string = '';
   @Input() theme: NzMenuThemeType = 'light';
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
-  @Input() isMenuInsideDropDown = false;
+  @Input() isMenuInsideDropdown = false;
   @Input() mode: NzMenuModeType = 'vertical';
   @Input() nzTriggerSubMenuAction: NzSubmenuTrigger = 'hover';
   @Input() position = 'right';

@@ -25,19 +25,19 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 
 import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
-import { NzIsMenuInsideDropDownToken, NzMenuServiceLocalToken } from './menu.token';
+import { NzIsMenuInsideDropdownToken, NzMenuServiceLocalToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubMenuComponent } from './submenu.component';
 
-export function MenuServiceFactory(): MenuService {
-  const serviceInsideDropDown = inject(MenuService, { skipSelf: true, optional: true });
-  const serviceOutsideDropDown = inject(NzMenuServiceLocalToken);
-  return serviceInsideDropDown ?? serviceOutsideDropDown;
+function MenuServiceFactory(): MenuService {
+  const serviceInsideDropdown = inject(MenuService, { skipSelf: true, optional: true });
+  const serviceOutsideDropdown = inject(NzMenuServiceLocalToken);
+  return serviceInsideDropdown ?? serviceOutsideDropdown;
 }
 
-export function MenuDropDownTokenFactory(): boolean {
-  const isMenuInsideDropDownToken = inject(NzIsMenuInsideDropDownToken, { skipSelf: true, optional: true });
-  return isMenuInsideDropDownToken ?? false;
+function MenuDropdownTokenFactory(): boolean {
+  const isMenuInsideDropdownToken = inject(NzIsMenuInsideDropdownToken, { skipSelf: true, optional: true });
+  return isMenuInsideDropdownToken ?? false;
 }
 
 @Directive({
@@ -55,27 +55,27 @@ export function MenuDropDownTokenFactory(): boolean {
     },
     /** check if menu inside dropdown-menu component **/
     {
-      provide: NzIsMenuInsideDropDownToken,
-      useFactory: MenuDropDownTokenFactory
+      provide: NzIsMenuInsideDropdownToken,
+      useFactory: MenuDropdownTokenFactory
     }
   ],
   host: {
-    '[class.ant-dropdown-menu]': `isMenuInsideDropDown`,
-    '[class.ant-dropdown-menu-root]': `isMenuInsideDropDown`,
-    '[class.ant-dropdown-menu-light]': `isMenuInsideDropDown && nzTheme === 'light'`,
-    '[class.ant-dropdown-menu-dark]': `isMenuInsideDropDown && nzTheme === 'dark'`,
-    '[class.ant-dropdown-menu-vertical]': `isMenuInsideDropDown && actualMode === 'vertical'`,
-    '[class.ant-dropdown-menu-horizontal]': `isMenuInsideDropDown && actualMode === 'horizontal'`,
-    '[class.ant-dropdown-menu-inline]': `isMenuInsideDropDown && actualMode === 'inline'`,
-    '[class.ant-dropdown-menu-inline-collapsed]': `isMenuInsideDropDown && nzInlineCollapsed`,
-    '[class.ant-menu]': `!isMenuInsideDropDown`,
-    '[class.ant-menu-root]': `!isMenuInsideDropDown`,
-    '[class.ant-menu-light]': `!isMenuInsideDropDown && nzTheme === 'light'`,
-    '[class.ant-menu-dark]': `!isMenuInsideDropDown && nzTheme === 'dark'`,
-    '[class.ant-menu-vertical]': `!isMenuInsideDropDown && actualMode === 'vertical'`,
-    '[class.ant-menu-horizontal]': `!isMenuInsideDropDown && actualMode === 'horizontal'`,
-    '[class.ant-menu-inline]': `!isMenuInsideDropDown && actualMode === 'inline'`,
-    '[class.ant-menu-inline-collapsed]': `!isMenuInsideDropDown && nzInlineCollapsed`,
+    '[class.ant-dropdown-menu]': `isMenuInsideDropdown`,
+    '[class.ant-dropdown-menu-root]': `isMenuInsideDropdown`,
+    '[class.ant-dropdown-menu-light]': `isMenuInsideDropdown && nzTheme === 'light'`,
+    '[class.ant-dropdown-menu-dark]': `isMenuInsideDropdown && nzTheme === 'dark'`,
+    '[class.ant-dropdown-menu-vertical]': `isMenuInsideDropdown && actualMode === 'vertical'`,
+    '[class.ant-dropdown-menu-horizontal]': `isMenuInsideDropdown && actualMode === 'horizontal'`,
+    '[class.ant-dropdown-menu-inline]': `isMenuInsideDropdown && actualMode === 'inline'`,
+    '[class.ant-dropdown-menu-inline-collapsed]': `isMenuInsideDropdown && nzInlineCollapsed`,
+    '[class.ant-menu]': `!isMenuInsideDropdown`,
+    '[class.ant-menu-root]': `!isMenuInsideDropdown`,
+    '[class.ant-menu-light]': `!isMenuInsideDropdown && nzTheme === 'light'`,
+    '[class.ant-menu-dark]': `!isMenuInsideDropdown && nzTheme === 'dark'`,
+    '[class.ant-menu-vertical]': `!isMenuInsideDropdown && actualMode === 'vertical'`,
+    '[class.ant-menu-horizontal]': `!isMenuInsideDropdown && actualMode === 'horizontal'`,
+    '[class.ant-menu-inline]': `!isMenuInsideDropdown && actualMode === 'inline'`,
+    '[class.ant-menu-inline-collapsed]': `!isMenuInsideDropdown && nzInlineCollapsed`,
     '[class.ant-menu-rtl]': `dir === 'rtl'`
   }
 })
@@ -87,13 +87,13 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges {
 
   @ContentChildren(NzMenuItemComponent, { descendants: true })
   listOfNzMenuItemDirective!: QueryList<NzMenuItemComponent>;
-  isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
+  isMenuInsideDropdown = inject(NzIsMenuInsideDropdownToken);
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent!: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: NzMenuThemeType = 'light';
   @Input() nzMode: NzMenuModeType = 'vertical';
   @Input({ transform: booleanAttribute }) nzInlineCollapsed = false;
-  @Input({ transform: booleanAttribute }) nzSelectable = !this.isMenuInsideDropDown;
+  @Input({ transform: booleanAttribute }) nzSelectable = !this.isMenuInsideDropdown;
   @Output() readonly nzClick = new EventEmitter<NzMenuItemComponent>();
   actualMode: NzMenuModeType = 'vertical';
   dir: Direction = 'ltr';

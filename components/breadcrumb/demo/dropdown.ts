@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'nz-demo-breadcrumb-dropdown',
-  imports: [NzBreadCrumbModule, NzDropDownModule],
+  imports: [NzBreadCrumbModule, NzDropdownModule],
   template: `
     <nz-breadcrumb>
       <nz-breadcrumb-item>Ant Design</nz-breadcrumb-item>

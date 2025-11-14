@@ -22,7 +22,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
-import { NzDropDownDirective, NzDropDownModule, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import { NzDropdownDirective, NzDropdownModule, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
 
@@ -48,7 +48,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
       <ng-content></ng-content>
     </span>
   `,
-  imports: [NzDropDownModule]
+  imports: [NzDropdownModule]
 })
 export class NzFilterTriggerComponent implements OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -65,7 +65,7 @@ export class NzFilterTriggerComponent implements OnInit {
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  @ViewChild(NzDropDownDirective, { static: true, read: ElementRef }) nzDropdown!: ElementRef<HTMLElement>;
+  @ViewChild(NzDropdownDirective, { static: true, read: ElementRef }) nzDropdown!: ElementRef<HTMLElement>;
 
   onVisibleChange(visible: boolean): void {
     this.nzVisible = visible;

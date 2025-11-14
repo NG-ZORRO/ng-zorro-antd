@@ -14,8 +14,8 @@ import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/tes
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzPlacementType } from './dropdown-menu.component';
-import { NzDropDownDirective } from './dropdown.directive';
-import { NzDropDownModule } from './dropdown.module';
+import { NzDropdownDirective } from './dropdown.directive';
+import { NzDropdownModule } from './dropdown.module';
 
 describe('dropdown', () => {
   let overlayContainer: OverlayContainer;
@@ -49,7 +49,7 @@ describe('dropdown', () => {
     it('should render arrow when nzArrow is true and apply placement classes', fakeAsync(() => {
       fixture.componentInstance.placement = 'bottomLeft';
       fixture.detectChanges();
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
       dispatchFakeEvent(dropdownElement, 'mouseenter');
       tick(1000);
       fixture.detectChanges();
@@ -70,7 +70,7 @@ describe('dropdown', () => {
     it('should map center placements to top/bottom classes', fakeAsync(() => {
       fixture.componentInstance.placement = 'bottomCenter';
       fixture.detectChanges();
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
       dispatchFakeEvent(dropdownElement, 'mouseenter');
       tick(1000);
       fixture.detectChanges();
@@ -102,7 +102,7 @@ describe('dropdown', () => {
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
       dispatchFakeEvent(dropdownElement, 'mouseenter');
       fixture.detectChanges();
       tick(1000);
@@ -117,7 +117,7 @@ describe('dropdown', () => {
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
       dispatchFakeEvent(dropdownElement, 'click');
       fixture.detectChanges();
       tick(1000);
@@ -132,7 +132,7 @@ describe('dropdown', () => {
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
       dispatchFakeEvent(dropdownElement, 'mouseenter');
       fixture.detectChanges();
       tick(1000);
@@ -154,7 +154,7 @@ describe('dropdown', () => {
       fixture.detectChanges();
 
       expect(() => {
-        const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+        const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
         dispatchFakeEvent(dropdownElement, 'click');
 
         tick(1000);
@@ -179,7 +179,7 @@ describe('dropdown', () => {
     fixture.detectChanges();
 
     expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
 
       dispatchFakeEvent(dropdownElement, 'click');
       tick(1000);
@@ -201,7 +201,7 @@ describe('dropdown', () => {
     const fixture = TestBed.createComponent(NzTestDropdownComponent);
     fixture.detectChanges();
     expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
       dispatchFakeEvent(dropdownElement, 'mouseenter');
       fixture.detectChanges();
       tick(1000);
@@ -215,7 +215,7 @@ describe('dropdown', () => {
     const fixture = TestBed.createComponent(NzTestDropdownVisibleComponent);
     fixture.detectChanges();
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(0);
-    const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
     dispatchFakeEvent(dropdownElement, 'mouseenter');
     fixture.detectChanges();
     tick(1000);
@@ -245,7 +245,7 @@ describe('dropdown', () => {
 });
 
 @Component({
-  imports: [NzDropDownModule, NzMenuModule],
+  imports: [NzDropdownModule, NzMenuModule],
   template: `
     <a
       nz-dropdown
@@ -278,7 +278,7 @@ export class NzTestDropdownComponent {
 }
 
 @Component({
-  imports: [NzDropDownModule, NzMenuModule],
+  imports: [NzDropdownModule, NzMenuModule],
   template: `
     <a
       nz-dropdown
@@ -304,7 +304,7 @@ export class NzTestDropdownVisibleComponent {
 }
 
 @Component({
-  imports: [NzDropDownModule, NzMenuModule],
+  imports: [NzDropdownModule, NzMenuModule],
   template: `
     <a nz-dropdown [nzDropdownMenu]="menu" [nzArrow]="arrow" [nzPlacement]="placement" [nzTrigger]="'hover'">
       Trigger
