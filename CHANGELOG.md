@@ -1,3 +1,16 @@
+## [20.4.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.4.0...20.4.1) (2025-11-14)
+
+### Bug Fixes
+
+- **badge:** hex `nzColor` should work ([#9517](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9517)) ([47d44ba](https://github.com/NG-ZORRO/ng-zorro-antd/commit/47d44ba4f826f882ee3a9de64994ad5ebd89daa5))
+- **cascader:** fix zoneless `NG0100` issue ([#9504](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9504)) ([24b4e83](https://github.com/NG-ZORRO/ng-zorro-antd/commit/24b4e83e39fe3216d02857999df78cd4fbdc35fe))
+- **color-picker:** fix `NG01350` error ([#9525](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9525)) ([fbcb8c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fbcb8c3f78c293bd510994a28de7295e4349576c))
+- **dropdown:** update arrow placement once the position of connected overlay changes ([#9519](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9519)) ([7ff7e09](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7ff7e09d4256e8b4bd54cf2e1e01f64cabadcf4d))
+- **input:** render icon when enterButton is an empty string ([#9498](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9498)) ([6a40b0d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6a40b0db8cd23584cc4a268c16eec14cf6bbaf29))
+- **result:** nz-result-icon in ng-content does not work ([#9511](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9511)) ([0e095a1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0e095a14e0bf6014cffcb95db007b750bfe84da7))
+- **segmented:** should not block the `selected$` if no animation ([#9512](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9512)) ([af8b531](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af8b53186469aa9858a9eaa883e3e597db65c598))
+- **select:** correct font size in small size ([#9516](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9516)) ([6f79005](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6f7900548ccd128b430f7a09ee3ef07dd6ea482c))
+
 ## [20.4.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.3.1...20.4.0) (2025-10-31)
 
 ### Features
