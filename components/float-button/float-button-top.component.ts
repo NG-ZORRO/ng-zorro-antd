@@ -31,7 +31,7 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigService, withConfigFactory } from 'ng-zorro-antd/core/config';
+import { withConfigFactory } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, generateClassName } from 'ng-zorro-antd/core/util';
@@ -72,13 +72,12 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   encapsulation: ViewEncapsulation.None
 })
 export class NzFloatButtonTopComponent implements OnInit {
-  public nzConfigService = inject(NzConfigService);
-  private scrollSrv = inject(NzScrollService);
-  private platform = inject(Platform);
-  private ngZone = inject(NgZone);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
-  private document = inject(DOCUMENT);
+  private readonly scrollSrv = inject(NzScrollService);
+  private readonly platform = inject(Platform);
+  private readonly ngZone = inject(NgZone);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly document = inject(DOCUMENT);
 
   readonly backTop = viewChild('backTop', { read: ElementRef });
 

@@ -18,7 +18,6 @@ import {
   TemplateRef
 } from '@angular/core';
 
-import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzFourDirectionType, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { generateClassName } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -34,13 +33,14 @@ const CLASS_NAME = 'ant-float-btn-group';
   exportAs: 'nzFloatButtonGroup',
   imports: [NzFloatButtonComponent, NzIconModule, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [fadeMotion],
   template: `
     @if (!isMenuMode()) {
       <ng-container *ngTemplateOutlet="menu"></ng-container>
     } @else {
       @if (open()) {
-        <div class="ant-float-btn-group-wrap" @fadeMotion><ng-container *ngTemplateOutlet="menu"></ng-container></div>
+        <div class="ant-float-btn-group-wrap" [animate.enter]="enterAnimation()" [animate.leave]="leaveAnimation()">
+          <ng-container *ngTemplateOutlet="menu"></ng-container>
+        </div>
       }
       <nz-float-button
         class="ant-float-btn-group-trigger"
@@ -77,11 +77,13 @@ export class NzFloatButtonGroupComponent {
   readonly nzPlacement = input<NzFourDirectionType>('top');
   readonly nzOnOpenChange = output<boolean>();
 
-  protected dir = inject(Directionality).valueSignal;
-  protected open = linkedSignal<boolean>(() => !!this.nzOpen());
-  protected isMenuMode = computed(() => !!this.nzTrigger() && ['click', 'hover'].includes(this.nzTrigger() as string));
-  protected isControlledMode = computed(() => this.nzOpen() !== null);
-  protected class = computed<string[]>(() => {
+  protected readonly dir = inject(Directionality).valueSignal;
+  protected readonly open = linkedSignal<boolean>(() => !!this.nzOpen());
+  protected readonly isMenuMode = computed(
+    () => !!this.nzTrigger() && ['click', 'hover'].includes(this.nzTrigger() as string)
+  );
+  protected readonly isControlledMode = computed(() => this.nzOpen() !== null);
+  protected readonly class = computed<string[]>(() => {
     const shape = this.nzShape();
     const dir = this.dir();
     const classes = [CLASS_NAME, this.generateClass(shape)];
@@ -95,6 +97,8 @@ export class NzFloatButtonGroupComponent {
     }
     return classes;
   });
+  protected readonly enterAnimation = computed(() => `ant-float-btn-enter-${this.nzPlacement()}`);
+  protected readonly leaveAnimation = computed(() => `ant-float-btn-leave-${this.nzPlacement()}`);
 
   constructor() {
     effect(() => {
