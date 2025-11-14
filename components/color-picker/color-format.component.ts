@@ -41,9 +41,9 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, NzSelectModule, NzInputModule, NzInputNumberModule],
   template: `
-    <div [formGroup]="validateForm" class="ant-color-picker-input-container">
+    <div class="ant-color-picker-input-container">
       <div class="ant-color-picker-format-select">
-        <nz-select formControlName="isFormat" nzBorderless nzSize="small">
+        <nz-select [formControl]="validateForm.controls.isFormat" nzBorderless nzSize="small">
           <nz-option nzValue="hex" nzLabel="HEX" />
           <nz-option nzValue="hsb" nzLabel="HSB" />
           <nz-option nzValue="rgb" nzLabel="RGB" />
@@ -55,7 +55,7 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
           @case ('hex') {
             <div class="ant-color-picker-hex-input">
               <nz-input-wrapper nzPrefix="#">
-                <input nz-input nzSize="small" formControlName="hex" />
+                <input nz-input nzSize="small" [formControl]="validateForm.controls.hex" />
               </nz-input-wrapper>
             </div>
           }
@@ -63,7 +63,7 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
             <div class="ant-color-picker-hsb-input">
               <div class="ant-color-picker-steppers ant-color-picker-hsb-input">
                 <nz-input-number
-                  formControlName="hsbH"
+                  [formControl]="validateForm.controls.hsbH"
                   [nzMin]="0"
                   [nzMax]="360"
                   [nzStep]="1"
@@ -73,7 +73,7 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
               </div>
               <div class="ant-color-picker-steppers ant-color-picker-hsb-input">
                 <nz-input-number
-                  formControlName="hsbS"
+                  [formControl]="validateForm.controls.hsbS"
                   [nzMin]="0"
                   [nzMax]="100"
                   [nzStep]="1"
@@ -84,7 +84,7 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
               </div>
               <div class="ant-color-picker-steppers ant-color-picker-hsb-input">
                 <nz-input-number
-                  formControlName="hsbB"
+                  [formControl]="validateForm.controls.hsbB"
                   [nzMin]="0"
                   [nzMax]="100"
                   [nzStep]="1"
@@ -98,13 +98,31 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
           @default {
             <div class="ant-color-picker-rgb-input">
               <div class="ant-color-picker-steppers ant-color-picker-rgb-input">
-                <nz-input-number formControlName="rgbR" [nzMin]="0" [nzMax]="255" [nzStep]="1" nzSize="small" />
+                <nz-input-number
+                  [formControl]="validateForm.controls.rgbR"
+                  [nzMin]="0"
+                  [nzMax]="255"
+                  [nzStep]="1"
+                  nzSize="small"
+                />
               </div>
               <div class="ant-color-picker-steppers ant-color-picker-rgb-input">
-                <nz-input-number formControlName="rgbG" [nzMin]="0" [nzMax]="255" [nzStep]="1" nzSize="small" />
+                <nz-input-number
+                  [formControl]="validateForm.controls.rgbG"
+                  [nzMin]="0"
+                  [nzMax]="255"
+                  [nzStep]="1"
+                  nzSize="small"
+                />
               </div>
               <div class="ant-color-picker-steppers ant-color-picker-rgb-input">
-                <nz-input-number formControlName="rgbB" [nzMin]="0" [nzMax]="255" [nzStep]="1" nzSize="small" />
+                <nz-input-number
+                  [formControl]="validateForm.controls.rgbB"
+                  [nzMin]="0"
+                  [nzMax]="255"
+                  [nzStep]="1"
+                  nzSize="small"
+                />
               </div>
             </div>
           }
@@ -114,7 +132,7 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
       @if (!nzDisabledAlpha) {
         <div class="ant-color-picker-steppers ant-color-picker-alpha-input">
           <nz-input-number
-            formControlName="roundA"
+            [formControl]="validateForm.controls.roundA"
             [nzMin]="0"
             [nzMax]="100"
             [nzStep]="1"
@@ -137,18 +155,6 @@ export class NzColorFormatComponent implements OnChanges, OnInit {
   @Output() readonly formatChange = new EventEmitter<{ color: string; format: NzColorPickerFormatType }>();
   @Output() readonly nzOnFormatChange = new EventEmitter<NzColorPickerFormatType>();
 
-  validatorFn(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const REGEXP = /^[0-9a-fA-F]{6}$/;
-      if (!control.value) {
-        return { error: true };
-      } else if (!REGEXP.test(control.value)) {
-        return { error: true };
-      }
-      return null;
-    };
-  }
-
   validateForm: FormGroup<{
     isFormat: FormControl<NzColorPickerFormatType | null>;
     hex: FormControl<string | null>;
@@ -161,7 +167,7 @@ export class NzColorFormatComponent implements OnChanges, OnInit {
     roundA: FormControl<number>;
   }> = this.formBuilder.nonNullable.group({
     isFormat: this.formBuilder.control<NzColorPickerFormatType>('hex'),
-    hex: this.formBuilder.control<string>('1677FF', this.validatorFn()),
+    hex: this.formBuilder.control<string>('1677FF', hexValidator),
     hsbH: 215,
     hsbS: 91,
     hsbB: 100,
@@ -251,3 +257,13 @@ export class NzColorFormatComponent implements OnChanges, OnInit {
     }
   }
 }
+
+const hexValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const REGEXP = /^[0-9a-fA-F]{6}$/;
+  if (!control.value) {
+    return { error: true };
+  } else if (!REGEXP.test(control.value)) {
+    return { error: true };
+  }
+  return null;
+};
