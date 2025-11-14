@@ -4,5 +4,5 @@
  */
 
 export * from './typings';
-export * from './water-mark.component';
-export * from './water-mark.module';
+export * from './watermark.component';
+export * from './watermark.module';

@@ -2,7 +2,7 @@
 category: Components
 type: Other
 cols: 1
-title: WaterMark
+title: Watermark
 tag: 15.1.0
 cover: 'https://img.alicdn.com/imgextra/i2/O1CN01ozPPZp1wj9CwsVvDL_!!6000000006343-0-tps-1232-820.jpg'
 description: Add specific text or patterns to the page.
@@ -15,7 +15,7 @@ description: Add specific text or patterns to the page.
 
 ## API
 
-### nz-water-mark
+### nz-watermark
 
 | Property    | Description                                                                                       | Type                 | Default                    |
 | ----------- | ------------------------------------------------------------------------------------------------- | -------------------- | -------------------------- |
@@ -46,12 +46,12 @@ description: Add specific text or patterns to the page.
 When using an image watermark and the image loads abnormally, you can add `nzContent` at the same time to prevent the watermark from becoming invalid.
 
 ```html
-<nz-water-mark
+<nz-watermark
   [nzWidth]="212"
   [nzHeight]="32"
   nzContent="NG Ant Design"
   nzImage="https://img.alicdn.com/imgextra/i3/O1CN01UR3Zkq1va9fnZsZcr_!!6000000006188-55-tps-424-64.svg"
 >
   <div style="height: 500px"></div>
-</nz-water-mark>
+</nz-watermark>
 ```

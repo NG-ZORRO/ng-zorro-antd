@@ -345,10 +345,6 @@
     "./upload/style/*": {
       "less": "./upload/style/*.less",
       "style": "./upload/style/index.min.css"
-    },
-    "./water-mark/style/*": {
-      "less": "./water-mark/style/*.less",
-      "style": "./water-mark/style/index.min.css"
     }
   }
 }

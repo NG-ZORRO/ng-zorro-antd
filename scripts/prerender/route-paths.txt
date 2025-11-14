@@ -131,8 +131,8 @@
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
-/components/water-mark/en
-/components/water-mark/zh
+/components/watermark/en
+/components/watermark/zh
 /components/check-list/en
 /components/check-list/zh
 /components/color-picker/en
