@@ -207,7 +207,7 @@ export type NzSelectSizeType = NzSizeLDSType;
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-show-search]': `(nzShowSearch || nzMode !== 'default') && !nzDisabled`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
-    '[class.ant-select-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
+    '[class.ant-select-borderless]': `nzVariant === 'borderless'`,
     '[class.ant-select-filled]': `nzVariant === 'filled'`,
     '[class.ant-select-underlined]': `nzVariant === 'underlined'`,
     '[class.ant-select-open]': 'nzOpen',
@@ -270,10 +270,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input({ transform: booleanAttribute }) nzAllowClear = false;
-  /**
-   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
-   */
-  @Input({ transform: booleanAttribute }) @WithConfig() nzBorderless = false;
   @Input({ transform: booleanAttribute }) nzShowSearch = false;
   @Input({ transform: booleanAttribute }) nzLoading = false;
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
