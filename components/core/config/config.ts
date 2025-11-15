@@ -16,7 +16,8 @@ import {
   NzSizeDSType,
   NzSizeLDSType,
   NzSizeMDSType,
-  NzTSType
+  NzTSType,
+  NzVariant
 } from 'ng-zorro-antd/core/types';
 
 interface MonacoEnvironment {
@@ -90,7 +91,7 @@ export interface Theme {
 }
 
 export interface SelectConfig {
-  nzBorderless?: boolean;
+  nzVariant?: NzVariant;
   nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
   nzBackdrop?: boolean;
   nzOptionHeightPx?: number;
@@ -178,6 +179,7 @@ export interface DatePickerConfig {
   nzSeparator?: string;
   nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
   nzBackdrop?: boolean;
+  nzVariant?: NzVariant;
 }
 
 export interface DescriptionsConfig {
@@ -327,6 +329,7 @@ export interface TimePickerConfig {
   nzUse12Hours?: string;
   nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
   nzBackdrop?: boolean;
+  nzVariant?: NzVariant;
 }
 
 export interface TreeConfig {
