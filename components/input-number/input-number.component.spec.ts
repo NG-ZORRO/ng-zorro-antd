@@ -371,12 +371,6 @@ describe('input-number', () => {
     expect(document.activeElement).not.toBe(hostElement.querySelector('input'));
   });
 
-  it('should be set bordered', () => {
-    component.bordered = false;
-    fixture.detectChanges();
-    expect(hostElement.classList).toContain('ant-input-number-borderless');
-  });
-
   describe('should nzVariant work', () => {
     it('filled', () => {
       fixture.detectChanges();
@@ -549,7 +543,7 @@ describe('input-number with affixes or addons', () => {
   });
 
   it('should be apply borderless class', () => {
-    component.bordered = false;
+    component.variant = 'borderless';
     fixture.detectChanges();
     expect(component.withContentAffixes().nativeElement.classList).toContain(
       'ant-input-number-affix-wrapper-borderless'
@@ -607,7 +601,6 @@ describe('input-number with affixes or addons', () => {
       [nzPrecision]="precision"
       [nzDisabled]="disabled"
       [nzReadOnly]="readonly"
-      [nzBordered]="bordered"
       [nzVariant]="variant"
       [nzKeyboard]="keyboard"
       [nzControls]="controls"
@@ -629,7 +622,6 @@ class InputNumberTestComponent {
   precision: null | number = null;
   disabled = false;
   readonly = false;
-  bordered = true;
   variant: NzVariant = 'outlined';
   keyboard = true;
   controls = true;
@@ -654,17 +646,10 @@ class InputNumberTestComponent {
       nzSuffix="Suffix"
       [nzDisabled]="disabled"
       [nzReadOnly]="readonly"
-      [nzBordered]="bordered"
       [nzVariant]="variant"
     />
 
-    <nz-input-number
-      #withContentAffixes
-      [nzDisabled]="disabled"
-      [nzReadOnly]="readonly"
-      [nzBordered]="bordered"
-      [nzVariant]="variant"
-    >
+    <nz-input-number #withContentAffixes [nzDisabled]="disabled" [nzReadOnly]="readonly" [nzVariant]="variant">
       <span nzInputPrefix>Prefix</span>
       <span nzInputSuffix>Suffix</span>
     </nz-input-number>
@@ -675,17 +660,10 @@ class InputNumberTestComponent {
       nzAddonAfter="After"
       [nzDisabled]="disabled"
       [nzReadOnly]="readonly"
-      [nzBordered]="bordered"
       [nzVariant]="variant"
     />
 
-    <nz-input-number
-      #withContentAddons
-      [nzDisabled]="disabled"
-      [nzReadOnly]="readonly"
-      [nzBordered]="bordered"
-      [nzVariant]="variant"
-    >
+    <nz-input-number #withContentAddons [nzDisabled]="disabled" [nzReadOnly]="readonly" [nzVariant]="variant">
       <span nzInputAddonBefore>Before</span>
       <span nzInputAddonAfter>After</span>
     </nz-input-number>
@@ -698,17 +676,10 @@ class InputNumberTestComponent {
       nzAddonAfter="After"
       [nzDisabled]="disabled"
       [nzReadOnly]="readonly"
-      [nzBordered]="bordered"
       [nzVariant]="variant"
     />
 
-    <nz-input-number
-      #withContentMix
-      [nzDisabled]="disabled"
-      [nzReadOnly]="readonly"
-      [nzBordered]="bordered"
-      [nzVariant]="variant"
-    >
+    <nz-input-number #withContentMix [nzDisabled]="disabled" [nzReadOnly]="readonly" [nzVariant]="variant">
       <span nzInputPrefix>Prefix</span>
       <span nzInputSuffix>Suffix</span>
       <span nzInputAddonBefore>Before</span>
@@ -719,7 +690,6 @@ class InputNumberTestComponent {
 class InputNumberWithAffixesAndAddonsTestComponent {
   disabled = false;
   readonly = false;
-  bordered = true;
   variant: NzVariant = 'outlined';
 
   readonly withPropAffixes = viewChild.required('withPropAffixes', { read: ElementRef });
