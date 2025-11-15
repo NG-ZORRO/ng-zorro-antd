@@ -12,9 +12,3 @@ import { NzTooltipComponent, NzTooltipDirective } from './tooltip';
   exports: [NzTooltipComponent, NzTooltipDirective]
 })
 export class NzTooltipModule {}
-
-/**
- * @deprecated Use {@link NzTooltipModule} instead.
- * This will be removed in v21.0.0.
- */
-export const NzToolTipModule = NzTooltipModule;
