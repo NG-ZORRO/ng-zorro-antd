@@ -9,9 +9,6 @@ import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testi
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
-
-import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
 import { NzCheckboxComponent } from './checkbox.component';
 import { NzCheckboxModule } from './checkbox.module';
 
@@ -212,32 +209,6 @@ describe('checkbox', () => {
     }));
   });
 
-  describe('checkbox wrapper', () => {
-    let fixture: ComponentFixture<NzTestCheckboxWrapperComponent>;
-    let testComponent: NzTestCheckboxWrapperComponent;
-    let checkboxWrapper: DebugElement;
-    let inputElement: HTMLInputElement;
-
-    beforeEach(fakeAsync(() => {
-      fixture = TestBed.createComponent(NzTestCheckboxWrapperComponent);
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      checkboxWrapper = fixture.debugElement.query(By.directive(NzCheckboxWrapperComponent));
-      inputElement = checkboxWrapper.nativeElement.querySelector('input') as HTMLInputElement;
-    }));
-    it('should className correct', fakeAsync(() => {
-      expect(checkboxWrapper.nativeElement.classList).toContain('ant-checkbox-group');
-    }));
-    it('should onChange correct', fakeAsync(() => {
-      inputElement.click();
-      flush();
-      fixture.detectChanges();
-      expect(testComponent.onChange).toHaveBeenCalledWith([]);
-      expect(testComponent.onChange).toHaveBeenCalledTimes(1);
-    }));
-  });
   describe('RTL', () => {
     it('should single checkbox className correct on dir change', () => {
       const fixture = TestBed.createComponent(NzTestCheckboxSingleRtlComponent);
@@ -275,22 +246,6 @@ export class NzTestCheckboxSingleComponent {
   checked = false;
   indeterminate = false;
   modelChange = jasmine.createSpy('change callback');
-}
-
-@Component({
-  imports: [FormsModule, NzCheckboxModule],
-  template: `
-    <nz-checkbox-wrapper (nzOnChange)="onChange($event)">
-      <div><label nz-checkbox nzValue="A" [ngModel]="true">A</label></div>
-      <div><label nz-checkbox nzValue="B">B</label></div>
-      <div><label nz-checkbox nzValue="C">C</label></div>
-      <div><label nz-checkbox nzValue="D">D</label></div>
-      <div><label nz-checkbox nzValue="E">E</label></div>
-    </nz-checkbox-wrapper>
-  `
-})
-export class NzTestCheckboxWrapperComponent {
-  onChange = jasmine.createSpy('change callback');
 }
 
 @Component({
@@ -346,35 +301,5 @@ describe('checkbox component', () => {
     component.nzAutoFocus = true;
     component.ngAfterViewInit();
     expect(component.focus).toHaveBeenCalled();
-  });
-
-  describe('checkbox wrapper component', () => {
-    let fixture: ComponentFixture<NzCheckboxWrapperComponent>;
-    let component: NzCheckboxWrapperComponent;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzCheckboxWrapperComponent);
-      component = fixture.componentInstance;
-    });
-
-    it('should emit correct value', () => {
-      (component as NzSafeAny)['checkboxList'] = [
-        {
-          nzChecked: true,
-          nzValue: 'value 1'
-        },
-        {
-          nzChecked: true,
-          nzValue: 'value 2'
-        },
-        {
-          nzChecked: false,
-          nzValue: 'value 3'
-        }
-      ];
-      spyOn(component.nzOnChange, 'emit');
-      component.onChange();
-      expect(component.nzOnChange.emit).toHaveBeenCalledWith(['value 1', 'value 2']);
-    });
   });
 });
