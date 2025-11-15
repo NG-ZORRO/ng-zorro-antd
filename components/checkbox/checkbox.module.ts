@@ -6,11 +6,10 @@
 import { NgModule } from '@angular/core';
 
 import { NzCheckboxGroupComponent } from './checkbox-group.component';
-import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
 import { NzCheckboxComponent } from './checkbox.component';
 
 @NgModule({
-  imports: [NzCheckboxComponent, NzCheckboxGroupComponent, NzCheckboxWrapperComponent],
-  exports: [NzCheckboxComponent, NzCheckboxGroupComponent, NzCheckboxWrapperComponent]
+  imports: [NzCheckboxComponent, NzCheckboxGroupComponent],
+  exports: [NzCheckboxComponent, NzCheckboxGroupComponent]
 })
 export class NzCheckboxModule {}
