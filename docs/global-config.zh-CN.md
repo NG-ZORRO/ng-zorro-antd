@@ -126,7 +126,7 @@ export const appConfig: ApplicationConfig = {
         const globalConfig = inject(NzConfigService, { skipSelf: true }).getConfig();
         const localConfig = {
           select: {
-            nzBorderless: true
+            nzVariant: 'borderless'
           }
         };
         // 合并全局配置与本地配置

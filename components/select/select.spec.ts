@@ -257,13 +257,6 @@ describe('select', () => {
       expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('test_label');
     }));
 
-    it('should nzBorderless works', () => {
-      expect(selectElement.classList).not.toContain('ant-select-borderless');
-      component.nzBorderless = true;
-      fixture.detectChanges();
-      expect(selectElement.classList).toContain('ant-select-borderless');
-    });
-
     describe('should nzVariant works', () => {
       it('filled', () => {
         fixture.detectChanges();
@@ -1649,7 +1642,6 @@ describe('select', () => {
       [nzFilterOption]="nzFilterOption"
       [compareWith]="compareWith"
       [nzAllowClear]="nzAllowClear"
-      [nzBorderless]="nzBorderless"
       [nzVariant]="nzVariant"
       [nzShowSearch]="nzShowSearch"
       [nzLoading]="nzLoading"
@@ -1722,7 +1714,6 @@ export class TestSelectTemplateDefaultComponent {
   };
   compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAllowClear = false;
-  nzBorderless = false;
   nzVariant: NzVariant = 'outlined';
   nzShowSearch = false;
   nzLoading = false;
@@ -1821,7 +1812,6 @@ export class TestSelectTemplateTagsComponent {
       [nzFilterOption]="nzFilterOption"
       [compareWith]="compareWith"
       [nzAllowClear]="nzAllowClear"
-      [nzBorderless]="nzBorderless"
       [nzShowSearch]="nzShowSearch"
       [nzLoading]="nzLoading"
       [nzAutoFocus]="nzAutoFocus"
@@ -1866,7 +1856,6 @@ export class TestSelectReactiveDefaultComponent {
   };
   compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAllowClear = false;
-  nzBorderless = false;
   nzShowSearch = false;
   nzLoading = false;
   nzAutoFocus = false;

@@ -24,6 +24,7 @@ describe('input', () => {
       providers: [provideNzIconsTesting()]
     });
   }));
+
   describe('single input', () => {
     describe('input with input element', () => {
       let fixture: ComponentFixture<NzTestInputWithInputComponent>;
@@ -36,10 +37,12 @@ describe('input', () => {
         fixture.detectChanges();
         inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
       });
+
       it('should className correct', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input');
       });
+
       it('should disabled work', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-disabled');
@@ -47,6 +50,7 @@ describe('input', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input-disabled');
       });
+
       it('should nzSize work', () => {
         testComponent.size = 'small';
         fixture.detectChanges();
@@ -57,6 +61,7 @@ describe('input', () => {
         expect(inputElement.nativeElement.classList).toContain('ant-input');
         expect(inputElement.nativeElement.classList).toContain('ant-input-lg');
       });
+
       it('should nzStepperLess work', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input-stepperless');
@@ -64,11 +69,7 @@ describe('input', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-stepperless');
       });
-      it('should nzBorderless work', () => {
-        testComponent.borderless = true;
-        fixture.detectChanges();
-        expect(inputElement.nativeElement.classList).toContain('ant-input-borderless');
-      });
+
       describe('should nzVariant work', () => {
         it('filled', () => {
           fixture.detectChanges();
@@ -77,6 +78,7 @@ describe('input', () => {
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).toContain('ant-input-filled');
         });
+
         it('borderless', () => {
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).not.toContain('ant-input-borderless');
@@ -84,6 +86,7 @@ describe('input', () => {
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).toContain('ant-input-borderless');
         });
+
         it('underlined', () => {
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).not.toContain('ant-input-borderless');
@@ -123,6 +126,7 @@ describe('input', () => {
         fixture.detectChanges();
         inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
       });
+
       it('should set disabled work', fakeAsync(() => {
         flush();
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-disabled');
@@ -270,21 +274,13 @@ export class NzTestInputWithDirComponent {
 @Component({
   imports: [NzInputModule],
   template: `
-    <input
-      nz-input
-      [nzSize]="size"
-      [disabled]="disabled"
-      [nzBorderless]="borderless"
-      [nzVariant]="variant"
-      [nzStepperless]="stepperless"
-    />
+    <input nz-input [nzSize]="size" [disabled]="disabled" [nzVariant]="variant" [nzStepperless]="stepperless" />
   `
 })
 export class NzTestInputWithInputComponent {
   size: NzSizeLDSType = 'default';
   disabled = false;
   stepperless = true;
-  borderless = false;
   variant: NzVariant = 'outlined';
 }
 

@@ -37,12 +37,6 @@ description: 收集用户的多项选择。
 | `[nzDisabled]`    | 设定全部 checkbox disable 状态            | `boolean`                                    | `false` |
 | `(ngModelChange)` | 选中数据变化时的回调                      | `EventEmitter<string[] \| number[]>`         | -       |
 
-### nz-checkbox-wrapper
-
-| 参数           | 说明                 | 类型                  | 默认值 |
-| -------------- | -------------------- | --------------------- | ------ |
-| `(nzOnChange)` | 选中数据变化时的回调 | `EventEmitter<any[]>` | -      |
-
 ## 方法
 
 ### [nz-checkbox]
