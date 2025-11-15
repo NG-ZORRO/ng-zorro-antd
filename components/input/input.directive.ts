@@ -44,7 +44,7 @@ const PREFIX_CLS = 'ant-input';
     '[attr.type]': 'type()',
     '[class]': 'classes()',
     '[class.ant-input-disabled]': 'finalDisabled()',
-    '[class.ant-input-borderless]': `nzVariant() === 'borderless' || (nzVariant() === 'outlined' && nzBorderless())`,
+    '[class.ant-input-borderless]': `nzVariant() === 'borderless'`,
     '[class.ant-input-filled]': `nzVariant() === 'filled'`,
     '[class.ant-input-underlined]': `nzVariant() === 'underlined'`,
     '[class.ant-input-lg]': `finalSize() === 'large'`,
@@ -73,10 +73,6 @@ export class NzInputDirective implements OnInit {
   readonly ngControl = inject(NgControl, { self: true, optional: true });
   readonly value = signal<string>(this.elementRef.nativeElement.value);
 
-  /**
-   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
-   */
-  readonly nzBorderless = input(false, { transform: booleanAttribute });
   readonly nzVariant = input<NzVariant>('outlined');
   readonly nzSize = input<NzSizeLDSType>('default');
   /**
