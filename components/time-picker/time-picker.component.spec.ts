@@ -319,12 +319,6 @@ describe('time-picker', () => {
       expect(result.getSeconds()).toEqual(30);
     }));
 
-    it('should support nzBorderless', fakeAsync(() => {
-      fixture.componentInstance.nzBorderless = true;
-      fixture.detectChanges();
-      expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
-    }));
-
     describe('should nzVariant works', () => {
       it('filled', () => {
         fixture.detectChanges();
@@ -501,7 +495,6 @@ describe('time-picker', () => {
       [nzSuffixIcon]="nzSuffixIcon"
       [nzBackdrop]="nzBackdrop"
       [nzDefaultOpenValue]="defaultOpenValue"
-      [nzBorderless]="nzBorderless"
       [nzVariant]="nzVariant"
     ></nz-time-picker>
   `
@@ -516,7 +509,6 @@ export class NzTestTimePickerComponent {
   use12Hours = false;
   nzSuffixIcon: string = 'close-circle';
   nzBackdrop = false;
-  nzBorderless = false;
   nzVariant: NzVariant = 'outlined';
   defaultOpenValue: Date = new Date('2020-03-27T00:00:00');
   onChange(_: Date | null): void {}
