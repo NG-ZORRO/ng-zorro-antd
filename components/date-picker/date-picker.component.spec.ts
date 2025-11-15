@@ -563,12 +563,6 @@ describe('NzDatePickerComponent', () => {
       expect(debugElement.query(By.css(`.anticon-clock-circle`))).toBeDefined();
     }));
 
-    it('should support nzBorderless', fakeAsync(() => {
-      fixtureInstance.nzBorderless = true;
-      fixture.detectChanges();
-      expect(debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
-    }));
-
     describe('should support nzVariant', () => {
       it('borderless', () => {
         fixture.detectChanges();
@@ -1539,7 +1533,6 @@ describe('in form', () => {
           [nzShowTime]="nzShowTime"
           (nzOnOk)="nzOnOk($event)"
           [nzSuffixIcon]="nzSuffixIcon"
-          [nzBorderless]="nzBorderless"
           [nzVariant]="nzVariant"
           [nzInline]="nzInline"
           [nzBackdrop]="nzBackdrop"
@@ -1603,7 +1596,6 @@ class NzTestDatePickerComponent {
   nzShowNow = false;
   nzMode: string = 'date';
   nzSuffixIcon!: string;
-  nzBorderless = false;
   nzVariant: NzVariant = 'outlined';
   nzInline = false;
   nzBackdrop = false;
