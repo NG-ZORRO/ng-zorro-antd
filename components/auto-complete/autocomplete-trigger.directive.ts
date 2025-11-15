@@ -20,7 +20,6 @@ import {
   Directive,
   DOCUMENT,
   ElementRef,
-  ExistingProvider,
   forwardRef,
   inject,
   Injector,
@@ -38,31 +37,18 @@ import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
-
-/**
- * @deprecated Internally used, will be removed in v21, please do not use it.
- */
-export const NZ_AUTOCOMPLETE_VALUE_ACCESSOR: ExistingProvider = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NzAutocompleteTriggerDirective),
-  multi: true
-};
-
-/**
- * @deprecated Internally used, will not be exported in v21, please do not use it.
- */
-export function getNzAutocompleteMissingPanelError(): Error {
-  return Error(
-    'Attempting to open an undefined instance of `nz-autocomplete`. ' +
-      'Make sure that the id passed to the `nzAutocomplete` is correct and that ' +
-      "you're attempting to open it after the ngAfterContentInit hook."
-  );
-}
+import { getNzAutocompleteMissingPanelError } from './error';
 
 @Directive({
   selector: `input[nzAutocomplete], textarea[nzAutocomplete]`,
   exportAs: 'nzAutocompleteTrigger',
-  providers: [NZ_AUTOCOMPLETE_VALUE_ACCESSOR],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NzAutocompleteTriggerDirective),
+      multi: true
+    }
+  ],
   host: {
     autocomplete: 'off',
     'aria-autocomplete': 'list',
