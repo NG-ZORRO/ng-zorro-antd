@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 
@@ -14,13 +14,14 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule, NzTreeNodeOptions } f
       [nzExpandedKeys]="defaultExpandedKeys"
       [nzSelectedKeys]="defaultSelectedKeys"
       (nzClick)="nzClick($event)"
+      (nzDblClick)="nzClick($event)"
       (nzContextMenu)="nzClick($event)"
       (nzCheckboxChange)="nzCheck($event)"
       (nzExpandChange)="nzCheck($event)"
     ></nz-tree>
   `
 })
-export class NzDemoTreeBasicComponent implements AfterViewInit {
+export class NzDemoTreeBasicComponent {
   @ViewChild('nzTreeComponent', { static: false }) nzTreeComponent!: NzTreeComponent;
   defaultCheckedKeys = ['10020'];
   defaultSelectedKeys = ['10010'];
@@ -63,17 +64,5 @@ export class NzDemoTreeBasicComponent implements AfterViewInit {
   // nzSelectedKeys change
   nzSelect(keys: string[]): void {
     console.log(keys, this.nzTreeComponent.getSelectedNodeList());
-  }
-
-  ngAfterViewInit(): void {
-    // get node by key: '10011'
-    console.log(this.nzTreeComponent.getTreeNodeByKey('10011'));
-    // use tree methods
-    console.log(
-      this.nzTreeComponent.getTreeNodes(),
-      this.nzTreeComponent.getCheckedNodeList(),
-      this.nzTreeComponent.getSelectedNodeList(),
-      this.nzTreeComponent.getExpandedNodeList()
-    );
   }
 }

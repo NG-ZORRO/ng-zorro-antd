@@ -204,11 +204,6 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges {
     return !this.isExpanded && !this.isLeaf;
   }
 
-  /**
-   * collapse node
-   *
-   * @param event
-   */
   clickExpand(event: MouseEvent): void {
     event.preventDefault();
     if (!this.isLoading && !this.isLeaf) {
@@ -240,16 +235,10 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges {
   }
 
   contextMenu(event: MouseEvent): void {
-    event.preventDefault();
     const eventNext = this.nzTreeService.formatEvent('contextmenu', this.nzTreeNode, event);
     this.nzContextMenu.emit(eventNext);
   }
 
-  /**
-   * check node
-   *
-   * @param event
-   */
   clickCheckbox(event: MouseEvent): void {
     event.preventDefault();
     // return if the node is disabled
@@ -265,16 +254,9 @@ export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges {
 
   clearDragClass(): void {
     const dragClass = ['drag-over-gap-top', 'drag-over-gap-bottom', 'drag-over', 'drop-target'];
-    dragClass.forEach(e => {
-      this.renderer.removeClass(this.el, e);
-    });
+    dragClass.forEach(e => this.renderer.removeClass(this.el, e));
   }
 
-  /**
-   * drag event
-   *
-   * @param e
-   */
   handleDragStart(e: DragEvent): void {
     try {
       // i.e., throw error
