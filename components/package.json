@@ -94,10 +94,6 @@
       "less": "./avatar/style/*.less",
       "style": "./avatar/style/index.min.css"
     },
-    "./back-top/style/*": {
-      "less": "./back-top/style/*.less",
-      "style": "./back-top/style/index.min.css"
-    },
     "./badge/style/*": {
       "less": "./badge/style/*.less",
       "style": "./badge/style/index.min.css"
