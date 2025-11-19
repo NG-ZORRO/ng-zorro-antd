@@ -18,26 +18,27 @@ import {
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
-import { NzIsMenuInsideDropDownToken } from './menu.token';
+import { NzIsMenuInsideDropdownToken } from './menu.token';
 
-export function MenuGroupFactory(): boolean {
-  const isMenuInsideDropDownToken = inject(NzIsMenuInsideDropDownToken, { optional: true, skipSelf: true });
-  return isMenuInsideDropDownToken ?? false;
+function MenuGroupFactory(): boolean {
+  const isMenuInsideDropdownToken = inject(NzIsMenuInsideDropdownToken, { optional: true, skipSelf: true });
+  return isMenuInsideDropdownToken ?? false;
 }
+
 @Component({
   selector: '[nz-menu-group]',
   exportAs: 'nzMenuGroup',
   providers: [
     /** check if menu inside dropdown-menu component **/
     {
-      provide: NzIsMenuInsideDropDownToken,
+      provide: NzIsMenuInsideDropdownToken,
       useFactory: MenuGroupFactory
     }
   ],
   template: `
     <div
-      [class.ant-menu-item-group-title]="!isMenuInsideDropDown"
-      [class.ant-dropdown-menu-item-group-title]="isMenuInsideDropDown"
+      [class.ant-menu-item-group-title]="!isMenuInsideDropdown"
+      [class.ant-dropdown-menu-item-group-title]="isMenuInsideDropdown"
       #titleElement
     >
       <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
@@ -49,15 +50,15 @@ export function MenuGroupFactory(): boolean {
   `,
   imports: [NzOutletModule],
   host: {
-    '[class.ant-menu-item-group]': '!isMenuInsideDropDown',
-    '[class.ant-dropdown-menu-item-group]': 'isMenuInsideDropDown'
+    '[class.ant-menu-item-group]': '!isMenuInsideDropdown',
+    '[class.ant-dropdown-menu-item-group]': 'isMenuInsideDropdown'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzMenuGroupComponent implements AfterViewInit {
   private readonly renderer = inject(Renderer2);
-  protected readonly isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
+  protected readonly isMenuInsideDropdown = inject(NzIsMenuInsideDropdownToken);
 
   @Input() nzTitle?: string | TemplateRef<void>;
   @ViewChild('titleElement') titleElement?: ElementRef;
@@ -66,7 +67,7 @@ export class NzMenuGroupComponent implements AfterViewInit {
     const ulElement = this.titleElement!.nativeElement.nextElementSibling;
     if (ulElement) {
       /** add classname to ul **/
-      const className = this.isMenuInsideDropDown ? 'ant-dropdown-menu-item-group-list' : 'ant-menu-item-group-list';
+      const className = this.isMenuInsideDropdown ? 'ant-dropdown-menu-item-group-list' : 'ant-menu-item-group-list';
       this.renderer.addClass(ulElement, className);
     }
   }

@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-space-compact-buttons',
-  imports: [NzSpaceModule, NzButtonModule, NzIconModule, NzDropDownModule, NzTooltipModule],
+  imports: [NzSpaceModule, NzButtonModule, NzIconModule, NzDropdownModule, NzTooltipModule],
   template: `
     <nz-space-compact nzBlock>
       <button nz-button nz-tooltip nzTooltipTitle="Like">

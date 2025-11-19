@@ -8,19 +8,18 @@ import { NgModule } from '@angular/core';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzContextMenuServiceModule } from './context-menu.service.module';
-import { NzDropDownADirective } from './dropdown-a.directive';
-import { NzDropdownButtonDirective } from './dropdown-button.directive';
+import { NzDropdownADirective } from './dropdown-a.directive';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
-import { NzDropDownDirective } from './dropdown.directive';
+import { NzDropdownDirective } from './dropdown.directive';
 
 @NgModule({
-  imports: [
-    NzDropDownDirective,
-    NzDropDownADirective,
-    NzDropdownMenuComponent,
-    NzDropdownButtonDirective,
-    NzContextMenuServiceModule
-  ],
-  exports: [NzMenuModule, NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective]
+  imports: [NzDropdownDirective, NzDropdownADirective, NzDropdownMenuComponent, NzContextMenuServiceModule],
+  exports: [NzMenuModule, NzDropdownDirective, NzDropdownADirective, NzDropdownMenuComponent]
 })
-export class NzDropDownModule {}
+export class NzDropdownModule {}
+
+/**
+ * @deprecated Use {@link NzDropdownModule} instead.
+ * This will be removed in v22.0.0.
+ */
+export const NzDropDownModule = NzDropdownModule;

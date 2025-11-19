@@ -4,7 +4,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
@@ -18,7 +18,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
     NzAvatarModule,
     NzBreadCrumbModule,
     NzButtonModule,
-    NzDropDownModule,
+    NzDropdownModule,
     NzGridModule,
     NzIconModule,
     NzNoAnimationModule,

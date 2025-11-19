@@ -15,7 +15,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzContextMenuService } from './context-menu.service';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
-import { NzDropDownModule } from './dropdown.module';
+import { NzDropdownModule } from './dropdown.module';
 
 describe('context-menu', () => {
   let overlayContainer: OverlayContainer;
@@ -156,7 +156,7 @@ describe('context-menu', () => {
 });
 
 @Component({
-  imports: [NzDropDownModule, NzMenuModule],
+  imports: [NzDropdownModule, NzMenuModule],
   template: `
     <nz-dropdown-menu>
       <ul nz-menu>

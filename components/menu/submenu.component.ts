@@ -37,7 +37,7 @@ import { getPlacementName, POSITION_MAP, POSITION_TYPE_HORIZONTAL } from 'ng-zor
 
 import { NzMenuItemComponent } from './menu-item.component';
 import { MenuService } from './menu.service';
-import { NzIsMenuInsideDropDownToken } from './menu.token';
+import { NzIsMenuInsideDropdownToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType, NzSubmenuTrigger } from './menu.types';
 import { NzSubmenuInlineChildComponent } from './submenu-inline-child.component';
 import { NzSubmenuNoneInlineChildComponent } from './submenu-non-inline-child.component';
@@ -74,7 +74,7 @@ const listOfHorizontalPositions = [
       [nzTitle]="nzTitle"
       [mode]="mode"
       [nzDisabled]="nzDisabled"
-      [isMenuInsideDropDown]="isMenuInsideDropDown"
+      [isMenuInsideDropdown]="isMenuInsideDropdown"
       [paddingLeft]="nzPaddingLeft || inlinePaddingLeft"
       [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
       (subMenuMouseState)="setMouseEnterState($event)"
@@ -112,7 +112,7 @@ const listOfHorizontalPositions = [
           [nzOpen]="nzOpen"
           [position]="position"
           [nzDisabled]="nzDisabled"
-          [isMenuInsideDropDown]="isMenuInsideDropDown"
+          [isMenuInsideDropdown]="isMenuInsideDropdown"
           [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
           [templateOutlet]="subMenuTemplate"
           [menuClass]="nzMenuClassName"
@@ -128,22 +128,22 @@ const listOfHorizontalPositions = [
     </ng-template>
   `,
   host: {
-    '[class.ant-dropdown-menu-submenu]': `isMenuInsideDropDown`,
-    '[class.ant-dropdown-menu-submenu-disabled]': `isMenuInsideDropDown && nzDisabled`,
-    '[class.ant-dropdown-menu-submenu-open]': `isMenuInsideDropDown && nzOpen`,
-    '[class.ant-dropdown-menu-submenu-selected]': `isMenuInsideDropDown && isSelected`,
-    '[class.ant-dropdown-menu-submenu-vertical]': `isMenuInsideDropDown && mode === 'vertical'`,
-    '[class.ant-dropdown-menu-submenu-horizontal]': `isMenuInsideDropDown && mode === 'horizontal'`,
-    '[class.ant-dropdown-menu-submenu-inline]': `isMenuInsideDropDown && mode === 'inline'`,
-    '[class.ant-dropdown-menu-submenu-active]': `isMenuInsideDropDown && isActive`,
-    '[class.ant-menu-submenu]': `!isMenuInsideDropDown`,
-    '[class.ant-menu-submenu-disabled]': `!isMenuInsideDropDown && nzDisabled`,
-    '[class.ant-menu-submenu-open]': `!isMenuInsideDropDown && nzOpen`,
-    '[class.ant-menu-submenu-selected]': `!isMenuInsideDropDown && isSelected`,
-    '[class.ant-menu-submenu-vertical]': `!isMenuInsideDropDown && mode === 'vertical'`,
-    '[class.ant-menu-submenu-horizontal]': `!isMenuInsideDropDown && mode === 'horizontal'`,
-    '[class.ant-menu-submenu-inline]': `!isMenuInsideDropDown && mode === 'inline'`,
-    '[class.ant-menu-submenu-active]': `!isMenuInsideDropDown && isActive`,
+    '[class.ant-dropdown-menu-submenu]': `isMenuInsideDropdown`,
+    '[class.ant-dropdown-menu-submenu-disabled]': `isMenuInsideDropdown && nzDisabled`,
+    '[class.ant-dropdown-menu-submenu-open]': `isMenuInsideDropdown && nzOpen`,
+    '[class.ant-dropdown-menu-submenu-selected]': `isMenuInsideDropdown && isSelected`,
+    '[class.ant-dropdown-menu-submenu-vertical]': `isMenuInsideDropdown && mode === 'vertical'`,
+    '[class.ant-dropdown-menu-submenu-horizontal]': `isMenuInsideDropdown && mode === 'horizontal'`,
+    '[class.ant-dropdown-menu-submenu-inline]': `isMenuInsideDropdown && mode === 'inline'`,
+    '[class.ant-dropdown-menu-submenu-active]': `isMenuInsideDropdown && isActive`,
+    '[class.ant-menu-submenu]': `!isMenuInsideDropdown`,
+    '[class.ant-menu-submenu-disabled]': `!isMenuInsideDropdown && nzDisabled`,
+    '[class.ant-menu-submenu-open]': `!isMenuInsideDropdown && nzOpen`,
+    '[class.ant-menu-submenu-selected]': `!isMenuInsideDropdown && isSelected`,
+    '[class.ant-menu-submenu-vertical]': `!isMenuInsideDropdown && mode === 'vertical'`,
+    '[class.ant-menu-submenu-horizontal]': `!isMenuInsideDropdown && mode === 'horizontal'`,
+    '[class.ant-menu-submenu-inline]': `!isMenuInsideDropdown && mode === 'inline'`,
+    '[class.ant-menu-submenu-active]': `!isMenuInsideDropdown && isActive`,
     '[class.ant-menu-submenu-rtl]': `dir === 'rtl'`
   },
   imports: [
@@ -156,7 +156,7 @@ const listOfHorizontalPositions = [
 })
 export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
   public readonly nzSubmenuService = inject(NzSubmenuService);
-  protected readonly isMenuInsideDropDown = inject(NzIsMenuInsideDropDownToken);
+  protected readonly isMenuInsideDropdown = inject(NzIsMenuInsideDropdownToken);
   protected readonly noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
   private readonly directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);

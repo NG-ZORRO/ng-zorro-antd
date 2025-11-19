@@ -44,7 +44,7 @@ export interface NzConfig {
   datePicker?: DatePickerConfig;
   descriptions?: DescriptionsConfig;
   drawer?: DrawerConfig;
-  dropDown?: DropDownConfig;
+  dropdown?: DropdownConfig;
   empty?: EmptyConfig;
   filterTrigger?: FilterTriggerConfig;
   form?: FormConfig;
@@ -194,7 +194,7 @@ export interface DrawerConfig {
   nzDirection?: Direction;
 }
 
-export interface DropDownConfig {
+export interface DropdownConfig {
   nzBackdrop?: boolean;
 }
 
