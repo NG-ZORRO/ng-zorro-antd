@@ -4,22 +4,18 @@
 @color-picker-prefix-cls: ~'@{ant-prefix}-color-picker';
 
 .@{color-picker-prefix-cls} {
-  position: absolute;
-  z-index: 1;
-  display: block;
-  width: max-content;
-  min-width: 250px;
-  visibility: visible;
+  &-inner {
+    display: block;
 
-  &-hidden {
-    display: none;
+    &-content {
+      display: flex;
+      flex-direction: column;
+      width: 234px;
+    }
   }
 
   &-panel {
-    display: flex;
-    flex-direction: column;
-    width: 250px;
-    border-radius: @border-radius-base;
+    user-select: none;
 
     &-disabled {
       cursor: not-allowed;
@@ -33,20 +29,22 @@
 
   &-palette {
     position: relative;
+    display: block;
   }
 
   &-select {
+    display: block;
+    margin-bottom: @margin-sm;
+
     .@{color-picker-prefix-cls}-palette {
       min-height: 160px;
       overflow: hidden;
       border-radius: @border-radius-base;
 
-      & > .@{color-picker-prefix-cls}-gradient {
+      &>.@{color-picker-prefix-cls}-gradient {
         border-top-left-radius: 5px;
       }
     }
-
-    margin-bottom: @margin-sm;
   }
 
   &-saturation {
@@ -65,20 +63,21 @@
   }
 
   &-handler {
+    display: block;
     box-sizing: border-box;
     width: 16px;
     height: 16px;
     border: @border-width-base solid #fff;
     border-radius: 50%;
-  }
 
-  &-handler-sm {
-    width: 12px;
-    height: 12px;
+    &-sm {
+      width: 12px;
+      height: 12px;
+    }
   }
 
   &-slider {
-    width: 100%;
+    display: block;
     border-radius: @border-radius-base;
 
     .@{color-picker-prefix-cls}-palette {
@@ -94,12 +93,10 @@
     }
 
     &-alpha {
-      background-image: conic-gradient(
-        rgba(0, 0, 0, 0.06) 0 25%,
-        transparent 0 50%,
-        rgba(0, 0, 0, 0.06) 0 75%,
-        transparent 0
-      );
+      background-image: conic-gradient(rgba(0, 0, 0, 0.06) 0 25%,
+          transparent 0 50%,
+          rgba(0, 0, 0, 0.06) 0 75%,
+          transparent 0);
       background-size: 8px 8px;
     }
   }
@@ -142,15 +139,14 @@
 
   &-color-block {
     position: relative;
+    display: block;
     width: 28px;
     height: 28px;
     overflow: hidden;
-    background-image: conic-gradient(
-      rgba(0, 0, 0, 0.06) 0 25%,
-      transparent 0 50%,
-      rgba(0, 0, 0, 0.06) 0 75%,
-      transparent 0
-    );
+    background-image: conic-gradient(rgba(0, 0, 0, 0.06) 0 25%,
+        transparent 0 50%,
+        rgba(0, 0, 0, 0.06) 0 75%,
+        transparent 0);
     background-size: 50% 50%;
     border-radius: @border-radius-base;
 

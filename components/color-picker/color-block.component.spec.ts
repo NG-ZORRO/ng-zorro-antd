@@ -62,16 +62,14 @@ describe('nz-color-block', () => {
 
 @Component({
   imports: [NzColorPickerModule],
-  template: `
-    <nz-color-block [nzColor]="nzColor" [nzSize]="nzSize" (nzOnClick)="clickHandle($event)"></nz-color-block>
-  `
+  template: ` <nz-color-block [nzColor]="nzColor" [nzSize]="nzSize" (nzOnClick)="clickHandle()"></nz-color-block> `
 })
 export class NzTestColorBlockComponent {
   nzColor = '#1677ff';
   nzSize: NzSizeLDSType = 'default';
   isClick: boolean = false;
 
-  clickHandle(value: boolean): void {
-    this.isClick = value;
+  clickHandle(): void {
+    this.isClick = true;
   }
 }

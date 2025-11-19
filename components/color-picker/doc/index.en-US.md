@@ -39,7 +39,7 @@ Used when the user needs to customize the color selection.
 | ------------- | -------------------------------------- | --------------------------------- | ----------- |
 | `[nzColor]`   | Module colors                          | `string`                          | `'#1677ff'` |
 | `[nzSize]`    | Color block size                       | `'large' \| 'small' \| 'default'` | `'default'` |
-| `[nzOnClick]` | Callbacks for clicking on color blocks | `EventEmitter<boolean>`           | -           |
+| `[nzOnClick]` | Callbacks for clicking on color blocks | `EventEmitter<void>`              | -           |
 
 ### NzColor
 

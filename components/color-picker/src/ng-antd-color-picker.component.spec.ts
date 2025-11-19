@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -21,26 +21,6 @@ describe('NgxColorPickerComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     resultEl = fixture.debugElement.query(By.directive(NgAntdColorPickerComponent));
-
-    // karma 无法读取class样式， 添加默认样式
-    fixture.debugElement.nativeElement.querySelector('.ant-color-picker-select').style.width = '258px';
-    fixture.debugElement.nativeElement.querySelector('.ant-color-picker-select').style.height = '160px';
-
-    fixture.debugElement.nativeElement.querySelector('.ant-color-picker-slider-hue').style.width = '222px';
-    fixture.debugElement.nativeElement.querySelector('.ant-color-picker-slider-hue').style.height = '8px';
-
-    fixture.debugElement.nativeElement.querySelector('.ant-color-picker-slider-alpha').style.width = '222px';
-    fixture.debugElement.nativeElement.querySelector('.ant-color-picker-slider-alpha').style.height = '8px';
-
-    fixture.debugElement.nativeElement.querySelectorAll('.ant-color-picker-palette')[0].firstChild.style.width = '16px';
-    fixture.debugElement.nativeElement.querySelectorAll('.ant-color-picker-palette')[0].firstChild.style.height =
-      '16px';
-    fixture.debugElement.nativeElement.querySelectorAll('.ant-color-picker-palette')[1].firstChild.style.width = '16px';
-    fixture.debugElement.nativeElement.querySelectorAll('.ant-color-picker-palette')[1].firstChild.style.height =
-      '16px';
-    fixture.debugElement.nativeElement.querySelectorAll('.ant-color-picker-palette')[2].firstChild.style.width = '16px';
-    fixture.debugElement.nativeElement.querySelectorAll('.ant-color-picker-palette')[2].firstChild.style.height =
-      '16px';
   });
 
   it('color-picker basic', () => {
@@ -78,8 +58,9 @@ describe('NgxColorPickerComponent', () => {
     component.value = '#ff6600';
     fixture.detectChanges();
     const dom = fixture.debugElement.nativeElement.querySelector('.ant-color-picker-palette');
-    expect(dom.firstChild.style.top).toBe('-8px');
-    expect(dom.firstChild.style.left).toBe('250px');
+    const handleWrapper = dom.firstChild;
+    expect(dom.firstChild.style.top).toBe(`-${handleWrapper.clientWidth / 2}px`);
+    expect(dom.firstChild.style.left).toBe(`${dom.clientWidth - handleWrapper.clientWidth / 2}px`);
     expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
       'rgb(255, 102, 0)'
     );
@@ -88,17 +69,19 @@ describe('NgxColorPickerComponent', () => {
   it('color-picker slide select', () => {
     fixture.detectChanges();
     const element = fixture.debugElement.nativeElement.querySelector('.ant-color-picker-select');
+    const dom = fixture.debugElement.nativeElement.querySelector('.ant-color-picker-palette');
+    const handleWrapper = dom.firstChild;
     const { x, y } = {
-      x: element.offsetLeft + 258,
-      y: element.offsetTop - 8
+      x: element.offsetLeft + element.clientWidth + handleWrapper.clientWidth / 2,
+      y: element.offsetTop - handleWrapper.clientWidth / 2
     };
     const event = new MouseEvent('mousedown', { clientX: x, clientY: y });
     const event1 = new MouseEvent('mouseup');
     element.dispatchEvent(event);
     element.dispatchEvent(event1);
-    const dom = fixture.debugElement.nativeElement.querySelector('.ant-color-picker-palette');
-    expect(dom.firstChild.style.top).toBe('-8px');
-    expect(dom.firstChild.style.left).toBe('250px');
+
+    expect(dom.firstChild.style.top).toBe(`-${handleWrapper.clientWidth / 2}px`);
+    expect(dom.firstChild.style.left).toBe(`${dom.clientWidth - handleWrapper.clientWidth / 2}px`);
     expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
       'rgb(0, 106, 255)'
     );
@@ -168,6 +151,11 @@ describe('NgxColorPickerComponent', () => {
     <ng-template #footer>
       <div class="ant-color-picker-footer">Color Picker Footer</div>
     </ng-template>
+  `,
+  encapsulation: ViewEncapsulation.None,
+  styles: `
+    @import '../../style/testing.less';
+    @import '../style/entry.less';
   `
 })
 export class NzxTestColorPickerComponent {
