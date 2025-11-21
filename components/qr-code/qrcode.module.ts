@@ -5,10 +5,12 @@
 
 import { NgModule } from '@angular/core';
 
+import { NzQrcodeCanvasComponent } from './qrcode-canvas.component';
+import { NzQrcodeSvgComponent } from './qrcode-svg.component';
 import { NzQRCodeComponent } from './qrcode.component';
 
 @NgModule({
-  imports: [NzQRCodeComponent],
+  imports: [NzQRCodeComponent, NzQrcodeCanvasComponent, NzQrcodeSvgComponent],
   exports: [NzQRCodeComponent]
 })
 export class NzQRCodeModule {}
