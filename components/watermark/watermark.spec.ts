@@ -11,25 +11,25 @@ import { renderApplication } from '@angular/platform-server';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { FontType } from './typings';
-import { NzWaterMarkComponent } from './water-mark.component';
-import { NzWaterMarkModule } from './water-mark.module';
+import { NzWatermarkComponent } from './watermark.component';
+import { NzWatermarkModule } from './watermark.module';
 
-describe('water-mark', () => {
-  let fixture: ComponentFixture<NzTestWaterMarkBasicComponent>;
-  let testComponent: NzTestWaterMarkBasicComponent;
+describe('nz-watermark', () => {
+  let fixture: ComponentFixture<NzTestWatermarkBasicComponent>;
+  let testComponent: NzTestWatermarkBasicComponent;
   let resultEl: DebugElement;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NzTestWaterMarkBasicComponent);
+    fixture = TestBed.createComponent(NzTestWatermarkBasicComponent);
     fixture.detectChanges();
     testComponent = fixture.debugElement.componentInstance;
-    resultEl = fixture.debugElement.query(By.directive(NzWaterMarkComponent));
+    resultEl = fixture.debugElement.query(By.directive(NzWatermarkComponent));
   });
 
   it('basic', () => {
     testComponent.nzContent = 'NG Ant Design';
     fixture.detectChanges();
-    const view = resultEl.nativeElement.querySelector('.water-mark > div');
+    const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view.tagName).toBe('DIV');
   });
 
@@ -37,14 +37,14 @@ describe('water-mark', () => {
     testComponent.nzImage =
       'https://img.alicdn.com/imgextra/i3/O1CN01UR3Zkq1va9fnZsZcr_!!6000000006188-55-tps-424-64.svg';
     fixture.detectChanges();
-    const view = resultEl.nativeElement.querySelector('.water-mark > div');
+    const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view.tagName).toBe('DIV');
   });
 
   it('invalid image', () => {
     testComponent.nzImage = 'https://img.alicdn.com/test.svg';
     fixture.detectChanges();
-    const view = resultEl.nativeElement.querySelector('.water-mark > div');
+    const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view.tagName).toBe('DIV');
   });
 
@@ -52,7 +52,7 @@ describe('water-mark', () => {
     testComponent.nzContent = ['Angular', 'NG Ant Design'];
     testComponent.nzOffset = [200, 200];
     fixture.detectChanges();
-    const view = resultEl.nativeElement.querySelector('.water-mark > div');
+    const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view?.style.left).toBe('150px');
     expect(view?.style.top).toBe('150px');
     expect(view?.style.width).toBe('calc(100% - 150px)');
@@ -65,14 +65,14 @@ describe('water-mark', () => {
     testComponent.nzWidth = 200;
     testComponent.nzHeight = 200;
     fixture.detectChanges();
-    const view = resultEl.nativeElement.querySelector('.water-mark > div');
+    const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view?.style.backgroundSize).toBe('600px');
   });
 
   it('should MutationObserver work', fakeAsync(() => {
     testComponent.nzContent = 'NG Ant Design';
     fixture.detectChanges();
-    const view = resultEl.nativeElement.querySelector('.water-mark > div');
+    const view = resultEl.nativeElement.querySelector('.watermark > div');
     view?.remove();
     tick(100);
     expect(view).toBeTruthy();
@@ -81,14 +81,14 @@ describe('water-mark', () => {
   it('should observe the modification of style', fakeAsync(() => {
     testComponent.nzContent = 'NG Ant Design';
     fixture.detectChanges();
-    const view = resultEl.nativeElement.querySelector('.water-mark > div');
+    const view = resultEl.nativeElement.querySelector('.watermark > div');
     view?.setAttribute('style', '');
     tick(100);
     expect(view.style).toBeTruthy();
   }));
 });
 
-describe('water-mark (SSR)', () => {
+describe('watermark (SSR)', () => {
   it('should render water mark on server', async () => {
     destroyPlatform();
 
@@ -102,12 +102,12 @@ describe('water-mark (SSR)', () => {
       globalThis['ngServerMode'] = true;
 
       const bootstrap = (): Promise<ApplicationRef> =>
-        bootstrapApplication(NzTestWaterMarkBasicComponent, { providers: [] });
+        bootstrapApplication(NzTestWatermarkBasicComponent, { providers: [] });
       const html = await renderApplication(bootstrap, {
-        document: '<html><head></head><body><nz-app></nz-app></body></html>'
+        document: '<html><head></head><body><nz-test-watermark-basic></nz-test-watermark-basic></body></html>'
       });
 
-      expect(html).toContain('<nz-water-mark class="ant-water-mark water-mark">');
+      expect(html).toContain('<nz-watermark class="watermark"');
     } finally {
       // Restore the original value.
       (globalThis as NzSafeAny)['ngDevMode'] = ngDevMode;
@@ -120,10 +120,10 @@ describe('water-mark (SSR)', () => {
 });
 
 @Component({
-  selector: 'nz-app',
-  imports: [NzWaterMarkModule],
+  selector: 'nz-test-watermark-basic',
+  imports: [NzWatermarkModule],
   template: `
-    <nz-water-mark
+    <nz-watermark
       [nzContent]="nzContent"
       [nzWidth]="nzWidth"
       [nzHeight]="nzHeight"
@@ -133,12 +133,12 @@ describe('water-mark (SSR)', () => {
       [nzFont]="nzFont"
       [nzGap]="nzGap"
       [nzOffset]="nzOffset"
-      class="water-mark"
+      class="watermark"
     >
-    </nz-water-mark>
+    </nz-watermark>
   `
 })
-export class NzTestWaterMarkBasicComponent {
+export class NzTestWatermarkBasicComponent {
   nzContent: string | string[] = 'NG Ant Design';
   nzWidth: number = 120;
   nzHeight: number = 64;

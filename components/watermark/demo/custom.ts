@@ -8,10 +8,10 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { FontType, NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
+import { FontType, NzWatermarkModule } from 'ng-zorro-antd/watermark';
 
 @Component({
-  selector: 'nz-demo-water-mark-custom',
+  selector: 'nz-demo-watermark-custom',
   imports: [
     ReactiveFormsModule,
     NzColorPickerModule,
@@ -21,11 +21,11 @@ import { FontType, NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
     NzInputNumberModule,
     NzSliderModule,
     NzTypographyModule,
-    NzWaterMarkModule
+    NzWatermarkModule
   ],
   template: `
     <div style="display: flex;">
-      <nz-water-mark
+      <nz-watermark
         [nzContent]="form.value.content!"
         [nzRotate]="form.value.rotate!"
         [nzZIndex]="form.value.zIndex!"
@@ -57,7 +57,7 @@ import { FontType, NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
           src="https://gw.alipayobjects.com/mdn/rms_08e378/afts/img/A*zx7LTI_ECSAAAAAAAAAAAABkARQnAQ"
           alt="示例图片"
         />
-      </nz-water-mark>
+      </nz-watermark>
       <nz-divider nzType="vertical"></nz-divider>
       <form nz-form nzLayout="vertical" [formGroup]="form">
         <nz-form-item>
@@ -109,7 +109,7 @@ import { FontType, NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
   `,
   styles: [
     `
-      nz-water-mark {
+      nz-watermark {
         flex: 1 1 auto;
       }
 
@@ -129,7 +129,7 @@ import { FontType, NzWaterMarkModule } from 'ng-zorro-antd/water-mark';
     `
   ]
 })
-export class NzDemoWaterMarkCustomComponent implements OnInit {
+export class NzDemoWatermarkCustomComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);
 
   form = this.fb.group({
