@@ -122,36 +122,20 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
 
   readonly iconOnly = computed(() => this.elementOnly() && (!!this.iconDir() || !!this.loadingIconDir()));
 
-  insertSpan(nodes: NodeList, renderer: Renderer2): void {
-    nodes.forEach(node => {
-      if (node.nodeType === Node.TEXT_NODE && node.textContent!.trim().length > 0) {
-        const span = renderer.createElement('span');
-        const parent = renderer.parentNode(node);
-        renderer.insertBefore(parent, span, node);
-        renderer.appendChild(span, node);
-      }
-    });
-  }
-
   constructor() {
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
       this.size.set(this.nzSize);
       this.cdr.markForCheck();
     });
 
-    let elementOnly = false;
     afterEveryRender({
       read: () => {
-        const { childNodes, children } = this.elementRef.nativeElement;
-        const hasText = Array.from(childNodes).some(
-          node => node.nodeType === Node.TEXT_NODE && node.textContent!.trim().length > 0
-        );
-        const visibleElementCount = Array.from(children).filter(
+        const { children } = this.elementRef.nativeElement;
+        const visibleElement = Array.from(children).filter(
           element => (element as HTMLElement).style.display !== 'none'
-        ).length;
-        elementOnly = !hasText && visibleElementCount === 1;
-      },
-      write: () => this.elementOnly.set(elementOnly)
+        );
+        this.elementOnly.set(visibleElement.length === 1);
+      }
     });
   }
 
@@ -189,7 +173,7 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   }
 
   ngAfterViewInit(): void {
-    this.insertSpan(this.elementRef.nativeElement.childNodes, this.renderer);
+    this.insertSpan();
   }
 
   ngAfterContentInit(): void {
@@ -207,5 +191,16 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
           this.renderer.removeStyle(nativeElement, 'display');
         }
       });
+  }
+
+  insertSpan(): void {
+    this.elementRef.nativeElement.childNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent!.trim().length > 0) {
+        const span = this.renderer.createElement('span');
+        const parent = this.renderer.parentNode(node);
+        this.renderer.insertBefore(parent, span, node);
+        this.renderer.appendChild(span, node);
+      }
+    });
   }
 }
