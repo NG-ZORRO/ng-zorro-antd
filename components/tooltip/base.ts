@@ -10,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
+  DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -22,8 +23,7 @@ import {
   Type,
   ViewChild,
   ViewContainerRef,
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, asapScheduler } from 'rxjs';
@@ -35,9 +35,9 @@ import {
   DEFAULT_TOOLTIP_POSITIONS,
   POSITION_MAP,
   POSITION_TYPE,
+  TOOLTIP_OFFSET_MAP,
   getPlacementName,
-  setConnectedPositionOffset,
-  TOOLTIP_OFFSET_MAP
+  setConnectedPositionOffset
 } from 'ng-zorro-antd/core/overlay';
 import { NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
@@ -65,7 +65,8 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
   abstract overlayClassName?: string;
   abstract overlayStyle?: NgStyleInterface;
   abstract overlayClickable?: boolean;
-  cdkConnectedOverlayPush?: boolean;
+  /** @deprecated Default is false, and customization is no longer supported. This will be removed in v22.0.0. */
+  cdkConnectedOverlayPush?: boolean = false;
   visibleChange = new EventEmitter<boolean>();
 
   /**
@@ -359,7 +360,8 @@ export abstract class NzTooltipBaseComponent implements OnInit {
   nzBackdrop = false;
   nzMouseEnterDelay?: number;
   nzMouseLeaveDelay?: number;
-  cdkConnectedOverlayPush?: boolean = true;
+  /** @deprecated Default is false, and customization is no longer supported. This will be removed in v22.0.0. */
+  cdkConnectedOverlayPush?: boolean = false;
 
   nzVisibleChange = new Subject<boolean>();
 
