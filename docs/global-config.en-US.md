@@ -125,7 +125,7 @@ You can also use `useFactory` to combine the global configuration with the local
         const globalConfig = inject(NzConfigService, { skipSelf: true }).getConfig();
         const localConfig = {
           select: {
-            nzBorderless: true
+            nzVariant: 'borderless'
           }
         };
         // merge local and global config

@@ -146,9 +146,3 @@ export class NzTooltipComponent extends NzTooltipBaseComponent {
     };
   }
 }
-
-/**
- * @deprecated Use {@link NzTooltipComponent} instead.
- * This will be removed in v21.0.0.
- */
-export const NzToolTipComponent = NzTooltipComponent;

@@ -42,7 +42,7 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
   imports: [ReactiveFormsModule, NzSelectModule, NzInputModule, NzInputNumberModule],
   template: `
     <div class="ant-color-picker-format-select">
-      <nz-select [formControl]="validateForm.controls.isFormat" nzBorderless nzSize="small">
+      <nz-select [formControl]="validateForm.controls.isFormat" nzVariant="borderless" nzSize="small">
         <nz-option nzValue="hex" nzLabel="HEX" />
         <nz-option nzValue="hsb" nzLabel="HSB" />
         <nz-option nzValue="rgb" nzLabel="RGB" />

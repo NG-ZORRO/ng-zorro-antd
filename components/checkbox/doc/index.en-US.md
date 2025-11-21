@@ -36,12 +36,6 @@ description: Collect user's choices.
 | `[nzDisabled]`    | Disable all checkboxes                                          | `boolean`                                    | `false` |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<string[] \| number[]>`         | -       |
 
-### nz-checkbox-wrapper
-
-| Property       | Description                                                     | Type                  | Default |
-| -------------- | --------------------------------------------------------------- | --------------------- | ------- |
-| `(nzOnChange)` | The callback function that is triggered when the state changes. | `EventEmitter<any[]>` | -       |
-
 ## Methods
 
 ### [nz-checkbox]

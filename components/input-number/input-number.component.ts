@@ -196,10 +196,6 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzDisabled = input(false, { transform: booleanAttribute });
   readonly nzReadOnly = input(false, { transform: booleanAttribute });
   readonly nzAutoFocus = input(false, { transform: booleanAttribute });
-  /**
-   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
-   */
-  readonly nzBordered = input(true, { transform: booleanAttribute });
   readonly nzKeyboard = input(true, { transform: booleanAttribute });
   readonly nzControls = input(true, { transform: booleanAttribute });
   readonly nzPrefix = input<string>();
@@ -273,7 +269,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-rtl': this.dir() === 'rtl',
       'ant-input-number-in-form-item': !!this.nzFormStatusService,
       'ant-input-number-out-of-range': this.value() !== null && !isInRange(this.value()!, this.nzMin(), this.nzMax()),
-      ...getVariantClassNames('ant-input-number', this.nzVariant(), !this.nzBordered()),
+      ...getVariantClassNames('ant-input-number', this.nzVariant()),
       ...getStatusClassNames('ant-input-number', this.finalStatus(), this.hasFeedback())
     };
   });
@@ -285,7 +281,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-affix-wrapper-focused': this.focused(),
       'ant-input-number-affix-wrapper-rtl': this.dir() === 'rtl',
       ...getStatusClassNames('ant-input-number-affix-wrapper', this.finalStatus(), this.hasFeedback()),
-      ...getVariantClassNames('ant-input-number-affix-wrapper', this.nzVariant(), !this.nzBordered())
+      ...getVariantClassNames('ant-input-number-affix-wrapper', this.nzVariant())
     };
   });
   protected readonly groupWrapperClass = computed(() => {
@@ -293,7 +289,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-group-wrapper': true,
       'ant-input-number-group-wrapper-rtl': this.dir() === 'rtl',
       ...getStatusClassNames('ant-input-number-group-wrapper', this.finalStatus(), this.hasFeedback()),
-      ...getVariantClassNames('ant-input-number-group-wrapper', this.nzVariant(), !this.nzBordered())
+      ...getVariantClassNames('ant-input-number-group-wrapper', this.nzVariant())
     };
   });
 

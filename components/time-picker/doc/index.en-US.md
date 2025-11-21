@@ -37,7 +37,6 @@ By clicking the input box, you can select a time from a popup panel.
 | `[nzSecondStep]`          | interval between seconds in picker                                                     | `number`                                                 | `1`               | ✅            |
 | `[nzSize]`                | width of time picker box                                                               | `'large' \| 'small' \| 'default'`                        | `'default'`       |
 | `[nzStatus]`              | Set validation status                                                                  | `'error' \| 'warning'`                                   | -                 |
-| ~~`[nzBorderless]`~~      | ~~remove the border~~                                                                  | ~~`boolean`~~                                            | ~~`false`~~       | -             |
 | `[nzVariant]`             | Variants of TimePicker                                                                 | `'outlined' \| 'borderless' \| 'filled' \| 'underlined'` | `'outlined'`      | ✅            | 20.0.0  |
 | `[nzInputReadOnly]`       | set the readonly attribute of the input tag (avoids virtual keyboard on touch devices) | `boolean`                                                | `false`           | -             |
 | `[nzOpen]`                | whether to popup panel, double binding                                                 | `boolean`                                                | `false`           |
