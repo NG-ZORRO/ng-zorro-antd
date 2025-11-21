@@ -6,7 +6,7 @@
 import { ClassNameUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const classNames: VersionChanges<ClassNameUpgradeData> = {
-  [TargetVersion.V20]: [{
+  [TargetVersion.V21]: [{
     pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/8901',
     changes: [{
       replace: 'NzInputNumberModule',

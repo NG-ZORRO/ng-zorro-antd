@@ -11,5 +11,5 @@ import { ConstructorChecksUpgradeData, TargetVersion, VersionChanges } from '@an
  * automatically through type checking.
  */
 export const constructorChecks: VersionChanges<ConstructorChecksUpgradeData> = {
-  [TargetVersion.V20]: []
+  [TargetVersion.V21]: []
 };

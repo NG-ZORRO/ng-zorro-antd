@@ -11,9 +11,9 @@ import { nzMigrations } from './migrations';
 import { nzUpgradeData } from './upgrade-data';
 import { nzUpgradeRules } from './upgrade-rules';
 
-export function updateToV20(): Rule {
+export function updateToV21(): Rule {
   return createMigrationSchematicRule(
-    TargetVersion.V20,
+    TargetVersion.V21,
     [...nzUpgradeRules, ...nzMigrations],
     nzUpgradeData,
     postUpdate

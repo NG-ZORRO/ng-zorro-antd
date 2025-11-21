@@ -41,6 +41,7 @@ import { NzTreeNodeSwitcherComponent } from './tree-node-switcher.component';
 import { NzTreeNodeTitleComponent } from './tree-node-title.component';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'nz-tree-node[builtin]',
   exportAs: 'nzTreeBuiltinNode',
   template: `

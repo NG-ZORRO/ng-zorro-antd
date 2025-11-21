@@ -1,10 +1,10 @@
 ---
 order: 15
-title: v20 升级指南
+title: v21 升级指南
 toc: false
 ---
 
-本文档将帮助你从 `ng-zorro-antd` 19.x 版本升级到 20.x 版本。
+本文档将帮助你从 `ng-zorro-antd` 20.x 版本升级到 21.x 版本。
 
 ## 开始之前
 
@@ -16,7 +16,7 @@ toc: false
 
 ### 1. 升级相关依赖
 
-- 参考[升级指南](https://angular.dev/update-guide)将项目升级到 Angular 20
+- 参考[升级指南](https://angular.dev/update-guide)将项目升级到 Angular 21
 - 如果有单独使用 `@angular/cdk` 请执行 `ng update @angular/cdk`
 
 ### 2. 升级 NG-ZORRO
@@ -26,4 +26,4 @@ toc: false
 
 ### 3. 移除废弃 API
 
-- 请参考 [v20 changelog](/docs/changelog/zh#2000) 移除废弃 API
+- 请参考 [v21 changelog](/docs/changelog/zh#2100) 移除废弃 API
