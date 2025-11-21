@@ -163,6 +163,7 @@ export interface CarouselConfig {
 export interface CascaderConfig {
   nzSize?: string;
   nzBackdrop?: boolean;
+  nzVariant?: NzVariant;
 }
 
 export interface CollapseConfig {
@@ -345,6 +346,7 @@ export interface TreeSelectConfig {
   nzHideUnMatched?: boolean;
   nzSize?: 'large' | 'small' | 'default';
   nzBackdrop?: boolean;
+  nzVariant?: NzVariant;
 }
 
 export interface TypographyConfig {
