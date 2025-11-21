@@ -22,7 +22,7 @@ export interface StyleObjectLike {
 const noopFun = () => void 0;
 
 export class ModalOptions<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny> {
-  nzCentered?: boolean = false;
+  nzCentered?: boolean;
   nzClosable?: boolean = true;
   nzOkLoading?: boolean = false;
   nzOkDisabled?: boolean = false;
