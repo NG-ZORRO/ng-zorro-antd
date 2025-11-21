@@ -15,6 +15,15 @@ timeline: true
 
 ---
 
+## 20.4.2
+
+`2025-11-21`
+
+### Bug Fixes
+
+- **cascader,select,date-picker,time-picker,tree-select:** 补充 `nzVariant` 全局配置类型定义 ([#9543](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9543)) ([221386b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/221386b45cc20d6bea689a5a4c10e35ff15b06b7))
+- **button:** 优化 zoneless 模式下仅图标展示的逻辑 ([#9541](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9541)) ([9def420](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9def420d2da1a2b8a7993db814948151733ef772))
+
 ## 20.4.1
 
 `2025-11-14`
