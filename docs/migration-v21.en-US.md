@@ -1,10 +1,10 @@
 ---
 order: 15
-title: v20 Migration Guide
+title: v21 Migration Guide
 toc: false
 ---
 
-This document will help you upgrade from `ng-zorro-antd` 19.x version to 20.x version.
+This document will help you upgrade from `ng-zorro-antd` 20.x version to 21.x version.
 
 ## Before upgrade
 
@@ -14,7 +14,7 @@ This document will help you upgrade from `ng-zorro-antd` 19.x version to 20.x ve
 
 ### 1. Upgrade dependencies
 
-- Upgrade Angular to 20.x version, ref [https://angular.dev/update-guide](https://angular.dev/update-guide).
+- Upgrade Angular to 21.x version, ref [https://angular.dev/update-guide](https://angular.dev/update-guide).
 - Run `ng update @angular/cdk`, if you have used `@angular/cdk`.
 
 ### 2. Upgrade NG-ZORRO
@@ -24,4 +24,4 @@ This document will help you upgrade from `ng-zorro-antd` 19.x version to 20.x ve
 
 ### 3. Remove deprecated APIs
 
-- Remove deprecated APIs, please refer to the [v20 changelog](/docs/changelog/en#2000) for more information.
+- Remove deprecated APIs, please refer to the [v21 changelog](/docs/changelog/en#2100) for more information.

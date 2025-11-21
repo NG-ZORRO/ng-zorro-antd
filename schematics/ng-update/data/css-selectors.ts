@@ -6,7 +6,7 @@
 import { CssSelectorUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const cssSelectors: VersionChanges<CssSelectorUpgradeData> = {
-  [TargetVersion.V20]: [{
+  [TargetVersion.V21]: [{
     pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9238',
     changes: [{
       replace: 'nz-tabset',

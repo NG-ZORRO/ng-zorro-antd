@@ -6,5 +6,5 @@
 import { AttributeSelectorUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const attributeSelectors: VersionChanges<AttributeSelectorUpgradeData> = {
-  [TargetVersion.V20]: []
+  [TargetVersion.V21]: []
 };

@@ -1,10 +1,10 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
-    "migration-v20": {
-      "version": "20.0.0-0",
-      "description": "Updates NG-ZORRO to v20 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/8890]",
-      "factory": "./ng-update/index#updateToV20"
+    "migration-v21": {
+      "version": "21.0.0-0",
+      "description": "Updates NG-ZORRO to v21 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/8890]",
+      "factory": "./ng-update/index#updateToV21"
     },
     "ng-post-update": {
       "description": "Prints out results after ng-update.",
