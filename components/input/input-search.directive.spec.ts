@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -16,6 +16,13 @@ import { NzInputModule } from './input.module';
 describe('input-search', () => {
   let component: InputSearchTestComponent;
   let fixture: ComponentFixture<InputSearchTestComponent>;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InputSearchTestComponent);

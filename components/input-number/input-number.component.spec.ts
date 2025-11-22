@@ -4,7 +4,7 @@
  */
 
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
-import { ApplicationRef, Component, ElementRef, viewChild } from '@angular/core';
+import { ApplicationRef, Component, ElementRef, provideZoneChangeDetection, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -21,8 +21,9 @@ describe('input-number', () => {
   let hostElement: HTMLElement;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
     fixture = TestBed.createComponent(InputNumberTestComponent);
     component = fixture.componentInstance;
@@ -505,8 +506,9 @@ describe('input-number with affixes or addons', () => {
   let fixture: ComponentFixture<InputNumberWithAffixesAndAddonsTestComponent>;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
     fixture = TestBed.createComponent(InputNumberWithAffixesAndAddonsTestComponent);
     component = fixture.componentInstance;

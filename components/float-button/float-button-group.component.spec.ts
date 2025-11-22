@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -17,11 +17,12 @@ import { NzFloatButtonGroupComponent } from './float-button-group.component';
 import { NzFloatButtonModule } from './float-button.module';
 
 describe('nz-float-button-group', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('float-button-group basic', () => {
     let fixture: ComponentFixture<NzTestFloatButtonGroupBasicComponent>;

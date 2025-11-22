@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzInputModule } from './input.module';
@@ -11,6 +11,13 @@ import { NzInputModule } from './input.module';
 describe('input-password', () => {
   let component: InputPasswordTestComponent;
   let fixture: ComponentFixture<InputPasswordTestComponent>;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InputPasswordTestComponent);

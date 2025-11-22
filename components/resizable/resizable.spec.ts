@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, ElementRef, NgZone, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ElementRef, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -25,6 +25,8 @@ describe('resizable', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         provideNzIconsTesting(),
         {
           provide: NgZone,

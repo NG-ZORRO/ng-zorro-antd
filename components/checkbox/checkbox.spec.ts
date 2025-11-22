@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -13,7 +13,14 @@ import { NzCheckboxComponent } from './checkbox.component';
 import { NzCheckboxModule } from './checkbox.module';
 
 describe('checkbox', () => {
-  describe('checkbox basic', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestCheckboxSingleComponent>;
     let testComponent: NzTestCheckboxSingleComponent;
     let checkbox: DebugElement;
@@ -37,6 +44,7 @@ describe('checkbox', () => {
       );
       expect(checkbox.nativeElement.lastElementChild.innerText).toBe(' Checkbox');
     });
+
     it('should click change', () => {
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
@@ -48,6 +56,7 @@ describe('checkbox', () => {
       expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
+
     it('should click input a11y correct', () => {
       fixture.detectChanges();
       const inputElement = checkbox.nativeElement.querySelector('input');
@@ -62,6 +71,7 @@ describe('checkbox', () => {
       expect(inputElement.checked).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
+
     it('should ngModel change', fakeAsync(() => {
       testComponent.checked = true;
       fixture.detectChanges();
@@ -71,6 +81,7 @@ describe('checkbox', () => {
       expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
+
     it('should disabled work', () => {
       fixture.detectChanges();
       testComponent.disabled = true;
@@ -84,6 +95,7 @@ describe('checkbox', () => {
       expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
+
     it('should indeterminate work', () => {
       fixture.detectChanges();
       testComponent.indeterminate = true;
@@ -93,6 +105,7 @@ describe('checkbox', () => {
       fixture.detectChanges();
       expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox-indeterminate')).toBe(true);
     });
+
     it('should autofocus work', () => {
       fixture.detectChanges();
       testComponent.autoFocus = true;
@@ -102,6 +115,7 @@ describe('checkbox', () => {
       fixture.detectChanges();
       expect(checkbox.nativeElement.querySelector('input').attributes.getNamedItem('autofocus')).toBe(null);
     });
+
     it('should focus and blur function work', () => {
       fixture.detectChanges();
       expect(checkbox.nativeElement.querySelector('input') === document.activeElement).toBe(false);
@@ -112,6 +126,7 @@ describe('checkbox', () => {
       fixture.detectChanges();
       expect(checkbox.nativeElement.querySelector('input') === document.activeElement).toBe(false);
     });
+
     describe('change detection behavior', () => {
       it('should not run change detection when the `input` is clicked', () => {
         const appRef = TestBed.inject(ApplicationRef);
@@ -126,6 +141,7 @@ describe('checkbox', () => {
         expect(appRef.tick).not.toHaveBeenCalled();
         expect(event.stopPropagation).toHaveBeenCalled();
       });
+
       it('should not run change detection when the `nz-checkbox` is clicked and it is disabled', () => {
         testComponent.disabled = true;
         fixture.detectChanges();
@@ -145,7 +161,7 @@ describe('checkbox', () => {
     });
   });
 
-  describe('checkbox form', () => {
+  describe('form', () => {
     let fixture: ComponentFixture<NzTestCheckboxFormComponent>;
     let testComponent: NzTestCheckboxFormComponent;
 
@@ -153,6 +169,7 @@ describe('checkbox', () => {
       fixture = TestBed.createComponent(NzTestCheckboxFormComponent);
       testComponent = fixture.componentInstance;
     });
+
     it('should be in pristine, untouched, and valid states and enable initially', fakeAsync(() => {
       fixture.detectChanges();
       flush();
@@ -164,6 +181,7 @@ describe('checkbox', () => {
       expect(testComponent.formControl.pristine).toBe(true);
       expect(testComponent.formControl.touched).toBe(false);
     }));
+
     it('should be disable if form is disable and nzDisable set to false', fakeAsync(() => {
       testComponent.disable();
       fixture.detectChanges();
@@ -173,6 +191,7 @@ describe('checkbox', () => {
       expect(checkbox.nativeElement.firstElementChild!.classList).toContain('ant-checkbox-disabled');
       expect(inputElement.disabled).toBeTruthy();
     }));
+
     it('should set disabled work', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();

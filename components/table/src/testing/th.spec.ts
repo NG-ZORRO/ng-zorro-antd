@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -14,8 +14,9 @@ import { NzThAddOnComponent, NzTableModule } from 'ng-zorro-antd/table';
 
 describe('nz-th', () => {
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
     });
   });
 

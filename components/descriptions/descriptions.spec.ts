@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, ViewChild } from '@angular/core';
+import { Component, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -14,7 +14,14 @@ import { NzDescriptionsModule } from './descriptions.module';
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 declare const viewport: any;
 
-describe('nz descriptions', () => {
+describe('descriptions', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
   describe('with different spans', () => {
     let testComponent: NzTestDescriptionsComponent;
     let componentElement: HTMLElement;

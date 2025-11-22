@@ -5,7 +5,7 @@
 
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -20,12 +20,13 @@ import { NzSelectComponent as Select } from '../select/select.component';
 
 registerLocaleData(zh);
 
-describe('Calendar Header', () => {
-  beforeEach(waitForAsync(() => {
+describe('calendar Header', () => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('mode', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderModeComponent>;

@@ -3,18 +3,26 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize } from 'ng-zorro-antd/space';
 import { NzSpaceComponent } from 'ng-zorro-antd/space/space.component';
 
 import { NzSpaceModule } from './space.module';
 
-describe('Space', () => {
+describe('space', () => {
   let component: SpaceTestComponent;
   let fixture: ComponentFixture<SpaceTestComponent>;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SpaceTestComponent);

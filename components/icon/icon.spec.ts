@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, NgModule } from '@angular/core';
+import { Component, DebugElement, NgModule, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, inject, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -28,6 +28,8 @@ describe('nz-icon', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         provideNzIcons([
           LeftOutline,
           RightOutline,

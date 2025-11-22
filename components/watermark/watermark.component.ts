@@ -63,6 +63,9 @@ export class NzWatermarkComponent implements OnInit, OnChanges {
   watermarkElement: HTMLDivElement = this.document.createElement('div');
   stopObservation: boolean = false;
   private observer: MutationObserver | null = null;
+  // for test usage
+  private onImageLoad?: VoidFunction;
+  private onImageError?: VoidFunction;
 
   constructor() {
     if (this.isServer) {
@@ -276,7 +279,7 @@ export class NzWatermarkComponent implements OnInit, OnChanges {
       if (this.nzImage) {
         const img = new Image();
 
-        const onLoad = (): void => {
+        this.onImageLoad = (): void => {
           cleanup();
 
           ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
@@ -288,7 +291,7 @@ export class NzWatermarkComponent implements OnInit, OnChanges {
           this.appendWatermark(canvas.toDataURL(), markWidth);
         };
 
-        const onError = (): void => {
+        this.onImageError = (): void => {
           cleanup();
 
           this.drawText(
@@ -307,12 +310,12 @@ export class NzWatermarkComponent implements OnInit, OnChanges {
         };
 
         const cleanup = (): void => {
-          img.removeEventListener('load', onLoad);
-          img.removeEventListener('error', onError);
+          img.removeEventListener('load', this.onImageLoad!);
+          img.removeEventListener('error', this.onImageError!);
         };
 
-        img.addEventListener('load', onLoad);
-        img.addEventListener('error', onError);
+        img.addEventListener('load', this.onImageLoad);
+        img.addEventListener('error', this.onImageError);
 
         img.crossOrigin = 'anonymous';
         img.referrerPolicy = 'no-referrer';

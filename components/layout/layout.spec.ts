@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -65,6 +65,10 @@ describe('nz-layout', () => {
     let trigger: DebugElement;
 
     beforeEach(() => {
+      // todo: use zoneless
+      TestBed.configureTestingModule({
+        providers: [provideZoneChangeDetection()]
+      });
       fixture = TestBed.createComponent(NzLayoutSideComponent);
       testComponent = fixture.componentInstance;
       sider = fixture.debugElement.query(By.directive(NzSiderComponent));
@@ -223,6 +227,10 @@ describe('nz-layout', () => {
     let layouts: DebugElement[];
 
     beforeEach(() => {
+      // todo: use zoneless
+      TestBed.configureTestingModule({
+        providers: [provideZoneChangeDetection()]
+      });
       fixture = TestBed.createComponent(NzTestLayoutRtlComponent);
       layouts = fixture.debugElement.queryAll(By.directive(NzLayoutComponent));
     });

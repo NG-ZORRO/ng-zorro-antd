@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, inject, NgZone } from '@angular/core';
+import { Component, inject, NgZone, provideZoneChangeDetection } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TestBed } from '@angular/core/testing';
 import { fromEvent } from 'rxjs';
@@ -39,6 +39,9 @@ class TestComponent {
 
 describe('fromEventOutsideAngular', () => {
   it('should add event listener outside of the Angular zone', () => {
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
     const fixture = TestBed.createComponent(TestComponent);
     document.body.click();
     expect(fixture.componentInstance.recorder).toEqual([

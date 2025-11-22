@@ -6,7 +6,16 @@
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { AsyncPipe } from '@angular/common';
-import { Component, DebugElement, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  OnInit,
+  provideZoneChangeDetection,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+  ViewEncapsulation
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -24,12 +33,13 @@ import { NzTabComponent } from './tab.component';
 import { NzTabsComponent } from './tabs.component';
 import { NzTabsModule } from './tabs.module';
 
-describe('NzTabs', () => {
-  beforeEach(fakeAsync(() => {
+describe('tabs', () => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('basic', () => {
     let fixture: ComponentFixture<SimpleTabsTestComponent>;

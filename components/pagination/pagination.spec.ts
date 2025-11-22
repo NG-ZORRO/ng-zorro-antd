@@ -5,7 +5,7 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, DebugElement, signal, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -22,11 +22,12 @@ import type { NzPaginationAlign } from './pagination.types';
 declare const viewport: NzSafeAny;
 
 describe('pagination', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('pagination complex', () => {
     let fixture: ComponentFixture<NzTestPaginationComponent>;

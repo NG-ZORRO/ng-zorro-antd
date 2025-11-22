@@ -4,8 +4,8 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -17,11 +17,12 @@ import { NzSpinComponent } from './spin.component';
 import { NzSpinModule } from './spin.module';
 
 describe('spin', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('spin basic', () => {
     let fixture: ComponentFixture<NzTestSpinBasicComponent>;

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
@@ -18,8 +18,9 @@ import { NzTreeModule } from './tree.module';
 
 describe('tree', () => {
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
     });
   });
 

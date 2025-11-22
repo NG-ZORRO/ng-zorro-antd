@@ -5,7 +5,15 @@
 
 import { BidiModule, Dir, Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { Component, DebugElement, DOCUMENT, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  DOCUMENT,
+  ElementRef,
+  provideZoneChangeDetection,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
@@ -52,6 +60,8 @@ describe('affix', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         {
           provide: NzScrollService,
           useClass: NzScrollService
@@ -511,11 +521,16 @@ describe('affix RTL', () => {
   let context: TestAffixRtlComponent;
   let dl: DebugElement;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
     fixture = TestBed.createComponent(TestAffixRtlComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;
-  }));
+  });
+
   it('should className correct on dir change', fakeAsync(() => {
     context.newOffsetBottom = 10;
     context.fakeTarget = window;
