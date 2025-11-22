@@ -9,11 +9,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 
+/**
+ * @deprecated Will be removed in v22.
+ */
 export interface AutoSizeType {
   minRows?: number;
   maxRows?: number;
 }
 
+/**
+ * @deprecated Will be removed in v22. It is recommended to use {@link CdkTextareaAutosize} instead.
+ */
 @Directive({
   selector: 'textarea[nzAutosize]',
   exportAs: 'nzAutosize',
