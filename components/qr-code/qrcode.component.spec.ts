@@ -3,18 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzQRCodeComponent } from './qrcode.component';
 import { NzQRCodeModule } from './qrcode.module';
 
-describe('nz-qrcode', () => {
+describe('qrcode', () => {
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideHttpClientTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
   });
 

@@ -11,10 +11,11 @@ import {
   Component,
   DebugElement,
   OnInit,
+  provideZoneChangeDetection,
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { BooleanInput, NzDirectionVHType, NzSizeDSType } from 'ng-zorro-antd/core/types';
@@ -28,11 +29,13 @@ import { NzProgressDotTemplate, NzStatusType, NzStepsComponent } from './steps.c
 import { NzStepsModule } from './steps.module';
 
 describe('steps', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
+
   describe('outer steps', () => {
     let fixture: ComponentFixture<NzTestOuterStepsComponent>;
     let testComponent: NzTestOuterStepsComponent;

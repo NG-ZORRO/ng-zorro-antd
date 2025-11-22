@@ -4,7 +4,7 @@
  */
 
 import { ApplicationRef, Component, DebugElement, destroyPlatform } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { bootstrapApplication, By } from '@angular/platform-browser';
 import { renderApplication } from '@angular/platform-server';
 
@@ -14,44 +14,58 @@ import { FontType } from './typings';
 import { NzWatermarkComponent } from './watermark.component';
 import { NzWatermarkModule } from './watermark.module';
 
-describe('nz-watermark', () => {
+describe('watermark', () => {
   let fixture: ComponentFixture<NzTestWatermarkBasicComponent>;
   let testComponent: NzTestWatermarkBasicComponent;
   let resultEl: DebugElement;
+  let mockSrcSpy: jasmine.Spy;
+
+  beforeAll(() => {
+    mockSrcSpy = spyOnProperty(Image.prototype, 'src', 'set');
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NzTestWatermarkBasicComponent);
-    fixture.detectChanges();
     testComponent = fixture.debugElement.componentInstance;
     resultEl = fixture.debugElement.query(By.directive(NzWatermarkComponent));
+    mockSrcSpy.and.callFake(() => {
+      resultEl.componentInstance['onImageLoad']?.();
+    });
   });
 
-  it('basic', () => {
+  it('basic', async () => {
     testComponent.nzContent = 'NG Ant Design';
-    fixture.detectChanges();
+    await fixture.whenStable();
     const view = resultEl.nativeElement.querySelector('.watermark > div');
+    expect(view).toBeTruthy();
     expect(view.tagName).toBe('DIV');
   });
 
-  it('image', () => {
+  it('image', async () => {
     testComponent.nzImage =
       'https://img.alicdn.com/imgextra/i3/O1CN01UR3Zkq1va9fnZsZcr_!!6000000006188-55-tps-424-64.svg';
-    fixture.detectChanges();
+    await fixture.whenStable();
     const view = resultEl.nativeElement.querySelector('.watermark > div');
+    expect(view).toBeTruthy();
     expect(view.tagName).toBe('DIV');
   });
 
-  it('invalid image', () => {
+  it('invalid image', async () => {
+    mockSrcSpy.and.callFake(() => {
+      resultEl.componentInstance['onImageError']?.();
+    });
     testComponent.nzImage = 'https://img.alicdn.com/test.svg';
-    fixture.detectChanges();
+    await fixture.whenStable();
     const view = resultEl.nativeElement.querySelector('.watermark > div');
+    expect(view).toBeTruthy();
     expect(view.tagName).toBe('DIV');
   });
 
-  it('should offset work', () => {
+  it('should offset work', async () => {
     testComponent.nzContent = ['Angular', 'NG Ant Design'];
     testComponent.nzOffset = [200, 200];
-    fixture.detectChanges();
+    await fixture.whenStable();
+
     const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view?.style.left).toBe('150px');
     expect(view?.style.top).toBe('150px');
@@ -59,33 +73,38 @@ describe('nz-watermark', () => {
     expect(view?.style.height).toBe('calc(100% - 150px)');
   });
 
-  it('should backgroundSize work', () => {
+  it('should backgroundSize work', async () => {
     testComponent.nzContent = 'NG Ant Design';
     testComponent.nzGap = [100, 100];
     testComponent.nzWidth = 200;
     testComponent.nzHeight = 200;
-    fixture.detectChanges();
+    await fixture.whenStable();
+
     const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view?.style.backgroundSize).toBe('600px');
   });
 
-  it('should MutationObserver work', fakeAsync(() => {
+  it('should MutationObserver work', async () => {
     testComponent.nzContent = 'NG Ant Design';
-    fixture.detectChanges();
+    await fixture.whenStable();
+
     const view = resultEl.nativeElement.querySelector('.watermark > div');
     view?.remove();
-    tick(100);
-    expect(view).toBeTruthy();
-  }));
+    await fixture.whenStable();
 
-  it('should observe the modification of style', fakeAsync(() => {
+    expect(view).toBeTruthy();
+  });
+
+  it('should observe the modification of style', async () => {
     testComponent.nzContent = 'NG Ant Design';
-    fixture.detectChanges();
+    await fixture.whenStable();
+
     const view = resultEl.nativeElement.querySelector('.watermark > div');
     view?.setAttribute('style', '');
-    tick(100);
+    await fixture.whenStable();
+
     expect(view.style).toBeTruthy();
-  }));
+  });
 });
 
 describe('watermark (SSR)', () => {
@@ -134,8 +153,7 @@ describe('watermark (SSR)', () => {
       [nzGap]="nzGap"
       [nzOffset]="nzOffset"
       class="watermark"
-    >
-    </nz-watermark>
+    ></nz-watermark>
   `
 })
 export class NzTestWatermarkBasicComponent {

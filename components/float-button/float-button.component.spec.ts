@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -17,12 +17,13 @@ import { NzFloatButtonComponent } from './float-button.component';
 import { NzFloatButtonModule } from './float-button.module';
 import { NzFloatButtonBadge, NzFloatButtonType } from './typings';
 
-describe('nz-float-button', () => {
-  beforeEach(waitForAsync(() => {
+describe('float-button', () => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('float-button basic', () => {
     let fixture: ComponentFixture<NzTestFloatButtonBasicComponent>;

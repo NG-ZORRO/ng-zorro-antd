@@ -6,11 +6,11 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, ViewChild } from '@angular/core';
+import { Component, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n/date-config';
@@ -21,13 +21,17 @@ import { NzCalendarModule } from './calendar.module';
 
 registerLocaleData(zh);
 
-describe('Calendar', () => {
-  beforeEach(waitForAsync(() => {
+describe('calendar', () => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      providers: [{ provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
+      providers: [
+        provideZoneChangeDetection(),
+        provideNoopAnimations(),
+        { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }
+      ]
     });
-  }));
+  });
 
   describe('mode', () => {
     let fixture: ComponentFixture<NzTestCalendarModeComponent>;

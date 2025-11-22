@@ -323,7 +323,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: NgStyleInterface | null = null;
   @Input() nzDropdownClassName?: string;
-  @Input() @WithConfig() nzBackdrop = false;
+  @Input() @WithConfig() nzBackdrop = true;
   @Input() nzStatus: NzStatus = '';
   @Input() nzPlacement: NzPlacementType = '';
   @Input()

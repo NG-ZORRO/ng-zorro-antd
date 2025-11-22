@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -16,9 +16,16 @@ const WAVE_ATTRIBUTE_NAME = 'ant-click-animating-without-extra-node';
 const WAVE_ATTRIBUTE_NAME_EXTRA_NODE = 'ant-click-animating';
 const EXTRA_NODE_CLASS_NAME = '.ant-click-animating-node';
 
-describe('nz-wave base', () => {
+describe('nz-wave basic', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveTarget: HTMLElement;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
 
   describe('basic wave', () => {
     beforeEach(() => {
@@ -108,6 +115,13 @@ describe('nz-wave base', () => {
 describe('nz-wave extra', () => {
   let fixture: ComponentFixture<WaveContainerWithExtraNodeComponent>;
   let waveTarget: HTMLElement;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
 
   describe('extra node wave', () => {
     beforeEach(() => {

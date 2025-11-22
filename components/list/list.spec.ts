@@ -5,7 +5,7 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { AsyncPipe } from '@angular/common';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, timer } from 'rxjs';
@@ -22,9 +22,11 @@ describe('list', () => {
   let fixture: ComponentFixture<TestListComponent>;
   let context: TestListComponent;
   let dl: DebugElement;
+
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
     fixture = TestBed.createComponent(TestListComponent);
     context = fixture.componentInstance;
@@ -172,6 +174,7 @@ describe('list', () => {
       expect(dl.query(By.css('.ant-list-item-main')) != null).toBe(true);
       expect(dl.query(By.css('.ant-list-item-extra')) != null).toBe(true);
     });
+
     it('should display the asynchronous action', fakeAsync(() => {
       tick(2000);
       fixture.detectChanges();
@@ -181,10 +184,12 @@ describe('list', () => {
 
   describe('item', () => {
     let fixtureTemp: ComponentFixture<TestListItemComponent>;
+
     beforeEach(() => {
       fixtureTemp = TestBed.createComponent(TestListItemComponent);
       fixtureTemp.detectChanges();
     });
+
     it('with string', () => {
       expect(
         (
@@ -194,9 +199,11 @@ describe('list', () => {
       expect(fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item-action')) != null).toBe(true);
       expect(fixtureTemp.debugElement.query(By.css('#item-string .extra-logo')) != null).toBe(true);
     });
+
     it('with custom template of [nzContent]', () => {
       expect(fixtureTemp.debugElement.query(By.css('#item-template .item-content')) != null).toBe(true);
     });
+
     it('#nzNoFlex', () => {
       expect(fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item-no-flex')) != null).toBe(false);
       fixtureTemp.componentInstance.noFlex = true;
@@ -207,15 +214,18 @@ describe('list', () => {
 
   describe('item-meta', () => {
     let fixtureTemp: ComponentFixture<TestListItemComponent>;
+
     beforeEach(() => {
       fixtureTemp = TestBed.createComponent(TestListItemComponent);
       fixtureTemp.detectChanges();
     });
+
     it('with string', () => {
       expect(fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item-meta-title')) != null).toBe(true);
       expect(fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item-meta-description')) != null).toBe(true);
       expect(fixtureTemp.debugElement.query(By.css('#item-string .ant-list-item-meta-avatar')) != null).toBe(true);
     });
+
     it('with custom template', () => {
       expect(fixtureTemp.debugElement.query(By.css('#item-template .item-title')) != null).toBe(true);
       expect(fixtureTemp.debugElement.query(By.css('#item-template .item-desc')) != null).toBe(true);
@@ -229,8 +239,9 @@ describe('list RTL', () => {
   let componentElement: HTMLElement;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
     fixture = TestBed.createComponent(NzTestListRtlComponent);
     componentElement = fixture.debugElement.query(By.directive(NzListComponent)).nativeElement;

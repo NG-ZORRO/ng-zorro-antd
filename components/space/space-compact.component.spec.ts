@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component } from '@angular/core';
+import { ApplicationRef, Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -20,13 +20,14 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzSpaceModule } from './space.module';
 import { NzSpaceDirection } from './types';
 
-describe('Space compact', () => {
+describe('space compact', () => {
   let component: SpaceCompactTestComponent;
   let fixture: ComponentFixture<SpaceCompactTestComponent>;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
     fixture = TestBed.createComponent(SpaceCompactTestComponent);
     component = fixture.componentInstance;
@@ -158,13 +159,14 @@ describe('Space compact', () => {
   });
 });
 
-describe('Space compact direction', () => {
+describe('space compact direction', () => {
   let component: SpaceCompactDirectionTestComponent;
   let fixture: ComponentFixture<SpaceCompactDirectionTestComponent>;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
     fixture = TestBed.createComponent(SpaceCompactDirectionTestComponent);
     component = fixture.componentInstance;

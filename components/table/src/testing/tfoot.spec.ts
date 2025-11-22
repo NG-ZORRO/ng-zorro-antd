@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzTableModule } from '../table.module';
@@ -14,6 +14,10 @@ describe('tfoot', () => {
   let component: TestComponent;
 
   beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
     component = fixture.componentInstance;

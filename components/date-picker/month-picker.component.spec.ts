@@ -6,7 +6,7 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -25,17 +25,18 @@ import { NzDatePickerModule } from './date-picker.module';
 
 registerLocaleData(zh);
 
-describe('NzMonthPickerComponent', () => {
+describe('month-picker', () => {
   let fixture: ComponentFixture<NzTestMonthPickerComponent>;
   let fixtureInstance: NzTestMonthPickerComponent;
   let debugElement: DebugElement;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NzTestMonthPickerComponent);

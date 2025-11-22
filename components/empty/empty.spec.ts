@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, DebugElement, TemplateRef, ViewChild, inject, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -17,7 +17,14 @@ import { NzEmbedEmptyComponent } from './embed-empty.component';
 import { NzEmptyComponent } from './empty.component';
 import { NzEmptyModule } from './empty.module';
 
-describe('nz-empty', () => {
+describe('empty', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
   describe('basic', () => {
     let fixture: ComponentFixture<NzEmptyTestBasicComponent>;
     let testComponent: NzEmptyTestBasicComponent;
