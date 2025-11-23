@@ -4,10 +4,17 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { AfterViewInit, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzLabelAlignType } from 'ng-zorro-antd/form/form.directive';
 import { NzFormModule } from 'ng-zorro-antd/form/form.module';
@@ -16,31 +23,38 @@ import { en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzFormLabelComponent, NzFormTooltipIcon } from './form-label.component';
 import { NzRequiredMark } from './types';
 
-const testBedOptions = { imports: [NoopAnimationsModule] };
+describe('form-label', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection(), provideNoopAnimations()]
+    });
+  });
 
-describe('nz-form-label', () => {
   describe('default', () => {
     let fixture: ComponentFixture<NzTestFormLabelComponent>;
     let testComponent: NzTestFormLabelComponent;
     let label: DebugElement;
+
     beforeEach(() => {
-      TestBed.configureTestingModule(testBedOptions);
       fixture = TestBed.createComponent(NzTestFormLabelComponent);
       testComponent = fixture.componentInstance;
       fixture.detectChanges();
       label = fixture.debugElement.query(By.directive(NzFormLabelComponent));
     });
+
     it('should className correct', () => {
       expect(label.nativeElement.classList).toContain('ant-form-item-label');
     });
+
     it('should label for work', () => {
       expect(label.nativeElement.querySelector('label').attributes.getNamedItem('for').value).toBe('test');
     });
+
     it('should required work', () => {
       expect(label.nativeElement.querySelector('label').classList).not.toContain('ant-form-item-required');
 
       testComponent.required = true;
-
       fixture.detectChanges();
 
       expect(label.nativeElement.querySelector('label').classList).toContain('ant-form-item-required');
@@ -50,7 +64,6 @@ describe('nz-form-label', () => {
       expect(label.nativeElement.querySelector('label').classList).not.toContain('ant-form-item-no-colon');
 
       testComponent.noColon = true;
-
       fixture.detectChanges();
 
       expect(label.nativeElement.querySelector('label').classList).toContain('ant-form-item-no-colon');
@@ -71,11 +84,11 @@ describe('nz-form-label', () => {
       expect(label.nativeElement.querySelector('.ant-form-item-tooltip')).toBeDefined();
       expect(label.nativeElement.querySelector('.anticon-info-circle')).toBeDefined();
     });
+
     it('should label align work', () => {
       expect(label.nativeElement.classList).not.toContain('ant-form-item-label-left');
 
       testComponent.align = 'left';
-
       fixture.detectChanges();
 
       expect(label.nativeElement.classList).toContain('ant-form-item-label-left');
@@ -98,7 +111,6 @@ describe('nz-form-label', () => {
     let i18nService: NzI18nService;
 
     beforeEach(() => {
-      TestBed.configureTestingModule(testBedOptions);
       fixture = TestBed.createComponent(NzTestFormLabelRequiredMarkComponent);
       testComponent = fixture.componentInstance;
       i18nService = TestBed.inject(NzI18nService);

@@ -17,7 +17,8 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  inject
+  inject,
+  provideZoneChangeDetection
 } from '@angular/core';
 import {
   ComponentFixture,
@@ -44,17 +45,18 @@ import { NzModalComponent } from './modal.component';
 import { NzModalModule } from './modal.module';
 import { NzModalService } from './modal.service';
 
-describe('Animation', () => {
+describe('modal with animation', () => {
   let modalService: NzModalService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<TestWithServiceComponent>;
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [NzModalService, provideAnimations()]
+      providers: [NzModalService, provideAnimations(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   beforeEach(
     testingInject([NzModalService, OverlayContainer], (m: NzModalService, oc: OverlayContainer) => {
@@ -95,7 +97,7 @@ describe('Animation', () => {
   }));
 });
 
-describe('NzModal', () => {
+describe('modal', () => {
   let modalService: NzModalService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
@@ -105,7 +107,13 @@ describe('NzModal', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      providers: [NzModalService, provideNoopAnimations(), { provide: Location, useClass: SpyLocation }]
+      providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
+        NzModalService,
+        provideNoopAnimations(),
+        { provide: Location, useClass: SpyLocation }
+      ]
     });
   }));
 

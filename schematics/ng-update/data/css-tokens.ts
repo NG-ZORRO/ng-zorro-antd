@@ -6,5 +6,5 @@
 import { CssTokenUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const cssTokens: VersionChanges<CssTokenUpgradeData> = {
-  [TargetVersion.V20]: []
+  [TargetVersion.V21]: []
 };

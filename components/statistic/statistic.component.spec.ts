@@ -4,14 +4,23 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
+import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzStatisticComponent } from './statistic.component';
 import { NzStatisticModule } from './statistic.module';
 
-describe('nz-statistic', () => {
+describe('statistic', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+    });
+  });
+
   describe('basic', () => {
     let fixture: ComponentFixture<NzTestStatisticComponent>;
     let testComponent: NzTestStatisticComponent;

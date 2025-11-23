@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, ViewChild } from '@angular/core';
+import { Component, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -22,6 +22,13 @@ const setWindowWidth = (width: number): void => {
 };
 
 describe('grid', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
   describe('row', () => {
     let fixture: ComponentFixture<TestGridComponent>;
     let component: TestGridComponent;

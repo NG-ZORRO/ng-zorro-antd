@@ -4,8 +4,8 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -17,13 +17,14 @@ import { NzFloatButtonGroupComponent } from './float-button-group.component';
 import { NzFloatButtonModule } from './float-button.module';
 
 describe('nz-float-button-group', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
-  describe('float-button-group basic', () => {
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestFloatButtonGroupBasicComponent>;
     let testComponent: NzTestFloatButtonGroupBasicComponent;
     let resultEl: DebugElement;
@@ -163,27 +164,24 @@ describe('nz-float-button-group', () => {
       });
     });
   });
-});
 
-describe('nz-float-button-group RTL', () => {
-  let fixture: ComponentFixture<NzTestFloatButtonRtlComponent>;
-  let resultEl: DebugElement;
-  let groupComponent: NzFloatButtonGroupComponent;
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestFloatButtonRtlComponent>;
+    let resultEl: DebugElement;
+    let groupComponent: NzFloatButtonGroupComponent;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
+      resultEl = fixture.debugElement.query(By.directive(NzFloatButtonGroupComponent));
+      groupComponent = resultEl.componentInstance;
     });
-    fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
-    resultEl = fixture.debugElement.query(By.directive(NzFloatButtonGroupComponent));
-    groupComponent = resultEl.componentInstance;
-  }));
 
-  it('rtl', () => {
-    fixture.detectChanges();
-    // @ts-ignore
-    expect(groupComponent.dir()).toBe('rtl');
-    expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-rtl');
+    it('rtl', () => {
+      fixture.detectChanges();
+      // @ts-ignore
+      expect(groupComponent.dir()).toBe('rtl');
+      expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-rtl');
+    });
   });
 });
 
@@ -198,8 +196,7 @@ describe('nz-float-button-group RTL', () => {
       [nzOpen]="nzOpen"
       [nzPlacement]="nzPlacement"
       (nzOnOpenChange)="onClick($event)"
-    >
-    </nz-float-button-group>
+    />
   `
 })
 export class NzTestFloatButtonGroupBasicComponent {
@@ -219,7 +216,7 @@ export class NzTestFloatButtonGroupBasicComponent {
   imports: [BidiModule, NzFloatButtonModule],
   template: `
     <div [dir]="direction">
-      <nz-float-button-group></nz-float-button-group>
+      <nz-float-button-group />
     </div>
   `
 })

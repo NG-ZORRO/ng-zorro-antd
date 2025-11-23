@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -110,8 +110,9 @@ describe('nz-result', () => {
     let resultEl: DebugElement;
 
     beforeEach(() => {
+      // todo: use zoneless
       TestBed.configureTestingModule({
-        providers: [provideNzIconsTesting()]
+        providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
       });
 
       fixture = TestBed.createComponent(NzTestResultRtlComponent);

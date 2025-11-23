@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
-import { Component, DebugElement, DOCUMENT, NgZone } from '@angular/core';
+import { Component, DebugElement, DOCUMENT, NgZone, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
@@ -27,13 +27,13 @@ interface PanelProps {
   imports: [BidiModule, NzSplitterModule],
   template: `
     <nz-splitter
-      [nzLazy]="lazy"
-      [nzLayout]="vertical ? 'vertical' : 'horizontal'"
+      [nzLazy]="lazy()"
+      [nzLayout]="vertical() ? 'vertical' : 'horizontal'"
       (nzResizeStart)="onResizeStart($event)"
       (nzResize)="onResize($event)"
       (nzResizeEnd)="onResizeEnd($event)"
     >
-      @for (panel of panels; track $index) {
+      @for (panel of panels(); track $index) {
         <nz-splitter-panel
           [nzDefaultSize]="panel.defaultSize"
           [nzMin]="panel.min"
@@ -58,9 +58,9 @@ interface PanelProps {
   `
 })
 class NzSplitterTestComponent {
-  vertical = false;
-  lazy = false;
-  panels: PanelProps[] = [{}, {}];
+  readonly vertical = signal(false);
+  readonly lazy = signal(false);
+  readonly panels = signal<PanelProps[]>([{}, {}]);
   readonly onResizeStart = (_sizes: number[]): void => void 0;
   readonly onResize = (_sizes: number[]): void => void 0;
   readonly onResizeEnd = (_sizes: number[]): void => void 0;
@@ -141,9 +141,9 @@ describe('nz-splitter', () => {
       expect(container.query(By.css('.ant-splitter-bar'))).toBeTruthy();
     });
 
-    it('should correct render panel size', () => {
-      component.panels = [{ size: 20 }, { size: '45%' }, {}];
-      fixture.detectChanges();
+    it('should correct render panel size', async () => {
+      component.panels.set([{ size: 20 }, { size: '45%' }, {}]);
+      await fixture.whenStable();
 
       const panels = container.queryAll(By.css('.ant-splitter-panel'));
       expect(getPanelFlexBasis(panels?.[0])).toBe('20px');
@@ -151,23 +151,23 @@ describe('nz-splitter', () => {
       expect(getPanelFlexBasis(panels?.[2])).toBe('35px');
     });
 
-    it('should layout work', () => {
-      fixture.detectChanges();
+    it('should layout work', async () => {
+      await fixture.whenStable();
       expect(container.query(By.css('.ant-splitter.ant-splitter-horizontal'))).toBeTruthy();
 
-      component.vertical = true;
-      fixture.detectChanges();
+      component.vertical.set(true);
+      await fixture.whenStable();
       expect(container.query(By.css('.ant-splitter.ant-splitter-vertical'))).toBeTruthy();
     });
 
-    it('should resizable work', () => {
-      component.panels = [{ size: 20 }, { resizable: false }, {}];
-      fixture.detectChanges();
+    it('should resizable work', async () => {
+      component.panels.set([{ size: 20 }, { resizable: false }, {}]);
+      await fixture.whenStable();
       expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveSize(2);
       expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveSize(2);
 
-      component.panels = [{ size: 20 }, {}, { resizable: false }];
-      fixture.detectChanges();
+      component.panels.set([{ size: 20 }, {}, { resizable: false }]);
+      await fixture.whenStable();
       expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveSize(2);
       expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveSize(1);
     });
@@ -179,95 +179,95 @@ describe('nz-splitter', () => {
         spyOn(component, 'onResizeEnd');
       });
 
-      it('should mouse move work', () => {
-        component.panels = [{}, {}];
-        fixture.detectChanges();
+      it('should mouse move work', async () => {
+        component.panels.set([{}, {}]);
+        await fixture.whenStable();
 
         const { dragger, x, y } = getDraggerAndPos();
 
         // right
         dispatchMouseEvent(dragger, 'mousedown', x, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(dragger.classList).toContain('ant-splitter-bar-dragger-active');
         expect(component.onResizeStart).toHaveBeenCalledWith([50, 50]);
 
         dispatchMouseEvent(dragger, 'mousemove', x + 40, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResize).toHaveBeenCalledWith([90, 10]);
         expect(component.onResizeEnd).not.toHaveBeenCalled();
 
         dispatchMouseEvent(dragger, 'mouseup', x + 40, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResizeEnd).toHaveBeenCalledWith([90, 10]);
 
         // left
         dispatchMouseEvent(dragger, 'mousedown', x + 40, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         dispatchMouseEvent(dragger, 'mousemove', x - 240, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResize).toHaveBeenCalledWith([0, 100]);
         dispatchMouseEvent(dragger, 'mouseup');
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResizeEnd).toHaveBeenCalledWith([0, 100]);
       });
 
-      it('should touch move work', () => {
-        component.panels = [{}, {}];
-        fixture.detectChanges();
+      it('should touch move work', async () => {
+        component.panels.set([{}, {}]);
+        await fixture.whenStable();
 
         const { dragger, x, y } = getDraggerAndPos();
 
         // right
         dispatchTouchEvent(dragger, 'touchstart', x, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(dragger.classList).toContain('ant-splitter-bar-dragger-active');
         expect(component.onResizeStart).toHaveBeenCalledWith([50, 50]);
 
         dispatchTouchEvent(document, 'touchmove', x + 40, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResize).toHaveBeenCalledWith([90, 10]);
         expect(component.onResizeEnd).not.toHaveBeenCalled();
 
         dispatchTouchEvent(document, 'touchend', x + 40, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResizeEnd).toHaveBeenCalledWith([90, 10]);
 
         // left
         dispatchTouchEvent(dragger, 'touchstart', x + 40, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
 
         dispatchTouchEvent(document, 'touchmove', x - 240, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResize).toHaveBeenCalledWith([0, 100]);
         dispatchTouchEvent(document, 'touchend');
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResizeEnd).toHaveBeenCalledWith([0, 100]);
       });
 
-      it('with min', () => {
-        component.panels = [{ min: 10 }, {}];
-        fixture.detectChanges();
+      it('with min', async () => {
+        component.panels.set([{ min: 10 }, {}]);
+        await fixture.whenStable();
 
         drag(getDragger(), x => x - 100);
         expect(component.onResize).toHaveBeenCalledWith([10, 90]);
         expect(component.onResizeEnd).toHaveBeenCalledWith([10, 90]);
       });
 
-      it('with max', () => {
-        component.panels = [{ max: 90 }, {}];
-        fixture.detectChanges();
+      it('with max', async () => {
+        component.panels.set([{ max: 90 }, {}]);
+        await fixture.whenStable();
 
         drag(getDragger(), x => x + 100);
         expect(component.onResize).toHaveBeenCalledWith([90, 10]);
         expect(component.onResizeEnd).toHaveBeenCalledWith([90, 10]);
       });
 
-      it('both panel has min and max', () => {
-        component.panels = [
+      it('both panel has min and max', async () => {
+        component.panels.set([
           { min: 10, max: 80 },
           { min: 10, max: 80 }
-        ];
-        fixture.detectChanges();
+        ]);
+        await fixture.whenStable();
 
         drag(getDragger(), x => x - 100);
         expect(component.onResize).toHaveBeenCalledWith([20, 80]);
@@ -278,18 +278,18 @@ describe('nz-splitter', () => {
         expect(component.onResizeEnd).toHaveBeenCalledWith([80, 20]);
       });
 
-      it('[true, 0, true] can be move left', () => {
-        component.panels = [{}, { defaultSize: 0 }, {}];
-        fixture.detectChanges();
+      it('[true, 0, true] can be move left', async () => {
+        component.panels.set([{}, { defaultSize: 0 }, {}]);
+        await fixture.whenStable();
 
         drag(getDragger(1), x => x - 100);
         expect(component.onResize).toHaveBeenCalledWith([0, 50, 50]);
         expect(component.onResizeEnd).toHaveBeenCalledWith([0, 50, 50]);
       });
 
-      it('[false, 0, true] can not be move left', () => {
-        component.panels = [{ resizable: false }, { defaultSize: 0 }, {}];
-        fixture.detectChanges();
+      it('[false, 0, true] can not be move left', async () => {
+        component.panels.set([{ resizable: false }, { defaultSize: 0 }, {}]);
+        await fixture.whenStable();
 
         drag(getDragger(1), x => x - 100);
         expect(component.onResize).toHaveBeenCalledWith([50, 0, 50]);
@@ -310,15 +310,15 @@ describe('nz-splitter', () => {
         spyOn(component, 'onResizeEnd');
       });
 
-      it('basic', () => {
-        component.panels = [{ size: 20, collapsible: true }, { collapsible: true }];
-        fixture.detectChanges();
+      it('basic', async () => {
+        component.panels.set([{ size: 20, collapsible: true }, { collapsible: true }]);
+        await fixture.whenStable();
 
         expect(container.queryAll(By.css('.ant-splitter-bar-collapse-icon'))).toHaveSize(2);
         expect(container.query(By.css('.ant-splitter-bar-collapse-start'))).toBeTruthy();
         expect(container.query(By.css('.ant-splitter-bar-collapse-end'))).toBeTruthy();
 
-        component.panels = [
+        component.panels.set([
           {
             size: 20,
             collapsible: true
@@ -327,21 +327,21 @@ describe('nz-splitter', () => {
             collapsible: true
           },
           {}
-        ];
-        fixture.detectChanges();
+        ]);
+        await fixture.whenStable();
         expect(container.queryAll(By.css('.ant-splitter-bar-collapse-start'))).toHaveSize(2);
         expect(container.queryAll(By.css('.ant-splitter-bar-collapse-end'))).toHaveSize(1);
       });
 
-      it('collapsible - true', () => {
-        component.panels = [
+      it('collapsible - true', async () => {
+        component.panels.set([
           {
             size: 20,
             collapsible: true
           },
           {}
-        ];
-        fixture.detectChanges();
+        ]);
+        await fixture.whenStable();
 
         const startBtn = container.query(By.css('.ant-splitter-bar-collapse-start'))!.nativeElement as HTMLElement;
         startBtn.click();
@@ -351,8 +351,8 @@ describe('nz-splitter', () => {
         expect(component.onResizeEnd).toHaveBeenCalledWith([0, 100]);
       });
 
-      it('collapsible - start:true', () => {
-        component.panels = [
+      it('collapsible - start:true', async () => {
+        component.panels.set([
           {},
           {
             size: 20,
@@ -361,22 +361,22 @@ describe('nz-splitter', () => {
             }
           },
           {}
-        ];
-        fixture.detectChanges();
+        ]);
+        await fixture.whenStable();
 
         expect(container.query(By.css('.ant-splitter-bar-collapse-start'))).toBeFalsy();
         expect(container.query(By.css('.ant-splitter-bar-collapse-end'))).toBeTruthy();
 
         const endBtn = container.query(By.css('.ant-splitter-bar-collapse-end'))!.nativeElement as HTMLElement;
         endBtn.click();
-        fixture.detectChanges();
+        await fixture.whenStable();
 
         expect(component.onResize).toHaveBeenCalledWith([60, 0, 40]);
         expect(component.onResizeEnd).toHaveBeenCalledWith([60, 0, 40]);
       });
 
-      it('collapsible - end:true', () => {
-        component.panels = [
+      it('collapsible - end:true', async () => {
+        component.panels.set([
           {},
           {
             size: 20,
@@ -385,30 +385,30 @@ describe('nz-splitter', () => {
             }
           },
           {}
-        ];
-        fixture.detectChanges();
+        ]);
+        await fixture.whenStable();
 
         expect(container.query(By.css('.ant-splitter-bar-collapse-start'))).toBeTruthy();
         expect(container.query(By.css('.ant-splitter-bar-collapse-end'))).toBeFalsy();
 
         const startBtn = container.query(By.css('.ant-splitter-bar-collapse-start'))!.nativeElement as HTMLElement;
         startBtn.click();
-        fixture.detectChanges();
+        await fixture.whenStable();
 
         expect(component.onResize).toHaveBeenCalledWith([40, 0, 60]);
         expect(component.onResizeEnd).toHaveBeenCalledWith([40, 0, 60]);
       });
 
-      it('both collapsible', () => {
-        component.panels = [
+      it('both collapsible', async () => {
+        component.panels.set([
           {
             collapsible: true
           },
           {
             collapsible: true
           }
-        ];
-        fixture.detectChanges();
+        ]);
+        await fixture.whenStable();
 
         const startBtn = container.query(By.css('.ant-splitter-bar-collapse-start'))!.nativeElement as HTMLElement;
         const endBtn = container.query(By.css('.ant-splitter-bar-collapse-end'))!.nativeElement as HTMLElement;
@@ -419,8 +419,8 @@ describe('nz-splitter', () => {
         expectClick(startBtn, [50, 50]);
       });
 
-      it('collapsible with cache', () => {
-        component.panels = [
+      it('collapsible with cache', async () => {
+        component.panels.set([
           {
             defaultSize: 20,
             collapsible: true,
@@ -430,8 +430,8 @@ describe('nz-splitter', () => {
             collapsible: true,
             min: '80%'
           }
-        ];
-        fixture.detectChanges();
+        ]);
+        await fixture.whenStable();
 
         const startBtn = container.query(By.css('.ant-splitter-bar-collapse-start'))!.nativeElement as HTMLElement;
         const endBtn = container.query(By.css('.ant-splitter-bar-collapse-end'))!.nativeElement as HTMLElement;
@@ -447,8 +447,8 @@ describe('nz-splitter', () => {
         expect(container.query(By.css('.ant-splitter-bar-dragger-disabled'))).toBeTruthy();
       });
 
-      it('collapsible with fallback', () => {
-        component.panels = [
+      it('collapsible with fallback', async () => {
+        component.panels.set([
           {
             defaultSize: 10,
             collapsible: true,
@@ -458,8 +458,8 @@ describe('nz-splitter', () => {
             collapsible: true,
             min: '80%'
           }
-        ];
-        fixture.detectChanges();
+        ]);
+        await fixture.whenStable();
 
         const startBtn = container.query(By.css('.ant-splitter-bar-collapse-start'))!.nativeElement as HTMLElement;
         const endBtn = container.query(By.css('.ant-splitter-bar-collapse-end'))!.nativeElement as HTMLElement;
@@ -476,10 +476,10 @@ describe('nz-splitter', () => {
       });
     });
 
-    describe('lazy', () => {
+    describe('lazy', async () => {
       beforeEach(() => {
-        component.lazy = true;
-        component.panels = [
+        component.lazy.set(true);
+        component.panels.set([
           {
             defaultSize: '50%',
             min: '30%',
@@ -490,25 +490,25 @@ describe('nz-splitter', () => {
             min: '30%',
             max: '70%'
           }
-        ];
+        ]);
 
         spyOn(component, 'onResizeStart');
         spyOn(component, 'onResize');
         spyOn(component, 'onResizeEnd');
       });
 
-      it('should only update after mouse up', () => {
-        fixture.detectChanges();
+      it('should only update after mouse up', async () => {
+        await fixture.whenStable();
         const { dragger, x, y } = getDraggerAndPos();
 
         // right
         dispatchMouseEvent(dragger, 'mousedown', x, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(dragger.classList).toContain('ant-splitter-bar-dragger-active');
         expect(component.onResizeStart).toHaveBeenCalledWith([50, 50]);
 
         dispatchMouseEvent(document, 'mousemove', x + 100, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResize).not.toHaveBeenCalled();
 
         dispatchMouseEvent(document, 'mouseup', x + 100, y);
@@ -517,10 +517,10 @@ describe('nz-splitter', () => {
 
         // left
         dispatchMouseEvent(dragger, 'mousedown', x + 100, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
 
         dispatchMouseEvent(document, 'mousemove', x, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResize).toHaveBeenCalledTimes(1);
 
         dispatchMouseEvent(document, 'mouseup', x, y);
@@ -528,18 +528,18 @@ describe('nz-splitter', () => {
         expect(component.onResizeEnd).toHaveBeenCalledWith([30, 70]);
       });
 
-      it('should work with touch events', () => {
-        fixture.detectChanges();
+      it('should work with touch events', async () => {
+        await fixture.whenStable();
         const { dragger, x, y } = getDraggerAndPos();
 
         // right
         dispatchTouchEvent(dragger, 'touchstart', x, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(dragger.classList).toContain('ant-splitter-bar-dragger-active');
         expect(component.onResizeStart).toHaveBeenCalledWith([50, 50]);
 
         dispatchTouchEvent(document, 'touchmove', x + 100, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResize).not.toHaveBeenCalled();
 
         dispatchTouchEvent(document, 'touchend', x + 100, y);
@@ -548,10 +548,10 @@ describe('nz-splitter', () => {
 
         // left
         dispatchTouchEvent(dragger, 'touchstart', x + 100, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
 
         dispatchTouchEvent(document, 'touchmove', x, y);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(component.onResize).toHaveBeenCalledTimes(1);
 
         dispatchTouchEvent(document, 'touchend', x, y);
@@ -559,9 +559,9 @@ describe('nz-splitter', () => {
         expect(component.onResizeEnd).toHaveBeenCalledWith([30, 70]);
       });
 
-      it('should work with vertical layout', () => {
-        component.vertical = true;
-        fixture.detectChanges();
+      it('should work with vertical layout', async () => {
+        component.vertical.set(true);
+        await fixture.whenStable();
 
         function dragWithMouse(f: (y: number) => number): void {
           const { dragger, x, y } = getDraggerAndPos();
@@ -614,9 +614,9 @@ describe('nz-splitter', () => {
       spyOn(component, 'onResizeEnd');
     });
 
-    it('rtl', () => {
-      component.panels = [{}, {}];
-      fixture.detectChanges();
+    it('rtl', async () => {
+      component.panels.set([{}, {}]);
+      await fixture.whenStable();
 
       const splitter = container.query(By.css('.ant-splitter'))!.nativeElement as HTMLElement;
       expect(splitter.classList).toContain('ant-splitter-rtl');

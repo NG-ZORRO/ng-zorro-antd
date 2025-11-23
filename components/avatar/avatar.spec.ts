@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -53,8 +53,9 @@ describe('avatar', () => {
   }
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
 
     fixture = TestBed.createComponent(TestAvatarComponent);
@@ -67,6 +68,7 @@ describe('avatar', () => {
     it('#nzSrc', () => {
       expect(context).not.toBeNull();
     });
+
     it('should tolerate error src', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
@@ -85,6 +87,7 @@ describe('avatar', () => {
       expect(getType(dl)).toBe('image');
       tick();
     }));
+
     it('should prevent default fallback when error src', fakeAsync(() => {
       const event = createFakeEvent('error');
       event.preventDefault();
@@ -104,12 +107,14 @@ describe('avatar', () => {
       expect(getType(dl)).toBe('image');
       tick();
     }));
+
     it('#nzSrcSet', () => {
       context.nzSrcSet = '1.png';
       fixture.detectChanges();
       const el = getImageElement();
       expect(el.srcset).toBe(context.nzSrcSet);
     });
+
     it('#nzAlt', () => {
       context.nzAlt = 'alt';
       fixture.detectChanges();
@@ -131,9 +136,11 @@ describe('avatar', () => {
       context.nzIcon = undefined;
       fixture.detectChanges();
     });
+
     it('property', () => {
       expect(getType(dl)).toBe('text');
     });
+
     it('should be normal font-size', fakeAsync(() => {
       context.nzText = 'a';
       fixture.detectChanges();
@@ -141,6 +148,7 @@ describe('avatar', () => {
       const scale = getScaleFromCSSTransform(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!);
       expect(scale).toBe(1);
     }));
+
     it('should be auto set font-size', fakeAsync(() => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
@@ -252,6 +260,7 @@ describe('avatar', () => {
     }));
 
     // this case will fail in local environment but pass in CI. Ignore it first.
+
     it('[IGNORE_LOCAL] should have 0 for avatarWidth if element.width is falsy`', fakeAsync(() => {
       const size = 64;
       context.nzIcon = undefined;
@@ -312,6 +321,7 @@ describe('avatar', () => {
     it('image priority', () => {
       expect(getType(dl)).toBe('image');
     });
+
     it('should be show icon when image loaded error and icon exists', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
@@ -320,6 +330,7 @@ describe('avatar', () => {
       fixture.detectChanges();
       expect(getType(dl)).toBe('icon');
     }));
+
     it('should be show text when image loaded error and icon not exists', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
@@ -330,6 +341,7 @@ describe('avatar', () => {
       fixture.detectChanges();
       expect(getType(dl)).toBe('text');
     }));
+
     it('should be show empty when image loaded error and icon & text not exists', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');

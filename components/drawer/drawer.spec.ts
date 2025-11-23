@@ -6,15 +6,8 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, Input, TemplateRef, ViewChild, inject } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  inject as testingInject,
-  tick,
-  waitForAsync
-} from '@angular/core/testing';
+import { Component, Input, TemplateRef, ViewChild, inject, provideZoneChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, inject as testingInject, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -30,11 +23,12 @@ import { NzDrawerModule } from './drawer.module';
 import { NzDrawerService } from './drawer.service';
 
 describe('NzDrawerComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('default', () => {
     let component: NzTestDrawerComponent;
@@ -61,12 +55,12 @@ describe('NzDrawerComponent', () => {
       })
     );
 
-    afterEach(fakeAsync(() => {
+    afterEach(() => {
       component.close();
       document.body.removeChild(forceScrollElement);
       window.scroll(0, 0);
       overlayContainer.ngOnDestroy();
-    }));
+    });
 
     it('should create', () => {
       expect(component).toBeTruthy();
@@ -685,17 +679,17 @@ describe('NzDrawerService', () => {
   let drawerService: NzDrawerService;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [NzDrawerService, provideNoopAnimations()]
     });
-  }));
+  });
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     fixture = TestBed.createComponent(NzTestDrawerWithServiceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   beforeEach(
     testingInject([OverlayContainer, NzDrawerService], (oc: OverlayContainer, ds: NzDrawerService) => {

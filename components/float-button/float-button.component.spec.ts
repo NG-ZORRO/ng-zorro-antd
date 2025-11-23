@@ -4,8 +4,8 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -17,14 +17,15 @@ import { NzFloatButtonComponent } from './float-button.component';
 import { NzFloatButtonModule } from './float-button.module';
 import { NzFloatButtonBadge, NzFloatButtonType } from './typings';
 
-describe('nz-float-button', () => {
-  beforeEach(waitForAsync(() => {
+describe('float-button', () => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
-  describe('float-button basic', () => {
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestFloatButtonBasicComponent>;
     let testComponent: NzTestFloatButtonBasicComponent;
     let resultEl: DebugElement;
@@ -91,23 +92,20 @@ describe('nz-float-button', () => {
       expect(resultEl.nativeElement.querySelector('.ant-badge')).toBeTruthy();
     });
   });
-});
 
-describe('nz-float-button RTL', () => {
-  let fixture: ComponentFixture<NzTestFloatButtonRtlComponent>;
-  let resultEl: DebugElement;
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestFloatButtonRtlComponent>;
+    let resultEl: DebugElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
+      resultEl = fixture.debugElement.query(By.directive(NzFloatButtonComponent));
     });
-    fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
-    resultEl = fixture.debugElement.query(By.directive(NzFloatButtonComponent));
-  }));
 
-  it('rtl', () => {
-    fixture.detectChanges();
-    expect(resultEl.nativeElement.classList).toContain('ant-float-btn-rtl');
+    it('rtl', () => {
+      fixture.detectChanges();
+      expect(resultEl.nativeElement.classList).toContain('ant-float-btn-rtl');
+    });
   });
 });
 
@@ -124,7 +122,7 @@ describe('nz-float-button RTL', () => {
       [nzShape]="nzShape"
       [nzBadge]="nzBadge"
       (nzOnClick)="onClick($event)"
-    ></nz-float-button>
+    />
     <ng-template #icon>
       <nz-icon nzType="question-circle" nzTheme="outline" />
     </ng-template>
@@ -154,7 +152,7 @@ export class NzTestFloatButtonBasicComponent {
   imports: [BidiModule, NzFloatButtonModule],
   template: `
     <div [dir]="direction">
-      <nz-float-button></nz-float-button>
+      <nz-float-button />
     </div>
   `
 })

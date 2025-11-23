@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -11,15 +11,19 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { NzColorBlockComponent, NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
-describe('nz-color-block', () => {
+describe('color-block', () => {
   let fixture: ComponentFixture<NzTestColorBlockComponent>;
   let component: NzTestColorBlockComponent;
   let resultEl: DebugElement;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(NzTestColorBlockComponent);
     fixture.detectChanges();
     component = fixture.componentInstance;

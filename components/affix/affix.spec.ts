@@ -5,8 +5,16 @@
 
 import { BidiModule, Dir, Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { Component, DebugElement, DOCUMENT, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  Component,
+  DebugElement,
+  DOCUMENT,
+  ElementRef,
+  provideZoneChangeDetection,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
 
@@ -49,9 +57,11 @@ describe('affix', () => {
   const height = 100;
   const width = 100;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         {
           provide: NzScrollService,
           useClass: NzScrollService
@@ -66,7 +76,8 @@ describe('affix', () => {
     componentObject = new NzAffixPageObject();
     debugElement = fixture.debugElement;
     componentObject.wrap().id = 'wrap';
-  }));
+  });
+
   afterEach(fakeAsync(() => {
     setupInitialState();
   }));
@@ -511,11 +522,16 @@ describe('affix RTL', () => {
   let context: TestAffixRtlComponent;
   let dl: DebugElement;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
     fixture = TestBed.createComponent(TestAffixRtlComponent);
     context = fixture.componentInstance;
     dl = fixture.debugElement;
-  }));
+  });
+
   it('should className correct on dir change', fakeAsync(() => {
     context.newOffsetBottom = 10;
     context.fakeTarget = window;

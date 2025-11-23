@@ -6,7 +6,7 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -20,7 +20,7 @@ import { NzSliderComponent } from './slider.component';
 import { NzSliderModule } from './slider.module';
 import { NzSliderShowTooltip } from './typings';
 
-describe('nz-slider', () => {
+describe('slider', () => {
   let sliderDebugElement: DebugElement;
   let sliderNativeElement: HTMLElement;
   let sliderInstance: NzSliderComponent;
@@ -33,8 +33,9 @@ describe('nz-slider', () => {
   }
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
     });
   });
 

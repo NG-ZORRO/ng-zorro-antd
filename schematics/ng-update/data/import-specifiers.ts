@@ -13,7 +13,7 @@ export interface ImportSpecifierUpgradeData {
 const resolve = (module: string): string => `ng-zorro-antd/${module}`;
 
 export const importSpecifiers: VersionChanges<ImportSpecifierUpgradeData> = {
-  [TargetVersion.V20]: [{
+  [TargetVersion.V21]: [{
     pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/8901',
     changes: [{
       replace: resolve('input-number'),

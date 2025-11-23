@@ -6,7 +6,7 @@
 import { OutputNameUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const outputNames: VersionChanges<OutputNameUpgradeData> = {
-  [TargetVersion.V20]: [{
+  [TargetVersion.V21]: [{
     pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/8934',
     changes: [{
       replace: 'nzCheckBoxChange',

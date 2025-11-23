@@ -15,22 +15,14 @@ import {
   ElementRef,
   NgZone,
   OnInit,
+  provideZoneChangeDetection,
   QueryList,
   signal,
   SimpleChanges,
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import {
-  ComponentFixture,
-  discardPeriodicTasks,
-  fakeAsync,
-  flush,
-  inject,
-  TestBed,
-  tick,
-  waitForAsync
-} from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -59,29 +51,28 @@ describe('auto-complete', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   const scrolledSubject = new Subject();
-  let zone: MockNgZone;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         provideNoopAnimations(),
         { provide: Directionality, useClass: MockDirectionality },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
-          useFactory: () => {
-            zone = new MockNgZone();
-            return zone;
-          }
+          useFactory: () => new MockNgZone()
         }
       ]
     });
+  });
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
   }));
+
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
@@ -1234,8 +1225,9 @@ describe('auto-complete', () => {
   let mockDirectionality: MockDirectionality;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [{ provide: Directionality, useClass: MockDirectionality }]
+      providers: [provideZoneChangeDetection(), { provide: Directionality, useClass: MockDirectionality }]
     });
 
     fixture = TestBed.createComponent(NzAutocompleteComponent);
