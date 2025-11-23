@@ -5,7 +5,7 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PRIMARY_OUTLET, provideRouter, Router, RouterOutlet, Routes } from '@angular/router';
 
@@ -65,11 +65,11 @@ describe('breadcrumb', () => {
     let items: DebugElement[];
     let breadcrumbs: DebugElement[];
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [provideNzIconsTesting()]
       });
-    }));
+    });
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoBreadcrumbSeparatorComponent);

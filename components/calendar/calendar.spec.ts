@@ -7,7 +7,7 @@ import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, provideZoneChangeDetection, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -37,10 +37,10 @@ describe('calendar', () => {
     let fixture: ComponentFixture<NzTestCalendarModeComponent>;
     let component: NzTestCalendarModeComponent;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarModeComponent);
       component = fixture.componentInstance;
-    }));
+    });
 
     it('should be month by default', () => {
       fixture.detectChanges();
@@ -100,15 +100,14 @@ describe('calendar', () => {
     let fixture: ComponentFixture<NzTestCalendarValueComponent>;
     let component: NzTestCalendarValueComponent;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarValueComponent);
       component = fixture.componentInstance;
-    }));
+    });
 
     it('should be now by default', () => {
-      const now = new Date();
-
       fixture.detectChanges();
+      const now = new Date();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
       const header = host.query(By.directive(CalendarHeader)).injector.get(CalendarHeader);
@@ -231,10 +230,10 @@ describe('calendar', () => {
     let fixture: ComponentFixture<NzTestCalendarFullscreenComponent>;
     let component: NzTestCalendarFullscreenComponent;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarFullscreenComponent);
       component = fixture.componentInstance;
-    }));
+    });
 
     it('should be true by default', () => {
       fixture.detectChanges();
@@ -270,9 +269,9 @@ describe('calendar', () => {
   describe('dateCell', () => {
     let fixture: ComponentFixture<NzTestCalendarDateCellComponent>;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarDateCellComponent);
-    }));
+    });
 
     it('should work when passed via property', () => {
       fixture.detectChanges();
@@ -296,9 +295,9 @@ describe('calendar', () => {
   describe('dateFullCell', () => {
     let fixture: ComponentFixture<NzTestCalendarDateFullCellComponent>;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarDateFullCellComponent);
-    }));
+    });
 
     it('should work when passed via property', () => {
       fixture.detectChanges();
@@ -321,9 +320,9 @@ describe('calendar', () => {
   describe('monthCell', () => {
     let fixture: ComponentFixture<NzTestCalendarMonthCellComponent>;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarMonthCellComponent);
-    }));
+    });
 
     it('should work when passed via property', () => {
       fixture.detectChanges();
@@ -345,9 +344,9 @@ describe('calendar', () => {
   describe('monthFullCell', () => {
     let fixture: ComponentFixture<NzTestCalendarMonthFullCellComponent>;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarMonthFullCellComponent);
-    }));
+    });
 
     it('should work when passed via property', () => {
       fixture.detectChanges();
@@ -370,12 +369,12 @@ describe('calendar', () => {
     let fixture: ComponentFixture<NzTestCalendarChangesComponent>;
     let component: NzTestCalendarChangesComponent;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarChangesComponent);
       component = fixture.componentInstance;
-    }));
+    });
 
-    it('should panelChange work', fakeAsync(() => {
+    it('should panelChange work', () => {
       fixture.detectChanges();
 
       expect(component.panelChange).toHaveBeenCalledTimes(0);
@@ -385,7 +384,7 @@ describe('calendar', () => {
       fixture.detectChanges();
 
       expect(component.panelChange).toHaveBeenCalledTimes(1);
-    }));
+    });
 
     it('should selectChange work', () => {
       fixture.detectChanges();
@@ -409,18 +408,18 @@ describe('calendar', () => {
     let fixture: ComponentFixture<NzTestCalendarRtlComponent>;
     let componentElement: HTMLElement;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarRtlComponent);
       componentElement = fixture.debugElement.query(By.directive(Calendar)).nativeElement;
       fixture.detectChanges();
-    }));
+    });
 
-    it('should className correct on dir change', fakeAsync(() => {
+    it('should className correct on dir change', () => {
       expect(componentElement.classList).toContain('ant-picker-calendar-rtl');
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
       expect(componentElement.classList).not.toContain('ant-picker-calendar-rtl');
-    }));
+    });
   });
 });
 

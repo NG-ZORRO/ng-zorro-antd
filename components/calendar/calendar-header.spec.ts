@@ -6,7 +6,7 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -32,10 +32,10 @@ describe('calendar Header', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderModeComponent>;
     let component: NzTestCalendarHeaderModeComponent;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarHeaderModeComponent);
       component = fixture.componentInstance;
-    }));
+    });
 
     it('should be month by default', () => {
       fixture.detectChanges();
@@ -78,10 +78,10 @@ describe('calendar Header', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderFullscreenComponent>;
     let component: NzTestCalendarHeaderFullscreenComponent;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarHeaderFullscreenComponent);
       component = fixture.componentInstance;
-    }));
+    });
 
     it('should be true by default', () => {
       fixture.detectChanges();
@@ -113,9 +113,9 @@ describe('calendar Header', () => {
   describe('activeDate', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderActiveDateComponent>;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarHeaderActiveDateComponent);
-    }));
+    });
 
     it('should be now by default', () => {
       const now = new Date();
@@ -146,10 +146,10 @@ describe('calendar Header', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderChangesComponent>;
     let component: NzTestCalendarHeaderChangesComponent;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarHeaderChangesComponent);
       component = fixture.componentInstance;
-    }));
+    });
 
     it('should emit yearChange when year changed', fakeAsync(() => {
       tick(1);
@@ -188,9 +188,9 @@ describe('calendar Header', () => {
   describe('custom Header', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderChangesComponent>;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCalendarHeaderChangesComponent);
-    }));
+    });
 
     it('should have the default header if custom header is not passed', fakeAsync(() => {
       fixture.componentInstance.customHeader = undefined;

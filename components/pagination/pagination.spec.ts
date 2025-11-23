@@ -6,7 +6,7 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, DebugElement, provideZoneChangeDetection, signal, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -172,16 +172,16 @@ describe('pagination', () => {
         expect(paginationElement.children.length).toBe(9);
       });
 
-      it('should showSizeChanger work', waitForAsync(() => {
+      it('should showSizeChanger work', async () => {
         testComponent.total = 500;
         testComponent.pageIndex = 50;
         testComponent.showSizeChanger = true;
         fixture.detectChanges();
-        fixture.whenStable().then(() => {
-          expect(paginationElement.children.length).toBe(10);
-          expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-options')).toBe(true);
-        });
-      }));
+        await fixture.whenStable();
+
+        expect(paginationElement.children.length).toBe(10);
+        expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-options')).toBe(true);
+      });
 
       it('should change pageSize correct', () => {
         testComponent.pageIndex = 5;
