@@ -16,7 +16,7 @@ import {
   signal,
   ViewChild
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -43,7 +43,7 @@ describe('mention', () => {
   let overlayContainerElement: HTMLElement;
   const scrolledSubject = new Subject();
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         // todo: use zoneless
@@ -58,11 +58,11 @@ describe('mention', () => {
         }
       ]
     });
+  });
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
   }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {

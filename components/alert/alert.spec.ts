@@ -12,7 +12,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -24,12 +24,12 @@ import { NzAlertComponent, NzAlertType } from './alert.component';
 import { NzAlertModule } from './alert.module';
 
 describe('alert', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('basic alert', () => {
     let fixture: ComponentFixture<NzDemoTestBasicComponent>;

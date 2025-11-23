@@ -83,7 +83,7 @@ describe('resizable', () => {
       expect(appRef.tick).toHaveBeenCalledTimes(0);
     });
 
-    it('should maximum size work', (done: () => void) => {
+    it('should maximum size work', done => {
       const rect = resizableEle.getBoundingClientRect();
       const handel = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
       mouseMoveTrigger(
@@ -108,7 +108,7 @@ describe('resizable', () => {
       });
     });
 
-    it('should minimum size work', (done: () => void) => {
+    it('should minimum size work', done => {
       const rect = resizableEle.getBoundingClientRect();
       const handel = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
       mouseMoveTrigger(
@@ -143,7 +143,7 @@ describe('resizable', () => {
         expect(testComponent.height).toBe(200);
       });
 
-      it('should touch event work', (done: () => void) => {
+      it('should touch event work', done => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-top') as HTMLElement;
         touchMoveTrigger(
           handle,
@@ -171,7 +171,7 @@ describe('resizable', () => {
        *  |       |
        *  +-------+
        */
-      it('top', (done: () => void) => {
+      it('top', done => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-top') as HTMLElement;
         mouseMoveTrigger(
           handle,
@@ -199,7 +199,7 @@ describe('resizable', () => {
        *  |       |
        *  +---↑---+
        */
-      it('bottom', (done: () => void) => {
+      it('bottom', done => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-bottom') as HTMLElement;
         mouseMoveTrigger(
           handle,
@@ -227,7 +227,7 @@ describe('resizable', () => {
        *  →       |
        *  +-------+
        */
-      it('left', (done: () => void) => {
+      it('left', done => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-left') as HTMLElement;
         mouseMoveTrigger(
           handle,
@@ -255,7 +255,7 @@ describe('resizable', () => {
        *  |       ←
        *  +-------+
        */
-      it('right', (done: () => void) => {
+      it('right', done => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-right') as HTMLElement;
         mouseMoveTrigger(
           handle,
@@ -283,7 +283,7 @@ describe('resizable', () => {
        *  |       |
        *  +------+
        */
-      it('topRight', (done: () => void) => {
+      it('topRight', done => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-topRight') as HTMLElement;
         mouseMoveTrigger(
           handle,
@@ -313,7 +313,7 @@ describe('resizable', () => {
        *  |       |
        *  +-------+
        */
-      it('topLeft', (done: () => void) => {
+      it('topLeft', done => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-topLeft') as HTMLElement;
         mouseMoveTrigger(
           handle,
@@ -343,7 +343,7 @@ describe('resizable', () => {
        *  |       |
        *  +-------↖
        */
-      it('bottomRight', (done: () => void) => {
+      it('bottomRight', done => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
         mouseMoveTrigger(
           handle,
@@ -373,7 +373,7 @@ describe('resizable', () => {
        *  |       |
        *  ↗-------+
        */
-      it('bottomLeft', (done: () => void) => {
+      it('bottomLeft', done => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-bottomLeft') as HTMLElement;
         mouseMoveTrigger(
           handle,
@@ -400,7 +400,7 @@ describe('resizable', () => {
       });
     });
 
-    it('should disabled work', (done: () => void) => {
+    it('should disabled work', done => {
       testComponent.disabled = true;
       fixture.detectChanges();
       expect(resizableEle.classList).toContain(`nz-resizable-disabled`);
@@ -439,7 +439,7 @@ describe('resizable', () => {
       fixture.detectChanges();
     });
 
-    it('should customize handles', (done: () => void) => {
+    it('should customize handles', done => {
       const bottomRightHandel = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
       expect(bottomRightHandel.querySelector('.bottom-right')).toBeTruthy();
       const rightHandel = resizableEle.querySelector('.nz-resizable-handle-right') as HTMLElement;
@@ -458,7 +458,6 @@ describe('resizable', () => {
         }
       );
       zone.simulateZoneExit();
-      fixture.detectChanges();
       fixture.detectChanges();
       afterNextFrameRender(() => {
         fixture.detectChanges();
@@ -482,7 +481,7 @@ describe('resizable', () => {
       fixture.detectChanges();
     });
 
-    it('should lock aspect ratio when resize', (done: () => void) => {
+    it('should lock aspect ratio when resize', done => {
       const rect = resizableEle.getBoundingClientRect();
       const leftHandel = resizableEle.querySelector('.nz-resizable-handle-right') as HTMLElement;
       const topHandel = resizableEle.querySelector('.nz-resizable-handle-top') as HTMLElement;
@@ -571,7 +570,7 @@ describe('resizable', () => {
       fixture.detectChanges();
     });
 
-    it('should grid work', (done: () => void) => {
+    it('should grid work', done => {
       const rect = resizableEle.getBoundingClientRect();
       const handle = resizableEle.querySelector('.nz-resizable-handle-right') as HTMLElement;
       mouseMoveTrigger(
@@ -636,7 +635,7 @@ describe('resizable', () => {
       fixture.detectChanges();
     });
 
-    it('should parent bounds work', (done: () => void) => {
+    it('should parent bounds work', done => {
       const rect = resizableEle.getBoundingClientRect();
       const handle = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
       mouseMoveTrigger(
@@ -660,7 +659,7 @@ describe('resizable', () => {
       });
     });
 
-    it('should element ref bounds work', (done: () => void) => {
+    it('should element ref bounds work', done => {
       const rect = resizableEle.getBoundingClientRect();
       testComponent.bounds = testComponent.boxRef;
       fixture.detectChanges();
@@ -686,7 +685,7 @@ describe('resizable', () => {
       });
     });
 
-    it('should window bounds work', (done: () => void) => {
+    it('should window bounds work', done => {
       const rect = resizableEle.getBoundingClientRect();
       testComponent.bounds = 'window';
       fixture.detectChanges();

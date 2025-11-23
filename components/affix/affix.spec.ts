@@ -14,7 +14,7 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
 
@@ -57,7 +57,7 @@ describe('affix', () => {
   const height = 100;
   const width = 100;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         // todo: use zoneless
@@ -76,7 +76,8 @@ describe('affix', () => {
     componentObject = new NzAffixPageObject();
     debugElement = fixture.debugElement;
     componentObject.wrap().id = 'wrap';
-  }));
+  });
+
   afterEach(fakeAsync(() => {
     setupInitialState();
   }));
