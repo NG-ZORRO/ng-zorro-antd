@@ -17,14 +17,14 @@ import {
   booleanAttribute,
   inject,
   DestroyRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { filter, startWith, tap } from 'rxjs/operators';
 
-import { helpMotion } from 'ng-zorro-antd/core/animation';
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -37,7 +37,6 @@ import { NzFormDirective } from './form.directive';
 @Component({
   selector: 'nz-form-control',
   exportAs: 'nzFormControl',
-  animations: [helpMotion],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -47,7 +46,11 @@ import { NzFormDirective } from './form.directive';
       </div>
     </div>
     @if (innerTip) {
-      <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected">
+      <div
+        [animate.enter]="nzValidateAnimationEnter()"
+        [animate.leave]="nzValidateAnimationLeave()"
+        class="ant-form-item-explain ant-form-item-explain-connected"
+      >
         <div role="alert" [class]="['ant-form-item-explain-' + status]">
           <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
             innerTip
@@ -85,6 +88,9 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
       ? toBoolean(this.nzDisableAutoTips)
       : !!this.nzFormDirective?.nzDisableAutoTips;
   }
+
+  protected readonly nzValidateAnimationEnter = signal<string>('ant-form-validate-animation-enter');
+  protected readonly nzValidateAnimationLeave = signal<string>('ant-form-validate-animation-leave');
 
   status: NzFormControlStatusType = '';
   validateControl: AbstractControl | NgModel | null = null;

@@ -1,0 +1,113 @@
+@import (reference) '../../style/themes/index';
+
+// ================================================================
+// =                    Form Validate Animation                   =
+// ================================================================
+
+@form-prefix-cls: ~'@{ant-prefix}-form';
+
+@animation-duration: 0.3s;
+@animate-distance: -5px;
+
+// .@{form-prefix-cls}-help-motion {
+//     animation: animate-in 1s;
+// }
+
+// @keyframes animate-in {
+//   from {
+//     transform: translateY(-5px);
+//     opacity: 0;
+//   }
+
+//   to {
+//     transform: translateY(0);
+//     opacity: 1;
+//   }
+// }
+
+// @keyframes animate-out {
+//   from {
+//     transform: translateY(0);
+//     opacity: 1;
+//   }
+
+//   to {
+//     transform: translateY(-5px);
+//     opacity: 0;
+//   }
+// }
+
+.animation(@type) {
+  &-@{type} {
+    animation: ~"@{type}" @animation-duration ease-in-out;
+  }
+}
+
+.keyframes(@name; @from-opacity; @to-opacity; @from-transform; @to-transform) {
+  @keyframes @name {
+    from {
+      transform: @from-transform;
+      opacity: @from-opacity;
+    }
+
+    to {
+      transform: @to-transform;
+      opacity: @to-opacity;
+    }
+  }
+}
+
+.@{form-prefix-cls}-validate-animation {
+  .animation(enter);
+  .animation(leave);
+
+  .keyframes(enter; 0; 1; translateY(@animate-distance); translateY(0));
+  .keyframes(leave; 1; 0; translateY(0); translateY(@animate-distance));
+}
+
+
+// @float-btn-prefix-cls: ~'@{ant-prefix}-float-btn';
+// @animation-duration: 0.3s;
+// @slide-distance: 40px;
+
+// .animation(@direction, @type) {
+//   &-@{type}-@{direction} {
+//     animation: ~"@{type}-@{direction}" @animation-duration ease-in-out;
+//   }
+// }
+
+// .keyframes(@name; @from-opacity; @to-opacity; @from-transform; @to-transform) {
+//   @keyframes @name {
+//     from {
+//       transform: @from-transform;
+//       opacity: @from-opacity;
+//     }
+
+//     to {
+//       transform: @to-transform;
+//       opacity: @to-opacity;
+//     }
+//   }
+// }
+
+// .@{float-btn-prefix-cls} {
+//   // animation class
+//   .animation(top, enter);
+//   .animation(top, leave);
+//   .animation(bottom, enter);
+//   .animation(bottom, leave);
+//   .animation(left, enter);
+//   .animation(left, leave);
+//   .animation(right, enter);
+//   .animation(right, leave);
+
+//   // keyframes
+//   .keyframes(enter-top; 0; 1; translateY(@slide-distance); translateY(0));
+//   .keyframes(leave-top; 1; 0; translateY(0); translateY(@slide-distance));
+//   .keyframes(enter-bottom; 0; 1; translateY(-@slide-distance); translateY(0));
+//   .keyframes(leave-bottom; 1; 0; translateY(0); translateY(-@slide-distance));
+//   .keyframes(enter-left; 0; 1; translateX(@slide-distance); translateX(0));
+//   .keyframes(leave-left; 1; 0; translateX(0); translateX(@slide-distance));
+//   .keyframes(enter-right; 0; 1; translateX(-@slide-distance); translateX(0));
+//   .keyframes(leave-right; 1; 0; translateX(0); translateX(-@slide-distance));
+// }
