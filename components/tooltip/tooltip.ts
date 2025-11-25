@@ -52,7 +52,8 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipOverlayClassName') override overlayClassName?: string;
   @Input('nzTooltipOverlayStyle') override overlayStyle?: NgStyleInterface;
   @Input({ alias: 'nzTooltipArrowPointAtCenter', transform: booleanAttribute }) override arrowPointAtCenter?: boolean;
-  @Input({ transform: booleanAttribute }) override cdkConnectedOverlayPush?: boolean = true;
+  /** @deprecated Default is false, and customization is no longer supported. This will be removed in v22.0.0. */
+  @Input({ transform: booleanAttribute }) override cdkConnectedOverlayPush?: boolean = false;
   @Input() nzTooltipColor?: string;
 
   override directiveContent?: NzTSType | null = null;
