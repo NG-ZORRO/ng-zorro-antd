@@ -58,6 +58,10 @@ describe('nz-form-control', () => {
         expect(formItem.nativeElement.classList).toContain(statusMap[status]);
       });
     });
+    it('should get correct form validate animation class', () => {
+      expect(formControl.componentInstance.nzValidateAnimationEnter()).toContain('ant-form-validate-animation-enter');
+      expect(formControl.componentInstance.nzValidateAnimationLeave()).toBe('ant-form-validate-animation-leave');
+    });
   });
   describe('reactive status', () => {
     let fixture: ComponentFixture<NzTestReactiveFormControlComponent>;
@@ -367,12 +371,6 @@ describe('nz-form-control', () => {
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(
         passwordErrorTip
       );
-    });
-
-    it('should get correct form validate animation class', () => {
-      fixture.detectChanges();
-      expect(formControls[0].componentInstance.nzValidateAnimationEnter()).toBe('ant-form-validate-animation-enter');
-      expect(formControls[0].componentInstance.nzValidateAnimationLeave()).toBe('ant-form-validate-animation-leave');
     });
   });
 });
