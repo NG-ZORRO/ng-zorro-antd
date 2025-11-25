@@ -5,10 +5,7 @@ title: Dynamic Theme (Experimental)
 
 Except [less customize theme](/docs/customize-theme/en), We also provide CSS Variable version to enable dynamic theme.
 
-## Caveats
-
-- This function depends on CSS Variables. Please check the [browser compatibility](https://caniuse.com/css-variables).
-- This function requires at least `ng-zorro-antd@13.2.x`.
+> This feature depends on CSS Variables. Please check the [browser compatibility](https://caniuse.com/css-variables).
 
 ## How to use
 

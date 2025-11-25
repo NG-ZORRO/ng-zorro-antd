@@ -177,26 +177,8 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
   }
 
   private restoreFocus(): void {
-    const toFocus = this.elementFocusedBeforeModalWasOpened as HTMLElement;
-
-    // We need the extra check, because IE can set the `activeElement` to null in some cases.
-    if (toFocus && typeof toFocus.focus === 'function') {
-      const activeElement = this.document.activeElement as Element;
-      const element = this.host.nativeElement;
-
-      if (
-        !activeElement ||
-        activeElement === this.document.body ||
-        activeElement === element ||
-        element.contains(activeElement)
-      ) {
-        toFocus.focus();
-      }
-    }
-
-    if (this.focusTrap) {
-      this.focusTrap.destroy();
-    }
+    this.elementFocusedBeforeModalWasOpened?.focus();
+    this.focusTrap?.destroy();
   }
 
   private setEnterAnimationClass(): void {

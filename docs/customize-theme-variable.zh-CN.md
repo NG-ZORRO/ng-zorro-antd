@@ -5,10 +5,7 @@ title: 动态主题（实验性）
 
 除了 [less 定制主题](/docs/customize-theme/zh) 外，我们还提供了 CSS Variable 版本以支持动态切换主题能力。
 
-## 注意事项
-
-- 该功能通过动态修改 CSS Variable 实现，因而在 IE 中页面将无法正常展示。请先确认你的用户环境是否需要支持 IE。
-- 该功能在 `ng-zorro-antd@13.2.x` 版本起支持。
+> 该功能通过动态修改 CSS Variable 实现，在 IE 中页面将无法正常展示
 
 ## 如何使用
 
