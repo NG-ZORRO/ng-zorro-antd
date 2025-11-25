@@ -368,6 +368,12 @@ describe('nz-form-control', () => {
         passwordErrorTip
       );
     });
+
+    it('should get correct form validate animation class', () => {
+      fixture.detectChanges();
+      expect(formControls[0].componentInstance.nzValidateAnimationEnter()).toBe('ant-form-validate-animation-enter');
+      expect(formControls[0].componentInstance.nzValidateAnimationLeave()).toBe('ant-form-validate-animation-leave');
+    });
   });
 });
 
