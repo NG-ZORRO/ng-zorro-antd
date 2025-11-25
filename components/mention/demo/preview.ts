@@ -1,3 +1,4 @@
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -8,14 +9,16 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-mention-preview',
-  imports: [FormsModule, NzInputModule, NzMentionModule, NzTabsModule],
+  imports: [FormsModule, NzInputModule, NzMentionModule, NzTabsModule, CdkTextareaAutosize],
   template: `
     <nz-tabs>
       <nz-tab nzTitle="Write">
         <nz-mention [nzSuggestions]="suggestions">
           <textarea
             nz-input
-            [nzAutosize]="{ minRows: 4, maxRows: 4 }"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="4"
+            cdkAutosizeMaxRows="4"
             [(ngModel)]="inputValue"
             (ngModelChange)="renderPreView()"
             nzMentionTrigger
