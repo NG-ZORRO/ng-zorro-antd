@@ -104,12 +104,12 @@ describe('popover', () => {
     expect(getInnerTextContent()).toContain('changed-content');
   }));
 
-  // todo: it seems that CdkConnectedOverlay does not work in v21
-  xit('should nzPopoverBackdrop work', fakeAsync(() => {
+  it('should nzPopoverBackdrop work', fakeAsync(() => {
     const triggerElement = component.backdropPopover.nativeElement;
     dispatchMouseEvent(triggerElement, 'click');
     waitingForTooltipToggling();
-    expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    const boundingBox = overlayContainerElement.children[0];
+    expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
   }));
 
   it('should prohibit hiding popover when nzPopoverOverlayClickable is false', fakeAsync(() => {

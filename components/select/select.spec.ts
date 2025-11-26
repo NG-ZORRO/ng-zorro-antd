@@ -372,12 +372,12 @@ describe('select', () => {
       expect(component.value).not.toBe('disabledValue');
     }));
 
-    // todo: it seems that CdkConnectedOverlay does not work in v21
-    xit('should nzBackdrop works', fakeAsync(() => {
+    it('should nzBackdrop works', fakeAsync(() => {
       component.nzOpen = true;
       component.nzBackdrop = true;
       flushChanges();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     it('should close dropdown when ESC keydown', fakeAsync(() => {

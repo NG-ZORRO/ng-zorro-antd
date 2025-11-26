@@ -380,13 +380,13 @@ describe('tree-select', () => {
       expect(treeSelectComponent.nzOpen).toBe(true);
     }));
 
-    // todo: it seems that CdkConnectedOverlay does not work in v21
-    xit('should nzBackdrop work', fakeAsync(() => {
+    it('should nzBackdrop work', fakeAsync(() => {
       testComponent.hasBackdrop = true;
       fixture.detectChanges();
       treeSelect.nativeElement.click();
       fixture.detectChanges();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     it('should isComposing/inputValue is correct', fakeAsync(() => {

@@ -269,14 +269,14 @@ describe('popconfirm', () => {
     expect(overlayContainerElement.querySelector('.ant-popover-arrow')).toBeTruthy();
   }));
 
-  // todo: it seems that CdkConnectedOverlay does not work in v21
-  xit('should nzPopconfirmBackdrop work', fakeAsync(() => {
+  it('should nzPopconfirmBackdrop work', fakeAsync(() => {
     component.nzPopconfirmBackdrop = true;
     fixture.detectChanges();
     const triggerElement = component.stringTemplate.nativeElement;
     dispatchMouseEvent(triggerElement, 'click');
     fixture.detectChanges();
-    expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    const boundingBox = overlayContainerElement.children[0];
+    expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
   }));
 
   it('should change overlayClass when the nzPopconfirmOverlayClassName is changed', fakeAsync(() => {

@@ -630,12 +630,12 @@ describe('NzDatePickerComponent', () => {
       expect(event.preventDefault).toHaveBeenCalled();
     });
 
-    // todo: it seems that CdkConnectedOverlay does not work in v21
-    xit('should support nzBackdrop', fakeAsync(() => {
+    it('should support nzBackdrop', fakeAsync(() => {
       fixtureInstance.nzBackdrop = true;
       fixture.detectChanges();
       openPickerByClickTrigger();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     // TODO: why this works well locally but fails on CI?

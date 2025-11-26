@@ -920,13 +920,13 @@ describe('cascader', () => {
       expect(testComponent.cascader.cascaderService.columns.length).toBe(1);
     }));
 
-    // todo: it seems that CdkConnectedOverlay does not work in v21
-    xit('should nzBackdrop works', fakeAsync(() => {
+    it('should nzBackdrop works', fakeAsync(() => {
       testComponent.nzBackdrop = true;
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     it('should navigate up when press UP_ARROW', fakeAsync(() => {
@@ -2714,7 +2714,7 @@ const options5: NzSafeAny[] = [];
       (nzClear)="onClear()"
     ></nz-cascader>
 
-    <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
+    <ng-template #renderTpl let-labels="labels">
       @for (label of labels; track $index) {
         {{ label }}{{ $last ? '' : ' | ' }}
       }

@@ -212,14 +212,14 @@ describe('time-picker', () => {
       expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
     }));
 
-    // todo: it seems that CdkConnectedOverlay does not work in v21
-    xit('should backdrop work', fakeAsync(() => {
+    it('should backdrop work', fakeAsync(() => {
       testComponent.nzBackdrop = true;
       testComponent.open = true;
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     it('should open with click and close with tab', fakeAsync(() => {
