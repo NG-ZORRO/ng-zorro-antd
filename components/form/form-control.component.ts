@@ -17,8 +17,7 @@ import {
   booleanAttribute,
   inject,
   DestroyRef,
-  ChangeDetectorRef,
-  signal
+  ChangeDetectorRef
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
@@ -47,8 +46,8 @@ import { NzFormDirective } from './form.directive';
     </div>
     @if (innerTip) {
       <div
-        [animate.enter]="nzValidateAnimationEnter()"
-        [animate.leave]="nzValidateAnimationLeave()"
+        [animate.enter]="nzValidateAnimationEnter"
+        [animate.leave]="nzValidateAnimationLeave"
         class="ant-form-item-explain ant-form-item-explain-connected"
       >
         <div role="alert" [class]="['ant-form-item-explain-' + status]">
@@ -89,8 +88,8 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
       : !!this.nzFormDirective?.nzDisableAutoTips;
   }
 
-  protected readonly nzValidateAnimationEnter = signal<string>('ant-form-validate-animation-enter');
-  protected readonly nzValidateAnimationLeave = signal<string>('ant-form-validate-animation-leave');
+  protected readonly nzValidateAnimationEnter: string = 'ant-form-validate_animation-enter';
+  protected readonly nzValidateAnimationLeave: string = 'ant-form-validate_animation-leave';
 
   status: NzFormControlStatusType = '';
   validateControl: AbstractControl | NgModel | null = null;

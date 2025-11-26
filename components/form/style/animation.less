@@ -6,12 +6,12 @@
 
 @form-prefix-cls: ~'@{ant-prefix}-form';
 
-@animation-duration: 0.3s;
+@animation-duration: @animation-duration-slow;
 @animate-distance: -5px;
 
 .animation(@type) {
   &-@{type} {
-    animation: ~"@{type}" @animation-duration ease-in-out;
+    animation: ~"@{type}" @animation-duration @ease-in-out;
   }
 }
 
@@ -29,7 +29,7 @@
   }
 }
 
-.@{form-prefix-cls}-validate-animation {
+.@{form-prefix-cls}-validate_animation {
   .animation(enter);
   .animation(leave);
 

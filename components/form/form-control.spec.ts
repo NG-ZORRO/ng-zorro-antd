@@ -59,8 +59,8 @@ describe('nz-form-control', () => {
       });
     });
     it('should get correct form validate animation class', () => {
-      expect(formControl.componentInstance.nzValidateAnimationEnter()).toContain('ant-form-validate-animation-enter');
-      expect(formControl.componentInstance.nzValidateAnimationLeave()).toBe('ant-form-validate-animation-leave');
+      expect(formControl.componentInstance.nzValidateAnimationEnter).toContain('ant-form-validate_animation-enter');
+      expect(formControl.componentInstance.nzValidateAnimationLeave).toBe('ant-form-validate_animation-leave');
     });
   });
   describe('reactive status', () => {
