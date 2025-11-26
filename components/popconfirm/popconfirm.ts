@@ -266,7 +266,7 @@ export class NzPopconfirmComponent extends NzTooltipComponent {
 
   protected override _trigger: NzTooltipTrigger = 'click';
   private elementFocusedBeforeModalWasOpened: HTMLElement | null = null;
-  private document: Document = inject(DOCUMENT);
+  private document = inject(DOCUMENT);
 
   override _prefix = 'ant-popover';
 
@@ -279,9 +279,6 @@ export class NzPopconfirmComponent extends NzTooltipComponent {
     });
   }
 
-  /**
-   * @override
-   */
   override show(): void {
     if (!this.nzCondition) {
       this.capturePreviouslyFocusedElement();
@@ -333,21 +330,6 @@ export class NzPopconfirmComponent extends NzTooltipComponent {
   }
 
   private restoreFocus(): void {
-    const toFocus = this.elementFocusedBeforeModalWasOpened as HTMLElement;
-
-    // We need the extra check, because IE can set the `activeElement` to null in some cases.
-    if (toFocus && typeof toFocus.focus === 'function') {
-      const activeElement = this.document.activeElement as Element;
-      const element: HTMLElement = this.elementRef.nativeElement;
-
-      if (
-        !activeElement ||
-        activeElement === this.document.body ||
-        activeElement === element ||
-        element.contains(activeElement)
-      ) {
-        toFocus.focus();
-      }
-    }
+    this.elementFocusedBeforeModalWasOpened?.focus();
   }
 }

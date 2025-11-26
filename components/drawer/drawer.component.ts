@@ -494,10 +494,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   savePreviouslyFocusedElement(): void {
     if (this.document && !this.previouslyFocusedElement) {
       this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
-      // We need the extra check, because IE's svg element has no blur method.
-      if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.blur === 'function') {
-        this.previouslyFocusedElement.blur();
-      }
+      this.previouslyFocusedElement?.blur();
     }
   }
 
@@ -509,8 +506,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   }
 
   private restoreFocus(): void {
-    // We need the extra check, because IE can set the `activeElement` to null in some cases.
-    if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.focus === 'function') {
+    if (this.previouslyFocusedElement) {
       this.previouslyFocusedElement.focus();
       this.previouslyFocusedElement = undefined;
     }
