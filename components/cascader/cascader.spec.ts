@@ -25,7 +25,7 @@ import {
   ZERO
 } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, inject, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, inject, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -75,8 +75,9 @@ describe('cascader', () => {
   }
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
     });
   });
 
@@ -924,7 +925,8 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     it('should navigate up when press UP_ARROW', fakeAsync(() => {
@@ -2712,7 +2714,7 @@ const options5: NzSafeAny[] = [];
       (nzClear)="onClear()"
     ></nz-cascader>
 
-    <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
+    <ng-template #renderTpl let-labels="labels">
       @for (label of labels; track $index) {
         {{ label }}{{ $last ? '' : ' | ' }}
       }

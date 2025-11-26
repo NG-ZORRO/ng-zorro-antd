@@ -4,7 +4,14 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  OnInit,
+  provideZoneChangeDetection,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -13,6 +20,13 @@ import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 import { NzTableComponent, NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
 
 describe('nz-table', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
   describe('basic nz-table', () => {
     let fixture: ComponentFixture<NzTestTableBasicComponent>;
     let testComponent: NzTestTableBasicComponent;

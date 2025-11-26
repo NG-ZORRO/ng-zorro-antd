@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -14,6 +14,13 @@ import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression/cron-expre
 import { NzCronExpressionSize } from 'ng-zorro-antd/cron-expression/typings';
 
 describe('cron-expression', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
   describe('basic', () => {
     let fixture: ComponentFixture<NzTestCronExpressionComponent>;
     let testComponent: NzTestCronExpressionComponent;

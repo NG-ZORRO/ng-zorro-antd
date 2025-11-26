@@ -4,7 +4,15 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ApplicationRef, Component, DebugElement, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  OnInit,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -39,7 +47,10 @@ describe('transfer', () => {
   let pageObject: TransferPageObject<AbstractTestTransferComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideNzIconsTesting(), provideNoopAnimations()] });
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection(), provideNzIconsTesting(), provideNoopAnimations()]
+    });
     fixture = TestBed.createComponent(TestTransferComponent);
     debugElement = fixture.debugElement;
     instance = debugElement.componentInstance;

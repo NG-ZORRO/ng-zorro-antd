@@ -4,36 +4,48 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { AfterViewInit, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzFormModule } from 'ng-zorro-antd/form/form.module';
 
 import { NzFormDirective, NzFormLayoutType } from './form.directive';
 import { NzRequiredMark } from './types';
 
-const testBedOptions = {
-  imports: [NoopAnimationsModule]
-};
+describe('form', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection(), provideNoopAnimations()]
+    });
+  });
 
-describe('nz-form', () => {
   describe('default', () => {
     let fixture: ComponentFixture<NzTestFormDirectiveComponent>;
     let testComponent: NzTestFormDirectiveComponent;
     let form: DebugElement;
+
     beforeEach(() => {
-      TestBed.configureTestingModule(testBedOptions);
       fixture = TestBed.createComponent(NzTestFormDirectiveComponent);
       testComponent = fixture.componentInstance;
       form = fixture.debugElement.query(By.directive(NzFormDirective));
     });
+
     it('should className correct', () => {
       fixture.detectChanges();
       expect(form.nativeElement.classList).toContain('ant-form');
       expect(form.nativeElement.classList).toContain('ant-form-horizontal');
     });
+
     it('should layout work', () => {
       testComponent.layout = 'vertical';
 
@@ -56,8 +68,8 @@ describe('nz-form', () => {
     let fixture: ComponentFixture<NzTestFormLabelIntegrateComponent>;
     let testComponent: NzTestFormLabelIntegrateComponent;
     let form: DebugElement;
+
     beforeEach(() => {
-      TestBed.configureTestingModule(testBedOptions);
       fixture = TestBed.createComponent(NzTestFormLabelIntegrateComponent);
       testComponent = fixture.componentInstance;
       form = fixture.debugElement.query(By.directive(NzFormDirective));
@@ -127,7 +139,6 @@ describe('nz-form', () => {
     let form: DebugElement;
 
     beforeEach(() => {
-      TestBed.configureTestingModule(testBedOptions);
       fixture = TestBed.createComponent(NzTestFormRequiredMarkComponent);
       testComponent = fixture.componentInstance;
       form = fixture.debugElement.query(By.directive(NzFormDirective));

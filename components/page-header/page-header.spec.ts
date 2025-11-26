@@ -5,10 +5,10 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
-import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -19,16 +19,17 @@ import { NzDemoPageHeaderGhostComponent } from './demo/ghost';
 import { NzDemoPageHeaderResponsiveComponent } from './demo/responsive';
 import { NzPageHeaderComponent } from './page-header.component';
 
-describe('NzPageHeaderComponent', () => {
+describe('page-header', () => {
   let location: Location;
-  beforeEach(waitForAsync(() => {
+
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      providers: [provideNzIconsTesting()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
     location = TestBed.inject(Location);
     spyOn(location, 'getState').and.returnValue({ navigationId: 2 });
-  }));
+  });
 
   it('should basic work', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);

@@ -165,8 +165,8 @@
 /docs/introduce/zh
 /docs/join/en
 /docs/join/zh
-/docs/migration-v20/en
-/docs/migration-v20/zh
+/docs/migration-v21/en
+/docs/migration-v21/zh
 /docs/recommendation/en
 /docs/recommendation/zh
 /docs/schematics/en

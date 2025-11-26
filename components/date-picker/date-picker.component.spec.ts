@@ -5,7 +5,15 @@
 
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ApplicationRef, Component, DebugElement, inject, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  inject,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -41,8 +49,9 @@ describe('NzDatePickerComponent', () => {
   let i18nService: NzI18nService;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
   });
 
@@ -625,7 +634,8 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzBackdrop = true;
       fixture.detectChanges();
       openPickerByClickTrigger();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     // TODO: why this works well locally but fails on CI?
@@ -1388,11 +1398,12 @@ describe('date-fns testing', () => {
   let fixture: ComponentFixture<NzTestDatePickerComponent>;
   let fixtureInstance: NzTestDatePickerComponent;
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
     });
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NzTestDatePickerComponent);
@@ -1423,14 +1434,15 @@ describe('date-fns testing', () => {
   }));
 });
 
-describe('status', () => {
+describe('date-picker status', () => {
   let fixture: ComponentFixture<NzTestDatePickerStatusComponent>;
   let fixtureInstance: NzTestDatePickerStatusComponent;
   let datePickerElement!: HTMLElement;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
   });
 

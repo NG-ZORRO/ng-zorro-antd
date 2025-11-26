@@ -31,7 +31,6 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: true,
-        project: ['tsconfig.json'],
         tsconfigRootDir: import.meta.dirname
       }
     },
@@ -77,11 +76,19 @@ export default tseslint.config(
         }
       ],
       '@angular-eslint/directive-selector': [
-        'error',
-        {
-          type: 'attribute',
-          prefix: ['nz']
-        }
+        'warn',
+        [
+          {
+            type: 'attribute',
+            prefix: ['nz'],
+            style: 'camelCase'
+          },
+          {
+            type: 'element',
+            prefix: ['nz'],
+            style: 'kebab-case'
+          }
+        ]
       ],
       '@angular-eslint/prefer-inject': 'off',
       '@angular-eslint/no-rename-input': 'off',

@@ -4,8 +4,8 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzDemoTimelineLabelComponent } from './demo/label';
@@ -14,6 +14,13 @@ import { NzTimelineModule } from './timeline.module';
 import { NzTimelineMode } from './typings';
 
 describe('nz-timeline', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
   describe('basic', () => {
     let fixture: ComponentFixture<NzTestTimelineBasicComponent>;
     let testComponent: NzTestTimelineBasicComponent;
@@ -199,13 +206,13 @@ describe('nz-timeline', () => {
     let timeline: DebugElement;
     let items: HTMLDivElement[] = [];
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimelineRtlComponent);
       fixture.detectChanges();
 
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
       items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
-    }));
+    });
 
     it('should init className correct', () => {
       expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-rtl');

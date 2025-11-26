@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, viewChild } from '@angular/core';
+import { Component, ElementRef, provideZoneChangeDetection, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -14,6 +14,13 @@ import { NzInputModule } from './input.module';
 describe('input-wrapper', () => {
   let component: InputWithAffixesAndAddonsTestComponent;
   let fixture: ComponentFixture<InputWithAffixesAndAddonsTestComponent>;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InputWithAffixesAndAddonsTestComponent);
@@ -137,6 +144,13 @@ describe('input-wrapper allow clear', () => {
   let component: InputAllowClearTestComponent;
   let fixture: ComponentFixture<InputAllowClearTestComponent>;
   let clearIconElement: HTMLElement;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InputAllowClearTestComponent);

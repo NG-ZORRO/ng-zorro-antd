@@ -4,7 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { Component, DebugElement, DOCUMENT, ElementRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, DOCUMENT, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -22,7 +22,12 @@ describe('anchor', () => {
   let context: TestComponent;
   let page: PageObject;
   let srv: NzScrollService;
+
   beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
     fixture = TestBed.createComponent(TestComponent);
     dl = fixture.debugElement;
     context = fixture.componentInstance;
@@ -32,6 +37,7 @@ describe('anchor', () => {
     spyOn(context, '_change');
     srv = TestBed.inject(NzScrollService);
   });
+
   afterEach(() => fixture.destroy());
 
   describe('[default]', () => {

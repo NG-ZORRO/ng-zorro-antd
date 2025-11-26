@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, TemplateRef } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, TemplateRef } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -29,15 +29,19 @@ describe('check-list', () => {
     fixture.detectChanges();
   }
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(NzTestCheckListBasicComponent);
     fixture.detectChanges();
     testComponent = fixture.debugElement.componentInstance;
     resultEl = fixture.debugElement.query(By.directive(NzCheckListComponent));
-  }));
+  });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;

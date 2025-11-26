@@ -4,8 +4,8 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -44,6 +44,8 @@ describe('nz-float-button-top', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         provideNoopAnimations(),
         {
           provide: NzScrollService,
@@ -160,29 +162,26 @@ describe('nz-float-button-top', () => {
     }));
   });
 
-  describe('(nzOnClick)', () => {
-    beforeEach(fakeAsync(() => {
-      componentObject.scrollTo(window, defaultVisibilityHeight + 1);
-      tick();
-      fixture.detectChanges();
-    }));
+  it(`should emit event on nzClick`, fakeAsync(() => {
+    componentObject.scrollTo(window, defaultVisibilityHeight + 1);
+    tick();
+    fixture.detectChanges();
 
-    it(`emit event on nzClick`, fakeAsync(() => {
-      component.nzOnClick.subscribe((returnValue: boolean) => {
-        expect(returnValue).toBe(true);
-      });
+    component.nzOnClick.subscribe((returnValue: boolean) => {
+      expect(returnValue).toBe(true);
+    });
 
-      componentObject.clickBackTop();
-    }));
-  });
+    componentObject.clickBackTop();
+  }));
 
   describe('[nzTarget]', () => {
     let fakeTarget: HTMLElement;
-    beforeEach(fakeAsync(() => {
+
+    beforeEach(() => {
       fakeTarget = debugElement.query(By.css('#fakeTarget')).nativeElement;
       fixture.componentInstance.setTarget(fakeTarget);
       fixture.detectChanges();
-    }));
+    });
 
     it('window scroll does not show the button', fakeAsync(() => {
       componentObject.scrollTo(window, defaultVisibilityHeight + 1);
@@ -216,29 +215,27 @@ describe('nz-float-button-top', () => {
     });
   });
 
-  describe('#nzTemplate', () => {
-    it(`should show custom template`, fakeAsync(() => {
-      const fixtureTemplate = TestBed.createComponent(TestFloatTopTemplateComponent);
+  it(`should custom template work`, fakeAsync(() => {
+    const fixtureTemplate = TestBed.createComponent(TestFloatTopTemplateComponent);
 
-      componentObject.scrollTo(window, defaultVisibilityHeight + 1);
-      tick();
-      fixtureTemplate.detectChanges();
-      expect(fixtureTemplate.debugElement.query(By.css('.this-is-my-template')) === null).toBe(false);
-    }));
-  });
+    componentObject.scrollTo(window, defaultVisibilityHeight + 1);
+    tick();
+    fixtureTemplate.detectChanges();
+    expect(fixtureTemplate.debugElement.query(By.css('.this-is-my-template')) === null).toBe(false);
+  }));
 });
 
 describe('nz-float-button-top RTL', () => {
   let fixture: ComponentFixture<TestFloatButtonTopRtlComponent>;
   let resultEl: DebugElement;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations(), provideNzIconsTesting()]
     });
     fixture = TestBed.createComponent(TestFloatButtonTopRtlComponent);
     resultEl = fixture.debugElement.query(By.directive(NzFloatButtonTopComponent));
-  }));
+  });
 
   it('rtl', () => {
     fixture.detectChanges();

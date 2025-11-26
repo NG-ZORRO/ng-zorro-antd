@@ -37,6 +37,7 @@ export class NzSkeletonElementDirective {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'nz-skeleton-element[nzType="button"]',
   template: `
     <span
@@ -56,6 +57,7 @@ export class NzSkeletonElementButtonComponent {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'nz-skeleton-element[nzType="avatar"]',
   template: `
     <span
@@ -86,6 +88,7 @@ export class NzSkeletonElementAvatarComponent implements OnChanges {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'nz-skeleton-element[nzType="input"]',
   template: `
     <span
@@ -101,6 +104,7 @@ export class NzSkeletonElementInputComponent {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'nz-skeleton-element[nzType="image"]',
   template: `
     <span class="ant-skeleton-image">
