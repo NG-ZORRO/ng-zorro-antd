@@ -160,6 +160,7 @@ export default tseslint.config(
         }
       ],
       'prefer-arrow/prefer-arrow-functions': 'off',
+      'import/no-cycle': 'error',
       'import/no-duplicates': 'error',
       'import/no-unused-modules': 'error',
       'import/no-unassigned-import': 'error',
