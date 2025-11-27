@@ -5,19 +5,20 @@
 
 import {
   AfterContentInit,
+  ANIMATION_MODULE_TYPE,
+  booleanAttribute,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
+  inject,
   Input,
   OnChanges,
   OnInit,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation,
-  booleanAttribute,
-  inject,
-  DestroyRef,
-  ChangeDetectorRef
+  ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
@@ -47,7 +48,11 @@ import { NzFormDirective } from './form.directive';
       </div>
     </div>
     @if (innerTip) {
-      <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected">
+      <div
+        @helpMotion
+        [@.disabled]="animationType === 'NoopAnimations'"
+        class="ant-form-item-explain ant-form-item-explain-connected"
+      >
         <div role="alert" [class]="['ant-form-item-explain-' + status]">
           <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
             innerTip
@@ -73,6 +78,7 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
   public i18n = inject(NzI18nService);
   private nzFormStatusService = inject(NzFormStatusService);
   private destroyRef = inject(DestroyRef);
+  protected readonly animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
 
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;

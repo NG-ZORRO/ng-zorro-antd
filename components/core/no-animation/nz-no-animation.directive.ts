@@ -3,8 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Input, booleanAttribute, inject } from '@angular/core';
-import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { ANIMATION_MODULE_TYPE, booleanAttribute, Directive, inject, Input } from '@angular/core';
 
 @Directive({
   selector: '[nzNoAnimation]',
