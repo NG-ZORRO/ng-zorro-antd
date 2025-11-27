@@ -16,9 +16,8 @@ import {
   booleanAttribute
 } from '@angular/core';
 
-import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';

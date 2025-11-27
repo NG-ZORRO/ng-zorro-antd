@@ -16,9 +16,8 @@ import {
   inject
 } from '@angular/core';
 
-import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
+import { zoomBadgeMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 

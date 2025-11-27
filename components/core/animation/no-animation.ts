@@ -4,6 +4,7 @@
  */
 
 import {
+  ANIMATION_MODULE_TYPE,
   assertInInjectionContext,
   booleanAttribute,
   computed,
@@ -15,7 +16,6 @@ import {
   signal,
   Signal
 } from '@angular/core';
-import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 export const NZ_NO_ANIMATION_CLASS = 'nz-animate-disabled';
 
@@ -23,7 +23,7 @@ export const NZ_NO_ANIMATION_CLASS = 'nz-animate-disabled';
   selector: '[nzNoAnimation]',
   exportAs: 'nzNoAnimation',
   host: {
-    '[class.nz-animate-disabled]': `nzNoAnimation() || animationType === 'NoopAnimations'`
+    [`[class.${NZ_NO_ANIMATION_CLASS}]`]: `nzNoAnimation() || animationType === 'NoopAnimations'`
   }
 })
 export class NzNoAnimationDirective {
@@ -52,9 +52,14 @@ export function provideNzNoAnimation(): Provider[] {
   ];
 }
 
-export function wrapAnimationClass(classNameGetter: () => string): Signal<string> {
+/**
+ * If the current animation mode is `NoopAnimations`, returns the no-animation class as a signal.
+ * Otherwise, returns the result of the provided class name getter as a computed signal.
+ * @param classNameGetter A function that returns the class name string.
+ */
+export function withAnimationCheck(classNameGetter: () => string): Signal<string> {
   if (typeof ngDevMode !== 'undefined' && ngDevMode) {
-    assertInInjectionContext(wrapAnimationClass);
+    assertInInjectionContext(withAnimationCheck);
   }
 
   const animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });

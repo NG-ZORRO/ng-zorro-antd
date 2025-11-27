@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { auditTime, map } from 'rxjs/operators';
 
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzHighlightPipe } from 'ng-zorro-antd/core/highlight';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTreeFlatDataSource, NzTreeFlattener, NzTreeViewModule } from 'ng-zorro-antd/tree-view';

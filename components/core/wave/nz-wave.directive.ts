@@ -5,6 +5,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import {
+  ANIMATION_MODULE_TYPE,
   CSP_NONCE,
   Directive,
   ElementRef,
@@ -17,7 +18,6 @@ import {
   inject,
   makeEnvironmentProviders
 } from '@angular/core';
-import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { NzWaveRenderer } from './nz-wave-renderer';
 
