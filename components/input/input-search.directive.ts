@@ -3,13 +3,24 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { booleanAttribute, computed, contentChild, Directive, ElementRef, input, output } from '@angular/core';
+import {
+  booleanAttribute,
+  computed,
+  contentChild,
+  Directive,
+  ElementRef,
+  forwardRef,
+  input,
+  output
+} from '@angular/core';
 
 import { NzInputDirective } from './input.directive';
+import { NZ_INPUT_SEARCH } from './tokens';
 
 @Directive({
   selector: 'nz-input-search',
   exportAs: 'nzInputSearch',
+  providers: [{ provide: NZ_INPUT_SEARCH, useExisting: forwardRef(() => NzInputSearchDirective) }],
   host: {
     class: 'ant-input-search',
     '[class.ant-input-search-large]': `size() === 'large'`,

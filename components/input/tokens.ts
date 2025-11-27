@@ -5,8 +5,13 @@
 
 import { InjectionToken } from '@angular/core';
 
+import { NzInputSearchDirective } from './input-search.directive';
 import type { NzInputWrapperComponent } from './input-wrapper.component';
 
 export const NZ_INPUT_WRAPPER = new InjectionToken<NzInputWrapperComponent>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-input-wrapper' : ''
+);
+
+export const NZ_INPUT_SEARCH = new InjectionToken<NzInputSearchDirective>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-input-search' : ''
 );
