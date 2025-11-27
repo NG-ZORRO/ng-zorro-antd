@@ -7,7 +7,6 @@ import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzFourDirectionType, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -20,7 +19,7 @@ describe('nz-float-button-group', () => {
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
   });
 
