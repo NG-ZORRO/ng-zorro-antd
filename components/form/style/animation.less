@@ -1,0 +1,38 @@
+@import (reference) '../../style/themes/index';
+
+// ================================================================
+// =                    Form Validate Animation                   =
+// ================================================================
+
+@form-prefix-cls: ~'@{ant-prefix}-form';
+
+@animation-duration: @animation-duration-slow;
+@animate-distance: -5px;
+
+.animation(@type) {
+  &-@{type} {
+    animation: ~"@{type}" @animation-duration @ease-in-out;
+  }
+}
+
+.keyframes(@name; @from-opacity; @to-opacity; @from-transform; @to-transform) {
+  @keyframes @name {
+    from {
+      transform: @from-transform;
+      opacity: @from-opacity;
+    }
+
+    to {
+      transform: @to-transform;
+      opacity: @to-opacity;
+    }
+  }
+}
+
+.@{form-prefix-cls}-validate_animation {
+  .animation(enter);
+  .animation(leave);
+
+  .keyframes(enter; 0; 1; translateY(@animate-distance); translateY(0));
+  .keyframes(leave; 1; 0; translateY(0); translateY(@animate-distance));
+}

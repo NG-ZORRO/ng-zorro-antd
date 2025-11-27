@@ -24,7 +24,6 @@ import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgMo
 import { Observable, Subscription } from 'rxjs';
 import { filter, startWith, tap } from 'rxjs/operators';
 
-import { helpMotion } from 'ng-zorro-antd/core/animation';
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -37,7 +36,6 @@ import { NzFormDirective } from './form.directive';
 @Component({
   selector: 'nz-form-control',
   exportAs: 'nzFormControl',
-  animations: [helpMotion],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -47,7 +45,11 @@ import { NzFormDirective } from './form.directive';
       </div>
     </div>
     @if (innerTip) {
-      <div @helpMotion class="ant-form-item-explain ant-form-item-explain-connected">
+      <div
+        [animate.enter]="nzValidateAnimationEnter"
+        [animate.leave]="nzValidateAnimationLeave"
+        class="ant-form-item-explain ant-form-item-explain-connected"
+      >
         <div role="alert" [class]="['ant-form-item-explain-' + status]">
           <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{
             innerTip
@@ -85,6 +87,9 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
       ? toBoolean(this.nzDisableAutoTips)
       : !!this.nzFormDirective?.nzDisableAutoTips;
   }
+
+  protected readonly nzValidateAnimationEnter: string = 'ant-form-validate_animation-enter';
+  protected readonly nzValidateAnimationLeave: string = 'ant-form-validate_animation-leave';
 
   status: NzFormControlStatusType = '';
   validateControl: AbstractControl | NgModel | null = null;
