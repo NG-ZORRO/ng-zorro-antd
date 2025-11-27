@@ -31,8 +31,7 @@ import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
 import { NzInputPasswordDirective } from './input-password.directive';
-import { NzInputSearchDirective } from './input-search.directive';
-import { NZ_INPUT_WRAPPER } from './tokens';
+import { NZ_INPUT_SEARCH, NZ_INPUT_WRAPPER } from './tokens';
 
 const PREFIX_CLS = 'ant-input';
 
@@ -66,9 +65,9 @@ export class NzInputDirective implements OnInit {
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
   private inputWrapper = inject(NZ_INPUT_WRAPPER, { host: true, optional: true });
   private focusMonitor = inject(FocusMonitor);
-  protected hostView = inject(ViewContainerRef);
-  protected readonly inputPasswordDir = inject(NzInputPasswordDirective, { host: true, optional: true });
-  protected readonly inputSearchDir = inject(NzInputSearchDirective, { host: true, optional: true });
+  private hostView = inject(ViewContainerRef);
+  private readonly inputPasswordDir = inject(NzInputPasswordDirective, { host: true, optional: true });
+  private readonly inputSearchDir = inject(NZ_INPUT_SEARCH, { host: true, optional: true });
 
   readonly ngControl = inject(NgControl, { self: true, optional: true });
   readonly value = signal<string>(this.elementRef.nativeElement.value);
