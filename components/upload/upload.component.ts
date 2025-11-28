@@ -16,6 +16,7 @@ import {
   DOCUMENT,
   EventEmitter,
   inject,
+  input,
   Input,
   numberAttribute,
   OnChanges,
@@ -124,6 +125,8 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzIconRender: NzIconRenderTemplate | null = null;
   @Input() nzFileListRender: TemplateRef<{ $implicit: NzUploadFile[] }> | null = null;
 
+  readonly nzMaxCount = input<number>();
+
   @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();
 
@@ -211,12 +214,17 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private onStart = (file: NzUploadFile): void => {
+    const maxCount = this.nzMaxCount();
     if (!this.nzFileList) {
       this.nzFileList = [];
     }
     const targetItem = this.fileToObject(file);
     targetItem.status = 'uploading';
-    this.nzFileList = this.nzFileList.concat(targetItem);
+    if (maxCount === 1) {
+      this.nzFileList = [targetItem];
+    } else if (!maxCount || maxCount <= 0 || this.nzFileList.length < maxCount) {
+      this.nzFileList = [...this.nzFileList, targetItem];
+    }
     this.nzFileListChange.emit(this.nzFileList);
     this.nzChange.emit({ file: targetItem, fileList: this.nzFileList, type: 'start' });
     this.detectChangesList();
@@ -225,10 +233,15 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   private onProgress = (e: { percent: number }, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
+
+    if (!targetItem) {
+      return;
+    }
+
     targetItem.percent = e.percent;
     this.nzChange.emit({
       event: e,
-      file: { ...targetItem },
+      file: targetItem,
       fileList: this.nzFileList,
       type: 'progress'
     });
@@ -238,10 +251,13 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   private onSuccess = (res: {}, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
+    if (!targetItem) {
+      return;
+    }
     targetItem.status = 'done';
     targetItem.response = res;
     this.nzChange.emit({
-      file: { ...targetItem },
+      file: targetItem,
       fileList,
       type: 'success'
     });
@@ -251,6 +267,11 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   private onError = (err: {}, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
+
+    if (!targetItem) {
+      return;
+    }
+
     targetItem.error = err;
     targetItem.status = 'error';
     this.nzChange.emit({
