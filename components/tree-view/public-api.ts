@@ -6,7 +6,6 @@
 export * from './tree-view.module';
 export * from './checkbox';
 export * from './utils';
-export * from './data-source';
 export * from './indent';
 export * from './node';
 export * from './option';
@@ -16,3 +15,6 @@ export * from './toggle';
 export * from './tree-view';
 export * from './tree';
 export * from './tree-virtual-scroll-view';
+export * from './flattener';
+export * from './flat-data-source';
+export * from './nested-data-source';

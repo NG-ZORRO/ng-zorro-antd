@@ -18,7 +18,13 @@ import { auditTime } from 'rxjs/operators';
 
 import { NzNodeBase } from './node-base';
 import { NzTreeView } from './tree';
-import { getNextSibling, getParent } from './utils';
+import {
+  flattenNestedNodes,
+  getNextSibling,
+  getNextSiblingForNestedData,
+  getParent,
+  getParentForNestedData
+} from './utils';
 
 /**
  * [true, false, false, true] => 1001
@@ -53,48 +59,62 @@ export class NzTreeNodeIndentsComponent {
   }
 })
 export class NzTreeNodeIndentLineDirective<T> {
-  private treeNode = inject(NzNodeBase<T>);
-  private tree = inject(NzTreeView<T>);
-  private cdr = inject(ChangeDetectorRef);
-  private destroyRef = inject(DestroyRef);
+  private readonly treeNode = inject(NzNodeBase<T>);
+  private readonly tree = inject(NzTreeView<T>);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
 
-  isLast: boolean | 'unset' = 'unset';
-  isLeaf = false;
   private preNodeRef: T | null = null;
   private nextNodeRef: T | null = null;
   private currentIndents: string = '';
+
+  isLast: boolean | 'unset' = 'unset';
+
+  get isLeaf(): boolean {
+    return this.treeNode.isLeaf;
+  }
+
+  get dataNodes(): T[] {
+    return this.tree.dataNodes;
+  }
+
+  get currentDataNode(): T {
+    return this.treeNode.data;
+  }
 
   constructor() {
     this.buildIndents();
     this.checkLast();
 
     /**
-     * The dependent data (TreeControl.dataNodes) can be set after node instantiation,
-     * and setting the indents can cause frame rate loss if it is set too often.
+     * setting the indents can cause frame rate loss if it is set too often.
      */
-    merge(this.treeNode._dataChanges, this.tree._dataSourceChanged)
-      .pipe(auditTime(0, BUILD_INDENTS_SCHEDULER), takeUntilDestroyed())
+    merge(this.treeNode._dataChanges, this.tree.dataSourceChanged$)
+      .pipe(auditTime(0, BUILD_INDENTS_SCHEDULER), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.buildIndents();
         this.checkAdjacent();
         this.cdr.markForCheck();
       });
-
-    this.destroyRef.onDestroy(() => {
-      this.preNodeRef = null;
-      this.nextNodeRef = null;
-    });
   }
 
+  /**
+   * The true and false in indents indicate whether there should be a vertical line to the left of the current node.
+   * if there is no nextSibling, there is no vertical line.
+   */
   private getIndents(): boolean[] {
-    const indents: boolean[] = [];
-    if (!this.tree.treeControl) {
-      return indents;
+    if (this.tree.levelAccessor) {
+      return this.getIndentsForFlatData(this.dataNodes, this.currentDataNode, this.tree.levelAccessor);
+    } else if (this.tree.childrenAccessor) {
+      return this.getIndentsForNestedData(this.dataNodes, this.currentDataNode, this.tree.childrenAccessor);
+    } else {
+      return [];
     }
+  }
 
-    const nodes = this.tree.treeControl.dataNodes;
-    const getLevel = this.tree.treeControl.getLevel;
-    let parent = getParent(nodes, this.treeNode.data, getLevel);
+  private getIndentsForFlatData(nodes: T[], node: T, getLevel: (dataNode: T) => number): boolean[] {
+    const indents: boolean[] = [];
+    let parent = getParent(nodes, node, getLevel);
     while (parent) {
       const parentNextSibling = getNextSibling(nodes, parent, getLevel);
       if (parentNextSibling) {
@@ -107,8 +127,23 @@ export class NzTreeNodeIndentLineDirective<T> {
     return indents;
   }
 
+  private getIndentsForNestedData(nodes: T[], node: T, getChildren: (dataNode: T) => T[]): boolean[] {
+    const indents: boolean[] = [];
+    let parent = getParentForNestedData(nodes, node, getChildren);
+    while (parent) {
+      const parentNextSibling = getNextSiblingForNestedData(nodes, parent, getChildren);
+      if (parentNextSibling) {
+        indents.unshift(true);
+      } else {
+        indents.unshift(false);
+      }
+      parent = getParentForNestedData(nodes, parent, getChildren);
+    }
+    return indents;
+  }
+
   private buildIndents(): void {
-    if (this.treeNode.data) {
+    if (this.currentDataNode) {
       const indents = this.getIndents();
       const diffString = booleanArrayToString(indents);
       if (diffString !== this.currentIndents) {
@@ -119,12 +154,21 @@ export class NzTreeNodeIndentLineDirective<T> {
   }
 
   /**
-   * We need to add an class name for the last child node,
+   * We need to add a class name for the last child node,
    * this result can also be affected when the adjacent nodes are changed.
    */
   private checkAdjacent(): void {
-    const nodes = this.tree.treeControl?.dataNodes || [];
-    const index = nodes.indexOf(this.treeNode.data);
+    let nodes = [] as T[];
+    if (this.tree.levelAccessor) {
+      nodes = this.dataNodes;
+    } else if (this.tree.childrenAccessor) {
+      nodes = flattenNestedNodes(this.dataNodes, this.tree.childrenAccessor);
+    }
+    this.checkAdjacentNodeChanged(nodes);
+  }
+
+  private checkAdjacentNodeChanged(nodes: T[]): void {
+    const index = nodes.indexOf(this.currentDataNode);
     const preNode = nodes[index - 1] || null;
     const nextNode = nodes[index + 1] || null;
     if (this.nextNodeRef !== nextNode || this.preNodeRef !== preNode) {
@@ -135,9 +179,12 @@ export class NzTreeNodeIndentLineDirective<T> {
   }
 
   private checkLast(index?: number): void {
-    const nodes = this.tree.treeControl?.dataNodes || [];
-    this.isLeaf = this.treeNode.isLeaf;
-    this.isLast =
-      !!this.tree.treeControl && !getNextSibling(nodes, this.treeNode.data, this.tree.treeControl.getLevel, index);
+    if (this.tree.levelAccessor) {
+      this.isLast = !getNextSibling(this.dataNodes, this.currentDataNode, this.tree.levelAccessor, index);
+    } else if (this.tree.childrenAccessor) {
+      this.isLast = !getNextSiblingForNestedData(this.dataNodes, this.currentDataNode, this.tree.childrenAccessor);
+    } else {
+      return;
+    }
   }
 }
