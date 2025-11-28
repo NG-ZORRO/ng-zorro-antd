@@ -125,7 +125,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzIconRender: NzIconRenderTemplate | null = null;
   @Input() nzFileListRender: TemplateRef<{ $implicit: NzUploadFile[] }> | null = null;
 
-  readonly nzMaxCount = input<number | undefined>(undefined);
+  readonly nzMaxCount = input<number>();
 
   @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();
