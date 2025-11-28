@@ -124,7 +124,9 @@ export class NzResultComponent {
       return typeof icon === 'string' ? IconMap[icon as NzResultIconType] || icon : icon;
     }
     // When no nzIcon is provided and no custom icon directive is projected,
-    // use the icon from IconMap based on nzStatus
+    // use the icon from IconMap based on nzStatus.
+    // Note: For exception statuses, IconMap lookup returns undefined but
+    // the template guards this with isException() check.
     if (!this.customIconDirective()) {
       return IconMap[this.nzStatus() as NzResultIconType];
     }
