@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 7
 title:
   zh-CN: 带连接线的树
   en-US: Tree with line

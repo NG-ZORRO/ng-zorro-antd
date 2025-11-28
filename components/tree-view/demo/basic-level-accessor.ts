@@ -1,14 +1,25 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTreeFlatDataSource, NzTreeFlattener, NzTreeViewModule } from 'ng-zorro-antd/tree-view';
+import {
+  NzTreeFlattener,
+  NzTreeViewComponent,
+  NzTreeViewFlatDataSource,
+  NzTreeViewModule
+} from 'ng-zorro-antd/tree-view';
 
 interface TreeNode {
   name: string;
   disabled?: boolean;
   children?: TreeNode[];
+}
+
+interface FlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+  disabled: boolean;
 }
 
 const TREE_DATA: TreeNode[] = [
@@ -28,19 +39,12 @@ const TREE_DATA: TreeNode[] = [
   }
 ];
 
-interface FlatNode {
-  expandable: boolean;
-  name: string;
-  level: number;
-  disabled: boolean;
-}
-
 @Component({
-  selector: 'nz-demo-tree-view-basic',
   imports: [NzIconModule, NzTreeViewModule],
+  selector: 'nz-demo-tree-view-basic-level-accessor',
   template: `
-    <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
-      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
+    <nz-tree-view [nzDataSource]="dataSource" [nzLevelAccessor]="levelAccessor">
+      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
         <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
         <nz-tree-node-option
           [nzDisabled]="node.disabled"
@@ -51,7 +55,7 @@ interface FlatNode {
         </nz-tree-node-option>
       </nz-tree-node>
 
-      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
+      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding [nzExpandable]="true">
         <nz-tree-node-toggle>
           <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
@@ -66,33 +70,36 @@ interface FlatNode {
     </nz-tree-view>
   `
 })
-export class NzDemoTreeViewBasicComponent {
+export class NzDemoTreeViewBasicLevelAccessorComponent implements OnInit, AfterViewInit {
+  @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<FlatNode>;
+
+  readonly levelAccessor = (dataNode: FlatNode): number => dataNode.level;
+
+  readonly hasChild = (_: number, node: FlatNode): boolean => node.expandable;
+
   private transformer = (node: TreeNode, level: number): FlatNode => ({
     expandable: !!node.children && node.children.length > 0,
     name: node.name,
     level,
     disabled: !!node.disabled
   });
-  selectListSelection = new SelectionModel<FlatNode>(true);
 
-  treeControl = new FlatTreeControl<FlatNode>(
-    node => node.level,
-    node => node.expandable
-  );
-
-  treeFlattener = new NzTreeFlattener(
+  private treeFlattener = new NzTreeFlattener<TreeNode, FlatNode>(
     this.transformer,
     node => node.level,
     node => node.expandable,
     node => node.children
   );
 
-  dataSource = new NzTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  selectListSelection = new SelectionModel<FlatNode>(true);
 
-  constructor() {
-    this.dataSource.setData(TREE_DATA);
-    this.treeControl.expandAll();
+  dataSource!: NzTreeViewFlatDataSource<TreeNode, FlatNode>;
+
+  ngOnInit(): void {
+    this.dataSource = new NzTreeViewFlatDataSource(this.tree, this.treeFlattener, TREE_DATA);
   }
 
-  hasChild = (_: number, node: FlatNode): boolean => node.expandable;
+  ngAfterViewInit(): void {
+    this.tree.expandAll();
+  }
 }

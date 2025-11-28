@@ -6,6 +6,7 @@
 import { CdkTreeNode } from '@angular/cdk/tree';
 
 export abstract class NzNodeBase<T> extends CdkTreeNode<T> {
+  // Distinguish the isLeafNode of CdkTreeNode, isLeafNode is only used for Tree Control
+  abstract get isLeaf(): boolean;
   abstract setIndents(indents: boolean[]): void;
-  abstract isLeaf: boolean;
 }

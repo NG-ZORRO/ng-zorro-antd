@@ -9,6 +9,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   forwardRef,
+  signal,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -21,10 +22,11 @@ import { NzTreeView } from './tree';
 @Component({
   selector: 'nz-tree-view',
   exportAs: 'nzTreeView',
+  imports: [NzTreeNodeOutletDirective],
   template: `
     <div class="ant-tree-list-holder">
       <div
-        [@.disabled]="!_afterViewInit || !!noAnimation?.nzNoAnimation"
+        [@.disabled]="!afterViewInit() || !!noAnimation?.nzNoAnimation"
         [@treeCollapseMotion]="_nodeOutlet.viewContainer.length"
         class="ant-tree-list-holder-inner"
       >
@@ -42,19 +44,20 @@ import { NzTreeView } from './tree';
     class: 'ant-tree',
     '[class.ant-tree-block-node]': 'nzDirectoryTree || nzBlockNode',
     '[class.ant-tree-directory]': 'nzDirectoryTree',
-    '[class.ant-tree-rtl]': `dir === 'rtl'`
+    '[class.ant-tree-rtl]': `dir() === 'rtl'`
   },
-  animations: [treeCollapseMotion],
-  imports: [NzTreeNodeOutletDirective]
+  animations: [treeCollapseMotion]
 })
 export class NzTreeViewComponent<T> extends NzTreeView<T> implements AfterViewInit {
   @ViewChild(NzTreeNodeOutletDirective, { static: true }) nodeOutlet!: NzTreeNodeOutletDirective;
-  _afterViewInit = false;
+
+  protected readonly afterViewInit = signal(false);
 
   override ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+
     Promise.resolve().then(() => {
-      this._afterViewInit = true;
-      this.cdr.markForCheck();
+      this.afterViewInit.set(true);
     });
   }
 }

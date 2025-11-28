@@ -2,6 +2,7 @@
 category: Components
 type: Data Display
 title: TreeView
+tag: Update
 cover: 'https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg'
 description: Tree view component with better performance and customizability.
 ---
@@ -10,16 +11,20 @@ description: Tree view component with better performance and customizability.
 
 More basic Tree component, allowing each of its parts to be defined in the template, and state to be managed manually.
 
+> ⚠️ `nzTreeControl` has been removed in `v21.0.0`. Please use either `nzLevelAccessor` or `nzChildrenAccessor` instead, one of them must exist.
+
 ## API
 
 ### nz-tree-view
 
-| Property            | Description                                        | Type                                                                                                               | Default |
-| ------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------- |
-| `[nzTreeControl]`   | The tree controller                                | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                                | -       |
-| `[nzDataSource]`    | The data array to render                           | `DataSource<T> \| Observable<T[]> \| T[]`, [DataSource](https://material.angular.io/cdk/tree/overview#data-source) | -       |
-| `[nzDirectoryTree]` | Whether nodes are displayed as directory style     | `boolean`                                                                                                          | `false` |
-| `[nzBlockNode]`     | Whether tree nodes fill remaining horizontal space | `boolean`                                                                                                          | `false` |
+| Property               | Description                                                                                                                       | Type                                                                                                               | Default                             |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------- |
+| `[nzDataSource]`       | The data array to render                                                                                                          | `DataSource<T> \| Observable<T[]> \| T[]`, [DataSource](https://material.angular.io/cdk/tree/overview#data-source) | -                                   |
+| `[nzLevelAccessor]`    | The level accessor of tree node ([levelAccessor](https://material.angular.io/cdk/tree/api#CdkTree)), used with flat data.         | `(dataNode: T) => number`                                                                                          | -                                   |
+| `[nzChildrenAccessor]` | The children accessor of tree node ([childrenAccessor](https://material.angular.io/cdk/tree/api#CdkTree)), used with nested data. | `(dataNode: T) => T[]`                                                                                             | -                                   |
+| `[nzTrackBy]`          | Tracking function that will be used to check the differences in data changes. Used similarly to ngFor trackBy function.           | `TrackByFunction`                                                                                                  | `(_index, dataNode: T) => dataNode` |
+| `[nzDirectoryTree]`    | Whether nodes are displayed as directory style                                                                                    | `boolean`                                                                                                          | `false`                             |
+| `[nzBlockNode]`        | Whether tree nodes fill remaining horizontal space                                                                                | `boolean`                                                                                                          | `false`                             |
 
 ### nz-tree-virtual-scroll-view
 
@@ -27,15 +32,17 @@ The virtual scroll tree view, which can be accessed from
 the [CdkVirtualScrollViewport](https://material.angular.io/cdk/scrolling/api#CdkVirtualScrollViewport) instance through
 the `virtualScrollViewport` member of the component instance.
 
-| Property            | Description                                                                    | Type                                                                                                               | Default   |
-| ------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | --------- |
-| `[nzTreeControl]`   | The tree controller                                                            | [TreeControl](https://material.angular.io/cdk/tree/api#TreeControl)                                                | -         |
-| `[nzDataSource]`    | The data array to render                                                       | `DataSource<T> \| Observable<T[]> \| T[]`, [DataSource](https://material.angular.io/cdk/tree/overview#data-source) | -         |
-| `[nzDirectoryTree]` | Whether nodes are displayed as directory style                                 | `boolean`                                                                                                          | `false`   |
-| `[nzBlockNode]`     | Whether tree nodes fill remaining horizontal space                             | `boolean`                                                                                                          | `false`   |
-| `[nzItemSize]`      | The size of nodes in the tree (in pixels)                                      | `number`                                                                                                           | `28`      |
-| `[nzMinBufferPx]`   | The minimum amount of buffer rendered allowed outside the viewport (in pixels) | `number`                                                                                                           | `28 * 5`  |
-| `[nzMaxBufferPx]`   | The amount of buffer required for rendering new nodes (in pixels)              | `number`                                                                                                           | `28 * 10` |
+| Property               | Description                                                                                                                       | Type                                                                                                               | Default                             |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------- |
+| `[nzDataSource]`       | The data array to render                                                                                                          | `DataSource<T> \| Observable<T[]> \| T[]`, [DataSource](https://material.angular.io/cdk/tree/overview#data-source) | -                                   |
+| `[nzLevelAccessor]`    | The level accessor of tree node ([levelAccessor](https://material.angular.io/cdk/tree/api#CdkTree)), used with flat data.         | `(dataNode: T) => number`                                                                                          | -                                   |
+| `[nzChildrenAccessor]` | The children accessor of tree node ([childrenAccessor](https://material.angular.io/cdk/tree/api#CdkTree)), used with nested data. | `(dataNode: T) => T[]`                                                                                             | -                                   |
+| `[nzTrackBy]`          | Tracking function that will be used to check the differences in data changes. Used similarly to ngFor trackBy function.           | `TrackByFunction`                                                                                                  | `(_index, dataNode: T) => dataNode` |
+| `[nzDirectoryTree]`    | Whether nodes are displayed as directory style                                                                                    | `boolean`                                                                                                          | `false`                             |
+| `[nzBlockNode]`        | Whether tree nodes fill remaining horizontal space                                                                                | `boolean`                                                                                                          | `false`                             |
+| `[nzItemSize]`         | The size of nodes in the tree (in pixels)                                                                                         | `number`                                                                                                           | `28`                                |
+| `[nzMinBufferPx]`      | The minimum amount of buffer rendered allowed outside the viewport (in pixels)                                                    | `number`                                                                                                           | `28 * 5`                            |
+| `[nzMaxBufferPx]`      | The amount of buffer required for rendering new nodes (in pixels)                                                                 | `number`                                                                                                           | `28 * 10`                           |
 
 ### [nzTreeNodeDef]
 
@@ -49,21 +56,25 @@ Directive to define `nz-tree-node`.
 
 The tree node container component, which needs to be defined by the `nzTreeNodeDef` directive.
 
+| Property         | Description                                                                                                                                                                                | Type      | Default |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------- |
+| `[nzExpandable]` | [Whether or not this tree node is expandable](https://material.angular.io/cdk/tree/api#CdkTreeNode). Please set this parameter value when using `nzLevelAccessor` or `nzChildrenAccessor`. | `boolean` | `false` |
+
 ### [nzTreeNodePadding]
+
+Show node indentation by adding `padding` **Best Performance**.
 
 ```html
 <nz-tree-node nzTreeNodePadding></nz-tree-node>
 ```
 
-Show node indentation by adding `padding` **Best Performance**.
-
 ### nzTreeNodeIndentLine
+
+Show node indentation by adding indent lines.
 
 ```html
 <nz-tree-node nzTreeNodeIndentLine></nz-tree-node>
 ```
-
-Show node indentation by adding indent lines.
 
 ### nz-tree-node-toggle
 
@@ -89,43 +100,67 @@ Define an icon in the toggle for an active style, which it can be used for the l
 
 Define the selectable feature of a node.
 
-| Property       | Description                    | Type                       | Default |
-| -------------- | ------------------------------ | -------------------------- | ------- |
-| `[nzSelected]` | Whether the option is selected | `boolean`                  | `false` |
-| `[nzDisabled]` | Whether the option is disabled | `boolean`                  | `false` |
-| `(nzClick)`    | Event on click                 | `EventEmitter<MouseEvent>` | -       |
+| Property       | Description                     | Type                       | Default |
+| -------------- | ------------------------------- | -------------------------- | ------- |
+| `[nzSelected]` | Whether the option is selected. | `boolean`                  | `false` |
+| `[nzDisabled]` | Whether the option is disabled. | `boolean`                  | `false` |
+| `(nzClick)`    | Event on click.                 | `EventEmitter<MouseEvent>` | -       |
 
 ### nz-tree-node-checkbox
 
 Define the checkbox feature of a node.
 
-| Property            | Description                           | Type                       | Default |
-| ------------------- | ------------------------------------- | -------------------------- | ------- |
-| `[nzChecked]`       | Whether the checkbox is checked       | `boolean`                  | `false` |
-| `[nzDisabled]`      | Whether the checkbox is disabled      | `boolean`                  | `false` |
-| `[nzIndeterminate]` | Whether the checkbox is indeterminate | `boolean`                  | `false` |
-| `(nzClick)`         | Event on click                        | `EventEmitter<MouseEvent>` | -       |
+| Property            | Description                            | Type                       | Default |
+| ------------------- | -------------------------------------- | -------------------------- | ------- |
+| `[nzChecked]`       | Whether the checkbox is checked.       | `boolean`                  | `false` |
+| `[nzDisabled]`      | Whether the checkbox is disabled.      | `boolean`                  | `false` |
+| `[nzIndeterminate]` | Whether the checkbox is indeterminate. | `boolean`                  | `false` |
+| `(nzClick)`         | Event on click.                        | `EventEmitter<MouseEvent>` | -       |
 
 ## Classes
 
-### NzTreeFlatDataSource extends DataSource
+### NzTreeViewFlatDataSource extends DataSource
+
+The `dataSource` for flat data that automatically responds to view and data changes, used with `nzLevelAccessor`.
 
 **Construction Parameters**
 
-| Name                                      | Description                                                      |
-| ----------------------------------------- | ---------------------------------------------------------------- |
-| `treeControl: FlatTreeControl<F, K>`      | The tree controller.                                             |
-| `treeFlattener: NzTreeFlattener<T, F, K>` | Flattener for convert nested nodes `T` into flattened nodes `F`. |
-| `initialData: T[] = []`                   | Initialized data.                                                |
+| Name                                   | Description                                                          |
+| -------------------------------------- | -------------------------------------------------------------------- |
+| `tree: NzTreeView<T, F>`               | Tree View component instance.                                        |
+| `treeFlattener: NzTreeFlattener<T, F>` | Flattener for convert nested nodes `<T>` into flattened nodes `<F>`. |
+| `initialData: T[] = []`                | Initialized data `<T>`.                                              |
 
 **Methods**
 
-| Name                                                           | Description                                                  |
-| -------------------------------------------------------------- | ------------------------------------------------------------ |
-| `connect(collectionViewer: CollectionViewer): Observable<F[]>` | Call from the TreeView component to listen for data updates. |
-| `disconnect(): void`                                           | Call when TreeView component is destroyed.                   |
-| `setData(value: T[]): void`                                    | Set the origin data                                          |
-| `getData(): T[]`                                               | Get the origin data                                          |
+| Name                                                           | Description                                                        |
+| -------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `connect(collectionViewer: CollectionViewer): Observable<F[]>` | Called in the TreeView component, emit flattenData to the TreeView |
+| `disconnect(): void`                                           | Call when TreeView component is destroyed.                         |
+| `setData(value: T[]): void`                                    | Set the origin data `<T>`.                                         |
+| `getData(): T[]`                                               | Get the origin data `<T>`.                                         |
+| `setFlattenedData(nodes: F[]): void`                           | Set the flattened data `<F>`.                                      |
+| `getFlattenData(): F[]`                                        | Get the flattened data `<F>`.                                      |
+
+### NzTreeViewNestedDataSource extends DataSource
+
+The `dataSource` for nested data that automatically responds to view and data changes, used with `nzChildrenAccessor`.
+
+**Construction Parameters**
+
+| Name                    | Description                   |
+| ----------------------- | ----------------------------- |
+| `tree: NzTreeView<T>`   | Tree View component instance. |
+| `initialData: T[] = []` | Initialized data `<T>`.       |
+
+**Methods**
+
+| Name                                                           | Description                                                 |
+| -------------------------------------------------------------- | ----------------------------------------------------------- |
+| `connect(collectionViewer: CollectionViewer): Observable<T[]>` | Called in the TreeView component, emit data to the TreeView |
+| `disconnect(): void`                                           | Call when TreeView component is destroyed.                  |
+| `setData(value: T[]): void`                                    | Set the origin data `<T>`                                   |
+| `getData(): T[]`                                               | Get the origin data `<T>`                                   |
 
 ### NzTreeFlattener
 
@@ -133,16 +168,36 @@ Convert nested data with child nodes into node data with level information.
 
 **Construction Parameters**
 
-| Name                                                                    | Description                                           |
-| ----------------------------------------------------------------------- | ----------------------------------------------------- |
-| `transformFunction: (node: T, level: number) => F`                      | Receive a nested node and return a flattened node     |
-| `getLevel: (node: F) => number`                                         | Define the method to get the `level` property         |
-| `isExpandable: (node: F) => boolean`                                    | Methods for defining whether a node is expandable     |
-| `getChildren: (node: T) => Observable<T[]> \| T[] \| undefined \| null` | Define methods to get children nodes from nested node |
+| Name                                                                    | Description                                                    |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `transformFunction: (node: T, level: number) => F`                      | Receive a nested node `<T>` and return a flattened node `<F>`. |
+| `getLevel: (node: F) => number`                                         | Define the method to get the `level` property.                 |
+| `isExpandable: (node: F) => boolean`                                    | Methods for defining whether a node is expandable.             |
+| `getChildren: (node: T) => Observable<T[]> \| T[] \| undefined \| null` | Define methods to get children nodes from nested node `<T>`.   |
 
 **Methods**
 
-| Name                                                                    | Description                                       |
-| ----------------------------------------------------------------------- | ------------------------------------------------- |
-| `flattenNodes(structuredData: T[]): F[]`                                | Receive nested data and return flattened data     |
-| `expandFlattenedNodes(nodes: F[], treeControl: TreeControl<F, K>): F[]` | Get flattened node data based on expansion status |
+| Name                                     | Description                                                |
+| ---------------------------------------- | ---------------------------------------------------------- |
+| `flattenNodes(structuredData: T[]): F[]` | Receive nested data `<T>` and return flattened data `<F>`. |
+
+## utils
+
+Common utility classes in the Tree View component. Provides methods for getting the father, brother, and descendant nodes of the current tree node, including two sets of methods for **flat** and **nested** data structures respectively.
+
+**Flat Data**
+
+| Name                                                                                                   | Description                                                                                    |
+| ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| `getParent: (nodes: F[], node: F, getLevel: (dataNode: F) => number): F \| null`                       | Return parent of the node.                                                                     |
+| `getDescendants: (nodes: F[], node: F, getLevel: (dataNode: F) => number): F[]`                        | Return descendants of the node.                                                                |
+| `getNextSibling: (nodes: F[], node: F, getLevel: (dataNode: F) => number, _index?: number): F \| null` | Return the next sibling of the node, or the first sibling of the node after `_index` position. |
+
+**Nested Data**
+
+| Name                                                                                               | Description                                                                                  |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `getParentForNestedData: (nodes: T[], node: T, getChildren: (dataNode: T) => T[]): T \| null`      | Return parent of the node.                                                                   |
+| `getDescendantsForNestedData: (node: T, getChildren: (dataNode: T) => T[]): T[]`                   | Return descendants of the node.                                                              |
+| `getNextSiblingForNestedData: (nodes: T[], node: T, getChildren: (dataNode: T) => T[]): T \| null` | Return the next sibling of the node.                                                         |
+| `flattenNestedNodes: (nodes: T[], getChildren: (dataNode: T) => T[]): T[]`                         | Flatten nested data and returns flat arrays, but does not change the nested node properties. |

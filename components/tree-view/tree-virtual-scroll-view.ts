@@ -4,7 +4,7 @@
  */
 
 import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { BaseTreeControl, CdkTree, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
+import { CdkTree, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,7 +37,7 @@ const DEFAULT_SIZE = 28;
         [maxBufferPx]="nzMaxBufferPx"
       >
         <ng-container *cdkVirtualFor="let item of nodes; let i = index; trackBy: innerTrackBy">
-          <ng-template nzTreeVirtualScrollNodeOutlet [data]="item" [compareBy]="compareBy"></ng-template>
+          <ng-template nzTreeVirtualScrollNodeOutlet [data]="item" [compareBy]="compareBy(i)"></ng-template>
         </ng-container>
       </cdk-virtual-scroll-viewport>
     </div>
@@ -53,25 +53,27 @@ const DEFAULT_SIZE = 28;
     class: 'ant-tree',
     '[class.ant-tree-block-node]': 'nzDirectoryTree || nzBlockNode',
     '[class.ant-tree-directory]': 'nzDirectoryTree',
-    '[class.ant-tree-rtl]': `dir === 'rtl'`
+    '[class.ant-tree-rtl]': `dir() === 'rtl'`
   },
   imports: [
-    NzTreeVirtualScrollNodeOutletDirective,
+    CdkFixedSizeVirtualScroll,
     CdkVirtualForOf,
-    NzTreeNodeOutletDirective,
     CdkVirtualScrollViewport,
-    CdkFixedSizeVirtualScroll
+    NzTreeNodeOutletDirective,
+    NzTreeVirtualScrollNodeOutletDirective
   ]
 })
 export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implements OnChanges {
-  @ViewChild(NzTreeNodeOutletDirective, { static: true }) readonly nodeOutlet!: NzTreeNodeOutletDirective;
+  @ViewChild(NzTreeNodeOutletDirective, { static: true }) override readonly _nodeOutlet: NzTreeNodeOutletDirective =
+    undefined!;
   @ViewChild(CdkVirtualScrollViewport, { static: true }) readonly virtualScrollViewport!: CdkVirtualScrollViewport;
 
   @Input() nzItemSize = DEFAULT_SIZE;
   @Input() nzMinBufferPx = DEFAULT_SIZE * 5;
   @Input() nzMaxBufferPx = DEFAULT_SIZE * 10;
-  @Input() override trackBy: TrackByFunction<T> = null!;
+
   nodes: Array<NzTreeVirtualNodeData<T>> = [];
+
   innerTrackBy: TrackByFunction<NzTreeVirtualNodeData<T>> = i => i;
 
   ngOnChanges({ trackBy }: SimpleChanges): void {
@@ -84,42 +86,24 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
     }
   }
 
-  get compareBy(): ((value: T) => NzSafeAny) | null {
-    const baseTreeControl = this.treeControl as BaseTreeControl<T, NzSafeAny>;
-    if (baseTreeControl.trackBy) {
-      return baseTreeControl.trackBy;
-    }
-
-    return null;
+  compareBy(index: number): (value: T) => NzSafeAny {
+    return (value: T) => (this.trackBy ? this.trackBy(index, value) : value);
   }
 
-  override renderNodeChanges(data: T[] | readonly T[]): void {
-    this.nodes = new Array(...data).map((n, i) => this.createNode(n, i));
-    this._dataSourceChanged.next();
+  override renderNodeChanges(data: T[]): void {
+    /* https://github.com/angular/components/blob/21cc21ea3b280c3f82a19f5ec1b679eb1eee1358/src/cdk/tree/tree.ts#L1103
+     * If levelAccessor is used, renderNodes needs to be recalculated, because flattenData (i.e., dataNodes) is used as renderNodes by default in the @angular/components library
+     * If childrenAccessor is used, @angular/components library inner will calculate renderNodes.
+     */
+    const renderNodes = this.levelAccessor ? this.getRenderNodes(data) : [...data];
+    this.nodes = renderNodes.map((n, i) => this.createNode(n, i));
+    this.dataSourceChanged$.next();
     this.cdr.markForCheck();
-  }
-
-  /**
-   * @note
-   * angular/cdk v18.2.0 breaking changes: https://github.com/angular/components/pull/29062
-   * Temporary workaround: revert to old method of getting level
-   * TODO: refactor tree-view, remove #treeControl and adopt #levelAccessor and #childrenAccessor
-   * */
-  override _getLevel(nodeData: T): number | undefined {
-    if (this.treeControl?.getLevel) {
-      return this.treeControl.getLevel(nodeData);
-    }
-    return;
   }
 
   private createNode(nodeData: T, index: number): NzTreeVirtualNodeData<T> {
     const node = this._getNodeDef(nodeData, index);
     const context = new CdkTreeNodeOutletContext<T>(nodeData);
-    if (this.treeControl?.getLevel) {
-      context.level = this.treeControl.getLevel(nodeData);
-    } else {
-      context.level = 0;
-    }
     return {
       data: nodeData,
       context,
