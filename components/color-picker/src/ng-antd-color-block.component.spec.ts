@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -13,6 +13,13 @@ describe('NgxColorBlockComponent', () => {
   let component: NzxTestColorBlockComponent;
   let fixture: ComponentFixture<NzxTestColorBlockComponent>;
   let resultEl: DebugElement;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NzxTestColorBlockComponent);
@@ -31,20 +38,20 @@ describe('NgxColorBlockComponent', () => {
 
   it('color-block click', () => {
     fixture.detectChanges();
-    resultEl.nativeElement.querySelector('.ant-color-picker-color-block').click();
+    resultEl.nativeElement.click();
     expect(component.isClick).toBeTrue();
   });
 });
 
 @Component({
   imports: [NgAntdColorBlockComponent],
-  template: `<ng-antd-color-block [color]="color" (nzOnClick)="clickHandle($event)"></ng-antd-color-block>`
+  template: `<ng-antd-color-block [color]="color" (nzOnClick)="clickHandle()"></ng-antd-color-block>`
 })
 export class NzxTestColorBlockComponent {
   color = '#1677ff';
   isClick: boolean = false;
 
-  clickHandle(value: boolean): void {
-    this.isClick = value;
+  clickHandle(): void {
+    this.isClick = true;
   }
 }

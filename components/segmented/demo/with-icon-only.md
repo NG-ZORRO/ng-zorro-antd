@@ -1,5 +1,5 @@
 ---
-order: 11
+order: 10
 title:
   zh-CN: 只设置图标
   en-US: With Icon only

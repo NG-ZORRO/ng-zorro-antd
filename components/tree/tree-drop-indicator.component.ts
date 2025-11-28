@@ -3,41 +3,42 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
-  SimpleChanges,
-  numberAttribute
+  numberAttribute,
+  inject
 } from '@angular/core';
 
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-tree-drop-indicator',
-  exportAs: 'NzTreeDropIndicator',
+  exportAs: 'nzTreeDropIndicator',
   template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ant-tree-drop-indicator]': 'true',
+    class: 'ant-tree-drop-indicator',
     '[style]': 'style'
   }
 })
 export class NzTreeDropIndicatorComponent implements OnChanges {
   @Input() dropPosition?: number;
   @Input({ transform: numberAttribute }) level: number = 1;
-  @Input() direction: string = 'ltr';
+  @Input() direction: Direction = 'ltr';
   style: NgStyleInterface = {};
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  private cdr = inject(ChangeDetectorRef);
 
-  ngOnChanges(_changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.renderIndicator(this.dropPosition!, this.direction);
   }
 
-  renderIndicator(dropPosition: number, direction: string = 'ltr'): void {
+  renderIndicator(dropPosition: number, direction: Direction = 'ltr'): void {
     const offset = 4;
     const startPosition = direction === 'ltr' ? 'left' : 'right';
     const endPosition = direction === 'ltr' ? 'right' : 'left';

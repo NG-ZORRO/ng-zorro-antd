@@ -7,11 +7,9 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg'
 description: Empty state placeholder.
 ---
 
-
 ## When To Use
 
 When there is no data provided, display for friendly tips.
-
 
 ## API
 
@@ -27,9 +25,9 @@ When there is no data provided, display for friendly tips.
 
 The `nzEmpty` interface has properties as follows:
 
-| Properties              | Description                                                                                             | Type                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| `nzDefaultEmptyContent` | User default empty component. You can restore the system default empty content by providing `undefined` | `Type<any>\|TemplateRef<string>\|string\|undefined` |
+| Properties              | Description                                                                                             | Type                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `nzDefaultEmptyContent` | User default empty component. You can restore the system default empty content by providing `undefined` | `Type<any> \| TemplateRef<string> \| string \| undefined` |
 
 ### InjectionToken
 

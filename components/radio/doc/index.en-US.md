@@ -6,12 +6,10 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg'
 description: Used to select a single state from multiple options.
 ---
 
-
 ## When To Use
 
 - Used to select a single state in multiple options.
 - The difference from Select is that Radio is visible to the user and can facilitate the comparison of choice, which means there shouldn't be too many of them.
-
 
 ## API
 
@@ -44,7 +42,7 @@ radio group，wrap a group of `nz-radio`。
 
 you can get `NzRadioComponent` via `ViewChild`
 
-| Name    | Description  |
-| ------- | ------------ |
+| Name      | Description  |
+| --------- | ------------ |
 | `blur()`  | remove focus |
 | `focus()` | get focus    |

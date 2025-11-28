@@ -7,9 +7,11 @@ import { Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
   booleanAttribute,
+  DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   NgZone,
   numberAttribute,
@@ -17,9 +19,9 @@ import {
   Output,
   Renderer2
 } from '@angular/core';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { ensureInBounds, fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { getEventWithPoint } from './resizable-utils';
@@ -37,7 +39,7 @@ export interface NzResizeEvent {
 @Directive({
   selector: '[nz-resizable]',
   exportAs: 'nzResizable',
-  providers: [NzResizableService, NzDestroyService],
+  providers: [NzResizableService],
   host: {
     class: 'nz-resizable',
     '[class.nz-resizable-resizing]': 'resizing',
@@ -45,6 +47,13 @@ export interface NzResizeEvent {
   }
 })
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly renderer = inject(Renderer2);
+  private readonly nzResizableService = inject(NzResizableService);
+  private readonly platform = inject(Platform);
+  private readonly ngZone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
+
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';
   @Input() nzMaxHeight?: number;
   @Input() nzMaxWidth?: number;
@@ -61,21 +70,14 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   @Output() readonly nzResizeStart = new EventEmitter<NzResizeEvent>();
 
   resizing = false;
-  private elRect!: ClientRect | DOMRect;
+  private elRect!: DOMRect;
   private currentHandleEvent: NzResizeHandleMouseDownEvent | null = null;
   private ghostElement: HTMLDivElement | null = null;
   private el!: HTMLElement;
   private sizeCache: NzResizeEvent | null = null;
 
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    private renderer: Renderer2,
-    private nzResizableService: NzResizableService,
-    private platform: Platform,
-    private ngZone: NgZone,
-    private destroy$: NzDestroyService
-  ) {
-    this.nzResizableService.handleMouseDownOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+  constructor() {
+    this.nzResizableService.handleMouseDownOutsideAngular$.pipe(takeUntilDestroyed()).subscribe(event => {
       if (this.nzDisabled) {
         return;
       }
@@ -89,7 +91,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     });
 
     this.nzResizableService.documentMouseUpOutsideAngular$
-      .pipe(takeUntil(this.destroy$), filter(Boolean))
+      .pipe(takeUntilDestroyed(), filter(Boolean))
       .subscribe(event => {
         if (this.resizing) {
           this.resizing = false;
@@ -98,7 +100,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
         }
       });
 
-    this.nzResizableService.documentMouseMoveOutsideAngular$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+    this.nzResizableService.documentMouseMoveOutsideAngular$.pipe(takeUntilDestroyed()).subscribe(event => {
       if (this.resizing) {
         this.resize(event);
       }
@@ -219,7 +221,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     }
     const size = this.calcSize(width, height, ratio);
     this.sizeCache = { ...size };
-    // Re-enter the Angular zone and run the change detection only if there're any `nzResize` listeners,
+    // Re-enter the Angular zone and run the change detection only if there are any `nzResize` listeners,
     // e.g.: `<div nz-resizable (nzResize)="..."></div>`.
     if (this.nzResize.observers.length) {
       this.ngZone.run(() => {
@@ -243,7 +245,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
           width: this.elRect.width,
           height: this.elRect.height
         };
-    // Re-enter the Angular zone and run the change detection only if there're any `nzResizeEnd` listeners,
+    // Re-enter the Angular zone and run the change detection only if there are any `nzResizeEnd` listeners,
     // e.g.: `<div nz-resizable (nzResizeEnd)="..."></div>`.
     if (this.nzResizeEnd.observers.length) {
       this.ngZone.run(() => {
@@ -287,13 +289,13 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     this.setPosition();
 
     fromEventOutsideAngular(this.el, 'mouseenter')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.nzResizableService.mouseEnteredOutsideAngular$.next(true);
       });
 
     fromEventOutsideAngular(this.el, 'mouseleave')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.nzResizableService.mouseEnteredOutsideAngular$.next(false);
       });

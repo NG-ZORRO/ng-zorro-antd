@@ -100,6 +100,9 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
   ]
 })
 export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
+  private readonly ngZone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
+
   @Input() notFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() menuItemSelectedIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() dropdownRender: TemplateRef<NzSafeAny> | null = null;
@@ -116,8 +119,6 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Output() readonly scrollToBottom = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   private scrolledIndex = 0;
-  private ngZone = inject(NgZone);
-  private platformId = inject(PLATFORM_ID);
 
   onItemClick(value: NzSafeAny): void {
     this.itemClick.emit(value);

@@ -21,7 +21,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 
-import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
+import { NzHighlightPipe } from 'ng-zorro-antd/core/highlight';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTreeNode } from 'ng-zorro-antd/core/tree';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -31,7 +31,7 @@ import { NzCascaderOption } from './typings';
 @Component({
   selector: '[nz-cascader-option]',
   exportAs: 'nzCascaderOption',
-  imports: [NgTemplateOutlet, NzHighlightModule, NzIconModule, NzOutletModule],
+  imports: [NgTemplateOutlet, NzHighlightPipe, NzIconModule, NzOutletModule],
   template: `
     @if (checkable) {
       <span

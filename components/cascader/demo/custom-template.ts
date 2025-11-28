@@ -37,12 +37,12 @@ const options: NzCascaderOption[] = [
       [nzOptions]="nzOptions"
       [(ngModel)]="values"
       (ngModelChange)="onChanges($event)"
-    ></nz-cascader>
+    />
     <ng-template #renderTpl let-option let-index="index">{{ index + 1 }}. {{ option.label }}</ng-template>
   `
 })
 export class NzDemoCascaderCustomTemplateComponent {
-  nzOptions = options;
+  readonly nzOptions = options;
   values: string[] | null = null;
 
   onChanges(values: string): void {

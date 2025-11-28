@@ -4,7 +4,6 @@
  */
 
 export { NzSliderComponent } from './slider.component';
-export { NzSliderService as ɵNzSliderService } from './slider.service';
 export { NzSliderModule } from './slider.module';
 export { NzSliderHandleComponent as ɵNzSliderHandleComponent } from './handle.component';
 export { NzSliderMarksComponent as ɵNzSliderMarksComponent } from './marks.component';

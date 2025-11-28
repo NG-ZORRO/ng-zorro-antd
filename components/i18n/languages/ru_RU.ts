@@ -173,5 +173,8 @@ export default {
   },
   Image: {
     preview: 'Предпросмотр'
+  },
+  Form: {
+    optional: '(необязательно)'
   }
 };

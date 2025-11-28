@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -12,7 +12,7 @@ import { ModalOptions } from './modal-types';
 
 @Component({
   selector: 'button[nz-modal-close]',
-  exportAs: 'NzModalCloseBuiltin',
+  exportAs: 'nzModalCloseBuiltin',
   template: `
     <span class="ant-modal-close-x">
       <ng-container *nzStringTemplateOutlet="config.nzCloseIcon; let closeIcon">
@@ -28,5 +28,5 @@ import { ModalOptions } from './modal-types';
   imports: [NzIconModule, NzOutletModule]
 })
 export class NzModalCloseComponent {
-  constructor(public config: ModalOptions) {}
+  public readonly config = inject(ModalOptions);
 }

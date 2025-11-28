@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "19.3.1",
+  "version": "20.4.1",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "schematics": "./schematics/collection.json",
@@ -106,12 +106,6 @@
     },
     "./avatar/style/*.css": {
       "style": "./avatar/style/index.min.css"
-    },
-    "./back-top/style/*.less": {
-      "less": "./back-top/style/*.less"
-    },
-    "./back-top/style/*.css": {
-      "style": "./back-top/style/index.min.css"
     },
     "./badge/style/*.less": {
       "less": "./badge/style/*.less"
@@ -491,11 +485,11 @@
     "./upload/style/*.css": {
       "style": "./upload/style/index.min.css"
     },
-    "./water-mark/style/*.less": {
-      "less": "./water-mark/style/*.less"
+    "./watermark/style/*.less": {
+      "less": "./watermark/style/*.less"
     },
-    "./water-mark/style/*.css": {
-      "style": "./water-mark/style/index.min.css"
+    "./watermark/style/*.css": {
+      "style": "./watermark/style/index.min.css"
     }
   }
 }

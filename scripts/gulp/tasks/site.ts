@@ -4,26 +4,24 @@
  */
 
 import { detect } from 'detect-port';
-import * as fs from 'fs-extra';
+import { readJSONSync, writeJSON } from 'fs-extra';
 import { parallel, series, task, watch } from 'gulp';
 import { debounce } from 'lodash';
 
 import { join } from 'path';
 
 import { buildConfig } from '../../build-config';
+import { generateLLms } from '../../generate-llms';
 import { generate } from '../../prerender/ngsw-config';
 import { generateSitemap } from '../../prerender/sitemap';
-import { execNodeTask, execTask } from '../util/task-helpers';
-
-const siteGenerate = require('../../site/generate-site');
-const themeGenerate = require('../../site/generate-theme');
+import siteGenerate from '../../site/generate-site';
+import themeGenerate from '../../site/generate-theme';
+import { execTask } from '../util/task-helpers';
 
 const docsGlob = join(buildConfig.componentsDir, `**/doc/*.+(md|txt)`);
 const demoGlob = join(buildConfig.componentsDir, `**/demo/*.+(md|ts)`);
 const issueHelperScriptFile = join(buildConfig.scriptsDir, 'release-helper.sh');
 const tsconfigFile = join(buildConfig.projectDir, 'site/tsconfig.app.json');
-
-const CI = process.env.CI;
 
 /**
  * Development app watch task,
@@ -56,47 +54,31 @@ task('init:site', async done => {
 /** Run `ng serve` */
 task('serve:site', async done => {
   const port = await detect(4200);
-  execNodeTask('@angular/cli', 'ng', ['serve', 'ng-zorro-antd-doc', '--port', port === 4200 ? '4200' : '0'])(done);
+  execTask('ng', ['serve', 'ng-zorro-antd-doc', '--port', port === 4200 ? '4200' : '0'])(done);
 });
 
 /** Run `ng build ng-zorro-antd-doc --configuration=production` */
-task(
-  'build:site-doc',
-  execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=production'])
-);
+task('build:site-doc', execTask('ng', ['build', 'ng-zorro-antd-doc', '--configuration=production']));
 
-/** Run `ng build ng-zorro-antd-doc --configuration=pre-production` */
-task(
-  'build:site-doc/pre-production',
-  execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=pre-production'])
-);
-
-/** Run `ng build ng-zorro-antd-doc --configuration=preview` */
-task(
-  'build:site-doc-preview',
-  execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-doc', '--configuration=preview'])
-);
+/** Generate llms.txt and llms-full.txt */
+task('site:llms-txt', generateLLms);
 
 /** Replace the library paths to publish/ directory */
 task('site:replace-path', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tsconfig: any = fs.readJSONSync(tsconfigFile);
+  const tsconfig = readJSONSync(tsconfigFile);
   tsconfig.compilerOptions.paths['ng-zorro-antd'] = ['../publish'];
   tsconfig.compilerOptions.paths['ng-zorro-antd/*'] = ['../publish/*'];
-  return fs.writeJSON(tsconfigFile, tsconfig);
+  return writeJSON(tsconfigFile, tsconfig);
 });
 
 /** Run sitemap script on the output directory, to create sitemap.xml */
-task('site:sitemap', done => {
-  generateSitemap();
-  done();
-});
+task('site:sitemap', generateSitemap);
 
 /** Regenerate the ngsw-config to fix https://github.com/angular/angular/issues/23613 */
 task('site:regen-ngsw-config', generate);
 
 /** Run release-helper.sh
- * Clone issue-helper builds from github and copy to the output directory.
+ * Clone issue-helper builds from GitHub and copy to the output directory.
  */
 task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 
@@ -109,12 +91,7 @@ task(
 /** Init site directory, and start watch and ng-serve */
 task('start:site', series('init:site', parallel('watch:site', 'serve:site')));
 
-/** Task that use source code to build ng-zorro-antd-doc project,
- * output not included issue-helper and prerender.
- */
-task('build:simple-site', series('init:site', CI ? 'build:site-doc/pre-production' : 'build:site-doc'));
-
 /** Task that use publish code to build ng-zorro-antd-doc project,
  * output included issue-helper and prerender.
  */
-task('build:release-site', series('init:site', 'site:replace-path', 'build:site'));
+task('build:release-site', series('init:site', 'site:replace-path', 'site:llms-txt', 'build:site'));

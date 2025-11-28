@@ -13,7 +13,8 @@ import {
   Output,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 
 import { NzCronExpressionCronErrorI18n } from 'ng-zorro-antd/i18n';
@@ -62,6 +63,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   imports: [NgTemplateOutlet, DatePipe, NzIconModule]
 })
 export class NzCronExpressionPreviewComponent {
+  private cdr = inject(ChangeDetectorRef);
   @Input() TimeList: Date[] = [];
   @Input({ transform: booleanAttribute }) visible: boolean = true;
   @Input() locale!: NzCronExpressionCronErrorI18n;
@@ -69,8 +71,6 @@ export class NzCronExpressionPreviewComponent {
   @Output() readonly loadMorePreview = new EventEmitter<void>();
 
   isExpand: boolean = true;
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   setExpand(): void {
     this.isExpand = !this.isExpand;

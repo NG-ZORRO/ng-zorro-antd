@@ -89,6 +89,10 @@
         "none"
       ]
     },
+    "type": {
+      "type": "string",
+      "description": "Append a custom type to the component's filename. For example, if you set the type to `container`, the file will be named `my-component.container.ts`."
+    },
     "skipTests": {
       "type": "boolean",
       "description": "When true, does not create \"spec.ts\" test files for the new component.",
@@ -109,6 +113,11 @@
       "format": "html-selector",
       "description": "The selector to use for the component."
     },
+    "skipSelector": {
+      "type": "boolean",
+      "default": false,
+      "description": "Skip the generation of an HTML selector for the component."
+    },
     "module": {
       "type": "string",
       "description": "Allows specification of the declaring module.",
@@ -118,6 +127,16 @@
       "type": "boolean",
       "default": false,
       "description": "When true, the declaring NgModule exports this component."
+    },
+    "exportDefault": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use a default export for the component in its TypeScript file instead of a named export."
+    },
+    "ngHtml": {
+      "type": "boolean",
+      "default": false,
+      "description": "Generate component template files with an '.ng.html' file extension instead of '.html'."
     },
     "entryComponent": {
       "type": "boolean",

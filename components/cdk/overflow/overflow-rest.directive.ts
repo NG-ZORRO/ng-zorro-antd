@@ -17,6 +17,7 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 export class NzOverflowRestDirective {
   private nzResizeObserver = inject(NzResizeObserver);
   private elementRef = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
 
   restStyle: Record<string, string | number | undefined> | undefined = undefined;
   restWidth$ = this.nzResizeObserver.observe(this.elementRef.nativeElement).pipe(
@@ -25,7 +26,6 @@ export class NzOverflowRestDirective {
     tap(width => (this.restWidth = width))
   );
   restWidth = 0;
-  constructor(private cdr: ChangeDetectorRef) {}
 
   setRestStyle(display: boolean, order: number): void {
     const mergedHidden = !display;

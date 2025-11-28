@@ -5,8 +5,16 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  Component,
+  DebugElement,
+  ElementRef,
+  provideZoneChangeDetection,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -24,21 +32,24 @@ import { NzSubMenuComponent } from './submenu.component';
 describe('menu', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
-    });
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
+    });
+  });
+
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
   }));
 
-  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-    currentOverlayContainer.ngOnDestroy();
+  afterEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    oc.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
+
   describe('demo', () => {
     describe('horizontal', () => {
       let fixture: ComponentFixture<NzTestBasicMenuHorizontalComponent>;
@@ -51,6 +62,7 @@ describe('menu', () => {
         submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
+
       it('should className correct', () => {
         fixture.detectChanges();
         expect(items.every(item => item.nativeElement.classList.contains('ant-menu-item'))).toBe(true);
@@ -59,23 +71,27 @@ describe('menu', () => {
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu')).toBe(true);
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-horizontal');
       });
+
       it('should menu item select', () => {
         fixture.detectChanges();
         items[0].nativeElement.click();
         fixture.detectChanges();
         expect(items[0].nativeElement.classList.contains('ant-menu-item-selected')).toBe(true);
       });
+
       it('should menu disabled work', () => {
         fixture.detectChanges();
         items[1].nativeElement.click();
         fixture.detectChanges();
         expect(items[0].nativeElement.classList.contains('ant-menu-item-selected')).toBe(false);
       });
+
       it('should menu danger work', () => {
         fixture.detectChanges();
         expect(items[3].nativeElement.classList.contains('ant-menu-item-danger')).toBe(true);
       });
     });
+
     describe('inline', () => {
       let fixture: ComponentFixture<NzTestBasicMenuInlineComponent>;
       let items: DebugElement[];
@@ -87,6 +103,7 @@ describe('menu', () => {
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
       });
+
       it('should className correct', () => {
         fixture.detectChanges();
         expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu'))).toBe(true);
@@ -95,6 +112,7 @@ describe('menu', () => {
         );
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
       });
+
       it('should padding left work', () => {
         fixture.detectChanges();
         const firstLevelItems = items;
@@ -102,6 +120,7 @@ describe('menu', () => {
         expect(firstLevelItems.every(item => item.nativeElement.style.paddingLeft === '48px')).toBe(true);
         expect(secondLevelItems.every(item => item.nativeElement.style.paddingLeft === '72px')).toBe(true);
       });
+
       it('should click expand', fakeAsync(() => {
         fixture.detectChanges();
         const ul = submenus[0].nativeElement.querySelector('.ant-menu');
@@ -119,6 +138,7 @@ describe('menu', () => {
         expect(submenus[0].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
       }));
     });
+
     describe('inline-collapsed', () => {
       let fixture: ComponentFixture<NzTestMenuInlineCollapsedComponent>;
       let testComponent: NzTestMenuInlineCollapsedComponent;
@@ -130,6 +150,7 @@ describe('menu', () => {
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
+
       it('should className correct', () => {
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
@@ -142,6 +163,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
       });
+
       it('should keep open after change mode', () => {
         fixture.detectChanges();
         let ul = submenus[0].nativeElement.querySelector('.ant-menu');
@@ -163,6 +185,7 @@ describe('menu', () => {
         expect(ul.style.height).not.toBe('0px');
       });
     });
+
     describe('slider-current', () => {
       let fixture: ComponentFixture<NzTestMenuSiderCurrentComponent>;
       let submenus: DebugElement[];
@@ -170,6 +193,7 @@ describe('menu', () => {
         fixture = TestBed.createComponent(NzTestMenuSiderCurrentComponent);
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
       });
+
       it('should collapsed self work', fakeAsync(() => {
         fixture.detectChanges();
         const ul = submenus[0].nativeElement.querySelector('.ant-menu');
@@ -186,6 +210,7 @@ describe('menu', () => {
         expect(ul.style.height).not.toBe('0px');
         expect(submenus[0].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
       }));
+
       it('should collapsed other work', fakeAsync(() => {
         fixture.detectChanges();
         const firstUl = submenus[0].nativeElement.querySelector('.ant-menu');
@@ -202,6 +227,7 @@ describe('menu', () => {
         expect(submenus[1].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
       }));
     });
+
     describe('theme', () => {
       let fixture: ComponentFixture<NzTestMenuThemeComponent>;
       let testComponent: NzTestMenuThemeComponent;
@@ -211,6 +237,7 @@ describe('menu', () => {
         testComponent = fixture.debugElement.componentInstance;
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
+
       it('should className correct', () => {
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
@@ -219,6 +246,7 @@ describe('menu', () => {
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-inline ant-menu-light');
       });
     });
+
     describe('switch-mode', () => {
       let fixture: ComponentFixture<NzTestMenuSwitchModeComponent>;
       let testComponent: NzTestMenuSwitchModeComponent;
@@ -230,6 +258,7 @@ describe('menu', () => {
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
+
       it('should className correct', () => {
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
@@ -248,6 +277,7 @@ describe('menu', () => {
       });
     });
   });
+
   describe('coverage', () => {
     describe('horizontal submenu', () => {
       let fixture: ComponentFixture<NzTestMenuHorizontalComponent>;
@@ -258,6 +288,7 @@ describe('menu', () => {
         testComponent = fixture.debugElement.componentInstance;
         submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       });
+
       it('should overlay work', fakeAsync(() => {
         fixture.detectChanges();
         expect(overlayContainerElement.textContent).toBe('');
@@ -265,6 +296,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(overlayContainerElement.textContent).not.toBe('');
       }));
+
       it('should submenu mouseenter work', () => {
         fixture.detectChanges();
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
@@ -277,6 +309,7 @@ describe('menu', () => {
         expect(mouseenterCallback).toHaveBeenCalledWith(true);
         expect(mouseenterCallback).toHaveBeenCalledTimes(1);
       });
+
       it('should have "hover" as default trigger', () => {
         fixture.detectChanges();
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
@@ -289,6 +322,7 @@ describe('menu', () => {
         expect(mouseenterCallback).toHaveBeenCalledWith(true);
         expect(mouseenterCallback).toHaveBeenCalledTimes(1);
       });
+
       it('should have not open with mouse hover if trigger is set to "click"', () => {
         testComponent.nzTriggerSubMenuAction = 'click';
         fixture.detectChanges();
@@ -301,6 +335,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledTimes(0);
       });
+
       it('should open with mouse click if trigger is set to "click"', () => {
         testComponent.nzTriggerSubMenuAction = 'click';
         fixture.detectChanges();
@@ -313,6 +348,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledTimes(1);
       });
+
       it('should submenu mouseleave work', () => {
         fixture.detectChanges();
         const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
@@ -325,6 +361,7 @@ describe('menu', () => {
         expect(mouseleaveCallback).toHaveBeenCalledWith(false);
         expect(mouseleaveCallback).toHaveBeenCalledTimes(1);
       });
+
       it('should nested submenu work', () => {
         testComponent.open = true;
         fixture.detectChanges();
@@ -338,6 +375,7 @@ describe('menu', () => {
         expect(nestedCallback).toHaveBeenCalledWith(false);
         expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
+
       it('should nested submenu disabled work', () => {
         testComponent.open = true;
         testComponent.disabled = true;
@@ -351,6 +389,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
+
       it('should click menu and other submenu menu not active', fakeAsync(() => {
         testComponent.open = true;
         fixture.detectChanges();
@@ -362,6 +401,7 @@ describe('menu', () => {
         tick(500);
         expect(subs[1].isActive).toBe(false);
       }));
+
       it('should click submenu menu item close', () => {
         testComponent.open = true;
         fixture.detectChanges();
@@ -376,6 +416,7 @@ describe('menu', () => {
         expect(nestedCallback).toHaveBeenCalledWith(false);
         expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
+
       it('should click submenu disabled menu item not close', () => {
         testComponent.open = true;
         fixture.detectChanges();
@@ -388,6 +429,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(0);
       });
+
       it('should width change correct', () => {
         fixture.detectChanges();
         testComponent.open = true;
@@ -402,6 +444,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(overlayPane.style.width).toBe('300px');
       });
+
       it('should position change correct', () => {
         const fakeLeftTopEvent = {
           connectionPair: {
@@ -431,6 +474,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(subs[1].position).toBe('right');
       });
+
       it('should `nzMenuClassName` work', fakeAsync(() => {
         fixture.detectChanges();
         testComponent.open = true;
@@ -439,6 +483,7 @@ describe('menu', () => {
           'ant-menu-sub'
         );
       }));
+
       it('should nested submenu `nzMenuClassName` work', () => {
         testComponent.open = true;
         fixture.detectChanges();
@@ -453,6 +498,7 @@ describe('menu', () => {
         );
       });
     });
+
     describe('inline submenu', () => {
       let fixture: ComponentFixture<NzTestMenuInlineComponent>;
       let testComponent: NzTestMenuInlineComponent;
@@ -462,6 +508,7 @@ describe('menu', () => {
         testComponent = fixture.debugElement.componentInstance;
         submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       });
+
       it('should click expand', fakeAsync(() => {
         fixture.detectChanges();
         const ul = submenu.nativeElement.querySelector('.ant-menu');
@@ -473,10 +520,12 @@ describe('menu', () => {
         expect(ul.style.height).not.toBe('0px');
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
       }));
+
       it('should `nzMenuClassName` work', fakeAsync(() => {
         fixture.detectChanges();
         expect(submenu.nativeElement.querySelector('.ant-menu-sub').className).toContain('submenu');
       }));
+
       it('should `nzMenuClassName` multi class names work', fakeAsync(() => {
         fixture.detectChanges();
         testComponent.submenuClassName = 'submenu submenu-1';
@@ -484,6 +533,7 @@ describe('menu', () => {
         expect(submenu.nativeElement.querySelector('.ant-menu-sub').className).toContain('submenu');
         expect(submenu.nativeElement.querySelector('.ant-menu-sub').className).toContain('submenu-1');
       }));
+
       it('should disabled work', fakeAsync(() => {
         testComponent.disabled = true;
         fixture.detectChanges();
@@ -497,6 +547,7 @@ describe('menu', () => {
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
       }));
     });
+
     describe('ng-for', () => {
       it('should ng for works fine', () => {
         expect(() => {
@@ -504,6 +555,7 @@ describe('menu', () => {
         }).not.toThrowError();
       });
     });
+
     describe('ng-if', () => {
       it('should ng if works fine', () => {
         expect(() => {
@@ -511,6 +563,7 @@ describe('menu', () => {
         }).not.toThrowError();
       });
     });
+
     describe('submenu default selected', () => {
       it('should default selected active submenu', () => {
         const fixture = TestBed.createComponent(NzTestSubMenuSelectedComponent);
@@ -527,12 +580,14 @@ describe('menu', () => {
     let testComponent: NzTestMenuHorizontalComponent;
     let submenu: DebugElement;
     let menu: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestMenuRtlComponent);
       testComponent = fixture.debugElement.query(By.directive(NzTestMenuHorizontalComponent)).componentInstance;
       submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       menu = fixture.debugElement.query(By.directive(NzMenuDirective));
     });
+
     it('should className correct on dir change', () => {
       fixture.detectChanges();
       expect(submenu.nativeElement.classList.contains('ant-menu-submenu-rtl')).toBe(true);

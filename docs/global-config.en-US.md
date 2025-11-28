@@ -18,10 +18,8 @@ const ngZorroConfig: NzConfig = {
 };
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzConfig(ngZorroConfig)
-  ]
-}
+  providers: [provideNzConfig(ngZorroConfig)]
+};
 ```
 
 These global configurations would be injected and stored in a service named `NzConfigService`.
@@ -81,14 +79,14 @@ const nzConfigFactory = (): NzConfig => {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    { // The FactoryProvider
+    {
+      // The FactoryProvider
       provide: NZ_CONFIG,
       useFactory: nzConfigFactory
     }
   ]
-}
+};
 ```
-
 
 ## Overwrite inside Component
 
@@ -127,7 +125,7 @@ You can also use `useFactory` to combine the global configuration with the local
         const globalConfig = inject(NzConfigService, { skipSelf: true }).getConfig();
         const localConfig = {
           select: {
-            nzBorderless: true
+            nzVariant: 'borderless'
           }
         };
         // merge local and global config
@@ -154,13 +152,12 @@ export class ChangeZorroConfigComponent {
   private nzConfigService = inject(NzConfigService);
 
   onChangeConfig() {
-    this.nzConfigService.set('button', { nzSize: 'large' })
+    this.nzConfigService.set('button', { nzSize: 'large' });
   }
 }
 ```
 
 All component instances is responsive to this configuration change (as long as they are not configured independently).
-
 
 ## Priority of Global Configurations
 

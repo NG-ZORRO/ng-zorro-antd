@@ -19,6 +19,7 @@ function alphabet(): string[] {
       [nzMaxTagCount]="3"
       [nzMaxTagPlaceholder]="tagPlaceHolder"
       nzMode="multiple"
+      nzAllowClear
       nzPlaceHolder="Please select"
       [(ngModel)]="listOfSelectedValue"
     >

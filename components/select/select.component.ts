@@ -12,23 +12,19 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { Platform, _getEventTarget } from '@angular/cdk/platform';
+import { _getEventTarget, Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -37,19 +33,23 @@ import {
   computed,
   forwardRef,
   inject,
-  signal
+  signal,
+  output,
+  DestroyRef,
+  NgZone,
+  ChangeDetectorRef,
+  Renderer2
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, merge, of as observableOf } from 'rxjs';
-import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { slideMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
-import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { cancelAnimationFrame, requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NgClassInterface,
   NzSafeAny,
@@ -98,7 +98,6 @@ export type NzSelectSizeType = NzSizeLDSType;
   selector: 'nz-select',
   exportAs: 'nzSelect',
   providers: [
-    NzDestroyService,
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSelectComponent),
@@ -128,12 +127,13 @@ export type NzSelectSizeType = NzSizeLDSType;
       [showSearch]="nzShowSearch"
       [autofocus]="nzAutoFocus"
       [listOfTopItem]="listOfTopItem"
+      [prefix]="nzPrefix"
       (inputValueChange)="onInputValueChange($event)"
       (tokenize)="onTokenSeparate($event)"
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
-    ></nz-select-top-control>
-    @if (nzShowArrow || (hasFeedback && !!status) || isMaxMultipleCountSet) {
+    />
+    @if (showArrow || (hasFeedback && !!status) || isMaxMultipleCountSet) {
       <nz-select-arrow
         [showArrow]="nzShowArrow"
         [loading]="nzLoading"
@@ -146,14 +146,14 @@ export type NzSelectSizeType = NzSizeLDSType;
       >
         <ng-template #feedbackIconTpl>
           @if (hasFeedback && !!status) {
-            <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+            <nz-form-item-feedback-icon [status]="status" />
           }
         </ng-template>
       </nz-select-arrow>
     }
 
     @if (nzAllowClear && !nzDisabled && listOfValue.length) {
-      <nz-select-clear [clearIcon]="nzClearIcon" (clear)="onClearSelection()"></nz-select-clear>
+      <nz-select-clear [clearIcon]="nzClearIcon" (clear)="onClearSelection()" />
     }
     <ng-template
       cdkConnectedOverlay
@@ -194,7 +194,7 @@ export type NzSelectSizeType = NzSizeLDSType;
         (keydown)="onKeyDown($event)"
         (itemClick)="onItemClick($event)"
         (scrollToBottom)="nzScrollToBottom.emit()"
-      ></nz-option-container>
+      />
     </ng-template>
   `,
   host: {
@@ -202,11 +202,11 @@ export type NzSelectSizeType = NzSizeLDSType;
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'finalSize() === "large"',
     '[class.ant-select-sm]': 'finalSize() === "small"',
-    '[class.ant-select-show-arrow]': `nzShowArrow`,
+    '[class.ant-select-show-arrow]': `showArrow`,
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-show-search]': `(nzShowSearch || nzMode !== 'default') && !nzDisabled`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
-    '[class.ant-select-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
+    '[class.ant-select-borderless]': `nzVariant === 'borderless'`,
     '[class.ant-select-filled]': `nzVariant === 'filled'`,
     '[class.ant-select-underlined]': `nzVariant === 'underlined'`,
     '[class.ant-select-open]': 'nzOpen',
@@ -228,8 +228,17 @@ export type NzSelectSizeType = NzSizeLDSType;
     NzOptionContainerComponent
   ]
 })
-export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnChanges, OnDestroy {
+export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  private readonly ngZone = inject(NgZone);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly renderer = inject(Renderer2);
+  private readonly platform = inject(Platform);
+  private readonly focusMonitor = inject(FocusMonitor);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
@@ -246,6 +255,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzMaxTagCount = Infinity;
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
+  @Input() nzPrefix: TemplateRef<NzSafeAny> | string | null = null;
   @Input()
   @WithConfig()
   nzSuffixIcon: TemplateRef<NzSafeAny> | string | null = null;
@@ -259,10 +269,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input({ transform: booleanAttribute }) nzAllowClear = false;
-  /**
-   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
-   */
-  @Input({ transform: booleanAttribute }) @WithConfig() nzBorderless = false;
   @Input({ transform: booleanAttribute }) nzShowSearch = false;
   @Input({ transform: booleanAttribute }) nzLoading = false;
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
@@ -273,13 +279,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input({ transform: booleanAttribute }) nzSelectOnTab = false;
   @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
+  @Input({ transform: booleanAttribute }) nzShowArrow: boolean = true;
 
-  @Input({ transform: booleanAttribute })
-  set nzShowArrow(value: boolean) {
-    this._nzShowArrow = value;
-  }
-  get nzShowArrow(): boolean {
-    return this._nzShowArrow === undefined ? this.nzMode === 'default' : this._nzShowArrow;
+  get showArrow(): boolean {
+    return this.nzShowArrow || !!this.nzSuffixIcon;
   }
 
   get isMultiple(): boolean {
@@ -299,6 +302,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzBlur = new EventEmitter<void>();
   @Output() readonly nzFocus = new EventEmitter<void>();
+  readonly nzOnClear = output<void>();
   @ViewChild(CdkOverlayOrigin, { static: true, read: ElementRef }) originElement!: ElementRef;
   @ViewChild(CdkConnectedOverlay, { static: true }) cdkConnectedOverlay!: CdkConnectedOverlay;
   @ViewChild(NzSelectTopControlComponent, { static: true }) nzSelectTopControlComponent!: NzSelectTopControlComponent;
@@ -324,7 +328,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private searchValue: string = '';
   private isReactiveDriven = false;
   private value: NzSafeAny | NzSafeAny[];
-  private _nzShowArrow: boolean | undefined;
   private requestId: number = -1;
   private isNzDisableFirstChange: boolean = true;
 
@@ -460,7 +463,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       .map(item => item.nzValue)
       .filter(item => this.listOfValue.findIndex(v => this.compareWith(v, item)) === -1);
     /**
-     * Limit the number of selected item to nzMaxMultipleCount
+     * Limit the number of selected items to nzMaxMultipleCount
      */
     const limitWithinMaxCount = <T>(value: T[]): T[] =>
       this.isMaxMultipleCountSet ? value.slice(0, this.nzMaxMultipleCount) : value;
@@ -570,6 +573,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   onClearSelection(): void {
     this.updateListOfValue([]);
+    this.nzOnClear.emit();
   }
 
   onClickOutside(event: MouseEvent): void {
@@ -595,8 +599,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   updateCdkConnectedOverlayStatus(): void {
     if (this.platform.isBrowser && this.originElement.nativeElement) {
       const triggerWidth = this.triggerWidth;
-      cancelRequestAnimationFrame(this.requestId);
-      this.requestId = reqAnimFrame(() => {
+      cancelAnimationFrame(this.requestId);
+      this.requestId = requestAnimationFrame(() => {
         // Blink triggers style and layout pipelines anytime the `getBoundingClientRect()` is called, which may cause a
         // frame drop. That's why it's scheduled through the `requestAnimationFrame` to unload the composite thread.
         this.triggerWidth = this.originElement.nativeElement.getBoundingClientRect().width;
@@ -611,7 +615,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   }
 
   updateCdkConnectedOverlayPositions(): void {
-    reqAnimFrame(() => {
+    requestAnimationFrame(() => {
       this.cdkConnectedOverlay?.overlayRef?.updatePosition();
     });
   }
@@ -620,17 +624,17 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
-  constructor(
-    private ngZone: NgZone,
-    private destroy$: NzDestroyService,
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private host: ElementRef<HTMLElement>,
-    private renderer: Renderer2,
-    private platform: Platform,
-    private focusMonitor: FocusMonitor,
-    private directionality: Directionality
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      cancelAnimationFrame(this.requestId);
+      this.focusMonitor.stopMonitoring(this.host);
+    });
+
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.size.set(this.nzSize);
+      this.cdr.markForCheck();
+    });
+  }
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
     /** https://github.com/angular/angular/issues/14988 **/
@@ -721,7 +725,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         }),
         withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
@@ -729,7 +733,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
     this.focusMonitor
       .monitor(this.host, true)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {
           this.focused = false;
@@ -745,7 +749,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         }
       });
     combineLatest([this.listOfValue$, this.listOfTemplateItem$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([listOfSelectedValue, listOfTemplateItem]) => {
         const listOfTagItem = listOfSelectedValue
           .filter(() => this.nzMode === 'tags')
@@ -763,23 +767,15 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
         this.updateListOfContainerItem();
       });
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
-    this.nzConfigService
-      .getConfigChangeEventForComponent('select')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.size.set(this.nzSize);
-        this.cdr.markForCheck();
-      });
-
     this.dir = this.directionality.value;
 
     fromEventOutsideAngular(this.host.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         if ((this.nzOpen && this.nzShowSearch) || this.nzDisabled) {
           return;
@@ -793,7 +789,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     // `markForCheck()` internally, which means the whole component tree (starting from the root and
     // going down to the select component) will be re-checked and updated (if needed).
     // This is safe to do that manually since `setOpenState()` calls `markForCheck()` if needed.
-    this.cdkConnectedOverlay.overlayKeydown.pipe(takeUntil(this.destroy$)).subscribe(event => {
+    this.cdkConnectedOverlay.overlayKeydown.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
       if (event.keyCode === ESCAPE) {
         this.setOpenState(false);
       }
@@ -815,7 +811,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
               ]
             ).pipe(startWith(true))
           ),
-          takeUntil(this.destroy$)
+          takeUntilDestroyed(this.destroyRef)
         )
         .subscribe(() => {
           const listOfOptionInterface = this.listOfNzOptionComponent.toArray().map(item => {
@@ -837,11 +833,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
           this.cdr.markForCheck();
         });
     }
-  }
-
-  ngOnDestroy(): void {
-    cancelRequestAnimationFrame(this.requestId);
-    this.focusMonitor.stopMonitoring(this.host);
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {

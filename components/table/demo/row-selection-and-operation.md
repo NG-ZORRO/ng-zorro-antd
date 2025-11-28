@@ -12,6 +12,3 @@ title:
 ## en-US
 
 Rows can be selectable by making first column as a selectable column, to perform operations and clear selections after selecting some rows, all data strategy should be controlled by the developers.
-
-
-

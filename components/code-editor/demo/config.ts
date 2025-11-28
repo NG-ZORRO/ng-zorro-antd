@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
@@ -30,13 +30,13 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
   `
 })
 export class NzDemoCodeEditorConfigComponent {
+  private nzConfigService = inject(NzConfigService);
+
   dark = false;
 
   code = `**All monaco editor instances on the same page always have the same color. It's a by-design of monaco editor.**
 
 You can refer to [this issue](https://github.com/Microsoft/monaco-editor/issues/338).`;
-
-  constructor(private nzConfigService: NzConfigService) {}
 
   onDarkModeChange(dark: boolean): void {
     this.dark = dark;

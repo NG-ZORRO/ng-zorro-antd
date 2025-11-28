@@ -7,12 +7,10 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/8cYb5seNB/Radio.svg'
 description: 用于在多个备选项中选中单个状态。
 ---
 
-
 ## 何时使用
 
 - 用于在多个备选项中选中单个状态。
 - 和 Select 的区别是，Radio 所有选项默认可见，方便用户在比较中选择，因此选项不宜过多。
-
 
 ## API
 
@@ -45,7 +43,7 @@ description: 用于在多个备选项中选中单个状态。
 
 可以通过 `ViewChild` 等其他方式获取 `NzRadioComponent` 使用以下方法
 
-| 名称    | 描述     |
-| ------- | -------- |
+| 名称      | 描述     |
+| --------- | -------- |
 | `blur()`  | 移除焦点 |
 | `focus()` | 获取焦点 |

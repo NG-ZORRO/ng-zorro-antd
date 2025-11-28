@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Custom the content of nz-select via `nzCustomTemplate`.
-

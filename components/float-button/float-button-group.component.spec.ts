@@ -3,12 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { BidiModule, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzFourDirectionType, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -16,22 +16,25 @@ import { NzFloatButtonGroupComponent } from './float-button-group.component';
 import { NzFloatButtonModule } from './float-button.module';
 
 describe('nz-float-button-group', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
-  describe('float-button-group basic', () => {
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestFloatButtonGroupBasicComponent>;
     let testComponent: NzTestFloatButtonGroupBasicComponent;
     let resultEl: DebugElement;
+    let groupComponent: NzFloatButtonGroupComponent;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFloatButtonGroupBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzFloatButtonGroupComponent));
+      groupComponent = resultEl.componentInstance;
     });
 
     it('basic', () => {
@@ -43,10 +46,16 @@ describe('nz-float-button-group', () => {
       testComponent.nzShape = 'square';
       fixture.detectChanges();
       expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-square');
+      const innerButtons = [
+        ...groupComponent.nzFloatButtonComponents(),
+        ...groupComponent.nzFloatButtonTopComponents()
+      ];
+      innerButtons.forEach(btn => {
+        expect(btn.shape()).toBe('square');
+      });
     });
 
     it('nzTrigger hover', () => {
-      testComponent.nzIcon = testComponent.icon;
       testComponent.nzTrigger = 'hover';
       fixture.detectChanges();
       resultEl.nativeElement.getElementsByClassName('ant-float-btn')[0].dispatchEvent(new MouseEvent('mouseover'));
@@ -62,7 +71,6 @@ describe('nz-float-button-group', () => {
     });
 
     it('nzTrigger click', () => {
-      testComponent.nzIcon = testComponent.icon;
       testComponent.nzTrigger = 'click';
       fixture.detectChanges();
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
@@ -78,7 +86,6 @@ describe('nz-float-button-group', () => {
     });
 
     it('nzOpen true', () => {
-      testComponent.nzIcon = testComponent.icon;
       testComponent.nzOpen = true;
       testComponent.nzTrigger = 'click';
       fixture.detectChanges();
@@ -88,7 +95,6 @@ describe('nz-float-button-group', () => {
     });
 
     it('nzOpen false', () => {
-      testComponent.nzIcon = testComponent.icon;
       testComponent.nzOpen = false;
       testComponent.nzTrigger = 'click';
       fixture.detectChanges();
@@ -98,24 +104,83 @@ describe('nz-float-button-group', () => {
         false
       );
     });
-  });
-});
 
-describe('nz-float-button-group RTL', () => {
-  let fixture: ComponentFixture<NzTestFloatButtonRtlComponent>;
-  let resultEl: DebugElement;
+    describe('float-button-group placement', () => {
+      it('should set correct class for nzPlacement top', () => {
+        testComponent.nzTrigger = 'click';
+        testComponent.nzPlacement = 'top';
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-top');
+        // is not menu mode
+        testComponent.nzTrigger = null;
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-top');
+      });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      it('should set correct class for nzPlacement bottom', () => {
+        testComponent.nzTrigger = 'click';
+        testComponent.nzPlacement = 'bottom';
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-bottom');
+        // is not menu mode
+        testComponent.nzTrigger = null;
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-bottom');
+      });
+
+      it('should set correct class for nzPlacement left', () => {
+        testComponent.nzTrigger = 'click';
+        testComponent.nzPlacement = 'left';
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-left');
+        // is not menu mode
+        testComponent.nzTrigger = null;
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-left');
+      });
+
+      it('should set correct class for nzPlacement right', () => {
+        testComponent.nzTrigger = 'click';
+        testComponent.nzPlacement = 'right';
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-right');
+        // is not menu mode
+        testComponent.nzTrigger = null;
+        fixture.detectChanges();
+        expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-right');
+      });
+
+      it('should get correct animation class according to nzPlacement', () => {
+        fixture.detectChanges();
+        // @ts-ignore
+        const { enterAnimation, leaveAnimation } = groupComponent;
+        expect(enterAnimation()).toBe('ant-float-btn-enter-top');
+        expect(leaveAnimation()).toBe('ant-float-btn-leave-top');
+        testComponent.nzPlacement = 'right';
+        fixture.detectChanges();
+        expect(enterAnimation()).toBe('ant-float-btn-enter-right');
+        expect(leaveAnimation()).toBe('ant-float-btn-leave-right');
+      });
     });
-    fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
-    resultEl = fixture.debugElement.query(By.directive(NzFloatButtonGroupComponent));
-  }));
+  });
 
-  it('rtl', () => {
-    fixture.detectChanges();
-    expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-rtl');
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzTestFloatButtonRtlComponent>;
+    let resultEl: DebugElement;
+    let groupComponent: NzFloatButtonGroupComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
+      resultEl = fixture.debugElement.query(By.directive(NzFloatButtonGroupComponent));
+      groupComponent = resultEl.componentInstance;
+    });
+
+    it('rtl', () => {
+      fixture.detectChanges();
+      // @ts-ignore
+      expect(groupComponent.dir()).toBe('rtl');
+      expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-rtl');
+    });
   });
 });
 
@@ -124,24 +189,20 @@ describe('nz-float-button-group RTL', () => {
   imports: [NzFloatButtonModule, NzIconModule],
   template: `
     <nz-float-button-group
-      [nzIcon]="nzIcon"
+      nzIcon="question-circle"
       [nzShape]="nzShape"
       [nzTrigger]="nzTrigger"
       [nzOpen]="nzOpen"
+      [nzPlacement]="nzPlacement"
       (nzOnOpenChange)="onClick($event)"
-    >
-    </nz-float-button-group>
-    <ng-template #icon>
-      <nz-icon nzType="question-circle" nzTheme="outline" />
-    </ng-template>
+    />
   `
 })
 export class NzTestFloatButtonGroupBasicComponent {
-  nzShape: 'circle' | 'square' = 'circle';
+  nzShape: NzShapeSCType = 'circle';
   nzTrigger: 'click' | 'hover' | null = null;
   nzOpen: boolean | null = null;
-  nzIcon: TemplateRef<void> | null = null;
-  @ViewChild('icon', { static: false }) icon!: TemplateRef<void>;
+  nzPlacement: NzFourDirectionType = 'top';
 
   isClick: boolean = false;
 
@@ -154,11 +215,10 @@ export class NzTestFloatButtonGroupBasicComponent {
   imports: [BidiModule, NzFloatButtonModule],
   template: `
     <div [dir]="direction">
-      <nz-float-button-group></nz-float-button-group>
+      <nz-float-button-group />
     </div>
   `
 })
 export class NzTestFloatButtonRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
   direction: Direction = 'rtl';
 }

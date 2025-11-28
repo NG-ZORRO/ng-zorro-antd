@@ -8,7 +8,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   ViewEncapsulation
@@ -30,6 +29,8 @@ import { NzMessageData } from './typings';
   template: `
     <div
       class="ant-message-notice"
+      [class]="instance.options?.nzClass"
+      [style]="instance.options?.nzStyle"
       [@moveUpMotion]="instance.state"
       (@moveUpMotion.done)="animationStateChanged.next($event)"
       (mouseenter)="onEnter()"
@@ -65,7 +66,7 @@ import { NzMessageData } from './typings';
   `,
   imports: [NzIconModule, NzOutletModule]
 })
-export class NzMessageComponent extends NzMNComponent implements OnInit, OnDestroy {
+export class NzMessageComponent extends NzMNComponent implements OnInit {
   @Input() override instance!: Required<NzMessageData>;
   @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
   index?: number;

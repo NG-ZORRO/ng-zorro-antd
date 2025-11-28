@@ -3,21 +3,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subject, Subscription } from 'rxjs';
 
-import { NzDragService } from 'ng-zorro-antd/core/services';
 import { createMouseEvent, createTouchEvent, dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core/testing';
+
+import { NzDragService } from './drag';
 
 @Component({
   template: ''
 })
 export class NzTestDragServiceComponent {
+  public nzDragService = inject(NzDragService);
   drag$ = new Subject<void>();
   complete$ = new Subject<void>();
-
-  constructor(public readonly nzDragService: NzDragService) {}
 
   drag(event: MouseEvent | TouchEvent): void {
     this.nzDragService.requestDraggingSequence(event).subscribe({

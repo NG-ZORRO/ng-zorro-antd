@@ -12,6 +12,3 @@ title:
 ## en-US
 
 Classic page layouts.
-
-
-

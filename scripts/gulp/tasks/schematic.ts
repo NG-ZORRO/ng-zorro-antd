@@ -11,7 +11,7 @@ import { buildConfig } from '../../build-config';
 import { copyResources } from '../../schematics/copy-resources';
 import { generate as demo2schematics } from '../../schematics/demo2schematics';
 import { setVersion } from '../../schematics/set-version';
-import { cleanTask, execNodeTask } from '../util/task-helpers';
+import { cleanTask, execTask } from '../util/task-helpers';
 
 const schematicsDir = join(buildConfig.projectDir, 'schematics');
 const tsconfigFile = join(schematicsDir, 'tsconfig.json');
@@ -25,7 +25,7 @@ task('generate:schematics', done => {
 });
 
 /** Build the schematics in the publish directory. */
-task('tsc:schematics', execNodeTask('typescript', 'tsc', ['-p', tsconfigFile]));
+task('tsc:schematics', execTask('tsc', ['-p', tsconfigFile]));
 
 /** Copies all resources files to the publish directory. */
 task('schematics:copy-resources', done => {
@@ -43,7 +43,7 @@ task(
 );
 
 /** Test the schematics */
-task('test:schematics', execNodeTask('jasmine', 'jasmine', ['publish/schematics/**/*.spec.js']));
+task('test:schematics', execTask('jasmine', ['publish/schematics/**/*.spec.js']));
 
 /** Test the ng-update schematics */
-task('test:schematics-update', execNodeTask('jasmine', 'jasmine', ['publish/schematics/ng-update/**/*.spec.js']));
+task('test:schematics-update', execTask('jasmine', ['publish/schematics/ng-update/**/*.spec.js']));

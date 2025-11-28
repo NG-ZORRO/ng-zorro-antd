@@ -5,18 +5,20 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  inject,
   Input,
   OnInit,
-  ViewEncapsulation,
-  booleanAttribute
+  ViewEncapsulation
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
+import type { NzSizeLMSType } from 'ng-zorro-antd/core/types';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
 
@@ -34,38 +36,34 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
     '[class.ant-collapse-icon-position-end]': `nzExpandIconPosition === 'end'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered',
-    '[class.ant-collapse-rtl]': "dir === 'rtl'"
-  },
-  providers: [NzDestroyService]
+    '[class.ant-collapse-rtl]': "dir === 'rtl'",
+    '[class.ant-collapse-small]': `nzSize === 'small'`,
+    '[class.ant-collapse-large]': `nzSize === 'large'`
+  }
 })
 export class NzCollapseComponent implements OnInit {
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input({ transform: booleanAttribute }) @WithConfig() nzAccordion: boolean = false;
   @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = true;
   @Input({ transform: booleanAttribute }) @WithConfig() nzGhost: boolean = false;
   @Input() nzExpandIconPosition: 'start' | 'end' = 'start';
+  @Input() nzSize: NzSizeLMSType = 'middle';
 
   dir: Direction = 'ltr';
 
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality,
-    private destroy$: NzDestroyService
-  ) {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });

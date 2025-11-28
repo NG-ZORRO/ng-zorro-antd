@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Group table head with fixed columns.
-
-

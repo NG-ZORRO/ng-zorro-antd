@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Control sorters and filters by `[nzSortOrder]` and `[nzFilters]`.
-

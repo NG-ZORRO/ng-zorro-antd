@@ -27,7 +27,6 @@ export class NzTabLinkTemplateDirective {
   exportAs: 'nzTabLink'
 })
 export class NzTabLinkDirective {
+  elementRef = inject(ElementRef<HTMLAnchorElement>);
   routerLink = inject(RouterLink, { self: true, optional: true });
-
-  constructor(public elementRef: ElementRef<HTMLAnchorElement>) {}
 }

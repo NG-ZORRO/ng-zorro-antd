@@ -9,37 +9,30 @@ import {
   ConnectedOverlayPositionChange,
   FlexibleConnectedPositionStrategyOrigin
 } from '@angular/cdk/overlay';
-import { Directive, ElementRef, Input, booleanAttribute } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { Directive, ElementRef, Input, booleanAttribute, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { getPlacementName } from './overlay-position';
 
-/** Equivalent of `ClientRect` without some of the properties we don't care about. */
-type Dimensions = Omit<ClientRect, 'x' | 'y' | 'toJSON'>;
+/** Equivalent of `DOMRect` without some of the properties we don't care about. */
+type Dimensions = Omit<DOMRect, 'x' | 'y' | 'toJSON'>;
 
 @Directive({
   selector: '[cdkConnectedOverlay][nzConnectedOverlay]',
-  exportAs: 'nzConnectedOverlay',
-  providers: [NzDestroyService]
+  exportAs: 'nzConnectedOverlay'
 })
 export class NzConnectedOverlayDirective {
+  private readonly cdkConnectedOverlay = inject(CdkConnectedOverlay);
   @Input({ transform: booleanAttribute }) nzArrowPointAtCenter: boolean = false;
 
-  constructor(
-    private readonly cdkConnectedOverlay: CdkConnectedOverlay,
-    private readonly nzDestroyService: NzDestroyService
-  ) {
+  constructor() {
     this.cdkConnectedOverlay.backdropClass = 'nz-overlay-transparent-backdrop';
 
-    this.cdkConnectedOverlay.positionChange
-      .pipe(takeUntil(this.nzDestroyService))
-      .subscribe((position: ConnectedOverlayPositionChange) => {
-        if (this.nzArrowPointAtCenter) {
-          this.updateArrowPosition(position);
-        }
-      });
+    this.cdkConnectedOverlay.positionChange.pipe(takeUntilDestroyed()).subscribe(position => {
+      if (this.nzArrowPointAtCenter) {
+        this.updateArrowPosition(position);
+      }
+    });
   }
 
   private updateArrowPosition(position: ConnectedOverlayPositionChange): void {

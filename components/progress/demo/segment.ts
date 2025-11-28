@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 import { NzProgressModule } from 'ng-zorro-antd/progress';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-progress-segment',
-  imports: [NzProgressModule, NzToolTipModule],
+  imports: [NzProgressModule, NzTooltipModule],
   template: `
     <nz-progress
       nz-tooltip

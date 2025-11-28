@@ -104,7 +104,8 @@
         "type": "list",
         "items": [
           "blank",
-          "sidemenu"
+          "sidemenu",
+          "topnav"
         ]
       }
     },

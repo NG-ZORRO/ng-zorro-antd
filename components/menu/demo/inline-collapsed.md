@@ -16,4 +16,3 @@ title:
 Inline menu could be collapsed.
 
 Here is [a complete demo](/components/layout/en/#components-layout-demo-side) with sider layout.
-

@@ -3,8 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Overlay } from '@angular/cdk/overlay';
-import { Injectable, Injector, TemplateRef } from '@angular/core';
+import { Injectable, TemplateRef } from '@angular/core';
 
 import type { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzMNService } from 'ng-zorro-antd/message';
@@ -20,10 +19,6 @@ let notificationId = 0;
 })
 export class NzNotificationService extends NzMNService<NzNotificationContainerComponent> {
   protected componentPrefix = 'notification-';
-
-  constructor(overlay: Overlay, injector: Injector) {
-    super(overlay, injector);
-  }
 
   success(
     title: string | TemplateRef<void>,

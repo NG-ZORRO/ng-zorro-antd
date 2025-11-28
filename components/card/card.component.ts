@@ -22,7 +22,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
@@ -95,7 +95,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
   imports: [NzOutletModule, NgTemplateOutlet, NzSkeletonModule]
 })
 export class NzCardComponent implements OnInit {
-  public nzConfigService = inject(NzConfigService);
   private cdr = inject(ChangeDetectorRef);
   private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
@@ -117,12 +116,7 @@ export class NzCardComponent implements OnInit {
   dir: Direction = 'ltr';
 
   constructor() {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
   }
 
   ngOnInit(): void {

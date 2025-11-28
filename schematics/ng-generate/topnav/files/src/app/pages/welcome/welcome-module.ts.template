@@ -1,0 +1,12 @@
+import { NgModule } from '@angular/core';
+
+import { WelcomeRoutingModule } from './welcome-routing-module';
+
+import <% if(!exportDefault) { %>{ <% }%>Welcome<%= classify(type) %> <% if(!exportDefault) {%>} <% }%>from './welcome<%= type ? '.' + dasherize(type): '' %>';
+
+@NgModule({
+  imports: [WelcomeRoutingModule],
+  declarations: [Welcome<%= type ? classify(type): '' %>],
+  exports: [Welcome<%= type ? classify(type): '' %>]
+})
+export class WelcomeModule {}

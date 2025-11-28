@@ -7,11 +7,9 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/5FrZKStG_/List.svg'
 description: Basic list display, which can carry text, lists, pictures, paragraphs.
 ---
 
-
 ## When To Use
 
 A list can be used to display content related to a single subject. The content can consist of multiple elements of varying type and size.
-
 
 ## API
 

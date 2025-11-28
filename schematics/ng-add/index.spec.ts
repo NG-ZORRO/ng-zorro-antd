@@ -6,11 +6,11 @@
 import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/schematics';
 
 import { normalize } from '@angular-devkit/core';
-import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import { Tree } from '@angular-devkit/schematics';
 import { NodePackageName } from '@angular-devkit/schematics/tasks/package-manager/options';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { readWorkspace } from '@schematics/angular/utility';
+import { getPackageJsonDependency } from '@schematics/angular/utility/dependencies';
 
 import { join } from 'path';
 
@@ -35,32 +35,20 @@ describe('ng-add schematic', () => {
   it('should update package.json', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add', options, appTree);
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
-    const dependencies = packageJson.dependencies;
-
-    expect(dependencies['ng-zorro-antd']).toBeDefined();
-
+    expect(getPackageJsonDependency(tree, 'ng-zorro-antd')).not.toBeNull();
     expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(true);
   });
 
   it('should add hammerjs to package.json', async () => {
     const options = { ...defaultOptions, gestures: true };
     const tree = await runner.runSchematic('ng-add', options, appTree);
-
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
-    const dependencies = packageJson.dependencies;
-
-    expect(dependencies.hammerjs).toBeDefined();
+    expect(getPackageJsonDependency(tree, 'hammerjs')).not.toBeNull();
   });
 
   it('should skip package.json', async () => {
     const options = { ...defaultOptions, skipPackageJson: true };
     const tree = await runner.runSchematic('ng-add', options, appTree);
-
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
-    const dependencies = packageJson.dependencies;
-
-    expect(dependencies['ng-zorro-antd']).toBeUndefined();
+    expect(getPackageJsonDependency(tree, 'ng-zorro-antd')).toBeNull();
   });
 
   it('should skip install dependency package', async () => {
@@ -69,11 +57,17 @@ describe('ng-add schematic', () => {
     expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(false);
   });
 
+  it('should add less as devDependencies when choosing custom theme in non-LESS project', async () => {
+    const options = { ...defaultOptions, theme: true };
+    const tree = await runner.runSchematic('ng-add', options, appTree);
+    expect(getPackageJsonDependency(tree, 'less')).not.toBeNull();
+  });
+
   it('should add hammerjs import to project main file', async () => {
     const options = { ...defaultOptions, gestures: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
+    const workspace = await readWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace, defaultOptions.project);
     const fileContent = getFileContent(tree, normalize(join(project.sourceRoot, 'main.ts')));
 
     expect(fileContent).toContain(`import 'hammerjs';`);
@@ -82,8 +76,8 @@ describe('ng-add schematic', () => {
   it('should add default theme', async () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
+    const workspace = await readWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace, defaultOptions.project);
 
     expect(getProjectTargetOptions(project, 'build').styles).toContain(
       './node_modules/ng-zorro-antd/ng-zorro-antd.min.css'
@@ -95,8 +89,8 @@ describe('ng-add schematic', () => {
 
     appTree = await createTestApp(runner, { style: 'less', standalone: false });
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
+    const workspace = await readWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace, defaultOptions.project);
 
     const customThemePath = normalize(join(project.sourceRoot, 'styles.less'));
     const buffer = tree.read(customThemePath);
@@ -110,8 +104,8 @@ describe('ng-add schematic', () => {
   it('should add custom theme file when no LESS file in project', async () => {
     const options = { ...defaultOptions, theme: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
+    const workspace = await readWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace, defaultOptions.project);
 
     expect(getProjectTargetOptions(project, 'build').styles).toContain('projects/ng-zorro/src/theme.less');
   });
@@ -119,8 +113,8 @@ describe('ng-add schematic', () => {
   it('should add icon assets', async () => {
     const options = { ...defaultOptions, dynamicIcon: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const workspace = await getWorkspace(tree);
-    const project = getProjectFromWorkspace(workspace as unknown as WorkspaceDefinition, defaultOptions.project);
+    const workspace = await readWorkspace(tree);
+    const project = getProjectFromWorkspace(workspace, defaultOptions.project);
     const assets = getProjectTargetOptions(project, 'build').assets;
 
     const assetsString = JSON.stringify(assets);
@@ -135,7 +129,6 @@ describe('ng-add schematic', () => {
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app-module.ts');
 
     expect(fileContent).toContain('provideHttpClient()');
-    expect(fileContent).toContain('FormsModule');
   });
 
   it('should add provideAnimationsAsync() function call if animations is enable', async () => {
@@ -173,18 +166,14 @@ describe('ng-add schematic', () => {
     expect(fileContent).toContain('registerLocaleData(zh)');
   });
 
-  /**
-   * Test skip because it seems that it's not possible anymore to call the runSchematics method twice in the same test.
-   * error: getStart of undefined
-   */
-  xit('should not add locale id if locale id is set up', async () => {
+  it('should not add locale id if locale id is set up', async () => {
     const options = { ...defaultOptions, i18n: 'zh_CN' };
     await runner.runSchematic('ng-add-setup-project', { ...defaultOptions }, appTree);
 
     spyOn(console, 'log');
 
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
+    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app-module.ts');
 
     expect(fileContent).toContain('provideNzI18n(en_US)');
     expect(fileContent).toContain('registerLocaleData(en)');

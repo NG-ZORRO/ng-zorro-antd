@@ -8,25 +8,25 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { arraysEqual } from 'ng-zorro-antd/core/util';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzI18nService, NzTableI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzRadioComponent } from 'ng-zorro-antd/radio';
@@ -88,21 +88,24 @@ interface NzThItemInterface {
     NgTemplateOutlet,
     NzFilterTriggerComponent,
     NzIconModule,
-    NzDropDownModule,
+    NzDropdownModule,
     NzRadioComponent,
     NzCheckboxModule,
     FormsModule,
     NzButtonModule
   ]
 })
-export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
+export class NzTableFilterComponent implements OnChanges, OnInit {
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly i18n = inject(NzI18nService);
+  private readonly destroyRef = inject(DestroyRef);
+
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() customFilter = false;
   @Input() extraTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() filterMultiple = true;
   @Input() listOfFilter: NzTableFilterList = [];
   @Output() readonly filterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
-  private destroy$ = new Subject<boolean>();
   locale!: NzTableI18nInterface;
   isChecked = false;
   isVisible = false;
@@ -168,13 +171,8 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
     return listOfParsedFilter.some(item => item.checked);
   }
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService
-  ) {}
-
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Table');
       this.cdr.markForCheck();
     });
@@ -186,9 +184,5 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
       this.listOfParsedFilter = this.parseListOfFilter(this.listOfFilter);
       this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
     }
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

@@ -58,7 +58,7 @@ const options: NzCascaderOption[] = [
       [nzOptions]="nzOptions"
       [(ngModel)]="values"
       (ngModelChange)="onChanges($event)"
-    ></nz-cascader>
+    />
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
       @for (label of labels; track label) {
@@ -78,7 +78,7 @@ const options: NzCascaderOption[] = [
   `
 })
 export class NzDemoCascaderCustomRenderComponent {
-  nzOptions: NzCascaderOption[] = options;
+  readonly nzOptions: NzCascaderOption[] = options;
   values: string[] | null = null;
 
   onChanges(values: string[]): void {

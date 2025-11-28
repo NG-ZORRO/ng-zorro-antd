@@ -8,16 +8,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  inject,
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { Subscription, interval } from 'rxjs';
 
 import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 
@@ -44,26 +43,31 @@ const REFRESH_INTERVAL = 1000 / 30;
   `,
   imports: [NzStatisticComponent, NzPipesModule]
 })
-export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
+export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges {
+  private ngZone = inject(NgZone);
+  private platform = inject(Platform);
+
   @Input() nzFormat: string = 'HH:mm:ss';
   @Output() readonly nzCountdownFinish = new EventEmitter<void>();
 
   diff!: number;
 
   private target: number = 0;
-  private updater_?: Subscription | null;
+  private intervalId: ReturnType<typeof setInterval> | null = null;
 
-  constructor(
-    private ngZone: NgZone,
-    private platform: Platform
-  ) {
+  constructor() {
     super();
+
+    this.destroyRef.onDestroy(() => {
+      this.stopTimer();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzValue) {
-      this.target = Number(changes.nzValue.currentValue);
-      if (!changes.nzValue.isFirstChange()) {
+    const { nzValue } = changes;
+    if (nzValue) {
+      this.target = Number(nzValue.currentValue);
+      if (!nzValue.isFirstChange()) {
         this.syncTimer();
       }
     }
@@ -72,10 +76,6 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   override ngOnInit(): void {
     super.ngOnInit();
     this.syncTimer();
-  }
-
-  override ngOnDestroy(): void {
-    this.stopTimer();
   }
 
   syncTimer(): void {
@@ -90,18 +90,18 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
     if (this.platform.isBrowser) {
       this.ngZone.runOutsideAngular(() => {
         this.stopTimer();
-        this.updater_ = interval(REFRESH_INTERVAL).subscribe(() => {
+        this.intervalId = setInterval(() => {
           this.updateValue();
           this.cdr.detectChanges();
-        });
+        }, REFRESH_INTERVAL);
       });
     }
   }
 
   stopTimer(): void {
-    if (this.updater_) {
-      this.updater_.unsubscribe();
-      this.updater_ = null;
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
     }
   }
 

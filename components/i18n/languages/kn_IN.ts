@@ -130,5 +130,8 @@ export default {
     uploadError: 'ಏರಿಸುವ ದೋಷ',
     previewFile: 'ಫೈಲ್ ಮುನ್ನೋಟ',
     downloadFile: 'ಫೈಲ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ'
+  },
+  Form: {
+    optional: '(ಅಗತ್ಯ)'
   }
 };

@@ -1,8 +1,9 @@
 ---
-order: 11
+order: 13
+version: 20.4.0
 title:
-    zh-CN: 带移除图标
-    en-US: With clear icon
+  zh-CN: 带移除图标
+  en-US: With clear icon
 ---
 
 ## zh-CN
@@ -12,4 +13,3 @@ title:
 ## en-US
 
 Input with clear icon.
-

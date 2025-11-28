@@ -21,9 +21,7 @@ Ant Design 的样式使用了 [Less](https://lesscss.org/) 作为开发语言，
 {
   "build": {
     "options": {
-      "styles": [
-        "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
-      ]
+      "styles": ["./node_modules/ng-zorro-antd/ng-zorro-antd.min.css"]
     }
   }
 }
@@ -45,7 +43,7 @@ Ant Design 的样式使用了 [Less](https://lesscss.org/) 作为开发语言，
 
 ```less
 // 引入官方提供的默认 less 样式文件
-@import "~ng-zorro-antd/ng-zorro-antd.less";
+@import '~ng-zorro-antd/ng-zorro-antd.less';
 
 // 引入官方提供的暗黑 less 样式文件
 //@import "~ng-zorro-antd/ng-zorro-antd.dark.less";
@@ -64,7 +62,7 @@ Ant Design 的样式使用了 [Less](https://lesscss.org/) 作为开发语言，
 样式文件中：
 
 ```css
-@import "~ng-zorro-antd/ng-zorro-antd.css";
+@import '~ng-zorro-antd/ng-zorro-antd.css';
 /*@import "~ng-zorro-antd/ng-zorro-antd.dark.css";*/
 /*@import "~ng-zorro-antd/ng-zorro-antd.compact.css";*/
 /*@import "~ng-zorro-antd/ng-zorro-antd.aliyun.css";*/
@@ -76,9 +74,7 @@ Ant Design 的样式使用了 [Less](https://lesscss.org/) 作为开发语言，
 {
   "build": {
     "options": {
-      "styles": [
-        "node_modules/ng-zorro-antd/ng-zorro-antd.css"
-      ]
+      "styles": ["node_modules/ng-zorro-antd/ng-zorro-antd.css"]
     }
   }
 }
@@ -95,7 +91,7 @@ Ant Design 的样式使用了 [Less](https://lesscss.org/) 作为开发语言，
 ```less
 // Custom Theming for NG-ZORRO
 // For more information: https://ng.ant.design/docs/customize-theme/en
-@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+@import '../node_modules/ng-zorro-antd/ng-zorro-antd.less';
 ```
 
 #### 自定义样式变量
@@ -104,7 +100,7 @@ Ant Design 的样式使用了 [Less](https://lesscss.org/) 作为开发语言，
 
 ```less
 // -------- 引入官方提供的 less 样式入口文件 -----------
-@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+@import '../node_modules/ng-zorro-antd/ng-zorro-antd.less';
 
 // -------- 自定义参数覆盖 -----------
 @primary-color: #f5222d;
@@ -123,11 +119,11 @@ module.exports = {
   module: {
     rules: [
       {
-        test   : /\.less$/,
+        test: /\.less$/,
         loader: 'less-loader',
         options: {
           modifyVars: {
-            'hack': `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
+            hack: `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
             ...darkThemeVars,
             ...compactThemeVars
           },
@@ -137,7 +133,6 @@ module.exports = {
     ]
   }
 };
-
 ```
 
 #### 覆盖为定制主题变量
@@ -146,72 +141,71 @@ Angular CLI 提供了 [custom-webpack](https://www.npmjs.com/package/@angular-bu
 
 1. 在 `angular.json` 中引入 `ng-zorro-antd.less` 文件
 
-    ```json
-    {
-      "styles": [
-        "node_modules/ng-zorro-antd/ng-zorro-antd.less"
-      ]
-    }
-    ```
+   ```json
+   {
+     "styles": ["node_modules/ng-zorro-antd/ng-zorro-antd.less"]
+   }
+   ```
 
 2. 安装 `@angular-builders/custom-webpack` builder
 
-    ```bash
-    npm i -D @angular-builders/custom-webpack
-    ```
+   ```bash
+   npm i -D @angular-builders/custom-webpack
+   ```
 
 3. 新建 webpack 配置文件 `extra-webpack.config.js`
 
-    ```javascript
-    module.exports = {
-      module: {
-        rules: [
-          {
-            test   : /\.less$/,
-            loader: 'less-loader',
-            options: {
-              modifyVars: { // 修改主题变量
-                'primary-color': '#1DA57A',
-                'link-color': '#1DA57A',
-                'border-radius-base': '2px'
-              },
-              javascriptEnabled: true
-            }
-          }
-        ]
-      }
-    };
-    ```
+   ```javascript
+   module.exports = {
+     module: {
+       rules: [
+         {
+           test: /\.less$/,
+           loader: 'less-loader',
+           options: {
+             modifyVars: {
+               // 修改主题变量
+               'primary-color': '#1DA57A',
+               'link-color': '#1DA57A',
+               'border-radius-base': '2px'
+             },
+             javascriptEnabled: true
+           }
+         }
+       ]
+     }
+   };
+   ```
 
 4. 在 `angular.json` 中配置自定义 builder
 
-    ```diff
-      "architect": {
-        "build": {
-    -     "builder": "@angular-devkit/build-angular:browser",
-    +     "builder": "@angular-builders/custom-webpack:browser",
-          "options": {
-    +        "customWebpackConfig": {
-    +          "path": "./extra-webpack.config.js",
-    +          "mergeStrategies": {
-    +            "module.rules": "append"
-    +          },
-    +          "replaceDuplicatePlugins": true
-    +        }
-          },
-        },
-        "serve": {
-    -      "builder": "@angular-devkit/build-angular:dev-server",
-    +      "builder": "@angular-builders/custom-webpack:dev-server",
-        }
-      }
-    ```
+   ```diff
+     "architect": {
+       "build": {
+   -     "builder": "@angular-devkit/build-angular:browser",
+   +     "builder": "@angular-builders/custom-webpack:browser",
+         "options": {
+   +        "customWebpackConfig": {
+   +          "path": "./extra-webpack.config.js",
+   +          "mergeStrategies": {
+   +            "module.rules": "append"
+   +          },
+   +          "replaceDuplicatePlugins": true
+   +        }
+         },
+       },
+       "serve": {
+   -      "builder": "@angular-devkit/build-angular:dev-server",
+   +      "builder": "@angular-builders/custom-webpack:dev-server",
+       }
+     }
+   ```
 
 更多在 Angular CLI 中定制 webpack 的文章可以参考
 
-* [Angular Builder Document](https://www.npmjs.com/package/@angular-builders/custom-webpack)
-* [Angular CLI: Custom webpack Config](https://alligator.io/angular/custom-webpack-config/)
-* [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
+- [Angular Builder Document](https://www.npmjs.com/package/@angular-builders/custom-webpack)
+- [Angular CLI: Custom webpack Config](https://alligator.io/angular/custom-webpack-config/)
+- [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
 
 全部可被自定义 less 变量可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less)。
 
@@ -223,46 +217,46 @@ Angular CLI 提供了 [custom-webpack](https://www.npmjs.com/package/@angular-bu
 
 1. 样式预处理器选项 `stylePreprocessorOptions`
 
-    在`angular.json` 中配置样式预处理器选项 `stylePreprocessorOptions` 并添加路径：
+   在`angular.json` 中配置样式预处理器选项 `stylePreprocessorOptions` 并添加路径：
 
-    ```json
-    "stylePreprocessorOptions": {
-      "includePaths": [
-        "src/styles/themes"
-      ]
-    },
-    ```
+   ```json
+   "stylePreprocessorOptions": {
+     "includePaths": [
+       "src/styles/themes"
+     ]
+   },
+   ```
 
-    于是，在项目组件样式文件里，无需相对路径，`src/styles/themes` 路径下的任意文件定义文件都可以从项目中的任何位置导入，例如：
+   于是，在项目组件样式文件里，无需相对路径，`src/styles/themes` 路径下的任意文件定义文件都可以从项目中的任何位置导入，例如：
 
-    ```less
-    // A relative path works
-    @import 'src/styles/themes/mixin';
-    // But now this works as well
-    @import 'mixin';
-    ```
+   ```less
+   // A relative path works
+   @import 'src/styles/themes/mixin';
+   // But now this works as well
+   @import 'mixin';
+   ```
 
 2. styles 里的 `bundleName` 和 `inject`
 
-    如果需要在项目运行时动态切换主题，你就需要为构建器配置好每个主题的全局上下文样式文件。继续以默认和暗黑主题为例，请在 `angular.json` 的 `styles` 选项数组里进行如下配置：
+   如果需要在项目运行时动态切换主题，你就需要为构建器配置好每个主题的全局上下文样式文件。继续以默认和暗黑主题为例，请在 `angular.json` 的 `styles` 选项数组里进行如下配置：
 
-    ```json
-    "styles": [
-      "src/styles.less",
-      {
-        "input": "src/styles/default.less",
-        "bundleName": "default",
-        "inject": false
-      },
-      {
-        "input": "src/styles/dark.less",
-        "bundleName": "dark",
-        "inject": false
-      }
-    ],
-    ```
+   ```json
+   "styles": [
+     "src/styles.less",
+     {
+       "input": "src/styles/default.less",
+       "bundleName": "default",
+       "inject": false
+     },
+     {
+       "input": "src/styles/dark.less",
+       "bundleName": "dark",
+       "inject": false
+     }
+   ],
+   ```
 
-    `bundleName` 指捆绑包的自定义 CSS 文件名称，方便了之后切换主题创建所需的 link 标签的 href 属性。`inject` 默认为 `true`，会将捆绑包注入。为了动态主题切换则需要将主题捆绑包从注入中排除。
+   `bundleName` 指捆绑包的自定义 CSS 文件名称，方便了之后切换主题创建所需的 link 标签的 href 属性。`inject` 默认为 `true`，会将捆绑包注入。为了动态主题切换则需要将主题捆绑包从注入中排除。
 
 ### 多主题定制
 
@@ -283,7 +277,7 @@ Angular CLI 提供了 [custom-webpack](https://www.npmjs.com/package/@angular-bu
 
 ```less
 @import '../../node_modules/ng-zorro-antd/ng-zorro-antd';
-@import "./themes/dark";
+@import './themes/dark';
 ```
 
 相应的，`src/styles/themes/dark.less` 文件负责定制暗黑主题的样式：
@@ -322,12 +316,12 @@ html {
   &.default {
     @import 'default';
     // 组件样式
-    ...
+    ...;
   }
   &.dark {
-   @import 'dark';
-   // 组件样式
-   ...
+    @import 'dark';
+    // 组件样式
+    ...;
   }
 }
 ```
@@ -354,7 +348,7 @@ html {
 并在所有的项目组件样式文件里，只需要将所有样式传入 `.themeMixin(@rules)` 里即可：
 
 ```less
-@import "mixin"; // 同样的，不需要完整的相对路径
+@import 'mixin'; // 同样的，不需要完整的相对路径
 
 .themeMixin({
   :host {
@@ -382,6 +376,7 @@ private loadCss(href: string, id: string): Promise<Event> {
 }
 
 ```
+
 这里的 `href` 将指代上文配置的[捆绑包](/docs/customize-theme/zh#配置-angular-json-文件)的路径，也就是 `bundleName`的路径。
 
 #### 同步两种主题切换
@@ -417,6 +412,4 @@ loadTheme(firstLoad = true): Promise<Event> {
 
 注意：第一次加载首先需要先将用户默认的项目组件主题加入 html 里，而不是包进 Promise 里，否则开始有一段时间会出现没有主题 `className` 的情况。
 
-
 ## Q&A
-

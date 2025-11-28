@@ -5,7 +5,7 @@
 
 import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ApplicationRef, Component, NgZone, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -25,8 +25,7 @@ import { NzTextEditComponent } from '.';
 import { NzTypographyComponent } from './typography.component';
 import { NzTypographyModule } from './typography.module';
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
-declare const viewport: any;
+declare const viewport: NzSafeAny;
 
 describe('typography', () => {
   let componentElement: HTMLElement;
@@ -36,6 +35,8 @@ describe('typography', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         provideNzIconsTesting(),
         provideNoopAnimations(),
         { provide: NgZone, useFactory: () => new MockNgZone() }

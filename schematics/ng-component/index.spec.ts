@@ -25,13 +25,25 @@ const defaultOptions = {
   inlineTemplate: false,
   changeDetection: ChangeDetection.Default,
   style: Style.Less,
+  type: 'Component',
   skipTests: false,
   module: undefined,
   export: false,
-    project: 'ng-zorro'
+  project: 'ng-zorro'
 };
 
-describe('ng-component schematic', () => {
+function generateModuleContent(moduleName: string): string {
+  return `
+import { NgModule } from '@angular/core';
+@NgModule({
+  imports: [],
+  declarations: []
+})
+export class ${moduleName} {}
+`;
+}
+
+describe('[schematic] ng-component', () => {
   let runner: SchematicTestRunner;
   let appTree: Tree;
 
@@ -55,11 +67,63 @@ describe('ng-component schematic', () => {
     );
   });
 
+  it('should respect the type option', async () => {
+    const options = { ...defaultOptions, type: 'container' };
+    const tree = await runner.runSchematic('component', options, appTree);
+    const files = tree.files;
+
+    expect(files).toEqual(
+      jasmine.arrayContaining([
+        '/projects/ng-zorro/src/app/test/test.container.less',
+        '/projects/ng-zorro/src/app/test/test.container.html',
+        '/projects/ng-zorro/src/app/test/test.container.spec.ts',
+        '/projects/ng-zorro/src/app/test/test.container.ts'
+      ])
+    );
+  });
+
+  it('should allow empty string in the type option', async () => {
+    const options = { ...defaultOptions, type: '' };
+    const tree = await runner.runSchematic('component', options, appTree);
+    const files = tree.files;
+
+    expect(files).toEqual(
+      jasmine.arrayContaining([
+        '/projects/ng-zorro/src/app/test/test.less',
+        '/projects/ng-zorro/src/app/test/test.html',
+        '/projects/ng-zorro/src/app/test/test.spec.ts',
+        '/projects/ng-zorro/src/app/test/test.ts'
+      ])
+    );
+  });
+
+  it('should not use `.ng.html` extension when ngHtml is false', async () => {
+    const options = { ...defaultOptions, ngHtml: false };
+    const tree = await runner.runSchematic('component', options, appTree);
+    const content = tree.readContent('/projects/ng-zorro/src/app/test/test.component.ts');
+    const files = tree.files;
+
+    expect(content).toContain('test.component.html');
+    expect(files).toContain('/projects/ng-zorro/src/app/test/test.component.less');
+    expect(files).toContain('/projects/ng-zorro/src/app/test/test.component.html');
+  });
+
+  it('should use `.ng.html` extension when ngHtml is true', async () => {
+    const options = { ...defaultOptions, ngHtml: true };
+    const tree = await runner.runSchematic('component', options, appTree);
+    const content = tree.readContent('/projects/ng-zorro/src/app/test/test.component.ts');
+    const files = tree.files;
+
+    expect(content).toContain('test.component.ng.html');
+    expect(files).toContain('/projects/ng-zorro/src/app/test/test.component.less');
+    expect(files).toContain('/projects/ng-zorro/src/app/test/test.component.ng.html');
+  });
+
   describe('style', () => {
-    it('should create specified style',  async() => {
+    it('should create specified style', async () => {
       const options = { ...defaultOptions, style: Style.Sass };
       const tree = await runner.runSchematic('component', options, appTree);
-      const files = tree.files.filter(file => file.startsWith('/projects/ng-zorro/src/app/test/'));
+      const files = tree.files;
 
       expect(files).toEqual(
         jasmine.arrayContaining([
@@ -71,12 +135,11 @@ describe('ng-component schematic', () => {
       );
     });
 
-    it('should not create style file when inlineStyle is true',  async() => {
+    it('should not create style file when inlineStyle is true', async () => {
       const options = { ...defaultOptions, inlineStyle: true };
       const tree = await runner.runSchematic('component', options, appTree);
-      const files = tree.files.filter(file => file.startsWith('/projects/ng-zorro/src/app/test/'));
+      const files = tree.files;
 
-      expect(files.length).toEqual(3);
       expect(files).toEqual(
         jasmine.arrayContaining([
           '/projects/ng-zorro/src/app/test/test.component.html',
@@ -84,14 +147,14 @@ describe('ng-component schematic', () => {
           '/projects/ng-zorro/src/app/test/test.component.ts'
         ])
       );
+      expect(files).not.toContain('/projects/ng-zorro/src/app/test/test.component.less');
     });
 
-    it('should not create style file when style is none',  async() => {
+    it('should not create style file when style is none', async () => {
       const options = { ...defaultOptions, style: Style.None };
       const tree = await runner.runSchematic('component', options, appTree);
-      const files = tree.files.filter(file => file.startsWith('/projects/ng-zorro/src/app/test/'));
+      const files = tree.files;
 
-      expect(files.length).toEqual(3);
       expect(files).toEqual(
         jasmine.arrayContaining([
           '/projects/ng-zorro/src/app/test/test.component.html',
@@ -99,6 +162,7 @@ describe('ng-component schematic', () => {
           '/projects/ng-zorro/src/app/test/test.component.ts'
         ])
       );
+      expect(files).not.toContain('/projects/ng-zorro/src/app/test/test.component.less');
     });
   });
 
@@ -140,18 +204,11 @@ describe('ng-component schematic', () => {
   describe('classnameWithModule', () => {
     it('should find the closest module', async () => {
       const options = { ...defaultOptions, standalone: false };
-      const closestModule = '/projects/ng-zorro/src/app/test/test.module.ts';
+      const closestModule = '/projects/ng-zorro/src/app/test/test-module.ts';
 
       appTree.create(
         closestModule,
-        `
-        import { NgModule } from '@angular/core';
-        @NgModule({
-          imports: [],
-          declarations: []
-        })
-        export class ClosestModule { }
-      `
+        generateModuleContent('ClosestModule')
       );
       const tree = await runner.runSchematic('component', options, appTree);
       const fooModuleContent = tree.readContent(closestModule);
@@ -161,18 +218,11 @@ describe('ng-component schematic', () => {
 
     it('should set classname with the closest module', async () => {
       const options = { ...defaultOptions, classnameWithModule: true, standalone: false };
-      const testModule = '/projects/ng-zorro/src/app/test/test.module.ts';
+      const testModule = '/projects/ng-zorro/src/app/test/test-module.ts';
 
       appTree.create(
         testModule,
-        `
-        import { NgModule } from '@angular/core';
-        @NgModule({
-          imports: [],
-          declarations: []
-        })
-        export class TestModule { }
-      `
+        generateModuleContent('TestModule')
       );
 
       const tree = await runner.runSchematic('component', options, appTree);

@@ -13,7 +13,6 @@ import {
   HostListener,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -23,10 +22,12 @@ import {
   ViewChildren,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  DestroyRef
 } from '@angular/core';
-import { Observable, Subject, of as observableOf, of } from 'rxjs';
-import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, of as observableOf, of } from 'rxjs';
+import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
@@ -171,8 +172,15 @@ import { NzTransferListComponent } from './transfer-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzTransferListComponent, NzIconModule, NzButtonModule]
 })
-export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
+export class NzTransferComponent implements OnInit, OnChanges {
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  private i18n = inject(NzI18nService);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private renderer = inject(Renderer2);
+  private directionality = inject(Directionality);
+  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   @ViewChildren(NzTransferListComponent) lists!: QueryList<NzTransferListComponent>;
   locale!: NzTransferI18nInterface;
@@ -318,14 +326,14 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.updateOperationStatus(oppositeDirection, 0);
     const datasource = direction === 'left' ? this.rightDataSource : this.leftDataSource;
     const moveList = datasource.filter(item => item.checked === true && !item.disabled);
-    this.nzCanMove({ direction, list: moveList }).subscribe(
-      newMoveList =>
+    this.nzCanMove({ direction, list: moveList }).subscribe({
+      next: newMoveList =>
         this.truthMoveTo(
           direction,
           newMoveList.filter(i => !!i)
         ),
-      () => moveList.forEach(i => (i.checked = false))
-    );
+      error: () => moveList.forEach(i => (i.checked = false))
+    });
   }
 
   private truthMoveTo(direction: TransferDirection, list: TransferItem[]): void {
@@ -344,18 +352,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.markForCheckAllList();
   }
 
-  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
-
   // #endregion
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService,
-    private elementRef: ElementRef<HTMLElement>,
-    private renderer: Renderer2,
-    private directionality: Directionality
-  ) {}
 
   private markForCheckAllList(): void {
     if (!this.lists) {
@@ -391,24 +388,22 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
       .pipe(
-        distinctUntilChanged((pre, cur) => {
-          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
-        }),
+        distinctUntilChanged((pre, cur) => pre.status === cur.status && pre.hasFeedback === cur.hasFeedback),
         withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
-        takeUntil(this.unsubscribe$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
       });
 
-    this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Transfer');
       this.markForCheckAllList();
     });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.unsubscribe$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -432,11 +427,6 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {

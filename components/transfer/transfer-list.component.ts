@@ -18,7 +18,8 @@ import {
   ViewChild,
   ViewChildren,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { merge } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
@@ -163,6 +164,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
 })
 export class NzTransferListComponent implements AfterViewInit {
   // #region fields
+  private cdr = inject(ChangeDetectorRef);
 
   @Input() direction: TransferDirection = 'left';
   @Input() titleText = '';
@@ -285,8 +287,6 @@ export class NzTransferListComponent implements AfterViewInit {
   }
 
   // #endregion
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   markForCheck(): void {
     this.updateCheckStatus();

@@ -189,5 +189,8 @@ export default {
     expired: 'QR koda termiņš ir beidzies',
     refresh: 'Atjaunot',
     scanned: 'Skenēts'
+  },
+  Form: {
+    optional: '(nepieciešams)'
   }
 };

@@ -7,7 +7,6 @@ title:
 
 ## zh-CN
 
-
 对于列数很多的数据，可以使用 `[nzLeft]` 和 `[nzRight]` 固定前后的列，横向滚动查看其它数据，需要和 `[nzScroll].x` 配合使用。
 
 > 列头与内容不对齐或出现列重复，请指定固定列的宽度 `[nzWidth]`。如果指定 width 不生效或出现白色垂直空隙，请尝试建议留一列不设宽度以适应弹性布局，或者检查是否有超长连续字段破坏布局。
@@ -15,7 +14,6 @@ title:
 > 注意：固定列通过 sticky 实现，IE 11 会降级成横向滚动。
 
 ## en-US
-
 
 To fix some columns and scroll inside other columns, and you must set `[nzScroll].x`, `[nzLeft]` and `[nzRight]` meanwhile.
 

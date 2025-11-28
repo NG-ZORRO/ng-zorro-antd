@@ -1,5 +1,5 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
@@ -7,7 +7,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-draggable',
   imports: [NzTabsModule, CdkDrag, CdkDropList],
   template: `
-    <nz-tabset
+    <nz-tabs
       [(nzSelectedIndex)]="selectedTabIndex"
       class="example-drag-tabs"
       cdkDropList
@@ -25,14 +25,14 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
           </span>
         </ng-template>
       }
-    </nz-tabset>
+    </nz-tabs>
   `,
   styles: [
     `
       :host ::ng-deep .ant-tabs-tab-btn {
         cursor: move;
       }
-      nz-tabset.cdk-drop-list-dragging {
+      nz-tabs.cdk-drop-list-dragging {
         pointer-events: none;
       }
       .preview.cdk-drag-animating {
@@ -45,6 +45,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   ]
 })
 export class NzDemoTabsDraggableComponent {
+  private cdr = inject(ChangeDetectorRef);
   tabs = [
     {
       name: 'Tab 1',
@@ -65,5 +66,6 @@ export class NzDemoTabsDraggableComponent {
     const prevActive = this.tabs[this.selectedTabIndex];
     moveItemInArray(this.tabs, event.previousIndex, event.currentIndex);
     this.selectedTabIndex = this.tabs.indexOf(prevActive);
+    this.cdr.markForCheck();
   }
 }

@@ -17,11 +17,10 @@ import {
 } from '@angular/cdk/schematics';
 
 import { chain, Rule, Tree } from '@angular-devkit/schematics';
-import { addRootProvider } from '@schematics/angular/utility';
+import { addRootProvider, readWorkspace } from '@schematics/angular/utility';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
 import { findBootstrapApplicationCall } from '@schematics/angular/utility/standalone/util';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { blue, cyan, yellow } from 'chalk';
 import * as ts from 'typescript';
 
@@ -30,7 +29,7 @@ import { Schema } from '../schema';
 
 export function registerLocale(options: Schema): Rule {
   return async (host: Tree) => {
-    const workspace = await getWorkspace(host);
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const mainFile = getProjectMainFile(project);
     if (isStandaloneApp(host, mainFile)) {
@@ -39,6 +38,75 @@ export function registerLocale(options: Schema): Rule {
       return registerLocaleInAppModule(mainFile, options);
     }
   };
+}
+
+/**
+ * Safely creates an import change, returning NoopChange if the moduleSource is invalid
+ * or if the import already exists.
+ */
+function safeInsertImport(moduleSource: ts.SourceFile | undefined, filePath: string, symbolName: string, fileName: string, isDefault = false): Change {
+  if (!moduleSource) {
+    console.log();
+    console.log(yellow(`Could not insert import for ${symbolName} in file (${blue(filePath)}).`));
+    console.log(yellow(`The source file is invalid.`));
+    return new NoopChange();
+  }
+
+  // Check if the import already exists
+  const allImports = findNodes(moduleSource, ts.SyntaxKind.ImportDeclaration);
+  if (!allImports) {
+    return new NoopChange();
+  }
+
+  const importExists = allImports.some(node => {
+    // Make sure it's an import declaration
+    if (!ts.isImportDeclaration(node)) {
+      return false;
+    }
+
+    if (!node.moduleSpecifier) {
+      return false;
+    }
+
+    // Check if this import is from the same file
+    if (!ts.isStringLiteral(node.moduleSpecifier)) {
+      return false;
+    }
+    const importPath = node.moduleSpecifier.text;
+    if (importPath !== fileName) {
+      return false;
+    }
+
+    // Check if the symbol is already imported
+    if (!node.importClause) {
+      return false;
+    }
+    const namedBindings = node.importClause.namedBindings;
+    if (!namedBindings) {
+      return false;
+    }
+
+    if (ts.isNamedImports(namedBindings)) {
+      return namedBindings.elements.some(element =>
+        element.name.text === symbolName
+      );
+    }
+
+    return false;
+  });
+
+  if (importExists) {
+    return new NoopChange();
+  }
+
+  try {
+    return insertImport(moduleSource, filePath, symbolName, fileName, isDefault);
+  } catch (e) {
+    console.log();
+    console.log(yellow(`Could not insert import for ${symbolName} in file (${blue(filePath)}).`));
+    console.log(yellow(`Error: ${e.message}`));
+    return new NoopChange();
+  }
 }
 
 function registerLocaleInAppModule(mainFile: string, options: Schema): Rule {
@@ -50,14 +118,10 @@ function registerLocaleInAppModule(mainFile: string, options: Schema): Rule {
     const localePrefix = locale.split('_')[0];
 
     applyChangesToFile(host, appModulePath, [
-      insertImport(moduleSource, appModulePath, 'provideNzI18n',
-        'ng-zorro-antd/i18n'),
-      insertImport(moduleSource, appModulePath, locale,
-        'ng-zorro-antd/i18n'),
-      insertImport(moduleSource, appModulePath, 'registerLocaleData',
-        '@angular/common'),
-      insertImport(moduleSource, appModulePath, localePrefix,
-        `@angular/common/locales/${localePrefix}`, true),
+      safeInsertImport(moduleSource, appModulePath, 'provideNzI18n', 'ng-zorro-antd/i18n'),
+      safeInsertImport(moduleSource, appModulePath, locale, 'ng-zorro-antd/i18n'),
+      safeInsertImport(moduleSource, appModulePath, 'registerLocaleData', '@angular/common'),
+      safeInsertImport(moduleSource, appModulePath, localePrefix, `@angular/common/locales/${localePrefix}`, true),
       registerLocaleData(moduleSource, appModulePath, localePrefix),
       ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
     ]);
@@ -69,18 +133,40 @@ function registerLocaleInStandaloneApp(mainFile: string, options: Schema): Rule 
 
   return chain([
     async (host: Tree) => {
-      const bootstrapCall = findBootstrapApplicationCall(host, mainFile);
-      const appConfig = findAppConfig(bootstrapCall, host, mainFile);
-      const appConfigFile = appConfig.filePath;
-      const appConfigSource = parseSourceFile(host, appConfig.filePath);
-      const localePrefix = locale.split('_')[0];
+      try {
+        const bootstrapCall = findBootstrapApplicationCall(host, mainFile);
+        if (!bootstrapCall) {
+          console.log();
+          console.log(yellow(`Could not find bootstrap application call in file (${blue(mainFile)}).`));
+          return void 0;
+        }
 
-      applyChangesToFile(host, appConfigFile, [
-        insertImport(appConfigSource, appConfigFile, locale, 'ng-zorro-antd/i18n'),
-        insertImport(appConfigSource, appConfigFile, 'registerLocaleData', '@angular/common'),
-        insertImport(appConfigSource, appConfigFile, localePrefix, `@angular/common/locales/${localePrefix}`, true),
-        registerLocaleData(appConfigSource, appConfigFile, localePrefix)
-      ]);
+        const appConfig = findAppConfig(bootstrapCall, host, mainFile);
+        if (!appConfig || !appConfig.filePath) {
+          console.log();
+          console.log(yellow(`Could not find app config in file (${blue(mainFile)}).`));
+          return void 0;
+        }
+
+        const appConfigFile = appConfig.filePath;
+        const appConfigSource = parseSourceFile(host, appConfig.filePath);
+        if (!appConfigSource) {
+          console.log();
+          console.log(yellow(`Could not parse app config file (${blue(appConfigFile)}).`));
+          return void 0;
+        }
+
+        const localePrefix = locale.split('_')[0];
+
+        applyChangesToFile(host, appConfigFile, [
+          safeInsertImport(appConfigSource, appConfigFile, locale, 'ng-zorro-antd/i18n'),
+          safeInsertImport(appConfigSource, appConfigFile, 'registerLocaleData', '@angular/common'),
+          safeInsertImport(appConfigSource, appConfigFile, localePrefix, `@angular/common/locales/${localePrefix}`, true),
+          registerLocaleData(appConfigSource, appConfigFile, localePrefix)
+        ]);
+      } catch (e) {
+        console.log(yellow(`Error registering locale in standalone app: ${e.message}`));
+      }
     },
     addRootProvider(options.project, ({ code, external }) => {
       return code`${external('provideNzI18n', 'ng-zorro-antd/i18n')}(${locale})`;
@@ -92,16 +178,41 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
   const allImports = findNodes(moduleSource, ts.SyntaxKind.ImportDeclaration);
   const allFun = findNodes(moduleSource, ts.SyntaxKind.ExpressionStatement);
 
+  // Check if allImports is valid before proceeding
+  if (!allImports || allImports.length === 0) {
+    console.log(yellow(`Could not add the registerLocaleData to file (${blue(modulePath)}).` +
+      `because no import declarations were found.`));
+    console.log(yellow(`Please manually add the following code:`));
+    console.log(cyan(`registerLocaleData(${locale});`));
+    return new NoopChange();
+  }
+
+  // Safely filter the expression statements
   const registerLocaleDataFun = allFun.filter(node => {
-    const fun = node.getChildren();
-    return fun[0].getChildren()[0]?.getText() === 'registerLocaleData';
+    if (!node) return false;
+    const children = node.getChildren();
+    if (!children || children.length === 0) {
+      return false;
+    }
+    const firstChild = children[0];
+    if (!firstChild) {
+      return false;
+    }
+    const firstChildChildren = firstChild.getChildren();
+    if (!firstChildChildren || firstChildChildren.length === 0) {
+      return false;
+    }
+    const firstChildFirstChild = firstChildChildren[0];
+    if (!firstChildFirstChild) {
+      return false;
+    }
+    return firstChildFirstChild.getText() === 'registerLocaleData';
   });
 
   if (registerLocaleDataFun.length === 0) {
     return insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`,
       modulePath, 0) as InsertChange;
   } else {
-    console.log();
     console.log(yellow(`Could not add the registerLocaleData to file (${blue(modulePath)}).` +
       `because there is already a registerLocaleData function.`));
     console.log(yellow(`Please manually add the following code:`));
@@ -113,13 +224,22 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
 function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change[] {
   const metadataField = 'providers';
   const nodes = getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
+
+  // Check if nodes are valid
+  if (!nodes || nodes.length === 0) {
+    console.log(yellow(`Could not find NgModule decorator in file (${blue(modulePath)}).`));
+    console.log(yellow(`Please manually add the following code to your providers:`));
+    console.log(cyan(`provideNzI18n(${locale})`));
+    return [];
+  }
+
   const addProvide = addSymbolToNgModuleMetadata(
-      moduleSource,
-      modulePath,
-      'providers',
-      `provideNzI18n(${locale})`,
-      null
-    );
+    moduleSource,
+    modulePath,
+    'providers',
+    `provideNzI18n(${locale})`,
+    null
+  );
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const node: any = nodes[0];
 
@@ -127,10 +247,19 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
     return [];
   }
 
+  // Check if a node has properties
+  if (!node.properties) {
+    console.log(yellow(`Could not find properties in NgModule decorator in file (${blue(modulePath)}).`));
+    console.log(yellow(`Please manually add the following code to your providers:`));
+    console.log(cyan(`provideNzI18n(${locale})`));
+    return [];
+  }
+
   const matchingProperties: ts.ObjectLiteralElement[] =
     (node as ts.ObjectLiteralExpression).properties
-      .filter(prop => prop.kind === ts.SyntaxKind.PropertyAssignment)
+      .filter(prop => prop && prop.kind === ts.SyntaxKind.PropertyAssignment)
       .filter((prop: ts.PropertyAssignment) => {
+        if (!prop || !prop.name) return false;
         const name = prop.name;
         switch (name.kind) {
           case ts.SyntaxKind.Identifier:
@@ -148,15 +277,16 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
 
   if (matchingProperties.length) {
     const assignment = matchingProperties[0] as ts.PropertyAssignment;
-    if (assignment.initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression) {
+    if (!assignment || !assignment.initializer || assignment.initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression) {
       return [];
     }
     const arrLiteral = assignment.initializer as ts.ArrayLiteralExpression;
-    if (arrLiteral.elements.length === 0) {
+    if (!arrLiteral.elements || arrLiteral.elements.length === 0) {
       return addProvide;
     } else {
-      const provideWithToken = arrLiteral.elements.some(e => e.getText?.().includes('NZ_I18N'));
-      const provideWithFunc = arrLiteral.elements.some(e => e.getText?.().includes('provideNzI18n'));
+      // Safely check for getText method before calling it
+      const provideWithToken = arrLiteral.elements.some(e => e && typeof e.getText === 'function' && e.getText().includes('NZ_I18N'));
+      const provideWithFunc = arrLiteral.elements.some(e => e && typeof e.getText === 'function' && e.getText().includes('provideNzI18n'));
 
       if (!provideWithFunc && !provideWithToken) {
         return addProvide;

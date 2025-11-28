@@ -49,7 +49,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
           </nz-breadcrumb>
           <div class="inner-content">Bill is a cat.</div>
         </nz-content>
-        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,
@@ -78,12 +78,19 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
         padding: 24px;
         background: #fff;
         min-height: 360px;
+        border-radius: 8px;
       }
 
       nz-footer {
         text-align: center;
       }
+
+      :host > nz-layout {
+        min-height: 100vh;
+      }
     `
   ]
 })
-export class NzDemoLayoutSideComponent {}
+export class NzDemoLayoutSideComponent {
+  protected readonly date = new Date();
+}

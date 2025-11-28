@@ -9,12 +9,10 @@ import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
   selector: 'nz-demo-tree-search',
   imports: [FormsModule, NzIconModule, NzInputModule, NzTreeModule],
   template: `
-    <nz-input-group [nzSuffix]="suffixIcon">
+    <nz-input-wrapper>
       <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
-    </nz-input-group>
-    <ng-template #suffixIcon>
-      <nz-icon nzType="search" />
-    </ng-template>
+      <nz-icon nzInputSuffix nzType="search" />
+    </nz-input-wrapper>
     <br />
     <nz-tree
       [nzData]="nodes"

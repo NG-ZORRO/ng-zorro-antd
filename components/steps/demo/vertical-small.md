@@ -12,4 +12,3 @@ title:
 ## en-US
 
 A simple mini version step bar in the vertical direction.
-

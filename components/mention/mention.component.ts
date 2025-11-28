@@ -7,9 +7,10 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectionPositionPair,
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  createRepositionScrollStrategy,
   FlexibleConnectedPositionStrategy,
-  Overlay,
-  OverlayConfig,
   OverlayRef,
   PositionStrategy
 } from '@angular/cdk/overlay';
@@ -21,32 +22,38 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
+  contentChild,
   ContentChild,
+  DestroyRef,
   DOCUMENT,
+  effect,
   ElementRef,
   EventEmitter,
   inject,
+  Injector,
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   QueryList,
   Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge, of as observableOf, Subscription } from 'rxjs';
-import { distinctUntilChanged, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
+import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import {
   fromEventOutsideAngular,
   getCaretCoordinates,
@@ -59,7 +66,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_MENTION_CONFIG } from './config';
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
-import { NzMentionService } from './mention.service';
 
 export interface MentionOnSearchTypes {
   value: string;
@@ -117,16 +123,43 @@ export type MentionPlacement = 'top' | 'bottom';
     @if (hasFeedback && !!status) {
       <nz-form-item-feedback-icon class="ant-mentions-suffix" [status]="status" />
     }
+    @if (nzAllowClear && hasValue()) {
+      <span class="ant-mentions-suffix">
+        <button type="button" tabindex="-1" class="ant-mentions-clear-icon" (click)="clear()">
+          <ng-template [nzStringTemplateOutlet]="nzClearIcon">
+            <nz-icon nzType="close-circle" nzTheme="fill" />
+          </ng-template>
+        </button>
+      </span>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzMentionService, NzDestroyService],
   host: {
     class: 'ant-mentions',
-    '[class.ant-mentions-rtl]': `dir === 'rtl'`
+    '[class.ant-mentions-rtl]': `dir === 'rtl'`,
+    '[class.ant-mentions-borderless]': `nzVariant === 'borderless'`,
+    '[class.ant-mentions-filled]': `nzVariant === 'filled'`,
+    '[class.ant-mentions-underlined]': `nzVariant === 'underlined'`,
+    '[class.ant-mentions-focused]': `focused()`,
+    '[class.ant-mentions-disabled]': `disabled()`
   },
-  imports: [NgTemplateOutlet, NzIconModule, NzEmptyModule, NzFormItemFeedbackIconComponent]
+  imports: [
+    NgTemplateOutlet,
+    NzIconModule,
+    NzEmptyModule,
+    NzFormItemFeedbackIconComponent,
+    NzStringTemplateOutletDirective
+  ]
 })
-export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
+export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
+  private ngZone = inject(NgZone);
+  private directionality = inject(Directionality);
+  private cdr = inject(ChangeDetectorRef);
+  private injector = inject(Injector);
+  private viewContainerRef = inject(ViewContainerRef);
+  private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private destroyRef = inject(DestroyRef);
   @Input() nzValueWith: (value: NzSafeAny) => string = value => value;
   @Input() nzPrefix: string | string[] = '@';
   @Input({ transform: booleanAttribute }) nzLoading = false;
@@ -134,10 +167,13 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
   @Input() nzStatus: NzStatus = '';
+  @Input() nzVariant: NzVariant = 'outlined';
+  @Input({ transform: booleanAttribute }) nzAllowClear = false;
+  @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Output() readonly nzOnSelect = new EventEmitter<NzSafeAny>();
   @Output() readonly nzOnSearchChange = new EventEmitter<MentionOnSearchTypes>();
+  @Output() readonly nzOnClear = new EventEmitter<void>();
 
-  trigger!: NzMentionTriggerDirective;
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;
   @ViewChildren('items', { read: ElementRef })
   items!: QueryList<ElementRef>;
@@ -149,6 +185,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     }
   }
 
+  readonly trigger = contentChild.required(NzMentionTriggerDirective);
+
   isOpen = false;
   filteredSuggestions: string[] = [];
   suggestionTemplate: TemplateRef<{ $implicit: NzSafeAny }> | null = null;
@@ -159,6 +197,14 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   statusCls: NgClassInterface = {};
   status: NzValidateStatus = '';
   hasFeedback: boolean = false;
+  readonly focused = signal(false);
+
+  readonly disabled = computed(() => {
+    return this.trigger().disabled();
+  });
+  readonly hasValue = computed(() => {
+    return !!this.trigger()?.value().trim();
+  });
 
   private previousValue: string | null = null;
   private cursorMention: string | null = null;
@@ -171,7 +217,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   private document: Document = inject(DOCUMENT);
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
-    return this.trigger.el.nativeElement;
+    return this.trigger().elementRef.nativeElement;
   }
 
   private get focusItemElement(): HTMLElement | null {
@@ -185,17 +231,20 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
-  constructor(
-    private ngZone: NgZone,
-    private directionality: Directionality,
-    private cdr: ChangeDetectorRef,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private nzMentionService: NzMentionService,
-    private destroy$: NzDestroyService
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.closeDropdown();
+    });
+
+    effect(() => {
+      const trigger = this.trigger();
+      if (trigger) {
+        this.bindTriggerEvents();
+        this.closeDropdown();
+        this.overlayRef = null;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
@@ -205,21 +254,13 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
         }),
         withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
       });
-
-    this.nzMentionService.triggerChanged().subscribe(trigger => {
-      this.trigger = trigger;
-      this.bindTriggerEvents();
-      this.closeDropdown();
-      this.overlayRef = null;
-    });
-
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
   }
@@ -252,10 +293,6 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
       });
   }
 
-  ngOnDestroy(): void {
-    this.closeDropdown();
-  }
-
   closeDropdown(): void {
     if (this.overlayRef && this.overlayRef.hasAttached()) {
       this.overlayRef.detach();
@@ -272,12 +309,12 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   }
 
   getMentions(): string[] {
-    return this.trigger ? getMentions(this.trigger.value!, this.nzPrefix) : [];
+    return this.trigger() ? getMentions(this.trigger().value(), this.nzPrefix) : [];
   }
 
   selectSuggestion(suggestion: string | {}): void {
     const value = this.nzValueWith(suggestion);
-    this.trigger.insertMention({
+    this.trigger().insertMention({
       mention: value,
       startPos: this.cursorMentionStart!,
       endPos: this.cursorMentionEnd!
@@ -287,10 +324,16 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     this.activeIndex = -1;
   }
 
+  clear(): void {
+    this.closeDropdown();
+    this.trigger().clear();
+    this.nzOnClear.emit();
+  }
+
   private handleInput(event: KeyboardEvent): void {
     const target = event.target as HTMLInputElement | HTMLTextAreaElement;
-    this.trigger.onChange(target.value);
-    this.trigger.value = target.value;
+    this.trigger().onChange(target.value);
+    this.trigger().value.set(target.value);
     this.resetDropdown();
   }
 
@@ -323,13 +366,15 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   }
 
   private handleClick(): void {
-    this.resetDropdown();
+    this.resetDropdown(false);
   }
 
   private bindTriggerEvents(): void {
-    this.trigger.onInput.subscribe((e: KeyboardEvent) => this.handleInput(e));
-    this.trigger.onKeydown.subscribe((e: KeyboardEvent) => this.handleKeydown(e));
-    this.trigger.onClick.subscribe(() => this.handleClick());
+    this.trigger().onFocusin.subscribe(() => this.focused.set(true));
+    this.trigger().onBlur.subscribe(() => this.focused.set(false));
+    this.trigger().onInput.subscribe((e: KeyboardEvent) => this.handleInput(e));
+    this.trigger().onKeydown.subscribe((e: KeyboardEvent) => this.handleKeydown(e));
+    this.trigger().onClick.subscribe(() => this.handleClick());
   }
 
   private suggestionsFilter(value: string, emit: boolean): void {
@@ -446,7 +491,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
       const clickTarget = event.target as HTMLElement;
       return (
         this.isOpen &&
-        clickTarget !== this.trigger.el.nativeElement &&
+        clickTarget !== this.triggerNativeElement &&
         !this.overlayRef?.overlayElement.contains(clickTarget)
       );
     };
@@ -469,7 +514,11 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
   private attachOverlay(): void {
     if (!this.overlayRef) {
       this.portal = new TemplatePortal(this.suggestionsTemp!, this.viewContainerRef);
-      this.overlayRef = this.overlay.create(this.getOverlayConfig());
+      this.overlayRef = createOverlayRef(this.injector, {
+        positionStrategy: this.getOverlayPosition(),
+        scrollStrategy: createRepositionScrollStrategy(this.injector),
+        disposeOnNavigation: true
+      });
     }
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
@@ -478,26 +527,14 @@ export class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnC
     this.updatePositions();
   }
 
-  private getOverlayConfig(): OverlayConfig {
-    return new OverlayConfig({
-      positionStrategy: this.getOverlayPosition(),
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      disposeOnNavigation: true
-    });
-  }
-
   private getOverlayPosition(): PositionStrategy {
-    const positions = [
-      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
-      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
-    ];
-    this.positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.trigger.el)
-      .withPositions(positions)
+    return (this.positionStrategy = createFlexibleConnectedPositionStrategy(this.injector, this.trigger().elementRef)
+      .withPositions([
+        new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+        new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+      ])
       .withFlexibleDimensions(false)
-      .withPush(false);
-    return this.positionStrategy;
+      .withPush(false));
   }
 
   private setStatusStyles(status: NzValidateStatus, hasFeedback: boolean): void {

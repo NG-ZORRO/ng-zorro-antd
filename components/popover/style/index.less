@@ -3,13 +3,10 @@
 
 @popover-prefix-cls: ~'@{ant-prefix}-popover';
 
-@popover-arrow-rotate-width: sqrt(@popover-arrow-width * @popover-arrow-width * 2) + 6px;
-
-@popover-arrow-offset-vertical: 12px;
-@popover-arrow-offset-horizontal: 16px;
-
 .@{popover-prefix-cls} {
   .reset-component();
+
+  --antd-arrow-background-color: @popover-bg;
 
   position: absolute;
   top: 0;
@@ -34,31 +31,6 @@
 
   &-hidden {
     display: none;
-  }
-
-  // Offset the popover to account for the popover arrow
-  &-placement-top,
-  &-placement-topLeft,
-  &-placement-topRight {
-    padding-bottom: @popover-distance;
-  }
-
-  &-placement-right,
-  &-placement-rightTop,
-  &-placement-rightBottom {
-    padding-left: @popover-distance;
-  }
-
-  &-placement-bottom,
-  &-placement-bottomLeft,
-  &-placement-bottomRight {
-    padding-top: @popover-distance;
-  }
-
-  &-placement-left,
-  &-placement-leftTop,
-  &-placement-leftBottom {
-    padding-right: @popover-distance;
   }
 
   &-inner {
@@ -115,149 +87,26 @@
     }
   }
 
-  // Arrows
-  &-arrow {
-    position: absolute;
-    display: block;
-    width: @popover-arrow-rotate-width;
-    height: @popover-arrow-rotate-width;
-    overflow: hidden;
-    background: transparent;
-    pointer-events: none;
-
-    &-content {
-      --antd-arrow-background-color: @popover-bg;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      display: block;
-      width: @popover-arrow-width;
-      height: @popover-arrow-width;
-      margin: auto;
-      content: '';
-      pointer-events: auto;
-      .roundedArrow(@popover-arrow-width, 5px);
-    }
-  }
-
-  &-placement-top &-arrow,
-  &-placement-topLeft &-arrow,
-  &-placement-topRight &-arrow {
-    bottom: 0;
-    transform: translateY(100%);
-
-    &-content {
-      box-shadow: 3px 3px 7px fade(@black, 7%);
-      transform: translateY((-@popover-arrow-rotate-width / 2)) rotate(45deg);
-    }
-  }
-
-  &-placement-top &-arrow {
-    left: 50%;
-    transform: translateY(100%) translateX(-50%);
-  }
-
-  &-placement-topLeft &-arrow {
-    left: @popover-arrow-offset-horizontal;
-  }
-
-  &-placement-topRight &-arrow {
-    right: @popover-arrow-offset-horizontal;
-  }
-
-  &-placement-right &-arrow,
-  &-placement-rightTop &-arrow,
-  &-placement-rightBottom &-arrow {
-    left: 0;
-    transform: translateX(-100%);
-
-    &-content {
-      box-shadow: 3px 3px 7px fade(@black, 7%);
-      transform: translateX((@popover-arrow-rotate-width / 2)) rotate(135deg);
-    }
-  }
-
-  &-placement-right &-arrow {
-    top: 50%;
-    transform: translateX(-100%) translateY(-50%);
-  }
-
-  &-placement-rightTop &-arrow {
-    top: @popover-arrow-offset-vertical;
-  }
-
-  &-placement-rightBottom &-arrow {
-    bottom: @popover-arrow-offset-vertical;
-  }
-
-  &-placement-bottom &-arrow,
-  &-placement-bottomLeft &-arrow,
-  &-placement-bottomRight &-arrow {
-    top: 0;
-    transform: translateY(-100%);
-
-    &-content {
-      box-shadow: 2px 2px 5px fade(@black, 6%);
-      transform: translateY((@popover-arrow-rotate-width / 2)) rotate(-135deg);
-    }
-  }
-
-  &-placement-bottom &-arrow {
-    left: 50%;
-    transform: translateY(-100%) translateX(-50%);
-  }
-
-  &-placement-bottomLeft &-arrow {
-    left: @popover-arrow-offset-horizontal;
-  }
-
-  &-placement-bottomRight &-arrow {
-    right: @popover-arrow-offset-horizontal;
-  }
-
-  &-placement-left &-arrow,
-  &-placement-leftTop &-arrow,
-  &-placement-leftBottom &-arrow {
-    right: 0;
-    transform: translateX(100%);
-
-    &-content {
-      box-shadow: 3px 3px 7px fade(@black, 7%);
-      transform: translateX((-@popover-arrow-rotate-width / 2)) rotate(-45deg);
-    }
-  }
-
-  &-placement-left &-arrow {
-    top: 50%;
-    transform: translateX(100%) translateY(-50%);
-  }
-
-  &-placement-leftTop &-arrow {
-    top: @popover-arrow-offset-vertical;
-  }
-
-  &-placement-leftBottom &-arrow {
-    bottom: @popover-arrow-offset-vertical;
-  }
+  // Arrow Style
+  .placementArrow(@popover-arrow-width, 4px, @arrow-border-radius, var(--antd-arrow-background-color), @popover-arrow-box-shadow);
 }
 
 .generator-popover-preset-color(@i: length(@preset-colors)) when (@i > 0) {
   .generator-popover-preset-color(@i - 1);
   @color: extract(@preset-colors, @i);
   @lightColor: '@{color}-6';
+
   .@{popover-prefix-cls}-@{color} {
     .@{popover-prefix-cls}-inner {
       background-color: @@lightColor;
     }
+
     .@{popover-prefix-cls}-arrow {
-      &-content {
-        background-color: @@lightColor;
-      }
+      background-color: @@lightColor;
     }
   }
 }
+
 .generator-popover-preset-color();
 
 @import './rtl';

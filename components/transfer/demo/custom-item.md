@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Custom each Transfer Item, and in this way you can render a complex datasource.
-
-

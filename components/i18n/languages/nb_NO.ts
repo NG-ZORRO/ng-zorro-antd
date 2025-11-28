@@ -192,5 +192,8 @@ export default {
     expired: 'QR-koden er utløpt',
     refresh: 'Oppdater',
     scanned: 'Skannet'
+  },
+  Form: {
+    optional: '(valgfritt)'
   }
 };

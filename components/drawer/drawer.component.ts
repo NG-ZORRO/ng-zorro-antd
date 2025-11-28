@@ -6,7 +6,14 @@
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { CdkScrollable, Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
+import {
+  CdkScrollable,
+  createBlockScrollStrategy,
+  createGlobalPositionStrategy,
+  createOverlayRef,
+  OverlayKeyboardDispatcher,
+  OverlayRef
+} from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -17,13 +24,13 @@ import {
   Component,
   ComponentRef,
   ContentChild,
+  DestroyRef,
   DOCUMENT,
   EventEmitter,
   inject,
   Injector,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -33,12 +40,11 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { drawerMaskMotion } from 'ng-zorro-antd/core/animation';
+import { drawerMaskMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { overlayZIndexSetter } from 'ng-zorro-antd/core/overlay';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -144,8 +150,18 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
   extends NzDrawerRef<T, R>
-  implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
+  implements OnInit, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
 {
+  private cdr = inject(ChangeDetectorRef);
+  public nzConfigService = inject(NzConfigService);
+  private renderer = inject(Renderer2);
+  private injector = inject(Injector);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private focusTrapFactory = inject(FocusTrapFactory);
+  private viewContainerRef = inject(ViewContainerRef);
+  private overlayKeyboardDispatcher = inject(OverlayKeyboardDispatcher);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzContent!: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
@@ -190,7 +206,6 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   @ContentChild(NzDrawerContentDirective, { static: true, read: TemplateRef })
   contentFromContentChild?: TemplateRef<NzSafeAny>;
 
-  private destroy$ = new Subject<void>();
   previouslyFocusedElement?: HTMLElement;
   placementChanging = false;
   placementChangeTimeoutId?: ReturnType<typeof setTimeout>;
@@ -281,23 +296,16 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   dir: Direction = 'ltr';
   private document: Document = inject(DOCUMENT);
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    public nzConfigService: NzConfigService,
-    private renderer: Renderer2,
-    private overlay: Overlay,
-    private injector: Injector,
-    private changeDetectorRef: ChangeDetectorRef,
-    private focusTrapFactory: FocusTrapFactory,
-    private viewContainerRef: ViewContainerRef,
-    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
-    private directionality: Directionality
-  ) {
+  constructor() {
     super();
+    this.destroyRef.onDestroy(() => {
+      clearTimeout(this.placementChangeTimeoutId);
+      this.disposeOverlay();
+    });
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -334,13 +342,6 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     if (nzPlacement && !nzPlacement.isFirstChange()) {
       this.triggerPlacementChangeCycleOnce();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    clearTimeout(this.placementChangeTimeoutId);
-    this.disposeOverlay();
   }
 
   private getAnimationDuration(): number {
@@ -440,7 +441,11 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private attachOverlay(): void {
     if (!this.overlayRef) {
       this.portal = new TemplatePortal(this.drawerTemplate, this.viewContainerRef);
-      this.overlayRef = this.overlay.create(this.getOverlayConfig());
+      this.overlayRef = createOverlayRef(this.injector, {
+        disposeOnNavigation: this.nzCloseOnNavigation,
+        positionStrategy: createGlobalPositionStrategy(this.injector),
+        scrollStrategy: createBlockScrollStrategy(this.injector)
+      });
 
       overlayZIndexSetter(this.overlayRef, this.nzZIndex);
     }
@@ -448,7 +453,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
       this.overlayRef!.keydownEvents()
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((event: KeyboardEvent) => {
           if (event.keyCode === ESCAPE && this.isOpen && this.nzKeyboard) {
             this.nzOnClose.emit();
@@ -456,7 +461,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
         });
       this.overlayRef
         .detachments()
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.close();
           this.disposeOverlay();
@@ -467,14 +472,6 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private disposeOverlay(): void {
     this.overlayRef?.dispose();
     this.overlayRef = null;
-  }
-
-  private getOverlayConfig(): OverlayConfig {
-    return new OverlayConfig({
-      disposeOnNavigation: this.nzCloseOnNavigation,
-      positionStrategy: this.overlay.position().global(),
-      scrollStrategy: this.overlay.scrollStrategies.block()
-    });
   }
 
   private updateOverlayStyle(): void {
@@ -496,10 +493,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   savePreviouslyFocusedElement(): void {
     if (this.document && !this.previouslyFocusedElement) {
       this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
-      // We need the extra check, because IE's svg element has no blur method.
-      if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.blur === 'function') {
-        this.previouslyFocusedElement.blur();
-      }
+      this.previouslyFocusedElement?.blur();
     }
   }
 
@@ -511,8 +505,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   }
 
   private restoreFocus(): void {
-    // We need the extra check, because IE can set the `activeElement` to null in some cases.
-    if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.focus === 'function') {
+    if (this.previouslyFocusedElement) {
       this.previouslyFocusedElement.focus();
       this.previouslyFocusedElement = undefined;
     }

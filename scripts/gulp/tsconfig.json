@@ -7,6 +7,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "../../dist",
+    "esModuleInterop": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
@@ -14,7 +15,8 @@
     "noImplicitAny": true,
     "target": "es5",
     "types": [
-      "node"
+      "node",
+      "../build/less.d.ts"
     ],
     "baseUrl": "."
   },

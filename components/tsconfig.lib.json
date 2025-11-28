@@ -7,10 +7,6 @@
     "declaration": true,
     "inlineSources": true,
     "declarationMap": true,
-    "lib": [
-      "es2020",
-      "dom"
-    ],
     "sourceMap": true,
     "strictFunctionTypes": true,
     "stripInternal": true

@@ -12,7 +12,8 @@ import { NzResizeHandleMouseDownEvent } from './resize-handle.component';
 
 @Injectable()
 export class NzResizableService implements OnDestroy {
-  private document: Document = inject(DOCUMENT);
+  private readonly document: Document = inject(DOCUMENT);
+  private readonly ngZone = inject(NgZone);
   private listeners = new Map<string, (event: MouseEvent | TouchEvent) => void>();
 
   /**
@@ -29,8 +30,6 @@ export class NzResizableService implements OnDestroy {
   documentMouseUpOutsideAngular$ = new Subject<MouseEvent | TouchEvent | null>();
   documentMouseMoveOutsideAngular$ = new Subject<MouseEvent | TouchEvent>();
   mouseEnteredOutsideAngular$ = new Subject<boolean>();
-
-  constructor(private ngZone: NgZone) {}
 
   startResizing(event: MouseEvent | TouchEvent): void {
     const _isTouchEvent = isTouchEvent(event);

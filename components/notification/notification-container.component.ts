@@ -6,9 +6,8 @@
 import { Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { NotificationConfig } from 'ng-zorro-antd/core/config';
+import { NotificationConfig, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 
@@ -163,13 +162,10 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent<Not
   }
 
   protected subscribeConfigChange(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.updateConfig();
-        this.dir = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME)?.nzDirection || this.dir;
-      });
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.updateConfig();
+      this.dir = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME)?.nzDirection || this.dir;
+    });
   }
 
   protected updateConfig(): void {

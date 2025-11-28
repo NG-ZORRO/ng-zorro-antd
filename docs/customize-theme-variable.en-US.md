@@ -5,10 +5,7 @@ title: Dynamic Theme (Experimental)
 
 Except [less customize theme](/docs/customize-theme/en), We also provide CSS Variable version to enable dynamic theme.
 
-## Caveats
-
-- This function depends on CSS Variables. Please check the [browser compatibility](https://caniuse.com/css-variables).
-- This function requires at least `ng-zorro-antd@13.2.x`.
+> This feature depends on CSS Variables. Please check the [browser compatibility](https://caniuse.com/css-variables).
 
 ## How to use
 
@@ -37,10 +34,8 @@ const ngZorroConfig: NzConfig = {
 };
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzConfig(ngZorroConfig)
-  ]
-}
+  providers: [provideNzConfig(ngZorroConfig)]
+};
 ```
 
 These global configurations would be injected and stored in a service named `NzConfigService`.
@@ -59,7 +54,7 @@ export class ChangeZorroConfigComponent {
   private nzConfigService = inject(NzConfigService);
 
   onChangeConfig() {
-    this.nzConfigService.set('theme', { primaryColor: '#1890ff' })
+    this.nzConfigService.set('theme', { primaryColor: '#1890ff' });
   }
 }
 ```

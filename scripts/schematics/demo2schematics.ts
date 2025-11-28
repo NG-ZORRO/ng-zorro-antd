@@ -3,10 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import * as fs from 'fs-extra';
+import { copySync, mkdirsSync, readFileSync, readJsonSync, outputFileSync, outputJsonSync, } from 'fs-extra';
 import { sync as glob } from 'glob';
 
-import * as path from 'path';
+import path from 'path';
 
 import { buildConfig } from '../build-config';
 
@@ -55,10 +55,10 @@ function getComponentPaths(): string[] {
 }
 
 function parse(filePath: string): DemoMeta {
-  const fileContent = fs.readFileSync(filePath, 'utf-8');
-  const pathSplitted = filePath.split('components/')[1].split('/');
-  const componentName = pathSplitted[0] || '';
-  const demoName = (pathSplitted[2] && pathSplitted[2].split('.')[0]) ? pathSplitted[2].split('.')[0] : '';
+  const fileContent = readFileSync(filePath, 'utf-8');
+  const pathSplit = filePath.split('components/')[1].split('/');
+  const componentName = pathSplit[0] || '';
+  const demoName = (pathSplit[2] && pathSplit[2].split('.')[0]) ? pathSplit[2].split('.')[0] : '';
   const template = getTemplate(fileContent);
   const styles = getStyles(fileContent);
   const selector = getSelector(fileContent);
@@ -106,23 +106,23 @@ function createSchematic(demoComponent: DemoMeta): void {
   const demoPath = path.resolve(demoDirPath, `./${demoComponent.componentName}-${demoComponent.demoName}`);
   const filesPath = path.resolve(__dirname, `${demoPath}/files/__path__/__name@dasherize@if-flat__`);
   const schemaPath = `${demoPath}/schema.json`;
-  fs.mkdirsSync(filesPath);
+  mkdirsSync(filesPath);
 
-  fs.copySync(path.resolve(__dirname, `./template/index.ts.template`), `${demoPath}/index.ts`);
-  fs.copySync(path.resolve(__dirname, `./template/schema.json.template`), `${demoPath}/schema.json`);
-  fs.copySync(path.resolve(__dirname, `./template/schema.ts.template`), `${demoPath}/schema.ts`);
+  copySync(path.resolve(__dirname, `./template/index.ts.template`), `${demoPath}/index.ts`);
+  copySync(path.resolve(__dirname, `./template/schema.json.template`), `${demoPath}/schema.json`);
+  copySync(path.resolve(__dirname, `./template/schema.ts.template`), `${demoPath}/schema.ts`);
 
-  const schemaJson = fs.readJsonSync(schemaPath);
+  const schemaJson = readJsonSync(schemaPath);
   schemaJson.$id = `${demoComponent.demoName}-${demoComponent.componentName}`;
   schemaJson.title = `NG-ZORRO ${demoComponent.demoName} ${demoComponent.componentName}`;
-  fs.outputJsonSync(schemaPath, schemaJson);
+  outputJsonSync(schemaPath, schemaJson);
 
-  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.__style__.template`, demoComponent.styles);
-  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.html.template`, demoComponent.template);
-  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.spec.ts.template`, TEST_FILE_CONTENT);
-  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.ts.template`, replaceTemplate(demoComponent));
+  outputFileSync(`${filesPath}/__name@dasherize__.component.__style__.template`, demoComponent.styles);
+  outputFileSync(`${filesPath}/__name@dasherize__.component.html.template`, demoComponent.template);
+  outputFileSync(`${filesPath}/__name@dasherize__.component.spec.ts.template`, TEST_FILE_CONTENT);
+  outputFileSync(`${filesPath}/__name@dasherize__.component.ts.template`, replaceTemplate(demoComponent));
 
-  const collectionJson = fs.readJsonSync(collectionPath, { throws: false }) || { schematics: {} };
+  const collectionJson = readJsonSync(collectionPath, { throws: false }) || { schematics: {} };
   collectionJson.schematics = {
     ...collectionJson.schematics,
     [`${demoComponent.componentName}-${demoComponent.demoName}`]: {
@@ -131,7 +131,7 @@ function createSchematic(demoComponent: DemoMeta): void {
       schema: `./demo/${demoComponent.componentName}-${demoComponent.demoName}/schema.json`
     }
   };
-  fs.outputJsonSync(collectionPath, collectionJson, { spaces: '  ' });
+  outputJsonSync(collectionPath, collectionJson, { spaces: '  ' });
 }
 
 export function generate(): void {

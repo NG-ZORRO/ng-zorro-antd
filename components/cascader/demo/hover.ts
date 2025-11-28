@@ -50,15 +50,15 @@ const options: NzCascaderOption[] = [
   imports: [FormsModule, NzCascaderModule],
   template: `
     <nz-cascader
-      [nzExpandTrigger]="'hover'"
+      nzExpandTrigger="hover"
       [nzOptions]="nzOptions"
       [(ngModel)]="values"
       (ngModelChange)="onChanges($event)"
-    ></nz-cascader>
+    />
   `
 })
 export class NzDemoCascaderHoverComponent {
-  nzOptions: NzCascaderOption[] = options;
+  readonly nzOptions: NzCascaderOption[] = options;
   values: string[] | null = null;
 
   onChanges(values: string[]): void {

@@ -4,12 +4,12 @@
  */
 
 import { DestroyRef, inject, Injectable } from '@angular/core';
-import { BehaviorSubject, from, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isNotNil } from 'ng-zorro-antd/core/util';
+import { isNotNil, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
 import { isShowSearchObject, NzCascaderComponentAsSource, NzCascaderFilter, NzCascaderOption } from './typings';
 import { isChildNode, isParentNode } from './utils';
@@ -356,7 +356,7 @@ export class NzCascaderService {
         node.isLoading = true;
       }
 
-      from(loadFn(option, columnIndex))
+      wrapIntoObservable(loadFn(option, columnIndex))
         .pipe(
           finalize(() => {
             node && (node.isLoading = false);

@@ -5,7 +5,7 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -16,6 +16,13 @@ import { NzRateComponent } from './rate.component';
 import { NzRateModule } from './rate.module';
 
 describe('rate', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
   describe('basic rate', () => {
     let fixture: ComponentFixture<NzTestRateBasicComponent>;
     let testComponent: NzTestRateBasicComponent;
@@ -27,10 +34,12 @@ describe('rate', () => {
       testComponent = fixture.debugElement.componentInstance;
       rate = fixture.debugElement.query(By.directive(NzRateComponent));
     });
+
     it('should className correct', () => {
       fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate');
     });
+
     it('should set ngModel work', fakeAsync(() => {
       fixture.detectChanges();
       const children = Array.prototype.slice.call(rate.nativeElement.firstElementChild.children);
@@ -42,6 +51,7 @@ describe('rate', () => {
       expect(children.every((item: HTMLElement) => item.classList.contains('ant-rate-star-full'))).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
+
     it('should click work', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
@@ -52,6 +62,7 @@ describe('rate', () => {
       expect(testComponent.value).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     }));
+
     it('should allow half work', fakeAsync(() => {
       testComponent.allowHalf = false;
       fixture.detectChanges();
@@ -76,6 +87,7 @@ describe('rate', () => {
       expect(testComponent.value).toBe(3.5);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     }));
+
     it('should allow clear work', fakeAsync(() => {
       testComponent.allowClear = false;
       fixture.detectChanges();
@@ -101,6 +113,7 @@ describe('rate', () => {
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
     }));
+
     it('should disable work', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();
@@ -112,6 +125,7 @@ describe('rate', () => {
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
+
     it('should count work', fakeAsync(() => {
       fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild.children.length).toBe(5);
@@ -130,6 +144,7 @@ describe('rate', () => {
       expect(testComponent.value).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     }));
+
     it('should autofocus work', () => {
       fixture.detectChanges();
       testComponent.autoFocus = true;
@@ -139,6 +154,7 @@ describe('rate', () => {
       fixture.detectChanges();
       expect(rate.nativeElement.querySelector('ul').attributes.getNamedItem('autofocus')).toBe(null);
     });
+
     it('should focus and blur function work', () => {
       fixture.detectChanges();
       expect(rate.nativeElement.querySelector('ul') === document.activeElement).toBe(false);
@@ -149,6 +165,7 @@ describe('rate', () => {
       fixture.detectChanges();
       expect(rate.nativeElement.querySelector('ul') === document.activeElement).toBe(false);
     });
+
     it('should hover rate work', () => {
       fixture.detectChanges();
       dispatchFakeEvent(
@@ -171,6 +188,7 @@ describe('rate', () => {
       dispatchFakeEvent(rate.nativeElement.firstElementChild.children[2].firstElementChild, 'mouseover');
       expect(testComponent.onHoverChange).toHaveBeenCalledTimes(2);
     });
+
     it('should keydown work', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
@@ -197,6 +215,7 @@ describe('rate', () => {
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
     });
+
     it('should right keydown not dispatch change reached limit', fakeAsync(() => {
       testComponent.value = 5;
       fixture.detectChanges();
@@ -208,6 +227,7 @@ describe('rate', () => {
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     }));
   });
+
   describe('rate form', () => {
     let fixture: ComponentFixture<NzTestRateFormComponent>;
     let testComponent: NzTestRateFormComponent;
@@ -216,6 +236,7 @@ describe('rate', () => {
       fixture = TestBed.createComponent(NzTestRateFormComponent);
       testComponent = fixture.componentInstance;
     });
+
     it('should be in pristine, untouched, and valid states and enable initially', fakeAsync(() => {
       fixture.detectChanges();
       flush();
@@ -225,6 +246,7 @@ describe('rate', () => {
       expect(testComponent.formControl.touched).toBe(false);
       expect(rate.nativeElement.firstElementChild!.classList).not.toContain('ant-rate-disabled');
     }));
+
     it('should be disable if form is enable and nzDisable set to true initially', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();
@@ -232,6 +254,7 @@ describe('rate', () => {
       const rate = fixture.debugElement.query(By.directive(NzRateComponent));
       expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate-disabled');
     }));
+
     it('should be disable if form is disable and nzDisable set to false initially', fakeAsync(() => {
       testComponent.disable();
       fixture.detectChanges();
@@ -239,6 +262,7 @@ describe('rate', () => {
       const rate = fixture.debugElement.query(By.directive(NzRateComponent));
       expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate-disabled');
     }));
+
     it('should set disabled work', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();
@@ -268,6 +292,7 @@ describe('rate', () => {
       expect(testComponent.formControl.value).toBe(4);
     }));
   });
+
   describe('RTL', () => {
     let fixture: ComponentFixture<NzTestRateRtlComponent>;
     let rate: DebugElement;
@@ -287,6 +312,7 @@ describe('rate', () => {
       expect(rate.nativeElement.firstElementChild!.classList).not.toContain('ant-rate-rtl');
     }));
   });
+
   describe('rate character', () => {
     let fixture: ComponentFixture<NzTestRateCharacterComponent>;
     let rate: DebugElement;

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -13,7 +13,7 @@ import { NzHashCodeComponent } from './hash-code.component';
 import { NzHashCodeModule } from './hash-code.module';
 import { NzModeType } from './typings';
 
-describe('nz-hash-code', () => {
+describe('hash-code', () => {
   let fixture: ComponentFixture<NzTestHashCodeBasicComponent>;
   let testComponent: NzTestHashCodeBasicComponent;
   let resultEl: DebugElement;
@@ -24,12 +24,19 @@ describe('nz-hash-code', () => {
     fixture.detectChanges();
   }
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(NzTestHashCodeBasicComponent);
     fixture.detectChanges();
     testComponent = fixture.componentInstance;
     resultEl = fixture.debugElement.query(By.directive(NzHashCodeComponent));
-  }));
+  });
 
   it('basic', () => {
     fixture.detectChanges();

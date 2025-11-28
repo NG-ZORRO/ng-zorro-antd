@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Accordion mode, only one panel can be expanded at a time. The first panel will be expanded by default.
-
-

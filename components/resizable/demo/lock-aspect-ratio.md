@@ -12,5 +12,3 @@ title:
 ## en-US
 
 Lock the resize aspect ratio.
-
-

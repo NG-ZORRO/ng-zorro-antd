@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Specifies default value by an array, but `nzOptions` is `null`/empty, data are loaded by `nzLoadData` function.
-

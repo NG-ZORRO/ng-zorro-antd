@@ -153,6 +153,7 @@
 @font-size-base: 14px;
 @font-size-lg: @font-size-base + 2px;
 @font-size-sm: 12px;
+@font-size-icon: @font-size-sm;
 @heading-1-size: ceil(@font-size-base * 2.71);
 @heading-2-size: ceil(@font-size-base * 2.14);
 @heading-3-size: ceil(@font-size-base * 1.71);
@@ -160,8 +161,10 @@
 @heading-5-size: ceil(@font-size-base * 1.14);
 // https://github.com/ant-design/ant-design/issues/20210
 @line-height-base: 1.5715;
+@line-width: 1px;
 @border-radius-base: 2px;
 @border-radius-sm: 2px;
+@border-radius-lg: 4px;
 
 // control border
 @control-border-radius: @border-radius-base;
@@ -436,7 +439,6 @@
 @zindex-badge: auto;
 @zindex-table-fixed: 2;
 @zindex-affix: 10;
-@zindex-back-top: 10;
 @zindex-picker-panel: 10;
 @zindex-popup-close: 10;
 @zindex-modal: 1000;
@@ -485,9 +487,9 @@
 @input-height-base: @height-base;
 @input-height-lg: @height-lg;
 @input-height-sm: @height-sm;
-@input-padding-horizontal: @control-padding-horizontal - 1px;
+@input-padding-horizontal: @control-padding-horizontal - @line-width;
 @input-padding-horizontal-base: @input-padding-horizontal;
-@input-padding-horizontal-sm: @control-padding-horizontal-sm - 1px;
+@input-padding-horizontal-sm: @control-padding-horizontal-sm - @line-width;
 @input-padding-horizontal-lg: @input-padding-horizontal;
 @input-padding-vertical-base: max(
   (round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) -
@@ -528,6 +530,7 @@
 
 // Select
 // ---
+@select-height: @input-height-base;
 @select-border-color: @border-color-base;
 @select-item-selected-color: @text-color;
 @select-item-selected-font-weight: 600;
@@ -544,11 +547,13 @@
 @select-selection-item-border-color: @border-color-split;
 @select-single-item-height-lg: 40px;
 @select-multiple-item-height: @input-height-base - @input-padding-vertical-base * 2; // Normal 24px
+@select-multiple-item-height-sm: @input-height-sm - @input-padding-vertical-base * 2;
 @select-multiple-item-height-lg: 32px;
 @select-multiple-item-spacing-half: ceil((@input-padding-vertical-base / 2));
 @select-multiple-disabled-background: @input-disabled-bg;
 @select-multiple-item-disabled-color: #bfbfbf;
 @select-multiple-item-disabled-border-color: @select-border-color;
+@select-select-affix-padding: 4px;
 
 // Cascader
 // ---
@@ -581,7 +586,7 @@
 // Tooltip background color
 @tooltip-bg: rgba(0, 0, 0, 0.75);
 // Tooltip arrow width
-@tooltip-arrow-width: 8px * sqrt(2);
+@tooltip-arrow-width: 16px;
 // Tooltip distance with trigger
 @tooltip-distance: @tooltip-arrow-width - 1px + 4px;
 // Tooltip arrow color
@@ -601,11 +606,12 @@
 @popover-arrow-width: @tooltip-arrow-width;
 // Popover arrow color
 @popover-arrow-color: @popover-bg;
-// Popover outer arrow width
+// Popover arrow box shadow
+@popover-arrow-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
 // Popover outer arrow color
 @popover-arrow-outer-color: @popover-bg;
 // Popover distance with trigger
-@popover-distance: @popover-arrow-width + 4px;
+@popover-distance: calc(@popover-arrow-width / 2 + @margin-xss);
 @popover-padding-horizontal: @padding-md;
 
 // Modal
@@ -872,12 +878,6 @@
 @tabs-active-color: @primary-7;
 @tabs-card-gutter: 2px;
 @tabs-card-tab-active-border-top: 2px solid transparent;
-
-// BackTop
-// ---
-@back-top-color: #fff;
-@back-top-bg: @text-color-secondary;
-@back-top-hover-bg: @text-color;
 
 // Avatar
 // ---

@@ -7,13 +7,11 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/Vyyeu8jq2/Tooltp.svg'
 description: 简单的文字提示气泡框。
 ---
 
-
 ## 何时使用
 
 鼠标移入则显示提示，移出消失，气泡浮层不承载复杂文本和操作。
 
 可用来代替系统默认的 `title` 提示，提供一个`按钮/文字/操作`的文案解释。
-
 
 ## API
 
@@ -39,16 +37,19 @@ description: 简单的文字提示气泡框。
 
 以下 API 为 `nz-tooltip`、`nz-popconfirm`、`nz-popover` 共享的 API。
 
-| 方法             | 说明     |
-| ---------------- | -------- |
-| `show`           | 打开     |
-| `hide`           | 隐藏     |
-| `updatePosition` | 调整位置 |
-
-## 非 body 滚轴事件需要更新 CDK 的位置
-
-在 tooltip 相关(包括 popconfirm popover) 的组件使用中，body 的滚轴事件会刷新 tooltip 的位置。如果是自定义容器的滚轴事件则不会刷新，你可以在自定义容器上添加 `cdkScrollable` 指令以达到该目的。注意，这里需要导入相关的包 `import { ScrollingModule } from '@angular/cdk/scrolling';`，更多信息请参考 [scrolling/api](https://material.angular.io/cdk/scrolling/api)。
+| 方法               | 说明     |
+| ------------------ | -------- |
+| `show()`           | 打开     |
+| `hide()`           | 隐藏     |
+| `updatePosition()` | 调整位置 |
 
 ## 注意
 
 请确保 `[nz-tooltip]` 元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
+
+## FAQ
+
+### Q：滚动时浮层元素没有跟随滚动位置
+
+默认情况下，浮层元素使用 `body` 作为滚动容器，如果使用了其他滚动容器，在自定义滚动容器元素上添加 [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) 指令。
+注意：您需要从 `@angular/cdk/scrolling` 导入 `CdkScrollable` 指令或 `ScrollingModule` 模块。

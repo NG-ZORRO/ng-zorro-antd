@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { BidiModule, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -30,21 +30,16 @@ import { NzResultModule } from './result.module';
 export class NzTestResultBasicComponent {
   icon?: string = 'success';
   title?: string = 'Title';
-  status?: NzResultStatusType = 'error';
+  status: NzResultStatusType = 'error';
   subtitle?: string = 'SubTitle';
   extra?: string = 'Extra';
 }
 
 @Component({
   imports: [BidiModule, NzTestResultBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-basic-result></nz-test-basic-result>
-    </div>
-  `
+  template: `<nz-test-basic-result [dir]="direction" />`
 })
 export class NzTestResultRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
   direction: Direction = 'rtl';
 }
 
@@ -81,12 +76,7 @@ describe('nz-result', () => {
     });
 
     it('should content work', () => {
-      testComponent.icon =
-        testComponent.title =
-        testComponent.subtitle =
-        testComponent.status =
-        testComponent.extra =
-          undefined;
+      testComponent.icon = testComponent.title = testComponent.subtitle = testComponent.extra = undefined;
       fixture.detectChanges();
 
       const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');
@@ -104,14 +94,14 @@ describe('nz-result', () => {
     });
 
     it('should icon overlap status', () => {
-      testComponent.icon = undefined;
+      testComponent.icon = 'smile-o';
       fixture.detectChanges();
 
       const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');
 
       expect(resultEl.nativeElement.classList).toContain('ant-result');
       expect(resultEl.nativeElement.classList).toContain('ant-result-error'); // should status work
-      expect(iconView.firstElementChild.classList).toContain('anticon-close-circle');
+      expect(iconView.firstElementChild.classList).toContain('anticon-smile-o');
     });
   });
 
@@ -120,8 +110,9 @@ describe('nz-result', () => {
     let resultEl: DebugElement;
 
     beforeEach(() => {
+      // todo: use zoneless
       TestBed.configureTestingModule({
-        providers: [provideNzIconsTesting()]
+        providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
       });
 
       fixture = TestBed.createComponent(NzTestResultRtlComponent);

@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Allow only select parent options.
-

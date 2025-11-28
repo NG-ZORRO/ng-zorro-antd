@@ -1,12 +1,11 @@
 ---
 category: Components
-type: Data Display
+type: Navigation
 title: Tabs
 cols: 1
 cover: 'https://gw.alipayobjects.com/zos/antfincdn/lkI2hNEDr2V/Tabs.svg'
 description: Tabs make it easy to switch between different views.
 ---
-
 
 ## When To Use
 
@@ -16,21 +15,20 @@ Ant Design has 3 types of Tabs for different situations.
 - Normal Tabs: for functional aspects of a page.
 - [RadioButton](/components/radio/en/#components-radio-demo-radiobutton): for secondary tabs.
 
-
 ## API
 
-### nz-tabset
+### nz-tabs
 
 | Property                     | Description                                                                               | Type                                                | Default                            | Global Config |
 | ---------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------- | ------------- |
 | `[nzSelectedIndex]`          | Current tab's index                                                                       | `number`                                            | -                                  |
-| `[nzAnimated]`               | Whether to change tabs with animation. Only works while `nzTabPosition="top" \| "bottom"` | `boolean \| {inkBar:boolean, tabPane:boolean}`      | `true`, `false` when `type="card"` | ✅             |
-| `[nzSize]`                   | preset tab bar size                                                                       | `'large' \| 'small' \| 'default'`                   | `'default'`                        | ✅             |
+| `[nzAnimated]`               | Whether to change tabs with animation. Only works while `nzTabPosition="top" \| "bottom"` | `boolean \| {inkBar:boolean, tabPane:boolean}`      | `true`, `false` when `type="card"` | ✅            |
+| `[nzSize]`                   | preset tab bar size                                                                       | `'large' \| 'small' \| 'default'`                   | `'default'`                        | ✅            |
 | `[nzTabBarExtraContent]`     | Extra content in tab bar                                                                  | `TemplateRef<void>`                                 | -                                  |
 | `[nzTabBarStyle]`            | Tab bar style object                                                                      | `object`                                            | -                                  |
 | `[nzTabPosition]`            | Position of tabs                                                                          | `'top' \| 'right' \| 'bottom' \| 'left'`            | `'top'`                            |               |
-| `[nzType]`                   | Basic style of tabs                                                                       | `'line' \| 'card' \| 'editable-card'`               | `'line'`                           | ✅             |
-| `[nzTabBarGutter]`           | The gap between tabs                                                                      | `number`                                            | -                                  | ✅             |
+| `[nzType]`                   | Basic style of tabs                                                                       | `'line' \| 'card' \| 'editable-card'`               | `'line'`                           | ✅            |
+| `[nzTabBarGutter]`           | The gap between tabs                                                                      | `number`                                            | -                                  | ✅            |
 | `[nzHideAll]`                | Whether hide all tabs                                                                     | `boolean`                                           | `false`                            |
 | `[nzLinkRouter]`             | Link with Angular router. It supports child mode and query param mode                     | `boolean`                                           | `false`                            |               |
 | `[nzLinkExact]`              | Use exact routing matching                                                                | `boolean`                                           | `true`                             |
@@ -40,7 +38,7 @@ Ant Design has 3 types of Tabs for different situations.
 | `(nzSelectedIndexChange)`    | Current tab's index change callback                                                       | `EventEmitter<number>`                              | -                                  |
 | `(nzSelectChange)`           | Current tab's change callback                                                             | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                  |
 
-### nz-tabset[nzType="editable-card"]
+### nz-tabs[nzType="editable-card"]
 
 | Property      | Description                    | Type                              | Default | Global Config |
 | ------------- | ------------------------------ | --------------------------------- | ------- | ------------- |
@@ -61,7 +59,7 @@ Ant Design has 3 types of Tabs for different situations.
 | `(nzSelect)`      | title select callback                                                    | `EventEmitter<void>`          | -       |
 | `(nzDeselect)`    | title deselect callback                                                  | `EventEmitter<void>`          | -       |
 
-### nz-tabset[nzType="editable-card"] > nz-tab
+### nz-tabs[nzType="editable-card"] > nz-tab
 
 | Property        | Description            | Type                          | Default | Global Config |
 | --------------- | ---------------------- | ----------------------------- | ------- | ------------- |
@@ -100,17 +98,17 @@ Tab contents can be lazy loaded by declaring the body in a `ng-template` with th
 Show a link in tab's head. Used in router link mode.
 
 ```html
-<nz-tabset nzLinkRouter>
+<nz-tabs nzLinkRouter>
   <nz-tab>
     <a *nzTabLink nz-tab-link [routerLink]="['.']">Link</a>
     Default.
   </nz-tab>
-</nz-tabset>
+</nz-tabs>
 ```
 
 ### [nzTabBarExtraContent]
 
-> Note: `*nzTabBarExtraContent` has a higher priority than `nz-tabset[nzTabBarExtraContent]`.
+> Note: `*nzTabBarExtraContent` has a higher priority than `nz-tabs[nzTabBarExtraContent]`.
 
 | Property                 | Description               | Type               | Default | Global Config |
 | ------------------------ | ------------------------- | ------------------ | ------- | ------------- |

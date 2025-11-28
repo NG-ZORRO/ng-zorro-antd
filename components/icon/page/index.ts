@@ -6,10 +6,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   DOCUMENT,
   inject,
   Input,
-  OnDestroy,
   OnInit,
   PLATFORM_ID,
   TemplateRef,
@@ -35,7 +35,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzUploadFile, NzUploadModule, NzUploadXHRArgs } from 'ng-zorro-antd/upload';
 
 export interface Categories {
@@ -326,7 +326,7 @@ declare const locale: NzSafeAny;
     NzRadioModule,
     NzResultModule,
     NzSpinModule,
-    NzToolTipModule,
+    NzTooltipModule,
     NzProgressModule,
     NzUploadModule
   ],
@@ -365,16 +365,14 @@ declare const locale: NzSafeAny;
           Two Tone
         </label>
       </nz-radio-group>
-      <nz-input-group nzSearch [nzSuffix]="suffixIconCamera" [nzAddOnAfter]="addOnAfterIconSearch">
+      <nz-input-search>
         <input
           nz-input
           [placeholder]="localeObj.search"
           [(ngModel)]="searchingString"
           (ngModelChange)="onSearchChange()"
         />
-      </nz-input-group>
-      <ng-template #suffixIconCamera>
-        <div class="icon-pic-searcher">
+        <div nzInputSuffix class="icon-pic-searcher">
           <nz-icon
             class="icon-pic-btn"
             nz-popover
@@ -390,12 +388,7 @@ declare const locale: NzSafeAny;
             </svg>
           </nz-icon>
         </div>
-      </ng-template>
-      <ng-template #addOnAfterIconSearch>
-        <button nz-button nzType="default" nzSearch>
-          <nz-icon nzType="search"></nz-icon>
-        </button>
-      </ng-template>
+      </nz-input-search>
     </div>
     @for (category of categoryNames; track category; let i = $index) {
       <h3>{{ localeObj[category] }}</h3>
@@ -504,14 +497,18 @@ declare const locale: NzSafeAny;
         justify-content: space-between;
       }
 
-      nz-input-group {
+      nz-input-search {
         margin-left: 10px;
         flex: 1 1 0;
       }
     `
   ]
 })
-export class NzPageDemoIconComponent implements OnInit, OnDestroy {
+export class NzPageDemoIconComponent implements OnInit {
+  private platformId = inject(PLATFORM_ID);
+  private message = inject(NzMessageService);
+  private viewContainerRef = inject(ViewContainerRef);
+
   displayedNames: Array<{ name: string; icons: string[] }> = [];
   categoryNames: string[] = [];
   currentTheme: ThemeType = 'outline';
@@ -708,15 +705,14 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
     }
   }
 
-  private platformId = inject(PLATFORM_ID);
-
-  constructor(
-    private _iconService: NzIconService,
-    private message: NzMessageService,
-    private viewContainerRef: ViewContainerRef
-  ) {
+  constructor() {
     // This is to test that tree shake works!
-    this._iconService.addIcon(AccountBookFill);
+    inject(NzIconService).addIcon(AccountBookFill);
+
+    inject(DestroyRef).onDestroy(() => {
+      this.document.removeEventListener('paste', this.onPaste as EventListener);
+      this.viewContainerRef.clear();
+    });
   }
 
   ngOnInit(): void {
@@ -726,11 +722,6 @@ export class NzPageDemoIconComponent implements OnInit, OnDestroy {
       this.loadModel();
       this.popoverVisible = !localStorage.getItem('disableIconTip');
     }
-  }
-
-  ngOnDestroy(): void {
-    this.document.removeEventListener('paste', this.onPaste as EventListener);
-    this.viewContainerRef.clear();
   }
 }
 

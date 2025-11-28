@@ -11,7 +11,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     <div style="margin-bottom: 16px;">
       <button nz-button (click)="newTab()">ADD</button>
     </div>
-    <nz-tabset nzLinkRouter>
+    <nz-tabs nzLinkRouter>
       <nz-tab>
         <a *nzTabLink nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: 'one' }" queryParamsHandling="merge">
           Default
@@ -50,7 +50,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
           {{ tab.content }}
         </nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsLinkRouterComponent {

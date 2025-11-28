@@ -66,9 +66,9 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
 
     <ng-template #inputNumberWithAddonInner>
       <div class="ant-input-number-wrapper ant-input-number-group">
-        @if (addonBefore()) {
+        @if (hasAddonBefore()) {
           <div class="ant-input-number-group-addon">
-            <ng-content select="[nzInputAddonBefore]"></ng-content>
+            <ng-content select="[nzInputAddonBefore]">{{ nzAddonBefore() }}</ng-content>
           </div>
         }
 
@@ -78,9 +78,9 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
           <ng-template [ngTemplateOutlet]="inputNumber" />
         }
 
-        @if (addonAfter()) {
+        @if (hasAddonAfter()) {
           <div class="ant-input-number-group-addon">
-            <ng-content select="[nzInputAddonAfter]"></ng-content>
+            <ng-content select="[nzInputAddonAfter]">{{ nzAddonAfter() }}</ng-content>
           </div>
         }
       </div>
@@ -93,15 +93,15 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
     </ng-template>
 
     <ng-template #inputNumberWithAffixInner>
-      @if (prefix()) {
+      @if (hasPrefix()) {
         <span class="ant-input-number-prefix">
-          <ng-content select="[nzInputPrefix]"></ng-content>
+          <ng-content select="[nzInputPrefix]">{{ nzPrefix() }}</ng-content>
         </span>
       }
       <ng-template [ngTemplateOutlet]="inputNumber" />
-      @if (suffix() || hasFeedback()) {
+      @if (hasSuffix()) {
         <span class="ant-input-number-suffix">
-          <ng-content select="[nzInputSuffix]"></ng-content>
+          <ng-content select="[nzInputSuffix]">{{ nzSuffix() }}</ng-content>
           @if (hasFeedback() && finalStatus()) {
             <nz-form-item-feedback-icon [status]="finalStatus()" />
           }
@@ -196,12 +196,12 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzDisabled = input(false, { transform: booleanAttribute });
   readonly nzReadOnly = input(false, { transform: booleanAttribute });
   readonly nzAutoFocus = input(false, { transform: booleanAttribute });
-  /**
-   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
-   */
-  readonly nzBordered = input(true, { transform: booleanAttribute });
   readonly nzKeyboard = input(true, { transform: booleanAttribute });
   readonly nzControls = input(true, { transform: booleanAttribute });
+  readonly nzPrefix = input<string>();
+  readonly nzSuffix = input<string>();
+  readonly nzAddonBefore = input<string>();
+  readonly nzAddonAfter = input<string>();
 
   readonly nzBlur = output<void>();
   readonly nzFocus = output<void>();
@@ -220,7 +220,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   private directionality = inject(Directionality);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private autoStepTimer: ReturnType<typeof setTimeout> | null = null;
-  private defaultFormater = (value: number): string => {
+  private defaultFormatter = (value: number): string => {
     const precision = this.nzPrecision();
     if (isNotNil(precision)) {
       return value.toFixed(precision);
@@ -228,23 +228,28 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     return value.toString();
   };
 
-  protected value = signal<number | null>(null);
-  protected displayValue = signal('');
+  protected readonly value = signal<number | null>(null);
+  protected readonly displayValue = signal('');
 
-  protected dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
-  protected focused = signal(false);
-  protected hasFeedback = signal(false);
-  protected finalStatus = linkedSignal<NzValidateStatus>(() => this.nzStatus());
-  protected finalDisabled = linkedSignal(() => this.nzDisabled());
+  protected readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
+  protected readonly focused = signal(false);
+  protected readonly hasFeedback = signal(false);
+  protected readonly finalStatus = linkedSignal<NzValidateStatus>(() => this.nzStatus());
+  protected readonly finalDisabled = linkedSignal(() => this.nzDisabled());
 
-  protected prefix = contentChild(NzInputPrefixDirective);
-  protected suffix = contentChild(NzInputSuffixDirective);
-  protected addonBefore = contentChild(NzInputAddonBeforeDirective);
-  protected addonAfter = contentChild(NzInputAddonAfterDirective);
-  protected hasAffix = computed(() => !!this.prefix() || !!this.suffix() || this.hasFeedback());
-  protected hasAddon = computed(() => !!this.addonBefore() || !!this.addonAfter());
+  protected readonly prefix = contentChild(NzInputPrefixDirective);
+  protected readonly suffix = contentChild(NzInputSuffixDirective);
+  protected readonly addonBefore = contentChild(NzInputAddonBeforeDirective);
+  protected readonly addonAfter = contentChild(NzInputAddonAfterDirective);
 
-  protected class = computed(() => {
+  protected readonly hasPrefix = computed(() => !!this.nzPrefix() || !!this.prefix());
+  protected readonly hasSuffix = computed(() => !!this.nzSuffix() || !!this.suffix() || this.hasFeedback());
+  protected readonly hasAffix = computed(() => this.hasPrefix() || this.hasSuffix());
+  protected readonly hasAddonBefore = computed(() => !!this.nzAddonBefore() || !!this.addonBefore());
+  protected readonly hasAddonAfter = computed(() => !!this.nzAddonAfter() || !!this.addonAfter());
+  protected readonly hasAddon = computed(() => this.hasAddonBefore() || this.hasAddonAfter());
+
+  protected readonly class = computed(() => {
     if (this.hasAddon()) {
       return this.groupWrapperClass();
     }
@@ -253,7 +258,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     }
     return this.inputNumberClass();
   });
-  protected inputNumberClass = computed(() => {
+  protected readonly inputNumberClass = computed(() => {
     return {
       'ant-input-number': true,
       'ant-input-number-lg': this.finalSize() === 'large',
@@ -264,11 +269,11 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-rtl': this.dir() === 'rtl',
       'ant-input-number-in-form-item': !!this.nzFormStatusService,
       'ant-input-number-out-of-range': this.value() !== null && !isInRange(this.value()!, this.nzMin(), this.nzMax()),
-      ...getVariantClassNames('ant-input-number', this.nzVariant(), !this.nzBordered()),
+      ...getVariantClassNames('ant-input-number', this.nzVariant()),
       ...getStatusClassNames('ant-input-number', this.finalStatus(), this.hasFeedback())
     };
   });
-  protected affixWrapperClass = computed(() => {
+  protected readonly affixWrapperClass = computed(() => {
     return {
       'ant-input-number-affix-wrapper': true,
       'ant-input-number-affix-wrapper-disabled': this.finalDisabled(),
@@ -276,28 +281,29 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-affix-wrapper-focused': this.focused(),
       'ant-input-number-affix-wrapper-rtl': this.dir() === 'rtl',
       ...getStatusClassNames('ant-input-number-affix-wrapper', this.finalStatus(), this.hasFeedback()),
-      ...getVariantClassNames('ant-input-number-affix-wrapper', this.nzVariant(), !this.nzBordered())
+      ...getVariantClassNames('ant-input-number-affix-wrapper', this.nzVariant())
     };
   });
-  protected groupWrapperClass = computed(() => {
+  protected readonly groupWrapperClass = computed(() => {
     return {
       'ant-input-number-group-wrapper': true,
       'ant-input-number-group-wrapper-rtl': this.dir() === 'rtl',
-      ...getStatusClassNames('ant-input-number-group-wrapper', this.finalStatus(), this.hasFeedback())
+      ...getStatusClassNames('ant-input-number-group-wrapper', this.finalStatus(), this.hasFeedback()),
+      ...getVariantClassNames('ant-input-number-group-wrapper', this.nzVariant())
     };
   });
 
-  protected finalSize = computed(() => {
+  protected readonly finalSize = computed(() => {
     if (this.compactSize) {
       return this.compactSize();
     }
     return this.nzSize();
   });
 
-  protected upDisabled = computed(() => {
+  protected readonly upDisabled = computed(() => {
     return !isNil(this.value()) && this.value()! >= this.nzMax();
   });
-  protected downDisabled = computed(() => {
+  protected readonly downDisabled = computed(() => {
     return !isNil(this.value()) && this.value()! <= this.nzMin();
   });
 
@@ -340,7 +346,8 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  writeValue(value: number | null): void {
+  writeValue(value: number | null | undefined): void {
+    if (isNil(value)) value = null;
     untracked(() => {
       this.value.set(value);
       this.setValue(value);
@@ -403,21 +410,22 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   private setValue(value: number | null): void {
-    const formatter = this.nzFormatter() ?? this.defaultFormater;
+    const formatter = this.nzFormatter() ?? this.defaultFormatter;
     const precision = this.nzPrecision();
 
     if (isNotNil(precision)) {
       value &&= +value.toFixed(precision);
     }
 
-    const formatedValue = value === null ? '' : formatter(value);
+    const formatedValue = isNil(value) ? '' : formatter(value);
     this.displayValue.set(formatedValue);
     this.updateValue(value);
   }
 
   private setValueByTyping(value: string): void {
+    this.displayValue.set(value);
+
     if (value === '') {
-      this.displayValue.set('');
       this.updateValue(null);
       return;
     }
@@ -426,12 +434,16 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     const parsedValue = parser(value);
 
     if (isNotCompleteNumber(value) || Number.isNaN(parsedValue)) {
-      this.displayValue.set(value);
       return;
     }
 
-    const formattedValue = this.nzFormatter()?.(parsedValue) ?? parsedValue.toString();
-    this.displayValue.set(formattedValue);
+    // Formatting is called during input only if the user provided a formatter.
+    // Otherwise, formatting is only called when the input blurs.
+    const formatter = this.nzFormatter();
+    if (formatter) {
+      const formattedValue = formatter(parsedValue);
+      this.displayValue.set(formattedValue);
+    }
 
     if (!isInRange(parsedValue, this.nzMin(), this.nzMax())) {
       return;
@@ -531,7 +543,12 @@ const STEP_INTERVAL = 200;
 const STEP_DELAY = 600;
 
 function defaultParser(value: string): number {
-  return +value.trim().replace(/。/g, '.');
+  const parsedValue = value.trim().replace(/,/g, '').replace(/。/g, '.');
+  // `+'' === 0`, so we need to check if parsedValue is empty
+  if (parsedValue.length) {
+    return +parsedValue;
+  }
+  return NaN;
 }
 
 function isInRange(value: number, min: number, max: number): boolean {

@@ -7,12 +7,10 @@ cover: 'https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg'
 description: 展示统计数字。
 ---
 
-
 ## 何时使用
 
 - 当需要突出某个或某组数字时。
 - 当需要展示带描述的统计类数据时使用。
-
 
 ## API
 
@@ -32,7 +30,7 @@ description: 展示统计数字。
 
 | 参数                  | 说明                   | 类型                                 | 默认值       |
 | --------------------- | ---------------------- | ------------------------------------ | ------------ |
-| `[nzFormat]`          | 格式化倒计时展示       | `string`                             | `"HH:mm:ss"` |
+| `[nzFormat]`          | 格式化倒计时展示       | `string`                             | `'HH:mm:ss'` |
 | `[nzPrefix]`          | 设置数值的前缀         | `string \| TemplateRef<void>`        | -            |
 | `[nzSuffix]`          | 设置数值的后缀         | `string \| TemplateRef<void>`        | -            |
 | `[nzTitle]`           | 数值的标题             | `string \| TemplateRef<void>`        | -            |

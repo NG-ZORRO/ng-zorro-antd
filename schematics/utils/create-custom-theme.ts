@@ -13,5 +13,5 @@ export function createCustomTheme(): string {
 // View all variables: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less
 
 // @primary-color: #1890ff;
-`
+`;
 }

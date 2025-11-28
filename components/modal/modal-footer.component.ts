@@ -3,9 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -17,7 +16,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
 
 @Component({
   selector: 'div[nz-modal-footer]',
-  exportAs: 'NzModalFooterBuiltin',
+  exportAs: 'nzModalFooterBuiltin',
   template: `
     @if (config.nzFooter) {
       <ng-container
@@ -77,24 +76,23 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
   changeDetection: ChangeDetectionStrategy.Default,
   imports: [NzOutletModule, NzButtonModule]
 })
-export class NzModalFooterComponent implements OnDestroy {
+export class NzModalFooterComponent {
+  private i18n = inject(NzI18nService);
+  public readonly config = inject(ModalOptions);
+
   buttonsFooter = false;
   buttons: ModalButtonOptions[] = [];
   locale!: NzModalI18nInterface;
   @Output() readonly cancelTriggered = new EventEmitter<void>();
   @Output() readonly okTriggered = new EventEmitter<void>();
   @Input() modalRef!: NzModalRef;
-  private destroy$ = new Subject<void>();
 
-  constructor(
-    private i18n: NzI18nService,
-    public config: ModalOptions
-  ) {
-    if (Array.isArray(config.nzFooter)) {
+  constructor() {
+    if (Array.isArray(this.config.nzFooter)) {
       this.buttonsFooter = true;
-      this.buttons = (config.nzFooter as ModalButtonOptions[]).map(mergeDefaultOption);
+      this.buttons = (this.config.nzFooter as ModalButtonOptions[]).map(mergeDefaultOption);
     }
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed()).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');
     });
   }
@@ -134,11 +132,6 @@ export class NzModalFooterComponent implements OnDestroy {
           });
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
 

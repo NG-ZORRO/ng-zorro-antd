@@ -7,7 +7,6 @@ import { chain, noop, Rule } from '@angular-devkit/schematics';
 
 import { Schema } from '../schema';
 import { addIconToAssets } from './add-icon-assets';
-import { addRequiredModules } from './add-required-modules';
 import { addRequiredProviders } from './add-required-providers';
 import { hammerjsImport } from './hammerjs-import';
 import { registerLocale } from './register-locale';
@@ -16,7 +15,6 @@ import { addThemeToAppStyles } from './theming';
 export default function (options: Schema): Rule {
   return chain([
     registerLocale(options),
-    addRequiredModules(options),
     addRequiredProviders(options),
     addThemeToAppStyles(options),
     options.dynamicIcon ? addIconToAssets(options) : noop(),

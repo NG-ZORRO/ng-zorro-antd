@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -13,17 +13,18 @@ import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 import { NzTooltipDirective } from './tooltip';
-import { NzToolTipModule } from './tooltip.module';
+import { NzTooltipModule } from './tooltip.module';
 
-describe('nz-tooltip', () => {
+describe('tooltip', () => {
   let fixture: ComponentFixture<NzTooltipTestComponent>;
   let component: NzTooltipTestComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideZoneChangeDetection(), provideNoopAnimations()]
     });
     fixture = TestBed.createComponent(NzTooltipTestComponent);
     component = fixture.componentInstance;
@@ -175,10 +176,6 @@ describe('nz-tooltip', () => {
   });
 
   describe('content', () => {
-    // These specs are covered in previous specs.
-    // it('should nzTooltipTitle support string', fakeAsync(() => {}));
-    // it('should nzTooltipTitle support template', fakeAsync(() => {}));
-
     it('cannot be visible when the title is empty', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
 
@@ -244,7 +241,7 @@ describe('nz-tooltip', () => {
       expect(overlayContainerElement.textContent).toContain(title);
       expect(component.visibilityTogglingCount).toBe(1);
 
-      // Should close when title is changed to null.
+      // Should close when the title is changed to null.
       component.title = null;
       fixture.detectChanges();
       waitingForTooltipToggling();
@@ -253,7 +250,7 @@ describe('nz-tooltip', () => {
       expect(component.visibilityTogglingCount).toBe(2);
     }));
 
-    // changing title on the directive should be synced to the component
+    // changing the title on the directive should be synced to the component
     it('should set `setTitle` proxy to `nzTitle`', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
       const tooltipComponent = component.titleStringDirective.component!;
@@ -299,24 +296,22 @@ describe('nz-tooltip', () => {
     it('should background work', fakeAsync(() => {
       const triggerElement = component.titleTemplate.nativeElement;
       component.color = 'pink';
-
       fixture.detectChanges();
 
       dispatchMouseEvent(triggerElement, 'click');
       waitingForTooltipToggling();
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.classList).toContain(
-        'ant-tooltip-pink'
-      );
+      const tooltip = overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!;
+      expect(tooltip.classList).toContain('ant-tooltip-pink');
 
       component.color = '#f50';
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe(
-        'rgb(255, 85, 0)'
-      );
-      expect(
-        overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip-arrow-content')!.style.backgroundColor
-      ).toBe('rgb(255, 85, 0)');
+      expect(tooltip.querySelector<HTMLElement>('.ant-tooltip-inner')!.style.backgroundColor).toBe('rgb(255, 85, 0)');
+      const arrow = tooltip.querySelector<HTMLElement>('.ant-tooltip-arrow')!;
+      // Check that the CSS variable is correctly set on the arrow element
+      const arrowStyles = getComputedStyle(arrow);
+      const cssVarValue = arrowStyles.getPropertyValue('--antd-arrow-background-color').trim();
+      expect(cssVarValue).toBe('#f50');
     }));
   });
 
@@ -376,7 +371,7 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
 }
 
 @Component({
-  imports: [NzToolTipModule],
+  imports: [NzTooltipModule],
   template: `
     <a
       #titleString
@@ -459,7 +454,7 @@ export class NzTooltipTestComponent {
 }
 
 @Component({
-  imports: [NzElementPatchModule, NzToolTipModule],
+  imports: [NzElementPatchModule, NzTooltipModule],
   template: `
     <button nz-element #button="nzElement">Action</button>
     <a nz-tooltip nzTooltipTitle="This action could not be revoked!" [nzTooltipOrigin]="button.elementRef">Notice</a>
@@ -470,7 +465,7 @@ export class NzTestTooltipTargetComponent {
 }
 
 @Component({
-  imports: [NzToolTipModule],
+  imports: [NzTooltipModule],
   template: `
     <a
       #titleString

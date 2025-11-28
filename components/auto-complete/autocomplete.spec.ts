@@ -15,21 +15,14 @@ import {
   ElementRef,
   NgZone,
   OnInit,
+  provideZoneChangeDetection,
   QueryList,
+  signal,
   SimpleChanges,
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import {
-  ComponentFixture,
-  discardPeriodicTasks,
-  fakeAsync,
-  flush,
-  inject,
-  TestBed,
-  tick,
-  waitForAsync
-} from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -45,7 +38,7 @@ import {
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-import { getNzAutocompleteMissingPanelError } from './autocomplete-trigger.directive';
+import { getNzAutocompleteMissingPanelError } from './error';
 import {
   NzAutocompleteComponent,
   NzAutocompleteModule,
@@ -58,29 +51,28 @@ describe('auto-complete', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   const scrolledSubject = new Subject();
-  let zone: MockNgZone;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         provideNoopAnimations(),
         { provide: Directionality, useClass: MockDirectionality },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
-          useFactory: () => {
-            zone = new MockNgZone();
-            return zone;
-          }
+          useFactory: () => new MockNgZone()
         }
       ]
     });
+  });
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
   }));
+
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
@@ -932,32 +924,28 @@ describe('auto-complete', () => {
       }).toThrow(getNzAutocompleteMissingPanelError());
     }));
 
-    it(
-      'should show the panel when the options are initialized later within a component with ' +
-        'OnPush change detection',
-      fakeAsync(() => {
-        fixture = TestBed.createComponent(NzTestAutocompleteWithOnPushDelayComponent);
-        fixture.detectChanges();
+    it('should show the panel when the options are initialized later within a component with OnPush change detection', fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestAutocompleteWithOnPushDelayComponent);
+      fixture.detectChanges();
 
-        dispatchFakeEvent(fixture.debugElement.query(By.css('input')).nativeElement, 'focusin');
-        fixture.detectChanges();
-        tick(1000);
+      dispatchFakeEvent(fixture.debugElement.query(By.css('input')).nativeElement, 'focusin');
+      fixture.detectChanges();
+      tick(1000);
 
-        fixture.detectChanges();
-        tick();
+      fixture.detectChanges();
+      tick();
 
-        Promise.resolve().then(() => {
-          fixture.detectChanges();
-          flush();
-          fixture.detectChanges();
-          const panel = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
-          expect(panel.classList).not.toContain('ant-select-dropdown-hidden');
-        });
-      })
-    );
+      Promise.resolve().then(() => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+        const panel = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+        expect(panel.classList).not.toContain('ant-select-dropdown-hidden');
+      });
+    }));
   });
 
-  describe('group-input', () => {
+  describe('within input-wrapper', () => {
     let fixture: ComponentFixture<NzTestAutocompleteWithGroupInputComponent>;
     let input: HTMLInputElement;
 
@@ -967,14 +955,13 @@ describe('auto-complete', () => {
       input = fixture.debugElement.query(By.css('input')).nativeElement;
     });
 
-    it('should use the group-input as the dropdown target', () => {
+    it('should use the input element as the dropdown target', () => {
       const componentInstance = fixture.componentInstance;
       fixture.detectChanges();
       dispatchFakeEvent(input, 'blur');
       fixture.detectChanges();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expect((componentInstance.trigger as any).getConnectedElement().nativeElement).toEqual(
-        componentInstance.inputGroupComponent.nativeElement
+      expect(componentInstance.trigger['getConnectedElement']().nativeElement).toEqual(
+        componentInstance.inputRef.nativeElement
       );
     });
   });
@@ -1047,7 +1034,7 @@ class NzTestAutocompletePropertyComponent {
 
 @Component({
   imports: [NzAutocompleteModule],
-  template: `<input [nzAutocomplete]="auto" />`
+  template: `<input [nzAutocomplete]="null!" />`
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
@@ -1219,18 +1206,17 @@ class NzTestAutocompleteWithObjectOptionComponent {
 @Component({
   imports: [NzAutocompleteModule, NzInputModule],
   template: `
-    <nz-input-group #inputGroupComponent nzSize="large" [nzSuffix]="suffixIcon">
-      <input placeholder="input here" nz-input [nzAutocomplete]="auto" />
-      <ng-template #suffixIcon></ng-template>
+    <nz-input-wrapper #inputGroupComponent>
+      <input #input placeholder="input here" nz-input nzSize="large" [nzAutocomplete]="auto" />
       <nz-autocomplete #auto>
         <nz-auto-option nzValue="value">label</nz-auto-option>
       </nz-autocomplete>
-    </nz-input-group>
+    </nz-input-wrapper>
   `
 })
 class NzTestAutocompleteWithGroupInputComponent {
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-  @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent!: ElementRef;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: true }) trigger!: NzAutocompleteTriggerDirective;
+  @ViewChild('input', { static: true, read: ElementRef }) inputRef!: ElementRef;
 }
 
 describe('auto-complete', () => {
@@ -1239,8 +1225,9 @@ describe('auto-complete', () => {
   let mockDirectionality: MockDirectionality;
 
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [{ provide: Directionality, useClass: MockDirectionality }]
+      providers: [provideZoneChangeDetection(), { provide: Directionality, useClass: MockDirectionality }]
     });
 
     fixture = TestBed.createComponent(NzAutocompleteComponent);
@@ -1345,4 +1332,5 @@ describe('auto-complete', () => {
 class MockDirectionality {
   value = 'ltr';
   change = new Subject();
+  valueSignal = signal('ltr');
 }

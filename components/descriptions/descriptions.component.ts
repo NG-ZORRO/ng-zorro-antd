@@ -11,18 +11,20 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   QueryList,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { Subject, merge } from 'rxjs';
-import { auditTime, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { merge } from 'rxjs';
+import { auditTime, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
@@ -160,7 +162,12 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
   },
   imports: [NzOutletModule, NgTemplateOutlet]
 })
-export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit, OnInit {
+export class NzDescriptionsComponent implements OnChanges, AfterContentInit, OnInit {
+  public nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private breakpointService = inject(NzBreakpointService);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ContentChildren(NzDescriptionsItemComponent) items!: QueryList<NzDescriptionsItemComponent>;
@@ -178,17 +185,10 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   dir: Direction = 'ltr';
 
   private breakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
-  private destroy$ = new Subject<void>();
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private breakpointService: NzBreakpointService,
-    private directionality: Directionality
-  ) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
     });
   }
@@ -200,23 +200,18 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   }
 
   ngAfterContentInit(): void {
-    const contentChange$ = this.items.changes.pipe(startWith(this.items), takeUntil(this.destroy$));
+    const contentChange$ = this.items.changes.pipe(startWith(this.items));
 
     merge(
       contentChange$,
       contentChange$.pipe(switchMap(() => merge(...this.items.map(i => i.inputChange$)).pipe(auditTime(16)))),
       this.breakpointService.subscribe(gridResponsiveMap).pipe(tap(bp => (this.breakpoint = bp)))
     )
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.prepareMatrix();
         this.cdr.markForCheck();
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   /**

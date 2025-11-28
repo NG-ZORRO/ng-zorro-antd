@@ -123,5 +123,8 @@ export default {
   },
   Empty: {
     description: 'Мэдээлэл байхгүй байна'
+  },
+  Form: {
+    optional: '(заавалгүй)'
   }
 };

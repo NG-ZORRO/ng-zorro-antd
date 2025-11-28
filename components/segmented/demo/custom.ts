@@ -9,22 +9,16 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   template: `
     <nz-segmented>
       <label nz-segmented-item nzValue="user1">
-        <div [style.padding.px]="4">
-          <nz-avatar nzSrc="https://joeschmoe.io/api/v1/random" />
-          <div>User 1</div>
-        </div>
+        <nz-avatar nzSrc="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+        <div>User 1</div>
       </label>
       <label nz-segmented-item nzValue="user2">
-        <div [style.padding.px]="4">
-          <nz-avatar nzText="K" [style.background]="'#f56a00'" />
-          <div>User 2</div>
-        </div>
+        <nz-avatar nzText="K" [style.background]="'#f56a00'" />
+        <div>User 2</div>
       </label>
       <label nz-segmented-item nzValue="user3">
-        <div [style.padding.px]="4">
-          <nz-avatar nzIcon="user" [style.background]="'#87d068'" />
-          <div>User 3</div>
-        </div>
+        <nz-avatar nzIcon="user" [style.background]="'#87d068'" />
+        <div>User 3</div>
       </label>
     </nz-segmented>
 
@@ -33,30 +27,27 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
     <nz-segmented>
       <label nz-segmented-item nzValue="spring">
-        <div [style.padding.px]="4">
-          <div>Spring</div>
-          <div>Jan-Mar</div>
-        </div>
+        <div>Spring</div>
+        <div>Jan-Mar</div>
       </label>
       <label nz-segmented-item nzValue="summer">
-        <div [style.padding.px]="4">
-          <div>Summer</div>
-          <div>Apr-Jun</div>
-        </div>
+        <div>Summer</div>
+        <div>Apr-Jun</div>
       </label>
       <label nz-segmented-item nzValue="autumn">
-        <div [style.padding.px]="4">
-          <div>Autumn</div>
-          <div>Jul-Sept</div>
-        </div>
+        <div>Autumn</div>
+        <div>Jul-Sept</div>
       </label>
       <label nz-segmented-item nzValue="winter">
-        <div [style.padding.px]="4">
-          <div>Winter</div>
-          <div>Oct-Dec</div>
-        </div>
+        <div>Winter</div>
+        <div>Oct-Dec</div>
       </label>
     </nz-segmented>
+  `,
+  styles: `
+    :host ::ng-deep .ant-segmented-item-label {
+      margin: 4px;
+    }
   `
 })
 export class NzDemoSegmentedCustomComponent {}

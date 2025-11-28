@@ -5,31 +5,32 @@
 
 import { getDefaultComponentOptions, getProjectFromWorkspace, isStandaloneSchematic } from '@angular/cdk/schematics';
 
-import { strings, template as interpolateTemplate } from '@angular-devkit/core';
-import { ProjectDefinition } from '@angular-devkit/core/src/workspace';
+import { template as interpolateTemplate } from '@angular-devkit/core';
 import {
   apply,
   applyTemplates,
-  branchAndMerge,
   chain,
+  FileOperator,
   filter,
+  forEach,
   mergeWith,
   move,
   noop,
   Rule,
   SchematicsException,
+  strings,
   Tree,
   url
 } from '@angular-devkit/schematics';
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
 import { Schema as ComponentOptions, Style } from '@schematics/angular/component/schema';
 import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
+import { ProjectDefinition, readWorkspace } from '@schematics/angular/utility';
 import { addDeclarationToModule, addExportToModule, getDecoratorMetadata } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { buildRelativePath, findModuleFromOptions } from '@schematics/angular/utility/find-module';
 import { parseName } from '@schematics/angular/utility/parse-name';
 import { validateHtmlSelector } from '@schematics/angular/utility/validation';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
 import { ProjectType } from '@schematics/angular/utility/workspace-models';
 
 import { readFileSync, statSync } from 'fs';
@@ -84,8 +85,7 @@ function buildDefaultPath(project: ProjectDefinition): string {
  */
 const supportedCssExtensions = ['css', 'scss', 'sass', 'less', 'none'];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function readIntoSourceFile(host: Tree, modulePath: string): any {
+function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
   const text = host.read(modulePath);
   if (text === null) {
     throw new SchematicsException(`File ${modulePath} does not exist.`);
@@ -94,8 +94,7 @@ function readIntoSourceFile(host: Tree, modulePath: string): any {
   return ts.createSourceFile(modulePath, text.toString('utf-8'), ts.ScriptTarget.Latest, true);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getModuleClassnamePrefix(source: any): string {
+function getModuleClassnamePrefix(source: ts.SourceFile): string {
   const className = getFirstNgModuleName(source);
   if (className) {
     const execArray = /(\w+)Module/gi.exec(className);
@@ -196,7 +195,7 @@ function indentTextContent(text: string, numSpaces: number): string {
  */
 export function buildComponent(options: ZorroComponentOptions, additionalFiles: Record<string, string> = {}): Rule {
   return async (host: Tree, context: FileSystemSchematicContext) => {
-    const workspace = await getWorkspace(host);
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const defaultZorroComponentOptions = getDefaultComponentOptions(project);
     let modulePrefix = '';
@@ -228,6 +227,8 @@ export function buildComponent(options: ZorroComponentOptions, additionalFiles: 
       options.module = findModuleFromOptions(host, options);
     }
 
+    options.type ??= '';
+
     const parsedPath = parseName(options.path!, options.name);
     if (options.classnameWithModule && !options.skipImport && options.module) {
       const source = readIntoSourceFile(host, options.module);
@@ -257,6 +258,7 @@ export function buildComponent(options: ZorroComponentOptions, additionalFiles: 
       ...strings,
       'if-flat': (s: string) => (options.flat ? '' : s),
       classify: classifyCovered,
+      ngext: options.ngHtml ? '.ng' : '',
       ...options
     };
 
@@ -279,15 +281,27 @@ export function buildComponent(options: ZorroComponentOptions, additionalFiles: 
       options.inlineTemplate ? filter(path => !path.endsWith('.html.template')) : noop(),
       // Treat the template options as any, because the type definition for the template options
       // is made unnecessarily explicit. Every type of object can be used in the EJS template.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      applyTemplates({ indentTextContent, resolvedFiles, ...baseTemplateContext } as any),
+      applyTemplates({ indentTextContent, resolvedFiles, ...baseTemplateContext }),
+      // remove multiple dots if no type is specified
+      !options.type
+        ? forEach(((file) => {
+            return file.path.includes('..')
+              ? {
+                content: file.content,
+                path: file.path.replace('..', '.')
+              }
+              : file;
+          }
+        ) as FileOperator)
+        : noop(),
       // TODO(devversion): figure out why we cannot just remove the first parameter
       // See for example: angular-cli#schematics/angular/component/index.ts#L160
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      move(null as any, parsedPath.path)
+      move(null, parsedPath.path)
     ]);
 
-    return () =>
-      chain([branchAndMerge(chain([addDeclarationToNgModule(options), mergeWith(templateSource)]))])(host, context);
+    return () => chain([
+      addDeclarationToNgModule(options),
+      mergeWith(templateSource)
+    ])(host, context);
   };
 }

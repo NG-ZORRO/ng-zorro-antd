@@ -8,13 +8,11 @@ experimental: true
 description: 渲染流程图。
 ---
 
-
 ## 何时使用
 
 需要在网页上渲染 GRAPH 图时使用。
 
 > 目前组件依赖 d3-drag d3-zoom d3-selection d3-transition d3-shape 用于绘制相关属性（可能会在之后的版本中逐步替换）
-
 
 ### 引入样式
 

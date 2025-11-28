@@ -6,11 +6,11 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-centered',
   imports: [NzTabsModule],
   template: `
-    <nz-tabset nzCentered>
+    <nz-tabs nzCentered>
       <nz-tab nzTitle="Tab 1">Content of Tab Pane 1</nz-tab>
       <nz-tab nzTitle="Tab 2">Content of Tab Pane 2</nz-tab>
       <nz-tab nzTitle="Tab 3">Content of Tab Pane 3</nz-tab>
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsCenteredComponent {}

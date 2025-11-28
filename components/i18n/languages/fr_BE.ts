@@ -160,6 +160,9 @@ export default {
     previewFile: 'Fichier de prévisualisation',
     downloadFile: 'Télécharger un fichier'
   },
+  Form: {
+    optional: '(optionnel)'
+  },
   Text: {
     edit: 'Éditer',
     copy: 'Copier',

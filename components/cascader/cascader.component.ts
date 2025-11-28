@@ -45,10 +45,10 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { slideMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import {
   DEFAULT_CASCADER_POSITIONS,
   getPlacementName,
@@ -56,7 +56,6 @@ import {
   POSITION_MAP,
   POSITION_TYPE
 } from 'ng-zorro-antd/core/overlay';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { NzTreeBase, NzTreeNode } from 'ng-zorro-antd/core/tree';
 import {
   NgClassInterface,
@@ -104,57 +103,78 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   template: `
     @if (nzShowInput) {
       <div #selectContainer class="ant-select-selector">
-        @if (nzMultiple) {
-          @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node) {
-            <nz-select-item
-              [deletable]="true"
+        @if (nzPrefix; as prefix) {
+          <div class="ant-select-prefix">
+            <ng-container *nzStringTemplateOutlet="prefix">{{ prefix }}</ng-container>
+          </div>
+        }
+        <span class="ant-select-selection-wrap">
+          @if (nzMultiple) {
+            <div class="ant-select-selection-overflow">
+              @for (node of selectedNodes | slice: 0 : nzMaxTagCount; track node) {
+                <div class="ant-select-selection-overflow-item">
+                  <nz-select-item
+                    deletable
+                    [disabled]="nzDisabled"
+                    [label]="nzDisplayWith(getAncestorOptionList(node))"
+                    (delete)="removeSelected(node)"
+                  />
+                </div>
+              }
+              @if (selectedNodes.length > nzMaxTagCount) {
+                <div class="ant-select-selection-overflow-item">
+                  <nz-select-item [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'" />
+                </div>
+              }
+
+              <div class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix">
+                <nz-select-search
+                  [showInput]="!!nzShowSearch"
+                  (isComposingChange)="isComposingChange($event)"
+                  [value]="inputValue"
+                  (valueChange)="inputValue = $event"
+                  [mirrorSync]="true"
+                  [disabled]="nzDisabled"
+                  [autofocus]="nzAutoFocus"
+                  [focusTrigger]="menuVisible()"
+                />
+              </div>
+            </div>
+          } @else {
+            <nz-select-search
+              [showInput]="!!nzShowSearch"
+              (isComposingChange)="isComposingChange($event)"
+              [value]="inputValue"
+              (valueChange)="inputValue = $event"
+              [mirrorSync]="false"
               [disabled]="nzDisabled"
-              [label]="nzDisplayWith(getAncestorOptionList(node))"
-              (delete)="removeSelected(node)"
-            ></nz-select-item>
+              [autofocus]="nzAutoFocus"
+              [focusTrigger]="menuVisible()"
+            />
+
+            @if (showLabelRender) {
+              <nz-select-item
+                [disabled]="nzDisabled"
+                [label]="labelRenderText"
+                [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
+                [contentTemplateOutletContext]="labelRenderContext"
+              />
+            }
           }
-          @if (selectedNodes.length > nzMaxTagCount) {
-            <nz-select-item
-              [deletable]="false"
-              [disabled]="false"
-              [label]="'+ ' + (selectedNodes.length - nzMaxTagCount) + ' ...'"
-            ></nz-select-item>
+
+          @if (showPlaceholder) {
+            <nz-select-placeholder
+              [placeholder]="nzPlaceHolder || locale?.placeholder!"
+              [style.display]="inputValue || isComposing ? 'none' : 'block'"
+            />
           }
-        }
-
-        <nz-select-search
-          [showInput]="!!nzShowSearch"
-          (isComposingChange)="isComposingChange($event)"
-          [value]="inputValue"
-          (valueChange)="inputValue = $event"
-          [mirrorSync]="nzMultiple"
-          [disabled]="nzDisabled"
-          [autofocus]="nzAutoFocus"
-          [focusTrigger]="menuVisible"
-        ></nz-select-search>
-
-        @if (showPlaceholder) {
-          <nz-select-placeholder
-            [placeholder]="nzPlaceHolder || locale?.placeholder!"
-            [style.display]="inputValue || isComposing ? 'none' : 'block'"
-          ></nz-select-placeholder>
-        }
-
-        @if (showLabelRender) {
-          <nz-select-item
-            [deletable]="false"
-            [disabled]="nzDisabled"
-            [label]="labelRenderText"
-            [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
-            [contentTemplateOutletContext]="labelRenderContext"
-          ></nz-select-item>
-        }
+        </span>
       </div>
 
       @if (nzShowArrow) {
         <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
           @if (!isLoading) {
-            <nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible" />
+            <nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible()" />
           } @else {
             <nz-icon nzType="loading" />
           }
@@ -165,7 +185,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         </span>
       }
       @if (clearIconVisible) {
-        <nz-select-clear (clear)="clearSelection($event)"></nz-select-clear>
+        <nz-select-clear (clear)="clearSelection($event)" />
       }
     }
     <ng-content></ng-content>
@@ -177,7 +197,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-dropdown'"
-      [cdkConnectedOverlayOpen]="menuVisible"
+      [cdkConnectedOverlayOpen]="menuVisible()"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="closeMenu()"
       (positionChange)="onPositionChange($event)"
@@ -199,7 +219,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           #menu
           class="ant-cascader-menus"
           [class.ant-cascader-rtl]="dir === 'rtl'"
-          [class.ant-cascader-menus-hidden]="!menuVisible"
+          [class.ant-cascader-menus-hidden]="!menuVisible()"
           [class.ant-cascader-menu-empty]="shouldShowEmpty"
           [class]="nzMenuClassName"
           [style]="nzMenuStyle"
@@ -256,7 +276,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     },
     { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'select' },
     NzCascaderService,
-    NzDestroyService,
     NzCascaderTreeService
   ],
   host: {
@@ -271,7 +290,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-borderless]': `nzVariant === 'borderless'`,
     '[class.ant-select-filled]': `nzVariant === 'filled'`,
     '[class.ant-select-underlined]': `nzVariant === 'underlined'`,
-    '[class.ant-select-open]': 'menuVisible',
+    '[class.ant-select-open]': 'menuVisible()',
     '[class.ant-select-focused]': 'isFocused',
     '[class.ant-select-multiple]': 'nzMultiple',
     '[class.ant-select-single]': '!nzMultiple',
@@ -291,7 +310,8 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     NzSelectItemComponent,
     NzSelectPlaceholderComponent,
     NzSelectSearchComponent,
-    NzCascaderOptionComponent
+    NzCascaderOptionComponent,
+    NzStringTemplateOutletDirective
   ]
 })
 export class NzCascaderComponent
@@ -326,6 +346,8 @@ export class NzCascaderComponent
   @ViewChild(CdkConnectedOverlay, { static: false }) overlay!: CdkConnectedOverlay;
   @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
 
+  @Input() nzOpen?: boolean;
+  @Input() nzOptions: NzCascaderOption[] | null = [];
   @Input() nzOptionRender: TemplateRef<{ $implicit: NzCascaderOption; index: number }> | null = null;
   @Input({ transform: booleanAttribute }) nzShowInput = true;
   @Input({ transform: booleanAttribute }) nzShowArrow = true;
@@ -368,25 +390,9 @@ export class NzCascaderComponent
     return defaultDisplayRender(nodes.map(n => this.cascaderService.getOptionLabel(n!)));
   };
   // TODO: RTL
+  @Input() nzPrefix: string | TemplateRef<void> | null = null;
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
   @Input() nzExpandIcon: string | TemplateRef<void> = '';
-
-  @Input()
-  get nzOptions(): NzCascaderOption[] | null {
-    return this.cascaderService.nzOptions;
-  }
-
-  set nzOptions(options: NzCascaderOption[] | null) {
-    const nodes = this.coerceTreeNodes(options || []);
-    this.treeService.initTree(nodes);
-    this.cascaderService.columns = [nodes];
-    this.updateSelectedNodes(true);
-
-    if (this.inSearchingMode) {
-      this.cascaderService.setSearchingMode(this.inSearchingMode);
-      this.cascaderService.prepareSearchOptions(this.inputValue);
-    }
-  }
 
   get treeService(): NzCascaderTreeService {
     return this.nzTreeService as NzCascaderTreeService;
@@ -409,7 +415,7 @@ export class NzCascaderComponent
   shouldShowEmpty: boolean = false;
 
   el: HTMLElement = this.elementRef.nativeElement;
-  menuVisible = false;
+  readonly menuVisible = signal(false);
   isLoading = false;
   labelRenderText?: string;
   labelRenderContext = {};
@@ -472,7 +478,7 @@ export class NzCascaderComponent
   }
 
   get showLabelRender(): boolean {
-    return !this.hasInput && !this.nzMultiple && !!this.selectedNodes.length;
+    return !this.hasInput && !!this.selectedNodes.length;
   }
 
   get showPlaceholder(): boolean {
@@ -487,10 +493,13 @@ export class NzCascaderComponent
     return !!this.nzLabelRender;
   }
 
+  private get openControlled(): boolean {
+    return this.nzOpen !== undefined;
+  }
+
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
-  private nzConfigService = inject(NzConfigService);
   public cascaderService = inject(NzCascaderService);
 
   constructor() {
@@ -503,6 +512,11 @@ export class NzCascaderComponent
       this.clearDelayMenuTimer();
       this.clearDelaySelectTimer();
     });
+
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
+      this.size.set(this.nzSize);
+      this.cdr.markForCheck();
+    });
   }
 
   ngOnInit(): void {
@@ -513,9 +527,7 @@ export class NzCascaderComponent
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(({ status, hasFeedback }) => {
-        this.setStatusStyles(status, hasFeedback);
-      });
+      .subscribe(({ status, hasFeedback }) => this.setStatusStyles(status, hasFeedback));
 
     const srv = this.cascaderService;
 
@@ -539,7 +551,9 @@ export class NzCascaderComponent
       } else {
         const shouldClose =
           // keep menu opened if multiple mode
-          !this.nzMultiple && (node.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover'));
+          !this.nzMultiple &&
+          (node.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover')) &&
+          !this.openControlled;
         if (shouldClose) {
           this.delaySetMenuVisible(false);
         }
@@ -553,18 +567,11 @@ export class NzCascaderComponent
       this.dropdownWidthStyle = '';
     });
 
-    this.i18nService.localeChange.pipe(startWith(), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.setLocale();
-    });
+    this.i18nService.localeChange
+      .pipe(startWith(), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.setLocale());
 
     this.size.set(this.nzSize);
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.size.set(this.nzSize);
-        this.cdr.markForCheck();
-      });
 
     this.dir = this.directionality.value;
     this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
@@ -579,7 +586,13 @@ export class NzCascaderComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzStatus, nzSize, nzPlacement } = changes;
+    const { nzOpen, nzStatus, nzSize, nzPlacement, nzOptions } = changes;
+    if (nzOpen && this.openControlled) {
+      this.setMenuVisible(nzOpen.currentValue);
+    }
+    if (nzOptions) {
+      this.updateOptions();
+    }
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
@@ -656,18 +669,18 @@ export class NzCascaderComponent
   }
 
   setMenuVisible(visible: boolean): void {
-    if (this.nzDisabled || this.menuVisible === visible) {
+    if (this.nzDisabled || this.menuVisible() === visible) {
       return;
     }
     if (visible) {
       this.cascaderService.$redraw.next();
-      this.updateSelectedNodes(!!this.nzLoadData);
+      this.updateSelectedNodes(true);
       this.scrollToActivatedOptions();
     } else {
       this.inputValue = '';
     }
 
-    this.menuVisible = visible;
+    this.menuVisible.set(visible);
     this.nzVisibleChange.emit(visible);
     this.cdr.detectChanges();
   }
@@ -689,7 +702,9 @@ export class NzCascaderComponent
     this.labelRenderText = '';
     this.labelRenderContext = {};
     this.inputValue = '';
-    this.setMenuVisible(false);
+    if (!this.openControlled) {
+      this.setMenuVisible(false);
+    }
     this.cascaderService.clear();
     this.nzClear.emit();
   }
@@ -734,7 +749,7 @@ export class NzCascaderComponent
   }
 
   handleInputBlur(): void {
-    this.menuVisible ? this.focus() : this.blur();
+    this.menuVisible() ? this.focus() : this.blur();
   }
 
   handleInputFocus(): void {
@@ -747,21 +762,21 @@ export class NzCascaderComponent
 
   @HostListener('click')
   onTriggerClick(): void {
-    if (this.nzDisabled) {
+    if (this.nzDisabled || this.openControlled) {
       return;
     }
     if (this.nzShowSearch) {
       this.focus();
     }
     if (this.isActionTrigger('click')) {
-      this.delaySetMenuVisible(!this.menuVisible, 100);
+      this.delaySetMenuVisible(!this.menuVisible(), 100);
     }
     this.onTouched();
   }
 
   @HostListener('mouseenter')
   onTriggerMouseEnter(): void {
-    if (this.nzDisabled || !this.isActionTrigger('hover')) {
+    if (this.nzDisabled || !this.isActionTrigger('hover') || this.openControlled) {
       return;
     }
 
@@ -770,7 +785,13 @@ export class NzCascaderComponent
 
   @HostListener('mouseleave', ['$event'])
   onTriggerMouseLeave(event: MouseEvent): void {
-    if (this.nzDisabled || !this.menuVisible || this.isOpening || !this.isActionTrigger('hover')) {
+    if (
+      this.nzDisabled ||
+      !this.menuVisible() ||
+      this.isOpening ||
+      !this.isActionTrigger('hover') ||
+      this.openControlled
+    ) {
       event.preventDefault();
       return;
     }
@@ -966,7 +987,7 @@ export class NzCascaderComponent
 
   onClickOutside(event: MouseEvent): void {
     const target = _getEventTarget(event);
-    if (!this.el.contains(target as Node)) {
+    if (!this.el.contains(target as Node) && !this.openControlled) {
       this.closeMenu();
     }
   }
@@ -974,6 +995,18 @@ export class NzCascaderComponent
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     const placement = getPlacementName(position);
     this.dropdownPosition = placement as NzSelectPlacementType;
+  }
+
+  private updateOptions(): void {
+    const nodes = this.coerceTreeNodes(this.nzOptions || []);
+    this.treeService.initTree(nodes);
+    this.cascaderService.setColumnData(nodes, 0);
+    this.updateSelectedNodes(true);
+
+    if (this.inSearchingMode) {
+      this.cascaderService.setSearchingMode(this.inSearchingMode);
+      this.cascaderService.prepareSearchOptions(this.inputValue);
+    }
   }
 
   private isActionTrigger(action: 'click' | 'hover'): boolean {
@@ -986,9 +1019,11 @@ export class NzCascaderComponent
     const columnIndex = Math.max(this.cascaderService.activatedNodes.length - 1, 0);
     const node = this.cascaderService.activatedNodes[columnIndex];
     if (node && !node.isDisabled) {
-      this.inSearchingMode
-        ? this.cascaderService.setSearchOptionSelected(node)
-        : this.cascaderService.setNodeActivated(node, columnIndex, true);
+      this.nzMultiple
+        ? this.onOptionCheck(node, columnIndex, true)
+        : this.inSearchingMode
+          ? this.cascaderService.setSearchOptionSelected(node)
+          : this.cascaderService.setNodeActivated(node, columnIndex, true);
     }
   }
 
@@ -1011,7 +1046,7 @@ export class NzCascaderComponent
         break;
       }
       const nextOption = options[nextIndex];
-      if (!nextOption || nextOption.isDisabled) {
+      if (!nextOption || nextOption.isDisabled || nextOption.isDisableCheckbox) {
         continue;
       }
       this.cascaderService.setNodeActivated(nextOption, columnIndex);
@@ -1019,19 +1054,21 @@ export class NzCascaderComponent
     }
   }
 
-  private moveLeft(): void {
-    const options = this.cascaderService.activatedNodes;
-    if (options.length) {
-      options.pop(); // Remove the last one
-      this.cascaderService.setNodeDeactivatedSinceColumn(options.length); // collapse menu
+  private prevColumn(): void {
+    if (this.cascaderService.activatedNodes.length) {
+      this.cascaderService.activatedNodes.pop(); // Remove the last one
+      this.cascaderService.setNodeDeactivatedSinceColumn(this.cascaderService.activatedNodes.length); // collapse menu
+      if (!this.cascaderService.activatedNodes.length) {
+        this.setMenuVisible(false);
+      }
     }
   }
 
-  private moveRight(): void {
+  private nextColumn(): void {
     const length = this.cascaderService.activatedNodes.length;
     const options = this.cascaderService.columns[length];
     if (options && options.length) {
-      const nextOpt = options.find(o => !o.isDisabled);
+      const nextOpt = options.find(o => !o.isDisabled && !o.isDisableCheckbox);
       if (nextOpt) {
         this.cascaderService.setNodeActivated(nextOpt, length);
       }
@@ -1090,7 +1127,7 @@ export class NzCascaderComponent
    * and may exceed the boundary of browser's window.
    */
   private reposition(): void {
-    if (this.overlay && this.overlay.overlayRef && this.menuVisible) {
+    if (this.overlay && this.overlay.overlayRef && this.menuVisible()) {
       Promise.resolve().then(() => {
         this.overlay.overlayRef.updatePosition();
         this.cdr.markForCheck();
@@ -1217,7 +1254,7 @@ export class NzCascaderComponent
         }
 
         // Press any keys above to reopen menu.
-        if (!this.menuVisible && keyCode !== BACKSPACE && keyCode !== ESCAPE) {
+        if (!this.menuVisible() && keyCode !== BACKSPACE && keyCode !== ESCAPE && !this.openControlled) {
           // The `setMenuVisible` runs `detectChanges()`, so we don't need to run `markForCheck()` additionally.
           return this.ngZone.run(() => this.setMenuVisible(true));
         }
@@ -1227,7 +1264,7 @@ export class NzCascaderComponent
           return;
         }
 
-        if (!this.menuVisible) {
+        if (!this.menuVisible()) {
           return;
         }
 
@@ -1235,16 +1272,33 @@ export class NzCascaderComponent
 
         this.ngZone.run(() => {
           // Interact with the component.
-          if (keyCode === DOWN_ARROW) {
-            this.moveUpOrDown(false);
-          } else if (keyCode === UP_ARROW) {
-            this.moveUpOrDown(true);
-          } else if (keyCode === LEFT_ARROW) {
-            this.moveLeft();
-          } else if (keyCode === RIGHT_ARROW) {
-            this.moveRight();
-          } else if (keyCode === ENTER) {
-            this.onEnter();
+          switch (keyCode) {
+            case DOWN_ARROW:
+              this.moveUpOrDown(false);
+              break;
+            case UP_ARROW:
+              this.moveUpOrDown(true);
+              break;
+            case LEFT_ARROW:
+              if (this.dir === 'rtl') {
+                this.nextColumn();
+              } else {
+                this.prevColumn();
+              }
+              break;
+            case RIGHT_ARROW:
+              if (this.dir === 'rtl') {
+                this.prevColumn();
+              } else {
+                this.nextColumn();
+              }
+              break;
+            case ENTER:
+              this.onEnter();
+              break;
+            case BACKSPACE:
+              this.prevColumn();
+              break;
           }
           // `@HostListener`s run `markForCheck()` internally before calling the actual handler so
           // we call `markForCheck()` to be backwards-compatible.

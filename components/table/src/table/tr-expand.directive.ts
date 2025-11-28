@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Input } from '@angular/core';
+import { booleanAttribute, Directive, Input } from '@angular/core';
 
 @Directive({
   selector: 'tr[nzExpand]',
@@ -13,5 +13,5 @@ import { Directive, Input } from '@angular/core';
   }
 })
 export class NzTrExpandDirective {
-  @Input() nzExpand = true;
+  @Input({ transform: booleanAttribute }) nzExpand = true;
 }

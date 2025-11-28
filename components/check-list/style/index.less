@@ -12,6 +12,7 @@
   cursor: pointer;
 
   .@{check-list-prefix-cls}-button {
+    position: relative;
     display: flex;
     gap: @margin-xs;
     align-items: center;
@@ -28,6 +29,29 @@
 
   .@{check-list-prefix-cls}-description {
     font-size: @font-size-base;
+  }
+
+  .@{check-list-prefix-cls}-trigger-dot {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: @primary-color;
+    background-color: @component-background;
+    border: @border-width-base solid @primary-color;
+    border-radius: 50%;
+  }
+
+  .@{check-list-prefix-cls}-trigger-dot-text {
+    font-weight: 500;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 16px;
   }
 }
 

@@ -3,12 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { createFakeEvent } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzAvatarGroupComponent } from './avatar-group.component';
@@ -47,9 +47,15 @@ describe('avatar', () => {
   let fixture: ComponentFixture<TestAvatarComponent>;
   let context: TestAvatarComponent;
   let dl: DebugElement;
+
+  function getImageElement(): HTMLImageElement {
+    return dl.query(By.css('img')).nativeElement;
+  }
+
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
 
     fixture = TestBed.createComponent(TestAvatarComponent);
@@ -62,6 +68,7 @@ describe('avatar', () => {
     it('#nzSrc', () => {
       expect(context).not.toBeNull();
     });
+
     it('should tolerate error src', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
@@ -80,6 +87,7 @@ describe('avatar', () => {
       expect(getType(dl)).toBe('image');
       tick();
     }));
+
     it('should prevent default fallback when error src', fakeAsync(() => {
       const event = createFakeEvent('error');
       event.preventDefault();
@@ -99,36 +107,40 @@ describe('avatar', () => {
       expect(getType(dl)).toBe('image');
       tick();
     }));
+
     it('#nzSrcSet', () => {
       context.nzSrcSet = '1.png';
       fixture.detectChanges();
-      const el = dl.query(By.css(`img`)).nativeElement as HTMLImageElement;
+      const el = getImageElement();
       expect(el.srcset).toBe(context.nzSrcSet);
     });
+
     it('#nzAlt', () => {
       context.nzAlt = 'alt';
       fixture.detectChanges();
-      const el = dl.query(By.css(`img`)).nativeElement as HTMLImageElement;
+      const el = getImageElement();
       expect(el.alt).toBe(context.nzAlt);
     });
   });
 
   it('#nzIcon', () => {
-    context.nzSrc = null;
-    context.nzText = null;
+    context.nzSrc = undefined;
+    context.nzText = undefined;
     fixture.detectChanges();
     expect(getType(dl)).toBe('icon');
   });
 
   describe('#nzText', () => {
     beforeEach(() => {
-      context.nzSrc = null;
-      context.nzIcon = null;
+      context.nzSrc = undefined;
+      context.nzIcon = undefined;
       fixture.detectChanges();
     });
+
     it('property', () => {
       expect(getType(dl)).toBe('text');
     });
+
     it('should be normal font-size', fakeAsync(() => {
       context.nzText = 'a';
       fixture.detectChanges();
@@ -136,6 +148,7 @@ describe('avatar', () => {
       const scale = getScaleFromCSSTransform(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!);
       expect(scale).toBe(1);
     }));
+
     it('should be auto set font-size', fakeAsync(() => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
@@ -193,7 +206,7 @@ describe('avatar', () => {
   });
 
   describe('#nzShape', () => {
-    for (const type of ['square', 'circle']) {
+    for (const type of ['square', 'circle'] as const) {
       it(type, () => {
         context.nzShape = type;
         fixture.detectChanges();
@@ -206,7 +219,7 @@ describe('avatar', () => {
     for (const item of [
       { size: 'large', cls: 'lg' },
       { size: 'small', cls: 'sm' }
-    ]) {
+    ] as const) {
       it(item.size, () => {
         context.nzSize = item.size;
         fixture.detectChanges();
@@ -216,8 +229,8 @@ describe('avatar', () => {
 
     it('custom size', () => {
       context.nzSize = 64;
-      context.nzIcon = null;
-      context.nzSrc = null;
+      context.nzIcon = undefined;
+      context.nzSrc = undefined;
       fixture.detectChanges();
       const size = `${64}px`;
       const hostStyle = dl.nativeElement.querySelector('nz-avatar').style;
@@ -233,8 +246,8 @@ describe('avatar', () => {
 
     it('should set `lineHeight` on the text element considering `nzSize`', fakeAsync(() => {
       const size = 64;
-      context.nzIcon = null;
-      context.nzSrc = null;
+      context.nzIcon = undefined;
+      context.nzSrc = undefined;
       context.nzSize = size;
       context.nzText = 'LongUsername';
       fixture.detectChanges();
@@ -246,10 +259,12 @@ describe('avatar', () => {
       expect(textEl.style.lineHeight).toEqual(`${size}px`);
     }));
 
-    it('should have 0 for avatarWidth if element.width is falsy`', fakeAsync(() => {
+    // this case will fail in local environment but pass in CI. Ignore it first.
+
+    it('[IGNORE_LOCAL] should have 0 for avatarWidth if element.width is falsy`', fakeAsync(() => {
       const size = 64;
-      context.nzIcon = null;
-      context.nzSrc = null;
+      context.nzIcon = undefined;
+      context.nzSrc = undefined;
       context.nzSize = size;
       context.nzText = 'LongUsername';
       context.comp.hasText = true;
@@ -278,10 +293,35 @@ describe('avatar', () => {
     }));
   });
 
+  describe('[nzLoading]', () => {
+    it('should set `loading` attribute to `eager` by default', () => {
+      expect(getImageElement().loading).toEqual('eager');
+    });
+
+    it('should allow providing a binding for the `loading` attribute', () => {
+      context.nzLoading = 'lazy';
+      fixture.detectChanges();
+      expect(getImageElement().loading).toEqual('lazy');
+    });
+  });
+
+  describe('[nzFetchPriority]', () => {
+    it('should set `fetchpriority` attribute to `auto` by default', () => {
+      expect(getImageElement().fetchPriority).toEqual('auto');
+    });
+
+    it('should allow providing a binding for the `fetchpriority` attribute', () => {
+      context.nzFetchPriority = 'high';
+      fixture.detectChanges();
+      expect(getImageElement().fetchPriority).toEqual('high');
+    });
+  });
+
   describe('order: image > icon > text', () => {
     it('image priority', () => {
       expect(getType(dl)).toBe('image');
     });
+
     it('should be show icon when image loaded error and icon exists', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
@@ -290,21 +330,23 @@ describe('avatar', () => {
       fixture.detectChanges();
       expect(getType(dl)).toBe('icon');
     }));
+
     it('should be show text when image loaded error and icon not exists', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
-      context.nzIcon = null;
+      context.nzIcon = undefined;
       fixture.detectChanges();
       context.comp.imgError(event);
       tick();
       fixture.detectChanges();
       expect(getType(dl)).toBe('text');
     }));
+
     it('should be show empty when image loaded error and icon & text not exists', fakeAsync(() => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
-      context.nzIcon = null;
-      context.nzText = null;
+      context.nzIcon = undefined;
+      context.nzText = undefined;
       fixture.detectChanges();
       context.comp.imgError(event);
       tick();
@@ -331,6 +373,8 @@ function getScaleFromCSSTransform(transform: string): number {
       [nzSrc]="nzSrc"
       [nzSrcSet]="nzSrcSet"
       [nzAlt]="nzAlt"
+      [nzLoading]="nzLoading"
+      [nzFetchPriority]="nzFetchPriority"
     ></nz-avatar>
   `,
   styles: `
@@ -340,14 +384,16 @@ function getScaleFromCSSTransform(transform: string): number {
 })
 class TestAvatarComponent {
   @ViewChild('comp', { static: false }) comp!: NzAvatarComponent;
-  nzShape = 'square';
-  nzSize: string | number = 'large';
+  nzShape: NzShapeSCType = 'square';
+  nzSize: NzSizeLDSType | number = 'large';
   nzGap = 4;
-  nzIcon: string | null = 'user';
-  nzText: string | null = 'A';
-  nzSrc: string | null = imageBase64;
+  nzIcon?: string = 'user';
+  nzText?: string = 'A';
+  nzSrc?: string = imageBase64;
   nzSrcSet?: string;
   nzAlt?: string;
+  nzLoading?: 'eager' | 'lazy';
+  nzFetchPriority?: 'high' | 'low' | 'auto';
 }
 
 @Component({

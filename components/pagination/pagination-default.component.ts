@@ -9,11 +9,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -22,8 +23,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
@@ -82,9 +82,16 @@ import { PaginationItemRenderContext } from './pagination.types';
       </ul>
     </ng-template>
   `,
-  imports: [NgTemplateOutlet, NzPaginationItemComponent, NzPaginationOptionsComponent]
+  imports: [NgTemplateOutlet, NzPaginationItemComponent, NzPaginationOptionsComponent],
+  host: {
+    '[class.ant-pagination-rtl]': "dir === 'rtl'"
+  }
 })
-export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnInit {
+export class NzPaginationDefaultComponent implements OnChanges, OnInit {
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
+
   @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
@@ -103,37 +110,19 @@ export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnIni
   listOfPageItem: Array<Partial<NzPaginationItemComponent>> = [];
 
   dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    private directionality: Directionality
-  ) {
-    renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
+  constructor() {
+    const el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+    const renderer = inject(Renderer2);
+    renderer.removeChild(renderer.parentNode(el), el);
   }
+
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
-      this.updateRtlStyle();
       this.cdr.detectChanges();
     });
     this.dir = this.directionality.value;
-    this.updateRtlStyle();
-  }
-
-  private updateRtlStyle(): void {
-    if (this.dir === 'rtl') {
-      this.renderer.addClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
-    } else {
-      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   jumpPage(index: number): void {
@@ -181,10 +170,7 @@ export class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnIni
     const generatePage = (start: number, end: number): Array<Partial<NzPaginationItemComponent>> => {
       const list = [];
       for (let i = start; i <= end; i++) {
-        list.push({
-          index: i,
-          type: 'page'
-        });
+        list.push({ index: i, type: 'page' });
       }
       return list;
     };

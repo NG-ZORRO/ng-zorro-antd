@@ -140,6 +140,9 @@ export default {
   Empty: {
     description: 'Sense dades'
   },
+  Form: {
+    optional: '(opcional)'
+  },
   Icon: {
     icon: 'icona'
   },

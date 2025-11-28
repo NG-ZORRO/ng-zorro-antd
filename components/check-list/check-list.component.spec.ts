@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, TemplateRef } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, TemplateRef } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -29,15 +29,19 @@ describe('check-list', () => {
     fixture.detectChanges();
   }
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(NzTestCheckListBasicComponent);
     fixture.detectChanges();
     testComponent = fixture.debugElement.componentInstance;
     resultEl = fixture.debugElement.query(By.directive(NzCheckListComponent));
-  }));
+  });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
@@ -116,6 +120,17 @@ describe('check-list', () => {
     expect(overlayContainerElement.querySelectorAll('.ant-check-list-steps-item-arrows').length).toBe(1);
 
     testComponent.index = 2;
+    testComponent.items = [
+      {
+        description: 'Step 1',
+        checked: true,
+        onClick: () => {}
+      },
+      {
+        description: 'Step 2',
+        onClick: () => {}
+      }
+    ];
     fixture.detectChanges();
     expect(
       (
@@ -134,6 +149,18 @@ describe('check-list', () => {
     expect((overlayContainerElement.querySelector('.ant-progress-text') as HTMLElement).innerText).toBe('50%');
 
     testComponent.index = 3;
+    testComponent.items = [
+      {
+        description: 'Step 1',
+        checked: true,
+        onClick: () => {}
+      },
+      {
+        description: 'Step 2',
+        checked: true,
+        onClick: () => {}
+      }
+    ];
     fixture.detectChanges();
     expect(!overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBeTrue();
     expect(!!overlayContainerElement.querySelector('.ant-check-list-header-finish')).toBeTrue();

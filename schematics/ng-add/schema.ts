@@ -42,10 +42,10 @@ export type Locale =
   | 'zh_TW';
 
 export enum ProjectTemplate {
-  Blank    = 'blank',
+  Blank = 'blank',
   Sidemenu = 'sidemenu',
-  Topnav   = 'topnav',
-  None     = 'none'
+  Topnav = 'topnav',
+  None = 'none'
 }
 
 export interface Schema {

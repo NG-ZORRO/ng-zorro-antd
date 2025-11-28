@@ -13,10 +13,6 @@
     "declaration": false,
     "moduleResolution": "bundler",
     "target": "ES2022",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,

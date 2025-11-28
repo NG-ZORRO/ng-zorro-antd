@@ -6,13 +6,18 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  forwardRef,
+  inject,
   Input,
   NgZone,
+  numberAttribute,
   OnChanges,
   OnInit,
   Output,
@@ -20,19 +25,15 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  booleanAttribute,
-  forwardRef,
-  numberAttribute
+  ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
-import { NgClassType } from 'ng-zorro-antd/core/types';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
+import { NgClassType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 import { NzRateItemComponent } from './rate-item.component';
 
@@ -74,17 +75,22 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
     </ul>
   `,
   providers: [
-    NzDestroyService,
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzRateComponent),
       multi: true
     }
   ],
-  imports: [NzToolTipModule, NzRateItemComponent, NzToolTipModule]
+  imports: [NzTooltipModule, NzRateItemComponent]
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  private readonly ngZone = inject(NgZone);
+  private readonly renderer = inject(Renderer2);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
 
   @ViewChild('ulElement', { static: true }) ulElement!: ElementRef<HTMLUListElement>;
 
@@ -125,14 +131,9 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     this.hoverValue = Math.ceil(input);
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private ngZone: NgZone,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality,
-    private destroy$: NzDestroyService
-  ) {}
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzAutoFocus, nzCount, nzValue } = changes;
@@ -156,12 +157,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   }
 
   ngOnInit(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.cdr.markForCheck());
-
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -169,7 +165,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     this.dir = this.directionality.value;
 
     fromEventOutsideAngular<FocusEvent>(this.ulElement.nativeElement, 'focus')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         this.isFocused = true;
         if (this.nzOnFocus.observers.length) {
@@ -178,7 +174,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
       });
 
     fromEventOutsideAngular<FocusEvent>(this.ulElement.nativeElement, 'blur')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         this.isFocused = false;
         if (this.nzOnBlur.observers.length) {
@@ -287,11 +283,11 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (_: number) => void): void {
+  registerOnChange(fn: OnChangeType): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: OnTouchedType): void {
     this.onTouched = fn;
   }
 

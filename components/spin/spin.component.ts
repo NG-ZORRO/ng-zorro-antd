@@ -10,18 +10,21 @@ import {
   Component,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  numberAttribute
+  numberAttribute,
+  inject,
+  DestroyRef,
+  signal
 } from '@angular/core';
-import { BehaviorSubject, ReplaySubject, Subject, timer } from 'rxjs';
-import { debounce, distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
+import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
@@ -39,12 +42,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
         <i class="ant-spin-dot-item"></i>
       </span>
     </ng-template>
-    @if (isLoading) {
+    @if (isLoading()) {
       <div>
         <div
-          class="ant-spin"
+          class="ant-spin ant-spin-spinning"
           [class.ant-spin-rtl]="dir === 'rtl'"
-          [class.ant-spin-spinning]="isLoading"
           [class.ant-spin-lg]="nzSize === 'large'"
           [class.ant-spin-sm]="nzSize === 'small'"
           [class.ant-spin-show-text]="nzTip"
@@ -57,7 +59,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
       </div>
     }
     @if (!nzSimple) {
-      <div class="ant-spin-container" [class.ant-spin-blur]="isLoading">
+      <div class="ant-spin-container" [class.ant-spin-blur]="isLoading()">
         <ng-content></ng-content>
       </div>
     }
@@ -67,8 +69,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
   },
   imports: [NgTemplateOutlet]
 })
-export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
+export class NzSpinComponent implements OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
 
   @Input() @WithConfig() nzIndicator: TemplateRef<NzSafeAny> | null = null;
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -76,41 +82,46 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   @Input({ transform: numberAttribute }) nzDelay = 0;
   @Input({ transform: booleanAttribute }) nzSimple = false;
   @Input({ transform: booleanAttribute }) nzSpinning = true;
-  private destroy$ = new Subject<void>();
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private delay$ = new ReplaySubject<number>(1);
-  isLoading = false;
+
+  readonly isLoading = signal(false);
+
   dir: Direction = 'ltr';
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
+  constructor() {
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
+  }
 
   ngOnInit(): void {
-    const loading$ = this.delay$.pipe(
-      startWith(this.nzDelay),
-      distinctUntilChanged(),
-      switchMap(delay => {
-        if (delay === 0) {
-          return this.spinning$;
-        }
+    this.delay$
+      .pipe(
+        startWith(this.nzDelay),
+        distinctUntilChanged(),
+        switchMap(delay =>
+          // This construct is used to reduce RxJS dependencies.
+          // It previously used `debounce(() => timer())`, but consumers may not
+          // use these RxJS functions at all, causing them to still be bundled
+          // into the main bundle unnecessarily.
+          this.spinning$.pipe(
+            switchMap(spinning => {
+              if (delay === 0 || !spinning) {
+                return of(spinning);
+              }
+              return new Observable<boolean>(subscriber => {
+                const timeoutId = setTimeout(() => subscriber.next(spinning), delay);
+                return () => clearTimeout(timeoutId);
+              });
+            })
+          )
+        ),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(isLoading => {
+        this.isLoading.set(isLoading);
+      });
 
-        return this.spinning$.pipe(debounce(spinning => timer(spinning ? delay : 0)));
-      }),
-      takeUntil(this.destroy$)
-    );
-    loading$.subscribe(loading => {
-      this.isLoading = loading;
-      this.cdr.markForCheck();
-    });
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.cdr.markForCheck());
-
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -126,10 +137,5 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
     if (nzDelay) {
       this.delay$.next(this.nzDelay);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

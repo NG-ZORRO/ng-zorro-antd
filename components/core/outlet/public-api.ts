@@ -4,4 +4,4 @@
  */
 
 export { NzOutletModule } from './outlet.module';
-export { NzStringTemplateOutletDirective } from './string_template_outlet.directive';
+export { NzStringTemplateOutletDirective } from './string-template-outlet.directive';

@@ -6,7 +6,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg'
 description: Used to select and upload files or drag and drop files.
 ---
 
-
 ## When To Use
 
 Uploading is publishing information (web pages, text, pictures, video, etc.) to a remote server via a web page or upload tool.
@@ -14,7 +13,6 @@ Uploading is publishing information (web pages, text, pictures, video, etc.) to 
 - When you need to upload one or more files.
 - When you need to show the process of uploading.
 - When you need to upload files by dragging and dropping.
-
 
 ## API
 
@@ -33,9 +31,10 @@ Uploading is publishing information (web pages, text, pictures, video, etc.) to 
 | `[nzDisabled]`              | disable upload button                                                                                                                                                                                             | `boolean`                                                                                        | `false`         |
 | `[nzFileList]`              | List of files, two-way data-binding                                                                                                                                                                               | `NzUploadFile[]`                                                                                 | -               |
 | `[nzLimit]`                 | limit single upload count when `nzMultiple` has opened. `0` unlimited                                                                                                                                             | `number`                                                                                         | `0`             |
+| `[nzMaxCount]`              | Limit the file displayed in uploaded files list. Will replace current one when maxCount is 1 unlimited                                                                                                            | `number\|undefined`                                                                              | `undefined`     |
 | `[nzSize]`                  | limit file size (KB). `0` unlimited                                                                                                                                                                               | `number`                                                                                         | `0`             |
 | `[nzFileType]`              | limit file type, e.g: `image/png,image/jpeg,image/gif,image/bmp`                                                                                                                                                  | `string`                                                                                         | -               |
-| `[nzFilter]`                | Custom filter when choosed file                                                                                                                                                                                   | `UploadFilter[]`                                                                                 | -               |
+| `[nzFilter]`                | Custom filter when choose file                                                                                                                                                                                    | `UploadFilter[]`                                                                                 | -               |
 | `[nzHeaders]`               | Set request headers, valid above IE10. NOTICE: Must use `=>` to define the method.                                                                                                                                | `Object \| ((file: NzUploadFile) => Object \| Observable<{}>)`                                   | -               |
 | `[nzListType]`              | Built-in stylesheets, support for three types: `text`, `picture` or `picture-card`                                                                                                                                | `'text' \| 'picture' \| 'picture-card'`                                                          | `'text'`        |
 | `[nzMultiple]`              | Whether to support selected multiple files. `IE10+` supported. You can select multiple files with CTRL holding down while multiple is set to be true                                                              | `boolean`                                                                                        | `false`         |
@@ -50,7 +49,7 @@ Uploading is publishing information (web pages, text, pictures, video, etc.) to 
 | `[nzRemove]`                | A callback function will be executed when the removing file button is clicked, remove event will be prevented when the return value is `false` or an Observable. NOTICE: Must use `=>` to define the method.      | `(file: NzUploadFile) => boolean \| Observable<boolean>`                                         | -               |
 | `(nzChange)`                | A callback function, can be executed when uploading state is changing                                                                                                                                             | `EventEmitter<NzUploadChangeParam>`                                                              | -               |
 | `[nzDownload]`              | Click the method to download the file, pass the method to perform the method logic, do not pass the default jump to the new TAB.                                                                                  | `(file: NzUploadFile) => void`                                                                   | Jump to new TAB |
-| `[nzTransformFile]`         | Customize transform file before request                                                                                                                                                                           | `(file: NzUploadFile) => NzUploadTransformFileType`                                              | -               |
+| ~~`[nzTransformFile]`~~     | ~~Customize transform file before request~~                                                                                                                                                                       | ~~`(file: NzUploadFile) => NzUploadTransformFileType`~~                                          | -               |
 | `[nzIconRender]`            | Custom show icon                                                                                                                                                                                                  | `TemplateRef<{ $implicit: NzUploadFile }>`                                                       | -               |
 | `[nzFileListRender]`        | Custom file list                                                                                                                                                                                                  | `TemplateRef<{ $implicit: NzUploadFile[] }>`                                                     | -               |
 

@@ -5,7 +5,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 @Component({
   selector: 'nz-demo-segmented-icon',
   imports: [NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options"></nz-segmented>`
+  template: `<nz-segmented [nzOptions]="options" />`
 })
 export class NzDemoSegmentedIconComponent {
   options = [

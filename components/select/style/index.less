@@ -6,8 +6,6 @@
 @import './status';
 
 @select-prefix-cls: ~'@{ant-prefix}-select';
-@select-height-without-border: @input-height-base - 2 * @border-width-base;
-@select-dropdown-edge-child-vertical-padding: @dropdown-edge-child-vertical-padding;
 
 .select-selector() {
   position: relative;
@@ -20,16 +18,30 @@
     cursor: pointer;
   }
 
+  .@{select-prefix-cls}-prefix {
+    flex: none;
+    margin-inline-end: @select-select-affix-padding;
+  }
+
+  .@{select-prefix-cls}-selection-wrap {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+
+    &::after {
+      width: 0;
+      overflow: hidden;
+      content: '\a0';
+    }
+  }
+
   .@{select-prefix-cls}-show-search& {
     cursor: text;
 
     input {
       cursor: auto;
     }
-  }
-
-  .@{select-prefix-cls}-focused:not(.@{select-prefix-cls}-disabled)& {
-    .active();
   }
 
   .@{select-prefix-cls}-disabled& {
@@ -52,6 +64,7 @@
   .@{select-prefix-cls}-selection-search-input {
     margin: 0;
     padding: 0;
+    font-family: inherit;
     background: transparent;
     border: none;
     outline: none;
@@ -59,8 +72,7 @@
 
     &::-webkit-search-cancel-button {
       display: none;
-      /* stylelint-disable-next-line property-no-vendor-prefix */
-      -webkit-appearance: none;
+      appearance: none;
     }
   }
 }
@@ -68,7 +80,7 @@
 .@{select-prefix-cls} {
   .reset-component();
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   cursor: pointer;
 
   &:not(&-customize-input) &-selector {
@@ -80,6 +92,10 @@
     .hover();
   }
 
+  &:not(&-disabled)&-focused &-selector {
+    .active();
+  }
+
   // ======================== Selection ========================
   &-selection-item {
     flex: 1;
@@ -87,6 +103,7 @@
     font-weight: normal;
     white-space: nowrap;
     text-overflow: ellipsis;
+    user-select: none;
 
     // IE11 css hack. `*::-ms-backdrop,` is a must have
     @media all and (-ms-high-contrast: none) {
@@ -120,13 +137,14 @@
     .iconfont-mixin();
     position: absolute;
     top: 50%;
-    right: @control-padding-horizontal - 1px;
+    inset-inline-start: auto;
+    inset-inline-end: @input-padding-horizontal-base;
     display: flex;
     align-items: center;
-    height: @font-size-sm;
-    margin-top: (-@font-size-sm / 2);
+    height: @font-size-icon;
+    margin-top: (-@font-size-icon / 2);
     color: @disabled-color;
-    font-size: @font-size-sm;
+    font-size: @font-size-icon;
     line-height: 1;
     text-align: center;
     pointer-events: none;
@@ -157,24 +175,28 @@
   &-clear {
     position: absolute;
     top: 50%;
-    right: @control-padding-horizontal - 1px;
     z-index: 1;
     display: inline-block;
-    width: @font-size-sm;
-    height: @font-size-sm;
-    margin-top: (-@font-size-sm / 2);
+    width: @font-size-icon;
+    height: @font-size-icon;
+    margin-top: (-@font-size-icon / 2);
     color: @disabled-color;
-    font-size: @font-size-sm;
+    font-size: @font-size-icon;
     font-style: normal;
     line-height: 1;
     text-align: center;
     text-transform: none;
     background: @select-clear-background;
+    // https://github.com/ant-design/ant-design/issues/54205
+    // Force GPU compositing on Safari to prevent flickering on opacity/transform transitions
+    transform: translateZ(0);
     cursor: pointer;
     opacity: 0;
     transition:
       color 0.3s ease,
       opacity 0.15s ease;
+    inset-inline-start: auto;
+    inset-inline-end: @input-padding-horizontal-base;
     text-rendering: auto;
 
     &::before {
@@ -195,10 +217,9 @@
     .reset-component();
     position: absolute;
     top: -9999px;
-    left: -9999px;
     z-index: @zindex-dropdown;
     box-sizing: border-box;
-    padding: @select-dropdown-edge-child-vertical-padding 0;
+    padding: @padding-xss;
     overflow: hidden;
     font-size: @font-size-base;
     // Fix select render lag of long text in chrome
@@ -301,12 +322,13 @@
         &.@{select-prefix-cls}-item-option-selected {
           background-color: @select-multiple-disabled-background;
         }
+
         color: @disabled-color;
         cursor: not-allowed;
       }
 
       &-grouped {
-        padding-left: @control-padding-horizontal * 2;
+        padding-inline-start: @control-padding-horizontal * 2;
       }
     }
   }
@@ -319,49 +341,67 @@
   }
 
   // no border style
-  &-borderless &-selector {
-    background-color: transparent !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
+  &&-borderless,
+  &&-borderless:hover,
+  &&-borderless:focus,
+  &&-borderless&-focused,
+  &&-borderless&-disabled,
+  &&-borderless&[disabled] {
+    .@{select-prefix-cls}-selector {
+      background-color: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
   }
 
   // filled style
-  &-filled &-selector {
-    background-color: @input-variant-filled-bg !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
+  &&-filled &-selector {
+    background-color: @input-variant-filled-bg;
+    border-color: transparent;
+    box-shadow: none;
   }
 
-  &-filled:hover &-selector {
-    background-color: @input-variant-filled-hover-bg !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
+  &&-filled:hover &-selector {
+    background-color: @input-variant-filled-hover-bg;
+    border-color: transparent;
+    box-shadow: none;
   }
 
-  &-filled:focus &-selector,
-  &-filled&-focused &-selector {
-    .active() !important;
-    background-color: transparent !important;
-    box-shadow: none !important;
+  &&-filled:focus,
+  &&-filled&-focused {
+    .@{select-prefix-cls}-selector {
+      .active();
+      background-color: transparent;
+      box-shadow: none;
+    }
   }
 
-  &-filled&-disabled &-selector,
-  &-filled&[disabled] &-selector {
-    .disabled() !important;
+  &&-filled&-disabled,
+  &&-filled&[disabled] {
+    .@{select-prefix-cls}-selector {
+      .disabled();
+    }
   }
 
   // underlined style
-  &-underlined &-selector,
-  &-underlined:hover &-selector,
-  &-underlined:focus &-selector,
-  &-underlined&-focused &-selector,
-  &-underlined&-disabled &-selector,
-  &-underlined&[disabled] &-selector{
-    background-color: transparent !important;
-    border-width: 0 0 @border-width-base !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+  &&-underlined,
+  &&-underlined:hover,
+  &&-underlined:focus,
+  &&-underlined&-focused,
+  &&-underlined&-disabled,
+  &&-underlined&[disabled] {
+    .@{select-prefix-cls}-selector {
+      background-color: transparent;
+      border-width: 0 0 @border-width-base;
+      border-radius: 0;
+      box-shadow: none;
+    }
   }
+
+  &&-underlined:hover:not(&-focused):not(:focus) &-selector {
+    border-color: @input-border-color;
+  }
+
 
   &&-in-form-item {
     width: 100%;

@@ -15,7 +15,7 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
     </nz-radio-group>
     <nz-input-number style="float:right;" [nzMin]="0" [nzMax]="29" [(ngModel)]="selectedIndex"></nz-input-number>
 
-    <nz-tabset
+    <nz-tabs
       style="height:220px;"
       [nzTabPosition]="nzTabPosition"
       [(nzSelectedIndex)]="selectedIndex"
@@ -33,7 +33,7 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
           {{ tab.content }}
         </nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   `
 })
 export class NzDemoTabsSlideComponent implements OnInit {

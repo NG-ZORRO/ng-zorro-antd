@@ -4,7 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import { afterNextRender, computed, Directive, ElementRef, inject, OnDestroy } from '@angular/core';
+import { afterNextRender, computed, DestroyRef, Directive, ElementRef, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { NzSpaceCompactComponent } from './space-compact.component';
@@ -16,7 +16,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_ITEMS } from './space-comp
     '[class]': 'class()'
   }
 })
-export class NzSpaceCompactItemDirective implements OnDestroy {
+export class NzSpaceCompactItemDirective {
   /**
    * Ancestor component injected from the parent.
    * Note that it is not necessarily the direct parent component.
@@ -48,7 +48,8 @@ export class NzSpaceCompactItemDirective implements OnDestroy {
     // so we need to use findIndex to find the index value of the first valid element.
     if (index === firstIndex) {
       classes.push(compactFirstItemClassOf(this.type, direction));
-    } else if (index === items.length - 1) {
+    }
+    if (index === items.length - 1) {
       classes.push(compactLastItemClassOf(this.type, direction));
     }
 
@@ -69,10 +70,10 @@ export class NzSpaceCompactItemDirective implements OnDestroy {
         });
       }
     });
-  }
 
-  ngOnDestroy(): void {
-    this.items?.update(value => value.filter(o => o !== this));
+    inject(DestroyRef).onDestroy(() => {
+      this.items?.update(value => value.filter(o => o !== this));
+    });
   }
 }
 

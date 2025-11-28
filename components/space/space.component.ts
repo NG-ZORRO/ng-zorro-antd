@@ -10,15 +10,16 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
   Input,
   OnChanges,
-  OnDestroy,
   QueryList,
+  SimpleChanges,
   TemplateRef,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -41,19 +42,11 @@ const SPACE_SIZE: Record<NzSpaceType, number> = {
   template: `
     <ng-content></ng-content>
     @for (item of items; track item; let last = $last; let index = $index) {
-      <div
-        class="ant-space-item"
-        [style.margin-block-end.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-        [style.margin-inline-end.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
-      >
+      <div class="ant-space-item">
         <ng-container [ngTemplateOutlet]="item"></ng-container>
       </div>
       @if (nzSplit && !last) {
-        <span
-          class="ant-space-split"
-          [style.margin-block-end.px]="nzDirection === 'vertical' ? (last ? null : spaceSize) : null"
-          [style.margin-inline-end.px]="nzDirection === 'horizontal' ? (last ? null : spaceSize) : null"
-        >
+        <span class="ant-space-split">
           <ng-template [nzStringTemplateOutlet]="nzSplit" [nzStringTemplateOutletContext]="{ $implicit: index }">{{
             nzSplit
           }}</ng-template>
@@ -69,50 +62,62 @@ const SPACE_SIZE: Record<NzSpaceType, number> = {
     '[class.ant-space-align-end]': 'mergedAlign === "end"',
     '[class.ant-space-align-center]': 'mergedAlign === "center"',
     '[class.ant-space-align-baseline]': 'mergedAlign === "baseline"',
-    '[style.flex-wrap]': 'nzWrap ? "wrap" : null'
+    '[style.flex-wrap]': 'nzWrap ? "wrap" : null',
+    '[style.column-gap.px]': 'horizontalSize',
+    '[style.row-gap.px]': 'verticalSize'
   },
   imports: [NgTemplateOutlet, NzStringTemplateOutletDirective]
 })
-export class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
+export class NzSpaceComponent implements OnChanges, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
 
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
   @Input() nzAlign?: NzSpaceAlign;
   @Input() nzSplit: TemplateRef<{ $implicit: number }> | string | null = null;
   @Input({ transform: booleanAttribute }) nzWrap: boolean = false;
-  @Input() @WithConfig() nzSize: NzSpaceSize = 'small';
+  @Input() @WithConfig() nzSize: NzSpaceSize | [NzSpaceSize, NzSpaceSize] = 'small';
 
   @ContentChildren(NzSpaceItemDirective, { read: TemplateRef }) items!: QueryList<TemplateRef<NzSafeAny>>;
 
   mergedAlign?: NzSpaceAlign;
-  spaceSize: number = SPACE_SIZE.small;
-  private destroy$ = new Subject<boolean>();
+  horizontalSize!: number;
+  verticalSize!: number;
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
-  private updateSpaceItems(): void {
-    const numberSize = typeof this.nzSize === 'string' ? SPACE_SIZE[this.nzSize] : this.nzSize;
-    this.spaceSize = numberSize / (this.nzSplit ? 2 : 1);
-    this.cdr.markForCheck();
+  constructor() {
+    this.updateSpaceSize();
   }
 
-  ngOnChanges(): void {
-    this.updateSpaceItems();
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzSize } = changes;
+    if (nzSize) {
+      this.updateSpaceSize();
+    }
     this.mergedAlign = this.nzAlign === undefined && this.nzDirection === 'horizontal' ? 'center' : this.nzAlign;
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
-  }
-
   ngAfterContentInit(): void {
-    this.updateSpaceItems();
-    this.items.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.items.changes.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.cdr.markForCheck();
     });
   }
+
+  private updateSpaceSize(): void {
+    const { horizontalSize, verticalSize } = normalizeSpaceSize(this.nzSize);
+    this.horizontalSize = horizontalSize;
+    this.verticalSize = verticalSize;
+  }
+}
+
+function normalizeSpaceSize(size: NzSpaceSize | [NzSpaceSize, NzSpaceSize]): {
+  horizontalSize: number;
+  verticalSize: number;
+} {
+  const [horizontalSize, verticalSize] = (Array.isArray(size) ? size : ([size, size] as const)).map(s =>
+    typeof s === 'number' ? s : SPACE_SIZE[s]
+  );
+  return { horizontalSize, verticalSize };
 }

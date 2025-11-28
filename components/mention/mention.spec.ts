@@ -7,11 +7,19 @@ import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ApplicationRef, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  NgZone,
+  provideZoneChangeDetection,
+  signal,
+  ViewChild
+} from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import {
@@ -34,30 +42,29 @@ describe('mention', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   const scrolledSubject = new Subject();
-  let zone: MockNgZone;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
+        provideNoopAnimations(),
         provideNzIconsTesting(),
         { provide: Directionality, useClass: MockDirectionality },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
-          useFactory: () => {
-            zone = new MockNgZone();
-            return zone;
-          }
+          useFactory: () => new MockNgZone()
         }
       ]
     });
+  });
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
   }));
+
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
@@ -85,13 +92,13 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestSimpleMentionComponent>;
     let textarea: HTMLTextAreaElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestSimpleMentionComponent);
       fixture.detectChanges();
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       textarea.value = '@angular';
-      fixture.detectChanges();
-    });
+      tick();
+    }));
 
     it('should open the dropdown when the input is click', () => {
       dispatchFakeEvent(textarea, 'click');
@@ -193,6 +200,7 @@ describe('mention', () => {
     it('should support switch trigger', fakeAsync(() => {
       fixture.componentInstance.inputTrigger = true;
       fixture.detectChanges();
+      tick(); // Wait for afterNextRender
       const textareaWithSingleLine = fixture.debugElement.query(By.css('textarea')).nativeElement;
       const mention = fixture.componentInstance.mention;
       expect(textareaWithSingleLine).toBeTruthy();
@@ -206,6 +214,7 @@ describe('mention', () => {
       expect(mention.isOpen).toBe(true);
 
       const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
+      expect(option).toBeTruthy(); // Ensure option exists before clicking
       option.click();
       fixture.detectChanges();
 
@@ -398,12 +407,9 @@ describe('mention', () => {
       textarea.value = '@';
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
-
       expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeTruthy();
-
       dispatchKeyboardEvent(textarea, 'keydown', TAB);
       fixture.detectChanges();
-
       tick(500);
       expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeFalsy();
     }));
@@ -426,11 +432,18 @@ describe('mention', () => {
   describe('property', () => {
     let fixture: ComponentFixture<NzTestPropertyMentionComponent>;
     let textarea: HTMLTextAreaElement;
+    let spyNzOnSearch: jasmine.Spy;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestPropertyMentionComponent);
       fixture.detectChanges();
+      tick();
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
+      spyNzOnSearch = spyOn(fixture.componentInstance, 'onSearchChange');
+    }));
+
+    afterEach(() => {
+      spyNzOnSearch.calls.reset();
     });
 
     it('should open the dropdown when the async load suggestions', fakeAsync(() => {
@@ -463,24 +476,22 @@ describe('mention', () => {
     });
 
     it('should emit nzOnSearchChange when type in @ prefix', () => {
-      spyOn(fixture.componentInstance, 'onSearchChange');
-
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       typeInElement('@test', textarea);
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledTimes(1);
+      expect(spyNzOnSearch).toHaveBeenCalledTimes(1);
 
       typeInElement('@test  @', textarea);
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledTimes(2);
+      expect(spyNzOnSearch).toHaveBeenCalledTimes(2);
 
       typeInElement('@test  @ @', textarea);
       fixture.detectChanges();
 
-      expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledTimes(3);
+      expect(spyNzOnSearch).toHaveBeenCalledTimes(3);
     });
 
     it('should open the dropdown when the type in # prefix', () => {
@@ -518,11 +529,12 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestStatusMentionComponent>;
     let mention: DebugElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestStatusMentionComponent);
       mention = fixture.debugElement.query(By.directive(NzMentionComponent));
       fixture.detectChanges();
-    });
+      tick();
+    }));
 
     it('should className with status correct', () => {
       fixture.detectChanges();
@@ -542,11 +554,12 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestMentionInFormComponent>;
     let mention: DebugElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestMentionInFormComponent);
       mention = fixture.debugElement.query(By.directive(NzMentionComponent));
       fixture.detectChanges();
-    });
+      tick();
+    }));
 
     it('should className correct', () => {
       fixture.detectChanges();
@@ -566,6 +579,180 @@ describe('mention', () => {
       expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
   });
+
+  describe('variant', () => {
+    let fixture: ComponentFixture<NzTestVariantMentionComponent>;
+    let mention: DebugElement;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestVariantMentionComponent);
+      mention = fixture.debugElement.query(By.directive(NzMentionComponent));
+      fixture.detectChanges();
+      tick();
+    }));
+
+    it('should have default outlined variant', () => {
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
+    });
+
+    it('should apply borderless variant correctly', () => {
+      fixture.componentInstance.variant = 'borderless';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
+    });
+
+    it('should apply filled variant correctly', () => {
+      fixture.componentInstance.variant = 'filled';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-filled');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
+    });
+
+    it('should apply underlined variant correctly', () => {
+      fixture.componentInstance.variant = 'underlined';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-underlined');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+    });
+
+    it('should switch between variants correctly', () => {
+      fixture.componentInstance.variant = 'filled';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-filled');
+
+      fixture.componentInstance.variant = 'borderless';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+
+      fixture.componentInstance.variant = 'outlined';
+      fixture.detectChanges();
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
+    });
+
+    it('should maintain functionality across different variants', fakeAsync(() => {
+      const variants: Array<'outlined' | 'filled' | 'borderless' | 'underlined'> = [
+        'outlined',
+        'filled',
+        'borderless',
+        'underlined'
+      ];
+
+      variants.forEach(variant => {
+        fixture.componentInstance.variant = variant;
+        fixture.detectChanges();
+
+        const textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
+        textarea.value = '@angular';
+        fixture.detectChanges();
+
+        dispatchFakeEvent(textarea, 'click');
+        fixture.detectChanges();
+        flush();
+
+        expect(fixture.componentInstance.mention.isOpen).toBe(true);
+
+        const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
+        if (option) {
+          option.click();
+          fixture.detectChanges();
+          tick(500);
+
+          expect(fixture.componentInstance.mention.isOpen).toBe(false);
+        }
+      });
+    }));
+  });
+
+  describe('clear button', () => {
+    let fixture: ComponentFixture<NzTestClearMentionComponent>;
+    let textarea: HTMLTextAreaElement;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestClearMentionComponent);
+      fixture.detectChanges();
+      textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
+      tick();
+    }));
+
+    it('should not show clear button when nzAllowClear is false', fakeAsync(() => {
+      fixture.componentInstance.allowClear = false;
+      fixture.detectChanges();
+      typeInElement('test value', textarea);
+      fixture.detectChanges();
+      tick();
+      expect(fixture.debugElement.query(By.css('.ant-mentions-clear-icon'))).toBeNull();
+    }));
+
+    it('should show clear button when nzAllowClear is true and has value', fakeAsync(() => {
+      fixture.componentInstance.allowClear = true;
+      fixture.detectChanges();
+      typeInElement('test value', textarea);
+      fixture.detectChanges();
+      tick();
+      expect(fixture.debugElement.query(By.css('.ant-mentions-clear-icon'))).toBeTruthy();
+    }));
+
+    it('should not show clear button when nzAllowClear is true but has no value', fakeAsync(() => {
+      fixture.componentInstance.allowClear = true;
+      fixture.detectChanges();
+      typeInElement('', textarea);
+      fixture.detectChanges();
+      tick();
+      expect(fixture.debugElement.query(By.css('.ant-mentions-clear-icon'))).toBeNull();
+    }));
+
+    it('should clear input value when clear button is clicked', fakeAsync(() => {
+      fixture.componentInstance.allowClear = true;
+      fixture.detectChanges();
+      typeInElement('test value', textarea);
+      fixture.detectChanges();
+      tick();
+
+      const clearButton = fixture.debugElement.query(By.css('.ant-mentions-clear-icon')).nativeElement;
+      clearButton.click();
+      fixture.detectChanges();
+      tick();
+
+      expect(textarea.value).toBe('');
+      expect(fixture.componentInstance.inputValue).toBe('');
+    }));
+
+    it('should emit nzOnClear when clear button is clicked', fakeAsync(() => {
+      const spy = spyOn(fixture.componentInstance, 'onClear');
+      fixture.componentInstance.allowClear = true;
+      fixture.detectChanges();
+      typeInElement('test value', textarea);
+      fixture.detectChanges();
+      tick();
+
+      const clearButton = fixture.debugElement.query(By.css('.ant-mentions-clear-icon')).nativeElement;
+      clearButton.click();
+      fixture.detectChanges();
+
+      expect(spy).toHaveBeenCalled();
+    }));
+
+    it('should use custom clear icon when provided', fakeAsync(() => {
+      fixture.componentInstance.allowClear = true;
+      fixture.componentInstance.useCustomClearIcon = true;
+      fixture.detectChanges();
+      typeInElement('test value', textarea);
+      fixture.detectChanges();
+      tick();
+
+      const clearIcon = fixture.debugElement.query(By.css('.custom-clear-icon'));
+      expect(clearIcon).toBeTruthy();
+    }));
+  });
 });
 
 @Component({
@@ -573,12 +760,7 @@ describe('mention', () => {
   template: `
     <nz-mention [nzSuggestions]="suggestions">
       @if (!inputTrigger) {
-        <textarea
-          nz-input
-          [nzAutosize]="{ minRows: 4, maxRows: 4 }"
-          [(ngModel)]="inputValue"
-          nzMentionTrigger
-        ></textarea>
+        <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       } @else {
         <textarea rows="1" nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       }
@@ -604,7 +786,7 @@ class NzTestSimpleMentionComponent {
       [nzLoading]="loading"
       (nzOnSearchChange)="onSearchChange()"
     >
-      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+      <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       <ng-container *nzMentionSuggestion="let framework">
         <span class="custom">{{ framework.name }} - {{ framework.type }}</span>
       </ng-container>
@@ -693,7 +875,50 @@ class NzTestMentionInFormComponent {
   feedback = true;
 }
 
+@Component({
+  imports: [FormsModule, NzInputModule, NzMentionModule],
+  template: `
+    <nz-mention [nzSuggestions]="suggestions" [nzVariant]="variant">
+      <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+    </nz-mention>
+  `
+})
+class NzTestVariantMentionComponent {
+  inputValue: string = '@angular';
+  variant: 'outlined' | 'filled' | 'borderless' | 'underlined' = 'outlined';
+  suggestions = ['angular', 'ant-design', 'mention'];
+  @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
+}
+
+@Component({
+  imports: [FormsModule, NzInputModule, NzMentionModule],
+  template: `
+    <nz-mention
+      [nzSuggestions]="suggestions"
+      [nzAllowClear]="allowClear"
+      [nzClearIcon]="useCustomClearIcon ? clearIconTemplate : null"
+      (nzOnClear)="onClear()"
+    >
+      <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+      <ng-template #clearIconTemplate>
+        <span class="custom-clear-icon">×</span>
+      </ng-template>
+    </nz-mention>
+  `
+})
+class NzTestClearMentionComponent {
+  inputValue = '';
+  suggestions = ['angular', 'ant-design', 'mention'];
+  allowClear = false;
+  useCustomClearIcon = false;
+
+  @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
+
+  onClear(): void {}
+}
+
 class MockDirectionality {
   value = 'ltr';
   change = new Subject();
+  valueSignal = signal('ltr');
 }

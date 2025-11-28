@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 8
 title:
   zh-CN: 搜索
   en-US: search

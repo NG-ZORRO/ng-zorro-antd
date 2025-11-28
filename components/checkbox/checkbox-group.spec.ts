@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -14,6 +14,13 @@ describe('checkbox group', () => {
   let component: CheckboxGroupTestComponent;
   let fixture: ComponentFixture<CheckboxGroupTestComponent>;
   let hostElement: HTMLElement;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckboxGroupTestComponent);
@@ -101,6 +108,13 @@ describe('checkbox group with custom layout', () => {
   let component: CheckboxGroupWithCustomLayoutTestComponent;
   let fixture: ComponentFixture<CheckboxGroupWithCustomLayoutTestComponent>;
   let hostElement: HTMLElement;
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckboxGroupWithCustomLayoutTestComponent);

@@ -63,7 +63,6 @@ export function createKeyboardEvent(
   shiftKey?: boolean
 ): KeyboardEvent {
   const event = document.createEvent('KeyboardEvent') as NzSafeAny;
-  const originalPreventDefault = event.preventDefault;
 
   // Firefox does not support `initKeyboardEvent`, but supports `initKeyEvent`.
   if (event.initKeyEvent) {
@@ -82,13 +81,6 @@ export function createKeyboardEvent(
     metaKey: { get: () => metaKey },
     shiftKey: { get: () => shiftKey }
   });
-
-  // IE won't set `defaultPrevented` on synthetic events so we need to do it manually.
-  event.preventDefault = function () {
-    Object.defineProperty(event, 'defaultPrevented', { get: () => true, configurable: true });
-    // eslint-disable-next-line prefer-rest-params
-    return originalPreventDefault.apply(this, arguments);
-  };
 
   return event;
 }

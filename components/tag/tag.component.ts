@@ -9,29 +9,24 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import {
-  isPresetColor,
-  isStatusColor,
-  NzPresetColor,
-  NzStatusColor,
-  presetColors,
-  statusColors
-} from 'ng-zorro-antd/core/color';
+import { isPresetColor, isStatusColor, presetColors, statusColors } from 'ng-zorro-antd/core/color';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { NzTagColor } from './typings';
 
 @Component({
   selector: 'nz-tag',
@@ -56,23 +51,21 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   },
   imports: [NzIconModule]
 })
-export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
-  isPresetColor = false;
+export class NzTagComponent implements OnChanges, OnInit {
+  private cdr = inject(ChangeDetectorRef);
+  private renderer = inject(Renderer2);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
-  @Input() nzColor?: string | NzStatusColor | NzPresetColor;
+  @Input() nzColor?: NzTagColor;
   @Input({ transform: booleanAttribute }) nzChecked = false;
   @Input({ transform: booleanAttribute }) nzBordered = true;
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    private directionality: Directionality
-  ) {}
+  isPresetColor = false;
 
   updateCheckedStatus(): void {
     if (this.nzMode === 'checkable') {
@@ -84,26 +77,24 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
   closeTag(e: MouseEvent): void {
     this.nzOnClose.emit(e);
     if (!e.defaultPrevented) {
-      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
+      this.renderer.removeChild(this.renderer.parentNode(this.el), this.el);
     }
   }
 
   private clearPresetColor(): void {
-    const hostElement = this.elementRef.nativeElement as HTMLElement;
     // /(ant-tag-(?:pink|red|...))/g
     const regexp = new RegExp(`(ant-tag-(?:${[...presetColors, ...statusColors].join('|')}))`, 'g');
-    const classname = hostElement.classList.toString();
+    const classname = this.el.classList.toString();
     const matches: string[] = [];
     let match: RegExpExecArray | null = regexp.exec(classname);
     while (match !== null) {
       matches.push(match[1]);
       match = regexp.exec(classname);
     }
-    hostElement.classList.remove(...matches);
+    this.el.classList.remove(...matches);
   }
 
   private setPresetColor(): void {
-    const hostElement = this.elementRef.nativeElement as HTMLElement;
     this.clearPresetColor();
     if (!this.nzColor) {
       this.isPresetColor = false;
@@ -111,12 +102,12 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
       this.isPresetColor = isPresetColor(this.nzColor) || isStatusColor(this.nzColor);
     }
     if (this.isPresetColor) {
-      hostElement.classList.add(`ant-tag-${this.nzColor}`);
+      this.el.classList.add(`ant-tag-${this.nzColor}`);
     }
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -129,10 +120,5 @@ export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
     if (nzColor) {
       this.setPresetColor();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

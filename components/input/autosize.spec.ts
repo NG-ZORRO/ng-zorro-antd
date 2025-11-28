@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, NgZone } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Component, NgZone, provideZoneChangeDetection } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -16,9 +16,11 @@ import { NzInputModule } from './input.module';
 describe('autoresize', () => {
   let zone: MockNgZone;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         {
           provide: NgZone,
           useFactory: () => {
@@ -28,7 +30,7 @@ describe('autoresize', () => {
         }
       ]
     });
-  }));
+  });
 
   describe('single input', () => {
     describe('textarea autosize string', () => {
@@ -44,6 +46,7 @@ describe('autoresize', () => {
         textarea = fixture.debugElement.query(By.directive(NzAutosizeDirective)).nativeElement;
         autosize = fixture.debugElement.query(By.directive(NzAutosizeDirective)).injector.get(NzAutosizeDirective);
       });
+
       it('should resize the textarea based on its ngModel', fakeAsync(() => {
         let previousHeight = textarea.clientHeight;
         testComponent.value = `
@@ -98,6 +101,7 @@ describe('autoresize', () => {
         expect(autosize.resizeToFitContent).toHaveBeenCalled();
       }));
     });
+
     describe('textarea autosize object', () => {
       let fixture: ComponentFixture<NzTestInputWithTextAreaAutoSizeObjectComponent>;
       let testComponent: NzTestInputWithTextAreaAutoSizeObjectComponent;
@@ -111,6 +115,7 @@ describe('autoresize', () => {
         textarea = fixture.debugElement.query(By.directive(NzAutosizeDirective)).nativeElement;
         autosize = fixture.debugElement.query(By.directive(NzAutosizeDirective)).injector.get(NzAutosizeDirective);
       });
+
       it('should set a min-height based on minRows', fakeAsync(() => {
         autosize.resizeToFitContent(true);
         fixture.detectChanges();
@@ -143,6 +148,7 @@ describe('autoresize', () => {
           .toBeGreaterThan(previousMaxHeight);
       }));
     });
+
     describe('textarea autosize boolean', () => {
       let fixture: ComponentFixture<NzTestInputWithTextAreaAutoSizeBooleanComponent>;
       let testComponent: NzTestInputWithTextAreaAutoSizeBooleanComponent;
@@ -156,6 +162,7 @@ describe('autoresize', () => {
         textarea = fixture.debugElement.query(By.directive(NzAutosizeDirective)).nativeElement;
         autosize = fixture.debugElement.query(By.directive(NzAutosizeDirective)).injector.get(NzAutosizeDirective);
       });
+
       it('should resize the textarea based on its ngModel', fakeAsync(() => {
         let previousHeight = textarea.clientHeight;
         testComponent.value = `

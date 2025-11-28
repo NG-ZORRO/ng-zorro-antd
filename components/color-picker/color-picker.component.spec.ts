@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -17,7 +17,7 @@ import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzFormModule } from 'ng-zorro-antd/form';
 
-describe('nz-color-picker', () => {
+describe('color-picker', () => {
   let fixture: ComponentFixture<NzTestColorPickerComponent>;
   let testComponent: NzTestColorPickerComponent;
   let resultEl: DebugElement;
@@ -30,15 +30,19 @@ describe('nz-color-picker', () => {
     fixture.detectChanges();
   }
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(NzTestColorPickerComponent);
     fixture.detectChanges();
     testComponent = fixture.componentInstance;
     resultEl = fixture.debugElement.query(By.directive(NzColorPickerComponent));
-  }));
+  });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;

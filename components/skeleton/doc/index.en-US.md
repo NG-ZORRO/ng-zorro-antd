@@ -7,14 +7,12 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/KpcciCJgv/Skeleton.svg'
 description: Provide a placeholder while you wait for content to load or visualize content that doesn't exist yet.
 ---
 
-
 ## When To Use
 
 - When resource needs long time loading, like low network speed.
 - The component contains information, such as a List or Card.
 - Only works when loading data for the first time.
 - Could be replaced by Spin in any situation but can provide a better user experience.
-
 
 ## API
 

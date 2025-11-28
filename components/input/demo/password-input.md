@@ -1,8 +1,9 @@
 ---
-order: 10
+order: 12
+version: 20.4.0
 title:
-    zh-CN: 密码框
-    en-US: Password box
+  zh-CN: 密码框
+  en-US: Password box
 ---
 
 ## zh-CN

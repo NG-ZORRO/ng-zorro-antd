@@ -6,7 +6,14 @@
 import { ENTER, TAB } from '@angular/cdk/keycodes';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -37,34 +44,34 @@ import { NzUploadBtnComponent } from './upload-btn.component';
 import { NzUploadListComponent } from './upload-list.component';
 import { NzUploadComponent } from './upload.component';
 
-const FILECONTENT = [
+const FILE_CONTENT = [
   `iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`
 ];
-const FILE = new File(FILECONTENT, '');
-const PNGSMALL = {
+const FILE = new File(FILE_CONTENT, '');
+const PNG_SMALL = {
   target: {
     files: [
-      new File(FILECONTENT, 'test.png', {
+      new File(FILE_CONTENT, 'test.png', {
         type: 'image/png'
       })
     ]
   }
 };
-const JPGSMALL = {
+const JPG_SMALL = {
   target: {
     files: [
-      new File(FILECONTENT, 'test.jpg', {
+      new File(FILE_CONTENT, 'test.jpg', {
         type: 'image/jpg'
       })
     ]
   }
 };
-const LARGEFILE = {
+const LARGE_FILE = {
   name: 'test.png',
   size: 500001,
   type: 'image/png'
 };
-const PNGBIG = { target: { files: { 0: LARGEFILE, length: 1, item: () => LARGEFILE } } };
+const PNG_BIG = { target: { files: { 0: LARGE_FILE, length: 1, item: () => LARGE_FILE } } };
 
 class Item {
   children?: Item[];
@@ -72,21 +79,18 @@ class Item {
 }
 
 describe('upload', () => {
-  it('should throw error when HttpClientModule not imported', () => {
-    expect(() => {
-      TestBed.createComponent(TestUploadBtnComponent);
-    }).toThrow();
-  });
-
   describe('component', () => {
     let fixture: ComponentFixture<TestUploadComponent>;
     let dl: DebugElement;
     let instance: TestUploadComponent;
     let pageObject: NzUploadPageObject;
     let httpMock: HttpTestingController;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [
+          // todo: use zoneless
+          provideZoneChangeDetection(),
           provideNzIconsTesting(),
           provideNoopAnimations(),
           provideHttpClient(withInterceptorsFromDi()),
@@ -139,7 +143,7 @@ describe('upload', () => {
         instance.nzMultiple = true;
         fixture.detectChanges();
         expect(instance._beforeUploadList.length).toBe(0);
-        pageObject.postFile([...PNGSMALL.target.files, ...PNGSMALL.target.files, ...PNGSMALL.target.files]);
+        pageObject.postFile([...PNG_SMALL.target.files, ...PNG_SMALL.target.files, ...PNG_SMALL.target.files]);
         expect(instance._beforeUploadList.length).toBe(instance.nzLimit);
       });
 
@@ -147,7 +151,7 @@ describe('upload', () => {
         instance.nzFileType = 'image/png';
         fixture.detectChanges();
         expect(instance._beforeUploadList.length).toBe(0);
-        pageObject.postFile(JPGSMALL.target.files);
+        pageObject.postFile(JPG_SMALL.target.files);
         expect(instance._beforeUploadList.length).toBe(0);
       });
 
@@ -238,6 +242,7 @@ describe('upload', () => {
           const req = httpMock.expectOne(() => true);
           expect(req.request.url).toBe(url);
         });
+
         it('should be return Observable when is function', () => {
           const url = `/new-url-with-observable`;
           instance.nzAction = () => of(url);
@@ -342,6 +347,7 @@ describe('upload', () => {
           req.flush({});
           httpMock.verify();
         });
+
         it('should return Observable', () => {
           instance.nzTransformFile = () => of(new File([`123`], `1.png`));
           fixture.detectChanges();
@@ -403,6 +409,7 @@ describe('upload', () => {
           pageObject.postSmall();
           expect(instance._beforeUpload).toBe(false);
         });
+
         describe('using observable', () => {
           it('can return true', () => {
             spyOn(instance, 'nzChange');
@@ -411,6 +418,7 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(instance.nzChange).toHaveBeenCalled();
           });
+
           it('can return same file', () => {
             let ret = false;
             instance.beforeUpload = (file: NzUploadFile): Observable<NzSafeAny> => {
@@ -421,6 +429,7 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(ret).toBe(true);
           });
+
           it('can return a string file', () => {
             let ret = false;
             instance.beforeUpload = (): Observable<NzSafeAny> => {
@@ -431,6 +440,7 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(ret).toBe(true);
           });
+
           it('can return a blob file', () => {
             let ret = false;
             instance.beforeUpload = (): Observable<NzSafeAny> => {
@@ -441,6 +451,7 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(ret).toBe(true);
           });
+
           it('cancel upload when return a false value', () => {
             expect(instance._nzChange).toBeUndefined();
             instance.beforeUpload = (): Observable<NzSafeAny> => of(false);
@@ -448,6 +459,7 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(instance._nzChange).toBeUndefined();
           });
+
           it('should be console.warn error', () => {
             let warnMsg = '';
             console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
@@ -457,6 +469,75 @@ describe('upload', () => {
             pageObject.postSmall();
             expect(warnMsg).toContain(`Unhandled upload beforeUpload error`);
           });
+        });
+
+        describe('using promise', () => {
+          it('should upload when promise resolves to true', fakeAsync(() => {
+            let hookExecuted = false;
+            instance.beforeUpload = (): Promise<boolean> => {
+              hookExecuted = true;
+              return Promise.resolve(true);
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(hookExecuted).toBe(true);
+          }));
+
+          it('should upload when promise resolves to file', fakeAsync(() => {
+            let hookExecuted = false;
+            instance.beforeUpload = (file: NzUploadFile): Promise<NzUploadFile> => {
+              hookExecuted = true;
+              return Promise.resolve(file);
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(hookExecuted).toBe(true);
+          }));
+
+          it('should upload with blob when promise resolves to blob', fakeAsync(() => {
+            let hookExecuted = false;
+            const testBlob = new Blob(['test content'], { type: 'text/plain' });
+            instance.beforeUpload = (): Promise<Blob> => {
+              hookExecuted = true;
+              return Promise.resolve(testBlob);
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(hookExecuted).toBe(true);
+          }));
+
+          it('should cancel upload when promise resolves to false', fakeAsync(() => {
+            expect(instance._nzChange).toBeUndefined();
+            instance.beforeUpload = (): Promise<boolean> => Promise.resolve(false);
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(instance._nzChange).toBeUndefined();
+          }));
+
+          it('should work with promise that resolves to boolean true', fakeAsync(() => {
+            let hookCalled = false;
+            instance.beforeUpload = (): Promise<boolean> => {
+              hookCalled = true;
+              return Promise.resolve(true);
+            };
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(hookCalled).toBe(true);
+          }));
+
+          it('should cancel upload when promise rejects with false', fakeAsync(() => {
+            expect(instance._nzChange).toBeUndefined();
+            instance.beforeUpload = (): Promise<boolean> => Promise.reject(false);
+            fixture.detectChanges();
+            pageObject.postSmall();
+            tick();
+            expect(instance._nzChange).toBeUndefined();
+          }));
         });
       });
 
@@ -472,9 +553,10 @@ describe('upload', () => {
           ];
           fixture.detectChanges();
           expect(instance._beforeUploadList.length).toBe(0);
-          pageObject.postFile([...PNGSMALL.target.files, ...PNGSMALL.target.files, ...PNGSMALL.target.files]);
+          pageObject.postFile([...PNG_SMALL.target.files, ...PNG_SMALL.target.files, ...PNG_SMALL.target.files]);
           expect(instance._beforeUploadList.length).toBe(instance.nzLimit);
         });
+
         it('should be custom size', () => {
           instance.nzSize = 1;
           instance.nzFilter = [
@@ -488,6 +570,7 @@ describe('upload', () => {
           pageObject.postLarge();
           expect(instance._beforeUploadList.length).toBe(0);
         });
+
         it('should be custom type', () => {
           instance.nzFileType = 'image/png';
           instance.nzFilter = [
@@ -498,9 +581,10 @@ describe('upload', () => {
           ];
           fixture.detectChanges();
           expect(instance._beforeUploadList.length).toBe(0);
-          pageObject.postFile(JPGSMALL.target.files);
+          pageObject.postFile(JPG_SMALL.target.files);
           expect(instance._beforeUploadList.length).toBe(0);
         });
+
         describe('with Observable', () => {
           it('should working', () => {
             instance.nzFilter = [
@@ -523,9 +607,10 @@ describe('upload', () => {
             ];
             fixture.detectChanges();
             expect(instance._beforeUploadList.length).toBe(0);
-            pageObject.postFile([...PNGSMALL.target.files, ...PNGSMALL.target.files, ...PNGSMALL.target.files]);
+            pageObject.postFile([...PNG_SMALL.target.files, ...PNG_SMALL.target.files, ...PNG_SMALL.target.files]);
             expect(instance._beforeUploadList.length).toBe(1);
           });
+
           it('should be console.warn error', () => {
             let warnMsg = '';
             console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
@@ -539,7 +624,7 @@ describe('upload', () => {
               }
             ];
             fixture.detectChanges();
-            pageObject.postFile(PNGSMALL.target.files);
+            pageObject.postFile(PNG_SMALL.target.files);
             expect(warnMsg).toContain(`Unhandled upload filter error`);
           });
         });
@@ -559,6 +644,7 @@ describe('upload', () => {
 
       describe('[nzRemove]', () => {
         const count = 3;
+
         beforeEach(() => {
           instance.nzFileList = [
             {
@@ -584,6 +670,7 @@ describe('upload', () => {
           ] as NzSafeAny[];
           fixture.detectChanges();
         });
+
         it('should be return a Observable', () => {
           instance.onRemove = () => of(false);
           fixture.detectChanges();
@@ -591,6 +678,7 @@ describe('upload', () => {
           dl.query(By.css('.anticon-delete')).nativeElement.click();
           expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(count);
         });
+
         it('should be return a Observable includes a delay operation', (done: () => void) => {
           const DELAY = 20;
           instance.onRemove = () => of(true).pipe(delay(DELAY));
@@ -602,6 +690,7 @@ describe('upload', () => {
             done();
           }, DELAY + 1);
         });
+
         it('should be return a truth value', () => {
           instance.onRemove = () => true;
           fixture.detectChanges();
@@ -609,6 +698,7 @@ describe('upload', () => {
           dl.query(By.css('.anticon-delete')).nativeElement.click();
           expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(count - 1);
         });
+
         it('should be return a falsy value', () => {
           instance.onRemove = () => false;
           fixture.detectChanges();
@@ -616,6 +706,7 @@ describe('upload', () => {
           dl.query(By.css('.anticon-delete')).nativeElement.click();
           expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(count);
         });
+
         it('should be with null', () => {
           instance.onRemove = undefined;
           fixture.detectChanges();
@@ -634,6 +725,7 @@ describe('upload', () => {
             fixture.detectChanges();
             expect(instance.comp.nzFileList[0].thumbUrl).toBeUndefined();
           });
+
           it('with picture', () => {
             instance.nzListType = 'picture';
             fixture.detectChanges();
@@ -673,6 +765,154 @@ describe('upload', () => {
         expect(el != null).toBe(true);
         expect((el.nativeElement as HTMLElement).textContent).toBe('asdf');
       });
+
+      describe('[nzMaxCount]', () => {
+        it('should replace existing file when nzMaxCount is 1', () => {
+          instance.nzMaxCount = 1;
+          instance.nzFileList = [
+            {
+              uid: 1,
+              name: 'existing.png',
+              status: 'done'
+            } as NzSafeAny
+          ];
+          fixture.detectChanges();
+
+          expect(instance.nzFileList.length).toBe(1);
+          expect(instance.nzFileList[0].name).toBe('existing.png');
+
+          // Upload a new file
+          pageObject.postSmall();
+          const req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+
+          // Should replace the existing file
+          expect(instance.nzFileList.length).toBe(1);
+          expect(instance.nzFileList[0].name).toBe('test.png');
+        });
+
+        it('should limit files when nzMaxCount is greater than 1', () => {
+          instance.nzMaxCount = 2;
+          instance.nzFileList = [];
+          fixture.detectChanges();
+
+          // Upload first file
+          pageObject.postSmall();
+          let req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(1);
+
+          // Upload second file
+          pageObject.postFile([new File(['content'], 'second.png', { type: 'image/png' })]);
+          req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(2);
+
+          // Upload third file - upload happens but file is not added to list due to max count
+          pageObject.postFile([new File(['content'], 'third.png', { type: 'image/png' })]);
+          req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          // File list should still be 2 because max count prevents adding more files
+          expect(instance.nzFileList.length).toBe(2);
+        });
+
+        it('should allow unlimited files when nzMaxCount is undefined', () => {
+          instance.nzMaxCount = undefined;
+          instance.nzFileList = [];
+          fixture.detectChanges();
+
+          // Upload multiple files
+          for (let i = 0; i < 5; i++) {
+            pageObject.postFile([new File(['content'], `file${i}.png`, { type: 'image/png' })]);
+            const req = httpMock.expectOne(instance.nzAction as string);
+            req.flush({});
+          }
+
+          expect(instance.nzFileList.length).toBe(5);
+        });
+
+        it('should only accept positive values for nzMaxCount', () => {
+          // Test with positive value (should limit)
+          instance.nzMaxCount = 2;
+          instance.nzFileList = [];
+          fixture.detectChanges();
+
+          // Upload first file
+          pageObject.postSmall();
+          let req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(1);
+
+          // Upload second file
+          pageObject.postFile([new File(['content'], 'second.png', { type: 'image/png' })]);
+          req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(2);
+
+          // Upload third file - should not be added due to limit
+          pageObject.postFile([new File(['content'], 'third.png', { type: 'image/png' })]);
+          req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(2); // Still 2, not 3
+        });
+
+        it('should handle edge cases for nzMaxCount', () => {
+          // Test with 0 (should behave like undefined - no limit)
+          instance.nzMaxCount = 0;
+          instance.nzFileList = [];
+          fixture.detectChanges();
+
+          pageObject.postSmall();
+          let req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(1);
+
+          // Add another file to confirm no limit with 0
+          pageObject.postFile([new File(['content'], 'second.png', { type: 'image/png' })]);
+          req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(2);
+
+          // Test with negative value (should behave like undefined - no limit)
+          instance.nzMaxCount = -1;
+          fixture.detectChanges();
+
+          pageObject.postFile([new File(['content'], 'third.png', { type: 'image/png' })]);
+          req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(3);
+        });
+
+        it('should work with existing nzLimit when both are set', () => {
+          instance.nzMaxCount = 3;
+          instance.nzLimit = 2; // This should be overridden by nzMaxCount logic
+          instance.nzMultiple = true;
+          fixture.detectChanges();
+
+          // Upload files one by one to test the maxCount behavior
+          pageObject.postSmall();
+          let req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(1);
+
+          pageObject.postFile([new File(['content'], 'second.png', { type: 'image/png' })]);
+          req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(2);
+
+          pageObject.postFile([new File(['content'], 'third.png', { type: 'image/png' })]);
+          req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          expect(instance.nzFileList.length).toBe(3);
+
+          // Fourth file - upload happens but file is not added to list due to max count
+          pageObject.postFile([new File(['content'], 'fourth.png', { type: 'image/png' })]);
+          req = httpMock.expectOne(instance.nzAction as string);
+          req.flush({});
+          // File list should still be 3 because max count prevents adding more files
+          expect(instance.nzFileList.length).toBe(3);
+        });
+      });
     });
 
     describe('CORS', () => {
@@ -683,6 +923,7 @@ describe('upload', () => {
         req.flush({});
         httpMock.verify();
       });
+
       it('should be allow override [X-Requested-With]', () => {
         instance.nzHeaders = {
           'X-Requested-With': null
@@ -733,12 +974,12 @@ describe('upload', () => {
       }
 
       postSmall(): this {
-        this.postFile(PNGSMALL.target.files);
+        this.postFile(PNG_SMALL.target.files);
         return this;
       }
 
       postLarge(): this {
-        this.postFile(PNGBIG.target.files);
+        this.postFile(PNG_BIG.target.files);
         return this;
       }
 
@@ -758,9 +999,11 @@ describe('upload', () => {
     let fixture: ComponentFixture<TestUploadListComponent>;
     let dl: DebugElement;
     let instance: TestUploadListComponent;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [provideNzIconsTesting(), provideNoopAnimations()]
+        // todo: use zoneless
+        providers: [provideZoneChangeDetection(), provideNzIconsTesting(), provideNoopAnimations()]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);
       dl = fixture.debugElement;
@@ -791,6 +1034,7 @@ describe('upload', () => {
         fixture.detectChanges();
         expect(instance._onPreview).toBe(true);
       });
+
       it('should be hide preview', () => {
         instance.icons = {
           showPreviewIcon: false,
@@ -801,6 +1045,7 @@ describe('upload', () => {
         expect(actions.length).toBe(0);
         expect(instance._onPreview).toBe(false);
       });
+
       it('should be show remove', () => {
         expect(instance._onRemove).toBe(false);
         const actions = dl.queryAll(By.css('.ant-upload-list-item-actions'));
@@ -809,6 +1054,7 @@ describe('upload', () => {
         fixture.detectChanges();
         expect(instance._onRemove).toBe(true);
       });
+
       it('should be hide remove', () => {
         instance.icons = {
           showPreviewIcon: true,
@@ -827,6 +1073,7 @@ describe('upload', () => {
         dl.query(By.css('.ant-upload-list-item-actions a')).nativeElement.click();
         expect(instance._onPreview).toBe(true);
       });
+
       it('should be invalid handle preview when is a null', () => {
         expect(instance._onPreview).toBe(false);
         instance.onPreview = undefined;
@@ -834,6 +1081,7 @@ describe('upload', () => {
         dl.query(By.css('.ant-upload-list-item-actions a')).nativeElement.click();
         expect(instance._onPreview).toBe(false);
       });
+
       it('should support linkProps as object', fakeAsync(() => {
         instance.items = [
           {
@@ -852,6 +1100,7 @@ describe('upload', () => {
         const el = dl.query(By.css('.ant-upload-list-item-name')).nativeElement as HTMLElement;
         expect(el.attributes.getNamedItem('download')!.textContent).toBe('image');
       }));
+
       it('should support linkProps as json stringify', fakeAsync(() => {
         const linkPropsString = JSON.stringify({ download: 'image' });
         instance.items = [
@@ -877,6 +1126,7 @@ describe('upload', () => {
         dl.query(By.css('.ant-upload-list-item-actions .anticon-delete')).nativeElement.click();
         expect(instance._onRemove).toBe(true);
       });
+
       it('should be invalid handle remove when is a null', () => {
         expect(instance._onRemove).toBe(false);
         instance.onRemove = null;
@@ -892,27 +1142,33 @@ describe('upload', () => {
           expect(instance.comp.isImageUrl({ type: 'image/' } as NzSafeAny)).toBe(true);
         });
       });
+
       describe('via thumbUrl or url', () => {
         it('should be false when not found url & thumbUrl', () => {
           expect(instance.comp.isImageUrl({} as NzSafeAny)).toBe(false);
         });
+
         describe('via extension', () => {
           it('with valid image extension', () => {
             expect(instance.comp.isImageUrl({ url: '1.svg' } as NzSafeAny)).toBe(true);
           });
+
           it('with invalid image extension', () => {
             expect(instance.comp.isImageUrl({ url: '1.pdf' } as NzSafeAny)).toBe(false);
           });
         });
+
         describe('when url is base64', () => {
           it('with valid image base64', () => {
             expect(instance.comp.isImageUrl({ url: 'data:image/png;base64,1' } as NzSafeAny)).toBe(true);
           });
+
           it('with invalid image base64', () => {
             expect(instance.comp.isImageUrl({ url: 'data:application/pdf;base64,1' } as NzSafeAny)).toBe(false);
           });
         });
       });
+
       it('#previewIsImage', fakeAsync(() => {
         instance.previewIsImage = () => true;
         instance.listType = 'picture';
@@ -945,6 +1201,7 @@ describe('upload', () => {
         tick();
         expect(instance.items[0].thumbUrl.length).toBeGreaterThan(1);
       }));
+
       it('should be generate thumb when width greater than height', fakeAsync(() => {
         const img = new MockImage();
         img.width = 2;
@@ -957,12 +1214,14 @@ describe('upload', () => {
         tick();
         expect(instance.items[0].thumbUrl.length).toBeGreaterThan(1);
       }));
+
       it('should be ignore thumb when is invalid image data', () => {
         instance.listType = 'picture';
         instance.items = [{ originFileObj: new File([''], '1.pdf', { type: 'pdf' }), thumbUrl: undefined }];
         fixture.detectChanges();
         expect(instance.items[0].thumbUrl).toBe('');
       });
+
       it('should be customize preview file', fakeAsync(() => {
         instance.previewFile = () => of('11');
         instance.listType = 'picture';
@@ -979,9 +1238,12 @@ describe('upload', () => {
       let fixture: ComponentFixture<TestUploadBtnComponent>;
       let dl: DebugElement;
       let instance: TestUploadBtnComponent;
+
       beforeEach(() => {
         TestBed.configureTestingModule({
           providers: [
+            // todo: use zoneless
+            provideZoneChangeDetection(),
             provideNzIconsTesting(),
             provideNoopAnimations(),
             provideHttpClient(withInterceptorsFromDi()),
@@ -1008,6 +1270,7 @@ describe('upload', () => {
             expect(instance.comp.file.nativeElement.click).toHaveBeenCalled();
           });
         });
+
         describe('via onClick', () => {
           it('', () => {
             spyOn(instance.comp.file.nativeElement, 'click');
@@ -1015,6 +1278,7 @@ describe('upload', () => {
             instance.comp.onClick();
             expect(instance.comp.file.nativeElement.click).toHaveBeenCalled();
           });
+
           it(', when nzOpenFileDialogOnClick is false', () => {
             instance.options.openFileDialogOnClick = false;
             spyOn(instance.comp.file.nativeElement, 'click');
@@ -1023,6 +1287,7 @@ describe('upload', () => {
             expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
           });
         });
+
         describe('via onKeyDown', () => {
           it('normal', () => {
             const appRef = TestBed.inject(ApplicationRef);
@@ -1034,6 +1299,7 @@ describe('upload', () => {
             expect(instance.comp.onClick).toHaveBeenCalled();
             expect(appRef.tick).toHaveBeenCalledTimes(0);
           });
+
           it('when expect Enter', () => {
             const appRef = TestBed.inject(ApplicationRef);
             spyOn(appRef, 'tick');
@@ -1045,6 +1311,7 @@ describe('upload', () => {
             expect(appRef.tick).toHaveBeenCalledTimes(0);
           });
         });
+
         describe('via Drop', () => {
           it('normal', () => {
             spyOn(instance.comp, 'uploadFiles');
@@ -1056,12 +1323,14 @@ describe('upload', () => {
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
           });
+
           it('when dragover event', () => {
             spyOn(instance.comp, 'uploadFiles');
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({ type: 'dragover', preventDefault: () => {} } as NzSafeAny);
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
           });
+
           it('limit gif using resource type', () => {
             instance.options.accept = 'image/gif';
             fixture.detectChanges();
@@ -1069,11 +1338,12 @@ describe('upload', () => {
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
-              dataTransfer: { files: PNGSMALL.target.files },
+              dataTransfer: { files: PNG_SMALL.target.files },
               preventDefault: () => {}
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
           });
+
           it('limit gif using file name', () => {
             instance.options.accept = '.gif';
             fixture.detectChanges();
@@ -1081,11 +1351,12 @@ describe('upload', () => {
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
-              dataTransfer: { files: PNGSMALL.target.files },
+              dataTransfer: { files: PNG_SMALL.target.files },
               preventDefault: () => {}
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
           });
+
           it('allow type image/*', () => {
             instance.options.accept = 'image/*';
             fixture.detectChanges();
@@ -1093,11 +1364,12 @@ describe('upload', () => {
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
-              dataTransfer: { files: PNGSMALL.target.files },
+              dataTransfer: { files: PNG_SMALL.target.files },
               preventDefault: () => {}
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
           });
+
           it(`allow type [ 'image/png', 'image/jpg' ]`, () => {
             instance.options.accept = ['image/png', 'image/jpg'];
             fixture.detectChanges();
@@ -1105,18 +1377,20 @@ describe('upload', () => {
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
-              dataTransfer: { files: PNGSMALL.target.files },
+              dataTransfer: { files: PNG_SMALL.target.files },
               preventDefault: () => {}
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
           });
         });
+
         it('via onChange', () => {
           spyOn(instance.comp, 'uploadFiles');
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
-          instance.comp.onChange(PNGSMALL as NzSafeAny);
+          instance.comp.onChange(PNG_SMALL as NzSafeAny);
           expect(instance.comp.uploadFiles).toHaveBeenCalled();
         });
+
         describe('via directory', () => {
           const makeFileSystemEntry = (item: Item): FileSystemEntry => {
             const isDirectory = Array.isArray(item.children);
@@ -1135,7 +1409,9 @@ describe('upload', () => {
             ({
               webkitGetAsEntry: () => makeFileSystemEntry(item)
             }) as DataTransferItem;
+
           beforeEach(() => (instance.options.directory = true));
+
           it('should working', () => {
             spyOn(instance.comp, 'uploadFiles');
             const files = {
@@ -1160,6 +1436,7 @@ describe('upload', () => {
             } as NzSafeAny);
             expect(instance.comp.uploadFiles).toHaveBeenCalled();
           });
+
           it('should be ignore invalid extension', () => {
             instance.options.accept = ['.webp'];
             spyOn(instance.comp, 'uploadFiles');
@@ -1188,24 +1465,28 @@ describe('upload', () => {
           instance.options.disabled = true;
           fixture.detectChanges();
         });
+
         it('[onClick]', () => {
           spyOn<NzSafeAny>(instance.comp, 'file');
           expect(instance.comp.file).not.toHaveBeenCalled();
           instance.comp.onClick();
           expect(instance.comp.file).not.toHaveBeenCalled();
         });
+
         it('[onKeyDown]', () => {
           spyOn(instance.comp, 'onClick');
           expect(instance.comp.onClick).not.toHaveBeenCalled();
           // instance.comp.onKeyDown(null);
           // expect(instance.comp.onClick).not.toHaveBeenCalled();
         });
+
         it('[onFileDrop]', () => {
           spyOn(instance.comp, 'uploadFiles');
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
           instance.comp.onFileDrop({ type: 'dragover', preventDefault: () => {} } as NzSafeAny);
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
         });
+
         it('[onChange]', () => {
           spyOn(instance.comp, 'uploadFiles');
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
@@ -1218,18 +1499,19 @@ describe('upload', () => {
         it('should be abort all uploading file', () => {
           instance.comp.onChange({
             target: {
-              files: [...PNGSMALL.target.files, ...JPGSMALL.target.files]
+              files: [...PNG_SMALL.target.files, ...JPG_SMALL.target.files]
             }
           } as NzSafeAny);
           expect(Object.keys(instance.comp.reqs).length).toBe(2);
-          instance.comp.ngOnDestroy();
+          fixture.destroy();
           expect(Object.keys(instance.comp.reqs).length).toBe(0);
         });
+
         it('should be subsequent uploading', () => {
-          instance.comp.onChange(PNGSMALL as NzSafeAny);
+          instance.comp.onChange(PNG_SMALL as NzSafeAny);
           expect(Object.keys(instance.comp.reqs).length).toBe(1);
-          instance.comp.ngOnDestroy();
-          instance.comp.onChange(PNGSMALL as NzSafeAny);
+          fixture.destroy();
+          instance.comp.onChange(PNG_SMALL as NzSafeAny);
           expect(Object.keys(instance.comp.reqs).length).toBe(0);
         });
       });
@@ -1239,10 +1521,15 @@ describe('upload', () => {
       let fixture: ComponentFixture<NzUploadBtnComponent>;
       let comp: NzUploadBtnComponent;
       let http: HttpTestingController;
+
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [NzUploadBtnComponent],
-          providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+          // todo: use zoneless
+          providers: [
+            provideZoneChangeDetection(),
+            provideHttpClient(withInterceptorsFromDi()),
+            provideHttpClientTesting()
+          ]
         });
         fixture = TestBed.createComponent(NzUploadBtnComponent);
         comp = fixture.debugElement.componentInstance;
@@ -1268,7 +1555,7 @@ describe('upload', () => {
         spyOn<NzSafeAny>(comp.options, 'onStart');
         spyOn<NzSafeAny>(comp.options, 'onProgress');
         spyOn<NzSafeAny>(comp.options, 'onSuccess');
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         tick(1);
         const req = http.expectOne('/test');
         req.event({ type: 1, loaded: 10, total: 100 });
@@ -1279,7 +1566,7 @@ describe('upload', () => {
       }));
 
       it('should contain the parameters of http request', fakeAsync(() => {
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         tick(1);
         const req = http.expectOne('/test');
         expect(req.request.withCredentials).toBe(true);
@@ -1298,23 +1585,74 @@ describe('upload', () => {
             fn: (fileList: NzUploadFile[]) => fileList.filter(w => w.size! / 1024 <= 0)
           }
         ];
-        comp.onChange(PNGBIG as NzSafeAny);
+        comp.onChange(PNG_BIG as NzSafeAny);
         expect(comp.options.onStart).not.toHaveBeenCalled();
       });
 
       it('should be no request when beforeUpload is false', () => {
         spyOn<NzSafeAny>(comp.options, 'beforeUpload').and.returnValue(false);
         spyOn<NzSafeAny>(comp.options, 'onStart');
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         expect(comp.options.beforeUpload).toHaveBeenCalled();
         expect(comp.options.onStart).not.toHaveBeenCalled();
       });
+
+      it('should handle promise-based beforeUpload that resolves to true', fakeAsync(() => {
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        comp.options.beforeUpload = (): Promise<boolean> => Promise.resolve(true);
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        tick();
+        const req = http.expectOne('/test');
+        expect(comp.options.onStart).toHaveBeenCalled();
+        req.flush('ok');
+      }));
+
+      it('should not start upload when promise-based beforeUpload resolves to false', fakeAsync(() => {
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        comp.options.beforeUpload = (): Promise<boolean> => Promise.resolve(false);
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        tick();
+        expect(comp.options.onStart).not.toHaveBeenCalled();
+        http.expectNone('/test');
+      }));
+
+      it('should handle promise-based beforeUpload with file transformation', fakeAsync(() => {
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        const baseFile = new File(['modified'], 'modified.txt', { type: 'text/plain' });
+        const transformedFile: NzUploadFile = {
+          ...baseFile,
+          uid: 'test-uid',
+          name: baseFile.name,
+          size: baseFile.size,
+          type: baseFile.type,
+          lastModified: baseFile.lastModified.toString(),
+          originFileObj: baseFile
+        };
+        comp.options.beforeUpload = (): Promise<NzUploadFile> => Promise.resolve(transformedFile);
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        tick();
+        const req = http.expectOne('/test');
+        expect(comp.options.onStart).toHaveBeenCalled();
+        req.flush('ok');
+      }));
+
+      it('should handle promise rejection in beforeUpload', fakeAsync(() => {
+        let warnMsg = '';
+        console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        comp.options.beforeUpload = (): Promise<boolean> => Promise.reject(new Error('Validation failed'));
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        tick();
+        expect(comp.options.onStart).not.toHaveBeenCalled();
+        expect(warnMsg).toContain('Unhandled upload beforeUpload error');
+        http.expectNone('/test');
+      }));
 
       it('should error when request error', fakeAsync(() => {
         spyOn<NzSafeAny>(comp.options, 'onStart');
         spyOn<NzSafeAny>(comp.options, 'onSuccess');
         spyOn<NzSafeAny>(comp.options, 'onError');
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         tick(1);
         http.expectOne('/test').error({ status: 403 } as unknown as ProgressEvent);
         expect(comp.options.onStart).toHaveBeenCalled();
@@ -1325,7 +1663,7 @@ describe('upload', () => {
       it('should custom request', () => {
         comp.options.customRequest = () => of(true).subscribe(() => {});
         spyOn<NzSafeAny>(comp.options, 'customRequest');
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         expect(comp.options.customRequest).toHaveBeenCalled();
       });
 
@@ -1333,7 +1671,7 @@ describe('upload', () => {
         let warnMsg = '';
         console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
         comp.options.customRequest = (() => {}) as NzSafeAny;
-        comp.onChange(PNGSMALL as NzSafeAny);
+        comp.onChange(PNG_SMALL as NzSafeAny);
         expect(warnMsg).toContain(`Must return Subscription type in '[nzCustomRequest]' property`);
       });
     });
@@ -1372,6 +1710,7 @@ describe('upload', () => {
         [nzTransformFile]="nzTransformFile"
         [nzIconRender]="nzIconRender"
         [nzFileListRender]="nzFileListRender"
+        [nzMaxCount]="nzMaxCount"
         (nzFileListChange)="nzFileListChange($event)"
         (nzChange)="nzChange($event)"
       >
@@ -1422,6 +1761,7 @@ class TestUploadComponent {
   nzTransformFile!: (file: NzUploadFile) => NzUploadTransformFileType;
   nzIconRender: NzIconRenderTemplate | null = null;
   nzFileListRender: TemplateRef<{ $implicit: NzUploadFile[] }> | null = null;
+  nzMaxCount: number | undefined = undefined;
   _onPreview = false;
   onPreview = (): void => {
     this._onPreview = true;

@@ -163,6 +163,9 @@ export default {
   Empty: {
     description: 'داده‌ای موجود نیست'
   },
+  Form: {
+    optional: '(اختیاری)'
+  },
   Icon: {
     icon: 'آیکن'
   },

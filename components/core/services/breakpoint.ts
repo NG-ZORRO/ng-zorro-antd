@@ -4,9 +4,10 @@
  */
 
 import { MediaMatcher } from '@angular/cdk/layout';
-import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
+import { inject, Injectable } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 
 import { NzResizeService } from './resize';
 
@@ -44,21 +45,15 @@ export const siderResponsiveMap: BreakpointMap = {
 @Injectable({
   providedIn: 'root'
 })
-export class NzBreakpointService implements OnDestroy {
-  private destroy$ = new Subject<void>();
+export class NzBreakpointService {
+  private resizeService = inject(NzResizeService);
+  private mediaMatcher = inject(MediaMatcher);
 
-  constructor(
-    private resizeService: NzResizeService,
-    private mediaMatcher: MediaMatcher
-  ) {
+  constructor() {
     this.resizeService
-      .subscribe()
-      .pipe(takeUntil(this.destroy$))
+      .connect()
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {});
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
   }
 
   subscribe(breakpointMap: BreakpointMap): Observable<NzBreakpointEnum>;
@@ -67,7 +62,7 @@ export class NzBreakpointService implements OnDestroy {
     if (fullMap) {
       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       const get = () => this.matchMedia(breakpointMap, true);
-      return this.resizeService.subscribe().pipe(
+      return this.resizeService.connect().pipe(
         map(get),
         startWith(get()),
         distinctUntilChanged(
@@ -78,7 +73,7 @@ export class NzBreakpointService implements OnDestroy {
     } else {
       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       const get = () => this.matchMedia(breakpointMap);
-      return this.resizeService.subscribe().pipe(map(get), startWith(get()), distinctUntilChanged());
+      return this.resizeService.connect().pipe(map(get), startWith(get()), distinctUntilChanged());
     }
   }
 

@@ -7,18 +7,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter,
-  Input,
   NgZone,
-  OnChanges,
   OnInit,
-  Output,
-  SimpleChanges,
-  booleanAttribute
+  booleanAttribute,
+  inject,
+  DestroyRef,
+  input,
+  output,
+  effect
 } from '@angular/core';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
 import { NzTreeNodeComponent } from './node';
@@ -30,50 +30,46 @@ import { NzTreeNodeComponent } from './node';
   host: {
     class: 'ant-tree-node-content-wrapper',
     '[class.ant-tree-node-content-wrapper-open]': 'isExpanded',
-    '[class.ant-tree-node-selected]': 'nzSelected'
-  },
-  providers: [NzDestroyService]
+    '[class.ant-tree-node-selected]': 'nzSelected()'
+  }
 })
-export class NzTreeNodeOptionComponent<T> implements OnChanges, OnInit {
-  @Input({ transform: booleanAttribute }) nzSelected = false;
-  @Input({ transform: booleanAttribute }) nzDisabled = false;
-  @Output() readonly nzClick = new EventEmitter<MouseEvent>();
+export class NzTreeNodeOptionComponent<T> implements OnInit {
+  readonly nzSelected = input(false, { transform: booleanAttribute });
+  readonly nzDisabled = input(false, { transform: booleanAttribute });
+  readonly nzClick = output<MouseEvent>();
 
-  constructor(
-    private ngZone: NgZone,
-    private host: ElementRef<HTMLElement>,
-    private destroy$: NzDestroyService,
-    private treeNode: NzTreeNodeComponent<T>
-  ) {}
+  private readonly ngZone = inject(NgZone);
+  private readonly element: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly treeNode = inject(NzTreeNodeComponent<T>);
 
   get isExpanded(): boolean {
     return this.treeNode.isExpanded;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzDisabled, nzSelected } = changes;
-    if (nzDisabled) {
-      if (nzDisabled.currentValue) {
-        this.treeNode.disable();
-      } else {
-        this.treeNode.enable();
-      }
-    }
-
-    if (nzSelected) {
-      if (nzSelected.currentValue) {
+  constructor() {
+    effect(() => {
+      if (this.nzSelected()) {
         this.treeNode.select();
       } else {
         this.treeNode.deselect();
       }
-    }
+    });
+
+    effect(() => {
+      if (this.nzDisabled()) {
+        this.treeNode.disable();
+      } else {
+        this.treeNode.enable();
+      }
+    });
   }
 
   ngOnInit(): void {
-    fromEventOutsideAngular<MouseEvent>(this.host.nativeElement, 'click')
+    fromEventOutsideAngular<MouseEvent>(this.element, 'click')
       .pipe(
-        filter(() => !this.nzDisabled && this.nzClick.observers.length > 0),
-        takeUntil(this.destroy$)
+        filter(() => !this.nzDisabled()),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(event => {
         this.ngZone.run(() => this.nzClick.emit(event));

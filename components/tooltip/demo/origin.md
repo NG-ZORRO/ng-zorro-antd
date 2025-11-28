@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Use `nzTooltipOrigin` to set the origin of the tooltip (You can use the util class we provide `import { NzElementPatchModule } from 'ng-zorro-antd/core/element-patch'`).
-

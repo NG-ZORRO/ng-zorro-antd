@@ -7,8 +7,8 @@ import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -28,11 +28,12 @@ describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
@@ -48,6 +49,7 @@ describe('time-picker', () => {
     let testComponent: NzTestTimePickerComponent;
     let fixture: ComponentFixture<NzTestTimePickerComponent>;
     let timeElement: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -216,7 +218,8 @@ describe('time-picker', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     it('should open with click and close with tab', fakeAsync(() => {
@@ -319,12 +322,6 @@ describe('time-picker', () => {
       expect(result.getSeconds()).toEqual(30);
     }));
 
-    it('should support nzBorderless', fakeAsync(() => {
-      fixture.componentInstance.nzBorderless = true;
-      fixture.detectChanges();
-      expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
-    }));
-
     describe('should nzVariant works', () => {
       it('filled', () => {
         fixture.detectChanges();
@@ -393,6 +390,7 @@ describe('time-picker', () => {
     let testComponent: NzTestTimePickerStatusComponent;
     let fixture: ComponentFixture<NzTestTimePickerStatusComponent>;
     let timeElement: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerStatusComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -436,6 +434,7 @@ describe('time-picker', () => {
   describe('in form', () => {
     let testComponent: NzTestTimePickerInFormComponent;
     let fixture: ComponentFixture<NzTestTimePickerInFormComponent>;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerInFormComponent);
       testComponent = fixture.debugElement.componentInstance;
@@ -501,9 +500,8 @@ describe('time-picker', () => {
       [nzSuffixIcon]="nzSuffixIcon"
       [nzBackdrop]="nzBackdrop"
       [nzDefaultOpenValue]="defaultOpenValue"
-      [nzBorderless]="nzBorderless"
       [nzVariant]="nzVariant"
-    ></nz-time-picker>
+    />
   `
 })
 export class NzTestTimePickerComponent {
@@ -516,7 +514,6 @@ export class NzTestTimePickerComponent {
   use12Hours = false;
   nzSuffixIcon: string = 'close-circle';
   nzBackdrop = false;
-  nzBorderless = false;
   nzVariant: NzVariant = 'outlined';
   defaultOpenValue: Date = new Date('2020-03-27T00:00:00');
   onChange(_: Date | null): void {}
@@ -525,7 +522,7 @@ export class NzTestTimePickerComponent {
 
 @Component({
   imports: [NzTimePickerComponent],
-  template: `<nz-time-picker [nzStatus]="status"></nz-time-picker>`
+  template: `<nz-time-picker [nzStatus]="status" />`
 })
 export class NzTestTimePickerStatusComponent {
   status: NzStatus = 'error';
@@ -535,7 +532,7 @@ export class NzTestTimePickerStatusComponent {
   imports: [NzTimePickerComponent, BidiModule],
   template: `
     <div [dir]="dir">
-      <nz-time-picker></nz-time-picker>
+      <nz-time-picker />
     </div>
   `
 })
@@ -549,7 +546,7 @@ export class NzTestTimePickerDirComponent {
     <form nz-form [formGroup]="timePickerForm">
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
-          <nz-time-picker formControlName="time" [nzDisabled]="disabled"></nz-time-picker>
+          <nz-time-picker formControlName="time" [nzDisabled]="disabled" />
         </nz-form-control>
       </nz-form-item>
     </form>

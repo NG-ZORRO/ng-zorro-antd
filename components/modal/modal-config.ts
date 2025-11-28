@@ -24,4 +24,6 @@ export const FADE_CLASS_NAME_MAP = {
 
 export const MODAL_MASK_CLASS_NAME = 'ant-modal-mask';
 export const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'modal';
-export const NZ_MODAL_DATA = new InjectionToken<NzSafeAny>('NZ_MODAL_DATA');
+export const NZ_MODAL_DATA = new InjectionToken<NzSafeAny>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-modal-data' : ''
+);

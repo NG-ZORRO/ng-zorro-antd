@@ -4,6 +4,7 @@
  */
 
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   Input,
@@ -15,9 +16,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { zoomBadgeMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'nz-badge-sup',
@@ -49,6 +49,7 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
   `,
   host: {
     class: 'ant-scroll-number',
+    '[class]': `isPresetColor ? ('ant-badge-status-' + nzColor) : ''`,
     '[@.disabled]': `disableAnimation`,
     '[@zoomBadgeMotion]': '',
     '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
@@ -63,14 +64,17 @@ import { NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 })
 export class NzBadgeSupComponent implements OnInit, OnChanges {
   @Input() nzOffset?: [number, number];
-  @Input() nzTitle?: string | null | undefined;
-  @Input() nzStyle: Record<string, string> | null = null;
+  @Input() nzTitle?: string | null;
+  @Input() nzStyle: NgStyleInterface | null = null;
   @Input() nzDot = false;
-  @Input({ transform: numberAttribute }) nzOverflowCount: number = 99;
+  @Input({ transform: numberAttribute }) nzOverflowCount = 99;
   @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() noAnimation = false;
   @Input() nzSize: NzSizeDSType = 'default';
+  @Input({ transform: booleanAttribute }) isPresetColor = false;
+  @Input() nzColor?: string;
+
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;
@@ -80,7 +84,7 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
     this.maxNumberArray = this.nzOverflowCount
       .toString()
       .split('')
-      .map((value: string, index: number) => `${value}-${index}`);
+      .map((value, index) => `${value}-${index}`);
   }
 
   ngOnInit(): void {

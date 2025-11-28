@@ -16,9 +16,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
@@ -52,7 +51,8 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipOverlayClassName') override overlayClassName?: string;
   @Input('nzTooltipOverlayStyle') override overlayStyle?: NgStyleInterface;
   @Input({ alias: 'nzTooltipArrowPointAtCenter', transform: booleanAttribute }) override arrowPointAtCenter?: boolean;
-  @Input({ transform: booleanAttribute }) override cdkConnectedOverlayPush?: boolean = true;
+  /** @deprecated Default is false, and customization is no longer supported. This will be removed in v22.0.0. */
+  @Input({ transform: booleanAttribute }) override cdkConnectedOverlayPush?: boolean = false;
   @Input() nzTooltipColor?: string;
 
   override directiveContent?: NzTSType | null = null;
@@ -62,7 +62,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Output('nzTooltipVisibleChange') override readonly visibleChange = new EventEmitter<boolean>();
 
   constructor() {
-    super(NzToolTipComponent);
+    super(NzTooltipComponent);
   }
 
   protected override getProxyPropertyMap(): PropertyMapping {
@@ -79,6 +79,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   exportAs: 'nzTooltipComponent',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  // todo: currently the animation will cause small shake for the arrow (< 1px) when the tooltip is shown
   animations: [zoomBigMotion],
   template: `
     <ng-template
@@ -103,10 +104,8 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [@zoomBigMotion]="'active'"
       >
+        <div class="ant-tooltip-arrow" [style]="_arrowStyleMap"></div>
         <div class="ant-tooltip-content">
-          <div class="ant-tooltip-arrow">
-            <span class="ant-tooltip-arrow-content" [style]="_contentStyleMap"></span>
-          </div>
           <div class="ant-tooltip-inner" [style]="_contentStyleMap">
             <ng-container *nzStringTemplateOutlet="nzTitle; context: nzTitleContext">{{ nzTitle }}</ng-container>
           </div>
@@ -116,13 +115,14 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   `,
   imports: [OverlayModule, NzNoAnimationDirective, NzOutletModule, NzOverlayModule]
 })
-export class NzToolTipComponent extends NzTooltipBaseComponent {
+export class NzTooltipComponent extends NzTooltipBaseComponent {
   override nzTitle: NzTSType | null = null;
   nzTitleContext: object | null = null;
 
   nzColor?: string | NzPresetColor;
 
-  _contentStyleMap: NgStyleInterface = {};
+  protected _arrowStyleMap: NgStyleInterface = {};
+  protected _contentStyleMap: NgStyleInterface = {};
 
   protected isEmpty(): boolean {
     return isTooltipEmpty(this.nzTitle);
@@ -138,8 +138,11 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
     };
 
     this._contentStyleMap = {
-      backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null,
-      '--antd-arrow-background-color': this.nzColor
+      backgroundColor: !!this.nzColor && !isColorPreset ? this.nzColor : null
+    };
+
+    this._arrowStyleMap = {
+      '--antd-arrow-background-color': !!this.nzColor && !isColorPreset ? this.nzColor : null
     };
   }
 }

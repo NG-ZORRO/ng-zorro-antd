@@ -9,6 +9,7 @@ import { ReplaySubject } from 'rxjs';
 @Injectable()
 export class TimelineService {
   check$ = new ReplaySubject<void>(1);
+
   markForCheck(): void {
     this.check$.next();
   }

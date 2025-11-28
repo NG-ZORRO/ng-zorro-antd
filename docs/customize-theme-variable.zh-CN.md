@@ -5,10 +5,7 @@ title: 动态主题（实验性）
 
 除了 [less 定制主题](/docs/customize-theme/zh) 外，我们还提供了 CSS Variable 版本以支持动态切换主题能力。
 
-## 注意事项
-
-- 该功能通过动态修改 CSS Variable 实现，因而在 IE 中页面将无法正常展示。请先确认你的用户环境是否需要支持 IE。
-- 该功能在 `ng-zorro-antd@13.2.x` 版本起支持。
+> 该功能通过动态修改 CSS Variable 实现，在 IE 中页面将无法正常展示
 
 ## 如何使用
 
@@ -38,15 +35,14 @@ const ngZorroConfig: NzConfig = {
 };
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideNzConfig(ngZorroConfig)
-  ]
-}
+  providers: [provideNzConfig(ngZorroConfig)]
+};
 ```
 
 这些全局配置项将会被注入 `NzConfigService` 当中并保存。
 
 ### 动态变更
+
 你可以通过调用 `NzConfigService` 的 `set` 方法来改变 CSS Variable 样式配置项，例如：
 
 ```typescript
@@ -59,7 +55,7 @@ export class ChangeZorroConfigComponent {
   private nzConfigService = inject(NzConfigService);
 
   onChangeConfig() {
-    this.nzConfigService.set('theme', { primaryColor: '#1890ff' })
+    this.nzConfigService.set('theme', { primaryColor: '#1890ff' });
   }
 }
 ```

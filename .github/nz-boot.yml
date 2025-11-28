@@ -62,7 +62,6 @@ issue:
     components:
       Affix: cipchk
       Anchor: cipchk
-      BackTop: cipchk
       List: cipchk
       Upload: cipchk
       AutoComplete: hsuanxyz

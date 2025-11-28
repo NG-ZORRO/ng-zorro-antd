@@ -8,22 +8,21 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   Input,
-  OnDestroy,
   OnInit,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
   inject
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
-import { NzStatisticNumberComponent } from './statistic-number.component';
+import { NzStatisticContentValueComponent } from './statistic-content-value.component';
 import { NzStatisticValueType } from './typings';
 
 @Component({
@@ -44,7 +43,7 @@ import { NzStatisticValueType } from './typings';
             <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
           </span>
         }
-        <nz-statistic-number [nzValue]="nzValue" [nzValueTemplate]="nzValueTemplate"></nz-statistic-number>
+        <nz-statistic-content-value [nzValue]="nzValue" [nzValueTemplate]="nzValueTemplate" />
         @if (nzSuffix) {
           <span class="ant-statistic-content-suffix">
             <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
@@ -57,9 +56,9 @@ import { NzStatisticValueType } from './typings';
     class: 'ant-statistic',
     '[class.ant-statistic-rtl]': `dir === 'rtl'`
   },
-  imports: [NzSkeletonModule, NzStatisticNumberComponent, NzOutletModule]
+  imports: [NzSkeletonModule, NzStatisticContentValueComponent, NzOutletModule]
 })
-export class NzStatisticComponent implements OnDestroy, OnInit {
+export class NzStatisticComponent implements OnInit {
   @Input() nzPrefix?: string | TemplateRef<void>;
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
@@ -69,21 +68,16 @@ export class NzStatisticComponent implements OnDestroy, OnInit {
   @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject<void>();
   protected cdr = inject(ChangeDetectorRef);
+  protected destroyRef = inject(DestroyRef);
   private directionality = inject(Directionality);
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

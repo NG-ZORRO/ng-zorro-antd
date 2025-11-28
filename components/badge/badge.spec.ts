@@ -3,24 +3,26 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, SimpleChange, ViewChild } from '@angular/core';
+import { BidiModule, Direction } from '@angular/cdk/bidi';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { badgePresetColors } from 'ng-zorro-antd/badge/preset-colors';
-import { NzRibbonComponent } from 'ng-zorro-antd/badge/ribbon.component';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
+import { badgePresetColors } from './preset-colors';
+import { NzRibbonComponent } from './ribbon.component';
+import { NzBadgeStatusType } from './types';
 
 describe('nz-badge', () => {
   beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideAnimationsAsync()]
+      providers: [provideAnimationsAsync(), provideZoneChangeDetection()]
     });
   });
 
@@ -125,7 +127,7 @@ describe('nz-badge', () => {
     });
 
     it('should no wrapper work', fakeAsync(() => {
-      testComponent.inner = false;
+      testComponent.standalone = true;
       testComponent.style = { backgroundColor: '#52c41a' };
       fixture.detectChanges();
       tick(1000);
@@ -147,7 +149,8 @@ describe('nz-badge', () => {
     }));
 
     it('should status work', () => {
-      testComponent.inner = false;
+      testComponent.standalone = true;
+      testComponent.count = 0;
       const statusList = ['success', 'processing', 'default', 'error', 'warning'];
       statusList.forEach(status => {
         testComponent.status = status;
@@ -169,28 +172,105 @@ describe('nz-badge', () => {
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count-sm');
     });
 
-    it('should set presetColor of nzColor change', fakeAsync(() => {
-      let color: string | undefined;
-      const fixture = TestBed.createComponent(NzBadgeComponent);
-      const component = fixture.componentInstance;
-      fixture.detectChanges();
+    it('should set presetColor of nzColor change', () => {
+      const color = badgePresetColors[0];
+      const component: NzBadgeComponent = badgeElement.componentInstance;
 
-      color = badgePresetColors[0];
-      component.nzColor = color;
-      component.ngOnChanges({
-        nzColor: new SimpleChange(undefined, color, false)
-      });
-      tick();
+      testComponent.color = color;
+      fixture.detectChanges();
       expect(component.presetColor).toEqual(color);
 
-      color = undefined;
-      component.nzColor = color;
-      component.ngOnChanges({
-        nzColor: new SimpleChange(undefined, color, false)
-      });
-      tick();
+      testComponent.color = undefined;
+      fixture.detectChanges();
       expect(component.presetColor).toEqual(null);
+    });
+
+    it('should display correct of nzColor related change', fakeAsync(() => {
+      let color: string | undefined;
+      testComponent.standalone = true;
+      testComponent.count = 0;
+      testComponent.status = 'success';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
+        `ant-badge-status-success`
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      testComponent.status = '';
+      testComponent.text = 'test';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      color = 'blue';
+      testComponent.color = color;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
+        `ant-badge-status-${color}`
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      testComponent.standalone = false;
+      color = '#f5222d';
+      testComponent.color = color;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).not.toContain(
+        `ant-badge-status-`
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').style.backgroundColor).toBe(
+        'rgb(245, 34, 45)'
+      );
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
+
+      testComponent.text = '';
+      testComponent.showZero = true;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
+
+      testComponent.count = 5;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
     }));
+
+    it('should hex nzColor work', () => {
+      testComponent.count = 0;
+      testComponent.color = '#f5222d';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').style.backgroundColor).toBe(
+        'rgb(245, 34, 45)'
+      );
+
+      testComponent.count = 5;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').style.backgroundColor).toBe('rgb(245, 34, 45)');
+    });
+
+    it('should nzStyle work even if nzColor is not provided', () => {
+      testComponent.color = undefined;
+      testComponent.status = 'success'; // must set nzStatus to make sure status dot is rendered
+      testComponent.style = { backgroundColor: '#52c41a' };
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').style.backgroundColor).toBe('rgb(82, 196, 26)');
+
+      testComponent.standalone = true;
+      testComponent.count = 0;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').style.backgroundColor).toBe(
+        'rgb(82, 196, 26)'
+      );
+    });
   });
 
   describe('ribbon', () => {
@@ -214,26 +294,18 @@ describe('nz-badge', () => {
       expect(component.presetColor).toEqual(null);
     });
 
-    it('should set presetColor on nzColor change', fakeAsync(() => {
-      let color: string | undefined;
-
-      color = badgePresetColors[1];
-
-      component.nzColor = color;
-      component.ngOnChanges({
-        nzColor: new SimpleChange(undefined, color, false)
-      });
-      tick();
+    it('should set presetColor on nzColor change', async () => {
+      const color = badgePresetColors[0];
+      fixture.componentRef.setInput('nzColor', color);
+      fixture.detectChanges();
+      await fixture.whenStable();
       expect(component.presetColor).toEqual(color);
 
-      color = undefined;
-      component.nzColor = color;
-      component.ngOnChanges({
-        nzColor: new SimpleChange(undefined, color, false)
-      });
-      tick();
+      fixture.componentRef.setInput('nzColor', undefined);
+      fixture.detectChanges();
+      await fixture.whenStable();
       expect(component.presetColor).toEqual(null);
-    }));
+    });
   });
 
   describe('RTL', () => {
@@ -273,10 +345,11 @@ describe('nz-badge', () => {
       [nzDot]="dot"
       [nzOffset]="offset"
       [nzTitle]="title"
-      [nzStandalone]="!inner"
+      [nzStandalone]="standalone"
       [nzSize]="size"
+      [nzColor]="color"
     >
-      @if (inner) {
+      @if (!standalone) {
         <a></a>
       }
     </nz-badge>
@@ -285,28 +358,28 @@ describe('nz-badge', () => {
 export class NzTestBadgeBasicComponent {
   count = 5;
   dot = false;
-  inner = true;
+  standalone = false;
   overflow = 20;
   showZero = false;
-  status!: string;
+  status!: NzBadgeStatusType | string;
   style!: NgStyleInterface;
   text!: string;
   title?: string | null;
   offset?: [number, number];
   size: NzSizeDSType = 'default';
   noAnimation = true;
+  color?: string;
 }
 
 @Component({
   imports: [BidiModule, NzBadgeModule],
   template: `
     <div [dir]="direction">
-      <nz-badge [nzCount]="count"></nz-badge>
+      <nz-badge [nzCount]="count" />
     </div>
   `
 })
 export class NzTestBadgeRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
   direction: Direction = 'rtl';
   count = 5;
 }

@@ -12,7 +12,9 @@ export interface NzDateConfig {
   firstDayOfWeek?: WeekDayIndex;
 }
 
-export const NZ_DATE_CONFIG = new InjectionToken<NzDateConfig>('date-config');
+export const NZ_DATE_CONFIG = new InjectionToken<NzDateConfig>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-date-config' : ''
+);
 
 export const NZ_DATE_CONFIG_DEFAULT: NzDateConfig = {
   firstDayOfWeek: undefined

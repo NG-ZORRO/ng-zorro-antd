@@ -15,7 +15,7 @@ import {
   ViewChild,
   inject
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -111,6 +111,8 @@ import { BaseModalContainerComponent } from './modal-container.directive';
   imports: [NzPipesModule, NzIconModule, NzModalCloseComponent, NzOutletModule, PortalModule, NzButtonModule]
 })
 export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {
+  private i18n = inject(NzI18nService);
+
   @ViewChild(CdkPortalOutlet, { static: true }) set _portalOutlet(portalOutlet: CdkPortalOutlet) {
     this.portalOutlet = portalOutlet;
   }
@@ -120,12 +122,11 @@ export class NzModalConfirmContainerComponent extends BaseModalContainerComponen
   @Output() override readonly cancelTriggered = new EventEmitter<void>();
   @Output() override readonly okTriggered = new EventEmitter<void>();
   locale!: NzModalI18nInterface;
-  private i18n = inject(NzI18nService);
 
   constructor() {
     super();
 
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed()).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');
     });
   }

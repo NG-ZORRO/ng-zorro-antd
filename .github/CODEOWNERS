@@ -1,7 +1,6 @@
 # The components owners
 components/affix/**                       @cipchk
 components/anchor/**                      @cipchk
-components/back-top/**                    @cipchk
 components/list/**                        @cipchk
 components/upload/**                      @cipchk
 components/auto-complete/**               @hsuanxyz
@@ -70,7 +69,7 @@ components/pipes/**                       @chensimeng
 components/image/**                       @stygian-desolator
 components/qr-code/**                     @OriginRing
 components/cron-expression/**             @OriginRing
-components/water-mark/**                  @OriginRing
+components/watermark/**                   @OriginRing
 components/color-picker/**                @OriginRing
 components/hash-code/**                   @OriginRing
 components/flex/**                        @ParsaArvanehPA

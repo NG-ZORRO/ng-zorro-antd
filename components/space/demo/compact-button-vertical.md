@@ -1,5 +1,5 @@
 ---
-order: 8
+order: 9
 title:
   zh-CN: 垂直方向紧凑布局
   en-US: Vertical Compact Mode

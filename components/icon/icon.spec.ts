@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, NgModule } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, inject, tick, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, NgModule, provideZoneChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import {
@@ -28,6 +28,8 @@ describe('nz-icon', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         provideNzIcons([
           LeftOutline,
           RightOutline,
@@ -135,16 +137,14 @@ describe('nz-icon', () => {
       fixture.detectChanges();
     });
 
-    it('should support iconfont', waitForAsync(() => {
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-        expect(icons[0].nativeElement.className).toContain('anticon');
-        expect(icons[0].nativeElement.innerHTML).toContain('xlink:href="#icon-tuichu"');
-        expect(icons[1].nativeElement.innerHTML).toContain('link:href="#icon-facebook"');
-        expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
-      });
-    }));
+    it('should support iconfont', async () => {
+      await fixture.whenStable();
+      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+      expect(icons[0].nativeElement.className).toContain('anticon');
+      expect(icons[0].nativeElement.innerHTML).toContain('xlink:href="#icon-tuichu"');
+      expect(icons[1].nativeElement.innerHTML).toContain('link:href="#icon-facebook"');
+      expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
+    });
   });
 
   describe('config service', () => {
@@ -156,11 +156,8 @@ describe('nz-icon', () => {
       fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
       fixture.detectChanges();
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+      nzConfigService = TestBed.inject(NzConfigService);
     });
-
-    beforeEach(inject([NzConfigService], (c: NzConfigService) => {
-      nzConfigService = c;
-    }));
 
     it('should support config service', () => {
       nzConfigService!.set('icon', { nzTwotoneColor: '#234567' });

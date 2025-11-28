@@ -12,5 +12,3 @@ title:
 ## en-US
 
 The most basic usage of `nz-transfer` involves providing the source data and target keys arrays, plus the rendering and some callback functions.
-
-

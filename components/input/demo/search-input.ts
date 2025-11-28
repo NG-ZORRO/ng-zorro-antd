@@ -1,36 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputModule, NzInputSearchEvent } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-search-input',
-  imports: [FormsModule, NzButtonModule, NzInputModule, NzIconModule],
+  imports: [FormsModule, NzInputModule, NzIconModule],
   template: `
-    <nz-input-group [nzSuffix]="suffixIconSearch">
-      <input type="text" nz-input placeholder="input search text" />
-    </nz-input-group>
-    <ng-template #suffixIconSearch>
-      <nz-icon nzType="search" />
-    </ng-template>
+    <nz-input-search (nzSearch)="onSearch($event)">
+      <input nz-input [(ngModel)]="value" placeholder="input search text" />
+    </nz-input-search>
     <br />
     <br />
-    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-      <input type="text" nz-input placeholder="input search text" />
-    </nz-input-group>
-    <ng-template #suffixIconButton>
-      <button nz-button nzType="primary" nzSearch><nz-icon nzType="search" /></button>
-    </ng-template>
+    <nz-input-search nzAllowClear (nzSearch)="onSearch($event)">
+      <input nz-input [(ngModel)]="value" placeholder="input search text" />
+    </nz-input-search>
     <br />
     <br />
-    <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
-      <input type="text" nz-input placeholder="input search text" />
-    </nz-input-group>
-    <ng-template #suffixButton>
-      <button nz-button nzType="primary" nzSize="large" nzSearch>Search</button>
-    </ng-template>
+    <nz-input-search (nzSearch)="onSearch($event)">
+      <span nzInputAddonBefore>https://</span>
+      <input nz-input [(ngModel)]="value" placeholder="input search text" />
+    </nz-input-search>
+    <br />
+    <br />
+    <nz-input-search nzEnterButton="Submit" (nzSearch)="onSearch($event)">
+      <input nz-input [(ngModel)]="value" placeholder="input search text" />
+    </nz-input-search>
+    <br />
+    <br />
+    <nz-input-search nzEnterButton="Submit" (nzSearch)="onSearch($event)">
+      <input nz-input [(ngModel)]="value" placeholder="input search text" nzSize="large" />
+    </nz-input-search>
+    <br />
+    <br />
+    <nz-input-search (nzSearch)="onSearch($event)">
+      <input nz-input [(ngModel)]="value" placeholder="input search text" nzSize="large" />
+      <nz-icon nzInputSuffix nzType="audio" [style.font-size.px]="16" [style.color]="'#1677ff'" />
+      <span nzInputSearchEnterButton>Custom</span>
+    </nz-input-search>
   `
 })
-export class NzDemoInputSearchInputComponent {}
+export class NzDemoInputSearchInputComponent {
+  readonly value = signal('');
+
+  onSearch(event: NzInputSearchEvent): void {
+    console.log(event);
+  }
+}

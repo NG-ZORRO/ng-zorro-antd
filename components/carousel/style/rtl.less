@@ -6,6 +6,26 @@
 .@{carousel-prefix-cls} {
   &-rtl {
     direction: rtl;
+
+    .slick-next {
+      right: auto;
+      left: @carousel-arrow-offset;
+
+      &::after {
+        // In RTL, next points to the left
+        transform: rotate(-45deg);
+      }
+    }
+
+    .slick-prev {
+      right: @carousel-arrow-offset;
+      left: auto;
+
+      &::after {
+        // In RTL, previous points to the right
+        transform: rotate(135deg);
+      }
+    }
   }
 
   .slick-track {
@@ -14,29 +34,6 @@
       left: auto;
     }
   }
-
-  .slick-prev {
-    .@{carousel-prefix-cls}-rtl & {
-      right: -25px;
-      left: auto;
-
-      &::before {
-        content: '→';
-      }
-    }
-  }
-
-  .slick-next {
-    .@{carousel-prefix-cls}-rtl & {
-      right: auto;
-      left: -25px;
-
-      &::before {
-        content: '←';
-      }
-    }
-  }
-
   // Dots
   .slick-dots {
     .@{carousel-prefix-cls}-rtl& {
@@ -49,6 +46,21 @@
   .slick-dots {
     .@{carousel-prefix-cls}-rtl& {
       flex-direction: column;
+    }
+  }
+}
+
+// Vertical arrows in RTL follow the same reversal as LTR (prev up, next down)
+.@{carousel-prefix-cls} {
+  .@{carousel-prefix-cls}-rtl & {
+    .slick-vertical {
+      .slick-prev::after {
+        transform: rotate(45deg);
+      }
+
+      .slick-next::after {
+        transform: rotate(-135deg);
+      }
     }
   }
 }

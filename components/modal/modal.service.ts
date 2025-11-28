@@ -4,7 +4,13 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import {
+  ComponentType,
+  OverlayRef,
+  createBlockScrollStrategy,
+  createGlobalPositionStrategy,
+  createOverlayRef
+} from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, TemplateRef, inject } from '@angular/core';
 import { Observable, Subject, defer } from 'rxjs';
@@ -28,6 +34,11 @@ type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
 @Injectable()
 export class NzModalService implements OnDestroy {
+  private injector = inject(Injector);
+  private nzConfigService = inject(NzConfigService);
+  private directionality = inject(Directionality);
+  private parentModal = inject(NzModalService, { skipSelf: true, optional: true });
+
   private openModalsAtThisLevel: NzModalRef[] = [];
   private readonly afterAllClosedAtThisLevel = new Subject<void>();
 
@@ -43,15 +54,6 @@ export class NzModalService implements OnDestroy {
   readonly afterAllClose: Observable<void> = defer(() =>
     this.openModals.length ? this._afterAllClosed : this._afterAllClosed.pipe(startWith(undefined))
   ) as Observable<void>;
-
-  private parentModal = inject(NzModalService, { skipSelf: true, optional: true });
-
-  constructor(
-    private overlay: Overlay,
-    private injector: Injector,
-    private nzConfigService: NzConfigService,
-    private directionality: Directionality
-  ) {}
 
   create<T, D = NzSafeAny, R = NzSafeAny>(config: ModalOptions<T, D, R>): NzModalRef<T, R> {
     return this.open<T, D, R>(config.nzContent as ComponentType<T>, config);
@@ -131,16 +133,15 @@ export class NzModalService implements OnDestroy {
 
   private createOverlay(config: ModalOptions): OverlayRef {
     const globalConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
-    const overlayConfig = new OverlayConfig({
+
+    return createOverlayRef(this.injector, {
       hasBackdrop: true,
-      scrollStrategy: this.overlay.scrollStrategies.block(),
+      scrollStrategy: createBlockScrollStrategy(this.injector),
       backdropClass: getValueWithConfig(config.nzMask, globalConfig.nzMask, true) ? MODAL_MASK_CLASS_NAME : '',
-      positionStrategy: this.overlay.position().global(),
+      positionStrategy: createGlobalPositionStrategy(this.injector),
       disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true),
       direction: getValueWithConfig(config.nzDirection, globalConfig.nzDirection, this.directionality.value)
     });
-
-    return this.overlay.create(overlayConfig);
   }
 
   private attachModalContainer(overlayRef: OverlayRef, config: ModalOptions): BaseModalContainerComponent {

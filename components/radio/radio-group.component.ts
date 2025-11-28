@@ -10,16 +10,16 @@ import {
   Component,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewEncapsulation,
   booleanAttribute,
-  forwardRef
+  forwardRef,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
@@ -49,9 +49,13 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     '[class.ant-radio-group-rtl]': `dir === 'rtl'`
   }
 })
-export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDestroy, OnChanges {
+export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnChanges {
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly nzRadioService = inject(NzRadioService);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
+
   private value: NzSafeAny | null = null;
-  private destroy$ = new Subject<boolean>();
   private isNzDisableFirstChange: boolean = true;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
@@ -62,24 +66,18 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
 
   dir: Direction = 'ltr';
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private nzRadioService: NzRadioService,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
-    this.nzRadioService.selected$.pipe(takeUntil(this.destroy$)).subscribe(value => {
+    this.nzRadioService.selected$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       if (this.value !== value) {
         this.value = value;
         this.onChange(this.value);
       }
     });
-    this.nzRadioService.touched$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.nzRadioService.touched$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       Promise.resolve().then(() => this.onTouched());
     });
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -95,11 +93,6 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
     if (nzName) {
       this.nzRadioService.setName(this.nzName!);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 
   writeValue(value: NzSafeAny): void {

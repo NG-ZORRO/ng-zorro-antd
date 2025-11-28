@@ -27,11 +27,13 @@ import {
   computed,
   forwardRef,
   inject,
-  signal
+  signal,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { isValid } from 'date-fns';
 
@@ -41,7 +43,6 @@ import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusSer
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import {
   NgClassInterface,
   NzSafeAny,
@@ -51,7 +52,7 @@ import {
   NzVariant
 } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, isNil } from 'ng-zorro-antd/core/util';
-import { DateHelperService, NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
@@ -145,7 +146,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-focused]': `focused`,
     '[class.ant-picker-rtl]': `dir === 'rtl'`,
-    '[class.ant-picker-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
+    '[class.ant-picker-borderless]': `nzVariant === 'borderless'`,
     '[class.ant-picker-filled]': `nzVariant === 'filled'`,
     '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
     '(click)': 'open()'
@@ -153,9 +154,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
   hostDirectives: [NzSpaceCompactItemDirective],
   animations: [slideMotion],
   providers: [
-    NzDestroyService,
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzTimePickerComponent), multi: true },
-    { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'picker' }
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NzTimePickerComponent),
+      multi: true
+    },
+    {
+      provide: NZ_SPACE_COMPACT_ITEM_TYPE,
+      useValue: 'picker'
+    }
   ],
   imports: [
     AsyncPipe,
@@ -171,9 +178,18 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
+  public nzConfigService = inject(NzConfigService);
+  protected i18n = inject(NzI18nService);
+  private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private cdr = inject(ChangeDetectorRef);
+  private dateHelper = inject(DateHelperService);
+  private platform = inject(Platform);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   private _onChange?: (value: Date | null) => void;
   private _onTouched?: () => void;
-  private destroy$ = inject(NzDestroyService);
   private isNzDisableFirstChange: boolean = true;
   isInit = false;
   focused = false;
@@ -220,7 +236,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   hasFeedback: boolean = false;
 
   get origin(): ElementRef {
-    return this.element;
+    return this.elementRef;
   }
 
   @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
@@ -253,10 +269,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input() @WithConfig() nzBackdrop = false;
-  /**
-   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
-   */
-  @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
 
   emitValue(value: Date | null): void {
@@ -312,7 +324,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   onClickOutside(event: MouseEvent): void {
     const target = _getEventTarget(event);
-    if (!this.element.nativeElement.contains(target)) {
+    if (!this.elementRef.nativeElement.contains(target)) {
       this.setCurrentValueAndClose();
     }
   }
@@ -386,38 +398,23 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    protected i18n: NzI18nService,
-    private element: ElementRef,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    private dateHelper: DateHelperService,
-    private platform: Platform,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
       .pipe(
-        distinctUntilChanged((pre, cur) => {
-          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
-        }),
+        distinctUntilChanged((pre, cur) => pre.status === cur.status && pre.hasFeedback === cur.hasFeedback),
         withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : of(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
       });
 
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
-    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(
-      map((nzLocale: NzI18nInterface) => nzLocale.TimePicker.placeholder)
-    );
+    this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(map(nzLocale => nzLocale.TimePicker.placeholder));
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
     });
   }
@@ -513,9 +510,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.statusCls = getStatusClassNames(this.prefixCls, status, hasFeedback);
     Object.keys(this.statusCls).forEach(status => {
       if (this.statusCls[status]) {
-        this.renderer.addClass(this.element.nativeElement, status);
+        this.renderer.addClass(this.elementRef.nativeElement, status);
       } else {
-        this.renderer.removeClass(this.element.nativeElement, status);
+        this.renderer.removeClass(this.elementRef.nativeElement, status);
       }
     });
   }

@@ -4,7 +4,7 @@
  */
 
 import { PlatformLocation } from '@angular/common';
-import { ApplicationRef, DOCUMENT, NgZone } from '@angular/core';
+import { ApplicationRef, DOCUMENT, NgZone, provideZoneChangeDetection } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -40,6 +40,8 @@ describe('NzScrollService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         NzScrollService,
         { provide: DOCUMENT, useClass: MockDocument },
         { provide: PlatformLocation, useClass: MockPlatformLocation }

@@ -6,7 +6,7 @@
 import { TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, type NgClassInterface, type NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 import { NzMNComponent } from './base';
 
@@ -19,6 +19,8 @@ export interface NzMessageDataOptions {
   nzAnimate?: boolean;
   nzPauseOnHover?: boolean;
   nzData?: NzSafeAny;
+  nzStyle?: NgStyleInterface | string;
+  nzClass?: NgClassInterface | string;
 }
 
 export interface NzMessageData {

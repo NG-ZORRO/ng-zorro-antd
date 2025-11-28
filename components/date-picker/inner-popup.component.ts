@@ -29,11 +29,10 @@ import { PREFIX_CLASS } from './util';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'inner-popup',
-  exportAs: 'innerPopup',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div [class.ant-picker-datetime-panel]="showTimePicker">
+    <div (mouseleave)="onLeave()" [class.ant-picker-datetime-panel]="showTimePicker">
       <div class="{{ prefixCls }}-{{ panelMode }}-panel">
         @switch (panelMode) {
           @case ('decade') {
@@ -205,7 +204,7 @@ export class InnerPopupComponent implements OnChanges {
   @Output() readonly headerChange = new EventEmitter<CandyDate>(); // Emitted when user changed the header's value
   @Output() readonly selectDate = new EventEmitter<CandyDate>(); // Emitted when the date is selected by click the date panel
   @Output() readonly selectTime = new EventEmitter<CandyDate>();
-  @Output() readonly cellHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
+  @Output() readonly cellHover = new EventEmitter<CandyDate | null>(); // Emitted when hover on a day by mouse enter
 
   prefixCls: string = PREFIX_CLASS;
 
@@ -222,6 +221,10 @@ export class InnerPopupComponent implements OnChanges {
       panelMode === this.endPanelMode &&
       ((this.partType === 'left' && direction === 'next') || (this.partType === 'right' && direction === 'prev'))
     );
+  }
+
+  onLeave(): void {
+    this.cellHover.emit(null);
   }
 
   onSelectTime(date: Date): void {

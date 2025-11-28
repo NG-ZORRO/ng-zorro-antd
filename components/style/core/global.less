@@ -41,12 +41,7 @@ input::-ms-reveal {
   -webkit-text-size-adjust: 100%; // 4
   -ms-text-size-adjust: 100%; // 4
   -ms-overflow-style: scrollbar; // 5
-  -webkit-tap-highlight-color: fade(@black, 0%); // 6
-}
-
-// IE10+ doesn't honor `<meta name="viewport">` in some cases.
-@-ms-viewport {
-  width: device-width;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // 6
 }
 
 // Body
@@ -74,15 +69,14 @@ body {
   outline: none !important;
 }
 
+//
 // Content grouping
 //
-// 1. Add the correct box sizing in Firefox.
-// 2. Show the overflow in Edge and IE.
 
 hr {
-  box-sizing: content-box; // 1
-  height: 0; // 1
-  overflow: visible; // 2
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
 }
 
 //
@@ -117,7 +111,7 @@ p {
 // Abbreviations
 //
 // 1. remove the bottom border in Firefox 39-.
-// 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+// 2. Add the correct text decoration in Chrome, Edge, Opera, and Safari.
 // 3. Add explicit cursor to indicate changed behavior.
 // 4. Duplicate behavior to the data-* attribute for our tooltip plugin
 
@@ -278,7 +272,7 @@ figure {
 
 img {
   vertical-align: middle;
-  border-style: none; // remove the border on images inside links in IE 10-.
+  border-style: none;
 }
 
 // Avoid 300ms click delay on touch devices that support the `touch-action` CSS property.
@@ -345,8 +339,7 @@ select {
   text-transform: none; // remove the inheritance of text transform in Firefox
 }
 
-// 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
-//    controls in Android 4.
+// 1. Prevent a WebKit bug where (2) destroys native `audio` and `video` controls in Android 4.
 // 2. Correct the inability to style clickable types in iOS and Safari.
 button,
 @{html-selector} [type="button"], /* 1 */
@@ -366,8 +359,8 @@ button::-moz-focus-inner,
 
 input[type='radio'],
 input[type='checkbox'] {
-  box-sizing: border-box; // 1. Add the correct box sizing in IE 10-
-  padding: 0; // 2. remove the padding in IE 10-
+  box-sizing: border-box;
+  padding: 0;
 }
 
 input[type='date'],
@@ -383,7 +376,7 @@ input[type='month'] {
 }
 
 textarea {
-  overflow: auto; // remove the default vertical scrollbar in IE.
+  overflow: auto;
   // Textareas should really only resize vertically so they don't break their (horizontal) containers.
   resize: vertical;
 }
@@ -401,18 +394,16 @@ fieldset {
   border: 0;
 }
 
-// 1. Correct the text wrapping in Edge and IE.
-// 2. Correct the color inheritance from `fieldset` elements in IE.
 legend {
   display: block;
   width: 100%;
-  max-width: 100%; // 1
+  max-width: 100%;
   margin-bottom: 0.5em;
   padding: 0;
-  color: inherit; // 2
+  color: inherit;
   font-size: 1.5em;
   line-height: inherit;
-  white-space: normal; // 1
+  white-space: normal;
 }
 
 progress {
@@ -430,7 +421,7 @@ progress {
   // `.form-control` class can properly style them. Note that this cannot simply
   // be added to `.form-control` as it's not specific enough. For details, see
   // https://github.com/twbs/bootstrap/issues/11586.
-  outline-offset: -2px; // 2. Correct the outline style in Safari.
+  outline-offset: -2px;
   -webkit-appearance: none;
 }
 
@@ -466,18 +457,12 @@ summary {
 }
 
 template {
-  display: none; // Add the correct display in IE
+  display: none;
 }
 
 // Always hide an element with the `hidden` HTML attribute (from PureCSS).
-// Needed for proper display in IE 10-.
 [hidden] {
   display: none !important;
-}
-
-mark {
-  padding: 0.2em;
-  background-color: @yellow-1;
 }
 
 ::selection {

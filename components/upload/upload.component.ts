@@ -12,21 +12,23 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   DOCUMENT,
   EventEmitter,
   inject,
+  input,
   Input,
   numberAttribute,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable, of, Subject, Subscription } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, of, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, toBoolean } from 'ng-zorro-antd/core/util';
@@ -42,7 +44,8 @@ import {
   NzUploadType,
   NzUploadXHRArgs,
   UploadFilter,
-  ZipButtonOptions
+  ZipButtonOptions,
+  type NzBeforeUploadFileType
 } from './interface';
 import { NzUploadBtnComponent } from './upload-btn.component';
 import { NzUploadListComponent } from './upload-list.component';
@@ -58,10 +61,14 @@ import { NzUploadListComponent } from './upload-list.component';
   },
   imports: [NzUploadListComponent, NgTemplateOutlet, NzUploadBtnComponent]
 })
-export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList;
 
-  private destroy$ = new Subject<void>();
+  private cdr = inject(ChangeDetectorRef);
+  private i18n = inject(NzI18nService);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   @ViewChild('uploadComp', { static: false }) uploadComp!: NzUploadBtnComponent;
   @ViewChild('listComp', { static: false }) listComp!: NzUploadListComponent;
 
@@ -79,7 +86,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzAction?: string | ((file: NzUploadFile) => string | Observable<string>);
   @Input({ transform: booleanAttribute }) nzDirectory = false;
   @Input({ transform: booleanAttribute }) nzOpenFileDialogOnClick = true;
-  @Input() nzBeforeUpload?: (file: NzUploadFile, fileList: NzUploadFile[]) => boolean | Observable<boolean>;
+  @Input() nzBeforeUpload?: (file: NzUploadFile, fileList: NzUploadFile[]) => NzBeforeUploadFileType;
   @Input() nzCustomRequest?: (item: NzUploadXHRArgs) => Subscription;
   @Input() nzData?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
   @Input() nzFilter: UploadFilter[] = [];
@@ -109,10 +116,16 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() nzPreview?: (file: NzUploadFile) => void;
   @Input() nzPreviewFile?: (file: NzUploadFile) => Observable<string>;
   @Input() nzPreviewIsImage?: (file: NzUploadFile) => boolean;
+  /**
+   * @deprecated will be removed in v22.0.0
+   * Use `nzBeforeUpload` instead.
+   */
   @Input() nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
   @Input() nzDownload?: (file: NzUploadFile) => void;
   @Input() nzIconRender: NzIconRenderTemplate | null = null;
   @Input() nzFileListRender: TemplateRef<{ $implicit: NzUploadFile[] }> | null = null;
+
+  readonly nzMaxCount = input<number>();
 
   @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();
@@ -175,12 +188,6 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   // #endregion
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService,
-    private directionality: Directionality
-  ) {}
-
   // #region upload
 
   private fileToObject(file: NzUploadFile): NzUploadFile {
@@ -207,12 +214,17 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   private onStart = (file: NzUploadFile): void => {
+    const maxCount = this.nzMaxCount();
     if (!this.nzFileList) {
       this.nzFileList = [];
     }
     const targetItem = this.fileToObject(file);
     targetItem.status = 'uploading';
-    this.nzFileList = this.nzFileList.concat(targetItem);
+    if (maxCount === 1) {
+      this.nzFileList = [targetItem];
+    } else if (!maxCount || maxCount <= 0 || this.nzFileList.length < maxCount) {
+      this.nzFileList = [...this.nzFileList, targetItem];
+    }
     this.nzFileListChange.emit(this.nzFileList);
     this.nzChange.emit({ file: targetItem, fileList: this.nzFileList, type: 'start' });
     this.detectChangesList();
@@ -221,10 +233,15 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   private onProgress = (e: { percent: number }, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
+
+    if (!targetItem) {
+      return;
+    }
+
     targetItem.percent = e.percent;
     this.nzChange.emit({
       event: e,
-      file: { ...targetItem },
+      file: targetItem,
       fileList: this.nzFileList,
       type: 'progress'
     });
@@ -234,10 +251,13 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   private onSuccess = (res: {}, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
+    if (!targetItem) {
+      return;
+    }
     targetItem.status = 'done';
     targetItem.response = res;
     this.nzChange.emit({
-      file: { ...targetItem },
+      file: targetItem,
       fileList,
       type: 'success'
     });
@@ -247,6 +267,11 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   private onError = (err: {}, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
+
+    if (!targetItem) {
+      return;
+    }
+
     targetItem.error = err;
     targetItem.status = 'error';
     this.nzChange.emit({
@@ -333,13 +358,13 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.setClassMap();
       this.cdr.detectChanges();
     });
 
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Upload');
       this.detectChangesList();
     });
@@ -349,7 +374,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     if (this.platform.FIREFOX) {
       // fix firefox drop open new tab
       fromEventOutsideAngular<MouseEvent>(this.document.body, 'drop')
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(event => {
           event.preventDefault();
           event.stopPropagation();
@@ -359,10 +384,5 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   ngOnChanges(): void {
     this.zipOptions().setClassMap();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

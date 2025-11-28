@@ -1,27 +1,25 @@
 ---
 category: Components
 type: 数据录入
-title: Autocomplete
+title: AutoComplete
 subtitle: 自动完成
 cover: 'https://gw.alipayobjects.com/zos/alicdn/qtJm4yt45/AutoComplete.svg'
 description: 输入框自动完成功能。
 ---
 
-
 ## 何时使用
 
 需要自动完成时。
 
-
 ## API
 
 ```html
-<input nz-input [(ngModel)]="value" [nzAutocomplete]="auto">
+<input nz-input [(ngModel)]="value" [nzAutocomplete]="auto" />
 <nz-autocomplete [nzDataSource]="['12345', '23456', '34567']" #auto></nz-autocomplete>
 ```
 
 ```html
-<input nz-input [(ngModel)]="value" [nzAutocomplete]="auto">
+<input nz-input [(ngModel)]="value" [nzAutocomplete]="auto" />
 <nz-autocomplete #auto>
   <nz-auto-option [nzValue]="'12345'">12345</nz-auto-option>
   <nz-auto-option [nzValue]="'23456'">23456</nz-auto-option>
@@ -54,3 +52,10 @@ description: 输入框自动完成功能。
 | `[nzValue]`    | 绑定到触发元素 ngModel 的值 | `any`     | -       |
 | `[nzLabel]`    | 填入触发元素显示的值        | `string`  | -       |
 | `[nzDisabled]` | 禁用选项                    | `boolean` | `false` |
+
+## FAQ
+
+### Q：滚动时浮层元素没有跟随滚动位置
+
+默认情况下，浮层元素使用 `body` 作为滚动容器，如果使用了其他滚动容器，在自定义滚动容器元素上添加 [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) 指令。
+注意：您需要从 `@angular/cdk/scrolling` 导入 `CdkScrollable` 指令或 `ScrollingModule` 模块。

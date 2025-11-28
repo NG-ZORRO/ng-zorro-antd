@@ -12,4 +12,3 @@ title:
 ## en-US
 
 The height of the input field for the select defaults to 32px. If `nzSize` is set to large, the height will be 40px, and if set to small, 24px.
-

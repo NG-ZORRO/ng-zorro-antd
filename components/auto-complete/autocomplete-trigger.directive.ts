@@ -6,9 +6,10 @@
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectionPositionPair,
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  createRepositionScrollStrategy,
   FlexibleConnectedPositionStrategy,
-  Overlay,
-  OverlayConfig,
   OverlayRef,
   PositionStrategy
 } from '@angular/cdk/overlay';
@@ -19,9 +20,9 @@ import {
   Directive,
   DOCUMENT,
   ElementRef,
-  ExistingProvider,
   forwardRef,
   inject,
+  Injector,
   Input,
   NgZone,
   ViewContainerRef
@@ -36,25 +37,18 @@ import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
-
-export const NZ_AUTOCOMPLETE_VALUE_ACCESSOR: ExistingProvider = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NzAutocompleteTriggerDirective),
-  multi: true
-};
-
-export function getNzAutocompleteMissingPanelError(): Error {
-  return Error(
-    'Attempting to open an undefined instance of `nz-autocomplete`. ' +
-      'Make sure that the id passed to the `nzAutocomplete` is correct and that ' +
-      "you're attempting to open it after the ngAfterContentInit hook."
-  );
-}
+import { getNzAutocompleteMissingPanelError } from './error';
 
 @Directive({
   selector: `input[nzAutocomplete], textarea[nzAutocomplete]`,
   exportAs: 'nzAutocompleteTrigger',
-  providers: [NZ_AUTOCOMPLETE_VALUE_ACCESSOR],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NzAutocompleteTriggerDirective),
+      multi: true
+    }
+  ],
   host: {
     autocomplete: 'off',
     'aria-autocomplete': 'list',
@@ -66,9 +60,9 @@ export function getNzAutocompleteMissingPanelError(): Error {
   }
 })
 export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor {
+  private injector = inject(Injector);
   private ngZone = inject(NgZone);
   private elementRef = inject(ElementRef<HTMLElement>);
-  private overlay = inject(Overlay);
   private viewContainerRef = inject(ViewContainerRef);
   private destroyRef = inject(DestroyRef);
   /** Bind nzAutocomplete component */
@@ -94,7 +88,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   private selectionChangeSubscription!: Subscription;
   private optionsChangeSubscription!: Subscription;
   private overlayOutsideClickSubscription!: Subscription;
-  private document: Document = inject(DOCUMENT);
+  private document = inject(DOCUMENT);
   private nzInputGroupWhitSuffixOrPrefixDirective = inject(NzInputGroupWhitSuffixOrPrefixDirective, { optional: true });
 
   constructor() {
@@ -117,7 +111,9 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   writeValue(value: NzSafeAny): void {
-    this.ngZone.runOutsideAngular(() => Promise.resolve(null).then(() => this.setTriggerValue(value)));
+    this.ngZone.runOutsideAngular(() => {
+      Promise.resolve(null).then(() => this.setTriggerValue(value));
+    });
   }
 
   registerOnChange(fn: (value: {}) => {}): void {
@@ -269,7 +265,13 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     }
 
     if (!this.overlayRef) {
-      this.overlayRef = this.overlay.create(this.getOverlayConfig());
+      this.overlayRef = createOverlayRef(this.injector, {
+        positionStrategy: this.getOverlayPosition(),
+        disposeOnNavigation: true,
+        scrollStrategy: createRepositionScrollStrategy(this.injector),
+        // default host element width
+        width: this.nzAutocomplete.nzWidth || this.getHostWidth()
+      });
     }
 
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
@@ -304,39 +306,23 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     }
   }
 
-  private getOverlayConfig(): OverlayConfig {
-    return new OverlayConfig({
-      positionStrategy: this.getOverlayPosition(),
-      disposeOnNavigation: true,
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      // default host element width
-      width: this.nzAutocomplete.nzWidth || this.getHostWidth()
-    });
+  private getConnectedElement(): ElementRef {
+    return this.nzInputGroupWhitSuffixOrPrefixDirective?.elementRef ?? this.elementRef;
   }
 
-  private getConnectedElement(): ElementRef {
-    return this.nzInputGroupWhitSuffixOrPrefixDirective
-      ? this.nzInputGroupWhitSuffixOrPrefixDirective.elementRef
-      : this.elementRef;
+  private getOverlayPosition(): PositionStrategy {
+    return (this.positionStrategy = createFlexibleConnectedPositionStrategy(this.injector, this.getConnectedElement())
+      .withFlexibleDimensions(false)
+      .withPush(false)
+      .withPositions([
+        new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
+        new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
+      ])
+      .withTransformOriginOn('.ant-select-dropdown'));
   }
 
   private getHostWidth(): number {
     return this.getConnectedElement().nativeElement.getBoundingClientRect().width;
-  }
-
-  private getOverlayPosition(): PositionStrategy {
-    const positions = [
-      new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
-      new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
-    ];
-    this.positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.getConnectedElement())
-      .withFlexibleDimensions(false)
-      .withPush(false)
-      .withPositions(positions)
-      .withTransformOriginOn('.ant-select-dropdown');
-    return this.positionStrategy;
   }
 
   private resetActiveItem(): void {

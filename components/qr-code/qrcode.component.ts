@@ -10,13 +10,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   inject,
   Input,
   numberAttribute,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,
@@ -24,8 +24,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -78,7 +77,15 @@ import { drawCanvas, ERROR_LEVEL_MAP, plotQRCodeData } from './qrcode';
   },
   imports: [NzSpinModule, NzButtonModule, NzIconModule, NzStringTemplateOutletDirective]
 })
-export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges {
+  private i18n = inject(NzI18nService);
+  private el = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
+  // https://github.com/angular/universal-starter/issues/538#issuecomment-365518693
+  // canvas is not supported by the SSR DOM
+  protected isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+
   @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
   @Input() nzValue: string = '';
   @Input() nzPadding: number | number[] = 0;
@@ -95,24 +102,10 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Output() readonly nzRefresh = new EventEmitter<string>();
 
   locale!: NzQRCodeI18nInterface;
-  // https://github.com/angular/universal-starter/issues/538#issuecomment-365518693
-  // canvas is not supported by the SSR DOM
-  isBrowser = true;
-  private destroy$ = new Subject<void>();
-  private platformId = inject(PLATFORM_ID);
-
-  constructor(
-    private i18n: NzI18nService,
-    private el: ElementRef,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-    this.cdr.markForCheck();
-  }
 
   ngOnInit(): void {
     this.el.nativeElement.style.backgroundColor = this.nzBgColor;
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('QRCode');
       this.cdr.markForCheck();
     });
@@ -152,10 +145,5 @@ export class NzQRCodeComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.nzIcon
       );
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -3,100 +3,93 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
+  computed,
+  inject,
+  input,
+  linkedSignal,
+  output,
   TemplateRef
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
 
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { NzShapeSCType } from 'ng-zorro-antd/core/types';
+import { generateClassName } from 'ng-zorro-antd/core/util';
 
 import { NzFloatButtonContentComponent } from './float-button-content.component';
+import { NzFloatButtonBadge, NzFloatButtonType } from './typings';
+
+const CLASS_NAME = 'ant-float-btn';
 
 @Component({
   selector: 'nz-float-button',
   exportAs: 'nzFloatButton',
-  imports: [NzButtonModule, NzFloatButtonContentComponent],
+  imports: [NzButtonModule, NzFloatButtonContentComponent, NzBadgeModule, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (!!nzHref) {
+    @if (!!nzHref()) {
       <a
-        [target]="nzTarget"
-        [href]="nzHref"
+        [target]="nzTarget()"
+        [href]="nzHref()"
         nz-button
-        [nzType]="nzType"
-        [class.ant-float-btn-default]="nzType === 'default'"
+        [nzType]="nzType()"
+        [class.ant-float-btn-default]="nzType() === 'default'"
         class="ant-float-btn-inner"
         (click)="nzOnClick.emit(true)"
       >
-        <nz-float-button-content
-          [nzIcon]="nzIcon"
-          [nzDescription]="nzDescription"
-          [nzShape]="nzShape"
-        ></nz-float-button-content>
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
       </a>
     } @else {
       <button
         nz-button
-        [nzType]="nzType"
-        [class.ant-float-btn-default]="nzType === 'default'"
+        [nzType]="nzType()"
+        [class.ant-float-btn-default]="nzType() === 'default'"
         class="ant-float-btn-inner"
         (click)="nzOnClick.emit(true)"
       >
-        <nz-float-button-content
-          [nzIcon]="nzIcon"
-          [nzDescription]="nzDescription"
-          [nzShape]="nzShape"
-        ></nz-float-button-content>
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
       </button>
     }
+    <ng-template #contentTemplate>
+      <nz-float-button-content
+        [nzBadge]="nzBadge()"
+        [nzIcon]="nzIcon()"
+        [nzDescription]="nzDescription()"
+        [nzShape]="shape()"
+      ></nz-float-button-content>
+    </ng-template>
   `,
   host: {
-    class: 'ant-float-btn',
-    '[class.ant-float-btn-circle]': `nzShape === 'circle'`,
-    '[class.ant-float-btn-square]': `nzShape === 'square'`,
-    '[class.ant-float-btn-rtl]': `dir === 'rtl'`
-  },
-  providers: [NzDestroyService]
+    '[class]': 'class()'
+  }
 })
-export class NzFloatButtonComponent implements OnInit, OnDestroy {
-  @Input() nzHref: string | null = null;
-  @Input() nzTarget: string | null = null;
-  @Input() nzType: 'default' | 'primary' = 'default';
-  @Input() nzShape: 'circle' | 'square' = 'circle';
-  @Input() nzIcon: TemplateRef<void> | null = null;
-  @Input() nzDescription: TemplateRef<void> | string | null = null;
-  @Output() readonly nzOnClick = new EventEmitter<boolean>();
-  dir: Direction = 'ltr';
+export class NzFloatButtonComponent {
+  readonly nzHref = input<string | null>(null);
+  readonly nzTarget = input<string | null>(null);
+  readonly nzType = input<NzFloatButtonType>('default');
+  readonly nzIcon = input<string | TemplateRef<void> | null>(null);
+  readonly nzDescription = input<string | TemplateRef<void> | null>(null);
+  readonly nzShape = input<NzShapeSCType>('circle');
+  readonly nzBadge = input<NzFloatButtonBadge | null>(null);
+  readonly nzOnClick = output<boolean>();
 
-  constructor(
-    private destroy$: NzDestroyService,
-    private directionality: Directionality,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.dir = this.directionality.value;
-  }
+  readonly shape = linkedSignal(() => this.nzShape());
+  protected readonly dir = inject(Directionality).valueSignal;
+  protected readonly class = computed<string[]>(() => {
+    const dir = this.dir();
+    const classes = [CLASS_NAME, this.generateClass(this.shape())];
+    if (dir === 'rtl') {
+      classes.push(this.generateClass(dir));
+    }
+    return classes;
+  });
 
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  private generateClass(suffix: string): string {
+    return generateClassName(CLASS_NAME, suffix);
   }
 }

@@ -121,5 +121,8 @@ export default {
   },
   Empty: {
     description: 'Agahî tune'
+  },
+  Form: {
+    optional: '(êzîfî)'
   }
 };

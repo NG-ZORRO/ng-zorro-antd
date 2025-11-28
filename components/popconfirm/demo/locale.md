@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Set `okText` and `cancelText` props to customise the button's labels.
-

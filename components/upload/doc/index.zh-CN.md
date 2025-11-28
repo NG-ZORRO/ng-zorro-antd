@@ -7,7 +7,6 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/QaeBt_ZMg/Upload.svg'
 description: 文件选择上传和拖拽上传控件。
 ---
 
-
 ## 何时使用
 
 上传是将信息（网页、文字、图片、视频等）通过网页或者上传工具发布到远程服务器上的过程。
@@ -15,7 +14,6 @@ description: 文件选择上传和拖拽上传控件。
 - 当需要上传一个或一些文件时。
 - 当需要展现上传的进度时。
 - 当需要使用拖拽交互时。
-
 
 ## API
 
@@ -34,6 +32,7 @@ description: 文件选择上传和拖拽上传控件。
 | `[nzDisabled]`              | 是否禁用                                                                                                                        | `boolean`                                                                                        | `false`      |
 | `[nzFileList]`              | 文件列表，双向绑定                                                                                                              | `NzUploadFile[]`                                                                                 | -            |
 | `[nzLimit]`                 | 限制单次最多上传数量，`nzMultiple` 打开时有效；`0` 表示不限                                                                     | `number`                                                                                         | `0`          |
+| `[nzMaxCount]`              | 限制上传数量。当为 1 时，始终用最新上传的文件代替当前文件                                                                       | `number\|undefined`                                                                              | `undefined`  |
 | `[nzSize]`                  | 限制文件大小，单位：KB；`0` 表示不限                                                                                            | `number`                                                                                         | `0`          |
 | `[nzFileType]`              | 限制文件类型，例如：`image/png,image/jpeg,image/gif,image/bmp`                                                                  | `string`                                                                                         | -            |
 | `[nzFilter]`                | 自定义过滤器                                                                                                                    | `UploadFilter[]`                                                                                 | -            |
@@ -51,7 +50,7 @@ description: 文件选择上传和拖拽上传控件。
 | `[nzRemove]`                | 点击移除文件时的回调，返回值为 false 时不移除。支持返回 `Observable` 对象；注意：务必使用 `=>` 定义处理方法。                   | `(file: NzUploadFile) => boolean \| Observable<boolean>`                                         | -            |
 | `(nzChange)`                | 上传文件改变时的状态                                                                                                            | `EventEmitter<NzUploadChangeParam>`                                                              | -            |
 | `[nzDownload]`              | 点击下载文件时的回调，如果没有指定，则默认跳转到文件 url 对应的标签页                                                           | `(file: NzUploadFile) => void`                                                                   | 跳转新标签页 |
-| `[nzTransformFile]`         | 在上传之前转换文件。支持返回一个 Observable 对象                                                                                | `(file: NzUploadFile) => NzUploadTransformFileType`                                              | -            |
+| ~~`[nzTransformFile]`~~     | ~~在上传之前转换文件。支持返回一个 Observable 对象~~                                                                            | ~~`(file: NzUploadFile) => NzUploadTransformFileType`~~                                          | -            |
 | `[nzIconRender]`            | 自定义显示 icon                                                                                                                 | `TemplateRef<{ $implicit: NzUploadFile }>`                                                       | -            |
 | `[nzFileListRender]`        | 自定义显示整个列表                                                                                                              | `TemplateRef<{ $implicit: NzUploadFile[] }>`                                                     | -            |
 

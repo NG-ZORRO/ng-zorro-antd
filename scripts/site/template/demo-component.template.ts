@@ -1,8 +1,12 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { NzCodeBoxComponent } from '../codebox/codebox.component';
+import { ShareModule } from '../share/share.module';
+
+{{imports}}
 
 @Component({
   selector     : 'nz-demo-{{component}}',
+  imports      : [ShareModule, {{declarations}}],
   templateUrl  : './{{language}}.html'
 })
 export class {{componentName}} {

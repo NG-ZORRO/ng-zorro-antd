@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, provideZoneChangeDetection, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -15,20 +15,23 @@ import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzAutoFocusType } from 'ng-zorro-antd/popconfirm/popconfirm';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm/popconfirm.module';
 
-describe('NzPopconfirm', () => {
+import { NzPopConfirmButtonProps } from './popconfirm-option';
+
+describe('popconfirm', () => {
   let fixture: ComponentFixture<NzPopconfirmTestNewComponent>;
   let component: NzPopconfirmTestNewComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
     });
     fixture = TestBed.createComponent(NzPopconfirmTestNewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
@@ -91,6 +94,34 @@ describe('NzPopconfirm', () => {
     fixture.detectChanges();
 
     expect(getTooltipTrigger(1).disabled).toBeTrue();
+  });
+
+  it('should support nzOkButtonProps', () => {
+    fixture.detectChanges();
+    const triggerElement = component.stringTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    component.nzOkButtonProps.update(props => ({ ...props, nzDisabled: true }));
+    fixture.detectChanges();
+    expect(getTooltipTrigger(1).disabled).toBeTrue();
+  });
+
+  it('should support nzCancelButtonProps and disabled the cancel button', () => {
+    fixture.detectChanges();
+    const triggerElement = component.stringTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    expect(getTooltipTrigger(0).disabled).toBeFalse();
+    component.nzCancelButtonProps.update(props => ({ ...props, nzDisabled: true }));
+    fixture.detectChanges();
+    expect(getTooltipTrigger(0).disabled).toBeTrue();
+  });
+
+  it('should support nzCancelButtonProps and support danger on close button', () => {
+    fixture.detectChanges();
+    const triggerElement = component.stringTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    component.nzCancelButtonProps.update(props => ({ ...props, nzDanger: true }));
+    fixture.detectChanges();
+    expect(getTooltipTrigger(0).classList).toContain('ant-btn-dangerous');
   });
 
   it('should cancel work', fakeAsync(() => {
@@ -244,7 +275,8 @@ describe('NzPopconfirm', () => {
     const triggerElement = component.stringTemplate.nativeElement;
     dispatchMouseEvent(triggerElement, 'click');
     fixture.detectChanges();
-    expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+    const boundingBox = overlayContainerElement.children[0];
+    expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
   }));
 
   it('should change overlayClass when the nzPopconfirmOverlayClassName is changed', fakeAsync(() => {
@@ -290,6 +322,8 @@ describe('NzPopconfirm', () => {
       [nzPopconfirmOverlayClassName]="class"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
+      [nzOkButtonProps]="nzOkButtonProps()"
+      [nzCancelButtonProps]="nzCancelButtonProps()"
     >
       Delete
     </a>
@@ -315,11 +349,15 @@ export class NzPopconfirmTestNewComponent {
   condition = false;
   nzOkType: string = 'default';
   nzOkDisabled: boolean = false;
+  nzCancelText = 'Cancel';
+  nzOkText = 'Ok';
+  nzOkButtonProps = signal<NzPopConfirmButtonProps>({ nzDisabled: false });
+  nzCancelButtonProps = signal<NzPopConfirmButtonProps>({ nzDisabled: false });
   nzPopconfirmShowArrow = true;
   icon: string | undefined = undefined;
   nzPopconfirmBackdrop = false;
   autoFocus: NzAutoFocusType = null;
-  beforeConfirm: (() => Observable<boolean> | Promise<boolean> | boolean) | null = null;
+  beforeConfirm?: () => Observable<boolean> | Promise<boolean> | boolean = undefined;
 
   @ViewChild('stringTemplate', { static: false }) stringTemplate!: ElementRef;
   @ViewChild('templateTemplate', { static: false }) templateTemplate!: ElementRef;

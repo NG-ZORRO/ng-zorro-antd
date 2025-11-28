@@ -4,7 +4,7 @@
  */
 
 import { QueryList } from '@angular/core';
-import { Observable, Subject, timer } from 'rxjs';
+import { type Observable, Subject } from 'rxjs';
 
 import { NzCarouselContentDirective } from '../../carousel-content.directive';
 import { NzCarouselBaseStrategy } from '../base-strategy';
@@ -30,9 +30,9 @@ export class NzCarouselFlipStrategy extends NzCarouselBaseStrategy {
 
       const { carouselComponent } = this;
       carouselComponent!.ngZone.runOutsideAngular(() => {
-        timer(carouselComponent!.nzTransitionSpeed).subscribe(() => {
+        setTimeout(() => {
           this.contents.forEach(c => this.renderer.setStyle(c.el, 'transition', ['transform 500ms ease 0s']));
-        });
+        }, carouselComponent!.nzTransitionSpeed);
       });
     }
   }
@@ -42,10 +42,10 @@ export class NzCarouselFlipStrategy extends NzCarouselBaseStrategy {
     const complete$ = new Subject<void>();
     const speed = this.carouselComponent!.nzTransitionSpeed;
 
-    timer(speed).subscribe(() => {
+    setTimeout(() => {
       complete$.next();
       complete$.complete();
-    });
+    }, speed);
 
     if (rawF === rawT) {
       return complete$;

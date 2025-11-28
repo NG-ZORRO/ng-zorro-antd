@@ -1,5 +1,5 @@
 ---
-order: 15
+order: 16
 title:
   zh-CN: 隐藏已选择选项
   en-US: Hide Already Selected

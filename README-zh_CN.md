@@ -13,19 +13,20 @@ NG-ZORRO
 `ng-zorro-antd` 是 Ant Design 的 Angular 实现，主要用于研发企业级中后台产品。全部代码开源并遵循 MIT 协议，任何企业、组织及个人均可免费使用。
 
 [![Azure branch](https://img.shields.io/azure-devops/build/ng-zorro/0d271b73-3774-4dbc-a081-088df0b28bf8/2/master?style=flat-square)](https://dev.azure.com/ng-zorro/NG-ZORRO/_build)
+[![CodeFactor](https://www.codefactor.io/repository/github/ng-zorro/ng-zorro-antd/badge?style=flat-square)](https://www.codefactor.io/repository/github/ng-zorro/ng-zorro-antd)
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
-[![NPM package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-atnd)
+[![NPM package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://npmjs.org/package/ng-zorro-antd)
 [![NPM downloads](http://img.shields.io/npm/dm/ng-zorro-antd.svg?style=flat-square)](https://npmjs.org/package/ng-zorro-antd)
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
-[![Discord](https://img.shields.io/discord/748677963142135818?label=Discord&style=flat-square)](https://discord.com/channels/748677963142135818/764322550712893451)
+[![Discord](https://img.shields.io/discord/1433686455925870594?style=flat-square&logo=discord&label=Discord)](https://discord.com/channels/1433686455925870594/1433686456706138195)
 [![VSCode Extension](https://img.shields.io/badge/extension%20for-VSCode-blue.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=cipchk.ng-zorro-vscode)
 [![Code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![Twitter](https://img.shields.io/badge/Twitter-NG--ZORRO-blue.svg?style=flat-square&logo=twitter)](https://twitter.com/ng_zorro)
+[![X](https://img.shields.io/badge/NG--ZORRO-blue.svg?style=flat-square&logo=x)](http://x.com/ng_zorro)
 
 </div>
 
-[![](https://img.alicdn.com/tfs/TB1t6QPylr0gK0jSZFnXXbRRXXa-4000-1378.png)](http://ng.ant.design)
+[![logo](https://img.alicdn.com/tfs/TB1t6QPylr0gK0jSZFnXXbRRXXa-4000-1378.png)](http://ng.ant.design)
 
 [English](README.md) | 简体中文
 
@@ -43,16 +44,15 @@ NG-ZORRO
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd?ref=badge_shield)
 
-
 ## 🖥 支持环境
 
-- Angular `^19.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- Angular `^20.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 - 支持服务端渲染
 - 现代浏览器，[浏览器支持](https://angular.cn/reference/versions#browser-support)
 - [Electron](http://electron.atom.io/)
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/electron/electron_48x48.png" alt="Electron" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Electron |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | last 2 versions                                                                                                                                                                                       | last 2 versions                                                                                                                                                                                                   | last 2 versions                                                                                                                                                                                               | last 2 versions                                                                                                                                                                                               | last 2 versions                                                                                                                                                                                           | last 2 versions                                                                                                                                                                                                       |
 
 ## 🎨 设计规范
@@ -71,7 +71,6 @@ $ ng add ng-zorro-antd
 
 > 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多
 
-
 ## 🔨 使用
 
 将想要使用的组件模块引入到你的组件中。
@@ -80,7 +79,7 @@ $ ng add ng-zorro-antd
 import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
-  imports: [ NzButtonModule ]
+  imports: [NzButtonModule]
 })
 export class AppComponent {}
 ```
@@ -108,9 +107,9 @@ export class AppComponent {}
 
 ## 🔗 链接
 
-* [ng-zorro-antd-mobile](https://github.com/NG-ZORRO/ng-zorro-antd-mobile)
-* [ng-alain](https://github.com/ng-alain/ng-alain)
-* [VSCode 的 snippet 扩展](https://marketplace.visualstudio.com/items?itemName=cipchk.ng-zorro-vscode)
+- [ng-zorro-antd-mobile](https://github.com/NG-ZORRO/ng-zorro-antd-mobile)
+- [ng-alain](https://github.com/ng-alain/ng-alain)
+- [VSCode 的 snippet 扩展](https://marketplace.visualstudio.com/items?itemName=cipchk.ng-zorro-vscode)
 
 ## ⌨️ 开发
 

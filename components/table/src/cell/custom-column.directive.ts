@@ -3,50 +3,31 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, Directive, ElementRef, inject, Input, OnInit, Renderer2 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzTableDataService } from '../table-data.service';
 
 @Directive({
   selector: 'td[nzCellControl],th[nzCellControl]'
 })
-export class NzCustomColumnDirective<T> implements OnInit, OnDestroy {
+export class NzCustomColumnDirective<T> implements OnInit {
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private renderer = inject(Renderer2);
+  private nzTableDataService = inject(NzTableDataService<T>);
+  private destroyRef = inject(DestroyRef);
+
   @Input() nzCellControl: string | null = null;
 
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private el: ElementRef,
-    private renderer: Renderer2,
-    private nzTableDataService: NzTableDataService<T>
-  ) {}
-
   ngOnInit(): void {
-    this.nzTableDataService.listOfCustomColumn$.pipe(takeUntil(this.destroy$)).subscribe(item => {
-      if (item.length) {
-        item.forEach((v, i) => {
-          if (v.value === this.nzCellControl) {
-            if (!v.default) {
-              this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
-            } else {
-              this.renderer.setStyle(this.el.nativeElement, 'display', 'block');
-            }
-            this.renderer.setStyle(this.el.nativeElement, 'order', i);
-            if (!v?.fixWidth) {
-              this.renderer.setStyle(this.el.nativeElement, 'flex', `1 1 ${v.width}px`);
-            } else {
-              this.renderer.setStyle(this.el.nativeElement, 'flex', `1 0 ${v.width}px`);
-            }
-          }
-        });
-      }
+    this.nzTableDataService.listOfCustomColumn$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(item => {
+      item.forEach((v, i) => {
+        if (v.value === this.nzCellControl) {
+          this.renderer.setStyle(this.el, 'display', v.default ? 'block' : 'none');
+          this.renderer.setStyle(this.el, 'order', i);
+          this.renderer.setStyle(this.el, 'flex', v.fixWidth ? `1 0 ${v.width}px` : `1 1 ${v.width}px`);
+        }
+      });
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

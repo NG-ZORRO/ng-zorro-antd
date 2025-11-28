@@ -1,19 +1,23 @@
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTreeFlatDataSource, NzTreeFlattener, NzTreeViewModule } from 'ng-zorro-antd/tree-view';
+import {
+  NzTreeFlattener,
+  NzTreeViewFlatDataSource,
+  NzTreeViewModule,
+  NzTreeVirtualScrollViewComponent
+} from 'ng-zorro-antd/tree-view';
 
-interface FoodNode {
+interface TreeNode {
   name: string;
-  children?: FoodNode[];
+  children?: TreeNode[];
 }
 
-function dig(path: string = '0', level: number = 3): FoodNode[] {
-  const list: FoodNode[] = [];
+function dig(path: string = '0', level: number = 3): TreeNode[] {
+  const list: TreeNode[] = [];
   for (let i = 0; i < 10; i += 1) {
     const name = `${path}-${i}`;
-    const treeNode: FoodNode = {
+    const treeNode: TreeNode = {
       name
     };
 
@@ -26,10 +30,10 @@ function dig(path: string = '0', level: number = 3): FoodNode[] {
   return list;
 }
 
-const TREE_DATA: FoodNode[] = dig();
+const TREE_DATA: TreeNode[] = dig();
 
 /** Flat node with expandable and level information */
-interface ExampleFlatNode {
+interface FlatNode {
   expandable: boolean;
   name: string;
   level: number;
@@ -39,13 +43,17 @@ interface ExampleFlatNode {
   selector: 'nz-demo-tree-view-virtual-scroll',
   imports: [NzIconModule, NzTreeViewModule],
   template: `
-    <nz-tree-virtual-scroll-view class="virtual-scroll-tree" [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
-      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
+    <nz-tree-virtual-scroll-view
+      class="virtual-scroll-tree"
+      [nzDataSource]="dataSource"
+      [nzLevelAccessor]="levelAccessor"
+    >
+      <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
         <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
         {{ node.name }}
       </nz-tree-node>
 
-      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
+      <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding [nzExpandable]="true">
         <nz-tree-node-toggle>
           <nz-icon nzType="caret-down" nzTreeNodeToggleRotateIcon />
         </nz-tree-node-toggle>
@@ -61,17 +69,18 @@ interface ExampleFlatNode {
     `
   ]
 })
-export class NzDemoTreeViewVirtualScrollComponent {
-  private transformer = (node: FoodNode, level: number): ExampleFlatNode => ({
+export class NzDemoTreeViewVirtualScrollComponent implements OnInit, AfterViewInit {
+  @ViewChild(NzTreeVirtualScrollViewComponent, { static: true }) tree!: NzTreeVirtualScrollViewComponent<FlatNode>;
+
+  readonly levelAccessor = (dataNode: FlatNode): number => dataNode.level;
+
+  readonly hasChild = (_: number, node: FlatNode): boolean => node.expandable;
+
+  private transformer = (node: TreeNode, level: number): FlatNode => ({
     expandable: !!node.children && node.children.length > 0,
     name: node.name,
     level
   });
-
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
-    node => node.level,
-    node => node.expandable
-  );
 
   treeFlattener = new NzTreeFlattener(
     this.transformer,
@@ -80,12 +89,15 @@ export class NzDemoTreeViewVirtualScrollComponent {
     node => node.children
   );
 
-  dataSource = new NzTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  dataSource!: NzTreeViewFlatDataSource<TreeNode, FlatNode>;
 
-  constructor() {
-    this.dataSource.setData(TREE_DATA);
-    this.treeControl.expandAll();
+  ngOnInit(): void {
+    this.dataSource = new NzTreeViewFlatDataSource(this.tree, this.treeFlattener, TREE_DATA);
   }
 
-  hasChild = (_: number, node: ExampleFlatNode): boolean => node.expandable;
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.tree.expandAll();
+    });
+  }
 }

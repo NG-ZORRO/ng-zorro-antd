@@ -10,7 +10,6 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     <a
       nz-popconfirm
       nzPopconfirmTitle="Are you sure delete this task?"
-      nzPopconfirmPlacement="bottom"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
     >

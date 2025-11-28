@@ -12,5 +12,3 @@ title:
 ## en-US
 
 `nzMode="checkable"` works like Checkbox, click it to toggle checked state.
-
-

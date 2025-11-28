@@ -9,16 +9,18 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
+  inject,
   Input,
   NgZone,
-  OnDestroy,
   OnInit,
   Renderer2,
   TemplateRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
@@ -31,6 +33,7 @@ interface Info {
   width: number;
   height: number;
 }
+
 @Component({
   selector: '[nz-graph-node]',
   template: `
@@ -52,7 +55,14 @@ interface Info {
   },
   imports: [NgTemplateOutlet]
 })
-export class NzGraphNodeComponent implements OnInit, OnDestroy {
+export class NzGraphNodeComponent implements OnInit {
+  private readonly ngZone = inject(NgZone);
+  private readonly el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private readonly builder = inject(AnimationBuilder);
+  private readonly renderer2 = inject(Renderer2);
+  private readonly graphComponent = inject(NzGraph);
+  private readonly destroyRef = inject(DestroyRef);
+
   @Input() node!: NzGraphNode | NzGraphGroupNode;
   @Input({ transform: booleanAttribute }) noAnimation?: boolean;
   @Input() customTemplate?: TemplateRef<{
@@ -61,36 +71,22 @@ export class NzGraphNodeComponent implements OnInit, OnDestroy {
 
   animationInfo: Info | null = null;
   initialState = true;
-
-  private destroy$ = new Subject<void>();
   private animationPlayer: AnimationPlayer | null = null;
 
-  constructor(
-    private ngZone: NgZone,
-    private el: ElementRef<HTMLElement>,
-    private builder: AnimationBuilder,
-    private renderer2: Renderer2,
-    private graphComponent: NzGraph
-  ) {}
-
   ngOnInit(): void {
-    fromEventOutsideAngular<MouseEvent>(this.el.nativeElement, 'click')
+    fromEventOutsideAngular<MouseEvent>(this.el, 'click')
       .pipe(
         filter(event => {
           event.preventDefault();
           return this.graphComponent.nzNodeClick.observers.length > 0;
         }),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        // Re-enter the Angular zone and run the change detection only if there're any `nzNodeClick` listeners,
+        // Re-enter the Angular zone and run the change detection only if there are any `nzNodeClick` listeners,
         // e.g.: `<nz-graph (nzNodeClick)="..."></nz-graph>`.
         this.ngZone.run(() => this.graphComponent.nzNodeClick.emit(this.node));
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
   }
 
   makeAnimation(): Observable<void> {
@@ -136,12 +132,12 @@ export class NzGraphNodeComponent implements OnInit, OnDestroy {
       ]);
     }
     this.animationInfo = cur;
-    this.animationPlayer = animationFactory.create(this.el.nativeElement);
+    this.animationPlayer = animationFactory.create(this.el);
     this.animationPlayer.play();
     const done$ = new Subject<void>();
     this.animationPlayer.onDone(() => {
       // Need this for canvas for now.
-      this.renderer2.setAttribute(this.el.nativeElement, 'transform', `translate(${cur.x}, ${cur.y})`);
+      this.renderer2.setAttribute(this.el, 'transform', `translate(${cur.x}, ${cur.y})`);
       done$.next();
       done$.complete();
     });
@@ -151,7 +147,7 @@ export class NzGraphNodeComponent implements OnInit, OnDestroy {
   makeNoAnimation(): void {
     const cur = this.getAnimationInfo();
     // Need this for canvas for now.
-    this.renderer2.setAttribute(this.el.nativeElement, 'transform', `translate(${cur.x}, ${cur.y})`);
+    this.renderer2.setAttribute(this.el, 'transform', `translate(${cur.x}, ${cur.y})`);
   }
 
   getAnimationInfo(): Info {

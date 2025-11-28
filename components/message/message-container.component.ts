@@ -5,9 +5,8 @@
 
 import { Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
 
-import { MessageConfig } from 'ng-zorro-antd/core/config';
+import { MessageConfig, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzMNContainerComponent } from './base';
@@ -32,7 +31,7 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   template: `
     <div class="ant-message" [class.ant-message-rtl]="dir === 'rtl'" [style.top]="top">
       @for (instance of instances; track instance) {
-        <nz-message [instance]="instance" (destroyed)="remove($event.id, $event.userAction)"></nz-message>
+        <nz-message [instance]="instance" (destroyed)="remove($event.id, $event.userAction)" />
       }
     </div>
   `,
@@ -48,13 +47,10 @@ export class NzMessageContainerComponent extends NzMNContainerComponent {
   }
 
   protected subscribeConfigChange(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.updateConfig();
-        this.dir = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)?.nzDirection || this.dir;
-      });
+    onConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME, () => {
+      this.updateConfig();
+      this.dir = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)?.nzDirection || this.dir;
+    });
   }
 
   protected updateConfig(): void {

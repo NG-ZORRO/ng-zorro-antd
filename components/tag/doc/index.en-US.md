@@ -6,13 +6,11 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/cH1BOLfxC/Tag.svg'
 description: Used for marking and categorization.
 ---
 
-
 ## When To Use
 
 - It can be used to tag by dimension or property.
 
 - When categorizing.
-
 
 ## API
 

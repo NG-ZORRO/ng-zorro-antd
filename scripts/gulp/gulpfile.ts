@@ -9,12 +9,9 @@ import './tasks/clean';
 import './tasks/default';
 import './tasks/schematic';
 import './tasks/unit-test';
-
 import './tasks/library';
 import './tasks/site';
 
 task('build:release', series('clean', 'build:library', 'build:release-site'));
-
-task('build:preview', series('clean', 'init:site', 'build:site-doc-preview'));
 
 task('start:dev', series('clean', 'start:site'));

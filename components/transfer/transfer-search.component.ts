@@ -12,7 +12,8 @@ import {
   OnChanges,
   Output,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -31,7 +32,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       [disabled]="disabled"
       [placeholder]="placeholder"
       class="ant-input"
-      [class]="{ 'ant-input-disabled': disabled }"
+      [class.ant-input-disabled]="disabled"
     />
     @if (value && value.length > 0) {
       <span class="ant-input-suffix" (click)="_clear()">
@@ -45,6 +46,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 })
 export class NzTransferSearchComponent implements OnChanges {
   // region: fields
+  private cdr = inject(ChangeDetectorRef);
 
   @Input() placeholder?: string;
   @Input() value?: string;
@@ -55,13 +57,11 @@ export class NzTransferSearchComponent implements OnChanges {
 
   // endregion
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  _handle(): void {
+  protected _handle(): void {
     this.valueChanged.emit(this.value);
   }
 
-  _clear(): void {
+  protected _clear(): void {
     if (this.disabled) {
       return;
     }

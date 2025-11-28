@@ -16,7 +16,8 @@ import {
   NzSizeDSType,
   NzSizeLDSType,
   NzSizeMDSType,
-  NzTSType
+  NzTSType,
+  NzVariant
 } from 'ng-zorro-antd/core/types';
 
 interface MonacoEnvironment {
@@ -32,7 +33,7 @@ export interface NzConfig {
   alert?: AlertConfig;
   anchor?: AnchorConfig;
   avatar?: AvatarConfig;
-  backTop?: BackTopConfig;
+  floatButton?: FloatButtonConfig;
   badge?: BadgeConfig;
   button?: ButtonConfig;
   card?: CardConfig;
@@ -44,7 +45,7 @@ export interface NzConfig {
   datePicker?: DatePickerConfig;
   descriptions?: DescriptionsConfig;
   drawer?: DrawerConfig;
-  dropDown?: DropDownConfig;
+  dropdown?: DropdownConfig;
   empty?: EmptyConfig;
   filterTrigger?: FilterTriggerConfig;
   form?: FormConfig;
@@ -90,7 +91,7 @@ export interface Theme {
 }
 
 export interface SelectConfig {
-  nzBorderless?: boolean;
+  nzVariant?: NzVariant;
   nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
   nzBackdrop?: boolean;
   nzOptionHeightPx?: number;
@@ -117,10 +118,6 @@ export interface AnchorConfig {
   nzOffsetBottom?: number;
   nzOffsetTop?: number;
   nzShowInkInFixed?: boolean;
-}
-
-export interface BackTopConfig {
-  nzVisibilityHeight?: number;
 }
 
 export interface BadgeConfig {
@@ -166,6 +163,7 @@ export interface CarouselConfig {
 export interface CascaderConfig {
   nzSize?: string;
   nzBackdrop?: boolean;
+  nzVariant?: NzVariant;
 }
 
 export interface CollapseConfig {
@@ -182,6 +180,7 @@ export interface DatePickerConfig {
   nzSeparator?: string;
   nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
   nzBackdrop?: boolean;
+  nzVariant?: NzVariant;
 }
 
 export interface DescriptionsConfig {
@@ -198,7 +197,7 @@ export interface DrawerConfig {
   nzDirection?: Direction;
 }
 
-export interface DropDownConfig {
+export interface DropdownConfig {
   nzBackdrop?: boolean;
 }
 
@@ -208,6 +207,10 @@ export interface EmptyConfig {
 
 export interface FilterTriggerConfig {
   nzBackdrop?: boolean;
+}
+
+export interface FloatButtonConfig {
+  nzVisibilityHeight?: number;
 }
 
 export interface FormConfig {
@@ -276,7 +279,7 @@ export interface SegmentedConfig {
 }
 
 export interface SpaceConfig {
-  nzSize?: 'small' | 'middle' | 'large' | number;
+  nzSize?: 'small' | 'middle' | 'large' | number | Array<'small' | 'middle' | 'large' | number>;
 }
 
 export interface SpinConfig {
@@ -327,6 +330,7 @@ export interface TimePickerConfig {
   nzUse12Hours?: string;
   nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
   nzBackdrop?: boolean;
+  nzVariant?: NzVariant;
 }
 
 export interface TreeConfig {
@@ -342,6 +346,7 @@ export interface TreeSelectConfig {
   nzHideUnMatched?: boolean;
   nzSize?: 'large' | 'small' | 'default';
   nzBackdrop?: boolean;
+  nzVariant?: NzVariant;
 }
 
 export interface TypographyConfig {
@@ -385,7 +390,7 @@ export type NzConfigKey = keyof NzConfig;
 /**
  * User should provide an object implements this interface to set global configurations.
  */
-export const NZ_CONFIG = new InjectionToken<NzConfig>('nz-config');
+export const NZ_CONFIG = new InjectionToken<NzConfig>(typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-config' : '');
 
 export function provideNzConfig(config: NzConfig): EnvironmentProviders {
   return makeEnvironmentProviders([{ provide: NZ_CONFIG, useValue: config }]);

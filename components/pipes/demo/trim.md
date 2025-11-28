@@ -1,7 +1,7 @@
 ---
 order: 8
 title:
-  zh-CN:  nzTrim
+  zh-CN: nzTrim
   en-US: nzTrim
 ---
 

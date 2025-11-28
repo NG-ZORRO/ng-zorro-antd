@@ -9,8 +9,9 @@ title: Resources
 resources, which can hopefully serve well during your project development.
 
 | Category         | Recommended Components                                           | Details                                        |
-|------------------|------------------------------------------------------------------|------------------------------------------------|
+| ---------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
 | Component Lib    | [NG ALAIN](https://ng-alain.com/)                                | Admin Template work with ng-zorro-antd         |
+| Component Lib    | [ng-antd-admin](https://github.com/huajian123/ng-antd-admin)     | The Admin Template imitating Ant Design Pro    |
 | Component Lib    | [Material Design](https://material.angular.io)                   | Material Design                                |
 | Component Lib    | [Clarity](https://github.com/vmware/clarity)                     | Vmware Angular Component Lib                   |
 | Component Lib    | [Nebular](https://github.com/akveo/nebular/)                     | Nebular Angular Component Lib                  |
@@ -23,7 +24,6 @@ resources, which can hopefully serve well during your project development.
 | Component Lib    | [ngx-charts](https://swimlane.github.io/ngx-charts/)             | Charts based on D3                             |
 | Component Lib    | [ngx-graph](https://swimlane.github.io/ngx-graph/)               | Graph based on dagre.js                        |
 | Component Lib    | [ngx-formly](https://github.com/ngx-formly/ngx-formly)           | Form based on JSON schema                      |
-| Component Lib    | [ng-ant-admin](https://github.com/huajian123/ng-ant-admin)       | The Admin Template imitating Ant Design Pro    |
 | Dev Kit          | [Component Dev Kit](https://material.angular.io/cdk/categories)  | Component Developer Kit                        |
 | Dev Kit          | [Spectator](https://github.com/ngneat/spectator)                 | A Powerful Tool to Simplify Your Angular Tests |
 | Dev Kit          | [Scully](https://github.com/scullyio/scully)                     | The Static Site Generator for Angular apps     |

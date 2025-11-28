@@ -12,4 +12,3 @@ title:
 ## en-US
 
 Two compacted table size: `middle` and `small`, `small` size is used in Modal only.
-

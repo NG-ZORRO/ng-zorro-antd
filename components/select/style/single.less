@@ -1,172 +1,154 @@
 @import (reference) '../../style/themes/index';
+
 @select-prefix-cls: ~'@{ant-prefix}-select';
 
-@selection-item-padding: ceil(@font-size-base * 1.25);
+.genSizeStyle(@suffix, @control-height, @font-size, @border-radius) {
+  @merged-cls: ~'@{select-prefix-cls}@{suffix}';
+  @select-height-without-border: @control-height - 2 * @line-width;
+  @show-arrow-padding-inline-end: ceil(@font-size * 1.25);
 
-.@{select-prefix-cls}-single {
-  // ========================= Selector =========================
-  .@{select-prefix-cls}-selector {
-    display: flex;
+  &.@{merged-cls} {
+    height: @control-height;
+    font-size: @font-size;
 
-    .@{select-prefix-cls}-selection-search {
-      position: absolute;
-      top: 0;
-      right: @input-padding-horizontal-base;
-      bottom: 0;
-      left: @input-padding-horizontal-base;
-
-      &-input {
-        width: 100%;
-      }
-    }
-
-    .@{select-prefix-cls}-selection-item,
-    .@{select-prefix-cls}-selection-placeholder {
-      padding: 0;
-      line-height: @select-height-without-border;
-      transition: all .3s, visibility 0s;
-    }
-
-    .@{select-prefix-cls}-selection-item {
-      position: relative;
-      user-select: none;
-    }
-
-    .@{select-prefix-cls}-selection-placeholder {
-      transition: none;
-      pointer-events: none;
-    }
-
-    // For common baseline align
-    &::after,
-    /* For '' value baseline align */
-    .@{select-prefix-cls}-selection-item::after,
-    /* For undefined value baseline align */
-    .@{select-prefix-cls}-selection-placeholder::after {
-      display: inline-block;
-      width: 0;
-      visibility: hidden;
-      content: '\a0';
-    }
-  }
-
-  // With arrow should provides `padding-right` to show the arrow
-  &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-search {
-    right: @input-padding-horizontal-base + @font-size-base;
-  }
-
-  &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-item,
-  &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-placeholder {
-    padding-right: @selection-item-padding;
-  }
-
-  // Opacity selection if open
-  &.@{select-prefix-cls}-open .@{select-prefix-cls}-selection-item {
-    color: @input-placeholder-color;
-  }
-
-  // ========================== Input ==========================
-  // We only change the style of non-customize input which is only support by `combobox` mode.
-
-  // Not customize
-  &:not(.@{select-prefix-cls}-customize-input) {
+    // ========================= Selector =========================
     .@{select-prefix-cls}-selector {
-      width: 100%;
-      height: @input-height-base;
-      padding: 0 @input-padding-horizontal-base;
+      display: flex;
+      flex: 1 1 auto;
+      border-radius: @border-radius;
 
-      .@{select-prefix-cls}-selection-search-input {
-        height: @select-height-without-border;
-      }
-
-      &::after {
+      .@{select-prefix-cls}-selection-wrap::after {
         line-height: @select-height-without-border;
-      }
-    }
-  }
-
-  &.@{select-prefix-cls}-customize-input {
-    .@{select-prefix-cls}-selector {
-      &::after {
-        display: none;
       }
 
       .@{select-prefix-cls}-selection-search {
-        position: static;
+        position: absolute;
         width: 100%;
+        inset: 0;
+
+        &-input {
+          width: 100%;
+          appearance: textfield;
+        }
+      }
+
+      .@{select-prefix-cls}-selection-item,
+      .@{select-prefix-cls}-selection-placeholder {
+        display: block;
+        align-self: center;
+        padding: 0;
+        line-height: @select-height-without-border;
+        transition:
+          all 0.3s,
+          visibility 0s;
       }
 
       .@{select-prefix-cls}-selection-placeholder {
-        position: absolute;
-        right: 0;
-        left: 0;
+        transition: none;
+        pointer-events: none;
+      }
+
+      // For common baseline align
+      &::after,
+      /* For '' value baseline align */
+    .@{select-prefix-cls}-selection-item::after,
+      /* For undefined value baseline align */
+    .@{select-prefix-cls}-selection-placeholder::after {
+        display: inline-block;
+        width: 0;
+        visibility: hidden;
+        content: '\a0';
+      }
+    }
+
+    // With arrow should provides `padding-inline-end` to show the arrow
+    &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-item,
+    &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-search,
+    &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-placeholder {
+      padding-inline-end: @show-arrow-padding-inline-end;
+    }
+
+    // Opacity selection if open
+    &.@{select-prefix-cls}-open .@{select-prefix-cls}-selection-item {
+      color: @input-placeholder-color;
+    }
+
+    // ========================== Input ==========================
+    // We only change the style of non-customize input which is only support by `combobox` mode.
+    // Not customize
+    &:not(.@{select-prefix-cls}-customize-input) {
+      .@{select-prefix-cls}-selector {
+        align-items: center;
+        width: 100%;
+        height: 100%;
         padding: 0 @input-padding-horizontal-base;
 
+        .@{select-prefix-cls}-selection-search-input {
+          height: @select-height-without-border;
+          font-size: @font-size-base;
+        }
+
+        &::after {
+          line-height: @select-height-without-border;
+        }
+      }
+    }
+
+    &.@{select-prefix-cls}-customize-input {
+      .@{select-prefix-cls}-selector {
         &::after {
           display: none;
         }
-      }
-    }
-  }
 
-  // ============================================================
-  // ==                          Size                          ==
-  // ============================================================
-  .select-size(@suffix, @input-height) {
-    @merged-cls: ~'@{select-prefix-cls}-@{suffix}';
+        .@{select-prefix-cls}-selection-search {
+          position: static;
+          width: 100%;
+        }
 
-    &.@{merged-cls}:not(.@{select-prefix-cls}-customize-input) {
-      .@{select-prefix-cls}-selector {
-        height: @input-height;
-
-        &::after,
-        .@{select-prefix-cls}-selection-item,
         .@{select-prefix-cls}-selection-placeholder {
-          line-height: @input-height - 2 * @border-width-base;
-        }
-      }
+          position: absolute;
+          padding: 0 @input-padding-horizontal-base;
+          inset-inline-start: 0;
+          inset-inline-end: 0;
 
-      // Not customize
-      &:not(.@{select-prefix-cls}-customize-input) {
-        .@{select-prefix-cls}-selection-search-input {
-          height: @input-height - 2 * @border-width-base;
+          &::after {
+            display: none;
+          }
         }
       }
     }
   }
+}
 
-  .select-size('lg', @select-single-item-height-lg);
-  .select-size('sm', @input-height-sm);
+.@{select-prefix-cls}-single {
+  .genSizeStyle('', @input-height-base, @font-size-base, @border-radius-base);
 
-  // Size small need additional set padding
+  // ======================== Small ========================
+  // Shared
+  // stylelint-disable-next-line less/no-duplicate-variables
+  .genSizeStyle('-sm', @input-height-sm, @font-size-base, @border-radius-sm);
+
+  // Padding
   &.@{select-prefix-cls}-sm {
     &:not(.@{select-prefix-cls}-customize-input) {
-      .@{select-prefix-cls}-selection-search {
-        right: @input-padding-horizontal-sm;
-        left: @input-padding-horizontal-sm;
-      }
-
       .@{select-prefix-cls}-selector {
         padding: 0 @input-padding-horizontal-sm;
       }
 
-      // With arrow should provides `padding-right` to show the arrow
+      // With arrow should provides `padding-inline-end` to show the arrow
       &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-search {
-        right: @input-padding-horizontal-sm + @font-size-base * 1.5;
+        padding-inline-end: @input-padding-horizontal-sm + @font-size-base * 1.5;
       }
 
       &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-item,
       &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-placeholder {
-        padding-right: @font-size-base * 1.5;
+        padding-inline-end: @font-size-base * 1.5;
       }
     }
   }
 
-  &.@{select-prefix-cls}-lg {
-    &:not(.@{select-prefix-cls}-customize-input) {
-      .@{select-prefix-cls}-selector {
-        padding: 0 @input-padding-horizontal-lg;
-      }
-    }
-  }
+  // ======================== Large ========================
+  // Shared
+  // stylelint-disable-next-line less/no-duplicate-variables
+  .genSizeStyle('-lg', @select-single-item-height-lg, @font-size-lg, @border-radius-lg);
 }

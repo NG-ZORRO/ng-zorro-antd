@@ -4,8 +4,15 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ChangeDetectorRef,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -17,26 +24,30 @@ import { NzAlertComponent, NzAlertType } from './alert.component';
 import { NzAlertModule } from './alert.module';
 
 describe('alert', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('basic alert', () => {
     let fixture: ComponentFixture<NzDemoTestBasicComponent>;
     let testComponent: NzDemoTestBasicComponent;
     let alert: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoTestBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       alert = fixture.debugElement.query(By.directive(NzAlertComponent));
     });
+
     it('should className correct', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.firstElementChild!.classList).toContain('ant-alert');
     });
+
     it('should banner work', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.firstElementChild!.classList).not.toContain('ant-alert-banner');
@@ -48,6 +59,7 @@ describe('alert', () => {
       expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-info`);
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeNull();
     });
+
     it('should closeable work', fakeAsync(() => {
       testComponent.closeable = true;
       fixture.detectChanges();
@@ -61,6 +73,7 @@ describe('alert', () => {
       expect(alert.nativeElement.innerText).toBe('');
       expect(testComponent.onClose).toHaveBeenCalledTimes(1);
     }));
+
     it('should closeText work', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert-close-icon')).toBeNull();
@@ -71,6 +84,7 @@ describe('alert', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert-close-icon').innerText).toBe('template');
     });
+
     it('should description work', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert-description').innerText).toBe('description');
@@ -78,6 +92,7 @@ describe('alert', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert-description').innerText).toBe('template');
     });
+
     it('should message work', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert-message').innerText).toBe('message');
@@ -85,12 +100,14 @@ describe('alert', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert-message').innerText).toBe('template');
     });
+
     it('should showIcon work', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeNull();
       testComponent.showIcon = true;
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeDefined();
     });
+
     it('should iconType work', () => {
       fixture.detectChanges();
       testComponent.showIcon = true;
@@ -101,6 +118,7 @@ describe('alert', () => {
         'anticon-lock'
       );
     });
+
     it('should type work', () => {
       const listOfType: NzAlertType[] = ['success', 'info', 'warning', 'error'];
       listOfType.forEach(type => {
@@ -109,6 +127,7 @@ describe('alert', () => {
         expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-${type}`);
       });
     });
+
     it('should action work', () => {
       fixture.detectChanges();
       testComponent.action = testComponent.template;
@@ -116,6 +135,7 @@ describe('alert', () => {
       expect(alert.nativeElement.querySelector('.ant-alert-action').classList).not.toBeNull();
     });
   });
+
   describe('banner alert', () => {
     let fixture: ComponentFixture<NzDemoTestBannerComponent>;
     let alert: DebugElement;
@@ -132,6 +152,7 @@ describe('alert', () => {
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeDefined();
     });
   });
+
   describe('RTL', () => {
     it('should className correct on dir change', () => {
       const fixture = TestBed.createComponent(NzTestAlertRtlComponent);
@@ -144,6 +165,7 @@ describe('alert', () => {
       expect(alert.nativeElement.firstElementChild!.classList).not.toContain('ant-alert-rtl');
     });
   });
+
   describe('custom icon', () => {
     it('should custom icon work', () => {
       const fixture = TestBed.createComponent(NzTestAlertCustomIconComponent);

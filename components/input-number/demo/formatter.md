@@ -1,8 +1,8 @@
 ---
 order: 5
 title:
-    zh-CN: 格式化展示
-    en-US: Formatter
+  zh-CN: 格式化展示
+  en-US: Formatter
 ---
 
 ## zh-CN

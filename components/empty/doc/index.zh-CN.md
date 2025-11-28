@@ -8,11 +8,9 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg'
 description: 空状态时的展示占位图。
 ---
 
-
 ## 何时使用
 
 当目前没有数据时，用于显式的用户提示。
-
 
 ## API
 
@@ -28,9 +26,9 @@ description: 空状态时的展示占位图。
 
 `nzEmpty` 接口有如下字段：
 
-| 参数                    | 说明                                                                | 类型                                                |
-| ----------------------- | ------------------------------------------------------------------- | --------------------------------------------------- |
-| `nzDefaultEmptyContent` | 用户自定义的全局空组件，可通过 `undefined` 来取消自定义的全局空组件 | `Type<any>\|TemplateRef<string>\|string\|undefined` |
+| 参数                    | 说明                                                                | 类型                                                      |
+| ----------------------- | ------------------------------------------------------------------- | --------------------------------------------------------- |
+| `nzDefaultEmptyContent` | 用户自定义的全局空组件，可通过 `undefined` 来取消自定义的全局空组件 | `Type<any> \| TemplateRef<string> \| string \| undefined` |
 
 ### InjectionToken
 

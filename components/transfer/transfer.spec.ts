@@ -4,7 +4,15 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ApplicationRef, Component, DebugElement, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  OnInit,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -29,7 +37,7 @@ import {
 } from 'ng-zorro-antd/transfer';
 
 const COUNT = 21;
-const LEFTCOUNT = 2;
+const LEFT_COUNT = 2;
 const DISABLED = 1;
 
 describe('transfer', () => {
@@ -39,7 +47,10 @@ describe('transfer', () => {
   let pageObject: TransferPageObject<AbstractTestTransferComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideNzIconsTesting(), provideNoopAnimations()] });
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection(), provideNzIconsTesting(), provideNoopAnimations()]
+    });
     fixture = TestBed.createComponent(TestTransferComponent);
     debugElement = fixture.debugElement;
     instance = debugElement.componentInstance;
@@ -94,37 +105,37 @@ describe('transfer', () => {
 
     it('should be from left to right', () => {
       pageObject
-        .expectLeft(LEFTCOUNT)
+        .expectLeft(LEFT_COUNT)
         .transfer('right', 0)
-        .expectLeft(LEFTCOUNT - 1)
-        .expectRight(COUNT - LEFTCOUNT + 1);
+        .expectLeft(LEFT_COUNT - 1)
+        .expectRight(COUNT - LEFT_COUNT + 1);
     });
 
     it('should be from right to left', () => {
       pageObject
-        .expectRight(COUNT - LEFTCOUNT)
+        .expectRight(COUNT - LEFT_COUNT)
         .transfer('left', [0, 1])
-        .expectRight(COUNT - LEFTCOUNT - 2)
-        .expectLeft(LEFTCOUNT + 2);
+        .expectRight(COUNT - LEFT_COUNT - 2)
+        .expectLeft(LEFT_COUNT + 2);
     });
 
     it('should be from left to right when via search found items', () => {
       pageObject
-        .expectLeft(LEFTCOUNT)
+        .expectLeft(LEFT_COUNT)
         .search('left', '1')
         .transfer('right', 0)
-        .expectLeft(LEFTCOUNT - 1)
-        .expectRight(COUNT - LEFTCOUNT + 1);
+        .expectLeft(LEFT_COUNT - 1)
+        .expectRight(COUNT - LEFT_COUNT + 1);
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(0);
     });
 
     it('should be from right to left when via search found items', () => {
       pageObject
-        .expectRight(COUNT - LEFTCOUNT)
+        .expectRight(COUNT - LEFT_COUNT)
         .search('right', '2')
         .transfer('left', [0, 1])
-        .expectLeft(LEFTCOUNT + 2)
-        .expectRight(COUNT - LEFTCOUNT - 2);
+        .expectLeft(LEFT_COUNT + 2)
+        .expectRight(COUNT - LEFT_COUNT - 2);
       expect(pageObject.rightList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(DISABLED);
     });
 
@@ -132,7 +143,7 @@ describe('transfer', () => {
       pageObject.checkItem('left', 0).search('left', '1');
       pageObject.rightBtn.click();
       fixture.detectChanges();
-      expect(instance.comp.rightDataSource.filter(w => !w.hide).length).toBe(COUNT - LEFTCOUNT + 1);
+      expect(instance.comp.rightDataSource.filter(w => !w.hide).length).toBe(COUNT - LEFT_COUNT + 1);
     });
 
     it('should have correct disable state on moving buttons', () => {
@@ -151,19 +162,19 @@ describe('transfer', () => {
       instance.nzFilterOption = (inputValue: string, item: NzSafeAny): boolean =>
         item.description.indexOf(inputValue) > -1;
       fixture.detectChanges();
-      pageObject.expectLeft(LEFTCOUNT).search('left', 'description of content1');
+      pageObject.expectLeft(LEFT_COUNT).search('left', 'description of content1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
       fixture.detectChanges();
-      expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
+      expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFT_COUNT);
     });
 
     it('should be clear search keywords', () => {
-      pageObject.expectLeft(LEFTCOUNT).search('left', '1');
+      pageObject.expectLeft(LEFT_COUNT).search('left', '1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
       fixture.detectChanges();
-      expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFTCOUNT);
+      expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFT_COUNT);
     });
 
     it('should be checkbox is toggle select', () => {
@@ -194,7 +205,7 @@ describe('transfer', () => {
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
       const btn = pageObject.leftList.querySelector('.ant-transfer-list-header .ant-checkbox') as HTMLElement;
       btn.click();
-      expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(LEFTCOUNT);
+      expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(LEFT_COUNT);
       btn.click();
       expect(instance.comp.leftDataSource.filter(w => w.checked).length).toBe(0);
     });
@@ -203,7 +214,7 @@ describe('transfer', () => {
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
       const btn = pageObject.rightList.querySelector('.ant-transfer-list-header .ant-checkbox') as HTMLElement;
       btn.click();
-      expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(COUNT - LEFTCOUNT - DISABLED);
+      expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(COUNT - LEFT_COUNT - DISABLED);
       btn.click();
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(0);
     });
@@ -218,7 +229,7 @@ describe('transfer', () => {
       const multiSelectEndIndex = 9;
       pageObject.checkItem('right', multiSelectEndIndex);
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(
-        COUNT - LEFTCOUNT - DISABLED - multiSelectEndIndex + 1
+        COUNT - LEFT_COUNT - DISABLED - multiSelectEndIndex + 1
       );
       window.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
       expect(instance.comp.isShiftPressed).toBeFalse();
@@ -261,16 +272,16 @@ describe('transfer', () => {
         expect(debugElement.queryAll(By.css('.ant-transfer-disabled')).length).toBe(1);
         // All operation buttons muse be disabled
         expect(debugElement.queryAll(By.css('.ant-transfer-operation .ant-btn[disabled]')).length).toBe(2);
-        // All search input muse be disabled
+        // All search inputs must be disabled
         expect(debugElement.queryAll(By.css('.ant-input-disabled')).length).toBe(2);
-        // All item muse be disabled
+        // All items must be disabled
         expect(debugElement.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT);
-        // All checkbox (include 2 checkall) muse be disabled
+        // All checkboxes (include 2 check-all) must be disabled
         expect(debugElement.queryAll(By.css('.ant-checkbox-disabled')).length).toBe(COUNT + 2);
       });
 
       it('should be disabled clear', () => {
-        pageObject.expectLeft(LEFTCOUNT).search('left', '1');
+        pageObject.expectLeft(LEFT_COUNT).search('left', '1');
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
         instance.nzDisabled = true;
         fixture.detectChanges();
@@ -280,7 +291,7 @@ describe('transfer', () => {
       });
 
       it('should be disabled check all when search result is empty', () => {
-        pageObject.expectLeft(LEFTCOUNT).search('left', '模拟');
+        pageObject.expectLeft(LEFT_COUNT).search('left', '模拟');
         const selectorPath = '[data-direction="left"] .ant-transfer-list-header .ant-checkbox-disabled';
         expect(pageObject.leftList.querySelectorAll(selectorPath).length).toBe(1);
       });
@@ -317,17 +328,17 @@ describe('transfer', () => {
         );
       fixture.detectChanges();
       pageObject
-        .expectLeft(LEFTCOUNT)
+        .expectLeft(LEFT_COUNT)
         .transfer('right', [0, 1])
-        .expectLeft(LEFTCOUNT)
-        .expectRight(COUNT - LEFTCOUNT);
+        .expectLeft(LEFT_COUNT)
+        .expectRight(COUNT - LEFT_COUNT);
     });
 
     it('should be custom render item', () => {
       const tempFixture = TestBed.createComponent(TestTransferCustomRenderComponent);
       tempFixture.detectChanges();
       const leftList = tempFixture.debugElement.query(By.css('[data-direction="left"]')).nativeElement as HTMLElement;
-      expect(leftList.querySelectorAll('.anticon-frown-o').length).toBe(LEFTCOUNT);
+      expect(leftList.querySelectorAll('.anticon-frown-o').length).toBe(LEFT_COUNT);
     });
 
     it('should be custom footer', () => {
@@ -362,22 +373,21 @@ describe('transfer', () => {
       });
     });
 
-    describe('https://github.com/NG-ZORRO/ng-zorro-antd/issues/6667', () => {
-      it('should uncheck "Select all" checkbox after searched items are moved', () => {
-        const { leftList } = pageObject;
-        pageObject.search('left', 'content1');
-        expect(leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
+    // https://github.com/NG-ZORRO/ng-zorro-antd/issues/6667
+    it('should uncheck "Select all" checkbox after searched items are moved', () => {
+      const { leftList } = pageObject;
+      pageObject.search('left', 'content1');
+      expect(leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
 
-        const selectAll = leftList.querySelector<HTMLElement>('.ant-transfer-list-header .ant-checkbox')!;
-        selectAll.click();
-        fixture.detectChanges();
+      const selectAll = leftList.querySelector<HTMLElement>('.ant-transfer-list-header .ant-checkbox')!;
+      selectAll.click();
+      fixture.detectChanges();
 
-        pageObject.rightBtn.click();
-        fixture.detectChanges();
+      pageObject.rightBtn.click();
+      fixture.detectChanges();
 
-        expect(selectAll).not.toHaveClass('ant-checkbox-checked');
-        expect(selectAll).not.toHaveClass('ant-checkbox-indeterminate');
-      });
+      expect(selectAll).not.toHaveClass('ant-checkbox-checked');
+      expect(selectAll).not.toHaveClass('ant-checkbox-indeterminate');
     });
   });
 
@@ -387,10 +397,10 @@ describe('transfer', () => {
       pageObject = new TransferPageObject(fixture);
       fixture.detectChanges();
       pageObject
-        .expectLeft(LEFTCOUNT)
+        .expectLeft(LEFT_COUNT)
         .transfer('right', 0)
-        .expectLeft(LEFTCOUNT - 1)
-        .expectRight(COUNT - LEFTCOUNT + 1);
+        .expectLeft(LEFT_COUNT - 1)
+        .expectRight(COUNT - LEFT_COUNT + 1);
     });
 
     it('should be from left to right when two verification', () => {
@@ -402,10 +412,10 @@ describe('transfer', () => {
       };
       fixture.detectChanges();
       pageObject
-        .expectLeft(LEFTCOUNT)
+        .expectLeft(LEFT_COUNT)
         .transfer('right', [0, 1])
-        .expectLeft(LEFTCOUNT - 1)
-        .expectRight(COUNT - LEFTCOUNT + 1);
+        .expectLeft(LEFT_COUNT - 1)
+        .expectRight(COUNT - LEFT_COUNT + 1);
     });
   });
 
@@ -640,7 +650,7 @@ class TestTransferComponent implements OnInit, AbstractTestTransferComponent {
   nzItemsUnit = 'items';
   nzListStyle = { 'width.px': 300, 'height.px': 300 };
   nzShowSearch = true;
-  nzFilterOption: null | ((inputValue: string, item: NzSafeAny) => boolean) = null;
+  nzFilterOption?: (inputValue: string, item: NzSafeAny) => boolean;
   nzSearchPlaceholder = '请输入搜索内容';
   nzNotFoundContent = '列表为空';
   nzOneWay = false;
@@ -666,7 +676,7 @@ class TestTransferComponent implements OnInit, AbstractTestTransferComponent {
         key: i.toString(),
         title: `content${i + 1}`,
         description: `description of content${i + 1}`,
-        direction: i >= LEFTCOUNT ? 'right' : 'left',
+        direction: i >= LEFT_COUNT ? 'right' : 'left',
         icon: `frown-o`,
         disabled: i === 20
       });
@@ -705,7 +715,7 @@ class TestTransferCustomRenderComponent implements OnInit, AbstractTestTransferC
         key: i.toString(),
         title: `content${i + 1}`,
         description: `description of content${i + 1}`,
-        direction: i >= LEFTCOUNT ? 'right' : 'left',
+        direction: i >= LEFT_COUNT ? 'right' : 'left',
         icon: `frown-o`
       });
     }
@@ -714,7 +724,10 @@ class TestTransferCustomRenderComponent implements OnInit, AbstractTestTransferC
 }
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/996
-@Component({ imports: [NzTransferModule], template: `<nz-transfer [nzDataSource]="list"></nz-transfer>` })
+@Component({
+  imports: [NzTransferModule],
+  template: `<nz-transfer [nzDataSource]="list"></nz-transfer>`
+})
 class Test996Component implements OnInit {
   @ViewChild(NzTransferComponent, { static: true }) comp!: NzTransferComponent;
   list: NzSafeAny[] = [];

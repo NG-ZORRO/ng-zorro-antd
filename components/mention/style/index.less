@@ -20,7 +20,7 @@
 
   // =================== Status ===================
   &-disabled {
-    > textarea {
+    > .@{ant-prefix}-input {
       .disabled();
     }
   }
@@ -30,7 +30,7 @@
   }
 
   // ================= Input Area =================
-  > textarea,
+  > .@{ant-prefix}-input,
   &-measure {
     min-height: @input-height-base - 2px;
     margin: 0;
@@ -58,14 +58,17 @@
     tab-size: inherit;
   }
 
-  > textarea {
+  > .@{ant-prefix}-input {
     width: 100%;
+    background-color: inherit;
     border: none;
     outline: none;
     resize: none;
+
     & when (@theme = dark) {
       background-color: transparent;
     }
+
     .placeholder();
   }
 
@@ -173,6 +176,23 @@
     display: inline-flex;
     align-items: center;
     margin: auto;
+  }
+
+  &-clear-icon {
+    padding: 0;
+    color: @disabled-color;
+    font-size: @font-size-sm;
+    line-height: 0;
+    vertical-align: -1px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: @text-color-secondary;
+    }
   }
 }
 

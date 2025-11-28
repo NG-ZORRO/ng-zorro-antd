@@ -15,7 +15,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -23,15 +22,15 @@ import {
   ViewChild,
   booleanAttribute,
   forwardRef,
-  inject
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
+import { treeCollapseMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import {
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
@@ -182,11 +181,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
     NzTreeNodeBuiltinComponent
   ]
 })
-export class NzTreeComponent
-  extends NzTreeBase
-  implements OnInit, OnDestroy, ControlValueAccessor, OnChanges, AfterViewInit
-{
+export class NzTreeComponent extends NzTreeBase implements OnInit, ControlValueAccessor, OnChanges, AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  nzConfigService = inject(NzConfigService);
+  private cdr = inject(ChangeDetectorRef);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
 
   @Input({ transform: booleanAttribute }) @WithConfig() nzShowIcon: boolean = false;
   @Input({ transform: booleanAttribute }) @WithConfig() nzHideUnMatched: boolean = false;
@@ -257,8 +259,6 @@ export class NzTreeComponent
     height: 0,
     overflow: 'hidden'
   };
-
-  destroy$ = new Subject<boolean>();
 
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
@@ -474,21 +474,13 @@ export class NzTreeComponent
     );
     this.cdr.markForCheck();
   }
-  // Handle emit event end
 
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-
-  constructor(
-    nzTreeService: NzTreeBaseService,
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {
-    super(nzTreeService);
+  constructor() {
+    super(inject(NzTreeBaseService));
   }
 
   ngOnInit(): void {
-    this.nzTreeService.flattenNodes$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+    this.nzTreeService.flattenNodes$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.nzFlattenNodes =
         !!this.nzVirtualHeight && this.nzHideUnMatched && this.nzSearchValue?.length > 0
           ? data.filter(d => !d.canHide)
@@ -497,7 +489,7 @@ export class NzTreeComponent
     });
 
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -509,10 +501,5 @@ export class NzTreeComponent
 
   ngAfterViewInit(): void {
     this.beforeInit = false;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

@@ -24,3 +24,5 @@ export * from './dynamic-css';
 export * from './status-util';
 export * from './from-event-outside-angular';
 export * from './variant-utils';
+export * from './encode-entities';
+export * from './class-name';

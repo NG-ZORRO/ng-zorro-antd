@@ -23,7 +23,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -101,7 +101,6 @@ export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
   encapsulation: ViewEncapsulation.None
 })
 export class NzAlertComponent implements OnChanges, OnInit {
-  public nzConfigService = inject(NzConfigService);
   private cdr = inject(ChangeDetectorRef);
   private directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
@@ -127,12 +126,7 @@ export class NzAlertComponent implements OnChanges, OnInit {
   private isShowIconSet = false;
 
   constructor() {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
+    onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
   }
 
   ngOnInit(): void {

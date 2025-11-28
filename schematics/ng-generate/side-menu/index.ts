@@ -11,8 +11,6 @@ import {
   parseSourceFile
 } from '@angular/cdk/schematics';
 
-import { strings } from '@angular-devkit/core';
-import { WorkspaceDefinition } from '@angular-devkit/core/src/workspace';
 import {
   apply,
   applyTemplates,
@@ -23,24 +21,30 @@ import {
   mergeWith,
   move,
   Rule,
+  schematic,
+  strings,
   Tree,
   url
 } from '@angular-devkit/schematics';
-import { addRootProvider } from '@schematics/angular/utility';
+import { addRootProvider, readWorkspace } from '@schematics/angular/utility';
 import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
 import { findBootstrapApplicationCall } from '@schematics/angular/utility/standalone/util';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
 
 import { Schema } from './schema';
 import { applyChangesToFile } from '../../utils/apply-changes';
+import { getAppOptions } from '../../utils/config';
 import { addModule } from '../../utils/root-module';
 
-export default function (options: Schema): Rule {
+export default function(options: Schema): Rule {
   return async (host: Tree) => {
-    const workspace = (await getWorkspace(host)) as unknown as WorkspaceDefinition;
+    const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const mainFile = getProjectMainFile(project);
+    const { componentOptions, sourceDir } = await getAppOptions(options.project, project.root);
     const prefix = options.prefix || project.prefix;
+    const style = options.style || componentOptions.style;
+    const exportDefault = componentOptions.exportDefault ?? false;
+
     const isStandalone = isStandaloneApp(host, mainFile);
     const templateSourcePath = isStandalone ? './standalone' : './files';
 
@@ -49,8 +53,10 @@ export default function (options: Schema): Rule {
         apply(url(`${templateSourcePath}/src`), [
           applyTemplates({
             ...strings,
-            ...options,
-            prefix
+            ...componentOptions,
+            exportDefault,
+            prefix,
+            style
           }),
           move(project.sourceRoot as string),
           forEach((fileEntry: FileEntry) => {
@@ -62,6 +68,17 @@ export default function (options: Schema): Rule {
         ]),
         MergeStrategy.Overwrite
       ),
+      schematic('component', {
+        name: 'welcome',
+        project: options.project,
+        standalone: isStandalone,
+        ...componentOptions,
+        path: `${sourceDir}/pages`,
+        skipImport: true,
+        skipTests: true,
+        prefix,
+        style
+      }),
       isStandalone ? addIconsProvider(options.project, mainFile) : addModules(options.project)
     ]);
   };
@@ -69,7 +86,7 @@ export default function (options: Schema): Rule {
 
 function addModules(project: string): Rule {
   return chain([
-    addModule('AppRoutingModule', './app-routing.module', project),
+    addModule('AppRoutingModule', './app-routing-module', project),
     addModule('IconsProviderModule', './icons-provider.module', project),
     addModule('NzLayoutModule', 'ng-zorro-antd/layout', project),
     addModule('NzMenuModule', 'ng-zorro-antd/menu', project)
@@ -95,5 +112,5 @@ function importIconDefinitions(mainFile: string): Rule {
     applyChangesToFile(host, appConfigFile, [
       insertImport(appConfigSource, appConfigFile, 'icons', './icons-provider')
     ]);
-  }
+  };
 }

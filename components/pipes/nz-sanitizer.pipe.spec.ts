@@ -3,44 +3,43 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { inject, TestBed } from '@angular/core/testing';
-import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+import { TestBed } from '@angular/core/testing';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { NzSanitizerPipe } from './nz-sanitizer.pipe';
 
 describe('NzSanitizerPipe', () => {
+  let pipe: NzSanitizerPipe;
   const htmlSnippet = '<div><p>hello world</p><div>';
   const styleSnippet = 'height:50px;background-color: red';
   const urlSnippet = 'https://img.alicdn.com/tfs/TB1Ly5oS3HqK1RjSZFPXXcwapXa-238-54.png';
   const responseUrlSnippet = 'https://www.aliyun.com/';
+
   beforeEach(() => {
     TestBed.configureTestingModule({
+      providers: [NzSanitizerPipe],
       imports: [BrowserModule]
     });
+    pipe = TestBed.inject(NzSanitizerPipe);
   });
 
-  it('Should sanitizer', inject([DomSanitizer], (domSanitizer: DomSanitizer) => {
-    const pipe: NzSanitizerPipe = new NzSanitizerPipe(domSanitizer);
+  it('Should sanitizer', () => {
     expect(pipe).toBeTruthy();
-  }));
+  });
 
-  it('Should sanitizer but type is html', inject([DomSanitizer], (domSanitizer: DomSanitizer) => {
-    const pipe: NzSanitizerPipe = new NzSanitizerPipe(domSanitizer);
+  it('Should sanitizer but type is html', () => {
     expect(pipe.transform(htmlSnippet, 'html')).toBeTruthy();
-  }));
+  });
 
-  it('Should sanitizer but type is style', inject([DomSanitizer], (domSanitizer: DomSanitizer) => {
-    const pipe: NzSanitizerPipe = new NzSanitizerPipe(domSanitizer);
+  it('Should sanitizer but type is style', () => {
     expect(pipe.transform(styleSnippet, 'style')).toBeTruthy();
-  }));
+  });
 
-  it('Should sanitizer but type is url', inject([DomSanitizer], (domSanitizer: DomSanitizer) => {
-    const pipe: NzSanitizerPipe = new NzSanitizerPipe(domSanitizer);
+  it('Should sanitizer but type is url', () => {
     expect(pipe.transform(urlSnippet, 'url')).toBeTruthy();
-  }));
+  });
 
-  it('Should sanitizer but type is resourceUrl', inject([DomSanitizer], (domSanitizer: DomSanitizer) => {
-    const pipe: NzSanitizerPipe = new NzSanitizerPipe(domSanitizer);
+  it('Should sanitizer but type is resourceUrl', () => {
     expect(pipe.transform(responseUrlSnippet, 'resourceUrl')).toBeTruthy();
-  }));
+  });
 });

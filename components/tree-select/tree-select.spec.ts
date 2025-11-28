@@ -7,8 +7,8 @@ import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
-import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Component, DebugElement, NgZone, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -27,14 +27,16 @@ import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NzTreeSelectComponent } from './tree-select.component';
 import { NzTreeSelectModule } from './tree-select.module';
 
-describe('tree-select component', () => {
+describe('tree-select', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let zone: MockNgZone;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         provideNoopAnimations(),
         {
           provide: NgZone,
@@ -45,14 +47,15 @@ describe('tree-select component', () => {
         }
       ]
     });
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
+  });
+
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
   }));
 
-  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-    currentOverlayContainer.ngOnDestroy();
+  afterEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    oc.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
 
@@ -92,6 +95,7 @@ describe('tree-select component', () => {
         fixture.detectChanges();
         expect(treeSelect.nativeElement.classList).toContain('ant-select-filled');
       });
+
       it('borderless', () => {
         fixture.detectChanges();
         expect(treeSelect.nativeElement.classList).not.toContain('ant-select-borderless');
@@ -99,6 +103,7 @@ describe('tree-select component', () => {
         fixture.detectChanges();
         expect(treeSelect.nativeElement.classList).toContain('ant-select-borderless');
       });
+
       it('underlined', () => {
         fixture.detectChanges();
         expect(treeSelect.nativeElement.classList).not.toContain('ant-select-underlined');
@@ -122,6 +127,7 @@ describe('tree-select component', () => {
 
       expect(nativeElement.querySelector('nz-select-clear')).toBeNull();
     });
+
     it('should click toggle open', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
@@ -130,6 +136,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(false);
     });
+
     it('should close when the outside clicks', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
@@ -139,6 +146,7 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.nzOpen).toBe(false);
       fixture.detectChanges();
     });
+
     it('should disabled work', fakeAsync(() => {
       testComponent.disabled = true;
       fixture.detectChanges();
@@ -153,6 +161,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       tick();
     }));
+
     it('should dropdownMatchSelectWidth work', () => {
       testComponent.dropdownMatchSelectWidth = true;
       fixture.detectChanges();
@@ -161,7 +170,7 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.nzOpen).toBe(true);
       const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
       expect(overlayPane.style.width).toBe('250px');
-      treeSelectComponent.closeDropDown();
+      treeSelectComponent.closeDropdown();
       fixture.detectChanges();
       testComponent.dropdownMatchSelectWidth = false;
       fixture.detectChanges();
@@ -170,6 +179,7 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.nzOpen).toBe(true);
       expect(overlayPane.style.minWidth).toBe('250px');
     });
+
     it('should clear value work', fakeAsync(() => {
       testComponent.allowClear = true;
       fixture.detectChanges();
@@ -182,6 +192,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(null);
     }));
+
     it('should set null value work', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.value).toBe('10001');
@@ -197,6 +208,7 @@ describe('tree-select component', () => {
       expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toEqual(0);
       expect(testComponent.nzSelectTreeComponent.value.length).toBe(0);
     }));
+
     it('should dropdown style work', fakeAsync(() => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
@@ -205,6 +217,7 @@ describe('tree-select component', () => {
       const targetElement = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(targetElement.style.height).toBe('120px');
     }));
+
     it('should dropdown classname work', fakeAsync(() => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
@@ -214,6 +227,7 @@ describe('tree-select component', () => {
       expect(targetElement.classList).toContain('class1');
       expect(targetElement.classList).toContain('class2');
     }));
+
     it('should click option close dropdown', fakeAsync(() => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
@@ -283,6 +297,7 @@ describe('tree-select component', () => {
       flush();
       fixture.detectChanges();
     }));
+
     it('should display no data', fakeAsync(() => {
       treeSelectComponent.updateSelectedNodes();
       fixture.detectChanges();
@@ -300,6 +315,7 @@ describe('tree-select component', () => {
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBe('');
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
     }));
+
     it('should clean search value when reopen', fakeAsync(() => {
       testComponent.showSearch = true;
       fixture.detectChanges();
@@ -322,6 +338,7 @@ describe('tree-select component', () => {
 
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
     }));
+
     it('should max tag count work', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.multiple = true;
@@ -368,7 +385,8 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       treeSelect.nativeElement.click();
       fixture.detectChanges();
-      expect(overlayContainerElement.children[0].classList).toContain('cdk-overlay-backdrop');
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     }));
 
     it('should isComposing/inputValue is correct', fakeAsync(() => {
@@ -379,6 +397,25 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.isComposing).toBe(true);
       expect(treeSelectComponent.inputValue).toBe('');
     }));
+
+    it('should nzPrefix work', () => {
+      const host = fixture.debugElement.nativeElement;
+      testComponent.prefix = 'prefix';
+      fixture.detectChanges();
+      expect(host.querySelector('.ant-select-prefix')!.textContent?.trim()).toBe('prefix');
+
+      testComponent.prefix = testComponent.affixTemplate;
+      fixture.detectChanges();
+      expect(host.querySelector('.ant-select-prefix')!.textContent?.trim()).toBe('icon');
+    });
+
+    it('should nzSuffixIcon work', () => {
+      const host = fixture.debugElement.nativeElement;
+      expect(host.querySelector('.anticon-down')).toBeTruthy();
+      testComponent.suffixIcon = testComponent.affixTemplate;
+      fixture.detectChanges();
+      expect(host.querySelector('nz-select-arrow')!.textContent?.trim()).toBe('icon');
+    });
   });
 
   describe('checkable', () => {
@@ -548,6 +585,7 @@ describe('tree-select component', () => {
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
       treeSelectComponent = treeSelect.componentInstance;
     });
+
     it('should set disabled work', fakeAsync(() => {
       fixture.detectChanges();
       flush();
@@ -630,6 +668,7 @@ describe('tree-select component', () => {
       fixture = TestBed.createComponent(NzTestTreeSelectCustomizedIconComponent);
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
     });
+
     it('should display', fakeAsync(() => {
       fixture.detectChanges();
       treeSelect.nativeElement.click();
@@ -745,12 +784,16 @@ describe('tree-select component', () => {
       [nzMaxTagCount]="maxTagCount"
       [nzDropdownStyle]="{ height: '120px' }"
       [nzBackdrop]="hasBackdrop"
+      [nzPrefix]="prefix"
+      [nzSuffixIcon]="suffixIcon"
       nzDropdownClassName="class1 class2"
-    ></nz-tree-select>
+    />
+    <ng-template #affixTemplate>icon</ng-template>
   `
 })
 export class NzTestTreeSelectBasicComponent {
   @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent!: NzTreeSelectComponent;
+  @ViewChild('affixTemplate', { static: false }) affixTemplate!: TemplateRef<void>;
   expandKeys = ['1001', '10001'];
   value: string | string[] | null = '10001';
   size: NzSizeLDSType = 'default';
@@ -761,6 +804,8 @@ export class NzTestTreeSelectBasicComponent {
   dropdownMatchSelectWidth = true;
   multiple = false;
   maxTagCount = Infinity;
+  prefix: string | TemplateRef<void> | null = null;
+  suffixIcon: string | TemplateRef<void> | null = null;
   nodes: NzTreeNodeOptions[] = [
     {
       title: 'root1',
@@ -831,7 +876,6 @@ export class NzTestTreeSelectBasicComponent {
   imports: [FormsModule, NzTreeSelectModule],
   template: `
     <nz-tree-select
-      style="width: 250px"
       nzPlaceHolder="Please select"
       [nzExpandedKeys]="expandKeys"
       [nzNodes]="nodes"
@@ -839,7 +883,7 @@ export class NzTestTreeSelectBasicComponent {
       [nzCheckable]="true"
       [nzCheckStrictly]="checkStrictly"
       [(ngModel)]="value"
-    ></nz-tree-select>
+    />
   `
 })
 export class NzTestTreeSelectCheckableComponent {
@@ -917,7 +961,7 @@ export class NzTestTreeSelectCheckableComponent {
   imports: [ReactiveFormsModule, NzTreeSelectModule],
   template: `
     <form>
-      <nz-tree-select [formControl]="formControl" style="width: 250px" [nzNodes]="nodes"></nz-tree-select>
+      <nz-tree-select [formControl]="formControl" [nzNodes]="nodes" />
     </form>
   `
 })
@@ -986,13 +1030,12 @@ export class NzTestTreeSelectCustomizedIconComponent {
   imports: [FormsModule, NzTreeSelectModule],
   template: `
     <nz-tree-select
-      style="width:100%;margin:20px 0;"
       [nzNodes]="nodes"
       nzShowSearch
       [nzStatus]="status"
       nzPlaceHolder="Please select"
       [(ngModel)]="value"
-    ></nz-tree-select>
+    />
   `
 })
 export class NzTestTreeSelectStatusComponent {
@@ -1027,7 +1070,7 @@ export class NzTestTreeSelectStatusComponent {
     <form nz-form>
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
-          <nz-tree-select [nzNodes]="[]"></nz-tree-select>
+          <nz-tree-select [nzNodes]="[]" />
         </nz-form-control>
       </nz-form-item>
     </form>
@@ -1072,7 +1115,7 @@ function dig(path = '0', level = 3): NzTreeNodeOptions[] {
       nzVirtualHeight="300px"
       nzHideUnMatched="true"
       [nzDropdownMatchSelectWidth]="true"
-    ></nz-tree-select>
+    />
   `
 })
 export class NzTestTreeSelectVirtualScrollComponent {

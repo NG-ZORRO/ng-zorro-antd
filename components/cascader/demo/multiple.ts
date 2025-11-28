@@ -51,11 +51,11 @@ const getOptions = (): NzCascaderOption[] => [
       (ngModelChange)="onChanges($event)"
       nzMultiple
       [nzMaxTagCount]="3"
-    ></nz-cascader>
+    />
   `
 })
 export class NzDemoCascaderMultipleComponent {
-  nzOptions: NzCascaderOption[] = getOptions();
+  readonly nzOptions: NzCascaderOption[] = getOptions();
   values: NzSafeAny[][] | null = null;
 
   onChanges(values: NzSafeAny[][]): void {

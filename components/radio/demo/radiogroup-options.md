@@ -9,7 +9,6 @@ title:
 
 通过配置 `options` 参数来渲染单选框。
 
-
 ## en-US
 
 Render radios by configuring `options`.

@@ -5,8 +5,15 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
-import { ApplicationRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -19,11 +26,12 @@ import { NzSwitchComponent } from './switch.component';
 import { NzSwitchModule } from './switch.module';
 
 describe('switch', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
+    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
     });
-  }));
+  });
 
   describe('basic switch', () => {
     let fixture: ComponentFixture<NzTestSwitchBasicComponent>;

@@ -13,11 +13,17 @@ export interface ImportSpecifierUpgradeData {
 const resolve = (module: string): string => `ng-zorro-antd/${module}`;
 
 export const importSpecifiers: VersionChanges<ImportSpecifierUpgradeData> = {
-  [TargetVersion.V20]: [{
-    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/8901',
+  [TargetVersion.V21]: [{
+    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9528',
     changes: [{
-      replace: resolve('input-number'),
-      replaceWith: resolve('input-number-legacy'),
+      replace: resolve('water-mark'),
+      replaceWith: resolve('watermark'),
+    }]
+  }, {
+    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9555',
+    changes: [{
+      replace: resolve('core/no-animation'),
+      replaceWith: resolve('core/animation'),
     }]
   }]
 };

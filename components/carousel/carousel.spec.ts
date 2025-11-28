@@ -5,7 +5,7 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
@@ -22,7 +22,14 @@ import { NzCarouselTransformNoLoopStrategy } from './strategies/experimental/tra
 import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './typings';
 
 describe('carousel', () => {
-  describe('carousel basic', () => {
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
     let testComponent: NzTestCarouselBasicComponent;
     let carouselWrapper: DebugElement;
@@ -366,9 +373,11 @@ describe('carousel custom strategies', () => {
   let carouselWrapper: DebugElement;
   let carouselContents: DebugElement[];
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         {
           provide: NZ_CAROUSEL_CUSTOM_STRATEGIES,
           useValue: [
@@ -384,7 +393,7 @@ describe('carousel custom strategies', () => {
         }
       ]
     });
-  }));
+  });
 
   it('could use custom strategies', fakeAsync(() => {
     fixture = TestBed.createComponent(NzTestCarouselBasicComponent);
@@ -420,6 +429,87 @@ describe('carousel custom strategies', () => {
     expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe(
       'translate3d(0px, 0px, 0px)'
     );
+  }));
+});
+
+describe('carousel arrows', () => {
+  let fixture: ComponentFixture<NzTestCarouselArrowsComponent>;
+  let testComponent: NzTestCarouselArrowsComponent;
+  let carouselWrapper: DebugElement;
+  let carouselContents: DebugElement[];
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection()]
+    });
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestCarouselArrowsComponent);
+    fixture.detectChanges();
+    testComponent = fixture.debugElement.componentInstance;
+    carouselWrapper = fixture.debugElement.query(By.directive(NzCarouselComponent));
+    carouselContents = fixture.debugElement.queryAll(By.directive(NzCarouselContentDirective));
+  });
+
+  it('should render arrows when nzArrows is true', () => {
+    const prev = carouselWrapper.nativeElement.querySelector('.slick-prev');
+    const next = carouselWrapper.nativeElement.querySelector('.slick-next');
+    expect(prev).not.toBeNull();
+    expect(next).not.toBeNull();
+  });
+
+  it('should navigate via arrows', fakeAsync(() => {
+    expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+    carouselWrapper.nativeElement.querySelector('.slick-next').click();
+    tickMilliseconds(fixture, 700);
+    expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
+    carouselWrapper.nativeElement.querySelector('.slick-prev').click();
+    tickMilliseconds(fixture, 700);
+    expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+  }));
+
+  it('should disable arrows at edges when loop is false', fakeAsync(() => {
+    testComponent.loop = false;
+    fixture.detectChanges();
+    const prev = carouselWrapper.nativeElement.querySelector('.slick-prev');
+    const next = carouselWrapper.nativeElement.querySelector('.slick-next');
+    expect(prev.classList).toContain('slick-disabled');
+    expect(next.classList).not.toContain('slick-disabled');
+
+    // Go to last slide
+    for (let i = 0; i < 3; i++) {
+      next.click();
+      tickMilliseconds(fixture, 700);
+    }
+    expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+    expect(next.classList).toContain('slick-disabled');
+
+    // Clicking next should not move beyond last
+    next.click();
+    tickMilliseconds(fixture, 700);
+    expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+  }));
+});
+
+describe('carousel no swipe', () => {
+  let fixture: ComponentFixture<NzTestCarouselNoSwipeComponent>;
+  let testComponent: NzTestCarouselNoSwipeComponent;
+  let carouselContents: DebugElement[];
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestCarouselNoSwipeComponent);
+    fixture.detectChanges();
+    testComponent = fixture.debugElement.componentInstance;
+    carouselContents = fixture.debugElement.queryAll(By.directive(NzCarouselContentDirective));
+  });
+
+  it('should not change slide on swipe when nzEnableSwipe is false', fakeAsync(() => {
+    expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+    swipe(testComponent.nzCarouselComponent, 500);
+    tickMilliseconds(fixture, 700);
+    expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
   }));
 });
 
@@ -508,6 +598,43 @@ export class NzTestCarouselActiveIndexComponent {
   }
 }
 
+@Component({
+  selector: 'nz-test-carousel-arrows',
+  imports: [NzCarouselModule],
+  template: `
+    <nz-carousel [nzArrows]="true" [nzLoop]="loop">
+      @for (index of array; track index) {
+        <div nz-carousel-content>
+          <h3>{{ index }}</h3>
+        </div>
+      }
+    </nz-carousel>
+  `
+})
+export class NzTestCarouselArrowsComponent {
+  @ViewChild(NzCarouselComponent, { static: true }) nzCarouselComponent!: NzCarouselComponent;
+  array = [1, 2, 3, 4];
+  loop = true;
+}
+
+@Component({
+  selector: 'nz-test-carousel-no-swipe',
+  imports: [NzCarouselModule],
+  template: `
+    <nz-carousel [nzEnableSwipe]="false">
+      @for (index of array; track index) {
+        <div nz-carousel-content>
+          <h3>{{ index }}</h3>
+        </div>
+      }
+    </nz-carousel>
+  `
+})
+export class NzTestCarouselNoSwipeComponent {
+  @ViewChild(NzCarouselComponent, { static: true }) nzCarouselComponent!: NzCarouselComponent;
+  array = [1, 2, 3, 4];
+}
+
 class MockDirectionality {
   value = 'ltr';
   change = new Subject();
@@ -527,6 +654,8 @@ describe('carousel', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        // todo: use zoneless
+        provideZoneChangeDetection(),
         {
           provide: Directionality,
           useClass: MockDirectionality

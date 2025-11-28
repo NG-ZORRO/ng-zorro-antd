@@ -171,5 +171,8 @@ export default {
   },
   Image: {
     preview: 'Önizleme'
+  },
+  Form: {
+    optional: '(isteğe bağlı)'
   }
 };

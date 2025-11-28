@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 @Component({
   selector: 'nz-demo-popover-arrow-point-at-center',
-  imports: [NzButtonModule, NzPopoverModule, NzNoAnimationModule],
+  imports: [NzButtonModule, NzPopoverModule, NzNoAnimationDirective],
   template: `
     <button nz-button nzPopoverTitle="Title" nzPopoverContent="Content" nzPopoverPlacement="topLeft" nz-popover>
       Align edge / 边缘对齐

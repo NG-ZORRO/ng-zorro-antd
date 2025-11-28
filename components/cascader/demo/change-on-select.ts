@@ -49,16 +49,11 @@ const options: NzCascaderOption[] = [
   selector: 'nz-demo-cascader-change-on-select',
   imports: [FormsModule, NzCascaderModule],
   template: `
-    <nz-cascader
-      nzChangeOnSelect
-      [nzOptions]="nzOptions"
-      [(ngModel)]="values"
-      (ngModelChange)="onChanges($event)"
-    ></nz-cascader>
+    <nz-cascader nzChangeOnSelect [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)" />
   `
 })
 export class NzDemoCascaderChangeOnSelectComponent {
-  nzOptions: NzCascaderOption[] = options;
+  readonly nzOptions: NzCascaderOption[] = options;
   values: string[] | null = null;
 
   onChanges(values: string[]): void {

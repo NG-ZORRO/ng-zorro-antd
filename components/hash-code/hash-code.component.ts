@@ -8,6 +8,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   Output,
@@ -211,6 +212,8 @@ import { NzModeType } from './typings';
   }
 })
 export class NzHashCodeComponent implements OnChanges {
+  private cdr = inject(ChangeDetectorRef);
+
   @Input() nzValue: string = '';
   @Input() nzTitle: string = 'HashCode';
   @Input() nzLogo: TemplateRef<void> | string = '';
@@ -223,8 +226,6 @@ export class NzHashCodeComponent implements OnChanges {
   copyHandle(): void {
     this.nzOnCopy.emit(this.nzValue);
   }
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzValue } = changes;

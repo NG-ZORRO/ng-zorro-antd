@@ -5,6 +5,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import {
+  ANIMATION_MODULE_TYPE,
   CSP_NONCE,
   Directive,
   ElementRef,
@@ -17,7 +18,6 @@ import {
   inject,
   makeEnvironmentProviders
 } from '@angular/core';
-import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { NzWaveRenderer } from './nz-wave-renderer';
 
@@ -29,7 +29,9 @@ export const NZ_WAVE_GLOBAL_DEFAULT_CONFIG: NzWaveConfig = {
   disabled: false
 };
 
-export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>('nz-wave-global-options');
+export const NZ_WAVE_GLOBAL_CONFIG = new InjectionToken<NzWaveConfig>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-wave-global-options' : ''
+);
 
 export function provideNzWave(config: NzWaveConfig): EnvironmentProviders {
   return makeEnvironmentProviders([{ provide: NZ_WAVE_GLOBAL_CONFIG, useValue: config }]);
@@ -57,11 +59,10 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   private platform = inject(Platform);
   private config = inject(NZ_WAVE_GLOBAL_CONFIG, { optional: true });
   private animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
+  private ngZone = inject(NgZone);
+  private elementRef = inject(ElementRef<HTMLElement>);
 
-  constructor(
-    private ngZone: NgZone,
-    private elementRef: ElementRef
-  ) {
+  constructor() {
     this.waveDisabled = this.isConfigDisabled();
   }
 

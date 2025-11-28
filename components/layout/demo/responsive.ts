@@ -8,7 +8,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
   selector: 'nz-demo-layout-responsive',
   imports: [NzIconModule, NzMenuModule, NzLayoutModule],
   template: `
-    <nz-layout class="layout">
+    <nz-layout>
       <nz-sider nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline">
@@ -35,16 +35,12 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
         <nz-content>
           <div class="inner-content">Content</div>
         </nz-content>
-        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,
   styles: [
     `
-      .layout {
-        min-height: 100vh;
-      }
-
       .logo {
         height: 32px;
         background: rgba(255, 255, 255, 0.2);
@@ -72,4 +68,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
     `
   ]
 })
-export class NzDemoLayoutResponsiveComponent {}
+export class NzDemoLayoutResponsiveComponent {
+  protected readonly date = new Date();
+}

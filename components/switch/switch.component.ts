@@ -14,17 +14,17 @@ import {
   ElementRef,
   Input,
   NgZone,
-  OnDestroy,
   OnInit,
   TemplateRef,
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
-  forwardRef
+  forwardRef,
+  inject,
+  DestroyRef
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -79,8 +79,16 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
   `,
   imports: [NzWaveModule, NzIconModule, NzOutletModule]
 })
-export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
+export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
+  nzConfigService = inject(NzConfigService);
+  private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  private focusMonitor = inject(FocusMonitor);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
 
   isChecked = false;
   onChange: OnChangeType = () => {};
@@ -96,7 +104,6 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
 
   dir: Direction = 'ltr';
 
-  private destroy$ = new Subject<void>();
   private isNzDisableFirstChange = true;
 
   updateValue(value: boolean): void {
@@ -114,25 +121,22 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     this.switchElement.nativeElement.blur();
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private host: ElementRef<HTMLElement>,
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private focusMonitor: FocusMonitor,
-    private directionality: Directionality
-  ) {}
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.focusMonitor.stopMonitoring(this.switchElement!.nativeElement);
+    });
+  }
 
   ngOnInit(): void {
-    this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
 
     this.dir = this.directionality.value;
 
-    fromEventOutsideAngular(this.host.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
+    fromEventOutsideAngular(this.el, 'click')
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         event.preventDefault();
 
@@ -147,7 +151,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
       });
 
     fromEventOutsideAngular<KeyboardEvent>(this.switchElement.nativeElement, 'keydown')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
         if (this.nzControl || this.nzDisabled || this.nzLoading) {
           return;
@@ -177,19 +181,13 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   ngAfterViewInit(): void {
     this.focusMonitor
       .monitor(this.switchElement!.nativeElement, true)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {
           /** https://github.com/angular/angular/issues/17793 **/
           Promise.resolve().then(() => this.onTouched());
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.focusMonitor.stopMonitoring(this.switchElement!.nativeElement);
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   writeValue(value: boolean): void {

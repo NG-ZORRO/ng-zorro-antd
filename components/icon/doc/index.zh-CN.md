@@ -8,32 +8,30 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/rrwbSt3FQ/Icon.svg'
 description: 语义化的矢量图形。
 ---
 
-
 ## 图标列表
 
 新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/) 同步保持图标的更新。
-
 
 ## API
 
 ### nz-icon, [nz-icon]
 
-| 参数                 | 说明                             | 类型                           | 默认值         | 支持全局配置 |
-|--------------------|--------------------------------|------------------------------|-------------|--------|
-| `[nzType]`         | 图标类型，遵循图标的命名规范                 | string                       | -           | -      |
-| `[nzTheme]`        | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标 | `'fill'丨'outline'丨'twotone'` | `'outline'` | ✅      |
-| `[nzSpin]`         | 是否有旋转动画                        | `boolean`                    | `false`     | -      |
-| `[nzTwotoneColor]` | 双色图标的主要颜色，默认为 Ant Design 蓝色    | `string (十六进制颜色)`            | -           | ✅      |
-| `[nzIconfont]`     | 指定来自 IconFont 的图标类型            | string                       | -           | -      |
-| `[nzRotate]`       | 图标旋转角度                         | `number`                     | -           | -      |
+| 参数               | 说明                                                         | 类型                           | 默认值      | 支持全局配置 |
+| ------------------ | ------------------------------------------------------------ | ------------------------------ | ----------- | ------------ |
+| `[nzType]`         | 图标类型，遵循图标的命名规范                                 | string                         | -           | -            |
+| `[nzTheme]`        | 图标主题风格。可选实心、描线、双色等主题风格，适用于官方图标 | `'fill'丨'outline'丨'twotone'` | `'outline'` | ✅           |
+| `[nzSpin]`         | 是否有旋转动画                                               | `boolean`                      | `false`     | -            |
+| `[nzTwotoneColor]` | 双色图标的主要颜色，默认为 Ant Design 蓝色                   | `string (十六进制颜色)`        | -           | ✅           |
+| `[nzIconfont]`     | 指定来自 IconFont 的图标类型                                 | string                         | -           | -            |
+| `[nzRotate]`       | 图标旋转角度                                                 | `number`                       | -           | -            |
 
 ### NzIconService
 
-| 方法                     | 说明                                          | 参数                       |
-|------------------------|---------------------------------------------|--------------------------|
-| `addIcon()`            | 用于静态引入图标，可传入多个值（或者用数组解构赋值）                  | `IconDefinition`         |
-| `addIconLiteral()`     | 用于静态引入用户自定义图标                               | `string`, `string (SVG)` |
-| `fetchFromIconfont()`  | 用于从 IconFont 获取图标资源文件                       | `NzIconfontOption`       |
+| 方法                   | 说明                                                                               | 参数                     |
+| ---------------------- | ---------------------------------------------------------------------------------- | ------------------------ |
+| `addIcon()`            | 用于静态引入图标，可传入多个值（或者用数组解构赋值）                               | `IconDefinition`         |
+| `addIconLiteral()`     | 用于静态引入用户自定义图标                                                         | `string`, `string (SVG)` |
+| `fetchFromIconfont()`  | 用于从 IconFont 获取图标资源文件                                                   | `NzIconfontOption`       |
 | `changeAssetsSource()` | 用于修改动态加载图标的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 CDN | `string`                 |
 
 ### SVG 图标
@@ -63,7 +61,7 @@ import { provideNzIcons } from 'ng-zorro-antd/icon';
 // 引入你需要的图标，比如你需要 fill 主题的 AccountBook Alert 和 outline 主题的 Alert，推荐 ✔️
 import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
 
-const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
+const icons: IconDefinition[] = [AccountBookFill, AlertOutline, AlertFill];
 
 // 引入全部的图标，不推荐 ❌
 // import * as AllIcons from '@ant-design/icons-angular/icons';
@@ -73,7 +71,7 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
 
 export const appConfig: ApplicationConfig = {
   providers: [provideNzIcons(icons)]
-}
+};
 ```
 
 本质上是调用了 `NzIconService` 的 `addIcon` 方法，引入后的文件会被打包到 `.js` 文件中。
@@ -115,10 +113,12 @@ import { NzIconModule, provideNzIconsPatch } from 'ng-zorro-antd/icon';
 class ChildComponent {}
 
 // 或 在 xxx.routes.ts 中
-const routes: Routes = [{
-  path: '',
-  providers: [provideNzIconsPatch([QuestionOutline])],
-}]
+const routes: Routes = [
+  {
+    path: '',
+    providers: [provideNzIconsPatch([QuestionOutline])]
+  }
+];
 ```
 
 这样，当 QuestionOutline 图标加载之后，整个应用都能够使用它。
@@ -145,9 +145,9 @@ this._iconService.fetchFromIconfont({
 
 `options` 的配置项如下：
 
-| 参数          | 说明                                                                         | 类型     | 默认值 |
-|-------------|----------------------------------------------------------------------------|--------|-----|
-| `scriptUrl` | [iconfont.cn](http://iconfont.cn/) 项目在线生成的 `js` 地址，在 `namespace` 也设置的情况下有效 | string | -   |
+| 参数        | 说明                                                                                           | 类型   | 默认值 |
+| ----------- | ---------------------------------------------------------------------------------------------- | ------ | ------ |
+| `scriptUrl` | [iconfont.cn](http://iconfont.cn/) 项目在线生成的 `js` 地址，在 `namespace` 也设置的情况下有效 | string | -      |
 
 在 `scriptUrl` 都设置有效的情况下，组件在渲染前会自动引入 [iconfont.cn](http://iconfont.cn/) 项目中的图标符号集，无需手动引入。
 
@@ -176,7 +176,7 @@ this._iconService.fetchFromIconfont({
 import * as AllIcons from '@ant-design/icons-angular/icons';
 
 const antDesignIcons = AllIcons as Record<string, IconDefinition>;
-const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key]);
 ```
 
 然后通过 `provideNzIcons` 或者 `NzIconService` 的 `addIcon` 方法引入。

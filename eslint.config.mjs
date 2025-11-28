@@ -1,13 +1,14 @@
 // @ts-check
 
 import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import markdown from '@eslint/markdown';
 import angular from 'angular-eslint';
+import tseslint from 'typescript-eslint';
 
-import jsdoc from 'eslint-plugin-jsdoc';
-import prettier from 'eslint-plugin-prettier';
 import header from 'eslint-plugin-header';
 import importPlugin from 'eslint-plugin-import';
+import jsdoc from 'eslint-plugin-jsdoc';
+import prettier from 'eslint-plugin-prettier';
 import unusedImports from 'eslint-plugin-unused-imports';
 
 header.rules.header.meta.schema = false;
@@ -20,7 +21,7 @@ export default tseslint.config(
       'publish/',
       'lib/',
       'dist/',
-      'scripts/site/{_site,template}/**/*',
+      'scripts/site/{doc,template}/**/*',
       'junit/',
       'coverage-report/'
     ]
@@ -30,7 +31,6 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: true,
-        project: ['tsconfig.json'],
         tsconfigRootDir: import.meta.dirname
       }
     },
@@ -76,11 +76,19 @@ export default tseslint.config(
         }
       ],
       '@angular-eslint/directive-selector': [
-        'error',
-        {
-          type: 'attribute',
-          prefix: ['nz']
-        }
+        'warn',
+        [
+          {
+            type: 'attribute',
+            prefix: ['nz'],
+            style: 'camelCase'
+          },
+          {
+            type: 'element',
+            prefix: ['nz'],
+            style: 'kebab-case'
+          }
+        ]
       ],
       '@angular-eslint/prefer-inject': 'off',
       '@angular-eslint/no-rename-input': 'off',
@@ -152,6 +160,7 @@ export default tseslint.config(
         }
       ],
       'prefer-arrow/prefer-arrow-functions': 'off',
+      'import/no-cycle': 'error',
       'import/no-duplicates': 'error',
       'import/no-unused-modules': 'error',
       'import/no-unassigned-import': 'error',
@@ -215,6 +224,18 @@ export default tseslint.config(
           parser: 'angular'
         }
       ]
+    }
+  },
+  {
+    files: ['**/*.md'],
+    plugins: {
+      prettier,
+      markdown
+    },
+    extends: [markdown.configs.recommended],
+    rules: {
+      'prettier/prettier': 'error',
+      'markdown/no-missing-label-refs': 'off'
     }
   }
 );

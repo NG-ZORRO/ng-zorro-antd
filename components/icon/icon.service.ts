@@ -4,12 +4,12 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { inject, Injectable, InjectionToken } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 
-import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { IconConfig, NzConfigService, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 
 import { NZ_ICONS_USED_BY_ZORRO } from './icons';
@@ -18,8 +18,12 @@ export interface NzIconfontOption {
   scriptUrl: string;
 }
 
-export const NZ_ICONS = new InjectionToken<IconDefinition[]>('nz_icons');
-export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
+export const NZ_ICONS = new InjectionToken<IconDefinition[]>(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-icons' : ''
+);
+export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-icon-default-twotone-color' : ''
+);
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 
 /**
@@ -28,7 +32,7 @@ export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 @Injectable({
   providedIn: 'root'
 })
-export class NzIconService extends IconService implements OnDestroy {
+export class NzIconService extends IconService {
   protected nzConfigService = inject(NzConfigService);
   private platform = inject(Platform);
 
@@ -39,14 +43,6 @@ export class NzIconService extends IconService implements OnDestroy {
   }
 
   private iconfontCache = new Set<string>();
-  private subscription: Subscription | null = null;
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
-    }
-  }
 
   normalizeSvgElement(svg: SVGElement): void {
     if (!svg.getAttribute('viewBox')) {
@@ -85,7 +81,7 @@ export class NzIconService extends IconService implements OnDestroy {
   }
 
   private onConfigChange(): void {
-    this.subscription = this.nzConfigService.getConfigChangeEventForComponent('icon').subscribe(() => {
+    onConfigChangeEventForComponent('icon', () => {
       this.configDefaultTwotoneColor();
       this.configDefaultTheme();
       this.configUpdated$.next();

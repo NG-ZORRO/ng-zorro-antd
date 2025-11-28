@@ -7,11 +7,9 @@ experimental: true
 description: 常用 Pipes 集合。
 ---
 
-
 ## 何时使用
 
 引入 Pipe 后，像 angular 的默认 Pipe 一样使用
-
 
 ## API
 

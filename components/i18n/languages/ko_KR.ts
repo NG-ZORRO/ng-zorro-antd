@@ -126,5 +126,8 @@ export default {
   },
   Empty: {
     description: '데이터 없음'
+  },
+  Form: {
+    optional: '(선택)'
   }
 };

@@ -8,11 +8,9 @@ cover: 'https://gw.alipayobjects.com/zos/alicdn/5FrZKStG_/List.svg'
 description: 最基础的列表展示，可承载文字、列表、图片、段落。
 ---
 
-
 ## 何时使用
 
 最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面。
-
 
 ## API
 

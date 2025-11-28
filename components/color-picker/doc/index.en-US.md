@@ -15,31 +15,31 @@ Used when the user needs to customize the color selection.
 
 ### nz-color-picker
 
-| Parameter            | Description                           | Type                                               | Default   |
-| -------------------- | ------------------------------------- | -------------------------------------------------- | --------- |
-| `[nzFormat]`         | Format of color                       | `rgb`｜`hex`｜`hsb`                                | `hex`     |
-| `[nzValue]`          | Value of color                        | `string`｜`NzColor`                                | -         |
-| `[nzSize]`           | Setting the trigger size              | `large`｜`default`｜`small`                        | `default` |
-| `[nzDefaultValue]`   | Default value of color                | `string`｜`NzColor`                                | `false`   |
-| `[nzAllowClear]`     | Allow clearing color selected         | `boolean`                                          | `false`   |
-| `[nzTrigger]`        | ColorPicker trigger mode              | `hover`｜`click`                                   | `click`   |
-| `[nzShowText]`       | Show color text                       | `boolean`                                          | `false`   |
-| `[nzOpen]`           | Whether to show popups                | `boolean`                                          | `false`   |
-| `[nzDisabled]`       | Disable ColorPicker                   | `boolean`                                          | `false`   |
-| `[nzDisabledAlpha]`  | Disable Alpha                         | `boolean`                                          | `false`   |
-| `[nzTitle]`          | Setting the title of the color picker | `TemplateRef<void>`｜`string`                      | -         |
-| `(nzOnChange)`       | Callback when value is changed        | `EventEmitter<{ color: NzColor; format: string }>` | -         |
-| `(nzOnClear)`        | Called when clear                     | `EventEmitter<boolean>`                            | -         |
-| `(nzOnFormatChange)` | Callback when `format` is changed     | `EventEmitter<'rgb'｜'hex'｜'hsb'>`                | -         |
-| `(nzOnOpenChange)`   | Callback for opening the color panel  | `EventEmitter<boolean>`                            | -         |
+| Parameter            | Description                           | Type                                               | Default     |
+| -------------------- | ------------------------------------- | -------------------------------------------------- | ----------- |
+| `[nzFormat]`         | Format of color                       | `'rgb' \| 'hex' \| 'hsb'`                          | `'hex'`     |
+| `[nzValue]`          | Value of color                        | `string \| NzColor`                                | -           |
+| `[nzSize]`           | Setting the trigger size              | `'large' \| 'small' \| 'default'`                  | `'default'` |
+| `[nzDefaultValue]`   | Default value of color                | `string \| NzColor`                                | `false`     |
+| `[nzAllowClear]`     | Allow clearing color selected         | `boolean`                                          | `false`     |
+| `[nzTrigger]`        | ColorPicker trigger mode              | `'hover' \| 'click'`                               | `'click'`   |
+| `[nzShowText]`       | Show color text                       | `boolean`                                          | `false`     |
+| `[nzOpen]`           | Whether to show popups                | `boolean`                                          | `false`     |
+| `[nzDisabled]`       | Disable ColorPicker                   | `boolean`                                          | `false`     |
+| `[nzDisabledAlpha]`  | Disable Alpha                         | `boolean`                                          | `false`     |
+| `[nzTitle]`          | Setting the title of the color picker | `TemplateRef<void> \| string`                      | -           |
+| `(nzOnChange)`       | Callback when value is changed        | `EventEmitter<{ color: NzColor; format: string }>` | -           |
+| `(nzOnClear)`        | Called when clear                     | `EventEmitter<boolean>`                            | -           |
+| `(nzOnFormatChange)` | Callback when `format` is changed     | `EventEmitter<'rgb'｜'hex'｜'hsb'>`                | -           |
+| `(nzOnOpenChange)`   | Callback for opening the color panel  | `EventEmitter<boolean>`                            | -           |
 
 ### nz-color-block
 
-| Parameter     | Description                            | Type                        | Default   |
-| ------------- | -------------------------------------- | --------------------------- | --------- |
-| `[nzColor]`   | Module colors                          | `string`                    | `#1677ff` |
-| `[nzSize]`    | Color block size                       | `large`｜`default`｜`small` | `default` |
-| `[nzOnClick]` | Callbacks for clicking on color blocks | `EventEmitter<boolean>`     | -         |
+| Parameter     | Description                            | Type                              | Default     |
+| ------------- | -------------------------------------- | --------------------------------- | ----------- |
+| `[nzColor]`   | Module colors                          | `string`                          | `'#1677ff'` |
+| `[nzSize]`    | Color block size                       | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzOnClick]` | Callbacks for clicking on color blocks | `EventEmitter<void>`              | -           |
 
 ### NzColor
 
@@ -51,3 +51,10 @@ Used when the user needs to customize the color selection.
 | `toHsbString` | Convert to `hsb` format color string, the return type like: `hsb(215, 91%, 100%)` | `() => string`                                          | -       |
 | `toRgb`       | Convert to `rgb` object                                                           | `() => ({ r: number, g: number, b: number, a number })` | -       |
 | `toRgbString` | Convert to `rgb` format color string, the return type like: `rgb(22, 119, 255)`   | `() => string`                                          | -       |
+
+## FAQ
+
+### Q: The overlay layer element does not follow the scroll position when scrolling
+
+By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
+Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.

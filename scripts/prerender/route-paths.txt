@@ -11,8 +11,6 @@
 /components/auto-complete/zh
 /components/avatar/en
 /components/avatar/zh
-/components/back-top/en
-/components/back-top/zh
 /components/badge/en
 /components/badge/zh
 /components/breadcrumb/en
@@ -133,8 +131,8 @@
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
-/components/water-mark/en
-/components/water-mark/zh
+/components/watermark/en
+/components/watermark/zh
 /components/check-list/en
 /components/check-list/zh
 /components/color-picker/en
@@ -167,8 +165,8 @@
 /docs/introduce/zh
 /docs/join/en
 /docs/join/zh
-/docs/migration-v19/en
-/docs/migration-v19/zh
+/docs/migration-v21/en
+/docs/migration-v21/zh
 /docs/recommendation/en
 /docs/recommendation/zh
 /docs/schematics/en

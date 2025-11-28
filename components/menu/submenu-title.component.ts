@@ -8,16 +8,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -37,7 +37,7 @@ import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
       <span class="ant-menu-title-content">{{ nzTitle }}</span>
     </ng-container>
     <ng-content />
-    @if (isMenuInsideDropDown) {
+    @if (isMenuInsideDropdown) {
       <span class="ant-dropdown-menu-submenu-expand-icon">
         @switch (dir) {
           @case ('rtl') {
@@ -53,8 +53,8 @@ import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
     }
   `,
   host: {
-    '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropDown',
-    '[class.ant-menu-submenu-title]': '!isMenuInsideDropDown',
+    '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropdown',
+    '[class.ant-menu-submenu-title]': '!isMenuInsideDropdown',
     '[style.paddingLeft.px]': `dir === 'rtl' ? null : paddingLeft `,
     '[style.paddingRight.px]': `dir === 'rtl' ? paddingLeft : null`,
     '(click)': 'clickTitle()',
@@ -63,10 +63,14 @@ import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
   },
   imports: [NzIconModule, NzOutletModule]
 })
-export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
+export class NzSubMenuTitleComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly directionality = inject(Directionality);
+
   @Input() nzIcon: string | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
-  @Input() isMenuInsideDropDown = false;
+  @Input() isMenuInsideDropdown = false;
   @Input() nzDisabled = false;
   @Input() paddingLeft: number | null = null;
   @Input() mode: NzMenuModeType = 'vertical';
@@ -75,23 +79,13 @@ export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
   dir: Direction = 'ltr';
-  private destroy$ = new Subject<void>();
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
   ngOnInit(): void {
     this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   setMouseState(state: boolean): void {
@@ -99,6 +93,7 @@ export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
       this.subMenuMouseState.next(state);
     }
   }
+
   clickTitle(): void {
     if ((this.mode === 'inline' || this.nzTriggerSubMenuAction === 'click') && !this.nzDisabled) {
       this.subMenuMouseState.next(true);

@@ -10,7 +10,9 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
   NgZone,
   OnChanges,
@@ -21,10 +23,10 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription, merge } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { startWith } from 'rxjs/operators';
 
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { toBoolean } from 'ng-zorro-antd/core/util';
 
@@ -51,11 +53,15 @@ export type NzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; 
     '[class.ant-steps-navigation]': `nzType === 'navigation'`,
     '[class.ant-steps-rtl]': `dir === 'rtl'`,
     '[class.ant-steps-with-progress]': 'showProgress'
-  },
-  providers: [NzDestroyService]
+  }
 })
 export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   static ngAcceptInputType_nzProgressDot: BooleanInput | NzProgressDotTemplate | undefined | null;
+
+  private cdr = inject(ChangeDetectorRef);
+  private ngZone = inject(NgZone);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
 
   @ContentChildren(NzStepComponent) steps!: QueryList<NzStepComponent>;
 
@@ -87,21 +93,15 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   customProcessDotTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
   dir: Direction = 'ltr';
 
-  constructor(
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality,
-    private destroy$: NzDestroyService
-  ) {}
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzStartIndex || changes.nzDirection || changes.nzStatus || changes.nzCurrent || changes.nzSize) {
+    const { nzStartIndex, nzDirection, nzStatus, nzCurrent, nzSize } = changes;
+    if (nzStartIndex || nzDirection || nzStatus || nzCurrent || nzSize) {
       this.updateChildrenSteps();
     }
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -112,7 +112,7 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     if (this.steps) {
-      this.steps.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
+      this.steps.changes.pipe(startWith(null), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
         this.updateHostProgressClass();
         this.updateChildrenSteps();
       });
@@ -146,7 +146,7 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
       });
       this.indexChangeSubscription.unsubscribe();
       this.indexChangeSubscription = merge(...this.steps.map(step => step.clickOutsideAngular$))
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(index => {
           if (this.nzIndexChange.observers.length) {
             this.ngZone.run(() => this.nzIndexChange.emit(index));

@@ -6,12 +6,10 @@ cover: 'https://gw.alipayobjects.com/zos/antfincdn/rcBNhLBrKbE/Statistic.svg'
 description: Display statistic number.
 ---
 
-
 ## When To Use
 
 - When want to highlight some data.
 - When want to display statistic data with description.
-
 
 ## API
 
@@ -31,7 +29,7 @@ description: Display statistic number.
 
 | Property              | Description                      | Type                                 | Default      |
 | --------------------- | -------------------------------- | ------------------------------------ | ------------ |
-| `[nzFormat]`          | Format string                    | `string`                             | `"HH:mm:ss"` |
+| `[nzFormat]`          | Format string                    | `string`                             | `'HH:mm:ss'` |
 | `[nzPrefix]`          | Prefix of Value                  | `string \| TemplateRef<void>`        | -            |
 | `[nzSuffix]`          | Suffix of Value                  | `string \| TemplateRef<void>`        | -            |
 | `[nzTitle]`           | Title                            | `string \| TemplateRef<void>`        | -            |

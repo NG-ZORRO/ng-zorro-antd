@@ -21,6 +21,7 @@ import {
   ChangeDetectorRef,
   Component,
   computed,
+  DestroyRef,
   DOCUMENT,
   ElementRef,
   EventEmitter,
@@ -39,18 +40,17 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { of } from 'rxjs';
-import { distinctUntilChanged, map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
@@ -250,7 +250,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     '[class.ant-picker-small]': `finalSize() === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-rtl]': `dir === 'rtl'`,
-    '[class.ant-picker-borderless]': `nzVariant === 'borderless' || (nzVariant === 'outlined' && nzBorderless)`,
+    '[class.ant-picker-borderless]': `nzVariant === 'borderless'`,
     '[class.ant-picker-filled]': `nzVariant === 'filled'`,
     '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
     '[class.ant-picker-inline]': `nzInline`,
@@ -258,7 +258,6 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   providers: [
-    NzDestroyService,
     DatePickerService,
     { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'picker' },
     {
@@ -281,6 +280,18 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
   ]
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
+  public nzConfigService = inject(NzConfigService);
+  public datePickerService = inject(DatePickerService);
+  protected i18n = inject(NzI18nService);
+  protected cdr = inject(ChangeDetectorRef);
+  private renderer = inject(Renderer2);
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private dateHelper = inject(DateHelperService);
+  private nzResizeObserver = inject(NzResizeObserver);
+  private platform = inject(Platform);
+  private directionality = inject(Directionality);
+  private destroyRef = inject(DestroyRef);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
@@ -304,10 +315,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
   @Input({ transform: booleanAttribute }) nzAutoFocus: boolean = false;
   @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
-  /**
-   * @deprecated Will be removed in v21. It is recommended to use `nzVariant` instead.
-   */
-  @Input({ transform: booleanAttribute }) nzBorderless: boolean = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
   @Input({ transform: booleanAttribute }) nzInline: boolean = false;
   @Input({ transform: booleanAttribute }) nzOpen?: boolean;
@@ -395,13 +402,13 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     if (this.isRange && this.platform.isBrowser) {
       this.nzResizeObserver
         .observe(this.elementRef)
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.updateInputWidthAndArrowLeft();
         });
     }
 
-    this.datePickerService.inputPartChange$.pipe(takeUntil(this.destroy$)).subscribe(partType => {
+    this.datePickerService.inputPartChange$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(partType => {
       if (partType) {
         this.datePickerService.activeInput = partType;
       }
@@ -413,7 +420,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
       // prevent mousedown event to trigger focusout event when click in date picker
       // see: https://github.com/NG-ZORRO/ng-zorro-antd/issues/7450
       fromEventOutsideAngular(this.elementRef.nativeElement, 'mousedown')
-        .pipe(takeUntil(this.destroy$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(event => {
           if ((event.target as HTMLInputElement).tagName.toLowerCase() !== 'input') {
             event.preventDefault();
@@ -634,20 +641,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   // Input API End
   // ------------------------------------------------------------------------
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    public datePickerService: DatePickerService,
-    protected i18n: NzI18nService,
-    protected cdr: ChangeDetectorRef,
-    private renderer: Renderer2,
-    private elementRef: ElementRef<HTMLElement>,
-    private dateHelper: DateHelperService,
-    private nzResizeObserver: NzResizeObserver,
-    private platform: Platform,
-    private destroy$: NzDestroyService,
-    private directionality: Directionality
-  ) {}
-
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
       .pipe(
@@ -656,7 +649,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
         }),
         withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : of(false)),
         map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
@@ -664,13 +657,13 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
     // Subscribe the every locale change if the nzLocale is not handled by user
     if (!this.nzLocale) {
-      this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => this.setLocale());
+      this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.setLocale());
     }
 
     // Default value
     this.datePickerService.isRange = this.isRange;
     this.datePickerService.initValue(true);
-    this.datePickerService.emitValue$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.datePickerService.emitValue$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       const granularityComparison = this.showTime ? 'second' : 'day';
       const value = this.datePickerService.value;
       const datePickerPreviousValue = this.datePickerService.initialValue;
@@ -717,7 +710,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
       this.close();
     });
 
-    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
       this.dir = direction;
       this.cdr.detectChanges();
     });
@@ -725,7 +718,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     this.inputValue = this.isRange ? ['', ''] : '';
     this.setModeAndFormat();
 
-    this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.datePickerService.valueChange$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.updateInputValue();
     });
   }
