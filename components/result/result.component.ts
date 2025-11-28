@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  contentChild,
   inject,
   input,
   TemplateRef,
@@ -20,6 +21,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzResultNotFoundComponent } from './partial/not-found';
 import { NzResultServerErrorComponent } from './partial/server-error.component';
 import { NzResultUnauthorizedComponent } from './partial/unauthorized';
+import { NzResultIconDirective } from './result-cells';
 
 export type NzResultIconType = 'success' | 'error' | 'info' | 'warning';
 export type NzExceptionStatusType = '404' | '500' | '403';
@@ -99,6 +101,7 @@ const ExceptionStatus = ['404', '500', '403'];
 })
 export class NzResultComponent {
   private readonly dir = inject(Directionality).valueSignal;
+  private readonly customIconDirective = contentChild(NzResultIconDirective);
 
   readonly nzIcon = input<string | TemplateRef<void>>();
   readonly nzTitle = input<string | TemplateRef<void>>();
@@ -117,6 +120,14 @@ export class NzResultComponent {
   readonly isException = computed(() => ExceptionStatus.indexOf(this.nzStatus()) !== -1);
   readonly icon = computed(() => {
     const icon = this.nzIcon();
-    return typeof icon === 'string' ? IconMap[icon as NzResultIconType] || icon : icon;
+    if (icon !== undefined) {
+      return typeof icon === 'string' ? IconMap[icon as NzResultIconType] || icon : icon;
+    }
+    // When no nzIcon is provided and no custom icon directive is projected,
+    // use the icon from IconMap based on nzStatus
+    if (!this.customIconDirective()) {
+      return IconMap[this.nzStatus() as NzResultIconType];
+    }
+    return undefined;
   });
 }

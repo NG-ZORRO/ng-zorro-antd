@@ -43,6 +43,15 @@ export class NzTestResultRtlComponent {
   direction: Direction = 'rtl';
 }
 
+@Component({
+  selector: 'nz-test-status-icon-result',
+  imports: [NzResultModule],
+  template: `<nz-result [nzStatus]="status" nzTitle="Test Title" />`
+})
+export class NzTestResultStatusIconComponent {
+  status: NzResultStatusType = 'success';
+}
+
 describe('nz-result', () => {
   describe('basic', () => {
     let fixture: ComponentFixture<NzTestResultBasicComponent>;
@@ -127,6 +136,54 @@ describe('nz-result', () => {
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
       expect(resultEl.nativeElement.className).not.toContain('ant-result-rtl');
+    });
+  });
+
+  describe('default icon from status', () => {
+    let fixture: ComponentFixture<NzTestResultStatusIconComponent>;
+    let testComponent: NzTestResultStatusIconComponent;
+    let resultEl: DebugElement;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [provideNzIconsTesting()]
+      });
+
+      fixture = TestBed.createComponent(NzTestResultStatusIconComponent);
+      testComponent = fixture.componentInstance;
+      resultEl = fixture.debugElement.query(By.directive(NzResultComponent));
+    });
+
+    it('should show default icon based on status when nzIcon is not provided', () => {
+      testComponent.status = 'success';
+      fixture.detectChanges();
+
+      const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');
+      expect(iconView.firstElementChild.classList).toContain('anticon-check-circle');
+    });
+
+    it('should show info icon when status is info', () => {
+      testComponent.status = 'info';
+      fixture.detectChanges();
+
+      const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');
+      expect(iconView.firstElementChild.classList).toContain('anticon-exclamation-circle');
+    });
+
+    it('should show warning icon when status is warning', () => {
+      testComponent.status = 'warning';
+      fixture.detectChanges();
+
+      const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');
+      expect(iconView.firstElementChild.classList).toContain('anticon-warning');
+    });
+
+    it('should show error icon when status is error', () => {
+      testComponent.status = 'error';
+      fixture.detectChanges();
+
+      const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');
+      expect(iconView.firstElementChild.classList).toContain('anticon-close-circle');
     });
   });
 });
