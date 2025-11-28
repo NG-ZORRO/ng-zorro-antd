@@ -12,5 +12,11 @@ export const cssSelectors: VersionChanges<CssSelectorUpgradeData> = {
       replace: 'nz-tabset',
       replaceWith: 'nz-tabs'
     }]
+  }, {
+    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9330',
+    changes: [{
+      replace: 'nz-statistic-number',
+      replaceWith: 'nz-statistic-content-value'
+    }]
   }]
 };
