@@ -30,5 +30,29 @@ export const classNames: VersionChanges<ClassNameUpgradeData> = {
       replace: 'NzToolTipModule',
       replaceWith: 'NzTooltipModule'
     }]
+  }, {
+    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9330',
+    changes: [{
+      replace: 'NzStatisticNumberComponent',
+      replaceWith: 'NzStatisticContentValueComponent'
+    }]
+  }, {
+    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9527',
+    changes: [{
+      replace: 'NzDropDownModule',
+      replaceWith: 'NzDropdownModule'
+    }, {
+      replace: 'NzDropDownADirective',
+      replaceWith: 'NzDropdownADirective'
+    }]
+  }, {
+    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9528',
+    changes: [{
+      replace: 'NzWaterMarkModule',
+      replaceWith: 'NzWatermarkModule'
+    }, {
+      replace: 'NzWaterMarkComponent',
+      replaceWith: 'NzWatermarkComponent'
+    }]
   }]
 };
