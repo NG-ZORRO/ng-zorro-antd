@@ -3,8 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Input, NgZone, inject } from '@angular/core';
-import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { ANIMATION_MODULE_TYPE, Directive, ElementRef, Input, NgZone, inject } from '@angular/core';
 
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 

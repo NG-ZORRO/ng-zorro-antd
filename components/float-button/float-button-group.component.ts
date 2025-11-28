@@ -18,6 +18,7 @@ import {
   TemplateRef
 } from '@angular/core';
 
+import { withAnimationCheck } from 'ng-zorro-antd/core/animation';
 import { NzFourDirectionType, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { generateClassName } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -97,8 +98,8 @@ export class NzFloatButtonGroupComponent {
     }
     return classes;
   });
-  protected readonly enterAnimation = computed(() => `ant-float-btn-enter-${this.nzPlacement()}`);
-  protected readonly leaveAnimation = computed(() => `ant-float-btn-leave-${this.nzPlacement()}`);
+  protected readonly enterAnimation = withAnimationCheck(() => `ant-float-btn-enter-${this.nzPlacement()}`);
+  protected readonly leaveAnimation = withAnimationCheck(() => `ant-float-btn-leave-${this.nzPlacement()}`);
 
   constructor() {
     effect(() => {

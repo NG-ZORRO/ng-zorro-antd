@@ -11,7 +11,7 @@ import { ComponentFixture, TestBed, fakeAsync, inject as testingInject, tick } f
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NZ_DRAWER_DATA, NzDrawerPlacement } from 'ng-zorro-antd/drawer/drawer-options';
 import { NzIconModule } from 'ng-zorro-antd/icon';

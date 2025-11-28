@@ -2,12 +2,12 @@
 @import '../../style/themes/index';
 
 @float-btn-prefix-cls: ~'@{ant-prefix}-float-btn';
-@animation-duration: 0.3s;
+@animation-duration: @animation-duration-slow;
 @slide-distance: 40px;
 
 .animation(@direction, @type) {
   &-@{type}-@{direction} {
-    animation: ~"@{type}-@{direction}" @animation-duration ease-in-out;
+    animation: ~"@{type}-@{direction}" @animation-duration @ease-in-out;
   }
 }
 
