@@ -70,7 +70,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input('nzPopconfirmOverlayStyle') override overlayStyle?: NgStyleInterface;
   @Input('nzPopconfirmVisible') override visible?: boolean;
   @Input() nzBeforeConfirm?: () => Observable<boolean> | Promise<boolean> | boolean;
-  @Input() nzIcon?: string | TemplateRef<void>;
+  @Input() nzIcon?: string | TemplateRef<void> | null;
   @Input({ transform: booleanAttribute }) nzCondition: boolean = false;
   @Input({ transform: booleanAttribute }) nzPopconfirmShowArrow: boolean = true;
   @Input() @WithConfig() nzPopconfirmBackdrop?: boolean = false;
