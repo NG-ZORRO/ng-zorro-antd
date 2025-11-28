@@ -47,6 +47,6 @@
     "!/components/?*",
     "!/experimental/**/*",
     "!/experimental/?*",
-    "!/x/**/*"
+    "!/x/**"
   ]
 }

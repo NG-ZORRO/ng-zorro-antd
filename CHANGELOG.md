@@ -1,3 +1,10 @@
+## [20.4.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.4.2...20.4.3) (2025-11-28)
+
+### Bug Fixes
+
+- **form:** animation should respect NoopAnimations ([#9562](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9562)) ([5bccf96](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5bccf968ab8cbe4164fe09e691f6664ee2664a5c))
+- **input:** fix dependency cycle ([#9561](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9561)) ([8d5782d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8d5782d5ae35769fc73bcdb49d9d7897b9b92828))
+
 ## [20.4.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.4.1...20.4.2) (2025-11-21)
 
 ### Bug Fixes
