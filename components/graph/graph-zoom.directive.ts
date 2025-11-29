@@ -4,7 +4,7 @@
  */
 
 import {
-  AfterViewInit,
+  afterNextRender,
   ChangeDetectorRef,
   DestroyRef,
   Directive,
@@ -29,7 +29,7 @@ import { NzZoomTransform, RelativePositionInfo } from './interface';
   selector: '[nz-graph-zoom]',
   exportAs: 'nzGraphZoom'
 })
-export class NzGraphZoomDirective implements AfterViewInit {
+export class NzGraphZoomDirective {
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
   private element = inject(ElementRef);
@@ -53,10 +53,10 @@ export class NzGraphZoomDirective implements AfterViewInit {
     this.destroyRef.onDestroy(() => {
       this.unbind();
     });
-  }
 
-  ngAfterViewInit(): void {
-    this.bind();
+    afterNextRender(() => {
+      this.bind();
+    });
   }
 
   bind(): void {
