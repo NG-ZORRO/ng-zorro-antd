@@ -43,14 +43,10 @@
         nzVariant="filled"
         [style.max-width.px]="126"
         [style.min-width.px]="90"
+        [nzOptions]="versions"
         [ngModel]="currentVersion"
         (ngModelChange)="navigateToVersion($event)"
-      >
-        <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion" />
-        @for (version of oldVersionList; track version) {
-          <nz-option [nzLabel]="version" [nzValue]="version" />
-        }
-      </nz-select>
+      />
       <button
         id="language"
         nz-tooltip

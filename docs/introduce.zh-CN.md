@@ -16,7 +16,7 @@ title: Ant Design of Angular
 - 提炼自企业级中后台产品的交互语言和视觉风格。
 - 开箱即用的高质量 Angular 组件库，与 Angular 保持同步升级。
 - 使用 TypeScript 构建，提供完整的类型定义文件。
-- 支持 OnPush 模式，性能卓越。
+- 支持 Zoneless 和 OnPush 模式，性能卓越。
 - 数十个国际化语言支持。
 - 深入每个细节的主题定制能力。
 
@@ -36,7 +36,7 @@ title: Ant Design of Angular
 
 ## 支持 Angular 版本
 
-`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^20.0.0` 版本。
+`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^21.0.0` 版本。
 
 ## 设计规范
 

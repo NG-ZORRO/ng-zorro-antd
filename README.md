@@ -36,7 +36,7 @@ English | [简体中文](README-zh_CN.md)
 - 70+ high-quality Angular components out of the box.
 - Written in TypeScript with predictable static types.
 - The whole package of development and design resources and tools.
-- Support OnPush mode, high performance.
+- Support Zoneless and OnPush mode, high performance.
 - Powerful theme customization in every detail.
 - Internationalization support for dozens of languages.
 
@@ -47,7 +47,7 @@ English | [简体中文](README-zh_CN.md)
 
 ## 🖥 Environment Support
 
-- Angular `^20.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- Angular `^21.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 - Server-side Rendering
 - Modern browsers including the following [specific versions](https://angular.dev/reference/versions#browser-support)
 - [Electron](http://electron.atom.io/)

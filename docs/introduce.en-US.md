@@ -16,7 +16,7 @@ An enterprise-class Angular UI component library based on Ant Design, all compon
 - An enterprise-class UI design language for Angular applications.
 - 70+ high-quality Angular components out of the box.
 - Written in TypeScript with complete defined types.
-- Support OnPush mode, high performance.
+- Support Zoneless and OnPush mode, high performance.
 - Powerful theme customization in every detail.
 - Internationalization support for dozens of languages.
 
@@ -36,7 +36,7 @@ An enterprise-class Angular UI component library based on Ant Design, all compon
 
 ## Angular Support
 
-`ng-zorro-antd` keeps the same major version with `@angular/core`, now supports Angular `^20.0.0`.
+`ng-zorro-antd` keeps the same major version with `@angular/core`, now supports Angular `^21.0.0`.
 
 ## Design Specification
 

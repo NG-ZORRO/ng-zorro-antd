@@ -15,6 +15,93 @@ timeline: true
 
 ---
 
+## 21.0.0-next.0
+
+`2025-11-28`
+
+通过 @angular/cli 升级
+
+```shell
+ng update ng-zorro-antd@next
+```
+
+### Features
+
+- **core:** 新增 `provideNzNoAnimation` provider 用于禁用动画效果 ([#9555](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9555)) ([c945e81](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c945e81ce5966f34e7a96a8bccbf628a5b8d8c06))
+- **float-button:** 悬浮按钮组合新增动画效果 ([#9413](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9413)) ([b40ad91](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b40ad91b26aee48fc86d92da48071751f8345ab4))
+- **tree-view:** 升级 tree-view 组件，支持 `nzLevelAccessor` 和 `nzChildrenAccessor` ([#9003](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9003)) ([ae9ad57](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ae9ad576292671f3228361733b47e890d425e713))
+- **upload:** 新增 `nzMaxCount` 属性 ([#9424](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9424)) ([0bf13c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0bf13c3fa5e41289315cf4d9642ed5aa7005af9e))
+- **schematics:** 支持 v21 迁移 ([#9564](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9564)) ([a44227d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a44227d4dcfd137a2f33fabf699ac0af331e4208))
+
+### Bug Fixes
+
+- **tree:** 不再阻止右键点击树节点标题的默认行为 ([#9532](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9532)) ([900efad](https://github.com/NG-ZORRO/ng-zorro-antd/commit/900efad5b0a04b1a0aca2c68728f01ed8dc4ef3b))
+
+### ⚠ BREAKING CHANGES
+
+- **tree-view:** 移除 `nzTreeControl`，请使用 `nzLevelAccessor` 或 `nzChildrenAccessor` 替代
+- **statistic:** 重命名 `NzStatisticNumberComponent` 为`NzStatisticContentValueComponent`
+- **color-picker:** 简化 DOM 结构，移除 `nzClick` output 不必要的参数
+- **watermark:** 将引入路径 `ng-zorro-antd/water-mark` 调整为 `ng-zorro-antd/watermark`
+- **back-top:** 移除，请使用 `float-button` 替代
+- **input-number-legacy:** 移除，请使用 `input-number` 替代
+
+移除以下在过去的版本中标记为废弃的 API:
+
+| Module                              | API                                    |
+| ----------------------------------- | -------------------------------------- |
+| `ng-zorro-antd/back-top`            | `*`                                    |
+| `ng-zorro-antd/input-number-legacy` | `*`                                    |
+| `ng-zorro-antd/dropdown`            | `NzDropdownButtonDirective`            |
+| `ng-zorro-antd/core`                | `NzHighlightModule`                    |
+| `ng-zorro-antd/auto-complete`       | `NZ_AUTOCOMPLETE_VALUE_ACCESSOR`       |
+| `ng-zorro-antd/checkbox`            | `nz-checkbox-wrapper`                  |
+| `ng-zorro-antd/date-picker`         | `NzDatePickerComponent#nzBorderless`   |
+| `ng-zorro-antd/input`               | `NzInputDirective#nzBorderless`        |
+| `ng-zorro-antd/input-number`        | `NzInputNumberComponent#nzBordered`    |
+| `ng-zorro-antd/mention`             | `NZ_MENTION_TRIGGER_ACCESSOR`          |
+| `ng-zorro-antd/select`              | `NzSelectComponent#nzBorderless`       |
+| `ng-zorro-antd/time-picker`         | `NzTimePickerComponent#nzBorderless`   |
+| `ng-zorro-antd/tooltip`             | `NzToolTipModule` `NzToolTipComponent` |
+
+统一组件命名规范，变化如下：
+
+| Module      | Original                      | Current                       |
+| ----------- | ----------------------------- | ----------------------------- |
+| `core`      | `NzConfig#backTop`            | `NzConfig#floatButton`        |
+| `core`      | `NzConfig#dropDown`           | `NzConfig#dropdown`           |
+| `dropdown`  | `NzDropDownModule`            | `NzDropdownModule`            |
+| `dropdown`  | `NzDropDownADirective`        | `NzDropdownADirective`        |
+| `menu`      | `NzIsMenuInsideDropDownToken` | `NzIsMenuInsideDropdownToken` |
+| `watermark` | `NzWaterMarkModule`           | `NzWatermarkModule`           |
+| `watermark` | `NzWaterMarkComponent`        | `NzWatermarkComponent`        |
+
+### Deprecations
+
+在 v21 中，以下 API 被标记为 **deprecated**，并将在下一个主要版本中移除。 请参考相关文档以获取更好的替代方案。
+
+| Module                | API                    |
+| --------------------- | ---------------------- |
+| `ng-zorro-antd/input` | `textarea[nzAutosize]` |
+
+## 20.4.3
+
+`2025-11-28`
+
+### Bug Fixes
+
+- **form:** 修复无法禁用 nz-form-control 动画的问题 ([#9562](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9562)) ([5bccf96](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5bccf968ab8cbe4164fe09e691f6664ee2664a5c))
+- **input:** 修复循环依赖问题 ([#9561](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9561)) ([8d5782d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8d5782d5ae35769fc73bcdb49d9d7897b9b92828))
+
+## 20.4.2
+
+`2025-11-21`
+
+### Bug Fixes
+
+- **cascader,select,date-picker,time-picker,tree-select:** 补充 `nzVariant` 全局配置类型定义 ([#9543](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9543)) ([221386b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/221386b45cc20d6bea689a5a4c10e35ff15b06b7))
+- **button:** 优化 zoneless 模式下仅图标展示的逻辑 ([#9541](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9541)) ([9def420](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9def420d2da1a2b8a7993db814948151733ef772))
+
 ## 20.4.1
 
 `2025-11-14`

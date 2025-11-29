@@ -8,7 +8,6 @@ export default {
     noFallthroughCasesInSwitch: true,
     skipLibCheck: true,
     isolatedModules: true,
-    experimentalDecorators: true,
     importHelpers: true,
     target: 'ES2022',
     module: 'preserve'
