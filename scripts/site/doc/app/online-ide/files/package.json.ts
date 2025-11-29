@@ -27,7 +27,6 @@ export default (nzVersion: string, ngVersion: string) => {
       rxjs: '~7.8.1',
       tslib: '^2.0.0',
       'ng-zorro-antd': nzVersion,
-      'zone.js': '~0.15.0',
       // demo needs
       d3: '^6.3.1',
       dagre: '^0.8.5',
@@ -39,7 +38,7 @@ export default (nzVersion: string, ngVersion: string) => {
       '@angular/build': ngVersion,
       '@angular/cli': ngVersion,
       '@angular/compiler-cli': ngVersion,
-      typescript: '~5.8.2'
+      typescript: '~5.9.2'
     }
   };
 };

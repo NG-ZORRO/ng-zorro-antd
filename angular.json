@@ -23,9 +23,6 @@
             "ssr": {
               "entry": "site/server.ts"
             },
-            "polyfills": [
-              "zone.js"
-            ],
             "assets": [
               "site/assets",
               "site/manifest.json",

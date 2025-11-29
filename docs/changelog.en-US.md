@@ -15,6 +15,94 @@ timeline: true
 
 ---
 
+## 21.0.0-next.0
+
+`2025-11-28`
+
+Upgrade with shell
+
+```shell
+ng update ng-zorro-antd@next
+```
+
+### Features
+
+- **core:** add `provideNzNoAnimation` ([#9555](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9555)) ([c945e81](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c945e81ce5966f34e7a96a8bccbf628a5b8d8c06))
+- **float-button:** add pop animation to float button menu ([#9413](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9413)) ([b40ad91](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b40ad91b26aee48fc86d92da48071751f8345ab4))
+- **tree-view:** upgrade tree view component ([#9003](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9003)) ([ae9ad57](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ae9ad576292671f3228361733b47e890d425e713))
+- **upload:** add `nzMaxCount` feature ([#9424](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9424)) ([0bf13c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0bf13c3fa5e41289315cf4d9642ed5aa7005af9e))
+- **schematics:** update upgrade data for v21 ([#9564](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9564)) ([a44227d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a44227d4dcfd137a2f33fabf699ac0af331e4208))
+
+### Bug Fixes
+
+- **tree:** no `preventDefault` when right-clicking the node title ([#9532](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9532)) ([900efad](https://github.com/NG-ZORRO/ng-zorro-antd/commit/900efad5b0a04b1a0aca2c68728f01ed8dc4ef3b))
+
+### ⚠ BREAKING CHANGES
+
+- **tree-view:** `nzTreeControl` has been removed, please use `nzLevelAccessor` or `nzChildrenAccessor` instead
+- **statistic:** rename `NzStatisticNumberComponent` to `NzStatisticContentValueComponent`
+- **color-picker:** change DOM structure to be simpler, and remove no unnecessary payload of `nzClick` output
+- **watermark:** change import path from `ng-zorro-antd/water-mark` to `ng-zorro-antd/watermark`
+- **back-top:** removed, please use `float-button` instead
+- **input-number-legacy:** removed, please use `input-number` instead
+
+Remove the following APIs which were marked as deprecated in the previous version:
+
+| Module                              | API                                    |
+| ----------------------------------- | -------------------------------------- |
+| `ng-zorro-antd/back-top`            | `*`                                    |
+| `ng-zorro-antd/dropdown`            | `NzDropdownButtonDirective`            |
+| `ng-zorro-antd/input-number-legacy` | `*`                                    |
+| `ng-zorro-antd/core`                | `NzHighlightModule`                    |
+| `ng-zorro-antd/auto-complete`       | `NZ_AUTOCOMPLETE_VALUE_ACCESSOR`       |
+| `ng-zorro-antd/checkbox`            | `nz-checkbox-wrapper`                  |
+| `ng-zorro-antd/date-picker`         | `NzDatePickerComponent#nzBorderless`   |
+| `ng-zorro-antd/input`               | `NzInputDirective#nzBorderless`        |
+| `ng-zorro-antd/input-number`        | `NzInputNumberComponent#nzBordered`    |
+| `ng-zorro-antd/mention`             | `NZ_MENTION_TRIGGER_ACCESSOR`          |
+| `ng-zorro-antd/select`              | `NzSelectComponent#nzBorderless`       |
+| `ng-zorro-antd/time-picker`         | `NzTimePickerComponent#nzBorderless`   |
+| `ng-zorro-antd/tooltip`             | `NzToolTipModule` `NzToolTipComponent` |
+
+Unify and standardize component naming, involving the following name changes:
+
+| Module      | Original                      | Current                       |
+| ----------- | ----------------------------- | ----------------------------- |
+| `core`      | `NzConfig#backTop`            | `NzConfig#floatButton`        |
+| `core`      | `NzConfig#dropDown`           | `NzConfig#dropdown`           |
+| `dropdown`  | `NzDropDownModule`            | `NzDropdownModule`            |
+| `dropdown`  | `NzDropDownADirective`        | `NzDropdownADirective`        |
+| `menu`      | `NzIsMenuInsideDropDownToken` | `NzIsMenuInsideDropdownToken` |
+| `watermark` | `NzWaterMarkModule`           | `NzWatermarkModule`           |
+| `watermark` | `NzWaterMarkComponent`        | `NzWatermarkComponent`        |
+
+### Deprecations
+
+The following APIs are marked as **deprecated** in v20 and will be removed in the next major version.
+Please refer to related documentation for better alternatives.
+
+| Module                | API                    |
+| --------------------- | ---------------------- |
+| `ng-zorro-antd/input` | `textarea[nzAutosize]` |
+
+## 20.4.3
+
+`2025-11-28`
+
+### Bug Fixes
+
+- **form:** animation should respect NoopAnimations ([#9562](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9562)) ([5bccf96](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5bccf968ab8cbe4164fe09e691f6664ee2664a5c))
+- **input:** fix dependency cycle ([#9561](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9561)) ([8d5782d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8d5782d5ae35769fc73bcdb49d9d7897b9b92828))
+
+## 20.4.2
+
+`2025-11-21`
+
+### Bug Fixes
+
+- **cascader,select,date-picker,time-picker,tree-select:** add missing nzVariant global config ([#9543](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9543)) ([221386b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/221386b45cc20d6bea689a5a4c10e35ff15b06b7))
+- **button:** improve icon only logic in zoneless mode ([#9541](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9541)) ([9def420](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9def420d2da1a2b8a7993db814948151733ef772))
+
 ## 20.4.1
 
 `2025-11-14`

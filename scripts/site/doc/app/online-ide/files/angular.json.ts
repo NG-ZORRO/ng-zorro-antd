@@ -13,7 +13,6 @@ export default {
           builder: '@angular/build:application',
           options: {
             browser: 'src/main.ts',
-            polyfills: ['zone.js'],
             tsConfig: 'tsconfig.app.json',
             assets: [
               'src/favicon.ico',

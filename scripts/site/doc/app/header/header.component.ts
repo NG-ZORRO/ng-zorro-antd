@@ -1,12 +1,12 @@
 import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, Version } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
-import { NzGridModule } from "ng-zorro-antd/grid";
-import { NzIconModule } from "ng-zorro-antd/icon";
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -48,6 +48,7 @@ export class HeaderComponent {
 
   readonly searching = signal(false);
   readonly oldVersionList = [
+    '20.4.x',
     '19.3.x',
     '18.2.x',
     '17.4.x',
@@ -60,12 +61,25 @@ export class HeaderComponent {
     '10.2.x',
     '9.3.x',
     '8.5.x',
-    '7.5.x',
-    '1.8.x',
-    '0.7.x',
-    '0.5.x'
+    '7.5.x'
   ];
-  readonly currentVersion = VERSION.full;
+  readonly currentVersion: string = VERSION.full;
+  readonly versions = [this.currentVersion, ...this.oldVersionList].map(v => ({
+    label: this.getVersionLabel(v),
+    value: v
+  }));
+
+  getVersionLabel(version: string): string {
+    if (version.includes('next')) {
+      return 'next';
+    } else if (version.includes('alpha')) {
+      return 'alpha';
+    } else if (version.includes('beta')) {
+      return 'beta';
+    }
+    const major = new Version(version).major;
+    return `v${major}`;
+  }
 
   onFocusChange(focus: boolean): void {
     this.searching.set(focus);

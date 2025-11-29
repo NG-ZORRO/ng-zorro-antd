@@ -52,7 +52,7 @@ export class NzCodeEditorService {
 
     this.config = { ...globalConfig };
     if (this.config.monacoEnvironment) {
-      window.MonacoEnvironment = { ...this.config.monacoEnvironment };
+      this.document.defaultView!.MonacoEnvironment = { ...this.config.monacoEnvironment };
     }
     this.option = this.config.defaultEditorOption || {};
 

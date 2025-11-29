@@ -35,7 +35,7 @@ NG-ZORRO
 - 提炼自企业级中后台产品的交互语言和视觉风格。
 - 开箱即用的高质量 Angular 组件，与 Angular 保持同步升级。
 - 使用 TypeScript 构建，提供完整的类型定义文件。
-- 支持 OnPush 模式，性能卓越。
+- 支持 Zoneless 和 OnPush 模式，性能卓越。
 - 数十个国际化语言支持。
 - 深入每个细节的主题定制能力。
 
@@ -46,7 +46,7 @@ NG-ZORRO
 
 ## 🖥 支持环境
 
-- Angular `^20.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- Angular `^21.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 - 支持服务端渲染
 - 现代浏览器，[浏览器支持](https://angular.cn/reference/versions#browser-support)
 - [Electron](http://electron.atom.io/)
