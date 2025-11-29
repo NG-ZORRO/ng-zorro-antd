@@ -9,7 +9,7 @@ import { ShareModule } from '../share/share.module';
   imports      : [ShareModule, {{declarations}}],
   templateUrl  : './{{language}}.html'
 })
-export class {{componentName}} {
+export default class {{componentName}} {
   expanded = false;
   @ViewChildren(NzCodeBoxComponent) codeBoxes!: QueryList<NzCodeBoxComponent>;
 

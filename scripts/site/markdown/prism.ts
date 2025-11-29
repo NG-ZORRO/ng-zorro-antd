@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { languages, highlight } from 'prismjs';
+import { highlight, languages } from 'prismjs';
 
 const loadLanguages = require('prismjs/components/');
 
@@ -108,7 +108,7 @@ languages.insertBefore('angular', 'string', {
     }
   },
   'styles-string': {
-    pattern: /styles[\s]*:[\s]*\[[\s]*`(?:\\[\s\S]|[^\\`])*`[\s]*\]/,
+    pattern: /styles[\s]*:[\s]*(\[)?[\s]*`(?:\\[\s\S]|[^\\`])*`[\s]*(\])?/,
     greedy: true,
     inside: {
       css: {
@@ -119,4 +119,4 @@ languages.insertBefore('angular', 'string', {
   }
 });
 
-export { languages, highlight };
+export { highlight, languages };

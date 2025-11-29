@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { afterNextRender, Component, signal } from '@angular/core';
 
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
@@ -6,7 +6,7 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
   selector: 'nz-demo-anchor-target-offset',
   imports: [NzAnchorModule],
   template: `
-    <nz-anchor [nzTargetOffset]="targetOffset">
+    <nz-anchor [nzTargetOffset]="targetOffset()">
       <nz-link nzHref="#components-anchor-demo-basic" nzTitle="Basic demo"></nz-link>
       <nz-link nzHref="#components-anchor-demo-static" nzTitle="Static demo"></nz-link>
       <nz-link nzHref="#api" nzTitle="API">
@@ -16,10 +16,12 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
     </nz-anchor>
   `
 })
-export class NzDemoAnchorTargetOffsetComponent implements OnInit {
-  targetOffset?: number;
+export class NzDemoAnchorTargetOffsetComponent {
+  readonly targetOffset = signal(0);
 
-  ngOnInit(): void {
-    this.targetOffset = window.innerHeight / 2;
+  constructor() {
+    afterNextRender(() => {
+      this.targetOffset.set(window.innerHeight / 2);
+    });
   }
 }
