@@ -1,0 +1,34 @@
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: block;
+  width: 100%;
+  height: 2.5px;
+  background: transparent;
+
+  &::after {
+    display: block;
+    width: 40%;
+    height: 100%;
+    background: var(--ant-primary-color);
+    transform-origin: left;
+    animation: nav-progress 1.5s infinite linear;
+    content: '';
+  }
+}
+
+@keyframes nav-progress {
+  0% {
+    transform: translateX(250%) scaleX(0.2);
+  }
+
+  80% {
+    transform: translateX(0) scaleX(1);
+  }
+
+  100% {
+    transform: translateX(0) scaleX(0);
+  }
+}

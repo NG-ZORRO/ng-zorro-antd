@@ -8,9 +8,9 @@ import { readFileSync, writeFileSync } from 'fs-extra';
 import path from 'path';
 
 import {
-  ComponentIndexDocMeta,
-  ComponentIndexDocMap,
   ComponentChildRouter,
+  ComponentIndexDocMap,
+  ComponentIndexDocMeta,
   I18n,
   Language,
   RouterList
@@ -56,7 +56,7 @@ function generateNav(componentsDocMap: ComponentIndexDocMap): {
     generateLanguageData(componentsDocMap[key], 'en', reverseMap, key);
     const experimental = componentsDocMap[key]['zh'].experimental || componentsDocMap[key]['en'].experimental;
     const routePath = `${experimental ? 'experimental' : 'components'}/${key}`;
-    routes += `  {'path': '${routePath}', 'loadChildren': () => import('./${key}/routes')},\n`;
+    routes += `  {path: '${routePath}', loadChildren: () => import('./${key}/routes')},\n`;
   }
   return { reverseMap, routes };
 }
