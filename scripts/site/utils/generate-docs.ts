@@ -10,10 +10,10 @@ import { remark } from 'remark';
 import path from 'path';
 
 import md from '../markdown';
+import { I18n, Language } from '../types';
 import { angularNonBindAble } from './angular-non-bindable';
 import { generateTitle } from './generate-title';
 import { getMeta } from './get-meta';
-import { I18n, Language } from '../types';
 
 const componentTemplate = String(readFileSync(path.resolve(__dirname, '../template/doc-component.template.ts')));
 const routesTemplate = String(readFileSync(path.resolve(__dirname, '../template/doc-routes.template.ts')));
@@ -84,17 +84,11 @@ function generateToc(raw: string): string {
 }
 
 function generateModule(docsPath: string, docsMap: Record<string, I18n<Buffer>>): void {
-  let imports = '';
   let router = '';
   for (const name in docsMap) {
-    const componentName = `NzDoc${pascalCase(name)}`;
-    const enComponentName = `${componentName}EnComponent`;
-    const zhComponentName = `${componentName}ZhComponent`;
-    imports += `import { ${enComponentName} } from './${name}-en';\n`;
-    imports += `import { ${zhComponentName} } from './${name}-zh';\n`;
-    router += `\t{ path: '${name}/zh', component: ${zhComponentName} },\n`;
-    router += `\t{ path: '${name}/en', component: ${enComponentName} },\n`;
+    router += `\t{ path: '${name}/zh', loadComponent: () => import('./${name}-zh') },\n`;
+    router += `\t{ path: '${name}/en', loadComponent: () => import('./${name}-en') },\n`;
   }
-  const module = routesTemplate.replace(/{{imports}}/g, imports).replace(/{{routes}}/g, router);
+  const module = routesTemplate.replace(/{{routes}}/g, router);
   writeFileSync(path.join(docsPath, `routes.ts`), module);
 }

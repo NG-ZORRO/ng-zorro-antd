@@ -32,10 +32,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
         text-decoration: underline;
       }
     }
-  `,
-  host: {
-    ngSkipHydration: ''
-  }
+  `
 })
 export class ComponentMetaComponent {
   name = input.required<string>();

@@ -10,7 +10,7 @@ import { FooterItemComponent } from './footer-item.component';
   selector: 'app-footer',
   imports: [NzColorPickerModule, FooterColComponent, FooterItemComponent],
   template: `
-    <footer class="rc-footer rc-footer-dark">
+    <footer class="rc-footer">
       <section class="rc-footer-container">
         <section class="rc-footer-columns">
           <div app-footer-col [title]="language() === 'zh' ? '相关资源' : 'Resources'">
@@ -24,10 +24,18 @@ import { FooterItemComponent } from './footer-item.component';
               link="https://ant.design/docs/react/introduce"
               description="React"
             />
-            <app-footer-item title="Ant Design" link="https://vue.ant.design/" description="Vue" />
+            <!-- <app-footer-item title="Ant Design" link="https://vue.ant.design/" description="Vue" /> -->
             <app-footer-item
               title="Angular"
               [link]="language() === 'zh' ? 'https://angular.cn/' : 'https://angular.dev/'"
+            />
+            <app-footer-item
+              title="Angular Aira"
+              [link]="language() === 'zh' ? 'https://angular.cn/guide/aria/overview' : 'https://angular.dev/guide/aria/overview'"
+            />
+            <app-footer-item
+              title="Angular CDK"
+              [link]="language() === 'zh' ? 'https://material.angular.cn/cdk/categories' : 'https://material.angular.dev/cdk/categories'"
             />
             <app-footer-item
               title="Angular CLI"

@@ -8,8 +8,10 @@ import pascalCase from 'pascalcase';
 
 import path from 'path';
 
+import { ComponentDemo, ComponentDemoDoc, ComponentIndexDocMeta, I18n, I18nTitle } from '../types';
 import { generateTitle } from './generate-title';
-import { ComponentDemo, ComponentDemoDoc, ComponentIndexDocMeta, I18nTitle, I18n } from '../types';
+
+const demoRoutesTemplate = String(readFileSync(path.resolve(__dirname, '../template/demo-routes.template.ts')));
 
 /**
  * Generate demos for the component
@@ -28,8 +30,7 @@ export function generateDemo(showCaseComponentPath: string, result: ComponentDem
   const demoComponent = generateDemoComponent(result);
   writeFileSync(path.join(showCaseComponentPath, `zh.component.ts`), demoComponent.zh);
   writeFileSync(path.join(showCaseComponentPath, `en.component.ts`), demoComponent.en);
-  const demoRoutes = generateDemoRoutes(result);
-  writeFileSync(path.join(showCaseComponentPath, `routes.ts`), demoRoutes);
+  writeFileSync(path.join(showCaseComponentPath, `routes.ts`), demoRoutesTemplate);
 }
 
 function generateDemoImports(content: ComponentDemo): { imports: string; declarations: string[] } {
@@ -45,12 +46,6 @@ function generateDemoImports(content: ComponentDemo): { imports: string; declara
     declarations.push(...declareComponents);
   }
   return { imports, declarations };
-}
-
-function generateDemoRoutes(content: ComponentDemo): string {
-  const demoRoutesTemplate = String(readFileSync(path.resolve(__dirname, '../template/demo-routes.template.ts')));
-  const component = content.name;
-  return demoRoutesTemplate.replace(/{{component}}/g, pascalCase(component));
 }
 
 function generateComponentName(component: string, language: string): string {
