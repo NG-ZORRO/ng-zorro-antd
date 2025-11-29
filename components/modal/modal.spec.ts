@@ -514,6 +514,45 @@ describe('modal', () => {
     flush();
   }));
 
+  it('should global config nzCentered work', fakeAsync(() => {
+    configService.set('modal', { nzCentered: true });
+
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    fixture.detectChanges();
+
+    let modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+    expect(modal.classList).withContext('should use global config').toContain('ant-modal-centered');
+
+    configService.set('modal', { nzCentered: false });
+    fixture.detectChanges();
+
+    modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+    expect(modal.classList)
+      .withContext('should not contain class when global config changed')
+      .not.toContain('ant-modal-centered');
+
+    modalRef.close();
+    const modalRef2 = modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzCentered: true
+    });
+
+    fixture.detectChanges();
+
+    modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+    expect(modal.classList)
+      .withContext('should use explicit setting even if global config is different')
+      .toContain('ant-modal-centered');
+
+    configService.set('modal', { nzCentered: false });
+    modalRef2.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
   it('nzMask work', fakeAsync(() => {
     configService.set('modal', { nzMask: false });
 
