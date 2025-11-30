@@ -22,7 +22,7 @@ const defaultCustomThemeFilename = 'theme.less';
 /** Object that maps a CLI target to its default builder name. */
 const defaultTargetBuilders = {
   build: ['@angular/build:application'],
-  test: ['@angular/build:karma']
+  test: ['@angular/build:unit-test']
 };
 
 /** Add pre-built styles to the main project style file. */
@@ -145,17 +145,19 @@ function validateDefaultTargetBuilder(
   const targetConfig = project.targets && project.targets.get(targetName);
   const isDefaultBuilder = targetConfig && defaultBuilder.includes(targetConfig.builder);
 
-  if (!isDefaultBuilder && targetName === 'build') {
-    throw new SchematicsException(
-      `Your project is not using the default builders for ` +
-      `"${targetName}". The NG-ZORRO schematics cannot add a theme to the workspace ` +
-      `configuration if the builder has been changed.`
-    );
-  } else if (!isDefaultBuilder) {
-    logger.warn(
-      `Your project is not using the default builders for "${targetName}". This ` +
-      `means that we cannot add the configured theme to the "${targetName}" target.`
-    );
+  if (!isDefaultBuilder) {
+    if (targetName === 'build') {
+      throw new SchematicsException(
+        `Your project is not using the default builders for ` +
+        `"${targetName}". The NG-ZORRO schematics cannot add a theme to the workspace ` +
+        `configuration if the builder has been changed.`
+      );
+    } else {
+      logger.warn(
+        `Your project is not using the default builders for "${targetName}". This ` +
+        `means that we cannot add the configured theme to the "${targetName}" target.`
+      );
+    }
   }
 
   return isDefaultBuilder;
