@@ -7,15 +7,6 @@ import { ClassNameUpgradeData, TargetVersion, VersionChanges } from '@angular/cd
 
 export const classNames: VersionChanges<ClassNameUpgradeData> = {
   [TargetVersion.V21]: [{
-    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/8901',
-    changes: [{
-      replace: 'NzInputNumberModule',
-      replaceWith: 'NzInputNumberLegacyModule',
-    }, {
-      replace: 'NzInputNumberComponent',
-      replaceWith: 'NzInputNumberLegacyComponent',
-    }]
-  }, {
     pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9238',
     changes: [{
       replace: 'NzTabsetComponent',
