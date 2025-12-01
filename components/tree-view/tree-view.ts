@@ -26,7 +26,7 @@ import { NzTreeView } from './tree';
   template: `
     <div class="ant-tree-list-holder">
       <div
-        [@.disabled]="!afterViewInit() || !!noAnimation?.nzNoAnimation"
+        [@.disabled]="!afterViewInit() || !!noAnimation?.nzNoAnimation?.()"
         [@treeCollapseMotion]="_nodeOutlet.viewContainer.length"
         class="ant-tree-list-holder-inner"
       >

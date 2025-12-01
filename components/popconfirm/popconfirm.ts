@@ -172,8 +172,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         [class]="_classMap"
         [class.ant-popover-rtl]="dir === 'rtl'"
         [style]="nzOverlayStyle"
-        [@.disabled]="!!noAnimation?.nzNoAnimation"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
         [@zoomBigMotion]="'active'"
       >
         @if (nzPopconfirmShowArrow) {

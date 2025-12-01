@@ -235,7 +235,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     >
       <div
         class="ant-picker-wrapper"
-        [nzNoAnimation]="!!noAnimation?.nzNoAnimation"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         [@slideMotion]="'enter'"
         [style.position]="'relative'"
       >

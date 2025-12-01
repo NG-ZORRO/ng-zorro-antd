@@ -74,10 +74,10 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
         [class.ant-select-dropdown-rtl]="dir === 'rtl'"
         [class]="nzOverlayClassName"
         [style]="nzOverlayStyle"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
         @slideMotion
         (@slideMotion.done)="onAnimationEvent($event)"
-        [@.disabled]="!!noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
       >
         <div class="ant-select-dropdown-content-wrapper">
           <div class="ant-select-dropdown-content">
