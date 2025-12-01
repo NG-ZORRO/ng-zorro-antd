@@ -282,7 +282,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
         this.renderInfo = renderInfo;
         this.cdr.markForCheck();
         this.requestId = requestAnimationFrame(() => {
-          this.drawNodes(!this.noAnimation?.nzNoAnimation).then(() => {
+          this.drawNodes(!this.noAnimation?.nzNoAnimation?.()).then(() => {
             // Update element
             this.cdr.markForCheck();
             if (needResize) {

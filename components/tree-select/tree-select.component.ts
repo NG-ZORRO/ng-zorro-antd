@@ -117,8 +117,8 @@ const listOfPositions = [
       <div
         [@slideMotion]="'enter'"
         [class]="dropdownClassName"
-        [@.disabled]="!!noAnimation?.nzNoAnimation"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
         [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'top'"
         [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"

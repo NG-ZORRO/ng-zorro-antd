@@ -58,8 +58,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
           [nzDot]="nzDot"
           [nzCount]="nzCount"
           [nzOverflowCount]="nzOverflowCount"
-          [disableAnimation]="!!(nzStandalone || nzStatus || presetColor || noAnimation?.nzNoAnimation)"
-          [noAnimation]="!!noAnimation?.nzNoAnimation"
+          [disableAnimation]="!!(nzStandalone || nzStatus || presetColor || noAnimation?.nzNoAnimation?.())"
+          [noAnimation]="!!noAnimation?.nzNoAnimation?.()"
         />
       }
     </ng-container>
