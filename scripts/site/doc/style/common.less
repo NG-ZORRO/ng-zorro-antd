@@ -1,9 +1,55 @@
+@font-face {
+  font-weight: 300;
+  font-family: AlibabaSans;
+  font-style: normal;
+  src: url('//mdn.alipayobjects.com/huamei_iwk9zp/afts/file/A*1GSgSYDD_aIAAAAAQsAAAAgAegCCAQ/AlibabaSans-Light.woff2')
+    format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 400;
+  font-family: AlibabaSans;
+  font-style: normal;
+  src: url('//mdn.alipayobjects.com/huamei_iwk9zp/afts/file/A*2zEUQqnPNesAAAAAQtAAAAgAegCCAQ/AlibabaSans-Regular.woff2')
+    format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 500;
+  font-family: AlibabaSans;
+  font-style: normal;
+  src: url('//mdn.alipayobjects.com/huamei_iwk9zp/afts/file/A*E_cxRbMlZqUAAAAAQuAAAAgAegCCAQ/AlibabaSans-Medium.woff2')
+    format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 600;
+  font-family: AlibabaSans;
+  font-style: normal;
+  src: url('//mdn.alipayobjects.com/huamei_iwk9zp/afts/file/A*E_cxRbMlZqUAAAAAQuAAAAgAegCCAQ/AlibabaSans-Bold.woff2')
+    format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 700;
+  font-family: AlibabaSans;
+  font-style: normal;
+  src: url('//mdn.alipayobjects.com/huamei_iwk9zp/afts/file/A*E_cxRbMlZqUAAAAAQuAAAAgAegCCAQ/AlibabaSans-Heavy.woff2')
+    format('woff2');
+  font-display: swap;
+}
+
 body {
+  overflow-x: hidden;
   color: @site-text-color;
   font-size: 14px;
-  font-family: @font-family;
+  font-family: AlibabaSans, @font-family;
   background: @body-background;
-  transition: background 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: background-color 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 a {
@@ -47,7 +93,7 @@ a {
 .aside-container {
   min-height: 100%;
   padding-bottom: 48px;
-  font-family: Avenir, @font-family, sans-serif;
+  font-family: AlibabaSans, @font-family, sans-serif;
 
   &.ant-menu-inline {
     .ant-menu-submenu-title h4,
@@ -238,12 +284,12 @@ a {
 .main-wrapper,
 .main-wrapper > .ant-row > .main-menu .main-menu-inner > .ant-menu,
 .main-wrapper
-> .ant-row
-> .main-menu
-.main-menu-inner
-> .ant-menu.aside-container.ant-menu-inline
-> .ant-menu-item-group
-> .ant-menu-item-group-title::after,
+  > .ant-row
+  > .main-menu
+  .main-menu-inner
+  > .ant-menu.aside-container.ant-menu-inline
+  > .ant-menu-item-group
+  > .ant-menu-item-group-title::after,
 .main-wrapper .main-container,
 #demo-toc.toc {
   transition: all 0.3s @ease-in-out-circ;

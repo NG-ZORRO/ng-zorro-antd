@@ -25,8 +25,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
-import { ROUTER_LIST } from '../router';
 import { APP_LANGUAGE } from '../app.token';
+import { ROUTER_LIST } from '../router';
 
 @Component({
   selector: 'app-components-overview',
@@ -47,7 +47,7 @@ import { APP_LANGUAGE } from '../app.token';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class ComponentsOverviewComponent {
+export default class ComponentsOverviewComponent {
   protected readonly language = inject(APP_LANGUAGE);
   readonly routerList = signal(ROUTER_LIST.components);
   affixed = false;
