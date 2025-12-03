@@ -5,6 +5,7 @@
 
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -211,6 +212,60 @@ describe('dropdown', () => {
     }).not.toThrowError();
   }));
 
+  describe('should nzDestroyOnHidden work', () => {
+    it('should not recreate portal when nzDestroyOnHidden is false', fakeAsync(() => {
+      const fixture = TestBed.createComponent(NzTestDropdownComponent);
+      fixture.componentInstance.destroyOnHidden = false;
+      fixture.detectChanges();
+      expect(() => {
+        const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+        dispatchFakeEvent(dropdownElement, 'mouseenter');
+        fixture.detectChanges();
+        tick(1000);
+        fixture.detectChanges();
+        const portal_pre = fixture.debugElement
+          .query(By.directive(NzDropdownDirective))
+          .injector.get(NzDropdownDirective)['portal'];
+        expect(portal_pre instanceof TemplatePortal).toBe(true);
+        dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+        tick(1000);
+        fixture.detectChanges();
+        dispatchFakeEvent(dropdownElement, 'mouseenter');
+        tick(1000);
+        fixture.detectChanges();
+        expect(
+          fixture.debugElement.query(By.directive(NzDropdownDirective)).injector.get(NzDropdownDirective)['portal']
+        ).toBe(portal_pre);
+      }).not.toThrowError();
+    }));
+
+    it('should recreate portal when nzDestroyOnHidden is true', fakeAsync(() => {
+      const fixture = TestBed.createComponent(NzTestDropdownComponent);
+      fixture.componentInstance.destroyOnHidden = true;
+      fixture.detectChanges();
+      expect(() => {
+        const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+        dispatchFakeEvent(dropdownElement, 'mouseenter');
+        fixture.detectChanges();
+        tick(1000);
+        fixture.detectChanges();
+        const portal_pre = fixture.debugElement
+          .query(By.directive(NzDropdownDirective))
+          .injector.get(NzDropdownDirective)['portal'];
+        expect(portal_pre instanceof TemplatePortal).toBeTruthy();
+        dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+        tick(1000);
+        fixture.detectChanges();
+        dispatchFakeEvent(dropdownElement, 'mouseenter');
+        tick(1000);
+        fixture.detectChanges();
+        expect(
+          fixture.debugElement.query(By.directive(NzDropdownDirective)).injector.get(NzDropdownDirective)['portal']
+        ).not.toBe(portal_pre);
+      }).not.toThrowError();
+    }));
+  });
+
   it('should nzVisible & nzClickHide work', fakeAsync(() => {
     const fixture = TestBed.createComponent(NzTestDropdownVisibleComponent);
     fixture.detectChanges();
@@ -256,6 +311,7 @@ describe('dropdown', () => {
       [nzBackdrop]="backdrop"
       [nzOverlayClassName]="className"
       [nzOverlayStyle]="overlayStyle"
+      [nzDestroyOnHidden]="destroyOnHidden"
     >
       Trigger
     </a>
@@ -275,6 +331,7 @@ export class NzTestDropdownComponent {
   disabled = false;
   className = 'custom-class';
   overlayStyle = { color: '#000' };
+  destroyOnHidden = false;
 }
 
 @Component({
