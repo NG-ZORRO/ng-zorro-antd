@@ -1013,6 +1013,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       rightInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
+
       tick(500);
       expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
     }));
