@@ -995,6 +995,30 @@ describe('range-picker', () => {
       expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
     }));
 
+    it('if sort order is wrong, output in reverse order', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      fixtureInstance.modelValue = [];
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const leftInput = getPickerInput(fixture.debugElement);
+      const rightInput = getRangePickerRightInput(fixture.debugElement);
+      const newDateString = ['2019-09-15', '2020-10-10'];
+
+      typeInElement(newDateString[1], leftInput);
+      fixture.detectChanges();
+      leftInput.dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+
+      typeInElement(newDateString[0], rightInput);
+      fixture.detectChanges();
+      rightInput.dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+
+      tick(500);
+      expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
+    }));
+
     it('should not change value when click ESC', fakeAsync(() => {
       fixtureInstance.modelValue = [new Date('2018-09-11'), new Date('2020-09-12')];
       fixture.detectChanges();
