@@ -26,6 +26,7 @@ If there are too many operations to display, you can wrap them in a `Dropdown`. 
 | `[nzOverlayStyle]`     | Style of the dropdown root element                                                                | `object`                                                                                    | -              |
 | `(nzVisibleChange)`    | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>`                                                                     | -              |
 | `[nzArrow]`            | Whether the dropdown arrow should be visible                                                      | `boolean`                                                                                   | `false`        | 20.2.0  |
+| `[nzDestroyOnHidden]`  | Whether destroy dropdown when hidden                                                              | `boolean`                                                                                   | `false`        | 21.0.0  |
 
 You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items and dividers are also available by using `nz-menu-item` and `nz-menu-divider`.
 
