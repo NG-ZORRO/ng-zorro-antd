@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 
 @Component({
-  selector: 'nz-demo-qr-code-padding',
+  selector: 'nz-demo-qr-code-type',
   imports: [NzQRCodeModule],
   template: `
-    <nz-qrcode [nzPadding]="12" nzValue="https://ng.ant.design/"></nz-qrcode>
-    <nz-qrcode [nzPadding]="[12, 24]" nzValue="https://ng.ant.design/"></nz-qrcode>
+    <nz-qrcode nzValue="https://ng.ant.design/"></nz-qrcode>
+    <nz-qrcode nzValue="https://ng.ant.design/" nzType="svg"></nz-qrcode>
   `,
   styles: [
     `
@@ -17,4 +17,4 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
     `
   ]
 })
-export class NzDemoQrCodePaddingComponent {}
+export class NzDemoQrCodeTypeComponent {}

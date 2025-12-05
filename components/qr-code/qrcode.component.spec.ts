@@ -41,8 +41,15 @@ describe('qrcode', () => {
     it('qr code width', () => {
       testComponent.size = 200;
       fixture.detectChanges();
-      const widthView = resultEl.nativeElement.querySelector('.ant-qrcode > canvas');
+      const widthView = resultEl.nativeElement.querySelector('.ant-qrcode > nz-qrcode-canvas > canvas');
       expect(widthView.style.width).toBe('200px');
+    });
+
+    it('qr code type', () => {
+      testComponent.type = 'svg';
+      fixture.detectChanges();
+      const widthView = resultEl.nativeElement.querySelector('.ant-qrcode > nz-qrcode-svg > svg');
+      expect(widthView.nodeName).toBe('svg');
     });
 
     it('qr code custom status', () => {
@@ -74,6 +81,7 @@ describe('qrcode', () => {
   template: `<nz-qrcode
     [nzValue]="value"
     [nzSize]="size"
+    [nzType]="type"
     [nzBordered]="bordered"
     [nzStatus]="status"
     [nzStatusRender]="statusRender"
@@ -81,6 +89,7 @@ describe('qrcode', () => {
 })
 export class NzTestQrCodeBasicComponent {
   value: string = 'https://ng.ant.design/';
+  type: 'svg' | 'canvas' = 'canvas';
   size: number = 160;
   bordered: boolean = true;
   statusRender: string | null = null;
