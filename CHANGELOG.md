@@ -1,3 +1,17 @@
+## [20.4.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.4.2...20.4.3) (2025-11-28)
+
+### Bug Fixes
+
+- **form:** animation should respect NoopAnimations ([#9562](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9562)) ([5bccf96](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5bccf968ab8cbe4164fe09e691f6664ee2664a5c))
+- **input:** fix dependency cycle ([#9561](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9561)) ([8d5782d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8d5782d5ae35769fc73bcdb49d9d7897b9b92828))
+
+## [20.4.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.4.1...20.4.2) (2025-11-21)
+
+### Bug Fixes
+
+- **cascader,select,date-picker,time-picker,tree-select:** add missing nzVariant global config ([#9543](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9543)) ([221386b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/221386b45cc20d6bea689a5a4c10e35ff15b06b7))
+- **button:** improve icon only logic in zoneless mode ([#9541](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9541)) ([9def420](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9def420d2da1a2b8a7993db814948151733ef772))
+
 ## [20.4.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.4.0...20.4.1) (2025-11-14)
 
 ### Bug Fixes

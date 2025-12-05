@@ -15,6 +15,20 @@ timeline: true
 
 ---
 
+## 21.0.0-next.1
+
+`2025-12-05`
+
+### Features
+
+- **schematics:** 更新默认的测试 builder ([#9574](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9574)) ([46d39de](https://github.com/NG-ZORRO/ng-zorro-antd/commit/46d39de9f3968544989b68a31878edc1b5851c94))
+
+### Bug Fixes
+
+- **\*:** 修复 `nzNoAnimation` 不生效的问题 ([#9576](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9576)) ([b418efe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b418efee87145a448b47f0c07990ef49a0a9fc2d))
+- **popconfirm:** 允许设置 `nzIcon` 为 `null` 以隐藏图标 ([#9569](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9569)) ([760b587](https://github.com/NG-ZORRO/ng-zorro-antd/commit/760b58745a1b377d4008825a3d4c157d8a1bd590))
+- **schematics:** 移除 `NzInputNumberLegacyModule` 的迁移 schematic ([#9573](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9573)) ([48c02aa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/48c02aa17d866a1a9774521f23574dc3a3c38ca6))
+
 ## 21.0.0-next.0
 
 `2025-11-28`
