@@ -3,7 +3,7 @@
   "schematics": {
     "migration-v21": {
       "version": "21.0.0-0",
-      "description": "Updates NG-ZORRO to v21 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/8890]",
+      "description": "Updates NG-ZORRO to v21 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/9536]",
       "factory": "./ng-update/index#updateToV21"
     },
     "ng-post-update": {
