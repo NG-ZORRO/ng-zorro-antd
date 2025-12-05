@@ -44,7 +44,9 @@ const ExceptionStatus = ['404', '500', '403'];
             <nz-icon [nzType]="icon" nzTheme="fill" />
           </ng-container>
         } @else {
-          <ng-content select="[nz-result-icon]"></ng-content>
+          <ng-content select="[nz-result-icon]">
+            <nz-icon [nzType]="defaultIcon()" nzTheme="fill" />
+          </ng-content>
         }
       } @else {
         @switch (nzStatus()) {
@@ -119,4 +121,5 @@ export class NzResultComponent {
     const icon = this.nzIcon();
     return typeof icon === 'string' ? IconMap[icon as NzResultIconType] || icon : icon;
   });
+  readonly defaultIcon = computed(() => IconMap[this.nzStatus() as NzResultIconType]);
 }
