@@ -5,6 +5,7 @@ type: 其他
 title: BackTop
 cover: 'https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg'
 description: 返回页面顶部的操作按钮。
+tag: deprecated
 ---
 
 > ⚠️ **注意**：该组件将在 v21 版本移除，请使用 [FloatButton](/components/float-button/zh) 中的 `<nz-float-button-top>` 组件替代。
