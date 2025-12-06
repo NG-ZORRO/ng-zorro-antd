@@ -1,0 +1,38 @@
+@import (reference) '../../style/themes/index';
+
+@drawer-prefix-cls: ~'@{ant-prefix}-drawer';
+
+// Drawer mask animation using CSS keyframes
+.@{drawer-prefix-cls} {
+  &-mask {
+    // Animation classes
+    &_animation-enter {
+      animation: drawer-mask-enter @animation-duration-slow @ease-in-out;
+    }
+
+    &_animation-leave {
+      animation: drawer-mask-leave @animation-duration-slow @ease-in-out;
+    }
+
+    // Keyframes
+    @keyframes drawer-mask-enter {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes drawer-mask-leave {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+  }
+}
