@@ -1,0 +1,30 @@
+@import (reference) '../../style/themes/index';
+
+@alert-prefix-cls: ~'@{ant-prefix}-alert';
+
+// Alert animation using CSS keyframes
+.@{alert-prefix-cls} {
+  // Animation classes
+  &-motion-leave {
+    animation: alert-motion-leave @animation-duration-slow @ease-in-out-circ;
+  }
+
+  // Keyframes
+  @keyframes alert-motion-leave {
+    from {
+      max-height: 200px;
+      margin-bottom: 16px;
+      padding-top: @alert-padding-vertical;
+      padding-bottom: @alert-padding-vertical;
+      opacity: 1;
+    }
+
+    to {
+      max-height: 0;
+      margin-bottom: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      opacity: 0;
+    }
+  }
+}
