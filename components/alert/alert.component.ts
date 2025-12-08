@@ -5,24 +5,26 @@
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
+  ANIMATION_MODULE_TYPE,
+  AnimationCallbackEvent,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation,
-  booleanAttribute,
-  inject,
-  DestroyRef
+  ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -33,12 +35,12 @@ export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
 @Component({
   selector: 'nz-alert',
   exportAs: 'nzAlert',
-  animations: [slideAlertMotion],
-  imports: [NzIconModule, NzOutletModule],
+  imports: [NzIconModule, NzOutletModule, NzNoAnimationDirective],
   template: `
     @if (!closed) {
       <div
         class="ant-alert"
+        [nzNoAnimation]="nzNoAnimation"
         [class.ant-alert-rtl]="dir === 'rtl'"
         [class.ant-alert-success]="nzType === 'success'"
         [class.ant-alert-info]="nzType === 'info'"
@@ -48,9 +50,7 @@ export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
         [class.ant-alert-banner]="nzBanner"
         [class.ant-alert-closable]="nzCloseable"
         [class.ant-alert-with-description]="!!nzDescription"
-        [@.disabled]="nzNoAnimation"
-        [@slideAlertMotion]
-        (@slideAlertMotion.done)="onFadeAnimationDone()"
+        (animate.leave)="onLeaveAnimationDone($event)"
       >
         @if (nzShowIcon) {
           <div class="ant-alert-icon">
@@ -104,6 +104,7 @@ export class NzAlertComponent implements OnChanges, OnInit {
   private cdr = inject(ChangeDetectorRef);
   private directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzAction: string | TemplateRef<void> | null = null;
@@ -140,12 +141,32 @@ export class NzAlertComponent implements OnChanges, OnInit {
 
   closeAlert(): void {
     this.closed = true;
-  }
-
-  onFadeAnimationDone(): void {
-    if (this.closed) {
+    // When animations are disabled, emit immediately since animate.leave won't trigger
+    if (this.nzNoAnimation || this.animationType === 'NoopAnimations') {
       this.nzOnClose.emit(true);
     }
+  }
+
+  onLeaveAnimationDone(event: AnimationCallbackEvent): void {
+    const element = event.target as HTMLElement;
+
+    // If animations are disabled, complete immediately (nzOnClose already emitted in closeAlert)
+    if (this.nzNoAnimation || this.animationType === 'NoopAnimations') {
+      event.animationComplete();
+      return;
+    }
+
+    // Apply animation classes
+    element.classList.add('ant-alert-motion-leave', 'ant-alert-motion-leave-active');
+
+    // Listen for transition end to complete the animation
+    const onTransitionEnd = (): void => {
+      element.removeEventListener('transitionend', onTransitionEnd);
+      this.nzOnClose.emit(true);
+      event.animationComplete();
+    };
+
+    element.addEventListener('transitionend', onTransitionEnd);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
