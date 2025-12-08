@@ -4,6 +4,7 @@ type: Other
 title: BackTop
 cover: 'https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg'
 description: Makes it easy to go back to the top of the page.
+tag: deprecated
 ---
 
 > ⚠️ **Note**: This component will be removed in v21, please use `<nz-float-button-top>` in [FloatButton](/components/float-button/en) instead.
