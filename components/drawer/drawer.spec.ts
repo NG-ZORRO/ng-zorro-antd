@@ -8,34 +8,34 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, Input, TemplateRef, ViewChild, inject, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, inject as testingInject, tick } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
-import { NZ_DRAWER_DATA, NzDrawerPlacement } from 'ng-zorro-antd/drawer/drawer-options';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
+import { NZ_DRAWER_DATA, NzDrawerPlacement } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';
 import { NzDrawerModule } from './drawer.module';
 import { NzDrawerService } from './drawer.service';
 
 describe('NzDrawerComponent', () => {
-  beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
-    });
-  });
-
   describe('default', () => {
     let component: NzTestDrawerComponent;
     let fixture: ComponentFixture<NzTestDrawerComponent>;
     let overlayContainer: OverlayContainer;
     let overlayContainerElement: HTMLElement;
     let forceScrollElement: HTMLElement;
+
+    beforeEach(() => {
+      // todo: use zoneless
+      TestBed.configureTestingModule({
+        providers: [provideNzNoAnimation(), provideNzIconsTesting(), provideZoneChangeDetection()]
+      });
+    });
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDrawerComponent);
@@ -60,10 +60,6 @@ describe('NzDrawerComponent', () => {
       document.body.removeChild(forceScrollElement);
       window.scroll(0, 0);
       overlayContainer.ngOnDestroy();
-    });
-
-    it('should create', () => {
-      expect(component).toBeTruthy();
     });
 
     it('should open work', () => {
@@ -646,6 +642,13 @@ describe('NzDrawerComponent', () => {
     let overlayContainerElement: HTMLElement;
 
     beforeEach(() => {
+      // todo: use zoneless
+      TestBed.configureTestingModule({
+        providers: [provideNzNoAnimation(), provideNzIconsTesting(), provideZoneChangeDetection()]
+      });
+    });
+
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDrawerRtlComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -670,6 +673,20 @@ describe('NzDrawerComponent', () => {
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-rtl')).toBe(false);
     });
   });
+  describe('animation', () => {
+    beforeEach(() => {
+      // todo: use zoneless
+      TestBed.configureTestingModule({
+        providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      });
+    });
+
+    it('should get correct mask animation class', () => {
+      const fixture = TestBed.createComponent(NzDrawerComponent);
+      expect(fixture.componentInstance['maskAnimationEnter']()).toBe('ant-drawer-mask_animation-enter');
+      expect(fixture.componentInstance['maskAnimationLeave']()).toBe('ant-drawer-mask_animation-leave');
+    });
+  });
 });
 
 describe('NzDrawerService', () => {
@@ -681,7 +698,7 @@ describe('NzDrawerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NzDrawerService, provideNoopAnimations()]
+      providers: [NzDrawerService, provideNzNoAnimation()]
     });
   });
 
@@ -799,7 +816,7 @@ describe('NzDrawerService', () => {
 });
 
 @Component({
-  imports: [NzDrawerModule, NzIconModule, NzNoAnimationDirective],
+  imports: [NzDrawerModule, NzIconModule],
   template: `
     <button (click)="open()">Open</button>
     <ng-template #closeIconTemplate>
@@ -916,7 +933,7 @@ class NzTestDrawerWithServiceComponent {
   `
 })
 export class NzDrawerCustomComponent {
-  @Input() value: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  @Input() value: NzSafeAny;
   nzData: { value: string } = inject(NZ_DRAWER_DATA);
 
   constructor(private drawerRef: NzDrawerRef) {}

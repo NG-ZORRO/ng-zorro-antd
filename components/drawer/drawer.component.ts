@@ -43,8 +43,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
 
-import { drawerMaskMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective, withAnimationCheck } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { overlayZIndexSetter } from 'ng-zorro-antd/core/overlay';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -86,7 +86,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         [style.zIndex]="nzZIndex"
       >
         @if (nzMask && isOpen) {
-          <div @drawerMaskMotion class="ant-drawer-mask" (click)="maskClick()" [style]="nzMaskStyle"></div>
+          <div
+            class="ant-drawer-mask"
+            [animate.enter]="maskAnimationEnter()"
+            [animate.leave]="maskAnimationLeave()"
+            (click)="maskClick()"
+            [style]="nzMaskStyle"
+          ></div>
         }
         <div
           class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
@@ -127,10 +133,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                   @if (isTemplateRef(nzContent)) {
                     <ng-container *ngTemplateOutlet="nzContent; context: templateContext" />
                   }
-                } @else {
-                  @if (contentFromContentChild && (isOpen || inAnimation)) {
-                    <ng-template [ngTemplateOutlet]="contentFromContentChild" />
-                  }
+                } @else if (contentFromContentChild && (isOpen || inAnimation)) {
+                  <ng-template [ngTemplateOutlet]="contentFromContentChild" />
                 }
               </div>
               @if (nzFooter) {
@@ -145,7 +149,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [drawerMaskMotion],
   imports: [NzNoAnimationDirective, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet, CdkScrollable]
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
@@ -153,7 +156,6 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   implements OnInit, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
 {
   private cdr = inject(ChangeDetectorRef);
-  public nzConfigService = inject(NzConfigService);
   private renderer = inject(Renderer2);
   private injector = inject(Injector);
   private changeDetectorRef = inject(ChangeDetectorRef);
@@ -162,6 +164,8 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private overlayKeyboardDispatcher = inject(OverlayKeyboardDispatcher);
   private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
+  private document = inject(DOCUMENT);
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzContent!: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
@@ -221,6 +225,8 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     drawerRef: this as NzDrawerRef<R>
   };
   protected isTemplateRef = isTemplateRef;
+  protected readonly maskAnimationEnter = withAnimationCheck(() => 'ant-drawer-mask_animation-enter');
+  protected readonly maskAnimationLeave = withAnimationCheck(() => 'ant-drawer-mask_animation-leave');
 
   get offsetTransform(): string | null {
     if (!this.isOpen || this.nzOffsetX + this.nzOffsetY === 0) {
@@ -294,7 +300,6 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   @WithConfig() nzDirection?: Direction = undefined;
 
   dir: Direction = 'ltr';
-  private document: Document = inject(DOCUMENT);
 
   constructor() {
     super();
