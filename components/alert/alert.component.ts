@@ -141,6 +141,11 @@ export class NzAlertComponent implements OnChanges, OnInit {
   }
 
   closeAlert(): void {
+    // Guard against multiple calls to prevent duplicate emissions
+    if (this.closed) {
+      return;
+    }
+
     this.closed = true;
     // If animations are disabled (NoopAnimations or nzNoAnimation), emit immediately
     // because the animation event won't fire
