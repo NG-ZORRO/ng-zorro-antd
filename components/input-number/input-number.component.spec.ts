@@ -8,7 +8,7 @@ import { ApplicationRef, Component, ElementRef, provideZoneChangeDetection, view
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
-import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -410,6 +410,19 @@ describe('input-number', () => {
     expect(component.value).toBe(0);
   });
 
+  it('should be set mouse wheel', () => {
+    const input = hostElement.querySelector('input')!;
+    dispatchEvent(input, new WheelEvent('wheel', { deltaY: -100 }));
+    expect(component.value).toBe(1);
+    dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
+    expect(component.value).toBe(0);
+
+    component.disabled = true;
+    fixture.detectChanges();
+    dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
+    expect(component.value).toBe(0);
+  });
+
   it('should be hide controls', () => {
     component.controls = false;
     fixture.detectChanges();
@@ -610,6 +623,7 @@ describe('input-number with affixes or addons', () => {
       [nzFormatter]="formatter"
       [(ngModel)]="value"
       [disabled]="controlDisabled"
+      [nzChangeOnWheel]="changeOnWheel"
     />
   `
 })
@@ -627,6 +641,7 @@ class InputNumberTestComponent {
   variant: NzVariant = 'outlined';
   keyboard = true;
   controls = true;
+  changeOnWheel = true;
   parser: ((value: string) => number) | undefined = undefined;
   formatter: ((value: number) => string) | undefined = undefined;
 
