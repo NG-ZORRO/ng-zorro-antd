@@ -161,6 +161,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
           [disabled]="finalDisabled()"
           [readOnly]="nzReadOnly()"
           (input)="onInput(input.value)"
+          (wheel)="onWheel($event)"
         />
       </div>
     </ng-template>
@@ -198,6 +199,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzAutoFocus = input(false, { transform: booleanAttribute });
   readonly nzKeyboard = input(true, { transform: booleanAttribute });
   readonly nzControls = input(true, { transform: booleanAttribute });
+  readonly nzChangeOnWheel = input(true, { transform: booleanAttribute });
   readonly nzPrefix = input<string>();
   readonly nzSuffix = input<string>();
   readonly nzAddonBefore = input<string>();
@@ -529,6 +531,15 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
 
   protected onInput(value: string): void {
     this.setValueByTyping(value);
+  }
+
+  protected onWheel(event: WheelEvent): void {
+    if (this.nzDisabled() || !this.nzChangeOnWheel()) {
+      return;
+    }
+
+    event.preventDefault();
+    event.deltaY > 0 ? this.step(event, false) : this.step(event, true);
   }
 }
 
