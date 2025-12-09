@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import type { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzAlertComponent, NzAlertType } from './alert.component';
@@ -297,5 +298,58 @@ describe('NzAlertComponent', () => {
     configChangeEvent$.next('alert');
     await fixture.whenStable();
     expect(cdr.markForCheck).toHaveBeenCalled();
+  });
+});
+
+describe('NzAlertComponent Animation', () => {
+  let component: NzAlertComponent;
+  let fixture: ComponentFixture<NzAlertComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting()],
+      animationsEnabled: true
+    });
+
+    fixture = TestBed.createComponent(NzAlertComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should add animation classes and emit onClose when animation ends', () => {
+    spyOn(component.nzOnClose, 'emit');
+    const element = fixture.nativeElement.querySelector('.ant-alert');
+    const mockEvent = {
+      target: element,
+      animationComplete: jasmine.createSpy('animationComplete')
+    } as NzSafeAny;
+
+    component.onLeaveAnimationDone(mockEvent);
+
+    expect(element.classList).toContain('ant-alert-motion-leave');
+    expect(element.classList).toContain('ant-alert-motion-leave-active');
+    expect(component.nzOnClose.emit).not.toHaveBeenCalled();
+    expect(mockEvent.animationComplete).not.toHaveBeenCalled();
+
+    const transitionEndEvent = new Event('transitionend');
+    element.dispatchEvent(transitionEndEvent);
+
+    expect(component.nzOnClose.emit).toHaveBeenCalledWith(true);
+    expect(mockEvent.animationComplete).toHaveBeenCalled();
+  });
+
+  it('should handle no animation', () => {
+    component.nzNoAnimation = true;
+    spyOn(component.nzOnClose, 'emit');
+    const element = fixture.nativeElement.querySelector('.ant-alert');
+    const mockEvent = {
+      target: element,
+      animationComplete: jasmine.createSpy('animationComplete')
+    } as NzSafeAny;
+
+    component.onLeaveAnimationDone(mockEvent);
+
+    expect(element.classList).not.toContain('ant-alert-motion-leave');
+    expect(mockEvent.animationComplete).toHaveBeenCalled();
   });
 });
