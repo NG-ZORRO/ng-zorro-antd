@@ -7,14 +7,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 @Component({
   selector: 'nz-demo-input-number-change-on-wheel',
   imports: [FormsModule, NzInputNumberModule, NzButtonModule],
-  template: ` <nz-input-number nzChangeOnWheel [(ngModel)]="value" (ngModelChange)="onChange($event)" /> `,
-  styles: [
-    `
-      nz-input-number {
-        margin-right: 8px;
-      }
-    `
-  ]
+  template: ` <nz-input-number nzChangeOnWheel [(ngModel)]="value" (ngModelChange)="onChange($event)" /> `
 })
 export class NzDemoInputNumberChangeOnWheelComponent {
   value = 3;
