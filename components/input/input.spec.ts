@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -94,6 +94,13 @@ describe('input', () => {
           testComponent.variant = 'underlined';
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).toContain('ant-input-underlined');
+        });
+
+        it('should be focus / blur', async () => {
+          testComponent.inputDirective().focus();
+          expect(document.activeElement).toBe(inputElement.nativeElement);
+          testComponent.inputDirective().blur();
+          expect(document.activeElement).not.toBe(inputElement.nativeElement);
         });
       });
     });
@@ -283,6 +290,7 @@ export class NzTestInputWithInputComponent {
   disabled = false;
   stepperless = true;
   variant: NzVariant = 'outlined';
+  inputDirective = viewChild.required(NzInputDirective);
 }
 
 @Component({
