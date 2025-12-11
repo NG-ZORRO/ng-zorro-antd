@@ -338,14 +338,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
           }
         } else {
           /**
-           * if sort order is wrong, clear the other part's value
+           * if sort order is wrong, output in reverse order.
            */
           if (wrongSortOrder(selectedValue)) {
-            nextPart = this.reversedPart(checkedPart);
-            selectedValue[this.datePickerService.getActiveIndex(nextPart)] = null;
-            this.checkedPartArr[this.datePickerService.getActiveIndex(nextPart)] = false;
+            selectedValue.reverse();
           }
-
           this.datePickerService.setValue(selectedValue);
           /**
            * range date usually selected paired,

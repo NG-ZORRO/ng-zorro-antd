@@ -741,50 +741,6 @@ describe('range-picker', () => {
       ).toBe(2);
     }));
 
-    it('should focus to invalid input when sorted', fakeAsync(() => {
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
-      fixtureInstance.modelValue = [new Date('2018-11-11 01:00:00'), new Date('2018-12-12 00:00:00')];
-      fixtureInstance.nzShowTime = true;
-      fixtureInstance.nzDisabledTime = (_current: Date, partial: 'start' | 'end') =>
-        partial === 'start'
-          ? {
-              nzDisabledHours: () => [0]
-            }
-          : {
-              nzDisabledHours: () => [1]
-            };
-      fixture.detectChanges();
-      openPickerByClickTrigger();
-
-      const leftInput = getPickerInput(fixture.debugElement);
-      const rightInput = getRangePickerRightInput(fixture.debugElement);
-      const okButton = queryFromOverlay('.ant-picker-ok > button');
-      // will sort value
-      typeInElement('2019-11-11 01:00:00', leftInput);
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(leftInput.value.trim()).toBe('2019-11-11 01:00:00');
-      expect(okButton.getAttribute('disabled')).toEqual(null);
-
-      const newValidDateString = ['2020-12-12 01:00:00', '2021-11-11 00:00:00'];
-      typeInElement(newValidDateString[0], leftInput);
-      fixture.detectChanges();
-      dispatchMouseEvent(okButton, 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(rightInput === document.activeElement).toBe(true);
-
-      typeInElement(newValidDateString[1], rightInput);
-      fixture.detectChanges();
-      dispatchMouseEvent(okButton, 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(nzOnChange).toHaveBeenCalledWith([new Date(newValidDateString[0]), new Date(newValidDateString[1])]);
-    }));
-
     it('should support nzRenderExtraFooter', fakeAsync(() => {
       fixtureInstance.nzRenderExtraFooter = () => fixtureInstance.tplExtraFooter;
       fixture.detectChanges();
@@ -995,6 +951,29 @@ describe('range-picker', () => {
       expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
     }));
 
+    it('if sort order is wrong, output in reverse order', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      fixtureInstance.modelValue = [];
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const leftInput = getPickerInput(fixture.debugElement);
+      const rightInput = getRangePickerRightInput(fixture.debugElement);
+      const newDateString = ['2019-09-15', '2020-10-10'];
+
+      typeInElement(newDateString[1], leftInput);
+      fixture.detectChanges();
+      leftInput.dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+
+      typeInElement(newDateString[0], rightInput);
+      fixture.detectChanges();
+      rightInput.dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+      tick(500);
+      expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
+    }));
+
     it('should not change value when click ESC', fakeAsync(() => {
       fixtureInstance.modelValue = [new Date('2018-09-11'), new Date('2020-09-12')];
       fixture.detectChanges();
@@ -1035,8 +1014,8 @@ describe('range-picker', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(leftInput.value).toBe('');
-      expect(rightInput.value).toBe('2018-02-06');
+      expect(leftInput.value).toBe('2018-02-06');
+      expect(rightInput.value).toBe('2019-08-10');
     }));
 
     it('should panel date follows the selected date', fakeAsync(() => {
