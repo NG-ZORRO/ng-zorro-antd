@@ -484,12 +484,6 @@
     },
     "./upload/style/*.css": {
       "style": "./upload/style/index.min.css"
-    },
-    "./watermark/style/*.less": {
-      "less": "./watermark/style/*.less"
-    },
-    "./watermark/style/*.css": {
-      "style": "./watermark/style/index.min.css"
     }
   }
 }
