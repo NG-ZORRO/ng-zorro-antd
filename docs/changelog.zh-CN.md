@@ -15,6 +15,15 @@ timeline: true
 
 ---
 
+## 20.4.4
+
+`2025-12-12`
+
+### Bug Fixes
+
+- **icon:** 将 `nzSpin` 纳入变更检测逻辑，修复图标旋转状态在某些情况下无法及时更新 ([#9597](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9597)) ([46dc381](https://github.com/NG-ZORRO/ng-zorro-antd/commit/46dc3819244969963ca80eeac9f9c06482f48d29))
+- **result:** 修复仅设置 `nzStatus` 时图标不显示的问题 ([#9568](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9568)) ([#9582](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9582)) ([b652105](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b652105ac71a022f4d7343e911f04fbeb2dee8d0))
+
 ## 20.4.3
 
 `2025-11-28`

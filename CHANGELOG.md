@@ -1,3 +1,10 @@
+## [20.4.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.4.3...20.4.4) (2025-12-12)
+
+### Bug Fixes
+
+- **icon:** include nzSpin in change detection logic ([#9597](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9597)) ([46dc381](https://github.com/NG-ZORRO/ng-zorro-antd/commit/46dc3819244969963ca80eeac9f9c06482f48d29))
+- **result:** show default icon based on status ([#9568](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9568)) ([#9582](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9582)) ([b652105](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b652105ac71a022f4d7343e911f04fbeb2dee8d0))
+
 ## [20.4.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.4.2...20.4.3) (2025-11-28)
 
 ### Bug Fixes
