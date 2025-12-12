@@ -514,6 +514,22 @@ describe('modal', () => {
     flush();
   }));
 
+  it('should global config nzCentered work', fakeAsync(() => {
+    configService.set('modal', { nzCentered: true });
+
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    fixture.detectChanges();
+
+    const modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+
+    expect(modal.classList).withContext('should use global config').toContain('ant-modal-centered');
+    modalRef.close();
+    flush();
+  }));
+
   it('nzMask work', fakeAsync(() => {
     configService.set('modal', { nzMask: false });
 

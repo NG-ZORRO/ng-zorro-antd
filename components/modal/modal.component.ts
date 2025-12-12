@@ -25,6 +25,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
+import { WithConfig } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzModalContentDirective } from './modal-content.directive';
@@ -53,6 +54,7 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   @Input({ transform: booleanAttribute }) nzMask?: boolean;
   @Input({ transform: booleanAttribute }) nzMaskClosable?: boolean;
   @Input({ transform: booleanAttribute }) nzCloseOnNavigation?: boolean;
+  @Input({ transform: booleanAttribute }) @WithConfig() nzCentered?: boolean;
   @Input({ transform: booleanAttribute }) nzVisible: boolean = false;
   @Input({ transform: booleanAttribute }) nzClosable: boolean = true;
   @Input({ transform: booleanAttribute }) nzOkLoading: boolean = false;
@@ -61,7 +63,6 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   @Input({ transform: booleanAttribute }) nzCancelLoading: boolean = false;
   @Input({ transform: booleanAttribute }) nzKeyboard: boolean = true;
   @Input({ transform: booleanAttribute }) nzNoAnimation = false;
-  @Input({ transform: booleanAttribute }) nzCentered = false;
   @Input({ transform: booleanAttribute }) nzDraggable = false;
   @Input() nzContent?: string | TemplateRef<{}> | Type<T>;
   @Input() nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;

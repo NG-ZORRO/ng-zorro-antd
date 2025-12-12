@@ -65,7 +65,7 @@ import { NzModalTitleComponent } from './modal-title.component';
     role: 'dialog',
     '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
     '[class.ant-modal-wrap-rtl]': `dir === 'rtl'`,
-    '[class.ant-modal-centered]': 'config.nzCentered',
+    '[class.ant-modal-centered]': 'centered',
     '[style.zIndex]': 'config.nzZIndex',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@modalContainer]': 'state',
