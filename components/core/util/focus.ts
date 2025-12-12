@@ -7,14 +7,12 @@ export interface InputFocusOptions extends FocusOptions {
   cursor?: 'start' | 'end' | 'all';
 }
 
-export function triggerFocus(element?: HTMLElement, option?: InputFocusOptions): void {
-  if (!element) return;
-
-  element.focus(option);
+export function triggerFocus(element: HTMLInputElement | HTMLTextAreaElement, option?: InputFocusOptions): void {
+  element?.focus(option);
 
   // Selection content
   const { cursor } = option || {};
-  if (cursor && (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement)) {
+  if (cursor) {
     const len = element.value.length;
 
     switch (cursor) {
