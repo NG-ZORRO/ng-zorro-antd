@@ -8,7 +8,7 @@ export interface InputFocusOptions extends FocusOptions {
 }
 
 export function triggerFocus(element: HTMLInputElement | HTMLTextAreaElement, option?: InputFocusOptions): void {
-  element?.focus(option);
+  element.focus(option);
 
   // Selection content
   const { cursor } = option || {};
