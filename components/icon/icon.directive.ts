@@ -83,9 +83,9 @@ export class NzIconDirective extends IconDirective implements OnChanges, AfterCo
   }
 
   override ngOnChanges(changes: SimpleChanges): void {
-    const { nzType, nzTwotoneColor, nzTheme, nzRotate } = changes;
+    const { nzType, nzTwotoneColor, nzTheme, nzRotate, nzSpin } = changes;
 
-    if (nzType || nzTwotoneColor || nzTheme) {
+    if (nzType || nzTwotoneColor || nzTheme || nzSpin) {
       // This is used to reduce the number of change detections
       // while the icon is being loaded asynchronously.
       this.ngZone.runOutsideAngular(() => this.changeIcon2());
