@@ -48,10 +48,10 @@ When a numeric value needs to be provided.
 
 You can get instance by `ViewChild`
 
-| Name    | Description  |
-| ------- | ------------ |
-| focus() | get focus    |
-| blur()  | remove focus |
+| Name           | Description  | Parameters                                                                   |
+| -------------- | ------------ | ---------------------------------------------------------------------------- |
+| focus(option?) | get focus    | `(option?: { preventScroll?: boolean, cursor?: 'start' \| 'end' \| 'all' })` |
+| blur()         | remove focus | -                                                                            |
 
 ## FAQ
 
