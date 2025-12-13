@@ -1,17 +1,12 @@
-.fade-motion(@className, @keyframeName) {
-  @name: ~'@{ant-prefix}-@{className}';
-  .make-motion(@name, @keyframeName);
-  .@{name}-enter,
-  .@{name}-appear {
-    opacity: 0;
-    animation-timing-function: linear;
-  }
-  .@{name}-leave {
-    animation-timing-function: linear;
-  }
-}
+@import (reference) '../../themes/index';
+@import (reference) './util';
 
-.fade-motion(fade, antFade);
+.fade-motion(@className, @timing-function, @duration: @animation-duration-base) {
+  @name: ~'@{ant-prefix}-@{className}-motion';
+
+  .make-motion-enter(@name, antFadeIn, @timing-function, @duration);
+  .make-motion-leave(@name, antFadeOut, @timing-function, @duration);
+}
 
 @keyframes antFadeIn {
   0% {

@@ -683,8 +683,8 @@ describe('NzDrawerComponent', () => {
 
     it('should get correct mask animation class', () => {
       const fixture = TestBed.createComponent(NzDrawerComponent);
-      expect(fixture.componentInstance['maskAnimationEnter']()).toBe('ant-drawer-mask_animation-enter');
-      expect(fixture.componentInstance['maskAnimationLeave']()).toBe('ant-drawer-mask_animation-leave');
+      expect(fixture.componentInstance['maskAnimationEnter']()).toBe('ant-drawer-mask-motion-enter');
+      expect(fixture.componentInstance['maskAnimationLeave']()).toBe('ant-drawer-mask-motion-leave');
     });
   });
 });

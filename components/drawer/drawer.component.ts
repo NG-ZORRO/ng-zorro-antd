@@ -225,8 +225,8 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     drawerRef: this as NzDrawerRef<R>
   };
   protected isTemplateRef = isTemplateRef;
-  protected readonly maskAnimationEnter = withAnimationCheck(() => 'ant-drawer-mask_animation-enter');
-  protected readonly maskAnimationLeave = withAnimationCheck(() => 'ant-drawer-mask_animation-leave');
+  protected readonly maskAnimationEnter = withAnimationCheck(() => 'ant-drawer-mask-motion-enter');
+  protected readonly maskAnimationLeave = withAnimationCheck(() => 'ant-drawer-mask-motion-leave');
 
   get offsetTransform(): string | null {
     if (!this.isOpen || this.nzOffsetX + this.nzOffsetY === 0) {
