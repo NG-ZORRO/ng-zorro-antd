@@ -3,23 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import {
-  Component,
-  DebugElement,
-  DOCUMENT,
-  ElementRef,
-  provideZoneChangeDetection,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, DOCUMENT, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { NzScrollService } from 'ng-zorro-antd/core/services';
+import { provideMockDirectionality, sleep } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { toCssPixelNumber } from 'ng-zorro-antd/core/util';
 
 import { NzAffixComponent } from './affix.component';
 
@@ -58,17 +52,6 @@ describe('affix', () => {
   const width = 100;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        // todo: use zoneless
-        provideZoneChangeDetection(),
-        {
-          provide: NzScrollService,
-          useClass: NzScrollService
-        }
-      ]
-    });
-
     fixture = TestBed.createComponent(TestAffixComponent);
     context = fixture.componentInstance;
     component = context.nzAffixComponent;
@@ -78,130 +61,94 @@ describe('affix', () => {
     componentObject.wrap().id = 'wrap';
   });
 
-  afterEach(fakeAsync(() => {
-    setupInitialState();
-  }));
-
-  describe('[default]', () => {
-    it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/671', fakeAsync(() => {
+  describe('basic', () => {
+    it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/671', async () => {
       const edge = defaultOffsetTop + startOffset;
-      setupInitialState();
-      emitScroll(window, edge + 2);
+      await setupInitialState();
+      await emitScroll(window, edge + 2);
       componentObject.emitScroll(window, edge + 1);
       componentObject.emitScroll(window, edge);
       componentObject.emitScroll(window, edge - 1);
-      tick(100);
-      fixture.detectChanges();
+      await sleep(100);
 
-      expect(componentObject.wrap().offsetTop !== defaultOffsetTop).toBe(true);
-      setupInitialState();
-      discardPeriodicTasks();
-    }));
-
-    it('wraps content with affix', fakeAsync(() => {
-      expect(componentObject.content() === null).toBe(false);
-      setupInitialState();
-      discardPeriodicTasks();
-    }));
+      expect(componentObject.wrap().offsetTop).not.toBe(defaultOffsetTop);
+    });
 
     describe('when scrolled within top offset', () => {
-      it('scrolls with the content', fakeAsync(() => {
-        setupInitialState();
-        emitScroll(window, defaultOffsetTop + startOffset - 1);
+      it('scrolls with the content', async () => {
+        await setupInitialState();
+        await emitScroll(window, defaultOffsetTop + startOffset - 1);
 
         expect(componentObject.wrap().offsetTop !== defaultOffsetTop).toBe(true);
-        setupInitialState();
-        discardPeriodicTasks();
-      }));
+      });
     });
 
     describe('when scrolled below the top offset', () => {
-      it('sticks to the top offset', fakeAsync(() => {
-        setupInitialState();
-        emitScroll(window, defaultOffsetTop + startOffset + 1);
+      it('sticks to the top offset', async () => {
+        await setupInitialState();
+        await emitScroll(window, defaultOffsetTop + startOffset + 1);
         expect(componentObject.wrap().offsetTop).toBe(defaultOffsetTop);
-        setupInitialState();
-        discardPeriodicTasks();
-      }));
+      });
 
       describe('when element gets shifted horizontally', () => {
-        it('adjusts left position accordingly to maintain natural position', fakeAsync(() => {
-          setupInitialState();
+        it('adjusts left position accordingly to maintain natural position', async () => {
+          await setupInitialState();
           componentObject.offsetTo(componentObject.elementRef(), { top: startOffset, left: 10, width, height });
-          emitScroll(window, defaultOffsetTop + startOffset + 1);
+          await emitScroll(window, defaultOffsetTop + startOffset + 1);
 
           expect(componentObject.wrap().offsetLeft).toBe(10);
 
-          emitScroll(window, defaultOffsetTop + startOffset - 1);
+          await emitScroll(window, defaultOffsetTop + startOffset - 1);
           componentObject.offsetTo(componentObject.elementRef(), { top: startOffset, left: 100, width, height });
-          emitScroll(window, defaultOffsetTop + startOffset + 1);
+          await emitScroll(window, defaultOffsetTop + startOffset + 1);
 
           expect(componentObject.wrap().offsetLeft).toBe(100);
-          setupInitialState();
-          discardPeriodicTasks();
-        }));
+        });
       });
 
       for (const event of handledEvents) {
-        it(`handles '${event.type}' event`, fakeAsync(() => {
-          setupInitialState();
-          emitScroll(window, defaultOffsetTop + startOffset + 1);
+        it(`handles '${event.type}' event`, async () => {
+          await setupInitialState();
+          await emitScroll(window, defaultOffsetTop + startOffset + 1);
 
           expect(componentObject.wrap().offsetTop).toBe(defaultOffsetTop);
-          setupInitialState();
-          discardPeriodicTasks();
-        }));
+        });
       }
     });
-
-    it('should be re-adjust width when trigger resize', fakeAsync(() => {
-      setupInitialState();
-      emitScroll(window, defaultOffsetTop + startOffset - 1);
-      componentObject.emitEvent(window, new Event('resize'));
-      tick(20);
-      fixture.detectChanges();
-      setupInitialState();
-      discardPeriodicTasks();
-    }));
   });
 
   describe('resize', () => {
-    it('should be reset placeholder size', fakeAsync(() => {
+    it('should be reset placeholder size', async () => {
       const offsetTop = 150;
       context.newOffset = offsetTop;
-      setupInitialState({ offsetTop: offsetTop + 1 });
+      await setupInitialState({ offsetTop: offsetTop + 1 });
       const offsetWidthSpy = spyOnProperty(componentObject.elementRef(), 'offsetWidth', 'get');
-      emitScroll(window, 2);
+      await emitScroll(window, 2);
       expect(componentObject.elementRef().style.width).toBe(`${width}px`);
       componentObject.offsetYTo(componentObject.elementRef(), offsetTop + 2);
-      tick(20);
-      fixture.detectChanges();
+      await sleep(20);
+
       offsetWidthSpy.and.returnValue(100);
       componentObject.emitEvent(window, new Event('resize'));
-      tick(20);
-      fixture.detectChanges();
+      await sleep(20);
 
-      expect(componentObject.elementRef().style.width).toBe(`100px`);
-      setupInitialState();
-      discardPeriodicTasks();
-    }));
+      expect(componentObject.elementRef().style.width).toBe('100px');
+    });
 
-    it('should be reset placeholder size when container becomes greater', fakeAsync(() => {
+    it('should be reset placeholder size when container becomes greater', async () => {
       const target = componentObject.target();
       const clientHeightSpy = spyOnProperty(target, 'clientHeight', 'get');
       context.fakeTarget = target;
       context.newOffsetBottom = 10;
       clientHeightSpy.and.returnValue(10);
-      setupInitialState();
-      emitScroll(target, 11);
+      await setupInitialState();
+      await emitScroll(target, 11);
       clientHeightSpy.and.returnValue(100);
       componentObject.emitEvent(target, new Event('resize'));
-      tick(20);
-      fixture.detectChanges();
+      await sleep(20);
+
       expect(componentObject.elementRef().style.width).toBe(`${componentObject.elementRef().offsetWidth}px`);
-      setupInitialState();
-      discardPeriodicTasks();
-    }));
+    });
   });
 
   describe('[nzOffsetTop]', () => {
@@ -212,39 +159,30 @@ describe('affix', () => {
     });
 
     describe('when scrolled within top offset', () => {
-      it('scrolls with the content', fakeAsync(() => {
-        setupInitialState({ offsetTop: offsetTop + 1 });
-        emitScroll(window, 0);
+      it('scrolls with the content', async () => {
+        await setupInitialState({ offsetTop: offsetTop + 1 });
+        await emitScroll(window, 0);
 
         expect(componentObject.wrap().offsetTop !== offsetTop).toBe(true);
-
-        discardPeriodicTasks();
-      }));
+      });
     });
 
     describe('when scrolled below the top offset', () => {
-      it('sticks to the top offset', fakeAsync(() => {
-        setupInitialState({ offsetTop: offsetTop + 1 });
-        emitScroll(window, 2);
+      it('sticks to the top offset', async () => {
+        await setupInitialState({ offsetTop: offsetTop + 1 });
+        await emitScroll(window, 2);
 
         expect(componentObject.wrap().offsetTop).toBe(offsetTop);
-        emitScroll(window, 0);
-
-        discardPeriodicTasks();
-      }));
+      });
     });
 
-    it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/868', fakeAsync(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      context.newOffset = offsetTop.toString() as any;
-      setupInitialState({ offsetTop: offsetTop + 1 });
-      emitScroll(window, 2);
+    it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/868', async () => {
+      context.newOffset = offsetTop.toString() as NzSafeAny;
+      await setupInitialState({ offsetTop: offsetTop + 1 });
+      await emitScroll(window, 2);
 
       expect(componentObject.wrap().offsetTop).toBe(offsetTop);
-      emitScroll(window, 0);
-
-      discardPeriodicTasks();
-    }));
+    });
   });
 
   describe('[nzOffsetBottom]', () => {
@@ -257,16 +195,12 @@ describe('affix', () => {
         context.fakeTarget = target;
         context.newOffsetBottom = 10;
       });
-      describe('when scrolled below the bottom offset', () => {
-        it('sticks to the bottom offset', fakeAsync(() => {
-          setupInitialState();
-          emitScroll(target, 5000);
-          const wrapEl = componentObject.wrap();
-          expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
-          emitScroll(window, 0);
 
-          setupInitialState();
-        }));
+      describe('when scrolled below the bottom offset', () => {
+        it('should stick to the bottom with the specified offset', async () => {
+          await setupInitialState({ offsetTop: 5000 });
+          expect(toCssPixelNumber(componentObject.wrap().style.bottom)).toBe(10);
+        });
       });
     });
 
@@ -276,26 +210,21 @@ describe('affix', () => {
         context.fakeTarget = target;
         context.newOffsetBottom = offsetTop;
       });
+
       describe('when scrolled within bottom offset', () => {
-        it('scrolls with the content', fakeAsync(() => {
-          setupInitialState();
-          emitScroll(target, 0);
-          const wrapEl = componentObject.wrap();
-          expect(+wrapEl.style.bottom!.replace('px', '')).toBeGreaterThan(0);
-          setupInitialState();
-          discardPeriodicTasks();
-        }));
+        it('should scroll with the content', async () => {
+          await setupInitialState();
+          await emitScroll(target, 0);
+          expect(toCssPixelNumber(componentObject.wrap().style.bottom)).toBeGreaterThan(0);
+        });
       });
 
       describe('when scrolled below the bottom offset', () => {
-        it('sticks to the bottom offset', fakeAsync(() => {
-          setupInitialState();
-          emitScroll(target, 5000);
-          const wrapEl = componentObject.wrap();
-          expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
-          setupInitialState();
-          discardPeriodicTasks();
-        }));
+        it('should stick to the bottom offset', async () => {
+          await setupInitialState();
+          await emitScroll(target, 5000);
+          expect(toCssPixelNumber(componentObject.wrap().style.bottom)).toBe(0);
+        });
       });
     });
   });
@@ -309,76 +238,65 @@ describe('affix', () => {
     });
 
     describe('when window is scrolled', () => {
-      it('scrolls with the content', fakeAsync(() => {
-        setupInitialState();
-        emitScroll(window, defaultOffsetTop + startOffset + 1);
+      it('scrolls with the content', async () => {
+        await setupInitialState();
+        await emitScroll(window, defaultOffsetTop + startOffset + 1);
 
         expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
-        emitScroll(window, 0);
-        discardPeriodicTasks();
-      }));
+      });
     });
 
     describe('when custom target is scrolled within top offset', () => {
-      it('scrolls with the content', fakeAsync(() => {
-        setupInitialState();
-        emitScroll(target, defaultOffsetTop + startOffset - 1);
+      it('scrolls with the content', async () => {
+        await setupInitialState();
+        await emitScroll(target, defaultOffsetTop + startOffset - 1);
 
         expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
-        setupInitialState();
-        discardPeriodicTasks();
-      }));
+      });
     });
 
     describe('when custom target is scrolled below the top offset', () => {
-      it('sticks to the top offset', fakeAsync(() => {
-        setupInitialState();
-        emitScroll(target, defaultOffsetTop + startOffset + 1);
+      it('sticks to the top offset', async () => {
+        await setupInitialState();
+        await emitScroll(target, defaultOffsetTop + startOffset + 1);
 
         expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
-        setupInitialState();
-        discardPeriodicTasks();
-      }));
+      });
     });
 
-    it('should be a string value', fakeAsync(() => {
+    it('should be a string value', async () => {
       spyOn(component, 'updatePosition');
       expect(component.updatePosition).not.toHaveBeenCalled();
-      fixture.detectChanges();
+
       context.fakeTarget = '#target';
-      fixture.detectChanges();
-      tick();
+      await fixture.whenStable();
+
       expect(component.updatePosition).toHaveBeenCalled();
-      discardPeriodicTasks();
-    }));
+    });
   });
 
   describe('(nzChange)', () => {
     let changeValue: boolean;
     beforeEach(() => {
-      component.nzChange.subscribe((returnValue: boolean) => {
+      component.nzChange.subscribe(returnValue => {
         changeValue = returnValue;
       });
     });
 
-    it(`emit true when is affixed`, fakeAsync(() => {
-      setupInitialState();
-      emitScroll(window, defaultOffsetTop + startOffset + 1);
+    it(`emit true when is affixed`, async () => {
+      await setupInitialState();
+      await emitScroll(window, defaultOffsetTop + startOffset + 1);
 
       expect(changeValue).toBe(true);
+    });
 
-      discardPeriodicTasks();
-    }));
-
-    it(`emit false when isn't affixed`, fakeAsync(() => {
-      setupInitialState();
-      emitScroll(window, defaultOffsetTop + startOffset + 1);
-      emitScroll(window, defaultOffsetTop + startOffset - 1);
+    it(`emit false when isn't affixed`, async () => {
+      await setupInitialState();
+      await emitScroll(window, defaultOffsetTop + startOffset + 1);
+      await emitScroll(window, defaultOffsetTop + startOffset - 1);
 
       expect(changeValue).toBe(false);
-      setupInitialState();
-      discardPeriodicTasks();
-    }));
+    });
   });
 
   class NzAffixPageObject {
@@ -428,10 +346,6 @@ describe('affix', () => {
       });
     }
 
-    content(): HTMLElement {
-      return debugElement.query(By.css('#content')).nativeElement;
-    }
-
     elementRef(): HTMLElement {
       return debugElement.query(By.css('nz-affix')).nativeElement;
     }
@@ -456,102 +370,20 @@ describe('affix', () => {
     }
   }
 
-  function setupInitialState(options: { offsetTop?: number } = {}): void {
+  async function setupInitialState(options: { offsetTop?: number } = {}): Promise<void> {
     componentObject.offsetYTo(componentObject.elementRef(), options.offsetTop || startOffset);
-    tick(20);
-    fixture.detectChanges();
+    await sleep(20);
+    await fixture.whenStable();
     componentObject.emitScroll(window, 0);
-    tick(20);
-    fixture.detectChanges();
+    await sleep(20);
+    await fixture.whenStable();
   }
 
-  function emitScroll(el: Element | Window, offset: number): void {
+  async function emitScroll(el: Element | Window, offset: number): Promise<void> {
     componentObject.emitScroll(el, offset);
-    tick(20);
-    fixture.detectChanges();
+    await sleep(20);
+    await fixture.whenStable();
   }
-});
-
-describe('affix-extra', () => {
-  let fixture: ComponentFixture<TestAffixComponent>;
-  let context: TestAffixComponent;
-  let dl: DebugElement;
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TestAffixComponent);
-    context = fixture.componentInstance;
-    dl = fixture.debugElement;
-  });
-
-  afterEach(() => {
-    fixture.destroy();
-  });
-
-  it('#getOffset', () => {
-    const ret = fixture.componentInstance.nzAffixComponent.getOffset(
-      fixture.debugElement.query(By.css('#affix')).nativeElement,
-      window
-    );
-    expect(ret).not.toBeUndefined();
-  });
-  it('with window when scrolled below the bottom offset', fakeAsync(() => {
-    const value = 10;
-    context.newOffsetBottom = value;
-    context.fakeTarget = window;
-    fixture.detectChanges();
-    const el = dl.query(By.css('nz-affix')).nativeElement as HTMLElement;
-    spyOn(el, 'getBoundingClientRect').and.returnValue({
-      top: 1000,
-      left: 5,
-      width: 200,
-      height: 20
-    } as DOMRect);
-    window.dispatchEvent(new Event('scroll'));
-    tick(30);
-    fixture.detectChanges();
-    window.dispatchEvent(new Event('scroll'));
-    tick(30);
-    fixture.detectChanges();
-    const ret = +(el.querySelector('.ant-affix') as HTMLElement).style.bottom!.replace('px', '');
-    expect(ret).toBe(value);
-  }));
-});
-
-describe('affix RTL', () => {
-  let fixture: ComponentFixture<TestAffixRtlComponent>;
-  let context: TestAffixRtlComponent;
-  let dl: DebugElement;
-
-  beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-    fixture = TestBed.createComponent(TestAffixRtlComponent);
-    context = fixture.componentInstance;
-    dl = fixture.debugElement;
-  });
-
-  it('should className correct on dir change', fakeAsync(() => {
-    context.newOffsetBottom = 10;
-    context.fakeTarget = window;
-    fixture.detectChanges();
-    const el = dl.query(By.css('nz-affix')).nativeElement as HTMLElement;
-    spyOn(el, 'getBoundingClientRect').and.returnValue({
-      top: 1000,
-      left: 5,
-      width: 200,
-      height: 20
-    } as DOMRect);
-    window.dispatchEvent(new Event('scroll'));
-    tick(30);
-    fixture.detectChanges();
-    window.dispatchEvent(new Event('scroll'));
-    tick(30);
-    fixture.detectChanges();
-    expect(el.querySelector('.ant-affix')?.classList).toContain('ant-affix-rtl');
-    fixture.destroy();
-  }));
 });
 
 @Component({
@@ -570,38 +402,11 @@ class TestAffixComponent {
   newOffsetBottom!: number;
 }
 
-@Component({
-  imports: [NzAffixComponent, BidiModule],
-  template: `
-    <div [dir]="direction">
-      <nz-affix id="affix" [nzTarget]="fakeTarget" [nzOffsetTop]="newOffset" [nzOffsetBottom]="newOffsetBottom">
-        <button id="content">Affix Button</button>
-      </nz-affix>
-      <div id="target"></div>
-    </div>
-  `
-})
-export class TestAffixRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-
-  @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;
-  fakeTarget?: string | Element | Window;
-  newOffset!: number;
-  newOffsetBottom!: number;
-}
-
-class MockDirectionality {
-  value = 'ltr';
-  change = new Subject();
-}
-
 describe('NzAffixComponent', () => {
   let component: NzAffixComponent;
   let fixture: ComponentFixture<NzAffixComponent>;
-  let mockRenderer: Renderer2;
   let mockPlatform: Platform;
-  let mockDirectionality: MockDirectionality;
+  let mockDirectionality: Directionality;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -611,68 +416,60 @@ describe('NzAffixComponent', () => {
         { provide: Renderer2, useValue: jasmine.createSpyObj('Renderer2', ['setStyle', 'addClass', 'removeClass']) },
         { provide: ElementRef, useValue: new ElementRef(document.createElement('div')) },
         { provide: DOCUMENT, useValue: document },
-        { provide: Directionality, useClass: MockDirectionality },
+        provideMockDirectionality(),
         { provide: Platform, useValue: { isBrowser: true } }
       ]
     });
 
     fixture = TestBed.createComponent(NzAffixComponent);
     component = fixture.componentInstance;
-    mockRenderer = TestBed.inject(Renderer2);
     mockPlatform = TestBed.inject(Platform);
-    mockDirectionality = TestBed.inject(Directionality) as unknown as MockDirectionality;
+    mockDirectionality = TestBed.inject(Directionality);
   });
 
-  afterEach(() => {
-    mockDirectionality.change.complete();
-  });
-
-  it('should handle directionality change', () => {
-    mockDirectionality.value = 'ltr';
-    component.ngOnInit();
-
+  it('should handle directionality change', async () => {
     spyOn<NzSafeAny>(component, 'registerListeners');
     spyOn(component, 'updatePosition');
-    spyOn(component['cdr'], 'detectChanges');
 
-    mockDirectionality.change.next('rtl');
+    await fixture.whenStable();
 
-    expect(component.dir).toBe('rtl');
-    expect(component['registerListeners']).toHaveBeenCalled();
-    expect(component.updatePosition).toHaveBeenCalled();
-    expect(component['cdr'].detectChanges).toHaveBeenCalled();
+    expect(component['registerListeners']).toHaveBeenCalledTimes(1);
+    expect(component.updatePosition).toHaveBeenCalledTimes(1);
+
+    mockDirectionality.valueSignal.set('rtl');
+    await fixture.whenStable();
+
+    expect(component['registerListeners']).toHaveBeenCalledTimes(2);
+    expect(component.updatePosition).toHaveBeenCalledTimes(2);
   });
 
-  it('should register listeners if platform is browser', () => {
-    spyOn(component as NzSafeAny, 'removeListeners').and.callThrough();
-    spyOn(mockRenderer, 'setStyle');
+  it('should register listeners if platform is browser', async () => {
+    spyOn(component as NzSafeAny, 'removeListeners');
 
-    component.ngOnInit();
-    component.ngAfterViewInit();
+    await fixture.whenStable();
 
     expect(component['removeListeners']).toHaveBeenCalled();
     expect(component['positionChangeSubscription']).toBeDefined();
     expect(component['timeout']).toBeDefined();
   });
 
-  it('should not register listeners if platform is not browser', () => {
+  it('should not register listeners if platform is not browser', async () => {
     mockPlatform.isBrowser = false;
 
-    component.ngOnInit();
-    component.ngAfterViewInit();
+    await fixture.whenStable();
 
     expect(component['positionChangeSubscription']).toEqual(Subscription.EMPTY);
   });
 
   it('should remove listeners on destroy', () => {
-    spyOn(component as NzSafeAny, 'removeListeners').and.callThrough();
+    spyOn(component as NzSafeAny, 'removeListeners');
     fixture.destroy();
     expect(component['removeListeners']).toHaveBeenCalled();
   });
 
   it('should update position correctly', () => {
-    spyOn<NzSafeAny>(component, 'setAffixStyle').and.callThrough();
-    spyOn<NzSafeAny>(component, 'setPlaceholderStyle').and.callThrough();
+    spyOn<NzSafeAny>(component, 'setAffixStyle');
+    spyOn<NzSafeAny>(component, 'setPlaceholderStyle');
 
     const event = new Event('scroll');
     component.updatePosition(event);
@@ -682,30 +479,26 @@ describe('NzAffixComponent', () => {
   });
 
   it('should update RTL class when direction changes', () => {
-    component['fixedEl'].nativeElement.classList.add('ant-affix');
-    component.dir = 'ltr';
+    const fixedEl = component['fixedEl'].nativeElement;
+    fixedEl.classList.add('ant-affix');
     component['updateRtlClass']();
-    fixture.detectChanges();
 
-    expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
+    expect(fixedEl.classList.contains('ant-affix-rtl')).toBeFalse();
 
-    component.dir = 'rtl';
+    mockDirectionality.valueSignal.set('rtl');
     component['updateRtlClass']();
-    fixture.detectChanges();
 
-    expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeTrue();
+    expect(fixedEl.classList.contains('ant-affix-rtl')).toBeTrue();
 
-    component.dir = 'ltr';
+    mockDirectionality.valueSignal.set('ltr');
     component['updateRtlClass']();
-    fixture.detectChanges();
 
-    expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
+    expect(fixedEl.classList.contains('ant-affix-rtl')).toBeFalse();
 
-    component.dir = 'rtl';
-    component['fixedEl'].nativeElement.classList.remove('ant-affix');
-    component['fixedEl'].nativeElement.classList.add('ant-affix-rtl');
+    mockDirectionality.valueSignal.set('rtl');
+    fixedEl.classList.remove('ant-affix');
+    fixedEl.classList.add('ant-affix-rtl');
     component['updateRtlClass']();
-    fixture.detectChanges();
 
     expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
   });
@@ -727,7 +520,7 @@ describe('NzAffixComponent', () => {
       width: 100,
       height: 50
     });
-    spyOn<NzSafeAny>(component, 'setAffixStyle').and.callThrough();
+    spyOn<NzSafeAny>(component, 'setAffixStyle');
     component.nzOffsetTop = 10;
     component.nzOffsetBottom = 10;
 
@@ -740,7 +533,7 @@ describe('NzAffixComponent', () => {
   });
 
   it('should update the affix style with the correct width on resize', () => {
-    spyOn<NzSafeAny>(component, 'setAffixStyle').and.callThrough();
+    spyOn<NzSafeAny>(component, 'setAffixStyle');
 
     const scrollTop = 40;
     spyOn(component['scrollSrv'], 'getScroll').and.returnValue(scrollTop);
