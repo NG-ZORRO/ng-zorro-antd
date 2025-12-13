@@ -3,19 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import {
-  ApplicationRef,
-  Component,
-  DebugElement,
-  NgZone,
-  provideZoneChangeDetection,
-  signal,
-  ViewChild
-} from '@angular/core';
+import { ApplicationRef, Component, DebugElement, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -27,6 +19,7 @@ import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   MockNgZone,
+  provideMockDirectionality,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzStatus } from 'ng-zorro-antd/core/types';
@@ -50,7 +43,7 @@ describe('mention', () => {
         provideZoneChangeDetection(),
         provideNoopAnimations(),
         provideNzIconsTesting(),
-        { provide: Directionality, useClass: MockDirectionality },
+        provideMockDirectionality(),
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
@@ -915,10 +908,4 @@ class NzTestClearMentionComponent {
   @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
 
   onClear(): void {}
-}
-
-class MockDirectionality {
-  value = 'ltr';
-  change = new Subject();
-  valueSignal = signal('ltr');
 }
