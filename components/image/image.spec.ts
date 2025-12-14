@@ -7,10 +7,15 @@ import { ESCAPE, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
+import {
+  dispatchEvent,
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent,
+  MockNgZone
+} from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import {
@@ -32,8 +37,8 @@ const FALLBACK =
   'data:image/png;base64,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';
 
 describe('image', () => {
-  let fixture: ComponentFixture<TestImageBasicsComponent>;
-  let context: TestImageBasicsComponent;
+  let fixture: ComponentFixture<TestImageBasicComponent>;
+  let context: TestImageBasicComponent;
   let debugElement: DebugElement;
 
   beforeEach(() => {
@@ -41,7 +46,6 @@ describe('image', () => {
       providers: [
         // todo: use zoneless
         provideZoneChangeDetection(),
-        provideNoopAnimations(),
         { provide: Overlay, useClass: Overlay },
         {
           provide: NgZone,
@@ -52,7 +56,7 @@ describe('image', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestImageBasicsComponent);
+    fixture = TestBed.createComponent(TestImageBasicComponent);
     fixture.detectChanges();
     context = fixture.componentInstance;
     debugElement = fixture.debugElement;
@@ -105,7 +109,7 @@ describe('image placeholder', () => {
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection(), provideNoopAnimations(), { provide: Overlay, useClass: Overlay }]
+      providers: [provideZoneChangeDetection(), { provide: Overlay, useClass: Overlay }]
     });
   });
 
@@ -148,7 +152,7 @@ describe('image fallback', () => {
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection(), provideNoopAnimations(), { provide: Overlay, useClass: Overlay }]
+      providers: [provideZoneChangeDetection(), { provide: Overlay, useClass: Overlay }]
     });
   });
 
@@ -185,7 +189,6 @@ describe('image preview', () => {
       providers: [
         // todo: use zoneless
         provideZoneChangeDetection(),
-        provideNoopAnimations(),
         provideNzIconsTesting(),
         { provide: Overlay, useClass: Overlay }
       ]
@@ -269,40 +272,40 @@ describe('image preview', () => {
       const image = debugElement.nativeElement.querySelector('img');
       image.click();
       tickChanges();
-      previewElement = getPreviewRootElement();
+
       const imageElement = getPreviewImageElement();
-      const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
-      const close = operations[0];
-      const zoomIn = operations[1];
-      const zoomOut = operations[2];
-      const rotateRight = operations[3];
-      const rotateLeft = operations[4];
-      const flipHorizontally = operations[5];
-      const flipVertically = operations[6];
+      const [close, zoomIn, zoomOut, rotateRight, rotateLeft, flipHorizontally, flipVertically] =
+        overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
+
       dispatchFakeEvent(rotateLeft, 'click');
       tickChanges();
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(-90deg)');
+
       dispatchFakeEvent(rotateRight, 'click');
       tickChanges();
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
+
       dispatchFakeEvent(zoomIn, 'click');
       tickChanges();
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
+
       dispatchFakeEvent(zoomOut, 'click');
       tickChanges();
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
+
       dispatchFakeEvent(flipHorizontally, 'click');
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(-1, 1, 1) rotate(0deg)');
+
       tickChanges();
       dispatchFakeEvent(flipVertically, 'click');
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(-1, -1, 1) rotate(0deg)');
+
       tickChanges();
       dispatchFakeEvent(close, 'click');
+      dispatchEvent(getPreviewRootElement(), new AnimationEvent('animationend', { animationName: 'antFadeOut' }));
       tickChanges();
-      previewElement = getPreviewRootElement();
-      expect(previewElement).not.toBeTruthy();
-      discardPeriodicTasks();
-      flush();
+
+      expect(context.previewRef?.previewInstance).toBeFalsy();
     }));
 
     it('should zoom in/out based on the zoom step value', fakeAsync(() => {
@@ -406,8 +409,8 @@ describe('image preview', () => {
       context.createUsingService();
       const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
-      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
-      expect(previewInstance.isDragging).toEqual(true);
+      dispatchMouseEvent(previewInstance.imagePreviewWrapper.nativeElement, 'mousedown');
+      expect(previewInstance.isDragging()).toEqual(true);
       let isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](10);
       expect(isZoomingInside).toBeFalsy();
       isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](-10);
@@ -419,7 +422,7 @@ describe('image preview', () => {
       context.createUsingService();
       const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
-      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      dispatchMouseEvent(previewInstance.imagePreviewWrapper.nativeElement, 'mousedown');
       previewInstance['zoom'] = 5;
       spyOn(previewInstance, 'onZoomOut');
       spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
@@ -439,14 +442,10 @@ describe('image preview', () => {
       context.images = [{ src: QUICK_SRC }];
       context.createUsingService();
       const previewInstance = context.previewRef!.previewInstance;
-      previewInstance.ngOnInit();
       tickChanges();
       spyOn(previewInstance, 'onClose');
 
-      const event: KeyboardEvent = new KeyboardEvent('keydown', {
-        keyCode: ESCAPE
-      });
-      document.dispatchEvent(event);
+      dispatchKeyboardEvent(document, 'keydown', ESCAPE);
       tick();
 
       expect(previewInstance.onClose).toHaveBeenCalled();
@@ -460,11 +459,13 @@ describe('image preview', () => {
       tickChanges();
       const previewWrap = getPreviewWrapElement();
       previewWrap.click();
-      tickChanges();
       previewElement = getPreviewRootElement();
-      expect(previewElement).not.toBeTruthy();
-      discardPeriodicTasks();
-      flush();
+
+      // mock animationend event
+      dispatchEvent(previewElement, new AnimationEvent('animationend', { animationName: 'antFadeOut' }));
+      tick();
+
+      expect(context.previewRef?.previewInstance).toBeFalsy();
     }));
 
     it('should preview group work', fakeAsync(() => {
@@ -473,9 +474,8 @@ describe('image preview', () => {
       fixture.detectChanges();
       const images = debugElement.nativeElement.querySelectorAll('img');
       images[0].click();
-      fixture.detectChanges();
-      tick(300);
-      fixture.detectChanges();
+      tickChanges();
+
       previewElement = getPreviewRootElement();
       const left = previewElement!.querySelector('.ant-image-preview-switch-left')!;
       const right = previewElement!.querySelector('.ant-image-preview-switch-right')!;
@@ -483,16 +483,14 @@ describe('image preview', () => {
       expect(right).toBeTruthy();
       expect(left.classList.contains('ant-image-preview-switch-left-disabled')).toBeTrue();
       dispatchFakeEvent(right, 'click');
-      fixture.detectChanges();
-      tick(300);
-      fixture.detectChanges();
+      tickChanges();
+
       let previewImage = getPreviewImageElement();
       expect(previewImage.getAttribute('src')).toContain(QUICK_SRC);
       expect(right.classList.contains('ant-image-preview-switch-right-disabled')).toBeTrue();
       dispatchFakeEvent(left, 'click');
-      fixture.detectChanges();
-      tick(300);
-      fixture.detectChanges();
+      tickChanges();
+
       previewImage = getPreviewImageElement();
       expect(previewImage.getAttribute('src')).toContain(SRC);
     }));
@@ -556,7 +554,7 @@ describe('image preview', () => {
       const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
       previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
-      expect(previewInstance.isDragging).toEqual(true);
+      expect(previewInstance.isDragging()).toEqual(true);
       spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
         return true;
       });
@@ -704,18 +702,20 @@ describe('image preview', () => {
 });
 
 @Component({
+  selector: 'test-image-basic',
   imports: [NzImageModule],
-  template: `<img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" />`
+  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" />`
 })
-export class TestImageBasicsComponent {
+export class TestImageBasicComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
   src = '';
   placeholder: string | null = '';
 }
 
 @Component({
+  selector: 'test-image-placeholder',
   imports: [NzImageModule],
-  template: `<img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />`
+  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />`
 })
 export class TestImagePlaceholderComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
@@ -725,8 +725,9 @@ export class TestImagePlaceholderComponent {
 }
 
 @Component({
+  selector: 'test-image-fallback',
   imports: [NzImageModule],
-  template: `<img nz-image [nzSrc]="src" [nzFallback]="fallback" />`
+  template: `<img alt="" nz-image [nzSrc]="src" [nzFallback]="fallback" />`
 })
 export class TestImageFallbackComponent {
   @ViewChild(NzImageDirective) image!: NzImageDirective;
@@ -735,14 +736,15 @@ export class TestImageFallbackComponent {
 }
 
 @Component({
+  selector: 'test-image-preview-group',
   imports: [NzImageModule],
   template: `
     <nz-image-group [nzScaleStep]="groupZoomStep">
-      <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
-      <img nz-image [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
+      <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
+      <img alt="" nz-image [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
     </nz-image-group>
-    <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
-    <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
+    <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
+    <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
   `
 })
 export class TestImagePreviewGroupComponent {
