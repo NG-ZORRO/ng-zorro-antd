@@ -163,6 +163,6 @@ export class NzInputDirective implements OnInit {
   }
 
   blur(): void {
-    this.elementRef.nativeElement?.blur();
+    this.elementRef.nativeElement.blur();
   }
 }
