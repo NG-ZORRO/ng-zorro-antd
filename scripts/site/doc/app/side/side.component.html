@@ -13,8 +13,13 @@
     }
   } @else if (page() === 'components') {
     <li nz-menu-item nzMatchRouter>
-      <a routerLink="components/overview/{{ language() }}">
+      <a [routerLink]="`components/overview/${language()}`">
         <span>{{ language() === 'zh' ? '组件总览' : 'Components Overview' }}</span>
+      </a>
+    </li>
+    <li nz-menu-item nzMatchRouter>
+      <a [routerLink]="`components/changelog/${language()}`">
+        <span>{{ language() === 'zh' ? '更新日志' : 'Change Log' }}</span>
       </a>
     </li>
 
