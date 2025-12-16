@@ -96,3 +96,20 @@ description: 通过鼠标或键盘输入内容，是最基础的表单域的包�
 ### 如何使用紧凑型输入框组合？
 
 从 v20 版本开始，`nz-input-group` 不再直接支持紧凑模式，你可以使用 [nz-space-compact](/components/space/zh#components-space-demo-compact) 替代。
+
+### NG0951 错误
+
+若通过 `ngTemplateOutlet` 等方式将 `nz-input` 动态渲染到 `nz-input-wrapper` 内部，可能会触发 `NG0951` 错误。
+这是由于 Angular 的内容投影（Content Projection）与子查询（Child Query）机制是静态的，无法识别动态渲染的组件（参考：[angular/angular#64504](https://github.com/angular/angular/issues/64504)）。
+
+鉴于 `nz-input-wrapper` 依赖于内容子查询来定位 `nz-input`，建议将 `nz-input-wrapper` 与 `nz-input` 视为一个整体，避免拆分渲染。
+
+```html
+@if (need_affix_or_addon) {
+<nz-input-wrapper nzAddonBefore="...">
+  <input nz-input />
+</nz-input-wrapper>
+} @else {
+<input nz-input />
+}
+```

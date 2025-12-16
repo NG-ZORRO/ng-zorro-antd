@@ -95,3 +95,20 @@ All properties of `nz-input-wrapper` can be used.
 ### How to use compact input group?
 
 `nz-input-group` is no longer support compact mode directly in v20, you can use [nz-space-compact](/components/space/en#components-space-demo-compact) instead.
+
+### NG0951 Error
+
+If you attempt to dynamically render `nz-input` inside `nz-input-wrapper` using `ngTemplateOutlet` or similar methods, you may encounter the `NG0951` error.
+This is because Angular's Content Projection and Child Query mechanisms are static and cannot recognize dynamically rendered components (Reference: [angular/angular#64504](https://github.com/angular/angular/issues/64504)).
+
+Since `nz-input-wrapper` relies on content child queries to locate `nz-input`, it is recommended to treat `nz-input-wrapper` and `nz-input` as a single unit and avoid rendering them separately.
+
+```html
+@if (need_affix_or_addon) {
+<nz-input-wrapper nzAddonBefore="...">
+  <input nz-input />
+</nz-input-wrapper>
+} @else {
+<input nz-input />
+}
+```
