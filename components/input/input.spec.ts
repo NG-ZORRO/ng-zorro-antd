@@ -6,7 +6,7 @@
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { Component, DebugElement, provideZoneChangeDetection, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
@@ -295,7 +295,7 @@ export class NzTestInputWithDirComponent {
 }
 
 @Component({
-  imports: [FormsModule, NzInputModule],
+  imports: [NzInputModule],
   template: `
     <input
       nz-input
@@ -303,7 +303,7 @@ export class NzTestInputWithDirComponent {
       [disabled]="disabled"
       [nzVariant]="variant"
       [nzStepperless]="stepperless"
-      [(ngModel)]="value"
+      [value]="value"
     />
   `
 })
