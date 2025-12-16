@@ -22,7 +22,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { filter } from 'rxjs/operators';
+import { merge } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -110,7 +111,7 @@ const NZ_DEFAULT_ROTATE = 0;
               class="ant-image-preview-img-wrapper"
               #imagePreviewWrapper
               cdkDrag
-              [style.transform]="previewImageWrapperTransform"
+              [style.transform]="previewImageWrapperTransform()"
               [cdkDragFreeDragPosition]="position"
               (cdkDragEnded)="onDragEnd($event)"
             >
@@ -125,7 +126,7 @@ const NZ_DEFAULT_ROTATE = 0;
                     [attr.alt]="image.alt"
                     [style.width]="image.width"
                     [style.height]="image.height"
-                    [style.transform]="previewImageTransform"
+                    [style.transform]="previewImageTransform()"
                   />
                 }
               }
@@ -164,8 +165,8 @@ export class NzImagePreviewComponent implements OnInit {
   visible = true;
   scaleStepMap: Map<NzImageUrl, NzImageScaleStep> = new Map<NzImageUrl, NzImageScaleStep>();
 
-  previewImageTransform = '';
-  previewImageWrapperTransform = '';
+  protected readonly previewImageTransform = signal('');
+  protected readonly previewImageWrapperTransform = signal('');
   operations: NzImageContainerOperation[] = [
     {
       icon: 'close',
@@ -245,9 +246,12 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mousedown')
+    merge(
+      fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mousedown').pipe(map(() => true)),
+      fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mouseup').pipe(map(() => false))
+    )
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.isDragging.set(true));
+      .subscribe(dragging => this.isDragging.set(dragging));
 
     fromEventOutsideAngular<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -408,13 +412,15 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private updatePreviewImageTransform(): void {
-    this.previewImageTransform = `scale3d(${this.zoom * (this.flipHorizontally ? -1 : 1)}, ${
-      this.zoom * (this.flipVertically ? -1 : 1)
-    }, 1) rotate(${this.rotate}deg)`;
+    this.previewImageTransform.set(
+      `scale3d(${this.zoom * (this.flipHorizontally ? -1 : 1)}, ${
+        this.zoom * (this.flipVertically ? -1 : 1)
+      }, 1) rotate(${this.rotate}deg)`
+    );
   }
 
   private updatePreviewImageWrapperTransform(): void {
-    this.previewImageWrapperTransform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
+    this.previewImageWrapperTransform.set(`translate3d(${this.position.x}px, ${this.position.y}px, 0)`);
   }
 
   private updateZoomOutDisabled(): void {
