@@ -72,11 +72,11 @@ import { defaultColor, generateColor } from './util/util';
           <ng-antd-color-block [color]="toRgbString"></ng-antd-color-block>
         </div>
       </div>
-      @if (presets && presets.length > 0) {
-        <ng-antd-color-preset [value]="colorValue" [presets]="presets" (presetSelect)="handleChange($event)" />
-      }
       @if (panelRenderFooter) {
         <ng-template [ngTemplateOutlet]="panelRenderFooter"></ng-template>
+      }
+      @if (presets && presets.length > 0) {
+        <ng-antd-color-preset [value]="colorValue" [presets]="presets" (presetSelect)="handleChange($event)" />
       }
     </div>
   `,
