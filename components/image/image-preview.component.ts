@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AnimationEvent } from '@angular/animations';
 import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import {
@@ -17,14 +16,15 @@ import {
   inject,
   NgZone,
   OnInit,
+  signal,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { filter } from 'rxjs/operators';
+import { merge } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
-import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, isNotNil } from 'ng-zorro-antd/core/util';
@@ -55,7 +55,6 @@ const NZ_DEFAULT_ROTATE = 0;
 @Component({
   selector: 'nz-image-preview',
   exportAs: 'nzImagePreview',
-  animations: [fadeMotion],
   template: `
     <div class="ant-image-preview-mask"></div>
 
@@ -112,7 +111,7 @@ const NZ_DEFAULT_ROTATE = 0;
               class="ant-image-preview-img-wrapper"
               #imagePreviewWrapper
               cdkDrag
-              [style.transform]="previewImageWrapperTransform"
+              [style.transform]="previewImageWrapperTransform()"
               [cdkDragFreeDragPosition]="position"
               (cdkDragEnded)="onDragEnd($event)"
             >
@@ -127,7 +126,7 @@ const NZ_DEFAULT_ROTATE = 0;
                     [attr.alt]="image.alt"
                     [style.width]="image.width"
                     [style.height]="image.height"
-                    [style.transform]="previewImageTransform"
+                    [style.transform]="previewImageTransform()"
                   />
                 }
               }
@@ -142,36 +141,32 @@ const NZ_DEFAULT_ROTATE = 0;
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-image-preview-root',
-    '[class.ant-image-preview-moving]': 'isDragging',
-    '[style.zIndex]': 'config.nzZIndex',
-    '[@.disabled]': 'config.nzNoAnimation',
-    '[@fadeMotion]': `visible ? 'enter' : 'leave'`,
-    '(@fadeMotion.start)': 'onAnimationStart($event)',
-    '(@fadeMotion.done)': 'onAnimationDone($event)'
+    '[class.ant-image-preview-moving]': 'isDragging()',
+    '[style.zIndex]': 'config.nzZIndex'
   },
   imports: [NzIconModule, CdkDragHandle, CdkDrag]
 })
 export class NzImagePreviewComponent implements OnInit {
-  private document = inject(DOCUMENT);
-  private ngZone = inject(NgZone);
-  private cdr = inject(ChangeDetectorRef);
-  public nzConfigService = inject(NzConfigService);
-  public config = inject(NzImagePreviewOptions);
-  private sanitizer = inject(DomSanitizer);
-  private destroyRef = inject(DestroyRef);
+  private readonly document = inject(DOCUMENT);
+  private readonly ngZone = inject(NgZone);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly nzConfigService = inject(NzConfigService);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly destroyRef = inject(DestroyRef);
+  public readonly elementRef = inject(ElementRef);
+  public readonly config = inject(NzImagePreviewOptions);
   readonly _defaultNzZoom = NZ_DEFAULT_ZOOM;
   readonly _defaultNzScaleStep = NZ_DEFAULT_SCALE_STEP;
   readonly _defaultNzRotate = NZ_DEFAULT_ROTATE;
 
+  readonly isDragging = signal(false);
   images: NzImage[] = [];
   index = 0;
-  isDragging = false;
   visible = true;
-  animationStateChanged = new EventEmitter<AnimationEvent>();
   scaleStepMap: Map<NzImageUrl, NzImageScaleStep> = new Map<NzImageUrl, NzImageScaleStep>();
 
-  previewImageTransform = '';
-  previewImageWrapperTransform = '';
+  protected readonly previewImageTransform = signal('');
+  protected readonly previewImageWrapperTransform = signal('');
   operations: NzImageContainerOperation[] = [
     {
       icon: 'close',
@@ -239,10 +234,6 @@ export class NzImagePreviewComponent implements OnInit {
   private flipHorizontally = this.config.nzFlipHorizontally ?? false;
   private flipVertically = this.config.nzFlipVertically ?? false;
 
-  get animationDisabled(): boolean {
-    return this.config.nzNoAnimation ?? false;
-  }
-
   get maskClosable(): boolean {
     const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
     return this.config.nzMaskClosable ?? defaultConfig.nzMaskClosable ?? true;
@@ -255,11 +246,12 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mousedown')
+    merge(
+      fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mousedown').pipe(map(() => true)),
+      fromEventOutsideAngular(this.imagePreviewWrapper.nativeElement, 'mouseup').pipe(map(() => false))
+    )
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.isDragging = true;
-      });
+      .subscribe(dragging => this.isDragging.set(dragging));
 
     fromEventOutsideAngular<WheelEvent>(this.imagePreviewWrapper.nativeElement, 'wheel')
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -389,16 +381,8 @@ export class NzImagePreviewComponent implements OnInit {
     this.markForCheck();
   }
 
-  onAnimationStart(event: AnimationEvent): void {
-    this.animationStateChanged.emit(event);
-  }
-
-  onAnimationDone(event: AnimationEvent): void {
-    this.animationStateChanged.emit(event);
-  }
-
   onDragEnd(event: CdkDragEnd): void {
-    this.isDragging = false;
+    this.isDragging.set(false);
     const width = this.imageRef.nativeElement.offsetWidth * this.zoom;
     const height = this.imageRef.nativeElement.offsetHeight * this.zoom;
     const { left, top } = getOffset(this.imageRef.nativeElement);
@@ -428,13 +412,15 @@ export class NzImagePreviewComponent implements OnInit {
   }
 
   private updatePreviewImageTransform(): void {
-    this.previewImageTransform = `scale3d(${this.zoom * (this.flipHorizontally ? -1 : 1)}, ${
-      this.zoom * (this.flipVertically ? -1 : 1)
-    }, 1) rotate(${this.rotate}deg)`;
+    this.previewImageTransform.set(
+      `scale3d(${this.zoom * (this.flipHorizontally ? -1 : 1)}, ${
+        this.zoom * (this.flipVertically ? -1 : 1)
+      }, 1) rotate(${this.rotate}deg)`
+    );
   }
 
   private updatePreviewImageWrapperTransform(): void {
-    this.previewImageWrapperTransform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
+    this.previewImageWrapperTransform.set(`translate3d(${this.position.x}px, ${this.position.y}px, 0)`);
   }
 
   private updateZoomOutDisabled(): void {

@@ -6,10 +6,19 @@
 import { ESCAPE, hasModifierKey, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Subject } from 'rxjs';
-import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
+
+import { generateClassName } from 'ng-zorro-antd/core/util';
 
 import { NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewComponent } from './image-preview.component';
+
+const CLASS_NAME = 'ant-image-preview';
+const FADE_CLASS_NAME_MAP = {
+  enter: generateClassName(CLASS_NAME, 'fade-motion-enter'),
+  leave: generateClassName(CLASS_NAME, 'fade-motion-leave')
+};
+const FADE_OUT_KEYFRAME_NAME = 'antFadeOut';
 
 export class NzImagePreviewRef {
   private destroy$ = new Subject<void>();
@@ -19,43 +28,56 @@ export class NzImagePreviewRef {
     private config: NzImagePreviewOptions,
     private overlayRef: OverlayRef
   ) {
-    overlayRef
-      .keydownEvents()
-      .pipe(
-        filter(
-          event =>
-            (this.config.nzKeyboard as boolean) &&
-            (event.keyCode === ESCAPE || event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW) &&
-            !hasModifierKey(event)
+    if (config.nzKeyboard) {
+      overlayRef
+        .keydownEvents()
+        .pipe(
+          filter(
+            event =>
+              (event.keyCode === ESCAPE || event.keyCode === LEFT_ARROW || event.keyCode === RIGHT_ARROW) &&
+              !hasModifierKey(event)
+          )
         )
-      )
-      .subscribe(event => {
-        event.preventDefault();
-        if (event.keyCode === ESCAPE) {
-          previewInstance.onClose();
-        }
-        if (event.keyCode === LEFT_ARROW) {
-          this.prev();
-        }
-        if (event.keyCode === RIGHT_ARROW) {
-          this.next();
-        }
-      });
+        .subscribe(event => {
+          event.preventDefault();
+          if (event.keyCode === ESCAPE) {
+            previewInstance.onClose();
+          }
+          if (event.keyCode === LEFT_ARROW) {
+            this.prev();
+          }
+          if (event.keyCode === RIGHT_ARROW) {
+            this.next();
+          }
+        });
+    }
 
-    overlayRef.detachments().subscribe(() => {
-      this.overlayRef.dispose();
-    });
+    overlayRef.detachments().subscribe(() => this.overlayRef.dispose());
 
-    previewInstance.closeClick
-      .pipe(
-        take(1),
-        switchMap(() => previewInstance.animationStateChanged),
-        filter(event => event.phaseName === 'done'),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        this.close();
-      });
+    previewInstance.closeClick.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => this.close());
+
+    this._startEnterAnimation();
+  }
+
+  private get element(): HTMLElement {
+    return this.previewInstance.elementRef.nativeElement as HTMLElement;
+  }
+
+  private get _animationsEnabled(): boolean {
+    return !(this.config.nzNoAnimation ?? false);
+  }
+
+  private _startEnterAnimation(): void {
+    if (this._animationsEnabled) {
+      this.element.classList.add(FADE_CLASS_NAME_MAP.enter);
+    }
+  }
+
+  private _startLeaveAnimation(): void {
+    if (this._animationsEnabled) {
+      this.element.classList.remove(FADE_CLASS_NAME_MAP.enter);
+      this.element.classList.add(FADE_CLASS_NAME_MAP.leave);
+    }
   }
 
   switchTo(index: number): void {
@@ -71,7 +93,25 @@ export class NzImagePreviewRef {
   }
 
   close(): void {
+    if (this._animationsEnabled) {
+      // if animation is enabled, close after animation end
+      const onAnimationEnd = (event: AnimationEvent): void => {
+        if (event.animationName === FADE_OUT_KEYFRAME_NAME) {
+          this.element.removeEventListener('animationend', onAnimationEnd);
+          this._doClose();
+        }
+      };
+
+      this.element.addEventListener('animationend', onAnimationEnd);
+      this._startLeaveAnimation();
+    } else {
+      this._doClose();
+    }
+  }
+
+  private _doClose(): void {
     this.destroy$.next();
     this.overlayRef.dispose();
+    this.previewInstance = null!;
   }
 }

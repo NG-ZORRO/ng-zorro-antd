@@ -5,12 +5,18 @@
 
 import { ESCAPE, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
+import {
+  dispatchEvent,
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent,
+  MockNgZone,
+  updateNonSignalsInput
+} from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import {
@@ -32,16 +38,13 @@ const FALLBACK =
   'data:image/png;base64,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';
 
 describe('image', () => {
-  let fixture: ComponentFixture<TestImageBasicsComponent>;
-  let context: TestImageBasicsComponent;
+  let fixture: ComponentFixture<TestImageBasicComponent>;
+  let context: TestImageBasicComponent;
   let debugElement: DebugElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        // todo: use zoneless
-        provideZoneChangeDetection(),
-        provideNoopAnimations(),
         { provide: Overlay, useClass: Overlay },
         {
           provide: NgZone,
@@ -52,49 +55,53 @@ describe('image', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestImageBasicsComponent);
+    fixture = TestBed.createComponent(TestImageBasicComponent);
     fixture.detectChanges();
     context = fixture.componentInstance;
     debugElement = fixture.debugElement;
   });
 
-  it('should only latest src work', fakeAsync(() => {
+  it('should only latest src work', async () => {
     context.src = 'error.png';
     context.placeholder = null;
+    await updateNonSignalsInput(fixture);
+
     const image = debugElement.nativeElement.querySelector('img');
-    fixture.detectChanges();
+    await fixture.whenStable();
+
     const oldBackLoadImage = context.nzImage.backLoadImage;
     context.src = SRC;
-    fixture.detectChanges();
-    tick(1000);
+    await updateNonSignalsInput(fixture, 1000);
+
     context.nzImage.backLoadImage.dispatchEvent(new Event('load'));
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(image.src).toBe(SRC);
-    tick(1000);
+
     oldBackLoadImage.dispatchEvent(new ErrorEvent('error'));
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(image.src).toBe(SRC);
     expect(context.nzImage.status).toBe('normal');
-  }));
+  });
 
-  it('should keep placeholder when latest src is loading', fakeAsync(() => {
+  it('should keep placeholder when latest src is loading', async () => {
     context.src = SRC;
     context.placeholder = PLACEHOLDER;
+    await updateNonSignalsInput(fixture);
+
     const image = debugElement.nativeElement.querySelector('img');
-    fixture.detectChanges();
     const oldBackLoadImage = context.nzImage.backLoadImage;
     const SECOND_SRC = 'https://test.com/SECOND_SRC.png';
     context.src = SECOND_SRC;
-    fixture.detectChanges();
-    tick(1000);
+    await updateNonSignalsInput(fixture, 1000);
+
     oldBackLoadImage.dispatchEvent(new Event('load'));
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(image.src).toBe(PLACEHOLDER);
-    tick(1000);
+
     context.nzImage.backLoadImage.dispatchEvent(new Event('load'));
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(image.src).toBe(SECOND_SRC);
-  }));
+  });
 });
 
 describe('image placeholder', () => {
@@ -103,9 +110,8 @@ describe('image placeholder', () => {
   let debugElement: DebugElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection(), provideNoopAnimations(), { provide: Overlay, useClass: Overlay }]
+      providers: [{ provide: Overlay, useClass: Overlay }]
     });
   });
 
@@ -126,18 +132,17 @@ describe('image placeholder', () => {
     expect(spy).toHaveBeenCalledWith(PLACEHOLDER);
   });
 
-  it('should hide placeholder when image loaded', fakeAsync(() => {
+  it('should hide placeholder when image loaded', async () => {
     context.src = QUICK_SRC;
     context.placeholder = PLACEHOLDER;
     const imageComponent = context.nzImage;
     const imageElement = imageComponent.getElement().nativeElement;
-    fixture.detectChanges();
-    tick(300);
-    fixture.detectChanges();
+    await updateNonSignalsInput(fixture, 300);
+
     imageComponent.backLoadImage.dispatchEvent(new Event('load'));
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(imageElement.getAttribute('src')).toBe(QUICK_SRC);
-  }));
+  });
 });
 
 describe('image fallback', () => {
@@ -146,9 +151,8 @@ describe('image fallback', () => {
   let debugElement: DebugElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection(), provideNoopAnimations(), { provide: Overlay, useClass: Overlay }]
+      providers: [{ provide: Overlay, useClass: Overlay }]
     });
   });
 
@@ -159,16 +163,16 @@ describe('image fallback', () => {
     debugElement = fixture.debugElement;
   });
 
-  it('should fallback src work', fakeAsync(() => {
+  it('should fallback src work', async () => {
     context.src = 'error.png';
     context.fallback = FALLBACK;
-    fixture.detectChanges();
+    await updateNonSignalsInput(fixture);
+
     context.image.backLoadImage.dispatchEvent(new ErrorEvent('error'));
-    tick();
-    fixture.detectChanges();
+    await fixture.whenStable();
     const image = debugElement.nativeElement.querySelector('img');
     expect(image.src).toBe(FALLBACK);
-  }));
+  });
 });
 
 describe('image preview', () => {
@@ -183,11 +187,12 @@ describe('image preview', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        // todo: use zoneless
-        provideZoneChangeDetection(),
-        provideNoopAnimations(),
         provideNzIconsTesting(),
-        { provide: Overlay, useClass: Overlay }
+        { provide: Overlay, useClass: Overlay },
+        {
+          provide: NgZone,
+          useFactory: () => new MockNgZone()
+        }
       ]
     });
   });
@@ -228,198 +233,207 @@ describe('image preview', () => {
   }
 
   describe('nzDisablePreview', () => {
-    it('should nzDisablePreview work outside group', fakeAsync(() => {
+    it('should nzDisablePreview work outside group', async () => {
       context.firstSrc = QUICK_SRC;
       context.disablePreview = true;
-      fixture.detectChanges();
-      context.nzImage.getElement().nativeElement.click();
-      tickChanges();
-      previewElement = getPreviewRootElement();
-      expect(previewElement).not.toBeTruthy();
-      context.disablePreview = false;
-      fixture.detectChanges();
-      context.nzImage.getElement().nativeElement.click();
-      tickChanges();
-      previewElement = getPreviewRootElement();
-      expect(previewElement).toBeTruthy();
-    }));
+      await updateNonSignalsInput(fixture);
 
-    it('should nzDisablePreview work inside group', fakeAsync(() => {
+      context.triggerPreview();
+      await fixture.whenStable();
+      expect(getPreviewRootElement()).toBeFalsy();
+
+      context.disablePreview = false;
+      await updateNonSignalsInput(fixture);
+
+      context.triggerPreview();
+      await fixture.whenStable();
+      expect(getPreviewRootElement()).toBeTruthy();
+    });
+
+    it('should nzDisablePreview work inside group', async () => {
       context.firstSrc = QUICK_SRC;
       context.disablePreview = true;
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
+
       const image = debugElement.nativeElement.querySelector('img');
       image.click();
-      tickChanges();
-      previewElement = getPreviewRootElement();
-      expect(previewElement).not.toBeTruthy();
+      await fixture.whenStable();
+      expect(getPreviewRootElement()).toBeFalsy();
+
       context.disablePreview = false;
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
+
       image.click();
-      tickChanges();
-      previewElement = getPreviewRootElement();
-      expect(previewElement).toBeTruthy();
-    }));
+      await fixture.whenStable();
+      expect(getPreviewRootElement()).toBeTruthy();
+    });
   });
 
-  describe('ImagePreview', () => {
-    it('should rotate, zoom and close and flip work', fakeAsync(() => {
+  describe('tool actions', () => {
+    it('should rotate, zoom and close and flip work', async () => {
       context.firstSrc = QUICK_SRC;
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       const image = debugElement.nativeElement.querySelector('img');
       image.click();
-      tickChanges();
+      await fixture.whenStable();
+
       previewElement = getPreviewRootElement();
       const imageElement = getPreviewImageElement();
-      const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
-      const close = operations[0];
-      const zoomIn = operations[1];
-      const zoomOut = operations[2];
-      const rotateRight = operations[3];
-      const rotateLeft = operations[4];
-      const flipHorizontally = operations[5];
-      const flipVertically = operations[6];
-      dispatchFakeEvent(rotateLeft, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(-90deg)');
-      dispatchFakeEvent(rotateRight, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
-      dispatchFakeEvent(zoomIn, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
-      dispatchFakeEvent(zoomOut, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
-      dispatchFakeEvent(flipHorizontally, 'click');
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(-1, 1, 1) rotate(0deg)');
-      tickChanges();
-      dispatchFakeEvent(flipVertically, 'click');
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(-1, -1, 1) rotate(0deg)');
-      tickChanges();
-      dispatchFakeEvent(close, 'click');
-      tickChanges();
-      previewElement = getPreviewRootElement();
-      expect(previewElement).not.toBeTruthy();
-      discardPeriodicTasks();
-      flush();
-    }));
+      const [close, zoomIn, zoomOut, rotateRight, rotateLeft, flipHorizontally, flipVertically] =
+        overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
+      const getStyle = (): string | null => imageElement!.getAttribute('style');
 
-    it('should zoom in/out based on the zoom step value', fakeAsync(() => {
+      dispatchFakeEvent(rotateLeft, 'click');
+      await fixture.whenStable();
+      expect(getStyle()).toContain('transform: scale3d(1, 1, 1) rotate(-90deg)');
+
+      dispatchFakeEvent(rotateRight, 'click');
+      await fixture.whenStable();
+      expect(getStyle()).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
+
+      dispatchFakeEvent(zoomIn, 'click');
+      await fixture.whenStable();
+      expect(getStyle()).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
+
+      dispatchFakeEvent(zoomOut, 'click');
+      await fixture.whenStable();
+      expect(getStyle()).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
+
+      dispatchFakeEvent(flipHorizontally, 'click');
+      await fixture.whenStable();
+      expect(getStyle()).toContain('transform: scale3d(-1, 1, 1) rotate(0deg)');
+
+      dispatchFakeEvent(flipVertically, 'click');
+      await fixture.whenStable();
+      expect(getStyle()).toContain('transform: scale3d(-1, -1, 1) rotate(0deg)');
+
+      dispatchFakeEvent(close, 'click');
+      // mock animationend event
+      dispatchEvent(getPreviewRootElement(), new AnimationEvent('animationend', { animationName: 'antFadeOut' }));
+      await fixture.whenStable();
+      expect(context.previewRef?.previewInstance).toBeFalsy();
+    });
+
+    it('should zoom in/out based on the zoom step value', async () => {
       context.firstSrc = QUICK_SRC;
       context.zoomStep = 2;
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
+
       const image = debugElement.nativeElement.querySelectorAll('img');
       image[2].click();
-      tickChanges();
+      await fixture.whenStable();
+
       previewElement = getPreviewRootElement();
       const imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
       const zoomOut = operations[2];
-      dispatchFakeEvent(zoomIn, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(3, 3, 1) rotate(0deg)');
-      dispatchFakeEvent(zoomOut, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
-      discardPeriodicTasks();
-      flush();
-    }));
 
-    it('should have a default value of 0.5 for zoomStep', fakeAsync(() => {
+      dispatchFakeEvent(zoomIn, 'click');
+      await fixture.whenStable();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(3, 3, 1) rotate(0deg)');
+
+      dispatchFakeEvent(zoomOut, 'click');
+      await fixture.whenStable();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1, 1, 1) rotate(0deg)');
+    });
+
+    it('should have a default value of 0.5 for zoomStep', async () => {
       context.firstSrc = QUICK_SRC;
       context.zoomStep = null;
-      fixture.detectChanges();
-      const image = debugElement.nativeElement.querySelector('img');
-      image.click();
-      tickChanges();
+      await updateNonSignalsInput(fixture);
+
+      context.triggerPreview();
+      await fixture.whenStable();
+
       previewElement = getPreviewRootElement();
       const imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
-      dispatchFakeEvent(zoomIn, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
-      discardPeriodicTasks();
-      flush();
-    }));
 
-    it('should the groupZoomStep variable be set for each image"s zoomStep', fakeAsync(() => {
+      dispatchFakeEvent(zoomIn, 'click');
+      await fixture.whenStable();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(1.5, 1.5, 1) rotate(0deg)');
+    });
+
+    it('should the groupZoomStep variable be set for each image"s zoomStep', async () => {
       context.firstSrc = QUICK_SRC;
       context.groupZoomStep = 5;
-      fixture.detectChanges();
-      const image = debugElement.nativeElement.querySelectorAll('img');
-      image[0].click();
-      tickChanges();
+      await updateNonSignalsInput(fixture);
+
+      context.triggerPreview();
+      await fixture.whenStable();
+
       previewElement = getPreviewRootElement();
       const imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
-      dispatchFakeEvent(zoomIn, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(6, 6, 1) rotate(0deg)');
-      discardPeriodicTasks();
-      flush();
-    }));
 
-    it('should the groupZoomStep variable be set for each image"s zoomStep Except those that already have a zoomStep value', fakeAsync(() => {
+      dispatchFakeEvent(zoomIn, 'click');
+      await fixture.whenStable();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(6, 6, 1) rotate(0deg)');
+    });
+
+    it('should the groupZoomStep variable be set for each image"s zoomStep Except those that already have a zoomStep value', async () => {
       context.firstSrc = QUICK_SRC;
       context.groupZoomStep = 5;
       context.zoomStep = 3;
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
+
       const image = debugElement.nativeElement.querySelectorAll('img');
       image[2].click();
-      tickChanges();
+      await fixture.whenStable();
+
       previewElement = getPreviewRootElement();
       const imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
-      dispatchFakeEvent(zoomIn, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(4, 4, 1) rotate(0deg)');
-      discardPeriodicTasks();
-      flush();
-    }));
 
-    it('should global config work', fakeAsync(() => {
+      dispatchFakeEvent(zoomIn, 'click');
+      await fixture.whenStable();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(4, 4, 1) rotate(0deg)');
+    });
+
+    it('should global config work', async () => {
       configService.set('image', { nzScaleStep: 10 });
       context.firstSrc = QUICK_SRC;
-      fixture.detectChanges();
-      tickChanges();
+      await updateNonSignalsInput(fixture);
+
       const image = debugElement.nativeElement.querySelectorAll('img');
       image[3].click();
-      tickChanges();
+      await fixture.whenStable();
+
       previewElement = getPreviewRootElement();
       const imageElement = getPreviewImageElement();
       const operations = overlayContainerElement.querySelectorAll('.ant-image-preview-operations-operation');
       const zoomIn = operations[1];
-      dispatchFakeEvent(zoomIn, 'click');
-      tickChanges();
-      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(11, 11, 1) rotate(0deg)');
-      discardPeriodicTasks();
-      flush();
-    }));
 
+      dispatchFakeEvent(zoomIn, 'click');
+      await fixture.whenStable();
+      expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(11, 11, 1) rotate(0deg)');
+    });
+
+    // depends on NgZone.runOutsideAngular, keep using `fakeAsync` here
     it('should detect mouse zoom direction correctly', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
-      context.createUsingService();
+      context.createByService();
       const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
-      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
-      expect(previewInstance.isDragging).toEqual(true);
+      dispatchMouseEvent(previewInstance.imagePreviewWrapper.nativeElement, 'mousedown');
+      expect(previewInstance.isDragging()).toEqual(true);
       let isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](10);
       expect(isZoomingInside).toBeFalsy();
       isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](-10);
       expect(isZoomingInside).toBeTruthy();
     }));
 
-    it('should call correct methods when zooming in or out', fakeAsync(() => {
+    it('should call correct methods when zooming in or out', async () => {
       context.images = [{ src: QUICK_SRC }];
-      context.createUsingService();
+      context.createByService();
+
       const previewInstance = context.previewRef!.previewInstance;
-      tickChanges();
-      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      dispatchMouseEvent(previewInstance.imagePreviewWrapper.nativeElement, 'mousedown');
+      await fixture.whenStable();
       previewInstance['zoom'] = 5;
       spyOn(previewInstance, 'onZoomOut');
       spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
@@ -433,73 +447,69 @@ describe('image preview', () => {
       previewInstance['handleImageScaleWhileZoomingWithMouse'](-10);
       expect(previewInstance.onZoomOut).toHaveBeenCalled();
       expect(previewInstance['reCenterImage']).toHaveBeenCalled();
-    }));
+    });
 
     it('should close image preview when escape is pressed', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
-      context.createUsingService();
+      context.createByService();
       const previewInstance = context.previewRef!.previewInstance;
-      previewInstance.ngOnInit();
       tickChanges();
       spyOn(previewInstance, 'onClose');
 
-      const event: KeyboardEvent = new KeyboardEvent('keydown', {
-        keyCode: ESCAPE
-      });
-      document.dispatchEvent(event);
+      dispatchKeyboardEvent(document, 'keydown', ESCAPE);
       tick();
 
       expect(previewInstance.onClose).toHaveBeenCalled();
     }));
 
-    it('should container click work', fakeAsync(() => {
+    it('should container click work', async () => {
       context.firstSrc = QUICK_SRC;
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
+
       const image = debugElement.nativeElement.querySelector('img');
       image.click();
-      tickChanges();
-      const previewWrap = getPreviewWrapElement();
-      previewWrap.click();
-      tickChanges();
-      previewElement = getPreviewRootElement();
-      expect(previewElement).not.toBeTruthy();
-      discardPeriodicTasks();
-      flush();
-    }));
+      await fixture.whenStable();
 
-    it('should preview group work', fakeAsync(() => {
+      getPreviewWrapElement()!.click();
+
+      // mock animationend event
+      dispatchEvent(getPreviewRootElement(), new AnimationEvent('animationend', { animationName: 'antFadeOut' }));
+      await fixture.whenStable();
+      expect(context.previewRef?.previewInstance).toBeFalsy();
+    });
+
+    it('should preview group work', async () => {
       context.firstSrc = SRC;
       context.secondSrc = QUICK_SRC;
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
+
       const images = debugElement.nativeElement.querySelectorAll('img');
       images[0].click();
-      fixture.detectChanges();
-      tick(300);
-      fixture.detectChanges();
+      await fixture.whenStable();
+
       previewElement = getPreviewRootElement();
       const left = previewElement!.querySelector('.ant-image-preview-switch-left')!;
       const right = previewElement!.querySelector('.ant-image-preview-switch-right')!;
       expect(left).toBeTruthy();
       expect(right).toBeTruthy();
       expect(left.classList.contains('ant-image-preview-switch-left-disabled')).toBeTrue();
+
       dispatchFakeEvent(right, 'click');
-      fixture.detectChanges();
-      tick(300);
-      fixture.detectChanges();
+      await fixture.whenStable();
+
       let previewImage = getPreviewImageElement();
       expect(previewImage.getAttribute('src')).toContain(QUICK_SRC);
       expect(right.classList.contains('ant-image-preview-switch-right-disabled')).toBeTrue();
+
       dispatchFakeEvent(left, 'click');
-      fixture.detectChanges();
-      tick(300);
-      fixture.detectChanges();
+      await fixture.whenStable();
       previewImage = getPreviewImageElement();
       expect(previewImage.getAttribute('src')).toContain(SRC);
-    }));
+    });
   });
 
   describe('Service', () => {
-    it('should switchTo, next, prev work', fakeAsync(() => {
+    it('should switchTo, next, prev work', async () => {
       const images = [
         {
           src: 'https://img.alicdn.com/tfs/TB1g.mWZAL0gK0jSZFtXXXQCXXa-200-200.svg',
@@ -515,80 +525,90 @@ describe('image preview', () => {
         }
       ];
       context.images = images;
-      context.createUsingService();
+      context.createByService();
       context.previewRef?.switchTo(1);
-      tickChanges();
+      await fixture.whenStable();
+
       previewElement = getPreviewRootElement();
       let previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[1].src);
+
       context.previewRef?.next();
-      fixture.detectChanges();
+      await fixture.whenStable();
       previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[1].src);
+
       context.previewRef?.prev();
-      fixture.detectChanges();
+      await fixture.whenStable();
       previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[0].src);
+
       context.previewRef?.next();
-      fixture.detectChanges();
+      await fixture.whenStable();
       previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[1].src);
 
       dispatchKeyboardEvent(overlayContainerElement, 'keydown', RIGHT_ARROW);
-      tickChanges();
+      await fixture.whenStable();
       previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[1].src);
+
       dispatchKeyboardEvent(overlayContainerElement, 'keydown', LEFT_ARROW);
-      tickChanges();
+      await fixture.whenStable();
       previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[0].src);
+
       dispatchKeyboardEvent(overlayContainerElement, 'keydown', RIGHT_ARROW);
-      tickChanges();
+      await fixture.whenStable();
       previewImageElement = getPreviewImageElement();
       expect(previewImageElement.src).toContain(images[1].src);
-    }));
+    });
   });
 
   describe('Drag', () => {
+    // depends on NgZone.runOutsideAngular, keep using `fakeAsync` here
     it('should drag released work', fakeAsync(() => {
       context.images = [{ src: QUICK_SRC }];
-      context.createUsingService();
+      context.createByService();
       const previewInstance = context.previewRef!.previewInstance;
       tickChanges();
       previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
-      expect(previewInstance.isDragging).toEqual(true);
+      expect(previewInstance.isDragging()).toEqual(true);
       spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
         return true;
       });
       expect(previewInstance.position).toEqual({ x: 0, y: 0 });
     }));
 
-    it('should onDragEnd be called after drag is ended', fakeAsync(() => {
+    it('should onDragEnd be called after drag is ended', async () => {
       context.images = [{ src: QUICK_SRC }];
-      context.createUsingService();
+      context.createByService();
       const previewInstance = context.previewRef!.previewInstance;
-      tickChanges();
       previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+      await fixture.whenStable();
       spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
         return true;
       });
       const e: NzSafeAny = {};
       previewInstance.onDragEnd(e);
       expect(previewInstance['onDragEnd']).toHaveBeenCalled();
-    }));
+    });
 
-    it('should zoom to center when zoom is <= 1', fakeAsync(() => {
+    it('should zoom to center when zoom is <= 1', async () => {
       context.images = [{ src: QUICK_SRC }];
-      context.createUsingService();
+      context.createByService();
       const previewInstance = context.previewRef!.previewInstance;
       spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
-      tickChanges();
+      await fixture.whenStable();
+
       context.zoomStep = 0.25;
+      await updateNonSignalsInput(fixture);
+
       (previewInstance as NzSafeAny).zoom = 1.1;
       previewInstance.onZoomOut();
-      tickChanges();
+      await fixture.whenStable();
       expect(previewInstance['reCenterImage']).toHaveBeenCalled();
-    }));
+    });
 
     it('should position calculate correct', () => {
       let params = {
@@ -680,11 +700,12 @@ describe('image preview', () => {
   });
 
   describe('Zoom with mouse', () => {
-    it('should call proper methods', fakeAsync(() => {
+    it('should call proper methods', async () => {
       context.images = [{ src: QUICK_SRC }];
-      context.createUsingService();
+      context.createByService();
       const previewInstance = context.previewRef!.previewInstance;
-      tickChanges();
+      await fixture.whenStable();
+
       const e = jasmine.createSpyObj('e', ['preventDefault', 'stopPropagation']);
       spyOn<NzSafeAny>(previewInstance, 'handlerImageTransformationWhileZoomingWithMouse');
       spyOn<NzSafeAny>(previewInstance, 'handleImageScaleWhileZoomingWithMouse');
@@ -699,23 +720,25 @@ describe('image preview', () => {
       expect(previewInstance['updatePreviewImageWrapperTransform']).toHaveBeenCalled();
       expect(previewInstance['updatePreviewImageTransform']).toHaveBeenCalled();
       expect(previewInstance['markForCheck']).toHaveBeenCalled();
-    }));
+    });
   });
 });
 
 @Component({
+  selector: 'test-image-basic',
   imports: [NzImageModule],
-  template: `<img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" />`
+  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" />`
 })
-export class TestImageBasicsComponent {
+export class TestImageBasicComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
   src = '';
   placeholder: string | null = '';
 }
 
 @Component({
+  selector: 'test-image-placeholder',
   imports: [NzImageModule],
-  template: `<img nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />`
+  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />`
 })
 export class TestImagePlaceholderComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
@@ -725,8 +748,9 @@ export class TestImagePlaceholderComponent {
 }
 
 @Component({
+  selector: 'test-image-fallback',
   imports: [NzImageModule],
-  template: `<img nz-image [nzSrc]="src" [nzFallback]="fallback" />`
+  template: `<img alt="" nz-image [nzSrc]="src" [nzFallback]="fallback" />`
 })
 export class TestImageFallbackComponent {
   @ViewChild(NzImageDirective) image!: NzImageDirective;
@@ -735,14 +759,15 @@ export class TestImageFallbackComponent {
 }
 
 @Component({
+  selector: 'test-image-preview-group',
   imports: [NzImageModule],
   template: `
     <nz-image-group [nzScaleStep]="groupZoomStep">
-      <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
-      <img nz-image [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
+      <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
+      <img alt="" nz-image [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
     </nz-image-group>
-    <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
-    <img nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
+    <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
+    <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
   `
 })
 export class TestImagePreviewGroupComponent {
@@ -759,7 +784,11 @@ export class TestImagePreviewGroupComponent {
 
   constructor(private nzImageService: NzImageService) {}
 
-  createUsingService(): void {
+  createByService(): void {
     this.previewRef = this.nzImageService.preview(this.images, { nzZoom: 1.5, nzRotate: 0 });
+  }
+
+  triggerPreview(): void {
+    this.nzImage.getElement().nativeElement.click();
   }
 }

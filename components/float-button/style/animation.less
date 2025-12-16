@@ -1,5 +1,6 @@
 /* stylelint-disable less/no-duplicate-variables */
 @import '../../style/themes/index';
+@import (reference) '../../style/core/motion/fade';
 
 @float-btn-prefix-cls: ~'@{ant-prefix}-float-btn';
 @animation-duration: @animation-duration-slow;
@@ -45,5 +46,8 @@
   .keyframes(leave-left; 1; 0; translateX(0); translateX(@slide-distance));
   .keyframes(enter-right; 0; 1; translateX(-@slide-distance); translateX(0));
   .keyframes(leave-right; 1; 0; translateX(0); translateX(-@slide-distance));
-}
 
+  &-top {
+    .fade-motion('float-btn-top', linear);
+  }
+}
