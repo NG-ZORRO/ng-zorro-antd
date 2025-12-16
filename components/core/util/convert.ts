@@ -35,6 +35,10 @@ export function toCssPixel(value: number | string): string {
   return coerceCssPixelValue(value);
 }
 
+export function toCssPixelNumber(value: number | string): number {
+  return toNumber(typeof value === 'string' ? value.replace('px', '') : value);
+}
+
 // eslint-disable  no-invalid-this
 
 /**

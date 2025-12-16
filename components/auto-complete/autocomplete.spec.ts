@@ -17,7 +17,6 @@ import {
   OnInit,
   provideZoneChangeDetection,
   QueryList,
-  signal,
   SimpleChanges,
   ViewChild,
   ViewChildren
@@ -33,6 +32,7 @@ import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   MockNgZone,
+  provideMockDirectionality,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -58,7 +58,7 @@ describe('auto-complete', () => {
         // todo: use zoneless
         provideZoneChangeDetection(),
         provideNoopAnimations(),
-        { provide: Directionality, useClass: MockDirectionality },
+        provideMockDirectionality(),
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
@@ -1222,22 +1222,21 @@ class NzTestAutocompleteWithGroupInputComponent {
 describe('auto-complete', () => {
   let component: NzAutocompleteComponent;
   let fixture: ComponentFixture<NzAutocompleteComponent>;
-  let mockDirectionality: MockDirectionality;
+  let mockDirectionality: Directionality;
 
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection(), { provide: Directionality, useClass: MockDirectionality }]
+      providers: [provideZoneChangeDetection(), provideMockDirectionality()]
     });
 
     fixture = TestBed.createComponent(NzAutocompleteComponent);
     component = fixture.componentInstance;
-    mockDirectionality = TestBed.inject(Directionality) as unknown as MockDirectionality;
+    mockDirectionality = TestBed.inject(Directionality);
   });
 
   it('should change dir', fakeAsync(() => {
     spyOn(component['changeDetectorRef'], 'detectChanges');
-    mockDirectionality.value = 'ltr';
     component.ngOnInit();
     expect(component.dir).toEqual('ltr');
     mockDirectionality.change.next('rtl');
@@ -1328,9 +1327,3 @@ describe('auto-complete', () => {
     expect(nzOptionSelectionChange.isUserInput).toBeFalsy();
   });
 });
-
-class MockDirectionality {
-  value = 'ltr';
-  change = new Subject();
-  valueSignal = signal('ltr');
-}
