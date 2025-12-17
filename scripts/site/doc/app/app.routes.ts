@@ -10,5 +10,9 @@ export const routes: Routes = [
     path: 'components/overview',
     loadChildren: () => import('./components-overview/routes')
   },
+  {
+    path: 'components/changelog',
+    loadChildren: () => import('./changelog/routes')
+  },
   { path: '**', redirectTo: '/docs/introduce/en', pathMatch: 'full' }
 ];
