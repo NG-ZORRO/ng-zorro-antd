@@ -19,6 +19,8 @@ import {
   inject
 } from '@angular/core';
 
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+
 import { NzColorPickerPresetsItem } from '../typings';
 import { PickerComponent } from './components/picker.component';
 import { SliderComponent } from './components/slider.component';
@@ -31,7 +33,14 @@ import { defaultColor, generateColor } from './util/util';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-antd-color-picker',
-  imports: [PickerComponent, SliderComponent, NgAntdColorBlockComponent, NgTemplateOutlet, NgAntdColorPresetComponent],
+  imports: [
+    PickerComponent,
+    SliderComponent,
+    NgAntdColorBlockComponent,
+    NgTemplateOutlet,
+    NgAntdColorPresetComponent,
+    NzDividerModule
+  ],
   template: `
     <div class="ant-color-picker-inner-content">
       <div class="ant-color-picker-panel" [class.ant-color-picker-panel-disabled]="disabled">
@@ -76,6 +85,7 @@ import { defaultColor, generateColor } from './util/util';
         <ng-template [ngTemplateOutlet]="panelRenderFooter"></ng-template>
       }
       @if (presets && presets.length > 0) {
+        <nz-divider nzSize="small" />
         <ng-antd-color-preset [value]="colorValue" [presets]="presets" (presetSelect)="handleChange($event)" />
       }
     </div>

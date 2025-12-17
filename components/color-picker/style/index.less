@@ -312,11 +312,20 @@
   }
 
   &-presets {
-    border-top: @border-width-base solid @border-color-split;
-
     &-wrapper {
       max-height: 200px;
       overflow-y: auto;
+
+      .ant-collapse {
+        display: flex;
+        flex-direction: column;
+        gap: @margin-xss;
+
+        .ant-collapse-header {
+          padding: 0 !important;
+          font-size: 12px;
+        }
+      }
     }
 
     &-items {
