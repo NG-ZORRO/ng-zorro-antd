@@ -26,6 +26,15 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 | `[nzStatus]`          | Set validation status                                                                                                    | `'error' \| 'warning'`                                   | -            |
 | ~~`[nzStepperless]`~~ | ~~Whether hide stepper when input type is number~~                                                                       | ~~`boolean`~~                                            | ~~`true`~~   |
 
+#### Methods
+
+You can get instance by `ViewChild`
+
+| Name           | Description  | Parameters                                                                   |
+| -------------- | ------------ | ---------------------------------------------------------------------------- |
+| focus(option?) | get focus    | `(option?: { preventScroll?: boolean, cursor?: 'start' \| 'end' \| 'all' })` |
+| blur()         | remove focus | -                                                                            |
+
 ### nz-input-wrapper
 
 Use when you need to add extra functionality to `[nz-input]`.

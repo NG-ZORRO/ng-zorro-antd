@@ -41,7 +41,14 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, getVariantClassNames, isNil, isNotNil } from 'ng-zorro-antd/core/util';
+import {
+  getStatusClassNames,
+  getVariantClassNames,
+  InputFocusOptions,
+  isNil,
+  isNotNil,
+  triggerFocus
+} from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {
   NzInputAddonAfterDirective,
@@ -371,8 +378,8 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     this.isDisabledFirstChange = false;
   }
 
-  focus(): void {
-    this.inputRef().nativeElement.focus();
+  focus(options?: InputFocusOptions): void {
+    triggerFocus(this.inputRef().nativeElement, options);
   }
 
   blur(): void {

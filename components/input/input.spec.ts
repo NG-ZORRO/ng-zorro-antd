@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -69,6 +69,28 @@ describe('input', () => {
         testComponent.stepperless = false;
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-stepperless');
+      });
+
+      it('should be focus / blur work', async () => {
+        const input = inputElement.nativeElement;
+        testComponent.inputDirective().focus();
+        expect(document.activeElement).toBe(input);
+        testComponent.inputDirective().blur();
+        expect(document.activeElement).not.toBe(input);
+
+        testComponent.value = 'NG-ZORRO';
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        testComponent.inputDirective().focus({ cursor: 'start' });
+        expect(input.selectionStart).toBe(0);
+        expect(input.selectionEnd).toBe(0);
+        testComponent.inputDirective().focus({ cursor: 'end' });
+        expect(input.selectionStart).toBe(testComponent.value.length);
+        expect(input.selectionEnd).toBe(testComponent.value.length);
+        testComponent.inputDirective().focus({ cursor: 'all' });
+        expect(input.selectionStart).toBe(0);
+        expect(input.selectionEnd).toBe(testComponent.value.length);
       });
 
       describe('should nzVariant work', () => {
@@ -275,7 +297,14 @@ export class NzTestInputWithDirComponent {
 @Component({
   imports: [NzInputModule],
   template: `
-    <input nz-input [nzSize]="size" [disabled]="disabled" [nzVariant]="variant" [nzStepperless]="stepperless" />
+    <input
+      nz-input
+      [nzSize]="size"
+      [disabled]="disabled"
+      [nzVariant]="variant"
+      [nzStepperless]="stepperless"
+      [value]="value"
+    />
   `
 })
 export class NzTestInputWithInputComponent {
@@ -283,6 +312,8 @@ export class NzTestInputWithInputComponent {
   disabled = false;
   stepperless = true;
   variant: NzVariant = 'outlined';
+  value = 'NzTestInput';
+  inputDirective = viewChild.required(NzInputDirective);
 }
 
 @Component({

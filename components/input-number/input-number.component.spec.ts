@@ -364,12 +364,27 @@ describe('input-number', () => {
     expect(hostElement.classList).toContain('ant-input-number-readonly');
   });
 
-  it('should be focus / blur', async () => {
+  it('should be focus / blur work', async () => {
     await fixture.whenStable();
+    const input = hostElement.querySelector('input')!;
     component.inputNumber().focus();
-    expect(document.activeElement).toBe(hostElement.querySelector('input'));
+    expect(document.activeElement).toBe(input);
     component.inputNumber().blur();
-    expect(document.activeElement).not.toBe(hostElement.querySelector('input'));
+    expect(document.activeElement).not.toBe(input);
+
+    component.value = 555;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    component.inputNumber().focus({ cursor: 'start' });
+    expect(input.selectionStart).toBe(0);
+    expect(input.selectionEnd).toBe(0);
+    component.inputNumber().focus({ cursor: 'end' });
+    expect(input.selectionStart).toBe(String(component.value).length);
+    expect(input.selectionEnd).toBe(String(component.value).length);
+    component.inputNumber().focus({ cursor: 'all' });
+    expect(input.selectionStart).toBe(0);
+    expect(input.selectionEnd).toBe(String(component.value).length);
   });
 
   describe('should nzVariant work', () => {

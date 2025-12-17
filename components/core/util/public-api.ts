@@ -26,3 +26,4 @@ export * from './from-event-outside-angular';
 export * from './variant-utils';
 export * from './encode-entities';
 export * from './class-name';
+export * from './focus';
