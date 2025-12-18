@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NzColorPickerModule, NzColorPickerPresetsItem } from 'ng-zorro-antd/color-picker';
+import { NzColorPickerModule, NzPresetColor } from 'ng-zorro-antd/color-picker';
 
 @Component({
   selector: 'nz-demo-color-picker-presets',
@@ -25,7 +25,7 @@ import { NzColorPickerModule, NzColorPickerPresetsItem } from 'ng-zorro-antd/col
   `
 })
 export class NzDemoColorPickerPresetsComponent {
-  basicPresets: NzColorPickerPresetsItem[] = [
+  basicPresets: NzPresetColor[] = [
     {
       label: 'Recommended',
       colors: [
@@ -58,7 +58,7 @@ export class NzDemoColorPickerPresetsComponent {
     }
   ];
 
-  multiplePresets: NzColorPickerPresetsItem[] = [
+  multiplePresets: NzPresetColor[] = [
     {
       label: 'Primary Colors',
       colors: ['#1677ff', '#52c41a', '#faad14', '#f5222d', '#722ed1'],
@@ -76,7 +76,7 @@ export class NzDemoColorPickerPresetsComponent {
     }
   ];
 
-  customPresets: NzColorPickerPresetsItem[] = [
+  customPresets: NzPresetColor[] = [
     {
       label: 'Brand Colors',
       colors: ['#1677ff', '#69c0ff', '#bae7ff', '#e6f7ff'],

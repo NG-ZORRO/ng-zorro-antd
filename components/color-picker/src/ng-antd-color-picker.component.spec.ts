@@ -8,7 +8,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NzColorPickerPresetsItem } from '../typings';
+import { NzPresetColor } from '../typings';
 import { Color } from './interfaces/color';
 import { HsbaColorType } from './interfaces/type';
 import { NgAntdColorPickerComponent } from './ng-antd-color-picker.component';
@@ -206,7 +206,7 @@ export class NzxTestColorPickerComponent {
   defaultValue = '';
   disabled = false;
   disabledAlpha = false;
-  presets: NzColorPickerPresetsItem[] = [];
+  presets: NzPresetColor[] = [];
 
   changeColor: Color | null = null;
   complete: HsbaColorType | null = null;

@@ -16,7 +16,7 @@ import {
 
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
-import { NzColor, NzColorPickerPresetsItem } from '../typings';
+import { NzColor, NzPresetColor } from '../typings';
 import type { Color } from './interfaces/color';
 import { NgAntdColorBlockComponent } from './ng-antd-color-block.component';
 import { generateColor } from './util/util';
@@ -57,7 +57,7 @@ export class NgAntdColorPresetComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   protected openPresets = new Set<string | number>();
 
-  @Input() presets: NzColorPickerPresetsItem[] = [];
+  @Input() presets: NzPresetColor[] = [];
   @Input() value: Color | null = null;
   @Output() readonly presetSelect = new EventEmitter<NzColor>();
 

@@ -27,7 +27,7 @@ export type ValidFormKey = keyof ValidForm;
 
 export interface NzColor extends Color {}
 
-export interface NzColorPickerPresetsItem {
+export interface NzPresetColor {
   label: TemplateRef<void> | string;
   colors: Array<string | NzColor>;
   defaultOpen?: boolean;

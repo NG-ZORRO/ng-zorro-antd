@@ -15,8 +15,8 @@ import { NzColorPickerComponent, NzColorPickerModule } from 'ng-zorro-antd/color
 import {
   NzColor,
   NzColorPickerFormatType,
-  NzColorPickerPresetsItem,
-  NzColorPickerTriggerType
+  NzColorPickerTriggerType,
+  NzPresetColor
 } from 'ng-zorro-antd/color-picker/typings';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -462,7 +462,7 @@ export class NzTestColorPickerFormComponent {
   `
 })
 export class NzTestColorPickerPresetsComponent {
-  presets: NzColorPickerPresetsItem[] | null = [
+  presets: NzPresetColor[] | null = [
     {
       label: 'Basic Colors',
       colors: ['#ff0000', '#00ff00', '#0000ff'],

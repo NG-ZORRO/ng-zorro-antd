@@ -21,7 +21,7 @@ import {
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 
-import { NzColorPickerPresetsItem } from '../typings';
+import { NzPresetColor } from '../typings';
 import { PickerComponent } from './components/picker.component';
 import { SliderComponent } from './components/slider.component';
 import { Color } from './interfaces/color';
@@ -106,7 +106,7 @@ export class NgAntdColorPickerComponent implements OnInit, OnChanges {
   @Input() panelRenderFooter: TemplateRef<void> | null = null;
   @Input({ transform: booleanAttribute }) disabledAlpha: boolean = false;
   @Input({ transform: booleanAttribute }) disabled: boolean = false;
-  @Input() presets: NzColorPickerPresetsItem[] | null = null;
+  @Input() presets: NzPresetColor[] | null = null;
 
   colorValue: Color | null = null;
   alphaColor: string = '';
