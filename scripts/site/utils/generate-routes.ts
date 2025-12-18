@@ -70,6 +70,7 @@ export function generateRoutes(
   docsMeta: ComponentIndexDocMap
 ): void {
   const router: RouterList = { intro: [], components: [] };
+  delete docsMeta['changelog'];
   for (const key in docsMeta) {
     const enMeta = docsMeta[key].en;
     const zhMeta = docsMeta[key].zh;
