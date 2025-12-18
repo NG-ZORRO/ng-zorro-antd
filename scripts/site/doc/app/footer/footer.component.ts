@@ -69,7 +69,7 @@ import { FooterItemComponent } from './footer-item.component';
             <app-footer-item
               icon="history"
               [title]="language() === 'zh' ? '更新日志' : 'Changelog'"
-              link="https://ng.ant.design/docs/changelog/{{ language() }}"
+              link="https://ng.ant.design/components/changelog/{{ language() }}"
             />
             <app-footer-item
               icon="profile"
