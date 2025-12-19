@@ -11,7 +11,7 @@ import { defaultColor, generateColor } from './util/util';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-antd-color-block',
-  template: ` <div class="ant-color-picker-color-block-inner" [style.background-color]="color"></div> `,
+  template: `<div class="ant-color-picker-color-block-inner" [style.background-color]="color"></div>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-color-picker-color-block ant-color-picker-presets-color',
