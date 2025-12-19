@@ -41,7 +41,7 @@
       overflow: hidden;
       border-radius: @border-radius-base;
 
-      &>.@{color-picker-prefix-cls}-gradient {
+      & > .@{color-picker-prefix-cls}-gradient {
         border-top-left-radius: 5px;
       }
     }
@@ -93,10 +93,12 @@
     }
 
     &-alpha {
-      background-image: conic-gradient(rgba(0, 0, 0, 0.06) 0 25%,
-          transparent 0 50%,
-          rgba(0, 0, 0, 0.06) 0 75%,
-          transparent 0);
+      background-image: conic-gradient(
+        rgba(0, 0, 0, 0.06) 0 25%,
+        transparent 0 50%,
+        rgba(0, 0, 0, 0.06) 0 75%,
+        transparent 0
+      );
       background-size: 8px 8px;
     }
   }
@@ -140,13 +142,9 @@
   &-color-block {
     position: relative;
     display: block;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     overflow: hidden;
-    background-image: conic-gradient(rgba(0, 0, 0, 0.06) 0 25%,
-        transparent 0 50%,
-        rgba(0, 0, 0, 0.06) 0 75%,
-        transparent 0);
     background-size: 50% 50%;
     border-radius: @border-radius-base;
 
@@ -217,6 +215,7 @@
 
   &-input-container {
     display: flex;
+    margin-bottom: @margin-sm;
 
     .ant-select {
       font-size: 12px;
@@ -309,6 +308,59 @@
         width: 16px;
         height: 16px;
       }
+    }
+  }
+
+  &-presets {
+    &-wrapper {
+      max-height: 200px;
+      overflow-y: auto;
+
+      .ant-collapse {
+        display: flex;
+        flex-direction: column;
+        gap: @margin-xss;
+
+        .ant-collapse-header {
+          padding: 0 !important;
+          font-size: 12px;
+        }
+      }
+    }
+
+    &-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: @margin-xs;
+      padding: @padding-xs 0;
+    }
+
+    // Preset color block extra styles
+    &-color {
+      position: relative;
+    }
+
+    // Show a tick on selected preset - full overlay, centered
+    &-color-checked::after {
+      position: absolute;
+      top: 50%;
+      display: table;
+      box-sizing: border-box;
+      width: calc(120px / 13);
+      height: calc(192px / 13);
+      border: 2px solid #fff;
+      border-top: 0;
+      transform: translate(-50%, -60%) rotate(45deg);
+      content: '';
+      pointer-events: none;
+      border-inline-start: 0;
+      inset-inline-start: 46.5%;
+    }
+
+    // For bright backgrounds, use dark tick for contrast
+    &-color-bright&-color-checked::after,
+    &-color-checked&-color-bright::after {
+      border-color: rgba(0, 0, 0, 0.88);
     }
   }
 }

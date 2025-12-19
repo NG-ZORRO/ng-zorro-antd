@@ -7,9 +7,10 @@ import { NgModule } from '@angular/core';
 
 import { NgAntdColorBlockComponent } from './ng-antd-color-block.component';
 import { NgAntdColorPickerComponent } from './ng-antd-color-picker.component';
+import { NgAntdColorPresetComponent } from './ng-antd-color-preset.component';
 
 @NgModule({
-  imports: [NgAntdColorPickerComponent, NgAntdColorBlockComponent],
-  exports: [NgAntdColorPickerComponent, NgAntdColorBlockComponent]
+  imports: [NgAntdColorPickerComponent, NgAntdColorBlockComponent, NgAntdColorPresetComponent],
+  exports: [NgAntdColorPickerComponent, NgAntdColorBlockComponent, NgAntdColorPresetComponent]
 })
 export class NgAntdColorPickerModule {}

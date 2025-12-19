@@ -31,7 +31,7 @@ import { NzColorBlockComponent } from './color-block.component';
 import { NzColorFormatComponent } from './color-format.component';
 import { NgAntdColorPickerModule } from './src/ng-antd-color-picker.module';
 import { defaultColor, generateColor } from './src/util/util';
-import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './typings';
+import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetColor } from './typings';
 
 @Component({
   selector: 'nz-color-picker',
@@ -69,12 +69,13 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType } from './ty
     </div>
     <ng-template #colorPicker>
       <ng-antd-color-picker
-        [value]="nzValue"
+        [value]="blockColor"
         [defaultValue]="nzDefaultValue"
         [disabled]="nzDisabled"
         [panelRenderHeader]="nzPanelRenderHeader"
         [panelRenderFooter]="nzPanelRenderFooter"
         [disabledAlpha]="nzDisabledAlpha"
+        [presets]="nzPresets"
         (nzOnChange)="colorChange($event)"
       />
     </ng-template>
@@ -130,6 +131,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   @Input({ transform: booleanAttribute }) nzAllowClear: boolean = false;
   @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
   @Input({ transform: booleanAttribute }) nzDisabledAlpha: boolean = false;
+  @Input() nzPresets: NzPresetColor[] | null = null;
   @Output() readonly nzOnChange = new EventEmitter<{ color: NzColor; format: string }>();
   @Output() readonly nzOnFormatChange = new EventEmitter<NzColorPickerFormatType>();
   @Output() readonly nzOnClear = new EventEmitter<boolean>();
@@ -209,6 +211,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   colorChange(value: { color: NzColor }): void {
     this.blockColor = value.color.getAlpha() < 1 ? value.color.toHex8String() : value.color.toHexString();
     this.clearColor = false;
+    this.nzOnChange.emit({ color: value.color, format: this.nzFormat ?? 'hex' });
     this.cdr.markForCheck();
   }
 

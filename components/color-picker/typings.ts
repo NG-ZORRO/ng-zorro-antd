@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { TemplateRef } from '@angular/core';
+
 import { Color } from './src/interfaces/color';
 
 export type NzColorPickerFormatType = 'rgb' | 'hex' | 'hsb';
@@ -24,3 +26,10 @@ export interface ValidForm {
 export type ValidFormKey = keyof ValidForm;
 
 export interface NzColor extends Color {}
+
+export interface NzPresetColor {
+  label: TemplateRef<void> | string;
+  colors: Array<string | NzColor>;
+  defaultOpen?: boolean;
+  key?: string | number;
+}

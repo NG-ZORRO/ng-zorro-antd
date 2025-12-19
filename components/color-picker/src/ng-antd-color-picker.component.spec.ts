@@ -6,7 +6,9 @@
 import { Component, DebugElement, provideZoneChangeDetection, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzPresetColor } from '../typings';
 import { Color } from './interfaces/color';
 import { HsbaColorType } from './interfaces/type';
 import { NgAntdColorPickerComponent } from './ng-antd-color-picker.component';
@@ -20,6 +22,13 @@ describe('NgxColorPickerComponent', () => {
     // todo: use zoneless
     TestBed.configureTestingModule({
       providers: [provideZoneChangeDetection()]
+    });
+  });
+
+  beforeEach(() => {
+    // todo: use zoneless
+    TestBed.configureTestingModule({
+      providers: [provideZoneChangeDetection(), provideNoopAnimations()]
     });
   });
 
@@ -137,6 +146,32 @@ describe('NgxColorPickerComponent', () => {
     expect(resultEl.nativeElement.querySelector('.ant-color-picker-header').innerText).toBe('Color Picker Header');
     expect(resultEl.nativeElement.querySelector('.ant-color-picker-footer').innerText).toBe('Color Picker Footer');
   });
+
+  it('color-picker presets render and clicking a preset updates color and emits change', () => {
+    component.presets = [
+      { label: 'Recent', colors: ['rgb(255, 0, 0)', '#00ff00'], defaultOpen: true, key: 'recent' },
+      { label: 'Favorites', colors: ['#0000ff'], key: 'fav' }
+    ];
+    fixture.detectChanges();
+
+    const hostEl = resultEl.nativeElement as HTMLElement;
+
+    const items = hostEl.querySelectorAll('.ant-color-picker-presets .ant-collapse-item');
+    expect(items.length).toBe(2);
+
+    const presetBlocks = hostEl.querySelectorAll('.ant-color-picker-presets .ant-color-picker-color-block');
+    expect(presetBlocks.length).toBe(3);
+
+    const firstPreset = hostEl.querySelector('.ant-color-picker-presets .ant-color-picker-color-block') as HTMLElement;
+    firstPreset.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    fixture.detectChanges();
+
+    expect(component.changeColor?.toRgbString()).toBe('rgb(255, 0, 0)');
+    expect(component.complete).toBe(null);
+
+    const preview = hostEl.querySelector('.ant-color-picker-color-block-inner') as HTMLElement;
+    expect(preview.style.backgroundColor).toBe('rgb(255, 0, 0)');
+  });
 });
 
 @Component({
@@ -147,6 +182,7 @@ describe('NgxColorPickerComponent', () => {
       [defaultValue]="defaultValue"
       [disabled]="disabled"
       [disabledAlpha]="disabledAlpha"
+      [presets]="presets"
       [panelRenderHeader]="title"
       [panelRenderFooter]="footer"
       (nzOnChange)="onChange($event)"
@@ -170,6 +206,7 @@ export class NzxTestColorPickerComponent {
   defaultValue = '';
   disabled = false;
   disabledAlpha = false;
+  presets: NzPresetColor[] = [];
 
   changeColor: Color | null = null;
   complete: HsbaColorType | null = null;
