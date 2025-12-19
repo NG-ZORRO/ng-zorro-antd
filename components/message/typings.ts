@@ -29,6 +29,9 @@ export interface NzMessageData {
   messageId?: string;
   createdAt?: Date;
   options?: NzMessageDataOptions;
+  /**
+   * @deprecated Will be removed in v22.0.0
+   */
   state?: 'enter' | 'leave';
   onClose?: Subject<boolean>;
 }
