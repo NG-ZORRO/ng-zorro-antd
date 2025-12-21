@@ -1,9 +1,8 @@
+@let _listType = listType();
 @for (file of list; track file) {
-  <div class="ant-upload-list-{{ listType() }}-container">
+  <div class="ant-upload-list-{{ _listType }}-container">
     <div
-      class="ant-upload-list-item ant-upload-list-item-{{ file.status }} ant-upload-list-item-list-type-{{
-        listType()
-      }}"
+      class="ant-upload-list-item ant-upload-list-item-{{ file.status }} ant-upload-list-item-list-type-{{ _listType }}"
       [attr.data-key]="file.key"
       [animate.enter]="itemAnimationEnter()"
       [animate.leave]="itemAnimationLeave()"
@@ -46,7 +45,7 @@
 
       <ng-template #iconNode let-file>
         @if (!iconRender) {
-          @switch (listType()) {
+          @switch (_listType) {
             @case ('picture') {
               @if (file.isUploading) {
                 <nz-icon nzType="loading" />
@@ -103,8 +102,8 @@
       </ng-template>
 
       <ng-template #downloadOrDelete>
-        @if (listType() !== 'picture-card') {
-          <span class="ant-upload-list-item-card-actions" [class.picture]="listType() === 'picture'">
+        @if (_listType !== 'picture-card') {
+          <span class="ant-upload-list-item-card-actions" [class.picture]="_listType === 'picture'">
             <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
             <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
           </span>
@@ -139,7 +138,7 @@
         </span>
       </div>
       @if (!file.isUploading) {
-        @if (listType() === 'picture-card') {
+        @if (_listType === 'picture-card') {
           <span class="ant-upload-list-item-actions">
             @if (icons.showPreviewIcon) {
               <a

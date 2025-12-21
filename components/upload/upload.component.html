@@ -21,7 +21,7 @@
 </ng-template>
 <ng-template #con><ng-content></ng-content></ng-template>
 <ng-template #btn>
-  <div [class]="classList" [class.ant-upload-rtl]="dir() === 'rtl'" [style.display]="nzShowButton ? '' : 'none'">
+  <div [class]="classList()" [class.ant-upload-rtl]="dir() === 'rtl'" [style.display]="nzShowButton ? '' : 'none'">
     <div nz-upload-btn #uploadComp [options]="_btnOptions!">
       <ng-template [ngTemplateOutlet]="con"></ng-template>
     </div>
@@ -29,7 +29,7 @@
 </ng-template>
 @if (nzType === 'drag') {
   <div
-    [class]="classList"
+    [class]="classList()"
     [class.ant-upload-rtl]="dir() === 'rtl'"
     (drop)="fileDrop($event)"
     (dragover)="fileDrop($event)"

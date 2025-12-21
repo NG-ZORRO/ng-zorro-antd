@@ -22,6 +22,7 @@ import {
   OnChanges,
   OnInit,
   Output,
+  signal,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -327,7 +328,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
 
   // #region styles
 
-  protected classList: string[] = [];
+  protected readonly classList = signal<string[]>([]);
 
   private setClassMap(): void {
     let subCls: string[] = [];
@@ -346,8 +347,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
       subCls.push(this.generateClass('disabled'));
     }
 
-    this.classList = [CLASS_NAME, this.generateClass(this.nzType), ...subCls];
-    this.cdr.detectChanges();
+    this.classList.set([CLASS_NAME, this.generateClass(this.nzType), ...subCls]);
   }
 
   // #endregion
