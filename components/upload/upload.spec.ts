@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import { ENTER, TAB } from '@angular/cdk/keycodes';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -16,12 +17,12 @@ import {
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, Observer, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { dispatchKeyboardEvent, provideMockDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
@@ -92,7 +93,7 @@ describe('upload', () => {
           // todo: use zoneless
           provideZoneChangeDetection(),
           provideNzIconsTesting(),
-          provideNoopAnimations(),
+          provideNzNoAnimation(),
           provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting()
         ]
@@ -1003,7 +1004,7 @@ describe('upload', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         // todo: use zoneless
-        providers: [provideZoneChangeDetection(), provideNzIconsTesting(), provideNoopAnimations()]
+        providers: [provideZoneChangeDetection(), provideNzIconsTesting(), provideNzNoAnimation()]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);
       dl = fixture.debugElement;
@@ -1245,7 +1246,7 @@ describe('upload', () => {
             // todo: use zoneless
             provideZoneChangeDetection(),
             provideNzIconsTesting(),
-            provideNoopAnimations(),
+            provideNzNoAnimation(),
             provideHttpClient(withInterceptorsFromDi()),
             provideHttpClientTesting()
           ]
@@ -1676,9 +1677,42 @@ describe('upload', () => {
       });
     });
   });
+
+  describe('rtl', () => {
+    let dir: Directionality;
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [provideMockDirectionality()]
+      });
+      dir = TestBed.inject(Directionality);
+    });
+
+    it('should apply rtl class in upload component', async () => {
+      const fixture = TestBed.createComponent(TestUploadComponent);
+      await fixture.whenStable();
+
+      const el = fixture.debugElement.query(By.css('.ant-upload')).nativeElement as HTMLElement;
+      expect(el.classList).not.toContain('ant-upload-rtl');
+
+      dir.valueSignal.set('rtl');
+      await fixture.whenStable();
+      expect(el.classList).toContain('ant-upload-rtl');
+    });
+
+    it('should apply rtl class in upload list', async () => {
+      const fixture = TestBed.createComponent(NzUploadListComponent);
+      const el = fixture.debugElement.nativeElement as HTMLElement;
+      expect(el.classList).not.toContain('ant-upload-list-rtl');
+
+      dir.valueSignal.set('rtl');
+      await fixture.whenStable();
+      expect(el.classList).toContain('ant-upload-list-rtl');
+    });
+  });
 });
 
 @Component({
+  selector: 'nz-test-upload',
   imports: [NzButtonModule, NzIconModule, NzUploadModule],
   template: `
     @if (show) {
@@ -1786,6 +1820,7 @@ class TestUploadComponent {
 }
 
 @Component({
+  selector: 'nz-test-upload-list',
   imports: [NzUploadListComponent],
   template: `
     <nz-upload-list
@@ -1842,6 +1877,7 @@ class TestUploadListComponent {
 }
 
 @Component({
+  selector: 'nz-test-upload-btn',
   imports: [NzUploadBtnComponent],
   template: `<div nz-upload-btn #btn [options]="options" class="test">UPLOAD</div>`
 })

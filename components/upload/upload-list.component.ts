@@ -3,17 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { animate, style, transition, trigger } from '@angular/animations';
-import { Direction } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   DestroyRef,
   DOCUMENT,
   inject,
+  input,
   Input,
   NgZone,
   OnChanges,
@@ -24,8 +25,9 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { withAnimationCheck } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
+import { fromEventOutsideAngular, generateClassName } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
@@ -34,6 +36,7 @@ import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType 
 
 const isImageFileType = (type: string): boolean => !!type && type.indexOf('image/') === 0;
 
+const CLASS_NAME = 'ant-upload-list';
 const MEASURE_SIZE = 200;
 
 type UploadListIconType = '' | 'uploading' | 'thumbnail';
@@ -49,21 +52,8 @@ interface UploadListFile extends NzUploadFile {
   selector: 'nz-upload-list',
   exportAs: 'nzUploadList',
   templateUrl: './upload-list.component.html',
-  animations: [
-    trigger('itemState', [
-      transition(':enter', [
-        style({ height: '0', width: '0', opacity: 0 }),
-        animate(150, style({ height: '*', width: '*', opacity: 1 }))
-      ]),
-      transition(':leave', [animate(150, style({ height: '0', width: '0', opacity: 0 }))])
-    ])
-  ],
   host: {
-    class: 'ant-upload-list',
-    '[class.ant-upload-list-rtl]': `dir === 'rtl'`,
-    '[class.ant-upload-list-text]': `listType === 'text'`,
-    '[class.ant-upload-list-picture]': `listType === 'picture'`,
-    '[class.ant-upload-list-picture-card]': `listType === 'picture-card'`
+    '[class]': 'class()'
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -72,12 +62,8 @@ interface UploadListFile extends NzUploadFile {
 export class NzUploadListComponent implements OnChanges {
   list: UploadListFile[] = [];
 
-  private get showPic(): boolean {
-    return this.listType === 'picture' || this.listType === 'picture-card';
-  }
-
+  readonly listType = input<NzUploadListType>('text');
   @Input() locale: NzSafeAny = {};
-  @Input() listType!: NzUploadListType;
   @Input()
   set items(list: NzUploadFile[]) {
     this.list = list;
@@ -89,13 +75,31 @@ export class NzUploadListComponent implements OnChanges {
   @Input() previewFile?: (file: NzUploadFile) => Observable<string>;
   @Input() previewIsImage?: (file: NzUploadFile) => boolean;
   @Input() iconRender: NzIconRenderTemplate | null = null;
-  @Input() dir: Direction = 'ltr';
 
-  private document: Document = inject(DOCUMENT);
-  private destroyRef = inject(DestroyRef);
-  private ngZone = inject(NgZone);
-  private cdr = inject(ChangeDetectorRef);
-  private platform = inject(Platform);
+  private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly ngZone = inject(NgZone);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly platform = inject(Platform);
+  private readonly dir = inject(Directionality).valueSignal;
+
+  protected readonly class = computed(() => {
+    const cls = [CLASS_NAME, this.generateClass(this.listType())];
+    if (this.dir() === 'rtl') {
+      cls.push(this.generateClass('rtl'));
+    }
+    return cls;
+  });
+  private readonly showPic = computed(() => {
+    return this.listType() === 'picture' || this.listType() === 'picture-card';
+  });
+
+  protected readonly itemAnimationEnter = withAnimationCheck(
+    () => `ant-upload-${this.showPic() ? 'animate-inline' : 'animate'}-enter`
+  );
+  protected readonly itemAnimationLeave = withAnimationCheck(
+    () => `ant-upload-${this.showPic() ? 'animate-inline' : 'animate'}-leave`
+  );
 
   private genErr(file: NzUploadFile): string {
     if (file.response && typeof file.response === 'string') {
@@ -133,7 +137,7 @@ export class NzUploadListComponent implements OnChanges {
   }
 
   private getIconType(file: UploadListFile): UploadListIconType {
-    if (!this.showPic) {
+    if (!this.showPic()) {
       return '';
     }
     if (file.isUploading || (!file.thumbUrl && !file.url)) {
@@ -195,7 +199,7 @@ export class NzUploadListComponent implements OnChanges {
 
     const win = window as NzSafeAny;
     if (
-      !this.showPic ||
+      !this.showPic() ||
       typeof document === 'undefined' ||
       typeof win === 'undefined' ||
       !win.FileReader ||
@@ -263,8 +267,6 @@ export class NzUploadListComponent implements OnChanges {
     }
   }
 
-  // #endregion
-
   detectChanges(): void {
     this.fixData();
     this.cdr.detectChanges();
@@ -273,5 +275,9 @@ export class NzUploadListComponent implements OnChanges {
   ngOnChanges(): void {
     this.fixData();
     this.genThumb();
+  }
+
+  private generateClass(suffix: string): string {
+    return generateClassName(CLASS_NAME, suffix);
   }
 }
