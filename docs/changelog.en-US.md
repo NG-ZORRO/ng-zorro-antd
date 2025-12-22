@@ -15,6 +15,26 @@ timeline: true
 
 ---
 
+## 21.0.0-next.2
+
+### ⚠ BREAKING CHANGES
+
+- **tabs:** remove deprecated `nz-tabset` selector ([#9613](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9613)) ([d5e5772](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d5e577245da502a85799c84afbf9088c03732319))
+- **qrcode:** change the type of `nzPadding` from `number | number[]` to `number` ([#9535](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9535)) ([5419b51](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5419b51781478369afe3c01fe24374f2f62eeffe))
+
+### Features
+
+- **color-picker:** support `nzPresets` ([#9341](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9341)) ([d59ec99](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d59ec995b42726470ebaea39ec7a52f5c9c5e58d))
+- **date-picker:** output date range in correct order ([#9518](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9518)) ([d0b3185](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d0b3185fb2ae891a164d3b4f28e4f68add8e166b))
+- **input-number:** supports mouse wheel control ([#9591](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9591)) ([6ce3545](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6ce354537ec59bd0c480eed61bb8f663d2429189))
+- **input,input-number:** add additional options for `focus` method ([#9595](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9595)) ([c336711](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c3367110ccd53c5debd74799070ac6565c13c483))
+- **qrcode:** support `nzType` and `nzBoostLevel`, delete array usage of `nzPadding` ([#9535](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9535)) ([5419b51](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5419b51781478369afe3c01fe24374f2f62eeffe))
+
+### Bug Fixes
+
+- **icon:** include nzSpin in change detection logic ([#9598](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9598)) ([7d3c637](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7d3c637834fc17b1cd2d1f3e1ef77942a3d35c22))
+- **select:** disable nzAutoClearSearchValue in single mode ([#9605](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9605)) ([4720c21](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4720c2175dd2bc937d8ccbf66ab804c4782f23d4))
+
 ## 21.0.0-next.1
 
 `2025-12-05`
@@ -98,6 +118,15 @@ Please refer to related documentation for better alternatives.
 | Module                | API                    |
 | --------------------- | ---------------------- |
 | `ng-zorro-antd/input` | `textarea[nzAutosize]` |
+
+## 20.4.4
+
+`2025-12-12`
+
+### Bug Fixes
+
+- **icon:** include nzSpin in change detection logic ([#9597](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9597)) ([46dc381](https://github.com/NG-ZORRO/ng-zorro-antd/commit/46dc3819244969963ca80eeac9f9c06482f48d29))
+- **result:** show default icon based on status ([#9568](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9568)) ([#9582](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9582)) ([b652105](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b652105ac71a022f4d7343e911f04fbeb2dee8d0))
 
 ## 20.4.3
 
