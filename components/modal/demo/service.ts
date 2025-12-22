@@ -185,28 +185,24 @@ export class NzDemoModalServiceComponent {
   selector: 'nz-modal-custom-component',
   imports: [NzButtonModule],
   template: `
-    <div>
-      <h2>{{ title }}</h2>
-      <h4>{{ subtitle }}</h4>
-      <p
-        >My favorite framework is {{ nzModalData.favoriteFramework }} and my favorite library is
-        {{ nzModalData.favoriteLibrary }}
-      </p>
-      <p>
-        <span>Get Modal instance in component</span>
-        <button nz-button [nzType]="'primary'" (click)="destroyModal()">destroy modal in the component</button>
-      </p>
-    </div>
+    <h2>{{ title }}</h2>
+    <h4>{{ subtitle }}</h4>
+    <p>
+      My favorite framework is {{ nzModalData.favoriteFramework }} and my favorite library is
+      {{ nzModalData.favoriteLibrary }}
+    </p>
+    <br />
+    <button nz-button (click)="destroyModal()">destroy modal in the component</button>
   `
 })
 export class NzModalCustomComponent {
   @Input() title?: string;
   @Input() subtitle?: string;
 
-  readonly #modal = inject(NzModalRef);
-  readonly nzModalData: IModalData = inject(NZ_MODAL_DATA);
+  readonly modalRef = inject(NzModalRef);
+  readonly nzModalData = inject<IModalData>(NZ_MODAL_DATA);
 
   destroyModal(): void {
-    this.#modal.destroy({ data: 'this the result data' });
+    this.modalRef.destroy({ data: 'this the result data' });
   }
 }

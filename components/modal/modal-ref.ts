@@ -194,11 +194,13 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
       const result = trigger(this.getContentComponent());
       if (isPromise(result)) {
         this.config[loadingKey] = true;
+        this.updateConfig(this.config);
         let doClose: boolean | void | {} = false;
         try {
           doClose = (await result) as typeof result;
         } finally {
           this.config[loadingKey] = false;
+          this.updateConfig(this.config);
           this.closeWhitResult(doClose);
         }
       } else {
