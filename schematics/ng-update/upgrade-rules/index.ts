@@ -17,9 +17,6 @@ import { ModalTemplateRule } from './checks/modal-template-rule';
 import { SecondaryEntryPointsRule } from './checks/secondary-entry-points-rule';
 import { SpaceTemplateRule } from './checks/space-template-rule';
 import { TableTemplateRule } from './checks/table-template-rule';
-import { TabsInputRule } from './checks/tabs-input-rule';
-import { TabsOutputRule } from './checks/tabs-output-rule';
-import { TabsTemplateRule } from './checks/tabs-template-rule';
 import { TooltipLikeTemplateRule } from './checks/tooltip-like-template-rule';
 
 export const nzUpgradeRules: NullableDevkitMigration[] = [
@@ -32,9 +29,6 @@ export const nzUpgradeRules: NullableDevkitMigration[] = [
   GlobalConfigRule,
   FormTemplateRule,
   GridTemplateRule,
-  TabsInputRule,
-  TabsOutputRule,
-  TabsTemplateRule,
   TableTemplateRule,
   ModalTemplateRule,
   SecondaryEntryPointsRule,
