@@ -55,8 +55,13 @@ const CSS_TRANSFORM_TIME = 150;
 @Component({
   selector: 'nz-tabs-nav',
   exportAs: 'nzTabsNav',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+  imports: [
+    NzTabScrollListDirective,
+    NzTabAddButtonComponent,
+    NzTabsInkBarDirective,
+    NzTabNavOperationComponent,
+    NgTemplateOutlet
+  ],
   template: `
     @if (startExtraContent()) {
       <div class="ant-tabs-extra-content">
@@ -113,13 +118,8 @@ const CSS_TRANSFORM_TIME = 150;
     class: 'ant-tabs-nav',
     '(keydown)': 'handleKeydown($event)'
   },
-  imports: [
-    NzTabScrollListDirective,
-    NzTabAddButtonComponent,
-    NzTabsInkBarDirective,
-    NzTabNavOperationComponent,
-    NgTemplateOutlet
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnChanges {
   private cdr = inject(ChangeDetectorRef);

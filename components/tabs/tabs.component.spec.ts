@@ -18,10 +18,10 @@ import {
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, Router, RouterLink, RouterOutlet, Routes } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -37,7 +37,7 @@ describe('tabs', () => {
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzNoAnimation(), provideNzIconsTesting(), provideZoneChangeDetection()]
     });
   });
 
@@ -813,7 +813,7 @@ describe('tabs', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [provideNoopAnimations(), provideNzIconsTesting(), provideRouter(routes)]
+        providers: [provideNzNoAnimation(), provideNzIconsTesting(), provideRouter(routes)]
       });
 
       fixture = TestBed.createComponent(RouterTabsTestComponent);
@@ -849,21 +849,24 @@ describe('tabs', () => {
     let fixture: ComponentFixture<SimpleTabsRenderingComponent>;
     let element: HTMLElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(SimpleTabsRenderingComponent);
       element = fixture.nativeElement;
       fixture.detectChanges();
-    });
+      tick();
+    }));
 
-    it('should delay rendering and preserve DOM of tabpane', () => {
+    it('should delay rendering and preserve DOM of tabpane', fakeAsync(() => {
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
       fixture.componentInstance.selectedIndex = 1;
       fixture.detectChanges();
+      tick(300);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(2);
       fixture.componentInstance.selectedIndex = 2;
       fixture.detectChanges();
+      tick(300);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(3);
-    });
+    }));
 
     it('should render inactive tab when forceRender is true', fakeAsync(() => {
       fixture.componentInstance.forceRender = true;
@@ -1274,7 +1277,7 @@ const routes: Routes = [
 ];
 
 function getTranslate(transformValue: string): { x: number; y: number } {
-  const match = transformValue.match(/translate\(((?:-)*[0-9]+px), ((?:-)*[0-9]+px)\)/);
+  const match = transformValue.match(/translate\((-*[0-9]+px), (-*[0-9]+px)\)/);
   return {
     x: match && match[1] ? Number.parseFloat(match[1]) : 0,
     y: match && match[2] ? Number.parseFloat(match[2]) : 0
