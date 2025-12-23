@@ -1,9 +1,11 @@
+@let _listType = listType();
 @for (file of list; track file) {
-  <div class="ant-upload-list-{{ listType }}-container">
+  <div class="ant-upload-list-{{ _listType }}-container">
     <div
-      class="ant-upload-list-item ant-upload-list-item-{{ file.status }} ant-upload-list-item-list-type-{{ listType }}"
+      class="ant-upload-list-item ant-upload-list-item-{{ file.status }} ant-upload-list-item-list-type-{{ _listType }}"
       [attr.data-key]="file.key"
-      @itemState
+      [animate.enter]="itemAnimationEnter()"
+      [animate.leave]="itemAnimationLeave()"
       nz-tooltip
       [nzTooltipTitle]="file.status === 'error' ? file.message : null"
     >
@@ -43,7 +45,7 @@
 
       <ng-template #iconNode let-file>
         @if (!iconRender) {
-          @switch (listType) {
+          @switch (_listType) {
             @case ('picture') {
               @if (file.isUploading) {
                 <nz-icon nzType="loading" />
@@ -100,8 +102,8 @@
       </ng-template>
 
       <ng-template #downloadOrDelete>
-        @if (listType !== 'picture-card') {
-          <span class="ant-upload-list-item-card-actions {{ listType === 'picture' ? 'picture' : '' }}">
+        @if (_listType !== 'picture-card') {
+          <span class="ant-upload-list-item-card-actions" [class.picture]="_listType === 'picture'">
             <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
             <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
           </span>
@@ -135,27 +137,28 @@
           <ng-template [ngTemplateOutlet]="preview"></ng-template>
         </span>
       </div>
-      @if (listType === 'picture-card' && !file.isUploading) {
-        <span class="ant-upload-list-item-actions">
-          @if (icons.showPreviewIcon) {
-            <a
-              [href]="file.url || file.thumbUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              [attr.title]="locale.previewFile"
-              [style]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
-              (click)="handlePreview(file, $event)"
-            >
-              <nz-icon nzType="eye" />
-            </a>
-          }
-          @if (file.status === 'done') {
-            <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
-          }
-          <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
-        </span>
-      }
-      @if (file.isUploading) {
+      @if (!file.isUploading) {
+        @if (_listType === 'picture-card') {
+          <span class="ant-upload-list-item-actions">
+            @if (icons.showPreviewIcon) {
+              <a
+                [href]="file.url || file.thumbUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.title]="locale.previewFile"
+                [style]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
+                (click)="handlePreview(file, $event)"
+              >
+                <nz-icon nzType="eye" />
+              </a>
+            }
+            @if (file.status === 'done') {
+              <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
+            }
+            <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
+          </span>
+        }
+      } @else {
         <div class="ant-upload-list-item-progress">
           <nz-progress [nzPercent]="file.percent!" nzType="line" [nzShowInfo]="false" [nzStrokeWidth]="2"></nz-progress>
         </div>

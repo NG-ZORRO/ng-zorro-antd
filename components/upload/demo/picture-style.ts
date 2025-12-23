@@ -9,66 +9,36 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
   imports: [NzButtonModule, NzIconModule, NzUploadModule],
   template: `
     <nz-upload
-      nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      nzAction="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
       nzListType="picture"
-      [(nzFileList)]="fileList1"
+      [(nzFileList)]="fileList"
     >
       <button nz-button>
         <nz-icon nzType="upload" />
         Upload
       </button>
     </nz-upload>
-    <br />
-    <br />
-    <nz-upload
-      class="upload-list-inline"
-      nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-      nzListType="picture"
-      [(nzFileList)]="fileList2"
-    >
-      <button nz-button>
-        <span>
-          <nz-icon nzType="upload" />
-          Upload
-        </span>
-      </button>
-    </nz-upload>
-  `,
-  styles: [
-    `
-      :host ::ng-deep .upload-list-inline .ant-upload-list-item {
-        float: left;
-        width: 200px;
-        margin-right: 8px;
-      }
-      :host ::ng-deep .upload-list-inline [class*='-upload-list-rtl'] .ant-upload-list-item {
-        float: right;
-      }
-      :host ::ng-deep .upload-list-inline .ant-upload-animate-enter {
-        animation-name: uploadAnimateInlineIn;
-      }
-      :host ::ng-deep .upload-list-inline .ant-upload-animate-leave {
-        animation-name: uploadAnimateInlineOut;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoUploadPictureStyleComponent {
-  defaultFileList: NzUploadFile[] = [
+  fileList: NzUploadFile[] = [
+    {
+      uid: '0',
+      name: 'xxx.png',
+      status: 'uploading',
+      percent: 33
+    },
     {
       uid: '-1',
-      name: 'xxx.png',
+      name: 'yyy.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     },
     {
       uid: '-2',
-      name: 'yyy.png',
+      name: 'zzz.png',
       status: 'error'
     }
   ];
-
-  fileList1 = [...this.defaultFileList];
-  fileList2 = [...this.defaultFileList];
 }
