@@ -4,11 +4,23 @@
  */
 
 import { animate, AnimationTriggerMetadata, state, style, transition, trigger } from '@angular/animations';
+import { computed, type Signal } from '@angular/core';
 
 import { AnimationCurves, AnimationDuration } from './animation-consts';
+import { NZ_NO_ANIMATION_CLASS, withAnimationCheck, type NzNoAnimationDirective } from './no-animation';
 
 const ANIMATION_TRANSITION_IN = `${AnimationDuration.BASE} ${AnimationCurves.EASE_OUT_QUINT}`;
 const ANIMATION_TRANSITION_OUT = `${AnimationDuration.BASE} ${AnimationCurves.EASE_IN_QUINT}`;
+
+export const slideAnimationEnter = (nzNoAnimation: NzNoAnimationDirective | null): Signal<string> => {
+  const slideUpEnterMotion = withAnimationCheck(() => 'ant-slide-up-enter ant-slide-up-enter-active');
+  return computed(() => (nzNoAnimation?.nzNoAnimation?.() ? NZ_NO_ANIMATION_CLASS : slideUpEnterMotion()));
+};
+
+export const slideAnimationLeave = (nzNoAnimation: NzNoAnimationDirective | null): Signal<string> => {
+  const slideUpLeaveMotion = withAnimationCheck(() => 'ant-slide-up-leave ant-slide-up-leave-active');
+  return computed(() => (nzNoAnimation?.nzNoAnimation?.() ? NZ_NO_ANIMATION_CLASS : slideUpLeaveMotion()));
+};
 
 export const slideMotion: AnimationTriggerMetadata = trigger('slideMotion', [
   state(
@@ -27,18 +39,4 @@ export const slideMotion: AnimationTriggerMetadata = trigger('slideMotion', [
   ),
   transition('void => *', [animate(ANIMATION_TRANSITION_IN)]),
   transition('* => void', [animate(ANIMATION_TRANSITION_OUT)])
-]);
-
-export const slideAlertMotion: AnimationTriggerMetadata = trigger('slideAlertMotion', [
-  transition(':leave', [
-    style({ opacity: 1, transform: 'scaleY(1)', transformOrigin: '0% 0%' }),
-    animate(
-      `${AnimationDuration.SLOW} ${AnimationCurves.EASE_IN_OUT_CIRC}`,
-      style({
-        opacity: 0,
-        transform: 'scaleY(0)',
-        transformOrigin: '0% 0%'
-      })
-    )
-  ])
 ]);

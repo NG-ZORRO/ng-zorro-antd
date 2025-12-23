@@ -225,11 +225,9 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
           }
         });
 
-      this.nzDropdownMenu!.animationStateChange$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
-        if (event.toState === 'void') {
-          this.overlayRef?.dispose();
-          this.overlayRef = null;
-        }
+      this.nzDropdownMenu!.animationStateChange$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+        this.overlayRef?.dispose();
+        this.overlayRef = null;
       });
     }
   }
