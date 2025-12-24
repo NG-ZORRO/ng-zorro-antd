@@ -93,6 +93,8 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
   @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
+  // Whether destroy dropdown when hidden
+  @Input() nzDestroyOnHidden: boolean = false;
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   constructor() {
@@ -229,6 +231,9 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
         if (event.toState === 'void') {
           this.overlayRef?.dispose();
           this.overlayRef = null;
+          if (this.nzDestroyOnHidden) {
+            this.portal = undefined;
+          }
         }
       });
     }
