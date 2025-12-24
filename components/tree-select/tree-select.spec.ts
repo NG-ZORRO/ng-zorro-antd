@@ -7,12 +7,22 @@ import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
-import { Component, DebugElement, NgZone, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  NgZone,
+  provideZoneChangeDetection,
+  signal,
+  TemplateRef,
+  ViewChild,
+  WritableSignal
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzFormSizeService } from 'ng-zorro-antd/core/form';
 import {
   createKeyboardEvent,
   dispatchFakeEvent,
@@ -23,6 +33,7 @@ import {
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
+import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { NzTreeSelectComponent } from './tree-select.component';
 import { NzTreeSelectModule } from './tree-select.module';
@@ -765,6 +776,45 @@ describe('tree-select', () => {
   });
 });
 
+describe('tree-select finalSize', () => {
+  let fixture: ComponentFixture<TestTreeSelectFinalSizeComponent>;
+  let treeSelectElement: HTMLElement;
+  let component: TestTreeSelectFinalSizeComponent;
+  let formSizeService: NzFormSizeService;
+  let compactSizeSignal: WritableSignal<NzSizeLDSType>;
+
+  beforeEach(() => {
+    compactSizeSignal = signal<NzSizeLDSType>('large');
+    formSizeService = new NzFormSizeService();
+
+    TestBed.configureTestingModule({
+      providers: [
+        provideZoneChangeDetection(),
+        provideNoopAnimations(),
+        { provide: NzFormSizeService, useValue: formSizeService },
+        { provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }
+      ]
+    });
+
+    fixture = TestBed.createComponent(TestTreeSelectFinalSizeComponent);
+    component = fixture.componentInstance;
+    treeSelectElement = fixture.debugElement.query(By.directive(NzTreeSelectComponent)).nativeElement;
+    fixture.detectChanges();
+  });
+
+  it('should prioritize formSize > compactSize > nzSize', () => {
+    component.size = 'default';
+    compactSizeSignal.set('small');
+    formSizeService.setFormSize('large');
+    fixture.detectChanges();
+    expect(treeSelectElement.classList).toContain('ant-select-lg');
+
+    formSizeService.setFormSize(undefined);
+    fixture.detectChanges();
+    expect(treeSelectElement.classList).toContain('ant-select-sm');
+  });
+});
+
 @Component({
   imports: [NzTreeSelectModule, FormsModule],
   template: `
@@ -1120,4 +1170,12 @@ function dig(path = '0', level = 3): NzTreeNodeOptions[] {
 })
 export class NzTestTreeSelectVirtualScrollComponent {
   nodes: NzTreeNodeOptions[] = dig();
+}
+
+@Component({
+  imports: [NzTreeSelectModule],
+  template: `<nz-tree-select [nzNodes]="[]" [nzSize]="size" />`
+})
+export class TestTreeSelectFinalSizeComponent {
+  size: NzSizeLDSType = 'default';
 }

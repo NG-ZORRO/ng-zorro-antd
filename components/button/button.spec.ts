@@ -4,13 +4,23 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ApplicationRef, Component, Input, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  Input,
+  provideZoneChangeDetection,
+  signal,
+  ViewChild,
+  WritableSignal
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzFormSizeService } from 'ng-zorro-antd/core/form';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
+import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { NzButtonComponent, NzButtonModule, NzButtonShape, NzButtonSize, NzButtonType } from './index';
 
@@ -297,6 +307,43 @@ describe('anchor', () => {
   });
 });
 
+describe('finalSize', () => {
+  let fixture: ComponentFixture<TestButtonFinalSizeComponent>;
+  let buttonElement: HTMLButtonElement;
+  let component: TestButtonFinalSizeComponent;
+  let formSizeService: NzFormSizeService;
+  let compactSizeSignal: WritableSignal<NzSizeLDSType>;
+
+  beforeEach(() => {
+    compactSizeSignal = signal<NzSizeLDSType>('large');
+    formSizeService = new NzFormSizeService();
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: NzFormSizeService, useValue: formSizeService },
+        { provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }
+      ]
+    });
+
+    fixture = TestBed.createComponent(TestButtonFinalSizeComponent);
+    component = fixture.componentInstance;
+    buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+    fixture.detectChanges();
+  });
+
+  it('should prioritize formSize > compactSize > nzSize', () => {
+    component.size = 'default';
+    compactSizeSignal.set('small');
+    formSizeService.setFormSize('large');
+    fixture.detectChanges();
+    expect(buttonElement.classList).toContain('ant-btn-lg');
+
+    formSizeService.setFormSize(undefined);
+    fixture.detectChanges();
+    expect(buttonElement.classList).toContain('ant-btn-sm');
+  });
+});
+
 @Component({
   imports: [NzButtonModule],
   template: `
@@ -449,4 +496,12 @@ export class TestButtonRtlComponent extends TestButtonComponent {
 })
 export class TestAnchorComponent {
   disabled = false;
+}
+
+@Component({
+  imports: [NzButtonModule],
+  template: ` <button nz-button [nzSize]="size">Button</button> `
+})
+export class TestButtonFinalSizeComponent {
+  size: NzButtonSize = 'default';
 }
