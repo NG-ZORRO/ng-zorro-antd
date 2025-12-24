@@ -27,6 +27,7 @@ export default {
       weekPlaceholder: 'انتخاب هفته',
       rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'],
       rangeYearPlaceholder: ['سال شروع', 'سال پایان'],
+      rangeQuarterPlaceholder: ['فصل شروع', 'فصل پایان'],
       rangeMonthPlaceholder: ['ماه شروع', 'ماه پایان'],
       rangeWeekPlaceholder: ['هفته شروع', 'هفته پایان'],
       locale: 'fa_IR',
@@ -194,5 +195,15 @@ export default {
     expired: 'کد QR منقضی شده است',
     refresh: 'تازه کردن',
     scanned: 'اسکن شده'
+  },
+  CheckList: {
+    checkList: 'چک لیست',
+    checkListFinish: 'چک ‌لیست با موفقیت تکمیل شد',
+    checkListClose: 'بستن',
+    checkListFooter: 'نیازی به نمایش چک ‌لیست نیست',
+    checkListCheck: 'آیا می‌خواهید چک ‌لیست را ببندید؟',
+    ok: 'تایید',
+    cancel: 'لغو',
+    checkListCheckOther: 'دیگر نمایش داده نشود'
   }
 };
