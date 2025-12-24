@@ -345,8 +345,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   dir: Direction = 'ltr';
   positions: ConnectionPositionPair[] = [];
 
-  protected readonly selectAnimationEnter = slideAnimationEnter(this.noAnimation);
-  protected readonly selectAnimationLeave = slideAnimationLeave(this.noAnimation);
+  protected readonly selectAnimationEnter = slideAnimationEnter();
+  protected readonly selectAnimationLeave = slideAnimationLeave();
 
   // status
   prefixCls: string = 'ant-select';

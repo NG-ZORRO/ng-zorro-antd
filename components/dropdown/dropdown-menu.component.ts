@@ -94,8 +94,8 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   placement: NzPlacementType | 'bottom' | 'top' = 'bottomLeft';
   dir: Direction = 'ltr';
 
-  protected readonly dropdownAnimationEnter = slideAnimationEnter(this.noAnimation);
-  protected readonly dropdownAnimationLeave = slideAnimationLeave(this.noAnimation);
+  protected readonly dropdownAnimationEnter = slideAnimationEnter();
+  protected readonly dropdownAnimationLeave = slideAnimationLeave();
 
   onAnimationEvent(): void {
     this.animationStateChange$.emit();
