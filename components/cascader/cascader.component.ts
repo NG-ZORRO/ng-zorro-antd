@@ -45,7 +45,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -209,8 +209,8 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'topLeft'"
         [class.ant-select-dropdown-placement-topRight]="dropdownPosition === 'topRight'"
         [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
-        [@slideMotion]="'enter'"
-        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
+        [animate.enter]="cascaderAnimationEnter()"
+        [animate.leave]="cascaderAnimationLeave()"
         [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
         (mouseenter)="onTriggerMouseEnter()"
         (mouseleave)="onTriggerMouseLeave($event)"
@@ -267,7 +267,6 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       </div>
     </ng-template>
   `,
-  animations: [slideMotion],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -329,6 +328,8 @@ export class NzCascaderComponent
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ViewChild('selectContainer', { static: false }) selectContainer!: ElementRef;
+  protected readonly cascaderAnimationEnter = slideAnimationEnter();
+  protected readonly cascaderAnimationLeave = slideAnimationLeave();
 
   @ViewChild(NzSelectSearchComponent)
   set input(inputComponent: NzSelectSearchComponent | undefined) {
