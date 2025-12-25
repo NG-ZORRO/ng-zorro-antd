@@ -35,10 +35,9 @@
 
     .@{segmented-prefix-cls}-thumb-motion-appear-active {
       transition:
-        transform 0.3s @ease-in-out,
-        width 0.3s @ease-in-out,
-        height 0.3s @ease-in-out;
-      will-change: transform, width, height;
+        transform @animation-duration-slow @ease-in-out,
+        height @animation-duration-slow @ease-in-out;
+      will-change: transform, height;
     }
   }
 
@@ -136,18 +135,18 @@
     .segmented-item-selected();
 
     position: absolute;
-    top: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
     width: 0;
     height: 100%;
-    padding: 4px 0;
+    padding: @padding-xss 0;
   }
 
   // transition effect when `appear-active`
   &-thumb-motion-appear-active {
     transition:
-      transform 0.3s @ease-in-out,
-      width 0.3s @ease-in-out;
+      transform @animation-duration-slow @ease-in-out,
+      width @animation-duration-slow @ease-in-out;
     will-change: transform, width;
   }
 }

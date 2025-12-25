@@ -9,20 +9,20 @@ import { Component, DebugElement, provideZoneChangeDetection } from '@angular/co
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { dispatchEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 import { NzSegmentedComponent } from './segmented.component';
 import { NzSegmentedModule } from './segmented.module';
 import { NzSegmentedOptions } from './types';
 
-describe('nz-segmented', () => {
+describe('segmented', () => {
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNzNoAnimation(), provideZoneChangeDetection()]
     });
   });
 
@@ -162,33 +162,6 @@ describe('nz-segmented', () => {
       expect(theSecondElement.classList).toContain('ant-segmented-item-disabled');
       expect(theSecondElement.classList).not.toContain('ant-segmented-item-selected');
     });
-
-    it('should animate thumb correctly in vertical mode', fakeAsync(() => {
-      component.vertical = true;
-      fixture.detectChanges();
-
-      const segmentedComponentInstance = fixture.debugElement.query(
-        By.directive(NzSegmentedComponent)
-      ).componentInstance;
-
-      expect(segmentedComponentInstance.nzVertical).toBe(true);
-
-      const theSecondElement = getSegmentedOptionByIndex(1);
-
-      tick(100);
-      fixture.detectChanges();
-
-      dispatchMouseEvent(theSecondElement, 'click');
-      tick(100);
-      fixture.detectChanges();
-
-      expect(theSecondElement.classList).toContain('ant-segmented-item-selected');
-      expect(segmentedComponentInstance.animationState).toBeDefined();
-
-      if (segmentedComponentInstance.animationState) {
-        expect(['fromVertical', 'toVertical']).toContain(segmentedComponentInstance.animationState.value);
-      }
-    }));
 
     describe('keyboard interaction', () => {
       let theFirstElement: HTMLElement;
@@ -619,6 +592,75 @@ describe('nz-segmented', () => {
       const theFirstElement = getSegmentedOptionByIndex(0);
       expect(theFirstElement.querySelector('input')?.getAttribute('name')).toBe('custom_name');
     });
+  });
+});
+
+describe('segmented animation', () => {
+  let fixture: ComponentFixture<NzSegmentedTestComponent>;
+  let component: NzSegmentedTestComponent;
+  let segmentedComponent: DebugElement;
+
+  function getSegmentedOptionByIndex(index: number): HTMLElement {
+    return segmentedComponent.nativeElement.querySelectorAll('.ant-segmented-item')[index];
+  }
+
+  function getThumbElement(): HTMLElement {
+    return segmentedComponent.nativeElement.querySelector('.ant-segmented-thumb');
+  }
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzSegmentedTestComponent);
+    component = fixture.componentInstance;
+    spyOn(component, 'handleValueChange');
+    segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
+  });
+
+  it('should not render thumb element if not in animation', async () => {
+    await fixture.whenStable();
+    const segmentedComponentInstance = fixture.debugElement.query(By.directive(NzSegmentedComponent)).componentInstance;
+
+    expect(segmentedComponentInstance.showThumb()).toBeFalse();
+    expect(getThumbElement()).toBeFalsy();
+  });
+
+  it('should animate thumb correctly', async () => {
+    await fixture.whenStable();
+    const segmentedComponentInstance = fixture.debugElement.query(By.directive(NzSegmentedComponent)).componentInstance;
+    const theSecondElement = getSegmentedOptionByIndex(1);
+
+    dispatchMouseEvent(theSecondElement, 'click');
+    await fixture.whenStable();
+    expect(segmentedComponentInstance.showThumb()).toBeTrue();
+
+    const thumbElement = getThumbElement();
+    expect(thumbElement.style.transform).toContain('translateX');
+    expect(theSecondElement.classList).not.toContain('ant-segmented-item-selected');
+
+    dispatchEvent(thumbElement, new TransitionEvent('transitionend', { propertyName: 'transform' }));
+    await fixture.whenStable();
+    expect(segmentedComponentInstance.showThumb()).toBeFalse();
+    expect(theSecondElement.classList).toContain('ant-segmented-item-selected');
+  });
+
+  it('should animate thumb correctly in vertical mode', async () => {
+    component.vertical = true;
+    await fixture.whenStable();
+
+    const segmentedComponentInstance = fixture.debugElement.query(By.directive(NzSegmentedComponent)).componentInstance;
+    const theSecondElement = getSegmentedOptionByIndex(1);
+
+    dispatchMouseEvent(theSecondElement, 'click');
+    await fixture.whenStable();
+    expect(segmentedComponentInstance.showThumb()).toBeTrue();
+
+    const thumbElement = getThumbElement();
+    expect(thumbElement.style.transform).toContain('translateY');
+    expect(theSecondElement.classList).not.toContain('ant-segmented-item-selected');
+
+    dispatchEvent(thumbElement, new TransitionEvent('transitionend', { propertyName: 'transform' }));
+    await fixture.whenStable();
+    expect(segmentedComponentInstance.showThumb()).toBeFalse();
+    expect(theSecondElement.classList).toContain('ant-segmented-item-selected');
   });
 });
 
