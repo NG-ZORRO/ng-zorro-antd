@@ -4,13 +4,13 @@
  */
 
 import { _IdGenerator } from '@angular/cdk/a11y';
-import { ANIMATION_MODULE_TYPE, inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { ANIMATION_MODULE_TYPE, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class NzSegmentedService implements OnDestroy {
+export class NzSegmentedService {
   private readonly animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
   private readonly defaultName = inject(_IdGenerator).getId('segmented_');
 
@@ -24,20 +24,25 @@ export class NzSegmentedService implements OnDestroy {
 
   readonly showThumb = toSignal(this.animating$.pipe(map(animating => this._animationEnabled && animating)));
 
+  constructor() {
+    inject(DestroyRef).onDestroy(() => {
+      this.selected$.complete();
+      this.activated$.complete();
+      this.change$.complete();
+      this.disabled$.complete();
+      this.animating$.complete();
+      this.keydown$.complete();
+    });
+  }
+
+  /**
+   * @internal
+   */
   get _animationEnabled(): boolean {
     return this.animationType !== 'NoopAnimations';
   }
 
   setName(name: string | null | undefined): void {
     this.name.set(typeof name === 'undefined' ? this.defaultName : name);
-  }
-
-  ngOnDestroy(): void {
-    this.selected$.complete();
-    this.activated$.complete();
-    this.change$.complete();
-    this.disabled$.complete();
-    this.animating$.complete();
-    this.keydown$.complete();
   }
 }
