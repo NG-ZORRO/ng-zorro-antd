@@ -18,7 +18,8 @@ import {
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation,
-  inject
+  inject,
+  type AnimationCallbackEvent
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from 'rxjs';
@@ -56,7 +57,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         [style]="nzOverlayStyle"
         [animate.enter]="dropdownAnimationEnter()"
         [animate.leave]="dropdownAnimationLeave()"
-        (animate.leave)="onAnimationEvent()"
+        (animate.leave)="onAnimationEvent($event)"
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"
@@ -85,7 +86,7 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
   mouseState$ = new BehaviorSubject<boolean>(false);
-  animationStateChange$ = new EventEmitter<void>();
+  animationStateChange$ = new EventEmitter<AnimationCallbackEvent>();
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
   nzOverlayClassName: string = '';
@@ -97,8 +98,13 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   protected readonly dropdownAnimationEnter = slideAnimationEnter();
   protected readonly dropdownAnimationLeave = slideAnimationLeave();
 
-  onAnimationEvent(): void {
-    this.animationStateChange$.emit();
+  onAnimationEvent(event: AnimationCallbackEvent): void {
+    const element = event.target as HTMLElement;
+    const onAnimationEnd = (): void => {
+      element.removeEventListener('animationend', onAnimationEnd);
+      this.animationStateChange$.emit(event);
+    };
+    element.addEventListener('animationend', onAnimationEnd);
   }
 
   setMouseState(visible: boolean): void {
