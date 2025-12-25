@@ -120,7 +120,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   private isDisabledFirstChange = true;
 
   protected value?: number | string;
-  protected readonly thumbStyle = signal<NgStyleInterface>(null!);
+  protected readonly thumbStyle = signal<NgStyleInterface | null>(null);
   protected readonly thumbAnimationEnter = withAnimationCheck(() => 'ant-segmented-thumb-motion-appear-active');
   protected readonly showThumb = this.service.showThumb;
   protected normalizedOptions: NzSegmentedOption[] = [];
@@ -132,9 +132,9 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
       this.value = value;
     });
 
-    this.service.activated$.subscribe(e => {
+    this.service.activated$.pipe(takeUntilDestroyed()).subscribe(element => {
       this.thumbStyle.update(prevStyle => {
-        const nextStyle = this.calcThumbStyle(e);
+        const nextStyle = this.calcThumbStyle(element);
 
         if (prevStyle && nextStyle) {
           // Trigger animation to end position
