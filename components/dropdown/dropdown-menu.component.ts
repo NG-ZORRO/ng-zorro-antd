@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AnimationEvent } from '@angular/animations';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
@@ -19,12 +18,13 @@ import {
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation,
-  inject
+  inject,
+  type AnimationCallbackEvent
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from 'rxjs';
 
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { MenuService, NzIsMenuInsideDropdownToken } from 'ng-zorro-antd/menu';
 
@@ -33,7 +33,6 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
 @Component({
   selector: `nz-dropdown-menu`,
   exportAs: `nzDropdownMenu`,
-  animations: [slideMotion],
   providers: [
     MenuService,
     /** menu is inside dropdown-menu component **/
@@ -56,10 +55,10 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         [class.ant-dropdown-placement-top]="placement === 'top'"
         [class]="nzOverlayClassName"
         [style]="nzOverlayStyle"
-        @slideMotion
-        (@slideMotion.done)="onAnimationEvent($event)"
-        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
+        [animate.enter]="dropdownAnimationEnter()"
+        [animate.leave]="dropdownAnimationLeave()"
+        (animate.leave)="onAnimationEvent($event)"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"
       >
@@ -87,7 +86,7 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
   mouseState$ = new BehaviorSubject<boolean>(false);
-  animationStateChange$ = new EventEmitter<AnimationEvent>();
+  animationStateChange$ = new EventEmitter<AnimationCallbackEvent>();
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
   nzOverlayClassName: string = '';
@@ -96,8 +95,16 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   placement: NzPlacementType | 'bottom' | 'top' = 'bottomLeft';
   dir: Direction = 'ltr';
 
-  onAnimationEvent(event: AnimationEvent): void {
-    this.animationStateChange$.emit(event);
+  protected readonly dropdownAnimationEnter = slideAnimationEnter();
+  protected readonly dropdownAnimationLeave = slideAnimationLeave();
+
+  onAnimationEvent(event: AnimationCallbackEvent): void {
+    const element = event.target as HTMLElement;
+    const onAnimationEnd = (): void => {
+      element.removeEventListener('animationend', onAnimationEnd);
+      this.animationStateChange$.emit(event);
+    };
+    element.addEventListener('animationend', onAnimationEnd);
   }
 
   setMouseState(visible: boolean): void {

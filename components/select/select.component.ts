@@ -15,40 +15,40 @@ import {
 import { _getEventTarget, Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  computed,
   ContentChildren,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  forwardRef,
+  inject,
   Input,
+  NgZone,
   OnChanges,
   OnInit,
   Output,
+  output,
   QueryList,
+  Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation,
-  booleanAttribute,
-  computed,
-  forwardRef,
-  inject,
-  signal,
-  output,
-  DestroyRef,
-  NgZone,
-  ChangeDetectorRef,
-  Renderer2
+  ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
-import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
+import { getPlacementName, NzOverlayModule, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
 import { cancelAnimationFrame, requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NgClassInterface,
@@ -107,7 +107,6 @@ export type NzSelectSizeType = NzSizeLDSType;
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  animations: [slideMotion],
   template: `
     <nz-select-top-control
       cdkOverlayOrigin
@@ -116,7 +115,6 @@ export type NzSelectSizeType = NzSizeLDSType;
       [open]="nzOpen"
       [disabled]="nzDisabled"
       [mode]="nzMode"
-      [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
       [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
       [maxTagPlaceholder]="nzMaxTagPlaceholder"
       [removeIcon]="nzRemoveIcon"
@@ -179,9 +177,9 @@ export type NzSelectSizeType = NzSizeLDSType;
         [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'topLeft'"
         [class.ant-select-dropdown-placement-bottomRight]="dropdownPosition === 'bottomRight'"
         [class.ant-select-dropdown-placement-topRight]="dropdownPosition === 'topRight'"
-        [@slideMotion]="'enter'"
-        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
+        [animate.enter]="selectAnimationEnter()"
+        [animate.leave]="selectAnimationLeave()"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         [listOfContainerItem]="listOfContainerItem"
         [menuItemSelectedIcon]="nzMenuItemSelectedIcon"
         [notFoundContent]="nzNotFoundContent"
@@ -239,6 +237,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private readonly focusMonitor = inject(FocusMonitor);
   private readonly directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
+
+  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
@@ -342,6 +344,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   focused = false;
   dir: Direction = 'ltr';
   positions: ConnectionPositionPair[] = [];
+
+  protected readonly selectAnimationEnter = slideAnimationEnter();
+  protected readonly selectAnimationLeave = slideAnimationLeave();
 
   // status
   prefixCls: string = 'ant-select';
@@ -619,10 +624,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       this.cdkConnectedOverlay?.overlayRef?.updatePosition();
     });
   }
-
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-  protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   constructor() {
     this.destroyRef.onDestroy(() => {
