@@ -12,6 +12,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -27,8 +28,7 @@ import {
   computed,
   forwardRef,
   inject,
-  signal,
-  DestroyRef
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -37,7 +37,7 @@ import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { isValid } from 'date-fns';
 
-import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { warn } from 'ng-zorro-antd/core/logger';
@@ -109,7 +109,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
       (detach)="close()"
       (overlayOutsideClick)="onClickOutside($event)"
     >
-      <div [@slideMotion]="'enter'" class="ant-picker-dropdown" style="position: relative">
+      <div
+        [animate.enter]="timepickerAnimationEnter()"
+        [animate.leave]="timepickerAnimationLeave()"
+        class="ant-picker-dropdown"
+        style="position: relative"
+      >
         <div class="ant-picker-panel-container">
           <div tabindex="-1" class="ant-picker-panel">
             <nz-time-picker-panel
@@ -152,7 +157,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '(click)': 'open()'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
-  animations: [slideMotion],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -270,6 +274,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input() @WithConfig() nzBackdrop = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
+
+  protected readonly timepickerAnimationEnter = slideAnimationEnter();
+  protected readonly timepickerAnimationLeave = slideAnimationLeave();
 
   emitValue(value: Date | null): void {
     this.setValue(value, true);
