@@ -253,15 +253,16 @@ describe('notification', () => {
     expect(overlayContainerElement.textContent).toContain('test template content data');
   });
 
-  it('should update an existing notification with use template ref when change nzData', () => {
+  it('should update an existing notification with use template ref when change nzData', async () => {
     notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'oldData', nzKey: 'exists' });
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).toContain('oldData');
     notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'newData', nzKey: 'exists' });
+    await fixture.whenStable();
     expect(overlayContainerElement.textContent).toContain('newData');
   });
 
-  it('should update an existing notification when keys are matched', () => {
+  it('should update an existing notification when keys are matched', async () => {
     let messageId: string | null;
     messageId = notificationService.create('', '', 'EXISTS', { nzKey: 'exists' }).messageId;
     overlayContainerElement = overlayContainer.getContainerElement();
@@ -269,6 +270,7 @@ describe('notification', () => {
     expect(messageId).toEqual('exists');
 
     messageId = notificationService.create('success', 'Title', 'SHOULD NOT CHANGE', { nzKey: 'exists' }).messageId;
+    await fixture.whenStable();
     expect(messageId).toEqual('exists');
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
     expect(overlayContainerElement.textContent).toContain('Title');
