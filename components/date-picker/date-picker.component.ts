@@ -46,7 +46,7 @@ import { of } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -236,7 +236,8 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
       <div
         class="ant-picker-wrapper"
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
-        [@slideMotion]="'enter'"
+        [animate.enter]="datepickerAnimationEnter()"
+        [animate.leave]="datepickerAnimationLeave()"
         [style.position]="'relative'"
       >
         <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
@@ -266,7 +267,6 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
       useExisting: forwardRef(() => NzDatePickerComponent)
     }
   ],
-  animations: [slideMotion],
   imports: [
     FormsModule,
     NgTemplateOutlet,
@@ -377,6 +377,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   overlayPositions: ConnectionPositionPair[] = [...DEFAULT_DATE_PICKER_POSITIONS];
   currentPositionX: HorizontalConnectionPos = 'start';
   currentPositionY: VerticalConnectionPos = 'bottom';
+
+  protected readonly datepickerAnimationEnter = slideAnimationEnter();
+  protected readonly datepickerAnimationLeave = slideAnimationLeave();
 
   get realOpenState(): boolean {
     // The value that really decide the open state of overlay
