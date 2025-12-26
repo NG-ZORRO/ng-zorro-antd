@@ -15,7 +15,21 @@ timeline: true
 
 ---
 
+## 21.0.0-beta.0
+
+`2025-12-26`
+
+### Code Refactoring
+
+- migrate `upload` `select` `dropdown` `cascader` `tabs` `segmented` `message` `notification` to native animation
+
+### Bug Fixes
+
+- **i18n:** add missing translations to `fa_IR` ([#9615](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9615)) ([1e8845d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e8845d245ce7a98850390c61e65b301fb8fcc05))
+
 ## 21.0.0-next.2
+
+`2025-12-22`
 
 ### ⚠ BREAKING CHANGES
 

@@ -15,7 +15,21 @@ timeline: true
 
 ---
 
+## 21.0.0-beta.0
+
+`2025-12-26`
+
+### Code Refactoring
+
+- native animation 迁移：`upload` `select` `dropdown` `cascader` `tabs` `segmented` `message` `notification`
+
+### Bug Fixes
+
+- **i18n:** 更新 `fa_IR` 国际化文案 ([#9615](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9615)) ([1e8845d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e8845d245ce7a98850390c61e65b301fb8fcc05))
+
 ## 21.0.0-next.2
+
+`2025-12-22`
 
 ### ⚠ BREAKING CHANGES
 
