@@ -26,12 +26,12 @@ import {
 } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, inject, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, inject as testingInject, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzDemoCascaderMultipleComponent } from 'ng-zorro-antd/cascader/demo/multiple';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   createFakeEvent,
   dispatchFakeEvent,
@@ -77,7 +77,7 @@ describe('cascader', () => {
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation(), provideZoneChangeDetection()]
     });
   });
 
@@ -993,17 +993,21 @@ describe('cascader', () => {
       expect(getAllColumns().length).toBe(3);
 
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
-      let itemEl2 = getItemAtColumnAndRow(2, 1)!;
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
       let itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+      fixture.detectChanges();
+      flush();
       fixture.detectChanges();
       itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
@@ -1012,10 +1016,9 @@ describe('cascader', () => {
       expect(getAllColumns().length).toBe(2);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      itemEl2 = getItemAtColumnAndRow(2, 1)!;
-      expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(itemEl2).toBeNull();
-      expect(getAllColumns().length).toBe(1);
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible()).toBeFalse();
     }));
 
     it('should navigate left when press BACKSPACE', fakeAsync(() => {
