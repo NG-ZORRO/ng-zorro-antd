@@ -4,14 +4,14 @@
  */
 
 import { _IdGenerator } from '@angular/cdk/a11y';
-import { ANIMATION_MODULE_TYPE, DestroyRef, inject, Injectable, signal } from '@angular/core';
+import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+
+import { isAnimationEnabled } from 'ng-zorro-antd/core/animation';
 
 @Injectable()
 export class NzSegmentedService {
-  private readonly animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
   private readonly defaultName = inject(_IdGenerator).getId('segmented_');
 
   readonly name = signal<string | null>(this.defaultName);
@@ -22,7 +22,9 @@ export class NzSegmentedService {
   readonly animating$ = new BehaviorSubject<boolean>(false);
   readonly keydown$ = new Subject<KeyboardEvent>();
 
-  readonly showThumb = toSignal(this.animating$.pipe(map(animating => this._animationEnabled && animating)));
+  private readonly _animating = toSignal(this.animating$, { initialValue: false });
+  readonly animationEnabled = isAnimationEnabled(() => true);
+  readonly showThumb = computed(() => this.animationEnabled() && this._animating());
 
   constructor() {
     inject(DestroyRef).onDestroy(() => {
@@ -33,13 +35,6 @@ export class NzSegmentedService {
       this.animating$.complete();
       this.keydown$.complete();
     });
-  }
-
-  /**
-   * @internal
-   */
-  get _animationEnabled(): boolean {
-    return this.animationType !== 'NoopAnimations';
   }
 
   setName(name: string | null | undefined): void {

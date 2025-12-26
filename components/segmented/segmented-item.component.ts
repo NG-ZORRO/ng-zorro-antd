@@ -101,7 +101,7 @@ export class NzSegmentedItemComponent implements OnInit {
           }
         }),
         switchMap(value => {
-          if (!this.service._animationEnabled) {
+          if (!this.service.animationEnabled()) {
             return of(value);
           }
           return this.service.animating$.pipe(
