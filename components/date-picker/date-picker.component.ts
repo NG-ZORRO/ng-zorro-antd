@@ -234,11 +234,11 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      cdkConnectedOverlayTransformOriginOn=".{{ prefixCls }}-dropdown"
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="realOpenState"
       [cdkConnectedOverlayPositions]="overlayPositions"
-      [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
       (positionChange)="onPositionChange($event)"
       (detach)="close()"
       (overlayKeydown)="onOverlayKeydown($event)"
