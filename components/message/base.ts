@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AnimationEvent } from '@angular/animations';
 import {
   ComponentType,
   createGlobalPositionStrategy,
@@ -11,9 +10,18 @@ import {
   createOverlayRef
 } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, DestroyRef, Directive, EventEmitter, inject, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  DestroyRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Injector,
+  OnInit,
+  Signal
+} from '@angular/core';
 import { Subject } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
 
 import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
@@ -163,13 +171,27 @@ export abstract class NzMNComponent implements OnInit {
   abstract index?: number;
   abstract destroyed: EventEmitter<{ id: string; userAction: boolean }>;
 
-  protected cdr = inject(ChangeDetectorRef);
   protected destroyRef = inject(DestroyRef);
-  readonly animationStateChanged: Subject<AnimationEvent> = new Subject<AnimationEvent>();
+  protected elementRef = inject(ElementRef);
+
+  /**
+   * To get the element which triggers the animation.
+   */
+  protected abstract animationElement: Signal<ElementRef<HTMLElement>>;
+
+  /**
+   * When the animation is enabled, it is used to judge whether the leave animation is done or not.
+   * @note Keyframe of notification may have different keyframe names with individual placements, so use array here.
+   */
+  protected abstract _animationKeyframeMap: Record<'enter' | 'leave', string | string[]>;
+
+  /**
+   * The animation class map for enter and leave.
+   */
+  protected abstract _animationClassMap: Record<'enter' | 'leave', string>;
 
   protected options!: Required<NzMessageDataOptions>;
   protected autoClose?: boolean;
-  protected closeTimer?: ReturnType<typeof setTimeout>;
   protected userAction: boolean = false;
   protected eraseTimer?: ReturnType<typeof setTimeout>;
   protected eraseTimingStart?: number;
@@ -180,7 +202,6 @@ export abstract class NzMNComponent implements OnInit {
       if (this.autoClose) {
         this.clearEraseTimeout();
       }
-      this.animationStateChanged.complete();
     });
   }
 
@@ -188,16 +209,9 @@ export abstract class NzMNComponent implements OnInit {
     this.options = this.instance.options as Required<NzMessageDataOptions>;
 
     if (this.options.nzAnimate) {
+      // todo: remove this line in v22.0.0
       this.instance.state = 'enter';
-      this.animationStateChanged
-        .pipe(
-          filter(event => event.phaseName === 'done' && event.toState === 'leave'),
-          take(1)
-        )
-        .subscribe(() => {
-          clearTimeout(this.closeTimer);
-          this.destroyed.next({ id: this.instance.messageId, userAction: this.userAction });
-        });
+      this._startEnterAnimation();
     }
 
     this.autoClose = this.options.nzDuration > 0;
@@ -224,12 +238,9 @@ export abstract class NzMNComponent implements OnInit {
   protected destroy(userAction: boolean = false): void {
     this.userAction = userAction;
     if (this.options.nzAnimate) {
+      // todo: remove this line in v22.0.0
       this.instance.state = 'leave';
-      this.cdr.detectChanges();
-      this.closeTimer = setTimeout(() => {
-        this.closeTimer = undefined;
-        this.destroyed.next({ id: this.instance.messageId, userAction });
-      }, 200);
+      this._startLeaveAnimation(() => this.destroyed.next({ id: this.instance.messageId, userAction }));
     } else {
       this.destroyed.next({ id: this.instance.messageId, userAction });
     }
@@ -261,5 +272,41 @@ export abstract class NzMNComponent implements OnInit {
       clearTimeout(this.eraseTimer);
       this.eraseTimer = undefined;
     }
+  }
+
+  private _startEnterAnimation(): void {
+    const element = this.animationElement().nativeElement;
+    element.classList.add(this._animationClassMap.enter);
+
+    const onAnimationEnd = (event: AnimationEvent): void => {
+      if (this.matchAnimationKeyframe(event, this._animationKeyframeMap.enter)) {
+        element.removeEventListener('animationend', onAnimationEnd);
+        // should remove animation enter class once animation is done
+        element.classList.remove(this._animationClassMap.enter);
+      }
+    };
+
+    element.addEventListener('animationend', onAnimationEnd);
+  }
+
+  private _startLeaveAnimation(callback: () => void): void {
+    const element = this.animationElement().nativeElement;
+    element.classList.remove(this._animationClassMap.enter);
+    element.classList.add(this._animationClassMap.leave);
+
+    const onAnimationEnd = (event: AnimationEvent): void => {
+      if (this.matchAnimationKeyframe(event, this._animationKeyframeMap.leave)) {
+        element.removeEventListener('animationend', onAnimationEnd);
+        callback();
+      }
+    };
+
+    element.addEventListener('animationend', onAnimationEnd);
+  }
+
+  private matchAnimationKeyframe(event: AnimationEvent, animationName: string | string[]): boolean {
+    return typeof animationName === 'string'
+      ? event.animationName === animationName
+      : animationName.includes(event.animationName);
   }
 }

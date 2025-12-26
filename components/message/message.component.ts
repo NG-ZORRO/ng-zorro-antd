@@ -6,14 +6,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  viewChild,
   ViewEncapsulation
 } from '@angular/core';
 
-import { moveUpMotion } from 'ng-zorro-antd/core/animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -21,18 +22,15 @@ import { NzMNComponent } from './base';
 import { NzMessageData } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-message',
   exportAs: 'nzMessage',
-  animations: [moveUpMotion],
+  imports: [NzIconModule, NzOutletModule],
   template: `
     <div
+      #animationElement
       class="ant-message-notice"
       [class]="instance.options?.nzClass"
       [style]="instance.options?.nzStyle"
-      [@moveUpMotion]="instance.state"
-      (@moveUpMotion.done)="animationStateChanged.next($event)"
       (mouseenter)="onEnter()"
       (mouseleave)="onLeave()"
     >
@@ -64,10 +62,21 @@ import { NzMessageData } from './typings';
       </div>
     </div>
   `,
-  imports: [NzIconModule, NzOutletModule]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzMessageComponent extends NzMNComponent implements OnInit {
   @Input() override instance!: Required<NzMessageData>;
   @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
   index?: number;
+
+  readonly animationElement = viewChild.required('animationElement', { read: ElementRef });
+  protected readonly _animationKeyframeMap = {
+    enter: 'MessageMoveIn',
+    leave: 'MessageMoveOut'
+  };
+  protected readonly _animationClassMap = {
+    enter: 'ant-message-move-up-enter',
+    leave: 'ant-message-move-up-leave'
+  };
 }

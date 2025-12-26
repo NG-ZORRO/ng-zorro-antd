@@ -141,66 +141,6 @@
       margin-top: 16px;
     }
   }
-
-  .notification-fade-effect {
-    animation-duration: 0.24s;
-    animation-timing-function: @ease-in-out;
-    animation-fill-mode: both;
-  }
-
-  &-fade-enter,
-  &-fade-appear {
-    .notification-fade-effect();
-
-    opacity: 0;
-    animation-play-state: paused;
-  }
-
-  &-fade-leave {
-    .notification-fade-effect();
-
-    animation-duration: 0.2s;
-    animation-play-state: paused;
-  }
-
-  &-fade-enter&-fade-enter-active,
-  &-fade-appear&-fade-appear-active {
-    animation-name: NotificationFadeIn;
-    animation-play-state: running;
-  }
-
-  &-fade-leave&-fade-leave-active {
-    animation-name: NotificationFadeOut;
-    animation-play-state: running;
-  }
-}
-
-@keyframes NotificationFadeIn {
-  0% {
-    left: @notification-width;
-    opacity: 0;
-  }
-
-  100% {
-    left: 0;
-    opacity: 1;
-  }
-}
-
-@keyframes NotificationFadeOut {
-  0% {
-    max-height: 150px;
-    margin-bottom: @notification-margin-bottom;
-    opacity: 1;
-  }
-
-  100% {
-    max-height: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    opacity: 0;
-  }
 }
 
 @import './rtl';

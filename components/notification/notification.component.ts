@@ -4,9 +4,17 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  viewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
-import { notificationMotion } from 'ng-zorro-antd/core/animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMNComponent } from 'ng-zorro-antd/message';
@@ -14,17 +22,15 @@ import { NzMNComponent } from 'ng-zorro-antd/message';
 import { NzNotificationData } from './typings';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-notification',
   exportAs: 'nzNotification',
-  animations: [notificationMotion],
+  imports: [NzIconModule, NzOutletModule, NgTemplateOutlet],
   template: `
     <div
+      #animationElement
       class="ant-notification-notice ant-notification-notice-closable"
       [style]="instance.options?.nzStyle || null"
       [class]="instance.options?.nzClass || ''"
-      [@notificationMotion]="state"
-      (@notificationMotion.done)="animationStateChanged.next($event)"
       (click)="onClick($event)"
       (mouseenter)="onEnter()"
       (mouseleave)="onLeave()"
@@ -101,13 +107,29 @@ import { NzNotificationData } from './typings';
       </a>
     </div>
   `,
-  imports: [NzIconModule, NzOutletModule, NgTemplateOutlet]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzNotificationComponent extends NzMNComponent {
   @Input() instance!: Required<NzNotificationData>;
   @Input() index!: number;
   @Input() placement?: string;
   @Output() readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
+
+  readonly animationElement = viewChild.required('animationElement', { read: ElementRef });
+  protected readonly _animationKeyframeMap = {
+    enter: [
+      'antNotificationFadeIn',
+      'antNotificationTopFadeIn',
+      'antNotificationBottomFadeIn',
+      'antNotificationLeftFadeIn'
+    ],
+    leave: 'antNotificationFadeOut'
+  };
+  protected readonly _animationClassMap = {
+    enter: 'ant-notification-fade-enter',
+    leave: 'ant-notification-fade-leave'
+  };
 
   constructor() {
     super();
@@ -122,26 +144,5 @@ export class NzNotificationComponent extends NzMNComponent {
 
   close(): void {
     this.destroy(true);
-  }
-
-  get state(): string | undefined {
-    if (this.instance.state === 'enter') {
-      switch (this.placement) {
-        case 'topLeft':
-        case 'bottomLeft':
-          return 'enterLeft';
-        case 'topRight':
-        case 'bottomRight':
-          return 'enterRight';
-        case 'top':
-          return 'enterTop';
-        case 'bottom':
-          return 'enterBottom';
-        default:
-          return 'enterRight';
-      }
-    } else {
-      return this.instance.state;
-    }
   }
 }
