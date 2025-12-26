@@ -52,6 +52,23 @@ export function provideNzNoAnimation(): Provider[] {
   ];
 }
 
+function _internalAnimationEnabled(): boolean {
+  return inject(ANIMATION_MODULE_TYPE, { optional: true }) !== 'NoopAnimations';
+}
+
+/**
+ * If the current animation mode is `NoopAnimations`, returns the false as a signal.
+ * Otherwise, returns the result of the provided getter as a computed signal.
+ * @param getter A function that returns the outer logic for whether animations are enabled.
+ */
+export function isAnimationEnabled(getter: () => boolean): Signal<boolean> {
+  if (typeof ngDevMode !== 'undefined' && ngDevMode) {
+    assertInInjectionContext(isAnimationEnabled);
+  }
+
+  return _internalAnimationEnabled() ? computed(getter) : signal(false);
+}
+
 /**
  * If the current animation mode is `NoopAnimations`, returns the no-animation class as a signal.
  * Otherwise, returns the result of the provided class name getter as a computed signal.
@@ -62,6 +79,5 @@ export function withAnimationCheck(classNameGetter: () => string): Signal<string
     assertInInjectionContext(withAnimationCheck);
   }
 
-  const animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
-  return animationType === 'NoopAnimations' ? signal(NZ_NO_ANIMATION_CLASS) : computed(classNameGetter);
+  return _internalAnimationEnabled() ? computed(classNameGetter) : signal(NZ_NO_ANIMATION_CLASS);
 }

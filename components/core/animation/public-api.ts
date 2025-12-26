@@ -8,7 +8,6 @@ export * from './collapse';
 export * from './move';
 export * from './notification';
 export * from './slide';
-export * from './tabs';
 export * from './thumb';
 export * from './zoom';
 export * from './no-animation';
