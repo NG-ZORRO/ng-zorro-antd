@@ -46,7 +46,7 @@ import { of } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
+import { slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -185,16 +185,26 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
     <ng-template #inlineMode>
       <div
-        class="{{ prefixCls }}-dropdown {{ nzDropdownClassName }}"
-        [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
-        [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
-        [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
-        [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
-        [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
-        [class.ant-picker-dropdown-range]="isRange"
+        [class]="!nzInline ? prefixCls + '-dropdown' + (nzDropdownClassName ? ' ' + nzDropdownClassName : '') : ''"
+        [class.ant-picker-dropdown-rtl]="!nzInline && dir === 'rtl'"
+        [class.ant-picker-dropdown-placement-bottomLeft]="
+          !nzInline && currentPositionY === 'bottom' && currentPositionX === 'start'
+        "
+        [class.ant-picker-dropdown-placement-topLeft]="
+          !nzInline && currentPositionY === 'top' && currentPositionX === 'start'
+        "
+        [class.ant-picker-dropdown-placement-bottomRight]="
+          !nzInline && currentPositionY === 'bottom' && currentPositionX === 'end'
+        "
+        [class.ant-picker-dropdown-placement-topRight]="
+          !nzInline && currentPositionY === 'top' && currentPositionX === 'end'
+        "
+        [class.ant-picker-dropdown-range]="!nzInline && isRange"
         [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
         [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
         [style]="nzPopupStyle"
+        [animate.enter]="!nzInline && datepickerAnimationEnter()"
+        [animate.leave]="!nzInline && datepickerAnimationLeave()"
       >
         <date-range-popup
           [isRange]="isRange"
@@ -228,20 +238,12 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="realOpenState"
       [cdkConnectedOverlayPositions]="overlayPositions"
-      [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-wrapper'"
+      [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
       (positionChange)="onPositionChange($event)"
       (detach)="close()"
       (overlayKeydown)="onOverlayKeydown($event)"
     >
-      <div
-        class="ant-picker-wrapper"
-        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
-        [animate.enter]="datepickerAnimationEnter()"
-        [animate.leave]="datepickerAnimationLeave()"
-        [style.position]="'relative'"
-      >
-        <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
-      </div>
+      <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
     </ng-template>
   `,
   host: {
@@ -275,8 +277,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     NzFormItemFeedbackIconComponent,
     DateRangePopupComponent,
     CdkConnectedOverlay,
-    NzOverlayModule,
-    NzNoAnimationDirective
+    NzOverlayModule
   ]
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
@@ -636,7 +637,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     return this.nzOpen !== undefined;
   }
 
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
