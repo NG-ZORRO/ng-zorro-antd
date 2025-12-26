@@ -18,7 +18,8 @@ import {
   EventEmitter,
   inject,
   Injector,
-  OnInit
+  OnInit,
+  Signal
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -176,7 +177,7 @@ export abstract class NzMNComponent implements OnInit {
   /**
    * To get the element which triggers the animation.
    */
-  protected abstract get animationElement(): HTMLElement;
+  protected abstract animationElement: Signal<ElementRef<HTMLElement>>;
 
   /**
    * When the animation is enabled, it is used to judge whether the leave animation is done or not.
@@ -274,7 +275,7 @@ export abstract class NzMNComponent implements OnInit {
   }
 
   private _startEnterAnimation(): void {
-    const element = this.animationElement;
+    const element = this.animationElement().nativeElement;
     element.classList.add(this._animationClassMap.enter);
 
     const onAnimationEnd = (event: AnimationEvent): void => {
@@ -289,7 +290,7 @@ export abstract class NzMNComponent implements OnInit {
   }
 
   private _startLeaveAnimation(callback: () => void): void {
-    const element = this.animationElement;
+    const element = this.animationElement().nativeElement;
     element.classList.remove(this._animationClassMap.enter);
     element.classList.add(this._animationClassMap.leave);
 

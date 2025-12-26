@@ -25,7 +25,7 @@ class NzTestNotificationComponent {
   }>;
 }
 
-describe('NzNotification', () => {
+describe('notification', () => {
   let notificationService: NzNotificationService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;

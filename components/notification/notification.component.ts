@@ -4,7 +4,16 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  viewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -18,6 +27,7 @@ import { NzNotificationData } from './typings';
   imports: [NzIconModule, NzOutletModule, NgTemplateOutlet],
   template: `
     <div
+      #animationElement
       class="ant-notification-notice ant-notification-notice-closable"
       [style]="instance.options?.nzStyle || null"
       [class]="instance.options?.nzClass || ''"
@@ -97,6 +107,7 @@ import { NzNotificationData } from './typings';
       </a>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzNotificationComponent extends NzMNComponent {
@@ -105,6 +116,7 @@ export class NzNotificationComponent extends NzMNComponent {
   @Input() placement?: string;
   @Output() readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
+  readonly animationElement = viewChild.required('animationElement', { read: ElementRef });
   protected readonly _animationKeyframeMap = {
     enter: [
       'antNotificationFadeIn',
@@ -118,10 +130,6 @@ export class NzNotificationComponent extends NzMNComponent {
     enter: 'ant-notification-fade-enter',
     leave: 'ant-notification-fade-leave'
   };
-
-  get animationElement(): HTMLElement {
-    return (this.elementRef.nativeElement as HTMLElement).querySelector('.ant-notification-notice')!;
-  }
 
   constructor() {
     super();

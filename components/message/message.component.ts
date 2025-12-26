@@ -6,10 +6,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  viewChild,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -25,6 +27,7 @@ import { NzMessageData } from './typings';
   imports: [NzIconModule, NzOutletModule],
   template: `
     <div
+      #animationElement
       class="ant-message-notice"
       [class]="instance.options?.nzClass"
       [style]="instance.options?.nzStyle"
@@ -67,6 +70,7 @@ export class NzMessageComponent extends NzMNComponent implements OnInit {
   @Output() override readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
   index?: number;
 
+  readonly animationElement = viewChild.required('animationElement', { read: ElementRef });
   protected readonly _animationKeyframeMap = {
     enter: 'MessageMoveIn',
     leave: 'MessageMoveOut'
@@ -75,8 +79,4 @@ export class NzMessageComponent extends NzMNComponent implements OnInit {
     enter: 'ant-message-move-up-enter',
     leave: 'ant-message-move-up-leave'
   };
-
-  get animationElement(): HTMLElement {
-    return (this.elementRef.nativeElement as HTMLElement).querySelector('.ant-message-notice')!;
-  }
 }
