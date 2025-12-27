@@ -3,8 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
+import { Directionality } from '@angular/cdk/bidi';
+import {
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair,
+  OriginConnectionPosition,
+  OverlayModule
+} from '@angular/cdk/overlay';
 import { Platform, _getEventTarget } from '@angular/cdk/platform';
 import { AsyncPipe } from '@angular/common';
 import {
@@ -51,7 +56,7 @@ import {
   NzValidateStatus,
   NzVariant
 } from 'ng-zorro-antd/core/types';
-import { getStatusClassNames, isNil } from 'ng-zorro-antd/core/util';
+import { generateClassName, getStatusClassNames, isNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
@@ -108,11 +113,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
       [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
       (detach)="close()"
       (overlayOutsideClick)="onClickOutside($event)"
+      (positionChange)="onPositionChange($event)"
     >
       <div
         [animate.enter]="timepickerAnimationEnter()"
         [animate.leave]="timepickerAnimationLeave()"
-        class="ant-picker-dropdown"
+        [class]="dropdownTimePickerClass()"
         style="position: relative"
       >
         <div class="ant-picker-panel-container">
@@ -150,7 +156,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '[class.ant-picker-small]': `finalSize() === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-focused]': `focused`,
-    '[class.ant-picker-rtl]': `dir === 'rtl'`,
+    '[class.ant-picker-rtl]': `dir() === 'rtl'`,
     '[class.ant-picker-borderless]': `nzVariant === 'borderless'`,
     '[class.ant-picker-filled]': `nzVariant === 'filled'`,
     '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
@@ -189,12 +195,15 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   private cdr = inject(ChangeDetectorRef);
   private dateHelper = inject(DateHelperService);
   private platform = inject(Platform);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
+
+  protected readonly dir = inject(Directionality).valueSignal;
 
   private _onChange?: (value: Date | null) => void;
   private _onTouched?: () => void;
   private isNzDisableFirstChange: boolean = true;
+  private readonly currentPosition = signal<OriginConnectionPosition>({ originX: 'start', originY: 'bottom' });
+
   isInit = false;
   focused = false;
   inputValue: string = '';
@@ -232,7 +241,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       overlayY: 'bottom'
     }
   ] as ConnectionPositionPair[];
-  dir: Direction = 'ltr';
+
   // status
   prefixCls: string = 'ant-picker';
   statusCls: NgClassInterface = {};
@@ -393,11 +402,37 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.close();
   }
 
+  onPositionChange(position: ConnectedOverlayPositionChange): void {
+    this.currentPosition.set(position.connectionPair);
+  }
+
   protected finalSize = computed(() => {
     if (this.compactSize) {
       return this.compactSize();
     }
     return this.size();
+  });
+
+  protected dropdownTimePickerClass = computed(() => {
+    const classList = [this.generateClass('dropdown')];
+    const { originX, originY } = this.currentPosition();
+    const dir = this.dir();
+
+    if (originX === 'start' && originY === 'bottom') {
+      classList.push(this.generateClass('dropdown-placement-bottomLeft'));
+    } else if (originX === 'start' && originY === 'top') {
+      classList.push(this.generateClass('dropdown-placement-topLeft'));
+    } else if (originX === 'end' && originY === 'bottom') {
+      classList.push(this.generateClass('dropdown-placement-bottomRight'));
+    } else if (originX === 'end' && originY === 'top') {
+      classList.push(this.generateClass('dropdown-placement-topRight'));
+    }
+
+    if (dir === 'rtl') {
+      classList.push(this.generateClass('dropdown-rtl'));
+    }
+
+    return classList;
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
@@ -419,11 +454,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
     this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(map(nzLocale => nzLocale.TimePicker.placeholder));
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-    });
   }
 
   ngOnChanges({ nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus, nzStatus, nzSize }: SimpleChanges): void {
@@ -522,5 +552,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
         this.renderer.removeClass(this.elementRef.nativeElement, status);
       }
     });
+  }
+
+  private generateClass(suffix: string): string {
+    return generateClassName(this.prefixCls, suffix);
   }
 }

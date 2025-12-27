@@ -196,8 +196,8 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
         [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
         [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
         [style]="nzPopupStyle"
-        [animate.enter]="!nzInline() && datepickerAnimationEnter()"
-        [animate.leave]="!nzInline() && datepickerAnimationLeave()"
+        [animate.enter]="$any(!nzInline() && datepickerAnimationEnter())"
+        [animate.leave]="$any(!nzInline() && datepickerAnimationLeave())"
       >
         <date-range-popup
           [isRange]="isRange"
