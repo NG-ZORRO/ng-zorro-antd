@@ -3,6 +3,8 @@
 
 @badge-prefix-cls: ~'@{ant-prefix}-badge';
 @number-prefix-cls: ~'@{ant-prefix}-scroll-number';
+@badge-shadow-size: 1px;
+@badge-shadow-color: @shadow-color-inverse;
 
 .@{badge-prefix-cls} {
   .reset-component();
@@ -24,7 +26,7 @@
     text-align: center;
     background: @badge-color;
     border-radius: (@badge-height / 2);
-    box-shadow: 0 0 0 1px @shadow-color-inverse;
+    box-shadow: 0 0 0 @badge-shadow-size @badge-shadow-color;
 
     a,
     a:hover {
@@ -42,7 +44,7 @@
   }
 
   &-multiple-words {
-    padding: 0 8px;
+    padding: 0 @padding-xs;
   }
 
   &-dot {
@@ -52,7 +54,7 @@
     height: @badge-dot-size;
     background: @highlight-color;
     border-radius: 100%;
-    box-shadow: 0 0 0 1px @shadow-color-inverse;
+    box-shadow: 0 0 0 @badge-shadow-size @badge-shadow-color;
   }
 
   // Tricky way to resolve https://github.com/ant-design/ant-design/issues/30088
@@ -133,7 +135,7 @@
     .make-color-classes();
 
     &-text {
-      margin-left: 8px;
+      margin-left: @margin-xs;
       color: @text-color;
       font-size: @font-size-base;
     }
