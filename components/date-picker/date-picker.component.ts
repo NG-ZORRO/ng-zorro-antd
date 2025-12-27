@@ -3,14 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
   ConnectedOverlayPositionChange,
   ConnectionPositionPair,
-  HorizontalConnectionPos,
-  VerticalConnectionPos
+  OriginConnectionPosition
 } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
@@ -27,6 +26,7 @@ import {
   EventEmitter,
   forwardRef,
   inject,
+  input,
   Input,
   OnChanges,
   OnInit,
@@ -46,7 +46,7 @@ import { of } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -64,7 +64,13 @@ import {
   OnChangeType,
   OnTouchedType
 } from 'ng-zorro-antd/core/types';
-import { fromEventOutsideAngular, getStatusClassNames, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import {
+  fromEventOutsideAngular,
+  generateClassName,
+  getStatusClassNames,
+  toBoolean,
+  valueFunctionProp
+} from 'ng-zorro-antd/core/util';
 import {
   DateHelperService,
   NzDatePickerI18nInterface,
@@ -102,7 +108,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
   selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-quarter-picker,nz-year-picker,nz-range-picker',
   exportAs: 'nzDatePicker',
   template: `
-    @if (!nzInline) {
+    @if (!nzInline()) {
       @if (!isRange) {
         <div class="{{ prefixCls }}-input">
           <input
@@ -185,20 +191,17 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
     <ng-template #inlineMode>
       <div
-        class="{{ prefixCls }}-dropdown {{ nzDropdownClassName }}"
-        [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
-        [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
-        [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
-        [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
-        [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
-        [class.ant-picker-dropdown-range]="isRange"
+        [class]="dropdownClass()"
+        [class.ant-picker-dropdown-range]="!nzInline() && isRange"
         [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
         [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
         [style]="nzPopupStyle"
+        [animate.enter]="!nzInline() && datepickerAnimationEnter()"
+        [animate.leave]="!nzInline() && datepickerAnimationLeave()"
       >
         <date-range-popup
           [isRange]="isRange"
-          [inline]="nzInline"
+          [inline]="nzInline()"
           [defaultPickerValue]="nzDefaultPickerValue"
           [showWeek]="nzShowWeekNumber || nzMode === 'week'"
           [panelMode]="panelMode"
@@ -213,7 +216,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
           [disabledTime]="nzDisabledTime"
           [extraFooter]="extraFooter"
           [ranges]="nzRanges"
-          [dir]="dir"
+          [dir]="dir()"
           [format]="nzFormat"
           (resultOk)="onResultOk()"
         />
@@ -224,23 +227,16 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      cdkConnectedOverlayTransformOriginOn=".{{ prefixCls }}-dropdown"
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="realOpenState"
       [cdkConnectedOverlayPositions]="overlayPositions"
-      [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-wrapper'"
       (positionChange)="onPositionChange($event)"
       (detach)="close()"
       (overlayKeydown)="onOverlayKeydown($event)"
     >
-      <div
-        class="ant-picker-wrapper"
-        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
-        [@slideMotion]="'enter'"
-        [style.position]="'relative'"
-      >
-        <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
-      </div>
+      <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
     </ng-template>
   `,
   host: {
@@ -249,11 +245,11 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     '[class.ant-picker-large]': `finalSize() === 'large'`,
     '[class.ant-picker-small]': `finalSize() === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
-    '[class.ant-picker-rtl]': `dir === 'rtl'`,
+    '[class.ant-picker-rtl]': `dir() === 'rtl'`,
     '[class.ant-picker-borderless]': `nzVariant === 'borderless'`,
     '[class.ant-picker-filled]': `nzVariant === 'filled'`,
     '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
-    '[class.ant-picker-inline]': `nzInline`,
+    '[class.ant-picker-inline]': `nzInline()`,
     '(click)': 'onClickInputBox($event)'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
@@ -266,7 +262,6 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
       useExisting: forwardRef(() => NzDatePickerComponent)
     }
   ],
-  animations: [slideMotion],
   imports: [
     FormsModule,
     NgTemplateOutlet,
@@ -275,8 +270,7 @@ export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
     NzFormItemFeedbackIconComponent,
     DateRangePopupComponent,
     CdkConnectedOverlay,
-    NzOverlayModule,
-    NzNoAnimationDirective
+    NzOverlayModule
   ]
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
@@ -289,8 +283,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   private dateHelper = inject(DateHelperService);
   private nzResizeObserver = inject(NzResizeObserver);
   private platform = inject(Platform);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
+  protected readonly dir = inject(Directionality).valueSignal;
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -299,7 +293,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
   isRange: boolean = false; // Indicate whether the value is a range value
   extraFooter?: TemplateRef<NzSafeAny> | string;
-  dir: Direction = 'ltr';
 
   // status
   statusCls: NgClassInterface = {};
@@ -312,17 +305,17 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   private showTime: SupportTimeOptions | boolean = false;
   private isNzDisableFirstChange: boolean = true;
   // --- Common API
+  readonly nzInline = input(false, { transform: booleanAttribute });
   @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
   @Input({ transform: booleanAttribute }) nzAutoFocus: boolean = false;
   @Input({ transform: booleanAttribute }) nzDisabled: boolean = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
-  @Input({ transform: booleanAttribute }) nzInline: boolean = false;
   @Input({ transform: booleanAttribute }) nzOpen?: boolean;
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale!: NzDatePickerI18nInterface;
   @Input() nzPlaceHolder: string | string[] = '';
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
-  @Input() nzDropdownClassName?: string;
+  readonly nzDropdownClassName = input<string>();
   @Input() nzSize: NzDatePickerSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
   @Input() nzFormat!: string;
@@ -375,8 +368,40 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   activeBarStyle: object = {};
   overlayOpen: boolean = false; // Available when "nzOpen" = undefined
   overlayPositions: ConnectionPositionPair[] = [...DEFAULT_DATE_PICKER_POSITIONS];
-  currentPositionX: HorizontalConnectionPos = 'start';
-  currentPositionY: VerticalConnectionPos = 'bottom';
+
+  private readonly currentPosition = signal<OriginConnectionPosition>({ originX: 'start', originY: 'bottom' });
+
+  protected readonly datepickerAnimationEnter = slideAnimationEnter();
+  protected readonly datepickerAnimationLeave = slideAnimationLeave();
+
+  protected readonly dropdownClass = computed(() => {
+    const cls: string[] = [];
+    if (!this.nzInline()) {
+      cls.push(this.generateClass('dropdown'));
+
+      const customCls = this.nzDropdownClassName();
+      if (customCls) {
+        cls.push(customCls);
+      }
+
+      const { originX, originY } = this.currentPosition();
+
+      if (originX === 'start' && originY === 'bottom') {
+        cls.push(this.generateClass('dropdown-placement-bottomLeft'));
+      } else if (originX === 'start' && originY === 'top') {
+        cls.push(this.generateClass('dropdown-placement-topLeft'));
+      } else if (originX === 'end' && originY === 'bottom') {
+        cls.push(this.generateClass('dropdown-placement-bottomRight'));
+      } else if (originX === 'end' && originY === 'top') {
+        cls.push(this.generateClass('dropdown-placement-topRight'));
+      }
+
+      if (this.dir() === 'rtl') {
+        cls.push(this.generateClass('dropdown-rtl'));
+      }
+    }
+    return cls;
+  });
 
   get realOpenState(): boolean {
     // The value that really decide the open state of overlay
@@ -438,7 +463,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
         ? 0
         : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
 
-    if (this.dir === 'rtl') {
+    if (this.dir() === 'rtl') {
       this.activeBarStyle = { ...baseStyle, right: `${this.datePickerService.arrowLeft}px` };
     } else {
       this.activeBarStyle = { ...baseStyle, left: `${this.datePickerService.arrowLeft}px` };
@@ -448,7 +473,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   }
 
   getInput(partType?: RangePartType): HTMLInputElement | undefined {
-    if (this.nzInline) {
+    if (this.nzInline()) {
       return undefined;
     }
     return this.isRange
@@ -485,7 +510,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
   // Show overlay content
   open(): void {
-    if (this.nzInline) {
+    if (this.nzInline()) {
       return;
     }
     if (!this.realOpenState && !this.nzDisabled) {
@@ -498,7 +523,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   }
 
   close(): void {
-    if (this.nzInline) {
+    if (this.nzInline()) {
       return;
     }
     if (this.realOpenState) {
@@ -545,14 +570,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     }
   }
 
-  // NOTE: A issue here, the first time position change, the animation will not be triggered.
-  // Because the overlay's "positionChange" event is emitted after the content's full shown up.
-  // All other components like "nz-dropdown" which depends on overlay also has the same issue.
-  // See: https://github.com/NG-ZORRO/ng-zorro-antd/issues/1429
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.currentPositionX = position.connectionPair.originX;
-    this.currentPositionY = position.connectionPair.originY;
-    this.cdr.detectChanges(); // Take side effects to position styles
+    this.currentPosition.set(position.connectionPair);
   }
 
   onClickClear(event: MouseEvent): void {
@@ -633,7 +652,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     return this.nzOpen !== undefined;
   }
 
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
@@ -710,11 +728,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
       this.close();
     });
 
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
     this.inputValue = this.isRange ? ['', ''] : '';
     this.setModeAndFormat();
 
@@ -943,7 +956,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   private setPlacement(placement: NzPlacement): void {
     const position: ConnectionPositionPair = DATE_PICKER_POSITION_MAP[placement];
     this.overlayPositions = [position, ...DEFAULT_DATE_PICKER_POSITIONS];
-    this.currentPositionX = position.originX;
-    this.currentPositionY = position.originY;
+    this.currentPosition.set(position);
+  }
+
+  private generateClass(suffix: string): string {
+    return generateClassName(this.prefixCls, suffix);
   }
 }

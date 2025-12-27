@@ -5,6 +5,8 @@
 
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import {
   ApplicationRef,
   Component,
@@ -39,6 +41,8 @@ import { NzDatePickerModule } from './date-picker.module';
 import { CompatibleDate, NzPanelChangeType } from './standard-types';
 import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
 import { PREFIX_CLASS } from './util';
+
+registerLocaleData(zh);
 
 describe('NzDatePickerComponent', () => {
   let fixture: ComponentFixture<NzTestDatePickerComponent>;
