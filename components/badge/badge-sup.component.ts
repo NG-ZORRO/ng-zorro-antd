@@ -7,6 +7,7 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  inject,
   Input,
   numberAttribute,
   OnChanges,
@@ -16,7 +17,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { zoomBadgeMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -24,13 +25,12 @@ import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/ty
   exportAs: 'nzBadgeSup',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [zoomBadgeMotion],
   imports: [NzNoAnimationDirective],
   template: `
     @if (count <= nzOverflowCount) {
       @for (n of maxNumberArray; track n; let i = $index) {
         <span
-          [nzNoAnimation]="noAnimation"
+          [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
           class="ant-scroll-number-only"
           [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
         >
@@ -50,8 +50,6 @@ import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/ty
   host: {
     class: 'ant-scroll-number',
     '[class]': `isPresetColor ? ('ant-badge-status-' + nzColor) : ''`,
-    '[@.disabled]': `disableAnimation`,
-    '[@zoomBadgeMotion]': '',
     '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
     '[style]': `nzStyle`,
     '[style.right.px]': `nzOffset && nzOffset[0] ? -nzOffset[0] : null`,
@@ -63,14 +61,14 @@ import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/ty
   }
 })
 export class NzBadgeSupComponent implements OnInit, OnChanges {
+  protected readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+
   @Input() nzOffset?: [number, number];
   @Input() nzTitle?: string | null;
   @Input() nzStyle: NgStyleInterface | null = null;
   @Input() nzDot = false;
   @Input({ transform: numberAttribute }) nzOverflowCount = 99;
-  @Input() disableAnimation = false;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
-  @Input() noAnimation = false;
   @Input() nzSize: NzSizeDSType = 'default';
   @Input({ transform: booleanAttribute }) isPresetColor = false;
   @Input() nzColor?: string;
@@ -78,9 +76,9 @@ export class NzBadgeSupComponent implements OnInit, OnChanges {
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   count: number = 0;
-  countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  protected readonly countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  generateMaxNumberArray(): void {
+  private generateMaxNumberArray(): void {
     this.maxNumberArray = this.nzOverflowCount
       .toString()
       .split('')

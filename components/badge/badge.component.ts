@@ -16,8 +16,8 @@ import {
   inject
 } from '@angular/core';
 
-import { zoomBadgeMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { withAnimationCheck } from 'ng-zorro-antd/core/animation';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
@@ -32,7 +32,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   exportAs: 'nzBadge',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [zoomBadgeMotion],
   imports: [NzBadgeSupComponent, NzOutletModule],
   template: `
     @if ((nzStatus || nzColor) && !showSup && !nzCount) {
@@ -58,8 +57,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
           [nzDot]="nzDot"
           [nzCount]="nzCount"
           [nzOverflowCount]="nzOverflowCount"
-          [disableAnimation]="!!(nzStandalone || nzStatus || presetColor || noAnimation?.nzNoAnimation?.())"
-          [noAnimation]="!!noAnimation?.nzNoAnimation?.()"
+          [animate.enter]="supAnimationEnter()"
+          [animate.leave]="supAnimationLeave()"
         />
       }
     </ng-container>
@@ -72,13 +71,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   }
 })
 export class NzBadgeComponent implements OnChanges {
-  public readonly nzConfigService = inject(NzConfigService);
   protected readonly dir = inject(Directionality).valueSignal;
-  protected readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  showSup = false;
+  protected showSup = false;
+  protected readonly supAnimationEnter = withAnimationCheck(() => 'ant-badge-zoom-enter');
+  protected readonly supAnimationLeave = withAnimationCheck(() => 'ant-badge-zoom-leave');
   presetColor: string | null = null;
 
   @Input({ transform: booleanAttribute }) nzShowZero = false;
