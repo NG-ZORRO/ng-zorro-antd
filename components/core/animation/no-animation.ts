@@ -32,7 +32,7 @@ export class NzNoAnimationDirective {
 }
 
 /**
- * @deprecated Will be removed in v23, please use `NzNoAnimationDirective` instead.
+ * @deprecated Will be removed in v23, please use {@link NzNoAnimationDirective} instead.
  */
 @NgModule({
   imports: [NzNoAnimationDirective],

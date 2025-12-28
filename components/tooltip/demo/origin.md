@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-通过 `nzTooltipOrigin` 指定 tooltip 的锚定元素（可以使用我们提供的工具类 `import { NzElementPatchModule } from 'ng-zorro-antd/core/element-patch'`）
+通过 `nzTooltipOrigin` 指定 tooltip 的锚定元素（可以使用指令 `NzElementPatchDirective` 获取元素）
 
 ## en-US
 
-Use `nzTooltipOrigin` to set the origin of the tooltip (You can use the util class we provide `import { NzElementPatchModule } from 'ng-zorro-antd/core/element-patch'`).
+Use `nzTooltipOrigin` to set the origin of the tooltip (You can use the utility directive `NzElementPatchDirective` to get the element).
