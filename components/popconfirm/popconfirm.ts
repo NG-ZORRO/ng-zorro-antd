@@ -171,7 +171,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         [class]="_classMap"
         [class.ant-popover-rtl]="dir() === 'rtl'"
         [style]="nzOverlayStyle"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         [animate.enter]="zoomAnimationEnter()"
         [animate.leave]="zoomAnimationLeave()"
       >

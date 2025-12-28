@@ -79,8 +79,6 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   exportAs: 'nzTooltipComponent',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  // todo: currently the animation will cause small shake for the arrow (< 1px) when the tooltip is shown
-  // animations: [zoomBigMotion],
   template: `
     <ng-template
       #overlay="cdkConnectedOverlay"

@@ -184,4 +184,26 @@
   &.ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow svg {
     transition: none;
   }
+
+  // tooltip, popover, popconfirm
+  &.ant-tooltip, &.ant-popover {
+    animation: none;
+  }
+}
+
+// Note: Force GPU rendering to prevent sub-pixel rendering issues at default zoom levels.
+// Without this, floating-point precision loss during transform calculations may cause visible gaps
+// between the arrow and popup content.
+.ant-tooltip.ant-zoom-big-fast-enter,
+.ant-tooltip.ant-zoom-big-fast-leave {
+  .ant-tooltip-arrow {
+    will-change: transform;
+  }
+}
+
+.ant-popover.ant-zoom-big-enter,
+.ant-popover.ant-zoom-big-leave {
+  .ant-popover-arrow {
+    will-change: transform;
+  }
 }

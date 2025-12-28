@@ -103,7 +103,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
         [class.ant-popover-rtl]="dir() === 'rtl'"
         [class]="_classMap"
         [style]="nzOverlayStyle"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         [animate.enter]="zoomAnimationEnter()"
         [animate.leave]="zoomAnimationLeave()"
       >

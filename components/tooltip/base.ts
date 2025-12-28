@@ -80,7 +80,7 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
   }
 
   protected get _trigger(): NzTooltipTrigger {
-    return typeof this.trigger !== 'undefined' ? this.trigger : 'hover';
+    return typeof this.trigger !== 'undefined' ? this.trigger : 'click';
   }
 
   protected get _placement(): string[] {
