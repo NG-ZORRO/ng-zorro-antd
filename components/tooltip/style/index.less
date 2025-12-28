@@ -1,5 +1,6 @@
 @import '../../style/themes/index';
 @import '../../style/mixins/index';
+@import (reference) '../../style/core/motion/zoom';
 
 @tooltip-prefix-cls: ~'@{ant-prefix}-tooltip';
 
@@ -59,5 +60,8 @@
 }
 
 .generator-tooltip-preset-color();
+
+// Animations
+.zoom-motion('zoom-big-fast', antZoomBig, @animation-duration-fast);
 
 @import './rtl';
