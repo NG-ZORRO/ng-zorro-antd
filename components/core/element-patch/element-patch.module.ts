@@ -7,6 +7,9 @@ import { NgModule } from '@angular/core';
 
 import { NzElementPatchDirective } from './element-patch.directive';
 
+/**
+ * @deprecated Will be removed in v23, please use {@link NzElementPatchDirective} instead.
+ */
 @NgModule({
   imports: [NzElementPatchDirective],
   exports: [NzElementPatchDirective]

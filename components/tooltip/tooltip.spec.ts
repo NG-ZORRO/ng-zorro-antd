@@ -8,7 +8,7 @@ import { Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@a
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NzElementPatchModule } from 'ng-zorro-antd/core/element-patch';
+import { NzElementPatchDirective } from 'ng-zorro-antd/core/element-patch';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzTooltipBaseDirective, NzTooltipTrigger } from './base';
@@ -454,7 +454,7 @@ export class NzTooltipTestComponent {
 }
 
 @Component({
-  imports: [NzElementPatchModule, NzTooltipModule],
+  imports: [NzElementPatchDirective, NzTooltipModule],
   template: `
     <button nz-element #button="nzElement">Action</button>
     <a nz-tooltip nzTooltipTitle="This action could not be revoked!" [nzTooltipOrigin]="button.elementRef">Notice</a>

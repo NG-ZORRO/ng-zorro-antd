@@ -29,7 +29,7 @@ import { filter, Observable, Subject } from 'rxjs';
 import { finalize, first } from 'rxjs/operators';
 
 import { NzButtonModule, NzButtonType } from 'ng-zorro-antd/button';
-import { zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -149,7 +149,6 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
 @Component({
   selector: 'nz-popconfirm',
   exportAs: 'nzPopconfirmComponent',
-  animations: [zoomBigMotion],
   template: `
     <ng-template
       #overlay="cdkConnectedOverlay"
@@ -170,11 +169,11 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         [cdkTrapFocusAutoCapture]="nzAutoFocus !== null"
         class="ant-popover"
         [class]="_classMap"
-        [class.ant-popover-rtl]="dir === 'rtl'"
+        [class.ant-popover-rtl]="dir() === 'rtl'"
         [style]="nzOverlayStyle"
-        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
-        [@zoomBigMotion]="'active'"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
+        [animate.enter]="zoomAnimationEnter()"
+        [animate.leave]="zoomAnimationLeave()"
       >
         @if (nzPopconfirmShowArrow) {
           <div class="ant-popover-arrow"></div>
@@ -246,6 +245,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   encapsulation: ViewEncapsulation.None
 })
 export class NzPopconfirmComponent extends NzTooltipComponent {
+  protected override _animationPrefix = 'ant-zoom-big';
   @ViewChildren('okBtn', { read: ElementRef }) okBtn!: QueryList<ElementRef>;
   @ViewChildren('cancelBtn', { read: ElementRef }) cancelBtn!: QueryList<ElementRef>;
 

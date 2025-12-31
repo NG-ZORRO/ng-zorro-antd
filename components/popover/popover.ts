@@ -16,7 +16,7 @@ import {
   booleanAttribute
 } from '@angular/core';
 
-import { zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -81,7 +81,6 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
 @Component({
   selector: 'nz-popover',
   exportAs: 'nzPopoverComponent',
-  animations: [zoomBigMotion],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
@@ -101,12 +100,12 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
     >
       <div
         class="ant-popover"
-        [class.ant-popover-rtl]="dir === 'rtl'"
+        [class.ant-popover-rtl]="dir() === 'rtl'"
         [class]="_classMap"
         [style]="nzOverlayStyle"
-        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
-        [@zoomBigMotion]="'active'"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
+        [animate.enter]="zoomAnimationEnter()"
+        [animate.leave]="zoomAnimationLeave()"
       >
         <div class="ant-popover-arrow"></div>
         <div class="ant-popover-content">
@@ -133,6 +132,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   imports: [OverlayModule, NzOverlayModule, NzNoAnimationDirective, NzOutletModule]
 })
 export class NzPopoverComponent extends NzTooltipComponent {
+  override _animationPrefix = 'ant-zoom-big';
   override _prefix = 'ant-popover';
   nzContentContext: object | null = null;
 
