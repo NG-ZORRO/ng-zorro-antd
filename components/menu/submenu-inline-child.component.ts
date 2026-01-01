@@ -3,91 +3,122 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NgTemplateOutlet } from '@angular/common';
+import { Directionality } from '@angular/cdk/bidi';
+import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
+  computed,
+  effect,
   ElementRef,
   inject,
-  Input,
-  OnChanges,
-  OnInit,
-  Renderer2,
-  SimpleChanges,
-  TemplateRef,
+  input,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { collapseMotion } from 'ng-zorro-antd/core/animation';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { isAnimationEnabled, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
+import { generateClassName, getClassListFromValue } from 'ng-zorro-antd/core/util';
 
-import { NzMenuModeType } from './menu.types';
+const MENU_PREFIX = 'ant-menu';
+const COLLAPSE_MOTION_CLASS = 'ant-motion-collapse';
 
 @Component({
   selector: '[nz-submenu-inline-child]',
-  animations: [collapseMotion],
   exportAs: 'nzSubmenuInlineChild',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>`,
+  template: `<ng-content />`,
   host: {
-    class: 'ant-menu ant-menu-inline ant-menu-sub',
-    '[class.ant-menu-rtl]': `dir === 'rtl'`,
-    '[@collapseMotion]': 'expandState'
-  },
-  imports: [NgTemplateOutlet]
-})
-export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
-  private readonly elementRef = inject(ElementRef);
-  private readonly renderer = inject(Renderer2);
-  private readonly directionality = inject(Directionality);
-  private readonly destroyRef = inject(DestroyRef);
-
-  @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
-  @Input() menuClass: string = '';
-  @Input() mode: NzMenuModeType = 'vertical';
-  @Input() nzOpen = false;
-  listOfCacheClassName: string[] = [];
-  expandState = 'collapsed';
-  dir: Direction = 'ltr';
-
-  calcMotionState(): void {
-    this.expandState = this.nzOpen ? 'expanded' : 'collapsed';
+    '[class]': 'mergedClass()',
+    '(transitionend)': 'onTransitionEnd($event)'
   }
+})
+export class NzSubmenuInlineChildComponent {
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
+  private readonly animationEnabled = isAnimationEnabled(() => !this.noAnimation?.nzNoAnimation?.());
+  protected readonly dir = inject(Directionality).valueSignal;
 
-  ngOnInit(): void {
-    this.calcMotionState();
+  readonly menuClass = input<string>('');
+  readonly open = input(false);
 
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
+  private firstRender = true;
+
+  protected readonly mergedClass = computed(() => {
+    const customCls = getClassListFromValue(this.menuClass()) || [];
+    const cls = [
+      MENU_PREFIX,
+      generateClassName(MENU_PREFIX, 'inline'),
+      generateClassName(MENU_PREFIX, 'sub'),
+      ...customCls
+    ];
+    if (this.dir() === 'rtl') {
+      cls.push(generateClassName(MENU_PREFIX, 'rtl'));
+    }
+    return cls;
+  });
+
+  constructor() {
+    effect(() => {
+      const open = this.open();
+      const animationEnabled = this.animationEnabled() && !this.firstRender;
+      const element = this.elementRef.nativeElement;
+
+      if (open) {
+        element.classList.remove(generateClassName(MENU_PREFIX, 'submenu-hidden'));
+      }
+
+      if (animationEnabled) {
+        element.classList.add(COLLAPSE_MOTION_CLASS);
+
+        if (open) {
+          // Wait for next frame to get correct scrollHeight after removing hidden class
+          requestAnimationFrame(() => {
+            const scrollHeight = this.getActualScrollHeight(element);
+            element.style.height = coerceCssPixelValue(scrollHeight);
+            element.style.opacity = '1';
+          });
+        } else {
+          // Used for setting height to actual height when transition start
+          const scrollHeight = this.getActualScrollHeight(element);
+          element.style.height = coerceCssPixelValue(scrollHeight);
+          requestAnimationFrame(() => {
+            element.style.height = coerceCssPixelValue(0);
+            element.style.opacity = '0';
+          });
+        }
+      } else {
+        if (open) {
+          element.style.height = 'auto';
+          element.style.opacity = '1';
+        } else {
+          element.style.height = coerceCssPixelValue(0);
+          element.style.opacity = '0';
+        }
+      }
+
+      this.firstRender = false;
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { mode, nzOpen, menuClass } = changes;
-    if (mode || nzOpen) {
-      this.calcMotionState();
+  // Calculate height by summing up direct children's offsetHeight
+  // This naturally excludes collapsed nested submenus since they have height: 0
+  private getActualScrollHeight(element: HTMLElement): number {
+    return Array.from(element.children).reduce((acc, child) => acc + (child as HTMLElement).offsetHeight, 0);
+  }
+
+  protected onTransitionEnd(event: TransitionEvent): void {
+    if (!this.animationEnabled() || event.target !== this.elementRef.nativeElement) {
+      return;
     }
-    if (menuClass) {
-      if (this.listOfCacheClassName.length) {
-        this.listOfCacheClassName.forEach(className => {
-          if (className) {
-            this.renderer.removeClass(this.elementRef.nativeElement, className);
-          }
-        });
-      }
-      if (this.menuClass) {
-        this.listOfCacheClassName = this.menuClass.split(' ');
-        this.listOfCacheClassName.forEach(className => {
-          if (className) {
-            this.renderer.addClass(this.elementRef.nativeElement, className);
-          }
-        });
-      }
+
+    // set height to auto after transition end, so that it's height can be changed along with content
+    if (this.open()) {
+      this.elementRef.nativeElement.style.height = 'auto';
+    } else {
+      this.elementRef.nativeElement.classList.add(generateClassName(MENU_PREFIX, 'submenu-hidden'));
     }
+    this.elementRef.nativeElement.classList.remove(COLLAPSE_MOTION_CLASS);
   }
 }

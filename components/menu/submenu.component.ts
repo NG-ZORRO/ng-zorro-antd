@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, ConnectedOverlayPositionChange, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   booleanAttribute,
@@ -74,7 +75,6 @@ const listOfHorizontalPositions = [
       [nzTitle]="nzTitle"
       [mode]="mode"
       [nzDisabled]="nzDisabled"
-      [isMenuInsideDropdown]="isMenuInsideDropdown"
       [paddingLeft]="nzPaddingLeft || inlinePaddingLeft"
       [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
       (subMenuMouseState)="setMouseEnterState($event)"
@@ -85,15 +85,9 @@ const listOfHorizontalPositions = [
       }
     </div>
     @if (mode === 'inline') {
-      <div
-        nz-submenu-inline-child
-        [mode]="mode"
-        [nzOpen]="nzOpen"
-        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
-        [menuClass]="nzMenuClassName"
-        [templateOutlet]="subMenuTemplate"
-      ></div>
+      <div nz-submenu-inline-child [open]="nzOpen" [menuClass]="nzMenuClassName">
+        <ng-template [ngTemplateOutlet]="subMenuTemplate" />
+      </div>
     } @else {
       <ng-template
         cdkConnectedOverlay
@@ -109,17 +103,15 @@ const listOfHorizontalPositions = [
           nz-submenu-none-inline-child
           [theme]="theme"
           [mode]="mode"
-          [nzOpen]="nzOpen"
+          [open]="nzOpen"
           [position]="position"
-          [nzDisabled]="nzDisabled"
-          [isMenuInsideDropdown]="isMenuInsideDropdown"
-          [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
-          [templateOutlet]="subMenuTemplate"
           [menuClass]="nzMenuClassName"
-          [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
+          [nzDisabled]="nzDisabled"
+          [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
           (subMenuMouseState)="setMouseEnterState($event)"
-        ></div>
+        >
+          <ng-template [ngTemplateOutlet]="subMenuTemplate" />
+        </div>
       </ng-template>
     }
 
@@ -144,12 +136,12 @@ const listOfHorizontalPositions = [
     '[class.ant-menu-submenu-horizontal]': `!isMenuInsideDropdown && mode === 'horizontal'`,
     '[class.ant-menu-submenu-inline]': `!isMenuInsideDropdown && mode === 'inline'`,
     '[class.ant-menu-submenu-active]': `!isMenuInsideDropdown && isActive`,
-    '[class.ant-menu-submenu-rtl]': `dir === 'rtl'`
+    '[class.ant-menu-submenu-rtl]': `dir() === 'rtl'`
   },
   imports: [
+    NgTemplateOutlet,
     NzSubMenuTitleComponent,
     NzSubmenuInlineChildComponent,
-    NzNoAnimationDirective,
     NzSubmenuNoneInlineChildComponent,
     OverlayModule
   ]
@@ -158,7 +150,7 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
   public readonly nzSubmenuService = inject(NzSubmenuService);
   protected readonly isMenuInsideDropdown = inject(NzIsMenuInsideDropdownToken);
   protected readonly noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
-  private readonly directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private readonly destroyRef = inject(DestroyRef);
   private readonly nzMenuService = inject(MenuService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -182,7 +174,7 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
   listOfNzMenuItemDirective: QueryList<NzMenuItemComponent> | null = null;
 
   private level = this.nzSubmenuService.level;
-  position = 'right';
+  position: 'left' | 'right' = 'right';
   triggerWidth: number | null = null;
   theme: NzMenuThemeType = 'light';
   mode: NzMenuModeType = 'vertical';
@@ -190,7 +182,6 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
   overlayPositions = listOfVerticalPositions;
   isSelected = false;
   isActive = false;
-  dir: Direction = 'ltr';
 
   /** set the submenu host open status directly **/
   setOpenStateWithoutDebounce(open: boolean): void {
@@ -264,12 +255,6 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
         this.nzOpenChange.emit(this.nzOpen);
         this.cdr.markForCheck();
       }
-    });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.markForCheck();
     });
   }
 

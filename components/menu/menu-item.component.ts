@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -50,8 +49,7 @@ import { NzSubmenuService } from './submenu.service';
     '[class.ant-menu-item-selected]': `!isMenuInsideDropdown && nzSelected`,
     '[class.ant-menu-item-danger]': `!isMenuInsideDropdown && nzDanger`,
     '[class.ant-menu-item-disabled]': `!isMenuInsideDropdown && nzDisabled`,
-    '[style.paddingLeft.px]': `dir === 'rtl' ? null : nzPaddingLeft || inlinePaddingLeft`,
-    '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : null`,
+    '[style.padding-inline-start.px]': 'nzPaddingLeft || inlinePaddingLeft',
     '(click)': 'clickMenuItem($event)'
   }
 })
@@ -60,7 +58,6 @@ export class NzMenuItemComponent implements OnInit, OnChanges, AfterContentInit 
   private readonly destroyRef = inject(DestroyRef);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly nzSubmenuService = inject(NzSubmenuService, { optional: true });
-  private readonly directionality = inject(Directionality);
   private readonly routerLink = inject(RouterLink, { optional: true });
   private readonly router = inject(Router, { optional: true });
   protected readonly isMenuInsideDropdown = inject(NzIsMenuInsideDropdownToken);
@@ -68,7 +65,6 @@ export class NzMenuItemComponent implements OnInit, OnChanges, AfterContentInit 
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
-  dir: Direction = 'ltr';
   @Input({ transform: numberAttributeWithZeroFallback }) nzPaddingLeft?: number;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzSelected = false;
@@ -144,11 +140,6 @@ export class NzMenuItemComponent implements OnInit, OnChanges, AfterContentInit 
       .subscribe(([mode, inlineIndent]) => {
         this.inlinePaddingLeft = mode === 'inline' ? this.level * inlineIndent : null;
       });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-    });
   }
 
   ngAfterContentInit(): void {

@@ -6,5 +6,4 @@
 export * from './animation-consts';
 export * from './collapse';
 export * from './slide';
-export * from './zoom';
 export * from './no-animation';
