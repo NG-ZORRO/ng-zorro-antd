@@ -3,13 +3,6 @@ import { Component } from '@angular/core';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-interface Panel {
-  active: boolean;
-  disabled: boolean;
-  name: string;
-  icon?: string;
-}
-
 @Component({
   selector: 'nz-demo-collapse-custom',
   imports: [NzIconModule, NzCollapseModule],
@@ -20,21 +13,32 @@ interface Panel {
           #p
           [nzHeader]="panel.name"
           [nzActive]="panel.active"
-          [style]="customStyle"
           [nzExpandedIcon]="!$first ? panel.icon || expandedIcon : undefined"
         >
           <p>{{ panel.name }} content</p>
           <ng-template #expandedIcon let-active>
             {{ active }}
-            <nz-icon nzType="caret-right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : -90" />
+            <nz-icon nzType="caret-right" class="ant-collapse-arrow" [nzRotate]="p.active() ? 90 : -90" />
           </ng-template>
         </nz-collapse-panel>
       }
     </nz-collapse>
+  `,
+  styles: `
+    nz-collapse {
+      background: transparent;
+    }
+
+    nz-collapse-panel {
+      margin-bottom: 24px;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 8px !important;
+      border: none !important;
+    }
   `
 })
 export class NzDemoCollapseCustomComponent {
-  readonly panels: Panel[] = [
+  readonly panels = [
     {
       active: true,
       disabled: false,
@@ -52,10 +56,4 @@ export class NzDemoCollapseCustomComponent {
       name: 'This is panel header 3'
     }
   ];
-  readonly customStyle = {
-    background: '#f7f7f7',
-    'border-radius': '4px',
-    'margin-bottom': '24px',
-    border: '0px'
-  };
 }

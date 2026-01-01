@@ -3,19 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DestroyRef,
   inject,
   Input,
-  OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import type { NzSizeLMSType } from 'ng-zorro-antd/core/types';
@@ -36,15 +33,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
     '[class.ant-collapse-icon-position-end]': `nzExpandIconPosition === 'end'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered',
-    '[class.ant-collapse-rtl]': "dir === 'rtl'",
+    '[class.ant-collapse-rtl]': `dir() === 'rtl'`,
     '[class.ant-collapse-small]': `nzSize === 'small'`,
     '[class.ant-collapse-large]': `nzSize === 'large'`
   }
 })
-export class NzCollapseComponent implements OnInit {
+export class NzCollapseComponent {
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
+  protected readonly dir = inject(Directionality).valueSignal;
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -54,21 +50,10 @@ export class NzCollapseComponent implements OnInit {
   @Input() nzExpandIconPosition: 'start' | 'end' = 'start';
   @Input() nzSize: NzSizeLMSType = 'middle';
 
-  dir: Direction = 'ltr';
-
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
 
   constructor() {
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.cdr.markForCheck());
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   addPanel(value: NzCollapsePanelComponent): void {
@@ -80,18 +65,13 @@ export class NzCollapseComponent implements OnInit {
   }
 
   click(collapse: NzCollapsePanelComponent): void {
-    if (this.nzAccordion && !collapse.nzActive) {
+    const active = collapse.active();
+    // if accordion mode, close all panels except the clicked one
+    if (this.nzAccordion && !active) {
       this.listOfNzCollapsePanelComponent
-        .filter(item => item !== collapse)
-        .forEach(item => {
-          if (item.nzActive) {
-            item.nzActive = false;
-            item.nzActiveChange.emit(item.nzActive);
-            item.markForCheck();
-          }
-        });
+        .filter(item => item !== collapse && item.active())
+        .forEach(item => item.activate(false));
     }
-    collapse.nzActive = !collapse.nzActive;
-    collapse.nzActiveChange.emit(collapse.nzActive);
+    collapse.activate(!active);
   }
 }

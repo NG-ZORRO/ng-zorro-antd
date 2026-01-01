@@ -85,7 +85,12 @@ const listOfHorizontalPositions = [
       }
     </div>
     @if (mode === 'inline') {
-      <div nz-submenu-inline-child [open]="nzOpen" [menuClass]="nzMenuClassName">
+      <div
+        nz-submenu-inline-child
+        [open]="nzOpen"
+        [menuClass]="nzMenuClassName"
+        leavedClassName="ant-menu-submenu-hidden"
+      >
         <ng-template [ngTemplateOutlet]="subMenuTemplate" />
       </div>
     } @else {
