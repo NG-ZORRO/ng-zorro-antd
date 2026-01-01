@@ -62,6 +62,7 @@ export class NzSubmenuInlineChildComponent {
   constructor() {
     effect(() => {
       const open = this.open();
+      // should skip the first rendering
       const animationEnabled = this.animationEnabled() && !this.firstRender;
       const element = this.elementRef.nativeElement;
 
@@ -70,6 +71,16 @@ export class NzSubmenuInlineChildComponent {
       }
 
       if (animationEnabled) {
+        /**
+         * | open  | animation stage | height | opacity |
+         * | ----  | --------------- | ------ | ------- |
+         * | true  | before          | 0            | 1 |
+         * | true  | active          | scrollHeight | 1 |
+         * | true  | end             | auto         | 1 |
+         * | false | before          | scrollHeight | 0 |
+         * | false | active          | 0            | 0 |
+         * | false | end             | 0            | 0 |
+         */
         element.classList.add(COLLAPSE_MOTION_CLASS);
 
         if (open) {

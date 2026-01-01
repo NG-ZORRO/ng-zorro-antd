@@ -108,6 +108,7 @@ const listOfHorizontalPositions = [
           [menuClass]="nzMenuClassName"
           [nzDisabled]="nzDisabled"
           [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
+          [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
           (subMenuMouseState)="setMouseEnterState($event)"
         >
           <ng-template [ngTemplateOutlet]="subMenuTemplate" />
@@ -142,6 +143,7 @@ const listOfHorizontalPositions = [
     NgTemplateOutlet,
     NzSubMenuTitleComponent,
     NzSubmenuInlineChildComponent,
+    NzNoAnimationDirective,
     NzSubmenuNoneInlineChildComponent,
     OverlayModule
   ]

@@ -17,8 +17,8 @@ import {
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzIsMenuInsideDropdownToken } from 'ng-zorro-antd/menu/menu.token';
 
+import { NzIsMenuInsideDropdownToken } from './menu.token';
 import { NzMenuModeType, NzSubmenuTrigger } from './menu.types';
 
 @Component({
