@@ -3,35 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  animate,
-  AnimationTriggerMetadata,
-  query,
-  stagger,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
+import { animate, AnimationTriggerMetadata, query, stagger, style, transition, trigger } from '@angular/animations';
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { Directive, effect, ElementRef, inject, input } from '@angular/core';
 
-import { isAnimationEnabled, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation/no-animation';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 
 import { AnimationCurves } from './animation-consts';
+import { isAnimationEnabled, NzNoAnimationDirective } from './no-animation';
 
 const COLLAPSE_MOTION_CLASS = 'ant-motion-collapse';
-
-export const collapseMotion: AnimationTriggerMetadata = trigger('collapseMotion', [
-  state('expanded', style({ height: '*' })),
-  state('collapsed', style({ height: 0, overflow: 'hidden' })),
-  state('hidden', style({ height: 0, overflow: 'hidden', borderTopWidth: '0' })),
-  transition('expanded => collapsed', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
-  transition('expanded => hidden', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
-  transition('collapsed => expanded', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
-  transition('hidden => expanded', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`))
-]);
 
 export const treeCollapseMotion: AnimationTriggerMetadata = trigger('treeCollapseMotion', [
   transition('* => *', [
