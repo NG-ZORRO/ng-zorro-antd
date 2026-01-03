@@ -3,12 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { provideMockDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -21,7 +22,12 @@ describe('collapse', () => {
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [
+        provideNzIconsTesting(),
+        provideNzNoAnimation(),
+        provideZoneChangeDetection(),
+        provideMockDirectionality()
+      ]
     });
   });
 
@@ -275,14 +281,17 @@ describe('collapse', () => {
 
   describe('RTL', () => {
     it('should className correct on dir change', () => {
-      const fixture = TestBed.createComponent(NzTestCollapseRtlComponent);
-      const collapse = fixture.debugElement.query(By.directive(NzCollapseComponent));
-      fixture.detectChanges();
-      expect(collapse.nativeElement!.classList).toContain('ant-collapse-rtl');
+      const fixture = TestBed.createComponent(NzTestCollapseBasicComponent);
+      const directionality = TestBed.inject(Directionality);
 
-      fixture.componentInstance.direction = 'ltr';
+      const collapse = fixture.debugElement.query(By.directive(NzCollapseComponent));
+
       fixture.detectChanges();
       expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-rtl');
+
+      directionality.valueSignal.set('rtl');
+      fixture.detectChanges();
+      expect(collapse.nativeElement!.classList).toContain('ant-collapse-rtl');
     });
   });
 
@@ -404,19 +413,6 @@ export class NzTestCollapseCollapsibleComponent {
   active = false;
   collapsible: 'disabled' | 'header' | 'icon' = 'icon';
   showArrow = true;
-}
-
-@Component({
-  imports: [BidiModule, NzTestCollapseBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-basic-collapse></nz-test-basic-collapse>
-    </div>
-  `
-})
-export class NzTestCollapseRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }
 
 @Component({

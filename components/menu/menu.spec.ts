@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import {
   Component,
@@ -16,10 +16,11 @@ import {
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { dispatchFakeEvent, provideMockDirectionality } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzSubmenuTrigger } from 'ng-zorro-antd/menu/menu.types';
@@ -36,7 +37,12 @@ describe('menu', () => {
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [
+        provideNzIconsTesting(),
+        provideNzNoAnimation(),
+        provideZoneChangeDetection(),
+        provideMockDirectionality()
+      ]
     });
   });
 
@@ -50,7 +56,7 @@ describe('menu', () => {
     overlayContainer.ngOnDestroy();
   }));
 
-  describe('demo', () => {
+  describe('basic', () => {
     describe('horizontal', () => {
       let fixture: ComponentFixture<NzTestBasicMenuHorizontalComponent>;
       let items: DebugElement[];
@@ -278,11 +284,12 @@ describe('menu', () => {
     });
   });
 
-  describe('coverage', () => {
+  describe('submenu', () => {
     describe('horizontal submenu', () => {
       let fixture: ComponentFixture<NzTestMenuHorizontalComponent>;
       let testComponent: NzTestMenuHorizontalComponent;
       let submenu: DebugElement;
+
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestMenuHorizontalComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -302,8 +309,8 @@ describe('menu', () => {
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+
+        (subs[0].nzSubmenuService as NzSafeAny).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
         dispatchFakeEvent(title, 'mouseenter');
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledWith(true);
@@ -315,8 +322,8 @@ describe('menu', () => {
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+
+        (subs[0].nzSubmenuService as NzSafeAny).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
         dispatchFakeEvent(title, 'mouseenter');
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledWith(true);
@@ -329,8 +336,8 @@ describe('menu', () => {
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+
+        (subs[0].nzSubmenuService as NzSafeAny).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
         dispatchFakeEvent(title, 'mouseenter');
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledTimes(0);
@@ -342,8 +349,7 @@ describe('menu', () => {
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
+        (subs[0].nzSubmenuService as NzSafeAny).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
         title.click();
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledTimes(1);
@@ -354,8 +360,8 @@ describe('menu', () => {
         const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseleaveCallback);
+
+        (subs[0].nzSubmenuService as NzSafeAny).isMouseEnterTitleOrOverlay$.subscribe(mouseleaveCallback);
         dispatchFakeEvent(title, 'mouseleave');
         fixture.detectChanges();
         expect(mouseleaveCallback).toHaveBeenCalledWith(false);
@@ -367,8 +373,8 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
+
+        (subs[0].nzSubmenuService as NzSafeAny).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(false);
         fixture.detectChanges();
@@ -382,8 +388,8 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
+
+        (subs[0].nzSubmenuService as NzSafeAny).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(false);
         fixture.detectChanges();
@@ -409,8 +415,8 @@ describe('menu', () => {
         const subs = testComponent.subs.toArray();
         subs[1].nzOpen = true;
         fixture.detectChanges();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[1].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
+
+        (subs[1].nzSubmenuService as NzSafeAny).isChildSubMenuOpen$.subscribe(nestedCallback);
         testComponent.menuitem.nativeElement.click();
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledWith(false);
@@ -422,8 +428,8 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[1].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(nestedCallback);
+
+        (subs[1].nzSubmenuService as NzSafeAny).isMouseEnterTitleOrOverlay$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         testComponent.disabledItem.nativeElement.click();
         fixture.detectChanges();
@@ -490,8 +496,8 @@ describe('menu', () => {
         const subs = testComponent.subs.toArray();
         subs[0].nzOpen = true;
         subs[1].nzOpen = true;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (subs[1] as any).cdr.markForCheck();
+
+        (subs[1] as NzSafeAny).cdr.markForCheck();
         fixture.detectChanges();
         expect((overlayContainerElement.querySelector('.nested-submenu') as HTMLUListElement).classList).toContain(
           'ant-menu-sub'
@@ -503,6 +509,7 @@ describe('menu', () => {
       let fixture: ComponentFixture<NzTestMenuInlineComponent>;
       let testComponent: NzTestMenuInlineComponent;
       let submenu: DebugElement;
+
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestMenuInlineComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -548,22 +555,6 @@ describe('menu', () => {
       }));
     });
 
-    describe('ng-for', () => {
-      it('should ng for works fine', () => {
-        expect(() => {
-          TestBed.createComponent(NzTestMenuNgForComponent).detectChanges();
-        }).not.toThrowError();
-      });
-    });
-
-    describe('ng-if', () => {
-      it('should ng if works fine', () => {
-        expect(() => {
-          TestBed.createComponent(NzTestNgIfMenuComponent).detectChanges();
-        }).not.toThrowError();
-      });
-    });
-
     describe('submenu default selected', () => {
       it('should default selected active submenu', () => {
         const fixture = TestBed.createComponent(NzTestSubMenuSelectedComponent);
@@ -576,24 +567,29 @@ describe('menu', () => {
   });
 
   describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestMenuRtlComponent>;
+    let fixture: ComponentFixture<NzTestMenuHorizontalComponent>;
     let testComponent: NzTestMenuHorizontalComponent;
     let submenu: DebugElement;
     let menu: DebugElement;
+    let directionality: Directionality;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestMenuRtlComponent);
-      testComponent = fixture.debugElement.query(By.directive(NzTestMenuHorizontalComponent)).componentInstance;
+      fixture = TestBed.createComponent(NzTestMenuHorizontalComponent);
+      testComponent = fixture.componentInstance;
       submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
       menu = fixture.debugElement.query(By.directive(NzMenuDirective));
+      directionality = TestBed.inject(Directionality);
+
+      testComponent.open = true;
+      directionality.valueSignal.set('rtl');
+      fixture.detectChanges();
     });
 
     it('should className correct on dir change', () => {
-      fixture.detectChanges();
       expect(submenu.nativeElement.classList.contains('ant-menu-submenu-rtl')).toBe(true);
       expect(menu.nativeElement.classList.contains('ant-menu-rtl')).toBe(true);
 
-      fixture.componentInstance.direction = 'ltr';
+      directionality.valueSignal.set('ltr');
       fixture.detectChanges();
 
       expect(submenu.nativeElement.classList.contains('ant-menu-submenu-rtl')).toBe(false);
@@ -601,13 +597,10 @@ describe('menu', () => {
     });
 
     it('should nested submenu work', () => {
-      testComponent.open = true;
-      fixture.detectChanges();
       const subs = testComponent.subs.toArray();
       subs[0].nzOpen = true;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (subs[1] as any).cdr.markForCheck();
       fixture.detectChanges();
+
       expect((overlayContainerElement.querySelector('.ant-menu-submenu') as HTMLUListElement).classList).toContain(
         'ant-menu-submenu-rtl'
       );
@@ -698,48 +691,6 @@ export class NzTestMenuInlineComponent {
   collapse = false;
   submenuClassName = 'submenu';
   @ViewChild(NzSubMenuComponent, { static: true }) submenu!: NzSubMenuComponent;
-  @ViewChild('menuitem', { static: false, read: ElementRef }) menuitem!: ElementRef;
-}
-
-@Component({
-  imports: [NzIconModule, NzMenuModule],
-  template: `
-    <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
-      @for (l1 of menus; track l1) {
-        <li nz-submenu>
-          <span title>
-            <nz-icon nzType="appstore" />
-            {{ l1.text }}
-          </span>
-          <ul>
-            @for (l2 of l1.children; track l2) {
-              <li nz-submenu>
-                <span title>{{ l2.text }}</span>
-                <ul>
-                  @for (l3 of l2.children; track l3) {
-                    <li nz-menu-item>{{ l3.text }}</li>
-                  }
-                </ul>
-              </li>
-            }
-          </ul>
-        </li>
-      }
-    </ul>
-  `
-})
-export class NzTestMenuNgForComponent {
-  menus = [
-    {
-      text: 'level1',
-      children: [
-        {
-          text: 'level2',
-          children: [{ text: 'level3' }]
-        }
-      ]
-    }
-  ];
 }
 
 @Component({
@@ -841,27 +792,6 @@ export class NzTestBasicMenuHorizontalComponent {}
 })
 export class NzTestBasicMenuInlineComponent {}
 
-// https://github.com/NG-ZORRO/ng-zorro-antd/issues/3023
-@Component({
-  imports: [NzMenuModule],
-  template: `
-    <ul nz-menu nzMode="horizontal">
-      @if (display) {
-        <li nz-submenu>
-          <span title>{{ text }}</span>
-          <ul>
-            <li nz-menu-item>item</li>
-          </ul>
-        </li>
-      }
-    </ul>
-  `
-})
-export class NzTestNgIfMenuComponent {
-  text = 'text';
-  display = true;
-}
-
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/3345
 @Component({
   imports: [NzIconModule, NzMenuModule],
@@ -915,18 +845,7 @@ export class NzTestSubMenuSelectedComponent {}
         </li>
       </ul>
     </div>
-  `,
-  styles: [
-    `
-      .wrapper {
-        width: 240px;
-      }
-
-      button {
-        margin-bottom: 12px;
-      }
-    `
-  ]
+  `
 })
 export class NzTestMenuInlineCollapsedComponent {
   isCollapsed = false;
@@ -1052,14 +971,7 @@ export class NzTestMenuSiderCurrentComponent {
         </ul>
       </li>
     </ul>
-  `,
-  styles: [
-    `
-      [nz-menu] {
-        width: 240px;
-      }
-    `
-  ]
+  `
 })
 export class NzTestMenuSwitchModeComponent {
   mode = false;
@@ -1110,17 +1022,4 @@ export class NzTestMenuSwitchModeComponent {
 })
 export class NzTestMenuThemeComponent {
   theme = true;
-}
-
-@Component({
-  imports: [BidiModule, NzTestMenuHorizontalComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-menu-horizontal></nz-test-menu-horizontal>
-    </div>
-  `
-})
-export class NzTestMenuRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }

@@ -6,3 +6,11 @@
 export function generateClassName(prefix: string, suffix: string): string {
   return `${prefix}-${suffix}`;
 }
+
+export function getClassListFromValue(value: string | string[]): string[] | null {
+  let classList: string[] | null = Array.isArray(value) ? value.filter(Boolean) : null;
+  if (typeof value === 'string') {
+    classList = value.trim().split(/\s+/).filter(Boolean);
+  }
+  return classList;
+}

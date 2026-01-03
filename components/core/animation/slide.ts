@@ -12,11 +12,14 @@ import { withAnimationCheck } from './no-animation';
 const ANIMATION_TRANSITION_IN = `${AnimationDuration.BASE} ${AnimationCurves.EASE_OUT_QUINT}`;
 const ANIMATION_TRANSITION_OUT = `${AnimationDuration.BASE} ${AnimationCurves.EASE_IN_QUINT}`;
 
-export const slideAnimationEnter = (): Signal<string> =>
-  withAnimationCheck(() => 'ant-slide-up-enter ant-slide-up-enter-active');
+export const SLIDE_ANIMATION_CLASS = {
+  enter: 'ant-slide-up-enter ant-slide-up-enter-active',
+  leave: 'ant-slide-up-leave ant-slide-up-leave-active'
+};
 
-export const slideAnimationLeave = (): Signal<string> =>
-  withAnimationCheck(() => 'ant-slide-up-leave ant-slide-up-leave-active');
+export const slideAnimationEnter = (): Signal<string> => withAnimationCheck(() => SLIDE_ANIMATION_CLASS.enter);
+
+export const slideAnimationLeave = (): Signal<string> => withAnimationCheck(() => SLIDE_ANIMATION_CLASS.leave);
 
 export const slideMotion: AnimationTriggerMetadata = trigger('slideMotion', [
   state(
