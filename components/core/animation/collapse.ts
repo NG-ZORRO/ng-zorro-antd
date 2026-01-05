@@ -5,7 +5,6 @@
 
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { AnimationCallbackEvent, Directive, effect, ElementRef, inject, Injectable, input } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
 import { debounceTime, take } from 'rxjs/operators';
 
@@ -116,7 +115,7 @@ export class NzAnimationTreeCollapseService {
   readonly animationDone$ = new Subject<void>();
 
   constructor() {
-    this.animationDone$.pipe(debounceTime(50), take(1), takeUntilDestroyed()).subscribe(() => {
+    this.animationDone$.pipe(debounceTime(50), take(1)).subscribe(() => {
       this.firstRender = false;
     });
   }
@@ -133,6 +132,7 @@ export class NzAnimationTreeCollapseService {
 export class NzAnimationTreeCollapseDirective {
   private readonly treeCollapseService = inject(NzAnimationTreeCollapseService, { optional: true });
   private readonly noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
+  // should disable animation in virtual scrolling
   private readonly animationEnabled = isAnimationEnabled(
     () => !this.noAnimation?.nzNoAnimation() && !(this.treeCollapseService?.virtualScroll ?? false)
   );
@@ -142,7 +142,6 @@ export class NzAnimationTreeCollapseDirective {
   }
 
   protected onAnimationEnter(event: AnimationCallbackEvent): void {
-    console.log('enter', this.animationEnabled(), this.firstRender);
     if (!this.animationEnabled() || this.firstRender) {
       this.treeCollapseService?.animationDone$.next();
       event.animationComplete();
