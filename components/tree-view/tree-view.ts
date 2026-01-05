@@ -4,17 +4,9 @@
  */
 
 import { CdkTree } from '@angular/cdk/tree';
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  forwardRef,
-  signal,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
-import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
+import { NzAnimationTreeCollapseService } from 'ng-zorro-antd/core/animation';
 
 import { NzTreeNodeOutletDirective } from './outlet';
 import { NzTreeView } from './tree';
@@ -25,11 +17,7 @@ import { NzTreeView } from './tree';
   imports: [NzTreeNodeOutletDirective],
   template: `
     <div class="ant-tree-list-holder">
-      <div
-        [@.disabled]="!afterViewInit() || !!noAnimation?.nzNoAnimation?.()"
-        [@treeCollapseMotion]="_nodeOutlet.viewContainer.length"
-        class="ant-tree-list-holder-inner"
-      >
+      <div class="ant-tree-list-holder-inner">
         <ng-container nzTreeNodeOutlet></ng-container>
       </div>
     </div>
@@ -37,6 +25,7 @@ import { NzTreeView } from './tree';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    NzAnimationTreeCollapseService,
     { provide: CdkTree, useExisting: forwardRef(() => NzTreeViewComponent) },
     { provide: NzTreeView, useExisting: forwardRef(() => NzTreeViewComponent) }
   ],
@@ -45,19 +34,8 @@ import { NzTreeView } from './tree';
     '[class.ant-tree-block-node]': 'nzDirectoryTree || nzBlockNode',
     '[class.ant-tree-directory]': 'nzDirectoryTree',
     '[class.ant-tree-rtl]': `dir() === 'rtl'`
-  },
-  animations: [treeCollapseMotion]
-})
-export class NzTreeViewComponent<T> extends NzTreeView<T> implements AfterViewInit {
-  @ViewChild(NzTreeNodeOutletDirective, { static: true }) nodeOutlet!: NzTreeNodeOutletDirective;
-
-  protected readonly afterViewInit = signal(false);
-
-  override ngAfterViewInit(): void {
-    super.ngAfterViewInit();
-
-    Promise.resolve().then(() => {
-      this.afterViewInit.set(true);
-    });
   }
+})
+export class NzTreeViewComponent<T> extends NzTreeView<T> {
+  @ViewChild(NzTreeNodeOutletDirective, { static: true }) nodeOutlet!: NzTreeNodeOutletDirective;
 }

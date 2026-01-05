@@ -3,48 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { animate, AnimationTriggerMetadata, query, stagger, style, transition, trigger } from '@angular/animations';
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
-import { Directive, effect, ElementRef, inject, input } from '@angular/core';
+import { AnimationCallbackEvent, Directive, effect, ElementRef, inject, Injectable, input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject } from 'rxjs';
+import { debounceTime, take } from 'rxjs/operators';
 
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 
-import { AnimationCurves } from './animation-consts';
 import { isAnimationEnabled, NzNoAnimationDirective } from './no-animation';
 
 const COLLAPSE_MOTION_CLASS = 'ant-motion-collapse';
-
-export const treeCollapseMotion: AnimationTriggerMetadata = trigger('treeCollapseMotion', [
-  transition('* => *', [
-    query(
-      'nz-tree-node:leave,nz-tree-builtin-node:leave',
-      [
-        style({ overflow: 'hidden' }),
-        stagger(0, [
-          animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0, opacity: 0, 'padding-bottom': 0 }))
-        ])
-      ],
-      {
-        optional: true
-      }
-    ),
-    query(
-      'nz-tree-node:enter,nz-tree-builtin-node:enter',
-      [
-        style({ overflow: 'hidden', height: 0, opacity: 0, 'padding-bottom': 0 }),
-        stagger(0, [
-          animate(
-            `150ms ${AnimationCurves.EASE_IN_OUT}`,
-            style({ overflow: 'hidden', height: '*', opacity: '*', 'padding-bottom': '*' })
-          )
-        ])
-      ],
-      {
-        optional: true
-      }
-    )
-  ])
-]);
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
@@ -136,5 +105,100 @@ export class NzAnimationCollapseDirective {
     }
 
     this.elementRef.nativeElement.classList.remove(COLLAPSE_MOTION_CLASS);
+  }
+}
+
+@Injectable()
+export class NzAnimationTreeCollapseService {
+  firstRender = true;
+  virtualScroll = false;
+
+  readonly animationDone$ = new Subject<void>();
+
+  constructor() {
+    this.animationDone$.pipe(debounceTime(50), take(1), takeUntilDestroyed()).subscribe(() => {
+      this.firstRender = false;
+    });
+  }
+}
+
+@Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
+  selector: '[animation-tree-collapse]',
+  host: {
+    '(animate.enter)': 'onAnimationEnter($event)',
+    '(animate.leave)': 'onAnimationLeave($event)'
+  }
+})
+export class NzAnimationTreeCollapseDirective {
+  private readonly treeCollapseService = inject(NzAnimationTreeCollapseService, { optional: true });
+  private readonly noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
+  private readonly animationEnabled = isAnimationEnabled(
+    () => !this.noAnimation?.nzNoAnimation() && !(this.treeCollapseService?.virtualScroll ?? false)
+  );
+
+  private get firstRender(): boolean {
+    return this.treeCollapseService?.firstRender ?? false;
+  }
+
+  protected onAnimationEnter(event: AnimationCallbackEvent): void {
+    console.log('enter', this.animationEnabled(), this.firstRender);
+    if (!this.animationEnabled() || this.firstRender) {
+      this.treeCollapseService?.animationDone$.next();
+      event.animationComplete();
+      return;
+    }
+
+    const element = event.target as HTMLElement;
+    element.style.height = coerceCssPixelValue(0);
+    element.style.opacity = '0';
+    element.classList.add(COLLAPSE_MOTION_CLASS);
+
+    const onTransitionEnd = (e: TransitionEvent): void => {
+      // Only handle height transition to avoid premature cleanup
+      if (e.propertyName !== 'height') {
+        return;
+      }
+      element.removeEventListener('transitionend', onTransitionEnd);
+      element.style.height = 'auto';
+      element.classList.remove(COLLAPSE_MOTION_CLASS);
+      event.animationComplete();
+    };
+
+    requestAnimationFrame(() => {
+      element.style.height = coerceCssPixelValue(element.scrollHeight);
+      element.style.opacity = '1';
+    });
+
+    element.addEventListener('transitionend', onTransitionEnd);
+  }
+
+  protected onAnimationLeave(event: AnimationCallbackEvent): void {
+    if (!this.animationEnabled()) {
+      event.animationComplete();
+      return;
+    }
+
+    const element = event.target as HTMLElement;
+    element.style.height = coerceCssPixelValue(element.scrollHeight);
+    element.style.opacity = '1';
+    element.classList.add(COLLAPSE_MOTION_CLASS);
+
+    const onTransitionEnd = (e: TransitionEvent): void => {
+      // Only handle height transition to avoid premature cleanup
+      if (e.propertyName !== 'height') {
+        return;
+      }
+      element.removeEventListener('transitionend', onTransitionEnd);
+      event.animationComplete();
+    };
+
+    requestAnimationFrame(() => {
+      element.style.height = coerceCssPixelValue(0);
+      element.style.opacity = '0';
+      element.style.marginBottom = '0';
+    });
+
+    element.addEventListener('transitionend', onTransitionEnd);
   }
 }
