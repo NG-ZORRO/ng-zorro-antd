@@ -41,7 +41,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, filter, map, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
-import { slideMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -98,7 +98,6 @@ const listOfPositions = [
     NzFormItemFeedbackIconComponent,
     NzStringTemplateOutletDirective
   ],
-  animations: [slideMotion],
   template: `
     <ng-template
       cdkConnectedOverlay
@@ -115,10 +114,10 @@ const listOfPositions = [
       (positionChange)="onPositionChange($event)"
     >
       <div
-        [@slideMotion]="'enter'"
         [class]="dropdownClassName"
-        [@.disabled]="!!noAnimation?.nzNoAnimation?.()"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
+        [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
+        [animate.enter]="slideAnimationEnter()"
+        [animate.leave]="slideAnimationLeave()"
         [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'top'"
         [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
@@ -294,6 +293,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   private directionality = inject(Directionality);
   private focusMonitor = inject(FocusMonitor);
   private destroyRef = inject(DestroyRef);
+
+  protected readonly slideAnimationEnter = slideAnimationEnter();
+  protected readonly slideAnimationLeave = slideAnimationLeave();
 
   @Input() nzId: string | null = null;
   @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;

@@ -21,6 +21,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 
+import { NzAnimationTreeCollapseDirective } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTreeNodeIndentsComponent } from './indent';
@@ -61,6 +62,7 @@ export interface NzTreeVirtualNodeData<T> {
     <ng-content select="nz-tree-node-option"></ng-content>
     <ng-content></ng-content>
   `,
+  hostDirectives: [NzAnimationTreeCollapseDirective],
   host: {
     class: 'ant-tree-treenode',
     '[class.ant-tree-treenode-switcher-open]': 'isExpanded',

@@ -25,7 +25,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import {
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
@@ -126,8 +125,7 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
   ]
 })
 export class NzTreeNodeBuiltinComponent implements OnInit, OnChanges {
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-  nzTreeService = inject(NzTreeBaseService);
+  private nzTreeService = inject(NzTreeBaseService);
   private ngZone = inject(NgZone);
   private renderer = inject(Renderer2);
   private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;

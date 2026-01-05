@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { auditTime, map } from 'rxjs/operators';
 
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzHighlightPipe } from 'ng-zorro-antd/core/highlight';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -78,14 +77,14 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
 
 @Component({
   selector: 'nz-demo-tree-view-search',
-  imports: [FormsModule, NzInputModule, NzIconModule, NzTreeViewModule, NzNoAnimationDirective, NzHighlightPipe],
+  imports: [FormsModule, NzInputModule, NzIconModule, NzTreeViewModule, NzHighlightPipe],
   template: `
     <nz-input-wrapper>
       <input type="text" nz-input placeholder="Search" ngModel (ngModelChange)="searchValue$.next($event)" />
       <nz-icon nzInputSuffix nzType="search" />
     </nz-input-wrapper>
 
-    <nz-tree-view [nzDataSource]="dataSource" [nzLevelAccessor]="levelAccessor" nzNoAnimation>
+    <nz-tree-view [nzDataSource]="dataSource" [nzLevelAccessor]="levelAccessor">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
         <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
         <span [innerHTML]="node.name | nzHighlight: searchValue : 'i' : 'highlight'"></span>
@@ -99,17 +98,15 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
       </nz-tree-node>
     </nz-tree-view>
   `,
-  styles: [
-    `
-      nz-input-wrapper {
-        margin-bottom: 8px;
-      }
+  styles: `
+    nz-input-wrapper {
+      margin-bottom: 8px;
+    }
 
-      ::ng-deep .highlight {
-        color: #f50;
-      }
-    `
-  ]
+    ::ng-deep .highlight {
+      color: #f50;
+    }
+  `
 })
 export class NzDemoTreeViewSearchComponent implements OnInit {
   @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<FlatNode>;

@@ -9,6 +9,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   forwardRef,
+  inject,
   Input,
   OnChanges,
   SimpleChanges,
@@ -17,6 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzAnimationTreeCollapseService } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTreeVirtualNodeData, NzTreeVirtualScrollNodeOutletDirective } from './node';
@@ -46,6 +48,7 @@ const DEFAULT_SIZE = 28;
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    NzAnimationTreeCollapseService,
     { provide: NzTreeView, useExisting: forwardRef(() => NzTreeVirtualScrollViewComponent) },
     { provide: CdkTree, useExisting: forwardRef(() => NzTreeVirtualScrollViewComponent) }
   ],
@@ -75,6 +78,12 @@ export class NzTreeVirtualScrollViewComponent<T> extends NzTreeView<T> implement
   nodes: Array<NzTreeVirtualNodeData<T>> = [];
 
   innerTrackBy: TrackByFunction<NzTreeVirtualNodeData<T>> = i => i;
+
+  constructor() {
+    super();
+    const treeCollapseService = inject(NzAnimationTreeCollapseService);
+    treeCollapseService.virtualScroll = true;
+  }
 
   ngOnChanges({ trackBy }: SimpleChanges): void {
     if (trackBy) {
