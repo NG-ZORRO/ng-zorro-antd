@@ -100,11 +100,10 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   ngAfterViewInit(): void {
     if (this.nzAutocomplete) {
       this.nzAutocomplete.animationStateChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
-        if (event.toState === 'void') {
-          if (this.overlayRef) {
-            this.overlayRef.dispose();
-            this.overlayRef = null;
-          }
+        if (this.overlayRef) {
+          this.overlayRef.dispose();
+          this.overlayRef = null;
+          event.animationComplete();
         }
       });
     }
