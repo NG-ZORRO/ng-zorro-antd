@@ -6,9 +6,9 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  ANIMATION_MODULE_TYPE,
   AfterContentInit,
   AfterViewInit,
-  ANIMATION_MODULE_TYPE,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -34,7 +34,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subscription, defer, merge } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
-import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
+import {
+  NzNoAnimationDirective,
+  isAnimationEnabled,
+  slideAnimationEnter,
+  slideAnimationLeave
+} from 'ng-zorro-antd/core/animation';
 import { NZ_AFTER_NEXT_RENDER$ } from 'ng-zorro-antd/core/render';
 import { CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { numberAttributeWithZeroFallback } from 'ng-zorro-antd/core/util';
@@ -75,7 +80,7 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
         [class.ant-select-dropdown-rtl]="dir === 'rtl'"
         [class]="nzOverlayClassName"
         [style]="nzOverlayStyle"
-        [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
+        [nzNoAnimation]="!animationEnabled()"
         [animate.enter]="autoCompleteAnimationEnter()"
         [animate.leave]="autoCompleteAnimationLeave()"
         (animate.leave)="onAnimationEvent($event)"
@@ -171,6 +176,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   protected readonly autoCompleteAnimationEnter = slideAnimationEnter();
   protected readonly autoCompleteAnimationLeave = slideAnimationLeave();
+  protected readonly animationEnabled = isAnimationEnabled(() => !this.noAnimation?.nzNoAnimation());
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
@@ -205,7 +211,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   onAnimationEvent(event: AnimationCallbackEvent): void {
     const element = event.target as HTMLElement;
     // If animations are disabled, complete immediately
-    if (this.noAnimation?.nzNoAnimation() || this.animationType === 'NoopAnimations') {
+    if (!this.animationEnabled()) {
       this.animationStateChange.emit(event);
       event.animationComplete();
       return;
