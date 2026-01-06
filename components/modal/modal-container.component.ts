@@ -10,7 +10,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } fro
 
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
-import { nzModalAnimations } from './modal-animations';
 import { NzModalCloseComponent } from './modal-close.component';
 import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalFooterComponent } from './modal-footer.component';
@@ -57,7 +56,6 @@ import { NzModalTitleComponent } from './modal-title.component';
       </div>
     </div>
   `,
-  animations: [nzModalAnimations.modalContainer],
   // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
   changeDetection: ChangeDetectionStrategy.Default,
   host: {
@@ -67,10 +65,6 @@ import { NzModalTitleComponent } from './modal-title.component';
     '[class.ant-modal-wrap-rtl]': `dir === 'rtl'`,
     '[class.ant-modal-centered]': 'config.nzCentered',
     '[style.zIndex]': 'config.nzZIndex',
-    '[@.disabled]': 'config.nzNoAnimation',
-    '[@modalContainer]': 'state',
-    '(@modalContainer.start)': 'onAnimationStart($event)',
-    '(@modalContainer.done)': 'onAnimationDone($event)',
     '(click)': 'onContainerClick($event)'
   },
   imports: [

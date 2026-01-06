@@ -23,7 +23,6 @@ import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
-import { nzModalAnimations } from './modal-animations';
 import { NzModalCloseComponent } from './modal-close.component';
 import { BaseModalContainerComponent } from './modal-container.directive';
 
@@ -92,7 +91,6 @@ import { BaseModalContainerComponent } from './modal-container.directive';
     </div>
   `,
   hostDirectives: [CdkScrollable],
-  animations: [nzModalAnimations.modalContainer],
   // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
   changeDetection: ChangeDetectionStrategy.Default,
   host: {
@@ -102,10 +100,6 @@ import { BaseModalContainerComponent } from './modal-container.directive';
     '[class.ant-modal-wrap-rtl]': `dir === 'rtl'`,
     '[class.ant-modal-centered]': 'config.nzCentered',
     '[style.zIndex]': 'config.nzZIndex',
-    '[@.disabled]': 'config.nzNoAnimation',
-    '[@modalContainer]': 'state',
-    '(@modalContainer.start)': 'onAnimationStart($event)',
-    '(@modalContainer.done)': 'onAnimationDone($event)',
     '(click)': 'onContainerClick($event)'
   },
   imports: [NzPipesModule, NzIconModule, NzModalCloseComponent, NzOutletModule, PortalModule, NzButtonModule]
