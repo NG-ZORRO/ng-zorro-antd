@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgTemplateOutlet, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -13,6 +14,8 @@ import {
   DestroyRef,
   ElementRef,
   EventEmitter,
+  forwardRef,
+  inject,
   Input,
   OnChanges,
   OnInit,
@@ -22,14 +25,11 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChildren,
-  ViewEncapsulation,
-  booleanAttribute,
-  forwardRef,
-  inject
+  ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, ReplaySubject, Subscription, forkJoin } from 'rxjs';
-import { finalize, take } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { buildGraph } from 'dagre-compound';
 
@@ -63,7 +63,7 @@ import {
 } from './interface';
 
 /** Checks whether an object is a data source. */
-export function isDataSource(value: NzSafeAny): value is NzGraphData {
+function isDataSource(value: NzSafeAny): value is NzGraphData {
   // Check if the value is a DataSource by observing if it has a connect function. Cannot
   // be checked as an `instanceof DataSource` since people could create their own sources
   // that match the interface, but don't extend DataSource.
@@ -92,7 +92,7 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
       <svg:g [attr.transform]="type === 'sub' ? subGraphTransform(renderNode) : null">
         <svg:g class="core" [attr.transform]="coreTransform(renderNode)">
           <svg:g class="nz-graph-edges">
-            @for (edge of $asNzGraphEdges(renderNode.edges); track edgeTrackByFun(edge)) {
+            @for (edge of asNzGraphEdges(renderNode.edges); track edgeTrackByFun(edge)) {
               <g
                 class="nz-graph-edge"
                 nz-graph-edge
@@ -126,16 +126,18 @@ export function isDataSource(value: NzSafeAny): value is NzGraphData {
     </ng-template>
   `,
   host: {
-    '[class.nz-graph]': 'true',
+    class: 'nz-graph',
     '[class.nz-graph-auto-size]': 'nzAutoSize'
   },
   imports: [NgTemplateOutlet, NzGraphEdgeComponent, NzGraphNodeComponent, NzGraphDefsComponent]
 })
 export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked, NzGraph {
-  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-  private elementRef: ElementRef = inject(ElementRef);
-  private platformId = inject(PLATFORM_ID);
-  private destroyRef = inject(DestroyRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly elementRef = inject(ElementRef);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  private readonly nzGraphZoom = inject(NzGraphZoomDirective, { optional: true });
 
   @ViewChildren(NzGraphNodeComponent, { read: ElementRef }) listOfNodeElement!: QueryList<ElementRef>;
   @ViewChildren(NzGraphNodeComponent) listOfNodeComponent!: QueryList<NzGraphNodeComponent>;
@@ -162,7 +164,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   @Output() readonly nzGraphRendered = new EventEmitter<NzGraphComponent>();
   @Output() readonly nzNodeClick = new EventEmitter<NzGraphNode | NzGraphGroupNode>();
 
-  requestId: number = -1;
+  private requestId: number = -1;
   transformStyle = '';
   graphRenderedSubject$ = new ReplaySubject<void>(1);
   renderInfo: NzGraphGroupNode = { labelHeight: 0 } as NzGraphGroupNode;
@@ -170,26 +172,22 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   mapOfEdgeAttr: Record<string, NzGraphEdgeDef> = {};
   zoom = 1;
 
-  public readonly typedNodes = nzTypeDefinition<Array<NzGraphNode | NzGraphGroupNode>>();
   private dataSource?: NzGraphData;
   private layoutSetting: NzLayoutSetting = NZ_GRAPH_LAYOUT_SETTING;
-  /** Data subscription */
   private _dataSubscription?: Subscription | null;
 
-  edgeTrackByFun = (edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
+  // type guards
+  protected readonly typedNodes = nzTypeDefinition<Array<NzGraphNode | NzGraphGroupNode>>();
+  protected readonly asNzGraphEdges = (data: unknown): NzGraphEdge[] => data as NzGraphEdge[];
 
-  subGraphTransform = (node: NzGraphGroupNode): string => {
+  protected readonly edgeTrackByFun = (edge: NzGraphEdge): string => `${edge.v}-${edge.w}`;
+  protected readonly subGraphTransform = (node: NzGraphGroupNode): string => {
     const x = node.x - node.coreBox.width / 2.0;
     const y = node.y - node.height / 2.0 + node.paddingTop;
     return `translate(${x}, ${y})`;
   };
-
-  $asNzGraphEdges = (data: unknown): NzGraphEdge[] => data as NzGraphEdge[];
-
-  coreTransform = (node: NzGraphGroupNode): string => `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
-
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-  nzGraphZoom = inject(NzGraphZoomDirective, { optional: true });
+  protected readonly coreTransform = (node: NzGraphGroupNode): string =>
+    `translate(0, ${node.parentNodeName ? node.labelHeight : 0})`;
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -271,34 +269,33 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
    * @param needResize
    */
   drawGraph(data: NzGraphDataDef, options: NzGraphOption, needResize: boolean = false): Promise<void> {
+    if (!isPlatformBrowser(this.platformId)) {
+      return Promise.resolve();
+    }
+
+    const animationEnabled = !this.noAnimation?.nzNoAnimation?.();
+
     return new Promise(resolve => {
-      if (!isPlatformBrowser(this.platformId)) {
-        return resolve();
-      }
       this.requestId = requestAnimationFrame(() => {
-        const renderInfo = this.buildGraphInfo(data, options);
-        // TODO
-        // Need better performance
-        this.renderInfo = renderInfo;
+        // TODO: Need better performance
+        this.renderInfo = this.buildGraphInfo(data, options);
         this.cdr.markForCheck();
-        this.requestId = requestAnimationFrame(() => {
-          this.drawNodes(!this.noAnimation?.nzNoAnimation?.()).then(() => {
-            // Update element
-            this.cdr.markForCheck();
-            if (needResize) {
-              this.resizeNodeSize().then(() => {
-                const dataSource: NzGraphDataDef = this.dataSource!.dataSource!;
-                this.drawGraph(dataSource, options, false).then(() => resolve());
-              });
-            } else {
-              this.graphRenderedSubject$.next();
-              this.nzGraphRendered.emit(this);
-              resolve();
-            }
-          });
+        this.requestId = requestAnimationFrame(async () => {
+          await this.drawNodes(animationEnabled);
+          // Update element
+          this.cdr.markForCheck();
+
+          if (needResize) {
+            await this.resizeNodeSize();
+            await this.drawGraph(this.dataSource!.dataSource!, options, false);
+          } else {
+            this.graphRenderedSubject$.next();
+            this.nzGraphRendered.emit(this);
+          }
+
+          resolve();
         });
       });
-      this.cdr.markForCheck();
     });
   }
 
@@ -307,19 +304,12 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
    *
    * @param animate
    */
-  drawNodes(animate: boolean = true): Promise<void> {
-    return new Promise(resolve => {
-      if (animate) {
-        this.makeNodesAnimation().subscribe(() => {
-          resolve();
-        });
-      } else {
-        this.listOfNodeComponent.map(node => {
-          node.makeNoAnimation();
-        });
-        resolve();
-      }
-    });
+  async drawNodes(animate: boolean = true): Promise<void> {
+    if (animate) {
+      return this.makeNodesAnimation();
+    }
+
+    this.listOfNodeComponent.forEach(node => node.makeNoAnimation());
   }
 
   private resizeNodeSize(): Promise<void> {
@@ -358,7 +348,7 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
   /**
    * Switch to the provided data source by resetting the data and unsubscribing from the current
    * render change subscription if one exists. If the data source is null, interpret this by
-   * clearing the node outlet. Otherwise start listening for new data.
+   * clearing the node outlet. Otherwise, start listening for new data.
    */
   private _switchDataSource(dataSource: NzGraphData): void {
     if (this.dataSource && typeof this.dataSource.disconnect === 'function') {
@@ -438,15 +428,9 @@ export class NzGraphComponent implements OnInit, OnChanges, AfterContentChecked,
 
   /**
    * Play with animation
-   *
-   * @private
    */
-  private makeNodesAnimation(): Observable<void[]> {
-    return forkJoin(this.listOfNodeComponent.map(node => node.makeAnimation())).pipe(
-      finalize(() => {
-        this.cdr.detectChanges();
-      })
-    );
+  private async makeNodesAnimation(): Promise<void> {
+    await Promise.all(this.listOfNodeComponent.map(node => node.makeAnimation()));
   }
 
   private parseInfo(data: NzGraphDataDef): void {

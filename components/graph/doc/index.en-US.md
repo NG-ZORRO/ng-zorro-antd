@@ -11,7 +11,13 @@ description: Render graph.
 
 When you want to use graph in Angular.
 
+### Install Dependencies
+
 > The graph depends on d3-drag d3-zoom d3-selection d3-transition d3-shape (may be removed in next major version)
+
+```sh
+npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
+```
 
 ### Import Style
 
@@ -20,12 +26,6 @@ When you want to use graph in Angular.
 ```
 
 ## API
-
-Dependencies:
-
-```sh
-npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
-```
 
 ### nz-graph
 
@@ -49,7 +49,7 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 | `[(nzZoom)]`         | Default zoom scale         | `number`                                     | `1`     |
 | `[nzMinZoom]`        | Minimum zoom scale         | `number`                                     | `0.1`   |
 | `[nzMaxZoom]`        | Maximum zoom scale         | `number`                                     | `10`    |
-| `(nzTransformEvent)` | Event of zooming           | `() => NzZoomTransform`                      | ``      |
+| `(nzTransformEvent)` | Event of zooming           | `() => NzZoomTransform`                      | -       |
 | `(fitCenter)`        | Move graph to center       | `() => void`                                 | `void`  |
 | `(focus)`            | Move target node to center | `(e: SVGGElement, duration: number) => void` | `void`  |
 
