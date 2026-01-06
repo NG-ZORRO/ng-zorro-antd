@@ -12,10 +12,13 @@ This document will help you upgrade from `ng-zorro-antd` 20.x version to 21.x ve
 2. Create a new branch, or use other methods to back up the current project.
 3. Delete the package-lock.json file.
 
+## Upgrade steps
+
 ### 1. Upgrade dependencies
 
 - Upgrade Angular to 21.x version, ref [https://angular.dev/update-guide](https://angular.dev/update-guide).
 - Run `ng update @angular/cdk`, if you have used `@angular/cdk`.
+- Remove the `@angular/animations` dependency as needed.
 
 ### 2. Upgrade NG-ZORRO
 

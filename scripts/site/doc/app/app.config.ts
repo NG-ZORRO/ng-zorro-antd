@@ -1,7 +1,6 @@
 import { provideHttpClient, withFetch, withJsonpSupport } from '@angular/common/http';
 import { ApplicationConfig } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 
@@ -34,6 +33,5 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(withJsonpSupport(), withFetch()),
     provideServiceWorker('ngsw-worker.js', { enabled: environment.production }),
-    provideAnimationsAsync()
   ]
 };
