@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import type { NzPlacement } from 'ng-zorro-antd/core/types';
@@ -29,5 +29,5 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
   ]
 })
 export class NzDemoTimePickerPlacementComponent {
-  placement = model<NzPlacement>('bottomLeft');
+  readonly placement = signal<NzPlacement>('bottomLeft');
 }
