@@ -100,8 +100,6 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
       this.componentRef = null;
       this.overlayRef.dispose();
     });
-
-    // containerInstance._startEnterAnimation();
   }
 
   getContentComponent(): T {
