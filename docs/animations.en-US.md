@@ -3,31 +3,27 @@ order: 8
 title: Animations Switch
 ---
 
+> Since v21, NG-ZORRO uses [native animation](https://angular.dev/guide/animations) to implement animation effects. You can remove the `@angular/animations` dependency as needed.
+
 NG-ZORRO allows developers to turn off the animations. You can set animations' switch by adding corresponding directives or
 configurations, or use the global configuration to turn off all animations associated with it.
 
-### Turn Off Globally
+### Turn Off Globally or in Components
 
-Replace `BrowserAnimationsModule` with `NoopAnimationsModule` in the module.
-
-```ts
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
-
-export const appConfig: ApplicationConfig = {
-  providers: [
-    // ...
-    provideNoopAnimations()
-  ]
-};
-```
-
-### Turn Off in components
-
-You can use `provideNzNoAnimation` to turn off animations in components.
+`provideNoopAnimations` has been marked as deprecated. You can use `provideNzNoAnimation` to turn off animations.
 
 ```ts
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/no-animation';
 
+// Turn off animations globally
+export const appConfig: ApplicationConfig = {
+  providers: [
+    // ...
+    provideNzNoAnimation()
+  ]
+};
+
+// Turn off animations in components
 @Component({
   providers: [
     // ...
@@ -36,28 +32,15 @@ import { provideNzNoAnimation } from 'ng-zorro-antd/core/no-animation';
 })
 ```
 
-### Turn off in templates
+### Turn Off in Templates
 
-Import `NzNoAnimationDirective`.
-
-```ts
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-
-@Component({
-  imports: [
-    // ...
-    NzNoAnimationDirective
-  ]
-})
-```
-
-Add the `nzNoAnimation` directive to the component.
+Import the `NzNoAnimationDirective` and add the `nzNoAnimation` directive to the component where you want to turn off animations.
 
 ```html
 <nz-modal nzNoAnimation></nz-modal> <ul nz-menu nzNoAnimation></ul>
 ```
 
-### Turn off in services
+### Turn Off in Services
 
 Add the following configuration while invoking components' services.
 
@@ -79,10 +62,10 @@ Add the following configuration while invoking components' services.
 }
 ```
 
-### Turn off the wave effect
+### Turn Off the Wave Effect
 
-Some components use dynamic styles to support wave effects, so their styles are unable to be overridden directly.
-Instead, you can use `provideNzWave` or use `NoopAnimationsModule` to turn off the wave effects.
+Some components (such as Button) use dynamic styles to support wave effects, so their styles are unable to be overridden directly.
+You can use `provideNzWave` or `provideNzNoAnimation` to turn off the wave effects.
 
 ```ts
 import { provideNzWave } from 'ng-zorro-antd/core/wave';

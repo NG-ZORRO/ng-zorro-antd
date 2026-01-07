@@ -18,7 +18,6 @@ export default (nzVersion: string, ngVersion: string) => {
       '@angular/common': ngVersion,
       '@angular/router': ngVersion,
       '@angular/compiler': ngVersion,
-      '@angular/animations': ngVersion,
       '@angular/platform-browser': ngVersion,
       '@angular/cdk': ngVersion,
       '@angular/platform-browser-dynamic': ngVersion,

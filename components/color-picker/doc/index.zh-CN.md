@@ -16,8 +16,8 @@ description: 用于颜色选择。
 
 ### nz-color-picker
 
-| 参数                 | 说明                 | 类型                                               | 默认值      |
-| -------------------- | -------------------- | -------------------------------------------------- | ----------- |
+| 参数                 | 说明                 | 类型                                               | 默认值      | 版本   |
+| -------------------- | -------------------- | -------------------------------------------------- | ----------- | ------ |
 | `[nzFormat]`         | 颜色格式             | `'rgb' \| 'hex' \| 'hsb'`                          | `'hex'`     |
 | `[nzValue]`          | 颜色的值             | `string \| NzColor`                                | -           |
 | `[nzSize]`           | 设置触发器大小       | `'large' \| 'small' \| 'default'`                  | `'default'` |
@@ -29,7 +29,7 @@ description: 用于颜色选择。
 | `[nzDisabled]`       | 禁用颜色选择器       | `boolean`                                          | `false`     |
 | `[nzDisabledAlpha]`  | 禁用透明度           | `boolean`                                          | `false`     |
 | `[nzTitle]`          | 设置颜色选择器的标题 | `TemplateRef<void> \| string`                      | -           |
-| `[nzPresets]`        | 预设的颜色           | `NzColorPickerPresetsItem[]`                       | -           |
+| `[nzPresets]`        | 预设的颜色           | `NzColorPickerPresetsItem[]`                       | -           | 21.0.0 |
 | `(nzOnChange)`       | 颜色变化的回调       | `EventEmitter<{ color: NzColor; format: string }>` | -           |
 | `(nzOnClear)`        | 清除的回调           | `EventEmitter<boolean>`                            | -           |
 | `(nzOnFormatChange)` | 颜色格式变化的回调   | `EventEmitter<'rgb'｜'hex'｜'hsb'>`                | -           |

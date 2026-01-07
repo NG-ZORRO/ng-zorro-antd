@@ -15,8 +15,8 @@ Used when the user needs to customize the color selection.
 
 ### nz-color-picker
 
-| Parameter            | Description                           | Type                                               | Default     |
-| -------------------- | ------------------------------------- | -------------------------------------------------- | ----------- |
+| Parameter            | Description                           | Type                                               | Default     | Version |
+| -------------------- | ------------------------------------- | -------------------------------------------------- | ----------- | ------- |
 | `[nzFormat]`         | Format of color                       | `'rgb' \| 'hex' \| 'hsb'`                          | `'hex'`     |
 | `[nzValue]`          | Value of color                        | `string \| NzColor`                                | -           |
 | `[nzSize]`           | Setting the trigger size              | `'large' \| 'small' \| 'default'`                  | `'default'` |
@@ -28,7 +28,7 @@ Used when the user needs to customize the color selection.
 | `[nzDisabled]`       | Disable ColorPicker                   | `boolean`                                          | `false`     |
 | `[nzDisabledAlpha]`  | Disable Alpha                         | `boolean`                                          | `false`     |
 | `[nzTitle]`          | Setting the title of the color picker | `TemplateRef<void> \| string`                      | -           |
-| `[nzPresets]`        | Preset colors                         | `NzColorPickerPresetsItem[]`                       | -           |
+| `[nzPresets]`        | Preset colors                         | `NzColorPickerPresetsItem[]`                       | -           | 21.0.0  |
 | `(nzOnChange)`       | Callback when value is changed        | `EventEmitter<{ color: NzColor; format: string }>` | -           |
 | `(nzOnClear)`        | Called when clear                     | `EventEmitter<boolean>`                            | -           |
 | `(nzOnFormatChange)` | Callback when `format` is changed     | `EventEmitter<'rgb'｜'hex'｜'hsb'>`                | -           |
@@ -57,5 +57,7 @@ Used when the user needs to customize the color selection.
 
 ### Q: The overlay layer element does not follow the scroll position when scrolling
 
-By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
+By default, the overlay layer element uses body as the scroll container. If using another scroll container, add
+the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll
+container element.
 Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.

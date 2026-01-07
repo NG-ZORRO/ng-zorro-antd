@@ -6,7 +6,6 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ANIMATION_MODULE_TYPE,
   AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -108,7 +107,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   private changeDetectorRef = inject(ChangeDetectorRef);
   private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
-  private animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
+
   @Input({ transform: numberAttributeWithZeroFallback }) nzWidth?: number;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: Record<string, string> = {};

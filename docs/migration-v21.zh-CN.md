@@ -18,6 +18,7 @@ toc: false
 
 - 参考[升级指南](https://angular.dev/update-guide)将项目升级到 Angular 21
 - 如果有单独使用 `@angular/cdk` 请执行 `ng update @angular/cdk`
+- 按需移除 `@angular/animations` 依赖
 
 ### 2. 升级 NG-ZORRO
 

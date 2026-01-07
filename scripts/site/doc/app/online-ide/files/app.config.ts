@@ -1,6 +1,5 @@
 export default `import { registerLocaleData } from '@angular/common';
 import { ApplicationConfig } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
 import en from '@angular/common/locales/en';
 
@@ -19,7 +18,6 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withJsonpSupport()),
-    provideAnimationsAsync(),
     provideNzIcons(icons),
     provideNzI18n(en_US)
   ]
