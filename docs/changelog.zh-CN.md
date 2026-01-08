@@ -19,12 +19,6 @@ timeline: true
 
 `2026-01-09`
 
-通过 @angular/cli 升级
-
-```shell
-ng update ng-zorro-antd
-```
-
 ### Code Refactoring
 
 - 迁移至 native animation API，您可以按需移除依赖 `@angular/animations`
@@ -93,9 +87,11 @@ ng update ng-zorro-antd
 
 在 v21 中，以下 API 被标记为 **deprecated**，并将在下一个主要版本中移除。 请参考相关文档以获取更好的替代方案。
 
-| Module                | API                    |
-| --------------------- | ---------------------- |
-| `ng-zorro-antd/input` | `textarea[nzAutosize]` |
+| Module                   | API                                                               |
+| ------------------------ | ----------------------------------------------------------------- |
+| `ng-zorro-antd/collapse` | `nz-collapse-panel[nzDisabled]`                                   |
+| `ng-zorro-antd/input`    | `textarea[nzAutosize]`, `nz-input-group`, `[nz-input-group-slot]` |
+| `ng-zorro-antd/upload`   | `nz-upload[nzTransformFile]`, `NzUploadTransformFileType`         |
 
 ## 20.4.4
 

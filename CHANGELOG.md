@@ -69,9 +69,11 @@ Unify and standardize component naming, involving the following name changes:
 The following APIs are marked as **deprecated** in v20 and will be removed in the next major version.
 Please refer to related documentation for better alternatives.
 
-| Module                | API                    |
-| --------------------- | ---------------------- |
-| `ng-zorro-antd/input` | `textarea[nzAutosize]` |
+| Module                   | API                                                               |
+| ------------------------ | ----------------------------------------------------------------- |
+| `ng-zorro-antd/collapse` | `nz-collapse-panel[nzDisabled]`                                   |
+| `ng-zorro-antd/input`    | `textarea[nzAutosize]`, `nz-input-group`, `[nz-input-group-slot]` |
+| `ng-zorro-antd/upload`   | `nz-upload[nzTransformFile]`, `NzUploadTransformFileType`         |
 
 ## [20.4.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/20.4.3...20.4.4) (2025-12-12)
 

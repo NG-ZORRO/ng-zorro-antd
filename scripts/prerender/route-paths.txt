@@ -165,6 +165,8 @@
 /docs/introduce/zh
 /docs/join/en
 /docs/join/zh
+/docs/llms/en
+/docs/llms/zh
 /docs/migration-v21/en
 /docs/migration-v21/zh
 /docs/recommendation/en
