@@ -22,8 +22,8 @@ import {
   signal
 } from '@angular/core';
 import { ComponentFixture, TestBed, inject as testingInject } from '@angular/core/testing';
-import { provideAnimations, provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import {
   createKeyboardEvent,
@@ -48,13 +48,13 @@ describe('modal with animation', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NzModalService, provideAnimations()]
+      providers: [NzModalService]
     });
+    modalService = TestBed.inject(NzModalService);
   });
 
   beforeEach(
-    testingInject([NzModalService, OverlayContainer], (m: NzModalService, oc: OverlayContainer) => {
-      modalService = m;
+    testingInject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     })
@@ -68,23 +68,94 @@ describe('modal with animation', () => {
     overlayContainer.ngOnDestroy();
   });
 
+  // mock animationend events
+  function animationDone(element: Element, action: 'enter' | 'leave'): void {
+    dispatchEvent(
+      element,
+      new AnimationEvent('animationend', { animationName: action === 'enter' ? 'antZoomIn' : 'antZoomOut' })
+    );
+  }
+
   it('should apply animations class', async () => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent
     });
 
-    await fixture.whenStable();
-
+    await sleep(16); // wait for the next frame
     const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
     expect(modalContentElement!.classList).toContain('ant-zoom-enter');
     expect(modalContentElement!.classList).toContain('ant-zoom-enter-active');
 
-    await sleep(500);
-    modalRef.close();
+    animationDone(modalContentElement!, 'enter');
     await fixture.whenStable();
+    modalRef.close();
 
     expect(modalContentElement!.classList).toContain('ant-zoom-leave');
     expect(modalContentElement!.classList).toContain('ant-zoom-leave-active');
+  });
+
+  it('should emit when modal opening animation is complete', async () => {
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    const spy = jasmine.createSpy('afterOpen spy');
+    modalRef.afterOpen.subscribe(spy);
+    expect(spy).not.toHaveBeenCalled();
+
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
+    animationDone(modalContentElement!, 'enter');
+
+    await fixture.whenStable();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should return the current state of the modal', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
+
+    expect(modalRef.getState()).toBe(NzModalState.OPEN);
+    animationDone(modalContentElement!, 'enter');
+    await fixture.whenStable();
+
+    modalRef.close();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+
+    animationDone(modalContentElement!, 'leave');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+  });
+
+  describe('NzModalRef', () => {
+    it('should omit any action when closing', async () => {
+      const onOk = jasmine.createSpy('onOk', () => {});
+      const onCancel = jasmine.createSpy('onCancel', () => {});
+      const modalRef = modalService.create({
+        nzContent: TestWithModalContentComponent,
+        nzOnOk: onOk,
+        nzOnCancel: onCancel
+      });
+      const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
+
+      animationDone(modalContentElement!, 'enter');
+      await fixture.whenStable();
+
+      expect(overlayContainerElement.querySelector('nz-modal-container')).not.toBeNull();
+      await modalRef.triggerOk();
+      expect(onOk).toHaveBeenCalledTimes(1);
+      expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+
+      modalRef.triggerOk();
+      modalRef.triggerOk();
+      modalRef.triggerCancel();
+      modalRef.triggerCancel();
+      expect(onOk).toHaveBeenCalledTimes(1);
+      expect(onCancel).toHaveBeenCalledTimes(0);
+
+      animationDone(modalContentElement!, 'leave');
+      await fixture.whenStable();
+      expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
+    });
   });
 });
 
@@ -98,7 +169,7 @@ describe('modal', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NzModalService, provideNoopAnimations(), { provide: Location, useClass: SpyLocation }]
+      providers: [NzModalService, provideNzNoAnimation(), { provide: Location, useClass: SpyLocation }]
     });
   });
 
@@ -228,20 +299,6 @@ describe('modal', () => {
     const modalContentElement = overlayContainerElement.querySelector('.modal-html-content');
     expect(modalContentElement).toBeTruthy();
     expect(modalContentElement!.textContent).toBe('Hello Modal');
-    modalRef.close();
-  });
-
-  it('should emit when modal opening animation is complete', async () => {
-    const modalRef = modalService.create({
-      nzContent: TestWithModalContentComponent
-    });
-
-    const spy = jasmine.createSpy('afterOpen spy');
-    modalRef.afterOpen.subscribe(spy);
-    expect(spy).not.toHaveBeenCalled();
-
-    await fixture.whenStable();
-    expect(spy).toHaveBeenCalled();
     modalRef.close();
   });
 
@@ -705,17 +762,6 @@ describe('modal', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should return the current state of the modal', async () => {
-    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
-
-    expect(modalRef.getState()).toBe(NzModalState.OPEN);
-    modalRef.close();
-    expect(modalRef.getState()).toBe(NzModalState.CLOSING);
-
-    await fixture.whenStable();
-    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
-  });
-
   it('should use injector from viewContainerRef', async () => {
     const viewContainerFixture = TestBed.createComponent(TestWithChildViewContainerComponent);
     await viewContainerFixture.whenStable();
@@ -801,32 +847,6 @@ describe('modal', () => {
       });
       await fixture.whenStable();
       modalRef.triggerOk();
-      await fixture.whenStable();
-      expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
-    });
-
-    it('should omit any action when closing', async () => {
-      const onOk = jasmine.createSpy('onOk', () => {});
-      const onCancel = jasmine.createSpy('onCancel', () => {});
-      const modalRef = modalService.create({
-        nzContent: TestWithModalContentComponent,
-        nzOnOk: onOk,
-        nzOnCancel: onCancel
-      });
-      await fixture.whenStable();
-
-      expect(overlayContainerElement.querySelector('nz-modal-container')).not.toBeNull();
-      await modalRef.triggerOk();
-      expect(onOk).toHaveBeenCalledTimes(1);
-      expect(modalRef.getState()).toBe(NzModalState.CLOSING);
-
-      modalRef.triggerOk();
-      modalRef.triggerOk();
-      modalRef.triggerCancel();
-      modalRef.triggerCancel();
-      expect(onOk).toHaveBeenCalledTimes(1);
-      expect(onCancel).toHaveBeenCalledTimes(0);
-
       await fixture.whenStable();
       expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
     });
@@ -1030,9 +1050,6 @@ describe('modal', () => {
       expect(okButton).toBeTruthy();
 
       okButton.click();
-      expect(spy).not.toHaveBeenCalled();
-
-      await fixture.whenStable();
       expect(spy).toHaveBeenCalled();
     });
 
@@ -1044,9 +1061,6 @@ describe('modal', () => {
       expect(cancelButton).toBeTruthy();
 
       cancelButton.click();
-      expect(spy).not.toHaveBeenCalled();
-
-      await fixture.whenStable();
       expect(spy).toHaveBeenCalled();
     });
 

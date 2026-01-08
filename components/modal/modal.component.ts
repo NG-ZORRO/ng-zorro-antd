@@ -82,12 +82,16 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   @Input() nzModalType: ModalTypes = 'default';
   @Input() nzAutofocus: 'ok' | 'cancel' | 'auto' | null = 'auto';
 
-  // TODO(@hsuanxyz) Input will not be supported
+  /**
+   * @note The input usage will be removed in v22.
+   */
   @Input()
   @Output()
   readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> | NzSafeAny = new EventEmitter<T>();
 
-  // TODO(@hsuanxyz) Input will not be supported
+  /**
+   * @note The input usage will be removed in v22.
+   */
   @Input()
   @Output()
   readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> | NzSafeAny = new EventEmitter<T>();

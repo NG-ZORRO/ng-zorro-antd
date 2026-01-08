@@ -39,8 +39,6 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   afterClose = new Subject<R | undefined>();
   afterOpen = new Subject<void>();
 
-  private closeTimeout?: ReturnType<typeof setTimeout>;
-
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -50,7 +48,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   ) {
     containerInstance.animationStateChanged
       .pipe(
-        filter(event => event.phaseName === 'done' && event.toState === 'enter'),
+        filter(event => event === 'enter-active'),
         take(1)
       )
       .subscribe(() => {
@@ -63,13 +61,10 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
 
     containerInstance.animationStateChanged
       .pipe(
-        filter(event => event.phaseName === 'done' && event.toState === 'exit'),
+        filter(event => event === 'leave-active'),
         take(1)
       )
-      .subscribe(() => {
-        clearTimeout(this.closeTimeout);
-        this._finishDialogClose();
-      });
+      .subscribe(() => this._finishDialogClose());
 
     containerInstance.containerClick.pipe(takeUntil(this.destroy$)).subscribe(() => {
       const cancelable = !this.config.nzCancelLoading && !this.config.nzOkLoading;
@@ -81,14 +76,8 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     overlayRef
       .keydownEvents()
       .pipe(
-        filter(
-          event =>
-            (this.config.nzKeyboard as boolean) &&
-            !this.config.nzCancelLoading &&
-            !this.config.nzOkLoading &&
-            event.keyCode === ESCAPE &&
-            !hasModifierKey(event)
-        )
+        filter(() => (this.config.nzKeyboard as boolean) && !this.config.nzCancelLoading && !this.config.nzOkLoading),
+        filter(event => event.keyCode === ESCAPE && !hasModifierKey(event))
       )
       .subscribe(event => {
         event.preventDefault();
@@ -142,20 +131,11 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
       return;
     }
     this.result = result;
-    this.containerInstance.animationStateChanged
-      .pipe(
-        filter(event => event.phaseName === 'start'),
-        take(1)
-      )
-      .subscribe(event => {
-        this.overlayRef.detachBackdrop();
-        this.closeTimeout = setTimeout(() => {
-          this._finishDialogClose();
-        }, event.totalTime + 100);
-      });
-
-    this.containerInstance.startExitAnimation();
     this.state = NzModalState.CLOSING;
+    this.containerInstance._startLeaveAnimation(() => {
+      this.overlayRef.detachBackdrop();
+      this._finishDialogClose();
+    });
   }
 
   updateConfig(config: ModalOptions): void {

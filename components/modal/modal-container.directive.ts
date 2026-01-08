@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AnimationEvent } from '@angular/animations';
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Direction } from '@angular/cdk/bidi';
 import { OverlayRef } from '@angular/cdk/overlay';
@@ -38,6 +37,8 @@ export function throwNzModalContentAlreadyAttachedError(): never {
   throw Error('Attempting to attach modal content after content is already attached');
 }
 
+type AnimationState = 'enter-start' | 'enter-active' | 'leave-start' | 'leave-active' | 'void';
+
 @Directive()
 export class BaseModalContainerComponent extends BasePortalOutlet {
   readonly document: Document = inject(DOCUMENT);
@@ -55,12 +56,11 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
   portalOutlet!: CdkPortalOutlet;
   modalElementRef!: ElementRef<HTMLDivElement>;
 
-  animationStateChanged = new EventEmitter<AnimationEvent>();
+  animationStateChanged = new EventEmitter<AnimationState>();
   containerClick = new EventEmitter<void>();
   cancelTriggered = new EventEmitter<void>();
   okTriggered = new EventEmitter<void>();
 
-  state: 'void' | 'enter' | 'exit' = 'enter';
   modalRef!: NzModalRef;
   isStringContent: boolean = false;
   dir: Direction = 'ltr';
@@ -113,7 +113,10 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     }
     this.savePreviouslyFocusedElement();
     this.setZIndexForBackdrop();
-    return this.portalOutlet.attachComponentPortal(portal);
+    const result = this.portalOutlet.attachComponentPortal(portal);
+    // Trigger animation after content is attached and focus is saved
+    this._startEnterAnimation();
+    return result;
   }
 
   attachTemplatePortal<C>(portal: TemplatePortal<C>): EmbeddedViewRef<C> {
@@ -122,12 +125,17 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     }
     this.savePreviouslyFocusedElement();
     this.setZIndexForBackdrop();
-    return this.portalOutlet.attachTemplatePortal(portal);
+    const result = this.portalOutlet.attachTemplatePortal(portal);
+    // Trigger animation after content is attached and focus is saved
+    this._startEnterAnimation();
+    return result;
   }
 
   attachStringContent(): void {
     this.savePreviouslyFocusedElement();
     this.setZIndexForBackdrop();
+    // Trigger animation after focus is saved
+    this._startEnterAnimation();
   }
 
   getNativeElement(): HTMLElement {
@@ -278,29 +286,51 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     }
   }
 
-  onAnimationDone(event: AnimationEvent): void {
-    if (event.toState === 'enter') {
+  _startEnterAnimation(): void {
+    this.bindBackdropStyle();
+    this.animationStateChanged.emit('enter-start');
+
+    if (this.animationDisabled()) {
       this.trapFocus();
-    } else if (event.toState === 'exit') {
+      this.animationStateChanged.emit('enter-active');
+    } else {
+      // If were to attempt to focus immediately, then the offset of the modal would not yet be ready,
+      // which would cause the transition origin to be calculated from the wrong position.
+      // To deal with this, we simply wait until after the next frame.
+      requestAnimationFrame(() => this.setEnterAnimationClass());
+
+      const element = this.modalElementRef.nativeElement;
+      const onAnimationEnd = (): void => {
+        element.removeEventListener('animationend', onAnimationEnd);
+        this.trapFocus();
+        this.cleanAnimationClass();
+        this.animationStateChanged.emit('enter-active');
+      };
+
+      element.addEventListener('animationend', onAnimationEnd);
+    }
+  }
+
+  _startLeaveAnimation(callback?: () => void): void {
+    this.animationStateChanged.emit('leave-start');
+
+    if (this.animationDisabled()) {
       this.restoreFocus();
-    }
-    this.cleanAnimationClass();
-    this.animationStateChanged.emit(event);
-  }
-
-  onAnimationStart(event: AnimationEvent): void {
-    if (event.toState === 'enter') {
-      this.setEnterAnimationClass();
-      this.bindBackdropStyle();
-    } else if (event.toState === 'exit') {
+      callback?.();
+      this.animationStateChanged.emit('leave-active');
+    } else {
       this.setExitAnimationClass();
-    }
-    this.animationStateChanged.emit(event);
-  }
+      const element = this.modalElementRef.nativeElement;
+      const onAnimationEnd = (): void => {
+        element.removeEventListener('animationend', onAnimationEnd);
+        this.restoreFocus();
+        this.cleanAnimationClass();
+        callback?.();
+        this.animationStateChanged.emit('leave-active');
+      };
 
-  startExitAnimation(): void {
-    this.state = 'exit';
-    this.cdr.markForCheck();
+      element.addEventListener('animationend', onAnimationEnd);
+    }
   }
 
   protected setupMouseListeners(modalContainer: ElementRef<HTMLElement>): void {
