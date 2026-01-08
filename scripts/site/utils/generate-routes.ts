@@ -80,6 +80,7 @@ export function generateRoutes(
       order: enMeta.order ?? 0,
       hidden: !!enMeta.hidden,
       description: enMeta.description ?? '',
+      tag: enMeta.tag,
       experimental: !!enMeta.experimental
     });
     router.intro.push({
@@ -89,6 +90,7 @@ export function generateRoutes(
       order: zhMeta.order ?? 0,
       hidden: !!zhMeta.hidden,
       description: zhMeta.description ?? '',
+      tag: zhMeta.tag,
       experimental: !!zhMeta.experimental
     });
   }

@@ -2,7 +2,7 @@
 category: Components
 type: Data Entry
 title: Input
-tag: Update
+tag: updated
 cover: 'https://gw.alipayobjects.com/zos/alicdn/xS9YEJhfe/Input.svg'
 description: Through mouse or keyboard input content, it is the most basic form field wrapper.
 ---

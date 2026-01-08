@@ -1,6 +1,7 @@
 ---
 order: 8
 title: Animations Switch
+tag: updated
 ---
 
 > Since v21, NG-ZORRO uses [native animation](https://angular.dev/guide/animations) to implement animation effects. You can remove the `@angular/animations` dependency as needed.

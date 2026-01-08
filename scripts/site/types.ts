@@ -223,6 +223,7 @@ export interface IntroRouter {
   order: number;
   hidden: boolean;
   description: string;
+  tag?: string;
   experimental?: boolean;
 }
 

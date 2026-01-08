@@ -3,6 +3,7 @@ order: 13
 title: Change Log
 toc: false
 timeline: true
+tag: '{{version}}'
 ---
 
 `ng-zorro-antd` strictly follows [Semantic Versioning 2.0.0](https://semver.org).

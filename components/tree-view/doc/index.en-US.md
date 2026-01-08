@@ -2,7 +2,7 @@
 category: Components
 type: Data Display
 title: TreeView
-tag: Update
+tag: updated
 cover: 'https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg'
 description: Tree view component with better performance and customizability.
 ---

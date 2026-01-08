@@ -1,6 +1,7 @@
 ---
 order: 8
 title: 动画开关
+tag: updated
 ---
 
 > 从 v21 版本开始，NG-ZORRO 完全使用 [native animation](https://angular.cn/guide/animations) 实现动画效果，你可以按需移除 `@angular/animations` 依赖。
