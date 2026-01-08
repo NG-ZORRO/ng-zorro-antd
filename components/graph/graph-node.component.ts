@@ -3,10 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, group, query, style } from '@angular/animations';
+import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
@@ -19,8 +18,7 @@ import {
   TemplateRef
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 
@@ -33,6 +31,8 @@ interface Info {
   width: number;
   height: number;
 }
+
+const translate = (x: number, y: number): string => `translate(${coerceCssPixelValue(x)}, ${coerceCssPixelValue(y)})`;
 
 @Component({
   selector: '[nz-graph-node]',
@@ -50,36 +50,31 @@ interface Info {
   host: {
     '[id]': 'node.id || node.name',
     '[class.nz-graph-node-expanded]': 'node.expanded',
-    '[class.nz-graph-group-node]': 'node.type===0',
-    '[class.nz-graph-base-node]': 'node.type===1'
+    '[class.nz-graph-group-node]': 'node.type === 0',
+    '[class.nz-graph-base-node]': 'node.type === 1'
   },
   imports: [NgTemplateOutlet]
 })
 export class NzGraphNodeComponent implements OnInit {
   private readonly ngZone = inject(NgZone);
   private readonly el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
-  private readonly builder = inject(AnimationBuilder);
-  private readonly renderer2 = inject(Renderer2);
+  private readonly renderer = inject(Renderer2);
   private readonly graphComponent = inject(NzGraph);
   private readonly destroyRef = inject(DestroyRef);
 
   @Input() node!: NzGraphNode | NzGraphGroupNode;
-  @Input({ transform: booleanAttribute }) noAnimation?: boolean;
   @Input() customTemplate?: TemplateRef<{
     $implicit: NzGraphNode | NzGraphGroupNode;
   }>;
 
-  animationInfo: Info | null = null;
-  initialState = true;
-  private animationPlayer: AnimationPlayer | null = null;
+  private animationInfo: Info | null = null;
+  private initialState = true;
 
   ngOnInit(): void {
     fromEventOutsideAngular<MouseEvent>(this.el, 'click')
       .pipe(
-        filter(event => {
-          event.preventDefault();
-          return this.graphComponent.nzNodeClick.observers.length > 0;
-        }),
+        tap(event => event.preventDefault()),
+        filter(() => this.graphComponent.nzNodeClick.observers.length > 0),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
@@ -89,65 +84,68 @@ export class NzGraphNodeComponent implements OnInit {
       });
   }
 
-  makeAnimation(): Observable<void> {
+  async makeAnimation(): Promise<void> {
     const cur = this.getAnimationInfo();
-    if (this.animationPlayer) {
-      this.animationPlayer.destroy();
-    }
-    let animationFactory: AnimationFactory;
     const pre = { ...this.animationInfo } as Info;
 
+    const group = this.el.querySelector('g');
+
     if (this.initialState) {
-      animationFactory = this.builder.build([
-        style({ transform: `translate(${cur.x}px, ${cur.y}px)` }),
-        query('g', [
-          style({
-            width: `${cur.width}px`,
-            height: `${cur.height}px`
-          })
-        ])
-      ]);
+      // Initial state: directly set position without animation
+      this.renderer.setAttribute(this.el, 'transform', translate(cur.x, cur.y));
+      if (group) {
+        this.renderer.setStyle(group, 'width', coerceCssPixelValue(cur.width));
+        this.renderer.setStyle(group, 'height', coerceCssPixelValue(cur.height));
+      }
       this.initialState = false;
+      this.animationInfo = cur;
     } else {
-      animationFactory = this.builder.build([
-        style({ transform: `translate(${pre!.x}px, ${pre!.y}px)` }),
-        query('g', [
-          style({
-            width: `${pre!.width}px`,
-            height: `${pre!.height}px`
-          })
-        ]),
-        group([
-          query('g', [
-            animate(
-              '150ms ease-out',
-              style({
-                width: `${cur.width}px`,
-                height: `${cur.height}px`
-              })
-            )
-          ]),
-          animate('150ms ease-out', style({ transform: `translate(${cur.x}px, ${cur.y}px)` }))
-        ])
-      ]);
+      return new Promise(resolve => {
+        // Animate parent element (transform)
+        const parentAnimation = this.el.animate(
+          [{ transform: translate(pre.x, pre.y) }, { transform: translate(cur.x, cur.y) }],
+          {
+            duration: 150,
+            easing: 'ease-out',
+            fill: 'forwards'
+          }
+        );
+
+        // Animate child g element (width/height) if it exists
+        if (group) {
+          group.animate(
+            [
+              { width: coerceCssPixelValue(pre.width), height: coerceCssPixelValue(pre.height) },
+              { width: coerceCssPixelValue(cur.width), height: coerceCssPixelValue(cur.height) }
+            ],
+            {
+              duration: 150,
+              easing: 'ease-out',
+              fill: 'forwards'
+            }
+          );
+        }
+
+        // Wait for animations to complete
+        parentAnimation.onfinish = () => {
+          // Need this for canvas for now.
+          this.renderer.setAttribute(this.el, 'transform', translate(cur.x, cur.y));
+          if (group) {
+            this.renderer.setStyle(group, 'width', coerceCssPixelValue(cur.width));
+            this.renderer.setStyle(group, 'height', coerceCssPixelValue(cur.height));
+          }
+          resolve();
+        };
+
+        this.animationInfo = cur;
+      });
     }
-    this.animationInfo = cur;
-    this.animationPlayer = animationFactory.create(this.el);
-    this.animationPlayer.play();
-    const done$ = new Subject<void>();
-    this.animationPlayer.onDone(() => {
-      // Need this for canvas for now.
-      this.renderer2.setAttribute(this.el, 'transform', `translate(${cur.x}, ${cur.y})`);
-      done$.next();
-      done$.complete();
-    });
-    return done$.asObservable();
   }
 
   makeNoAnimation(): void {
     const cur = this.getAnimationInfo();
     // Need this for canvas for now.
-    this.renderer2.setAttribute(this.el, 'transform', `translate(${cur.x}, ${cur.y})`);
+    this.renderer.setAttribute(this.el, 'transform', translate(cur.x, cur.y));
   }
 
   getAnimationInfo(): Info {

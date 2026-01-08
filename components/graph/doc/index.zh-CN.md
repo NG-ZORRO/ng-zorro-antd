@@ -10,9 +10,15 @@ description: 渲染流程图。
 
 ## 何时使用
 
-需要在网页上渲染 GRAPH 图时使用。
+需要在网页上渲染 Graph 图时使用。
+
+### 安装依赖
 
 > 目前组件依赖 d3-drag d3-zoom d3-selection d3-transition d3-shape 用于绘制相关属性（可能会在之后的版本中逐步替换）
+
+```sh
+npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
+```
 
 ### 引入样式
 
@@ -21,12 +27,6 @@ description: 渲染流程图。
 ```
 
 ## API
-
-安装依赖：
-
-```sh
-npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-drag @types/d3
-```
 
 ### nz-graph
 
@@ -50,7 +50,7 @@ npm install dagre-compound dagre d3-transition d3-zoom d3-selection d3-shape d3-
 | `[(nzZoom)]`         | 缩放比例           | `number`                                     | `1`    |
 | `[nzMinZoom]`        | 最小缩放           | `number`                                     | `0.1`  |
 | `[nzMaxZoom]`        | 最大缩放           | `number`                                     | `10`   |
-| `(nzTransformEvent)` | 缩放事件           | `() => NzZoomTransform`                      | ``     |
+| `(nzTransformEvent)` | 缩放事件           | `() => NzZoomTransform`                      | -      |
 | `(fitCenter)`        | 居中图并自适应缩放 | `() => void`                                 | `void` |
 | `(focus)`            | 居中单个节点       | `(e: SVGGElement, duration: number) => void` | `void` |
 
