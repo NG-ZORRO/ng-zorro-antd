@@ -20,24 +20,15 @@ const routesTemplate = String(readFileSync(path.resolve(__dirname, '../template/
 
 /**
  * Generate docs in `/docs` folder
- * Change Log docs in `/changelog` folder
  */
 export function generateDocs(rootPath: string, docsMap: Record<string, I18n<Buffer>>): void {
   const docsPath = `${rootPath}docs`;
-  const docslogPath = `${rootPath}changelog`;
   mkdirSync(docsPath);
-  mkdirSync(docslogPath);
-
   for (const name in docsMap) {
-    if (name === 'changelog') {
-      generateDoc(docsMap[name].zh, docslogPath, name, 'zh');
-      generateDoc(docsMap[name].en, docslogPath, name, 'en');
-    } else {
-      generateDoc(docsMap[name].zh, docsPath, name, 'zh');
-      generateDoc(docsMap[name].en, docsPath, name, 'en');
-    }
+    generateDoc(docsMap[name].zh, docsPath, name, 'zh');
+    generateDoc(docsMap[name].en, docsPath, name, 'en');
   }
-  generateModule(docsPath, docslogPath, docsMap);
+  generateModule(docsPath, docsMap);
 }
 
 function generateDoc(file: Buffer, docsPath: string, name: string, language: Language): void {
@@ -90,20 +81,12 @@ function generateToc(raw: string): string {
 </nz-affix>`;
 }
 
-function generateModule(docsPath: string, docslogPath: string, docsMap: Record<string, I18n<Buffer>>): void {
+function generateModule(docsPath: string, docsMap: Record<string, I18n<Buffer>>): void {
   let router = '';
-  let logRouter = '';
   for (const name in docsMap) {
-    if (name === 'changelog') {
-      logRouter += `\t{ path: 'zh', loadComponent: () => import('./${name}-zh') },\n`;
-      logRouter += `\t{ path: 'en', loadComponent: () => import('./${name}-en') },\n`;
-    } else {
-      router += `\t{ path: '${name}/zh', loadComponent: () => import('./${name}-zh') },\n`;
-      router += `\t{ path: '${name}/en', loadComponent: () => import('./${name}-en') },\n`;
-    }
+    router += `\t{ path: '${name}/zh', loadComponent: () => import('./${name}-zh') },\n`;
+    router += `\t{ path: '${name}/en', loadComponent: () => import('./${name}-en') },\n`;
   }
   const module = routesTemplate.replace(/{{routes}}/g, router);
-  const logModule = routesTemplate.replace(/{{routes}}/g, logRouter);
   writeFileSync(path.join(docsPath, `routes.ts`), module);
-  writeFileSync(path.join(docslogPath, `routes.ts`), logModule);
 }
