@@ -18,21 +18,27 @@ We provide several LLMs.txt routes to help AI tools access our documentation:
 
 ## Usage with AI Tools
 
+### GitHub Copilot
+
+In GitHub Copilot, you can reference LLMs.txt files by adding them to your workspace's `.github/copilot-instructions.md` or mentioning the documentation URL directly in conversations.
+
+[Learn more about GitHub Copilot instructions](https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot)
+
 ### Cursor
 
-Use the `@Docs` feature in Cursor to include the LLMs.txt files in your project. This helps Cursor provide more accurate code suggestions and documentation for Ant Design components.
+Use the `@Docs` feature in Cursor to include the LLMs.txt files in your project. This helps Cursor provide more accurate code suggestions and documentation for `ng-zorro-antd`.
 
 [Read more about @Docs in Cursor](https://docs.cursor.com/context/@-symbols/@-docs)
 
 ### Windsurf
 
-Reference the LLMs.txt files using `@` or in your `.windsurf/rules` files to enhance Windsurf's understanding of Ant Design components.
+Reference the LLMs.txt files using `@` or in your `.windsurf/rules` files to enhance Windsurf's understanding of `ng-zorro-antd` components.
 
 [Read more about Windsurf Memories](https://docs.windsurf.com/windsurf/cascade/memories)
 
 ### Claude Code
 
-In Claude Code, add `LLMs.txt` to the workspace Knowledge Base (Docs / Context Files) configuration. This allows the file to be referenced during code completion and explanation, improving understanding of Ant Design components.
+In Claude Code, add `LLMs.txt` to the workspace Knowledge Base (Docs / Context Files) configuration. This allows the file to be referenced during code completion and explanation, improving understanding of `ng-zorro-antd` components.
 
 [Learn more about Claude Code document context configuration](https://code.claude.com/docs)
 
@@ -44,16 +50,16 @@ In Gemini CLI, you can specify the `LLMs.txt` file path with the `--context` par
 
 ### Trae
 
-In Trae, place the `LLMs.txt` file into the project’s knowledge sources and enable referencing in the settings. This allows Trae to better support Ant Design components when generating or analyzing code.
+In Trae, place the `LLMs.txt` file into the project’s knowledge sources and enable referencing in the settings.
 
 [Learn more about Trae knowledge sources](https://trae.ai/docs)
 
 ### Qoder
 
-In Qoder, you can add `LLMs.txt` as an external knowledge file in `.qoder/config.yml`, or temporarily reference it in a conversation with `@docs LLMs.txt`, enhancing support for Ant Design components.
+In Qoder, you can add `LLMs.txt` as an external knowledge file in `.qoder/config.yml`, or temporarily reference it in a conversation with `@docs LLMs.txt`, enhancing support for `ng-zorro-antd` components.
 
 [Learn more about Qoder configuration](https://docs.qoder.com/)
 
 ### Other AI Tools
 
-Any AI tool that supports LLMs.txt can use these routes to better understand Ant Design. Simply point your tool to any of the routes above.
+Any AI tool that supports LLMs.txt can use these routes to better understand `ng-zorro-antd`. Simply point your tool to any of the routes above.
