@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   afterEveryRender,
@@ -32,6 +32,7 @@ import { Subject } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
@@ -73,7 +74,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-background-ghost]': `nzGhost`,
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
-    '[class.ant-btn-rtl]': `dir === 'rtl'`,
+    '[class.ant-btn-rtl]': `dir() === 'rtl'`,
     '[class.ant-btn-icon-only]': `iconOnly()`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
@@ -85,7 +86,6 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   private elementRef: ElementRef<HTMLButtonElement | HTMLAnchorElement> = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
   private renderer = inject(Renderer2);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -103,14 +103,20 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
-  dir: Direction = 'ltr';
+  protected readonly dir = inject(Directionality).valueSignal;
 
   private readonly elementOnly = signal(false);
   private readonly size = signal<NzSizeLDSType>(this.nzSize);
+
+  private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+
   private readonly compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private readonly loading$ = new Subject<boolean>();
 
   protected readonly finalSize = computed(() => {
+    if (this.formSize?.()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }
@@ -141,13 +147,6 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
 
   ngOnInit(): void {
     this.size.set(this.nzSize);
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
 
     // Caretaker note: this event listener could've been added through `host.click` or `HostListener`.
     // The compiler generates the `ɵɵlistener` instruction which wraps the actual listener internally into the

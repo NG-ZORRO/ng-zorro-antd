@@ -25,23 +25,34 @@ import {
   ZERO
 } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, inject, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  inject,
+  provideZoneChangeDetection,
+  signal,
+  TemplateRef,
+  ViewChild,
+  type WritableSignal
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, inject as testingInject, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzDemoCascaderMultipleComponent } from 'ng-zorro-antd/cascader/demo/multiple';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import {
   createFakeEvent,
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   dispatchMouseEvent
 } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzStatus, NzVariant, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzSelectItemComponent } from 'ng-zorro-antd/select';
+import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { NzCascaderComponent } from './cascader.component';
 import { NzCascaderModule } from './cascader.module';
@@ -2457,6 +2468,52 @@ describe('cascader', () => {
         'ant-form-item-feedback-icon-success'
       );
     });
+  });
+});
+
+describe('finalSize', () => {
+  let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
+  let cascaderElement: HTMLElement;
+  let compactSizeSignal: WritableSignal<NzSizeLDSType>;
+  let formSizeSignal: WritableSignal<NzSizeLDSType>;
+
+  beforeEach(() => {
+    compactSizeSignal = signal<NzSizeLDSType>('large');
+    formSizeSignal = signal<NzSizeLDSType>('default');
+  });
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  it('should set correctly the size from the formSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: NZ_FORM_SIZE, useValue: formSizeSignal },
+        { provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }
+      ]
+    });
+    fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.detectChanges();
+    formSizeSignal.set('large');
+    fixture.detectChanges();
+    expect(cascaderElement.classList).toContain('ant-select-lg');
+  });
+  it('should set correctly the size from the compactSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
+    });
+    fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(cascaderElement.classList).toContain('ant-select-lg');
+  });
+  it('should set correctly the size from the component input', () => {
+    fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.componentInstance.nzSize = 'large';
+    fixture.detectChanges();
+    expect(cascaderElement.classList).toContain('ant-select-lg');
   });
 });
 

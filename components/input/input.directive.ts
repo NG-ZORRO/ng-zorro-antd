@@ -25,7 +25,12 @@ import { NgControl } from '@angular/forms';
 import { EMPTY } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import {
+  NZ_FORM_SIZE,
+  NzFormItemFeedbackIconComponent,
+  NzFormNoStatusService,
+  NzFormStatusService
+} from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, InputFocusOptions, triggerFocus } from 'ng-zorro-antd/core/util';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
@@ -88,6 +93,8 @@ export class NzInputDirective implements OnInit {
   // TODO: When the input group is removed, we can remove this.
   readonly size = linkedSignal(this.nzSize);
 
+  private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+
   readonly status = this.nzFormStatusService
     ? toSignal(this.nzFormStatusService.formStatusChanges.pipe(map(value => value.status)), { initialValue: '' })
     : this.nzStatus;
@@ -108,6 +115,9 @@ export class NzInputDirective implements OnInit {
 
   protected readonly focused = signal<boolean>(false);
   protected readonly finalSize = computed(() => {
+    if (this.formSize?.()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }
