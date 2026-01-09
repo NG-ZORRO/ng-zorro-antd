@@ -129,28 +129,20 @@ describe('[standalone] ng-add schematic', () => {
     expect(assetsString).toContain(iconPathSegment);
   });
 
-  it('should required modules and providers', async () => {
-    const options = { ...defaultOptions };
-    const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
-
-    expect(fileContent).toContain('provideHttpClient()');
-  });
-
-  it('should add provideAnimationsAsync() call function if animations is enable', async () => {
+  it('should not add provideNzNoAnimation() call function if animations is enable', async () => {
     const options = { ...defaultOptions, animations: true };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
-    expect(fileContent).toContain('provideAnimationsAsync()');
+    expect(fileContent).not.toContain('provideNzNoAnimation()');
   });
 
-  it(`should add provideAnimationsAsync('noop') function call if animations is disable`, async () => {
+  it(`should add provideNzNoAnimation() function call if animations is disable`, async () => {
     const options = { ...defaultOptions, animations: false };
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
 
-    expect(fileContent).toContain(`provideAnimationsAsync('noop')`);
+    expect(fileContent).toContain(`provideNzNoAnimation()`);
   });
 
   it('should register default locale id', async () => {

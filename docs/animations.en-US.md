@@ -13,7 +13,7 @@ configurations, or use the global configuration to turn off all animations assoc
 `provideNoopAnimations` has been marked as deprecated. You can use `provideNzNoAnimation` to turn off animations.
 
 ```ts
-import { provideNzNoAnimation } from 'ng-zorro-antd/core/no-animation';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 
 // Turn off animations globally
 export const appConfig: ApplicationConfig = {
