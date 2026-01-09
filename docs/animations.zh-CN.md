@@ -12,7 +12,7 @@ NG-ZORRO 允许开发者关闭动画效果，您可以通过添加对应指令�
 `provideNoopAnimations` 已被标记为废弃，你可以通过 `provideNzNoAnimation` 来关闭动画。
 
 ```ts
-import { provideNzNoAnimation } from 'ng-zorro-antd/core/no-animation';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 
 // 在全局中关闭动画
 export const appConfig: ApplicationConfig = {
