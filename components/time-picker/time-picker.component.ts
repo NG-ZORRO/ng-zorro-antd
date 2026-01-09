@@ -150,7 +150,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
               [(ngModel)]="value"
               (ngModelChange)="onPanelValueChange($event)"
               (closePanel)="closePanel()"
-            ></nz-time-picker-panel>
+            />
           </div>
         </div>
       </div>
@@ -292,6 +292,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   readonly nzPrefix = input<string | TemplateRef<void>>();
 
+  readonly nzNeedConfirm = input(false, { transform: booleanAttribute });
+  private hasConfirmed = false;
+
   protected readonly timepickerAnimationEnter = slideAnimationEnter();
   protected readonly timepickerAnimationLeave = slideAnimationLeave();
 
@@ -402,11 +405,17 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   closePanel(): void {
+    this.hasConfirmed = true;
     this.inputRef.nativeElement.blur();
   }
 
   setCurrentValueAndClose(): void {
-    this.emitValue(this.value);
+    if ((this.nzNeedConfirm() && this.hasConfirmed) || !this.nzNeedConfirm()) {
+      this.emitValue(this.value);
+      this.hasConfirmed = false;
+    } else {
+      this.setValue(this.preValue);
+    }
     this.close();
   }
 
