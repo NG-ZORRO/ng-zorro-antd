@@ -3,6 +3,7 @@ order: 13
 title: Change Log
 toc: false
 timeline: true
+tag: '{{version}}'
 ---
 
 `ng-zorro-antd` strictly follows [Semantic Versioning 2.0.0](https://semver.org).
@@ -15,84 +16,43 @@ timeline: true
 
 ---
 
-## 21.0.0-beta.0
+## 21.0.0
 
-`2025-12-26`
+`2026-01-09`
 
 ### Code Refactoring
 
-- migrate `upload` `select` `dropdown` `cascader` `tabs` `segmented` `message` `notification` to native animation
-
-### Bug Fixes
-
-- **i18n:** add missing translations to `fa_IR` ([#9615](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9615)) ([1e8845d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e8845d245ce7a98850390c61e65b301fb8fcc05))
-
-## 21.0.0-next.2
-
-`2025-12-22`
-
-### ⚠ BREAKING CHANGES
-
-- **tabs:** remove deprecated `nz-tabset` selector ([#9613](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9613)) ([d5e5772](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d5e577245da502a85799c84afbf9088c03732319))
-- **qrcode:** change the type of `nzPadding` from `number | number[]` to `number` ([#9535](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9535)) ([5419b51](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5419b51781478369afe3c01fe24374f2f62eeffe))
+- migrate to native animation API, feel free to remove the `@angular/animations` dependency
 
 ### Features
 
 - **color-picker:** support `nzPresets` ([#9341](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9341)) ([d59ec99](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d59ec995b42726470ebaea39ec7a52f5c9c5e58d))
+- **core:** add `provideNzNoAnimation` ([#9555](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9555)) ([c945e81](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c945e81ce5966f34e7a96a8bccbf628a5b8d8c06))
 - **date-picker:** output date range in correct order ([#9518](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9518)) ([d0b3185](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d0b3185fb2ae891a164d3b4f28e4f68add8e166b))
+- **float-button:** add pop animation to float button menu ([#9413](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9413)) ([b40ad91](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b40ad91b26aee48fc86d92da48071751f8345ab4))
 - **input-number:** supports mouse wheel control ([#9591](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9591)) ([6ce3545](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6ce354537ec59bd0c480eed61bb8f663d2429189))
 - **input,input-number:** add additional options for `focus` method ([#9595](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9595)) ([c336711](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c3367110ccd53c5debd74799070ac6565c13c483))
 - **qrcode:** support `nzType` and `nzBoostLevel`, delete array usage of `nzPadding` ([#9535](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9535)) ([5419b51](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5419b51781478369afe3c01fe24374f2f62eeffe))
-
-### Bug Fixes
-
-- **icon:** include nzSpin in change detection logic ([#9598](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9598)) ([7d3c637](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7d3c637834fc17b1cd2d1f3e1ef77942a3d35c22))
-- **select:** disable nzAutoClearSearchValue in single mode ([#9605](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9605)) ([4720c21](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4720c2175dd2bc937d8ccbf66ab804c4782f23d4))
-
-## 21.0.0-next.1
-
-`2025-12-05`
-
-### Features
-
-- **schematics:** update default test target builder ([#9574](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9574)) ([46d39de](https://github.com/NG-ZORRO/ng-zorro-antd/commit/46d39de9f3968544989b68a31878edc1b5851c94))
-
-### Bug Fixes
-
-- **\*:** correct usage of signal input `nzNoAnimation` ([#9576](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9576)) ([b418efe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b418efee87145a448b47f0c07990ef49a0a9fc2d))
-- **popconfirm:** allow null for `nzIcon` hide icon ([#9569](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9569)) ([760b587](https://github.com/NG-ZORRO/ng-zorro-antd/commit/760b58745a1b377d4008825a3d4c157d8a1bd590))
-- **schematics:** remove `NzInputNumberLegacyModule` ([#9573](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9573)) ([48c02aa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/48c02aa17d866a1a9774521f23574dc3a3c38ca6))
-
-## 21.0.0-next.0
-
-`2025-11-28`
-
-Upgrade with shell
-
-```shell
-ng update ng-zorro-antd@next
-```
-
-### Features
-
-- **core:** add `provideNzNoAnimation` ([#9555](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9555)) ([c945e81](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c945e81ce5966f34e7a96a8bccbf628a5b8d8c06))
-- **float-button:** add pop animation to float button menu ([#9413](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9413)) ([b40ad91](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b40ad91b26aee48fc86d92da48071751f8345ab4))
 - **tree-view:** upgrade tree view component ([#9003](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9003)) ([ae9ad57](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ae9ad576292671f3228361733b47e890d425e713))
 - **upload:** add `nzMaxCount` feature ([#9424](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9424)) ([0bf13c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0bf13c3fa5e41289315cf4d9642ed5aa7005af9e))
-- **schematics:** update upgrade data for v21 ([#9564](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9564)) ([a44227d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a44227d4dcfd137a2f33fabf699ac0af331e4208))
 
 ### Bug Fixes
 
+- **i18n:** add missing translations to `fa_IR` ([#9615](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9615)) ([1e8845d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e8845d245ce7a98850390c61e65b301fb8fcc05))
+- **popconfirm:** allow null for `nzIcon` hide icon ([#9569](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9569)) ([760b587](https://github.com/NG-ZORRO/ng-zorro-antd/commit/760b58745a1b377d4008825a3d4c157d8a1bd590))
+- **select:** disable `nzAutoClearSearchValue` in single mode ([#9605](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9605)) ([4720c21](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4720c2175dd2bc937d8ccbf66ab804c4782f23d4))
 - **tree:** no `preventDefault` when right-clicking the node title ([#9532](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9532)) ([900efad](https://github.com/NG-ZORRO/ng-zorro-antd/commit/900efad5b0a04b1a0aca2c68728f01ed8dc4ef3b))
 
 ### ⚠ BREAKING CHANGES
 
-- **tree-view:** `nzTreeControl` has been removed, please use `nzLevelAccessor` or `nzChildrenAccessor` instead
-- **statistic:** rename `NzStatisticNumberComponent` to `NzStatisticContentValueComponent`
-- **color-picker:** change DOM structure to be simpler, and remove no unnecessary payload of `nzClick` output
-- **watermark:** change import path from `ng-zorro-antd/water-mark` to `ng-zorro-antd/watermark`
 - **back-top:** removed, please use `float-button` instead
+- **color-picker:** change DOM structure to be simpler, and remove no unnecessary payload of `nzClick` output
 - **input-number-legacy:** removed, please use `input-number` instead
+- **qrcode:** change the type of `nzPadding` from `number | number[]` to `number` ([#9535](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9535))
+- **statistic:** rename `NzStatisticNumberComponent` to `NzStatisticContentValueComponent`
+- **tabs:** remove deprecated `nz-tabset` selector ([#9613](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9613))
+- **tree-view:** `nzTreeControl` has been removed, please use `nzLevelAccessor` or `nzChildrenAccessor` instead
+- **watermark:** change import path from `ng-zorro-antd/water-mark` to `ng-zorro-antd/watermark`
 
 Remove the following APIs which were marked as deprecated in the previous version:
 
@@ -129,9 +89,11 @@ Unify and standardize component naming, involving the following name changes:
 The following APIs are marked as **deprecated** in v20 and will be removed in the next major version.
 Please refer to related documentation for better alternatives.
 
-| Module                | API                    |
-| --------------------- | ---------------------- |
-| `ng-zorro-antd/input` | `textarea[nzAutosize]` |
+| Module                   | API                                                               |
+| ------------------------ | ----------------------------------------------------------------- |
+| `ng-zorro-antd/collapse` | `nz-collapse-panel[nzDisabled]`                                   |
+| `ng-zorro-antd/input`    | `textarea[nzAutosize]`, `nz-input-group`, `[nz-input-group-slot]` |
+| `ng-zorro-antd/upload`   | `nz-upload[nzTransformFile]`, `NzUploadTransformFileType`         |
 
 ## 20.4.4
 

@@ -3,6 +3,7 @@ order: 13
 title: 更新日志
 toc: false
 timeline: true
+tag: '{{version}}'
 ---
 
 `ng-zorro-antd` 严格遵循 [Semantic Versioning 2.0.0](https://semver.org/lang/zh-CN/) 语义化版本规范。
@@ -15,85 +16,43 @@ timeline: true
 
 ---
 
-## 21.0.0-beta.0
+## 21.0.0
 
-`2025-12-26`
+`2026-01-09`
 
 ### Code Refactoring
 
-- native animation 迁移：`upload` `select` `dropdown` `cascader` `tabs` `segmented` `message` `notification`
-
-### Bug Fixes
-
-- **i18n:** 更新 `fa_IR` 国际化文案 ([#9615](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9615)) ([1e8845d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e8845d245ce7a98850390c61e65b301fb8fcc05))
-
-## 21.0.0-next.2
-
-`2025-12-22`
-
-### ⚠ BREAKING CHANGES
-
-- **tabs:** 移除已弃用的 `nz-tabset` selector ([#9613](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9613)) ([d5e5772](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d5e577245da502a85799c84afbf9088c03732319))
-- **qrcode:** `nzPadding` 类型从 `number | number[]` 调整为 `number` ([#9535](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9535)) ([5419b51](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5419b51781478369afe3c01fe24374f2f62eeffe))
+- 迁移至 native animation API，您可以按需移除依赖 `@angular/animations`
 
 ### Features
 
 - **color-picker:** 新增 `nzPresets` 参数支持预设颜色 ([#9341](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9341)) ([d59ec99](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d59ec995b42726470ebaea39ec7a52f5c9c5e58d))
+- **core:** 新增 `provideNzNoAnimation` provider 用于禁用动画效果 ([#9555](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9555)) ([c945e81](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c945e81ce5966f34e7a96a8bccbf628a5b8d8c06))
 - **date-picker:** 日期范围选择顺序颠倒时确保能输出正确的范围 ([#9518](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9518)) ([d0b3185](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d0b3185fb2ae891a164d3b4f28e4f68add8e166b))
+- **float-button:** 悬浮按钮组合新增动画效果 ([#9413](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9413)) ([b40ad91](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b40ad91b26aee48fc86d92da48071751f8345ab4))
 - **input-number:** 支持鼠标滚轮控制 ([#9591](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9591)) ([6ce3545](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6ce354537ec59bd0c480eed61bb8f663d2429189))
 - **input,input-number:** `focus` 方法新增额外参数 ([#9595](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9595)) ([c336711](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c3367110ccd53c5debd74799070ac6565c13c483))
-- **qrcode:** 新增 `nzType` 和 `nzBoostLevel` 参数 ([#9535](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9535)) ([5419b51](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5419b51781478369afe3c01fe24374f2f62eeffe))
-
-### Bug Fixes
-
-- **icon:** 将 `nzSpin` 纳入变更检测逻辑，修复图标旋转状态在某些情况下无法及时更新 ([#9597](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9597)) ([46dc381](https://github.com/NG-ZORRO/ng-zorro-antd/commit/46dc3819244969963ca80eeac9f9c06482f48d29))
-
-* **select:** 单选模式下 `nzAutoClearSearchValue` 不应生效 ([#9605](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9605)) ([4720c21](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4720c2175dd2bc937d8ccbf66ab804c4782f23d4))
-
-## 21.0.0-next.1
-
-`2025-12-05`
-
-### Features
-
-- **schematics:** 更新默认的测试 builder ([#9574](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9574)) ([46d39de](https://github.com/NG-ZORRO/ng-zorro-antd/commit/46d39de9f3968544989b68a31878edc1b5851c94))
-
-### Bug Fixes
-
-- **\*:** 修复 `nzNoAnimation` 不生效的问题 ([#9576](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9576)) ([b418efe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b418efee87145a448b47f0c07990ef49a0a9fc2d))
-- **popconfirm:** 允许设置 `nzIcon` 为 `null` 以隐藏图标 ([#9569](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9569)) ([760b587](https://github.com/NG-ZORRO/ng-zorro-antd/commit/760b58745a1b377d4008825a3d4c157d8a1bd590))
-- **schematics:** 移除 `NzInputNumberLegacyModule` 的迁移 schematic ([#9573](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9573)) ([48c02aa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/48c02aa17d866a1a9774521f23574dc3a3c38ca6))
-
-## 21.0.0-next.0
-
-`2025-11-28`
-
-通过 @angular/cli 升级
-
-```shell
-ng update ng-zorro-antd@next
-```
-
-### Features
-
-- **core:** 新增 `provideNzNoAnimation` provider 用于禁用动画效果 ([#9555](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9555)) ([c945e81](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c945e81ce5966f34e7a96a8bccbf628a5b8d8c06))
-- **float-button:** 悬浮按钮组合新增动画效果 ([#9413](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9413)) ([b40ad91](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b40ad91b26aee48fc86d92da48071751f8345ab4))
+- **qrcode:** 新增 `nzType` 和 `nzBoostLevel` 参数，`nzPadding` 类型从 `number | number[]` 调整为 `number` ([#9535](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9535)) ([5419b51](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5419b51781478369afe3c01fe24374f2f62eeffe))
 - **tree-view:** 升级 tree-view 组件，支持 `nzLevelAccessor` 和 `nzChildrenAccessor` ([#9003](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9003)) ([ae9ad57](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ae9ad576292671f3228361733b47e890d425e713))
 - **upload:** 新增 `nzMaxCount` 属性 ([#9424](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9424)) ([0bf13c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0bf13c3fa5e41289315cf4d9642ed5aa7005af9e))
-- **schematics:** 支持 v21 迁移 ([#9564](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9564)) ([a44227d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a44227d4dcfd137a2f33fabf699ac0af331e4208))
 
 ### Bug Fixes
 
+- **i18n:** 更新 `fa_IR` 国际化文案 ([#9615](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9615)) ([1e8845d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e8845d245ce7a98850390c61e65b301fb8fcc05))
+- **popconfirm:** 允许设置 `nzIcon` 为 `null` 以隐藏图标 ([#9569](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9569)) ([760b587](https://github.com/NG-ZORRO/ng-zorro-antd/commit/760b58745a1b377d4008825a3d4c157d8a1bd590))
+- **select:** 单选模式下 `nzAutoClearSearchValue` 不应生效 ([#9605](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9605)) ([4720c21](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4720c2175dd2bc937d8ccbf66ab804c4782f23d4))
 - **tree:** 不再阻止右键点击树节点标题的默认行为 ([#9532](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9532)) ([900efad](https://github.com/NG-ZORRO/ng-zorro-antd/commit/900efad5b0a04b1a0aca2c68728f01ed8dc4ef3b))
 
 ### ⚠ BREAKING CHANGES
 
-- **tree-view:** 移除 `nzTreeControl`，请使用 `nzLevelAccessor` 或 `nzChildrenAccessor` 替代
-- **statistic:** 重命名 `NzStatisticNumberComponent` 为`NzStatisticContentValueComponent`
-- **color-picker:** 简化 DOM 结构，移除 `nzClick` output 不必要的参数
-- **watermark:** 将引入路径 `ng-zorro-antd/water-mark` 调整为 `ng-zorro-antd/watermark`
 - **back-top:** 移除，请使用 `float-button` 替代
+- **color-picker:** 简化 DOM 结构，移除 `nzClick` output 不必要的参数
 - **input-number-legacy:** 移除，请使用 `input-number` 替代
+- **qrcode:** `nzPadding` 类型从 `number | number[]` 调整为 `number`
+- **statistic:** 重命名 `NzStatisticNumberComponent` 为 `NzStatisticContentValueComponent`
+- **tabs:** 移除已弃用的 `nz-tabset` selector
+- **tree-view:** 移除 `nzTreeControl`，请使用 `nzLevelAccessor` 或 `nzChildrenAccessor` 替代
+- **watermark:** 将引入路径 `ng-zorro-antd/water-mark` 调整为 `ng-zorro-antd/watermark`
 
 移除以下在过去的版本中标记为废弃的 API:
 
@@ -129,9 +88,11 @@ ng update ng-zorro-antd@next
 
 在 v21 中，以下 API 被标记为 **deprecated**，并将在下一个主要版本中移除。 请参考相关文档以获取更好的替代方案。
 
-| Module                | API                    |
-| --------------------- | ---------------------- |
-| `ng-zorro-antd/input` | `textarea[nzAutosize]` |
+| Module                   | API                                                               |
+| ------------------------ | ----------------------------------------------------------------- |
+| `ng-zorro-antd/collapse` | `nz-collapse-panel[nzDisabled]`                                   |
+| `ng-zorro-antd/input`    | `textarea[nzAutosize]`, `nz-input-group`, `[nz-input-group-slot]` |
+| `ng-zorro-antd/upload`   | `nz-upload[nzTransformFile]`, `NzUploadTransformFileType`         |
 
 ## 20.4.4
 

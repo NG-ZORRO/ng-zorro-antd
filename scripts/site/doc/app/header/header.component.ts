@@ -78,7 +78,7 @@ export class HeaderComponent {
       return 'beta';
     }
     const major = new Version(version).major;
-    return `v${major}`;
+    return VERSION.major === major ? version : `v${major}`;
   }
 
   onFocusChange(focus: boolean): void {

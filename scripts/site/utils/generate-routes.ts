@@ -70,7 +70,6 @@ export function generateRoutes(
   docsMeta: ComponentIndexDocMap
 ): void {
   const router: RouterList = { intro: [], components: [] };
-  delete docsMeta['changelog'];
   for (const key in docsMeta) {
     const enMeta = docsMeta[key].en;
     const zhMeta = docsMeta[key].zh;
@@ -81,6 +80,7 @@ export function generateRoutes(
       order: enMeta.order ?? 0,
       hidden: !!enMeta.hidden,
       description: enMeta.description ?? '',
+      tag: enMeta.tag,
       experimental: !!enMeta.experimental
     });
     router.intro.push({
@@ -90,6 +90,7 @@ export function generateRoutes(
       order: zhMeta.order ?? 0,
       hidden: !!zhMeta.hidden,
       description: zhMeta.description ?? '',
+      tag: zhMeta.tag,
       experimental: !!zhMeta.experimental
     });
   }

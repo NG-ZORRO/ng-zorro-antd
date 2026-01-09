@@ -8,7 +8,12 @@
   @if (page() === 'docs') {
     @for (intro of intro(); track $index) {
       <li nz-menu-item nzMatchRouter>
-        <a routerLink="{{ intro.path }}">{{ intro.label }}</a>
+        <a class="menu-title-content-link" routerLink="{{ intro.path }}">
+          <span>{{ intro.label }}</span>
+          @if (intro.tag) {
+            <ng-container *ngTemplateOutlet="tag; context: { $implicit: intro.tag }"></ng-container>
+          }
+        </a>
       </li>
     }
   } @else if (page() === 'components') {
@@ -18,8 +23,9 @@
       </a>
     </li>
     <li nz-menu-item nzMatchRouter>
-      <a [routerLink]="`components/changelog/${language()}`">
+      <a class="menu-title-content-link" [routerLink]="`components/changelog/${language()}`">
         <span>{{ language() === 'zh' ? '更新日志' : 'Change Log' }}</span>
+        <ng-container *ngTemplateOutlet="tag; context: { $implicit: '{{version}}' }"></ng-container>
       </a>
     </li>
 
@@ -66,9 +72,10 @@
 </ul>
 
 <ng-template #tag let-tag>
-  @if (tag === 'deprecated') {
-    <nz-tag nzColor="warning" [nzBordered]="false">
-      <span>{{ language() === 'zh' ? '废弃' : 'Deprecated' }}</span>
+  @let semantic = semanticTags[tag];
+  @if (semantic) {
+    <nz-tag [nzColor]="semantic.color" [nzBordered]="false">
+      {{ semantic.label[language()] }}
     </nz-tag>
   } @else {
     <nz-tag nzColor="success" [nzBordered]="false">{{ tag }}</nz-tag>

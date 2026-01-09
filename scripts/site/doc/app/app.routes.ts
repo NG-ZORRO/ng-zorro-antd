@@ -11,8 +11,12 @@ export const routes: Routes = [
     loadChildren: () => import('./components-overview/routes')
   },
   {
-    path: 'components/changelog',
-    loadChildren: () => import('./changelog/routes')
+    path: 'components/changelog/en',
+    loadComponent: () => import('./docs/changelog-en')
+  },
+  {
+    path: 'components/changelog/zh',
+    loadComponent: () => import('./docs/changelog-zh')
   },
   { path: '**', redirectTo: '/docs/introduce/en', pathMatch: 'full' }
 ];

@@ -3,7 +3,7 @@ category: Components
 type: 数据展示
 title: TreeView
 subtitle: 树视图
-tag: 更新
+tag: updated
 cover: 'https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg'
 description: 树视图组件，相比封装好的 Tree 组件具有更高的定制度和更好的性能。
 ---

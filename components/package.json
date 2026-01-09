@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "21.0.0-beta.0",
+  "version": "21.0.0",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "schematics": "./schematics/collection.json",
@@ -33,7 +33,6 @@
     "date-fns": "^2.16.1"
   },
   "peerDependencies": {
-    "@angular/animations": "^21.0.0",
     "@angular/common": "^21.0.0",
     "@angular/forms": "^21.0.0",
     "@angular/core": "^21.0.0",
