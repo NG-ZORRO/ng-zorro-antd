@@ -16,7 +16,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, inject as testingInject, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -31,12 +31,12 @@ import {
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
-import { NgStyleInterface, NzSafeAny, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzSafeAny, NzStatus, NzVariant, type NzPlacement } from 'ng-zorro-antd/core/types';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NZ_DATE_LOCALE, NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 
-import { NzDatePickerComponent, NzDatePickerSizeType, NzPlacement } from './date-picker.component';
+import { NzDatePickerComponent, NzDatePickerSizeType } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
 import { CompatibleDate, NzPanelChangeType } from './standard-types';
 import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
