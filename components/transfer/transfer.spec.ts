@@ -13,7 +13,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
@@ -164,7 +164,7 @@ describe('transfer', () => {
       fixture.detectChanges();
       pageObject.expectLeft(LEFT_COUNT).search('left', 'description of content1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
-      (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
+      (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-clear-icon') as HTMLElement).click();
       fixture.detectChanges();
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFT_COUNT);
     });
@@ -172,7 +172,7 @@ describe('transfer', () => {
     it('should be clear search keywords', () => {
       pageObject.expectLeft(LEFT_COUNT).search('left', '1');
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
-      (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
+      (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-clear-icon') as HTMLElement).click();
       fixture.detectChanges();
       expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(LEFT_COUNT);
     });
@@ -266,27 +266,33 @@ describe('transfer', () => {
     });
 
     describe('#nzDisabled', () => {
-      it('should working', () => {
+      it('should working', async () => {
         instance.nzDisabled = true;
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
+        await fixture.whenStable();
         expect(debugElement.queryAll(By.css('.ant-transfer-disabled')).length).toBe(1);
         // All operation buttons muse be disabled
         expect(debugElement.queryAll(By.css('.ant-transfer-operation .ant-btn[disabled]')).length).toBe(2);
         // All search inputs must be disabled
-        expect(debugElement.queryAll(By.css('.ant-input-disabled')).length).toBe(2);
+        expect(debugElement.queryAll(By.css('.ant-transfer-list-search.ant-input-disabled')).length).toBe(2);
         // All items must be disabled
         expect(debugElement.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT);
         // All checkboxes (include 2 check-all) must be disabled
         expect(debugElement.queryAll(By.css('.ant-checkbox-disabled')).length).toBe(COUNT + 2);
       });
 
-      it('should be disabled clear', () => {
+      it('should be disabled clear', async () => {
         pageObject.expectLeft(LEFT_COUNT).search('left', '1');
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
         instance.nzDisabled = true;
         fixture.detectChanges();
-        (pageObject.leftList.querySelector('.ant-transfer-list-search .ant-input-suffix') as HTMLElement).click();
+        await fixture.whenStable();
+        const clearBtn = pageObject.leftList.querySelector(
+          '.ant-transfer-list-search .ant-input-clear-icon:not(.ant-input-clear-icon-hidden)'
+        ) as HTMLElement | null;
+        clearBtn?.click();
         fixture.detectChanges();
+        await fixture.whenStable();
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       });
 
