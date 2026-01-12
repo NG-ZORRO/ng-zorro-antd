@@ -14,20 +14,23 @@ import {
   computed,
   contentChild,
   DestroyRef,
+  effect,
   ElementRef,
   forwardRef,
   inject,
   input,
+  numberAttribute,
   output,
   signal,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { EMPTY, startWith, switchMap } from 'rxjs';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormItemFeedbackIconComponent } from 'ng-zorro-antd/core/form';
-import { getStatusClassNames, getVariantClassNames } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, getVariantClassNames, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
@@ -125,6 +128,9 @@ import { NZ_INPUT_WRAPPER } from './tokens';
               </ng-content>
             </span>
           }
+          @if (nzShowCount()) {
+            <span class="ant-input-show-count-suffix">{{ dataCount() }}</span>
+          }
           @if (inputPasswordDir && inputPasswordDir.nzVisibilityToggle()) {
             <span
               class="ant-input-password-icon"
@@ -164,6 +170,7 @@ import { NZ_INPUT_WRAPPER } from './tokens';
   host: {
     '[class]': 'class()',
     '[class.ant-input-disabled]': 'disabled()',
+    '[class.ant-input-out-of-range]': 'isOutOfRange()',
     '[class.ant-input-affix-wrapper-textarea-with-clear-btn]': 'nzAllowClear() && isTextarea()'
   }
 })
@@ -189,6 +196,11 @@ export class NzInputWrapperComponent {
   readonly nzAddonBefore = input<string>();
   readonly nzAddonAfter = input<string>();
 
+  readonly nzShowCount = input(false, { transform: booleanAttribute });
+  readonly nzCountMax = input(0, { transform: numberAttribute });
+  readonly nzCountStrategy = input((v: string) => v.length);
+  readonly nzExceedFormatter = input((v: string, _m: number) => v);
+
   readonly nzClear = output<void>();
 
   readonly size = computed(() => this.inputDir().nzSize());
@@ -200,7 +212,13 @@ export class NzInputWrapperComponent {
 
   protected readonly hasPrefix = computed(() => !!this.nzPrefix() || !!this.prefix());
   protected readonly hasSuffix = computed(
-    () => !!this.nzSuffix() || !!this.suffix() || this.nzAllowClear() || this.hasFeedback() || this.inputPasswordDir
+    () =>
+      !!this.nzSuffix() ||
+      !!this.suffix() ||
+      this.nzAllowClear() ||
+      this.hasFeedback() ||
+      this.nzShowCount() ||
+      this.inputPasswordDir
   );
   protected readonly hasAffix = computed(() => this.hasPrefix() || this.hasSuffix());
   protected readonly hasAddonBefore = computed(() => !!this.nzAddonBefore() || !!this.addonBefore());
@@ -254,6 +272,18 @@ export class NzInputWrapperComponent {
     };
   });
 
+  protected readonly dataCount = signal('');
+  protected readonly isOutOfRange = signal(false);
+  protected readonly inputValue = toSignal(
+    toObservable(this.inputDir).pipe(
+      switchMap(inputDir => {
+        const ngControl = inputDir.ngControl;
+        if (!ngControl) return EMPTY;
+        return (ngControl.valueChanges ?? EMPTY).pipe(startWith(ngControl.value as string));
+      })
+    )
+  );
+
   constructor() {
     const destroyRef = inject(DestroyRef);
 
@@ -270,10 +300,31 @@ export class NzInputWrapperComponent {
         this.focusMonitor.stopMonitoring(element);
       });
     });
+
+    effect(() => this.updateCount());
   }
 
   clear(): void {
     this.inputDir().ngControl?.control?.setValue('');
     this.nzClear.emit();
+  }
+
+  private updateCount(): void {
+    if (!this.nzShowCount()) {
+      return;
+    }
+
+    const countMax = this.nzCountMax();
+    const inputValue = this.inputValue();
+    const value = isNotNil(inputValue) ? String(inputValue) : '';
+    const formattedValue = this.nzExceedFormatter()(value, countMax);
+    const count = this.nzCountStrategy()(formattedValue);
+
+    this.dataCount.set(`${count}${countMax > 0 ? `/${countMax}` : ``}`);
+    this.isOutOfRange.set(countMax > 0 && count > countMax);
+
+    if (formattedValue !== value) {
+      this.inputDir().ngControl?.control?.setValue(formattedValue, { emitEvent: true });
+    }
   }
 }
