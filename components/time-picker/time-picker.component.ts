@@ -33,8 +33,8 @@ import {
   computed,
   forwardRef,
   inject,
-  signal,
-  input
+  input,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -285,8 +285,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @WithConfig() nzBackdrop = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
 
-  readonly nzNeedConfirmation = input(false, { transform: booleanAttribute });
-  private readonly hasConfirmed = signal(false);
+  readonly nzNeedConfirm = input(false, { transform: booleanAttribute });
+  private hasConfirmed = false;
 
   protected readonly timepickerAnimationEnter = slideAnimationEnter();
   protected readonly timepickerAnimationLeave = slideAnimationLeave();
@@ -398,14 +398,14 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   closePanel(): void {
-    this.hasConfirmed.set(true);
+    this.hasConfirmed = true;
     this.inputRef.nativeElement.blur();
   }
 
   setCurrentValueAndClose(): void {
-    if ((this.nzNeedConfirmation() && this.hasConfirmed()) || !this.nzNeedConfirmation()) {
+    if ((this.nzNeedConfirm() && this.hasConfirmed) || !this.nzNeedConfirm()) {
       this.emitValue(this.value);
-      this.hasConfirmed.set(false);
+      this.hasConfirmed = false;
     } else {
       this.setValue(this.preValue);
     }

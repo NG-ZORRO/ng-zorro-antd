@@ -782,7 +782,7 @@ export class NzTestTimePickerInFormComponent {
     <nz-time-picker
       [(ngModel)]="date"
       (ngModelChange)="onChange($event)"
-      [nzNeedConfirmation]="needConfirmation"
+      [nzNeedConfirm]="needConfirmation"
       [nzDefaultOpenValue]="defaultOpenValue"
     />
   `
