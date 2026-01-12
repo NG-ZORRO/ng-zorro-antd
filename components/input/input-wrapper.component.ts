@@ -324,7 +324,7 @@ export class NzInputWrapperComponent {
     this.isOutOfRange.set(countMax > 0 && count > countMax);
 
     if (formattedValue !== value) {
-      this.inputDir().ngControl?.control?.setValue(formattedValue, { emitEvent: true });
+      this.inputDir().ngControl?.control?.setValue(formattedValue, { emitEvent: false });
     }
   }
 }
