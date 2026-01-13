@@ -212,6 +212,34 @@ describe('time-picker', () => {
       expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
     }));
 
+    it('should support custom prefix icon', () => {
+      testComponent.nzPrefix = 'clock-circle';
+      fixture.detectChanges();
+      const prefixElement = fixture.debugElement.query(By.css('.ant-picker-prefix'));
+      expect(prefixElement).toBeDefined();
+      expect(prefixElement.query(By.css('.anticon-clock-circle'))).toBeDefined();
+    });
+
+    it('should not display prefix element when nzPrefix is not set', () => {
+      testComponent.nzPrefix = undefined;
+      fixture.detectChanges();
+      const prefixElement = fixture.debugElement.query(By.css('.ant-picker-prefix'));
+      expect(prefixElement).toBeNull();
+    });
+
+    it('should update prefix icon when nzPrefix changes', () => {
+      testComponent.nzPrefix = 'clock-circle';
+      fixture.detectChanges();
+      let prefixElement = fixture.debugElement.query(By.css('.ant-picker-prefix'));
+      expect(prefixElement.query(By.css('.anticon-clock-circle'))).toBeDefined();
+
+      testComponent.nzPrefix = 'calendar';
+      fixture.detectChanges();
+      prefixElement = fixture.debugElement.query(By.css('.ant-picker-prefix'));
+      expect(prefixElement.query(By.css('.anticon-calendar'))).toBeDefined();
+      expect(prefixElement.query(By.css('.anticon-clock-circle'))).toBeNull();
+    });
+
     it('should backdrop work', fakeAsync(() => {
       testComponent.nzBackdrop = true;
       testComponent.open = true;
@@ -498,6 +526,7 @@ describe('time-picker', () => {
       [nzInputReadOnly]="nzInputReadOnly"
       [nzUse12Hours]="use12Hours"
       [nzSuffixIcon]="nzSuffixIcon"
+      [nzPrefix]="nzPrefix"
       [nzBackdrop]="nzBackdrop"
       [nzDefaultOpenValue]="defaultOpenValue"
       [nzVariant]="nzVariant"
@@ -513,6 +542,7 @@ export class NzTestTimePickerComponent {
   nzInputReadOnly = false;
   use12Hours = false;
   nzSuffixIcon: string = 'close-circle';
+  nzPrefix?: string;
   nzBackdrop = false;
   nzVariant: NzVariant = 'outlined';
   defaultOpenValue: Date = new Date('2020-03-27T00:00:00');

@@ -33,6 +33,7 @@ import {
   computed,
   forwardRef,
   inject,
+  input,
   signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -71,6 +72,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
   selector: 'nz-time-picker',
   exportAs: 'nzTimePicker',
   template: `
+    @if (nzPrefix(); as prefix) {
+      <span class="ant-picker-prefix">
+        <ng-container *nzStringTemplateOutlet="prefix; let nzPrefix">
+          <nz-icon [nzType]="nzPrefix" />
+        </ng-container>
+      </span>
+    }
     <div class="ant-picker-input">
       <input
         #inputElement
@@ -283,6 +291,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input() @WithConfig() nzBackdrop = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
+
+  readonly nzPrefix = input<string | TemplateRef<NzSafeAny>>();
 
   protected readonly timepickerAnimationEnter = slideAnimationEnter();
   protected readonly timepickerAnimationLeave = slideAnimationLeave();
