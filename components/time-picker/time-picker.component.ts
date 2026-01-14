@@ -74,9 +74,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
   template: `
     @if (nzPrefix(); as prefix) {
       <span class="ant-picker-prefix">
-        <ng-container *nzStringTemplateOutlet="prefix">
-          {{ prefix }}
-        </ng-container>
+        <ng-container *nzStringTemplateOutlet="prefix">{{ prefix }}</ng-container>
       </span>
     }
     <div class="ant-picker-input">
