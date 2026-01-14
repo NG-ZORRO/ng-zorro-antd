@@ -69,6 +69,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
       [class.ant-collapse-content-active]="active()"
       animation-collapse
       [open]="active()"
+      leavedClassName="ant-collapse-content-hidden"
     >
       <div class="ant-collapse-content-box">
         <ng-content />
