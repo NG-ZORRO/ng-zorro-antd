@@ -17,7 +17,8 @@ import {
   booleanAttribute,
   computed,
   forwardRef,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -68,7 +69,9 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnCh
 
   dir = inject(Directionality).valueSignal;
 
-  protected readonly finalSize = computed(() => this.nzFormSize?.() || this.nzSize);
+  private readonly size = signal(this.nzSize);
+
+  protected readonly finalSize = computed(() => this.nzFormSize?.() || this.size());
 
   ngOnInit(): void {
     this.nzRadioService.selected$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
@@ -83,12 +86,15 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnCh
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzDisabled, nzName } = changes;
+    const { nzDisabled, nzName, nzSize } = changes;
     if (nzDisabled) {
       this.nzRadioService.setDisabled(this.nzDisabled);
     }
     if (nzName) {
       this.nzRadioService.setName(this.nzName!);
+    }
+    if (nzSize) {
+      this.size.set(this.nzSize);
     }
   }
 
