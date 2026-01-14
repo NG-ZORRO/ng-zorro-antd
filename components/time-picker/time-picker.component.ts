@@ -74,8 +74,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
   template: `
     @if (nzPrefix(); as prefix) {
       <span class="ant-picker-prefix">
-        <ng-container *nzStringTemplateOutlet="prefix; let nzPrefix">
-          <nz-icon [nzType]="nzPrefix" />
+        <ng-container *nzStringTemplateOutlet="prefix">
+          {{ prefix }}
         </ng-container>
       </span>
     }
@@ -292,7 +292,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @WithConfig() nzBackdrop = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
 
-  readonly nzPrefix = input<string | TemplateRef<NzSafeAny>>();
+  readonly nzPrefix = input<string | TemplateRef<void>>();
 
   protected readonly timepickerAnimationEnter = slideAnimationEnter();
   protected readonly timepickerAnimationLeave = slideAnimationLeave();
