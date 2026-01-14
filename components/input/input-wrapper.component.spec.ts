@@ -302,6 +302,29 @@ describe('input-wrapper with count config', () => {
         '11/20'
       );
     }));
+
+    it('should be work nzCountMax', fakeAsync(() => {
+      component.value = 'Hello';
+      component.countMax = 10;
+      component.showCount = true;
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(component.withCountMax().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountMax().nativeElement.querySelector('.ant-input-show-count-suffix').textContent).toEqual(
+        '5/10'
+      );
+
+      component.value = 'Hello World';
+      component.countMax = 10;
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(component.withCountMax().nativeElement.classList).toContain('ant-input-out-of-range');
+      expect(component.withCountMax().nativeElement.querySelector('.ant-input-show-count-suffix').textContent).toEqual(
+        '11/10'
+      );
+    }));
   });
 
   describe('should be work with count / max / strategy / formatter', () => {
@@ -329,7 +352,8 @@ describe('input-wrapper with count config', () => {
         component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('5/10');
 
-      component.value = 'HelloWorld NG-ZORRO';
+      component.value = 'HelloWorld';
+      component.countMax = 10;
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
@@ -337,6 +361,19 @@ describe('input-wrapper with count config', () => {
       expect(
         component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('10/10');
+    }));
+
+    it('should be work nzCountStrategy', fakeAsync(() => {
+      component.showCount = true;
+      component.countMax = 10;
+      component.value = 'Hello';
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(
+        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+      ).toEqual('5/10');
 
       component.value = '🔥🔥🔥';
       fixture.detectChanges();
@@ -355,6 +392,30 @@ describe('input-wrapper with count config', () => {
       expect(
         component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('8/10');
+    }));
+
+    it('should be work nzExceedFormatter', fakeAsync(() => {
+      component.showCount = true;
+      component.countMax = 10;
+      component.value = 'HelloWorld NG-ZORRO';
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(
+        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+      ).toEqual('10/10');
+      expect(component.withCountStrategy().nativeElement.querySelector('.ant-input').value).toEqual('HelloWorld');
+
+      component.value = 'Hello🔥🔥🔥🔥🔥World';
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(
+        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+      ).toEqual('10/10');
+      expect(component.withCountStrategy().nativeElement.querySelector('.ant-input').value).toEqual('Hello🔥🔥🔥🔥🔥');
     }));
   });
 });
