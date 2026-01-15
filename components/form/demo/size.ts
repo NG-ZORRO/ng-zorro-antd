@@ -1,8 +1,9 @@
-import { Component, model } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import type { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -100,7 +101,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   `
 })
 export class NzDemoFormSizeComponent {
-  size = model<'small' | 'default' | 'large'>('default');
+  readonly size = signal<NzSizeLDSType>('default');
 
   expandKeys = ['100', '1001'];
 
