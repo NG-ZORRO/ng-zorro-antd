@@ -133,6 +133,7 @@ import { PREFIX_CLASS } from './util';
             <date-header
               [(value)]="activeDate"
               [locale]="locale"
+              [mode]="panelMode"
               [showSuperPreBtn]="panelMode === 'week' ? enablePrevNext('prev', 'week') : enablePrevNext('prev', 'date')"
               [showSuperNextBtn]="
                 panelMode === 'week' ? enablePrevNext('next', 'week') : enablePrevNext('next', 'date')
