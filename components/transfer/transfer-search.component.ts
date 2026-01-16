@@ -19,6 +19,9 @@ import { FormsModule } from '@angular/forms';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+/**
+ * @deprecated Will be removed in v22.0.0. Please use `nz-input-wrapper` instead.
+ */
 @Component({
   selector: '[nz-transfer-search]',
   exportAs: 'nzTransferSearch',

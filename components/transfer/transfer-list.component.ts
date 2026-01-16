@@ -21,6 +21,7 @@ import {
   booleanAttribute,
   inject
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
@@ -29,13 +30,22 @@ import { NzCheckboxComponent, NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { RenderListContext, TransferDirection, TransferItem, TransferStat } from './interface';
-import { NzTransferSearchComponent } from './transfer-search.component';
 
 @Component({
   selector: 'nz-transfer-list',
   exportAs: 'nzTransferList',
+  imports: [
+    NzInputModule,
+    FormsModule,
+    NzCheckboxModule,
+    NgTemplateOutlet,
+    NzEmptyModule,
+    NzIconModule,
+    NzButtonModule
+  ],
   template: `
     <div class="ant-transfer-list-header">
       @if (showSelectAll && !oneWay) {
@@ -66,15 +76,16 @@ import { NzTransferSearchComponent } from './transfer-search.component';
     <div class="ant-transfer-list-body" [class.ant-transfer-list-body-with-search]="showSearch">
       @if (showSearch) {
         <div class="ant-transfer-list-body-search-wrapper">
-          <span
-            nz-transfer-search
-            class="ant-input-affix-wrapper ant-transfer-list-search"
-            (valueChanged)="handleFilter($event)"
-            (valueClear)="handleClear()"
-            [placeholder]="searchPlaceholder"
-            [disabled]="disabled"
-            [value]="filter"
-          ></span>
+          <nz-input-wrapper class="ant-transfer-list-search" nzAllowClear>
+            <nz-icon nzInputPrefix nzType="search" />
+            <input
+              nz-input
+              [placeholder]="searchPlaceholder"
+              [disabled]="disabled"
+              [(ngModel)]="filter"
+              (ngModelChange)="handleFilter($event)"
+            />
+          </nz-input-wrapper>
         </div>
       }
       @if (renderList) {
@@ -159,8 +170,7 @@ import { NzTransferSearchComponent } from './transfer-search.component';
   host: {
     class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'
-  },
-  imports: [NzCheckboxModule, NgTemplateOutlet, NzEmptyModule, NzTransferSearchComponent, NzIconModule, NzButtonModule]
+  }
 })
 export class NzTransferListComponent implements AfterViewInit {
   // #region fields
@@ -260,17 +270,12 @@ export class NzTransferListComponent implements AfterViewInit {
   // #region search
 
   handleFilter(value: string): void {
-    this.filter = value;
     this.dataSource.forEach(item => {
       item.hide = value.length > 0 && !this.matchFilter(value, item);
     });
     this.stat.shownCount = this.validData.length;
     this.stat.availableCount = this.availableData.length;
     this.filterChange.emit({ direction: this.direction, value });
-  }
-
-  handleClear(): void {
-    this.handleFilter('');
   }
 
   deleteItem(item: TransferItem): void {
