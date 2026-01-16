@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 import type { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -28,7 +29,8 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
     NzDatePickerModule,
     NzButtonModule,
     NzTimePickerModule,
-    NzSwitchModule
+    NzSwitchModule,
+    NzColorPickerModule
   ],
   template: `
     <form nz-form [nzSize]="size()">
@@ -95,6 +97,10 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
         <nz-form-control>
           <nz-switch />
         </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>Color Picker</nz-form-label>
+        <nz-color-picker />
       </nz-form-item>
       <button nz-button nzType="primary">Button</button>
     </form>

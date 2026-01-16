@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -18,6 +18,7 @@ import {
   NzColorPickerTriggerType,
   NzPresetColor
 } from 'ng-zorro-antd/color-picker/typings';
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -480,4 +481,118 @@ export class NzTestColorPickerPresetsComponent {
   onColorChange(event: { color: NzColor; format: string }): void {
     console.log('Color changed:', event);
   }
+}
+
+describe('nz-color-picker form size', () => {
+  let fixture: ComponentFixture<NzTestColorPickerFormSizeComponent>;
+  let colorPickerElement: HTMLElement;
+  let formSizeSignal: WritableSignal<NzSizeLDSType | undefined>;
+
+  beforeEach(() => {
+    formSizeSignal = signal<NzSizeLDSType | undefined>(undefined);
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  it('should apply size from NZ_FORM_SIZE signal', () => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
+    colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
+    fixture.detectChanges();
+
+    formSizeSignal.set('large');
+    fixture.detectChanges();
+
+    const trigger = colorPickerElement.querySelector('.ant-color-picker-trigger');
+    expect(trigger?.classList).toContain('ant-color-picker-lg');
+  });
+
+  it('should apply small size from NZ_FORM_SIZE signal', () => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
+    colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
+    fixture.detectChanges();
+
+    formSizeSignal.set('small');
+    fixture.detectChanges();
+
+    const trigger = colorPickerElement.querySelector('.ant-color-picker-trigger');
+    expect(trigger?.classList).toContain('ant-color-picker-sm');
+  });
+
+  it('should prioritize NZ_FORM_SIZE over nzSize input', () => {
+    formSizeSignal.set('large');
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
+    colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
+    fixture.componentInstance.size = 'small';
+    fixture.detectChanges();
+
+    const trigger = colorPickerElement.querySelector('.ant-color-picker-trigger');
+    expect(trigger?.classList).toContain('ant-color-picker-lg');
+    expect(trigger?.classList).not.toContain('ant-color-picker-sm');
+  });
+
+  it('should use nzSize input when NZ_FORM_SIZE is not provided', () => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
+    });
+    fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
+    colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
+    fixture.componentInstance.size = 'large';
+    fixture.detectChanges();
+
+    const trigger = colorPickerElement.querySelector('.ant-color-picker-trigger');
+    expect(trigger?.classList).toContain('ant-color-picker-lg');
+  });
+
+  it('should update size when NZ_FORM_SIZE signal changes', () => {
+    formSizeSignal.set('small');
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
+    colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
+    fixture.detectChanges();
+
+    let trigger = colorPickerElement.querySelector('.ant-color-picker-trigger');
+    expect(trigger?.classList).toContain('ant-color-picker-sm');
+
+    formSizeSignal.set('large');
+    fixture.detectChanges();
+
+    trigger = colorPickerElement.querySelector('.ant-color-picker-trigger');
+    expect(trigger?.classList).toContain('ant-color-picker-lg');
+    expect(trigger?.classList).not.toContain('ant-color-picker-sm');
+  });
+
+  it('should apply default size when NZ_FORM_SIZE is undefined', () => {
+    formSizeSignal.set(undefined);
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
+    colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
+    fixture.detectChanges();
+
+    const trigger = colorPickerElement.querySelector('.ant-color-picker-trigger');
+    expect(trigger?.classList).not.toContain('ant-color-picker-lg');
+    expect(trigger?.classList).not.toContain('ant-color-picker-sm');
+  });
+});
+
+@Component({
+  imports: [NzColorPickerModule],
+  template: `<nz-color-picker [nzSize]="size" />`
+})
+export class NzTestColorPickerFormSizeComponent {
+  size: NzSizeLDSType = 'default';
 }
