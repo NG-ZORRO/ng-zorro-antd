@@ -25,6 +25,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzPopoverDirective } from 'ng-zorro-antd/popover';
@@ -34,7 +35,6 @@ import { NzColorFormatComponent } from './color-format.component';
 import { NgAntdColorPickerModule } from './src/ng-antd-color-picker.module';
 import { defaultColor, generateColor } from './src/util/util';
 import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetColor } from './typings';
-import { NZ_FORM_SIZE } from '../core/form';
 
 @Component({
   selector: 'nz-color-picker',
