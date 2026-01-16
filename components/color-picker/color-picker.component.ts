@@ -9,6 +9,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   DestroyRef,
   EventEmitter,
   forwardRef,
@@ -17,12 +18,14 @@ import {
   OnChanges,
   OnInit,
   Output,
+  signal,
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzPopoverDirective } from 'ng-zorro-antd/popover';
@@ -48,8 +51,8 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetCol
   template: `
     <div
       [class.ant-color-picker-trigger]="!nzFlipFlop"
-      [class.ant-color-picker-sm]="nzSize === 'small'"
-      [class.ant-color-picker-lg]="nzSize === 'large'"
+      [class.ant-color-picker-sm]="finalSize() === 'small'"
+      [class.ant-color-picker-lg]="finalSize() === 'large'"
       nz-popover
       [nzPopoverContent]="colorPicker"
       [nzPopoverTrigger]="!nzDisabled ? nzTrigger : null"
@@ -57,7 +60,7 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetCol
       (nzPopoverVisibleChange)="nzOnOpenChange.emit($event)"
     >
       @if (!nzFlipFlop) {
-        <nz-color-block [nzColor]="blockColor" [nzSize]="nzSize" />
+        <nz-color-block [nzColor]="blockColor" [nzSize]="finalSize()" />
       } @else {
         <ng-template [ngTemplateOutlet]="nzFlipFlop" />
       }
@@ -119,6 +122,8 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   private destroyRef = inject(DestroyRef);
   private formBuilder = inject(FormBuilder);
 
+  private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+
   @Input() nzFormat: NzColorPickerFormatType | null = null;
   @Input() nzValue: string | NzColor = '';
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -142,6 +147,9 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   clearColor: boolean = false;
   showText: string = defaultColor.toHexString();
   formControl = this.formBuilder.control('');
+  private readonly size = signal(this.nzSize);
+
+  protected readonly finalSize = computed(() => this.formSize?.() || this.size());
 
   onChange: (value: string) => void = () => {};
 
@@ -186,9 +194,12 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzValue, nzDefaultValue } = changes;
+    const { nzValue, nzDefaultValue, nzSize } = changes;
     if (nzValue || nzDefaultValue) {
       this.getBlockColor();
+    }
+    if (nzSize) {
+      this.size.set(nzSize.currentValue);
     }
   }
 

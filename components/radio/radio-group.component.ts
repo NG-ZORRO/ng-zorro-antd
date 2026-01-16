@@ -3,24 +3,27 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   Input,
   OnChanges,
   OnInit,
   SimpleChanges,
   ViewEncapsulation,
   booleanAttribute,
+  computed,
   forwardRef,
   inject,
-  DestroyRef
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzRadioService } from './radio.service';
@@ -30,7 +33,7 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
 @Component({
   selector: 'nz-radio-group',
   exportAs: 'nzRadioGroup',
-  template: `<ng-content></ng-content>`,
+  template: `<ng-content />`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -43,17 +46,17 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
   ],
   host: {
     class: 'ant-radio-group',
-    '[class.ant-radio-group-large]': `nzSize === 'large'`,
-    '[class.ant-radio-group-small]': `nzSize === 'small'`,
+    '[class.ant-radio-group-large]': `finalSize() === 'large'`,
+    '[class.ant-radio-group-small]': `finalSize() === 'small'`,
     '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`,
-    '[class.ant-radio-group-rtl]': `dir === 'rtl'`
+    '[class.ant-radio-group-rtl]': `dir() === 'rtl'`
   }
 })
 export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnChanges {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly nzRadioService = inject(NzRadioService);
-  private readonly directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly nzFormSize = inject(NZ_FORM_SIZE, { optional: true });
 
   private value: NzSafeAny | null = null;
   private isNzDisableFirstChange: boolean = true;
@@ -64,7 +67,11 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnCh
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzName: string | null = null;
 
-  dir: Direction = 'ltr';
+  dir = inject(Directionality).valueSignal;
+
+  private readonly size = signal(this.nzSize);
+
+  protected readonly finalSize = computed(() => this.nzFormSize?.() || this.size());
 
   ngOnInit(): void {
     this.nzRadioService.selected$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
@@ -76,22 +83,18 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnCh
     this.nzRadioService.touched$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       Promise.resolve().then(() => this.onTouched());
     });
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzDisabled, nzName } = changes;
+    const { nzDisabled, nzName, nzSize } = changes;
     if (nzDisabled) {
       this.nzRadioService.setDisabled(this.nzDisabled);
     }
     if (nzName) {
       this.nzRadioService.setName(this.nzName!);
+    }
+    if (nzSize) {
+      this.size.set(this.nzSize);
     }
   }
 

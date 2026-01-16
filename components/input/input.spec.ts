@@ -4,15 +4,24 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection, viewChild } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  signal,
+  viewChild,
+  type WritableSignal
+} from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzInputWrapperComponent } from 'ng-zorro-antd/input/input-wrapper.component';
+import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
 import { NzInputDirective } from './input.directive';
@@ -276,6 +285,61 @@ describe('input', () => {
       expect(inputElement.nativeElement.type).toEqual('text');
     });
   });
+
+  describe('finalSize', () => {
+    let fixture: ComponentFixture<TestInputFinalSizeComponent>;
+    let inputElement: HTMLButtonElement;
+    let component: TestInputFinalSizeComponent;
+    let formSizeSignal: WritableSignal<NzSizeLDSType | undefined>;
+    let compactSizeSignal: WritableSignal<NzSizeLDSType>;
+
+    beforeEach(() => {
+      compactSizeSignal = signal<NzSizeLDSType>('large');
+      formSizeSignal = signal<NzSizeLDSType | undefined>('default');
+    });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
+
+    it('should set correctly the size from the formSize signal', () => {
+      TestBed.configureTestingModule({
+        providers: [
+          { provide: NZ_FORM_SIZE, useValue: formSizeSignal },
+          { provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }
+        ]
+      });
+      fixture = TestBed.createComponent(TestInputFinalSizeComponent);
+      component = fixture.componentInstance;
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
+      fixture.detectChanges();
+      formSizeSignal.set('large');
+      fixture.detectChanges();
+      expect(inputElement.classList).toContain('ant-input-lg');
+    });
+    it('should set correctly the size from the compactSize signal', () => {
+      TestBed.configureTestingModule({
+        providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
+      });
+      fixture = TestBed.createComponent(TestInputFinalSizeComponent);
+      component = fixture.componentInstance;
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
+      fixture.detectChanges();
+      compactSizeSignal.set('large');
+      fixture.detectChanges();
+      expect(inputElement.classList).toContain('ant-input-lg');
+    });
+    it('should set correctly the size from the nzSize input', () => {
+      TestBed.configureTestingModule({});
+      fixture = TestBed.createComponent(TestInputFinalSizeComponent);
+      component = fixture.componentInstance;
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
+      fixture.detectChanges();
+      component.size = 'large';
+      fixture.detectChanges();
+      expect(inputElement.classList).toContain('ant-input-lg');
+    });
+  });
 });
 
 @Component({
@@ -370,4 +434,12 @@ export class NzTestInputInFormComponent {
 })
 export class NzTestInputWithTypeComponent {
   type: string | null = null;
+}
+
+@Component({
+  imports: [NzInputModule],
+  template: `<input nz-input [nzSize]="size" />`
+})
+export class TestInputFinalSizeComponent {
+  size: NzSizeLDSType = 'default';
 }

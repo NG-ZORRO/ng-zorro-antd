@@ -62,6 +62,7 @@ A form consists of one or more form fields whose type includes input, textarea, 
 | `[nzLabelAlign]`      | Set default props `[nzLabelAlign]` value of `nz-form-label`                                             | `'left' \| 'right'`                            | `'right'`                                       |               |         |
 | `[nzLabelWrap]`       | Set default props `[nzLabelWrap]` value of `nz-form-label`                                              | `boolean`                                      | `false`                                         |               |         |
 | `[nzRequiredMark]`    | Required mark style. Can use required mark or optional mark.                                            | `NzRequiredMark`                               | `true`                                          |               | 20.4.0  |
+| `[nzSize]`            | Set field component size (antd components only)                                                         | `small` \| `default` \| `large`                |                                                 |               |         |
 
 ### nz-form-item
 

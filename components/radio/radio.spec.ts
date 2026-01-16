@@ -4,11 +4,12 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ApplicationRef, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, DebugElement, provideZoneChangeDetection, signal, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { createMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
@@ -450,6 +451,40 @@ describe('radio', () => {
       expect(radioGroup.nativeElement.className).not.toContain('ant-radio-group-rtl');
     });
   });
+
+  describe('finalSize', () => {
+    let fixture: ComponentFixture<TestRadioGroupFinalSizeComponent>;
+    let radioGroupElement: HTMLElement;
+    let component: TestRadioGroupFinalSizeComponent;
+    const formSize = signal<NzSizeLDSType | undefined>(undefined);
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [{ provide: NZ_FORM_SIZE, useValue: formSize }]
+      });
+
+      fixture = TestBed.createComponent(TestRadioGroupFinalSizeComponent);
+      component = fixture.componentInstance;
+      radioGroupElement = fixture.debugElement.query(By.directive(NzRadioGroupComponent)).nativeElement;
+      fixture.detectChanges();
+    });
+
+    it('should prioritize formSize > nzSize', () => {
+      component.size = 'default';
+      formSize.set('large');
+      fixture.detectChanges();
+      expect(radioGroupElement.classList).toContain('ant-radio-group-large');
+
+      formSize.set('small');
+      fixture.detectChanges();
+      expect(radioGroupElement.classList).toContain('ant-radio-group-small');
+
+      formSize.set('default');
+      fixture.detectChanges();
+      expect(radioGroupElement.classList).not.toContain('ant-radio-group-large');
+      expect(radioGroupElement.classList).not.toContain('ant-radio-group-small');
+    });
+  });
 });
 
 @Component({
@@ -681,4 +716,12 @@ export class NzTestRadioButtonRtlComponent {
 export class NzTestRadioGroupRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction: Direction = 'rtl';
+}
+
+@Component({
+  imports: [NzRadioModule],
+  template: `<nz-radio-group [nzSize]="size"></nz-radio-group>`
+})
+export class TestRadioGroupFinalSizeComponent {
+  size: NzSizeLDSType = 'default';
 }
