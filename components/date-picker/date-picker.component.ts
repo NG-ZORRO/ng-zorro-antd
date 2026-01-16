@@ -62,7 +62,8 @@ import {
   NzValidateStatus,
   NzVariant,
   OnChangeType,
-  OnTouchedType
+  OnTouchedType,
+  type NzPlacement
 } from 'ng-zorro-antd/core/types';
 import {
   fromEventOutsideAngular,
@@ -97,7 +98,6 @@ const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's st
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'datePicker';
 
 export type NzDatePickerSizeType = 'large' | 'default' | 'small';
-export type NzPlacement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight'; // todo: export it in public API
 
 /**
  * The base picker for all common APIs
