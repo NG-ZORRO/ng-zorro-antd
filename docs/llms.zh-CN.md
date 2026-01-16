@@ -1,6 +1,7 @@
 ---
 order: 7
 title: LLMs.txt
+tag: new
 ---
 
 本指南介绍如何让 Cursor、Windsurf 和 Claude 等 AI 工具更好地理解 `ng-zorro-antd`。

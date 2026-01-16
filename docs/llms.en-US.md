@@ -1,6 +1,7 @@
 ---
 order: 7
 title: LLMs.txt
+tag: new
 ---
 
 This guide explains how to enable AI tools like Cursor, Windsurf, and Claude to better understand `ng-zorro-antd`.
