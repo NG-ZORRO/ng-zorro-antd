@@ -7,7 +7,6 @@ import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@
 
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 
-import { NzDateMode } from '../standard-types';
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
 import { transCompatFormat } from './util';
@@ -20,8 +19,6 @@ import { transCompatFormat } from './util';
 })
 export class DateHeaderComponent extends AbstractPanelHeader {
   private readonly dateHelper = inject(DateHelperService);
-
-  override mode: NzDateMode = 'date';
 
   getSelectors(): PanelSelector[] {
     return [
