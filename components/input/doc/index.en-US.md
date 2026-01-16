@@ -39,18 +39,29 @@ You can get instance by `ViewChild`
 
 Use when you need to add extra functionality to `[nz-input]`.
 
-| Property              | Description                                                                              | Type                               | Default                       |
-| --------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------- | ----------------------------- |
-| `[nzAddonBefore]`     | The label text displayed before (on the left side of) the input field                    | `string`                           | -                             |
-| `[nzAddonAfter]`      | The label text displayed after (on the right side of) the input field                    | `string`                           | -                             |
-| `[nzPrefix]`          | The prefix icon for the Input                                                            | `string`                           | -                             |
-| `[nzSuffix]`          | The suffix icon for the Input                                                            | `string`                           | -                             |
-| `[nzAllowClear]`      | If allow to remove input content with clear icon                                         | `boolean`                          | `false`                       |
-| `[nzShowCount]`       | Should the character count be displayed                                                  | `boolean`                          | `false`                       |
-| `[nzCountMax]`        | Maximum character limit: exceeding will be highlighted in red but will not be truncated. | `number`                           | -                             |
-| `[nzCountStrategy]`   | Custom character counting strategy                                                       | `(v: string) => number`            | `(v: string) => v.length`     |
-| `[nzExceedFormatter]` | Trimming logic when the number of characters exceeds `nzCountMax`                        | `(v: string, m: number) => string` | `(v: string, m: number) => v` |
-| `(nzClear)`           | Event emitted when the clear icon is clicked                                             | `OutputEmitterRef<void>`           | -                             |
+| Property          | Description                                                           | Type                     | Default |
+| ----------------- | --------------------------------------------------------------------- | ------------------------ | ------- |
+| `[nzAddonBefore]` | The label text displayed before (on the left side of) the input field | `string`                 | -       |
+| `[nzAddonAfter]`  | The label text displayed after (on the right side of) the input field | `string`                 | -       |
+| `[nzPrefix]`      | The prefix icon for the Input                                         | `string`                 | -       |
+| `[nzSuffix]`      | The suffix icon for the Input                                         | `string`                 | -       |
+| `[nzAllowClear]`  | If allow to remove input content with clear icon                      | `boolean`                | `false` |
+| `[nzShowCount]`   | Should the character count be displayed                               | `boolean`                | `false` |
+| `[nzCount]`       | Custom character counting config                                      | `NzCountConfig`          | -       |
+| `(nzClear)`       | Event emitted when the clear icon is clicked                          | `OutputEmitterRef<void>` | -       |
+
+#### NzCountConfig
+
+```ts
+export interface NzCountConfig {
+  // Maximum character limit: exceeding will be highlighted in red but will not be truncated.
+  max?: number;
+  // Custom character counting strategy
+  strategy?: (value: string) => number;
+  // Trimming logic when the number of characters exceeds `max`
+  exceedFormatter?: (value: string, config: { max: number }) => string;
+}
+```
 
 ### nz-input-password
 

@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzSizeLDSType, NzVariant } from 'ng-zorro-antd/core/types';
 
+import { NzCountConfig } from './input-wrapper.component';
 import { NzInputModule } from './input.module';
 
 describe('input-wrapper', () => {
@@ -262,68 +263,68 @@ describe('input-wrapper with count config', () => {
     it('should be show/hidden count suffix', () => {
       component.showCount = false;
       fixture.detectChanges();
-      expect(component.withCountMax().nativeElement.classList).not.toContain('ant-input-out-of-range');
-      expect(component.withCountMax().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeFalsy();
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeFalsy();
 
       component.showCount = true;
       fixture.detectChanges();
-      expect(component.withCountMax().nativeElement.classList).not.toContain('ant-input-out-of-range');
-      expect(component.withCountMax().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeTruthy();
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeTruthy();
     });
 
     it('should be correct counting', fakeAsync(() => {
       component.value = 'Hello';
       component.showCount = true;
-      component.countMax = 10;
+      component.countConfig = { max: 10 };
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountMax().nativeElement.classList).not.toContain('ant-input-out-of-range');
-      expect(component.withCountMax().nativeElement.querySelector('.ant-input-show-count-suffix').textContent).toEqual(
-        '5/10'
-      );
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+      ).toEqual('5/10');
 
       component.value = 'Hello World';
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountMax().nativeElement.classList).toContain('ant-input-out-of-range');
-      expect(component.withCountMax().nativeElement.querySelector('.ant-input-show-count-suffix').textContent).toEqual(
-        '11/10'
-      );
+      expect(component.withCountConfig().nativeElement.classList).toContain('ant-input-out-of-range');
+      expect(
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+      ).toEqual('11/10');
 
       component.value = 'Hello World';
-      component.countMax = 20;
+      component.countConfig = { max: 20 };
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountMax().nativeElement.classList).not.toContain('ant-input-out-of-range');
-      expect(component.withCountMax().nativeElement.querySelector('.ant-input-show-count-suffix').textContent).toEqual(
-        '11/20'
-      );
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+      ).toEqual('11/20');
     }));
 
-    it('should be work nzCountMax', fakeAsync(() => {
+    it('should be work count max', fakeAsync(() => {
       component.value = 'Hello';
-      component.countMax = 10;
       component.showCount = true;
+      component.countConfig = { max: 10 };
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountMax().nativeElement.classList).not.toContain('ant-input-out-of-range');
-      expect(component.withCountMax().nativeElement.querySelector('.ant-input-show-count-suffix').textContent).toEqual(
-        '5/10'
-      );
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+      ).toEqual('5/10');
 
       component.value = 'Hello World';
-      component.countMax = 10;
+      component.countConfig = { max: 10 };
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountMax().nativeElement.classList).toContain('ant-input-out-of-range');
-      expect(component.withCountMax().nativeElement.querySelector('.ant-input-show-count-suffix').textContent).toEqual(
-        '11/10'
-      );
+      expect(component.withCountConfig().nativeElement.classList).toContain('ant-input-out-of-range');
+      expect(
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+      ).toEqual('11/10');
     }));
   });
 
@@ -331,91 +332,91 @@ describe('input-wrapper with count config', () => {
     it('should be show/hidden count suffix', () => {
       component.showCount = false;
       fixture.detectChanges();
-      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
-      expect(component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeFalsy();
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeFalsy();
 
       component.showCount = true;
       fixture.detectChanges();
-      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
-      expect(component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeTruthy();
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeTruthy();
     });
 
     it('should be correct counting', fakeAsync(() => {
       component.value = 'Hello';
       component.showCount = true;
-      component.countMax = 10;
+      component.countConfig = { max: 10, strategy: countStrategyFn };
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
-        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('5/10');
 
       component.value = 'HelloWorld';
-      component.countMax = 10;
+      component.countConfig = { max: 10, strategy: countStrategyFn };
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
-        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('10/10');
     }));
 
-    it('should be work nzCountStrategy', fakeAsync(() => {
+    it('should be work count strategy', fakeAsync(() => {
       component.showCount = true;
-      component.countMax = 10;
+      component.countConfig = { max: 10, strategy: countStrategyFn };
       component.value = 'Hello';
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
-        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('5/10');
 
       component.value = '🔥🔥🔥';
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
-        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('3/10');
 
       component.value = 'Hello🔥🔥🔥';
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
-        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('8/10');
     }));
 
-    it('should be work nzExceedFormatter', fakeAsync(() => {
+    it('should be work exceedFormatter', fakeAsync(() => {
       component.showCount = true;
-      component.countMax = 10;
+      component.countConfig = { max: 10, strategy: countStrategyFn, exceedFormatter: exceedFormatterFn };
       component.value = 'HelloWorld NG-ZORRO';
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
-        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('10/10');
-      expect(component.withCountStrategy().nativeElement.querySelector('.ant-input').value).toEqual('HelloWorld');
+      expect(component.withCountConfig().nativeElement.querySelector('.ant-input').value).toEqual('HelloWorld');
 
       component.value = 'Hello🔥🔥🔥🔥🔥World';
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(component.withCountStrategy().nativeElement.classList).not.toContain('ant-input-out-of-range');
+      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
-        component.withCountStrategy().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
+        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('10/10');
-      expect(component.withCountStrategy().nativeElement.querySelector('.ant-input').value).toEqual('Hello🔥🔥🔥🔥🔥');
+      expect(component.withCountConfig().nativeElement.querySelector('.ant-input').value).toEqual('Hello🔥🔥🔥🔥🔥');
     }));
   });
 });
@@ -499,17 +500,7 @@ class InputWithAffixesAndAddonsTestComponent {
       <input nz-input [(ngModel)]="value" />
     </nz-input-wrapper>
 
-    <nz-input-wrapper #withCountMax [nzShowCount]="showCount" [nzCountMax]="countMax">
-      <input nz-input [(ngModel)]="value" />
-    </nz-input-wrapper>
-
-    <nz-input-wrapper
-      #withCountStrategy
-      [nzShowCount]="showCount"
-      [nzCountMax]="countMax"
-      [nzCountStrategy]="countStrategy"
-      [nzExceedFormatter]="exceedFormatter"
-    >
+    <nz-input-wrapper #withCountConfig [nzShowCount]="showCount" [nzCount]="countConfig">
       <input nz-input [(ngModel)]="value" />
     </nz-input-wrapper>
   `
@@ -517,16 +508,13 @@ class InputWithAffixesAndAddonsTestComponent {
 export class InputWithCountTestComponent {
   value = '';
   showCount = false;
-  countMax = 10;
 
-  countStrategy = (v: string): number => runes(v).length;
-  exceedFormatter = (v: string, m: number): string => runes(v).slice(0, m).join('');
+  countConfig: NzCountConfig = {};
 
   readonly withShowCount = viewChild.required('withShowCount', { read: ElementRef });
-  readonly withCountMax = viewChild.required('withCountMax', { read: ElementRef });
-  readonly withCountStrategy = viewChild.required('withCountStrategy', { read: ElementRef });
+  readonly withCountConfig = viewChild.required('withCountConfig', { read: ElementRef });
 }
 
-function runes(str: string): string[] {
-  return [...str];
-}
+const runes = (str: string): string[] => [...str];
+const countStrategyFn = (v: string): number => runes(v).length;
+const exceedFormatterFn = (v: string, { max }: { max: number }): string => runes(v).slice(0, max).join('');

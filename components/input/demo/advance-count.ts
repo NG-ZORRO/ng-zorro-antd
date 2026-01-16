@@ -21,7 +21,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <nz-form-item>
         <nz-form-label><h4>Exceed Max</h4></nz-form-label>
         <nz-form-control>
-          <nz-input-wrapper nzShowCount [nzCountMax]="10">
+          <nz-input-wrapper nzShowCount [nzCount]="{ max: 10 }">
             <input nz-input formControlName="test_1" />
           </nz-input-wrapper>
         </nz-form-control>
@@ -29,7 +29,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <nz-form-item>
         <nz-form-label><h4>Emoji count as length 1</h4></nz-form-label>
         <nz-form-control>
-          <nz-input-wrapper [nzShowCount]="true" [nzCountMax]="6" [nzCountStrategy]="countStrategy">
+          <nz-input-wrapper nzShowCount [nzCount]="{ max: 6, strategy: countStrategyFn }">
             <input nz-input formControlName="test_2" />
           </nz-input-wrapper>
         </nz-form-control>
@@ -39,9 +39,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
         <nz-form-control>
           <nz-input-wrapper
             nzShowCount
-            [nzCountMax]="10"
-            [nzCountStrategy]="countStrategy"
-            [nzExceedFormatter]="exceedFormatterFn"
+            [nzCount]="{ max: 10, strategy: countStrategyFn, exceedFormatter: exceedFormatterFn }"
           >
             <input nz-input formControlName="test_3" />
           </nz-input-wrapper>
@@ -53,8 +51,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
           <nz-input-password
             [nzVisibilityToggle]="false"
             nzShowCount
-            [nzCountMax]="20"
-            [nzCountStrategy]="countStrategy"
+            [nzCount]="{ max: 20, strategy: countStrategyFn, exceedFormatter: exceedFormatterFn }"
           >
             <input nz-input formControlName="test_4" />
           </nz-input-password>
@@ -63,7 +60,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <nz-form-item>
         <nz-form-label><h4>nz-input-search</h4></nz-form-label>
         <nz-form-control>
-          <nz-input-search nzShowCount [nzCountMax]="20" [nzCountStrategy]="countStrategy">
+          <nz-input-search nzShowCount [nzCount]="{ max: 20, strategy: countStrategyFn }">
             <input nz-input formControlName="test_5" />
           </nz-input-search>
         </nz-form-control>
@@ -82,9 +79,9 @@ export class NzDemoInputAdvanceCountComponent {
     test_5: ['CCC']
   });
 
-  countStrategy: (v: string) => number = (v: string) => runes(v).length;
-  exceedFormatterFn: (cur: string, max: number) => string = (v: string, m: number) => {
-    const result = runes(v).slice(0, m).join('');
+  countStrategyFn: (v: string) => number = v => runes(v).length;
+  exceedFormatterFn: (cur: string, config: { max: number }) => string = (v, { max }) => {
+    const result = runes(v).slice(0, max).join('');
     return result;
   };
 }

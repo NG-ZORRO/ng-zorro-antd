@@ -19,7 +19,6 @@ import {
   forwardRef,
   inject,
   input,
-  numberAttribute,
   output,
   signal,
   TemplateRef,
@@ -40,6 +39,12 @@ import { NzInputPasswordDirective, NzInputPasswordIconDirective } from './input-
 import { NzInputSearchDirective, NzInputSearchEnterButtonDirective } from './input-search.directive';
 import { NzInputDirective } from './input.directive';
 import { NZ_INPUT_WRAPPER } from './tokens';
+
+export interface NzCountConfig {
+  max?: number;
+  strategy?: (value: string) => number;
+  exceedFormatter?: (value: string, config: { max: number }) => string;
+}
 
 @Component({
   selector: 'nz-input-wrapper,nz-input-password,nz-input-search',
@@ -197,9 +202,7 @@ export class NzInputWrapperComponent {
   readonly nzAddonAfter = input<string>();
 
   readonly nzShowCount = input(false, { transform: booleanAttribute });
-  readonly nzCountMax = input(0, { transform: numberAttribute });
-  readonly nzCountStrategy = input((v: string) => v.length);
-  readonly nzExceedFormatter = input((v: string, _m: number) => v);
+  readonly nzCount = input<NzCountConfig>();
 
   readonly nzClear = output<void>();
 
@@ -314,17 +317,21 @@ export class NzInputWrapperComponent {
       return;
     }
 
-    const countMax = this.nzCountMax();
+    const countConfig = this.nzCount();
     const inputValue = this.inputValue();
+    const countMax = countConfig?.max ?? 0;
+    const strategy = countConfig?.strategy ?? ((v: string) => v.length);
+    const exceedFormatter = countConfig?.exceedFormatter ?? ((v: string) => v);
+
     const value = isNotNil(inputValue) ? String(inputValue) : '';
-    const formattedValue = this.nzExceedFormatter()(value, countMax);
-    const count = this.nzCountStrategy()(formattedValue);
+    const formattedValue = exceedFormatter(value, { max: countMax });
+    const count = strategy(formattedValue);
 
     this.dataCount.set(`${count}${countMax > 0 ? `/${countMax}` : ``}`);
     this.isOutOfRange.set(countMax > 0 && count > countMax);
 
     if (formattedValue !== value) {
-      this.inputDir().ngControl?.control?.setValue(formattedValue, { emitEvent: false });
+      this.inputDir().ngControl?.control?.setValue(formattedValue);
     }
   }
 }
