@@ -16,6 +16,15 @@ tag: '{{version}}'
 
 ---
 
+## 21.0.1
+
+`2026-01-16`
+
+### Bug Fixes
+
+- 修复样式文件中 keyframes 样式缺失的问题 ([#9653](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9653)) ([49ec060](https://github.com/NG-ZORRO/ng-zorro-antd/commit/49ec0605b31eef0a3d790319d55d9f44492b4c0b))
+- **collapse:** 修复折叠状态下出现幽灵滚动区域的问题 ([#9649](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9649)) ([5378f8b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5378f8beec14f7b47e0a54b6c81583592825ffa1))
+
 ## 21.0.0
 
 `2026-01-09`
