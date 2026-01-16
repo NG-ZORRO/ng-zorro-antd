@@ -49,6 +49,7 @@ import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import {
   NZ_FORM_SIZE,
+  NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
   NzFormNoStatusService,
   NzFormStatusService
@@ -291,9 +292,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-show-arrow]': 'nzShowArrow',
     '[class.ant-select-show-search]': '!!nzShowSearch',
     '[class.ant-select-disabled]': 'nzDisabled',
-    '[class.ant-select-borderless]': `nzVariant === 'borderless'`,
-    '[class.ant-select-filled]': `nzVariant === 'filled'`,
-    '[class.ant-select-underlined]': `nzVariant === 'underlined'`,
+    '[class.ant-select-borderless]': `finalVariant() === 'borderless'`,
+    '[class.ant-select-filled]': `finalVariant() === 'filled'`,
+    '[class.ant-select-underlined]': `finalVariant() === 'underlined'`,
     '[class.ant-select-open]': 'menuVisible()',
     '[class.ant-select-focused]': 'isFocused',
     '[class.ant-select-multiple]': 'nzMultiple',
@@ -446,7 +447,7 @@ export class NzCascaderComponent
     return this.elementRef;
   }
 
-  protected finalSize = computed(() => {
+  protected readonly finalSize = computed(() => {
     if (this.formSize?.()) {
       return this.formSize();
     }
@@ -456,9 +457,15 @@ export class NzCascaderComponent
     return this.size();
   });
 
+  protected readonly finalVariant = computed(
+    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
+  );
+
   private size = signal<NzSizeLDSType>(this.nzSize);
+  private readonly variant = signal<NzVariant>(this.nzVariant);
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+  private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private inputString = '';
   private isOpening = false;
@@ -597,7 +604,7 @@ export class NzCascaderComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOpen, nzStatus, nzSize, nzPlacement, nzOptions } = changes;
+    const { nzOpen, nzStatus, nzSize, nzPlacement, nzOptions, nzVariant } = changes;
     if (nzOpen && this.openControlled) {
       this.setMenuVisible(nzOpen.currentValue);
     }
@@ -609,6 +616,9 @@ export class NzCascaderComponent
     }
     if (nzSize) {
       this.size.set(nzSize.currentValue);
+    }
+    if (nzVariant) {
+      this.variant.set(nzVariant.currentValue);
     }
     if (nzPlacement) {
       const { currentValue } = nzPlacement;
