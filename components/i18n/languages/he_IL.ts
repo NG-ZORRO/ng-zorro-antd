@@ -21,7 +21,15 @@ export default {
   DatePicker: {
     lang: {
       placeholder: 'בחר תאריך',
+      yearPlaceholder: 'בחר שנה',
+      quarterPlaceholder: 'בחר רבעון',
+      monthPlaceholder: 'בחר חודש',
+      weekPlaceholder: 'בחר שבוע',
       rangePlaceholder: ['תאריך התחלה', 'תאריך סיום'],
+      rangeYearPlaceholder: ['שנת התחלה', 'שנת סיום'],
+      rangeQuarterPlaceholder: ['רבעון התחלה', 'רבעון סיום'],
+      rangeMonthPlaceholder: ['חודש התחלה', 'חודש סיום'],
+      rangeWeekPlaceholder: ['שבוע התחלה', 'שבוע סיום'],
       locale: 'he_IL',
       today: 'היום',
       now: 'עכשיו',
@@ -51,16 +59,25 @@ export default {
       nextCentury: 'המאה הבאה'
     },
     timePickerLocale: {
-      placeholder: 'בחר שעה'
+      placeholder: 'בחר שעה',
+      rangePlaceholder: ['שעת התחלה', 'שעת סיום']
     }
   },
   TimePicker: {
-    placeholder: 'בחר שעה'
+    placeholder: 'בחר שעה',
+    rangePlaceholder: ['שעת התחלה', 'שעת סיום']
   },
   Calendar: {
     lang: {
       placeholder: 'בחר תאריך',
+      yearPlaceholder: 'בחר שנה',
+      quarterPlaceholder: 'בחר רבעון',
+      monthPlaceholder: 'בחר חודש',
+      weekPlaceholder: 'בחר שבוע',
       rangePlaceholder: ['תאריך התחלה', 'תאריך סיום'],
+      rangeYearPlaceholder: ['שנת התחלה', 'שנת סיום'],
+      rangeMonthPlaceholder: ['חודש התחלה', 'חודש סיום'],
+      rangeWeekPlaceholder: ['שבוע התחלה', 'שבוע סיום'],
       locale: 'he_IL',
       today: 'היום',
       now: 'עכשיו',
@@ -90,7 +107,8 @@ export default {
       nextCentury: 'המאה הבאה'
     },
     timePickerLocale: {
-      placeholder: 'בחר שעה'
+      placeholder: 'בחר שעה',
+      rangePlaceholder: ['שעת התחלה', 'שעת סיום']
     }
   },
   global: {
@@ -105,7 +123,7 @@ export default {
     selectionAll: 'בחר את כל הנתונים',
     sortTitle: 'מיון',
     expand: 'הרחב שורה',
-    collapse: 'צמצם שורהw',
+    collapse: 'צמצם שורה',
     triggerDesc: 'לחץ על מיון לפי סדר יורד',
     triggerAsc: 'לחץ על מיון לפי סדר עולה',
     cancelSort: 'לחץ כדי לבטל את המיון'
