@@ -5,26 +5,27 @@
 
 import {
   AfterContentInit,
+  AnimationCallbackEvent,
+  booleanAttribute,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
+  inject,
   Input,
   OnChanges,
   OnInit,
   SimpleChanges,
   TemplateRef,
-  ViewEncapsulation,
-  booleanAttribute,
-  inject,
-  DestroyRef,
-  ChangeDetectorRef
+  ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { filter, startWith, tap } from 'rxjs/operators';
 
-import { withAnimationCheck } from 'ng-zorro-antd/core/animation';
+import { isAnimationEnabled, NzNoAnimationDirective, withAnimationCheck } from 'ng-zorro-antd/core/animation';
 import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -49,6 +50,7 @@ import { NzFormDirective } from './form.directive';
       <div
         [animate.enter]="nzValidateAnimationEnter()"
         [animate.leave]="nzValidateAnimationLeave()"
+        (animate.leave)="onAnimationLeave($event)"
         class="ant-form-item-explain ant-form-item-explain-connected"
       >
         <div role="alert" [class]="['ant-form-item-explain-' + status]">
@@ -89,6 +91,8 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
       : !!this.nzFormDirective?.nzDisableAutoTips;
   }
 
+  private readonly noAnimation = inject(NzNoAnimationDirective, { optional: true, host: true });
+  private readonly animationEnabled = isAnimationEnabled(() => !this.noAnimation?.nzNoAnimation());
   protected readonly nzValidateAnimationEnter = withAnimationCheck(() => 'ant-form-validate_animation-enter');
   protected readonly nzValidateAnimationLeave = withAnimationCheck(() => 'ant-form-validate_animation-leave');
 
@@ -278,5 +282,18 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
         this.nzValidateStatus = this.defaultValidateControl!;
       }
     }
+  }
+
+  protected onAnimationLeave(event: AnimationCallbackEvent): void {
+    if (!this.animationEnabled()) {
+      return event.animationComplete();
+    }
+
+    const element = event.target as HTMLElement;
+    const onTransitionEnd = (): void => {
+      element.removeEventListener('transitionend', onTransitionEnd);
+      event.animationComplete();
+    };
+    element.addEventListener('transitionend', onTransitionEnd);
   }
 }
