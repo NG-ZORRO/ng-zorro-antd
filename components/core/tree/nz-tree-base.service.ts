@@ -43,9 +43,10 @@ export class NzTreeBaseService {
     this.rootNodes = nzNodes;
     this.expandedNodeList = this.filterNodesRecursively(nzNodes, 'isExpanded');
     this.selectedNodeList = this.filterNodesRecursively(nzNodes, 'isSelected');
-    this.halfCheckedNodeList = this.filterNodesRecursively(nzNodes, 'isHalfChecked');
     this.checkedNodeList = this.filterNodesRecursively(nzNodes, 'isChecked');
-    this.matchedNodeList = this.filterNodesRecursively(nzNodes, 'isMatched');
+    this.halfCheckedNodeList = [];
+    this.refreshCheckState(this.isCheckStrictly); // set halfCheckedNodeList
+    this.matchedNodeList = [];
   }
 
   flattenTreeData(nzNodes: NzTreeNode[], expandedKeys: NzTreeNodeKey[] | true = []): void {
