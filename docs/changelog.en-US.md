@@ -16,6 +16,16 @@ tag: '{{version}}'
 
 ---
 
+## 21.0.2
+
+`2026-01-23`
+
+### Bug Fixes
+
+- **i18n:** add missing translations to `he_IL` ([#9658](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9658)) ([a3410a0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a3410a0c60eea5367f7c9bb56da378e96920ba8c))
+- **form:** error message never disappear if animation is disabled ([#9660](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9660)) ([798a556](https://github.com/NG-ZORRO/ng-zorro-antd/commit/798a5566388a03d88e64799f0b568c5e7130709e))
+- **menu:** submenu should respect `provideNzNoAnimation` ([#9661](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9661)) ([79ffce9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/79ffce9621fde0f41e10de822ba8aa45dfdda7ae))
+
 ## 21.0.1
 
 `2026-01-16`
