@@ -16,6 +16,14 @@ tag: '{{version}}'
 
 ---
 
+## [21.0.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.0.1...21.0.2) (2026-01-23)
+
+### Bug Fixes
+
+- **i18n:** 更新 `he_IL` 国际化文案 ([#9658](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9658)) ([a3410a0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a3410a0c60eea5367f7c9bb56da378e96920ba8c))
+- **form:** 修复禁用动画时校验信息无法消失的问题 ([#9660](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9660)) ([798a556](https://github.com/NG-ZORRO/ng-zorro-antd/commit/798a5566388a03d88e64799f0b568c5e7130709e))
+- **menu:** 修复禁用动画时子菜单无法消失的问题 ([#9661](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9661)) ([79ffce9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/79ffce9621fde0f41e10de822ba8aa45dfdda7ae))
+
 ## 21.0.1
 
 `2026-01-16`
