@@ -410,7 +410,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   setCurrentValueAndClose(): void {
-    if ((this.nzNeedConfirm() && this.hasConfirmed) || !this.nzNeedConfirm()) {
+    if (this.hasConfirmed || !this.nzNeedConfirm()) {
       this.emitValue(this.value);
       this.hasConfirmed = false;
     } else {

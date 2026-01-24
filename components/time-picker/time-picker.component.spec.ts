@@ -518,18 +518,16 @@ describe('time-picker', () => {
   describe('confirmation', () => {
     let testComponent: NzTestTimePickerConfirmationComponent;
     let fixture: ComponentFixture<NzTestTimePickerConfirmationComponent>;
-    let timeElement: DebugElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerConfirmationComponent);
       testComponent = fixture.debugElement.componentInstance;
       fixture.detectChanges();
-      timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
     });
 
-    it('should emit value when OK button is clicked with nzNeedConfirmation enabled', fakeAsync(() => {
+    it('should emit value when OK button is clicked with nzNeedConfirm enabled', fakeAsync(() => {
       const onChange = spyOn(testComponent, 'onChange');
-      testComponent.needConfirmation = true;
+      testComponent.needConfirm = true;
       testComponent.date = new Date('2020-03-27T10:30:00');
       fixture.detectChanges();
       tick(500);
@@ -559,9 +557,9 @@ describe('time-picker', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
-    it('should revert to previous value when tabbing out without OK click with nzNeedConfirmation enabled', fakeAsync(() => {
+    it('should revert to previous value when tabbing out without OK click with nzNeedConfirm enabled', fakeAsync(() => {
       const onChange = spyOn(testComponent, 'onChange');
-      testComponent.needConfirmation = true;
+      testComponent.needConfirm = true;
       testComponent.date = new Date('2020-03-27T10:30:00');
       fixture.detectChanges();
       tick(500);
@@ -593,9 +591,9 @@ describe('time-picker', () => {
       expect(testComponent.nzTimePickerComponent.value?.getTime()).toBe((originalValue as Date).getTime());
     }));
 
-    it('should revert to previous value when pressing Enter without OK click with nzNeedConfirmation enabled', fakeAsync(() => {
+    it('should revert to previous value when pressing Enter without OK click with nzNeedConfirm enabled', fakeAsync(() => {
       const onChange = spyOn(testComponent, 'onChange');
-      testComponent.needConfirmation = true;
+      testComponent.needConfirm = true;
       testComponent.date = new Date('2020-03-27T10:30:00');
       fixture.detectChanges();
       tick(500);
@@ -627,9 +625,9 @@ describe('time-picker', () => {
       expect(testComponent.nzTimePickerComponent.value?.getTime()).toBe((originalValue as Date).getTime());
     }));
 
-    it('should emit value when tabbing out without nzNeedConfirmation (default behavior)', fakeAsync(() => {
+    it('should emit value when tabbing out without nzNeedConfirm (default behavior)', fakeAsync(() => {
       const onChange = spyOn(testComponent, 'onChange');
-      testComponent.needConfirmation = false;
+      testComponent.needConfirm = false;
       testComponent.date = new Date('2020-03-27T10:30:00');
       fixture.detectChanges();
       tick(500);
@@ -657,9 +655,9 @@ describe('time-picker', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
-    it('should emit value when OK button is clicked without nzNeedConfirmation', fakeAsync(() => {
+    it('should emit value when OK button is clicked without nzNeedConfirm', fakeAsync(() => {
       const onChange = spyOn(testComponent, 'onChange');
-      testComponent.needConfirmation = false;
+      testComponent.needConfirm = false;
       fixture.detectChanges();
 
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
@@ -680,9 +678,9 @@ describe('time-picker', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
-    it('should handle multiple open/close cycles correctly with nzNeedConfirmation', fakeAsync(() => {
+    it('should handle multiple open/close cycles correctly with nzNeedConfirm', fakeAsync(() => {
       const onChange = spyOn(testComponent, 'onChange');
-      testComponent.needConfirmation = true;
+      testComponent.needConfirm = true;
       testComponent.date = new Date('2020-03-27T10:30:00');
       fixture.detectChanges();
       tick(500);
@@ -838,14 +836,14 @@ export class NzTestTimePickerPrefixTemplateComponent {}
     <nz-time-picker
       [(ngModel)]="date"
       (ngModelChange)="onChange($event)"
-      [nzNeedConfirm]="needConfirmation"
+      [nzNeedConfirm]="needConfirm"
       [nzDefaultOpenValue]="defaultOpenValue"
     />
   `
 })
 export class NzTestTimePickerConfirmationComponent {
   date: Date | null = null;
-  needConfirmation = false;
+  needConfirm = false;
   defaultOpenValue: Date = new Date('2020-03-27T00:00:00');
   onChange(_: Date | null): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
