@@ -24,7 +24,9 @@
   background: @picker-bg;
   border: @border-width-base @border-style-base @select-border-color;
   border-radius: @control-border-radius;
-  transition: border @animation-duration-slow, box-shadow @animation-duration-slow;
+  transition:
+    border @animation-duration-slow,
+    box-shadow @animation-duration-slow;
 
   &:hover,
   &-focused {
@@ -148,6 +150,11 @@
     .picker-padding(@input-height-sm, @font-size-base, @input-padding-horizontal-sm);
   }
 
+  &-prefix {
+    flex: 0 0 auto;
+    margin-right: (@padding-xs / 2);
+  }
+
   &-suffix {
     display: flex;
     flex: none;
@@ -176,7 +183,9 @@
     transform: translateY(-50%);
     cursor: pointer;
     opacity: 0;
-    transition: opacity @animation-duration-slow, color @animation-duration-slow;
+    transition:
+      opacity @animation-duration-slow,
+      color @animation-duration-slow;
 
     > * {
       vertical-align: top;
@@ -275,7 +284,8 @@
       display: none;
     }
 
-    &-placement-bottomLeft, &-placement-bottomRight {
+    &-placement-bottomLeft,
+    &-placement-bottomRight {
       .@{picker-prefix-cls}-range-arrow {
         top: 0;
         display: block;
@@ -283,7 +293,8 @@
       }
     }
 
-    &-placement-topLeft, &-placement-topRight {
+    &-placement-topLeft,
+    &-placement-topRight {
       .@{picker-prefix-cls}-range-arrow {
         bottom: 0;
         display: block;
