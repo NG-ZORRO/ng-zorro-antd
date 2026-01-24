@@ -69,7 +69,7 @@ export class NzScrollService {
     return ret;
   }
 
-  /** Get the position of the scoll bar of `el`. */
+  /** Get the position of the scroll bar of `el`. */
   // TODO: remove '| Window' as the fallback already happens here
   getScroll(target?: Element | HTMLElement | Window | Document | null, top: boolean = true): number {
     if (typeof window === 'undefined') {

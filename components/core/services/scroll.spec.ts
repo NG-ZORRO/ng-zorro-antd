@@ -4,9 +4,10 @@
  */
 
 import { PlatformLocation } from '@angular/common';
-import { ApplicationRef, DOCUMENT, NgZone, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationRef, DOCUMENT, NgZone } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
+import { MockNgZone } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzScrollService } from './scroll';
@@ -15,6 +16,7 @@ describe('NzScrollService', () => {
   const TOP = 10;
   let document: MockDocument;
   let scrollService: NzScrollService;
+  let ngZone: MockNgZone;
 
   class MockDocument {
     body = new MockElement();
@@ -40,16 +42,16 @@ describe('NzScrollService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        // todo: use zoneless
-        provideZoneChangeDetection(),
         NzScrollService,
         { provide: DOCUMENT, useClass: MockDocument },
-        { provide: PlatformLocation, useClass: MockPlatformLocation }
+        { provide: PlatformLocation, useClass: MockPlatformLocation },
+        { provide: NgZone, useClass: MockNgZone }
       ]
     });
 
     document = TestBed.inject<MockDocument>(DOCUMENT);
     scrollService = TestBed.inject(NzScrollService);
+    ngZone = TestBed.inject(NgZone) as MockNgZone;
   });
 
   describe('#setScrollTop', () => {
@@ -127,18 +129,20 @@ describe('NzScrollService', () => {
     }));
 
     it('should call the custom callback within the Angular zone', fakeAsync(() => {
-      let callbackHasBeenCalledWithinTheAngularZone = false;
+      let callbackCalled = false;
+      spyOn(ngZone, 'run').and.callThrough();
 
       scrollService.scrollTo(undefined, undefined, {
         duration: 0,
         callback: () => {
-          callbackHasBeenCalledWithinTheAngularZone = NgZone.isInAngularZone();
+          callbackCalled = true;
         }
       });
 
       tickAnimationFrame();
 
-      expect(callbackHasBeenCalledWithinTheAngularZone).toBeTrue();
+      expect(ngZone.run).toHaveBeenCalled();
+      expect(callbackCalled).toBeTrue();
     }));
   });
 });
