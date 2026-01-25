@@ -46,6 +46,7 @@ description: 输入或选择时间的控件。
 | `[nzUse12Hours]`          | 使用 12 小时制，为 true 时 format 默认为`h:mm:ss a`     | `boolean`                                                | `false`        | ✅       |
 | `[nzSuffixIcon]`          | 自定义的后缀图标                                        | `string \| TemplateRef`                                  | -              | ✅       |
 | `[nzPrefix]`              | 自定义前缀                                              | `string \| TemplateRef`                                  | -              |          |
+| `[nzNeedConfirm]`         | 是否需要确认按钮，为 false 时失去焦点即代表选择         | `boolean`                                                | -              |          |
 | `(ngModelChange)`         | 时间发生变化的回调                                      | `EventEmitter<Date>`                                     | -              |
 | `(nzOpenChange)`          | 面板打开/关闭时的回调                                   | `EventEmitter<boolean>`                                  | -              |
 
