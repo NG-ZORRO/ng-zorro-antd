@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import type { NzPlacement } from 'ng-zorro-antd/core/types';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 @Component({
-  selector: 'nz-demo-date-picker-placement',
-  imports: [FormsModule, NzDatePickerModule, NzRadioModule],
+  selector: 'nz-demo-time-picker-placement',
+  imports: [FormsModule, NzTimePickerModule, NzRadioModule],
   template: `
     <nz-radio-group [(ngModel)]="placement">
       <label nz-radio-button nzValue="bottomLeft">bottomLeft</label>
@@ -17,19 +17,17 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
     </nz-radio-group>
     <br />
     <br />
-    <nz-date-picker [nzPlacement]="placement"></nz-date-picker>
+    <nz-time-picker [nzPlacement]="placement()" />
     <br />
-    <nz-range-picker [nzPlacement]="placement"></nz-range-picker>
   `,
   styles: [
     `
-      nz-date-picker,
-      nz-range-picker {
+      nz-time-picker {
         margin: 0 8px 12px 0;
       }
     `
   ]
 })
-export class NzDemoDatePickerPlacementComponent {
-  placement: NzPlacement = 'bottomLeft';
+export class NzDemoTimePickerPlacementComponent {
+  readonly placement = signal<NzPlacement>('bottomLeft');
 }
