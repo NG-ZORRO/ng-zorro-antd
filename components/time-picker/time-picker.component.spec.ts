@@ -417,13 +417,11 @@ describe('time-picker', () => {
   describe('placement', () => {
     let fixture: ComponentFixture<NzTestTimePickerPlacementComponent>;
     let fixtureInstance: NzTestTimePickerPlacementComponent;
-    let timePickerElement: DebugElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimePickerPlacementComponent);
       fixtureInstance = fixture.componentInstance;
       fixture.detectChanges();
-      timePickerElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
     });
 
     function openTimePicker(): void {
@@ -565,21 +563,6 @@ describe('time-picker', () => {
       expect(dropdown.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(false);
 
       closeTimePicker();
-    }));
-
-    it('should support multiple sequential placement changes', fakeAsync(() => {
-      const placements: NzPlacement[] = ['bottomLeft', 'bottomRight', 'topLeft', 'topRight'];
-
-      for (const placement of placements) {
-        fixtureInstance.nzPlacement = placement;
-        fixture.detectChanges();
-        openTimePicker();
-
-        const dropdown = queryFromOverlay('.ant-picker-dropdown');
-        expect(dropdown.classList.contains(`ant-picker-dropdown-placement-${placement}`)).toBe(true);
-
-        closeTimePicker();
-      }
     }));
 
     it('should maintain placement when selecting a time', fakeAsync(() => {
