@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-input-advance-count',
-  imports: [FormsModule, ReactiveFormsModule, NzFormModule, NzInputModule, NzIconModule],
+  imports: [ReactiveFormsModule, NzFormModule, NzInputModule],
   template: `
     <form nz-form [formGroup]="form" nzLayout="vertical">
       <nz-form-item>
