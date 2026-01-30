@@ -101,6 +101,7 @@ export default tseslint.config(
       '@angular-eslint/prefer-output-readonly': 'error',
       '@angular-eslint/use-component-selector': 'off',
       '@angular-eslint/use-component-view-encapsulation': 'off',
+      '@angular-eslint/no-implicit-take-until-destroyed': 'error',
       '@typescript-eslint/array-type': [
         'error',
         {
@@ -223,7 +224,8 @@ export default tseslint.config(
         {
           parser: 'angular'
         }
-      ]
+      ],
+      '@angular-eslint/template/prefer-self-closing-tags': 'error'
     }
   },
   {

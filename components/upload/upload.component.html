@@ -16,14 +16,14 @@
     />
   }
   @if (nzFileListRender) {
-    <ng-container *ngTemplateOutlet="nzFileListRender; context: { $implicit: nzFileList }"></ng-container>
+    <ng-container *ngTemplateOutlet="nzFileListRender; context: { $implicit: nzFileList }" />
   }
 </ng-template>
-<ng-template #con><ng-content></ng-content></ng-template>
+<ng-template #con><ng-content /></ng-template>
 <ng-template #btn>
   <div [class]="classList()" [class.ant-upload-rtl]="dir() === 'rtl'" [style.display]="nzShowButton ? '' : 'none'">
     <div nz-upload-btn #uploadComp [options]="_btnOptions!">
-      <ng-template [ngTemplateOutlet]="con"></ng-template>
+      <ng-template [ngTemplateOutlet]="con" />
     </div>
   </div>
 </ng-template>
@@ -37,17 +37,17 @@
   >
     <div nz-upload-btn #uploadComp [options]="_btnOptions!" class="ant-upload-btn">
       <div class="ant-upload-drag-container">
-        <ng-template [ngTemplateOutlet]="con"></ng-template>
+        <ng-template [ngTemplateOutlet]="con" />
       </div>
     </div>
   </div>
-  <ng-template [ngTemplateOutlet]="list"></ng-template>
+  <ng-template [ngTemplateOutlet]="list" />
 } @else {
   @if (nzListType === 'picture-card') {
-    <ng-template [ngTemplateOutlet]="list"></ng-template>
-    <ng-template [ngTemplateOutlet]="btn"></ng-template>
+    <ng-template [ngTemplateOutlet]="list" />
+    <ng-template [ngTemplateOutlet]="btn" />
   } @else {
-    <ng-template [ngTemplateOutlet]="btn"></ng-template>
-    <ng-template [ngTemplateOutlet]="list"></ng-template>
+    <ng-template [ngTemplateOutlet]="btn" />
+    <ng-template [ngTemplateOutlet]="list" />
   }
 }
