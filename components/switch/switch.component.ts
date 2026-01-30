@@ -4,13 +4,14 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   Input,
   NgZone,
@@ -19,14 +20,18 @@ import {
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
+  computed,
   forwardRef,
   inject,
-  DestroyRef
+  signal,
+  type OnChanges,
+  type SimpleChanges
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
@@ -58,8 +63,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       [class.ant-switch-checked]="isChecked"
       [class.ant-switch-loading]="nzLoading"
       [class.ant-switch-disabled]="nzDisabled"
-      [class.ant-switch-small]="nzSize === 'small'"
-      [class.ant-switch-rtl]="dir === 'rtl'"
+      [class.ant-switch-small]="finalSize() === 'small'"
+      [class.ant-switch-rtl]="dir() === 'rtl'"
       [nzWaveExtraNode]="true"
     >
       <span class="ant-switch-handle">
@@ -79,7 +84,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
   `,
   imports: [NzWaveModule, NzIconModule, NzOutletModule]
 })
-export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnInit {
+export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   nzConfigService = inject(NzConfigService);
@@ -87,7 +92,6 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
   private focusMonitor = inject(FocusMonitor);
-  private directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
 
   isChecked = false;
@@ -102,9 +106,15 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
   @Input() nzId: string | null = null;
 
-  dir: Direction = 'ltr';
+  protected readonly dir = inject(Directionality).valueSignal;
 
   private isNzDisableFirstChange = true;
+
+  private readonly size = signal<NzSizeDSType>(this.nzSize);
+
+  private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+
+  protected readonly finalSize = computed(() => this.formSize?.() || this.size());
 
   updateValue(value: boolean): void {
     if (this.isChecked !== value) {
@@ -127,14 +137,14 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzSize } = changes;
+    if (nzSize) {
+      this.size.set(nzSize.currentValue);
+    }
+  }
+
   ngOnInit(): void {
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-
     fromEventOutsideAngular(this.el, 'click')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {

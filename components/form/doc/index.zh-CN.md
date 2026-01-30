@@ -63,6 +63,7 @@ description: 高性能表单控件，自带数据域管理。包含数据录入�
 | `[nzLabelAlign]`      | 配置 `nz-form-label` 的 `[nzLabelAlign]` 的默认值                                   | `'left' \| 'right'`                            | `'right'`                                       |          |        |
 | `[nzLabelWrap]`       | 配置 `nz-form-label` 的 `[nzLabelWrap]` 的默认值                                    | `boolean`                                      | `false`                                         |          |        |
 | `[nzRequiredMark]`    | 必填标记样式。可使用必填标记或可选标记。                                            | `NzRequiredMark`                               | `true`                                          |          | 20.4.0 |
+| `[nzSize]`            | 设置字段组件的尺寸（仅限 antd 组件）                                                | `small` \| `default` \| `large`                |                                                 |          |        |
 
 ### nz-form-item
 

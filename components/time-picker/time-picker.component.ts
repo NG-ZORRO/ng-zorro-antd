@@ -41,7 +41,12 @@ import { isValid } from 'date-fns';
 
 import { slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import {
+  NZ_FORM_SIZE,
+  NzFormItemFeedbackIconComponent,
+  NzFormNoStatusService,
+  NzFormStatusService
+} from 'ng-zorro-antd/core/form';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -256,6 +261,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @WithConfig() nzBackdrop = false;
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
 
+  private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
   private hasConfirmed = false;
 
   readonly nzPrefix = input<string | TemplateRef<void>>();
@@ -264,6 +270,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   protected readonly currentPosition = linkedSignal(() => DATE_PICKER_POSITION_MAP[this.nzPlacement()]);
   protected readonly overlayPositions = computed(() => [this.currentPosition(), ...DEFAULT_DATE_PICKER_POSITIONS]);
+
   protected readonly timepickerAnimationEnter = slideAnimationEnter();
   protected readonly timepickerAnimationLeave = slideAnimationLeave();
 
@@ -393,6 +400,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   protected finalSize = computed(() => {
+    if (this.formSize?.()) {
+      return this.formSize();
+    }
     if (this.compactSize) {
       return this.compactSize();
     }

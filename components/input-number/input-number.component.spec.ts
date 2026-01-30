@@ -4,13 +4,24 @@
  */
 
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
-import { ApplicationRef, Component, ElementRef, provideZoneChangeDetection, viewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  ElementRef,
+  provideZoneChangeDetection,
+  signal,
+  viewChild,
+  type WritableSignal
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { dispatchEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
+import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { NzInputNumberComponent } from './input-number.component';
 import { NzInputNumberModule } from './input-number.module';
@@ -617,6 +628,54 @@ describe('input-number with affixes or addons', () => {
   });
 });
 
+describe('finalSize', () => {
+  let fixture: ComponentFixture<TestInputNumberFinalSizeComponent>;
+  let inputNumberElement: HTMLElement;
+  let compactSizeSignal: WritableSignal<NzSizeLDSType>;
+  let formSizeSignal: WritableSignal<NzSizeLDSType>;
+
+  beforeEach(() => {
+    compactSizeSignal = signal<NzSizeLDSType>('large');
+    formSizeSignal = signal<NzSizeLDSType>('default');
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  it('should set correctly the size from the formSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: NZ_FORM_SIZE, useValue: formSizeSignal },
+        { provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }
+      ]
+    });
+    fixture = TestBed.createComponent(TestInputNumberFinalSizeComponent);
+    inputNumberElement = fixture.debugElement.query(By.directive(NzInputNumberComponent)).nativeElement;
+    fixture.detectChanges();
+    formSizeSignal.set('large');
+    fixture.detectChanges();
+    expect(inputNumberElement.classList).toContain('ant-input-number-lg');
+  });
+  it('should set correctly the size from the compactSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
+    });
+    fixture = TestBed.createComponent(TestInputNumberFinalSizeComponent);
+    inputNumberElement = fixture.debugElement.query(By.directive(NzInputNumberComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(inputNumberElement.classList).toContain('ant-input-number-lg');
+  });
+  it('should set correctly the size from the size input ', () => {
+    TestBed.configureTestingModule({});
+    fixture = TestBed.createComponent(TestInputNumberFinalSizeComponent);
+    inputNumberElement = fixture.debugElement.query(By.directive(NzInputNumberComponent)).nativeElement;
+    fixture.componentInstance.size = 'large';
+    fixture.detectChanges();
+    expect(inputNumberElement.classList).toContain('ant-input-number-lg');
+  });
+});
+
 @Component({
   imports: [NzInputNumberModule, FormsModule],
   template: `
@@ -730,4 +789,12 @@ class InputNumberWithAffixesAndAddonsTestComponent {
   readonly withContentAddons = viewChild.required('withContentAddons', { read: ElementRef });
   readonly withPropMix = viewChild.required('withPropMix', { read: ElementRef });
   readonly withContentMix = viewChild.required('withContentMix', { read: ElementRef });
+}
+
+@Component({
+  imports: [NzInputNumberModule],
+  template: `<nz-input-number [nzSize]="size" />`
+})
+class TestInputNumberFinalSizeComponent {
+  size: NzSizeLDSType = 'default';
 }

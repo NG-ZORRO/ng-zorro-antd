@@ -10,15 +10,18 @@ import {
   Component,
   DebugElement,
   provideZoneChangeDetection,
+  signal,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  type WritableSignal
 } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
-import { NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { NzSizeDSType, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -319,6 +322,37 @@ describe('switch', () => {
       fixture.detectChanges();
       expect(switchElement.nativeElement.firstElementChild!.classList).not.toContain('ant-switch-rtl');
     });
+  });
+});
+
+describe('finalSize', () => {
+  let fixture: ComponentFixture<NzTestSwitchBasicComponent>;
+  let switchElement: HTMLElement;
+  let formSizeSignal: WritableSignal<NzSizeLDSType>;
+
+  beforeEach(() => {
+    formSizeSignal = signal<NzSizeDSType>('default');
+  });
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+  it('should set correctly the size from the formSize signal', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestSwitchBasicComponent);
+    switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent)).nativeElement;
+    fixture.detectChanges();
+    formSizeSignal.set('small');
+    fixture.detectChanges();
+    expect(switchElement.firstElementChild!.classList).toContain('ant-switch-small');
+  });
+  it('should set correctly the size from the component input', () => {
+    fixture = TestBed.createComponent(NzTestSwitchBasicComponent);
+    switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent)).nativeElement;
+    fixture.componentInstance.size = 'small';
+    fixture.detectChanges();
+    expect(switchElement.firstElementChild!.classList).toContain('ant-switch-small');
   });
 });
 
