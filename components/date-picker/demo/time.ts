@@ -24,14 +24,12 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
       (nzOnOk)="onOk($event)"
     />
   `,
-  styles: [
-    `
-      nz-date-picker,
-      nz-range-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker,
+    nz-range-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerTimeComponent {
   onChange(result: Date): void {

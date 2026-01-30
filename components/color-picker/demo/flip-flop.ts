@@ -13,13 +13,11 @@ import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
       <button nz-button nzType="primary" [style.background-color]="color">Color</button>
     </ng-template>
   `,
-  styles: [
-    `
-      button {
-        border: none;
-      }
-    `
-  ]
+  styles: `
+    button {
+      border: none;
+    }
+  `
 })
 export class NzDemoColorPickerFlipFlopComponent {
   color = '#1677ff';

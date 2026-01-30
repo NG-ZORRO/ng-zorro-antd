@@ -65,17 +65,15 @@ import { NzListModule } from 'ng-zorro-antd/list';
       </ng-container>
     </nz-drawer>
   `,
-  styles: [
-    `
-      .title {
-        font-size: 16px;
-        color: rgba(0, 0, 0, 0.85);
-        line-height: 24px;
-        display: block;
-        margin-bottom: 24px;
-      }
-    `
-  ]
+  styles: `
+    .title {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.85);
+      line-height: 24px;
+      display: block;
+      margin-bottom: 24px;
+    }
+  `
 })
 export class NzDemoDrawerUserProfileComponent {
   data = [

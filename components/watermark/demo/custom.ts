@@ -107,27 +107,25 @@ import { FontType, NzWatermarkModule } from 'ng-zorro-antd/watermark';
       </form>
     </div>
   `,
-  styles: [
-    `
-      nz-watermark {
-        flex: 1 1 auto;
-      }
+  styles: `
+    nz-watermark {
+      flex: 1 1 auto;
+    }
 
-      nz-divider {
-        height: auto;
-        margin: 0 20px;
-      }
+    nz-divider {
+      height: auto;
+      margin: 0 20px;
+    }
 
-      form {
-        flex: 0 0 280px;
-      }
+    form {
+      flex: 0 0 280px;
+    }
 
-      nz-input-number {
-        margin-right: 12px;
-        width: 40%;
-      }
-    `
-  ]
+    nz-input-number {
+      margin-right: 12px;
+      width: 40%;
+    }
+  `
 })
 export class NzDemoWatermarkCustomComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);

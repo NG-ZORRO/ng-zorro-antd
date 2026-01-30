@@ -29,13 +29,11 @@ function alphabet(): string[] {
     </nz-select>
     <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectMultipleComponent {
   readonly listOfOption: string[] = alphabet();

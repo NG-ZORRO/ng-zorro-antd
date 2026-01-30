@@ -11,16 +11,14 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
       <nz-float-button nzDescription="HELP" nzShape="square" style="right: 94px" />
     </div>
   `,
-  styles: [
-    `
-      .description {
-        height: 300px;
-        position: relative;
-      }
-      nz-float-button {
-        position: absolute;
-      }
-    `
-  ]
+  styles: `
+    .description {
+      height: 300px;
+      position: relative;
+    }
+    nz-float-button {
+      position: absolute;
+    }
+  `
 })
 export class NzDemoFloatButtonDescriptionComponent {}

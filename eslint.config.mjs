@@ -102,6 +102,10 @@ export default tseslint.config(
       '@angular-eslint/use-component-selector': 'off',
       '@angular-eslint/use-component-view-encapsulation': 'off',
       '@angular-eslint/no-implicit-take-until-destroyed': 'error',
+      '@angular-eslint/consistent-component-styles': [
+        'error',
+        'string'
+      ],
       '@typescript-eslint/array-type': [
         'error',
         {

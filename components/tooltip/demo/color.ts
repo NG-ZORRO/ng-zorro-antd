@@ -22,14 +22,12 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       </button>
     }
   `,
-  styles: [
-    `
-      .ant-btn {
-        margin-right: 8px;
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    .ant-btn {
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoTooltipColorComponent {
   customColors: string[] = ['#f50', '#2db7f5', '#87d068', '#108ee9'];

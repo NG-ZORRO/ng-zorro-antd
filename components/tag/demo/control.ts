@@ -34,14 +34,12 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
       />
     }
   `,
-  styles: [
-    `
-      .editable-tag {
-        background: rgb(255, 255, 255);
-        border-style: dashed;
-      }
-    `
-  ]
+  styles: `
+    .editable-tag {
+      background: rgb(255, 255, 255);
+      border-style: dashed;
+    }
+  `
 })
 export class NzDemoTagControlComponent {
   tags = ['Unremovable', 'Tag 2', 'Tag 3'];

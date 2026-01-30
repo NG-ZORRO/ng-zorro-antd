@@ -10,12 +10,10 @@ import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
     <nz-color-block />
     <nz-color-block nzSize="large" />
   `,
-  styles: [
-    `
-      nz-color-block {
-        margin-right: 12px;
-      }
-    `
-  ]
+  styles: `
+    nz-color-block {
+      margin-right: 12px;
+    }
+  `
 })
 export class NzDemoColorPickerBlockComponent {}

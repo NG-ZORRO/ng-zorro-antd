@@ -20,13 +20,11 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
       (nzOnClose)="afterClose()"
     />
   `,
-  styles: [
-    `
-      nz-alert {
-        margin-bottom: 16px;
-      }
-    `
-  ]
+  styles: `
+    nz-alert {
+      margin-bottom: 16px;
+    }
+  `
 })
 export class NzDemoAlertClosableComponent {
   afterClose(): void {

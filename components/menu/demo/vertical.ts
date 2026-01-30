@@ -44,13 +44,11 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       </li>
     </ul>
   `,
-  styles: [
-    `
-      [nz-menu] {
-        width: 240px;
-      }
-    `
-  ]
+  styles: `
+    [nz-menu] {
+      width: 240px;
+    }
+  `
 })
 export class NzDemoMenuVerticalComponent {
   change(value: boolean): void {

@@ -30,17 +30,15 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       </nz-float-button-group>
     </div>
   `,
-  styles: [
-    `
-      .menu {
-        height: 300px;
-        position: relative;
-      }
-      nz-float-button-group {
-        position: absolute;
-      }
-    `
-  ]
+  styles: `
+    .menu {
+      height: 300px;
+      position: relative;
+    }
+    nz-float-button-group {
+      position: absolute;
+    }
+  `
 })
 export class NzDemoFloatButtonGroupMenuComponent {
   openChange(status: boolean): void {

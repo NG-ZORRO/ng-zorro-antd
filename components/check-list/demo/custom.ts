@@ -70,19 +70,17 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
       (nzHide)="hideCancel($event)"
     />
   `,
-  styles: [
-    `
-      :host {
-        position: relative;
-      }
-      form {
-        width: 300px;
-      }
-      nz-check-list {
-        position: absolute;
-      }
-    `
-  ]
+  styles: `
+    :host {
+      position: relative;
+    }
+    form {
+      width: 300px;
+    }
+    nz-check-list {
+      position: absolute;
+    }
+  `
 })
 export class NzDemoCheckListCustomComponent {
   private fb = inject(NonNullableFormBuilder);

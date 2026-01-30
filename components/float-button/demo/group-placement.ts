@@ -55,42 +55,40 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
       </div>
     </div>
   `,
-  styles: [
-    `
-      .container {
-        display: flex;
-        height: 300px;
-        justify-content: center;
-        align-items: center;
+  styles: `
+    .container {
+      display: flex;
+      height: 300px;
+      justify-content: center;
+      align-items: center;
 
-        .anchor {
-          height: 100px;
-          width: 100px;
-          position: relative;
+      .anchor {
+        height: 100px;
+        width: 100px;
+        position: relative;
 
-          .up {
-            inset-inline-end: 30px;
-            bottom: 80px;
-          }
-          .down {
-            inset-inline-end: 30px;
-            bottom: -20px;
-          }
-          .left {
-            inset-inline-end: 80px;
-            bottom: 30px;
-          }
-          .right {
-            inset-inline-end: -20px;
-            bottom: 30px;
-          }
+        .up {
+          inset-inline-end: 30px;
+          bottom: 80px;
         }
-        nz-float-button-group {
-          position: absolute;
+        .down {
+          inset-inline-end: 30px;
+          bottom: -20px;
+        }
+        .left {
+          inset-inline-end: 80px;
+          bottom: 30px;
+        }
+        .right {
+          inset-inline-end: -20px;
+          bottom: 30px;
         }
       }
-    `
-  ]
+      nz-float-button-group {
+        position: absolute;
+      }
+    }
+  `
 })
 export class NzDemoFloatButtonGroupPlacementComponent {
   openChange(status: boolean): void {

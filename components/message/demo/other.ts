@@ -11,13 +11,11 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     <button nz-button (click)="createMessage('error')">Error</button>
     <button nz-button (click)="createMessage('warning')">Warning</button>
   `,
-  styles: [
-    `
-      [nz-button] {
-        margin-right: 8px;
-      }
-    `
-  ]
+  styles: `
+    [nz-button] {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoMessageOtherComponent {
   createMessage(type: string): void {

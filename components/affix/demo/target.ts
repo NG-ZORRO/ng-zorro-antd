@@ -17,19 +17,17 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
       </div>
     </div>
   `,
-  styles: [
-    `
-      .scrollable-container {
-        height: 100px;
-        overflow-y: scroll;
-      }
+  styles: `
+    .scrollable-container {
+      height: 100px;
+      overflow-y: scroll;
+    }
 
-      .background {
-        padding-top: 60px;
-        height: 300px;
-        background-image: url(//zos.alipayobjects.com/rmsportal/RmjwQiJorKyobvI.jpg);
-      }
-    `
-  ]
+    .background {
+      padding-top: 60px;
+      height: 300px;
+      background-image: url(//zos.alipayobjects.com/rmsportal/RmjwQiJorKyobvI.jpg);
+    }
+  `
 })
 export class NzDemoAffixTargetComponent {}

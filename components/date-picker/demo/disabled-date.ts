@@ -28,14 +28,12 @@ import { DisabledTimeFn, DisabledTimePartial, NzDatePickerModule } from 'ng-zorr
       nzFormat="yyyy-MM-dd HH:mm:ss"
     />
   `,
-  styles: [
-    `
-      nz-date-picker,
-      nz-range-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker,
+    nz-range-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerDisabledDateComponent {
   today = new Date();

@@ -27,13 +27,11 @@ interface Option {
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 120px;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 120px;
+    }
+  `
 })
 export class NzDemoSelectLabelInValueComponent {
   optionList: Option[] = [

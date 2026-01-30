@@ -15,15 +15,13 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
     />
     <nz-progress nzType="dashboard" [nzPercent]="100" [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }" />
   `,
-  styles: [
-    `
-      .ant-progress {
-        margin-right: 8px;
-        margin-bottom: 8px;
-        display: inline-block;
-      }
-    `
-  ],
+  styles: `
+    .ant-progress {
+      margin-right: 8px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+  `,
   encapsulation: ViewEncapsulation.None
 })
 export class NzDemoProgressGradientComponent {}

@@ -30,12 +30,10 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
     />
     <nz-alert nzType="error" nzMessage="Error" nzDescription="This is an error message about copywriting." nzShowIcon />
   `,
-  styles: [
-    `
-      nz-alert {
-        margin-bottom: 16px;
-      }
-    `
-  ]
+  styles: `
+    nz-alert {
+      margin-bottom: 16px;
+    }
+  `
 })
 export class NzDemoAlertIconComponent {}

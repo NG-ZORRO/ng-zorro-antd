@@ -16,23 +16,21 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
       <div class="box" [style.border-radius]="radiusValue | nzToCssUnit: 'rem'">rem</div>
     </div>
   `,
-  styles: [
-    `
-      .wrap {
-        display: flex;
-      }
-      .box {
-        margin-top: 20px;
-        margin-right: 20px;
-        text-align: center;
-        line-height: 50px;
-        color: #fff;
-        width: 50px;
-        height: 50px;
-        background: #4183c4;
-      }
-    `
-  ]
+  styles: `
+    .wrap {
+      display: flex;
+    }
+    .box {
+      margin-top: 20px;
+      margin-right: 20px;
+      text-align: center;
+      line-height: 50px;
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      background: #4183c4;
+    }
+  `
 })
 export class NzDemoPipesCssUnitComponent {
   radiusValue = 0;

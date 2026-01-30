@@ -16,12 +16,10 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
       </div>
     </ng-template>
   `,
-  styles: [
-    `
-      nz-qrcode {
-        margin-right: 12px;
-      }
-    `
-  ]
+  styles: `
+    nz-qrcode {
+      margin-right: 12px;
+    }
+  `
 })
 export class NzDemoQrCodeCustomStatusComponent {}

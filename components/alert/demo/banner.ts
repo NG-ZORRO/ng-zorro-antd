@@ -11,12 +11,10 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
     <nz-alert nzBanner nzMessage="Warning text without icon" [nzShowIcon]="false" />
     <nz-alert nzBanner nzType="error" nzMessage="Error text" />
   `,
-  styles: [
-    `
-      nz-alert {
-        margin-bottom: 12px;
-      }
-    `
-  ]
+  styles: `
+    nz-alert {
+      margin-bottom: 12px;
+    }
+  `
 })
 export class NzDemoAlertBannerComponent {}

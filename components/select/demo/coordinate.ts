@@ -18,14 +18,12 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        margin-right: 8px;
-        width: 120px;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      margin-right: 8px;
+      width: 120px;
+    }
+  `
 })
 export class NzDemoSelectCoordinateComponent {
   selectedProvince = 'Zhejiang';

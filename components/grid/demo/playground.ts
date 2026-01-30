@@ -46,23 +46,21 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
       </div>
     </div>
   `,
-  styles: [
-    `
-      .slider {
-        width: 50%;
-      }
-      .slider-container {
-        margin-bottom: 16px;
-      }
-      .grid-config {
-        height: 120px;
-        font-size: 14px;
-        line-height: 120px;
-        background: #0092ff;
-        border-radius: 4px;
-      }
-    `
-  ]
+  styles: `
+    .slider {
+      width: 50%;
+    }
+    .slider-container {
+      margin-bottom: 16px;
+    }
+    .grid-config {
+      height: 120px;
+      font-size: 14px;
+      line-height: 120px;
+      background: #0092ff;
+      border-radius: 4px;
+    }
+  `
 })
 export class NzDemoGridPlaygroundComponent {
   hGutter = 16;

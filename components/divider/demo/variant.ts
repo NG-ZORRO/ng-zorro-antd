@@ -28,13 +28,11 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
       </p>
     </div>
   `,
-  styles: [
-    `
-      nz-divider::after,
-      nz-divider::before {
-        border-color: #7cb305 !important;
-      }
-    `
-  ]
+  styles: `
+    nz-divider::after,
+    nz-divider::before {
+      border-color: #7cb305 !important;
+    }
+  `
 })
 export class NzDemoDividerVariantComponent {}

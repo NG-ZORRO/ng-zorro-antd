@@ -22,13 +22,11 @@ import { NzSelectModule, NzSelectPlacementType } from 'ng-zorro-antd/select';
       <nz-option nzValue="WenZhou" nzLabel="WenZhou #325000" />
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 120px;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 120px;
+    }
+  `
 })
 export class NzDemoSelectPlacementComponent {
   placement: NzSelectPlacementType = 'topLeft';

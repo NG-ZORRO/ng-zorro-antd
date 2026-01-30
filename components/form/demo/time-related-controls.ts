@@ -54,13 +54,11 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
-      form {
-        max-width: 600px;
-      }
-    `
-  ]
+  styles: `
+    form {
+      max-width: 600px;
+    }
+  `
 })
 export class NzDemoFormTimeRelatedControlsComponent {
   private fb = inject(FormBuilder);

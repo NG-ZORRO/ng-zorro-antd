@@ -23,13 +23,11 @@ import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
     <br />
     <button nz-button nzType="default" (click)="changeLanguage()">Switch language for all pickers</button>
   `,
-  styles: [
-    `
-      nz-date-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerBasicComponent {
   date = null;

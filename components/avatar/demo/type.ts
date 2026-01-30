@@ -13,13 +13,11 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
     <nz-avatar nzText="U" style="color:#f56a00; background-color:#fde3cf;" />
     <nz-avatar nzIcon="user" style="background-color:#87d068;" />
   `,
-  styles: [
-    `
-      nz-avatar {
-        margin-top: 16px;
-        margin-right: 16px;
-      }
-    `
-  ]
+  styles: `
+    nz-avatar {
+      margin-top: 16px;
+      margin-right: 16px;
+    }
+  `
 })
 export class NzDemoAvatarTypeComponent {}

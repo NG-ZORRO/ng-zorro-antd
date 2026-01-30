@@ -33,23 +33,21 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       />
     </ng-template>
   `,
-  styles: [
-    `
-      .editor {
-        height: 200px;
-      }
+  styles: `
+    .editor {
+      height: 200px;
+    }
 
-      .full-screen {
-        position: fixed;
-        z-index: 999;
-        height: 100vh;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-      }
-    `
-  ]
+    .full-screen {
+      position: fixed;
+      z-index: 999;
+      height: 100vh;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+    }
+  `
 })
 export class NzDemoCodeEditorComplexComponent {
   @ViewChild(NzCodeEditorComponent, { static: false }) editorComponent?: NzCodeEditorComponent;

@@ -37,13 +37,11 @@ type Gender = 'male' | 'female';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
-      [nz-form] {
-        max-width: 600px;
-      }
-    `
-  ]
+  styles: `
+    [nz-form] {
+      max-width: 600px;
+    }
+  `
 })
 export class NzDemoFormCoordinatedComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);

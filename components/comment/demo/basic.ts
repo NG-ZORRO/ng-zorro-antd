@@ -42,18 +42,16 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       <nz-comment-action>Reply to</nz-comment-action>
     </nz-comment>
   `,
-  styles: [
-    `
-      .count {
-        padding-left: 8px;
-        cursor: auto;
-      }
-      .ant-comment-rtl .count {
-        padding-right: 8px;
-        padding-left: 0;
-      }
-    `
-  ]
+  styles: `
+    .count {
+      padding-left: 8px;
+      cursor: auto;
+    }
+    .ant-comment-rtl .count {
+      padding-right: 8px;
+      padding-left: 0;
+    }
+  `
 })
 export class NzDemoCommentBasicComponent {
   likes = 0;

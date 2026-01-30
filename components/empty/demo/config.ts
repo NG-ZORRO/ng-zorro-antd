@@ -71,14 +71,12 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       </div>
     </ng-template>
   `,
-  styles: [
-    `
-      h3 {
-        font-size: inherit;
-        margin: 16px 0 8px 0;
-      }
-    `
-  ]
+  styles: `
+    h3 {
+      font-size: inherit;
+      margin: 16px 0 8px 0;
+    }
+  `
 })
 export class NzDemoEmptyConfigComponent {
   @ViewChild('customTpl', { static: false }) customTpl?: TemplateRef<any>; // eslint-disable-line @typescript-eslint/no-explicit-any

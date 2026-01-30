@@ -19,22 +19,20 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
       }
     </div>
   `,
-  styles: [
-    `
-      .segment-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
+  styles: `
+    .segment-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
 
-        margin-block-end: 1rem;
-      }
+      margin-block-end: 1rem;
+    }
 
-      .btn-wrapper {
-        overflow: auto;
-        padding-block: 10px;
-      }
-    `
-  ]
+    .btn-wrapper {
+      overflow: auto;
+      padding-block: 10px;
+    }
+  `
 })
 export class NzDemoFlexWrapComponent {
   wrapSegment: NzWrap[] = ['wrap', 'wrap-reverse', 'nowrap'];

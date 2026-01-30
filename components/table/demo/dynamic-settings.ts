@@ -141,14 +141,12 @@ interface Setting {
       </tbody>
     </nz-table>
   `,
-  styles: [
-    `
-      form nz-form-item {
-        margin-right: 16px;
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    form nz-form-item {
+      margin-right: 16px;
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
   settingForm: FormGroup<{ [K in keyof Setting]: FormControl<Setting[K]> }>;

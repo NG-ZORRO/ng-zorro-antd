@@ -10,13 +10,11 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     <nz-spin nzSimple />
     <nz-spin nzSimple nzSize="large" />
   `,
-  styles: [
-    `
-      nz-spin {
-        display: inline-block;
-        margin-right: 16px;
-      }
-    `
-  ]
+  styles: `
+    nz-spin {
+      display: inline-block;
+      margin-right: 16px;
+    }
+  `
 })
 export class NzDemoSpinSizeComponent {}

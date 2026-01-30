@@ -14,13 +14,11 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     Reversed:
     <nz-switch nzSize="small" [(ngModel)]="reverse" />
   `,
-  styles: [
-    `
-      .ant-slider-with-marks {
-        margin-bottom: 44px;
-      }
-    `
-  ]
+  styles: `
+    .ant-slider-with-marks {
+      margin-bottom: 44px;
+    }
+  `
 })
 export class NzDemoSliderReverseComponent {
   reverse = true;

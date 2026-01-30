@@ -21,16 +21,14 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
       </nz-float-button-group>
     </div>
   `,
-  styles: [
-    `
-      .group {
-        height: 300px;
-        position: relative;
-      }
-      nz-float-button-group {
-        position: absolute;
-      }
-    `
-  ]
+  styles: `
+    .group {
+      height: 300px;
+      position: relative;
+    }
+    nz-float-button-group {
+      position: absolute;
+    }
+  `
 })
 export class NzDemoFloatButtonGroupComponent {}

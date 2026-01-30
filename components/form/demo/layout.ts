@@ -45,13 +45,11 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
-      [nz-form]:not(.ant-form-inline):not(.ant-form-vertical) {
-        max-width: 600px;
-      }
-    `
-  ]
+  styles: `
+    [nz-form]:not(.ant-form-inline):not(.ant-form-vertical) {
+      max-width: 600px;
+    }
+  `
 })
 export class NzDemoFormLayoutComponent {
   private fb = inject(NonNullableFormBuilder);

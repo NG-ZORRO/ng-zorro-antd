@@ -12,12 +12,10 @@ import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
       <nz-cron-expression nzSize="large" />
     </div>
   `,
-  styles: [
-    `
-      .example-cron-expression nz-cron-expression {
-        margin: 0 8px 8px 0;
-      }
-    `
-  ]
+  styles: `
+    .example-cron-expression nz-cron-expression {
+      margin: 0 8px 8px 0;
+    }
+  `
 })
 export class NzDemoCronExpressionSizeComponent {}

@@ -15,13 +15,11 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
       <button nz-button nzSize="small">Cut It!</button>
     </ng-template>
   `,
-  styles: [
-    `
-      button {
-        margin-top: 8px;
-      }
-    `
-  ]
+  styles: `
+    button {
+      margin-top: 8px;
+    }
+  `
 })
 export class NzDemoNotificationTemplateComponent {
   @ViewChild(TemplateRef, { static: false }) template?: TemplateRef<{

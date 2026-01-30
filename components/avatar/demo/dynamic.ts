@@ -20,16 +20,14 @@ const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 
     <nz-avatar [nzGap]="gap()" [nzText]="text()" nzSize="large" [style.background-color]="color()" />
   `,
-  styles: [
-    `
-      div {
-        margin-bottom: 16px;
-      }
-      button {
-        margin-left: 8px;
-      }
-    `
-  ]
+  styles: `
+    div {
+      margin-bottom: 16px;
+    }
+    button {
+      margin-left: 8px;
+    }
+  `
 })
 export class NzDemoAvatarDynamicComponent {
   index = signal(3);

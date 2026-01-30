@@ -74,13 +74,11 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       </tfoot>
     </nz-table>
   `,
-  styles: [
-    `
-      :host ::ng-deep tfoot.ant-table-summary {
-        background-color: #fafafa !important;
-      }
-    `
-  ]
+  styles: `
+    :host ::ng-deep tfoot.ant-table-summary {
+      background-color: #fafafa !important;
+    }
+  `
 })
 export class NzDemoTableSummaryComponent implements OnInit {
   data = [

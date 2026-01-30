@@ -35,12 +35,10 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
       }
     </ng-template>
   `,
-  styles: [
-    `
-      .large ::ng-deep .ant-rate-star {
-        font-size: 36px;
-      }
-    `
-  ]
+  styles: `
+    .large ::ng-deep .ant-rate-star {
+      font-size: 36px;
+    }
+  `
 })
 export class NzDemoRateCustomizeComponent {}

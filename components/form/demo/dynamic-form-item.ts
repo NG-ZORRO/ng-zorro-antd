@@ -61,35 +61,33 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       </ng-container>
     </form>
   `,
-  styles: [
-    `
-      .dynamic-delete-button {
-        cursor: pointer;
-        position: relative;
-        top: 4px;
-        font-size: 24px;
-        color: #999;
-        transition: all 0.3s;
-      }
+  styles: `
+    .dynamic-delete-button {
+      cursor: pointer;
+      position: relative;
+      top: 4px;
+      font-size: 24px;
+      color: #999;
+      transition: all 0.3s;
+    }
 
-      .dynamic-delete-button:hover {
-        color: #777;
-      }
+    .dynamic-delete-button:hover {
+      color: #777;
+    }
 
-      .passenger-input {
-        width: 60%;
-        margin-right: 8px;
-      }
+    .passenger-input {
+      width: 60%;
+      margin-right: 8px;
+    }
 
-      [nz-form] {
-        max-width: 600px;
-      }
+    [nz-form] {
+      max-width: 600px;
+    }
 
-      .add-button {
-        width: 60%;
-      }
-    `
-  ]
+    .add-button {
+      width: 60%;
+    }
+  `
 })
 export class NzDemoFormDynamicFormItemComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);

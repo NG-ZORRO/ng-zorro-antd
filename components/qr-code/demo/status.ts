@@ -10,13 +10,11 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
     <nz-qrcode nzValue="https://ng.ant.design/" nzStatus="expired" (nzRefresh)="refresh($event)" />
     <nz-qrcode nzValue="https://ng.ant.design/" nzStatus="scanned" />
   `,
-  styles: [
-    `
-      nz-qrcode {
-        margin-right: 12px;
-      }
-    `
-  ]
+  styles: `
+    nz-qrcode {
+      margin-right: 12px;
+    }
+  `
 })
 export class NzDemoQrCodeStatusComponent {
   refresh(val: string): void {

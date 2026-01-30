@@ -50,13 +50,11 @@ function alphabet(): string[] {
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectSizeComponent {
   readonly listOfOption: string[] = alphabet();

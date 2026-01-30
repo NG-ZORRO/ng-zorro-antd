@@ -26,13 +26,11 @@ function alphabet(): string[] {
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectAutomaticTokenizationComponent {
   readonly listOfOption: Array<{ label: string; value: string }> = alphabet().map(item => ({

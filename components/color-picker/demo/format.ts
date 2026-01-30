@@ -11,19 +11,17 @@ import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
     <div class="format"> <nz-color-picker nzFormat="hsb" [(ngModel)]="hsb" /> HSB: {{ hsb }} </div>
     <div class="format"> <nz-color-picker nzFormat="rgb" [(ngModel)]="rgb" /> RGB: {{ rgb }} </div>
   `,
-  styles: [
-    `
-      .format {
-        display: flex;
-        align-items: center;
-        margin-bottom: 12px;
-      }
+  styles: `
+    .format {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
 
-      nz-color-picker {
-        margin-right: 8px;
-      }
-    `
-  ]
+    nz-color-picker {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoColorPickerFormatComponent {
   hex: string = '#1677ff';

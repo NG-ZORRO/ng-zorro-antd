@@ -47,19 +47,17 @@ interface Name {
       </cdk-virtual-scroll-viewport>
     </div>
   `,
-  styles: [
-    `
-      .demo-infinite-container {
-        height: 300px;
-        border: 1px solid #e8e8e8;
-        border-radius: 4px;
-      }
+  styles: `
+    .demo-infinite-container {
+      height: 300px;
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+    }
 
-      nz-list {
-        padding: 24px;
-      }
-    `
-  ],
+    nz-list {
+      padding: 24px;
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDemoListInfiniteLoadComponent implements OnInit {

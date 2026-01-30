@@ -14,14 +14,12 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     <br />
     <nz-range-picker [nzFormat]="dateFormat" />
   `,
-  styles: [
-    `
-      nz-date-picker,
-      nz-range-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker,
+    nz-range-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerFormatComponent {
   dateFormat = 'yyyy/MM/dd';

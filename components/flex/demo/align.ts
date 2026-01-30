@@ -26,22 +26,20 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
       <button nz-button nzType="primary">Primary</button>
     </div>
   `,
-  styles: [
-    `
-      .segment-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
+  styles: `
+    .segment-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
 
-        margin-block-end: 1rem;
-      }
+      margin-block-end: 1rem;
+    }
 
-      .btn-wrappers {
-        block-size: 10rem;
-        border: 1px solid var(--ant-primary-6);
-      }
-    `
-  ]
+    .btn-wrappers {
+      block-size: 10rem;
+      border: 1px solid var(--ant-primary-6);
+    }
+  `
 })
 export class NzDemoFlexAlignComponent {
   public justifySegment: NzJustify[] = [

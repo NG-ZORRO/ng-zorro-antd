@@ -114,41 +114,39 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       </nz-page-header-content>
     </nz-page-header>
   `,
-  styles: [
-    `
-      .content {
-        flex: 1;
-      }
+  styles: `
+    .content {
+      flex: 1;
+    }
 
-      .content p {
-        margin-bottom: 1em;
-      }
+    .content p {
+      margin-bottom: 1em;
+    }
 
-      .content-link a {
-        margin-right: 16px;
-      }
+    .content-link a {
+      margin-right: 16px;
+    }
 
-      .content-link a img {
-        margin-right: 8px;
-      }
+    .content-link a img {
+      margin-right: 8px;
+    }
 
+    .content-image {
+      margin: 0 0 0 60px;
+      display: flex;
+      align-items: center;
+    }
+
+    .content-image img {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
       .content-image {
-        margin: 0 0 0 60px;
-        display: flex;
-        align-items: center;
+        flex: 100%;
+        margin: 24px 0 0;
       }
-
-      .content-image img {
-        width: 100%;
-      }
-
-      @media (max-width: 768px) {
-        .content-image {
-          flex: 100%;
-          margin: 24px 0 0;
-        }
-      }
-    `
-  ]
+    }
+  `
 })
 export class NzDemoPageHeaderContentComponent {}

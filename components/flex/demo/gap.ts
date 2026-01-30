@@ -24,17 +24,15 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
       <button nz-button nzType="link">Link</button>
     </div>
   `,
-  styles: [
-    `
-      .segment-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
+  styles: `
+    .segment-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
 
-        margin-block-end: 1rem;
-      }
-    `
-  ]
+      margin-block-end: 1rem;
+    }
+  `
 })
 export class NzDemoFlexGapComponent {
   public gapSegment: string[] = ['small', 'middle', 'large', 'custom'];

@@ -58,13 +58,11 @@ const options: NzCascaderOption[] = [
     <button nz-button (click)="reset()">Reset</button>
     <button nz-button (click)="submit()">Submit</button>
   `,
-  styles: [
-    `
-      button {
-        margin-right: 8px;
-      }
-    `
-  ]
+  styles: `
+    button {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoCascaderReactiveFormComponent {
   private fb = inject(FormBuilder);

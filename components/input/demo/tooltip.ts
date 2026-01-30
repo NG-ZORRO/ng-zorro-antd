@@ -23,18 +23,16 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       (blur)="onBlur()"
     />
   `,
-  styles: [
-    `
-      .numeric-input .ant-tooltip-inner {
-        min-width: 32px;
-        min-height: 37px;
-      }
+  styles: `
+    .numeric-input .ant-tooltip-inner {
+      min-width: 32px;
+      min-height: 37px;
+    }
 
-      .numeric-input .numeric-input-title {
-        font-size: 14px;
-      }
-    `
-  ]
+    .numeric-input .numeric-input-title {
+      font-size: 14px;
+    }
+  `
 })
 export class NzDemoInputTooltipComponent {
   value = '';

@@ -9,14 +9,12 @@ const ngZorroIconLiteral =
   selector: 'nz-demo-icon-namespace',
   imports: [NzIconModule],
   template: `<nz-icon nzType="ng-zorro:antd" />`,
-  styles: [
-    `
-      nz-icon {
-        margin-right: 6px;
-        font-size: 24px;
-      }
-    `
-  ]
+  styles: `
+    nz-icon {
+      margin-right: 6px;
+      font-size: 24px;
+    }
+  `
 })
 export class NzDemoIconNamespaceComponent {
   constructor(private iconService: NzIconService) {

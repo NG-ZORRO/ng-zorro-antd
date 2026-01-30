@@ -14,36 +14,34 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
       <nz-icon nzType="smile" [class.icon-highlight]="nextHighLight" />
     </div>
   `,
-  styles: [
-    `
-      .icon-wrapper {
-        position: relative;
-        padding: 0 30px;
-      }
+  styles: `
+    .icon-wrapper {
+      position: relative;
+      padding: 0 30px;
+    }
 
-      nz-icon {
-        position: absolute;
-        top: -2px;
-        width: 16px;
-        height: 16px;
-        line-height: 1;
-        font-size: 16px;
-        color: rgba(0, 0, 0, 0.25);
-      }
+    nz-icon {
+      position: absolute;
+      top: -2px;
+      width: 16px;
+      height: 16px;
+      line-height: 1;
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.25);
+    }
 
-      nz-icon:first-child {
-        left: 0;
-      }
+    nz-icon:first-child {
+      left: 0;
+    }
 
-      nz-icon:last-child {
-        right: 0;
-      }
+    nz-icon:last-child {
+      right: 0;
+    }
 
-      .icon-highlight {
-        color: rgba(0, 0, 0, 0.45);
-      }
-    `
-  ]
+    .icon-highlight {
+      color: rgba(0, 0, 0, 0.45);
+    }
+  `
 })
 export class NzDemoSliderIconSliderComponent implements OnInit {
   min = 0;

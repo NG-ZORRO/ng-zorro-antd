@@ -10,14 +10,12 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
     <nz-progress [nzPercent]="70" nzType="circle" [nzWidth]="80" nzStatus="exception" />
     <nz-progress [nzPercent]="100" nzType="circle" [nzWidth]="80" />
   `,
-  styles: [
-    `
-      nz-progress {
-        margin-right: 8px;
-        margin-bottom: 8px;
-        display: inline-block;
-      }
-    `
-  ]
+  styles: `
+    nz-progress {
+      margin-right: 8px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+  `
 })
 export class NzDemoProgressCircleMiniComponent {}

@@ -20,13 +20,11 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       Arrow points to center / 箭头指向中心
     </button>
   `,
-  styles: [
-    `
-      button {
-        margin-right: 8px;
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    button {
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoTooltipArrowPointAtCenterComponent {}

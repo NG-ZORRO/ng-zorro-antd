@@ -12,13 +12,11 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     <br />
     <nz-range-picker nzDisabled />
   `,
-  styles: [
-    `
-      nz-date-picker,
-      nz-range-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker,
+    nz-range-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerDisabledComponent {}

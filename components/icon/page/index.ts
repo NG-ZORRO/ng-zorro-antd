@@ -480,28 +480,26 @@ declare const locale: NzSafeAny;
       </ng-container>
     </nz-modal>
   `,
-  styles: [
-    `
-      h3 {
-        margin: 1.6em 0 0.6em;
-        font-size: 18px;
-      }
+  styles: `
+    h3 {
+      margin: 1.6em 0 0.6em;
+      font-size: 18px;
+    }
 
-      ul.anticons-list li .anticon {
-        font-size: 24px;
-      }
+    ul.anticons-list li .anticon {
+      font-size: 24px;
+    }
 
-      .icon-selector {
-        display: flex;
-        justify-content: space-between;
-      }
+    .icon-selector {
+      display: flex;
+      justify-content: space-between;
+    }
 
-      nz-input-search {
-        margin-left: 10px;
-        flex: 1 1 0;
-      }
-    `
-  ]
+    nz-input-search {
+      margin-left: 10px;
+      flex: 1 1 0;
+    }
+  `
 })
 export class NzPageDemoIconComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);

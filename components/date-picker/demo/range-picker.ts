@@ -21,13 +21,11 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     <br />
     <nz-range-picker nzMode="year" [(ngModel)]="date" (ngModelChange)="onChange($event)" />
   `,
-  styles: [
-    `
-      nz-range-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-range-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerRangePickerComponent {
   date = null;

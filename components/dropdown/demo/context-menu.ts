@@ -27,17 +27,15 @@ import { NzContextMenuService, NzDropdownMenuComponent, NzDropdownModule } from 
       </ul>
     </nz-dropdown-menu>
   `,
-  styles: [
-    `
-      .context-area {
-        background: #f7f7f7;
-        color: #777;
-        text-align: center;
-        height: 200px;
-        line-height: 200px;
-      }
-    `
-  ]
+  styles: `
+    .context-area {
+      background: #f7f7f7;
+      color: #777;
+      text-align: center;
+      height: 200px;
+      line-height: 200px;
+    }
+  `
 })
 export class NzDemoDropdownContextMenuComponent {
   contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {

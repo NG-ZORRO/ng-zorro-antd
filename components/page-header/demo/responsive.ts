@@ -50,35 +50,33 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
       </nz-page-header-footer>
     </nz-page-header>
   `,
-  styles: [
-    `
+  styles: `
+    .content {
+      display: flex;
+    }
+
+    .extra > div {
+      display: flex;
+      width: max-content;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 576px) {
       .content {
-        display: flex;
+        display: block;
       }
 
-      .extra > div {
-        display: flex;
-        width: max-content;
-        justify-content: flex-end;
+      .main {
+        width: 100%;
+        margin-bottom: 12px;
       }
 
-      @media (max-width: 576px) {
-        .content {
-          display: block;
-        }
-
-        .main {
-          width: 100%;
-          margin-bottom: 12px;
-        }
-
-        .extra {
-          width: 100%;
-          margin-left: 0;
-          text-align: left;
-        }
+      .extra {
+        width: 100%;
+        margin-left: 0;
+        text-align: left;
       }
-    `
-  ]
+    }
+  `
 })
 export class NzDemoPageHeaderResponsiveComponent {}

@@ -19,13 +19,11 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
       <nz-avatar nzShape="square" nzSize="small" nzIcon="user" />
     </div>
   `,
-  styles: [
-    `
-      nz-avatar {
-        margin-top: 16px;
-        margin-right: 16px;
-      }
-    `
-  ]
+  styles: `
+    nz-avatar {
+      margin-top: 16px;
+      margin-right: 16px;
+    }
+  `
 })
 export class NzDemoAvatarBasicComponent {}

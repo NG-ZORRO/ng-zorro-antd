@@ -127,21 +127,19 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
-      [nz-form] {
-        max-width: 600px;
-      }
+  styles: `
+    [nz-form] {
+      max-width: 600px;
+    }
 
-      .ant-select.ant-select-in-form-item.phone-select {
-        width: 80px;
-      }
+    .ant-select.ant-select-in-form-item.phone-select {
+      width: 80px;
+    }
 
-      .register-area {
-        margin-bottom: 8px;
-      }
-    `
-  ]
+    .register-area {
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoFormRegisterComponent implements OnInit, OnDestroy {
   private fb = inject(NonNullableFormBuilder);

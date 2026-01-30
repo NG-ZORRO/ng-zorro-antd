@@ -46,14 +46,12 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
       </nz-tab>
     </nz-tabs>
   `,
-  styles: [
-    `
-      :host ::ng-deep .ant-tabs-tabpane {
-        padding: 24px;
-        overflow: auto;
-      }
-    `
-  ]
+  styles: `
+    :host ::ng-deep .ant-tabs-tabpane {
+      padding: 24px;
+      overflow: auto;
+    }
+  `
 })
 export class NzDemoDatePickerInlineComponent {
   date = null;

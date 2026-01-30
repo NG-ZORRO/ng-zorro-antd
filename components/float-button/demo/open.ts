@@ -22,18 +22,16 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       <nz-switch [(ngModel)]="isOpen" />
     </div>
   `,
-  styles: [
-    `
-      .open {
-        height: 300px;
-        position: relative;
-      }
-      nz-float-button-group,
-      nz-float-button {
-        position: absolute;
-      }
-    `
-  ]
+  styles: `
+    .open {
+      height: 300px;
+      position: relative;
+    }
+    nz-float-button-group,
+    nz-float-button {
+      position: absolute;
+    }
+  `
 })
 export class NzDemoFloatButtonOpenComponent {
   isOpen: boolean = true;

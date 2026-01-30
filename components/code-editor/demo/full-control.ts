@@ -11,13 +11,11 @@ declare const monaco: any;
   selector: 'nz-demo-code-editor-full-control',
   imports: [NzCodeEditorModule],
   template: ` <nz-code-editor class="editor" [nzFullControl]="true" (nzEditorInitialized)="onEditorInit($event)" /> `,
-  styles: [
-    `
-      .editor {
-        height: 200px;
-      }
-    `
-  ]
+  styles: `
+    .editor {
+      height: 200px;
+    }
+  `
 })
 export class NzDemoCodeEditorFullControlComponent {
   editor?: editor.ICodeEditor | editor.IEditor;

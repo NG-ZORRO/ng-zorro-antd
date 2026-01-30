@@ -21,17 +21,15 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
     Change nzMarks dynamically:
     <button nz-button (click)="changeMarks()">Change nzMarks</button>
   `,
-  styles: [
-    `
-      h4 {
-        margin: 0 0 16px;
-      }
+  styles: `
+    h4 {
+      margin: 0 0 16px;
+    }
 
-      .ant-slider-with-marks {
-        margin-bottom: 44px;
-      }
-    `
-  ]
+    .ant-slider-with-marks {
+      margin-bottom: 44px;
+    }
+  `
 })
 export class NzDemoSliderMarkComponent {
   marks: NzMarks = {

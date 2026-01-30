@@ -177,31 +177,29 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       </nz-input-number>
     </nz-space-compact>
   `,
-  styles: [
-    `
-      .site-input-split {
-        background-color: #fff;
-      }
+  styles: `
+    .site-input-split {
+      background-color: #fff;
+    }
 
-      .site-input-right:not(.ant-input-rtl) {
-        border-left-width: 0;
-      }
+    .site-input-right:not(.ant-input-rtl) {
+      border-left-width: 0;
+    }
 
-      .site-input-right:not(.ant-input-rtl):hover,
-      .site-input-right:not(.ant-input-rtl):focus {
-        border-left-width: 1px;
-      }
+    .site-input-right:not(.ant-input-rtl):hover,
+    .site-input-right:not(.ant-input-rtl):focus {
+      border-left-width: 1px;
+    }
 
-      .site-input-right.ant-input-rtl {
-        border-right-width: 0;
-      }
+    .site-input-right.ant-input-rtl {
+      border-right-width: 0;
+    }
 
-      .site-input-right.ant-input-rtl:hover,
-      .site-input-right.ant-input-rtl:focus {
-        border-right-width: 1px;
-      }
-    `
-  ]
+    .site-input-right.ant-input-rtl:hover,
+    .site-input-right.ant-input-rtl:focus {
+      border-right-width: 1px;
+    }
+  `
 })
 export class NzDemoSpaceCompactComponent {
   cascaderOptions: NzCascaderOption[] = [

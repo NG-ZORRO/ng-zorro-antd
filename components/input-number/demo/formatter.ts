@@ -16,13 +16,11 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
       [nzParser]="parserPercent"
     />
   `,
-  styles: [
-    `
-      nz-input-number {
-        margin-right: 8px;
-      }
-    `
-  ]
+  styles: `
+    nz-input-number {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoInputNumberFormatterComponent {
   dollarValue = 1000;

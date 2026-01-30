@@ -43,23 +43,21 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
       </ng-container>
     </nz-calendar>
   `,
-  styles: [
-    `
-      .events {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
+  styles: `
+    .events {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
 
-      .events .ant-badge-status {
-        overflow: hidden;
-        white-space: nowrap;
-        width: 100%;
-        text-overflow: ellipsis;
-        font-size: 12px;
-      }
-    `
-  ]
+    .events .ant-badge-status {
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+      text-overflow: ellipsis;
+      font-size: 12px;
+    }
+  `
 })
 export class NzDemoCalendarNoticeCalendarComponent {
   readonly listDataMap = {

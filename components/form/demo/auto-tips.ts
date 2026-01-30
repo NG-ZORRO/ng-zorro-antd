@@ -65,13 +65,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
-      [nz-form] {
-        max-width: 600px;
-      }
-    `
-  ]
+  styles: `
+    [nz-form] {
+      max-width: 600px;
+    }
+  `
 })
 export class NzDemoFormAutoTipsComponent implements OnInit, OnDestroy {
   private fb = inject(NonNullableFormBuilder);

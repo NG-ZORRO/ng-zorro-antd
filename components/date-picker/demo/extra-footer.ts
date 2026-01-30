@@ -13,14 +13,12 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     <nz-range-picker [nzRenderExtraFooter]="plainFooter" nzShowTime />
     <nz-date-picker nzMode="month" [nzRenderExtraFooter]="footerRender" />
   `,
-  styles: [
-    `
-      nz-date-picker,
-      nz-range-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker,
+    nz-range-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerExtraFooterComponent {
   plainFooter = 'plain extra footer';

@@ -9,12 +9,10 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
     <nz-qrcode nzValue="https://ng.ant.design/" />
     <nz-qrcode nzValue="https://ng.ant.design/" nzType="svg" />
   `,
-  styles: [
-    `
-      nz-qrcode {
-        margin-right: 12px;
-      }
-    `
-  ]
+  styles: `
+    nz-qrcode {
+      margin-right: 12px;
+    }
+  `
 })
 export class NzDemoQrCodeTypeComponent {}

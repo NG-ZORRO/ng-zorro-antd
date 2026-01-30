@@ -20,14 +20,12 @@ import { NzDropdownModule, NzPlacementType } from 'ng-zorro-antd/dropdown';
       }
     </div>
   `,
-  styles: [
-    `
-      [nz-button] {
-        margin-right: 8px;
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    [nz-button] {
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoDropdownPlacementComponent {
   listOfPosition: NzPlacementType[] = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];

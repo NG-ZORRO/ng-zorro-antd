@@ -29,14 +29,12 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
       <nz-step nzTitle="wait" nzStatus="wait" nzDisabled />
     </nz-steps>
   `,
-  styles: [
-    `
-      nz-steps {
-        margin-bottom: 60px;
-        box-shadow: rgb(232, 232, 232) 0 -1px 0 0 inset;
-      }
-    `
-  ]
+  styles: `
+    nz-steps {
+      margin-bottom: 60px;
+      box-shadow: rgb(232, 232, 232) 0 -1px 0 0 inset;
+    }
+  `
 })
 export class NzDemoStepsNavComponent {
   index = 0;

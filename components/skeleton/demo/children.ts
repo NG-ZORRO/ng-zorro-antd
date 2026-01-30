@@ -18,16 +18,14 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
       <button nz-button (click)="showSkeleton()" [disabled]="loading">Show Skeleton</button>
     </div>
   `,
-  styles: [
-    `
-      .article h4 {
-        margin-bottom: 16px;
-      }
-      .article button {
-        margin-top: 16px;
-      }
-    `
-  ]
+  styles: `
+    .article h4 {
+      margin-bottom: 16px;
+    }
+    .article button {
+      margin-top: 16px;
+    }
+  `
 })
 export class NzDemoSkeletonChildrenComponent {
   loading = false;

@@ -31,18 +31,16 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       </div>
     </div>
   `,
-  styles: [
-    `
-      .head-example {
-        width: 42px;
-        height: 42px;
-        border-radius: 4px;
-        background: #eee;
-        display: inline-block;
-        vertical-align: middle;
-      }
-    `
-  ]
+  styles: `
+    .head-example {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      background: #eee;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  `
 })
 export class NzDemoBadgeDynamicComponent {
   count = 5;

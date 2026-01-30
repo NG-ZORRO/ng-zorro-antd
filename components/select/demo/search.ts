@@ -13,13 +13,11 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       <nz-option nzLabel="Tom" nzValue="tom" />
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 200px;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 200px;
+    }
+  `
 })
 export class NzDemoSelectSearchComponent {
   selectedValue = null;

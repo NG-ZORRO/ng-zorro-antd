@@ -38,14 +38,12 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       <nz-cascader nzInputAddonBefore [nzOptions]="[]" nzPlaceHolder="cascader" [style.width.px]="150" />
     </nz-input-number>
   `,
-  styles: [
-    `
-      nz-input-number {
-        display: block;
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    nz-input-number {
+      display: block;
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoInputNumberAddonComponent {
   value = 100;

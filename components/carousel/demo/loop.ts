@@ -14,24 +14,22 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
       }
     </nz-carousel>
   `,
-  styles: [
-    `
-      [nz-carousel-content] {
-        text-align: center;
-        height: 160px;
-        line-height: 160px;
-        background: #364d79;
-        color: #fff;
-        overflow: hidden;
-      }
+  styles: `
+    [nz-carousel-content] {
+      text-align: center;
+      height: 160px;
+      line-height: 160px;
+      background: #364d79;
+      color: #fff;
+      overflow: hidden;
+    }
 
-      h3 {
-        color: #fff;
-        margin-bottom: 0;
-        user-select: none;
-      }
-    `
-  ]
+    h3 {
+      color: #fff;
+      margin-bottom: 0;
+      user-select: none;
+    }
+  `
 })
 export class NzDemoCarouselLoopComponent {
   array = [1, 2, 3, 4];

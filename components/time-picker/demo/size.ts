@@ -11,13 +11,11 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
     <nz-time-picker [(ngModel)]="time" />
     <nz-time-picker [(ngModel)]="time" nzSize="small" />
   `,
-  styles: [
-    `
-      nz-time-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-time-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoTimePickerSizeComponent {
   time = new Date();

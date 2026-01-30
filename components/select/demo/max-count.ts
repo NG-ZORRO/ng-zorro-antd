@@ -28,13 +28,11 @@ function alphabet(): string[] {
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectMaxCountComponent {
   readonly listOfOption: string[] = alphabet();

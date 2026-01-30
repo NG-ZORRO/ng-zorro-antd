@@ -18,22 +18,20 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
       <button nz-button nzType="primary" (click)="onClick()">Preview</button>
     </div>
   `,
-  styles: [
-    `
-      div {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-      }
+  styles: `
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
 
-      label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-    `
-  ]
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  `
 })
 export class NzDemoImageControlledPreviewComponent {
   private nzImageService = inject(NzImageService);

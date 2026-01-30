@@ -11,16 +11,14 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
       <nz-float-button nzType="default" style="right: 94px" nzIcon="question-circle" />
     </div>
   `,
-  styles: [
-    `
-      .type {
-        height: 300px;
-        position: relative;
-      }
-      nz-float-button {
-        position: absolute;
-      }
-    `
-  ]
+  styles: `
+    .type {
+      height: 300px;
+      position: relative;
+    }
+    nz-float-button {
+      position: absolute;
+    }
+  `
 })
 export class NzDemoFloatButtonTypeComponent {}

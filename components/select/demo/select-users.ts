@@ -38,17 +38,15 @@ interface MockUser {
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
+  styles: `
+    nz-select {
+      width: 100%;
+    }
 
-      .loading-icon {
-        margin-right: 8px;
-      }
-    `
-  ]
+    .loading-icon {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoSelectSelectUsersComponent implements OnInit {
   randomUserUrl = 'https://api.randomuser.me/?results=5';

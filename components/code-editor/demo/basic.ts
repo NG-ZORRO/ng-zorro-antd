@@ -7,13 +7,11 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
   selector: 'nz-demo-code-editor-basic',
   imports: [FormsModule, NzCodeEditorModule],
   template: ` <nz-code-editor class="editor" [ngModel]="code" [nzEditorOption]="{ language: 'typescript' }" /> `,
-  styles: [
-    `
-      .editor {
-        height: 200px;
-      }
-    `
-  ]
+  styles: `
+    .editor {
+      height: 200px;
+    }
+  `
 })
 export class NzDemoCodeEditorBasicComponent {
   code = `import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor'

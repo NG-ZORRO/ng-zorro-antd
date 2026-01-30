@@ -42,25 +42,23 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <a>register now!</a>
     </form>
   `,
-  styles: [
-    `
-      .login-form {
-        max-width: 300px;
-      }
+  styles: `
+    .login-form {
+      max-width: 300px;
+    }
 
-      .login-form-margin {
-        margin-bottom: 16px;
-      }
+    .login-form-margin {
+      margin-bottom: 16px;
+    }
 
-      .login-form-forgot {
-        float: right;
-      }
+    .login-form-forgot {
+      float: right;
+    }
 
-      .login-form-button {
-        width: 100%;
-      }
-    `
-  ]
+    .login-form-button {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoFormNormalLoginComponent {
   private fb = inject(NonNullableFormBuilder);

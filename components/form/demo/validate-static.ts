@@ -114,21 +114,19 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
-      [nz-form] {
-        max-width: 600px;
-      }
+  styles: `
+    [nz-form] {
+      max-width: 600px;
+    }
 
-      nz-date-picker ::ng-deep .ant-calendar-picker {
-        width: 100%;
-      }
+    nz-date-picker ::ng-deep .ant-calendar-picker {
+      width: 100%;
+    }
 
-      nz-date-picker,
-      nz-time-picker {
-        width: 100%;
-      }
-    `
-  ]
+    nz-date-picker,
+    nz-time-picker {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoFormValidateStaticComponent {}

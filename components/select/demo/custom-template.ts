@@ -30,12 +30,10 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       </div>
     </ng-template>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectCustomTemplateComponent {}

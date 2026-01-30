@@ -20,13 +20,11 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
       {{ isDisabledButton ? 'Enabled' : 'Disabled' }}
     </button>
   `,
-  styles: [
-    `
-      button {
-        margin-right: 8px;
-      }
-    `
-  ]
+  styles: `
+    button {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoCheckboxControllerComponent {
   isCheckedButton = true;

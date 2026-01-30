@@ -27,12 +27,10 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
       nzDescription="Error Description Error Description Error Description Error Description"
     />
   `,
-  styles: [
-    `
-      nz-alert {
-        margin-bottom: 16px;
-      }
-    `
-  ]
+  styles: `
+    nz-alert {
+      margin-bottom: 16px;
+    }
+  `
 })
 export class NzDemoAlertDescriptionComponent {}

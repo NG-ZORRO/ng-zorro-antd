@@ -21,13 +21,11 @@ function alphabet(): string[] {
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectTagsComponent {
   readonly listOfOption: string[] = alphabet();

@@ -34,13 +34,11 @@ interface MockUser {
       }
     </ng-template>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectScrollLoadComponent implements OnInit {
   readonly randomUserUrl: string = 'https://api.randomuser.me/?results=10';

@@ -17,12 +17,10 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
       <nz-icon nzInputPrefix nzType="clock-circle" />
     </nz-input-number>
   `,
-  styles: [
-    `
-      nz-input-number {
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    nz-input-number {
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoInputNumberStatusComponent {}

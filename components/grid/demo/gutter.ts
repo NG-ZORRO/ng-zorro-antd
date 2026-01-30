@@ -33,17 +33,15 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
       <div nz-col class="gutter-row" [nzSpan]="6"><div class="inner-box">col-6</div></div>
     </div>
   `,
-  styles: [
-    `
-      nz-divider {
-        color: #333;
-        font-weight: normal;
-      }
-      .inner-box {
-        background: #0092ff;
-        padding: 8px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-divider {
+      color: #333;
+      font-weight: normal;
+    }
+    .inner-box {
+      background: #0092ff;
+      padding: 8px 0;
+    }
+  `
 })
 export class NzDemoGridGutterComponent {}

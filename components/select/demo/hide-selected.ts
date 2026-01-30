@@ -13,13 +13,11 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectHideSelectedComponent {
   listOfOption = ['Apples', 'Nails', 'Bananas', 'Helicopters'];

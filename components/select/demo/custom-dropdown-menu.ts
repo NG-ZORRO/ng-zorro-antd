@@ -25,26 +25,24 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       </div>
     </ng-template>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 240px;
-      }
-      nz-divider {
-        margin: 4px 0;
-      }
-      .container {
-        display: flex;
-        flex-wrap: nowrap;
-        padding: 8px;
-      }
-      .add-item {
-        flex: 0 0 auto;
-        padding: 8px;
-        display: block;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 240px;
+    }
+    nz-divider {
+      margin: 4px 0;
+    }
+    .container {
+      display: flex;
+      flex-wrap: nowrap;
+      padding: 8px;
+    }
+    .add-item {
+      flex: 0 0 auto;
+      padding: 8px;
+      display: block;
+    }
+  `
 })
 export class NzDemoSelectCustomDropdownMenuComponent {
   listOfItem = ['jack', 'lucy'];

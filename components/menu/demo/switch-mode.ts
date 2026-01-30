@@ -54,13 +54,11 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       </li>
     </ul>
   `,
-  styles: [
-    `
-      [nz-menu] {
-        width: 240px;
-      }
-    `
-  ]
+  styles: `
+    [nz-menu] {
+      width: 240px;
+    }
+  `
 })
 export class NzDemoMenuSwitchModeComponent {
   mode = false;

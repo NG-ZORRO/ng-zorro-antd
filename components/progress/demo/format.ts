@@ -9,15 +9,13 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
     <nz-progress [nzPercent]="75" nzType="circle" [nzFormat]="formatOne" />
     <nz-progress [nzPercent]="100" nzType="circle" [nzFormat]="formatTwo" />
   `,
-  styles: [
-    `
-      nz-progress {
-        margin-right: 8px;
-        margin-bottom: 8px;
-        display: inline-block;
-      }
-    `
-  ]
+  styles: `
+    nz-progress {
+      margin-right: 8px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+  `
 })
 export class NzDemoProgressFormatComponent {
   formatOne = (percent: number): string => `${percent} Days`;

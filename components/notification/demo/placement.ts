@@ -36,13 +36,11 @@ import { NzNotificationPlacement, NzNotificationService } from 'ng-zorro-antd/no
       bottomRight
     </button>
   `,
-  styles: [
-    `
-      button {
-        margin-right: 1em;
-      }
-    `
-  ]
+  styles: `
+    button {
+      margin-right: 1em;
+    }
+  `
 })
 export class NzDemoNotificationPlacementComponent {
   placement = 'topRight';

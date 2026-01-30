@@ -24,13 +24,11 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       <nz-option nzLabel="Default Value" nzValue="Default" nzHide />
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectDefaultValueComponent {
   listOfOption = ['Option 01', 'Option 02'];

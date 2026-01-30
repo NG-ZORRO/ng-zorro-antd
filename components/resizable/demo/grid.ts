@@ -24,24 +24,22 @@ import { NzResizableModule, NzResizeEvent, NzResizeHandleOption } from 'ng-zorro
       <div class="col right" nz-col [nzSpan]="24 - col">col-{{ 24 - col }}</div>
     </div>
   `,
-  styles: [
-    `
-      .col {
-        padding: 16px 0;
-        text-align: center;
-        border-radius: 0;
-        min-height: 30px;
-        margin-top: 8px;
-        margin-bottom: 8px;
-        background: rgba(0, 160, 233, 0.7);
-        color: #fff;
-      }
+  styles: `
+    .col {
+      padding: 16px 0;
+      text-align: center;
+      border-radius: 0;
+      min-height: 30px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      background: rgba(0, 160, 233, 0.7);
+      color: #fff;
+    }
 
-      .col.right {
-        background: #00a0e9;
-      }
-    `
-  ]
+    .col.right {
+      background: #00a0e9;
+    }
+  `
 })
 export class NzDemoResizableGridComponent {
   col = 8;

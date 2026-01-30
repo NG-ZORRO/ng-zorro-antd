@@ -15,13 +15,11 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
       [nzEditorOption]="{ language: 'typescript' }"
     />
   `,
-  styles: [
-    `
-      .editor {
-        height: 200px;
-      }
-    `
-  ]
+  styles: `
+    .editor {
+      height: 200px;
+    }
+  `
 })
 export class NzDemoCodeEditorDiffComponent {
   originalCode = `import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';

@@ -22,13 +22,11 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 200px;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 200px;
+    }
+  `
 })
 export class NzDemoSelectSearchBoxComponent {
   selectedValue: string | null = null;

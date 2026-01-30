@@ -31,13 +31,11 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
     </ng-template>
     <p nz-typography nzCopyable [nzCopyTooltips]="null" nzContent="Hide copy tooltips."></p>
   `,
-  styles: [
-    `
-      p[nz-typography] {
-        margin-bottom: 1em;
-      }
-    `
-  ]
+  styles: `
+    p[nz-typography] {
+      margin-bottom: 1em;
+    }
+  `
 })
 export class NzDemoTypographyInteractiveComponent {
   editStr = 'This is an editable text.';

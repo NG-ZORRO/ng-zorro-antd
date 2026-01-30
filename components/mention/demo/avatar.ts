@@ -17,16 +17,14 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
       </ng-container>
     </nz-mention>
   `,
-  styles: [
-    `
-      .ant-avatar.ant-avatar-sm {
-        width: 14px;
-        height: 14px;
-        margin-right: 8px;
-        position: relative;
-      }
-    `
-  ]
+  styles: `
+    .ant-avatar.ant-avatar-sm {
+      width: 14px;
+      height: 14px;
+      margin-right: 8px;
+      position: relative;
+    }
+  `
 })
 export class NzDemoMentionAvatarComponent {
   inputValue?: string;
