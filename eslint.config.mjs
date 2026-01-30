@@ -225,7 +225,8 @@ export default tseslint.config(
           parser: 'angular'
         }
       ],
-      '@angular-eslint/template/prefer-self-closing-tags': 'error'
+      '@angular-eslint/template/prefer-self-closing-tags': 'error',
+      '@angular-eslint/template/prefer-at-empty': 'error',
     }
   },
   {

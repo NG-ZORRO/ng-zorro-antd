@@ -104,9 +104,7 @@ export type MentionPlacement = 'top' | 'bottom';
                 {{ nzValueWith(suggestion) }}
               }
             </li>
-          }
-
-          @if (filteredSuggestions.length === 0) {
+          } @empty {
             <li class="ant-mentions-dropdown-menu-item ant-mentions-dropdown-menu-item-disabled">
               @if (nzLoading) {
                 <span><nz-icon nzType="loading" /></span>
