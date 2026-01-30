@@ -12,26 +12,26 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   template: `
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <ng-container formArrayName="names">
-        @for (control of listOfControl.controls; track control; let i = $index) {
+        @for (control of listOfControl.controls; track control) {
           <nz-form-item>
-            @if (i === 0) {
-              <nz-form-label [nzXs]="24" [nzSm]="4" [nzFor]="'passenger' + i"> Passengers </nz-form-label>
+            @if ($first) {
+              <nz-form-label [nzXs]="24" [nzSm]="4" [nzFor]="'passenger' + $index"> Passengers </nz-form-label>
             }
             <nz-form-control
               [nzXs]="24"
               [nzSm]="20"
-              [nzOffset]="i === 0 ? 0 : 4"
+              [nzOffset]="$first ? 0 : 4"
               nzErrorTip="Please input passenger's name or delete this field."
             >
               <input
                 class="passenger-input"
                 nz-input
                 placeholder="placeholder"
-                [attr.id]="'passenger' + i"
-                [formControlName]="i"
+                [attr.id]="'passenger' + $index"
+                [formControlName]="$index"
               />
-              @if (listOfControl.controls.length > 1) {
-                <nz-icon nzType="minus-circle-o" class="dynamic-delete-button" (click)="removeField(i, $event)" />
+              @if ($count > 1) {
+                <nz-icon nzType="minus-circle-o" class="dynamic-delete-button" (click)="removeField($index, $event)" />
               }
             </nz-form-control>
           </nz-form-item>

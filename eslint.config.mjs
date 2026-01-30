@@ -228,6 +228,7 @@ export default tseslint.config(
       '@angular-eslint/template/prefer-self-closing-tags': 'error',
       '@angular-eslint/template/prefer-at-empty': 'error',
       '@angular-eslint/template/prefer-static-string-properties': 'error',
+      '@angular-eslint/template/prefer-contextual-for-variables': 'error',
     }
   },
   {

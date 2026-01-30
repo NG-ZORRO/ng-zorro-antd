@@ -86,7 +86,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [reverse]="nzReverse"
       />
     }
-    @for (handle of handles; track handle.value; let handleIndex = $index) {
+    @for (handle of handles; track handle.value) {
       <nz-slider-handle
         [vertical]="nzVertical"
         [reverse]="nzReverse"
@@ -98,7 +98,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [tooltipPlacement]="nzTooltipPlacement"
         [dragging]="dragging()"
         [dir]="dir"
-        (focusin)="onHandleFocusIn(handleIndex)"
+        (focusin)="onHandleFocusIn($index)"
       />
     }
     @if (marksArray) {

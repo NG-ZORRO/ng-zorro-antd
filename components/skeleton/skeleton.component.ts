@@ -53,8 +53,8 @@ import {
         }
         @if (!!nzParagraph) {
           <ul class="ant-skeleton-paragraph">
-            @for (row of rowsList; track row; let i = $index) {
-              <li [style.width]="toCSSUnit(widthList[i])"></li>
+            @for (row of rowsList; track row) {
+              <li [style.width]="toCSSUnit(widthList[$index])"></li>
             }
           </ul>
         }

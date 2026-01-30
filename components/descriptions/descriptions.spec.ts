@@ -154,8 +154,8 @@ describe('descriptions', () => {
   selector: 'nz-test-descriptions',
   template: `
     <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
-      @for (col of colspanArray; track i; let i = $index) {
-        <nz-descriptions-item [nzTitle]="itemTitle + i" [nzSpan]="col" />
+      @for (col of colspanArray; track $index) {
+        <nz-descriptions-item [nzTitle]="itemTitle + $index" [nzSpan]="col" />
       }
     </nz-descriptions>
   `

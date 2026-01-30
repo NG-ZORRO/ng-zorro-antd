@@ -84,10 +84,10 @@ interface CustomColumn extends NzCustomColumn {
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                @for (item of fix; track item; let i = $index) {
+                @for (item of fix; track item) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
-                    <nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, i)" />
+                    <nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, $index)" />
                   </div>
                 }
               </div>
@@ -109,10 +109,10 @@ interface CustomColumn extends NzCustomColumn {
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                @for (item of notFix; track item; let i = $index) {
+                @for (item of notFix; track item) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
-                    <nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, i)" />
+                    <nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, $index)" />
                   </div>
                 }
               </div>

@@ -11,7 +11,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
   imports: [FormsModule, NzIconModule, NzInputModule, NzTagModule, NzNoAnimationDirective],
   template: `
     @for (tag of tags; track tag) {
-      <nz-tag [nzMode]="$index === 0 ? 'default' : 'closeable'" (nzOnClose)="handleClose(tag)">
+      <nz-tag [nzMode]="$first ? 'default' : 'closeable'" (nzOnClose)="handleClose(tag)">
         {{ sliceTagName(tag) }}
       </nz-tag>
     }
