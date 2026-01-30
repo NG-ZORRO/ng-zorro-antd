@@ -612,7 +612,7 @@ describe('menu', () => {
   selector: 'nz-test-menu-horizontal',
   imports: [NzIconModule, NzMenuModule],
   template: `
-    <ul nz-menu [nzMode]="'horizontal'">
+    <ul nz-menu nzMode="horizontal">
       <li
         nz-submenu
         [nzTriggerSubMenuAction]="nzTriggerSubMenuAction"
@@ -672,7 +672,7 @@ export class NzTestMenuHorizontalComponent {
 @Component({
   imports: [NzIconModule, NzMenuModule],
   template: `
-    <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
+    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="collapse">
       <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
         <span title>
           <nz-icon nzType="mail" />

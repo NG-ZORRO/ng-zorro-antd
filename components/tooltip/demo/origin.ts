@@ -11,12 +11,10 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
     <button nz-button nz-element #button="nzElement">Action</button>
     <a nz-tooltip nzTooltipTitle="This action could not be revoked!" [nzTooltipOrigin]="button.elementRef">Notice</a>
   `,
-  styles: [
-    `
-      button {
-        margin-right: 8px;
-      }
-    `
-  ]
+  styles: `
+    button {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoTooltipOriginComponent {}

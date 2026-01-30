@@ -43,12 +43,12 @@ const TREE_DATA: TreeNode[] = [
   template: `
     <nz-tree-view [nzDataSource]="dataSource" [nzChildrenAccessor]="childrenAccessor">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
-        <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
+        <nz-tree-node-toggle nzTreeNodeNoopToggle />
         <nz-tree-node-checkbox
           [nzDisabled]="node.disabled"
           [nzChecked]="checklistSelection.isSelected(node)"
           (nzClick)="leafItemSelectionToggle(node)"
-        ></nz-tree-node-checkbox>
+        />
         <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="leafItemSelectionToggle(node)">
           {{ node.name }}
         </nz-tree-node-option>
@@ -63,7 +63,7 @@ const TREE_DATA: TreeNode[] = [
           [nzChecked]="descendantsAllSelected(node)"
           [nzIndeterminate]="descendantsPartiallySelected(node)"
           (nzClick)="itemSelectionToggle(node)"
-        ></nz-tree-node-checkbox>
+        />
         <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="itemSelectionToggle(node)">
           {{ node.name }}
         </nz-tree-node-option>

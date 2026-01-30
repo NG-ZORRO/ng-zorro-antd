@@ -21,7 +21,7 @@ import { NzSiderComponent } from './sider.component';
 @Component({
   selector: 'nz-layout',
   exportAs: 'nzLayout',
-  template: `<ng-content></ng-content>`,
+  template: `<ng-content />`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

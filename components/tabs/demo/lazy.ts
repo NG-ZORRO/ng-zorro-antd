@@ -28,19 +28,19 @@ export class NzDemoTabContentEagerlyComponent implements OnInit {
   template: `
     <nz-tabs>
       <nz-tab nzTitle="Tab Eagerly 1">
-        <nz-demo-tab-content-eagerly></nz-demo-tab-content-eagerly>
+        <nz-demo-tab-content-eagerly />
       </nz-tab>
       <nz-tab nzTitle="Tab Eagerly 2">
-        <nz-demo-tab-content-eagerly></nz-demo-tab-content-eagerly>
+        <nz-demo-tab-content-eagerly />
       </nz-tab>
       <nz-tab nzTitle="Tab Lazy 1">
         <ng-template nz-tab>
-          <nz-demo-tab-content-lazy></nz-demo-tab-content-lazy>
+          <nz-demo-tab-content-lazy />
         </ng-template>
       </nz-tab>
       <nz-tab nzTitle="Tab Lazy 2">
         <ng-template nz-tab>
-          <nz-demo-tab-content-lazy></nz-demo-tab-content-lazy>
+          <nz-demo-tab-content-lazy />
         </ng-template>
       </nz-tab>
     </nz-tabs>

@@ -644,7 +644,7 @@ describe('tree', () => {
       (nzContextMenu)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
       (nzCheckboxChange)="nzEvent($event)"
-    ></nz-tree>
+    />
     <ng-template #expandedIconTpl let-node>
       <nz-icon nzType="smile" class="ant-tree-switcher-icon" />
     </ng-template>
@@ -722,7 +722,7 @@ export class NzTestTreeBasicControlledComponent {
       (nzOnDragOver)="onDragOver()"
       (nzOnDrop)="onDrop()"
       (nzOnDragEnd)="onDragEnd()"
-    ></nz-tree>
+    />
   `
 })
 export class NzTestTreeDraggableComponent {
@@ -784,7 +784,7 @@ export class NzTestTreeDraggableComponent {
       [nzExpandAll]="expandAll"
       [nzAsyncData]="asyncData"
       [nzHideUnMatched]="hideUnMatched"
-    ></nz-tree>
+    />
   `
 })
 export class NzTestTreeBasicSearchComponent {

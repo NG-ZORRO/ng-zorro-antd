@@ -193,7 +193,7 @@ export class NzTestTagPreventComponent {
   imports: [BidiModule, NzTestTagBasicComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-basic-tag></nz-test-basic-tag>
+      <nz-test-basic-tag />
     </div>
   `
 })

@@ -1079,7 +1079,7 @@ class DisableTabsTestComponent {
   template: `
     <nz-tabs
       [(nzSelectedIndex)]="selectedIndex"
-      [nzType]="'editable-card'"
+      nzType="editable-card"
       (nzSelectedIndexChange)="handleSelection($event)"
     >
       @for (tab of tabs; track tab) {
@@ -1111,10 +1111,10 @@ class DynamicTabsTestComponent {
         (nzSelectedIndexChange)="handleSelection($event)"
         [nzTabPosition]="position"
       >
-        @for (_tab of tabs; track i; let i = $index) {
+        @for (_tab of tabs; track $index) {
           <nz-tab [nzTitle]="titleTemplate">
             <ng-template #titleTemplate let-visible="visible">Title in {{ visible ? 'tabs' : 'menu' }}</ng-template>
-            Content of Tab Pane {{ i }}
+            Content of Tab Pane {{ $index }}
           </nz-tab>
         }
       </nz-tabs>
@@ -1217,7 +1217,7 @@ class TabSetWithIndirectDescendantTabsTestComponent {
         Two
       </nz-tab>
     </nz-tabs>
-    <router-outlet></router-outlet>
+    <router-outlet />
   `
 })
 export class RouterTabsTestComponent {
@@ -1234,7 +1234,7 @@ export class RouterTabsTestComponent {
         </nz-tab>
       }
     </nz-tabs>
-    <router-outlet></router-outlet>
+    <router-outlet />
   `,
   imports: [RouterLink, RouterOutlet, NzTabsModule]
 })

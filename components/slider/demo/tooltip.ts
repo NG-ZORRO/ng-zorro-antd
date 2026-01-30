@@ -6,8 +6,8 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   selector: 'nz-demo-slider-tooltip',
   imports: [NzSliderModule],
   template: `
-    <nz-slider nzTooltipVisible="always"></nz-slider>
-    <nz-slider nzTooltipVisible="never"></nz-slider>
+    <nz-slider nzTooltipVisible="always" />
+    <nz-slider nzTooltipVisible="never" />
   `
 })
 export class NzDemoSliderTooltipComponent {}

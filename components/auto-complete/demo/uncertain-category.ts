@@ -38,23 +38,21 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       }
     </nz-autocomplete>
   `,
-  styles: [
-    `
-      .search-item {
-        display: flex;
-      }
+  styles: `
+    .search-item {
+      display: flex;
+    }
 
-      .search-item-desc {
-        flex: auto;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
+    .search-item-desc {
+      flex: auto;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
 
-      .search-item-count {
-        flex: none;
-      }
-    `
-  ]
+    .search-item-count {
+      flex: none;
+    }
+  `
 })
 export class NzDemoAutoCompleteUncertainCategoryComponent {
   inputValue?: string;

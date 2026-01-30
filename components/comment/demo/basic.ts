@@ -12,11 +12,7 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
   imports: [NzAvatarModule, NzCommentModule, NzIconModule, NzTooltipModule],
   template: `
     <nz-comment nzAuthor="Han Solo" [nzDatetime]="time">
-      <nz-avatar
-        nz-comment-avatar
-        nzIcon="user"
-        nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-      ></nz-avatar>
+      <nz-avatar nz-comment-avatar nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
       <nz-comment-content>
         <p>
           We supply a series of design principles, practical patterns and high quality design resources(Sketch and
@@ -46,18 +42,16 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       <nz-comment-action>Reply to</nz-comment-action>
     </nz-comment>
   `,
-  styles: [
-    `
-      .count {
-        padding-left: 8px;
-        cursor: auto;
-      }
-      .ant-comment-rtl .count {
-        padding-right: 8px;
-        padding-left: 0;
-      }
-    `
-  ]
+  styles: `
+    .count {
+      padding-left: 8px;
+      cursor: auto;
+    }
+    .ant-comment-rtl .count {
+      padding-right: 8px;
+      padding-left: 0;
+    }
+  `
 })
 export class NzDemoCommentBasicComponent {
   likes = 0;

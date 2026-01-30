@@ -24,10 +24,7 @@ import { NzStatisticValueType } from './typings';
   exportAs: 'nzStatisticContentValue',
   template: `
     @if (nzValueTemplate) {
-      <ng-container
-        [ngTemplateOutlet]="nzValueTemplate"
-        [ngTemplateOutletContext]="{ $implicit: nzValue }"
-      ></ng-container>
+      <ng-container [ngTemplateOutlet]="nzValueTemplate" [ngTemplateOutletContext]="{ $implicit: nzValue }" />
     } @else {
       @if (displayInt) {
         <span class="ant-statistic-content-value-int">{{ displayInt }}</span>

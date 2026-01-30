@@ -72,7 +72,7 @@ interface ChildrenItemData {
                     <td>{{ data.date }}</td>
                     <td>{{ data.name }}</td>
                     <td>
-                      <nz-badge [nzStatus]="'success'" [nzText]="'Finished'"></nz-badge>
+                      <nz-badge nzStatus="success" nzText="Finished" />
                     </td>
                     <td>{{ data.upgradeNum }}</td>
                     <td>
@@ -91,9 +91,9 @@ interface ChildrenItemData {
                             </li>
                           </ul>
                         </nz-dropdown-menu>
-                        <nz-divider nzType="vertical"></nz-divider>
+                        <nz-divider nzType="vertical" />
                         <a class="operation">Stop</a>
-                        <nz-divider nzType="vertical"></nz-divider>
+                        <nz-divider nzType="vertical" />
                         <a>More</a>
                       </span>
                     </td>

@@ -350,7 +350,7 @@ describe('rate', () => {
       [nzAllowClear]="allowClear"
       [nzDisabled]="disabled"
       [nzAutoFocus]="autoFocus"
-    ></nz-rate>
+    />
   `
 })
 export class NzTestRateBasicComponent {
@@ -372,7 +372,7 @@ export class NzTestRateBasicComponent {
   imports: [ReactiveFormsModule, NzRateModule],
   template: `
     <form>
-      <nz-rate [formControl]="formControl" [nzDisabled]="disabled"></nz-rate>
+      <nz-rate [formControl]="formControl" [nzDisabled]="disabled" />
     </form>
   `
 })
@@ -394,7 +394,7 @@ export class NzTestRateFormComponent {
   imports: [BidiModule, NzTestRateBasicComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-rate></nz-test-rate>
+      <nz-test-rate />
     </div>
   `
 })
@@ -407,7 +407,7 @@ export class NzTestRateRtlComponent {
   selector: 'nz-test-rate-character',
   imports: [FormsModule, NzRateModule],
   template: `
-    <nz-rate [(ngModel)]="value" [nzCharacter]="characterTpl"></nz-rate>
+    <nz-rate [(ngModel)]="value" [nzCharacter]="characterTpl" />
     <ng-template #characterTpl let-index>
       {{ index + 1 }}
     </ng-template>

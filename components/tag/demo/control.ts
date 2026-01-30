@@ -11,7 +11,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
   imports: [FormsModule, NzIconModule, NzInputModule, NzTagModule, NzNoAnimationDirective],
   template: `
     @for (tag of tags; track tag) {
-      <nz-tag [nzMode]="$index === 0 ? 'default' : 'closeable'" (nzOnClose)="handleClose(tag)">
+      <nz-tag [nzMode]="$first ? 'default' : 'closeable'" (nzOnClose)="handleClose(tag)">
         {{ sliceTagName(tag) }}
       </nz-tag>
     }
@@ -34,14 +34,12 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
       />
     }
   `,
-  styles: [
-    `
-      .editable-tag {
-        background: rgb(255, 255, 255);
-        border-style: dashed;
-      }
-    `
-  ]
+  styles: `
+    .editable-tag {
+      background: rgb(255, 255, 255);
+      border-style: dashed;
+    }
+  `
 })
 export class NzDemoTagControlComponent {
   tags = ['Unremovable', 'Tag 2', 'Tag 3'];

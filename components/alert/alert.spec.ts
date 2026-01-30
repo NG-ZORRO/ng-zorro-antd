@@ -179,7 +179,7 @@ describe('alert', () => {
       [nzType]="type"
       [nzAction]="action"
       (nzOnClose)="onClose($event)"
-    ></nz-alert>
+    />
   `
 })
 export class NzDemoTestBasicComponent {
@@ -198,7 +198,7 @@ export class NzDemoTestBasicComponent {
 
 @Component({
   imports: [NzAlertModule],
-  template: `<nz-alert nzBanner></nz-alert>`
+  template: `<nz-alert nzBanner />`
 })
 export class NzDemoTestBannerComponent {}
 
@@ -206,7 +206,7 @@ export class NzDemoTestBannerComponent {}
   imports: [NzDemoTestBasicComponent, BidiModule],
   template: `
     <div [dir]="direction">
-      <nz-test-basic-alert></nz-test-basic-alert>
+      <nz-test-basic-alert />
     </div>
   `
 })
@@ -224,7 +224,7 @@ export class NzTestAlertRtlComponent {
       nzDescription="Detailed description and advices about successful copywriting."
       [nzIcon]="customIconTemplate"
       nzShowIcon
-    ></nz-alert>
+    />
 
     <ng-template #customIconTemplate>
       <div> S </div>

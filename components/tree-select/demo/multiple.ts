@@ -17,7 +17,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       nzDefaultExpandAll
       nzMultiple
       (ngModelChange)="onChange($event)"
-    ></nz-tree-select>
+    />
     <ng-template #omittedPlaceHolder let-omittedValues>and {{ omittedValues.length }} more...</ng-template>
   `
 })

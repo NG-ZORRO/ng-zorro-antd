@@ -17,7 +17,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
         (input)="onInput($event)"
         [nzAutocomplete]="auto"
       />
-      <nz-autocomplete [nzDataSource]="options" nzBackfill #auto></nz-autocomplete>
+      <nz-autocomplete [nzDataSource]="options" nzBackfill #auto />
     </div>
   `
 })

@@ -213,8 +213,8 @@ describe('calendar Header', () => {
 @Component({
   imports: [FormsModule, NzCalendarHeaderComponent],
   template: `
-    <nz-calendar-header></nz-calendar-header>
-    <nz-calendar-header [(mode)]="mode"></nz-calendar-header>
+    <nz-calendar-header />
+    <nz-calendar-header [(mode)]="mode" />
   `
 })
 class NzTestCalendarHeaderModeComponent {
@@ -224,8 +224,8 @@ class NzTestCalendarHeaderModeComponent {
 @Component({
   imports: [NzCalendarHeaderComponent],
   template: `
-    <nz-calendar-header></nz-calendar-header>
-    <nz-calendar-header [fullscreen]="fullscreen"></nz-calendar-header>
+    <nz-calendar-header />
+    <nz-calendar-header [fullscreen]="fullscreen" />
   `
 })
 class NzTestCalendarHeaderFullscreenComponent {
@@ -235,8 +235,8 @@ class NzTestCalendarHeaderFullscreenComponent {
 @Component({
   imports: [NzCalendarHeaderComponent],
   template: `
-    <nz-calendar-header></nz-calendar-header>
-    <nz-calendar-header [activeDate]="activeDate"></nz-calendar-header>
+    <nz-calendar-header />
+    <nz-calendar-header [activeDate]="activeDate" />
   `
 })
 class NzTestCalendarHeaderActiveDateComponent {
@@ -246,11 +246,7 @@ class NzTestCalendarHeaderActiveDateComponent {
 @Component({
   imports: [NzCalendarHeaderComponent],
   template: `
-    <nz-calendar-header
-      [nzCustomHeader]="customHeader"
-      (yearChange)="year = $event"
-      (monthChange)="month = $event"
-    ></nz-calendar-header>
+    <nz-calendar-header [nzCustomHeader]="customHeader" (yearChange)="year = $event" (monthChange)="month = $event" />
 
     <ng-template #customHeaderElement>
       <p>custom header</p>

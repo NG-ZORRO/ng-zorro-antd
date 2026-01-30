@@ -137,7 +137,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
               <defs>
                 <linearGradient [id]="'gradient-' + gradientId" x1="100%" y1="0%" x2="0%" y2="0%">
                   @for (i of circleGradient; track $index) {
-                    <stop [attr.offset]="i.offset" [attr.stop-color]="i.color"></stop>
+                    <stop [attr.offset]="i.offset" [attr.stop-color]="i.color" />
                   }
                 </linearGradient>
               </defs>
@@ -150,7 +150,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
               [attr.stroke-width]="strokeWidth"
               [attr.d]="pathString"
               [style]="trailPathStyle"
-            ></path>
+            />
             @for (p of progressCirclePath; track $index) {
               <path
                 class="ant-progress-circle-path"
@@ -160,7 +160,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
                 [attr.stroke]="p.stroke"
                 [attr.stroke-width]="nzPercent ? strokeWidth : 0"
                 [style]="p.strokePathStyle"
-              ></path>
+              />
             }
           </svg>
           <ng-template [ngTemplateOutlet]="progressInfoTemplate" />

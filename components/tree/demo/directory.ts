@@ -15,7 +15,7 @@ import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree'
       (nzClick)="activeNode($event)"
       (nzDblClick)="openFolder($event)"
       [nzTreeTemplate]="nzTreeTemplate"
-    ></nz-tree>
+    />
     <ng-template #nzTreeTemplate let-node let-origin="origin">
       <span class="custom-node">
         @if (!node.isLeaf) {
@@ -40,37 +40,35 @@ import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree'
       </ul>
     </nz-dropdown-menu>
   `,
-  styles: [
-    `
-      nz-tree {
-        overflow: hidden;
-        margin: 0 -24px;
-        padding: 0 24px;
-      }
+  styles: `
+    nz-tree {
+      overflow: hidden;
+      margin: 0 -24px;
+      padding: 0 24px;
+    }
 
-      .custom-node {
-        cursor: pointer;
-        line-height: 24px;
-        margin-left: 4px;
-        display: inline-block;
-      }
+    .custom-node {
+      cursor: pointer;
+      line-height: 24px;
+      margin-left: 4px;
+      display: inline-block;
+    }
 
-      .file-name,
-      .folder-name {
-        margin-left: 4px;
-      }
+    .file-name,
+    .folder-name {
+      margin-left: 4px;
+    }
 
-      .file-desc,
-      .folder-desc {
-        padding: 0 8px;
-        display: inline-block;
-        background: #87ceff;
-        color: #ffffff;
-        position: relative;
-        left: 12px;
-      }
-    `
-  ]
+    .file-desc,
+    .folder-desc {
+      padding: 0 8px;
+      display: inline-block;
+      background: #87ceff;
+      color: #ffffff;
+      position: relative;
+      left: 12px;
+    }
+  `
 })
 export class NzDemoTreeDirectoryComponent {
   activatedNode?: NzTreeNode;

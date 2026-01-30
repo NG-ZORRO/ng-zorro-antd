@@ -11,13 +11,11 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
     <nz-input-number [(ngModel)]="value" [nzKeyboard]="keyboard" nzMin="1" nzMax="10" />
     <label nz-checkbox [(ngModel)]="keyboard">Toggle Keyboard</label>
   `,
-  styles: [
-    `
-      nz-input-number {
-        margin-right: 8px;
-      }
-    `
-  ]
+  styles: `
+    nz-input-number {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoInputNumberKeyboardComponent {
   keyboard = true;

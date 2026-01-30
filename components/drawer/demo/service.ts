@@ -89,7 +89,7 @@ export class NzDemoDrawerServiceComponent {
   template: `
     <div>
       <input nz-input [(ngModel)]="nzData.value" />
-      <nz-divider></nz-divider>
+      <nz-divider />
       <button nzType="primary" (click)="close()" nz-button>Confirm</button>
     </div>
   `

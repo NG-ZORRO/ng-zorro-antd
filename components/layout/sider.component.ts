@@ -37,7 +37,7 @@ import { NzSiderTriggerComponent } from './sider-trigger.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="ant-layout-sider-children">
-      <ng-content></ng-content>
+      <ng-content />
     </div>
     @if (nzCollapsible && nzTrigger !== null) {
       <div

@@ -8,7 +8,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
   selector: 'nz-demo-typography-suffix',
   imports: [FormsModule, NzSliderModule, NzTypographyModule],
   template: `
-    <nz-slider [(ngModel)]="rows" [nzMax]="10" [nzMin]="1"></nz-slider>
+    <nz-slider [(ngModel)]="rows" [nzMax]="10" [nzMin]="1" />
     <p
       nz-typography
       nzEllipsis

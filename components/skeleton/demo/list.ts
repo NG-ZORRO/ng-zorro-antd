@@ -10,7 +10,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-skeleton-list',
   imports: [FormsModule, NzIconModule, NzListModule, NzSkeletonModule, NzSwitchModule],
   template: `
-    <nz-switch [(ngModel)]="loading"></nz-switch>
+    <nz-switch [(ngModel)]="loading" />
     <nz-list [nzDataSource]="listData" [nzRenderItem]="item" nzItemLayout="vertical">
       <ng-template #item let-item>
         <nz-list-item

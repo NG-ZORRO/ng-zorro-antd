@@ -767,24 +767,22 @@ function afterNextFrameRender(callbackFn: () => void): void {
           [style.width.px]="width"
           (nzResize)="onResize($event)"
         >
-          <nz-resize-handles></nz-resize-handles>
+          <nz-resize-handles />
           content
         </div>
       </div>
     </div>
   `,
-  styles: [
-    `
-      .box-ref {
-        width: 256px;
-        height: 256px;
-      }
-      .parent {
-        width: 200px;
-        height: 200px;
-      }
-    `
-  ]
+  styles: `
+    .box-ref {
+      width: 256px;
+      height: 256px;
+    }
+    .parent {
+      width: 200px;
+      height: 200px;
+    }
+  `
 })
 class NzTestResizableBoundsComponent {
   @ViewChild('boxRef', { static: false }) boxRef!: ElementRef<HTMLDivElement>;

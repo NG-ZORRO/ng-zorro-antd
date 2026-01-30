@@ -20,23 +20,21 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
       <div class="flex-item even"></div>
     </div>
   `,
-  styles: [
-    `
-      nz-radio-group {
-        margin-block-end: 1rem;
-      }
+  styles: `
+    nz-radio-group {
+      margin-block-end: 1rem;
+    }
 
-      .flex-item {
-        inline-size: 25%;
-        block-size: 54px;
-        background-color: var(--ant-primary-6);
-      }
+    .flex-item {
+      inline-size: 25%;
+      block-size: 54px;
+      background-color: var(--ant-primary-6);
+    }
 
-      .even {
-        background-color: var(--ant-primary-5);
-      }
-    `
-  ]
+    .even {
+      background-color: var(--ant-primary-5);
+    }
+  `
 })
 export class NzDemoFlexBasicComponent {
   isVertical = false;

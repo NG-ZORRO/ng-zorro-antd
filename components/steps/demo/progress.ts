@@ -41,7 +41,7 @@ function mockAsyncStep(): Observable<number> {
           [nzTitle]="step.title"
           [nzDescription]="step.description"
           [nzPercentage]="step.async ? step.percentage : null"
-        ></nz-step>
+        />
       }
     </nz-steps>
     <div class="steps-action">
@@ -62,17 +62,15 @@ function mockAsyncStep(): Observable<number> {
       }
     </div>
   `,
-  styles: [
-    `
-      .steps-action {
-        margin-top: 36px;
-      }
+  styles: `
+    .steps-action {
+      margin-top: 36px;
+    }
 
-      button {
-        margin-right: 8px;
-      }
-    `
-  ]
+    button {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoStepsProgressComponent {
   steps: Step[] = [

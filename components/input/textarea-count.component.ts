@@ -26,7 +26,7 @@ import { NzInputDirective } from './input.directive';
 
 @Component({
   selector: 'nz-textarea-count',
-  template: `<ng-content select="textarea[nz-input]"></ng-content>`,
+  template: `<ng-content select="textarea[nz-input]" />`,
   host: {
     class: 'ant-input-textarea-show-count'
   },

@@ -9,7 +9,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
   imports: [NgTemplateOutlet, NzIconModule, NzMenuModule],
   template: `
     <ul nz-menu nzMode="inline" style="width: 240px;">
-      <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
+      <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }" />
       <ng-template #menuTpl let-menus>
         @for (menu of menus; track menu) {
           @if (!menu.children) {

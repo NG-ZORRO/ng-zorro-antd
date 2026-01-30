@@ -11,34 +11,16 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   template: `
     <div nz-flex nzGap="large">
       <nz-space nzDirection="vertical" style="flex: 1">
-        <nz-select *nzSpaceItem ngModel="lucy" [nzOptions]="options"></nz-select>
-        <nz-select *nzSpaceItem ngModel="lucy" nzVariant="filled" [nzOptions]="options"></nz-select>
-        <nz-select *nzSpaceItem ngModel="lucy" nzVariant="borderless" [nzOptions]="options"></nz-select>
-        <nz-select *nzSpaceItem ngModel="lucy" nzVariant="underlined" [nzOptions]="options"></nz-select>
+        <nz-select *nzSpaceItem ngModel="lucy" [nzOptions]="options" />
+        <nz-select *nzSpaceItem ngModel="lucy" nzVariant="filled" [nzOptions]="options" />
+        <nz-select *nzSpaceItem ngModel="lucy" nzVariant="borderless" [nzOptions]="options" />
+        <nz-select *nzSpaceItem ngModel="lucy" nzVariant="underlined" [nzOptions]="options" />
       </nz-space>
       <nz-space nzDirection="vertical" style="flex: 1">
-        <nz-select *nzSpaceItem nzMode="multiple" [ngModel]="['lucy']" [nzOptions]="options"></nz-select>
-        <nz-select
-          *nzSpaceItem
-          nzMode="multiple"
-          [ngModel]="['lucy']"
-          nzVariant="filled"
-          [nzOptions]="options"
-        ></nz-select>
-        <nz-select
-          *nzSpaceItem
-          nzMode="multiple"
-          [ngModel]="['lucy']"
-          nzVariant="borderless"
-          [nzOptions]="options"
-        ></nz-select>
-        <nz-select
-          *nzSpaceItem
-          nzMode="multiple"
-          [ngModel]="['lucy']"
-          nzVariant="underlined"
-          [nzOptions]="options"
-        ></nz-select>
+        <nz-select *nzSpaceItem nzMode="multiple" [ngModel]="['lucy']" [nzOptions]="options" />
+        <nz-select *nzSpaceItem nzMode="multiple" [ngModel]="['lucy']" nzVariant="filled" [nzOptions]="options" />
+        <nz-select *nzSpaceItem nzMode="multiple" [ngModel]="['lucy']" nzVariant="borderless" [nzOptions]="options" />
+        <nz-select *nzSpaceItem nzMode="multiple" [ngModel]="['lucy']" nzVariant="underlined" [nzOptions]="options" />
       </nz-space>
     </div>
   `,

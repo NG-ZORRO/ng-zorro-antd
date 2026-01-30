@@ -12,13 +12,11 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     <button nz-button nzType="text" nzDanger>Text</button>
     <a nz-button nzType="link" nzDanger>Link</a>
   `,
-  styles: [
-    `
-      [nz-button] {
-        margin-right: 8px;
-        margin-bottom: 12px;
-      }
-    `
-  ]
+  styles: `
+    [nz-button] {
+      margin-right: 8px;
+      margin-bottom: 12px;
+    }
+  `
 })
 export class NzDemoButtonDangerComponent {}

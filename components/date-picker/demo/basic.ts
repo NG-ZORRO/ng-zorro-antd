@@ -11,25 +11,23 @@ import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
   selector: 'nz-demo-date-picker-basic',
   imports: [FormsModule, NzButtonModule, NzDatePickerModule],
   template: `
-    <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+    <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)" />
     <br />
-    <nz-date-picker nzMode="week" [(ngModel)]="date" (ngModelChange)="getWeek($event)"></nz-date-picker>
+    <nz-date-picker nzMode="week" [(ngModel)]="date" (ngModelChange)="getWeek($event)" />
     <br />
-    <nz-date-picker nzMode="month" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+    <nz-date-picker nzMode="month" [(ngModel)]="date" (ngModelChange)="onChange($event)" />
     <br />
-    <nz-date-picker nzMode="quarter" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+    <nz-date-picker nzMode="quarter" [(ngModel)]="date" (ngModelChange)="onChange($event)" />
     <br />
-    <nz-date-picker nzMode="year" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+    <nz-date-picker nzMode="year" [(ngModel)]="date" (ngModelChange)="onChange($event)" />
     <br />
     <button nz-button nzType="default" (click)="changeLanguage()">Switch language for all pickers</button>
   `,
-  styles: [
-    `
-      nz-date-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerBasicComponent {
   date = null;

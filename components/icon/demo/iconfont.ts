@@ -10,14 +10,12 @@ import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
     <nz-icon nzIconfont="icon-facebook" />
     <nz-icon nzIconfont="icon-twitter" />
   `,
-  styles: [
-    `
-      nz-icon {
-        margin-right: 6px;
-        font-size: 24px;
-      }
-    `
-  ]
+  styles: `
+    nz-icon {
+      margin-right: 6px;
+      font-size: 24px;
+    }
+  `
 })
 export class NzDemoIconIconfontComponent {
   constructor(private iconService: NzIconService) {

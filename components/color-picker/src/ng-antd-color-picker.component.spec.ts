@@ -187,7 +187,7 @@ describe('NgxColorPickerComponent', () => {
       [panelRenderFooter]="footer"
       (nzOnChange)="onChange($event)"
       (nzOnChangeComplete)="onChangeComplete($event)"
-    ></ng-antd-color-picker>
+    />
     <ng-template #title>
       <div class="ant-color-picker-header">Color Picker Header</div>
     </ng-template>

@@ -7,8 +7,8 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
   selector: 'nz-demo-qr-code-custom-status',
   imports: [NzQRCodeModule, NzIconModule],
   template: `
-    <nz-qrcode nzValue="https://ng.ant.design/" nzStatusRender="NgZorro"></nz-qrcode>
-    <nz-qrcode nzValue="https://ng.ant.design/" [nzStatusRender]="customTemplate"></nz-qrcode>
+    <nz-qrcode nzValue="https://ng.ant.design/" nzStatusRender="NgZorro" />
+    <nz-qrcode nzValue="https://ng.ant.design/" [nzStatusRender]="customTemplate" />
     <ng-template #customTemplate>
       <div>
         <nz-icon nzType="check-circle" nzTheme="outline" style="color: red" />
@@ -16,12 +16,10 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
       </div>
     </ng-template>
   `,
-  styles: [
-    `
-      nz-qrcode {
-        margin-right: 12px;
-      }
-    `
-  ]
+  styles: `
+    nz-qrcode {
+      margin-right: 12px;
+    }
+  `
 })
 export class NzDemoQrCodeCustomStatusComponent {}

@@ -9,7 +9,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   selector: 'nz-demo-space-customize',
   imports: [FormsModule, NzButtonModule, NzSpaceModule, NzSliderModule],
   template: `
-    <nz-slider [(ngModel)]="size"></nz-slider>
+    <nz-slider [(ngModel)]="size" />
     <nz-space [nzSize]="size">
       <button *nzSpaceItem nz-button nzType="primary">Button</button>
       <button *nzSpaceItem nz-button nzType="default">Default</button>

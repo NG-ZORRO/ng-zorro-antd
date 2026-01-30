@@ -7,7 +7,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
   imports: [NzCardModule],
   template: `
     <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">
-      <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+      <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com" />
     </nz-card>
     <ng-template #coverTemplate>
       <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />

@@ -775,7 +775,7 @@ class NzTestSimpleMentionComponent {
       [nzSuggestions]="webFrameworks"
       [nzValueWith]="valueWith"
       [nzPrefix]="prefix"
-      [nzPlacement]="'top'"
+      nzPlacement="top"
       [nzLoading]="loading"
       (nzOnSearchChange)="onSearchChange()"
     >

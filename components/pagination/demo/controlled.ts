@@ -5,6 +5,6 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 @Component({
   selector: 'nz-demo-pagination-controlled',
   imports: [NzPaginationModule],
-  template: `<nz-pagination [nzPageIndex]="3" [nzTotal]="50"></nz-pagination>`
+  template: `<nz-pagination [nzPageIndex]="3" [nzTotal]="50" />`
 })
 export class NzDemoPaginationControlledComponent {}

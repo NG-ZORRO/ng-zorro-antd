@@ -11,17 +11,17 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae
         sunt a te dicta? Refert tamen, quo modo.
       </p>
-      <nz-divider nzText="Text"></nz-divider>
+      <nz-divider nzText="Text" />
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae
         sunt a te dicta? Refert tamen, quo modo.
       </p>
-      <nz-divider nzText="Left Text" nzOrientation="left"></nz-divider>
+      <nz-divider nzText="Left Text" nzOrientation="left" />
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae
         sunt a te dicta? Refert tamen, quo modo.
       </p>
-      <nz-divider nzText="Right Text" nzOrientation="right"></nz-divider>
+      <nz-divider nzText="Right Text" nzOrientation="right" />
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae
         sunt a te dicta? Refert tamen, quo modo.

@@ -528,13 +528,13 @@ describe('steps', () => {
       [nzProgressDot]="progressDot"
       [nzStartIndex]="startIndex"
     >
-      <nz-step nzTitle="0title" [nzSubtitle]="subtitle" nzDescription="0description"></nz-step>
-      <nz-step nzTitle="1title" nzDescription="1description"></nz-step>
-      <nz-step nzTitle="2title" nzDescription="2description"></nz-step>
+      <nz-step nzTitle="0title" [nzSubtitle]="subtitle" nzDescription="0description" />
+      <nz-step nzTitle="1title" nzDescription="1description" />
+      <nz-step nzTitle="2title" nzDescription="2description" />
     </nz-steps>
     <ng-template #progressTemplate let-dot let-status="status" let-index="index">
       <span class="insert-span">{{ status }}{{ index }}</span>
-      <ng-template [ngTemplateOutlet]="dot"></ng-template>
+      <ng-template [ngTemplateOutlet]="dot" />
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -556,9 +556,9 @@ export class NzTestOuterStepsComponent {
   imports: [NzIconModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
-      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
-      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
-      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
+      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status" />
+      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status" />
+      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status" />
     </nz-steps>
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
@@ -580,9 +580,9 @@ export class NzTestInnerStepStringComponent {
   imports: [NzIconModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1">
-      <nz-step [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate" [nzIcon]="iconTemplate"></nz-step>
-      <nz-step [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate" [nzIcon]="iconTemplate"></nz-step>
-      <nz-step [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate" [nzIcon]="iconTemplate"></nz-step>
+      <nz-step [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate" [nzIcon]="iconTemplate" />
+      <nz-step [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate" [nzIcon]="iconTemplate" />
+      <nz-step [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate" [nzIcon]="iconTemplate" />
     </nz-steps>
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
@@ -596,7 +596,7 @@ export class NzTestInnerStepTemplateComponent {}
   template: `
     <nz-steps>
       @for (step of steps; track step) {
-        <nz-step></nz-step>
+        <nz-step />
       }
     </nz-steps>
   `
@@ -613,7 +613,7 @@ export class NzTestStepForComponent {
   template: `
     <nz-steps [nzCurrent]="1">
       @for (step of steps; track step) {
-        <nz-step></nz-step>
+        <nz-step />
       }
     </nz-steps>
   `
@@ -630,7 +630,7 @@ export class NzTestStepAsyncComponent implements OnInit {
 
 @Component({
   imports: [BidiModule, NzTestOuterStepsComponent],
-  template: `<nz-test-outer-steps [dir]="direction"></nz-test-outer-steps>`
+  template: `<nz-test-outer-steps [dir]="direction" />`
 })
 export class NzTestOuterStepsRtlComponent {
   @ViewChild(Dir) dir!: Dir;

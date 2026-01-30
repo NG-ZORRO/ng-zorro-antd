@@ -24,7 +24,7 @@ import { NzTableSortOrder } from '../table.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <span class="ant-table-column-title"><ng-template [ngTemplateOutlet]="contentTemplate"></ng-template></span>
+    <span class="ant-table-column-title"><ng-template [ngTemplateOutlet]="contentTemplate" /></span>
     <span class="ant-table-column-sorter" [class.ant-table-column-sorter-full]="isDown && isUp">
       <span class="ant-table-column-sorter-inner">
         @if (isUp) {

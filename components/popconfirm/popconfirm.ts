@@ -200,7 +200,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                   <button
                     nz-button
                     #cancelBtn
-                    [nzSize]="'small'"
+                    nzSize="small"
                     [nzDanger]="nzCancelButtonProps()?.nzDanger"
                     (click)="onCancel()"
                     [disabled]="nzCancelButtonProps()?.nzDisabled"
@@ -212,7 +212,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
                   <button
                     nz-button
                     #okBtn
-                    [nzSize]="'small'"
+                    nzSize="small"
                     [nzType]="nzOkButtonProps().nzType"
                     [nzDanger]="nzOkButtonProps().nzDanger"
                     [nzLoading]="confirmLoading"

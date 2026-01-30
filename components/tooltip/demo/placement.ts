@@ -30,16 +30,14 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       <button nzTooltipTitle="prompt text" nzTooltipPlacement="bottomRight" nz-button nz-tooltip>BR</button>
     </div>
   `,
-  styles: [
-    `
-      button {
-        width: 70px;
-        text-align: center;
-        padding: 0;
-        margin-right: 8px;
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    button {
+      width: 70px;
+      text-align: center;
+      padding: 0;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoTooltipPlacementComponent {}

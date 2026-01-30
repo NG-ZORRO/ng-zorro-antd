@@ -9,7 +9,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   selector: 'nz-demo-form-horizontal-login',
   imports: [ReactiveFormsModule, NzButtonModule, NzFormModule, NzInputModule],
   template: `
-    <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form nz-form nzLayout="inline" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-control nzErrorTip="Please input your username!">
           <nz-input-wrapper>

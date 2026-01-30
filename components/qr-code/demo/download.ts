@@ -8,24 +8,22 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
   imports: [NzButtonModule, NzQRCodeModule],
   template: `
     <div id="download">
-      <nz-qrcode nzValue="https://ng.ant.design/"></nz-qrcode>
+      <nz-qrcode nzValue="https://ng.ant.design/" />
       <a #download></a>
       <button nz-button nzType="primary" (click)="downloadImg()">Download</button>
     </div>
   `,
-  styles: [
-    `
-      div {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-      }
+  styles: `
+    div {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+    }
 
-      nz-qrcode {
-        margin-bottom: 12px;
-      }
-    `
-  ]
+    nz-qrcode {
+      margin-bottom: 12px;
+    }
+  `
 })
 export class NzDemoQrCodeDownloadComponent {
   @ViewChild('download', { static: false }) download!: ElementRef;

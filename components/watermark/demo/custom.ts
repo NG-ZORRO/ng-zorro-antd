@@ -58,7 +58,7 @@ import { FontType, NzWatermarkModule } from 'ng-zorro-antd/watermark';
           alt="示例图片"
         />
       </nz-watermark>
-      <nz-divider nzType="vertical"></nz-divider>
+      <nz-divider nzType="vertical" />
       <form nz-form nzLayout="vertical" [formGroup]="form">
         <nz-form-item>
           <nz-form-label>Content</nz-form-label>
@@ -69,65 +69,63 @@ import { FontType, NzWatermarkModule } from 'ng-zorro-antd/watermark';
         <nz-form-item>
           <nz-form-label>Color</nz-form-label>
           <nz-form-control>
-            <nz-color-picker [nzValue]="color" (nzOnChange)="changeColor($event)"></nz-color-picker>
+            <nz-color-picker [nzValue]="color" (nzOnChange)="changeColor($event)" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>FontSize</nz-form-label>
           <nz-form-control>
-            <nz-slider formControlName="fontSize"></nz-slider>
+            <nz-slider formControlName="fontSize" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>zIndex</nz-form-label>
           <nz-form-control>
-            <nz-slider formControlName="zIndex"></nz-slider>
+            <nz-slider formControlName="zIndex" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>Rotate</nz-form-label>
           <nz-form-control>
-            <nz-slider [nzMin]="-180" [nzMax]="180" formControlName="rotate"></nz-slider>
+            <nz-slider [nzMin]="-180" [nzMax]="180" formControlName="rotate" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>Gap</nz-form-label>
           <nz-form-control>
-            <nz-input-number formControlName="gapX"></nz-input-number>
-            <nz-input-number formControlName="gapY"></nz-input-number>
+            <nz-input-number formControlName="gapX" />
+            <nz-input-number formControlName="gapY" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>Offset</nz-form-label>
           <nz-form-control>
-            <nz-input-number formControlName="offsetX"></nz-input-number>
-            <nz-input-number formControlName="offsetY"></nz-input-number>
+            <nz-input-number formControlName="offsetX" />
+            <nz-input-number formControlName="offsetY" />
           </nz-form-control>
         </nz-form-item>
       </form>
     </div>
   `,
-  styles: [
-    `
-      nz-watermark {
-        flex: 1 1 auto;
-      }
+  styles: `
+    nz-watermark {
+      flex: 1 1 auto;
+    }
 
-      nz-divider {
-        height: auto;
-        margin: 0 20px;
-      }
+    nz-divider {
+      height: auto;
+      margin: 0 20px;
+    }
 
-      form {
-        flex: 0 0 280px;
-      }
+    form {
+      flex: 0 0 280px;
+    }
 
-      nz-input-number {
-        margin-right: 12px;
-        width: 40%;
-      }
-    `
-  ]
+    nz-input-number {
+      margin-right: 12px;
+      width: 40%;
+    }
+  `
 })
 export class NzDemoWatermarkCustomComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);

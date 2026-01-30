@@ -9,10 +9,10 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-menu-switch-mode',
   imports: [FormsModule, NzDividerModule, NzMenuModule, NzSwitchModule],
   template: `
-    <nz-switch [(ngModel)]="mode"></nz-switch>
+    <nz-switch [(ngModel)]="mode" />
     Change Mode
-    <nz-divider nzType="vertical"></nz-divider>
-    <nz-switch [(ngModel)]="dark"></nz-switch>
+    <nz-divider nzType="vertical" />
+    <nz-switch [(ngModel)]="dark" />
     Change Theme
     <br />
     <br />
@@ -54,13 +54,11 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       </li>
     </ul>
   `,
-  styles: [
-    `
-      [nz-menu] {
-        width: 240px;
-      }
-    `
-  ]
+  styles: `
+    [nz-menu] {
+      width: 240px;
+    }
+  `
 })
 export class NzDemoMenuSwitchModeComponent {
   mode = false;

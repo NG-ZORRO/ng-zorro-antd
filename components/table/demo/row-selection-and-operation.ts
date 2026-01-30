@@ -64,17 +64,15 @@ export interface Data {
       </tbody>
     </nz-table>
   `,
-  styles: [
-    `
-      .send-request {
-        margin-bottom: 16px;
-      }
+  styles: `
+    .send-request {
+      margin-bottom: 16px;
+    }
 
-      .send-request span {
-        margin-left: 8px;
-      }
-    `
-  ]
+    .send-request span {
+      margin-left: 8px;
+    }
+  `
 })
 export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   checked = false;

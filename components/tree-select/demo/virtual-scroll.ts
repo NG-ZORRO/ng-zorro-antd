@@ -37,7 +37,7 @@ function dig(path = '0', level = 3): NzTreeNodeOptions[] {
       nzPlaceHolder="Please select"
       nzVirtualHeight="300px"
       nzHideUnMatched="true"
-    ></nz-tree-select>
+    />
   `
 })
 export class NzDemoTreeSelectVirtualScrollComponent {

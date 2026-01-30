@@ -1017,7 +1017,7 @@ class NzTestSimpleAutocompleteComponent {
         [nzDefaultActiveFirstOption]="false"
         nzBackfill
         #auto
-      ></nz-autocomplete>
+      />
     </div>
   `
 })
@@ -1045,7 +1045,7 @@ class NzTestAutocompleteWithoutPanelComponent {
   template: `
     <div>
       <input [nzAutocomplete]="auto" />
-      <nz-autocomplete [nzDataSource]="options" #auto></nz-autocomplete>
+      <nz-autocomplete [nzDataSource]="options" #auto />
     </div>
   `
 })

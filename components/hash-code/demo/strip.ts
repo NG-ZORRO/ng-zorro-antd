@@ -6,9 +6,9 @@ import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
   selector: 'nz-demo-hash-code-strip',
   imports: [NzHashCodeModule],
   template: `
-    <nz-hash-code [nzValue]="value" nzMode="strip"></nz-hash-code>
+    <nz-hash-code [nzValue]="value" nzMode="strip" />
     <br />
-    <nz-hash-code [nzValue]="value" nzMode="strip" nzType="primary"></nz-hash-code>
+    <nz-hash-code [nzValue]="value" nzMode="strip" nzType="primary" />
   `
 })
 export class NzDemoHashCodeStripComponent {

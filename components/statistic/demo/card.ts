@@ -20,7 +20,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
               [nzPrefix]="prefixTplOne"
               nzSuffix="%"
               [nzValueStyle]="{ color: '#3F8600' }"
-            ></nz-statistic>
+            />
             <ng-template #prefixTplOne><nz-icon nzType="arrow-up" /></ng-template>
           </nz-card>
         </nz-col>
@@ -32,7 +32,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
               [nzPrefix]="prefixTplTwo"
               nzSuffix="%"
               [nzValueStyle]="{ color: '#CF1322' }"
-            ></nz-statistic>
+            />
             <ng-template #prefixTplTwo><nz-icon nzType="arrow-down" /></ng-template>
           </nz-card>
         </nz-col>

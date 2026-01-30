@@ -22,28 +22,26 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
       }
     </nz-carousel>
   `,
-  styles: [
-    `
-      nz-radio-group {
-        margin-bottom: 8px;
-      }
+  styles: `
+    nz-radio-group {
+      margin-bottom: 8px;
+    }
 
-      [nz-carousel-content] {
-        text-align: center;
-        height: 160px;
-        line-height: 160px;
-        background: #364d79;
-        color: #fff;
-        overflow: hidden;
-      }
+    [nz-carousel-content] {
+      text-align: center;
+      height: 160px;
+      line-height: 160px;
+      background: #364d79;
+      color: #fff;
+      overflow: hidden;
+    }
 
-      h3 {
-        color: #fff;
-        margin-bottom: 0;
-        user-select: none;
-      }
-    `
-  ]
+    h3 {
+      color: #fff;
+      margin-bottom: 0;
+      user-select: none;
+    }
+  `
 })
 export class NzDemoCarouselPositionComponent {
   array = [1, 2, 3, 4];

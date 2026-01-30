@@ -17,7 +17,7 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
     <div class="ant-select-item ant-select-item-group">
       <ng-container *nzStringTemplateOutlet="nzLabel">{{ nzLabel }}</ng-container>
     </div>
-    <ng-content select="nz-auto-option"></ng-content>
+    <ng-content select="nz-auto-option" />
   `
 })
 export class NzAutocompleteOptgroupComponent {

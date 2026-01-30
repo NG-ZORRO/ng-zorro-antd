@@ -23,7 +23,7 @@ import { NzTreeSelectModule, NzPlacementType } from 'ng-zorro-antd/tree-select';
       [nzDropdownStyle]="{ width: '300px' }"
       nzDefaultExpandAll
       (ngModelChange)="onChange($event)"
-    ></nz-tree-select>
+    />
   `
 })
 export class NzDemoTreeSelectPlacementComponent {

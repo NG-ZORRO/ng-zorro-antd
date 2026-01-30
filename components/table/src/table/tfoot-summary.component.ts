@@ -34,10 +34,10 @@ function fixedAttribute(value: NzTableSummaryFixedType | boolean | unknown): NzT
   encapsulation: ViewEncapsulation.None,
   template: `
     <ng-template #contentTemplate>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
     @if (!isInsideTable || !nzFixed) {
-      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
+      <ng-template [ngTemplateOutlet]="contentTemplate" />
     }
   `,
   imports: [NgTemplateOutlet],

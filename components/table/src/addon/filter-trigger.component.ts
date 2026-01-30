@@ -45,7 +45,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'filterTrigger';
       [nzVisible]="nzVisible"
       (nzVisibleChange)="onVisibleChange($event)"
     >
-      <ng-content></ng-content>
+      <ng-content />
     </span>
   `,
   imports: [NzDropdownModule]

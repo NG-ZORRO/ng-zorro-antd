@@ -101,7 +101,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
           <nz-icon [nzType]="suffixIcon" />
         </ng-container>
         @if (hasFeedback && !!status) {
-          <nz-form-item-feedback-icon [status]="status"></nz-form-item-feedback-icon>
+          <nz-form-item-feedback-icon [status]="status" />
         }
       </span>
       @if (nzAllowEmpty && !nzDisabled && value) {

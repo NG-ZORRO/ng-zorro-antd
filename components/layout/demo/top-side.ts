@@ -59,47 +59,45 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       </nz-content>
     </nz-layout>
   `,
-  styles: [
-    `
-      .logo {
-        width: 120px;
-        height: 31px;
-        background: rgba(255, 255, 255, 0.2);
-        margin: 16px 28px 16px 0;
-        float: left;
-      }
+  styles: `
+    .logo {
+      width: 120px;
+      height: 31px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 16px 28px 16px 0;
+      float: left;
+    }
 
-      .header-menu {
-        line-height: 64px;
-      }
+    .header-menu {
+      line-height: 64px;
+    }
 
-      .outer-content {
-        padding: 0 50px;
-      }
+    .outer-content {
+      padding: 0 50px;
+    }
 
-      nz-breadcrumb {
-        margin: 16px 0;
-      }
+    nz-breadcrumb {
+      margin: 16px 0;
+    }
 
-      .inner-layout {
-        padding: 24px 0;
-        background: #fff;
-      }
+    .inner-layout {
+      padding: 24px 0;
+      background: #fff;
+    }
 
-      .sider-menu {
-        height: 100%;
-      }
+    .sider-menu {
+      height: 100%;
+    }
 
-      .inner-content {
-        padding: 0 24px;
-        min-height: 280px;
-      }
+    .inner-content {
+      padding: 0 24px;
+      min-height: 280px;
+    }
 
-      nz-footer {
-        text-align: center;
-      }
-    `
-  ]
+    nz-footer {
+      text-align: center;
+    }
+  `
 })
 export class NzDemoLayoutTopSideComponent {
   protected readonly date = new Date();

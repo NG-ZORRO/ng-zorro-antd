@@ -11,25 +11,17 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-card-loading',
   imports: [FormsModule, NzAvatarModule, NzCardModule, NzIconModule, NzSwitchModule, NzSkeletonModule],
   template: `
-    <nz-switch [(ngModel)]="loading"></nz-switch>
+    <nz-switch [(ngModel)]="loading" />
     <nz-card style="width: 300px;margin-top: 16px" [nzLoading]="loading">
-      <nz-card-meta
-        [nzAvatar]="avatarTemplate"
-        nzTitle="Card title"
-        nzDescription="This is the description"
-      ></nz-card-meta>
+      <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="Card title" nzDescription="This is the description" />
     </nz-card>
     <nz-card style="width: 300px;margin-top: 16px" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
       <nz-skeleton [nzActive]="true" [nzLoading]="loading" [nzAvatar]="{ size: 'large' }">
-        <nz-card-meta
-          [nzAvatar]="avatarTemplate"
-          nzTitle="Card title"
-          nzDescription="This is the description"
-        ></nz-card-meta>
+        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="Card title" nzDescription="This is the description" />
       </nz-skeleton>
     </nz-card>
     <ng-template #avatarTemplate>
-      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
     </ng-template>
     <ng-template #actionSetting>
       <nz-icon nzType="setting" />

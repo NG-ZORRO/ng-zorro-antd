@@ -12,21 +12,19 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
     <nz-mention [nzSuggestions]="webFrameworks" [nzValueWith]="valueWith" (nzOnSelect)="onSelect($event)">
       <textarea rows="1" nz-input nzMentionTrigger [(ngModel)]="inputValue"></textarea>
       <ng-container *nzMentionSuggestion="let framework">
-        <nz-avatar nzSize="small" [nzText]="framework.name" [nzSrc]="framework.icon"></nz-avatar>
+        <nz-avatar nzSize="small" [nzText]="framework.name" [nzSrc]="framework.icon" />
         <span>{{ framework.name }} - {{ framework.type }}</span>
       </ng-container>
     </nz-mention>
   `,
-  styles: [
-    `
-      .ant-avatar.ant-avatar-sm {
-        width: 14px;
-        height: 14px;
-        margin-right: 8px;
-        position: relative;
-      }
-    `
-  ]
+  styles: `
+    .ant-avatar.ant-avatar-sm {
+      width: 14px;
+      height: 14px;
+      margin-right: 8px;
+      position: relative;
+    }
+  `
 })
 export class NzDemoMentionAvatarComponent {
   inputValue?: string;

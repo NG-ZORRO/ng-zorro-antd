@@ -21,7 +21,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     <br />
     <br />
     Whether directly execute:
-    <nz-switch [(ngModel)]="switchValue"></nz-switch>
+    <nz-switch [(ngModel)]="switchValue" />
   `
 })
 export class NzDemoPopconfirmDynamicTriggerComponent {

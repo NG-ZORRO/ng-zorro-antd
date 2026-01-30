@@ -51,7 +51,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
           [class.ant-spin-sm]="nzSize === 'small'"
           [class.ant-spin-show-text]="nzTip"
         >
-          <ng-template [ngTemplateOutlet]="nzIndicator || defaultTemplate"></ng-template>
+          <ng-template [ngTemplateOutlet]="nzIndicator || defaultTemplate" />
           @if (nzTip) {
             <div class="ant-spin-text">{{ nzTip }}</div>
           }
@@ -60,7 +60,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
     }
     @if (!nzSimple) {
       <div class="ant-spin-container" [class.ant-spin-blur]="isLoading()">
-        <ng-content></ng-content>
+        <ng-content />
       </div>
     }
   `,

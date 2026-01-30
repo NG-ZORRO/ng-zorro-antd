@@ -373,7 +373,7 @@ describe('time-picker-panel', () => {
       [nzSecondStep]="secondStep"
       [nzMinuteStep]="minuteStep"
       [nzHourStep]="hourStep"
-    ></nz-time-picker-panel>
+    />
   `
 })
 export class NzTestTimePanelComponent {
@@ -401,7 +401,7 @@ export class NzTestTimePanelComponent {
       [nzInDatePicker]="inDatePicker"
       [nzHideDisabledOptions]="hideDisabledOptions"
       [nzHourStep]="hourStep"
-    ></nz-time-picker-panel>
+    />
   `
 })
 export class NzTestTimePanelDisabledComponent {
@@ -445,7 +445,7 @@ export class NzTestTimePanelDisabledComponent {
       [nzDefaultOpenValue]="openValue"
       [nzHourStep]="hourStep"
       [format]="format"
-    ></nz-time-picker-panel>
+    />
   `
 })
 export class NzTest12HourTimePanelComponent {
@@ -467,7 +467,7 @@ export class NzTest12HourTimePanelComponent {
       [nzDisabledMinutes]="disabledMinutes"
       [nzDisabledSeconds]="disabledSeconds"
       [nzHideDisabledOptions]="false"
-    ></nz-time-picker-panel>
+    />
   `
 })
 export class NzTest12HourTimePanelDisabledComponent {

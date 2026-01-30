@@ -241,7 +241,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       (detach)="close()"
       (overlayKeydown)="onOverlayKeydown($event)"
     >
-      <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
+      <ng-container *ngTemplateOutlet="inlineMode" />
     </ng-template>
   `,
   host: {

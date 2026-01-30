@@ -29,9 +29,9 @@ import { NzOverflowSuffixDirective } from './overflow-suffix.directive';
 @Component({
   selector: 'nz-overflow-container',
   template: `
-    <ng-content></ng-content>
-    <ng-content select="[appOverflowRest]"></ng-content>
-    <ng-content select="[appOverflowSuffix]"></ng-content>
+    <ng-content />
+    <ng-content select="[appOverflowRest]" />
+    <ng-content select="[appOverflowSuffix]" />
   `,
   providers: [NzResizeObserver],
   changeDetection: ChangeDetectionStrategy.OnPush

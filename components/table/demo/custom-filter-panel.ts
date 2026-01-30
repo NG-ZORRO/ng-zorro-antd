@@ -49,27 +49,25 @@ interface DataItem {
       </div>
     </nz-dropdown-menu>
   `,
-  styles: [
-    `
-      .search-box {
-        padding: 8px;
-      }
+  styles: `
+    .search-box {
+      padding: 8px;
+    }
 
-      .search-box input {
-        width: 188px;
-        margin-bottom: 8px;
-        display: block;
-      }
+    .search-box input {
+      width: 188px;
+      margin-bottom: 8px;
+      display: block;
+    }
 
-      .search-box button {
-        width: 90px;
-      }
+    .search-box button {
+      width: 90px;
+    }
 
-      .search-button {
-        margin-right: 8px;
-      }
-    `
-  ]
+    .search-button {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoTableCustomFilterPanelComponent {
   searchValue = '';

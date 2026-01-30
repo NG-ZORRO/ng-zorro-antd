@@ -39,11 +39,11 @@ const DEFAULT_SIZE = 28;
         [maxBufferPx]="nzMaxBufferPx"
       >
         <ng-container *cdkVirtualFor="let item of nodes; let i = index; trackBy: innerTrackBy">
-          <ng-template nzTreeVirtualScrollNodeOutlet [data]="item" [compareBy]="compareBy(i)"></ng-template>
+          <ng-template nzTreeVirtualScrollNodeOutlet [data]="item" [compareBy]="compareBy(i)" />
         </ng-container>
       </cdk-virtual-scroll-viewport>
     </div>
-    <ng-container nzTreeNodeOutlet></ng-container>
+    <ng-container nzTreeNodeOutlet />
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

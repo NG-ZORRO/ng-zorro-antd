@@ -69,12 +69,12 @@ describe('nz-countdown', () => {
   imports: [NzStatisticModule],
   template: `
     <nz-countdown
-      [nzTitle]="'Countdown'"
+      nzTitle="Countdown"
       [nzValue]="value"
       [nzFormat]="format"
       [nzValueTemplate]="template"
       (nzCountdownFinish)="onFinish()"
-    ></nz-countdown>
+    />
     <ng-template #tpl let-diff>
       {{ diff }}
     </ng-template>

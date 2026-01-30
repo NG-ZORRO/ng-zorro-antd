@@ -36,49 +36,47 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
           </div>
           <div class="extra">
             <div>
-              <nz-statistic nzTitle="Status" nzValue="Pending"></nz-statistic>
-              <nz-statistic nzTitle="Price" [nzValue]="568.08" nzPrefix="$" style="margin: 0 32px"></nz-statistic>
+              <nz-statistic nzTitle="Status" nzValue="Pending" />
+              <nz-statistic nzTitle="Price" [nzValue]="568.08" nzPrefix="$" style="margin: 0 32px" />
             </div>
           </div>
         </div>
       </nz-page-header-content>
       <nz-page-header-footer>
         <nz-tabs [nzSelectedIndex]="1">
-          <nz-tab nzTitle="Details"></nz-tab>
-          <nz-tab nzTitle="Rule"></nz-tab>
+          <nz-tab nzTitle="Details" />
+          <nz-tab nzTitle="Rule" />
         </nz-tabs>
       </nz-page-header-footer>
     </nz-page-header>
   `,
-  styles: [
-    `
+  styles: `
+    .content {
+      display: flex;
+    }
+
+    .extra > div {
+      display: flex;
+      width: max-content;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 576px) {
       .content {
-        display: flex;
+        display: block;
       }
 
-      .extra > div {
-        display: flex;
-        width: max-content;
-        justify-content: flex-end;
+      .main {
+        width: 100%;
+        margin-bottom: 12px;
       }
 
-      @media (max-width: 576px) {
-        .content {
-          display: block;
-        }
-
-        .main {
-          width: 100%;
-          margin-bottom: 12px;
-        }
-
-        .extra {
-          width: 100%;
-          margin-left: 0;
-          text-align: left;
-        }
+      .extra {
+        width: 100%;
+        margin-left: 0;
+        text-align: left;
       }
-    `
-  ]
+    }
+  `
 })
 export class NzDemoPageHeaderResponsiveComponent {}

@@ -10,18 +10,16 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
     <nz-code-editor
       class="editor"
       [nzOriginalText]="originalCode"
-      [nzEditorMode]="'diff'"
+      nzEditorMode="diff"
       [ngModel]="code"
       [nzEditorOption]="{ language: 'typescript' }"
-    ></nz-code-editor>
+    />
   `,
-  styles: [
-    `
-      .editor {
-        height: 200px;
-      }
-    `
-  ]
+  styles: `
+    .editor {
+      height: 200px;
+    }
+  `
 })
 export class NzDemoCodeEditorDiffComponent {
   originalCode = `import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';

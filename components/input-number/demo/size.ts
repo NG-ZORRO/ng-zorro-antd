@@ -11,13 +11,11 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
     <nz-input-number [(ngModel)]="value" nzMin="1" nzMax="10" />
     <nz-input-number [(ngModel)]="value" nzSize="small" nzMin="1" nzMax="10" />
   `,
-  styles: [
-    `
-      nz-input-number {
-        margin-right: 8px;
-      }
-    `
-  ]
+  styles: `
+    nz-input-number {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoInputNumberSizeComponent {
   value = 3;

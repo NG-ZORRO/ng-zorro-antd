@@ -8,10 +8,10 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
   imports: [NzIconModule, NzStepsModule],
   template: `
     <nz-steps>
-      <nz-step nzTitle="Login" nzStatus="finish" nzIcon="user"></nz-step>
-      <nz-step nzTitle="Verification" nzStatus="finish" nzIcon="solution"></nz-step>
-      <nz-step nzTitle="Pay" nzStatus="process" nzIcon="loading"></nz-step>
-      <nz-step nzTitle="Done" nzStatus="wait" [nzIcon]="iconTemplate"></nz-step>
+      <nz-step nzTitle="Login" nzStatus="finish" nzIcon="user" />
+      <nz-step nzTitle="Verification" nzStatus="finish" nzIcon="solution" />
+      <nz-step nzTitle="Pay" nzStatus="process" nzIcon="loading" />
+      <nz-step nzTitle="Done" nzStatus="wait" [nzIcon]="iconTemplate" />
       <ng-template #iconTemplate><nz-icon nzType="smile" /></ng-template>
     </nz-steps>
   `

@@ -6,7 +6,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 @Component({
   selector: 'nz-demo-experimental-image-auto-srcset',
   imports: [NzImageModule, NzExperimentalImageModule],
-  template: `<nz-image [nzSrc]="src" nzWidth="200" nzHeight="200" [nzSrcLoader]="loader" nzAutoSrcset></nz-image>`
+  template: `<nz-image [nzSrc]="src" nzWidth="200" nzHeight="200" [nzSrcLoader]="loader" nzAutoSrcset />`
 })
 export class NzDemoExperimentalImageAutoSrcsetComponent {
   src = 'jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';

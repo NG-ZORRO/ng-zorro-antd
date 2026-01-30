@@ -135,7 +135,7 @@ const TREE_DATA: TreeNode[] = [
           [nzDisabled]="node.disabled"
           [nzChecked]="checklistSelection.isSelected(node)"
           (nzClick)="leafItemSelectionToggle(node)"
-        ></nz-tree-node-checkbox>
+        />
         <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="leafItemSelectionToggle(node)">
           {{ node.name }}
         </nz-tree-node-option>
@@ -150,7 +150,7 @@ const TREE_DATA: TreeNode[] = [
           [nzChecked]="descendantsAllSelected(node)"
           [nzIndeterminate]="descendantsPartiallySelected(node)"
           (nzClick)="itemSelectionToggle(node)"
-        ></nz-tree-node-checkbox>
+        />
         <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="itemSelectionToggle(node)">
           {{ node.name }}
         </nz-tree-node-option>

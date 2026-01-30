@@ -45,14 +45,14 @@ import { defaultColor, generateColor } from './util/util';
     <div class="ant-color-picker-inner-content">
       <div class="ant-color-picker-panel" [class.ant-color-picker-panel-disabled]="disabled">
         @if (panelRenderHeader) {
-          <ng-template [ngTemplateOutlet]="panelRenderHeader"></ng-template>
+          <ng-template [ngTemplateOutlet]="panelRenderHeader" />
         }
         <color-picker
           [color]="colorValue"
           (nzOnChange)="handleChange($event)"
           [disabled]="disabled"
           (nzOnChangeComplete)="nzOnChangeComplete.emit($event)"
-        ></color-picker>
+        />
         <div class="ant-color-picker-slider-container">
           <div
             class="ant-color-picker-slider-group"
@@ -65,7 +65,7 @@ import { defaultColor, generateColor } from './util/util';
               (nzOnChange)="handleChange($event, 'hue')"
               [disabled]="disabled"
               (nzOnChangeComplete)="nzOnChangeComplete.emit($event)"
-            ></color-slider>
+            />
             @if (!disabledAlpha) {
               <color-slider
                 type="alpha"
@@ -75,14 +75,14 @@ import { defaultColor, generateColor } from './util/util';
                 (nzOnChange)="handleChange($event, 'alpha')"
                 [disabled]="disabled"
                 (nzOnChangeComplete)="nzOnChangeComplete.emit($event)"
-              ></color-slider>
+              />
             }
           </div>
-          <ng-antd-color-block [color]="toRgbString"></ng-antd-color-block>
+          <ng-antd-color-block [color]="toRgbString" />
         </div>
       </div>
       @if (panelRenderFooter) {
-        <ng-template [ngTemplateOutlet]="panelRenderFooter"></ng-template>
+        <ng-template [ngTemplateOutlet]="panelRenderFooter" />
       }
       @if (presets && presets.length > 0) {
         <nz-divider nzSize="small" />

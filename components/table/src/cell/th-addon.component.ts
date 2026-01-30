@@ -56,26 +56,22 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
         [filterMultiple]="nzFilterMultiple"
         [listOfFilter]="nzFilters"
         (filterChange)="onFilterValueChange($event)"
-      ></nz-table-filter>
+      />
     } @else {
-      <ng-container [ngTemplateOutlet]="notFilterTemplate"></ng-container>
+      <ng-container [ngTemplateOutlet]="notFilterTemplate" />
     }
     <ng-template #notFilterTemplate>
-      <ng-template [ngTemplateOutlet]="nzShowSort ? sortTemplate : contentTemplate"></ng-template>
+      <ng-template [ngTemplateOutlet]="nzShowSort ? sortTemplate : contentTemplate" />
     </ng-template>
     <ng-template #extraTemplate>
-      <ng-content select="[nz-th-extra]"></ng-content>
-      <ng-content select="nz-filter-trigger"></ng-content>
+      <ng-content select="[nz-th-extra]" />
+      <ng-content select="nz-filter-trigger" />
     </ng-template>
     <ng-template #sortTemplate>
-      <nz-table-sorters
-        [sortOrder]="sortOrder"
-        [sortDirections]="sortDirections"
-        [contentTemplate]="contentTemplate"
-      ></nz-table-sorters>
+      <nz-table-sorters [sortOrder]="sortOrder" [sortDirections]="sortDirections" [contentTemplate]="contentTemplate" />
     </ng-template>
     <ng-template #contentTemplate>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `,
   host: {

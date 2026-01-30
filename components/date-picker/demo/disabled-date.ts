@@ -13,29 +13,27 @@ import { DisabledTimeFn, DisabledTimePartial, NzDatePickerModule } from 'ng-zorr
       [nzDisabledDate]="disabledDate"
       [nzDisabledTime]="disabledDateTime"
       [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }"
-    ></nz-date-picker>
+    />
     <br />
-    <nz-date-picker nzMode="month" [nzDisabledDate]="disabledDate"></nz-date-picker>
+    <nz-date-picker nzMode="month" [nzDisabledDate]="disabledDate" />
     <br />
-    <nz-date-picker nzMode="quarter" [nzDisabledDate]="disabledDate"></nz-date-picker>
+    <nz-date-picker nzMode="quarter" [nzDisabledDate]="disabledDate" />
     <br />
-    <nz-date-picker nzMode="year" [nzDisabledDate]="disabledDate"></nz-date-picker>
+    <nz-date-picker nzMode="year" [nzDisabledDate]="disabledDate" />
     <br />
     <nz-range-picker
       [nzDisabledDate]="disabledDate"
       [nzDisabledTime]="disabledRangeTime"
       [nzShowTime]="{ nzHideDisabledOptions: true, nzDefaultOpenValue: timeDefaultValue }"
       nzFormat="yyyy-MM-dd HH:mm:ss"
-    ></nz-range-picker>
+    />
   `,
-  styles: [
-    `
-      nz-date-picker,
-      nz-range-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker,
+    nz-range-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerDisabledDateComponent {
   today = new Date();

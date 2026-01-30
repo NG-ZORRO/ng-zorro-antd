@@ -37,7 +37,7 @@ import { NzSubmenuService } from './submenu.service';
   encapsulation: ViewEncapsulation.None,
   template: `
     <span class="ant-menu-title-content">
-      <ng-content></ng-content>
+      <ng-content />
     </span>
   `,
   host: {

@@ -33,7 +33,7 @@ const TREE_DATA: TreeNode[] = [
   template: `
     <nz-tree-view [nzDataSource]="dataSource" [nzChildrenAccessor]="childrenAccessor">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
-        <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
+        <nz-tree-node-toggle nzTreeNodeNoopToggle />
         <nz-tree-node-option
           [nzDisabled]="node.disabled"
           [nzSelected]="selectListSelection.isSelected(node)"

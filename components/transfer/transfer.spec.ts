@@ -634,7 +634,7 @@ interface AbstractTestTransferComponent {
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
-    ></nz-transfer>
+    />
     <ng-template #renderList>
       <p class="transfer-renderList">renderList</p>
     </ng-template>
@@ -732,7 +732,7 @@ class TestTransferCustomRenderComponent implements OnInit, AbstractTestTransferC
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/996
 @Component({
   imports: [NzTransferModule],
-  template: `<nz-transfer [nzDataSource]="list"></nz-transfer>`
+  template: `<nz-transfer [nzDataSource]="list" />`
 })
 class Test996Component implements OnInit {
   @ViewChild(NzTransferComponent, { static: true }) comp!: NzTransferComponent;
@@ -751,7 +751,7 @@ class Test996Component implements OnInit {
   imports: [BidiModule, TestTransferComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-transfer></nz-test-transfer>
+      <nz-test-transfer />
     </div>
   `
 })
@@ -762,7 +762,7 @@ export class NzTestTransferRtlComponent {
 
 @Component({
   imports: [NzTransferModule],
-  template: `<nz-transfer [nzDataSource]="[]" [nzStatus]="status"></nz-transfer>`
+  template: `<nz-transfer [nzDataSource]="[]" [nzStatus]="status" />`
 })
 export class NzTestTransferStatusComponent {
   status: NzStatus = 'error';
@@ -774,7 +774,7 @@ export class NzTestTransferStatusComponent {
     <form nz-form>
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
-          <nz-transfer [nzDataSource]="[]"></nz-transfer>
+          <nz-transfer [nzDataSource]="[]" />
         </nz-form-control>
       </nz-form-item>
     </form>

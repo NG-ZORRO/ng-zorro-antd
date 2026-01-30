@@ -64,7 +64,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     <div
       class="slick-initialized slick-slider"
       [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'"
-      [dir]="'ltr'"
+      dir="ltr"
     >
       @if (nzArrows) {
         <button
@@ -84,7 +84,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
       >
         <!-- Render carousel items. -->
         <div class="slick-track" #slickTrack>
-          <ng-content></ng-content>
+          <ng-content />
         </div>
       </div>
       @if (nzArrows) {
@@ -110,7 +110,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
               <ng-template
                 [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
                 [ngTemplateOutletContext]="{ $implicit: $index }"
-              ></ng-template>
+              />
             </li>
           }
         </ul>

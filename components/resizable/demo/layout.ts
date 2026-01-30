@@ -41,62 +41,60 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
       </nz-layout>
     </nz-layout>
   `,
-  styles: [
-    `
-      nz-header {
-        background: #7dbcea;
-        color: #fff;
-      }
-      nz-sider {
-        background: #3ba0e9;
-        color: #fff;
-      }
+  styles: `
+    nz-header {
+      background: #7dbcea;
+      color: #fff;
+    }
+    nz-sider {
+      background: #3ba0e9;
+      color: #fff;
+    }
 
-      nz-sider.nz-resizable-resizing {
-        transition: none;
-      }
+    nz-sider.nz-resizable-resizing {
+      transition: none;
+    }
 
-      nz-content {
-        display: flex;
-        flex-direction: column;
-        background: rgba(16, 142, 233, 1);
-        height: 350px;
-        color: #fff;
-      }
+    nz-content {
+      display: flex;
+      flex-direction: column;
+      background: rgba(16, 142, 233, 1);
+      height: 350px;
+      color: #fff;
+    }
 
-      nz-content > div {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-      }
+    nz-content > div {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
 
-      nz-content .resizable-box {
-        flex: none;
-      }
+    nz-content .resizable-box {
+      flex: none;
+    }
 
-      nz-content,
-      nz-header,
-      ::ng-deep nz-sider > .ant-layout-sider-children {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    nz-content,
+    nz-header,
+    ::ng-deep nz-sider > .ant-layout-sider-children {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-      .sider-resize-line {
-        height: 100%;
-        width: 5px;
-        border-right: 1px solid #e8e8e8;
-      }
+    .sider-resize-line {
+      height: 100%;
+      width: 5px;
+      border-right: 1px solid #e8e8e8;
+    }
 
-      .content-resize-line {
-        width: 100%;
-        height: 5px;
-        border-bottom: 1px solid #e8e8e8;
-      }
-    `
-  ]
+    .content-resize-line {
+      width: 100%;
+      height: 5px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+  `
 })
 export class NzDemoResizableLayoutComponent {
   siderWidth = 120;

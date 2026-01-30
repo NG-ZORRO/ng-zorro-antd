@@ -22,7 +22,7 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
     '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
     '[class.ant-form-item-with-help]': 'withHelpClass'
   },
-  template: `<ng-content></ng-content>`
+  template: `<ng-content />`
 })
 export class NzFormItemComponent {
   private cdr = inject(ChangeDetectorRef);

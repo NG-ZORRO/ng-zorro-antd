@@ -13,17 +13,15 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
       <a nz-button nzType="link" nzGhost>Link</a>
     </div>
   `,
-  styles: [
-    `
-      .ghost-background {
-        padding: 8px;
-        background: rgb(190, 200, 200);
-      }
+  styles: `
+    .ghost-background {
+      padding: 8px;
+      background: rgb(190, 200, 200);
+    }
 
-      [nz-button] {
-        margin-right: 8px;
-      }
-    `
-  ]
+    [nz-button] {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoButtonGhostComponent {}

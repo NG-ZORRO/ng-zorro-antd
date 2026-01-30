@@ -28,7 +28,7 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
     <ng-template
       [ngTemplateOutlet]="treeTemplate"
       [ngTemplateOutletContext]="{ $implicit: context, origin: context.origin }"
-    ></ng-template>
+    />
     @if (!treeTemplate) {
       @if (icon && showIcon) {
         <span
@@ -51,7 +51,7 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
       <span class="ant-tree-title" [innerHTML]="title | nzHighlight: matchedValue : 'i' : 'font-highlight'"></span>
     }
     @if (showIndicator) {
-      <nz-tree-drop-indicator [dropPosition]="dragPosition" [level]="context.level"></nz-tree-drop-indicator>
+      <nz-tree-drop-indicator [dropPosition]="dragPosition" [level]="context.level" />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

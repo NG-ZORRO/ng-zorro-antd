@@ -86,12 +86,12 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
       >
         <div class="ant-select-dropdown-content-wrapper">
           <div class="ant-select-dropdown-content">
-            <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"></ng-template>
+            <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate" />
           </div>
         </div>
       </div>
       <ng-template #contentTemplate>
-        <ng-content></ng-content>
+        <ng-content />
       </ng-template>
       <ng-template #optionsTemplate>
         @for (option of normalizedDataSource; track option.value) {

@@ -17,17 +17,15 @@ import { NzTrimPipe } from 'ng-zorro-antd/pipes';
       <pre>{{ str | nzTrim }}</pre>
     </div>
   `,
-  styles: [
-    `
-      div {
-        padding: 8px 12px;
-      }
-      pre {
-        display: inline-block;
-        background: #eee;
-      }
-    `
-  ]
+  styles: `
+    div {
+      padding: 8px 12px;
+    }
+    pre {
+      display: inline-block;
+      background: #eee;
+    }
+  `
 })
 export class NzDemoPipesTrimComponent {
   str = ' Ant Design ';

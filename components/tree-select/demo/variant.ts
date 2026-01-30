@@ -18,7 +18,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzVariant="outlined"
           [ngModel]="defaultValue"
           nzDefaultExpandAll
-        ></nz-tree-select>
+        />
         <nz-tree-select
           *nzSpaceItem
           style="width: 100%"
@@ -26,7 +26,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzVariant="filled"
           [ngModel]="defaultValue"
           nzDefaultExpandAll
-        ></nz-tree-select>
+        />
         <nz-tree-select
           *nzSpaceItem
           style="width: 100%"
@@ -34,7 +34,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzVariant="borderless"
           [ngModel]="defaultValue"
           nzDefaultExpandAll
-        ></nz-tree-select>
+        />
         <nz-tree-select
           *nzSpaceItem
           style="width: 100%"
@@ -42,7 +42,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzVariant="underlined"
           [ngModel]="defaultValue"
           nzDefaultExpandAll
-        ></nz-tree-select>
+        />
       </nz-space>
       <nz-space nzDirection="vertical" style="flex: 1">
         <nz-tree-select
@@ -54,7 +54,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzMultiple
           [ngModel]="defaultValue"
           nzDefaultExpandAll
-        ></nz-tree-select>
+        />
         <nz-tree-select
           *nzSpaceItem
           style="width: 100%"
@@ -64,7 +64,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzMultiple
           [ngModel]="defaultValue"
           nzDefaultExpandAll
-        ></nz-tree-select>
+        />
         <nz-tree-select
           *nzSpaceItem
           style="width: 100%"
@@ -74,7 +74,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzMultiple
           [ngModel]="defaultValue"
           nzDefaultExpandAll
-        ></nz-tree-select>
+        />
         <nz-tree-select
           *nzSpaceItem
           style="width: 100%"
@@ -84,7 +84,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
           nzMultiple
           [ngModel]="defaultValue"
           nzDefaultExpandAll
-        ></nz-tree-select>
+        />
       </nz-space>
     </div>
   `

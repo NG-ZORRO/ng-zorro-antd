@@ -6,7 +6,7 @@ import { NzCalendarMode, NzCalendarModule } from 'ng-zorro-antd/calendar';
 @Component({
   selector: 'nz-demo-calendar-basic',
   imports: [FormsModule, NzCalendarModule],
-  template: `<nz-calendar [(ngModel)]="date" [(nzMode)]="mode" (nzPanelChange)="panelChange($event)"></nz-calendar>`
+  template: `<nz-calendar [(ngModel)]="date" [(nzMode)]="mode" (nzPanelChange)="panelChange($event)" />`
 })
 export class NzDemoCalendarBasicComponent {
   date = new Date(2012, 11, 21);

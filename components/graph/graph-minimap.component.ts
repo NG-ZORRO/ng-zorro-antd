@@ -18,18 +18,18 @@ import { NzZoomTransform } from './interface';
     <svg>
       <defs>
         <filter id="minimapDropShadow" x="-20%" y="-20%" width="150%" height="150%">
-          <feOffset result="offOut" in="SourceGraphic" dx="1" dy="1"></feOffset>
+          <feOffset result="offOut" in="SourceGraphic" dx="1" dy="1" />
           <feColorMatrix
             result="matrixOut"
             in="offOut"
             type="matrix"
             values="0.1 0 0 0 0 0 0.1 0 0 0 0 0 0.1 0 0 0 0 0 0.5 0"
-          ></feColorMatrix>
-          <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="2"></feGaussianBlur>
-          <feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>
+          />
+          <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="2" />
+          <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
         </filter>
       </defs>
-      <rect></rect>
+      <rect />
     </svg>
     <canvas class="viewport"></canvas>
     <!-- Additional canvas to use as buffer to avoid flickering between updates -->

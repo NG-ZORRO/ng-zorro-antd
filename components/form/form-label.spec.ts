@@ -245,7 +245,7 @@ describe('form-label', () => {
       [nzTooltipIcon]="tooltipIcon"
       [nzLabelAlign]="align"
       [nzLabelWrap]="labelWrap"
-    ></nz-form-label>
+    />
   `
 })
 export class NzTestFormLabelComponent {

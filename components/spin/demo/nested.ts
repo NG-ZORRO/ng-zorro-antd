@@ -14,12 +14,12 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
         nzType="info"
         nzMessage="Alert message title"
         nzDescription="Further details about the context of this alert."
-      ></nz-alert>
+      />
     </nz-spin>
     <br />
     <div>
       Loading state：
-      <nz-switch [(ngModel)]="isSpinning"></nz-switch>
+      <nz-switch [(ngModel)]="isSpinning" />
     </div>
   `
 })

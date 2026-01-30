@@ -14,16 +14,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <a>Link something</a>
     </nz-badge>
   `,
-  styles: [
-    `
-      nz-badge {
-        margin-right: 20px;
-      }
+  styles: `
+    nz-badge {
+      margin-right: 20px;
+    }
 
-      nz-icon {
-        font-size: 16px;
-      }
-    `
-  ]
+    nz-icon {
+      font-size: 16px;
+    }
+  `
 })
 export class NzDemoBadgeDotComponent {}

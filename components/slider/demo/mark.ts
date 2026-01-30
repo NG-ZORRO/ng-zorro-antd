@@ -9,29 +9,27 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
   imports: [FormsModule, NzButtonModule, NzSliderModule],
   template: `
     <h4>included=true</h4>
-    <nz-slider [nzMarks]="marks" [ngModel]="37"></nz-slider>
-    <nz-slider [nzMarks]="marks" nzIncluded nzRange [ngModel]="[26, 37]"></nz-slider>
+    <nz-slider [nzMarks]="marks" [ngModel]="37" />
+    <nz-slider [nzMarks]="marks" nzIncluded nzRange [ngModel]="[26, 37]" />
     <h4>included=false</h4>
-    <nz-slider [nzMarks]="marks" [nzIncluded]="false" [ngModel]="37"></nz-slider>
+    <nz-slider [nzMarks]="marks" [nzIncluded]="false" [ngModel]="37" />
     <h4>marks & step</h4>
-    <nz-slider [nzMarks]="marks" [nzStep]="10" [ngModel]="37"></nz-slider>
+    <nz-slider [nzMarks]="marks" [nzStep]="10" [ngModel]="37" />
     <h4>step=null || dots=true</h4>
-    <nz-slider [nzMarks]="marks" [nzStep]="null" [ngModel]="37"></nz-slider>
-    <nz-slider [nzMarks]="marks" nzDots [ngModel]="37"></nz-slider>
+    <nz-slider [nzMarks]="marks" [nzStep]="null" [ngModel]="37" />
+    <nz-slider [nzMarks]="marks" nzDots [ngModel]="37" />
     Change nzMarks dynamically:
     <button nz-button (click)="changeMarks()">Change nzMarks</button>
   `,
-  styles: [
-    `
-      h4 {
-        margin: 0 0 16px;
-      }
+  styles: `
+    h4 {
+      margin: 0 0 16px;
+    }
 
-      .ant-slider-with-marks {
-        margin-bottom: 44px;
-      }
-    `
-  ]
+    .ant-slider-with-marks {
+      margin-bottom: 44px;
+    }
+  `
 })
 export class NzDemoSliderMarkComponent {
   marks: NzMarks = {

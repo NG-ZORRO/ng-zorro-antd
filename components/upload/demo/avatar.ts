@@ -26,14 +26,12 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
       }
     </nz-upload>
   `,
-  styles: [
-    `
-      :host ::ng-deep .avatar-uploader > .ant-upload {
-        width: 128px;
-        height: 128px;
-      }
-    `
-  ]
+  styles: `
+    :host ::ng-deep .avatar-uploader > .ant-upload {
+      width: 128px;
+      height: 128px;
+    }
+  `
 })
 export class NzDemoUploadAvatarComponent {
   loading = false;

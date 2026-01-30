@@ -49,7 +49,7 @@ const options: NzCascaderOption[] = [
   selector: 'nz-demo-cascader-placement',
   imports: [NzCascaderModule, NzSegmentedModule],
   template: `
-    <nz-segmented [nzOptions]="placements" (nzValueChange)="setPlacement($event)"></nz-segmented>
+    <nz-segmented [nzOptions]="placements" (nzValueChange)="setPlacement($event)" />
     <br />
     <br />
     <nz-cascader [nzOptions]="nzOptions" [nzPlacement]="placement" />

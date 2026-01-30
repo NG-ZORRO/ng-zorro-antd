@@ -57,7 +57,7 @@ import { NzSegmentedService } from './segmented.service';
     </div>
 
     <ng-template #content>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `,
   host: {

@@ -44,14 +44,12 @@ import { NzMentionComponent, NzMentionModule } from 'ng-zorro-antd/mention';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
-      .cta-wrapper {
-        display: flex;
-        gap: 1rem;
-      }
-    `
-  ]
+  styles: `
+    .cta-wrapper {
+      display: flex;
+      gap: 1rem;
+    }
+  `
 })
 export class NzDemoMentionFormComponent {
   readonly suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご', 'ParsaArvaneh'];

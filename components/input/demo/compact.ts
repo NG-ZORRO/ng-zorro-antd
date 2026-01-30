@@ -37,7 +37,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
     <br />
     <br />
     <nz-space-compact>
-      <nz-select [ngModel]="'zhejiang'" [nzOptions]="options" />
+      <nz-select ngModel="zhejiang" [nzOptions]="options" />
       <input nz-input placeholder="Xihu District, Hangzhou" />
     </nz-space-compact>
     <br />

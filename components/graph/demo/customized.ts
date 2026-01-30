@@ -53,49 +53,47 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
       </ng-container>
     </nz-graph>
   `,
-  styles: [
-    `
-      nz-radio-group {
-        float: right;
-      }
+  styles: `
+    nz-radio-group {
+      float: right;
+    }
 
-      button {
-        margin-right: 12px;
-      }
+    button {
+      margin-right: 12px;
+    }
 
-      nz-graph {
-        height: 400px;
-      }
+    nz-graph {
+      height: 400px;
+    }
 
-      .graph-node {
-        border: 1px solid #8cc8ff;
-        cursor: pointer;
-        font-size: 12px;
-        height: 100%;
-        line-height: 1.2;
-        border-radius: 0;
-        text-align: center;
-        word-break: break-all;
-        display: block;
-      }
+    .graph-node {
+      border: 1px solid #8cc8ff;
+      cursor: pointer;
+      font-size: 12px;
+      height: 100%;
+      line-height: 1.2;
+      border-radius: 0;
+      text-align: center;
+      word-break: break-all;
+      display: block;
+    }
 
-      .group-node {
-        border-width: 4px;
-      }
+    .group-node {
+      border-width: 4px;
+    }
 
-      .leaf-node {
-        color: #1a90ff;
-        background: rgba(26, 144, 255, 0.15);
-        min-height: 30px;
-        height: fit-content;
-      }
+    .leaf-node {
+      color: #1a90ff;
+      background: rgba(26, 144, 255, 0.15);
+      min-height: 30px;
+      height: fit-content;
+    }
 
-      .title {
-        padding: 4px;
-        word-break: keep-all;
-      }
-    `
-  ]
+    .title {
+      padding: 4px;
+      word-break: keep-all;
+    }
+  `
 })
 export class NzDemoGraphCustomizedComponent {
   @ViewChild(NzGraphComponent, { static: true }) nzGraphComponent!: NzGraphComponent;

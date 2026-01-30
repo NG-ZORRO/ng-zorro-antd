@@ -8,9 +8,9 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
   template: `
     <div>
       Text
-      <nz-divider nzType="vertical"></nz-divider>
+      <nz-divider nzType="vertical" />
       <a href="#">Link</a>
-      <nz-divider nzType="vertical"></nz-divider>
+      <nz-divider nzType="vertical" />
       <a href="#">Link</a>
     </div>
   `

@@ -5,9 +5,7 @@ import { NzFormatEmitEvent, NzTreeModule, NzTreeNodeOptions } from 'ng-zorro-ant
 @Component({
   selector: 'nz-demo-tree-dynamic',
   imports: [NzTreeModule],
-  template: `
-    <nz-tree [nzData]="nodes" nzAsyncData (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)"></nz-tree>
-  `
+  template: ` <nz-tree [nzData]="nodes" nzAsyncData (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)" /> `
 })
 export class NzDemoTreeDynamicComponent {
   readonly nodes = [

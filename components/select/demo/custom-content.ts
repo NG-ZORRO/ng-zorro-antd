@@ -23,13 +23,11 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       </nz-option>
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 200px;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 200px;
+    }
+  `
 })
 export class NzDemoSelectCustomContentComponent {
   selectedValue = null;

@@ -22,7 +22,7 @@ import { NzBreadCrumbSeparatorComponent } from './breadcrumb-separator.component
   template: `
     @if (!!nzOverlay) {
       <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">
-        <ng-template [ngTemplateOutlet]="noMenuTpl"></ng-template>
+        <ng-template [ngTemplateOutlet]="noMenuTpl" />
         <nz-icon nzType="down" />
       </span>
     } @else {

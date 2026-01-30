@@ -10,10 +10,10 @@ import { NzListModule } from 'ng-zorro-antd/list';
   selector: 'nz-demo-comment-list',
   imports: [NzAvatarModule, NzCommentModule, NzListModule],
   template: `
-    <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+    <nz-list [nzDataSource]="data" [nzRenderItem]="item" nzItemLayout="horizontal">
       <ng-template #item let-item>
         <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.datetime">
-          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar" />
           <nz-comment-content>
             <p>{{ item.content }}</p>
           </nz-comment-content>

@@ -242,7 +242,7 @@ describe('skeleton element', () => {
       [nzTitle]="nzTitle"
       [nzParagraph]="nzParagraph"
       [nzRound]="nzRound"
-    ></nz-skeleton>
+    />
   `
 })
 export class NzTestSkeletonComponent {
@@ -258,26 +258,16 @@ export class NzTestSkeletonComponent {
   template: `
     @switch (useSuite) {
       @case (1) {
-        <nz-skeleton-element
-          nzType="avatar"
-          [nzActive]="nzActive"
-          [nzSize]="nzSize"
-          [nzShape]="$any(nzShape)"
-        ></nz-skeleton-element>
+        <nz-skeleton-element nzType="avatar" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="$any(nzShape)" />
       }
       @case (2) {
-        <nz-skeleton-element
-          nzType="button"
-          [nzActive]="nzActive"
-          [nzSize]="$any(nzSize)"
-          [nzShape]="nzShape"
-        ></nz-skeleton-element>
+        <nz-skeleton-element nzType="button" [nzActive]="nzActive" [nzSize]="$any(nzSize)" [nzShape]="nzShape" />
       }
       @case (3) {
-        <nz-skeleton-element nzType="input" [nzActive]="nzActive" [nzSize]="$any(nzSize)"></nz-skeleton-element>
+        <nz-skeleton-element nzType="input" [nzActive]="nzActive" [nzSize]="$any(nzSize)" />
       }
       @case (4) {
-        <nz-skeleton-element nzType="image" [nzActive]="nzActive"></nz-skeleton-element>
+        <nz-skeleton-element nzType="image" [nzActive]="nzActive" />
       }
     }
   `

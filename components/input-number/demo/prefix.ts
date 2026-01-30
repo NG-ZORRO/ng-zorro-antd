@@ -21,12 +21,10 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
     <nz-input-number nzPrefix="￥" nzDisabled [style.width.%]="100" />
   `,
-  styles: [
-    `
-      nz-input-number {
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    nz-input-number {
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoInputNumberPrefixComponent {}

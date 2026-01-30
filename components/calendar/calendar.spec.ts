@@ -426,8 +426,8 @@ describe('calendar', () => {
 @Component({
   imports: [NzCalendarModule],
   template: `
-    <nz-calendar></nz-calendar>
-    <nz-calendar [(nzMode)]="mode"></nz-calendar>
+    <nz-calendar />
+    <nz-calendar [(nzMode)]="mode" />
   `
 })
 class NzTestCalendarModeComponent {
@@ -437,10 +437,10 @@ class NzTestCalendarModeComponent {
 @Component({
   imports: [FormsModule, NzCalendarModule],
   template: `
-    <nz-calendar></nz-calendar>
-    <nz-calendar [(nzValue)]="date0"></nz-calendar>
-    <nz-calendar [(ngModel)]="date1"></nz-calendar>
-    <nz-calendar [(nzValue)]="date2" [(nzMode)]="mode"></nz-calendar>
+    <nz-calendar />
+    <nz-calendar [(nzValue)]="date0" />
+    <nz-calendar [(ngModel)]="date1" />
+    <nz-calendar [(nzValue)]="date2" [(nzMode)]="mode" />
   `
 })
 class NzTestCalendarValueComponent {
@@ -453,8 +453,8 @@ class NzTestCalendarValueComponent {
 @Component({
   imports: [NzCalendarModule],
   template: `
-    <nz-calendar></nz-calendar>
-    <nz-calendar [nzFullscreen]="fullscreen"></nz-calendar>
+    <nz-calendar />
+    <nz-calendar [nzFullscreen]="fullscreen" />
   `
 })
 class NzTestCalendarFullscreenComponent {
@@ -465,7 +465,7 @@ class NzTestCalendarFullscreenComponent {
 @Component({
   imports: [NzCalendarModule],
   template: `
-    <nz-calendar [nzDateCell]="tpl"></nz-calendar>
+    <nz-calendar [nzDateCell]="tpl" />
     <ng-template #tpl>Foo</ng-template>
     <nz-calendar>
       <ng-container *nzDateCell>Bar</ng-container>
@@ -477,7 +477,7 @@ class NzTestCalendarDateCellComponent {}
 @Component({
   imports: [NzCalendarModule],
   template: `
-    <nz-calendar [nzDateFullCell]="tpl"></nz-calendar>
+    <nz-calendar [nzDateFullCell]="tpl" />
     <ng-template #tpl>Foo</ng-template>
     <nz-calendar>
       <ng-container *nzDateFullCell>Bar</ng-container>
@@ -489,7 +489,7 @@ class NzTestCalendarDateFullCellComponent {}
 @Component({
   imports: [NzCalendarModule],
   template: `
-    <nz-calendar nzMode="year" [nzMonthCell]="tpl"></nz-calendar>
+    <nz-calendar nzMode="year" [nzMonthCell]="tpl" />
     <ng-template #tpl>Foo</ng-template>
     <nz-calendar nzMode="year">
       <ng-container *nzMonthCell>Bar</ng-container>
@@ -501,7 +501,7 @@ class NzTestCalendarMonthCellComponent {}
 @Component({
   imports: [NzCalendarModule],
   template: `
-    <nz-calendar nzMode="year" [nzMonthFullCell]="tpl"></nz-calendar>
+    <nz-calendar nzMode="year" [nzMonthFullCell]="tpl" />
     <ng-template #tpl>Foo</ng-template>
     <nz-calendar nzMode="year">
       <ng-container *nzMonthFullCell>Bar</ng-container>
@@ -518,7 +518,7 @@ class NzTestCalendarMonthFullCellComponent {}
       [(ngModel)]="date0"
       (nzPanelChange)="panelChange($event)"
       (nzSelectChange)="selectChange($event)"
-    ></nz-calendar>
+    />
   `
 })
 class NzTestCalendarChangesComponent {
@@ -532,7 +532,7 @@ class NzTestCalendarChangesComponent {
   imports: [BidiModule, NzCalendarModule],
   template: `
     <div [dir]="direction">
-      <nz-calendar></nz-calendar>
+      <nz-calendar />
     </div>
   `
 })

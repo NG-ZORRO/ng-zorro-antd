@@ -49,7 +49,7 @@ interface FlatNode {
       [nzLevelAccessor]="levelAccessor"
     >
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
-        <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
+        <nz-tree-node-toggle nzTreeNodeNoopToggle />
         {{ node.name }}
       </nz-tree-node>
 
@@ -61,13 +61,11 @@ interface FlatNode {
       </nz-tree-node>
     </nz-tree-virtual-scroll-view>
   `,
-  styles: [
-    `
-      .virtual-scroll-tree {
-        height: 200px;
-      }
-    `
-  ]
+  styles: `
+    .virtual-scroll-tree {
+      height: 200px;
+    }
+  `
 })
 export class NzDemoTreeViewVirtualScrollComponent implements OnInit, AfterViewInit {
   @ViewChild(NzTreeVirtualScrollViewComponent, { static: true }) tree!: NzTreeVirtualScrollViewComponent<FlatNode>;

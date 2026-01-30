@@ -40,14 +40,14 @@ const SPACE_SIZE: Record<NzSpaceType, number> = {
   exportAs: 'nzSpace',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-content></ng-content>
-    @for (item of items; track item; let last = $last; let index = $index) {
+    <ng-content />
+    @for (item of items; track item) {
       <div class="ant-space-item">
-        <ng-container [ngTemplateOutlet]="item"></ng-container>
+        <ng-container [ngTemplateOutlet]="item" />
       </div>
-      @if (nzSplit && !last) {
+      @if (nzSplit && !$last) {
         <span class="ant-space-split">
-          <ng-template [nzStringTemplateOutlet]="nzSplit" [nzStringTemplateOutletContext]="{ $implicit: index }">{{
+          <ng-template [nzStringTemplateOutlet]="nzSplit" [nzStringTemplateOutletContext]="{ $implicit: $index }">{{
             nzSplit
           }}</ng-template>
         </span>

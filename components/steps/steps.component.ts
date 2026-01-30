@@ -41,7 +41,7 @@ export type NzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; 
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-steps',
   exportAs: 'nzSteps',
-  template: `<ng-content></ng-content>`,
+  template: `<ng-content />`,
   host: {
     class: 'ant-steps',
     '[class.ant-steps-horizontal]': `nzDirection === 'horizontal'`,

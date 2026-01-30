@@ -260,7 +260,7 @@ describe('color-picker', () => {
       (nzOnOpenChange)="nzOnOpenChange($event)"
       nzTitle="Color Picker"
       [nzFlipFlop]="isFlipFlop ? flipFlop : null"
-    ></nz-color-picker>
+    />
     <ng-template #flipFlop>
       <button nz-button nzType="primary">Color</button>
     </ng-template>
@@ -435,7 +435,7 @@ describe('nz-color-picker with presets', () => {
       <nz-form-item>
         <nz-form-label [nzSpan]="4">color</nz-form-label>
         <nz-form-control [nzSpan]="16">
-          <nz-color-picker formControlName="colorPicker" nzShowText></nz-color-picker>
+          <nz-color-picker formControlName="colorPicker" nzShowText />
         </nz-form-control>
       </nz-form-item>
     </form>
@@ -457,10 +457,7 @@ export class NzTestColorPickerFormComponent {
 
 @Component({
   imports: [NzColorPickerModule],
-  template: `
-    <nz-color-picker [nzPresets]="presets" [nzValue]="'#1677ff'" (nzOnChange)="onColorChange($event)">
-    </nz-color-picker>
-  `
+  template: ` <nz-color-picker [nzPresets]="presets" nzValue="#1677ff" (nzOnChange)="onColorChange($event)" /> `
 })
 export class NzTestColorPickerPresetsComponent {
   presets: NzPresetColor[] | null = [

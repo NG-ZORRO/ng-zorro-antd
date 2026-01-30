@@ -30,7 +30,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       </div>
       <div nz-row>
         <div nz-col [nzSpan]="24" class="search-area">
-          <button nz-button [nzType]="'primary'">Search</button>
+          <button nz-button nzType="primary">Search</button>
           <button nz-button (click)="resetForm()">Clear</button>
           <a class="collapse" (click)="toggleCollapse()">
             Collapse
@@ -41,43 +41,41 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     </form>
     <div class="search-result-list">Search Result List</div>
   `,
-  styles: [
-    `
-      .ant-advanced-search-form {
-        padding: 24px;
-        background: #fbfbfb;
-        border: 1px solid #d9d9d9;
-        border-radius: 6px;
-      }
+  styles: `
+    .ant-advanced-search-form {
+      padding: 24px;
+      background: #fbfbfb;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+    }
 
-      .search-result-list {
-        margin-top: 16px;
-        border: 1px dashed #e9e9e9;
-        border-radius: 6px;
-        background-color: #fafafa;
-        min-height: 200px;
-        text-align: center;
-        padding-top: 80px;
-      }
+    .search-result-list {
+      margin-top: 16px;
+      border: 1px dashed #e9e9e9;
+      border-radius: 6px;
+      background-color: #fafafa;
+      min-height: 200px;
+      text-align: center;
+      padding-top: 80px;
+    }
 
-      [nz-form-label] {
-        overflow: visible;
-      }
+    [nz-form-label] {
+      overflow: visible;
+    }
 
-      button {
-        margin-left: 8px;
-      }
+    button {
+      margin-left: 8px;
+    }
 
-      .collapse {
-        margin-left: 8px;
-        font-size: 12px;
-      }
+    .collapse {
+      margin-left: 8px;
+      font-size: 12px;
+    }
 
-      .search-area {
-        text-align: right;
-      }
-    `
-  ]
+    .search-area {
+      text-align: right;
+    }
+  `
 })
 export class NzDemoFormAdvancedSearchComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);

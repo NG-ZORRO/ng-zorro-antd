@@ -65,7 +65,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         @if (nzArrow) {
           <div class="ant-dropdown-arrow"></div>
         }
-        <ng-content></ng-content>
+        <ng-content />
       </div>
     </ng-template>
   `,

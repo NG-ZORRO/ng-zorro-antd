@@ -20,13 +20,11 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
     <nz-time-picker [nzPlacement]="placement()" />
     <br />
   `,
-  styles: [
-    `
-      nz-time-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-time-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoTimePickerPlacementComponent {
   readonly placement = signal<NzPlacement>('bottomLeft');

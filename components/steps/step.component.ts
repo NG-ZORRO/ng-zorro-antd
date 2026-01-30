@@ -53,7 +53,7 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
                 [nzWidth]="nzSize === 'small' ? 32 : 40"
                 [nzFormat]="nullProcessFormat"
                 [nzStrokeWidth]="4"
-              ></nz-progress>
+              />
             </div>
           }
           @if (nzStatus === 'finish' && !nzIcon) {
@@ -87,7 +87,7 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
                 status: nzStatus,
                 index: index
               }"
-            ></ng-template>
+            />
           </span>
         }
       </div>

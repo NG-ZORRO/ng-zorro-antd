@@ -6,9 +6,9 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
   selector: 'nz-demo-transfer-status',
   imports: [NzTransferModule],
   template: `
-    <nz-transfer [nzDataSource]="[]" nzStatus="error"></nz-transfer>
+    <nz-transfer [nzDataSource]="[]" nzStatus="error" />
     <br />
-    <nz-transfer [nzDataSource]="[]" nzStatus="warning" nzShowSearch></nz-transfer>
+    <nz-transfer [nzDataSource]="[]" nzStatus="warning" nzShowSearch />
   `
 })
 export class NzDemoTransferStatusComponent {}

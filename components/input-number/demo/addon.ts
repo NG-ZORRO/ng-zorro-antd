@@ -18,15 +18,15 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     </nz-input-number>
 
     <nz-input-number [(ngModel)]="value">
-      <nz-select nzInputAddonBefore [ngModel]="'add'" [style.width.px]="60">
-        <nz-option nzLabel="+" nzValue="add"></nz-option>
-        <nz-option nzLabel="-" nzValue="minus"></nz-option>
+      <nz-select nzInputAddonBefore ngModel="add" [style.width.px]="60">
+        <nz-option nzLabel="+" nzValue="add" />
+        <nz-option nzLabel="-" nzValue="minus" />
       </nz-select>
-      <nz-select nzInputAddonAfter [ngModel]="'USD'" [style.width.px]="60">
-        <nz-option nzValue="USD" nzLabel="$"></nz-option>
-        <nz-option nzValue="EUR" nzLabel="€"></nz-option>
-        <nz-option nzValue="GBP" nzLabel="£"></nz-option>
-        <nz-option nzValue="CNY" nzLabel="¥"></nz-option>
+      <nz-select nzInputAddonAfter ngModel="USD" [style.width.px]="60">
+        <nz-option nzValue="USD" nzLabel="$" />
+        <nz-option nzValue="EUR" nzLabel="€" />
+        <nz-option nzValue="GBP" nzLabel="£" />
+        <nz-option nzValue="CNY" nzLabel="¥" />
       </nz-select>
     </nz-input-number>
 
@@ -38,14 +38,12 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       <nz-cascader nzInputAddonBefore [nzOptions]="[]" nzPlaceHolder="cascader" [style.width.px]="150" />
     </nz-input-number>
   `,
-  styles: [
-    `
-      nz-input-number {
-        display: block;
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    nz-input-number {
+      display: block;
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoInputNumberAddonComponent {
   value = 100;

@@ -22,7 +22,7 @@ import { Subject } from 'rxjs';
   selector: 'nz-descriptions-item',
   template: `
     <ng-template>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `,
   exportAs: 'nzDescriptionsItem'

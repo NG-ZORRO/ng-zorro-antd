@@ -16,24 +16,22 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
         nzTrigger="hover"
         style="right: 24px"
       >
-        <nz-float-button></nz-float-button>
-        <nz-float-button nzIcon="comment"></nz-float-button>
+        <nz-float-button />
+        <nz-float-button nzIcon="comment" />
       </nz-float-button-group>
-      <nz-switch [(ngModel)]="isOpen"></nz-switch>
+      <nz-switch [(ngModel)]="isOpen" />
     </div>
   `,
-  styles: [
-    `
-      .open {
-        height: 300px;
-        position: relative;
-      }
-      nz-float-button-group,
-      nz-float-button {
-        position: absolute;
-      }
-    `
-  ]
+  styles: `
+    .open {
+      height: 300px;
+      position: relative;
+    }
+    nz-float-button-group,
+    nz-float-button {
+      position: absolute;
+    }
+  `
 })
 export class NzDemoFloatButtonOpenComponent {
   isOpen: boolean = true;

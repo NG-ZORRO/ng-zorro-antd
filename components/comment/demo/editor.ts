@@ -29,7 +29,7 @@ interface Data extends User {
       <nz-list [nzDataSource]="data" [nzRenderItem]="item" nzItemLayout="horizontal">
         <ng-template #item let-item>
           <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
-            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+            <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar" />
             <nz-comment-content>
               <p>{{ item.content }}</p>
             </nz-comment-content>
@@ -39,7 +39,7 @@ interface Data extends User {
     }
 
     <nz-comment>
-      <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
+      <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar" />
       <nz-comment-content>
         <nz-form-item>
           <textarea [(ngModel)]="inputValue" nz-input rows="4"></textarea>

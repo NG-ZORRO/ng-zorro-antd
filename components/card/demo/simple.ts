@@ -12,12 +12,10 @@ import { NzCardModule } from 'ng-zorro-antd/card';
       <p>Card content</p>
     </nz-card>
   `,
-  styles: [
-    `
-      p {
-        margin: 0;
-      }
-    `
-  ]
+  styles: `
+    p {
+      margin: 0;
+    }
+  `
 })
 export class NzDemoCardSimpleComponent {}

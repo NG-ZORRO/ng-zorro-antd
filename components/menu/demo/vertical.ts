@@ -6,7 +6,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
   selector: 'nz-demo-menu-vertical',
   imports: [NzMenuModule],
   template: `
-    <ul nz-menu [nzMode]="'vertical'">
+    <ul nz-menu nzMode="vertical">
       <li nz-submenu nzTitle="Navigation One" nzIcon="mail">
         <ul>
           <li nz-menu-group nzTitle="Item 1">
@@ -44,13 +44,11 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       </li>
     </ul>
   `,
-  styles: [
-    `
-      [nz-menu] {
-        width: 240px;
-      }
-    `
-  ]
+  styles: `
+    [nz-menu] {
+      width: 240px;
+    }
+  `
 })
 export class NzDemoMenuVerticalComponent {
   change(value: boolean): void {

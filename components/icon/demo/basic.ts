@@ -16,13 +16,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <nz-icon nzType="loading" />
     </div>
   `,
-  styles: [
-    `
-      nz-icon {
-        margin-right: 6px;
-        font-size: 24px;
-      }
-    `
-  ]
+  styles: `
+    nz-icon {
+      margin-right: 6px;
+      font-size: 24px;
+    }
+  `
 })
 export class NzDemoIconBasicComponent {}

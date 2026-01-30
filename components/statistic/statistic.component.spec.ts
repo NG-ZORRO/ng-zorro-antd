@@ -74,13 +74,7 @@ describe('statistic', () => {
 @Component({
   imports: [NzStatisticModule],
   template: `
-    <nz-statistic
-      [nzValue]="123.45"
-      [nzTitle]="title"
-      [nzSuffix]="suffix"
-      [nzPrefix]="prefix"
-      [nzLoading]="loading"
-    ></nz-statistic>
+    <nz-statistic [nzValue]="123.45" [nzTitle]="title" [nzSuffix]="suffix" [nzPrefix]="prefix" [nzLoading]="loading" />
   `
 })
 export class NzTestStatisticComponent {
@@ -94,7 +88,7 @@ export class NzTestStatisticComponent {
   imports: [BidiModule, NzStatisticModule],
   template: `
     <div [dir]="direction">
-      <nz-statistic [nzValue]="123.45" nzTitle="test title"></nz-statistic>
+      <nz-statistic [nzValue]="123.45" nzTitle="test title" />
     </div>
   `
 })

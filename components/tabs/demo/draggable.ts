@@ -27,22 +27,20 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
       }
     </nz-tabs>
   `,
-  styles: [
-    `
-      :host ::ng-deep .ant-tabs-tab-btn {
-        cursor: move;
-      }
-      nz-tabs.cdk-drop-list-dragging {
-        pointer-events: none;
-      }
-      .preview.cdk-drag-animating {
-        transition: all 250ms cubic-bezier(0, 0, 0.2, 1);
-      }
-      ::ng-deep .ant-tabs-tab.cdk-drag-placeholder .ant-tabs-tab-btn {
-        opacity: 0.5;
-      }
-    `
-  ]
+  styles: `
+    :host ::ng-deep .ant-tabs-tab-btn {
+      cursor: move;
+    }
+    nz-tabs.cdk-drop-list-dragging {
+      pointer-events: none;
+    }
+    .preview.cdk-drag-animating {
+      transition: all 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+    ::ng-deep .ant-tabs-tab.cdk-drag-placeholder .ant-tabs-tab-btn {
+      opacity: 0.5;
+    }
+  `
 })
 export class NzDemoTabsDraggableComponent {
   private cdr = inject(ChangeDetectorRef);

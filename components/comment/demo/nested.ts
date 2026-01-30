@@ -10,7 +10,7 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
   template: `
     <ng-template #commentTemplateRef let-comment="comment">
       <nz-comment [nzAuthor]="comment.author">
-        <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.avatar"></nz-avatar>
+        <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.avatar" />
         <nz-comment-content>
           <p>{{ comment.content }}</p>
         </nz-comment-content>
@@ -23,7 +23,7 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
       </nz-comment>
     </ng-template>
 
-    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: data }"></ng-template>
+    <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: data }" />
   `
 })
 export class NzDemoCommentNestedComponent {

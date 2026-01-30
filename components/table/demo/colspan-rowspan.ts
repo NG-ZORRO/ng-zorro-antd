@@ -16,10 +16,10 @@ import { NzTableModule } from 'ng-zorro-antd/table';
         </tr>
       </thead>
       <tbody>
-        @for (data of colSpanTable.data; track data; let i = $index) {
+        @for (data of colSpanTable.data; track data) {
           <tr>
             <td>{{ data.name }}</td>
-            @switch (i) {
+            @switch ($index) {
               @case (2) {
                 <td>{{ data.age }}</td>
                 <td rowspan="2">{{ data.tel }}</td>

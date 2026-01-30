@@ -6,7 +6,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 @Component({
   selector: 'nz-demo-experimental-image-preloading',
   imports: [NzImageModule, NzExperimentalImageModule],
-  template: `<nz-image [nzSrc]="src" nzWidth="200" nzHeight="200" nzPriority></nz-image>`
+  template: `<nz-image [nzSrc]="src" nzWidth="200" nzHeight="200" nzPriority />`
 })
 export class NzDemoExperimentalImagePreloadingComponent {
   src = 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';

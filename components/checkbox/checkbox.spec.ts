@@ -292,7 +292,7 @@ export class NzTestCheckboxFormComponent {
   imports: [BidiModule, NzTestCheckboxSingleComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-single-checkbox></nz-test-single-checkbox>
+      <nz-test-single-checkbox />
     </div>
   `
 })

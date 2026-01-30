@@ -31,7 +31,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
         </ul>
       </nz-sider>
       <nz-layout>
-        <nz-header></nz-header>
+        <nz-header />
         <nz-content>
           <div class="inner-content">Content</div>
         </nz-content>
@@ -39,34 +39,32 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       </nz-layout>
     </nz-layout>
   `,
-  styles: [
-    `
-      .logo {
-        height: 32px;
-        background: rgba(255, 255, 255, 0.2);
-        margin: 16px;
-      }
+  styles: `
+    .logo {
+      height: 32px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 16px;
+    }
 
-      nz-header {
-        background: #fff;
-        padding: 0;
-      }
+    nz-header {
+      background: #fff;
+      padding: 0;
+    }
 
-      nz-content {
-        margin: 24px 16px 0;
-      }
+    nz-content {
+      margin: 24px 16px 0;
+    }
 
-      .inner-content {
-        padding: 24px;
-        background: #fff;
-        min-height: 360px;
-      }
+    .inner-content {
+      padding: 24px;
+      background: #fff;
+      min-height: 360px;
+    }
 
-      nz-footer {
-        text-align: center;
-      }
-    `
-  ]
+    nz-footer {
+      text-align: center;
+    }
+  `
 })
 export class NzDemoLayoutResponsiveComponent {
   protected readonly date = new Date();

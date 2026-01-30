@@ -339,7 +339,7 @@ declare const locale: NzSafeAny;
             <svg>
               <path
                 d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z m-12 800H172c-6.6 0-12-5.4-12-12V172c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v680c0 6.6-5.4 12-12 12z"
-              ></path>
+              />
             </svg>
           </nz-icon>
           Outlined
@@ -349,7 +349,7 @@ declare const locale: NzSafeAny;
             <svg>
               <path
                 d="M864 64H160C107 64 64 107 64 160v704c0 53 43 96 96 96h704c53 0 96-43 96-96V160c0-53-43-96-96-96z"
-              ></path>
+              />
             </svg>
           </nz-icon>
           Filled
@@ -359,7 +359,7 @@ declare const locale: NzSafeAny;
             <svg>
               <path
                 d="M16 512c0 273.932 222.066 496 496 496s496-222.068 496-496S785.932 16 512 16 16 238.066 16 512z m496 368V144c203.41 0 368 164.622 368 368 0 203.41-164.622 368-368 368z"
-              ></path>
+              />
             </svg>
           </nz-icon>
           Two Tone
@@ -384,7 +384,7 @@ declare const locale: NzSafeAny;
             <svg viewBox="64 64 896 896">
               <path
                 d="M864 248H728l-32.4-90.8a32.07 32.07 0 00-30.2-21.2H358.6c-13.5 0-25.6 8.5-30.1 21.2L296 248H160c-44.2 0-80 35.8-80 80v456c0 44.2 35.8 80 80 80h704c44.2 0 80-35.8 80-80V328c0-44.2-35.8-80-80-80zm8 536c0 4.4-3.6 8-8 8H160c-4.4 0-8-3.6-8-8V328c0-4.4 3.6-8 8-8h186.7l17.1-47.8 22.9-64.2h250.5l22.9 64.2 17.1 47.8H864c4.4 0 8 3.6 8 8v456zM512 384c-88.4 0-160 71.6-160 160s71.6 160 160 160 160-71.6 160-160-71.6-160-160-160zm0 256c-53 0-96-43-96-96s43-96 96-96 96 43 96 96-43 96-96 96z"
-              ></path>
+              />
             </svg>
           </nz-icon>
         </div>
@@ -395,7 +395,7 @@ declare const locale: NzSafeAny;
       <ul class="anticons-list">
         @for (icon of displayedNames[i].icons; track trackByFn(icon)) {
           <li (click)="onIconClick($event, icon)">
-            <nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme"></nz-icon>
+            <nz-icon [nzType]="kebabCase(icon)" [nzTheme]="currentTheme" />
             <span class="anticon-class">
               @if (isNewIcon(icon)) {
                 <nz-badge nzDot>
@@ -426,7 +426,7 @@ declare const locale: NzSafeAny;
             [nzShowUploadList]="{ showPreviewIcon: false, showRemoveIcon: false }"
           >
             <p class="ant-upload-drag-icon">
-              <nz-icon nzType="inbox" nzTheme="outline"></nz-icon>
+              <nz-icon nzType="inbox" nzTheme="outline" />
             </p>
             <p class="ant-upload-text">{{ localeObj.picSearcherUploadText }}</p>
             <p class="ant-upload-hint">{{ localeObj.picSearcherUploadHint }}</p>
@@ -457,11 +457,10 @@ declare const locale: NzSafeAny;
                             [nzType]="icon.type"
                             [nzTheme]="currentTheme"
                             (click)="onIconClick($event, icon.type)"
-                          >
-                          </nz-icon>
+                          />
                         </td>
                         <td>
-                          <nz-progress nzStrokeLinecap="round" [nzPercent]="icon.score"></nz-progress>
+                          <nz-progress nzStrokeLinecap="round" [nzPercent]="icon.score" />
                         </td>
                       </tr>
                     }
@@ -481,28 +480,26 @@ declare const locale: NzSafeAny;
       </ng-container>
     </nz-modal>
   `,
-  styles: [
-    `
-      h3 {
-        margin: 1.6em 0 0.6em;
-        font-size: 18px;
-      }
+  styles: `
+    h3 {
+      margin: 1.6em 0 0.6em;
+      font-size: 18px;
+    }
 
-      ul.anticons-list li .anticon {
-        font-size: 24px;
-      }
+    ul.anticons-list li .anticon {
+      font-size: 24px;
+    }
 
-      .icon-selector {
-        display: flex;
-        justify-content: space-between;
-      }
+    .icon-selector {
+      display: flex;
+      justify-content: space-between;
+    }
 
-      nz-input-search {
-        margin-left: 10px;
-        flex: 1 1 0;
-      }
-    `
-  ]
+    nz-input-search {
+      margin-left: 10px;
+      flex: 1 1 0;
+    }
+  `
 })
 export class NzPageDemoIconComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);

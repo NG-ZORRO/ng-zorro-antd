@@ -12,28 +12,26 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
     <div>
       <label>
         <span>scale step:</span>
-        <nz-input-number [(ngModel)]="scaleStep" [nzMin]="0.1" [nzStep]="1"></nz-input-number>
+        <nz-input-number [(ngModel)]="scaleStep" [nzMin]="0.1" [nzStep]="1" />
       </label>
 
       <button nz-button nzType="primary" (click)="onClick()">Preview</button>
     </div>
   `,
-  styles: [
-    `
-      div {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-      }
+  styles: `
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
 
-      label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-    `
-  ]
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  `
 })
 export class NzDemoImageControlledPreviewComponent {
   private nzImageService = inject(NzImageService);

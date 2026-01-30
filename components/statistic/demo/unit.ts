@@ -11,11 +11,11 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
   template: `
     <nz-row [nzGutter]="16">
       <nz-col [nzSpan]="12">
-        <nz-statistic [nzValue]="(1128 | number)!" nzTitle="Feedback" [nzPrefix]="prefixTpl"></nz-statistic>
+        <nz-statistic [nzValue]="(1128 | number)!" nzTitle="Feedback" [nzPrefix]="prefixTpl" />
         <ng-template #prefixTpl><nz-icon nzType="like" /></ng-template>
       </nz-col>
       <nz-col [nzSpan]="12">
-        <nz-statistic [nzValue]="93" nzTitle="Unmerged" nzSuffix="/ 100"></nz-statistic>
+        <nz-statistic [nzValue]="93" nzTitle="Unmerged" nzSuffix="/ 100" />
       </nz-col>
     </nz-row>
   `

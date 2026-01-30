@@ -10,13 +10,11 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
     <button nz-button nzType="primary" (click)="showConfirm()">Confirm</button>
     <button nz-button nzType="dashed" (click)="showDeleteConfirm()">Delete</button>
   `,
-  styles: [
-    `
-      button {
-        margin-right: 8px;
-      }
-    `
-  ]
+  styles: `
+    button {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoModalConfirmComponent {
   constructor(private modal: NzModalService) {}

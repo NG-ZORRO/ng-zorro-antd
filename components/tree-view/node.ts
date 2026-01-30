@@ -50,17 +50,17 @@ export interface NzTreeVirtualNodeData<T> {
   ],
   template: `
     @if (indents().length) {
-      <nz-tree-node-indents [indents]="indents()"></nz-tree-node-indents>
+      <nz-tree-node-indents [indents]="indents()" />
     }
-    <ng-content select="nz-tree-node-toggle, [nz-tree-node-toggle]"></ng-content>
+    <ng-content select="nz-tree-node-toggle, [nz-tree-node-toggle]" />
     @if (indents().length && isLeaf) {
       <nz-tree-node-toggle class="nz-tree-leaf-line-icon" nzTreeNodeNoopToggle>
         <span class="ant-tree-switcher-leaf-line"></span>
       </nz-tree-node-toggle>
     }
-    <ng-content select="nz-tree-node-checkbox"></ng-content>
-    <ng-content select="nz-tree-node-option"></ng-content>
-    <ng-content></ng-content>
+    <ng-content select="nz-tree-node-checkbox" />
+    <ng-content select="nz-tree-node-option" />
+    <ng-content />
   `,
   hostDirectives: [NzAnimationTreeCollapseDirective],
   host: {

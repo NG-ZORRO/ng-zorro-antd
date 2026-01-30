@@ -18,25 +18,23 @@ import { NzResizableModule, NzResizeDirection, NzResizeEvent } from 'ng-zorro-an
       [style.width.px]="width"
       (nzResize)="onResize($event)"
     >
-      <nz-resize-handles></nz-resize-handles>
+      <nz-resize-handles />
       content
     </div>
   `,
-  styles: [
-    `
-      :host {
-        display: block;
-        height: 200px;
-      }
-      .box {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #eee;
-        border: 1px solid #ddd;
-      }
-    `
-  ]
+  styles: `
+    :host {
+      display: block;
+      height: 200px;
+    }
+    .box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eee;
+      border: 1px solid #ddd;
+    }
+  `
 })
 export class NzDemoResizableBasicComponent {
   width = 400;

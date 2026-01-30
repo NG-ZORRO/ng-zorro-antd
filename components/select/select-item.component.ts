@@ -36,7 +36,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         @if (!removeIcon) {
           <nz-icon nzType="close" />
         } @else {
-          <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
+          <ng-template [ngTemplateOutlet]="removeIcon" />
         }
       </span>
     }

@@ -8,10 +8,10 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
   imports: [NzBadgeModule, NzAvatarModule],
   template: `
     <nz-badge [nzCount]="5" style="margin-right: 24px">
-      <nz-avatar nzIcon="user" nzShape="square"></nz-avatar>
+      <nz-avatar nzIcon="user" nzShape="square" />
     </nz-badge>
     <nz-badge nzDot>
-      <nz-avatar nzIcon="user" nzShape="square"></nz-avatar>
+      <nz-avatar nzIcon="user" nzShape="square" />
     </nz-badge>
   `
 })

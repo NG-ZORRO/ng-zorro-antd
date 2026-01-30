@@ -115,8 +115,8 @@ const NZ_DEFAULT_ROTATE = 0;
               [cdkDragFreeDragPosition]="position"
               (cdkDragEnded)="onDragEnd($event)"
             >
-              @for (image of images; track image; let imageIndex = $index) {
-                @if (imageIndex === index) {
+              @for (image of images; track image) {
+                @if ($index === index) {
                   <img
                     cdkDragHandle
                     class="ant-image-preview-img"

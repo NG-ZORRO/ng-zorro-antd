@@ -70,8 +70,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
         >
           <nz-input-wrapper>
             <nz-select nzInputAddonBefore formControlName="phoneNumberPrefix" class="phone-select">
-              <nz-option nzLabel="+86" nzValue="+86"></nz-option>
-              <nz-option nzLabel="+87" nzValue="+87"></nz-option>
+              <nz-option nzLabel="+86" nzValue="+86" />
+              <nz-option nzLabel="+87" nzValue="+87" />
             </nz-select>
             <input formControlName="phoneNumber" id="'phoneNumber'" nz-input />
           </nz-input-wrapper>
@@ -127,21 +127,19 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
-      [nz-form] {
-        max-width: 600px;
-      }
+  styles: `
+    [nz-form] {
+      max-width: 600px;
+    }
 
-      .ant-select.ant-select-in-form-item.phone-select {
-        width: 80px;
-      }
+    .ant-select.ant-select-in-form-item.phone-select {
+      width: 80px;
+    }
 
-      .register-area {
-        margin-bottom: 8px;
-      }
-    `
-  ]
+    .register-area {
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoFormRegisterComponent implements OnInit, OnDestroy {
   private fb = inject(NonNullableFormBuilder);

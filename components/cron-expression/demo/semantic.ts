@@ -10,11 +10,7 @@ import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
   selector: 'nz-demo-cron-expression-semantic',
   imports: [FormsModule, NzCronExpressionModule, DatePipe],
   template: `
-    <nz-cron-expression
-      [nzSemantic]="semanticTemplate"
-      [ngModel]="value"
-      (ngModelChange)="getValue($event)"
-    ></nz-cron-expression>
+    <nz-cron-expression [nzSemantic]="semanticTemplate" [ngModel]="value" (ngModelChange)="getValue($event)" />
     <ng-template #semanticTemplate>Next Time: {{ semantic | date: 'yyyy-MM-dd HH:mm:ss' }}</ng-template>
   `
 })

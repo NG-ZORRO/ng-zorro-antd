@@ -1613,18 +1613,18 @@ describe('finalSize', () => {
         />
       }
       @case (2) {
-        <nz-date-picker [nzOpen]="nzOpen" (nzOnOpenChange)="nzOnOpenChange($event)"></nz-date-picker>
+        <nz-date-picker [nzOpen]="nzOpen" (nzOnOpenChange)="nzOnOpenChange($event)" />
       }
       @case (3) {
-        <nz-date-picker nzOpen [(ngModel)]="modelValue"></nz-date-picker>
+        <nz-date-picker nzOpen [(ngModel)]="modelValue" />
       }
       @case (4) {
-        <nz-date-picker [formControl]="control" [nzDisabled]="nzDisabled"></nz-date-picker>
+        <nz-date-picker [formControl]="control" [nzDisabled]="nzDisabled" />
       }
       @case (5) {
         <ng-container>
-          <nz-date-picker [ngModel]="firstValue" (ngModelChange)="nzOnChange($event)"></nz-date-picker>
-          <nz-date-picker [ngModel]="secondValue"></nz-date-picker>
+          <nz-date-picker [ngModel]="firstValue" (ngModelChange)="nzOnChange($event)" />
+          <nz-date-picker [ngModel]="secondValue" />
         </ng-container>
       }
     }
@@ -1695,7 +1695,7 @@ class NzTestDatePickerComponent {
 
 @Component({
   imports: [NzDatePickerModule],
-  template: `<nz-date-picker [nzStatus]="status"></nz-date-picker>`
+  template: `<nz-date-picker [nzStatus]="status" />`
 })
 class NzTestDatePickerStatusComponent {
   status: NzStatus = 'error';
@@ -1707,7 +1707,7 @@ class NzTestDatePickerStatusComponent {
     <form nz-form [formGroup]="validateForm">
       <nz-form-item>
         <nz-form-control nzHasFeedback>
-          <nz-date-picker formControlName="demo"></nz-date-picker>
+          <nz-date-picker formControlName="demo" />
         </nz-form-control>
       </nz-form-item>
     </form>

@@ -7,10 +7,10 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
   selector: 'nz-demo-time-picker-use12-hours',
   imports: [FormsModule, NzTimePickerModule],
   template: `
-    <nz-time-picker [(ngModel)]="time" nzUse12Hours></nz-time-picker>
+    <nz-time-picker [(ngModel)]="time" nzUse12Hours />
     <br />
     <br />
-    <nz-time-picker [(ngModel)]="time" nzUse12Hours nzFormat="h:mm a"></nz-time-picker>
+    <nz-time-picker [(ngModel)]="time" nzUse12Hours nzFormat="h:mm a" />
   `
 })
 export class NzDemoTimePickerUse12HoursComponent {

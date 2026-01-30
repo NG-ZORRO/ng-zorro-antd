@@ -28,7 +28,7 @@ interface MockUser {
     >
       @if (!loading) {
         @for (o of optionList; track o) {
-          <nz-option [nzValue]="o" [nzLabel]="o"></nz-option>
+          <nz-option [nzValue]="o" [nzLabel]="o" />
         }
       } @else {
         <nz-option nzDisabled nzCustomContent>
@@ -38,17 +38,15 @@ interface MockUser {
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
+  styles: `
+    nz-select {
+      width: 100%;
+    }
 
-      .loading-icon {
-        margin-right: 8px;
-      }
-    `
-  ]
+    .loading-icon {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoSelectSelectUsersComponent implements OnInit {
   randomUserUrl = 'https://api.randomuser.me/?results=5';

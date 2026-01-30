@@ -6,7 +6,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   selector: 'nz-demo-tree-select-status',
   imports: [NzTreeSelectModule],
   template: `
-    <nz-tree-select [nzNodes]="[]" nzStatus="error" nzPlaceHolder="Error" style="width:100%;"></nz-tree-select>
+    <nz-tree-select [nzNodes]="[]" nzStatus="error" nzPlaceHolder="Error" style="width:100%;" />
     <br />
     <br />
     <nz-tree-select
@@ -16,7 +16,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       nzStatus="warning"
       nzPlaceHolder="Warning multiple"
       style="width:100%;"
-    ></nz-tree-select>
+    />
   `
 })
 export class NzDemoTreeSelectStatusComponent {}

@@ -84,7 +84,7 @@ export type MentionPlacement = 'top' | 'bottom';
   selector: 'nz-mention',
   exportAs: 'nzMention',
   template: `
-    <ng-content></ng-content>
+    <ng-content />
     <ng-template #suggestions>
       <div class="ant-mentions-dropdown">
         <ul class="ant-mentions-dropdown-menu" role="menu" tabindex="0">
@@ -104,9 +104,7 @@ export type MentionPlacement = 'top' | 'bottom';
                 {{ nzValueWith(suggestion) }}
               }
             </li>
-          }
-
-          @if (filteredSuggestions.length === 0) {
+          } @empty {
             <li class="ant-mentions-dropdown-menu-item ant-mentions-dropdown-menu-item-disabled">
               @if (nzLoading) {
                 <span><nz-icon nzType="loading" /></span>

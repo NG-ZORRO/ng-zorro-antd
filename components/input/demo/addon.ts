@@ -16,16 +16,16 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     <br />
     <br />
     <nz-input-wrapper>
-      <nz-select nzInputAddonBefore [ngModel]="'Http://'">
-        <nz-option nzLabel="Http://" nzValue="Http://"></nz-option>
-        <nz-option nzLabel="Https://" nzValue="Https://"></nz-option>
+      <nz-select nzInputAddonBefore ngModel="Http://">
+        <nz-option nzLabel="Http://" nzValue="Http://" />
+        <nz-option nzLabel="Https://" nzValue="Https://" />
       </nz-select>
       <input nz-input [(ngModel)]="value" />
-      <nz-select nzInputAddonAfter [ngModel]="'.com'">
-        <nz-option nzLabel=".com" nzValue=".com"></nz-option>
-        <nz-option nzLabel=".jp" nzValue=".jp"></nz-option>
-        <nz-option nzLabel=".cn" nzValue=".cn"></nz-option>
-        <nz-option nzLabel=".org" nzValue=".org"></nz-option>
+      <nz-select nzInputAddonAfter ngModel=".com">
+        <nz-option nzLabel=".com" nzValue=".com" />
+        <nz-option nzLabel=".jp" nzValue=".jp" />
+        <nz-option nzLabel=".cn" nzValue=".cn" />
+        <nz-option nzLabel=".org" nzValue=".org" />
       </nz-select>
     </nz-input-wrapper>
     <br />

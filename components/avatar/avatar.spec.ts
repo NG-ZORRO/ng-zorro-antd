@@ -359,7 +359,7 @@ function getScaleFromCSSTransform(transform: string): number {
       [nzAlt]="nzAlt"
       [nzLoading]="nzLoading"
       [nzFetchPriority]="nzFetchPriority"
-    ></nz-avatar>
+    />
   `,
   styles: `
     @import '../style/testing.less';
@@ -382,6 +382,6 @@ class TestAvatarComponent {
 
 @Component({
   imports: [NzAvatarModule],
-  template: `<nz-avatar-group></nz-avatar-group>`
+  template: `<nz-avatar-group />`
 })
 class TestAvatarGroupComponent {}

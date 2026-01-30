@@ -20,7 +20,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
         </nz-splitter-panel>
       </nz-splitter>
       <nz-flex nzJustify="space-between">
-        <nz-switch nzCheckedChildren="Enabled" nzUnCheckedChildren="Disabled" [(ngModel)]="resizable"></nz-switch>
+        <nz-switch nzCheckedChildren="Enabled" nzUnCheckedChildren="Disabled" [(ngModel)]="resizable" />
         <button nz-button (click)="sizes.set(['50%', '50%'])">Reset</button>
       </nz-flex>
     </nz-flex>

@@ -30,10 +30,10 @@ import { NzFloatButtonBadge } from './typings';
         [nzOffset]="nzBadge()?.nzOffset"
         [nzSize]="nzBadge()?.nzSize || 'default'"
       >
-        <ng-container *ngTemplateOutlet="button"></ng-container>
+        <ng-container *ngTemplateOutlet="button" />
       </nz-badge>
     } @else {
-      <ng-container *ngTemplateOutlet="button"></ng-container>
+      <ng-container *ngTemplateOutlet="button" />
     }
     <ng-template #button>
       <div class="ant-float-btn-body">

@@ -32,7 +32,7 @@ import { NzTagColor } from './typings';
   selector: 'nz-tag',
   exportAs: 'nzTag',
   template: `
-    <ng-content></ng-content>
+    <ng-content />
     @if (nzMode === 'closeable') {
       <nz-icon nzType="close" class="ant-tag-close-icon" tabindex="-1" (click)="closeTag($event)" />
     }

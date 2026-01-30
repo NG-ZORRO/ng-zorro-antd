@@ -683,7 +683,7 @@ export class NzTestRadioGroupLabelNgModelComponent {
   imports: [BidiModule, NzTestRadioSingleComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-radio-single></nz-test-radio-single>
+      <nz-test-radio-single />
     </div>
   `
 })
@@ -709,7 +709,7 @@ export class NzTestRadioButtonRtlComponent {
   imports: [BidiModule, NzTestRadioGroupComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-radio-group></nz-test-radio-group>
+      <nz-test-radio-group />
     </div>
   `
 })
@@ -720,7 +720,7 @@ export class NzTestRadioGroupRtlComponent {
 
 @Component({
   imports: [NzRadioModule],
-  template: `<nz-radio-group [nzSize]="size"></nz-radio-group>`
+  template: `<nz-radio-group [nzSize]="size" />`
 })
 export class TestRadioGroupFinalSizeComponent {
   size: NzSizeLDSType = 'default';

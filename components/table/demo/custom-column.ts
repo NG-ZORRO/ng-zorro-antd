@@ -57,7 +57,7 @@ interface CustomColumn extends NzCustomColumn {
             <td nzCellControl="address">{{ data.address }}</td>
             <td nzCellControl="action">
               <a>Action</a>
-              <nz-divider nzType="vertical"></nz-divider>
+              <nz-divider nzType="vertical" />
               <a>Delete</a>
             </td>
           </tr>
@@ -84,10 +84,10 @@ interface CustomColumn extends NzCustomColumn {
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                @for (item of fix; track item; let i = $index) {
+                @for (item of fix; track item) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
-                    <nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, i)" />
+                    <nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, $index)" />
                   </div>
                 }
               </div>
@@ -109,10 +109,10 @@ interface CustomColumn extends NzCustomColumn {
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                @for (item of notFix; track item; let i = $index) {
+                @for (item of notFix; track item) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
-                    <nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, i)" />
+                    <nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, $index)" />
                   </div>
                 }
               </div>
@@ -122,65 +122,63 @@ interface CustomColumn extends NzCustomColumn {
       </ng-container>
     </nz-modal>
   `,
-  styles: [
-    `
-      .example-container {
-        height: 350px;
-        display: flex;
-        flex-direction: column;
-      }
+  styles: `
+    .example-container {
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+    }
 
-      .example-list {
-        min-height: 60px;
-        border-radius: 4px;
-        overflow-x: hidden;
-        overflow-y: auto;
-        display: block;
-        border: 1px dashed #ccc;
-        flex: 1 1 auto;
-      }
+    .example-list {
+      min-height: 60px;
+      border-radius: 4px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      display: block;
+      border: 1px dashed #ccc;
+      flex: 1 1 auto;
+    }
 
-      .example-list > .example-box {
-        cursor: move;
-      }
+    .example-list > .example-box {
+      cursor: move;
+    }
 
-      .cdk-drag-preview {
-        box-sizing: border-box;
-        border-radius: 4px;
-        box-shadow:
-          0 5px 5px -3px rgba(0, 0, 0, 0.2),
-          0 8px 10px 1px rgba(0, 0, 0, 0.14),
-          0 3px 14px 2px rgba(0, 0, 0, 0.12);
-      }
+    .cdk-drag-preview {
+      box-sizing: border-box;
+      border-radius: 4px;
+      box-shadow:
+        0 5px 5px -3px rgba(0, 0, 0, 0.2),
+        0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    }
 
-      .cdk-drag-placeholder {
-        opacity: 0;
-      }
+    .cdk-drag-placeholder {
+      opacity: 0;
+    }
 
-      .cdk-drag-animating {
-        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-      }
+    .cdk-drag-animating {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
 
-      .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-      }
+    .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
 
-      .example-box {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        box-sizing: border-box;
-        margin: 4px;
-        padding: 4px 8px;
-        background-color: rgb(0 112 204 / 15%);
-      }
+    .example-box {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+      margin: 4px;
+      padding: 4px 8px;
+      background-color: rgb(0 112 204 / 15%);
+    }
 
-      .example-box span {
-        cursor: pointer;
-      }
-    `
-  ]
+    .example-box span {
+      cursor: pointer;
+    }
+  `
 })
 export class NzDemoTableCustomColumnComponent implements OnInit {
   listOfData: Person[] = [

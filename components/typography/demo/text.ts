@@ -22,15 +22,13 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       <a href="https://ng.ant.design/" target="_blank">Ant Design</a>
     </span>
   `,
-  styles: [
-    `
-      span[nz-typography] {
-        display: block;
-      }
-      span[nz-typography] + span[nz-typography] {
-        margin-top: 8px;
-      }
-    `
-  ]
+  styles: `
+    span[nz-typography] {
+      display: block;
+    }
+    span[nz-typography] + span[nz-typography] {
+      margin-top: 8px;
+    }
+  `
 })
 export class NzDemoTypographyTextComponent {}

@@ -17,18 +17,16 @@ import { NzSelectModule, NzSelectPlacementType } from 'ng-zorro-antd/select';
     <br />
     <br />
     <nz-select [(ngModel)]="selectedValue" [nzDropdownMatchSelectWidth]="false" [nzPlacement]="placement">
-      <nz-option nzValue="HangZhou" nzLabel="HangZhou #310000"></nz-option>
-      <nz-option nzValue="NingBo" nzLabel="NingBo #315000"></nz-option>
-      <nz-option nzValue="WenZhou" nzLabel="WenZhou #325000"></nz-option>
+      <nz-option nzValue="HangZhou" nzLabel="HangZhou #310000" />
+      <nz-option nzValue="NingBo" nzLabel="NingBo #315000" />
+      <nz-option nzValue="WenZhou" nzLabel="WenZhou #325000" />
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 120px;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 120px;
+    }
+  `
 })
 export class NzDemoSelectPlacementComponent {
   placement: NzSelectPlacementType = 'topLeft';

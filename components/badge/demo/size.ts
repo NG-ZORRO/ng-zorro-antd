@@ -13,21 +13,19 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
       <a class="head-example"></a>
     </nz-badge>
   `,
-  styles: [
-    `
-      nz-badge {
-        margin-right: 20px;
-      }
+  styles: `
+    nz-badge {
+      margin-right: 20px;
+    }
 
-      .head-example {
-        width: 42px;
-        height: 42px;
-        border-radius: 4px;
-        background: #eee;
-        display: inline-block;
-        vertical-align: middle;
-      }
-    `
-  ]
+    .head-example {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      background: #eee;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  `
 })
 export class NzDemoBadgeSizeComponent {}

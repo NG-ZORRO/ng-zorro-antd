@@ -8,7 +8,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
   selector: 'nz-demo-time-picker-addon',
   imports: [FormsModule, NzButtonModule, NzTimePickerModule],
   template: `
-    <nz-time-picker [(ngModel)]="time" [nzAddOn]="addOnTemplate" #timePicker></nz-time-picker>
+    <nz-time-picker [(ngModel)]="time" [nzAddOn]="addOnTemplate" #timePicker />
     <ng-template #addOnTemplate>
       <button nz-button nzSize="small" nzType="primary" (click)="timePicker.close()">Ok</button>
     </ng-template>

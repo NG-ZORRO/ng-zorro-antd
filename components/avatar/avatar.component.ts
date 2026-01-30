@@ -52,7 +52,7 @@ type NzAvatarFetchPriority = 'high' | 'low' | 'auto';
     } @else if (nzText && hasText) {
       <span class="ant-avatar-string" #textEl>{{ nzText }}</span>
     }
-    <ng-content></ng-content>
+    <ng-content />
   `,
   host: {
     class: 'ant-avatar',

@@ -49,7 +49,7 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
       [nzSelectMode]="nzSelectMode"
       [nzIsStart]="isStart"
       [nzIsEnd]="isEnd"
-    ></nz-tree-indent>
+    />
     @if (nzShowExpand) {
       <nz-tree-node-switcher
         [nzShowExpand]="nzShowExpand"
@@ -61,7 +61,7 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
         [isExpanded]="isExpanded"
         [isLoading]="isLoading"
         (click)="clickExpand($event)"
-      ></nz-tree-node-switcher>
+      />
     }
     @if (nzCheckable) {
       <nz-tree-node-checkbox
@@ -72,7 +72,7 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
         [isHalfChecked]="isHalfChecked"
         [isDisabled]="isDisabled"
         [isDisableCheckbox]="isDisableCheckbox"
-      ></nz-tree-node-checkbox>
+      />
     }
     <nz-tree-node-title
       [icon]="icon"
@@ -94,7 +94,7 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
       (dblclick)="dblClick($event)"
       (click)="clickSelect($event)"
       (contextmenu)="contextMenu($event)"
-    ></nz-tree-node-title>
+    />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

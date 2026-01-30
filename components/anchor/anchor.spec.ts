@@ -301,27 +301,27 @@ describe('anchor', () => {
       (nzScroll)="_scroll()"
       (nzChange)="_change()"
     >
-      <nz-link nzHref="#何时使用" nzTitle="何时使用"></nz-link>
-      <nz-link nzHref="#basic" nzTitle="Basic demo"></nz-link>
+      <nz-link nzHref="#何时使用" nzTitle="何时使用" />
+      <nz-link nzHref="#basic" nzTitle="Basic demo" />
       <nz-link nzHref="#API-AnchorLink">
         <ng-template #nzTemplate>
           <span class="nzTemplate-title">tpl</span>
         </ng-template>
       </nz-link>
       <nz-link nzHref="#API" nzTitle="API">
-        <nz-link nzHref="#API-Anchor" nzTitle="nz-anchor"></nz-link>
+        <nz-link nzHref="#API-Anchor" nzTitle="nz-anchor" />
         <nz-link nzHref="#API-AnchorLink" [nzTitle]="title">
           <ng-template #title>
             <span class="nzTitle-title">tpl-title</span>
           </ng-template>
         </nz-link>
       </nz-link>
-      <nz-link nzHref="#invalid" nzTitle="invalid"></nz-link>
-      <nz-link nzHref="invalidLink" nzTitle="invalidLink"></nz-link>
-      <nz-link nzHref="http://www.example.com/#id" nzTitle="complete" class="mock-complete"></nz-link>
-      <nz-link nzHref="#parallel1" nzTitle="parallel1"></nz-link>
-      <nz-link nzHref="#parallel2" nzTitle="parallel2"></nz-link>
-      <nz-link nzHref="#basic-target" nzTitle="basic-target"></nz-link>
+      <nz-link nzHref="#invalid" nzTitle="invalid" />
+      <nz-link nzHref="invalidLink" nzTitle="invalidLink" />
+      <nz-link nzHref="http://www.example.com/#id" nzTitle="complete" class="mock-complete" />
+      <nz-link nzHref="#parallel1" nzTitle="parallel1" />
+      <nz-link nzHref="#parallel2" nzTitle="parallel2" />
+      <nz-link nzHref="#basic-target" nzTitle="basic-target" />
     </nz-anchor>
     <h2 id="何时使用"></h2>
     <div style="height: 1000px"></div>
