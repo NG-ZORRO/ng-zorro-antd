@@ -37,7 +37,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
           <a class="login-form-forgot">Forgot password</a>
         </div>
       </div>
-      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+      <button nz-button class="login-form-button login-form-margin" nzType="primary">Log in</button>
       Or
       <a>register now!</a>
     </form>

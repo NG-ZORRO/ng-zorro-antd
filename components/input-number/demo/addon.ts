@@ -18,11 +18,11 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     </nz-input-number>
 
     <nz-input-number [(ngModel)]="value">
-      <nz-select nzInputAddonBefore [ngModel]="'add'" [style.width.px]="60">
+      <nz-select nzInputAddonBefore ngModel="add" [style.width.px]="60">
         <nz-option nzLabel="+" nzValue="add" />
         <nz-option nzLabel="-" nzValue="minus" />
       </nz-select>
-      <nz-select nzInputAddonAfter [ngModel]="'USD'" [style.width.px]="60">
+      <nz-select nzInputAddonAfter ngModel="USD" [style.width.px]="60">
         <nz-option nzValue="USD" nzLabel="$" />
         <nz-option nzValue="EUR" nzLabel="€" />
         <nz-option nzValue="GBP" nzLabel="£" />

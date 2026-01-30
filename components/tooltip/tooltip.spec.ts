@@ -405,13 +405,7 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Manually
     </a>
 
-    <a
-      #alwaysShow
-      nz-tooltip
-      [nzTooltipTrigger]="trigger"
-      [nzTooltipTitle]="'always show'"
-      [nzTooltipVisible]="visible"
-    >
+    <a #alwaysShow nz-tooltip [nzTooltipTrigger]="trigger" nzTooltipTitle="always show" [nzTooltipVisible]="visible">
       Always Show
     </a>
 

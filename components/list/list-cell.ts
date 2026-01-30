@@ -11,7 +11,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
   selector: 'nz-list-empty',
   exportAs: 'nzListHeader',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<nz-embed-empty [nzComponentName]="'list'" [specificContent]="nzNoResult" />`,
+  template: `<nz-embed-empty nzComponentName="list" [specificContent]="nzNoResult" />`,
   host: {
     class: 'ant-list-empty-text'
   },

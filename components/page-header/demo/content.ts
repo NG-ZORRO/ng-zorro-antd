@@ -49,7 +49,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
       <!--tags-->
       <nz-page-header-tags>
-        <nz-tag [nzColor]="'blue'">Running</nz-tag>
+        <nz-tag nzColor="blue">Running</nz-tag>
       </nz-page-header-tags>
 
       <!--extra-->

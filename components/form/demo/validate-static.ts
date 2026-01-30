@@ -28,13 +28,13 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
           [nzSpan]="12"
           nzErrorTip="Should be combination of numbers & alphabets"
         >
-          <input nz-input [ngModel]="'unavailable choice'" name="errorValid" />
+          <input nz-input ngModel="unavailable choice" name="errorValid" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Warning</nz-form-label>
         <nz-form-control nzValidateStatus="warning" [nzSpan]="12">
-          <input nz-input [ngModel]="'Warning'" name="warningValid" />
+          <input nz-input ngModel="Warning" name="warningValid" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -45,13 +45,13 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
           nzHasFeedback
           nzValidatingTip="I'm validating the content"
         >
-          <input nz-input [ngModel]="'The content is being validated'" name="validating" />
+          <input nz-input ngModel="The content is being validated" name="validating" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Success</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidateStatus="success" nzHasFeedback>
-          <input nz-input [ngModel]="'The content'" name="successValid" />
+          <input nz-input ngModel="The content" name="successValid" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -62,7 +62,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
           nzHasFeedback
           nzWarningTip="Should be combination of numbers & alphabets"
         >
-          <input nz-input [ngModel]="'Warning'" name="warningHighValid" />
+          <input nz-input ngModel="Warning" name="warningHighValid" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -73,7 +73,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
           nzHasFeedback
           nzErrorTip="Should be combination of numbers & alphabets"
         >
-          <input nz-input [ngModel]="'unavailable choice'" name="invalidValid" />
+          <input nz-input ngModel="unavailable choice" name="invalidValid" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -91,7 +91,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Error</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidateStatus="error" nzHasFeedback>
-          <nz-select name="select-error" [ngModel]="'Option 1'">
+          <nz-select name="select-error" ngModel="Option 1">
             <nz-option nzValue="Option 1" nzLabel="Option 1" />
             <nz-option nzValue="Option 2" nzLabel="Option 2" />
           </nz-select>
@@ -100,7 +100,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Validating</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidateStatus="validating" nzHasFeedback>
-          <nz-select name="select-validate" [ngModel]="'Option 2'">
+          <nz-select name="select-validate" ngModel="Option 2">
             <nz-option nzValue="Option 1" nzLabel="Option 1" />
             <nz-option nzValue="Option 2" nzLabel="Option 2" />
           </nz-select>

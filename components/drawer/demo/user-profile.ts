@@ -10,7 +10,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
   selector: 'nz-demo-drawer-user-profile',
   imports: [NzButtonModule, NzDescriptionsModule, NzDividerModule, NzDrawerModule, NzListModule],
   template: `
-    <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+    <nz-list [nzDataSource]="data" [nzRenderItem]="item" nzItemLayout="horizontal">
       <ng-template #item let-item>
         <nz-list-item [nzActions]="[viewAction]">
           <ng-template #viewAction>

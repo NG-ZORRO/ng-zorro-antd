@@ -148,7 +148,7 @@ import { RenderListContext, TransferDirection, TransferItem, TransferStat } from
           </ul>
         } @else {
           <div class="ant-transfer-list-body-not-found">
-            <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent" />
+            <nz-embed-empty nzComponentName="transfer" [specificContent]="notFoundContent" />
           </div>
         }
       }

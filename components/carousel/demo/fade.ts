@@ -6,7 +6,7 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
   selector: 'nz-demo-carousel-fade',
   imports: [NzCarouselModule],
   template: `
-    <nz-carousel [nzEffect]="'fade'">
+    <nz-carousel nzEffect="fade">
       @for (index of array; track index) {
         <div nz-carousel-content>
           <h3>{{ index }}</h3>

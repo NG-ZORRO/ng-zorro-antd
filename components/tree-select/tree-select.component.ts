@@ -111,7 +111,7 @@ const listOfPositions = [
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayPositions]="nzPlacement ? positions : []"
       [cdkConnectedOverlayOpen]="nzOpen"
-      [cdkConnectedOverlayTransformOriginOn]="'.ant-select-tree-dropdown'"
+      cdkConnectedOverlayTransformOriginOn=".ant-select-tree-dropdown"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       (overlayOutsideClick)="onClickOutside($event)"
@@ -164,7 +164,7 @@ const listOfPositions = [
         />
         @if (nzNodes.length === 0 || isNotFound) {
           <span class="ant-select-not-found">
-            <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent" />
+            <nz-embed-empty nzComponentName="tree-select" [specificContent]="nzNotFoundContent" />
           </span>
         }
       </div>

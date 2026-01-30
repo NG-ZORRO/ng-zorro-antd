@@ -457,7 +457,7 @@ export class NzTestColorPickerFormComponent {
 
 @Component({
   imports: [NzColorPickerModule],
-  template: ` <nz-color-picker [nzPresets]="presets" [nzValue]="'#1677ff'" (nzOnChange)="onColorChange($event)" /> `
+  template: ` <nz-color-picker [nzPresets]="presets" nzValue="#1677ff" (nzOnChange)="onColorChange($event)" /> `
 })
 export class NzTestColorPickerPresetsComponent {
   presets: NzPresetColor[] | null = [

@@ -341,7 +341,7 @@ class TestListWithTemplateComponent {
   imports: [NzIconModule, NzListModule],
   template: `
     <nz-list id="item-string">
-      <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra" [nzNoFlex]="noFlex">
+      <nz-list-item nzContent="content" [nzActions]="[action]" [nzExtra]="extra" [nzNoFlex]="noFlex">
         <ng-template #action>
           <nz-icon nzType="star-o" style="margin-right: 8px;" />
           156

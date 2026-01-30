@@ -10,7 +10,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   selector: 'nz-demo-cron-expression-use',
   imports: [ReactiveFormsModule, NzButtonModule, NzCronExpressionModule, NzFormModule, NzInputModule],
   template: `
-    <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form nz-form nzLayout="vertical" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-label [nzSpan]="6">name</nz-form-label>
         <nz-form-control [nzSpan]="14">

@@ -25,7 +25,7 @@ import { NzTypographyComponent } from 'ng-zorro-antd/typography';
 
       <nz-flex nzVertical>
         <h5 nz-typography>With custom display character</h5>
-        <nz-input-otp [nzMask]="'🔒'" />
+        <nz-input-otp nzMask="🔒" />
       </nz-flex>
     </nz-flex>
   `,

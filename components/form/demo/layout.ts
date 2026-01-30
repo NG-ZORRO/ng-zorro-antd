@@ -20,9 +20,9 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
         <nz-form-label [nzSpan]="isHorizontal ? 4 : null">Form Layout</nz-form-label>
         <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
           <nz-radio-group formControlName="formLayout">
-            <label nz-radio-button [nzValue]="'horizontal'">Horizontal</label>
-            <label nz-radio-button [nzValue]="'vertical'">Vertical</label>
-            <label nz-radio-button [nzValue]="'inline'">Inline</label>
+            <label nz-radio-button nzValue="horizontal">Horizontal</label>
+            <label nz-radio-button nzValue="vertical">Vertical</label>
+            <label nz-radio-button nzValue="inline">Inline</label>
           </nz-radio-group>
         </nz-form-control>
       </nz-form-item>

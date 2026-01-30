@@ -72,7 +72,7 @@ interface ChildrenItemData {
                     <td>{{ data.date }}</td>
                     <td>{{ data.name }}</td>
                     <td>
-                      <nz-badge [nzStatus]="'success'" [nzText]="'Finished'" />
+                      <nz-badge nzStatus="success" nzText="Finished" />
                     </td>
                     <td>{{ data.upgradeNum }}</td>
                     <td>

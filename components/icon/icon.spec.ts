@@ -221,7 +221,7 @@ describe('nz-icon injection', () => {
   imports: [NzIconModule],
   template: `
     <nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate" />
-    <nz-icon [nzType]="'loading'" [nzTheme]="theme" />
+    <nz-icon nzType="loading" [nzTheme]="theme" />
   `
 })
 export class NzTestIconExtensionsComponent {

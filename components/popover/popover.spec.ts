@@ -202,8 +202,8 @@ describe('popover', () => {
       nz-popover
       [nzPopoverTitle]="templateTitleContext"
       [nzPopoverContent]="templateContentContext"
-      [nzPopoverTitleContext]="'titleContextTest'"
-      [nzPopoverContentContext]="'contentContextTest'"
+      nzPopoverTitleContext="titleContextTest"
+      nzPopoverContentContext="contentContextTest"
     >
     </a>
     <ng-template #templateTitleContext let-item>{{ item }}</ng-template>

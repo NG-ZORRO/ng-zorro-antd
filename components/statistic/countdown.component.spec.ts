@@ -69,7 +69,7 @@ describe('nz-countdown', () => {
   imports: [NzStatisticModule],
   template: `
     <nz-countdown
-      [nzTitle]="'Countdown'"
+      nzTitle="Countdown"
       [nzValue]="value"
       [nzFormat]="format"
       [nzValueTemplate]="template"

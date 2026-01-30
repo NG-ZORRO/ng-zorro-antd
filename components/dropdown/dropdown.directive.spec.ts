@@ -306,9 +306,7 @@ export class NzTestDropdownVisibleComponent {
 @Component({
   imports: [NzDropdownModule, NzMenuModule],
   template: `
-    <a nz-dropdown [nzDropdownMenu]="menu" [nzArrow]="arrow" [nzPlacement]="placement" [nzTrigger]="'hover'">
-      Trigger
-    </a>
+    <a nz-dropdown [nzDropdownMenu]="menu" [nzArrow]="arrow" [nzPlacement]="placement" nzTrigger="hover"> Trigger </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>

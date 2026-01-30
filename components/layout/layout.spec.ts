@@ -311,7 +311,7 @@ export class NzLayoutSideComponent {
       <nz-sider
         nzCollapsible
         [(nzCollapsed)]="isCollapsed"
-        [nzBreakpoint]="'lg'"
+        nzBreakpoint="lg"
         [nzCollapsedWidth]="0"
         [nzZeroTrigger]="zeroTrigger"
       />

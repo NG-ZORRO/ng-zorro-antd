@@ -1079,7 +1079,7 @@ class DisableTabsTestComponent {
   template: `
     <nz-tabs
       [(nzSelectedIndex)]="selectedIndex"
-      [nzType]="'editable-card'"
+      nzType="editable-card"
       (nzSelectedIndexChange)="handleSelection($event)"
     >
       @for (tab of tabs; track tab) {

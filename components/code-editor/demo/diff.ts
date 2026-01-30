@@ -10,7 +10,7 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
     <nz-code-editor
       class="editor"
       [nzOriginalText]="originalCode"
-      [nzEditorMode]="'diff'"
+      nzEditorMode="diff"
       [ngModel]="code"
       [nzEditorOption]="{ language: 'typescript' }"
     />

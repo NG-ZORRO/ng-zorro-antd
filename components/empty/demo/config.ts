@@ -30,8 +30,8 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   ],
   template: `
     <nz-switch
-      [nzUnCheckedChildren]="'default'"
-      [nzCheckedChildren]="'customize'"
+      nzUnCheckedChildren="default"
+      nzCheckedChildren="customize"
       [(ngModel)]="customize"
       (ngModelChange)="onConfigChange()"
     />

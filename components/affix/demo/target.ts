@@ -10,7 +10,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     <div class="scrollable-container" #target>
       <div class="background">
         <nz-affix [nzTarget]="target" id="affix-container-target">
-          <button nz-button [nzType]="'primary'">
+          <button nz-button nzType="primary">
             <span>Fixed at the top of container</span>
           </button>
         </nz-affix>

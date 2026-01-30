@@ -7,7 +7,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
   selector: 'nz-demo-modal-basic',
   imports: [NzButtonModule, NzModalModule],
   template: `
-    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
+    <button nz-button nzType="primary" (click)="showModal()"><span>Show Modal</span></button>
     <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <ng-container *nzModalContent>
         <p>Content one</p>

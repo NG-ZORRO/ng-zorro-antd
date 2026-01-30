@@ -30,7 +30,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       </div>
       <div nz-row>
         <div nz-col [nzSpan]="24" class="search-area">
-          <button nz-button [nzType]="'primary'">Search</button>
+          <button nz-button nzType="primary">Search</button>
           <button nz-button (click)="resetForm()">Clear</button>
           <a class="collapse" (click)="toggleCollapse()">
             Collapse
