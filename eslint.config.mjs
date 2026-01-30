@@ -106,6 +106,7 @@ export default tseslint.config(
         'error',
         'string'
       ],
+      '@angular-eslint/use-lifecycle-interface': 'error',
       '@typescript-eslint/array-type': [
         'error',
         {
@@ -233,6 +234,8 @@ export default tseslint.config(
       '@angular-eslint/template/prefer-at-empty': 'error',
       '@angular-eslint/template/prefer-static-string-properties': 'error',
       '@angular-eslint/template/prefer-contextual-for-variables': 'error',
+      // TODO: This rule has some bugs; we'll try enabling it again in the future.
+      // '@angular-eslint/template/prefer-template-literal': 'error',
     }
   },
   {
