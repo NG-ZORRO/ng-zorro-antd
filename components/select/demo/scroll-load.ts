@@ -25,12 +25,12 @@ interface MockUser {
       [nzDropdownRender]="renderTemplate"
     >
       @for (item of optionList; track item) {
-        <nz-option [nzValue]="item" [nzLabel]="item"></nz-option>
+        <nz-option [nzValue]="item" [nzLabel]="item" />
       }
     </nz-select>
     <ng-template #renderTemplate>
       @if (isLoading) {
-        <nz-spin></nz-spin>
+        <nz-spin />
       }
     </ng-template>
   `,

@@ -74,7 +74,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
         [style.flex-basis]="flexBasis"
         [style.flex-grow]="flexGrow"
       >
-        <ng-container *ngTemplateOutlet="panel.contentTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="panel.contentTemplate" />
       </div>
 
       @if (!last) {

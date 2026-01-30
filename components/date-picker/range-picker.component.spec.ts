@@ -1287,7 +1287,7 @@ describe('range-picker', () => {
         <nz-date-picker [ngModel]="singleValue" />
       }
       @case (5) {
-        <nz-range-picker nzOpen></nz-range-picker>
+        <nz-range-picker nzOpen />
       }
       @case (6) {
         <nz-range-picker [nzSeparator]="separatorTemplate" />
@@ -1345,7 +1345,7 @@ class NzTestRangePickerComponent {
 
 @Component({
   imports: [NzDatePickerModule],
-  template: `<nz-range-picker [nzStatus]="status"></nz-range-picker>`
+  template: `<nz-range-picker [nzStatus]="status" />`
 })
 class NzTestRangePickerStatusComponent {
   status: NzStatus = 'error';

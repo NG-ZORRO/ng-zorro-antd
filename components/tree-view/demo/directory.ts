@@ -48,7 +48,7 @@ const TREE_DATA: FoodNode[] = [
   template: `
     <nz-tree-view [nzDataSource]="dataSource" [nzLevelAccessor]="levelAccessor" [nzDirectoryTree]="true">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
-        <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
+        <nz-tree-node-toggle nzTreeNodeNoopToggle />
         <nz-tree-node-option
           [nzDisabled]="node.disabled"
           [nzSelected]="selectListSelection.isSelected(node)"

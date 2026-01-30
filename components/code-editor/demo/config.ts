@@ -18,7 +18,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
         (ngModelChange)="onDarkModeChange($event)"
         [nzUnCheckedChildren]="unchecked"
         [nzCheckedChildren]="checked"
-      ></nz-switch>
+      />
     </p>
     <ng-template #unchecked>
       <nz-icon nzType="bulb" />
@@ -26,7 +26,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
     <ng-template #checked>
       <nz-icon nzType="poweroff" />
     </ng-template>
-    <nz-code-editor style="height: 200px" [ngModel]="code" [nzEditorOption]="{ language: 'markdown' }"></nz-code-editor>
+    <nz-code-editor style="height: 200px" [ngModel]="code" [nzEditorOption]="{ language: 'markdown' }" />
   `
 })
 export class NzDemoCodeEditorConfigComponent {

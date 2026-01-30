@@ -6,15 +6,15 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   selector: 'nz-demo-date-picker-date-render',
   imports: [NzDatePickerModule],
   template: `
-    <nz-date-picker [nzDateRender]="tplRender"></nz-date-picker>
-    <nz-range-picker [nzDateRender]="tplRender"></nz-range-picker>
+    <nz-date-picker [nzDateRender]="tplRender" />
+    <nz-range-picker [nzDateRender]="tplRender" />
 
     <ng-template #tplRender let-current>
       <div class="ant-picker-cell-inner" [class.border]="current.getDate() === 1"> {{ current.getDate() }} </div>
     </ng-template>
 
     <br />
-    <nz-date-picker nzMode="quarter" nzFormat="yyyy年Q季度" [nzDateRender]="tplQuarterRender"></nz-date-picker>
+    <nz-date-picker nzMode="quarter" nzFormat="yyyy年Q季度" [nzDateRender]="tplQuarterRender" />
     <ng-template #tplQuarterRender let-current>
       <div class="ant-picker-cell-inner">{{ getQuarter(current) }}</div>
     </ng-template>

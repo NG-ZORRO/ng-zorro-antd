@@ -18,7 +18,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       (nzOnSearch)="search($event)"
     >
       @for (item of listOfOption; track item) {
-        <nz-option [nzLabel]="item" [nzValue]="item"></nz-option>
+        <nz-option [nzLabel]="item" [nzValue]="item" />
       }
     </nz-select>
   `,

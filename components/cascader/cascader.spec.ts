@@ -2772,7 +2772,7 @@ const options5: NzSafeAny[] = [];
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
       (nzClear)="onClear()"
-    ></nz-cascader>
+    />
 
     <ng-template #renderTpl let-labels="labels">
       @for (label of labels; track $index) {
@@ -2831,7 +2831,7 @@ export class NzDemoCascaderDefaultComponent {
       [nzLoadData]="nzLoadData"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
-    ></nz-cascader>
+    />
   `
 })
 export class NzDemoCascaderLoadDataComponent {
@@ -2884,7 +2884,7 @@ export class NzDemoCascaderLoadDataComponent {
   imports: [BidiModule, NzCascaderModule],
   template: `
     <div [dir]="direction">
-      <nz-cascader [nzOptions]="nzOptions"></nz-cascader>
+      <nz-cascader [nzOptions]="nzOptions" />
     </div>
   `
 })
@@ -2897,7 +2897,7 @@ export class NzDemoCascaderRtlComponent {
 
 @Component({
   imports: [FormsModule, NzCascaderModule],
-  template: `<nz-cascader [nzOptions]="nzOptions" [nzStatus]="status"></nz-cascader>`
+  template: `<nz-cascader [nzOptions]="nzOptions" [nzStatus]="status" />`
 })
 export class NzDemoCascaderStatusComponent {
   nzOptions: NzSafeAny[] | null = options1;
@@ -2910,7 +2910,7 @@ export class NzDemoCascaderStatusComponent {
     <form nz-form [formGroup]="validateForm">
       <nz-form-item>
         <nz-form-control nzHasFeedback>
-          <nz-cascader formControlName="demo" [nzOptions]="nzOptions"></nz-cascader>
+          <nz-cascader formControlName="demo" [nzOptions]="nzOptions" />
         </nz-form-control>
       </nz-form-item>
     </form>

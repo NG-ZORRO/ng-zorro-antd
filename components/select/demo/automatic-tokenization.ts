@@ -22,7 +22,7 @@ function alphabet(): string[] {
       nzPlaceHolder="automatic tokenization"
     >
       @for (option of listOfOption; track option.value) {
-        <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        <nz-option [nzLabel]="option.label" [nzValue]="option.value" />
       }
     </nz-select>
   `,

@@ -14,7 +14,7 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
       [style.height.px]="height"
       [style.width.px]="width"
     >
-      <nz-resize-handles></nz-resize-handles>
+      <nz-resize-handles />
       content
     </div>
   `,

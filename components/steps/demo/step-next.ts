@@ -8,9 +8,9 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
   imports: [NzButtonModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
-      <nz-step nzTitle="Finished"></nz-step>
-      <nz-step nzTitle="In Progress"></nz-step>
-      <nz-step nzTitle="Waiting"></nz-step>
+      <nz-step nzTitle="Finished" />
+      <nz-step nzTitle="In Progress" />
+      <nz-step nzTitle="Waiting" />
     </nz-steps>
 
     <div class="steps-content">{{ index }}</div>

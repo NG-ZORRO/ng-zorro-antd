@@ -19,7 +19,7 @@ interface ItemData {
       @for (item of data; track item) {
         <nz-list-item>
           <nz-list-item-meta>
-            <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>
+            <nz-list-item-meta-avatar [nzSrc]="item.avatar" />
             <nz-list-item-meta-title>
               <a href="{{ item.href }}">{{ item.title }}</a>
             </nz-list-item-meta-title>

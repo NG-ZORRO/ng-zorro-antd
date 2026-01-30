@@ -54,7 +54,7 @@ function isDefaultColor(color?: string): boolean {
           <ng-container *nzStringTemplateOutlet="nzDot">{{ nzDot }}</ng-container>
         </div>
         <div class="ant-timeline-item-content">
-          <ng-content></ng-content>
+          <ng-content />
         </div>
       </li>
     </ng-template>

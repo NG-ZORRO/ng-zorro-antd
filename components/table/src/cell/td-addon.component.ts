@@ -32,9 +32,9 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzShowExpand || nzIndentSize > 0) {
-      <nz-row-indent [indentSize]="nzIndentSize"></nz-row-indent>
+      <nz-row-indent [indentSize]="nzIndentSize" />
       @if (nzExpandIcon) {
-        <ng-template [ngTemplateOutlet]="nzExpandIcon"></ng-template>
+        <ng-template [ngTemplateOutlet]="nzExpandIcon" />
       } @else {
         <button
           nz-row-expand-button
@@ -54,7 +54,7 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
         (ngModelChange)="onCheckedChange($event)"
       ></label>
     }
-    <ng-content></ng-content>
+    <ng-content />
   `,
   host: {
     '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,

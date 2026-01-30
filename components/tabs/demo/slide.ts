@@ -13,7 +13,7 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
       <label nz-radio-button [nzValue]="'top'">Horizontal</label>
       <label nz-radio-button [nzValue]="'left'">Vertical</label>
     </nz-radio-group>
-    <nz-input-number style="float:right;" [nzMin]="0" [nzMax]="29" [(ngModel)]="selectedIndex"></nz-input-number>
+    <nz-input-number style="float:right;" [nzMin]="0" [nzMax]="29" [(ngModel)]="selectedIndex" />
 
     <nz-tabs
       style="height:220px;"

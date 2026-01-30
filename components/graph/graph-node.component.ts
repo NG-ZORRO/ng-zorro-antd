@@ -41,7 +41,7 @@ const translate = (x: number, y: number): string => `translate(${coerceCssPixelV
       @if (customTemplate) {
         <ng-container [ngTemplateOutlet]="customTemplate" [ngTemplateOutletContext]="{ $implicit: node }" />
       } @else {
-        <svg:rect class="nz-graph-node-rect" [attr.width]="node.width" [attr.height]="node.height"></svg:rect>
+        <svg:rect class="nz-graph-node-rect" [attr.width]="node.width" [attr.height]="node.height" />
         <svg:text x="10" y="20">{{ node.id || node.name }}</svg:text>
       }
     </svg:g>

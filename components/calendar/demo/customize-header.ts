@@ -7,7 +7,7 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
   imports: [NzCalendarModule],
   template: `
     <div class="card">
-      <nz-calendar [nzFullscreen]="false" [nzCustomHeader]="customHeader"></nz-calendar>
+      <nz-calendar [nzFullscreen]="false" [nzCustomHeader]="customHeader" />
     </div>
 
     <ng-template #customHeader>

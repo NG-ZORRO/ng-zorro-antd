@@ -23,7 +23,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (clearIcon) {
-      <ng-template [ngTemplateOutlet]="clearIcon"></ng-template>
+      <ng-template [ngTemplateOutlet]="clearIcon" />
     } @else {
       <nz-icon nzType="close-circle" nzTheme="fill" class="ant-select-close-icon" />
     }

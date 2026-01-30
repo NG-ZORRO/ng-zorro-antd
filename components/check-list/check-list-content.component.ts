@@ -57,7 +57,7 @@ import { NzItemProps } from './typings';
         @if (progress()) {
           <div class="ant-check-list-progressBar">
             <div class="ant-check-list-progressBar-progress">
-              <nz-progress [nzPercent]="progressPercent() | number: '1.0-0'"></nz-progress>
+              <nz-progress [nzPercent]="progressPercent() | number: '1.0-0'" />
             </div>
           </div>
         }

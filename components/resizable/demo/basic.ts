@@ -18,7 +18,7 @@ import { NzResizableModule, NzResizeDirection, NzResizeEvent } from 'ng-zorro-an
       [style.width.px]="width"
       (nzResize)="onResize($event)"
     >
-      <nz-resize-handles></nz-resize-handles>
+      <nz-resize-handles />
       content
     </div>
   `,

@@ -6,9 +6,9 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   selector: 'nz-demo-slider-tip-formatter',
   imports: [NzSliderModule],
   template: `
-    <nz-slider [nzTipFormatter]="formatter"></nz-slider>
-    <nz-slider [nzTipFormatter]="null"></nz-slider>
-    <nz-slider [nzTipFormatter]="titleTemplate"></nz-slider>
+    <nz-slider [nzTipFormatter]="formatter" />
+    <nz-slider [nzTipFormatter]="null" />
+    <nz-slider [nzTipFormatter]="titleTemplate" />
     <ng-template #titleTemplate let-value>
       <span>Slider value: {{ value }}</span>
     </ng-template>

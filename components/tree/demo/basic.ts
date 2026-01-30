@@ -18,7 +18,7 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeModule, NzTreeNodeOptions } f
       (nzContextMenu)="nzClick($event)"
       (nzCheckboxChange)="nzCheck($event)"
       (nzExpandChange)="nzCheck($event)"
-    ></nz-tree>
+    />
   `
 })
 export class NzDemoTreeBasicComponent {

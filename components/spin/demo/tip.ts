@@ -12,7 +12,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
         nzType="info"
         nzMessage="Alert message title"
         nzDescription="Further details about the context of this alert."
-      ></nz-alert>
+      />
     </nz-spin>
   `
 })

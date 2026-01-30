@@ -6,8 +6,8 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
   selector: 'nz-demo-qr-code-padding',
   imports: [NzQRCodeModule],
   template: `
-    <nz-qrcode [nzPadding]="2" nzValue="https://ng.ant.design/"></nz-qrcode>
-    <nz-qrcode nzType="svg" [nzPadding]="2" nzValue="https://ng.ant.design/"></nz-qrcode>
+    <nz-qrcode [nzPadding]="2" nzValue="https://ng.ant.design/" />
+    <nz-qrcode nzType="svg" [nzPadding]="2" nzValue="https://ng.ant.design/" />
   `,
   styles: [
     `

@@ -8,11 +8,11 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
   selector: 'nz-demo-rate-character',
   imports: [FormsModule, NzIconModule, NzRateModule],
   template: `
-    <nz-rate [ngModel]="0" nzAllowHalf [nzCharacter]="characterIcon"></nz-rate>
+    <nz-rate [ngModel]="0" nzAllowHalf [nzCharacter]="characterIcon" />
     <br />
-    <nz-rate [ngModel]="0" nzAllowHalf class="large" [nzCharacter]="characterEnLetter"></nz-rate>
+    <nz-rate [ngModel]="0" nzAllowHalf class="large" [nzCharacter]="characterEnLetter" />
     <br />
-    <nz-rate [ngModel]="0" nzAllowHalf [nzCharacter]="characterZhLetter"></nz-rate>
+    <nz-rate [ngModel]="0" nzAllowHalf [nzCharacter]="characterZhLetter" />
     <ng-template #characterIcon><nz-icon nzType="heart" /></ng-template>
     <ng-template #characterZhLetter>好</ng-template>
     <ng-template #characterEnLetter>A</ng-template>

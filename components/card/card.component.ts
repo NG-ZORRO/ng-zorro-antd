@@ -66,7 +66,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
 
     <div class="ant-card-body" [style]="nzBodyStyle">
       @if (nzLoading) {
-        <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
+        <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzParagraph]="{ rows: 4 }" />
       } @else {
         <ng-content />
       }

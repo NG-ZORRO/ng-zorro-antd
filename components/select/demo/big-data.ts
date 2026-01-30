@@ -20,7 +20,7 @@ function alphabet(size: number): string[] {
       nzPlaceHolder="Please select"
       [nzOptions]="listOfOption"
       [(ngModel)]="listOfSelectedValue"
-    ></nz-select>
+    />
   `,
   styles: [
     `

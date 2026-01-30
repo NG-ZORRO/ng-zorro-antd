@@ -19,11 +19,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 
     <nz-divider />
 
-    <nz-checkbox-group
-      [nzOptions]="options"
-      [(ngModel)]="value"
-      (ngModelChange)="updateSingleChecked()"
-    ></nz-checkbox-group>
+    <nz-checkbox-group [nzOptions]="options" [(ngModel)]="value" (ngModelChange)="updateSingleChecked()" />
   `
 })
 export class NzDemoCheckboxCheckAllComponent {

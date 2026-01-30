@@ -52,7 +52,7 @@ const options: NzCascaderOption[] = [
   imports: [FormsModule, NzCascaderModule, NzFlexModule, NzSwitchModule],
   template: `
     <div nz-flex nzVertical nzGap="small">
-      <nz-switch [(ngModel)]="open" nzCheckedChildren="open" nzUnCheckedChildren="close"></nz-switch>
+      <nz-switch [(ngModel)]="open" nzCheckedChildren="open" nzUnCheckedChildren="close" />
       <nz-cascader
         [nzOptions]="nzOptions"
         [ngModel]="values"

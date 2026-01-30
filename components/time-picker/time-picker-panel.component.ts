@@ -120,7 +120,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
       <div class="ant-picker-footer">
         @if (nzAddOn) {
           <div class="ant-picker-footer-extra">
-            <ng-template [ngTemplateOutlet]="nzAddOn"></ng-template>
+            <ng-template [ngTemplateOutlet]="nzAddOn" />
           </div>
         }
         <ul class="ant-picker-ranges">

@@ -7,7 +7,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
   imports: [NzSpinModule],
   template: `
     <div class="container">
-      <nz-spin nzSimple></nz-spin>
+      <nz-spin nzSimple />
     </div>
   `,
   styles: [

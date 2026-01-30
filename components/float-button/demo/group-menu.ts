@@ -15,8 +15,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         style="right: 24px"
         (nzOnOpenChange)="openChange($event)"
       >
-        <nz-float-button></nz-float-button>
-        <nz-float-button nzIcon="comment"></nz-float-button>
+        <nz-float-button />
+        <nz-float-button nzIcon="comment" />
       </nz-float-button-group>
       <nz-float-button-group
         nzIcon="customer-service"
@@ -25,8 +25,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         style="right: 94px"
         (nzOnOpenChange)="openChange($event)"
       >
-        <nz-float-button></nz-float-button>
-        <nz-float-button nzIcon="comment"></nz-float-button>
+        <nz-float-button />
+        <nz-float-button nzIcon="comment" />
       </nz-float-button-group>
     </div>
   `,

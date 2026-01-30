@@ -47,7 +47,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
       <nz-drawer [nzClosable]="false" [nzVisible]="childrenVisible" nzTitle="Food" (nzOnClose)="closeChildren()">
         <nz-list *nzDrawerContent [nzDataSource]="vegetables" [nzRenderItem]="item">
           <ng-template #item let-item>
-            <nz-list-item [nzContent]="item"></nz-list-item>
+            <nz-list-item [nzContent]="item" />
           </ng-template>
         </nz-list>
       </nz-drawer>

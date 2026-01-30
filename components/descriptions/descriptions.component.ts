@@ -81,7 +81,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                           </ng-container>
                         </span>
                         <span class="ant-descriptions-item-content">
-                          <ng-template [ngTemplateOutlet]="item.content"></ng-template>
+                          <ng-template [ngTemplateOutlet]="item.content" />
                         </span>
                       </div>
                     </td>
@@ -92,7 +92,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                       </ng-container>
                     </td>
                     <td class="ant-descriptions-item-content" [colSpan]="item.span * 2 - 1">
-                      <ng-template [ngTemplateOutlet]="item.content"></ng-template>
+                      <ng-template [ngTemplateOutlet]="item.content" />
                     </td>
                   }
                 }

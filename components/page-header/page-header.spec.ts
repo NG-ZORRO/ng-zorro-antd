@@ -194,7 +194,7 @@ describe('page-header', () => {
   imports: [BidiModule, NzDemoPageHeaderBasicComponent],
   template: `
     <div [dir]="direction">
-      <nz-demo-page-header-basic></nz-demo-page-header-basic>
+      <nz-demo-page-header-basic />
     </div>
   `
 })

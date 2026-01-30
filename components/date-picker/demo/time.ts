@@ -13,7 +13,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
       ngModel
       (ngModelChange)="onChange($event)"
       (nzOnOk)="onOk($event)"
-    ></nz-date-picker>
+    />
     <br />
     <nz-range-picker
       [nzShowTime]="{ nzFormat: 'HH:mm' }"
@@ -22,7 +22,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
       (ngModelChange)="onChange($event)"
       (nzOnCalendarChange)="onCalendarChange($event)"
       (nzOnOk)="onOk($event)"
-    ></nz-range-picker>
+    />
   `,
   styles: [
     `

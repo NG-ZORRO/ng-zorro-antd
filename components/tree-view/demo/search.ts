@@ -86,7 +86,7 @@ function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
 
     <nz-tree-view [nzDataSource]="dataSource" [nzLevelAccessor]="levelAccessor">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
-        <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
+        <nz-tree-node-toggle nzTreeNodeNoopToggle />
         <span [innerHTML]="node.name | nzHighlight: searchValue : 'i' : 'highlight'"></span>
       </nz-tree-node>
 

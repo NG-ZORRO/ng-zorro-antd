@@ -42,7 +42,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
             Make things as simple as possible but no simpler.
           </nz-descriptions-item>
         </nz-descriptions>
-        <nz-divider></nz-divider>
+        <nz-divider />
         <nz-descriptions [nzColumn]="2" nzTitle="Company">
           <nz-descriptions-item nzTitle="Position" [nzSpan]="1">Programmer</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Responsibilities" [nzSpan]="1">Coding</nz-descriptions-item>
@@ -54,7 +54,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
             ASP, etc.
           </nz-descriptions-item>
         </nz-descriptions>
-        <nz-divider></nz-divider>
+        <nz-divider />
         <nz-descriptions [nzColumn]="2" nzTitle="Contacts">
           <nz-descriptions-item nzTitle="Email" [nzSpan]="1">AntDesign&#64;example.com</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">+86 181 0000 0000</nz-descriptions-item>

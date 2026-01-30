@@ -1217,7 +1217,7 @@ class TabSetWithIndirectDescendantTabsTestComponent {
         Two
       </nz-tab>
     </nz-tabs>
-    <router-outlet></router-outlet>
+    <router-outlet />
   `
 })
 export class RouterTabsTestComponent {
@@ -1234,7 +1234,7 @@ export class RouterTabsTestComponent {
         </nz-tab>
       }
     </nz-tabs>
-    <router-outlet></router-outlet>
+    <router-outlet />
   `,
   imports: [RouterLink, RouterOutlet, NzTabsModule]
 })

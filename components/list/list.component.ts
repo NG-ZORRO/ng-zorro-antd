@@ -102,7 +102,7 @@ import {
 
     <ng-content select="nz-list-footer, [nz-list-footer]" />
 
-    <ng-template [ngTemplateOutlet]="nzLoadMore"></ng-template>
+    <ng-template [ngTemplateOutlet]="nzLoadMore" />
     <ng-content select="nz-list-load-more, [nz-list-load-more]" />
 
     @if (nzPagination) {

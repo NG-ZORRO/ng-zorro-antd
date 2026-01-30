@@ -13,21 +13,21 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
           @case (8) {
             @for (item of listDataMap.eight; track $index) {
               <li>
-                <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
+                <nz-badge [nzStatus]="item.type" [nzText]="item.content" />
               </li>
             }
           }
           @case (10) {
             @for (item of listDataMap.ten; track $index) {
               <li>
-                <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
+                <nz-badge [nzStatus]="item.type" [nzText]="item.content" />
               </li>
             }
           }
           @case (11) {
             @for (item of listDataMap.eleven; track $index) {
               <li>
-                <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
+                <nz-badge [nzStatus]="item.type" [nzText]="item.content" />
               </li>
             }
           }

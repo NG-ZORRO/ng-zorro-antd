@@ -8,9 +8,9 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
   selector: 'nz-demo-rate-customize',
   imports: [FormsModule, NzIconModule, NzRateModule],
   template: `
-    <nz-rate [ngModel]="2" [nzCharacter]="characterNumber"></nz-rate>
+    <nz-rate [ngModel]="2" [nzCharacter]="characterNumber" />
     <br />
-    <nz-rate [ngModel]="3" [nzCharacter]="characterIcon"></nz-rate>
+    <nz-rate [ngModel]="3" [nzCharacter]="characterIcon" />
     <br />
     <ng-template #characterNumber let-index>
       {{ index + 1 }}

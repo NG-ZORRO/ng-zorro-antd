@@ -14,11 +14,11 @@ const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
   template: `
     <div>
       <label>Gap: </label>
-      <nz-input-number [nzMin]="0" [nzMax]="16" [nzStep]="1" [(ngModel)]="gap"></nz-input-number>
+      <nz-input-number [nzMin]="0" [nzMax]="16" [nzStep]="1" [(ngModel)]="gap" />
       <button nz-button (click)="change()">Change Text</button>
     </div>
 
-    <nz-avatar [nzGap]="gap()" [nzText]="text()" nzSize="large" [style.background-color]="color()"></nz-avatar>
+    <nz-avatar [nzGap]="gap()" [nzText]="text()" nzSize="large" [style.background-color]="color()" />
   `,
   styles: [
     `

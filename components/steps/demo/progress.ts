@@ -41,7 +41,7 @@ function mockAsyncStep(): Observable<number> {
           [nzTitle]="step.title"
           [nzDescription]="step.description"
           [nzPercentage]="step.async ? step.percentage : null"
-        ></nz-step>
+        />
       }
     </nz-steps>
     <div class="steps-action">

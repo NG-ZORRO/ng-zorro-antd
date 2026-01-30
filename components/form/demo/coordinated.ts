@@ -25,8 +25,8 @@ type Gender = 'male' | 'female';
         <nz-form-label [nzSpan]="5" nzFor="gender" nzRequired>Gender</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="Please select your gender!">
           <nz-select id="gender" formControlName="gender" nzPlaceHolder="Select a option and change input text above">
-            <nz-option nzValue="male" nzLabel="male"></nz-option>
-            <nz-option nzValue="female" nzLabel="female"></nz-option>
+            <nz-option nzValue="male" nzLabel="male" />
+            <nz-option nzValue="female" nzLabel="female" />
           </nz-select>
         </nz-form-control>
       </nz-form-item>

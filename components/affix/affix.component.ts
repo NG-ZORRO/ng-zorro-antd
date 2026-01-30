@@ -45,7 +45,7 @@ const NOOP_EVENT = {} as Event;
   exportAs: 'nzAffix',
   template: `
     <div #fixedEl>
-      <ng-content></ng-content>
+      <ng-content />
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

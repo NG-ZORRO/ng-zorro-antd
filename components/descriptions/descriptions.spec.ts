@@ -172,7 +172,7 @@ export class NzTestDescriptionsComponent {
   imports: [BidiModule, NzTestDescriptionsComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-descriptions></nz-test-descriptions>
+      <nz-test-descriptions />
     </div>
   `
 })

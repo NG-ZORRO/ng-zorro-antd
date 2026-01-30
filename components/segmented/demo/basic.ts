@@ -5,7 +5,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 @Component({
   selector: 'nz-demo-segmented-basic',
   imports: [NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" (nzValueChange)="handleValueChange($event)"></nz-segmented>`
+  template: `<nz-segmented [nzOptions]="options" (nzValueChange)="handleValueChange($event)" />`
 })
 export class NzDemoSegmentedBasicComponent {
   options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];

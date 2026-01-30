@@ -56,7 +56,7 @@ interface Setting {
           <nz-form-item>
             <nz-form-label>{{ item.name }}</nz-form-label>
             <nz-form-control>
-              <nz-switch [formControlName]="item.formControlName"></nz-switch>
+              <nz-switch [formControlName]="item.formControlName" />
             </nz-form-control>
           </nz-form-item>
         }
@@ -128,7 +128,7 @@ interface Setting {
             <td [nzEllipsis]="settingValue.ellipsis">{{ data.address }}</td>
             <td [nzRight]="fixedColumn" [nzEllipsis]="settingValue.ellipsis">
               <a href="#">Delete</a>
-              <nz-divider nzType="vertical"></nz-divider>
+              <nz-divider nzType="vertical" />
               <a href="#">More action</a>
             </td>
           </tr>

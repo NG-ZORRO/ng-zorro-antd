@@ -47,7 +47,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
         </ul>
       </nz-sider>
       <nz-layout class="right-layout">
-        <nz-header></nz-header>
+        <nz-header />
         <nz-content>
           <div class="inner-content">
             ...

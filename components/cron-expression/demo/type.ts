@@ -7,8 +7,8 @@ import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression';
   imports: [NzCronExpressionModule],
   template: `
     <div class="example-cron-expression">
-      <nz-cron-expression nzType="linux"></nz-cron-expression>
-      <nz-cron-expression nzType="spring"></nz-cron-expression>
+      <nz-cron-expression nzType="linux" />
+      <nz-cron-expression nzType="spring" />
     </div>
   `,
   styles: [

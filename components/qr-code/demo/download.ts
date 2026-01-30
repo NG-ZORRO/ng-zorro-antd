@@ -8,7 +8,7 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
   imports: [NzButtonModule, NzQRCodeModule],
   template: `
     <div id="download">
-      <nz-qrcode nzValue="https://ng.ant.design/"></nz-qrcode>
+      <nz-qrcode nzValue="https://ng.ant.design/" />
       <a #download></a>
       <button nz-button nzType="primary" (click)="downloadImg()">Download</button>
     </div>

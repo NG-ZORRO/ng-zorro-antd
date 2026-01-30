@@ -56,7 +56,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
             <nz-form-item>
               <nz-form-label>Owner</nz-form-label>
               <nz-form-control>
-                <nz-select nzPlaceHolder="Please select an owner"></nz-select>
+                <nz-select nzPlaceHolder="Please select an owner" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -64,7 +64,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
             <nz-form-item>
               <nz-form-label>Type</nz-form-label>
               <nz-form-control>
-                <nz-select nzPlaceHolder="Please choose the type"></nz-select>
+                <nz-select nzPlaceHolder="Please choose the type" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -74,7 +74,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
             <nz-form-item>
               <nz-form-label>Approver</nz-form-label>
               <nz-form-control>
-                <nz-select nzPlaceHolder="Please choose the approver"></nz-select>
+                <nz-select nzPlaceHolder="Please choose the approver" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -82,7 +82,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
             <nz-form-item>
               <nz-form-label>DateTime</nz-form-label>
               <nz-form-control>
-                <nz-range-picker></nz-range-picker>
+                <nz-range-picker />
               </nz-form-control>
             </nz-form-item>
           </div>

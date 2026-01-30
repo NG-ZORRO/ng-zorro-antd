@@ -40,10 +40,10 @@ export const NZ_TAB_SET = new InjectionToken<NzSafeAny>(typeof ngDevMode !== 'un
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #tabLinkTemplate>
-      <ng-content select="[nz-tab-link]"></ng-content>
+      <ng-content select="[nz-tab-link]" />
     </ng-template>
     <ng-template #contentTemplate>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `
 })

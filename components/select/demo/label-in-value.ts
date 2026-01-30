@@ -23,7 +23,7 @@ interface Option {
       nzPlaceHolder="Choose"
     >
       @for (option of optionList; track option) {
-        <nz-option [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        <nz-option [nzValue]="option" [nzLabel]="option.label" />
       }
     </nz-select>
   `,

@@ -10,11 +10,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   selector: 'nz-demo-cron-expression-shortcuts',
   imports: [FormsModule, NzButtonModule, NzCronExpressionModule, NzDropdownModule, NzIconModule],
   template: `
-    <nz-cron-expression
-      [nzExtra]="shortcuts"
-      [(ngModel)]="value"
-      (ngModelChange)="getValue($event)"
-    ></nz-cron-expression>
+    <nz-cron-expression [nzExtra]="shortcuts" [(ngModel)]="value" (ngModelChange)="getValue($event)" />
     <ng-template #shortcuts>
       <button nz-button nz-dropdown [nzDropdownMenu]="menu">
         Shortcuts

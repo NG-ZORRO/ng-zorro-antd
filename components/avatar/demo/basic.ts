@@ -7,16 +7,16 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
   imports: [NzAvatarModule],
   template: `
     <div>
-      <nz-avatar [nzSize]="64" nzIcon="user"></nz-avatar>
-      <nz-avatar nzSize="large" nzIcon="user"></nz-avatar>
-      <nz-avatar nzIcon="user"></nz-avatar>
-      <nz-avatar nzSize="small" nzIcon="user"></nz-avatar>
+      <nz-avatar [nzSize]="64" nzIcon="user" />
+      <nz-avatar nzSize="large" nzIcon="user" />
+      <nz-avatar nzIcon="user" />
+      <nz-avatar nzSize="small" nzIcon="user" />
     </div>
     <div>
-      <nz-avatar nzShape="square" [nzSize]="64" nzIcon="user"></nz-avatar>
-      <nz-avatar nzShape="square" nzSize="large" nzIcon="user"></nz-avatar>
-      <nz-avatar nzShape="square" nzIcon="user"></nz-avatar>
-      <nz-avatar nzShape="square" nzSize="small" nzIcon="user"></nz-avatar>
+      <nz-avatar nzShape="square" [nzSize]="64" nzIcon="user" />
+      <nz-avatar nzShape="square" nzSize="large" nzIcon="user" />
+      <nz-avatar nzShape="square" nzIcon="user" />
+      <nz-avatar nzShape="square" nzSize="small" nzIcon="user" />
     </div>
   `,
   styles: [

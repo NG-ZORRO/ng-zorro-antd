@@ -55,7 +55,7 @@ export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
         @if (nzShowIcon) {
           <div class="ant-alert-icon">
             @if (nzIcon) {
-              <ng-container *nzStringTemplateOutlet="nzIcon"></ng-container>
+              <ng-container *nzStringTemplateOutlet="nzIcon" />
             } @else {
               <nz-icon [nzType]="nzIconType || inferredIconType" [nzTheme]="iconTheme" />
             }

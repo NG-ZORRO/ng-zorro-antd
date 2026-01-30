@@ -53,7 +53,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
       (modeChange)="onModeChange($event)"
       (yearChange)="onYearSelect($event)"
       (monthChange)="onMonthSelect($event)"
-    ></nz-calendar-header>
+    />
 
     <div class="ant-picker-panel">
       <div class="ant-picker-{{ nzMode === 'month' ? 'date' : 'month' }}-panel">
@@ -68,7 +68,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
               [fullCellRender]="$any(dateFullCell)"
               [disabledDate]="nzDisabledDate"
               (valueChange)="onDateSelect($event)"
-            ></date-table>
+            />
           } @else {
             <month-table
               [prefixCls]="prefixCls"
@@ -77,7 +77,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
               [cellRender]="$any(monthCell)"
               [fullCellRender]="$any(monthFullCell)"
               (valueChange)="onDateSelect($event)"
-            ></month-table>
+            />
           }
         </div>
       </div>

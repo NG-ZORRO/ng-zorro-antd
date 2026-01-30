@@ -36,16 +36,16 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
           </div>
           <div class="extra">
             <div>
-              <nz-statistic nzTitle="Status" nzValue="Pending"></nz-statistic>
-              <nz-statistic nzTitle="Price" [nzValue]="568.08" nzPrefix="$" style="margin: 0 32px"></nz-statistic>
+              <nz-statistic nzTitle="Status" nzValue="Pending" />
+              <nz-statistic nzTitle="Price" [nzValue]="568.08" nzPrefix="$" style="margin: 0 32px" />
             </div>
           </div>
         </div>
       </nz-page-header-content>
       <nz-page-header-footer>
         <nz-tabs [nzSelectedIndex]="1">
-          <nz-tab nzTitle="Details"></nz-tab>
-          <nz-tab nzTitle="Rule"></nz-tab>
+          <nz-tab nzTitle="Details" />
+          <nz-tab nzTitle="Rule" />
         </nz-tabs>
       </nz-page-header-footer>
     </nz-page-header>

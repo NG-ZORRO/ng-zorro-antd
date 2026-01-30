@@ -71,7 +71,7 @@ import { NzItemProps } from './typings';
         [footer]="nzFooter()"
         (closePopover)="visible.set($event)"
         (hide)="visible.set($event); nzHide.emit($event)"
-      ></nz-check-list-content>
+      />
     </ng-template>
   `,
   host: {

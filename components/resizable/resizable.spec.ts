@@ -767,7 +767,7 @@ function afterNextFrameRender(callbackFn: () => void): void {
           [style.width.px]="width"
           (nzResize)="onResize($event)"
         >
-          <nz-resize-handles></nz-resize-handles>
+          <nz-resize-handles />
           content
         </div>
       </div>

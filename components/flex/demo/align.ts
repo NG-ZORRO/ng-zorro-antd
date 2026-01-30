@@ -11,12 +11,12 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   template: `
     <div class="segment-wrapper">
       <span>Select justify:</span>
-      <nz-segmented [nzOptions]="justifySegment" [(ngModel)]="selectedJustification"></nz-segmented>
+      <nz-segmented [nzOptions]="justifySegment" [(ngModel)]="selectedJustification" />
     </div>
 
     <div class="segment-wrapper">
       <span>Select align:</span>
-      <nz-segmented [nzOptions]="alignSegment" [(ngModel)]="selectedLAlignment"></nz-segmented>
+      <nz-segmented [nzOptions]="alignSegment" [(ngModel)]="selectedLAlignment" />
     </div>
 
     <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification" [nzAlign]="selectedLAlignment">

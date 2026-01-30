@@ -36,7 +36,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
       <nz-form-item>
         <nz-form-label>Index</nz-form-label>
         <nz-form-control>
-          <nz-segmented [nzOptions]="options" (nzValueChange)="handleIndexChange($event)"></nz-segmented>
+          <nz-segmented [nzOptions]="options" (nzValueChange)="handleIndexChange($event)" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -68,7 +68,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
       [nzTitle]="form.controls.nzTitle.value"
       [nzFooter]="form.controls.nzFooter.value"
       (nzHide)="hideCancel($event)"
-    ></nz-check-list>
+    />
   `,
   styles: [
     `

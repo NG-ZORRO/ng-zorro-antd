@@ -18,7 +18,7 @@ import { NzTreeView } from './tree';
   template: `
     <div class="ant-tree-list-holder">
       <div class="ant-tree-list-holder-inner">
-        <ng-container nzTreeNodeOutlet></ng-container>
+        <ng-container nzTreeNodeOutlet />
       </div>
     </div>
   `,

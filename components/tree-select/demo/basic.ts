@@ -15,7 +15,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       nzPlaceHolder="Please select"
       [(ngModel)]="value"
       (ngModelChange)="onChange($event)"
-    ></nz-tree-select>
+    />
   `
 })
 export class NzDemoTreeSelectBasicComponent implements OnInit {

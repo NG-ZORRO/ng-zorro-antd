@@ -307,7 +307,7 @@ export class NzTestTimelineCustomPositionComponent {}
   imports: [BidiModule, NzTestTimelineBasicComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-basic-timeline></nz-test-basic-timeline>
+      <nz-test-basic-timeline />
     </div>
   `
 })

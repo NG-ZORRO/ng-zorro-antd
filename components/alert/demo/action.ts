@@ -8,7 +8,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   selector: 'nz-demo-alert-action',
   imports: [NzAlertModule, NzButtonModule, NzSpaceModule],
   template: `
-    <nz-alert nzShowIcon nzType="success" nzMessage="Success Text" [nzAction]="actionTemplate1"></nz-alert>
+    <nz-alert nzShowIcon nzType="success" nzMessage="Success Text" [nzAction]="actionTemplate1" />
     <ng-template #actionTemplate1>
       <button nz-button nzSize="small" nzType="text" (click)="doAction('undo')">Undo</button></ng-template
     >
@@ -19,7 +19,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
       nzMessage="Error Text"
       [nzDescription]="descriptionTemplate1"
       [nzAction]="actionTemplate2"
-    ></nz-alert>
+    />
     <ng-template #descriptionTemplate1>
       <p>Error Description Error Description Error Description Error Description</p>
     </ng-template>
@@ -27,7 +27,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
       <button nz-button nzSize="small" nzType="default" nzDanger (click)="doAction('detail')">Detail</button>
     </ng-template>
     <br />
-    <nz-alert nzCloseable nzType="warning" nzMessage="Warning Text" [nzAction]="actionTemplate3"></nz-alert>
+    <nz-alert nzCloseable nzType="warning" nzMessage="Warning Text" [nzAction]="actionTemplate3" />
     <ng-template #actionTemplate3>
       <button nz-button nzSize="small" nzType="primary" nzGhost (click)="doAction('ignore')">Ignore</button>
     </ng-template>
@@ -38,7 +38,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
       nzMessage="Info Text"
       [nzDescription]="descriptionTemplate2"
       [nzAction]="actionTemplate4"
-    ></nz-alert>
+    />
     <ng-template #descriptionTemplate2>
       <p>Info Description Info Description Info Description Info Description</p>
     </ng-template>

@@ -6,12 +6,12 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   selector: 'nz-demo-date-picker-extra-footer',
   imports: [NzDatePickerModule],
   template: `
-    <nz-date-picker [nzRenderExtraFooter]="footerRender"></nz-date-picker>
+    <nz-date-picker [nzRenderExtraFooter]="footerRender" />
     <br />
-    <nz-date-picker [nzRenderExtraFooter]="plainFooter" nzShowTime></nz-date-picker>
-    <nz-range-picker [nzRenderExtraFooter]="footerRender"></nz-range-picker>
-    <nz-range-picker [nzRenderExtraFooter]="plainFooter" nzShowTime></nz-range-picker>
-    <nz-date-picker nzMode="month" [nzRenderExtraFooter]="footerRender"></nz-date-picker>
+    <nz-date-picker [nzRenderExtraFooter]="plainFooter" nzShowTime />
+    <nz-range-picker [nzRenderExtraFooter]="footerRender" />
+    <nz-range-picker [nzRenderExtraFooter]="plainFooter" nzShowTime />
+    <nz-date-picker nzMode="month" [nzRenderExtraFooter]="footerRender" />
   `,
   styles: [
     `

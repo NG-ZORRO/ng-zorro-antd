@@ -40,7 +40,7 @@ const ANIMATION_CLASS_MAP: Record<AnimationState, string[]> = {
   selector: '[nz-tab-body]',
   exportAs: 'nzTabBody',
   imports: [NgTemplateOutlet],
-  template: `<ng-template [ngTemplateOutlet]="content()"></ng-template>`,
+  template: `<ng-template [ngTemplateOutlet]="content()" />`,
   host: {
     '[class]': 'class()',
     '[class.ant-tabs-tabpane-active]': 'active()',

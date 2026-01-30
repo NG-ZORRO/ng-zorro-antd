@@ -720,7 +720,7 @@ export class NzSegmentedNgModelTestComponent {
 
 @Component({
   imports: [ReactiveFormsModule, NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" [formControl]="formControl"></nz-segmented>`
+  template: `<nz-segmented [nzOptions]="options" [formControl]="formControl" />`
 })
 export class NzSegmentedInReactiveFormTestComponent {
   options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];

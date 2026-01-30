@@ -72,7 +72,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [footer]="nzFooter"
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
-    ></nz-transfer-list>
+    />
     @if (dir !== 'rtl') {
       <div class="ant-transfer-operation">
         @if (!nzOneWay) {
@@ -160,7 +160,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       (moveToLeft)="moveToLeft()"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"
-    ></nz-transfer-list>
+    />
   `,
   host: {
     class: 'ant-transfer',

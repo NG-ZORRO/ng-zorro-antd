@@ -73,7 +73,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       [length]="track.length!"
       [reverse]="nzReverse"
       [dir]="dir"
-    ></nz-slider-track>
+    />
     @if (marksArray) {
       <nz-slider-step
         [vertical]="nzVertical"
@@ -84,7 +84,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [marksArray]="marksArray"
         [included]="nzIncluded"
         [reverse]="nzReverse"
-      ></nz-slider-step>
+      />
     }
     @for (handle of handles; track handle.value; let handleIndex = $index) {
       <nz-slider-handle
@@ -99,7 +99,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [dragging]="dragging()"
         [dir]="dir"
         (focusin)="onHandleFocusIn(handleIndex)"
-      ></nz-slider-handle>
+      />
     }
     @if (marksArray) {
       <nz-slider-marks
@@ -111,7 +111,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [marksArray]="marksArray"
         [included]="nzIncluded"
         [reverse]="nzReverse"
-      ></nz-slider-marks>
+      />
     }
   `,
   imports: [NzSliderTrackComponent, NzSliderStepComponent, NzSliderHandleComponent, NzSliderMarksComponent],

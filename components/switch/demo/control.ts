@@ -6,9 +6,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 @Component({
   selector: 'nz-demo-switch-control',
   imports: [FormsModule, NzSwitchModule],
-  template: `
-    <nz-switch [(ngModel)]="switchValue" [nzControl]="true" (click)="clickSwitch()" [nzLoading]="loading"></nz-switch>
-  `
+  template: ` <nz-switch [(ngModel)]="switchValue" [nzControl]="true" (click)="clickSwitch()" [nzLoading]="loading" /> `
 })
 export class NzDemoSwitchControlComponent {
   switchValue = false;

@@ -18,7 +18,7 @@ import { NzResizableModule, NzResizeEvent, NzResizeHandleOption } from 'ng-zorro
         [nzGridColumnCount]="24"
         [nzSpan]="col"
       >
-        <nz-resize-handles [nzDirections]="directions"></nz-resize-handles>
+        <nz-resize-handles [nzDirections]="directions" />
         col-{{ col }}
       </div>
       <div class="col right" nz-col [nzSpan]="24 - col">col-{{ 24 - col }}</div>

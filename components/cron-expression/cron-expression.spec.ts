@@ -144,7 +144,7 @@ describe('cron-expression', () => {
       [nzBorderless]="nzBorderless"
       [nzExtra]="shortcuts"
       [nzSemantic]="semanticTemplate"
-    ></nz-cron-expression>
+    />
     <ng-template #shortcuts>
       <button nz-button nzType="primary">Test</button>
     </ng-template>
@@ -160,7 +160,7 @@ export class NzTestCronExpressionComponent {
 
 @Component({
   imports: [NzCronExpressionModule],
-  template: `<nz-cron-expression [nzType]="nzType"></nz-cron-expression>`
+  template: `<nz-cron-expression [nzType]="nzType" />`
 })
 export class NzTestCronExpressionTypeComponent {
   nzType: 'linux' | 'spring' = 'spring';
@@ -168,7 +168,7 @@ export class NzTestCronExpressionTypeComponent {
 
 @Component({
   imports: [ReactiveFormsModule, NzCronExpressionModule],
-  template: `<nz-cron-expression [formControl]="formControl"></nz-cron-expression>`
+  template: `<nz-cron-expression [formControl]="formControl" />`
 })
 export class NzTestCronExpressionFormComponent {
   formControl = new FormControl('1 1 1 * *');

@@ -11,7 +11,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   template: `
     <div class="segment-wrapper">
       <span>Select wrap:</span>
-      <nz-segmented [nzOptions]="wrapSegment" [(ngModel)]="selectedWrap"></nz-segmented>
+      <nz-segmented [nzOptions]="wrapSegment" [(ngModel)]="selectedWrap" />
     </div>
     <div class="btn-wrapper" nz-flex [nzGap]="'middle'" [nzWrap]="selectedWrap">
       @for (_ of array; track _) {

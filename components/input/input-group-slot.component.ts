@@ -20,7 +20,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <nz-icon [nzType]="icon" />
     }
     <ng-container *nzStringTemplateOutlet="template">{{ template }}</ng-container>
-    <ng-content></ng-content>
+    <ng-content />
   `,
   host: {
     '[class.ant-input-group-addon]': `type === 'addon'`,

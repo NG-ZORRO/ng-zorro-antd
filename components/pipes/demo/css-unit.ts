@@ -8,7 +8,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   selector: 'nz-demo-pipes-css-unit',
   imports: [FormsModule, NzSliderModule, NzToCssUnitPipe],
   template: `
-    <nz-slider [(ngModel)]="radiusValue" [nzMax]="100" [nzMin]="0"></nz-slider>
+    <nz-slider [(ngModel)]="radiusValue" [nzMax]="100" [nzMin]="0" />
 
     <div class="wrap">
       <div class="box" [style.border-radius]="radiusValue | nzToCssUnit">Default</div>

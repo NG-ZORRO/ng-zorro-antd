@@ -168,7 +168,7 @@ describe('comment', () => {
   imports: [BidiModule, NzDemoCommentBasicComponent],
   template: `
     <div [dir]="direction">
-      <nz-demo-comment-basic></nz-demo-comment-basic>
+      <nz-demo-comment-basic />
     </div>
   `
 })

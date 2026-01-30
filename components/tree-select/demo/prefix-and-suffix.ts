@@ -7,10 +7,10 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   selector: 'nz-demo-tree-select-prefix-and-suffix',
   imports: [FormsModule, NzTreeSelectModule],
   template: `
-    <nz-tree-select [nzNodes]="nodes" nzSuffixIcon="smile" [(ngModel)]="value" nzDefaultExpandAll></nz-tree-select>
+    <nz-tree-select [nzNodes]="nodes" nzSuffixIcon="smile" [(ngModel)]="value" nzDefaultExpandAll />
     <br />
     <br />
-    <nz-tree-select [nzNodes]="nodes" nzPrefix="Prefix" [(ngModel)]="value" nzDefaultExpandAll></nz-tree-select>
+    <nz-tree-select [nzNodes]="nodes" nzPrefix="Prefix" [(ngModel)]="value" nzDefaultExpandAll />
   `,
   styles: `
     nz-tree-select {

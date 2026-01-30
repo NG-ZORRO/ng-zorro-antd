@@ -12,7 +12,7 @@ import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild, ViewEncapsu
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `
 })

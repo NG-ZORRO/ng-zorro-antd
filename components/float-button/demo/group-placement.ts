@@ -16,8 +16,8 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="top"
         >
-          <nz-float-button></nz-float-button>
-          <nz-float-button nzIcon="comment"></nz-float-button>
+          <nz-float-button />
+          <nz-float-button nzIcon="comment" />
         </nz-float-button-group>
         <nz-float-button-group
           class="down"
@@ -27,8 +27,8 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="bottom"
         >
-          <nz-float-button></nz-float-button>
-          <nz-float-button nzIcon="comment"></nz-float-button>
+          <nz-float-button />
+          <nz-float-button nzIcon="comment" />
         </nz-float-button-group>
         <nz-float-button-group
           class="left"
@@ -38,8 +38,8 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="left"
         >
-          <nz-float-button></nz-float-button>
-          <nz-float-button nzIcon="comment"></nz-float-button>
+          <nz-float-button />
+          <nz-float-button nzIcon="comment" />
         </nz-float-button-group>
         <nz-float-button-group
           class="right"
@@ -49,8 +49,8 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="right"
         >
-          <nz-float-button></nz-float-button>
-          <nz-float-button nzIcon="comment"></nz-float-button>
+          <nz-float-button />
+          <nz-float-button nzIcon="comment" />
         </nz-float-button-group>
       </div>
     </div>

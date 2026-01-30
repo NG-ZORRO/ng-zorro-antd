@@ -29,7 +29,7 @@ import { NzCommentActionComponent as CommentAction, NzCommentActionHostDirective
   template: `
     <div class="ant-comment-inner">
       <div class="ant-comment-avatar">
-        <ng-content select="nz-avatar[nz-comment-avatar]"></ng-content>
+        <ng-content select="nz-avatar[nz-comment-avatar]" />
       </div>
       <div class="ant-comment-content">
         <div class="ant-comment-content-author">

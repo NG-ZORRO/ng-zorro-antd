@@ -70,8 +70,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
         >
           <nz-input-wrapper>
             <nz-select nzInputAddonBefore formControlName="phoneNumberPrefix" class="phone-select">
-              <nz-option nzLabel="+86" nzValue="+86"></nz-option>
-              <nz-option nzLabel="+87" nzValue="+87"></nz-option>
+              <nz-option nzLabel="+86" nzValue="+86" />
+              <nz-option nzLabel="+87" nzValue="+87" />
             </nz-select>
             <input formControlName="phoneNumber" id="'phoneNumber'" nz-input />
           </nz-input-wrapper>

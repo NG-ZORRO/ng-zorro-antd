@@ -193,7 +193,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         <nz-select-clear (clear)="clearSelection($event)" />
       }
     }
-    <ng-content></ng-content>
+    <ng-content />
 
     <ng-template
       cdkConnectedOverlay

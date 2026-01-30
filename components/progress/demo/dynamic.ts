@@ -11,8 +11,8 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   imports: [NzButtonModule, NzIconModule, NzFlexModule, NzProgressModule, NzSpaceModule],
   template: `
     <div nz-flex nzVertical nzGap="small">
-      <nz-progress [nzPercent]="percent"></nz-progress>
-      <nz-progress [nzPercent]="percent" nzType="circle"></nz-progress>
+      <nz-progress [nzPercent]="percent" />
+      <nz-progress [nzPercent]="percent" nzType="circle" />
       <nz-space-compact>
         <button nz-button (click)="decline()"><nz-icon nzType="minus" /></button>
         <button nz-button (click)="increase()"><nz-icon nzType="plus" /></button>

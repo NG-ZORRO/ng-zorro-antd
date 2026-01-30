@@ -44,7 +44,7 @@ import {
             nzType="avatar"
             [nzSize]="avatar.size || 'default'"
             [nzShape]="avatar.shape || 'circle'"
-          ></nz-skeleton-element>
+          />
         </div>
       }
       <div class="ant-skeleton-content">
@@ -60,7 +60,7 @@ import {
         }
       </div>
     } @else {
-      <ng-content></ng-content>
+      <ng-content />
     }
   `,
   imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent],

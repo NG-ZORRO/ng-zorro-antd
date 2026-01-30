@@ -8,17 +8,17 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
   imports: [NzDividerModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1" nzProgressDot>
-      <nz-step nzTitle="Finished" nzDescription="This is a description."></nz-step>
-      <nz-step nzTitle="In Progress" nzDescription="This is a description."></nz-step>
-      <nz-step nzTitle="Waiting" nzDescription="This is a description."></nz-step>
+      <nz-step nzTitle="Finished" nzDescription="This is a description." />
+      <nz-step nzTitle="In Progress" nzDescription="This is a description." />
+      <nz-step nzTitle="Waiting" nzDescription="This is a description." />
     </nz-steps>
-    <nz-divider></nz-divider>
+    <nz-divider />
     <nz-steps [nzCurrent]="1" nzProgressDot nzDirection="vertical">
-      <nz-step nzTitle="Finished" nzDescription="This is a description. This is a description."></nz-step>
-      <nz-step nzTitle="Finished" nzDescription="This is a description. This is a description."></nz-step>
-      <nz-step nzTitle="In Progress" nzDescription="This is a description. This is a description."></nz-step>
-      <nz-step nzTitle="Waiting" nzDescription="This is a description."></nz-step>
-      <nz-step nzTitle="Waiting" nzDescription="This is a description."></nz-step>
+      <nz-step nzTitle="Finished" nzDescription="This is a description. This is a description." />
+      <nz-step nzTitle="Finished" nzDescription="This is a description. This is a description." />
+      <nz-step nzTitle="In Progress" nzDescription="This is a description. This is a description." />
+      <nz-step nzTitle="Waiting" nzDescription="This is a description." />
+      <nz-step nzTitle="Waiting" nzDescription="This is a description." />
     </nz-steps>
   `
 })

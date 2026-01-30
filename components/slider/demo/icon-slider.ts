@@ -10,7 +10,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   template: `
     <div class="icon-wrapper test-class">
       <nz-icon nzType="frown" [class.icon-highlight]="preHighLight" />
-      <nz-slider [nzMin]="0" [nzMax]="20" [(ngModel)]="sliderValue"></nz-slider>
+      <nz-slider [nzMin]="0" [nzMax]="20" [(ngModel)]="sliderValue" />
       <nz-icon nzType="smile" [class.icon-highlight]="nextHighLight" />
     </div>
   `,

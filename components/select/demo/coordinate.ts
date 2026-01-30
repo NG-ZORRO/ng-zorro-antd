@@ -9,12 +9,12 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   template: `
     <nz-select [(ngModel)]="selectedProvince" (ngModelChange)="provinceChange($event)">
       @for (p of provinceData; track p) {
-        <nz-option [nzValue]="p" [nzLabel]="p"></nz-option>
+        <nz-option [nzValue]="p" [nzLabel]="p" />
       }
     </nz-select>
     <nz-select [(ngModel)]="selectedCity">
       @for (c of cityData[selectedProvince]; track c) {
-        <nz-option [nzValue]="c" [nzLabel]="c"></nz-option>
+        <nz-option [nzValue]="c" [nzLabel]="c" />
       }
     </nz-select>
   `,

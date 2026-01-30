@@ -141,14 +141,14 @@ let nextId = 0;
         @if (!nzHideAll) {
           @for (tab of tabs; track tab; let i = $index) {
             @if (tab.nzForceRender) {
-              <ng-template [ngTemplateOutlet]="tabpaneTmpl"></ng-template>
+              <ng-template [ngTemplateOutlet]="tabpaneTmpl" />
             } @else if (nzDestroyInactiveTabPane) {
               @if (nzSelectedIndex === i) {
-                <ng-template [ngTemplateOutlet]="tabpaneTmpl"></ng-template>
+                <ng-template [ngTemplateOutlet]="tabpaneTmpl" />
               }
             } @else {
               @if (nzSelectedIndex === i || tab.hasBeenActive) {
-                <ng-template [ngTemplateOutlet]="tabpaneTmpl"></ng-template>
+                <ng-template [ngTemplateOutlet]="tabpaneTmpl" />
               }
             }
 

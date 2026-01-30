@@ -25,28 +25,28 @@ function alphabet(): string[] {
     <br />
     <nz-select [(ngModel)]="singleValue" [nzSize]="size">
       @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+        <nz-option [nzLabel]="option" [nzValue]="option" />
       }
     </nz-select>
     <br />
     <br />
     <nz-select [(ngModel)]="singleValue" [nzSize]="size" nzShowSearch>
       @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+        <nz-option [nzLabel]="option" [nzValue]="option" />
       }
     </nz-select>
     <br />
     <br />
     <nz-select [(ngModel)]="multipleValue" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
       @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+        <nz-option [nzLabel]="option" [nzValue]="option" />
       }
     </nz-select>
     <br />
     <br />
     <nz-select [(ngModel)]="tagValue" [nzSize]="size" nzMode="tags" nzPlaceHolder="Please select">
       @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+        <nz-option [nzLabel]="option" [nzValue]="option" />
       }
     </nz-select>
   `,

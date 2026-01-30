@@ -20,7 +20,7 @@ import { NzSplitterCollapsible } from './typings';
   exportAs: 'nzSplitterPanel',
   template: `
     <ng-template #contentTemplate>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `,
   encapsulation: ViewEncapsulation.None,

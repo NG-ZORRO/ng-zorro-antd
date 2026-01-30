@@ -7,7 +7,7 @@ import { NzFormatBeforeDropEvent, NzTreeModule } from 'ng-zorro-antd/tree';
 @Component({
   selector: 'nz-demo-tree-draggable-confirm',
   imports: [NzTreeModule],
-  template: `<nz-tree [nzData]="nodes" nzDraggable nzBlockNode [nzBeforeDrop]="beforeDrop"></nz-tree>`
+  template: `<nz-tree [nzData]="nodes" nzDraggable nzBlockNode [nzBeforeDrop]="beforeDrop" />`
 })
 export class NzDemoTreeDraggableConfirmComponent {
   readonly nodes = [

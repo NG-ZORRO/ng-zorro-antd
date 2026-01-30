@@ -42,7 +42,7 @@ const CLASS_NAME = 'ant-float-btn';
         class="ant-float-btn-inner"
         (click)="nzOnClick.emit(true)"
       >
-        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="contentTemplate" />
       </a>
     } @else {
       <button
@@ -52,7 +52,7 @@ const CLASS_NAME = 'ant-float-btn';
         class="ant-float-btn-inner"
         (click)="nzOnClick.emit(true)"
       >
-        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="contentTemplate" />
       </button>
     }
     <ng-template #contentTemplate>
@@ -61,7 +61,7 @@ const CLASS_NAME = 'ant-float-btn';
         [nzIcon]="nzIcon()"
         [nzDescription]="nzDescription()"
         [nzShape]="shape()"
-      ></nz-float-button-content>
+      />
     </ng-template>
   `,
   host: {

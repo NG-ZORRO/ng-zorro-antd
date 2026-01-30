@@ -370,7 +370,7 @@ describe('finalSize', () => {
       [nzControl]="control"
       [nzCheckedChildren]="checkedChildren"
       [nzUnCheckedChildren]="unCheckedChildren"
-    ></nz-switch>
+    />
   `
 })
 export class NzTestSwitchBasicComponent {
@@ -392,10 +392,7 @@ export class NzTestSwitchBasicComponent {
   template: `
     <ng-template #checkedChildrenTemplate><nz-icon nzType="check" /></ng-template>
     <ng-template #unCheckedChildrenTemplate><nz-icon nzType="close" /></ng-template>
-    <nz-switch
-      [nzCheckedChildren]="checkedChildrenTemplate"
-      [nzUnCheckedChildren]="unCheckedChildrenTemplate"
-    ></nz-switch>
+    <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate" />
   `
 })
 export class NzTestSwitchTemplateComponent {}
@@ -404,7 +401,7 @@ export class NzTestSwitchTemplateComponent {}
   imports: [ReactiveFormsModule, NzSwitchModule],
   template: `
     <form>
-      <nz-switch [formControl]="formControl" [nzDisabled]="disabled"></nz-switch>
+      <nz-switch [formControl]="formControl" [nzDisabled]="disabled" />
     </form>
   `
 })
@@ -426,7 +423,7 @@ export class NzTestSwitchFormComponent {
   imports: [BidiModule, FormsModule, NzSwitchModule],
   template: `
     <div [dir]="direction">
-      <nz-switch [(ngModel)]="switchValue"></nz-switch>
+      <nz-switch [(ngModel)]="switchValue" />
     </div>
   `
 })

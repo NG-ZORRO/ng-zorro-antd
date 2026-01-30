@@ -8,9 +8,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectedValue">
-      <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-      <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
-      <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+      <nz-option nzLabel="Jack" nzValue="jack" />
+      <nz-option nzLabel="Lucy" nzValue="lucy" />
+      <nz-option nzLabel="Tom" nzValue="tom" />
     </nz-select>
   `,
   styles: [

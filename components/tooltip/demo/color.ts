@@ -9,13 +9,13 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
   selector: 'nz-demo-tooltip-color',
   imports: [NzButtonModule, NzDividerModule, NzTooltipModule],
   template: `
-    <nz-divider nzText="Preset" nzOrientation="left"></nz-divider>
+    <nz-divider nzText="Preset" nzOrientation="left" />
     @for (color of presetColors; track color) {
       <button nz-button nz-tooltip [nzTooltipTitle]="color" [nzTooltipColor]="color">
         {{ color }}
       </button>
     }
-    <nz-divider nzText="Custom" nzOrientation="left"></nz-divider>
+    <nz-divider nzText="Custom" nzOrientation="left" />
     @for (color of customColors; track color) {
       <button nz-button nz-tooltip [nzTooltipTitle]="color" [nzTooltipColor]="color">
         {{ color }}

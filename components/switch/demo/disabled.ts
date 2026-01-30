@@ -8,7 +8,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-switch-disabled',
   imports: [FormsModule, NzButtonModule, NzSwitchModule],
   template: `
-    <nz-switch [(ngModel)]="switchValue" [nzDisabled]="isDisabled"></nz-switch>
+    <nz-switch [(ngModel)]="switchValue" [nzDisabled]="isDisabled" />
     <br />
     <br />
     <button nz-button nzType="primary" (click)="isDisabled = !isDisabled">Toggle disabled</button>

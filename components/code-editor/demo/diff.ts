@@ -13,7 +13,7 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
       [nzEditorMode]="'diff'"
       [ngModel]="code"
       [nzEditorOption]="{ language: 'typescript' }"
-    ></nz-code-editor>
+    />
   `,
   styles: [
     `

@@ -10,7 +10,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
       [nzDisabledHours]="disabledHours"
       [nzDisabledMinutes]="disabledMinutes"
       [nzDisabledSeconds]="disabledSeconds"
-    ></nz-time-picker>
+    />
   `
 })
 export class NzDemoTimePickerDisabledPartComponent {

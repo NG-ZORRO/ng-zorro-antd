@@ -44,7 +44,7 @@ import { NzAnchorComponent } from './anchor.component';
       }
     </a>
     @if (nzDirection === 'vertical') {
-      <ng-content></ng-content>
+      <ng-content />
     }
   `,
   encapsulation: ViewEncapsulation.None,

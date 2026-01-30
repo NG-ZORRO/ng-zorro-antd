@@ -15,7 +15,7 @@ import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree'
       (nzClick)="activeNode($event)"
       (nzDblClick)="openFolder($event)"
       [nzTreeTemplate]="nzTreeTemplate"
-    ></nz-tree>
+    />
     <ng-template #nzTreeTemplate let-node let-origin="origin">
       <span class="custom-node">
         @if (!node.isLeaf) {

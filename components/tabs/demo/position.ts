@@ -12,7 +12,7 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
       Tab position:
       <nz-select [(ngModel)]="position" style="width: 80px;">
         @for (option of options; track option.value) {
-          <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          <nz-option [nzLabel]="option.label" [nzValue]="option.value" />
         }
       </nz-select>
     </div>

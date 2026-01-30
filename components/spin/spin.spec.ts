@@ -189,7 +189,7 @@ export class NzTestSpinBasicComponent {
   imports: [BidiModule, NzTestSpinBasicComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-basic-spin></nz-test-basic-spin>
+      <nz-test-basic-spin />
     </div>
   `
 })

@@ -17,9 +17,9 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
     </nz-radio-group>
     <br />
     <br />
-    <nz-date-picker [nzPlacement]="placement"></nz-date-picker>
+    <nz-date-picker [nzPlacement]="placement" />
     <br />
-    <nz-range-picker [nzPlacement]="placement"></nz-range-picker>
+    <nz-range-picker [nzPlacement]="placement" />
   `,
   styles: [
     `

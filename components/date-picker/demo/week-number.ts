@@ -14,9 +14,9 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
     </nz-radio-group>
     <br />
     <br />
-    <nz-date-picker [nzShowWeekNumber]="showWeekNumber"></nz-date-picker>
+    <nz-date-picker [nzShowWeekNumber]="showWeekNumber" />
     <br />
-    <nz-range-picker [nzShowWeekNumber]="showWeekNumber"></nz-range-picker>
+    <nz-range-picker [nzShowWeekNumber]="showWeekNumber" />
   `,
   styles: [
     `

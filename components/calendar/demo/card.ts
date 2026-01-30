@@ -11,7 +11,7 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
         [nzFullscreen]="false"
         (nzSelectChange)="onValueChange($event)"
         (nzPanelChange)="onPanelChange($event)"
-      ></nz-calendar>
+      />
     </div>
   `,
   styles: [

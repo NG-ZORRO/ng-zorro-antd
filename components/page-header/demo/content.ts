@@ -39,7 +39,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       </nz-breadcrumb>
 
       <!--avatar-->
-      <nz-avatar nz-page-header-avatar nzSrc="https://avatars0.githubusercontent.com/u/22736418?s=88&v=4"></nz-avatar>
+      <nz-avatar nz-page-header-avatar nzSrc="https://avatars0.githubusercontent.com/u/22736418?s=88&v=4" />
 
       <!--title-->
       <nz-page-header-title>Title</nz-page-header-title>

@@ -28,7 +28,7 @@ interface MockUser {
     >
       @if (!loading) {
         @for (o of optionList; track o) {
-          <nz-option [nzValue]="o" [nzLabel]="o"></nz-option>
+          <nz-option [nzValue]="o" [nzLabel]="o" />
         }
       } @else {
         <nz-option nzDisabled nzCustomContent>

@@ -85,7 +85,7 @@ describe('qrcode', () => {
     [nzBordered]="bordered"
     [nzStatus]="status"
     [nzStatusRender]="statusRender"
-  ></nz-qrcode>`
+  />`
 })
 export class NzTestQrCodeBasicComponent {
   value: string = 'https://ng.ant.design/';

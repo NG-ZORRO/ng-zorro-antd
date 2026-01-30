@@ -13,7 +13,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
   template: `
     <p nz-paragraph style="margin-bottom: 8px;">
       Loading
-      <nz-switch [(ngModel)]="loading"></nz-switch>
+      <nz-switch [(ngModel)]="loading" />
     </p>
     <nz-code-editor
       class="editor"
@@ -22,7 +22,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       [nzLoading]="loading"
       [nzToolkit]="toolkit"
       [nzEditorOption]="{ language: 'javascript' }"
-    ></nz-code-editor>
+    />
     <ng-template #toolkit>
       <nz-icon
         [class.active]="fullScreen"

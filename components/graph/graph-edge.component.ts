@@ -30,7 +30,7 @@ import { NzGraphEdge, NzGraphEdgeType } from './interface';
       <ng-container [ngTemplateOutlet]="customTemplate" [ngTemplateOutletContext]="{ $implicit: edge }" />
     } @else {
       <svg:g>
-        <path class="nz-graph-edge-line" [attr.marker-end]="'url(#edge-end-arrow)'"></path>
+        <path class="nz-graph-edge-line" [attr.marker-end]="'url(#edge-end-arrow)'" />
         @if (edge.label) {
           <svg:text class="nz-graph-edge-text" text-anchor="middle" dy="10">
             <textPath [attr.href]="'#' + id" startOffset="50%">{{ edge.label }}</textPath>

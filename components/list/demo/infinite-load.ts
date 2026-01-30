@@ -40,7 +40,7 @@ interface Name {
                 </nz-list-item-meta-title>
               </nz-list-item-meta>
             } @else {
-              <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+              <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 1 }" />
             }
           </nz-list-item>
         </nz-list>

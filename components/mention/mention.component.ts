@@ -84,7 +84,7 @@ export type MentionPlacement = 'top' | 'bottom';
   selector: 'nz-mention',
   exportAs: 'nzMention',
   template: `
-    <ng-content></ng-content>
+    <ng-content />
     <ng-template #suggestions>
       <div class="ant-mentions-dropdown">
         <ul class="ant-mentions-dropdown-menu" role="menu" tabindex="0">

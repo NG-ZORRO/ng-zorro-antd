@@ -46,7 +46,7 @@ interface NzThItemInterface {
   encapsulation: ViewEncapsulation.None,
   template: `
     <span class="ant-table-column-title">
-      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
+      <ng-template [ngTemplateOutlet]="contentTemplate" />
     </span>
     @if (!customFilter) {
       <nz-filter-trigger
@@ -80,7 +80,7 @@ interface NzThItemInterface {
         </div>
       </nz-dropdown-menu>
     } @else {
-      <ng-container [ngTemplateOutlet]="extraTemplate"></ng-container>
+      <ng-container [ngTemplateOutlet]="extraTemplate" />
     }
   `,
   host: { class: 'ant-table-filter-column' },

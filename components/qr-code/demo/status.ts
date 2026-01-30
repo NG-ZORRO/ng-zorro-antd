@@ -6,9 +6,9 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
   selector: 'nz-demo-qr-code-status',
   imports: [NzQRCodeModule],
   template: `
-    <nz-qrcode nzValue="https://ng.ant.design/" nzStatus="loading"></nz-qrcode>
-    <nz-qrcode nzValue="https://ng.ant.design/" nzStatus="expired" (nzRefresh)="refresh($event)"></nz-qrcode>
-    <nz-qrcode nzValue="https://ng.ant.design/" nzStatus="scanned"></nz-qrcode>
+    <nz-qrcode nzValue="https://ng.ant.design/" nzStatus="loading" />
+    <nz-qrcode nzValue="https://ng.ant.design/" nzStatus="expired" (nzRefresh)="refresh($event)" />
+    <nz-qrcode nzValue="https://ng.ant.design/" nzStatus="scanned" />
   `,
   styles: [
     `

@@ -24,7 +24,7 @@ function alphabet(): string[] {
       [(ngModel)]="listOfSelectedValue"
     >
       @for (item of listOfOption; track item) {
-        <nz-option [nzLabel]="item" [nzValue]="item"></nz-option>
+        <nz-option [nzLabel]="item" [nzValue]="item" />
       }
     </nz-select>
   `,

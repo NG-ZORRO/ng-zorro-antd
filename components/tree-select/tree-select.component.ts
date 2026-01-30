@@ -161,7 +161,7 @@ const listOfPositions = [
           (nzSelectedKeysChange)="updateSelectedNodes()"
           (nzCheckboxChange)="nzTreeCheckboxChange.emit($event)"
           (nzSearchValueChange)="setSearchValues($event)"
-        ></nz-tree>
+        />
         @if (nzNodes.length === 0 || isNotFound) {
           <span class="ant-select-not-found">
             <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent" />

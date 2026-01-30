@@ -6,9 +6,9 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
   selector: 'nz-demo-spin-size',
   imports: [NzSpinModule],
   template: `
-    <nz-spin nzSimple nzSize="small"></nz-spin>
-    <nz-spin nzSimple></nz-spin>
-    <nz-spin nzSimple nzSize="large"></nz-spin>
+    <nz-spin nzSimple nzSize="small" />
+    <nz-spin nzSimple />
+    <nz-spin nzSimple nzSize="large" />
   `,
   styles: [
     `

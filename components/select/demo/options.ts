@@ -7,13 +7,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   selector: 'nz-demo-select-options',
   imports: [FormsModule, NzSelectModule],
   template: `
-    <nz-select ngModel="lucy" [nzOptions]="listOfOption"></nz-select>
-    <nz-select
-      [(ngModel)]="selectedValue"
-      nzAllowClear
-      nzPlaceHolder="Choose"
-      [nzOptions]="listOfGroupOption"
-    ></nz-select>
+    <nz-select ngModel="lucy" [nzOptions]="listOfOption" />
+    <nz-select [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose" [nzOptions]="listOfGroupOption" />
   `,
   styles: [
     `

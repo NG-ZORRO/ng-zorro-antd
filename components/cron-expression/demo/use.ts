@@ -20,13 +20,13 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <nz-form-item>
         <nz-form-label [nzSpan]="6">nz-cron-linux</nz-form-label>
         <nz-form-control [nzSpan]="14">
-          <nz-cron-expression formControlName="cronLinux"></nz-cron-expression>
+          <nz-cron-expression formControlName="cronLinux" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="6">nz-cron-spring</nz-form-label>
         <nz-form-control [nzSpan]="14">
-          <nz-cron-expression formControlName="cronSpring" nzType="spring"></nz-cron-expression>
+          <nz-cron-expression formControlName="cronSpring" nzType="spring" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

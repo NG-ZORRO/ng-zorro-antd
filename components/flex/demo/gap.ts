@@ -12,7 +12,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   template: `
     <div class="segment-wrapper">
       <span>Select gap:</span>
-      <nz-segmented [nzOptions]="gapSegment" [(ngModel)]="selectedGap"></nz-segmented>
+      <nz-segmented [nzOptions]="gapSegment" [(ngModel)]="selectedGap" />
     </div>
     @if (selectedGap === 'custom') {
       <nz-slider [nzMin]="0" [nzMax]="100" [(ngModel)]="customGapValue" />
