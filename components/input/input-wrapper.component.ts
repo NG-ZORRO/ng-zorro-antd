@@ -287,23 +287,22 @@ export class NzInputWrapperComponent {
   protected readonly formattedValue = computed(() => {
     const countConfig = this.nzCount();
     const inputValue = this.inputValue();
-    const countMax = countConfig?.max;
+    const countMax = countConfig?.max ?? 0;
     const value = isNotNil(inputValue) ? String(inputValue) : '';
     let formattedValue = value;
 
     if (countConfig?.exceedFormatter) {
-      formattedValue = countConfig.exceedFormatter(value, { max: countMax! });
+      formattedValue = countConfig.exceedFormatter(value, { max: countMax });
     }
     return formattedValue;
   });
   protected readonly computedCount = computed(() => {
     const countConfig = this.nzCount();
-    const inputValue = this.inputValue();
-    const value = isNotNil(inputValue) ? String(inputValue) : '';
-    let computedCount = value.length;
+    const formattedValue = this.formattedValue();
+    let computedCount = formattedValue.length;
 
     if (countConfig?.strategy) {
-      computedCount = countConfig.strategy(this.formattedValue());
+      computedCount = countConfig.strategy(formattedValue);
     }
     return computedCount;
   });

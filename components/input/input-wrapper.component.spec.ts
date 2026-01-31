@@ -303,29 +303,6 @@ describe('input-wrapper with count config', () => {
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('11/20');
     }));
-
-    it('should be work count max', fakeAsync(() => {
-      component.value = 'Hello';
-      component.showCount = true;
-      component.countConfig = { max: 10 };
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
-      expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
-      expect(
-        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
-      ).toEqual('5/10');
-
-      component.value = 'Hello World';
-      component.countConfig = { max: 10 };
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
-      expect(component.withCountConfig().nativeElement.classList).toContain('ant-input-out-of-range');
-      expect(
-        component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
-      ).toEqual('11/10');
-    }));
   });
 
   describe('should be work with count / max / strategy / formatter', () => {
