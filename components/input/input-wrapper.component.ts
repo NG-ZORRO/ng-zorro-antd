@@ -29,7 +29,7 @@ import { EMPTY, startWith, switchMap } from 'rxjs';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormItemFeedbackIconComponent } from 'ng-zorro-antd/core/form';
-import { getStatusClassNames, getVariantClassNames, isNotNil } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, getVariantClassNames, isNotNil, isNumberFinite } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
@@ -175,7 +175,7 @@ export interface NzCountConfig {
   host: {
     '[class]': 'class()',
     '[class.ant-input-disabled]': 'disabled()',
-    '[class.ant-input-out-of-range]': 'isOutOfRange()',
+    '[class.ant-input-out-of-range]': 'nzShowCount() && isOutOfRange()',
     '[class.ant-input-affix-wrapper-textarea-with-clear-btn]': 'nzAllowClear() && isTextarea()'
   }
 })
@@ -319,16 +319,23 @@ export class NzInputWrapperComponent {
 
     const countConfig = this.nzCount();
     const inputValue = this.inputValue();
-    const countMax = countConfig?.max ?? 0;
-    const strategy = countConfig?.strategy ?? ((v: string) => v.length);
-    const exceedFormatter = countConfig?.exceedFormatter ?? ((v: string) => v);
 
+    const countMax = countConfig?.max;
     const value = isNotNil(inputValue) ? String(inputValue) : '';
-    const formattedValue = exceedFormatter(value, { max: countMax });
-    const count = strategy(formattedValue);
+    let formattedValue = value;
+    let computedCount = value.length;
 
-    this.dataCount.set(`${count}${countMax > 0 ? `/${countMax}` : ``}`);
-    this.isOutOfRange.set(countMax > 0 && count > countMax);
+    if (countConfig?.exceedFormatter) {
+      formattedValue = countConfig.exceedFormatter(value, { max: countMax! });
+    }
+    if (countConfig?.strategy) {
+      computedCount = countConfig.strategy(formattedValue);
+    }
+
+    this.dataCount.set(`${computedCount}${countMax ? `/${countMax}` : ``}`);
+    if (isNumberFinite(countMax)) {
+      this.isOutOfRange.set(computedCount > countMax!);
+    }
 
     if (formattedValue !== value) {
       this.inputDir().ngControl?.control?.setValue(formattedValue);
