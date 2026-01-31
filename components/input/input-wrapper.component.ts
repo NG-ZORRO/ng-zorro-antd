@@ -275,8 +275,6 @@ export class NzInputWrapperComponent {
     };
   });
 
-  protected readonly dataCount = signal('');
-  protected readonly isOutOfRange = signal(false);
   protected readonly inputValue = toSignal(
     toObservable(this.inputDir).pipe(
       switchMap(inputDir => {
@@ -286,6 +284,43 @@ export class NzInputWrapperComponent {
       })
     )
   );
+  protected readonly formattedValue = computed(() => {
+    const countConfig = this.nzCount();
+    const inputValue = this.inputValue();
+    const countMax = countConfig?.max;
+    const value = isNotNil(inputValue) ? String(inputValue) : '';
+    let formattedValue = value;
+
+    if (countConfig?.exceedFormatter) {
+      formattedValue = countConfig.exceedFormatter(value, { max: countMax! });
+    }
+    return formattedValue;
+  });
+  protected readonly computedCount = computed(() => {
+    const countConfig = this.nzCount();
+    const inputValue = this.inputValue();
+    const value = isNotNil(inputValue) ? String(inputValue) : '';
+    let computedCount = value.length;
+
+    if (countConfig?.strategy) {
+      computedCount = countConfig.strategy(this.formattedValue());
+    }
+    return computedCount;
+  });
+  protected readonly dataCount = computed(() => {
+    const countConfig = this.nzCount();
+    const computedCount = this.computedCount();
+    const countMax = countConfig?.max;
+    return `${computedCount}${countMax ? `/${countMax}` : ``}`;
+  });
+  protected readonly isOutOfRange = computed(() => {
+    const countConfig = this.nzCount();
+    const countMax = countConfig?.max;
+    if (isNumberFinite(countMax)) {
+      return this.computedCount() > countMax!;
+    }
+    return false;
+  });
 
   constructor() {
     const destroyRef = inject(DestroyRef);
@@ -304,41 +339,17 @@ export class NzInputWrapperComponent {
       });
     });
 
-    effect(() => this.updateCount());
+    effect(() => {
+      const inputValue = this.inputValue();
+      const formattedValue = this.formattedValue();
+      if (formattedValue !== inputValue) {
+        this.inputDir().ngControl?.control?.setValue(formattedValue);
+      }
+    });
   }
 
   clear(): void {
     this.inputDir().ngControl?.control?.setValue('');
     this.nzClear.emit();
-  }
-
-  private updateCount(): void {
-    if (!this.nzShowCount()) {
-      return;
-    }
-
-    const countConfig = this.nzCount();
-    const inputValue = this.inputValue();
-
-    const countMax = countConfig?.max;
-    const value = isNotNil(inputValue) ? String(inputValue) : '';
-    let formattedValue = value;
-    let computedCount = value.length;
-
-    if (countConfig?.exceedFormatter) {
-      formattedValue = countConfig.exceedFormatter(value, { max: countMax! });
-    }
-    if (countConfig?.strategy) {
-      computedCount = countConfig.strategy(formattedValue);
-    }
-
-    this.dataCount.set(`${computedCount}${countMax ? `/${countMax}` : ``}`);
-    if (isNumberFinite(countMax)) {
-      this.isOutOfRange.set(computedCount > countMax!);
-    }
-
-    if (formattedValue !== value) {
-      this.inputDir().ngControl?.control?.setValue(formattedValue);
-    }
   }
 }
