@@ -15,6 +15,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
   numberAttribute,
+  booleanAttribute,
   inject,
   DestroyRef
 } from '@angular/core';
@@ -192,7 +193,7 @@ export class NzProgressComponent implements OnChanges, OnInit {
   @Input() @WithConfig() nzStrokeLinecap: NzProgressStrokeLinecapType = 'round';
 
   @Input({ transform: numberAttribute }) nzSteps: number = 0;
-  @Input() nzIndeterminate: boolean = false;
+  @Input({ transform: booleanAttribute }) nzIndeterminate: boolean = false;
 
   steps: NzProgressStepItem[] = [];
 
