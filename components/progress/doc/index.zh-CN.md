@@ -20,16 +20,17 @@ description: 展示操作的当前进度。
 
 各类型通用的属性。
 
-| 属性                 | 说明                         | 类型                                                                                   | 默认值                     | 全局配置 |
-| -------------------- | ---------------------------- | -------------------------------------------------------------------------------------- | -------------------------- | -------- |
-| `[nzType]`           | 类型                         | `'line' \| 'circle' \| 'dashboard'`                                                    | `'line'`                   |          |
-| `[nzFormat]`         | 内容的模板函数               | `(percent: number) => string \| TemplateRef<{ $implicit: number }>`                    | `percent => percent + '%'` |
-| `[nzPercent]`        | 百分比                       | `number`                                                                               | `0`                        |          |
-| `[nzShowInfo]`       | 是否显示进度数值或状态图标   | `boolean`                                                                              | `true`                     | ✅       |
-| `[nzStatus]`         | 状态                         | `'success' \| 'exception' \| 'active' \| 'normal'`                                     | -                          |          |
-| `[nzStrokeLinecap]`  | 进度条端点形状               | `'round' \| 'square'`                                                                  | `'round'`                  | ✅       |
-| `[nzStrokeColor]`    | 进度条颜色，传入对象时为渐变 | `string \| { from: string; to: string: direction: string; [percent: string]: string }` | -                          | ✅       |
-| `[nzSuccessPercent]` | 已完成的分段百分比           | `number`                                                                               | 0                          |          |
+| 属性                 | 说明                                                         | 类型                                                                                   | 默认值                     | 全局配置 |
+| -------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------- | -------------------------- | -------- |
+| `[nzType]`           | 类型                                                         | `'line' \| 'circle' \| 'dashboard'`                                                    | `'line'`                   |          |
+| `[nzFormat]`         | 内容的模板函数                                               | `(percent: number) => string \| TemplateRef<{ $implicit: number }>`                    | `percent => percent + '%'` |
+| `[nzPercent]`        | 百分比                                                       | `number`                                                                               | `0`                        |          |
+| `[nzShowInfo]`       | 是否显示进度数值或状态图标                                   | `boolean`                                                                              | `true`                     | ✅       |
+| `[nzStatus]`         | 状态                                                         | `'success' \| 'exception' \| 'active' \| 'normal'`                                     | -                          |          |
+| `[nzStrokeLinecap]`  | 进度条端点形状                                               | `'round' \| 'square'`                                                                  | `'round'`                  | ✅       |
+| `[nzStrokeColor]`    | 进度条颜色，传入对象时为渐变                                 | `string \| { from: string; to: string: direction: string; [percent: string]: string }` | -                          | ✅       |
+| `[nzSuccessPercent]` | 已完成的分段百分比                                           | `number`                                                                               | 0                          |          |
+| `[nzIndeterminate]`  | 是否显示不确定状态的持续加载动画（仅适用于 `nzType="line"`） | `boolean`                                                                              | `false`                    |          |
 
 ### `nzType="line"`
 

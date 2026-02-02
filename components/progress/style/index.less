@@ -122,6 +122,31 @@
     }
   }
 
+  &-indeterminate&-line {
+    .@{progress-prefix-cls}-bg {
+      position: relative;
+      width: 100% !important;
+      overflow: hidden;
+
+      &::before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 200%;
+        background-image: repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 8px,
+          rgba(255, 255, 255, 0.25) 8px,
+          rgba(255, 255, 255, 0.25) 16px
+        );
+        animation: ~'@{ant-prefix}-progress-indeterminate' 1s linear infinite;
+        content: '';
+      }
+    }
+  }
+
   &-status-exception {
     .@{progress-prefix-cls}-bg {
       background-color: @error-color;
@@ -204,6 +229,16 @@
   100% {
     transform: translateX(0) scaleX(1);
     opacity: 0;
+  }
+}
+
+@keyframes ~"@{ant-prefix}-progress-indeterminate" {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-22.627px);
   }
 }
 

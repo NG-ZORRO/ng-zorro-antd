@@ -180,6 +180,19 @@ describe('progress', () => {
       );
     });
 
+    it('should indeterminate work', () => {
+      fixture.detectChanges();
+      expect(progress.nativeElement.firstElementChild!.classList).not.toContain('ant-progress-indeterminate');
+
+      testComponent.indeterminate = true;
+      fixture.detectChanges();
+      expect(progress.nativeElement.firstElementChild!.classList).toContain('ant-progress-indeterminate');
+
+      // Should only work with line type
+      const progressBar = progress.nativeElement.querySelector('.ant-progress-bg');
+      expect(progressBar).toBeTruthy();
+    });
+
     it('should support steps mode', () => {
       testComponent.steps = 5;
       testComponent.percent = 50;
@@ -447,6 +460,7 @@ describe('progress', () => {
       [nzStrokeColor]="strokeColor"
       [nzStrokeLinecap]="strokeLinecap"
       [nzSteps]="steps"
+      [nzIndeterminate]="indeterminate"
     ></nz-progress>
     <ng-template #formatterTemplate let-percent>{{ percent }} / 100</ng-template>
   `
@@ -463,6 +477,7 @@ export class NzTestProgressLineComponent {
   strokeLinecap: NzProgressStrokeLinecapType = 'round';
   steps?: number;
   strokeColor?: NzProgressStrokeColorType;
+  indeterminate = false;
 }
 
 @Component({
