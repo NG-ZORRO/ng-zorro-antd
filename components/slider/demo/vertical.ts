@@ -9,13 +9,13 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   template: `
     <div [style]="{ height: '300px' }">
       <div [style]="style">
-        <nz-slider nzVertical [ngModel]="30"></nz-slider>
+        <nz-slider nzVertical [ngModel]="30" />
       </div>
       <div [style]="style">
-        <nz-slider nzVertical nzRange [nzStep]="10" [ngModel]="[20, 50]"></nz-slider>
+        <nz-slider nzVertical nzRange [nzStep]="10" [ngModel]="[20, 50]" />
       </div>
       <div [style]="style">
-        <nz-slider nzVertical nzRange [nzMarks]="marks" [ngModel]="[26, 37]"></nz-slider>
+        <nz-slider nzVertical nzRange [nzMarks]="marks" [ngModel]="[26, 37]" />
       </div>
     </div>
   `

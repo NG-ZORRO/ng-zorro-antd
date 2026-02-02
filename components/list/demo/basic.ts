@@ -22,8 +22,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
             </nz-list-item-meta-title>
           </nz-list-item-meta>
         </nz-list-item>
-      }
-      @if (data.length === 0) {
+      } @empty {
         <nz-list-empty />
       }
     </nz-list>

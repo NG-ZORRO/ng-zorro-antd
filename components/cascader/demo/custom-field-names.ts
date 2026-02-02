@@ -58,8 +58,8 @@ const options = [
     <nz-cascader
       [nzChangeOn]="validate"
       [nzOptions]="nzOptions"
-      [nzLabelProperty]="'name'"
-      [nzValueProperty]="'code'"
+      nzLabelProperty="name"
+      nzValueProperty="code"
       [nzShowSearch]="true"
       [(ngModel)]="values"
       (ngModelChange)="onChanges($event)"

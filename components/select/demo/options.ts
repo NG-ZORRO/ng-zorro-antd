@@ -7,22 +7,15 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   selector: 'nz-demo-select-options',
   imports: [FormsModule, NzSelectModule],
   template: `
-    <nz-select ngModel="lucy" [nzOptions]="listOfOption"></nz-select>
-    <nz-select
-      [(ngModel)]="selectedValue"
-      nzAllowClear
-      nzPlaceHolder="Choose"
-      [nzOptions]="listOfGroupOption"
-    ></nz-select>
+    <nz-select ngModel="lucy" [nzOptions]="listOfOption" />
+    <nz-select [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose" [nzOptions]="listOfGroupOption" />
   `,
-  styles: [
-    `
-      nz-select {
-        margin: 0 8px 10px 0;
-        width: 120px;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      margin: 0 8px 10px 0;
+      width: 120px;
+    }
+  `
 })
 export class NzDemoSelectOptionsComponent {
   selectedValue = 'lucy';

@@ -31,10 +31,10 @@ import { NzTrMeasureComponent } from './tr-measure.component';
         ></tr>
       }
     }
-    <ng-content></ng-content>
+    <ng-content />
     @if (showEmpty$ | async) {
       <tr class="ant-table-placeholder" nz-table-fixed-row>
-        <nz-embed-empty nzComponentName="table" [specificContent]="(noResult$ | async)!"></nz-embed-empty>
+        <nz-embed-empty nzComponentName="table" [specificContent]="(noResult$ | async)!" />
       </tr>
     }
   `,

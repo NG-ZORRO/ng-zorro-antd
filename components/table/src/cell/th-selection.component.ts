@@ -35,8 +35,8 @@ import { NzTableSelectionComponent } from '../addon/selection.component';
       [showCheckbox]="nzShowCheckbox"
       [showRowSelection]="nzShowRowSelection"
       (checkedChange)="onCheckedChange($event)"
-    ></nz-table-selection>
-    <ng-content></ng-content>
+    />
+    <ng-content />
   `,
   host: { class: 'ant-table-selection-column' },
   imports: [NzTableSelectionComponent]

@@ -46,14 +46,12 @@ import { NzTableModule } from 'ng-zorro-antd/table';
       </tbody>
     </nz-table>
   `,
-  styles: [
-    `
-      .nz-resizable-preview {
-        border-width: 0;
-        border-right-width: 1px;
-      }
-    `
-  ]
+  styles: `
+    .nz-resizable-preview {
+      border-width: 0;
+      border-right-width: 1px;
+    }
+  `
 })
 export class NzDemoResizableTableComponent {
   cols: Array<{ title: string; width?: string }> = [

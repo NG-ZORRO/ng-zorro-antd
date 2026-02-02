@@ -1032,7 +1032,7 @@ const styles = `
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider [nzDisabled]="disabled"></nz-slider>`,
+  template: `<nz-slider [nzDisabled]="disabled" />`,
   styles: [styles]
 })
 class NzTestSliderComponent {
@@ -1041,7 +1041,7 @@ class NzTestSliderComponent {
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>`,
+  template: `<nz-slider [nzMin]="min" [nzMax]="max" />`,
   styles: [styles]
 })
 class SliderWithMinAndMaxComponent {
@@ -1051,14 +1051,14 @@ class SliderWithMinAndMaxComponent {
 
 @Component({
   imports: [FormsModule, NzSliderModule],
-  template: `<nz-slider [ngModel]="26"></nz-slider>`,
+  template: `<nz-slider [ngModel]="26" />`,
   styles: [styles]
 })
 class SliderWithValueComponent {}
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider [nzMarks]="marks"></nz-slider>`
+  template: `<nz-slider [nzMarks]="marks" />`
 })
 class SliderWithMarksComponent {
   marks: Record<number, string> = { 100: '(100%)', 0: '(0%)' };
@@ -1066,7 +1066,7 @@ class SliderWithMarksComponent {
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider [nzStep]="step"></nz-slider>`,
+  template: `<nz-slider [nzStep]="step" />`,
   styles: [styles]
 })
 class SliderWithStepComponent {
@@ -1075,28 +1075,28 @@ class SliderWithStepComponent {
 
 @Component({
   imports: [FormsModule, NzSliderModule],
-  template: `<nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>`,
+  template: `<nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6" />`,
   styles: [styles]
 })
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
   imports: [FormsModule, NzSliderModule],
-  template: `<nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5"></nz-slider>`,
+  template: `<nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5" />`,
   styles: [styles]
 })
 class SliderWithValueZeroComponent {}
 
 @Component({
   imports: [FormsModule, NzSliderModule],
-  template: `<nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>`,
+  template: `<nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6" />`,
   styles: [styles]
 })
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider nzVertical></nz-slider>`,
+  template: `<nz-slider nzVertical />`,
   styles: [styles]
 })
 class VerticalSliderComponent {}
@@ -1104,9 +1104,9 @@ class VerticalSliderComponent {}
 @Component({
   imports: [NzSliderModule],
   template: `
-    <nz-slider nzReverse [nzMarks]="marks"></nz-slider>
-    <nz-slider nzReverse nzRange></nz-slider>
-    <nz-slider nzVertical nzReverse></nz-slider>
+    <nz-slider nzReverse [nzMarks]="marks" />
+    <nz-slider nzReverse nzRange />
+    <nz-slider nzVertical nzReverse />
   `
 })
 class ReverseSliderComponent {
@@ -1115,7 +1115,7 @@ class ReverseSliderComponent {
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider [nzMin]="4" [nzMax]="6" nzReverse></nz-slider>`,
+  template: `<nz-slider [nzMin]="4" [nzMax]="6" nzReverse />`,
   styles: [styles]
 })
 class ReverseSliderWithMinAndMaxComponent {}
@@ -1132,7 +1132,7 @@ class ReverseSliderWithMinAndMaxComponent {}
       [nzTipFormatter]="tipFormatter"
       [nzMin]="min"
       [nzMax]="max"
-    ></nz-slider>
+    />
   `,
   styles: [styles]
 })
@@ -1154,7 +1154,7 @@ class MixedSliderComponent {
   imports: [ReactiveFormsModule, NzSliderModule],
   template: `
     <form>
-      <nz-slider [formControl]="formControl" [nzDisabled]="disabled"></nz-slider>
+      <nz-slider [formControl]="formControl" [nzDisabled]="disabled" />
     </form>
   `,
   styles: [styles]
@@ -1175,7 +1175,7 @@ class SliderWithFormControlComponent {
 
 @Component({
   imports: [FormsModule, NzSliderModule],
-  template: `<nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider>`
+  template: `<nz-slider [nzTooltipVisible]="show" [ngModel]="value" />`
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
@@ -1185,7 +1185,7 @@ class SliderShowTooltipComponent {
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider [nzRange]="range" [nzDisabled]="disabled"></nz-slider>`
+  template: `<nz-slider [nzRange]="range" [nzDisabled]="disabled" />`
 })
 class NzTestSliderKeyboardComponent {
   range = false;
@@ -1195,7 +1195,7 @@ class NzTestSliderKeyboardComponent {
 @Component({
   imports: [FormsModule, NzSliderModule],
   template: `
-    <nz-slider [nzTooltipVisible]="show" [ngModel]="value" [nzTipFormatter]="titleTemplate"></nz-slider>
+    <nz-slider [nzTooltipVisible]="show" [ngModel]="value" [nzTipFormatter]="titleTemplate" />
     <ng-template #titleTemplate let-value>
       <span>Slider value: {{ value }}</span>
     </ng-template>
@@ -1314,7 +1314,7 @@ function dispatchMouseenterEvent(element: HTMLElement): void {
   imports: [BidiModule, NzSliderModule],
   template: `
     <div [dir]="direction">
-      <nz-slider></nz-slider>
+      <nz-slider />
     </div>
   `
 })

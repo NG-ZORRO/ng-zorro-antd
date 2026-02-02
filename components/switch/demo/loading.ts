@@ -7,10 +7,10 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-switch-loading',
   imports: [FormsModule, NzSwitchModule],
   template: `
-    <nz-switch [ngModel]="true" nzLoading></nz-switch>
+    <nz-switch [ngModel]="true" nzLoading />
     <br />
     <br />
-    <nz-switch nzSize="small" [ngModel]="false" nzLoading></nz-switch>
+    <nz-switch nzSize="small" [ngModel]="false" nzLoading />
   `
 })
 export class NzDemoSwitchLoadingComponent {}

@@ -54,7 +54,7 @@ import { NzRadioService } from './radio.service';
       />
       <span [class.ant-radio-inner]="!isRadioButton" [class.ant-radio-button-inner]="isRadioButton"></span>
     </span>
-    <span><ng-content></ng-content></span>
+    <span><ng-content /></span>
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

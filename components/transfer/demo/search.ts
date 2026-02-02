@@ -16,9 +16,9 @@ import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
-    ></nz-transfer>
+    />
     <br />
-    <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled"></nz-switch>
+    <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled" />
   `
 })
 export class NzDemoTransferSearchComponent implements OnInit {

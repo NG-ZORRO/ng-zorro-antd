@@ -58,7 +58,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   template: `
     <ng-template #contentTemplate let-content="content">
       @if (!content) {
-        <ng-content></ng-content>
+        <ng-content />
       }
       {{ content }}
     </ng-template>
@@ -69,10 +69,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
         canCssEllipsis ||
         (nzSuffix && expanded)
       ) {
-        <ng-template
-          [ngTemplateOutlet]="contentTemplate"
-          [ngTemplateOutletContext]="{ content: nzContent }"
-        ></ng-template>
+        <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{ content: nzContent }" />
         @if (nzSuffix) {
           {{ nzSuffix }}
         }
@@ -99,7 +96,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
         [tooltip]="nzEditTooltip"
         (endEditing)="onEndEditing($event)"
         (startEditing)="onStartEditing()"
-      ></nz-text-edit>
+      />
     }
 
     @if (nzCopyable && !editing) {
@@ -108,7 +105,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
         [tooltips]="nzCopyTooltips"
         [icons]="nzCopyIcons"
         (textCopy)="onTextCopy($event)"
-      ></nz-text-copy>
+      />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

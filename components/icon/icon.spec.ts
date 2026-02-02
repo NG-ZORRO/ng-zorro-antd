@@ -220,8 +220,8 @@ describe('nz-icon injection', () => {
 @Component({
   imports: [NzIconModule],
   template: `
-    <nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate"></nz-icon>
-    <nz-icon [nzType]="'loading'" [nzTheme]="theme"></nz-icon>
+    <nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate" />
+    <nz-icon nzType="loading" [nzTheme]="theme" />
   `
 })
 export class NzTestIconExtensionsComponent {
@@ -250,9 +250,9 @@ export class NzTestIconCustomComponent {}
 @Component({
   imports: [NzIconModule],
   template: `
-    <nz-icon nzIconfont="icon-tuichu"></nz-icon>
-    <nz-icon nzIconfont="icon-facebook"></nz-icon>
-    <nz-icon nzIconfont="icon-twitter"></nz-icon>
+    <nz-icon nzIconfont="icon-tuichu" />
+    <nz-icon nzIconfont="icon-facebook" />
+    <nz-icon nzIconfont="icon-twitter" />
   `
 })
 export class NzTestIconIconfontComponent {
@@ -271,8 +271,8 @@ class ChildModule {}
 @Component({
   imports: [NzIconModule, ChildModule],
   template: `
-    <nz-icon nzType="home"></nz-icon>
-    <nz-icon nzType="question"></nz-icon>
+    <nz-icon nzType="home" />
+    <nz-icon nzType="question" />
   `
 })
 class NzTestIconMultiInjectionComponent {}
@@ -281,8 +281,8 @@ class NzTestIconMultiInjectionComponent {}
   imports: [NzIconModule],
   providers: [provideNzIconsPatch([QuestionOutline])],
   template: `
-    <nz-icon nzType="home"></nz-icon>
-    <nz-icon nzType="question"></nz-icon>
+    <nz-icon nzType="home" />
+    <nz-icon nzType="question" />
   `
 })
 class NzTestIconMultiInjectionStandaloneComponent {}

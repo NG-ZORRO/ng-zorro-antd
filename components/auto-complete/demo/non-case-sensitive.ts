@@ -17,7 +17,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
         (ngModelChange)="onChange($event)"
         [nzAutocomplete]="auto"
       />
-      <nz-autocomplete [nzDataSource]="filteredOptions" #auto></nz-autocomplete>
+      <nz-autocomplete [nzDataSource]="filteredOptions" #auto />
     </div>
   `
 })

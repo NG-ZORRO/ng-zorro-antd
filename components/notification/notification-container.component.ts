@@ -40,11 +40,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.left]="'0px'"
     >
       @for (instance of topLeftInstances; track instance) {
-        <nz-notification
-          [instance]="instance"
-          [placement]="'topLeft'"
-          (destroyed)="remove($event.id, $event.userAction)"
-        />
+        <nz-notification [instance]="instance" placement="topLeft" (destroyed)="remove($event.id, $event.userAction)" />
       }
     </div>
     <div
@@ -56,7 +52,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       @for (instance of topRightInstances; track instance) {
         <nz-notification
           [instance]="instance"
-          [placement]="'topRight'"
+          placement="topRight"
           (destroyed)="remove($event.id, $event.userAction)"
         />
       }
@@ -70,7 +66,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       @for (instance of bottomLeftInstances; track instance) {
         <nz-notification
           [instance]="instance"
-          [placement]="'bottomLeft'"
+          placement="bottomLeft"
           (destroyed)="remove($event.id, $event.userAction)"
         />
       }
@@ -84,7 +80,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       @for (instance of bottomRightInstances; track instance) {
         <nz-notification
           [instance]="instance"
-          [placement]="'bottomRight'"
+          placement="bottomRight"
           (destroyed)="remove($event.id, $event.userAction)"
         />
       }
@@ -97,7 +93,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.transform]="'translateX(-50%)'"
     >
       @for (instance of topInstances; track instance) {
-        <nz-notification [instance]="instance" [placement]="'top'" (destroyed)="remove($event.id, $event.userAction)" />
+        <nz-notification [instance]="instance" placement="top" (destroyed)="remove($event.id, $event.userAction)" />
       }
     </div>
     <div
@@ -108,11 +104,7 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
       [style.transform]="'translateX(-50%)'"
     >
       @for (instance of bottomInstances; track instance) {
-        <nz-notification
-          [instance]="instance"
-          [placement]="'bottom'"
-          (destroyed)="remove($event.id, $event.userAction)"
-        />
+        <nz-notification [instance]="instance" placement="bottom" (destroyed)="remove($event.id, $event.userAction)" />
       }
     </div>
   `,

@@ -20,7 +20,7 @@ declare const monaco: any;
       [ngModel]="code"
       [nzFullControl]="true"
       (nzEditorInitialized)="onEditorInit($event)"
-    ></nz-code-editor>
+    />
   `
 })
 export class NzTestCodeEditorFullControlComponent {

@@ -6,7 +6,7 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
   selector: 'nz-demo-float-button-top',
   imports: [NzFloatButtonModule],
   template: `
-    <nz-float-button-top></nz-float-button-top>
+    <nz-float-button-top />
     Scroll down to see the back to top button on the bottom right
   `
 })

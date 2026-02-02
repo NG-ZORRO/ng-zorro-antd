@@ -11,7 +11,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
   selector: 'nz-list-empty',
   exportAs: 'nzListHeader',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<nz-embed-empty [nzComponentName]="'list'" [specificContent]="nzNoResult"></nz-embed-empty>`,
+  template: `<nz-embed-empty nzComponentName="list" [specificContent]="nzNoResult" />`,
   host: {
     class: 'ant-list-empty-text'
   },
@@ -25,7 +25,7 @@ export class NzListEmptyComponent {
   selector: 'nz-list-header',
   exportAs: 'nzListHeader',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content></ng-content>`,
+  template: `<ng-content />`,
   host: {
     class: 'ant-list-header'
   }
@@ -36,7 +36,7 @@ export class NzListHeaderComponent {}
   selector: 'nz-list-footer',
   exportAs: 'nzListFooter',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content></ng-content>`,
+  template: `<ng-content />`,
   host: {
     class: 'ant-list-footer'
   }
@@ -47,7 +47,7 @@ export class NzListFooterComponent {}
   selector: 'nz-list-pagination',
   exportAs: 'nzListPagination',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content></ng-content>`,
+  template: `<ng-content />`,
   host: {
     class: 'ant-list-pagination'
   }

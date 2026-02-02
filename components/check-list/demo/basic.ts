@@ -5,7 +5,7 @@ import { NzCheckListModule, NzItemProps } from 'ng-zorro-antd/check-list';
 @Component({
   selector: 'nz-demo-check-list-basic',
   imports: [NzCheckListModule],
-  template: `<nz-check-list [nzItems]="nzItems" [nzIndex]="index"></nz-check-list>`
+  template: `<nz-check-list [nzItems]="nzItems" [nzIndex]="index" />`
 })
 export class NzDemoCheckListBasicComponent {
   index = 2;

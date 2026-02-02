@@ -17,7 +17,7 @@ import { NzNotificationPlacement, NzNotificationService } from 'ng-zorro-antd/no
       <nz-icon nzType="border-bottom" nzTheme="outline" />
       bottom
     </button>
-    <nz-divider></nz-divider>
+    <nz-divider />
     <button nz-button (click)="createNotification('topLeft')" nzType="primary">
       <nz-icon nzType="radius-upleft" />
       topLeft
@@ -26,7 +26,7 @@ import { NzNotificationPlacement, NzNotificationService } from 'ng-zorro-antd/no
       <nz-icon nzType="radius-upright" />
       topRight
     </button>
-    <nz-divider></nz-divider>
+    <nz-divider />
     <button nz-button (click)="createNotification('bottomLeft')" nzType="primary">
       <nz-icon nzType="radius-bottomleft" />
       bottomLeft
@@ -36,13 +36,11 @@ import { NzNotificationPlacement, NzNotificationService } from 'ng-zorro-antd/no
       bottomRight
     </button>
   `,
-  styles: [
-    `
-      button {
-        margin-right: 1em;
-      }
-    `
-  ]
+  styles: `
+    button {
+      margin-right: 1em;
+    }
+  `
 })
 export class NzDemoNotificationPlacementComponent {
   placement = 'topRight';

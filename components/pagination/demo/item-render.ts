@@ -6,7 +6,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
   selector: 'nz-demo-pagination-item-render',
   imports: [NzPaginationModule],
   template: `
-    <nz-pagination [nzPageIndex]="1" [nzTotal]="500" [nzItemRender]="renderItemTemplate"></nz-pagination>
+    <nz-pagination [nzPageIndex]="1" [nzTotal]="500" [nzItemRender]="renderItemTemplate" />
     <ng-template #renderItemTemplate let-type let-page="page">
       @switch (type) {
         @case ('page') {

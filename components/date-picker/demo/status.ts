@@ -8,10 +8,10 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   imports: [NzDatePickerModule, NzSpaceModule],
   template: `
     <nz-space nzDirection="vertical" style="width: 100%">
-      <nz-date-picker *nzSpaceItem nzStatus="error" style="width: 100%"></nz-date-picker>
-      <nz-date-picker *nzSpaceItem nzStatus="warning" style="width: 100%"></nz-date-picker>
-      <nz-range-picker *nzSpaceItem nzStatus="error" style="width: 100%"></nz-range-picker>
-      <nz-range-picker *nzSpaceItem nzStatus="warning" style="width: 100%"></nz-range-picker>
+      <nz-date-picker *nzSpaceItem nzStatus="error" style="width: 100%" />
+      <nz-date-picker *nzSpaceItem nzStatus="warning" style="width: 100%" />
+      <nz-range-picker *nzSpaceItem nzStatus="error" style="width: 100%" />
+      <nz-range-picker *nzSpaceItem nzStatus="warning" style="width: 100%" />
     </nz-space>
   `
 })

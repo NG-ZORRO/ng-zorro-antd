@@ -34,23 +34,21 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
       <button nz-button nzGhost disabled>Ghost(disabled)</button>
     </div>
   `,
-  styles: [
-    `
-      [nz-button] {
-        margin-right: 8px;
-        margin-bottom: 12px;
-      }
+  styles: `
+    [nz-button] {
+      margin-right: 8px;
+      margin-bottom: 12px;
+    }
 
-      .ghost-background {
-        padding: 8px;
-        background: rgb(190, 200, 200);
-      }
+    .ghost-background {
+      padding: 8px;
+      background: rgb(190, 200, 200);
+    }
 
-      .ghost-background [nz-button] {
-        margin-right: 8px;
-        margin-bottom: 0;
-      }
-    `
-  ]
+    .ghost-background [nz-button] {
+      margin-right: 8px;
+      margin-bottom: 0;
+    }
+  `
 })
 export class NzDemoButtonDisabledComponent {}

@@ -5,6 +5,6 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 @Component({
   selector: 'nz-demo-spin-basic',
   imports: [NzSpinModule],
-  template: `<nz-spin nzSimple></nz-spin>`
+  template: `<nz-spin nzSimple />`
 })
 export class NzDemoSpinBasicComponent {}

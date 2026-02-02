@@ -34,13 +34,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       Search
     </button>
   `,
-  styles: [
-    `
-      [nz-button] {
-        margin-right: 8px;
-        margin-bottom: 12px;
-      }
-    `
-  ]
+  styles: `
+    [nz-button] {
+      margin-right: 8px;
+      margin-bottom: 12px;
+    }
+  `
 })
 export class NzDemoButtonIconComponent {}

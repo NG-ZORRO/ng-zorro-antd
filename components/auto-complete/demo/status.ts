@@ -13,7 +13,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     <br />
     <br />
     <input nz-input [(ngModel)]="value" [nzAutocomplete]="auto" nzStatus="warning" />
-    <nz-autocomplete [nzDataSource]="['12345', '23456', '34567']" #auto></nz-autocomplete>
+    <nz-autocomplete [nzDataSource]="['12345', '23456', '34567']" #auto />
   `
 })
 export class NzDemoAutoCompleteStatusComponent {

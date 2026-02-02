@@ -58,9 +58,9 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
       </nz-page-header-extra>
       <nz-page-header-content>
         <nz-row>
-          <nz-statistic nzTitle="Status" nzValue="Pending"></nz-statistic>
-          <nz-statistic nzTitle="Price" [nzValue]="568.08" nzPrefix="$" style="margin: 0 32px"></nz-statistic>
-          <nz-statistic nzTitle="Balance" [nzValue]="3345.08" nzPrefix="$"></nz-statistic>
+          <nz-statistic nzTitle="Status" nzValue="Pending" />
+          <nz-statistic nzTitle="Price" [nzValue]="568.08" nzPrefix="$" style="margin: 0 32px" />
+          <nz-statistic nzTitle="Balance" [nzValue]="3345.08" nzPrefix="$" />
         </nz-row>
       </nz-page-header-content>
     </nz-page-header>

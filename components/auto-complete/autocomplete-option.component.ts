@@ -40,7 +40,7 @@ export class NzOptionSelectionChange {
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="ant-select-item-option-content">
-      <ng-content></ng-content>
+      <ng-content />
     </div>
   `,
   host: {

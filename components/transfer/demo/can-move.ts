@@ -13,7 +13,7 @@ import { NzTransferModule, TransferCanMove, TransferItem } from 'ng-zorro-antd/t
       [nzCanMove]="canMove"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
-    ></nz-transfer>
+    />
   `
 })
 export class NzDemoTransferCanMoveComponent implements OnInit {

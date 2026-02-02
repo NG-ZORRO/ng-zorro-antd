@@ -65,7 +65,7 @@ const CSS_TRANSFORM_TIME = 150;
   template: `
     @if (startExtraContent()) {
       <div class="ant-tabs-extra-content">
-        <ng-template [ngTemplateOutlet]="startExtraContent()!.templateRef"></ng-template>
+        <ng-template [ngTemplateOutlet]="startExtraContent()!.templateRef" />
       </div>
     }
     <div
@@ -84,7 +84,7 @@ const CSS_TRANSFORM_TIME = 150;
         (tabScroll)="tabScroll.emit($event)"
         role="tablist"
       >
-        <ng-content></ng-content>
+        <ng-content />
         @if (showAddButton) {
           <button
             role="tab"
@@ -103,14 +103,14 @@ const CSS_TRANSFORM_TIME = 150;
       [addIcon]="addIcon"
       [addable]="addable"
       [items]="hiddenItems"
-    ></nz-tab-nav-operation>
+    />
     @if (endExtraContent()) {
       <div class="ant-tabs-extra-content">
-        <ng-template [ngTemplateOutlet]="endExtraContent()!.templateRef"></ng-template>
+        <ng-template [ngTemplateOutlet]="endExtraContent()!.templateRef" />
       </div>
     } @else if (extraTemplate) {
       <div class="ant-tabs-extra-content">
-        <ng-template [ngTemplateOutlet]="extraTemplate"></ng-template>
+        <ng-template [ngTemplateOutlet]="extraTemplate" />
       </div>
     }
   `,

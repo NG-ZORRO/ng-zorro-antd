@@ -20,21 +20,19 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <nz-icon nzType="clock-circle" class="ant-scroll-number-custom-component" style="color: #f5222d" />
     </ng-template>
   `,
-  styles: [
-    `
-      nz-badge {
-        margin-right: 20px;
-      }
+  styles: `
+    nz-badge {
+      margin-right: 20px;
+    }
 
-      .head-example {
-        width: 42px;
-        height: 42px;
-        border-radius: 4px;
-        background: #eee;
-        display: inline-block;
-        vertical-align: middle;
-      }
-    `
-  ]
+    .head-example {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      background: #eee;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  `
 })
 export class NzDemoBadgeBasicComponent {}

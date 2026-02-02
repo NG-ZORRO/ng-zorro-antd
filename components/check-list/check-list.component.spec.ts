@@ -288,8 +288,7 @@ describe('check-list', () => {
       [nzTriggerRender]="triggerRender"
       [nzTitle]="title"
       [nzFooter]="footer"
-    >
-    </nz-check-list>
+    />
   `
 })
 export class NzTestCheckListBasicComponent {

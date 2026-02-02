@@ -11,18 +11,16 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
         [nzFullscreen]="false"
         (nzSelectChange)="onValueChange($event)"
         (nzPanelChange)="onPanelChange($event)"
-      ></nz-calendar>
+      />
     </div>
   `,
-  styles: [
-    `
-      .card {
-        width: 300px;
-        border: 1px solid #d9d9d9;
-        border-radius: 4px;
-      }
-    `
-  ]
+  styles: `
+    .card {
+      width: 300px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+    }
+  `
 })
 export class NzDemoCalendarCardComponent {
   onValueChange(value: Date): void {

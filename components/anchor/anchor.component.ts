@@ -55,10 +55,10 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   template: `
     @if (nzAffix) {
       <nz-affix [nzOffsetTop]="nzOffsetTop" [nzTarget]="container">
-        <ng-template [ngTemplateOutlet]="content"></ng-template>
+        <ng-template [ngTemplateOutlet]="content" />
       </nz-affix>
     } @else {
-      <ng-template [ngTemplateOutlet]="content"></ng-template>
+      <ng-template [ngTemplateOutlet]="content" />
     }
 
     <ng-template #content>
@@ -71,7 +71,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
           <div class="ant-anchor-ink">
             <div class="ant-anchor-ink-ball" #ink></div>
           </div>
-          <ng-content></ng-content>
+          <ng-content />
         </div>
       </div>
     </ng-template>

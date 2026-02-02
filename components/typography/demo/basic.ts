@@ -52,7 +52,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
         to exist...
       </p>
     </article>
-    <nz-divider></nz-divider>
+    <nz-divider />
     <article nz-typography>
       <h1 nz-typography>介绍</h1>
       <p nz-typography>

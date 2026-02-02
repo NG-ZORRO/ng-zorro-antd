@@ -453,7 +453,7 @@ describe('pagination', () => {
       [nzPageSizeOptions]="pageSizeOptions"
       [nzShowSizeChanger]="showSizeChanger"
       [nzShowQuickJumper]="showQuickJumper"
-    ></nz-pagination>
+    />
   `
 })
 export class NzTestPaginationComponent {
@@ -475,12 +475,7 @@ export class NzTestPaginationComponent {
 @Component({
   imports: [NzPaginationModule],
   template: `
-    <nz-pagination
-      [nzPageIndex]="1"
-      [nzTotal]="50"
-      [nzItemRender]="renderItemTemplate"
-      [nzAlign]="nzAlign()"
-    ></nz-pagination>
+    <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate" [nzAlign]="nzAlign()" />
     <ng-template #renderItemTemplate let-type let-page="page">
       @switch (type) {
         @case ('prev') {
@@ -503,12 +498,7 @@ export class NzTestPaginationRenderComponent {
 @Component({
   imports: [NzPaginationModule],
   template: `
-    <nz-pagination
-      [(nzPageIndex)]="pageIndex"
-      [nzTotal]="85"
-      [nzPageSize]="20"
-      [nzShowTotal]="rangeTemplate"
-    ></nz-pagination>
+    <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="85" [nzPageSize]="20" [nzShowTotal]="rangeTemplate" />
     <ng-template #rangeTemplate let-range="range" let-total>
       {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
@@ -520,7 +510,7 @@ export class NzTestPaginationTotalComponent {
 
 @Component({
   imports: [NzPaginationModule],
-  template: `<nz-pagination nzResponsive></nz-pagination>`
+  template: `<nz-pagination nzResponsive />`
 })
 export class NzTestPaginationAutoResizeComponent {}
 
@@ -528,12 +518,7 @@ export class NzTestPaginationAutoResizeComponent {}
   imports: [BidiModule, NzPaginationModule],
   template: `
     <div [dir]="direction">
-      <nz-pagination
-        [nzSimple]="false"
-        [(nzPageIndex)]="pageIndex"
-        [nzTotal]="total"
-        [(nzPageSize)]="pageSize"
-      ></nz-pagination>
+      <nz-pagination [nzSimple]="false" [(nzPageIndex)]="pageIndex" [nzTotal]="total" [(nzPageSize)]="pageSize" />
     </div>
   `
 })

@@ -16,8 +16,8 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="top"
         >
-          <nz-float-button></nz-float-button>
-          <nz-float-button nzIcon="comment"></nz-float-button>
+          <nz-float-button />
+          <nz-float-button nzIcon="comment" />
         </nz-float-button-group>
         <nz-float-button-group
           class="down"
@@ -27,8 +27,8 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="bottom"
         >
-          <nz-float-button></nz-float-button>
-          <nz-float-button nzIcon="comment"></nz-float-button>
+          <nz-float-button />
+          <nz-float-button nzIcon="comment" />
         </nz-float-button-group>
         <nz-float-button-group
           class="left"
@@ -38,8 +38,8 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="left"
         >
-          <nz-float-button></nz-float-button>
-          <nz-float-button nzIcon="comment"></nz-float-button>
+          <nz-float-button />
+          <nz-float-button nzIcon="comment" />
         </nz-float-button-group>
         <nz-float-button-group
           class="right"
@@ -49,48 +49,46 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
           (nzOnOpenChange)="openChange($event)"
           nzPlacement="right"
         >
-          <nz-float-button></nz-float-button>
-          <nz-float-button nzIcon="comment"></nz-float-button>
+          <nz-float-button />
+          <nz-float-button nzIcon="comment" />
         </nz-float-button-group>
       </div>
     </div>
   `,
-  styles: [
-    `
-      .container {
-        display: flex;
-        height: 300px;
-        justify-content: center;
-        align-items: center;
+  styles: `
+    .container {
+      display: flex;
+      height: 300px;
+      justify-content: center;
+      align-items: center;
 
-        .anchor {
-          height: 100px;
-          width: 100px;
-          position: relative;
+      .anchor {
+        height: 100px;
+        width: 100px;
+        position: relative;
 
-          .up {
-            inset-inline-end: 30px;
-            bottom: 80px;
-          }
-          .down {
-            inset-inline-end: 30px;
-            bottom: -20px;
-          }
-          .left {
-            inset-inline-end: 80px;
-            bottom: 30px;
-          }
-          .right {
-            inset-inline-end: -20px;
-            bottom: 30px;
-          }
+        .up {
+          inset-inline-end: 30px;
+          bottom: 80px;
         }
-        nz-float-button-group {
-          position: absolute;
+        .down {
+          inset-inline-end: 30px;
+          bottom: -20px;
+        }
+        .left {
+          inset-inline-end: 80px;
+          bottom: 30px;
+        }
+        .right {
+          inset-inline-end: -20px;
+          bottom: 30px;
         }
       }
-    `
-  ]
+      nz-float-button-group {
+        position: absolute;
+      }
+    }
+  `
 })
 export class NzDemoFloatButtonGroupPlacementComponent {
   openChange(status: boolean): void {

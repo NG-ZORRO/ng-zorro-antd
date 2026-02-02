@@ -64,8 +64,8 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   selector: 'nz-splitter',
   exportAs: 'nzSplitter',
   template: `
-    @for (panel of panelProps(); let i = $index; track i; let last = $last) {
-      @let size = sizes()[i];
+    @for (panel of panelProps(); track $index) {
+      @let size = sizes()[$index];
       @let flexBasis = !!size.size ? size.size : 'auto';
       @let flexGrow = !!size.size ? 0 : 1;
       <div
@@ -74,12 +74,12 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
         [style.flex-basis]="flexBasis"
         [style.flex-grow]="flexGrow"
       >
-        <ng-container *ngTemplateOutlet="panel.contentTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="panel.contentTemplate" />
       </div>
 
-      @if (!last) {
-        @let resizableInfo = resizableInfos()[i];
-        @let ariaInfo = ariaInfos()[i];
+      @if (!$last) {
+        @let resizableInfo = resizableInfos()[$index];
+        @let ariaInfo = ariaInfos()[$index];
         <div
           nz-splitter-bar
           [ariaNow]="ariaInfo.ariaNow"
@@ -87,12 +87,12 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
           [ariaMax]="ariaInfo.ariaMax"
           [resizable]="resizableInfo.resizable"
           [collapsible]="resizableInfo.collapsible"
-          [active]="movingIndex()?.index === i"
+          [active]="movingIndex()?.index === $index"
           [vertical]="nzLayout() === 'vertical'"
           [lazy]="nzLazy()"
           [constrainedOffset]="constrainedOffset()"
-          (offsetStart)="startResize(i, $event)"
-          (collapse)="collapse(i, $event)"
+          (offsetStart)="startResize($index, $event)"
+          (collapse)="collapse($index, $event)"
         ></div>
       }
     }

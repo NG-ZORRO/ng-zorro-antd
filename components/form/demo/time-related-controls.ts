@@ -14,37 +14,37 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
       <nz-form-item>
         <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>DatePicker</nz-form-label>
         <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-date-picker formControlName="datePicker"></nz-date-picker>
+          <nz-date-picker formControlName="datePicker" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>DatePicker[ShowTime]</nz-form-label>
         <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-date-picker nzShowTime formControlName="datePickerTime"></nz-date-picker>
+          <nz-date-picker nzShowTime formControlName="datePickerTime" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>MonthPicker</nz-form-label>
         <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-date-picker nzMode="month" formControlName="monthPicker"></nz-date-picker>
+          <nz-date-picker nzMode="month" formControlName="monthPicker" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>RangePicker</nz-form-label>
         <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-range-picker formControlName="rangePicker"></nz-range-picker>
+          <nz-range-picker formControlName="rangePicker" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>RangePicker[showTime]</nz-form-label>
         <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-range-picker nzShowTime formControlName="rangePickerTime"></nz-range-picker>
+          <nz-range-picker nzShowTime formControlName="rangePickerTime" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>TimePicker</nz-form-label>
         <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-time-picker formControlName="timePicker"></nz-time-picker>
+          <nz-time-picker formControlName="timePicker" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -54,13 +54,11 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
-      form {
-        max-width: 600px;
-      }
-    `
-  ]
+  styles: `
+    form {
+      max-width: 600px;
+    }
+  `
 })
 export class NzDemoFormTimeRelatedControlsComponent {
   private fb = inject(FormBuilder);

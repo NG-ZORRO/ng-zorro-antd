@@ -12,13 +12,11 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
     <br />
     <nz-segmented [nzOptions]="options" nzSize="large" />
   `,
-  styles: [
-    `
-      .ant-segmented {
-        margin-bottom: 10px;
-      }
-    `
-  ]
+  styles: `
+    .ant-segmented {
+      margin-bottom: 10px;
+    }
+  `
 })
 export class NzDemoSegmentedSizeComponent {
   options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];

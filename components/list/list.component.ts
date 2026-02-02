@@ -56,7 +56,7 @@ import {
         }
         @if (nzGrid && nzDataSource) {
           <div nz-row [nzGutter]="nzGrid.gutter || null">
-            @for (item of nzDataSource; track item; let index = $index) {
+            @for (item of nzDataSource; track item) {
               <div
                 nz-col
                 [nzSpan]="nzGrid.span || null"
@@ -69,18 +69,18 @@ import {
               >
                 <ng-template
                   [ngTemplateOutlet]="nzRenderItem"
-                  [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+                  [ngTemplateOutletContext]="{ $implicit: item, index: $index }"
                 />
               </div>
             }
           </div>
         } @else {
           <div class="ant-list-items">
-            @for (item of nzDataSource; track item; let index = $index) {
+            @for (item of nzDataSource; track item) {
               <ng-container>
                 <ng-template
                   [ngTemplateOutlet]="nzRenderItem"
-                  [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+                  [ngTemplateOutletContext]="{ $implicit: item, index: $index }"
                 />
               </ng-container>
             }
@@ -102,7 +102,7 @@ import {
 
     <ng-content select="nz-list-footer, [nz-list-footer]" />
 
-    <ng-template [ngTemplateOutlet]="nzLoadMore"></ng-template>
+    <ng-template [ngTemplateOutlet]="nzLoadMore" />
     <ng-content select="nz-list-load-more, [nz-list-load-more]" />
 
     @if (nzPagination) {

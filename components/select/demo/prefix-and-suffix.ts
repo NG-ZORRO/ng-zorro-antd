@@ -9,20 +9,8 @@ import { NzSelectModule, NzSelectOptionInterface } from 'ng-zorro-antd/select';
   imports: [FormsModule, NzSelectModule, NzFlexModule],
   template: `
     <nz-flex nzWrap="wrap" nzGap="small">
-      <nz-select
-        [(ngModel)]="value"
-        nzAllowClear
-        [style.width.px]="200"
-        nzPrefix="User"
-        [nzOptions]="options"
-      ></nz-select>
-      <nz-select
-        [(ngModel)]="value"
-        nzAllowClear
-        [style.width.px]="120"
-        nzSuffixIcon="smile"
-        [nzOptions]="options"
-      ></nz-select>
+      <nz-select [(ngModel)]="value" nzAllowClear [style.width.px]="200" nzPrefix="User" [nzOptions]="options" />
+      <nz-select [(ngModel)]="value" nzAllowClear [style.width.px]="120" nzSuffixIcon="smile" [nzOptions]="options" />
       <nz-select
         [(ngModel)]="value"
         nzAllowClear
@@ -30,7 +18,7 @@ import { NzSelectModule, NzSelectOptionInterface } from 'ng-zorro-antd/select';
         nzSuffixIcon="meh"
         nzDisabled
         [nzOptions]="options"
-      ></nz-select>
+      />
       <br />
       <nz-select
         [(ngModel)]="multipleValue"
@@ -39,7 +27,7 @@ import { NzSelectModule, NzSelectOptionInterface } from 'ng-zorro-antd/select';
         nzMode="tags"
         nzPrefix="User"
         [nzOptions]="options"
-      ></nz-select>
+      />
       <nz-select
         [(ngModel)]="multipleValue"
         nzAllowClear
@@ -47,7 +35,7 @@ import { NzSelectModule, NzSelectOptionInterface } from 'ng-zorro-antd/select';
         nzMode="tags"
         nzSuffixIcon="smile"
         [nzOptions]="options"
-      ></nz-select>
+      />
       <nz-select
         [(ngModel)]="multipleValue"
         nzAllowClear
@@ -56,7 +44,7 @@ import { NzSelectModule, NzSelectOptionInterface } from 'ng-zorro-antd/select';
         nzSuffixIcon="meh"
         nzDisabled
         [nzOptions]="options"
-      ></nz-select>
+      />
     </nz-flex>
   `
 })

@@ -6,15 +6,13 @@ import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
   selector: 'nz-demo-qr-code-color',
   imports: [NzQRCodeModule],
   template: `
-    <nz-qrcode nzValue="https://ng.ant.design/" nzColor="#ff6600"></nz-qrcode>
-    <nz-qrcode nzValue="https://ng.ant.design/" nzColor="#1677ff"></nz-qrcode>
+    <nz-qrcode nzValue="https://ng.ant.design/" nzColor="#ff6600" />
+    <nz-qrcode nzValue="https://ng.ant.design/" nzColor="#1677ff" />
   `,
-  styles: [
-    `
-      nz-qrcode {
-        margin-right: 12px;
-      }
-    `
-  ]
+  styles: `
+    nz-qrcode {
+      margin-right: 12px;
+    }
+  `
 })
 export class NzDemoQrCodeColorComponent {}

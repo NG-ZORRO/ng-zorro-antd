@@ -88,27 +88,27 @@ let nextId = 0;
         (selectFocusedIndex)="setSelectedIndex($event)"
         (addClicked)="onAdd()"
       >
-        @for (tab of tabs; track tab; let i = $index) {
+        @for (tab of tabs; track tab) {
           <div
             class="ant-tabs-tab"
             [style.margin-right.px]="position === 'horizontal' ? nzTabBarGutter : null"
             [style.margin-bottom.px]="position === 'vertical' ? nzTabBarGutter : null"
-            [class.ant-tabs-tab-active]="nzSelectedIndex === i"
+            [class.ant-tabs-tab-active]="nzSelectedIndex === $index"
             [class.ant-tabs-tab-disabled]="tab.nzDisabled"
-            (click)="clickNavItem(tab, i, $event)"
+            (click)="clickNavItem(tab, $index, $event)"
             (contextmenu)="contextmenuNavItem(tab, $event)"
           >
             <button
               type="button"
               role="tab"
-              [id]="getTabContentId(i)"
-              [attr.tabIndex]="getTabIndex(tab, i)"
+              [id]="getTabContentId($index)"
+              [attr.tabIndex]="getTabIndex(tab, $index)"
               [attr.aria-disabled]="tab.nzDisabled"
-              [attr.aria-selected]="nzSelectedIndex === i && !nzHideAll"
-              [attr.aria-controls]="getTabContentId(i)"
+              [attr.aria-selected]="nzSelectedIndex === $index && !nzHideAll"
+              [attr.aria-controls]="getTabContentId($index)"
               [disabled]="tab.nzDisabled"
               [tab]="tab"
-              [active]="nzSelectedIndex === i"
+              [active]="nzSelectedIndex === $index"
               class="ant-tabs-tab-btn"
               nzTabNavItem
               cdkMonitorElementFocus
@@ -121,7 +121,7 @@ let nextId = 0;
                   type="button"
                   nz-tab-close-button
                   [closeIcon]="tab.nzCloseIcon"
-                  (click)="onClose(i, $event)"
+                  (click)="onClose($index, $event)"
                 ></button>
               }
             </button>
@@ -139,26 +139,26 @@ let nextId = 0;
         [class.ant-tabs-content-animated]="tabPaneAnimated"
       >
         @if (!nzHideAll) {
-          @for (tab of tabs; track tab; let i = $index) {
+          @for (tab of tabs; track tab) {
             @if (tab.nzForceRender) {
-              <ng-template [ngTemplateOutlet]="tabpaneTmpl"></ng-template>
+              <ng-template [ngTemplateOutlet]="tabpaneTmpl" />
             } @else if (nzDestroyInactiveTabPane) {
-              @if (nzSelectedIndex === i) {
-                <ng-template [ngTemplateOutlet]="tabpaneTmpl"></ng-template>
+              @if (nzSelectedIndex === $index) {
+                <ng-template [ngTemplateOutlet]="tabpaneTmpl" />
               }
             } @else {
-              @if (nzSelectedIndex === i || tab.hasBeenActive) {
-                <ng-template [ngTemplateOutlet]="tabpaneTmpl"></ng-template>
+              @if (nzSelectedIndex === $index || tab.hasBeenActive) {
+                <ng-template [ngTemplateOutlet]="tabpaneTmpl" />
               }
             }
 
             <ng-template #tabpaneTmpl>
               <div
                 role="tabpanel"
-                [id]="getTabContentId(i)"
-                [attr.aria-labelledby]="getTabContentId(i)"
+                [id]="getTabContentId($index)"
+                [attr.aria-labelledby]="getTabContentId($index)"
                 nz-tab-body
-                [active]="nzSelectedIndex === i"
+                [active]="nzSelectedIndex === $index"
                 [content]="tab.content"
                 [animated]="tabPaneAnimated"
               ></div>

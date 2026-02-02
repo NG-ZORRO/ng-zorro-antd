@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 @Component({
   selector: 'nz-content',
   exportAs: 'nzContent',
-  template: `<ng-content></ng-content>`,
+  template: `<ng-content />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {

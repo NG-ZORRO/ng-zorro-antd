@@ -57,14 +57,14 @@ import { NzItemProps } from './typings';
         @if (progress()) {
           <div class="ant-check-list-progressBar">
             <div class="ant-check-list-progressBar-progress">
-              <nz-progress [nzPercent]="progressPercent() | number: '1.0-0'"></nz-progress>
+              <nz-progress [nzPercent]="progressPercent() | number: '1.0-0'" />
             </div>
           </div>
         }
       }
       <div class="ant-check-list-steps-content">
-        @for (item of items(); track item.key || item.description; let i = $index) {
-          @let itemHighlight = index() === i + 1;
+        @for (item of items(); track item.key || item.description) {
+          @let itemHighlight = index() === $index + 1;
           <div
             class="ant-check-list-steps"
             [class.ant-check-list-highlight]="itemHighlight"
@@ -75,7 +75,7 @@ import { NzItemProps } from './typings';
                 @if (item?.checked) {
                   <nz-icon nzType="check" nzTheme="outline" class="ant-check-list-steps-checkoutlined" />
                 } @else {
-                  <div class="ant-check-list-steps-number">{{ i + 1 }}</div>
+                  <div class="ant-check-list-steps-number">{{ $index + 1 }}</div>
                 }
               </div>
               <div class="ant-check-list-steps-item-description">{{ item.description }}</div>

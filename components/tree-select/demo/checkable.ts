@@ -15,7 +15,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       nzShowSearch
       nzCheckable
       nzPlaceHolder="Please select"
-    ></nz-tree-select>
+    />
   `
 })
 export class NzDemoTreeSelectCheckableComponent {

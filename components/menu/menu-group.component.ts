@@ -46,7 +46,7 @@ function MenuGroupFactory(): boolean {
         <ng-content select="[title]" />
       }
     </div>
-    <ng-content></ng-content>
+    <ng-content />
   `,
   imports: [NzOutletModule],
   host: {

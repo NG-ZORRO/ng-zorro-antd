@@ -153,7 +153,7 @@ describe('watermark (SSR)', () => {
       [nzGap]="nzGap"
       [nzOffset]="nzOffset"
       class="watermark"
-    ></nz-watermark>
+    />
   `
 })
 export class NzTestWatermarkBasicComponent {

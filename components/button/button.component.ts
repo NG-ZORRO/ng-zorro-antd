@@ -56,7 +56,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
         <nz-icon nzType="loading" />
       </span>
     }
-    <ng-content></ng-content>
+    <ng-content />
   `,
   host: {
     class: 'ant-btn',

@@ -11,8 +11,8 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
       <button nz-button (click)="newTab()">ADD</button>
     </div>
     <nz-tabs [(nzSelectedIndex)]="index" nzType="editable-card" nzHideAdd (nzClose)="closeTab($event)">
-      @for (tab of tabs; track tab; let i = $index) {
-        <nz-tab [nzClosable]="i > 1" [nzTitle]="tab">Content of {{ tab }}</nz-tab>
+      @for (tab of tabs; track tab) {
+        <nz-tab [nzClosable]="$index > 1" [nzTitle]="tab">Content of {{ tab }}</nz-tab>
       }
     </nz-tabs>
   `

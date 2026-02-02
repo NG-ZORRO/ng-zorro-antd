@@ -11,11 +11,11 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
     <div class="slider-container">
       <span>Horizontal Gutter (px):</span>
       <div class="slider">
-        <nz-slider [nzMarks]="marksHGutter" [nzStep]="null" [nzMin]="8" [nzMax]="48" [(ngModel)]="hGutter"></nz-slider>
+        <nz-slider [nzMarks]="marksHGutter" [nzStep]="null" [nzMin]="8" [nzMax]="48" [(ngModel)]="hGutter" />
       </div>
       <span>Vertical Gutter (px):</span>
       <div class="slider">
-        <nz-slider [nzMarks]="marksVGutter" [nzStep]="null" [nzMin]="8" [nzMax]="48" [(ngModel)]="vGutter"></nz-slider>
+        <nz-slider [nzMarks]="marksVGutter" [nzStep]="null" [nzMin]="8" [nzMax]="48" [(ngModel)]="vGutter" />
       </div>
       <span>Column Count:</span>
       <div class="slider">
@@ -26,7 +26,7 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
           [nzMax]="12"
           [(ngModel)]="count"
           (ngModelChange)="reGenerateArray($event)"
-        ></nz-slider>
+        />
       </div>
     </div>
 
@@ -46,23 +46,21 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
       </div>
     </div>
   `,
-  styles: [
-    `
-      .slider {
-        width: 50%;
-      }
-      .slider-container {
-        margin-bottom: 16px;
-      }
-      .grid-config {
-        height: 120px;
-        font-size: 14px;
-        line-height: 120px;
-        background: #0092ff;
-        border-radius: 4px;
-      }
-    `
-  ]
+  styles: `
+    .slider {
+      width: 50%;
+    }
+    .slider-container {
+      margin-bottom: 16px;
+    }
+    .grid-config {
+      height: 120px;
+      font-size: 14px;
+      line-height: 120px;
+      background: #0092ff;
+      border-radius: 4px;
+    }
+  `
 })
 export class NzDemoGridPlaygroundComponent {
   hGutter = 16;

@@ -380,7 +380,7 @@ export class NzTestCollapseTemplateComponent {}
       <nz-collapse-panel>
         <p>Panel01</p>
       </nz-collapse-panel>
-      <nz-collapse-panel [nzExpandedIcon]="'double-right'">
+      <nz-collapse-panel nzExpandedIcon="double-right">
         <p>Panel02</p>
       </nz-collapse-panel>
       <nz-collapse-panel [nzExpandedIcon]="expandedIcon">

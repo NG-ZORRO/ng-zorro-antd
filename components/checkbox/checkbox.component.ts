@@ -59,7 +59,7 @@ import { NZ_CHECKBOX_GROUP } from './tokens';
       />
       <span class="ant-checkbox-inner"></span>
     </span>
-    <span><ng-content></ng-content></span>
+    <span><ng-content /></span>
   `,
   providers: [
     {

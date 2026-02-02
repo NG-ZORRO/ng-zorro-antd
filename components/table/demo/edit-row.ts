@@ -47,13 +47,11 @@ interface ItemData {
       </tbody>
     </nz-table>
   `,
-  styles: [
-    `
-      .save {
-        margin-right: 8px;
-      }
-    `
-  ]
+  styles: `
+    .save {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoTableEditRowComponent implements OnInit {
   editCache: { [key: string]: { edit: boolean; data: ItemData } } = {};

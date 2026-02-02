@@ -24,17 +24,15 @@ function alphabet(): string[] {
       [(ngModel)]="listOfSelectedValue"
     >
       @for (item of listOfOption; track item) {
-        <nz-option [nzLabel]="item" [nzValue]="item"></nz-option>
+        <nz-option [nzLabel]="item" [nzValue]="item" />
       }
     </nz-select>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectMaxCountComponent {
   readonly listOfOption: string[] = alphabet();

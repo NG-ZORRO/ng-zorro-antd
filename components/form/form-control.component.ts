@@ -43,7 +43,7 @@ import { NzFormDirective } from './form.directive';
   template: `
     <div class="ant-form-item-control-input">
       <div class="ant-form-item-control-input-content">
-        <ng-content></ng-content>
+        <ng-content />
       </div>
     </div>
     @if (innerTip) {

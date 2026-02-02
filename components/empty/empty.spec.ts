@@ -295,7 +295,7 @@ export class NzEmptyTestBasicComponent {
 @Component({
   imports: [NzListModule],
   template: `
-    <nz-list [nzDataSource]="[]" [nzNoResult]="noResult"></nz-list>
+    <nz-list [nzDataSource]="[]" [nzNoResult]="noResult" />
     <ng-template #tpl let-component>
       <div>I am in template {{ component }}</div>
     </ng-template>

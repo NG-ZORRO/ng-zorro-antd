@@ -24,26 +24,26 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
         [nzActive]="elementActive"
         [nzSize]="elementSize"
         [nzShape]="buttonShape"
-      ></nz-skeleton-element>
+      />
       <nz-skeleton-element
         *nzSpaceItem
         nzType="avatar"
         [nzActive]="elementActive"
         [nzSize]="elementSize"
         [nzShape]="avatarShape"
-      ></nz-skeleton-element>
+      />
       <nz-skeleton-element
         *nzSpaceItem
         nzType="input"
         [nzActive]="elementActive"
         [nzSize]="elementSize"
         style="width:200px"
-      ></nz-skeleton-element>
+      />
     </nz-space>
     <br />
     <br />
-    <nz-skeleton-element nzType="image" [nzActive]="elementActive"></nz-skeleton-element>
-    <nz-divider></nz-divider>
+    <nz-skeleton-element nzType="image" [nzActive]="elementActive" />
+    <nz-divider />
     <div nz-row nzAlign="middle" [nzGutter]="8">
       <div nz-col nzSpan="10">
         Size:
@@ -55,7 +55,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       </div>
       <div nz-col nzSpan="5">
         Active:
-        <nz-switch [(ngModel)]="elementActive"></nz-switch>
+        <nz-switch [(ngModel)]="elementActive" />
       </div>
     </div>
     <br />

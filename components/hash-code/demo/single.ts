@@ -6,9 +6,9 @@ import { NzHashCodeModule } from 'ng-zorro-antd/hash-code';
   selector: 'nz-demo-hash-code-single',
   imports: [NzHashCodeModule],
   template: `
-    <nz-hash-code [nzValue]="value" nzMode="single"></nz-hash-code>
+    <nz-hash-code [nzValue]="value" nzMode="single" />
     <br />
-    <nz-hash-code [nzValue]="value" nzMode="single" nzType="primary"></nz-hash-code>
+    <nz-hash-code [nzValue]="value" nzMode="single" nzType="primary" />
   `
 })
 export class NzDemoHashCodeSingleComponent {

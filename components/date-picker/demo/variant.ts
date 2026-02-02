@@ -14,12 +14,10 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
       <nz-date-picker *nzSpaceItem nzVariant="underlined" />
     </nz-space>
   `,
-  styles: [
-    `
-      nz-date-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerVariantComponent {}

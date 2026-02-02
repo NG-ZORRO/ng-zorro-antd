@@ -9,14 +9,14 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
   imports: [NgTemplateOutlet, NzStepsModule, NzPopoverModule],
   template: `
     <nz-steps [nzCurrent]="1" [nzProgressDot]="progressTemplate">
-      <nz-step nzTitle="Finished" nzDescription="You can hover on the dot."></nz-step>
-      <nz-step nzTitle="In Progress" nzDescription="You can hover on the dot."></nz-step>
-      <nz-step nzTitle="Waiting" nzDescription="You can hover on the dot."></nz-step>
-      <nz-step nzTitle="Waiting" nzDescription="You can hover on the dot."></nz-step>
+      <nz-step nzTitle="Finished" nzDescription="You can hover on the dot." />
+      <nz-step nzTitle="In Progress" nzDescription="You can hover on the dot." />
+      <nz-step nzTitle="Waiting" nzDescription="You can hover on the dot." />
+      <nz-step nzTitle="Waiting" nzDescription="You can hover on the dot." />
     </nz-steps>
     <ng-template #progressTemplate let-dot let-status="status" let-index="index">
       <span nz-popover nzPopoverContent="steps {{ index }} status: {{ status }}" style="margin-left: -100%;">
-        <ng-template [ngTemplateOutlet]="dot"></ng-template>
+        <ng-template [ngTemplateOutlet]="dot" />
       </span>
     </ng-template>
   `

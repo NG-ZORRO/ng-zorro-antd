@@ -447,7 +447,7 @@ describe('progress', () => {
       [nzStrokeColor]="strokeColor"
       [nzStrokeLinecap]="strokeLinecap"
       [nzSteps]="steps"
-    ></nz-progress>
+    />
     <ng-template #formatterTemplate let-percent>{{ percent }} / 100</ng-template>
   `
 })
@@ -477,7 +477,7 @@ export class NzTestProgressLineComponent {
       [nzStrokeWidth]="strokeWidth"
       [nzPercent]="percent"
       [nzStrokeLinecap]="strokeLinecap"
-    ></nz-progress>
+    />
   `
 })
 export class NzTestProgressDashBoardComponent {
@@ -500,7 +500,7 @@ export class NzTestProgressDashBoardComponent {
       [nzGapPosition]="gapPosition"
       [nzStrokeColor]="strokeColor"
       [nzStrokeLinecap]="strokeLinecap"
-    ></nz-progress>
+    />
   `
 })
 export class NzTestProgressCircleComponent {
@@ -512,7 +512,7 @@ export class NzTestProgressCircleComponent {
 
 @Component({
   imports: [NzProgressModule],
-  template: `<nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>`
+  template: `<nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60" />`
 })
 export class NzTestProgressCircleSuccessComponent {}
 
@@ -520,7 +520,7 @@ export class NzTestProgressCircleSuccessComponent {}
   imports: [BidiModule, NzProgressModule],
   template: `
     <div [dir]="direction">
-      <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>
+      <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60" />
     </div>
   `
 })

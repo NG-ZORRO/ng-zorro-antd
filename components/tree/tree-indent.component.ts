@@ -9,14 +9,14 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
   selector: 'nz-tree-indent',
   exportAs: 'nzTreeIndent',
   template: `
-    @for (_ of listOfUnit; track i; let i = $index) {
+    @for (_ of listOfUnit; track $index) {
       <span
         [class.ant-tree-indent-unit]="!nzSelectMode"
         [class.ant-select-tree-indent-unit]="nzSelectMode"
-        [class.ant-select-tree-indent-unit-start]="nzSelectMode && nzIsStart[i]"
-        [class.ant-tree-indent-unit-start]="!nzSelectMode && nzIsStart[i]"
-        [class.ant-select-tree-indent-unit-end]="nzSelectMode && nzIsEnd[i]"
-        [class.ant-tree-indent-unit-end]="!nzSelectMode && nzIsEnd[i]"
+        [class.ant-select-tree-indent-unit-start]="nzSelectMode && nzIsStart[$index]"
+        [class.ant-tree-indent-unit-start]="!nzSelectMode && nzIsStart[$index]"
+        [class.ant-select-tree-indent-unit-end]="nzSelectMode && nzIsEnd[$index]"
+        [class.ant-tree-indent-unit-end]="!nzSelectMode && nzIsEnd[$index]"
       ></span>
     }
   `,

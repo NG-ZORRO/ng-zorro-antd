@@ -7,7 +7,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
   selector: 'nz-demo-tree-customized-icon',
   imports: [NzIconModule, NzTreeModule],
   template: `
-    <nz-tree [nzData]="nodes" nzShowIcon></nz-tree>
+    <nz-tree [nzData]="nodes" nzShowIcon />
     <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="multiExpandedIconTpl">
       <ng-template #multiExpandedIconTpl let-node let-origin="origin">
         @if (!origin.isLeaf) {

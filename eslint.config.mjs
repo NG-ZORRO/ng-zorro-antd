@@ -101,6 +101,12 @@ export default tseslint.config(
       '@angular-eslint/prefer-output-readonly': 'error',
       '@angular-eslint/use-component-selector': 'off',
       '@angular-eslint/use-component-view-encapsulation': 'off',
+      '@angular-eslint/no-implicit-take-until-destroyed': 'error',
+      '@angular-eslint/consistent-component-styles': [
+        'error',
+        'string'
+      ],
+      '@angular-eslint/use-lifecycle-interface': 'error',
       '@typescript-eslint/array-type': [
         'error',
         {
@@ -223,7 +229,13 @@ export default tseslint.config(
         {
           parser: 'angular'
         }
-      ]
+      ],
+      '@angular-eslint/template/prefer-self-closing-tags': 'error',
+      '@angular-eslint/template/prefer-at-empty': 'error',
+      '@angular-eslint/template/prefer-static-string-properties': 'error',
+      '@angular-eslint/template/prefer-contextual-for-variables': 'error',
+      // TODO: This rule has some bugs; we'll try enabling it again in the future.
+      // '@angular-eslint/template/prefer-template-literal': 'error',
     }
   },
   {

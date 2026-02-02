@@ -24,14 +24,14 @@ import { NzTableLayout } from '../table.types';
     }
     @if (theadTemplate) {
       <thead class="ant-table-thead">
-        <ng-template [ngTemplateOutlet]="theadTemplate"></ng-template>
+        <ng-template [ngTemplateOutlet]="theadTemplate" />
       </thead>
     }
-    <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-    <ng-content></ng-content>
+    <ng-template [ngTemplateOutlet]="contentTemplate" />
+    <ng-content />
     @if (tfootTemplate) {
       <tfoot class="ant-table-summary">
-        <ng-template [ngTemplateOutlet]="tfootTemplate"></ng-template>
+        <ng-template [ngTemplateOutlet]="tfootTemplate" />
       </tfoot>
     }
   `,

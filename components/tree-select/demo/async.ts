@@ -18,7 +18,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       [nzNodes]="nodes"
       [nzAsyncData]="true"
       (nzExpandChange)="onExpandChange($event)"
-    ></nz-tree-select>
+    />
   `
 })
 export class NzDemoTreeSelectAsyncComponent {

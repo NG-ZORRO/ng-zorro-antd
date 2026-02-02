@@ -107,8 +107,7 @@ describe('hash-code', () => {
       [nzMode]="mode"
       [nzType]="type"
       (nzOnCopy)="onCopy($event)"
-    >
-    </nz-hash-code>
+    />
   `
 })
 export class NzTestHashCodeBasicComponent {

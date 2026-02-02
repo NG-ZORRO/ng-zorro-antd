@@ -72,7 +72,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [footer]="nzFooter"
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
-    ></nz-transfer-list>
+    />
     @if (dir !== 'rtl') {
       <div class="ant-transfer-operation">
         @if (!nzOneWay) {
@@ -81,8 +81,8 @@ import { NzTransferListComponent } from './transfer-list.component';
             type="button"
             (click)="moveToLeft()"
             [disabled]="nzDisabled || !leftActive"
-            [nzType]="'primary'"
-            [nzSize]="'small'"
+            nzType="primary"
+            nzSize="small"
           >
             <nz-icon nzType="left" />
             @if (nzOperations[1]) {
@@ -95,8 +95,8 @@ import { NzTransferListComponent } from './transfer-list.component';
           type="button"
           (click)="moveToRight()"
           [disabled]="nzDisabled || !rightActive"
-          [nzType]="'primary'"
-          [nzSize]="'small'"
+          nzType="primary"
+          nzSize="small"
         >
           <nz-icon nzType="right" />
           @if (nzOperations[0]) {
@@ -111,8 +111,8 @@ import { NzTransferListComponent } from './transfer-list.component';
           type="button"
           (click)="moveToRight()"
           [disabled]="nzDisabled || !rightActive"
-          [nzType]="'primary'"
-          [nzSize]="'small'"
+          nzType="primary"
+          nzSize="small"
         >
           <nz-icon nzType="left" />
           @if (nzOperations[0]) {
@@ -125,8 +125,8 @@ import { NzTransferListComponent } from './transfer-list.component';
             type="button"
             (click)="moveToLeft()"
             [disabled]="nzDisabled || !leftActive"
-            [nzType]="'primary'"
-            [nzSize]="'small'"
+            nzType="primary"
+            nzSize="small"
           >
             <nz-icon nzType="right" />
             @if (nzOperations[1]) {
@@ -160,7 +160,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       (moveToLeft)="moveToLeft()"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"
-    ></nz-transfer-list>
+    />
   `,
   host: {
     class: 'ant-transfer',

@@ -73,7 +73,7 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
             [class.ant-input-affix-wrapper-focused]="focused"
             [class]="affixInGroupStatusCls"
           >
-            <ng-template [ngTemplateOutlet]="affixTemplate"></ng-template>
+            <ng-template [ngTemplateOutlet]="affixTemplate" />
           </span>
         } @else {
           <ng-template [ngTemplateOutlet]="contentTemplate" />
@@ -107,7 +107,7 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
 
     <!-- content template -->
     <ng-template #contentTemplate>
-      <ng-content></ng-content>
+      <ng-content />
       @if (!isAddOn && !isAffix && isFeedback) {
         <span nz-input-group-slot type="suffix">
           <nz-form-item-feedback-icon [status]="status" />

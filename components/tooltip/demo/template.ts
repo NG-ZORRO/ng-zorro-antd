@@ -15,13 +15,11 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       <span>Tooltip With {{ thing }}</span>
     </ng-template>
   `,
-  styles: [
-    `
-      .anticon {
-        margin-right: 8px;
-        margin-left: 8px;
-      }
-    `
-  ]
+  styles: `
+    .anticon {
+      margin-right: 8px;
+      margin-left: 8px;
+    }
+  `
 })
 export class NzDemoTooltipTemplateComponent {}

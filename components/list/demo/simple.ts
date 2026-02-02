@@ -44,19 +44,17 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       <nz-list-footer>Footer</nz-list-footer>
     </ul>
   `,
-  styles: [
-    `
-      h3 {
-        margin: 16px 0;
-      }
-      h3:first-child {
-        margin-top: 0;
-      }
-      h3:last-child {
-        margin-bottom: 0;
-      }
-    `
-  ]
+  styles: `
+    h3 {
+      margin: 16px 0;
+    }
+    h3:first-child {
+      margin-top: 0;
+    }
+    h3:last-child {
+      margin-bottom: 0;
+    }
+  `
 })
 export class NzDemoListSimpleComponent {
   data = [

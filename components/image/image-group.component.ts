@@ -10,7 +10,7 @@ import { NzImageDirective } from './image.directive';
 @Component({
   selector: 'nz-image-group',
   exportAs: 'nzImageGroup',
-  template: '<ng-content></ng-content>',
+  template: '<ng-content />',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })

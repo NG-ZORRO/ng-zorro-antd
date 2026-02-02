@@ -27,12 +27,10 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
       </div>
     </div>
   `,
-  styles: [
-    `
-      p {
-        margin: 0;
-      }
-    `
-  ]
+  styles: `
+    p {
+      margin: 0;
+    }
+  `
 })
 export class NzDemoCardInColumnComponent {}

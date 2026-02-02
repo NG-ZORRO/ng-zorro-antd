@@ -8,9 +8,9 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
   imports: [NzButtonModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
-      <nz-step nzTitle="Finished"></nz-step>
-      <nz-step nzTitle="In Progress"></nz-step>
-      <nz-step nzTitle="Waiting"></nz-step>
+      <nz-step nzTitle="Finished" />
+      <nz-step nzTitle="In Progress" />
+      <nz-step nzTitle="Waiting" />
     </nz-steps>
 
     <div class="steps-content">{{ index }}</div>
@@ -32,27 +32,25 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
       }
     </div>
   `,
-  styles: [
-    `
-      .steps-content {
-        margin-top: 16px;
-        border: 1px dashed #e9e9e9;
-        border-radius: 6px;
-        background-color: #fafafa;
-        min-height: 200px;
-        text-align: center;
-        padding-top: 80px;
-      }
+  styles: `
+    .steps-content {
+      margin-top: 16px;
+      border: 1px dashed #e9e9e9;
+      border-radius: 6px;
+      background-color: #fafafa;
+      min-height: 200px;
+      text-align: center;
+      padding-top: 80px;
+    }
 
-      .steps-action {
-        margin-top: 24px;
-      }
+    .steps-action {
+      margin-top: 24px;
+    }
 
-      button {
-        margin-right: 8px;
-      }
-    `
-  ]
+    button {
+      margin-right: 8px;
+    }
+  `
 })
 export class NzDemoStepsStepNextComponent {
   current = 0;

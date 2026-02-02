@@ -14,23 +14,21 @@ import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
         nzTooltipTitle="Documents"
         nzTooltipPlacement="top"
         nzTooltipColor="blue"
-      ></nz-float-button>
-      <nz-float-button nz-tooltip [nzTooltipTitle]="titleTemplate"></nz-float-button>
+      />
+      <nz-float-button nz-tooltip [nzTooltipTitle]="titleTemplate" />
       <ng-template #titleTemplate>
         <div>Documents</div>
       </ng-template>
     </div>
   `,
-  styles: [
-    `
-      .tooltip {
-        height: 300px;
-        position: relative;
-      }
-      nz-float-button {
-        position: absolute;
-      }
-    `
-  ]
+  styles: `
+    .tooltip {
+      height: 300px;
+      position: relative;
+    }
+    nz-float-button {
+      position: absolute;
+    }
+  `
 })
 export class NzDemoFloatButtonTooltipComponent {}

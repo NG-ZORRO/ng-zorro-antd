@@ -36,11 +36,11 @@ const CLASS_NAME = 'ant-float-btn-group';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (!isMenuMode()) {
-      <ng-container *ngTemplateOutlet="menu"></ng-container>
+      <ng-container *ngTemplateOutlet="menu" />
     } @else {
       @if (open()) {
         <div class="ant-float-btn-group-wrap" [animate.enter]="enterAnimation()" [animate.leave]="leaveAnimation()">
-          <ng-container *ngTemplateOutlet="menu"></ng-container>
+          <ng-container *ngTemplateOutlet="menu" />
         </div>
       }
       <nz-float-button
@@ -51,9 +51,9 @@ const CLASS_NAME = 'ant-float-btn-group';
         [nzDescription]="open() ? null : nzDescription()"
         (nzOnClick)="open() ? clickCloseMenu() : clickOpenMenu()"
         (mouseover)="hoverOpenMenu()"
-      ></nz-float-button>
+      />
     }
-    <ng-template #menu><ng-content></ng-content></ng-template>
+    <ng-template #menu><ng-content /></ng-template>
     <ng-template #close>
       <nz-icon nzType="close" nzTheme="outline" />
     </ng-template>

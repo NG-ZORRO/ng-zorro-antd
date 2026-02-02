@@ -271,10 +271,10 @@ export class NzTestTimelineBasicComponent {
   imports: [NzTimelineModule],
   template: `
     <nz-timeline>
-      <nz-timeline-item [nzColor]="'cyan'">Create a services site 2015-09-01</nz-timeline-item>
-      <nz-timeline-item [nzColor]="'rgb(200, 0, 0)'">Solve initial network problems 2015-09-01</nz-timeline-item>
-      <nz-timeline-item [nzColor]="'#781241'">Technical testing 2015-09-01</nz-timeline-item>
-      <nz-timeline-item [nzColor]="'red'">Network problems being solved 2015-09-01</nz-timeline-item>
+      <nz-timeline-item nzColor="cyan">Create a services site 2015-09-01</nz-timeline-item>
+      <nz-timeline-item nzColor="rgb(200, 0, 0)">Solve initial network problems 2015-09-01</nz-timeline-item>
+      <nz-timeline-item nzColor="#781241">Technical testing 2015-09-01</nz-timeline-item>
+      <nz-timeline-item nzColor="red">Network problems being solved 2015-09-01</nz-timeline-item>
     </nz-timeline>
   `
 })
@@ -307,7 +307,7 @@ export class NzTestTimelineCustomPositionComponent {}
   imports: [BidiModule, NzTestTimelineBasicComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-basic-timeline></nz-test-basic-timeline>
+      <nz-test-basic-timeline />
     </div>
   `
 })

@@ -15,24 +15,22 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
     </nz-radio-group>
     <br />
     <br />
-    <nz-date-picker [nzSize]="size"></nz-date-picker>
+    <nz-date-picker [nzSize]="size" />
     <br />
-    <nz-date-picker nzMode="week" [nzSize]="size"></nz-date-picker>
+    <nz-date-picker nzMode="week" [nzSize]="size" />
     <br />
-    <nz-date-picker nzMode="month" [nzSize]="size"></nz-date-picker>
+    <nz-date-picker nzMode="month" [nzSize]="size" />
     <br />
-    <nz-date-picker nzMode="quarter" [nzSize]="size"></nz-date-picker>
+    <nz-date-picker nzMode="quarter" [nzSize]="size" />
     <br />
-    <nz-range-picker [nzSize]="size"></nz-range-picker>
+    <nz-range-picker [nzSize]="size" />
   `,
-  styles: [
-    `
-      nz-date-picker,
-      nz-range-picker {
-        margin: 0 8px 12px 0;
-      }
-    `
-  ]
+  styles: `
+    nz-date-picker,
+    nz-range-picker {
+      margin: 0 8px 12px 0;
+    }
+  `
 })
 export class NzDemoDatePickerSizeComponent {
   size: NzDatePickerSizeType = 'default';

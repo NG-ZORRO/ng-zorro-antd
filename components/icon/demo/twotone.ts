@@ -10,13 +10,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     <nz-icon nzType="heart" nzTheme="twotone" nzTwotoneColor="#eb2f96" />
     <nz-icon nzType="check-circle" nzTheme="twotone" nzTwotoneColor="#52c41a" />
   `,
-  styles: [
-    `
-      nz-icon {
-        margin-right: 6px;
-        font-size: 24px;
-      }
-    `
-  ]
+  styles: `
+    nz-icon {
+      margin-right: 6px;
+      font-size: 24px;
+    }
+  `
 })
 export class NzDemoIconTwotoneComponent {}

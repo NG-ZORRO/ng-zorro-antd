@@ -193,7 +193,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         <nz-select-clear (clear)="clearSelection($event)" />
       }
     }
-    <ng-content></ng-content>
+    <ng-content />
 
     <ng-template
       cdkConnectedOverlay
@@ -201,7 +201,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayPositions]="positions"
-      [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-dropdown'"
+      cdkConnectedOverlayTransformOriginOn=".ant-cascader-dropdown"
       [cdkConnectedOverlayOpen]="menuVisible()"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="closeMenu()"
@@ -234,7 +234,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
                 <nz-embed-empty
                   class="ant-cascader-menu-item-content"
-                  [nzComponentName]="'cascader'"
+                  nzComponentName="cascader"
                   [specificContent]="nzNotFoundContent"
                 />
               </li>

@@ -20,15 +20,13 @@ function alphabet(size: number): string[] {
       nzPlaceHolder="Please select"
       [nzOptions]="listOfOption"
       [(ngModel)]="listOfSelectedValue"
-    ></nz-select>
+    />
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectBigDataComponent {
   readonly listOfOption: Array<{ value: string; label: string }> = alphabet(10000).map(item => ({

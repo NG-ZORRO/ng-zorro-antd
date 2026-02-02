@@ -101,7 +101,7 @@ const listOfHorizontalPositions = [
         [cdkConnectedOverlayOrigin]="origin"
         [cdkConnectedOverlayWidth]="triggerWidth!"
         [cdkConnectedOverlayOpen]="nzOpen"
-        [cdkConnectedOverlayTransformOriginOn]="'.ant-menu-submenu'"
+        cdkConnectedOverlayTransformOriginOn=".ant-menu-submenu"
         (overlayOutsideClick)="setMouseEnterState(false)"
       >
         <div

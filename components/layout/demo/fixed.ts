@@ -28,49 +28,47 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
     </nz-layout>
   `,
-  styles: [
-    `
-      .layout {
-        min-height: 100vh;
-      }
+  styles: `
+    .layout {
+      min-height: 100vh;
+    }
 
-      .logo {
-        width: 120px;
-        height: 31px;
-        background: rgba(255, 255, 255, 0.2);
-        margin: 16px 24px 16px 0;
-        float: left;
-      }
+    .logo {
+      width: 120px;
+      height: 31px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 16px 24px 16px 0;
+      float: left;
+    }
 
-      nz-header {
-        position: fixed;
-        width: 100%;
-      }
+    nz-header {
+      position: fixed;
+      width: 100%;
+    }
 
-      [nz-menu] {
-        line-height: 64px;
-      }
+    [nz-menu] {
+      line-height: 64px;
+    }
 
-      nz-content {
-        padding: 0 50px;
-        margin-top: 64px;
-      }
+    nz-content {
+      padding: 0 50px;
+      margin-top: 64px;
+    }
 
-      nz-breadcrumb {
-        margin: 16px 0;
-      }
+    nz-breadcrumb {
+      margin: 16px 0;
+    }
 
-      .inner-content {
-        background: #fff;
-        padding: 24px;
-        min-height: 380px;
-      }
+    .inner-content {
+      background: #fff;
+      padding: 24px;
+      min-height: 380px;
+    }
 
-      nz-footer {
-        text-align: center;
-      }
-    `
-  ]
+    nz-footer {
+      text-align: center;
+    }
+  `
 })
 export class NzDemoLayoutFixedComponent {
   protected readonly date = new Date();

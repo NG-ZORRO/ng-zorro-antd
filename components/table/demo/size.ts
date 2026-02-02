@@ -45,13 +45,11 @@ import { NzTableModule } from 'ng-zorro-antd/table';
       </tbody>
     </nz-table>
   `,
-  styles: [
-    `
-      h4 {
-        margin-bottom: 16px;
-      }
-    `
-  ]
+  styles: `
+    h4 {
+      margin-bottom: 16px;
+    }
+  `
 })
 export class NzDemoTableSizeComponent {
   data = [

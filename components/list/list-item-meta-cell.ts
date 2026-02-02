@@ -12,7 +12,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
   exportAs: 'nzListItemMetaTitle',
   template: `
     <h4 class="ant-list-item-meta-title">
-      <ng-content></ng-content>
+      <ng-content />
     </h4>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -24,7 +24,7 @@ export class NzListItemMetaTitleComponent {}
   exportAs: 'nzListItemMetaDescription',
   template: `
     <div class="ant-list-item-meta-description">
-      <ng-content></ng-content>
+      <ng-content />
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

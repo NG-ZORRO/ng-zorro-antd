@@ -8,14 +8,12 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
   imports: [NzIconModule, NzSpinModule],
   template: `
     <ng-template #indicatorTemplate><nz-icon nzType="loading" /></ng-template>
-    <nz-spin nzSimple [nzIndicator]="indicatorTemplate"></nz-spin>
+    <nz-spin nzSimple [nzIndicator]="indicatorTemplate" />
   `,
-  styles: [
-    `
-      nz-icon {
-        font-size: 24px;
-      }
-    `
-  ]
+  styles: `
+    nz-icon {
+      font-size: 24px;
+    }
+  `
 })
 export class NzDemoSpinCustomIndicatorComponent {}

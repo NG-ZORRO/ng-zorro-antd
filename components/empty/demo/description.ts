@@ -5,6 +5,6 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 @Component({
   selector: 'nz-demo-empty-description',
   imports: [NzEmptyModule],
-  template: `<nz-empty [nzNotFoundContent]="null"></nz-empty>`
+  template: `<nz-empty [nzNotFoundContent]="null" />`
 })
 export class NzDemoEmptyDescriptionComponent {}

@@ -436,7 +436,7 @@ describe('form-control', () => {
   imports: [NzFormModule],
   template: `
     <nz-form-item>
-      <nz-form-control [nzHasFeedback]="hasFeedback" [nzValidateStatus]="status"></nz-form-control>
+      <nz-form-control [nzHasFeedback]="hasFeedback" [nzValidateStatus]="status" />
     </nz-form-item>
   `
 })

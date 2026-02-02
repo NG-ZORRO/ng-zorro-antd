@@ -7,19 +7,17 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
   imports: [NzFloatButtonModule],
   template: `
     <div class="basic">
-      <nz-float-button></nz-float-button>
+      <nz-float-button />
     </div>
   `,
-  styles: [
-    `
-      .basic {
-        height: 300px;
-        position: relative;
-      }
-      nz-float-button {
-        position: absolute;
-      }
-    `
-  ]
+  styles: `
+    .basic {
+      height: 300px;
+      position: relative;
+    }
+    nz-float-button {
+      position: absolute;
+    }
+  `
 })
 export class NzDemoFloatButtonBasicComponent {}

@@ -11,30 +11,28 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   template: `
     <div class="segment-wrapper">
       <span>Select wrap:</span>
-      <nz-segmented [nzOptions]="wrapSegment" [(ngModel)]="selectedWrap"></nz-segmented>
+      <nz-segmented [nzOptions]="wrapSegment" [(ngModel)]="selectedWrap" />
     </div>
-    <div class="btn-wrapper" nz-flex [nzGap]="'middle'" [nzWrap]="selectedWrap">
+    <div class="btn-wrapper" nz-flex nzGap="middle" [nzWrap]="selectedWrap">
       @for (_ of array; track _) {
         <button style="width: 100px" nz-button nzType="primary">Button {{ _ }}</button>
       }
     </div>
   `,
-  styles: [
-    `
-      .segment-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
+  styles: `
+    .segment-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
 
-        margin-block-end: 1rem;
-      }
+      margin-block-end: 1rem;
+    }
 
-      .btn-wrapper {
-        overflow: auto;
-        padding-block: 10px;
-      }
-    `
-  ]
+    .btn-wrapper {
+      overflow: auto;
+      padding-block: 10px;
+    }
+  `
 })
 export class NzDemoFlexWrapComponent {
   wrapSegment: NzWrap[] = ['wrap', 'wrap-reverse', 'nowrap'];

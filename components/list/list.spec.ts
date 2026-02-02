@@ -281,7 +281,7 @@ describe('list RTL', () => {
             nzTitle="title"
             nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
             nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
-          ></nz-list-item-meta>
+          />
           <ul nz-list-item-actions>
             @for (action of actions$ | async; track action) {
               <nz-list-item-action>{{ action }}</nz-list-item-action>
@@ -341,7 +341,7 @@ class TestListWithTemplateComponent {
   imports: [NzIconModule, NzListModule],
   template: `
     <nz-list id="item-string">
-      <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra" [nzNoFlex]="noFlex">
+      <nz-list-item nzContent="content" [nzActions]="[action]" [nzExtra]="extra" [nzNoFlex]="noFlex">
         <ng-template #action>
           <nz-icon nzType="star-o" style="margin-right: 8px;" />
           156
@@ -358,7 +358,7 @@ class TestListWithTemplateComponent {
           nzTitle="title"
           nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
           nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
-        ></nz-list-item-meta>
+        />
       </nz-list-item>
     </nz-list>
     <nz-list id="item-template">
@@ -381,7 +381,7 @@ class TestListItemComponent {
   imports: [BidiModule, TestListComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-list></nz-test-list>
+      <nz-test-list />
     </div>
   `
 })

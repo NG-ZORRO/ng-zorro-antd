@@ -8,9 +8,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   imports: [NzIconModule, NzSelectModule],
   template: `
     <nz-select nzAllowClear nzPlaceHolder="Select OS" [nzCustomTemplate]="defaultTemplate">
-      <nz-option nzLabel="Windows" nzValue="windows"></nz-option>
-      <nz-option nzLabel="Apple" nzValue="apple"></nz-option>
-      <nz-option nzLabel="Android" nzValue="android"></nz-option>
+      <nz-option nzLabel="Windows" nzValue="windows" />
+      <nz-option nzLabel="Apple" nzValue="apple" />
+      <nz-option nzLabel="Android" nzValue="android" />
     </nz-select>
     <ng-template #defaultTemplate let-selected>
       <nz-icon [nzType]="selected.nzValue" />
@@ -19,9 +19,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     <br />
     <br />
     <nz-select nzAllowClear nzPlaceHolder="Select OS" nzMode="multiple" [nzCustomTemplate]="multipleTemplate">
-      <nz-option nzLabel="Windows" nzValue="windows"></nz-option>
-      <nz-option nzLabel="Apple" nzValue="apple"></nz-option>
-      <nz-option nzLabel="Android" nzValue="android"></nz-option>
+      <nz-option nzLabel="Windows" nzValue="windows" />
+      <nz-option nzLabel="Apple" nzValue="apple" />
+      <nz-option nzLabel="Android" nzValue="android" />
     </nz-select>
     <ng-template #multipleTemplate let-selected>
       <div class="ant-select-selection-item-content">
@@ -30,12 +30,10 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       </div>
     </ng-template>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectCustomTemplateComponent {}

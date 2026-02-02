@@ -6,17 +6,15 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
   selector: 'nz-demo-alert-style',
   imports: [NzAlertModule],
   template: `
-    <nz-alert nzType="success" nzMessage="Success Text"></nz-alert>
-    <nz-alert nzType="info" nzMessage="Info Text"></nz-alert>
-    <nz-alert nzType="warning" nzMessage="Warning Text"></nz-alert>
-    <nz-alert nzType="error" nzMessage="Error Text"></nz-alert>
+    <nz-alert nzType="success" nzMessage="Success Text" />
+    <nz-alert nzType="info" nzMessage="Info Text" />
+    <nz-alert nzType="warning" nzMessage="Warning Text" />
+    <nz-alert nzType="error" nzMessage="Error Text" />
   `,
-  styles: [
-    `
-      nz-alert {
-        margin-bottom: 16px;
-      }
-    `
-  ]
+  styles: `
+    nz-alert {
+      margin-bottom: 16px;
+    }
+  `
 })
 export class NzDemoAlertStyleComponent {}

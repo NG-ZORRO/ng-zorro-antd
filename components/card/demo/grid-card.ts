@@ -16,13 +16,11 @@ import { NzCardModule } from 'ng-zorro-antd/card';
       <div nz-card-grid>Content</div>
     </nz-card>
   `,
-  styles: [
-    `
-      [nz-card-grid] {
-        width: 25%;
-        text-align: center;
-      }
-    `
-  ]
+  styles: `
+    [nz-card-grid] {
+      width: 25%;
+      text-align: center;
+    }
+  `
 })
 export class NzDemoCardGridCardComponent {}

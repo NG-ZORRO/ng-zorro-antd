@@ -44,7 +44,7 @@ import {
             nzType="avatar"
             [nzSize]="avatar.size || 'default'"
             [nzShape]="avatar.shape || 'circle'"
-          ></nz-skeleton-element>
+          />
         </div>
       }
       <div class="ant-skeleton-content">
@@ -53,14 +53,14 @@ import {
         }
         @if (!!nzParagraph) {
           <ul class="ant-skeleton-paragraph">
-            @for (row of rowsList; track row; let i = $index) {
-              <li [style.width]="toCSSUnit(widthList[i])"></li>
+            @for (row of rowsList; track row) {
+              <li [style.width]="toCSSUnit(widthList[$index])"></li>
             }
           </ul>
         }
       </div>
     } @else {
-      <ng-content></ng-content>
+      <ng-content />
     }
   `,
   imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent],

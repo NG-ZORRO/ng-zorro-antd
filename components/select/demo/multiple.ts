@@ -24,18 +24,16 @@ function alphabet(): string[] {
       [(ngModel)]="listOfSelectedValue"
     >
       @for (item of listOfOption; track item) {
-        <nz-option [nzLabel]="item" [nzValue]="item"></nz-option>
+        <nz-option [nzLabel]="item" [nzValue]="item" />
       }
     </nz-select>
     <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
   `,
-  styles: [
-    `
-      nz-select {
-        width: 100%;
-      }
-    `
-  ]
+  styles: `
+    nz-select {
+      width: 100%;
+    }
+  `
 })
 export class NzDemoSelectMultipleComponent {
   readonly listOfOption: string[] = alphabet();

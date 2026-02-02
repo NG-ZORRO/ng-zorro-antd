@@ -12,7 +12,7 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
       nzDescription="Detailed description and advices about successful copywriting."
       [nzIcon]="customIconTemplate"
       nzShowIcon
-    ></nz-alert>
+    />
 
     <ng-template #customIconTemplate>
       <div> S </div>

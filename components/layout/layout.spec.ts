@@ -251,7 +251,7 @@ describe('nz-layout', () => {
   imports: [NzIconModule, NzLayoutModule],
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate"></nz-sider>
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate" />
       <nz-layout>
         <nz-header>
           <span
@@ -287,14 +287,9 @@ export class NzLayoutCustomTriggerComponent {
   imports: [NzLayoutModule],
   template: `
     <nz-layout>
-      <nz-sider
-        nzCollapsible
-        [(nzCollapsed)]="isCollapsed"
-        [nzWidth]="width"
-        [nzReverseArrow]="isReverseArrow"
-      ></nz-sider>
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzReverseArrow]="isReverseArrow" />
       <nz-layout>
-        <nz-header></nz-header>
+        <nz-header />
         <nz-content>
           <div>Bill is a cat.</div>
         </nz-content>
@@ -316,12 +311,12 @@ export class NzLayoutSideComponent {
       <nz-sider
         nzCollapsible
         [(nzCollapsed)]="isCollapsed"
-        [nzBreakpoint]="'lg'"
+        nzBreakpoint="lg"
         [nzCollapsedWidth]="0"
         [nzZeroTrigger]="zeroTrigger"
-      ></nz-sider>
+      />
       <nz-layout>
-        <nz-header></nz-header>
+        <nz-header />
         <nz-content>
           <div>Content</div>
         </nz-content>
@@ -381,7 +376,7 @@ export class NzLayoutBasicComponent {}
   imports: [BidiModule, NzLayoutBasicComponent],
   template: `
     <div [dir]="direction">
-      <nz-test-layout-basic></nz-test-layout-basic>
+      <nz-test-layout-basic />
     </div>
   `
 })

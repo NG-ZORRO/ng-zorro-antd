@@ -33,14 +33,14 @@ import { NzTableStyleService } from '../table-style.service';
           style="position: sticky; left: 0; overflow: hidden;"
           [style.width.px]="hostWidth$ | async"
         >
-          <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
+          <ng-template [ngTemplateOutlet]="contentTemplate" />
         </div>
       } @else {
-        <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
+        <ng-template [ngTemplateOutlet]="contentTemplate" />
       }
     </td>
     <ng-template #contentTemplate>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `,
   imports: [AsyncPipe, NgTemplateOutlet]

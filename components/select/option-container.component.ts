@@ -40,7 +40,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
     <div>
       @if (listOfContainerItem.length === 0) {
         <div class="ant-select-item-empty">
-          <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent!"></nz-embed-empty>
+          <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent!" />
         </div>
       }
       <cdk-virtual-scroll-viewport
@@ -61,7 +61,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
         >
           @switch (item.type) {
             @case ('group') {
-              <nz-option-item-group [nzLabel]="item.groupLabel ?? null"></nz-option-item-group>
+              <nz-option-item-group [nzLabel]="item.groupLabel ?? null" />
             }
             @case ('item') {
               <nz-option-item
@@ -81,12 +81,12 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
                 [value]="item.nzValue"
                 (itemHover)="onItemHover($event)"
                 (itemClick)="onItemClick($event)"
-              ></nz-option-item>
+              />
             }
           }
         </ng-template>
       </cdk-virtual-scroll-viewport>
-      <ng-template [ngTemplateOutlet]="dropdownRender"></ng-template>
+      <ng-template [ngTemplateOutlet]="dropdownRender" />
     </div>
   `,
   host: { class: 'ant-select-dropdown' },

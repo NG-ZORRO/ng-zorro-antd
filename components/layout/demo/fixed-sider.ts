@@ -47,7 +47,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
         </ul>
       </nz-sider>
       <nz-layout class="right-layout">
-        <nz-header></nz-header>
+        <nz-header />
         <nz-content>
           <div class="inner-content">
             ...
@@ -151,50 +151,48 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       </nz-layout>
     </nz-layout>
   `,
-  styles: [
-    `
-      .logo {
-        height: 32px;
-        background: rgba(255, 255, 255, 0.2);
-        margin: 16px;
-      }
+  styles: `
+    .logo {
+      height: 32px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 16px;
+    }
 
-      .layout {
-        min-height: 100vh;
-      }
+    .layout {
+      min-height: 100vh;
+    }
 
-      nz-sider {
-        overflow: auto;
-        height: 100%;
-        position: fixed;
-        left: 0;
-      }
+    nz-sider {
+      overflow: auto;
+      height: 100%;
+      position: fixed;
+      left: 0;
+    }
 
-      .right-layout {
-        margin-left: 200px;
-      }
+    .right-layout {
+      margin-left: 200px;
+    }
 
-      nz-header {
-        background: #fff;
-        padding: 0;
-      }
+    nz-header {
+      background: #fff;
+      padding: 0;
+    }
 
-      nz-content {
-        margin: 24px 16px 0;
-        overflow: initial;
-      }
+    nz-content {
+      margin: 24px 16px 0;
+      overflow: initial;
+    }
 
-      .inner-content {
-        padding: 24px;
-        background: #fff;
-        text-align: center;
-      }
+    .inner-content {
+      padding: 24px;
+      background: #fff;
+      text-align: center;
+    }
 
-      nz-footer {
-        text-align: center;
-      }
-    `
-  ]
+    nz-footer {
+      text-align: center;
+    }
+  `
 })
 export class NzDemoLayoutFixedSiderComponent {
   protected readonly date = new Date();

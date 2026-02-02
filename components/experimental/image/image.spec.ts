@@ -135,7 +135,7 @@ describe('NzSrcLoader', () => {
       [nzWidth]="width"
       nzHeight="200"
       nzAlt="test"
-    ></nz-image>
+    />
   `
 })
 export class TestImageExperimentalBaseComponent {

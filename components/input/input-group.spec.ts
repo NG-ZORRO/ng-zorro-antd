@@ -385,10 +385,10 @@ export class NzTestInputGroupMixComponent {}
   template: `
     <nz-input-group>
       <div nz-col nzSpan="4">
-        <input type="text" nz-input [ngModel]="'0571'" />
+        <input type="text" nz-input ngModel="0571" />
       </div>
       <div nz-col nzSpan="8">
-        <input type="text" nz-input [ngModel]="'26888888'" />
+        <input type="text" nz-input ngModel="26888888" />
       </div>
     </nz-input-group>
   `

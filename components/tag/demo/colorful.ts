@@ -20,13 +20,11 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
       }
     </div>
   `,
-  styles: [
-    `
-      .ant-tag {
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  styles: `
+    .ant-tag {
+      margin-bottom: 8px;
+    }
+  `
 })
 export class NzDemoTagColorfulComponent {
   readonly presetColors = presetColors;

@@ -66,7 +66,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
 
     <div class="ant-card-body" [style]="nzBodyStyle">
       @if (nzLoading) {
-        <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
+        <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzParagraph]="{ rows: 4 }" />
       } @else {
         <ng-content />
       }
@@ -74,7 +74,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
     @if (nzActions.length) {
       <ul class="ant-card-actions">
         @for (action of nzActions; track $index) {
-          <li [style.width.%]="100 / nzActions.length">
+          <li [style.width.%]="100 / $count">
             <span><ng-template [ngTemplateOutlet]="action" /></span>
           </li>
         }

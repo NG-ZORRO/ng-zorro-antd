@@ -56,8 +56,8 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
     <br />
     <nz-space-compact nzBlock>
       <nz-select ngModel="Zhejianggggg">
-        <nz-option nzLabel="Zhejianggggg" nzValue="Zhejianggggg"></nz-option>
-        <nz-option nzLabel="Jiangsu" nzValue="Jiangsu"></nz-option>
+        <nz-option nzLabel="Zhejianggggg" nzValue="Zhejianggggg" />
+        <nz-option nzLabel="Jiangsu" nzValue="Jiangsu" />
       </nz-select>
       <input nz-input value="Xihu District, Hangzhou" [style.width.%]="50" />
     </nz-space-compact>
@@ -76,16 +76,16 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
     <br />
     <nz-space-compact nzBlock>
       <nz-select nzMode="multiple" [ngModel]="['Zhejianggggg']" [style.width.%]="50">
-        <nz-option nzLabel="Zhejianggggg" nzValue="Zhejianggggg"></nz-option>
-        <nz-option nzLabel="Jiangsu" nzValue="Jiangsu"></nz-option>
+        <nz-option nzLabel="Zhejianggggg" nzValue="Zhejianggggg" />
+        <nz-option nzLabel="Jiangsu" nzValue="Jiangsu" />
       </nz-select>
       <input nz-input value="Xihu District, Hangzhou" [style.width.%]="50" />
     </nz-space-compact>
     <br />
     <nz-space-compact nzBlock>
       <nz-select ngModel="Option1">
-        <nz-option nzLabel="Option1" nzValue="Option1"></nz-option>
-        <nz-option nzLabel="Option2" nzValue="Option2"></nz-option>
+        <nz-option nzLabel="Option1" nzValue="Option1" />
+        <nz-option nzLabel="Option2" nzValue="Option2" />
       </nz-select>
       <input nz-input value="input content" [style.width.%]="50" />
       <nz-input-number [ngModel]="12" />
@@ -109,19 +109,19 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
     <br />
     <nz-space-compact nzBlock>
       <nz-select ngModel="Option1-1">
-        <nz-option nzLabel="Option1-1" nzValue="Option1-1"></nz-option>
-        <nz-option nzLabel="Option2-1" nzValue="Option2-1"></nz-option>
+        <nz-option nzLabel="Option1-1" nzValue="Option1-1" />
+        <nz-option nzLabel="Option2-1" nzValue="Option2-1" />
       </nz-select>
       <nz-select ngModel="Option1-2">
-        <nz-option nzLabel="Option1-2" nzValue="Option1-2"></nz-option>
-        <nz-option nzLabel="Option2-2" nzValue="Option2-2"></nz-option>
+        <nz-option nzLabel="Option1-2" nzValue="Option1-2" />
+        <nz-option nzLabel="Option2-2" nzValue="Option2-2" />
       </nz-select>
     </nz-space-compact>
     <br />
     <nz-space-compact nzBlock>
       <nz-select ngModel="1">
-        <nz-option nzLabel="Between" nzValue="1"></nz-option>
-        <nz-option nzLabel="Except" nzValue="2"></nz-option>
+        <nz-option nzLabel="Between" nzValue="1" />
+        <nz-option nzLabel="Except" nzValue="2" />
       </nz-select>
       <input nz-input placeholder="Minimum" style="width: 100px; text-align: center" />
       <input
@@ -141,8 +141,8 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
     <br />
     <nz-space-compact nzBlock>
       <nz-select ngModel="Sign Up" [style.width.%]="30">
-        <nz-option nzLabel="Sign Up" nzValue="Sign Up"></nz-option>
-        <nz-option nzLabel="Sign In" nzValue="Sign In"></nz-option>
+        <nz-option nzLabel="Sign Up" nzValue="Sign Up" />
+        <nz-option nzLabel="Sign In" nzValue="Sign In" />
       </nz-select>
       <nz-autocomplete #auto [nzDataSource]="['text 1', 'text 2']" />
       <input nz-input placeholder="Email" [nzAutocomplete]="auto" [style.width.%]="70" />
@@ -161,7 +161,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
         ngModel="10010"
         nzDefaultExpandAll
         [style.width.%]="60"
-      ></nz-tree-select>
+      />
       <button nz-button nzType="primary">Submit</button>
     </nz-space-compact>
     <br />
@@ -177,31 +177,29 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       </nz-input-number>
     </nz-space-compact>
   `,
-  styles: [
-    `
-      .site-input-split {
-        background-color: #fff;
-      }
+  styles: `
+    .site-input-split {
+      background-color: #fff;
+    }
 
-      .site-input-right:not(.ant-input-rtl) {
-        border-left-width: 0;
-      }
+    .site-input-right:not(.ant-input-rtl) {
+      border-left-width: 0;
+    }
 
-      .site-input-right:not(.ant-input-rtl):hover,
-      .site-input-right:not(.ant-input-rtl):focus {
-        border-left-width: 1px;
-      }
+    .site-input-right:not(.ant-input-rtl):hover,
+    .site-input-right:not(.ant-input-rtl):focus {
+      border-left-width: 1px;
+    }
 
-      .site-input-right.ant-input-rtl {
-        border-right-width: 0;
-      }
+    .site-input-right.ant-input-rtl {
+      border-right-width: 0;
+    }
 
-      .site-input-right.ant-input-rtl:hover,
-      .site-input-right.ant-input-rtl:focus {
-        border-right-width: 1px;
-      }
-    `
-  ]
+    .site-input-right.ant-input-rtl:hover,
+    .site-input-right.ant-input-rtl:focus {
+      border-right-width: 1px;
+    }
+  `
 })
 export class NzDemoSpaceCompactComponent {
   cascaderOptions: NzCascaderOption[] = [

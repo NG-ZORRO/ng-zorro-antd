@@ -65,7 +65,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   template: `
     <nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading" [nzIndicator]="nzLoadingIndicator">
       @if (nzPaginationPosition === 'both' || nzPaginationPosition === 'top') {
-        <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
+        <ng-template [ngTemplateOutlet]="paginationTemplate" />
       }
       <div
         #tableMainElement
@@ -81,7 +81,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
         [class.ant-table-small]="nzSize === 'small'"
       >
         @if (nzTitle) {
-          <nz-table-title-footer [title]="nzTitle"></nz-table-title-footer>
+          <nz-table-title-footer [title]="nzTitle" />
         }
         @if (scrollY || scrollX) {
           <nz-table-inner-scroll
@@ -101,7 +101,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
             [tableMainElement]="tableMainElement"
             [virtualForTrackBy]="nzVirtualForTrackBy"
             [noDataVirtualHeight]="noDataVirtualHeight"
-          ></nz-table-inner-scroll>
+          />
         } @else {
           <nz-table-inner-default
             [tableLayout]="nzTableLayout"
@@ -109,14 +109,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
             [theadTemplate]="theadTemplate"
             [contentTemplate]="contentTemplate"
             [tfootTemplate]="tfootTemplate"
-          ></nz-table-inner-default>
+          />
         }
         @if (nzFooter) {
-          <nz-table-title-footer [footer]="nzFooter"></nz-table-title-footer>
+          <nz-table-title-footer [footer]="nzFooter" />
         }
       </div>
       @if (nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom') {
-        <ng-template [ngTemplateOutlet]="paginationTemplate"></ng-template>
+        <ng-template [ngTemplateOutlet]="paginationTemplate" />
       }
     </nz-spin>
     <ng-template #paginationTemplate>
@@ -137,11 +137,11 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
           [nzPageIndex]="nzPageIndex"
           (nzPageSizeChange)="onPageSizeChange($event)"
           (nzPageIndexChange)="onPageIndexChange($event)"
-        ></nz-pagination>
+        />
       }
     </ng-template>
     <ng-template #contentTemplate>
-      <ng-content></ng-content>
+      <ng-content />
     </ng-template>
   `,
   host: {

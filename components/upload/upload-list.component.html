@@ -13,7 +13,7 @@
         @switch (file.iconType) {
           @case ('uploading') {
             <div class="ant-upload-list-item-thumbnail" [class.ant-upload-list-item-file]="!file.isUploading">
-              <ng-template [ngTemplateOutlet]="iconNode" [ngTemplateOutletContext]="{ $implicit: file }"></ng-template>
+              <ng-template [ngTemplateOutlet]="iconNode" [ngTemplateOutletContext]="{ $implicit: file }" />
             </div>
           }
           @case ('thumbnail') {
@@ -28,16 +28,13 @@
               @if (file.isImageUrl) {
                 <img class="ant-upload-list-item-image" [src]="file.thumbUrl || file.url" [attr.alt]="file.name" />
               } @else {
-                <ng-template
-                  [ngTemplateOutlet]="iconNode"
-                  [ngTemplateOutletContext]="{ $implicit: file }"
-                ></ng-template>
+                <ng-template [ngTemplateOutlet]="iconNode" [ngTemplateOutletContext]="{ $implicit: file }" />
               }
             </a>
           }
           @default {
             <div class="ant-upload-text-icon">
-              <ng-template [ngTemplateOutlet]="iconNode" [ngTemplateOutletContext]="{ $implicit: file }"></ng-template>
+              <ng-template [ngTemplateOutlet]="iconNode" [ngTemplateOutletContext]="{ $implicit: file }" />
             </div>
           }
         }
@@ -65,7 +62,7 @@
             }
           }
         } @else {
-          <ng-template [ngTemplateOutlet]="iconRender" [ngTemplateOutletContext]="{ $implicit: file }"></ng-template>
+          <ng-template [ngTemplateOutlet]="iconRender" [ngTemplateOutletContext]="{ $implicit: file }" />
         }
       </ng-template>
 
@@ -104,8 +101,8 @@
       <ng-template #downloadOrDelete>
         @if (_listType !== 'picture-card') {
           <span class="ant-upload-list-item-card-actions" [class.picture]="_listType === 'picture'">
-            <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
-            <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
+            <ng-template [ngTemplateOutlet]="downloadIcon" />
+            <ng-template [ngTemplateOutlet]="removeIcon" />
           </span>
         }
       </ng-template>
@@ -128,13 +125,13 @@
             {{ file.name }}
           </span>
         }
-        <ng-template [ngTemplateOutlet]="downloadOrDelete"></ng-template>
+        <ng-template [ngTemplateOutlet]="downloadOrDelete" />
       </ng-template>
 
       <div class="ant-upload-list-item-info">
         <span class="ant-upload-span">
-          <ng-template [ngTemplateOutlet]="icon"></ng-template>
-          <ng-template [ngTemplateOutlet]="preview"></ng-template>
+          <ng-template [ngTemplateOutlet]="icon" />
+          <ng-template [ngTemplateOutlet]="preview" />
         </span>
       </div>
       @if (!file.isUploading) {
@@ -153,14 +150,14 @@
               </a>
             }
             @if (file.status === 'done') {
-              <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
+              <ng-template [ngTemplateOutlet]="downloadIcon" />
             }
-            <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
+            <ng-template [ngTemplateOutlet]="removeIcon" />
           </span>
         }
       } @else {
         <div class="ant-upload-list-item-progress">
-          <nz-progress [nzPercent]="file.percent!" nzType="line" [nzShowInfo]="false" [nzStrokeWidth]="2"></nz-progress>
+          <nz-progress [nzPercent]="file.percent!" nzType="line" [nzShowInfo]="false" [nzStrokeWidth]="2" />
         </div>
       }
     </div>

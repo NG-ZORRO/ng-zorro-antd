@@ -7,10 +7,10 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-switch-size',
   imports: [FormsModule, NzSwitchModule],
   template: `
-    <nz-switch [ngModel]="true"></nz-switch>
+    <nz-switch [ngModel]="true" />
     <br />
     <br />
-    <nz-switch nzSize="small" [ngModel]="true"></nz-switch>
+    <nz-switch nzSize="small" [ngModel]="true" />
   `
 })
 export class NzDemoSwitchSizeComponent {}

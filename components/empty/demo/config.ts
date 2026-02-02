@@ -30,25 +30,25 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   ],
   template: `
     <nz-switch
-      [nzUnCheckedChildren]="'default'"
-      [nzCheckedChildren]="'customize'"
+      nzUnCheckedChildren="default"
+      nzCheckedChildren="customize"
       [(ngModel)]="customize"
       (ngModelChange)="onConfigChange()"
-    ></nz-switch>
+    />
 
-    <nz-divider></nz-divider>
+    <nz-divider />
 
     <h3>Select</h3>
-    <nz-select style="width: 200px"></nz-select>
+    <nz-select style="width: 200px" />
 
     <h3>TreeSelect</h3>
-    <nz-tree-select style="width: 200px;"></nz-tree-select>
+    <nz-tree-select style="width: 200px;" />
 
     <h3>Cascader</h3>
-    <nz-cascader style="width: 200px;" [nzShowSearch]="true" [nzOptions]="[]"></nz-cascader>
+    <nz-cascader style="width: 200px;" [nzShowSearch]="true" [nzOptions]="[]" />
 
     <h3>Transfer</h3>
-    <nz-transfer></nz-transfer>
+    <nz-transfer />
 
     <h3>Table</h3>
     <nz-table [nzData]="[]">
@@ -62,7 +62,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
     </nz-table>
 
     <h3>List</h3>
-    <nz-list [nzDataSource]="[]"></nz-list>
+    <nz-list [nzDataSource]="[]" />
 
     <ng-template #customTpl let-name>
       <div style="text-align: center;">
@@ -71,14 +71,12 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
       </div>
     </ng-template>
   `,
-  styles: [
-    `
-      h3 {
-        font-size: inherit;
-        margin: 16px 0 8px 0;
-      }
-    `
-  ]
+  styles: `
+    h3 {
+      font-size: inherit;
+      margin: 16px 0 8px 0;
+    }
+  `
 })
 export class NzDemoEmptyConfigComponent {
   @ViewChild('customTpl', { static: false }) customTpl?: TemplateRef<any>; // eslint-disable-line @typescript-eslint/no-explicit-any

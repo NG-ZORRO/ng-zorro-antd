@@ -312,7 +312,7 @@ const TREE_DATA: TreeNode[] = dig();
       [nzTrackBy]="trackBy"
     >
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
-        <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
+        <nz-tree-node-toggle nzTreeNodeNoopToggle />
         {{ node.name }}
       </nz-tree-node>
 

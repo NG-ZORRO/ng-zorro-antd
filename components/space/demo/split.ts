@@ -9,7 +9,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   template: `
     <nz-space [nzSplit]="spaceSplit">
       <ng-template #spaceSplit>
-        <nz-divider nzType="vertical"></nz-divider>
+        <nz-divider nzType="vertical" />
       </ng-template>
 
       <a *nzSpaceItem>Link</a>

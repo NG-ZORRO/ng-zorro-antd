@@ -30,12 +30,10 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
       </div>
     </div>
   `,
-  styles: [
-    `
-      [nz-row] {
-        background-color: rgba(128, 128, 128, 0.08);
-      }
-    `
-  ]
+  styles: `
+    [nz-row] {
+      background-color: rgba(128, 128, 128, 0.08);
+    }
+  `
 })
 export class NzDemoGridFlexAlignComponent {}

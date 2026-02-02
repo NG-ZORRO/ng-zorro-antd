@@ -10,22 +10,22 @@ import { NzTypographyComponent } from 'ng-zorro-antd/typography';
     <nz-flex nzVertical [nzGap]="16">
       <nz-flex nzVertical>
         <h5 nz-typography>With Formatter (Uppercase)</h5>
-        <nz-input-otp [nzFormatter]="formatter"></nz-input-otp>
+        <nz-input-otp [nzFormatter]="formatter" />
       </nz-flex>
 
       <nz-flex nzVertical>
         <h5 nz-typography>With Disabled</h5>
-        <nz-input-otp [disabled]="true"></nz-input-otp>
+        <nz-input-otp [disabled]="true" />
       </nz-flex>
 
       <nz-flex nzVertical>
         <h5 nz-typography>With Length (8)</h5>
-        <nz-input-otp [nzLength]="8"></nz-input-otp>
+        <nz-input-otp [nzLength]="8" />
       </nz-flex>
 
       <nz-flex nzVertical>
         <h5 nz-typography>With custom display character</h5>
-        <nz-input-otp [nzMask]="'🔒'"></nz-input-otp>
+        <nz-input-otp nzMask="🔒" />
       </nz-flex>
     </nz-flex>
   `,

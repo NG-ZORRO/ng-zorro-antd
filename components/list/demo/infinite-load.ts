@@ -40,26 +40,24 @@ interface Name {
                 </nz-list-item-meta-title>
               </nz-list-item-meta>
             } @else {
-              <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+              <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 1 }" />
             }
           </nz-list-item>
         </nz-list>
       </cdk-virtual-scroll-viewport>
     </div>
   `,
-  styles: [
-    `
-      .demo-infinite-container {
-        height: 300px;
-        border: 1px solid #e8e8e8;
-        border-radius: 4px;
-      }
+  styles: `
+    .demo-infinite-container {
+      height: 300px;
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+    }
 
-      nz-list {
-        padding: 24px;
-      }
-    `
-  ],
+    nz-list {
+      padding: 24px;
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDemoListInfiniteLoadComponent implements OnInit {
