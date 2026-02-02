@@ -17,16 +17,17 @@ If it will take a long time to complete an operation, you can use `Progress` to 
 
 ### nz-progress
 
-| Property             | Description                                                          | Type                                                                                   | Default                    | Global Config |
-| -------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------- | ------------- |
-| `[nzType]`           | to set the type                                                      | `'line' \| 'circle' \| 'dashboard'`                                                    | `'line'`                   |               |
-| `[nzFormat]`         | template function of the content                                     | `(percent: number) => string \| TemplateRef<{ $implicit: number }>`                    | `percent => percent + '%'` |               |
-| `[nzPercent]`        | to set the completion percentage                                     | `number`                                                                               | `0`                        |               |
-| `[nzShowInfo]`       | whether to display the progress value and the status icon            | `boolean`                                                                              | `true`                     | ✅            |
-| `[nzStatus]`         | to set the status of the Progress                                    | `'success' \| 'exception' \| 'active' \| 'normal'`                                     | -                          |               |
-| `[nzStrokeLinecap]`  | to set the style of the progress linecap                             | `'round' \| 'square'`                                                                  | `'round'`                  | ✅            |
-| `[nzStrokeColor]`    | color of progress bar, render linear-gradient when passing an object | `string \| { from: string; to: string: direction: string; [percent: string]: string }` | -                          | ✅            |
-| `[nzSuccessPercent]` | segmented success percent                                            | `number`                                                                               | 0                          |               |
+| Property             | Description                                                                                           | Type                                                                                   | Default                    | Global Config |
+| -------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------- | ------------- |
+| `[nzType]`           | to set the type                                                                                       | `'line' \| 'circle' \| 'dashboard'`                                                    | `'line'`                   |               |
+| `[nzFormat]`         | template function of the content                                                                      | `(percent: number) => string \| TemplateRef<{ $implicit: number }>`                    | `percent => percent + '%'` |               |
+| `[nzPercent]`        | to set the completion percentage                                                                      | `number`                                                                               | `0`                        |               |
+| `[nzShowInfo]`       | whether to display the progress value and the status icon                                             | `boolean`                                                                              | `true`                     | ✅            |
+| `[nzStatus]`         | to set the status of the Progress                                                                     | `'success' \| 'exception' \| 'active' \| 'normal'`                                     | -                          |               |
+| `[nzStrokeLinecap]`  | to set the style of the progress linecap                                                              | `'round' \| 'square'`                                                                  | `'round'`                  | ✅            |
+| `[nzStrokeColor]`    | color of progress bar, render linear-gradient when passing an object                                  | `string \| { from: string; to: string: direction: string; [percent: string]: string }` | -                          | ✅            |
+| `[nzSuccessPercent]` | segmented success percent                                                                             | `number`                                                                               | 0                          |               |
+| `[nzIndeterminate]`  | whether to show indeterminate progress with continuous animation (only available for `nzType="line"`) | `boolean`                                                                              | `false`                    |               |
 
 ### `nzType="line"`
 

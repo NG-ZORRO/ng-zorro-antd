@@ -15,6 +15,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
   numberAttribute,
+  booleanAttribute,
   inject,
   DestroyRef
 } from '@angular/core';
@@ -84,6 +85,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
       [class.ant-progress-circle]="isCircleStyle"
       [class.ant-progress-steps]="isSteps"
       [class.ant-progress-rtl]="dir === 'rtl'"
+      [class.ant-progress-indeterminate]="nzIndeterminate && nzType === 'line'"
     >
       @if (nzType === 'line') {
         <div>
@@ -100,7 +102,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
               <div class="ant-progress-inner">
                 <div
                   class="ant-progress-bg"
-                  [style.width.%]="nzPercent"
+                  [style.width.%]="nzIndeterminate ? 100 : nzPercent"
                   [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
                   [style.background]="!isGradient ? nzStrokeColor : null"
                   [style.background-image]="isGradient ? lineGradient : null"
@@ -191,6 +193,7 @@ export class NzProgressComponent implements OnChanges, OnInit {
   @Input() @WithConfig() nzStrokeLinecap: NzProgressStrokeLinecapType = 'round';
 
   @Input({ transform: numberAttribute }) nzSteps: number = 0;
+  @Input({ transform: booleanAttribute }) nzIndeterminate: boolean = false;
 
   steps: NzProgressStepItem[] = [];
 
