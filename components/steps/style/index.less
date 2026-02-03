@@ -111,6 +111,11 @@
       background: @wait-tail-color;
       content: '';
     }
+
+    // When only description is provided, reserve title row so description stays below the line
+    &-placeholder {
+      min-height: @steps-title-line-height;
+    }
   }
 
   &-subtitle {
