@@ -211,12 +211,12 @@ describe('collapse', () => {
 
     it('should only toggle by icon when nzCollapsible is "icon"', () => {
       const headerEl = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
-      expect(headerEl.classList).toContain('ant-collapse-icon-collapsible-only');
+      expect(headerEl.classList).toContain('ant-collapse-collapsible-icon');
       // initial state
       expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
 
       // click header text should NOT toggle
-      (panel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      (panel.nativeElement.querySelector('.ant-collapse-title') as HTMLElement).click();
       fixture.detectChanges();
       expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
 
@@ -226,7 +226,7 @@ describe('collapse', () => {
       expect(panel.nativeElement.classList).toContain('ant-collapse-item-active');
 
       // click header text again should NOT toggle
-      (panel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      (panel.nativeElement.querySelector('.ant-collapse-title') as HTMLElement).click();
       fixture.detectChanges();
       expect(panel.nativeElement.classList).toContain('ant-collapse-item-active');
 
@@ -259,16 +259,16 @@ describe('collapse', () => {
       const localPanel = localFixture.debugElement.query(By.directive(NzCollapsePanelComponent));
 
       const header = localPanel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
-      expect(header.classList).toContain('ant-collapse-header-collapsible-only');
+      expect(header.classList).toContain('ant-collapse-collapsible-header');
       expect(localPanel.nativeElement.classList).not.toContain('ant-collapse-item-active');
 
       // click header toggles
-      (localPanel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      (localPanel.nativeElement.querySelector('.ant-collapse-title') as HTMLElement).click();
       localFixture.detectChanges();
       expect(localPanel.nativeElement.classList).toContain('ant-collapse-item-active');
 
       // click header toggles again (close)
-      (localPanel.nativeElement.querySelector('.ant-collapse-header-text') as HTMLElement).click();
+      (localPanel.nativeElement.querySelector('.ant-collapse-title') as HTMLElement).click();
       localFixture.detectChanges();
       expect(localPanel.nativeElement.classList).not.toContain('ant-collapse-item-active');
 
