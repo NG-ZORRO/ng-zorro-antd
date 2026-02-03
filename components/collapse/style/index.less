@@ -6,13 +6,25 @@
 .@{collapse-prefix-cls} {
   .reset-component();
 
+  @font-height: floor(@font-size-base * @line-height-base);
+
   background-color: @collapse-header-bg;
   border: @border-width-base @border-style-base @border-color-base;
-  border-bottom: 0;
   border-radius: @collapse-panel-border-radius;
+
+  &-rtl {
+    direction: rtl;
+  }
 
   & > &-item {
     border-bottom: @border-width-base @border-style-base @border-color-base;
+
+    &:first-child {
+      &,
+      & > .@{collapse-prefix-cls}-header {
+        border-radius: @collapse-panel-border-radius @collapse-panel-border-radius 0 0;
+      }
+    }
 
     &:last-child {
       &,
@@ -30,48 +42,58 @@
       color: @heading-color;
       line-height: @line-height-base;
       cursor: pointer;
-      transition:
-        all 0.3s,
-        visibility 0s;
+      transition: all @animation-duration-slow, visibility 0s;
 
-      .@{collapse-prefix-cls}-arrow {
-        display: inline-block;
-        margin-right: @margin-sm;
-        font-size: @font-size-sm;
-        vertical-align: -1px;
-
-        & svg {
-          transition: transform 0.24s;
-        }
-      }
-
-      .@{collapse-prefix-cls}-title {
+      > .@{collapse-prefix-cls}-title {
         flex: auto;
       }
 
-      .@{collapse-prefix-cls}-extra {
-        margin-left: auto;
+      // >>>>> Arrow
+      .@{collapse-prefix-cls}-expand-icon {
+        display: flex;
+        align-items: center;
+        height: @font-height;
+        margin-inline-end: @margin-sm;
       }
 
-      &:focus {
-        outline: none;
+      .@{collapse-prefix-cls}-arrow {
+        font-size: @font-size-icon;
+        // when `transform: rotate()` is applied to icon's root element
+        transition: transform @animation-duration-slow;
+        // when `transform: rotate()` is applied to icon's child element
+        svg {
+          transition: transform @animation-duration-slow;
+        }
+      }
+
+      // >>>>> Text
+      .@{collapse-prefix-cls}-title {
+        margin-inline-end: auto;
+      }
+
+      &:focus-visible {
+        outline: @line-width-focus solid @border-color-primary;
+        outline-offset: 1px;
+        transition: outline-offset 0s, outline 0s;
       }
     }
 
-    // Sync with ant-design: when only header is clickable, pointer on title and expand-icon
     .@{collapse-prefix-cls}-collapsible-header {
       cursor: default;
+
       .@{collapse-prefix-cls}-title {
         flex: none;
         cursor: pointer;
       }
+
       .@{collapse-prefix-cls}-expand-icon {
         cursor: pointer;
       }
     }
 
     .@{collapse-prefix-cls}-collapsible-icon {
-      cursor: default;
+      cursor: unset;
+
       .@{collapse-prefix-cls}-expand-icon {
         cursor: pointer;
       }
@@ -84,32 +106,12 @@
     }
   }
 
-  // Expand Icon end
-  &-icon-position-end {
-    & > .@{collapse-prefix-cls}-item {
-      > .@{collapse-prefix-cls}-header {
-        position: relative;
-        padding: @collapse-header-padding;
-        padding-right: @collapse-header-padding-extra;
-
-        .@{collapse-prefix-cls}-arrow {
-          position: absolute;
-          top: 50%;
-          right: @padding-md;
-          left: auto;
-          margin: 0;
-          transform: translateY(-50%);
-        }
-      }
-    }
-  }
-
   &-panel {
     color: @text-color;
     background-color: @collapse-content-bg;
     border-top: @border-width-base @border-style-base @border-color-base;
 
-    & > &-body {
+    & > .@{collapse-prefix-cls}-body {
       padding: @collapse-content-padding;
     }
 
@@ -118,53 +120,45 @@
     }
   }
 
-  &-item:last-child {
-    > .@{collapse-prefix-cls}-panel {
-      border-radius: 0 0 @collapse-panel-border-radius @collapse-panel-border-radius;
+  &-small {
+    > .@{collapse-prefix-cls}-item {
+      > .@{collapse-prefix-cls}-header {
+        padding: @padding-xs @padding-sm;
+        padding-inline-start: @padding-xs;
+      }
+
+      > .@{collapse-prefix-cls}-expand-icon {
+        // Arrow offset
+        margin-inline-end: calc(@padding-sm - @padding-xs);
+      }
+
+      > .@{collapse-prefix-cls}-panel > .@{collapse-prefix-cls}-body {
+        padding: @padding-sm;
+      }
     }
   }
 
-  &-borderless {
-    background-color: @collapse-header-bg;
-    border: 0;
-  }
-
-  &-borderless > &-item {
-    border-bottom: 1px solid @border-color-base;
-  }
-
-  &-borderless > &-item:last-child,
-  &-borderless > &-item:last-child &-header {
-    border-radius: 0;
-  }
-
-  // hide the last border-bottom in borderless mode
-  &-borderless > &-item:last-child {
-    border-bottom: 0;
-  }
-
-  &-borderless > &-item > &-panel {
-    background-color: transparent;
-    border-top: 0;
-  }
-
-  &-borderless > &-item > &-panel > &-body {
-    padding-top: 4px;
-  }
-
-  &-ghost {
-    background-color: transparent;
-    border: 0;
+  &-large {
     > .@{collapse-prefix-cls}-item {
-      border-bottom: 0;
-      > .@{collapse-prefix-cls}-panel {
-        background-color: transparent;
-        border-top: 0;
-        > .@{collapse-prefix-cls}-body {
-          padding-top: 12px;
-          padding-bottom: 12px;
-        }
+      font-size: @font-size-lg;
+      line-height: @line-height-lg;
+
+      > .@{collapse-prefix-cls}-header {
+        padding: @padding-md @padding-lg;
+        padding-inline-start: @padding-md;
       }
+
+      > .@{collapse-prefix-cls}-panel > .@{collapse-prefix-cls}-body {
+        padding: @padding-lg;
+      }
+    }
+  }
+
+  &-item:last-child {
+    border-bottom: 0;
+
+    > .@{collapse-prefix-cls}-panel {
+      border-radius: 0 0 @collapse-panel-border-radius @collapse-panel-border-radius;
     }
   }
 
@@ -176,31 +170,61 @@
     }
   }
 
-  &-small {
-    > .@{collapse-prefix-cls}-item {
+  // ========================== Icon Placement ==========================
+  &-icon-placement-end {
+    & > .@{collapse-prefix-cls}-item {
       > .@{collapse-prefix-cls}-header {
-        padding: 8px 12px;
-        padding-inline-start: 8px;
-      }
-      > .@{collapse-prefix-cls}-panel > .@{collapse-prefix-cls}-body {
-        padding: 12px;
+        .@{collapse-prefix-cls}-expand-icon {
+          order: 1;
+          margin-inline-end: 0;
+          margin-inline-start: @margin-sm;
+        }
       }
     }
   }
 
-  &-large {
+  &-borderless {
+    background-color: @collapse-header-bg;
+    border: 0;
+
     > .@{collapse-prefix-cls}-item {
-      font-size: 16px;
-      line-height: 1.5;
-      > .@{collapse-prefix-cls}-header {
-        padding: 16px 24px;
-        padding-inline-start: 16px;
-      }
-      > .@{collapse-prefix-cls}-panel > .@{collapse-prefix-cls}-body {
-        padding: 24px;
+      border-bottom: 1px solid @border-color-base;
+    }
+
+    > .@{collapse-prefix-cls}-item:last-child,
+    > .@{collapse-prefix-cls}-item:last-child > .@{collapse-prefix-cls}-header {
+      border-radius: 0;
+    }
+
+    > .@{collapse-prefix-cls}-item:last-child {
+      border-bottom: 0;
+    }
+
+    > .@{collapse-prefix-cls}-item > .@{collapse-prefix-cls}-panel {
+      background-color: transparent;
+      border-top: 0;
+    }
+
+    > .@{collapse-prefix-cls}-item > .@{collapse-prefix-cls}-panel > .@{collapse-prefix-cls}-body {
+      padding: @padding-xss 12px @padding-md;
+    }
+  }
+
+  &-ghost {
+    background-color: transparent;
+    border: 0;
+
+    > .@{collapse-prefix-cls}-item {
+      border-bottom: 0;
+
+      > .@{collapse-prefix-cls}-panel {
+        background-color: transparent;
+        border: 0;
+
+        > .@{collapse-prefix-cls}-body {
+          padding-block: @padding-sm;
+        }
       }
     }
   }
 }
-
-@import './rtl';

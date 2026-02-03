@@ -29,8 +29,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
   template: `<ng-content />`,
   host: {
     class: 'ant-collapse',
-    '[class.ant-collapse-icon-position-start]': `nzExpandIconPosition === 'start'`,
-    '[class.ant-collapse-icon-position-end]': `nzExpandIconPosition === 'end'`,
+    '[class.ant-collapse-icon-placement-start]': `nzExpandIconPosition === 'start'`,
+    '[class.ant-collapse-icon-placement-end]': `nzExpandIconPosition === 'end'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered',
     '[class.ant-collapse-rtl]': `dir() === 'rtl'`,
