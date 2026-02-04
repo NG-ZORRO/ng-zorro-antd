@@ -44,6 +44,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
       #collapseHeader
       role="button"
       [attr.aria-expanded]="active()"
+      [attr.aria-disabled]="nzDisabled || nzCollapsible === 'disabled'"
+      [attr.tabindex]="nzDisabled || nzCollapsible === 'disabled' ? -1 : 0"
       class="ant-collapse-header"
       [class.ant-collapse-collapsible-icon]="nzCollapsible === 'icon'"
       [class.ant-collapse-collapsible-header]="nzCollapsible === 'header'"
@@ -80,7 +82,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
     class: 'ant-collapse-item',
     '[class.ant-collapse-no-arrow]': '!nzShowArrow',
     '[class.ant-collapse-item-active]': 'active()',
-    '[class.ant-collapse-item-disabled]': 'nzDisabled || nzCollapsible === "disabled"'
+    '[class.ant-collapse-item-disabled]': `nzDisabled || nzCollapsible === 'disabled'`
   },
   imports: [NzOutletModule, NzIconModule, NzAnimationCollapseDirective]
 })
