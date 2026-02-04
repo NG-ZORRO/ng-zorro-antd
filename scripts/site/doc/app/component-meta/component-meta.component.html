@@ -15,7 +15,7 @@
       <a nz-button nzType="text" nzSize="small" [attr.href]="openIssues" target="_blank" rel="noopener noreferrer">
         <nz-icon nzType="issues-close" />
         <span nz-typography>
-          Open Issues 
+          {{ isEn() ? 'Open issues' : '待解决' }}
           @if (issues.hasValue()) {
             {{ issues.value() }}
           }
