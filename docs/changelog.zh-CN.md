@@ -22,10 +22,11 @@ tag: '{{version}}'
 
 ### Features
 
-- **form:** support `nzSize` ([#9606](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9606)) ([785ca6f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/785ca6fc0dec71e84b6817a650d3976f39814518))
-- **time-picker:** support `nzPrefix` ([#9647](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9647)) ([8d75887](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8d75887faee74f7a371e4c6ca9825e30375bd295))
-- **time-picker:** support `nzNeedConfirm` ([#9638](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9638)) ([9f887af](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9f887af5e14332ecabab52560db548dbabe0158f))
-- **time-picker:** support `nzPlacement` ([#9630](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9630)) ([931b3f4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/931b3f45489c410d8f00a987b74e215fe630dfec))
+- **collapse:** 同步最新 antd 样式 ([#9680](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9680)) ([4eec05f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4eec05f06def8d001e5f716372cee97859a7a5fa)) ([#9678](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9678)) ([2483498](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2483498b7f841eb2caede9cfe0ed975f1e6b284c))
+- **form:** 新增 `nzSize` 参数，支持设置表单组件尺寸 ([#9606](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9606)) ([785ca6f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/785ca6fc0dec71e84b6817a650d3976f39814518))
+- **time-picker:** 新增 `nzPrefix` 参数，支持自定义前缀 ([#9647](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9647)) ([8d75887](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8d75887faee74f7a371e4c6ca9825e30375bd295))
+- **time-picker:** 新增 `nzNeedConfirm` 参数，配置为 `true` 时需点击确认按钮才能完成选择 ([#9638](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9638)) ([9f887af](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9f887af5e14332ecabab52560db548dbabe0158f))
+- **time-picker:** 新增 `nzPlacement` 参数，支持设置选择框弹出的位置 ([#9630](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9630)) ([931b3f4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/931b3f45489c410d8f00a987b74e215fe630dfec))
 
 ## 21.0.2
 
