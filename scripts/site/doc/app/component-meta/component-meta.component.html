@@ -12,6 +12,10 @@
         <nz-icon nzType="github" />
         <span nz-typography>components/{{ path() }}</span>
       </a>
+      <a nz-button nzType="text" nzSize="small" [attr.href]="reportIssue" target="_blank" rel="noopener noreferrer">
+        <nz-icon nzType="bug" />
+        <span nz-typography>{{ isEn() ? 'Issue' : '提交问题' }}</span>
+      </a>
       <a nz-button nzType="text" nzSize="small" [attr.href]="openIssues" target="_blank" rel="noopener noreferrer">
         <nz-icon nzType="issues-close" />
         <span nz-typography>

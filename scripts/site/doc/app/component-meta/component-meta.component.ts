@@ -55,6 +55,10 @@ export class ComponentMetaComponent {
     return `https://github.com/NG-ZORRO/ng-zorro-antd/issues?q=is%3Aopen%20is%3Aissue%20label%3A%22Component%3A%20${this.componentName()}%22`;
   }
 
+  get reportIssue(): string {
+    return `https://ng.ant.design/issue-helper/#/${this.language()}`;
+  }
+
   readonly isEn = computed(() => this.language() === 'en');
   readonly document = computed(() => {
     const lang = this.isEn() ? 'en-US' : 'zh-CN';
