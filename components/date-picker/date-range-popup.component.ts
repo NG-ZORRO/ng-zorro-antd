@@ -227,6 +227,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     const activeDate = this.datePickerService.hasValue()
       ? this.datePickerService.value
       : this.datePickerService.makeValue(this.defaultPickerValue!);
+    //Issue #6823 fix
+    if (this.showTime) {
+      this.buildTimeOptions();
+    }
     this.datePickerService.setActiveDate(
       activeDate,
       this.hasTimePicker,
