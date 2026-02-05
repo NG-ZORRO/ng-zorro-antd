@@ -44,9 +44,9 @@ By clicking the input box, you can select a time from a popup panel.
 | `[nzPopupClassName]`      | className of panel                                                                     | `string`                                                   | `''`              | ✅            |
 | `[nzUse12Hours]`          | display as 12 hours format, with default format `h:mm:ss a`                            | `boolean`                                                  | `false`           | ✅            |
 | `[nzSuffixIcon]`          | the custom suffix icon                                                                 | `string \| TemplateRef`                                    | -                 | ✅            |
-| `[nzPrefix]`              | the custom prefix                                                                      | `string \| TemplateRef`                                    | -                 |               |
-| `[nzNeedConfirm]`         | Need click confirm button to trigger value change                                      | `boolean`                                                  | -                 |               |
-| `[nzPlacement]`           | The position where the selection box pops up                                           | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'` | -                 |               |
+| `[nzPrefix]`              | the custom prefix                                                                      | `string \| TemplateRef`                                    | -                 |               | 21.1.0  |
+| `[nzNeedConfirm]`         | Need click confirm button to trigger value change                                      | `boolean`                                                  | -                 |               | 21.1.0  |
+| `[nzPlacement]`           | The position where the selection box pops up                                           | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'` | -                 |               | 21.1.0  |
 | `(ngModelChange)`         | a callback function, can be executed when the selected time is changing                | `EventEmitter<Date>`                                       | -                 |
 | `(nzOpenChange)`          | a callback function which will be called while panel opening/closing                   | `EventEmitter<boolean>`                                    | -                 |
 

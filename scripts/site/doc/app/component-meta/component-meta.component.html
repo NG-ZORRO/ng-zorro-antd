@@ -2,24 +2,35 @@
 
 <nz-descriptions nzSize="small" [nzColumn]="1" [nzColon]="false">
   <nz-descriptions-item [nzTitle]="isEn() ? 'Import' : '使用'">
-    <button nz-button nzType="text" nzSize="small" (click)="copy()">
-      <span nz-typography nz-tooltip [nzTooltipTitle]="tip" nzTooltipPlacement="right" (nzTooltipVisibleChange)="usageTooltipVisibleChange($event)">
-        {{ usage }}
-      </span>
+    <button nz-button nzType="text" nzSize="small" (click)="copy()" nz-tooltip [nzTooltipTitle]="tip" nzTooltipPlacement="right" (nzTooltipVisibleChange)="usageTooltipVisibleChange($event)">
+      <span nz-typography>{{ usage }}</span>
     </button>
   </nz-descriptions-item>
   <nz-descriptions-item [nzTitle]="isEn() ? 'Source' : '源码'">
-    <a nz-button nzType="text" nzSize="small" [attr.href]="sourceCode" target="_blank" rel="noopener noreferrer">
-      <nz-icon nzType="github" />
-      <span nz-typography>components/{{ path() }}</span>
-    </a>
+    <nz-flex nzGap="small">
+      <a nz-button nzType="text" nzSize="small" [attr.href]="sourceCode" target="_blank" rel="noopener noreferrer">
+        <nz-icon nzType="github" />
+        <span nz-typography>components/{{ path() }}</span>
+      </a>
+      <a nz-button nzType="text" nzSize="small" [attr.href]="reportIssue" target="_blank" rel="noopener noreferrer">
+        <nz-icon nzType="bug" />
+        <span nz-typography>{{ isEn() ? 'Issue' : '提交问题' }}</span>
+      </a>
+      <a nz-button nzType="text" nzSize="small" [attr.href]="openIssues" target="_blank" rel="noopener noreferrer">
+        <nz-icon nzType="issues-close" />
+        <span nz-typography>
+          {{ isEn() ? 'Open issues' : '待解决' }}
+          @if (issues.hasValue()) {
+            {{ issues.value() }}
+          }
+        </span>
+      </a>
+    </nz-flex>
   </nz-descriptions-item>
   <nz-descriptions-item [nzTitle]="isEn() ? 'Docs' : '文档'">
     <a nz-button nzType="text" nzSize="small" [attr.href]="document()" target="_blank" rel="noopener noreferrer">
       <nz-icon nzType="edit" />
-      <span nz-typography>
-        {{ isEn() ? 'Edit this page' : '编辑此页' }}
-      </span>
+      <span nz-typography>{{ isEn() ? 'Edit this page' : '编辑此页' }}</span>
     </a>
   </nz-descriptions-item>
 </nz-descriptions>
