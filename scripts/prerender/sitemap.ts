@@ -3,10 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { readFileSync, createWriteStream } from 'fs-extra';
-import { EnumChangefreq, SitemapStream, SitemapItemLoose } from 'sitemap';
+import { createWriteStream, readFileSync } from 'fs-extra';
+import { EnumChangefreq, SitemapItemLoose, SitemapStream } from 'sitemap';
 
-import * as os from 'os';
 import { resolve } from 'path';
 
 import { buildConfig } from '../build-config';
@@ -19,7 +18,15 @@ const priorityMap: Record<string, number> = {
   '/docs/faq/en': 0.8
 };
 
-const ROUTES = readFileSync(resolve(__dirname, 'route-paths.txt')).toString().split(os.EOL) as string[];
+const PRERENDERED_ROUTES_PATH = resolve(__dirname, '../../dist/prerendered-routes.json');
+
+function loadRoutes(): string[] {
+  const raw = readFileSync(PRERENDERED_ROUTES_PATH, 'utf8');
+  const parsed = JSON.parse(raw) as { routes: Record<string, unknown> };
+  return Object.keys(parsed.routes);
+}
+
+const ROUTES = loadRoutes();
 
 function generateUrls(lang: 'zh' | 'en'): SitemapItemLoose[] {
   const urls = Array.from(new Set(ROUTES.filter(r => r !== '/').map(r => r.replace(/\/(zh|en)$/, ''))));
