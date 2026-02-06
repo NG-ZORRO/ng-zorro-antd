@@ -45,13 +45,12 @@
   }
 
   &:last-child > &-wrapper > &-rail,
-  &:last-child > &-wrapper > &-header > &-title::after {
+  &:last-child > &-wrapper > &-section > &-header > &-title::after {
     display: none;
   }
 
   &-icon,
-  &-header,
-  &-content {
+  &-section {
     display: inline-block;
     vertical-align: top;
   }
@@ -143,7 +142,7 @@
     }
   }
 
-  &-process > &-wrapper > &-header > &-title {
+  &-process > &-wrapper > &-section > &-header > &-title {
     font-weight: 500;
   }
   .step-item-status(finish);
@@ -238,14 +237,14 @@
       }
     }
   }
-  &-@{status} > &-wrapper > &-header > &-title {
+  &-@{status} > &-wrapper > &-section > &-header > &-title {
     color: @@title-color;
 
     &::after {
       background-color: @@tail-color;
     }
   }
-  &-@{status} > &-wrapper > &-content {
+  &-@{status} > &-wrapper > &-section > &-content {
     color: @@description-color;
   }
   &-@{status} > &-wrapper > &-rail::after {

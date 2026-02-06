@@ -91,23 +91,25 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
           </span>
         }
       </div>
-      <div
-        class="ant-steps-item-header"
-        [class.ant-steps-item-title-placeholder]="!nzTitle && !nzSubtitle && nzDescription"
-      >
-        <div class="ant-steps-item-title">
-          @if (nzTitle !== null || nzSubtitle !== null) {
-            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+      <div class="ant-steps-item-section">
+        <div
+          class="ant-steps-item-header"
+          [class.ant-steps-item-title-placeholder]="!nzTitle && !nzSubtitle && nzDescription"
+        >
+          <div class="ant-steps-item-title">
+            @if (nzTitle !== null || nzSubtitle !== null) {
+              <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+            }
+          </div>
+          @if (nzSubtitle) {
+            <span class="ant-steps-item-subtitle">
+              <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+            </span>
           }
         </div>
-        @if (nzSubtitle) {
-          <span class="ant-steps-item-subtitle">
-            <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
-          </span>
-        }
-      </div>
-      <div class="ant-steps-item-content">
-        <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+        <div class="ant-steps-item-content">
+          <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+        </div>
       </div>
     </div>
   `,
