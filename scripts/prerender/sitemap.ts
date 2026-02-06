@@ -26,10 +26,9 @@ function loadRoutes(): string[] {
   return Object.keys(parsed.routes);
 }
 
-const ROUTES = loadRoutes();
-
 function generateUrls(lang: 'zh' | 'en'): SitemapItemLoose[] {
-  const urls = Array.from(new Set(ROUTES.filter(r => r !== '/').map(r => r.replace(/\/(zh|en)$/, ''))));
+  const routes = loadRoutes();
+  const urls = Array.from(new Set(routes.filter(r => r !== '/').map(r => r.replace(/\/(zh|en)$/, ''))));
   return urls.map((r: string) => {
     const url = `${r}/${lang}`;
     return {
