@@ -1,4 +1,4 @@
-## [21.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.0.2...21.1.0) (2026-01-30)
+## [21.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.0.2...21.1.0) (2026-02-05)
 
 ### Features
 

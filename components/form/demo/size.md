@@ -1,5 +1,6 @@
 ---
 order: 16
+version: 21.1.0
 title:
   zh-CN: 表单尺寸
   en-US: Form size
