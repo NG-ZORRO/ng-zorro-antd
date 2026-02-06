@@ -17,9 +17,7 @@
             "server": "site/main.server.ts",
             "tsConfig": "site/tsconfig.app.json",
             "serviceWorker": "ngsw-config.json",
-            "prerender": {
-              "routesFile": "scripts/prerender/route-paths.txt"
-            },
+            "prerender": true,
             "ssr": {
               "entry": "site/server.ts"
             },
