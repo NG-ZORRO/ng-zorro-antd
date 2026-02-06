@@ -18,7 +18,7 @@ const priorityMap: Record<string, number> = {
   '/docs/faq/en': 0.8
 };
 
-const PRERENDERED_ROUTES_PATH = resolve(__dirname, '../../dist/prerendered-routes.json');
+const PRERENDERED_ROUTES_PATH = resolve(buildConfig.outputDir, 'prerendered-routes.json');
 
 function loadRoutes(): string[] {
   const raw = readFileSync(PRERENDERED_ROUTES_PATH, 'utf8');
