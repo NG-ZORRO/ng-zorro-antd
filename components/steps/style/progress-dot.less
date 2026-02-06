@@ -5,7 +5,7 @@
       line-height: @line-height-base;
     }
 
-    &-tail {
+    &-rail {
       top: @steps-dot-top;
       width: 100%;
       margin: 0 0 0 (@steps-description-max-width / 2);
@@ -78,7 +78,7 @@
   }
 
   // https://github.com/ant-design/ant-design/issues/18354
-  .@{steps-prefix-cls}-item > .@{steps-prefix-cls}-item-container > .@{steps-prefix-cls}-item-tail {
+  .@{steps-prefix-cls}-item > .@{steps-prefix-cls}-item-wrapper > .@{steps-prefix-cls}-item-rail {
     top: 6.5px;
     left: -9px;
     margin: 0;
@@ -91,8 +91,8 @@
     }
 
     .@{steps-prefix-cls}-item
-      > .@{steps-prefix-cls}-item-container
-      > .@{steps-prefix-cls}-item-tail {
+      > .@{steps-prefix-cls}-item-wrapper
+      > .@{steps-prefix-cls}-item-rail {
       top: 3.5px;
     }
   }
@@ -104,7 +104,7 @@
     width: inherit;
   }
   .@{steps-prefix-cls}-item-process
-    .@{steps-prefix-cls}-item-container
+    .@{steps-prefix-cls}-item-wrapper
     .@{steps-prefix-cls}-item-icon
     .@{steps-prefix-cls}-icon-dot {
     top: -1px;

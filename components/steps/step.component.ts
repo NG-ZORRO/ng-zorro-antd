@@ -36,12 +36,12 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
   template: `
     <div
       #itemContainer
-      class="ant-steps-item-container"
+      class="ant-steps-item-wrapper"
       [attr.role]="clickable && !nzDisabled ? 'button' : null"
       [tabindex]="clickable && !nzDisabled ? 0 : null"
     >
       @if (!last) {
-        <div class="ant-steps-item-tail"></div>
+        <div class="ant-steps-item-rail"></div>
       }
       <div class="ant-steps-item-icon">
         @if (!showProcessDot) {
@@ -91,23 +91,23 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
           </span>
         }
       </div>
-      <div class="ant-steps-item-content">
-        <div
-          class="ant-steps-item-title"
-          [class.ant-steps-item-title-placeholder]="!nzTitle && !nzSubtitle && nzDescription"
-        >
+      <div
+        class="ant-steps-item-header"
+        [class.ant-steps-item-title-placeholder]="!nzTitle && !nzSubtitle && nzDescription"
+      >
+        <div class="ant-steps-item-title">
           @if (nzTitle !== null || nzSubtitle !== null) {
             <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-            @if (nzSubtitle) {
-              <div class="ant-steps-item-subtitle">
-                <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
-              </div>
-            }
           }
         </div>
-        <div class="ant-steps-item-description">
-          <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
-        </div>
+        @if (nzSubtitle) {
+          <span class="ant-steps-item-subtitle">
+            <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+          </span>
+        }
+      </div>
+      <div class="ant-steps-item-content">
+        <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
       </div>
     </div>
   `,
