@@ -1,8 +1,8 @@
 ---
 order: 13
 title: Change Log
-toc: false
-timeline: true
+toc:
+  depth: 2
 tag: '{{version}}'
 ---
 

@@ -10,7 +10,7 @@ import { remark } from 'remark';
 import path from 'path';
 
 import md from '../markdown';
-import { I18n, Language } from '../types';
+import { ComponentIndexDocMetaTocConfig, I18n, Language } from '../types';
 import { angularNonBindAble } from './angular-non-bindable';
 import { generateTitle } from './generate-title';
 import { getMeta } from './get-meta';
@@ -37,11 +37,16 @@ function generateDoc(file: Buffer, docsPath: string, name: string, language: Lan
   delete meta.__content;
   const content = md.parse(raw, { async: false });
   const filename = `${name}-${language}`;
+  const toc = meta.toc ?? true;
 
   // template.html
   writeFileSync(
     path.join(docsPath, `${filename}.html`),
-    wrapperDocs((meta.toc ?? true) ? generateToc(raw) : '', generateTitle(meta), angularNonBindAble(content))
+    wrapperDocs(
+      toc ? generateToc(raw, typeof toc === 'boolean' ? {} : toc) : '',
+      generateTitle(meta),
+      angularNonBindAble(content)
+    )
   );
   // component.ts
   const component = componentTemplate
@@ -58,15 +63,19 @@ function wrapperDocs(toc: string, title: string, content: string): string {
 </article>`;
 }
 
-function generateToc(raw: string): string {
+function generateToc(raw: string, config: ComponentIndexDocMetaTocConfig): string {
   const ast = remark.parse(raw);
+  const { depth = 3 } = config;
   const linkArray: string[] = [];
   ast.children.forEach(child => {
-    if (child.type === 'heading' && (child.depth === 2 || child.depth === 3)) {
+    if (child.type === 'heading' && child.depth > 1 && child.depth <= depth) {
       const firstChild = child.children[0];
       if (firstChild.type === 'text') {
         const text = firstChild.value;
-        const lowerText = text.toLowerCase().replace(/ /g, '-').replace(/\./g, '-').replace(/\?/g, '');
+        const lowerText = text
+          .toLowerCase()
+          .replace(/ /g, '_') // replace space with underscore
+          .replace(/[?.]/g, ''); // remove special chars: `?` `.`
         const indent = child.depth - 1;
         linkArray.push(`<nz-link nzHref="#${lowerText}" class="toc-indent-${indent}" nzTitle="${text}"></nz-link>`);
       }

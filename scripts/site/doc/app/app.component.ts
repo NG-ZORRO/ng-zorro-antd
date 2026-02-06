@@ -264,7 +264,7 @@ export class AppComponent implements OnInit {
         setTimeout(() => {
           const toc = this.router.parseUrl(this.router.url).fragment || '';
           if (toc) {
-            document.querySelector(`#${toc}`)!.scrollIntoView();
+            document.getElementById(toc)?.scrollIntoView();
           }
         }, 200);
       }
