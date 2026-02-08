@@ -47,8 +47,7 @@
     flex: none;
   }
 
-  &:last-child > &-wrapper > &-rail,
-  &:last-child > &-wrapper > &-section > &-header > &-title::after {
+  &:last-child > &-wrapper > &-section > &-header > &-rail {
     display: none;
   }
 
@@ -78,28 +77,17 @@
     }
   }
 
-  &-rail {
-    position: absolute;
-    top: 12px;
-    left: 0;
-    width: 100%;
-    padding: 0 10px;
+  > &-wrapper > &-section > &-header > &-rail {
+    // Base styles - will be overridden in horizontal/vertical modes
+    display: none;
 
     &::after {
-      display: inline-block;
-      width: 100%;
+      display: block;
       height: 1px;
       background: @border-color-split;
       border-radius: 1px;
       transition: background 0.3s;
       content: '';
-    }
-  }
-
-  &-header {
-    // When only description is provided, reserve title row so description stays below the line
-    &.@{steps-prefix-cls}-item-title-placeholder {
-      min-height: @steps-title-line-height;
     }
   }
 
@@ -110,22 +98,10 @@
     color: @text-color;
     font-size: @font-size-lg;
     line-height: @steps-title-line-height;
-
-    &::after {
-      position: absolute;
-      top: (@steps-title-line-height / 2);
-      left: 100%;
-      display: block;
-      width: 9999px;
-      height: 1px;
-      background: @wait-tail-color;
-      content: '';
-    }
   }
 
   &-subtitle {
     display: inline;
-    margin-left: 8px;
     color: @text-color-secondary;
     font-weight: normal;
     font-size: @font-size-base;
@@ -151,7 +127,7 @@
   .step-item-status(finish);
   .step-item-status(error);
 
-  &.@{steps-prefix-cls}-next-error .@{steps-prefix-cls}-item-title::after {
+  &.@{steps-prefix-cls}-next-error > &-wrapper > &-section > &-header > &-rail::after {
     background: @error-icon-color;
   }
 
@@ -214,8 +190,43 @@
       padding-right: 0;
     }
 
+    // In horizontal mode use the rail (after title+subtitle) for the line so it doesn't overlap subtitle
+    &-header {
+      position: relative;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      overflow: visible;
+
+      &-subtitle {
+        flex-shrink: 0;
+        margin-right: 0;
+      }
+    }
+
     &-rail {
-      display: none;
+      position: relative;
+      display: block !important;
+      flex: 1;
+      width: auto;
+      min-width: 0;
+      height: @steps-title-line-height;
+      margin-left: 0;
+      padding: 0;
+      overflow: visible;
+
+      &::after {
+        position: absolute;
+        top: (@steps-title-line-height / 2);
+        left: 0;
+        display: block !important;
+        width: 9999px;
+        height: 1px;
+        background: @wait-tail-color;
+        border-radius: 1px;
+        transition: background 0.3s;
+        content: '';
+      }
     }
 
     &-content {
@@ -242,15 +253,11 @@
   }
   &-@{status} > &-wrapper > &-section > &-header > &-title {
     color: @@title-color;
-
-    &::after {
-      background-color: @@tail-color;
-    }
   }
   &-@{status} > &-wrapper > &-section > &-content {
     color: @@description-color;
   }
-  &-@{status} > &-wrapper > &-rail::after {
+  &-@{status} > &-wrapper > &-section > &-header > &-rail::after {
     background-color: @@tail-color;
   }
 }

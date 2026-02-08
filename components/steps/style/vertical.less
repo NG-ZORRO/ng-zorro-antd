@@ -13,14 +13,14 @@
       margin-right: @steps-vertical-icon-width;
     }
 
-    .@{steps-prefix-cls}-item-header,
+    .@{steps-prefix-cls}-item-header {
+      display: block;
+      overflow: visible;
+    }
+
     .@{steps-prefix-cls}-item-content {
       display: block;
       overflow: hidden;
-    }
-
-    .@{steps-prefix-cls}-item-header {
-      min-height: 48px;
     }
 
     .@{steps-prefix-cls}-item-title {
@@ -32,47 +32,49 @@
     }
   }
 
-  > .@{steps-prefix-cls}-item
+  > .@{steps-prefix-cls}-item:not(:last-child)
     > .@{steps-prefix-cls}-item-wrapper
+    > .@{steps-prefix-cls}-item-section
+    > .@{steps-prefix-cls}-item-header
     > .@{steps-prefix-cls}-item-rail {
     position: absolute;
-    top: 0;
+    top: @steps-icon-size + 6px;
+    bottom: 6px;
     left: @steps-vertical-tail-width - 1; // line width
+    display: block !important;
     width: 1px;
-    height: 100%;
-    padding: @steps-icon-size + 6px 0 6px;
 
     &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block !important;
       width: 1px;
       height: 100%;
+      border-radius: 1px;
+      transition: background 0.3s;
+      content: '';
     }
   }
 
-  > .@{steps-prefix-cls}-item:not(:last-child)
+
+
+  &.@{steps-prefix-cls}-small
+    > .@{steps-prefix-cls}-item:not(:last-child)
     > .@{steps-prefix-cls}-item-wrapper
+    > .@{steps-prefix-cls}-item-section
+    > .@{steps-prefix-cls}-item-header
     > .@{steps-prefix-cls}-item-rail {
-    display: block;
+    top: @steps-small-icon-size + 6px;
+    left: @steps-vertical-tail-width-sm - 1; // line width
   }
 
-  > .@{steps-prefix-cls}-item
+  &.@{steps-prefix-cls}-small
+    > .@{steps-prefix-cls}-item
     > .@{steps-prefix-cls}-item-wrapper
     > .@{steps-prefix-cls}-item-section
     > .@{steps-prefix-cls}-item-header
     > .@{steps-prefix-cls}-item-title {
-    &::after {
-      display: none;
-    }
-  }
-
-  &.@{steps-prefix-cls}-small .@{steps-prefix-cls}-item-wrapper {
-    .@{steps-prefix-cls}-item-rail {
-      position: absolute;
-      top: 0;
-      left: @steps-vertical-tail-width-sm - 1; // line width
-      padding: @steps-small-icon-size + 6px 0 6px;
-    }
-    .@{steps-prefix-cls}-item-title {
-      line-height: @steps-small-icon-size;
-    }
+    line-height: @steps-small-icon-size;
   }
 }

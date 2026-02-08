@@ -40,9 +40,6 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
       [attr.role]="clickable && !nzDisabled ? 'button' : null"
       [tabindex]="clickable && !nzDisabled ? 0 : null"
     >
-      @if (!last) {
-        <div class="ant-steps-item-rail"></div>
-      }
       <div class="ant-steps-item-icon">
         @if (!showProcessDot) {
           @if (showProgress) {
@@ -92,10 +89,7 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
         }
       </div>
       <div class="ant-steps-item-section">
-        <div
-          class="ant-steps-item-header"
-          [class.ant-steps-item-title-placeholder]="!nzTitle && !nzSubtitle && nzDescription"
-        >
+        <div class="ant-steps-item-header">
           <div class="ant-steps-item-title">
             @if (nzTitle !== null || nzSubtitle !== null) {
               <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
@@ -105,6 +99,15 @@ import { NzProgressFormatter, NzProgressModule } from 'ng-zorro-antd/progress';
             <span class="ant-steps-item-subtitle">
               <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
             </span>
+          }
+          @if (!last) {
+            <div
+              class="ant-steps-item-rail"
+              [class.ant-steps-item-rail-wait]="nzStatus === 'wait'"
+              [class.ant-steps-item-rail-process]="nzStatus === 'process'"
+              [class.ant-steps-item-rail-finish]="nzStatus === 'finish'"
+              [class.ant-steps-item-rail-error]="nzStatus === 'error'"
+            ></div>
           }
         </div>
         <div class="ant-steps-item-content">
