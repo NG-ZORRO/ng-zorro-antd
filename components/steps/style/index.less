@@ -56,6 +56,10 @@
     vertical-align: top;
   }
 
+  &-section {
+    flex: 1 1;
+  }
+
   &-icon {
     width: @steps-icon-size;
     height: @steps-icon-size;
@@ -79,21 +83,12 @@
   > &-wrapper > &-section > &-header > &-rail {
     // Base styles - will be overridden in horizontal/vertical modes
     display: none;
-
-    &::after {
-      display: block;
-      height: 1px;
-      background: @border-color-split;
-      border-radius: 1px;
-      transition: background 0.3s;
-      content: '';
-    }
+    height: 1px;
   }
 
   &-title {
     position: relative;
     display: inline-block;
-    padding-right: 16px;
     color: @text-color;
     font-size: @font-size-lg;
     line-height: @steps-title-line-height;
@@ -101,6 +96,7 @@
 
   &-subtitle {
     display: inline;
+    margin-left: 8px;
     color: @text-color-secondary;
     font-weight: normal;
     font-size: @font-size-base;
@@ -126,7 +122,7 @@
   .step-item-status(finish);
   .step-item-status(error);
 
-  &.@{steps-prefix-cls}-next-error > &-wrapper > &-section > &-header > &-rail::after {
+  &.@{steps-prefix-cls}-next-error > &-wrapper > &-section > &-header > &-rail {
     background: @error-icon-color;
   }
 
@@ -204,28 +200,18 @@
     }
 
     &-rail {
-      position: relative;
+      position: static;
       display: block !important;
       flex: 1;
       width: auto;
-      min-width: 0;
-      height: @steps-title-line-height;
-      margin-left: 0;
+      height: 1px;
+      margin: 0;
+      margin-left: 16px;
       padding: 0;
       overflow: visible;
-
-      &::after {
-        position: absolute;
-        top: (@steps-title-line-height / 2);
-        left: 0;
-        display: block !important;
-        width: 9999px;
-        height: 1px;
-        background: @wait-tail-color;
-        border-radius: 1px;
-        transition: background 0.3s;
-        content: '';
-      }
+      background: @wait-tail-color;
+      border-radius: 1px;
+      transition: background 0.3s;;
     }
 
     &-content {
@@ -256,7 +242,7 @@
   &-@{status} > &-wrapper > &-section > &-content {
     color: @@description-color;
   }
-  &-@{status} > &-wrapper > &-section > &-header > &-rail::after {
+  &-@{status} > &-wrapper > &-section > &-header > &-rail {
     background-color: @@tail-color;
   }
 }

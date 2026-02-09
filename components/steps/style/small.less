@@ -17,7 +17,6 @@
     border-radius: @steps-small-icon-size;
   }
   .@{steps-prefix-cls}-item-title {
-    padding-right: 12px;
     font-size: @font-size-base;
     line-height: @steps-small-icon-size;
   }
@@ -31,11 +30,8 @@
     > .@{steps-prefix-cls}-item-section
     > .@{steps-prefix-cls}-item-header
     > .@{steps-prefix-cls}-item-rail {
-    height: @steps-small-icon-size;
-
-    &::after {
-      top: (@steps-small-icon-size / 2);
-    }
+    height: 1px;
+    margin-left: 12px;
   }
   .@{steps-prefix-cls}-item-custom .@{steps-prefix-cls}-item-icon {
     width: inherit;
