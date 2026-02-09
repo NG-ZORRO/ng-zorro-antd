@@ -409,6 +409,7 @@ describe('NzAnchor', () => {
 
   it('should calculate target scroll top correctly and call scrollTo', () => {
     const mockElement = document.createElement('div');
+    spyOn(mockDocument, 'getElementById').and.returnValue(mockElement);
     spyOn(mockDocument, 'querySelector').and.returnValue(mockElement);
     spyOn(scrollService, 'getScroll').and.returnValue(100);
     spyOn<NzSafeAny>(component, 'getContainer').and.returnValue(window);
