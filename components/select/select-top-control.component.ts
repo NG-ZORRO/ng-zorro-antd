@@ -23,6 +23,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, Subject } from 'rxjs';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -145,6 +146,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   isShowSingleLabel = false;
   isComposing = false;
   inputValue: string | null = null;
+  inputValue$ = new Subject<string>();
 
   updateTemplateVariable(): void {
     const isSelectedValueEmpty = this.listOfTopItem.length === 0;
@@ -161,8 +163,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
     if (value !== this.inputValue) {
       this.inputValue = value;
       this.updateTemplateVariable();
-      this.inputValueChange.emit(value);
-      this.tokenSeparate(value, this.tokenSeparators);
+      this.inputValue$.next(value); // Push value to the debouncer
     }
   }
 
@@ -263,5 +264,10 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
           }
         }
       });
+
+    this.inputValue$.pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+      this.inputValueChange.emit(value);
+      this.tokenSeparate(value, this.tokenSeparators);
+    });
   }
 }
