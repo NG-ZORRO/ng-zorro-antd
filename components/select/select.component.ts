@@ -26,6 +26,7 @@ import {
   EventEmitter,
   forwardRef,
   inject,
+  input,
   Input,
   NgZone,
   OnChanges,
@@ -131,6 +132,7 @@ export type NzSelectSizeType = NzSizeLDSType;
       [autofocus]="nzAutoFocus"
       [listOfTopItem]="listOfTopItem"
       [prefix]="nzPrefix"
+      [debounceValueChangeTime]="debounceValueChangeTime()"
       (inputValueChange)="onInputValueChange($event)"
       (tokenize)="onTokenSeparate($event)"
       (deleteItem)="onItemDelete($event)"
@@ -286,7 +288,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
   @Input({ transform: booleanAttribute }) nzShowArrow: boolean = true;
-
+  debounceValueChangeTime = input(300);
   get showArrow(): boolean {
     return this.nzShowArrow || !!this.nzSuffixIcon;
   }
