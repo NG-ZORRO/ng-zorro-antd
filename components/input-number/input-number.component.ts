@@ -155,6 +155,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
       <div class="ant-input-number-input-wrap">
         <input
           #input
+          type="number"
           autocomplete="off"
           role="spinbutton"
           class="ant-input-number-input"
