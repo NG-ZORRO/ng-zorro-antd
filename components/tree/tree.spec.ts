@@ -62,6 +62,19 @@ describe('tree', () => {
         expect(component.treeComponent.getExpandedNodeList().length).toEqual(1);
       }));
 
+      it('should expand the specified node based on "expanded" property', fakeAsync(() => {
+        const nodes: NzTreeNodeOptions[] = structuredClone(component.nodes);
+        nodes.find(n => n.key === '0-1')!.expanded = true;
+        component.nodes = nodes;
+        fixture.detectChanges();
+        const shownNodes = nativeElement.querySelectorAll('nz-tree-node[builtin]');
+        expect(shownNodes.length).toEqual(4);
+        tick(300);
+        fixture.detectChanges();
+        // leaf node should not be included
+        expect(component.treeComponent.getExpandedNodeList().length).toEqual(1);
+      }));
+
       it('should expand all nodes while setting nzExpandAll', fakeAsync(() => {
         component.expandAll = true;
         fixture.detectChanges();
@@ -76,6 +89,25 @@ describe('tree', () => {
       it('should render checkbox state of nodes based on nzCheckedKeys', fakeAsync(() => {
         component.expandAll = true; // Just for testing the selected state
         component.defaultCheckedKeys = ['0-0-0', '0-0-1'];
+        fixture.detectChanges();
+        const checkedNodes = nativeElement.querySelectorAll('.ant-tree-checkbox-checked');
+        const halfCheckedNodes = nativeElement.querySelectorAll('.ant-tree-checkbox-indeterminate');
+        expect(checkedNodes.length).toEqual(2);
+        expect(halfCheckedNodes.length).toEqual(1);
+        tick(300);
+        fixture.detectChanges();
+        expect(component.treeComponent.getCheckedNodeList().length).toEqual(2);
+        expect(component.treeComponent.getHalfCheckedNodeList().length).toEqual(1);
+      }));
+
+      it('should render checkbox state of nodes based on "checked" property', fakeAsync(() => {
+        component.expandAll = true; // Just for testing the selected state
+        const nodes: NzTreeNodeOptions[] = structuredClone(component.nodes);
+        nodes
+          .find(n => n.key === '0-0')!
+          .children!.filter(n => ['0-0-0', '0-0-1'].includes(n.key))
+          .forEach(n => (n.checked = true));
+        component.nodes = nodes;
         fixture.detectChanges();
         const checkedNodes = nativeElement.querySelectorAll('.ant-tree-checkbox-checked');
         const halfCheckedNodes = nativeElement.querySelectorAll('.ant-tree-checkbox-indeterminate');
@@ -102,8 +134,41 @@ describe('tree', () => {
         expect(component.treeComponent.getHalfCheckedNodeList().length).toEqual(0);
       }));
 
+      it('node check should not affect other nodes based on nzCheckStrictly (using "checked" property)', fakeAsync(() => {
+        component.expandAll = true;
+        component.checkStrictly = true;
+        const nodes: NzTreeNodeOptions[] = structuredClone(component.nodes);
+        nodes
+          .find(n => n.key === '0-0')!
+          .children!.filter(n => ['0-0-0', '0-0-1'].includes(n.key))
+          .forEach(n => (n.checked = true));
+        component.nodes = nodes;
+        fixture.detectChanges();
+        const checkedNodes = nativeElement.querySelectorAll('.ant-tree-checkbox-checked');
+        const halfCheckedNodes = nativeElement.querySelectorAll('.ant-tree-checkbox-indeterminate');
+        expect(checkedNodes.length).toEqual(2);
+        expect(halfCheckedNodes.length).toEqual(0);
+        tick(300);
+        fixture.detectChanges();
+        expect(component.treeComponent.getCheckedNodeList().length).toEqual(2);
+        expect(component.treeComponent.getHalfCheckedNodeList().length).toEqual(0);
+      }));
+
       it('should select nodes based on nzSelectedKeys', fakeAsync(() => {
         component.defaultSelectedKeys = ['0-0', '0-1'];
+        fixture.detectChanges();
+        // nzMultiple is true
+        const selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
+        expect(selectedNodes.length).toEqual(2);
+        tick(300);
+        fixture.detectChanges();
+        expect(component.treeComponent.getSelectedNodeList().length).toEqual(2);
+      }));
+
+      it('should select nodes based on "selected" property', fakeAsync(() => {
+        const nodes: NzTreeNodeOptions[] = structuredClone(component.nodes);
+        nodes.filter(n => ['0-0', '0-1'].includes(n.key)).forEach(n => (n.selected = true));
+        component.nodes = nodes;
         fixture.detectChanges();
         // nzMultiple is true
         const selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
