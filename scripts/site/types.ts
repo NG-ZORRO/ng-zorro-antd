@@ -87,11 +87,21 @@ export interface ComponentIndexDocMeta {
   /**
    * whether to generate toc
    */
-  toc?: boolean;
+  toc?: ComponentIndexDocMetaToc;
   /**
    * content of the component
    */
   __content?: string;
+}
+
+export type ComponentIndexDocMetaToc = boolean | ComponentIndexDocMetaTocConfig;
+
+export interface ComponentIndexDocMetaTocConfig {
+  /**
+   * maximum depth of the toc
+   * @default 3
+   */
+  depth?: number;
 }
 
 export type ComponentIndexDocMap = Record<string, I18n<ComponentIndexDocMeta>>;

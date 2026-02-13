@@ -49,6 +49,7 @@
     "selector-id-pattern": null,
     "selector-not-notation": null,
     "declaration-block-no-redundant-longhand-properties": null,
+    "declaration-property-value-no-unknown": null,
     "at-rule-no-unknown": [
       true,
       {

@@ -1,8 +1,8 @@
 ---
 order: 13
 title: 更新日志
-toc: false
-timeline: true
+toc:
+  depth: 2
 tag: '{{version}}'
 ---
 
