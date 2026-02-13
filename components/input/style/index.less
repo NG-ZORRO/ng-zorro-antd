@@ -50,6 +50,7 @@
     &.@{input-prefix-cls}-lg {
       height: @input-height-lg;
     }
+
     &.@{input-prefix-cls}-sm {
       height: @input-height-sm;
       padding-top: 3px;
@@ -87,6 +88,13 @@
     display: inline-flex;
     align-items: center;
     margin: auto;
+  }
+
+  &-out-of-range {
+    .@{input-prefix-cls},
+    .@{input-prefix-cls}-show-count-suffix {
+      color: @error-color;
+    }
   }
 
   // ===================== Compact Item Styles =====================
