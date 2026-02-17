@@ -236,7 +236,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
 
   private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
 
-  protected readonly variant = signal<NzVariant>('outlined');
+  protected readonly variant = signal<NzVariant>(this.nzVariant);
 
   protected readonly finalVariant = computed(
     () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
