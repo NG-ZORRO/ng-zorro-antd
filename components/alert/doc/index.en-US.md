@@ -28,3 +28,12 @@ description: Alert component for feedback.
 | `[nzType]`        | Type of Alert styles, in `nzBanner` mode default is `'warning'` | `'success' \| 'info' \| 'warning' \| 'error'` | `'info'` |
 | `[nzIcon]`        | Custom icon, effective when showIcon is true                    | `string \| TemplateRef<void>`                 | -        |
 | `(nzOnClose)`     | Callback when Alert is closed                                   | `EventEmitter<void>`                          | -        |
+
+### nz-alert-marquee
+
+Use `nz-alert-marquee` as the `[nzMessage]` template content to create a scrolling loop banner inside an alert.
+
+| Property           | Description                                                      | Type      | Default |
+| ------------------ | ---------------------------------------------------------------- | --------- | ------- |
+| `[nzPauseOnHover]` | Whether to pause the scrolling animation on mouse hover          | `boolean` | `false` |
+| `[nzSpeed]`        | Animation speed in pixels per second (higher = faster scrolling) | `number`  | `50`    |
