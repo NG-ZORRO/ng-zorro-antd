@@ -87,7 +87,13 @@ export class NzInputDirective implements OnInit {
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
 
-  readonly controlDisabled = signal(false);
+  // Angular Signal Forms uses `InteropNgControl` which does not emit `statusChanges`.
+  // However, `InteropNgControl.disabled` is signal-reactive (it reads from the field's
+  // computed disabled signal), so an `effect()` here picks up changes for Signal Forms
+  // while remaining a one-shot read for traditional reactive forms (whose updates
+  // continue to come from the `statusChanges` subscription in `ngOnInit`).
+  // I think this is "nice" workaround for now, but we should find a better solution in the future when signal form API will be stable.
+  readonly controlDisabled = linkedSignal(() => !!this.ngControl?.disabled);
   readonly finalDisabled = this.ngControl ? this.controlDisabled : this.disabled;
   readonly dir = inject(Directionality).valueSignal;
   // TODO: When the input group is removed, we can remove this.
