@@ -48,7 +48,11 @@ export class NzTabsInkBarDirective {
       this.el.style.left = '';
       this.el.style.width = '';
       this.el.style.height = coerceCssPixelValue(
-        size ? (typeof size === 'number' ? size : size(element?.offsetHeight ?? 0)) : (element?.offsetHeight ?? 0)
+        size !== undefined && size !== null
+          ? typeof size === 'number'
+            ? size
+            : size(element?.offsetHeight ?? 0)
+          : (element?.offsetHeight ?? 0)
       );
       this.el.style.top = this.setIndicatorPosition(element, align);
     }
