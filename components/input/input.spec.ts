@@ -16,7 +16,7 @@ import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testi
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
+import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -340,6 +340,71 @@ describe('input', () => {
       expect(inputElement.classList).toContain('ant-input-lg');
     });
   });
+
+  describe('finalVariant', () => {
+    let fixture: ComponentFixture<TestInputFinalVariantComponent>;
+    let inputElement: HTMLElement;
+    let component: TestInputFinalVariantComponent;
+    let formVariantSignal: WritableSignal<NzVariant>;
+
+    beforeEach(() => {
+      formVariantSignal = signal<NzVariant>('outlined');
+    });
+
+    afterEach(() => {
+      TestBed.resetTestingModule();
+    });
+
+    it('should set correctly the variant from the formVariant signal', () => {
+      TestBed.configureTestingModule({
+        providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+      });
+      fixture = TestBed.createComponent(TestInputFinalVariantComponent);
+      component = fixture.componentInstance;
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
+      fixture.detectChanges();
+      formVariantSignal.set('filled');
+      fixture.detectChanges();
+      expect(inputElement.classList).toContain('ant-input-filled');
+    });
+
+    it('should prioritize nzVariant over formVariant when nzVariant is not outlined', () => {
+      TestBed.configureTestingModule({
+        providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+      });
+      fixture = TestBed.createComponent(TestInputFinalVariantComponent);
+      component = fixture.componentInstance;
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
+      fixture.detectChanges();
+      formVariantSignal.set('filled');
+      component.variant.set('borderless');
+      fixture.detectChanges();
+      expect(inputElement.classList).toContain('ant-input-borderless');
+      expect(inputElement.classList).not.toContain('ant-input-filled');
+    });
+
+    it('should use nzVariant when no formVariant is provided', () => {
+      TestBed.configureTestingModule({});
+      fixture = TestBed.createComponent(TestInputFinalVariantComponent);
+      component = fixture.componentInstance;
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
+      fixture.detectChanges();
+      component.variant.set('underlined');
+      fixture.detectChanges();
+      expect(inputElement.classList).toContain('ant-input-underlined');
+    });
+
+    it('should fallback to outlined when nzVariant is outlined and no formVariant is set', () => {
+      TestBed.configureTestingModule({});
+      fixture = TestBed.createComponent(TestInputFinalVariantComponent);
+      component = fixture.componentInstance;
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
+      fixture.detectChanges();
+      expect(inputElement.classList).not.toContain('ant-input-filled');
+      expect(inputElement.classList).not.toContain('ant-input-borderless');
+      expect(inputElement.classList).not.toContain('ant-input-underlined');
+    });
+  });
 });
 
 @Component({
@@ -442,4 +507,12 @@ export class NzTestInputWithTypeComponent {
 })
 export class TestInputFinalSizeComponent {
   size: NzSizeLDSType = 'default';
+}
+
+@Component({
+  imports: [NzInputModule],
+  template: `<input nz-input [nzVariant]="variant()" />`
+})
+export class TestInputFinalVariantComponent {
+  readonly variant = signal<NzVariant>('outlined');
 }

@@ -32,7 +32,12 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { NZ_FORM_SIZE, NzFormItemFeedbackIconComponent, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import {
+  NZ_FORM_SIZE,
+  NZ_FORM_VARIANT,
+  NzFormItemFeedbackIconComponent,
+  NzFormStatusService
+} from 'ng-zorro-antd/core/form';
 import {
   NzSizeLDSType,
   NzStatus,
@@ -241,6 +246,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   protected readonly displayValue = signal('');
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+  private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
 
   protected readonly dir = inject(Directionality).valueSignal;
   protected readonly focused = signal(false);
@@ -280,7 +286,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-rtl': this.dir() === 'rtl',
       'ant-input-number-in-form-item': !!this.nzFormStatusService,
       'ant-input-number-out-of-range': this.value() !== null && !isInRange(this.value()!, this.nzMin(), this.nzMax()),
-      ...getVariantClassNames('ant-input-number', this.nzVariant()),
+      ...getVariantClassNames('ant-input-number', this.finalVariant()),
       ...getStatusClassNames('ant-input-number', this.finalStatus(), this.hasFeedback())
     };
   });
@@ -292,7 +298,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-affix-wrapper-focused': this.focused(),
       'ant-input-number-affix-wrapper-rtl': this.dir() === 'rtl',
       ...getStatusClassNames('ant-input-number-affix-wrapper', this.finalStatus(), this.hasFeedback()),
-      ...getVariantClassNames('ant-input-number-affix-wrapper', this.nzVariant())
+      ...getVariantClassNames('ant-input-number-affix-wrapper', this.finalVariant())
     };
   });
   protected readonly groupWrapperClass = computed(() => {
@@ -300,7 +306,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-group-wrapper': true,
       'ant-input-number-group-wrapper-rtl': this.dir() === 'rtl',
       ...getStatusClassNames('ant-input-number-group-wrapper', this.finalStatus(), this.hasFeedback()),
-      ...getVariantClassNames('ant-input-number-group-wrapper', this.nzVariant())
+      ...getVariantClassNames('ant-input-number-group-wrapper', this.finalVariant())
     };
   });
 
@@ -313,6 +319,10 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     }
     return this.nzSize();
   });
+
+  protected readonly finalVariant = computed(
+    () => (this.nzVariant() === 'outlined' && this.formVariant?.()) || this.nzVariant()
+  );
 
   protected readonly upDisabled = computed(() => {
     return !isNil(this.value()) && this.value()! >= this.nzMax();
