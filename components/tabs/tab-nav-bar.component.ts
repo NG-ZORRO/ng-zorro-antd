@@ -16,6 +16,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -29,9 +30,8 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   computed,
-  input,
   inject,
-  DestroyRef
+  input
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
@@ -41,7 +41,7 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
+import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent, type NzIndicator } from './interfaces';
 import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabBarExtraContentDirective } from './tab-bar-extra-content.directive';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
@@ -94,7 +94,13 @@ const CSS_TRANSFORM_TIME = 150;
             (click)="addClicked.emit()"
           ></button>
         }
-        <div nz-tabs-ink-bar [hidden]="hideBar" [position]="position" [animated]="inkBarAnimated"></div>
+        <div
+          nz-tabs-ink-bar
+          [hidden]="hideBar"
+          [position]="position"
+          [animated]="inkBarAnimated"
+          [indicator]="indicator()"
+        ></div>
       </div>
     </div>
     <nz-tab-nav-operation
@@ -142,6 +148,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   @Input() extraTemplate?: TemplateRef<void>;
 
   readonly extraContents = input.required<readonly NzTabBarExtraContentDirective[]>();
+  readonly indicator = input<NzIndicator>();
 
   readonly startExtraContent = computed(() => this.extraContents().find(item => item.position() === 'start'));
   readonly endExtraContent = computed(() => this.extraContents().find(item => item.position() === 'end'));
@@ -566,12 +573,16 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { position } = changes;
+    const { position, indicator } = changes;
     // The first will be aligning in ngAfterViewInit
     if (position && !position.isFirstChange()) {
       this.alignInkBarToSelectedTab();
       this.lockAnimation();
       this.updateScrollListPosition();
+    }
+    if (indicator && !indicator.isFirstChange()) {
+      this.alignInkBarToSelectedTab();
+      this.lockAnimation();
     }
   }
 }
