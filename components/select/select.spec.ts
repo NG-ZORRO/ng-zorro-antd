@@ -1730,6 +1730,7 @@ describe('select finalSize', () => {
       [nzPlacement]="nzPlacement"
       [nzSelectOnTab]="nzSelectOnTab"
       [nzMaxMultipleCount]="nzMaxMultipleCount"
+      [debounceValueChangeTime]="0"
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
       (nzOpenChange)="openChange($event)"
@@ -1815,6 +1816,7 @@ export class TestSelectTemplateDefaultComponent {
       [nzMaxMultipleCount]="nzMaxMultipleCount"
       [compareWith]="compareWith"
       [nzAutoClearSearchValue]="nzAutoClearSearchValue"
+      [debounceValueChangeTime]="0"
       [(nzOpen)]="nzOpen"
       (ngModelChange)="valueChange($event)"
       (nzOpenChange)="valueChange($event)"
@@ -1851,6 +1853,7 @@ export class TestSelectTemplateMultipleComponent {
       [nzMaxTagCount]="nzMaxTagCount"
       [nzTokenSeparators]="nzTokenSeparators"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
+      [debounceValueChangeTime]="0"
       (ngModelChange)="valueChange($event)"
     >
       @for (o of listOfOption; track o) {
@@ -1895,6 +1898,7 @@ export class TestSelectTemplateTagsComponent {
       [nzServerSearch]="nzServerSearch"
       [nzDisabled]="nzDisabled"
       [nzAutoClearSearchValue]="nzAutoClearSearchValue"
+      [debounceValueChangeTime]="0"
       [(nzOpen)]="nzOpen"
       (ngModelChange)="valueChange($event)"
       (nzOnSearch)="searchValueChange($event)"
@@ -1956,6 +1960,7 @@ export class TestSelectReactiveDefaultComponent {
       [nzMaxMultipleCount]="nzMaxMultipleCount"
       [compareWith]="compareWith"
       [nzAutoClearSearchValue]="nzAutoClearSearchValue"
+      [debounceValueChangeTime]="0"
       [(nzOpen)]="nzOpen"
       (ngModelChange)="valueChange($event)"
       (nzOpenChange)="valueChange($event)"
@@ -1991,6 +1996,7 @@ export class TestSelectReactiveMultipleComponent {
       [nzMaxMultipleCount]="nzMaxMultipleCount"
       [nzTokenSeparators]="nzTokenSeparators"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder ?? null"
+      [debounceValueChangeTime]="0"
       (ngModelChange)="valueChange($event)"
     />
     <ng-template #tagTemplate let-selectedList>and {{ selectedList.length }} more selected</ng-template>

@@ -11,6 +11,7 @@ import {
   ElementRef,
   EventEmitter,
   inject,
+  input,
   Input,
   NgZone,
   numberAttribute,
@@ -23,6 +24,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, Subject } from 'rxjs';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -136,6 +138,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   @Input() listOfTopItem: NzSelectItemInterface[] = [];
   @Input() tokenSeparators: string[] = [];
   @Input() prefix: TemplateRef<NzSafeAny> | string | null = null;
+  debounceValueChangeTime = input(300);
   @Output() readonly tokenize = new EventEmitter<string[]>();
   @Output() readonly inputValueChange = new EventEmitter<string>();
   @Output() readonly deleteItem = new EventEmitter<NzSelectItemInterface>();
@@ -145,6 +148,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   isShowSingleLabel = false;
   isComposing = false;
   inputValue: string | null = null;
+  private readonly inputValue$ = new Subject<string>();
 
   updateTemplateVariable(): void {
     const isSelectedValueEmpty = this.listOfTopItem.length === 0;
@@ -161,8 +165,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
     if (value !== this.inputValue) {
       this.inputValue = value;
       this.updateTemplateVariable();
-      this.inputValueChange.emit(value);
-      this.tokenSeparate(value, this.tokenSeparators);
+      this.inputValue$.next(value); // Push value to the debouncer
     }
   }
 
@@ -263,5 +266,12 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
           }
         }
       });
+
+    const dueTime = this.debounceValueChangeTime();
+    const source$ = dueTime > 0 ? this.inputValue$.pipe(debounceTime(dueTime)) : this.inputValue$;
+    source$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+      this.inputValueChange.emit(value);
+      this.tokenSeparate(value, this.tokenSeparators);
+    });
   }
 }
