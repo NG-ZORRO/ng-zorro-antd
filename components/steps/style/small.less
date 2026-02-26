@@ -17,20 +17,21 @@
     border-radius: @steps-small-icon-size;
   }
   .@{steps-prefix-cls}-item-title {
-    padding-right: 12px;
     font-size: @font-size-base;
     line-height: @steps-small-icon-size;
-
-    &::after {
-      top: (@steps-small-icon-size / 2);
-    }
   }
-  .@{steps-prefix-cls}-item-description {
+  .@{steps-prefix-cls}-item-content {
     color: @text-color-secondary;
     font-size: @font-size-base;
   }
-  .@{steps-prefix-cls}-item-tail {
-    top: 8px;
+  &.@{steps-prefix-cls}-horizontal:not(.@{steps-prefix-cls}-label-vertical)
+    .@{steps-prefix-cls}-item
+    > .@{steps-prefix-cls}-item-wrapper
+    > .@{steps-prefix-cls}-item-section
+    > .@{steps-prefix-cls}-item-header
+    > .@{steps-prefix-cls}-item-rail {
+    height: 1px;
+    margin-left: 12px;
   }
   .@{steps-prefix-cls}-item-custom .@{steps-prefix-cls}-item-icon {
     width: inherit;

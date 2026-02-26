@@ -1,3 +1,34 @@
+// Horizontal dot only (vertical has its own block below)
+.@{steps-prefix-cls}-dot:not(.@{steps-prefix-cls}-vertical),
+.@{steps-prefix-cls}-dot.@{steps-prefix-cls}-small:not(.@{steps-prefix-cls}-vertical) {
+  .@{steps-prefix-cls}-item {
+    &-wrapper {
+      position: relative;
+      flex-direction: column;
+      align-items: center;
+
+      &-section {
+        align-self: stretch;
+      }
+    }
+
+    @rail-gap: 8px;
+
+    &-rail {
+      position: absolute !important;
+      right: @rail-gap;
+      left: calc(50% + (@steps-dot-size / 2) + @rail-gap); // gap after current dot
+      width: calc(100% - @rail-gap - (@steps-dot-size * 2));
+      height: 3px;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      border-radius: 1px;
+      transition: background 0.3s;
+    }
+  }
+}
+
 .@{steps-prefix-cls}-dot,
 .@{steps-prefix-cls}-dot.@{steps-prefix-cls}-small {
   .@{steps-prefix-cls}-item {
@@ -5,26 +36,30 @@
       line-height: @line-height-base;
     }
 
-    &-tail {
+    &-rail {
       top: @steps-dot-top;
+      display: block !important;
       width: 100%;
-      margin: 0 0 0 (@steps-description-max-width / 2);
+      height: 3px;
+      margin: 0;
       padding: 0;
-
-      &::after {
-        width: ~'calc(100% - 20px)';
-        height: 3px;
-        margin-left: 12px;
-      }
+      background: @border-color-split;
+      border-radius: 1px;
+      transition: background 0.3s;
     }
+    
     &:first-child .@{steps-prefix-cls}-icon-dot {
       left: 2px;
+    }
+
+    &:last-child {
+      flex: 1;
     }
 
     &-icon {
       width: @steps-dot-size;
       height: @steps-dot-size;
-      margin-left: 67px;
+      margin: 0;
       padding-right: 0;
       line-height: @steps-dot-size;
       background: transparent;
@@ -51,8 +86,16 @@
       }
     }
 
+    &-section {
+      align-self: stretch;
+    }
+
+    &-header {
+      width: inherit;
+    }
+
     &-content {
-      width: @steps-description-max-width;
+      width: inherit;
     }
     &-process .@{steps-prefix-cls}-item-icon {
       position: relative;
@@ -72,17 +115,23 @@
 
 .@{steps-prefix-cls}-vertical.@{steps-prefix-cls}-dot {
   .@{steps-prefix-cls}-item-icon {
+    float: left;
     margin-top: 13px;
+    margin-right: @steps-vertical-icon-width;
     margin-left: 0;
     background: none;
   }
 
-  // https://github.com/ant-design/ant-design/issues/18354
-  .@{steps-prefix-cls}-item > .@{steps-prefix-cls}-item-container > .@{steps-prefix-cls}-item-tail {
-    top: 6.5px;
-    left: -9px;
-    margin: 0;
-    padding: 22px 0 4px;
+  .@{steps-prefix-cls}-item:not(:last-child) > .@{steps-prefix-cls}-item-wrapper > .@{steps-prefix-cls}-item-section > .@{steps-prefix-cls}-item-header > .@{steps-prefix-cls}-item-rail {
+    position: absolute;
+    top: (@steps-dot-size * 2) + 13px;
+    bottom: -(@steps-dot-size * 2) + 13px;
+    left: (@steps-dot-size / 2) - 0.5px;
+    display: block !important;
+    width: 1px;
+    height: auto;
+    border-radius: 1px;
+    transition: background 0.3s;
   }
 
   &.@{steps-prefix-cls}-small {
@@ -90,10 +139,13 @@
       margin-top: 10px;
     }
 
-    .@{steps-prefix-cls}-item
-      > .@{steps-prefix-cls}-item-container
-      > .@{steps-prefix-cls}-item-tail {
+    .@{steps-prefix-cls}-item:not(:last-child)
+      > .@{steps-prefix-cls}-item-wrapper
+      > .@{steps-prefix-cls}-item-section
+      > .@{steps-prefix-cls}-item-header
+      > .@{steps-prefix-cls}-item-rail {
       top: 3.5px;
+      left: (@steps-dot-size / 2) - 0.5px;
     }
   }
 
@@ -104,7 +156,7 @@
     width: inherit;
   }
   .@{steps-prefix-cls}-item-process
-    .@{steps-prefix-cls}-item-container
+    .@{steps-prefix-cls}-item-wrapper
     .@{steps-prefix-cls}-item-icon
     .@{steps-prefix-cls}-icon-dot {
     top: -1px;
