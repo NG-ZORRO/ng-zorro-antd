@@ -117,7 +117,7 @@
     "marked-highlight": "^2.2.2",
     "minimist": "^1.2.5",
     "monaco-editor": "^0.33.0",
-    "ng-packagr": "^21.1.0",
+    "ng-packagr": "^21.2.0",
     "parse5": "^8.0.0",
     "pascalcase": "^2.0.0",
     "postcss": "^8.5.1",
