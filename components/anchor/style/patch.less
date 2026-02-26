@@ -8,10 +8,10 @@ nz-link {
   &-wrapper {
     // This is a feature of Antd 5, so we need add in the patch file.
     &-horizontal {
-      margin-left: unset;
-      padding-left: unset;
       margin-bottom: -4px;
+      margin-left: unset;
       padding-bottom: 4px;
+      padding-left: unset;
 
       .ant-anchor {
         display: flex;
@@ -22,7 +22,7 @@ nz-link {
           width: 100%;
           height: unset;
 
-          &:before {
+          &::before {
             width: 100%;
             height: 2px;
           }

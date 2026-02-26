@@ -315,7 +315,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input({ transform: booleanAttribute }) nzMultiple = false;
   @Input({ transform: booleanAttribute }) nzDefaultExpandAll = false;
   @Input({ transform: booleanAttribute }) nzCheckStrictly = false;
-  @Input() nzVirtualItemSize = 28;
+  @Input() @WithConfig() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
   @Input() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: string | null = null;

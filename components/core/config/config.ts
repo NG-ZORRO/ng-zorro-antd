@@ -298,6 +298,7 @@ export interface TableConfig {
   nzShowSizeChanger?: boolean;
   nzSimple?: boolean;
   nzHideOnSinglePage?: boolean;
+  nzVirtualItemSize?: number;
   /**
    * @see {@link NzTableSortOrder}
    */
@@ -337,6 +338,7 @@ export interface TreeConfig {
   nzBlockNode?: boolean;
   nzShowIcon?: boolean;
   nzHideUnMatched?: boolean;
+  nzVirtualItemSize?: number;
 }
 
 export interface TreeSelectConfig {
