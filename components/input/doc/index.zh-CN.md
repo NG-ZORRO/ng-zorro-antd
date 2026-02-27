@@ -46,7 +46,22 @@ description: 通过鼠标或键盘输入内容，是最基础的表单域的包�
 | `[nzPrefix]`      | 带有前缀图标的 input         | `string`                 | -       |
 | `[nzSuffix]`      | 带有后缀图标的 input         | `string`                 | -       |
 | `[nzAllowClear]`  | 可以点击清除图标删除内容     | `boolean`                | `false` |
+| `[nzShowCount]`   | 是否显示字符计数             | `boolean`                | `false` |
+| `[nzCount]`       | 自定义字符计数配置           | `NzCountConfig`          | -       |
 | `(nzClear)`       | 点击清除图标时触发           | `OutputEmitterRef<void>` | -       |
+
+#### NzCountConfig
+
+```ts
+export interface NzCountConfig {
+  // 最大字符数，超出后标红但不会截断
+  max?: number;
+  // 自定义字符计数策略
+  strategy?: (value: string) => number;
+  // 当字符数超出 `max` 时的裁剪逻辑
+  exceedFormatter?: (value: string, config: { max: number }) => string;
+}
+```
 
 ### nz-input-password
 

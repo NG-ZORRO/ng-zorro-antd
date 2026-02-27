@@ -46,7 +46,22 @@ Use when you need to add extra functionality to `[nz-input]`.
 | `[nzPrefix]`      | The prefix icon for the Input                                         | `string`                 | -       |
 | `[nzSuffix]`      | The suffix icon for the Input                                         | `string`                 | -       |
 | `[nzAllowClear]`  | If allow to remove input content with clear icon                      | `boolean`                | `false` |
+| `[nzShowCount]`   | Should the character count be displayed                               | `boolean`                | `false` |
+| `[nzCount]`       | Custom character counting config                                      | `NzCountConfig`          | -       |
 | `(nzClear)`       | Event emitted when the clear icon is clicked                          | `OutputEmitterRef<void>` | -       |
+
+#### NzCountConfig
+
+```ts
+export interface NzCountConfig {
+  // Maximum character limit: exceeding will be highlighted in red but will not be truncated.
+  max?: number;
+  // Custom character counting strategy
+  strategy?: (value: string) => number;
+  // Trimming logic when the number of characters exceeds `max`
+  exceedFormatter?: (value: string, config: { max: number }) => string;
+}
+```
 
 ### nz-input-password
 
