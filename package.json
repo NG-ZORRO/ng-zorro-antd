@@ -20,7 +20,7 @@
     "stage-release": "tsx scripts/release/release.ts",
     "llms": "tsx scripts/generate-llms.ts",
     "lint": "npm run lint:script && npm run lint:style",
-    "lint:script": "eslint --cache",
+    "lint:script": "eslint --cache --concurrency=auto",
     "lint:style": "stylelint components/**/*.less",
     "lint:fix": "npm run lint-fix:script && npm run lint-fix:style",
     "lint-fix:script": "npm run lint:script -- --fix",
