@@ -58,6 +58,14 @@ import {
 } from 'ng-zorro-antd/input';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
+export type NzInputNumberStepEmitter = 'wheel' | 'handler' | 'keyboard';
+export interface NzInputNumberStepEvent {
+  value: number;
+  offset: number;
+  type: 'up' | 'down';
+  emitter: NzInputNumberStepEmitter;
+}
+
 @Component({
   selector: 'nz-input-number',
   exportAs: 'nzInputNumber',
@@ -215,7 +223,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzBlur = output<void>();
   readonly nzFocus = output<void>();
 
-  readonly nzOnStep = output<{ value: number; offset: number; type: 'up' | 'down' }>();
+  readonly nzOnStep = output<NzInputNumberStepEvent>();
 
   private onChange: OnChangeType = () => {};
   private onTouched: OnTouchedType = () => {};
@@ -391,7 +399,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     this.inputRef().nativeElement.blur();
   }
 
-  private step(event: MouseEvent | KeyboardEvent, up: boolean): void {
+  private step(event: MouseEvent | KeyboardEvent, up: boolean, emitter: NzInputNumberStepEmitter): void {
     // Ignore step since out of range
     if ((up && this.upDisabled()) || (!up && this.downDisabled())) {
       return;
@@ -417,7 +425,8 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     this.nzOnStep.emit({
       type: up ? 'up' : 'down',
       value: this.value()!,
-      offset: this.nzStep()
+      offset: this.nzStep(),
+      emitter: emitter
     });
 
     this.focus();
@@ -513,11 +522,11 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     event.preventDefault();
     this.stopAutoStep();
 
-    this.step(event, up);
+    this.step(event, up, 'handler');
 
     // Loop step for interval
     const loopStep: () => void = () => {
-      this.step(event, up);
+      this.step(event, up, 'handler');
       this.autoStepTimer = setTimeout(loopStep, STEP_INTERVAL);
     };
 
@@ -529,11 +538,11 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     switch (event.keyCode) {
       case UP_ARROW:
         event.preventDefault();
-        this.nzKeyboard() && this.step(event, true);
+        this.nzKeyboard() && this.step(event, true, 'keyboard');
         break;
       case DOWN_ARROW:
         event.preventDefault();
-        this.nzKeyboard() && this.step(event, false);
+        this.nzKeyboard() && this.step(event, false, 'keyboard');
         break;
       case ENTER:
         this.fixValue();
@@ -551,7 +560,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     }
 
     event.preventDefault();
-    this.step(event, event.deltaY < 0);
+    this.step(event, event.deltaY < 0, 'wheel');
   }
 }
 
