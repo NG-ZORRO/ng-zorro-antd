@@ -23,7 +23,7 @@ import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
-import { NzInputNumberComponent } from './input-number.component';
+import { NzInputNumberComponent, NzInputNumberStepEvent } from './input-number.component';
 import { NzInputNumberModule } from './input-number.module';
 
 describe('input-number', () => {
@@ -449,6 +449,29 @@ describe('input-number', () => {
     expect(component.value).toBe(0);
   });
 
+  it('should be work onStep', () => {
+    const onStep = spyOn(component, 'onStep');
+    const input = hostElement.querySelector('input')!;
+
+    upStepByKeyboard();
+    expect(onStep).toHaveBeenCalledWith({ value: 1, offset: component.step, type: 'up', emitter: 'keyboard' });
+
+    downStepByKeyboard();
+    expect(onStep).toHaveBeenCalledWith({ value: 0, offset: component.step, type: 'down', emitter: 'keyboard' });
+
+    dispatchEvent(input, new WheelEvent('wheel', { deltaY: -100 }));
+    expect(onStep).toHaveBeenCalledWith({ value: 1, offset: component.step, type: 'up', emitter: 'wheel' });
+
+    dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
+    expect(onStep).toHaveBeenCalledWith({ value: 0, offset: component.step, type: 'down', emitter: 'wheel' });
+
+    upStepByHandler();
+    expect(onStep).toHaveBeenCalledWith({ value: 1, offset: component.step, type: 'up', emitter: 'handler' });
+
+    downStepByHandler();
+    expect(onStep).toHaveBeenCalledWith({ value: 0, offset: component.step, type: 'down', emitter: 'handler' });
+  });
+
   it('should be hide controls', () => {
     component.controls = false;
     fixture.detectChanges();
@@ -698,6 +721,7 @@ describe('finalSize', () => {
       [(ngModel)]="value"
       [disabled]="controlDisabled"
       [nzChangeOnWheel]="changeOnWheel"
+      (nzOnStep)="onStep($event)"
     />
   `
 })
@@ -726,6 +750,8 @@ class InputNumberTestComponent {
   get displayValue(): string {
     return this.inputNumber()['displayValue']();
   }
+
+  onStep(_event: NzInputNumberStepEvent): void {}
 }
 
 @Component({
