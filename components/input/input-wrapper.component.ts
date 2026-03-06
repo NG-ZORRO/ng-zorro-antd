@@ -14,6 +14,7 @@ import {
   computed,
   contentChild,
   DestroyRef,
+  effect,
   ElementRef,
   forwardRef,
   inject,
@@ -23,11 +24,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { EMPTY, startWith, switchMap } from 'rxjs';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormItemFeedbackIconComponent } from 'ng-zorro-antd/core/form';
-import { getStatusClassNames, getVariantClassNames } from 'ng-zorro-antd/core/util';
+import { getStatusClassNames, getVariantClassNames, isNotNil, isNumberFinite } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
@@ -37,6 +39,12 @@ import { NzInputPasswordDirective, NzInputPasswordIconDirective } from './input-
 import { NzInputSearchDirective, NzInputSearchEnterButtonDirective } from './input-search.directive';
 import { NzInputDirective } from './input.directive';
 import { NZ_INPUT_WRAPPER } from './tokens';
+
+export interface NzCountConfig {
+  max?: number;
+  strategy?: (value: string) => number;
+  exceedFormatter?: (value: string, config: { max: number }) => string;
+}
 
 @Component({
   selector: 'nz-input-wrapper,nz-input-password,nz-input-search',
@@ -125,6 +133,9 @@ import { NZ_INPUT_WRAPPER } from './tokens';
               </ng-content>
             </span>
           }
+          @if (nzShowCount()) {
+            <span class="ant-input-show-count-suffix">{{ dataCount() }}</span>
+          }
           @if (inputPasswordDir && inputPasswordDir.nzVisibilityToggle()) {
             <span
               class="ant-input-password-icon"
@@ -164,6 +175,7 @@ import { NZ_INPUT_WRAPPER } from './tokens';
   host: {
     '[class]': 'class()',
     '[class.ant-input-disabled]': 'disabled()',
+    '[class.ant-input-out-of-range]': 'nzShowCount() && isOutOfRange()',
     '[class.ant-input-affix-wrapper-textarea-with-clear-btn]': 'nzAllowClear() && isTextarea()'
   }
 })
@@ -189,6 +201,9 @@ export class NzInputWrapperComponent {
   readonly nzAddonBefore = input<string>();
   readonly nzAddonAfter = input<string>();
 
+  readonly nzShowCount = input(false, { transform: booleanAttribute });
+  readonly nzCount = input<NzCountConfig>();
+
   readonly nzClear = output<void>();
 
   readonly size = computed(() => this.inputDir().nzSize());
@@ -200,7 +215,13 @@ export class NzInputWrapperComponent {
 
   protected readonly hasPrefix = computed(() => !!this.nzPrefix() || !!this.prefix());
   protected readonly hasSuffix = computed(
-    () => !!this.nzSuffix() || !!this.suffix() || this.nzAllowClear() || this.hasFeedback() || this.inputPasswordDir
+    () =>
+      !!this.nzSuffix() ||
+      !!this.suffix() ||
+      this.nzAllowClear() ||
+      this.hasFeedback() ||
+      this.nzShowCount() ||
+      this.inputPasswordDir
   );
   protected readonly hasAffix = computed(() => this.hasPrefix() || this.hasSuffix());
   protected readonly hasAddonBefore = computed(() => !!this.nzAddonBefore() || !!this.addonBefore());
@@ -254,6 +275,52 @@ export class NzInputWrapperComponent {
     };
   });
 
+  protected readonly inputValue = toSignal(
+    toObservable(this.inputDir).pipe(
+      switchMap(inputDir => {
+        const ngControl = inputDir.ngControl;
+        if (!ngControl) return EMPTY;
+        return (ngControl.valueChanges ?? EMPTY).pipe(startWith(ngControl.value as string));
+      })
+    )
+  );
+  protected readonly formattedValue = computed(() => {
+    const countConfig = this.nzCount();
+    const inputValue = this.inputValue();
+    const countMax = countConfig?.max ?? 0;
+    const value = isNotNil(inputValue) ? String(inputValue) : '';
+    let formattedValue = value;
+
+    if (countConfig?.exceedFormatter) {
+      formattedValue = countConfig.exceedFormatter(value, { max: countMax });
+    }
+    return formattedValue;
+  });
+  protected readonly computedCount = computed(() => {
+    const countConfig = this.nzCount();
+    const formattedValue = this.formattedValue();
+    let computedCount = formattedValue.length;
+
+    if (countConfig?.strategy) {
+      computedCount = countConfig.strategy(formattedValue);
+    }
+    return computedCount;
+  });
+  protected readonly dataCount = computed(() => {
+    const countConfig = this.nzCount();
+    const computedCount = this.computedCount();
+    const countMax = countConfig?.max;
+    return `${computedCount}${countMax ? `/${countMax}` : ``}`;
+  });
+  protected readonly isOutOfRange = computed(() => {
+    const countConfig = this.nzCount();
+    const countMax = countConfig?.max;
+    if (isNumberFinite(countMax)) {
+      return this.computedCount() > countMax!;
+    }
+    return false;
+  });
+
   constructor() {
     const destroyRef = inject(DestroyRef);
 
@@ -269,6 +336,14 @@ export class NzInputWrapperComponent {
       destroyRef.onDestroy(() => {
         this.focusMonitor.stopMonitoring(element);
       });
+    });
+
+    effect(() => {
+      const inputValue = this.inputValue();
+      const formattedValue = this.formattedValue();
+      if (formattedValue !== inputValue) {
+        this.inputDir().ngControl?.control?.setValue(formattedValue);
+      }
     });
   }
 
