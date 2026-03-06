@@ -118,6 +118,7 @@ export class NzAlertComponent implements OnChanges, OnInit {
   @Input({ transform: booleanAttribute }) nzBanner = false;
   @Input({ transform: booleanAttribute }) nzNoAnimation = false;
   @Input() nzIcon: string | TemplateRef<void> | null = null;
+
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
   closed = false;
   iconTheme: 'outline' | 'fill' = 'fill';
