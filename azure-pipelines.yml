@@ -59,7 +59,7 @@ stages:
             command: 'ci'
         - script: npm run test
           displayName: 'Run tests'
-        - script: cat ./coverage-report/lcov.info | npx -y codecov@3.8.3
+        - script: cat ./coverage-report/lcov.info | npx -y codecov@3.8.2
           displayName: 'Upload coverage to Codecov'
           condition: succeededOrFailed()
 
