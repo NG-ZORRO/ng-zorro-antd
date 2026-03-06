@@ -48,3 +48,9 @@ export type NzTabScrollEventHandlerFun<T extends NzTabScrollEvent['event']> = (e
 export interface TabTemplateContext {
   visible: boolean;
 }
+
+export type NzIndicatorAlign = 'start' | 'end' | 'center';
+export interface NzIndicator {
+  size?: number | ((origin: number) => number);
+  align: NzIndicatorAlign;
+}
