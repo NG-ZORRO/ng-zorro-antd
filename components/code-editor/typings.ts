@@ -8,10 +8,8 @@ import { editor, Environment } from 'monaco-editor';
 import IStandAloneEditorConstructionOptions = editor.IStandaloneEditorConstructionOptions;
 import IDiffEditorConstructionOptions = editor.IDiffEditorConstructionOptions;
 
-declare global {
-  interface Window {
-    MonacoEnvironment?: Environment | undefined;
-  }
+export interface NzCodeEditorMonacoWindow extends Window {
+  MonacoEnvironment?: Environment | undefined;
 }
 
 export type EditorOptions = IStandAloneEditorConstructionOptions;
