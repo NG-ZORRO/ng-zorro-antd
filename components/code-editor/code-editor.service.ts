@@ -11,7 +11,7 @@ import { CodeEditorConfig, NzConfigService, onConfigChangeEventForComponent } fr
 import { PREFIX, warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { JoinedEditorOptions, NzCodeEditorLoadingStatus, NzCodeEditorMonacoWindow } from './typings';
+import { JoinedEditorOptions, NzCodeEditorLoadingStatus } from './typings';
 
 declare const monaco: NzSafeAny;
 
@@ -52,7 +52,7 @@ export class NzCodeEditorService {
 
     this.config = { ...globalConfig };
     if (this.config.monacoEnvironment) {
-      (this.document.defaultView as NzCodeEditorMonacoWindow).MonacoEnvironment = { ...this.config.monacoEnvironment };
+      (this.document.defaultView as NzSafeAny).MonacoEnvironment = { ...this.config.monacoEnvironment };
     }
     this.option = this.config.defaultEditorOption || {};
 
