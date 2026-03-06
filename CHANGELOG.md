@@ -1,3 +1,11 @@
+## [21.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.1.0...21.1.1) (2026-03-06)
+
+### Bug Fixes
+
+- **anchor:** support number id in `nzHref` ([#9683](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9683)) ([fc8a096](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fc8a096bef670cf65df2cda8cbd2f4042fdc840c))
+- **carousel:** restore responsive height on window resize ([#9612](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9612)) ([b5558ae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b5558ae679831fa5abc1d9e4ba23c85be5a0d690))
+- **cascader:** wrong padding size ([#9699](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9699)) ([b16da90](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b16da905867fc8235d413b44e32ba3233a74dadb))
+
 ## [21.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.0.2...21.1.0) (2026-02-05)
 
 ### Features
