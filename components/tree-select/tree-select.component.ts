@@ -45,6 +45,7 @@ import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from
 import { NzConfigKey, WithConfig, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import {
   NZ_FORM_SIZE,
+  NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
   NzFormNoStatusService,
   NzFormStatusService
@@ -277,9 +278,9 @@ const listOfPositions = [
     '[class.ant-select-single]': '!isMultiple',
     '[class.ant-select-show-arrow]': '!isMultiple',
     '[class.ant-select-show-search]': '!isMultiple',
-    '[class.ant-select-borderless]': 'nzVariant === "borderless"',
-    '[class.ant-select-filled]': 'nzVariant === "filled"',
-    '[class.ant-select-underlined]': 'nzVariant === "underlined"',
+    '[class.ant-select-borderless]': 'finalVariant() === "borderless"',
+    '[class.ant-select-filled]': 'finalVariant() === "filled"',
+    '[class.ant-select-underlined]': 'finalVariant() === "underlined"',
     '[class.ant-select-multiple]': 'isMultiple',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]': 'nzOpen',
@@ -393,9 +394,15 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     return this.size();
   });
 
+  protected readonly finalVariant = computed(
+    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
+  );
+
   private size = signal<NzSizeLDSType>(this.nzSize);
+  private readonly variant = signal<NzVariant>(this.nzVariant);
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+  private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
 
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private isNzDisableFirstChange: boolean = true;
@@ -502,7 +509,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     });
   }
 
-  ngOnChanges({ nzNodes, nzDropdownClassName, nzStatus, nzPlacement, nzSize }: SimpleChanges): void {
+  ngOnChanges({ nzNodes, nzDropdownClassName, nzStatus, nzPlacement, nzSize, nzVariant }: SimpleChanges): void {
     if (nzNodes) {
       this.updateSelectedNodes(true);
     }
@@ -521,6 +528,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     }
     if (nzSize) {
       this.size.set(nzSize.currentValue);
+    }
+    if (nzVariant) {
+      this.variant.set(nzVariant.currentValue);
     }
   }
 

@@ -27,6 +27,7 @@ import { map, startWith } from 'rxjs/operators';
 
 import {
   NZ_FORM_SIZE,
+  NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
   NzFormNoStatusService,
   NzFormStatusService
@@ -48,9 +49,9 @@ const PREFIX_CLS = 'ant-input';
     '[attr.type]': 'type()',
     '[class]': 'classes()',
     '[class.ant-input-disabled]': 'finalDisabled()',
-    '[class.ant-input-borderless]': `nzVariant() === 'borderless'`,
-    '[class.ant-input-filled]': `nzVariant() === 'filled'`,
-    '[class.ant-input-underlined]': `nzVariant() === 'underlined'`,
+    '[class.ant-input-borderless]': `finalVariant() === 'borderless'`,
+    '[class.ant-input-filled]': `finalVariant() === 'filled'`,
+    '[class.ant-input-underlined]': `finalVariant() === 'underlined'`,
     '[class.ant-input-lg]': `finalSize() === 'large'`,
     '[class.ant-input-sm]': `finalSize() === 'small'`,
     '[attr.disabled]': 'finalDisabled() || null',
@@ -94,6 +95,7 @@ export class NzInputDirective implements OnInit {
   readonly size = linkedSignal(this.nzSize);
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+  private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
 
   readonly status = this.nzFormStatusService
     ? toSignal(this.nzFormStatusService.formStatusChanges.pipe(map(value => value.status)), { initialValue: '' })
@@ -123,6 +125,10 @@ export class NzInputDirective implements OnInit {
     }
     return this.size();
   });
+
+  protected readonly finalVariant = computed(
+    () => (this.nzVariant() === 'outlined' && this.formVariant?.()) || this.nzVariant()
+  );
 
   feedbackRef: ComponentRef<NzFormItemFeedbackIconComponent> | null = null;
   // TODO: When the input group is removed, we can remove this.

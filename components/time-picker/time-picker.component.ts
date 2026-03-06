@@ -43,6 +43,7 @@ import { slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/ani
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import {
   NZ_FORM_SIZE,
+  NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
   NzFormNoStatusService,
   NzFormStatusService
@@ -165,9 +166,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-focused]': `focused`,
     '[class.ant-picker-rtl]': `dir() === 'rtl'`,
-    '[class.ant-picker-borderless]': `nzVariant === 'borderless'`,
-    '[class.ant-picker-filled]': `nzVariant === 'filled'`,
-    '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
+    '[class.ant-picker-borderless]': `finalVariant() === 'borderless'`,
+    '[class.ant-picker-filled]': `finalVariant() === 'filled'`,
+    '[class.ant-picker-underlined]': `finalVariant() === 'underlined'`,
     '(click)': 'open()'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
@@ -262,6 +263,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input({ transform: booleanAttribute }) nzInputReadOnly: boolean = false;
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+  private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
   private hasConfirmed = false;
 
   readonly nzPrefix = input<string | TemplateRef<void>>();
@@ -409,6 +411,10 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     return this.size();
   });
 
+  protected readonly finalVariant = computed(
+    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
+  );
+
   protected dropdownTimePickerClass = computed(() => {
     const classList = [this.generateClass('dropdown')];
     const { originX, originY } = this.currentPosition();
@@ -432,6 +438,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
+  private readonly variant = signal<NzVariant>(this.nzVariant);
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
@@ -452,7 +459,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(map(nzLocale => nzLocale.TimePicker.placeholder));
   }
 
-  ngOnChanges({ nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus, nzStatus, nzSize }: SimpleChanges): void {
+  ngOnChanges({ nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus, nzStatus, nzSize, nzVariant }: SimpleChanges): void {
     if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue && !nzFormat) {
       this.nzFormat = 'h:mm:ss a';
     }
@@ -473,6 +480,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
     if (nzSize) {
       this.size.set(nzSize.currentValue);
+    }
+    if (nzVariant) {
+      this.variant.set(nzVariant.currentValue);
     }
   }
 

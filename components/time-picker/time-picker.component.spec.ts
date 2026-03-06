@@ -21,7 +21,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
+import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { NzPlacement, NzStatus, NzVariant, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
@@ -995,6 +995,50 @@ describe('time-picker size', () => {
   });
 });
 
+describe('finalVariant', () => {
+  let fixture: ComponentFixture<NzTestTimePickerVariantComponent>;
+  let timePickerElement: HTMLElement;
+  let formVariantSignal: WritableSignal<NzVariant>;
+  beforeEach(() => {
+    formVariantSignal = signal<NzVariant>('outlined');
+  });
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+  it('should use the formVariant when nzVariant is outlined (default)', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestTimePickerVariantComponent);
+    timePickerElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(timePickerElement.classList).toContain('ant-picker-filled');
+  });
+  it('should use nzVariant over formVariant when nzVariant is not outlined', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestTimePickerVariantComponent);
+    timePickerElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.componentInstance.variant.set('borderless');
+    fixture.detectChanges();
+    expect(timePickerElement.classList).toContain('ant-picker-borderless');
+    expect(timePickerElement.classList).not.toContain('ant-picker-filled');
+  });
+  it('should use nzVariant when no formVariant is provided', () => {
+    fixture = TestBed.createComponent(NzTestTimePickerVariantComponent);
+    timePickerElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
+    fixture.detectChanges();
+    fixture.componentInstance.variant.set('filled');
+    fixture.detectChanges();
+    expect(timePickerElement.classList).toContain('ant-picker-filled');
+  });
+});
+
 @Component({
   imports: [NzTimePickerComponent, FormsModule],
   template: `
@@ -1124,4 +1168,12 @@ export class NzTestTimePickerPlacementComponent {
 })
 class NzTestTimePickerSizeComponent {
   size: NzSizeLDSType = 'default';
+}
+
+@Component({
+  imports: [NzTimePickerComponent],
+  template: `<nz-time-picker [nzVariant]="variant()" />`
+})
+export class NzTestTimePickerVariantComponent {
+  readonly variant = signal<NzVariant>('outlined');
 }

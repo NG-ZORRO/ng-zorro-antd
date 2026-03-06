@@ -7,13 +7,23 @@ import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ApplicationRef, Component, DebugElement, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  NgZone,
+  provideZoneChangeDetection,
+  signal,
+  ViewChild,
+  type WritableSignal
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
+import { NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
   createKeyboardEvent,
   dispatchFakeEvent,
@@ -22,7 +32,7 @@ import {
   provideMockDirectionality,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
-import { NzStatus } from 'ng-zorro-antd/core/types';
+import { NzStatus, type NzVariant } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
@@ -748,6 +758,52 @@ describe('mention', () => {
   });
 });
 
+describe('finalVariant', () => {
+  let fixture: ComponentFixture<NzTestFinalVariantMentionComponent>;
+  let mentionHtmlElement: HTMLElement;
+  let formVariantSignal: WritableSignal<NzVariant>;
+
+  beforeEach(() => {
+    formVariantSignal = signal<NzVariant>('outlined');
+  });
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+  it('should use the formVariant when nzVariant is outlined (default)', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestFinalVariantMentionComponent);
+    mentionHtmlElement = fixture.debugElement.query(By.directive(NzMentionComponent)).nativeElement;
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(mentionHtmlElement.classList).toContain('ant-mentions-filled');
+  });
+
+  it('should use nzVariant over formVariant when nzVariant is not outlined', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestFinalVariantMentionComponent);
+    mentionHtmlElement = fixture.debugElement.query(By.directive(NzMentionComponent)).nativeElement;
+    fixture.componentInstance.variant.set('borderless');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(mentionHtmlElement.classList).toContain('ant-mentions-borderless');
+    expect(mentionHtmlElement.classList).not.toContain('ant-mentions-filled');
+  });
+
+  it('should use nzVariant when no formVariant is provided', () => {
+    fixture = TestBed.createComponent(NzTestFinalVariantMentionComponent);
+    mentionHtmlElement = fixture.debugElement.query(By.directive(NzMentionComponent)).nativeElement;
+    fixture.componentInstance.variant.set('filled');
+    fixture.detectChanges();
+    expect(mentionHtmlElement.classList).toContain('ant-mentions-filled');
+  });
+});
+
 @Component({
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
@@ -908,4 +964,17 @@ class NzTestClearMentionComponent {
   @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
 
   onClear(): void {}
+}
+
+@Component({
+  imports: [NzMentionModule],
+  template: `
+    <nz-mention [nzSuggestions]="suggestions" [nzVariant]="variant()">
+      <textarea nz-input nzMentionTrigger></textarea>
+    </nz-mention>
+  `
+})
+class NzTestFinalVariantMentionComponent {
+  readonly variant = signal<NzVariant>('outlined');
+  suggestions = ['angular', 'ant-design', 'mention'];
 }

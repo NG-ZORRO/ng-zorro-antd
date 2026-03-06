@@ -27,7 +27,7 @@ import isEqual from 'date-fns/isEqual';
 import isSameDay from 'date-fns/isSameDay';
 import { enUS } from 'date-fns/locale';
 
-import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
+import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -1573,6 +1573,54 @@ describe('finalSize', () => {
   });
 });
 
+describe('finalVariant', () => {
+  let fixture: ComponentFixture<TestDatePickerFinalVariantComponent>;
+  let datePickerElement: HTMLElement;
+  let formVariantSignal: WritableSignal<NzVariant>;
+
+  beforeEach(() => {
+    formVariantSignal = signal<NzVariant>('outlined');
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  it('should use the formVariant when nzVariant is outlined (default)', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestDatePickerFinalVariantComponent);
+    datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(datePickerElement.classList).toContain('ant-picker-filled');
+  });
+
+  it('should use nzVariant over formVariant when nzVariant is not outlined', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestDatePickerFinalVariantComponent);
+    datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+    fixture.componentInstance.variant.set('borderless');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(datePickerElement.classList).toContain('ant-picker-borderless');
+    expect(datePickerElement.classList).not.toContain('ant-picker-filled');
+  });
+
+  it('should use nzVariant when no formVariant is provided', () => {
+    fixture = TestBed.createComponent(TestDatePickerFinalVariantComponent);
+    datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
+    fixture.componentInstance.variant.set('filled');
+    fixture.detectChanges();
+    expect(datePickerElement.classList).toContain('ant-picker-filled');
+  });
+});
+
 @Component({
   imports: [ReactiveFormsModule, FormsModule, NzDatePickerModule],
   template: `
@@ -1726,4 +1774,12 @@ class NzTestDatePickerInFormComponent {
 })
 export class TestDatePickerFinalSizeComponent {
   size: NzDatePickerSizeType = 'default';
+}
+
+@Component({
+  imports: [NzDatePickerModule],
+  template: `<nz-date-picker [nzVariant]="variant()" />`
+})
+export class TestDatePickerFinalVariantComponent {
+  readonly variant = signal<NzVariant>('outlined');
 }
