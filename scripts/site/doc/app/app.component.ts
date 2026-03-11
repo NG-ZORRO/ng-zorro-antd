@@ -150,7 +150,7 @@ export class AppComponent implements OnInit {
       style.rel = 'stylesheet';
       style.id = `site-theme-${theme}`;
       style.href = `assets/${theme}.css`;
-      document.body.append(style);
+      document.head.append(style);
 
       style.onload = () => {
         successLoaded();
