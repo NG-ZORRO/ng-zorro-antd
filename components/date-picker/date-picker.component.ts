@@ -325,7 +325,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() nzSize: NzDatePickerSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
   @Input() nzFormat!: string;
-  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
+  @Input() @WithConfig() nzVariant: NzVariant | undefined = undefined;
   @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
   @Input() nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;
@@ -424,12 +424,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     return this.size();
   });
 
-  protected readonly finalVariant = computed(
-    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
-  );
+  protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
 
   private size = signal<NzSizeLDSType>(this.nzSize);
-  private variant = signal<NzVariant>(this.nzVariant);
+  private variant = signal<NzVariant | undefined>(this.nzVariant);
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
   private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });

@@ -170,7 +170,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
   @Input() nzStatus: NzStatus = '';
-  @Input() nzVariant: NzVariant = 'outlined';
+  @Input() nzVariant: NzVariant | undefined = undefined;
   @Input({ transform: booleanAttribute }) nzAllowClear = false;
   @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Output() readonly nzOnSelect = new EventEmitter<NzSafeAny>();
@@ -236,11 +236,9 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
 
   private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
 
-  protected readonly variant = signal<NzVariant>(this.nzVariant);
+  protected readonly variant = signal<NzVariant | undefined>(this.nzVariant);
 
-  protected readonly finalVariant = computed(
-    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
-  );
+  protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
 
   constructor() {
     this.destroyRef.onDestroy(() => {

@@ -367,7 +367,7 @@ export class NzCascaderComponent
   @Input() nzValueProperty: string = 'value';
   @Input() nzLabelProperty: string = 'label';
   @Input() nzLabelRender: TemplateRef<typeof this.labelRenderContext> | null = null;
-  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
+  @Input() @WithConfig() nzVariant: NzVariant | undefined = undefined;
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig() nzSize: NzCascaderSize = 'default';
   @Input() @WithConfig() nzBackdrop = false;
@@ -457,12 +457,10 @@ export class NzCascaderComponent
     return this.size();
   });
 
-  protected readonly finalVariant = computed(
-    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
-  );
+  protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
 
   private size = signal<NzSizeLDSType>(this.nzSize);
-  private readonly variant = signal<NzVariant>(this.nzVariant);
+  private readonly variant = signal<NzVariant | undefined>(this.nzVariant);
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
   private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });

@@ -368,7 +368,7 @@ describe('input', () => {
       expect(inputElement.classList).toContain('ant-input-filled');
     });
 
-    it('should prioritize nzVariant over formVariant when nzVariant is not outlined', () => {
+    it('should prioritize any explicit nzVariant over formVariant', () => {
       TestBed.configureTestingModule({
         providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
       });
@@ -383,6 +383,22 @@ describe('input', () => {
       expect(inputElement.classList).not.toContain('ant-input-filled');
     });
 
+    it('should prioritize nzVariant over formVariant when nzVariant is explicitly set', () => {
+      TestBed.configureTestingModule({
+        providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+      });
+      fixture = TestBed.createComponent(TestInputFinalVariantComponent);
+      component = fixture.componentInstance;
+      inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
+      fixture.detectChanges();
+      formVariantSignal.set('filled');
+      component.variant.set('outlined');
+      fixture.detectChanges();
+      expect(inputElement.classList).not.toContain('ant-input-filled');
+      expect(inputElement.classList).not.toContain('ant-input-borderless');
+      expect(inputElement.classList).not.toContain('ant-input-underlined');
+    });
+
     it('should use nzVariant when no formVariant is provided', () => {
       TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestInputFinalVariantComponent);
@@ -394,7 +410,7 @@ describe('input', () => {
       expect(inputElement.classList).toContain('ant-input-underlined');
     });
 
-    it('should fallback to outlined when nzVariant is outlined and no formVariant is set', () => {
+    it('should fallback to outlined when neither nzVariant nor formVariant is set', () => {
       TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestInputFinalVariantComponent);
       component = fixture.componentInstance;
@@ -514,5 +530,5 @@ export class TestInputFinalSizeComponent {
   template: `<input nz-input [nzVariant]="variant()" />`
 })
 export class TestInputFinalVariantComponent {
-  readonly variant = signal<NzVariant>('outlined');
+  readonly variant = signal<NzVariant | undefined>(undefined);
 }

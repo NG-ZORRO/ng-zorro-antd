@@ -250,7 +250,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
-  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
+  @Input() @WithConfig() nzVariant: NzVariant | undefined = undefined;
   @Input() @WithConfig() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string[] | string | null = null;
@@ -330,11 +330,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     return this.size();
   });
 
-  protected readonly finalVariant = computed(
-    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
-  );
+  protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
   private size = signal<NzSizeLDSType>(this.nzSize);
-  private variant = signal<NzVariant>(this.nzVariant);
+  private variant = signal<NzVariant | undefined>(this.nzVariant);
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
   private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });

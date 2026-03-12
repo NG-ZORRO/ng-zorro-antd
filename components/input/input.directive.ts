@@ -78,7 +78,7 @@ export class NzInputDirective implements OnInit {
   readonly ngControl = inject(NgControl, { self: true, optional: true });
   readonly value = signal<string>(this.elementRef.nativeElement.value);
 
-  readonly nzVariant = input<NzVariant>('outlined');
+  readonly nzVariant = input<NzVariant>();
   readonly nzSize = input<NzSizeLDSType>('default');
   /**
    * @deprecated Will be removed in v22.
@@ -126,9 +126,7 @@ export class NzInputDirective implements OnInit {
     return this.size();
   });
 
-  protected readonly finalVariant = computed(
-    () => (this.nzVariant() === 'outlined' && this.formVariant?.()) || this.nzVariant()
-  );
+  protected readonly finalVariant = computed(() => this.nzVariant() || this.formVariant?.() || 'outlined');
 
   feedbackRef: ComponentRef<NzFormItemFeedbackIconComponent> | null = null;
   // TODO: When the input group is removed, we can remove this.

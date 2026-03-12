@@ -2530,7 +2530,7 @@ describe('finalVariant', () => {
     TestBed.resetTestingModule();
   });
 
-  it('should use the formVariant when nzVariant is outlined (default)', () => {
+  it('should use formVariant when nzVariant is not set (default)', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
@@ -2542,7 +2542,7 @@ describe('finalVariant', () => {
     expect(cascaderElement.classList).toContain('ant-select-filled');
   });
 
-  it('should use nzVariant over formVariant when nzVariant is not outlined', () => {
+  it('should use nzVariant over formVariant when nzVariant is explicitly set', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
@@ -2562,6 +2562,28 @@ describe('finalVariant', () => {
     fixture.componentInstance.variant.set('filled');
     fixture.detectChanges();
     expect(cascaderElement.classList).toContain('ant-select-filled');
+  });
+
+  it('should use outlined as default when neither nzVariant nor formVariant is provided', () => {
+    fixture = TestBed.createComponent(TestCascaderFinalVariantComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(cascaderElement.classList).not.toContain('ant-select-filled');
+    expect(cascaderElement.classList).not.toContain('ant-select-borderless');
+    expect(cascaderElement.classList).not.toContain('ant-select-underlined');
+  });
+
+  it('should use explicitly set outlined over formVariant', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestCascaderFinalVariantComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.componentInstance.variant.set('outlined');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(cascaderElement.classList).not.toContain('ant-select-filled');
   });
 });
 
@@ -2977,5 +2999,5 @@ export class NzDemoCascaderInFormComponent {
   template: ` <nz-cascader [nzVariant]="variant()" /> `
 })
 export class TestCascaderFinalVariantComponent {
-  readonly variant = signal<NzVariant>('outlined');
+  readonly variant = signal<NzVariant | undefined>(undefined);
 }

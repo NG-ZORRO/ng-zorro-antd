@@ -199,7 +199,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzSize = input<NzSizeLDSType>('default');
   readonly nzPlaceHolder = input<string | null>(null);
   readonly nzStatus = input<NzStatus>('');
-  readonly nzVariant = input<NzVariant>('outlined');
+  readonly nzVariant = input<NzVariant>();
   readonly nzStep = input(1, { transform: numberAttribute });
   readonly nzMin = input(Number.MIN_SAFE_INTEGER, { transform: numberAttribute });
   readonly nzMax = input(Number.MAX_SAFE_INTEGER, { transform: numberAttribute });
@@ -320,9 +320,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     return this.nzSize();
   });
 
-  protected readonly finalVariant = computed(
-    () => (this.nzVariant() === 'outlined' && this.formVariant?.()) || this.nzVariant()
-  );
+  protected readonly finalVariant = computed(() => this.nzVariant() || this.formVariant?.() || 'outlined');
 
   protected readonly upDisabled = computed(() => {
     return !isNil(this.value()) && this.value()! >= this.nzMax();

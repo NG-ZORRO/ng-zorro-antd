@@ -234,7 +234,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzStatus: NzStatus = '';
-  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
+  @Input() @WithConfig() nzVariant: NzVariant | undefined = undefined;
   @Input() @WithConfig() nzHourStep: number = 1;
   @Input() @WithConfig() nzMinuteStep: number = 1;
   @Input() @WithConfig() nzSecondStep: number = 1;
@@ -412,7 +412,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   });
 
   protected readonly finalVariant = computed(
-    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
+    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant() || 'outlined'
   );
 
   protected dropdownTimePickerClass = computed(() => {
@@ -438,7 +438,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   });
 
   private size = signal<NzSizeLDSType>(this.nzSize);
-  private readonly variant = signal<NzVariant>(this.nzVariant);
+  private readonly variant = signal<NzVariant | undefined>(this.nzVariant);
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });

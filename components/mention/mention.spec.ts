@@ -769,7 +769,7 @@ describe('finalVariant', () => {
   afterEach(() => {
     TestBed.resetTestingModule();
   });
-  it('should use the formVariant when nzVariant is outlined (default)', () => {
+  it('should use formVariant when nzVariant is not set (undefined by default)', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
@@ -781,7 +781,7 @@ describe('finalVariant', () => {
     expect(mentionHtmlElement.classList).toContain('ant-mentions-filled');
   });
 
-  it('should use nzVariant over formVariant when nzVariant is not outlined', () => {
+  it('should use nzVariant over formVariant when nzVariant is explicitly set', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
@@ -795,12 +795,34 @@ describe('finalVariant', () => {
     expect(mentionHtmlElement.classList).not.toContain('ant-mentions-filled');
   });
 
+  it('should use nzVariant outlined over formVariant when explicitly set', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(NzTestFinalVariantMentionComponent);
+    mentionHtmlElement = fixture.debugElement.query(By.directive(NzMentionComponent)).nativeElement;
+    fixture.componentInstance.variant.set('outlined');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(mentionHtmlElement.classList).not.toContain('ant-mentions-filled');
+  });
+
   it('should use nzVariant when no formVariant is provided', () => {
     fixture = TestBed.createComponent(NzTestFinalVariantMentionComponent);
     mentionHtmlElement = fixture.debugElement.query(By.directive(NzMentionComponent)).nativeElement;
     fixture.componentInstance.variant.set('filled');
     fixture.detectChanges();
     expect(mentionHtmlElement.classList).toContain('ant-mentions-filled');
+  });
+
+  it('should default to outlined when neither nzVariant nor formVariant is set', () => {
+    fixture = TestBed.createComponent(NzTestFinalVariantMentionComponent);
+    mentionHtmlElement = fixture.debugElement.query(By.directive(NzMentionComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(mentionHtmlElement.classList).not.toContain('ant-mentions-filled');
+    expect(mentionHtmlElement.classList).not.toContain('ant-mentions-borderless');
+    expect(mentionHtmlElement.classList).not.toContain('ant-mentions-underlined');
   });
 });
 
@@ -975,6 +997,6 @@ class NzTestClearMentionComponent {
   `
 })
 class NzTestFinalVariantMentionComponent {
-  readonly variant = signal<NzVariant>('outlined');
+  readonly variant = signal<NzVariant | undefined>(undefined);
   suggestions = ['angular', 'ant-design', 'mention'];
 }

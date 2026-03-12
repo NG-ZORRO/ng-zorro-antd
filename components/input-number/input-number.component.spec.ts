@@ -689,7 +689,7 @@ describe('finalVariant', () => {
     TestBed.resetTestingModule();
   });
 
-  it('should use the formVariant when nzVariant is outlined (default)', () => {
+  it('should use the formVariant when nzVariant is not set', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
@@ -701,7 +701,7 @@ describe('finalVariant', () => {
     expect(inputNumberElement.classList).toContain('ant-input-number-filled');
   });
 
-  it('should use nzVariant over formVariant when nzVariant is not outlined', () => {
+  it('should use nzVariant over formVariant when nzVariant is explicitly set', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
@@ -853,5 +853,5 @@ class TestInputNumberFinalSizeComponent {
   template: `<nz-input-number [nzVariant]="variant()" />`
 })
 class TestInputNumberFinalVariantComponent {
-  readonly variant = signal<NzVariant>('outlined');
+  readonly variant = signal<NzVariant | undefined>(undefined);
 }

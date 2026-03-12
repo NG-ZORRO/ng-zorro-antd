@@ -325,7 +325,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzNodes: NzTreeNodeOptions[] | NzTreeNode[] = [];
   @Input() nzOpen = false;
   @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
-  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
+  @Input() @WithConfig() nzVariant: NzVariant | undefined = undefined;
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: NgStyleInterface | null = null;
   @Input() nzDropdownClassName?: string;
@@ -394,12 +394,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     return this.size();
   });
 
-  protected readonly finalVariant = computed(
-    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant()
-  );
+  protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
 
   private size = signal<NzSizeLDSType>(this.nzSize);
-  private readonly variant = signal<NzVariant>(this.nzVariant);
+  private readonly variant = signal<NzVariant | undefined>(this.nzVariant);
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
   private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });

@@ -1714,7 +1714,7 @@ describe('select finalVariant', () => {
     TestBed.resetTestingModule();
   });
 
-  it('should use the formVariant when nzVariant is outlined (default)', () => {
+  it('should use formVariant when nzVariant is not set (undefined by default)', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
@@ -1726,7 +1726,7 @@ describe('select finalVariant', () => {
     expect(selectElement.classList).toContain('ant-select-filled');
   });
 
-  it('should use nzVariant over formVariant when nzVariant is not outlined', () => {
+  it('should use nzVariant over formVariant when nzVariant is explicitly set', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
@@ -1740,12 +1740,34 @@ describe('select finalVariant', () => {
     expect(selectElement.classList).not.toContain('ant-select-filled');
   });
 
+  it('should use nzVariant outlined over formVariant when explicitly set', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestSelectFinalVariantComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.componentInstance.variant.set('outlined');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(selectElement.classList).not.toContain('ant-select-filled');
+  });
+
   it('should use nzVariant when no formVariant is provided', () => {
     fixture = TestBed.createComponent(TestSelectFinalVariantComponent);
     selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
     fixture.componentInstance.variant.set('filled');
     fixture.detectChanges();
     expect(selectElement.classList).toContain('ant-select-filled');
+  });
+
+  it('should default to outlined when neither nzVariant nor formVariant is set', () => {
+    fixture = TestBed.createComponent(TestSelectFinalVariantComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(selectElement.classList).not.toContain('ant-select-filled');
+    expect(selectElement.classList).not.toContain('ant-select-borderless');
+    expect(selectElement.classList).not.toContain('ant-select-underlined');
   });
 });
 
@@ -1839,7 +1861,7 @@ export class TestSelectTemplateDefaultComponent {
   };
   compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAllowClear = false;
-  nzVariant: NzVariant = 'outlined';
+  nzVariant: NzVariant | undefined = undefined;
   nzShowSearch = false;
   nzLoading = false;
   nzAutoFocus = false;
@@ -2107,5 +2129,5 @@ export class TestSelectFinalSizeComponent {
   template: `<nz-select [nzVariant]="variant()" />`
 })
 export class TestSelectFinalVariantComponent {
-  readonly variant = signal<NzVariant>('outlined');
+  readonly variant = signal<NzVariant | undefined>(undefined);
 }
