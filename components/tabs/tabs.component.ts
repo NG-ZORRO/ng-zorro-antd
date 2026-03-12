@@ -20,6 +20,7 @@ import {
   EventEmitter,
   forwardRef,
   inject,
+  input,
   Input,
   NgZone,
   OnInit,
@@ -47,7 +48,8 @@ import {
   NzTabPositionMode,
   NzTabsCanDeactivateFn,
   NzTabScrollEvent,
-  NzTabType
+  NzTabType,
+  type NzIndicator
 } from './interfaces';
 import { NzTabBarExtraContentDirective } from './tab-bar-extra-content.directive';
 import { NzTabBodyComponent } from './tab-body.component';
@@ -84,6 +86,7 @@ let nextId = 0;
         [position]="position"
         [extraTemplate]="nzTabBarExtraContent"
         [extraContents]="extraContents()"
+        [indicator]="nzIndicator()"
         (tabScroll)="nzTabListScroll.emit($event)"
         (selectFocusedIndex)="setSelectedIndex($event)"
         (addClicked)="onAdd()"
@@ -224,6 +227,8 @@ export class NzTabsComponent implements OnInit, AfterContentChecked, AfterConten
   @Input({ transform: booleanAttribute }) nzLinkRouter = false;
   @Input({ transform: booleanAttribute }) nzLinkExact = true;
   @Input({ transform: booleanAttribute }) nzDestroyInactiveTabPane = false;
+
+  readonly nzIndicator = input<NzIndicator>();
 
   @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
   @Output() readonly nzSelectedIndexChange: EventEmitter<number> = new EventEmitter<number>();

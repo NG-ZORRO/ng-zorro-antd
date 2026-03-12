@@ -35,6 +35,7 @@ Ant Design has 3 types of Tabs for different situations.
 | `[nzCanDeactivate]`          | Determine if a tab can be deactivated                                                     | `NzTabsCanDeactivateFn`                             | -                                  |
 | `[nzCentered]`               | Centers tabs                                                                              | `boolean`                                           | `false`                            |
 | `[nzDestroyInactiveTabPane]` | Whether destroy inactive TabPane when change tab                                          | `boolean`                                           | `false`                            |
+| `[nzIndicator]`              | Custom indicator size and align                                                           | `NzIndicator`                                       | -                                  |
 | `(nzSelectedIndexChange)`    | Current tab's index change callback                                                       | `EventEmitter<number>`                              | -                                  |
 | `(nzSelectChange)`           | Current tab's change callback                                                             | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                  |
 
