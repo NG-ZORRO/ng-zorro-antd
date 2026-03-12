@@ -6,4 +6,34 @@ nz-alert {
   &-icon {
     line-height: 1;
   }
+
+  &-marquee {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+
+    &-track {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      min-width: 100%;
+      white-space: nowrap;
+      animation: nz-alert-marquee 20s linear infinite;
+    }
+
+    &.ant-alert-marquee-pause-on-hover:hover &-track {
+      animation-play-state: paused;
+    }
+  }
+}
+
+@keyframes nz-alert-marquee {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
 }

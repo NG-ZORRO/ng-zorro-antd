@@ -29,3 +29,12 @@ description: 警告提示，展现需要关注的信息。
 | `[nzType]`        | 指定警告提示的样式，`nzBanner` 模式下默认值为 `'warning'` | `'success' \| 'info' \| 'warning' \| 'error'` | `'info'` |
 | `[nzIcon]`        | 自定义图标，showIcon 为 true 时有效                       | `string \| TemplateRef<void>`                 | -        |
 | `(nzOnClose)`     | 关闭时触发的回调函数                                      | `EventEmitter<void>`                          | -        |
+
+### nz-alert-marquee
+
+将 `nz-alert-marquee` 作为 `[nzMessage]` 的模板内容使用，可在警告提示中实现滚动走马灯效果。
+
+| 参数               | 说明                                | 类型      | 默认值  |
+| ------------------ | ----------------------------------- | --------- | ------- |
+| `[nzPauseOnHover]` | 鼠标悬停时是否暂停滚动动画          | `boolean` | `false` |
+| `[nzSpeed]`        | 滚动速度（像素/秒），值越大滚动越快 | `number`  | `50`    |
