@@ -573,14 +573,12 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { position, indicator } = changes;
     // The first will be aligning in ngAfterViewInit
+    const { position, indicator } = changes;
     if (position && !position.isFirstChange()) {
-      this.alignInkBarToSelectedTab();
-      this.lockAnimation();
       this.updateScrollListPosition();
     }
-    if (indicator && !indicator.isFirstChange()) {
+    if ((position && !position.isFirstChange()) || (indicator && !indicator.isFirstChange())) {
       this.alignInkBarToSelectedTab();
       this.lockAnimation();
     }
