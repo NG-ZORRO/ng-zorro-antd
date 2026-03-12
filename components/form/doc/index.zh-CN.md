@@ -53,17 +53,18 @@ description: 高性能表单控件，自带数据域管理。包含数据录入�
 
 ### [nz-form]
 
-| 参数                  | 说明                                                                                | 类型                                           | 默认值                                          | 全局配置 | 版本   |
-| --------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- | -------- | ------ |
-| `[nzLayout]`          | 表单布局                                                                            | `'horizontal' \| 'vertical' \| 'inline'`       | `'horizontal'`                                  |          |        |
-| `[nzAutoTips]`        | 配置 `nz-form-control` 的 `[nzAutoTips]` 的默认值, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>`       | `{}`                                            | ✅       |        |
-| `[nzDisableAutoTips]` | 配置 `nz-form-control` 的 `[nzDisableAutoTips]` 的默认值                            | `boolean`                                      | `false`                                         | ✅       |        |
-| `[nzNoColon]`         | 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值                                      | `boolean`                                      | `false`                                         | ✅       |        |
-| `[nzTooltipIcon]`     | 配置 `nz-form-label` 的 `[nzTooltipIcon]` 的默认值                                  | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅       |        |
-| `[nzLabelAlign]`      | 配置 `nz-form-label` 的 `[nzLabelAlign]` 的默认值                                   | `'left' \| 'right'`                            | `'right'`                                       |          |        |
-| `[nzLabelWrap]`       | 配置 `nz-form-label` 的 `[nzLabelWrap]` 的默认值                                    | `boolean`                                      | `false`                                         |          |        |
-| `[nzRequiredMark]`    | 必填标记样式。可使用必填标记或可选标记。                                            | `NzRequiredMark`                               | `true`                                          |          | 20.4.0 |
-| `[nzSize]`            | 设置字段组件的尺寸                                                                  | `small` \| `default` \| `large`                | -                                               |          | 21.1.0 |
+| 参数                  | 说明                                                                                | 类型                                                     | 默认值                                          | 全局配置 | 版本   |
+| --------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------- | -------- | ------ |
+| `[nzLayout]`          | 表单布局                                                                            | `'horizontal' \| 'vertical' \| 'inline'`                 | `'horizontal'`                                  |          |        |
+| `[nzAutoTips]`        | 配置 `nz-form-control` 的 `[nzAutoTips]` 的默认值, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>`                 | `{}`                                            | ✅       |        |
+| `[nzDisableAutoTips]` | 配置 `nz-form-control` 的 `[nzDisableAutoTips]` 的默认值                            | `boolean`                                                | `false`                                         | ✅       |        |
+| `[nzNoColon]`         | 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值                                      | `boolean`                                                | `false`                                         | ✅       |        |
+| `[nzTooltipIcon]`     | 配置 `nz-form-label` 的 `[nzTooltipIcon]` 的默认值                                  | `string \| { type: string; theme: ThemeType }`           | `{ type: 'question-circle', theme: 'outline' }` | ✅       |        |
+| `[nzLabelAlign]`      | 配置 `nz-form-label` 的 `[nzLabelAlign]` 的默认值                                   | `'left' \| 'right'`                                      | `'right'`                                       |          |        |
+| `[nzLabelWrap]`       | 配置 `nz-form-label` 的 `[nzLabelWrap]` 的默认值                                    | `boolean`                                                | `false`                                         |          |        |
+| `[nzRequiredMark]`    | 必填标记样式。可使用必填标记或可选标记。                                            | `NzRequiredMark`                                         | `true`                                          |          | 20.4.0 |
+| `[nzSize]`            | 设置字段组件的尺寸                                                                  | `small` \| `default` \| `large`                          | -                                               |          | 21.1.0 |
+| `[nzVariant]`         | 设置表单样式                                                                        | `'outlined' \| 'filled' \| 'borderless' \| 'underlined'` | `'outlined'`                                    |          |        |
 
 ### nz-form-item
 

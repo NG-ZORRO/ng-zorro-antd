@@ -19,7 +19,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
+import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
@@ -1701,6 +1701,76 @@ describe('select finalSize', () => {
   });
 });
 
+describe('select finalVariant', () => {
+  let fixture: ComponentFixture<TestSelectFinalVariantComponent>;
+  let selectElement: HTMLElement;
+  let formVariantSignal: WritableSignal<NzVariant>;
+
+  beforeEach(() => {
+    formVariantSignal = signal<NzVariant>('outlined');
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  it('should use formVariant when nzVariant is not set (undefined by default)', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestSelectFinalVariantComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(selectElement.classList).toContain('ant-select-filled');
+  });
+
+  it('should use nzVariant over formVariant when nzVariant is explicitly set', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestSelectFinalVariantComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.componentInstance.variant.set('borderless');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(selectElement.classList).toContain('ant-select-borderless');
+    expect(selectElement.classList).not.toContain('ant-select-filled');
+  });
+
+  it('should use nzVariant outlined over formVariant when explicitly set', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestSelectFinalVariantComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.componentInstance.variant.set('outlined');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(selectElement.classList).not.toContain('ant-select-filled');
+  });
+
+  it('should use nzVariant when no formVariant is provided', () => {
+    fixture = TestBed.createComponent(TestSelectFinalVariantComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.componentInstance.variant.set('filled');
+    fixture.detectChanges();
+    expect(selectElement.classList).toContain('ant-select-filled');
+  });
+
+  it('should default to outlined when neither nzVariant nor formVariant is set', () => {
+    fixture = TestBed.createComponent(TestSelectFinalVariantComponent);
+    selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(selectElement.classList).not.toContain('ant-select-filled');
+    expect(selectElement.classList).not.toContain('ant-select-borderless');
+    expect(selectElement.classList).not.toContain('ant-select-underlined');
+  });
+});
+
 @Component({
   imports: [FormsModule, NzSelectModule],
   template: `
@@ -1791,7 +1861,7 @@ export class TestSelectTemplateDefaultComponent {
   };
   compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   nzAllowClear = false;
-  nzVariant: NzVariant = 'outlined';
+  nzVariant: NzVariant | undefined = undefined;
   nzShowSearch = false;
   nzLoading = false;
   nzAutoFocus = false;
@@ -2052,4 +2122,12 @@ export class TestSelectInFormComponent {
 })
 export class TestSelectFinalSizeComponent {
   size: NzSelectSizeType = 'default';
+}
+
+@Component({
+  imports: [NzSelectModule],
+  template: `<nz-select [nzVariant]="variant()" />`
+})
+export class TestSelectFinalVariantComponent {
+  readonly variant = signal<NzVariant | undefined>(undefined);
 }

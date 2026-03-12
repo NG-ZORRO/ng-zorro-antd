@@ -49,6 +49,7 @@ import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import {
   NZ_FORM_SIZE,
+  NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
   NzFormNoStatusService,
   NzFormStatusService
@@ -209,9 +210,9 @@ export type NzSelectSizeType = NzSizeLDSType;
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-show-search]': `(nzShowSearch || nzMode !== 'default') && !nzDisabled`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
-    '[class.ant-select-borderless]': `nzVariant === 'borderless'`,
-    '[class.ant-select-filled]': `nzVariant === 'filled'`,
-    '[class.ant-select-underlined]': `nzVariant === 'underlined'`,
+    '[class.ant-select-borderless]': `finalVariant() === 'borderless'`,
+    '[class.ant-select-filled]': `finalVariant() === 'filled'`,
+    '[class.ant-select-underlined]': `finalVariant() === 'underlined'`,
     '[class.ant-select-open]': 'nzOpen',
     '[class.ant-select-focused]': 'nzOpen || focused',
     '[class.ant-select-single]': `nzMode === 'default'`,
@@ -249,7 +250,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
-  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
+  @Input() @WithConfig() nzVariant: NzVariant | undefined = undefined;
   @Input() @WithConfig() nzOptionHeightPx = 32;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string[] | string | null = null;
@@ -329,8 +330,11 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     return this.size();
   });
 
+  protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
   private size = signal<NzSizeLDSType>(this.nzSize);
+  private variant = signal<NzVariant | undefined>(this.nzVariant);
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+  private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private listOfValue$ = new BehaviorSubject<NzSafeAny[]>([]);
   private listOfTemplateItem$ = new BehaviorSubject<NzSelectItemInterface[]>([]);
@@ -682,7 +686,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     this.cdr.markForCheck();
   }
 
-  ngOnChanges({ nzOpen, nzDisabled, nzOptions, nzStatus, nzPlacement, nzSize }: SimpleChanges): void {
+  ngOnChanges({ nzOpen, nzDisabled, nzOptions, nzStatus, nzPlacement, nzSize, nzVariant }: SimpleChanges): void {
     if (nzOpen) {
       this.onOpenChange();
     }
@@ -723,6 +727,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     }
     if (nzSize) {
       this.size.set(nzSize.currentValue);
+    }
+    if (nzVariant) {
+      this.variant.set(nzVariant.currentValue);
     }
   }
 

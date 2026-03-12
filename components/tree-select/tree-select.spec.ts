@@ -22,7 +22,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
+import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
   createKeyboardEvent,
   dispatchFakeEvent,
@@ -822,6 +822,74 @@ describe('tree-select finalSize', () => {
   });
 });
 
+describe('finalVariant', () => {
+  let fixture: ComponentFixture<TestTreeSelectFinalVariantComponent>;
+  let treeSelectElement: HTMLElement;
+  let formVariantSignal: WritableSignal<NzVariant>;
+
+  beforeEach(() => {
+    formVariantSignal = signal<NzVariant>('outlined');
+  });
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+  it('should use formVariant when nzVariant is not set (undefined by default)', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestTreeSelectFinalVariantComponent);
+    treeSelectElement = fixture.debugElement.query(By.directive(NzTreeSelectComponent)).nativeElement;
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(treeSelectElement.classList).toContain('ant-select-filled');
+  });
+
+  it('should use nzVariant over formVariant when nzVariant is explicitly set', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestTreeSelectFinalVariantComponent);
+    treeSelectElement = fixture.debugElement.query(By.directive(NzTreeSelectComponent)).nativeElement;
+    fixture.componentInstance.variant.set('borderless');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(treeSelectElement.classList).toContain('ant-select-borderless');
+    expect(treeSelectElement.classList).not.toContain('ant-select-filled');
+  });
+
+  it('should use nzVariant outlined over formVariant when explicitly set', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestTreeSelectFinalVariantComponent);
+    treeSelectElement = fixture.debugElement.query(By.directive(NzTreeSelectComponent)).nativeElement;
+    fixture.componentInstance.variant.set('outlined');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(treeSelectElement.classList).not.toContain('ant-select-filled');
+  });
+
+  it('should use nzVariant when no formVariant is provided', () => {
+    fixture = TestBed.createComponent(TestTreeSelectFinalVariantComponent);
+    treeSelectElement = fixture.debugElement.query(By.directive(NzTreeSelectComponent)).nativeElement;
+    fixture.componentInstance.variant.set('filled');
+    fixture.detectChanges();
+    expect(treeSelectElement.classList).toContain('ant-select-filled');
+  });
+
+  it('should default to outlined when neither nzVariant nor formVariant is set', () => {
+    fixture = TestBed.createComponent(TestTreeSelectFinalVariantComponent);
+    treeSelectElement = fixture.debugElement.query(By.directive(NzTreeSelectComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(treeSelectElement.classList).not.toContain('ant-select-filled');
+    expect(treeSelectElement.classList).not.toContain('ant-select-borderless');
+    expect(treeSelectElement.classList).not.toContain('ant-select-underlined');
+  });
+});
+
 @Component({
   imports: [NzTreeSelectModule, FormsModule],
   template: `
@@ -1185,4 +1253,12 @@ export class NzTestTreeSelectVirtualScrollComponent {
 })
 export class TestTreeSelectFinalSizeComponent {
   size: NzSizeLDSType = 'default';
+}
+
+@Component({
+  imports: [NzTreeSelectComponent],
+  template: `<nz-tree-select [nzVariant]="variant()" />`
+})
+export class TestTreeSelectFinalVariantComponent {
+  readonly variant = signal<NzVariant | undefined>(undefined);
 }

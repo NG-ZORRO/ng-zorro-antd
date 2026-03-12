@@ -41,7 +41,7 @@ import { By } from '@angular/platform-browser';
 
 import { NzDemoCascaderMultipleComponent } from 'ng-zorro-antd/cascader/demo/multiple';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
+import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
   createFakeEvent,
   dispatchFakeEvent,
@@ -2517,6 +2517,76 @@ describe('finalSize', () => {
   });
 });
 
+describe('finalVariant', () => {
+  let fixture: ComponentFixture<TestCascaderFinalVariantComponent>;
+  let cascaderElement: HTMLElement;
+  let formVariantSignal: WritableSignal<NzVariant>;
+
+  beforeEach(() => {
+    formVariantSignal = signal<NzVariant>('outlined');
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  it('should use formVariant when nzVariant is not set (default)', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestCascaderFinalVariantComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(cascaderElement.classList).toContain('ant-select-filled');
+  });
+
+  it('should use nzVariant over formVariant when nzVariant is explicitly set', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestCascaderFinalVariantComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.componentInstance.variant.set('borderless');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(cascaderElement.classList).toContain('ant-select-borderless');
+    expect(cascaderElement.classList).not.toContain('ant-select-filled');
+  });
+
+  it('should use nzVariant when no formVariant is provided', () => {
+    fixture = TestBed.createComponent(TestCascaderFinalVariantComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.componentInstance.variant.set('filled');
+    fixture.detectChanges();
+    expect(cascaderElement.classList).toContain('ant-select-filled');
+  });
+
+  it('should use outlined as default when neither nzVariant nor formVariant is provided', () => {
+    fixture = TestBed.createComponent(TestCascaderFinalVariantComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.detectChanges();
+    expect(cascaderElement.classList).not.toContain('ant-select-filled');
+    expect(cascaderElement.classList).not.toContain('ant-select-borderless');
+    expect(cascaderElement.classList).not.toContain('ant-select-underlined');
+  });
+
+  it('should use explicitly set outlined over formVariant', () => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
+    });
+    fixture = TestBed.createComponent(TestCascaderFinalVariantComponent);
+    cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;
+    fixture.componentInstance.variant.set('outlined');
+    fixture.detectChanges();
+    formVariantSignal.set('filled');
+    fixture.detectChanges();
+    expect(cascaderElement.classList).not.toContain('ant-select-filled');
+  });
+});
+
 const ID_NAME_LIST = [
   {
     id: 1,
@@ -2922,4 +2992,12 @@ export class NzDemoCascaderInFormComponent {
     demo: this.fb.control<string[] | null>(null, Validators.required)
   });
   nzOptions: NzSafeAny[] | null = options1;
+}
+
+@Component({
+  imports: [NzCascaderModule],
+  template: ` <nz-cascader [nzVariant]="variant()" /> `
+})
+export class TestCascaderFinalVariantComponent {
+  readonly variant = signal<NzVariant | undefined>(undefined);
 }
