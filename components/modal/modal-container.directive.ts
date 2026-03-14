@@ -189,18 +189,31 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     this.focusTrap?.destroy();
   }
 
-  private setEnterAnimationClass(): void {
+  private setEnterInitialClass(): void {
     if (this.animationDisabled()) {
       return;
     }
-    // Make sure to set the `TransformOrigin` style before set the modelElement's class names
+    const modalElement = this.modalElementRef.nativeElement;
+    const backdropElement = this.overlayRef.backdropElement;
+    // Add enter class immediately to hide the modal (scale(0), opacity: 0)
+    // This prevents the flicker when the modal is first rendered
+    modalElement.classList.add(ZOOM_CLASS_NAME_MAP.enter);
+    if (backdropElement) {
+      backdropElement.classList.add(FADE_CLASS_NAME_MAP.enter);
+    }
+  }
+
+  private setEnterActiveClass(): void {
+    if (this.animationDisabled()) {
+      return;
+    }
+    // Make sure to set the `TransformOrigin` style before set the enter-active class names
     this.setModalTransformOrigin();
     const modalElement = this.modalElementRef.nativeElement;
     const backdropElement = this.overlayRef.backdropElement;
-    modalElement.classList.add(ZOOM_CLASS_NAME_MAP.enter);
+    // Add enter-active class to trigger the animation
     modalElement.classList.add(ZOOM_CLASS_NAME_MAP.enterActive);
     if (backdropElement) {
-      backdropElement.classList.add(FADE_CLASS_NAME_MAP.enter);
       backdropElement.classList.add(FADE_CLASS_NAME_MAP.enterActive);
     }
   }
@@ -294,10 +307,12 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
       this.trapFocus();
       this.animationStateChanged.emit('enter-active');
     } else {
-      // If were to attempt to focus immediately, then the offset of the modal would not yet be ready,
-      // which would cause the transition origin to be calculated from the wrong position.
-      // To deal with this, we simply wait until after the next frame.
-      requestAnimationFrame(() => this.setEnterAnimationClass());
+      // Immediately add enter class to hide the modal (prevents flicker)
+      // The enter class sets scale(0) and opacity(0) so the modal is invisible
+      this.setEnterInitialClass();
+
+      // In the next frame, add enter-active class to trigger the animation
+      requestAnimationFrame(() => this.setEnterActiveClass());
 
       const element = this.modalElementRef.nativeElement;
       const onAnimationEnd = (): void => {
