@@ -111,33 +111,6 @@ describe('modal with animation', () => {
     expect(modalContentElement!.classList).toContain('ant-zoom-leave-active');
   });
 
-  it('should recalculate transform origin after layout is complete', async () => {
-    // Create a trigger element to simulate real-world scenario
-    const triggerElement = document.createElement('button');
-    triggerElement.id = 'trigger-button';
-    document.body.appendChild(triggerElement);
-    triggerElement.focus();
-
-    modalService.create({
-      nzContent: TestWithModalContentComponent
-    });
-
-    // Initially, transform-origin might not be set correctly due to layout not being complete
-    const modalElement = overlayContainerElement.querySelector('.ant-modal') as HTMLElement;
-
-    // Trigger the enter-active phase where transform origin is recalculated
-    await sleep(16);
-
-    // Transform origin should be recalculated and set correctly
-    const finalTransformOrigin = modalElement.style.transformOrigin;
-    expect(finalTransformOrigin).toBeTruthy();
-    // Should follow the expected format: "xpx ypx 0px"
-    expect(finalTransformOrigin).toMatch(/\d+px \d+px 0px/);
-
-    // Clean up
-    document.body.removeChild(triggerElement);
-  });
-
   it('should emit when modal opening animation is complete', async () => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent

@@ -193,8 +193,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     if (this.animationDisabled()) {
       return;
     }
-    // Make sure to set the `TransformOrigin` style before set the modelElement's class names
-    this.setModalTransformOrigin();
     const modalElement = this.modalElementRef.nativeElement;
     const backdropElement = this.overlayRef.backdropElement;
     // Add enter class immediately to hide the modal (scale(0), opacity: 0)
@@ -209,7 +207,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     if (this.animationDisabled()) {
       return;
     }
-    // Re-calculate transform origin after layout is complete
+    // Make sure to set the `TransformOrigin` style before set the enter-active class names
     this.setModalTransformOrigin();
     const modalElement = this.modalElementRef.nativeElement;
     const backdropElement = this.overlayRef.backdropElement;
