@@ -76,6 +76,23 @@ describe('modal with animation', () => {
     );
   }
 
+  it('should apply enter class immediately to prevent flicker', () => {
+    modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
+    const backdropElement = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
+    // Enter class should be applied synchronously (before requestAnimationFrame)
+    // This ensures the modal starts hidden (scale(0), opacity: 0) to prevent flicker
+    expect(modalContentElement!.classList).toContain('ant-zoom-enter');
+    expect(modalContentElement!.classList).not.toContain('ant-zoom-enter-active');
+    if (backdropElement) {
+      expect(backdropElement.classList).toContain('ant-fade-enter');
+      expect(backdropElement.classList).not.toContain('ant-fade-enter-active');
+    }
+  });
+
   it('should apply animations class', async () => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent
@@ -92,6 +109,33 @@ describe('modal with animation', () => {
 
     expect(modalContentElement!.classList).toContain('ant-zoom-leave');
     expect(modalContentElement!.classList).toContain('ant-zoom-leave-active');
+  });
+
+  it('should recalculate transform origin after layout is complete', async () => {
+    // Create a trigger element to simulate real-world scenario
+    const triggerElement = document.createElement('button');
+    triggerElement.id = 'trigger-button';
+    document.body.appendChild(triggerElement);
+    triggerElement.focus();
+
+    modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    // Initially, transform-origin might not be set correctly due to layout not being complete
+    const modalElement = overlayContainerElement.querySelector('.ant-modal') as HTMLElement;
+
+    // Trigger the enter-active phase where transform origin is recalculated
+    await sleep(16);
+
+    // Transform origin should be recalculated and set correctly
+    const finalTransformOrigin = modalElement.style.transformOrigin;
+    expect(finalTransformOrigin).toBeTruthy();
+    // Should follow the expected format: "xpx ypx 0px"
+    expect(finalTransformOrigin).toMatch(/\d+px \d+px 0px/);
+
+    // Clean up
+    document.body.removeChild(triggerElement);
   });
 
   it('should emit when modal opening animation is complete', async () => {
