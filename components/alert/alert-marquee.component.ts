@@ -24,18 +24,19 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="ant-alert-marquee" [class.ant-alert-marquee-pause-on-hover]="nzPauseOnHover()">
-      <div #track1 class="ant-alert-marquee-track" [style.animation-duration.s]="animationDuration()">
-        <ng-content />
-      </div>
-      <div
-        #track2
-        class="ant-alert-marquee-track"
-        aria-hidden="true"
-        [style.animation-duration.s]="animationDuration()"
-      ></div>
+    <div #track1 class="ant-alert-marquee-track" [style.animation-duration.s]="animationDuration()">
+      <ng-content />
     </div>
-  `
+    <div
+      #track2
+      class="ant-alert-marquee-track"
+      aria-hidden="true"
+      [style.animation-duration.s]="animationDuration()"
+    ></div>
+  `,
+  host: {
+    '[class]': 'class()'
+  }
 })
 export class NzAlertMarqueeComponent {
   private readonly destroyRef = inject(DestroyRef);
@@ -52,6 +53,11 @@ export class NzAlertMarqueeComponent {
     const speed = this.nzSpeed();
     return width > 0 && speed > 0 ? width / speed : 20;
   });
+
+  protected readonly class = computed(() => ({
+    'ant-alert-marquee': true,
+    'ant-alert-marquee-pause-on-hover': this.nzPauseOnHover()
+  }));
 
   constructor() {
     afterNextRender(() => {
