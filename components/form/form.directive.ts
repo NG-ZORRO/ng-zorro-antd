@@ -21,8 +21,8 @@ import { filter, map } from 'rxjs/operators';
 import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
-import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
-import { InputObservable, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
+import { InputObservable, type NzSizeLDSType, type NzVariant } from 'ng-zorro-antd/core/types';
 
 import type { NzRequiredMark } from './types';
 
@@ -49,7 +49,13 @@ export const DefaultTooltipIcon = {
     '[class.ant-form-small]': `nzSize() === 'small'`,
     '[class.ant-form-large]': `nzSize() === 'large'`
   },
-  providers: [{ provide: NZ_FORM_SIZE, useFactory: () => inject(NzFormDirective).nzSize }]
+  providers: [
+    { provide: NZ_FORM_SIZE, useFactory: () => inject(NzFormDirective).nzSize },
+    {
+      provide: NZ_FORM_VARIANT,
+      useFactory: () => inject(NzFormDirective).nzVariant
+    }
+  ]
 })
 export class NzFormDirective implements OnChanges, InputObservable {
   private destroyRef = inject(DestroyRef);
@@ -65,6 +71,7 @@ export class NzFormDirective implements OnChanges, InputObservable {
   @Input({ transform: booleanAttribute }) @WithConfig() nzLabelWrap: boolean = false;
 
   readonly nzSize = input<NzSizeLDSType>();
+  readonly nzVariant = input<NzVariant>('outlined');
 
   readonly nzRequiredMark = input<NzRequiredMark>(true);
 

@@ -50,7 +50,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge, of as observableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { NzFormItemFeedbackIconComponent, NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import {
+  NZ_FORM_VARIANT,
+  NzFormItemFeedbackIconComponent,
+  NzFormNoStatusService,
+  NzFormStatusService
+} from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { NgClassInterface, NzSafeAny, NzStatus, NzValidateStatus, NzVariant } from 'ng-zorro-antd/core/types';
@@ -135,9 +140,9 @@ export type MentionPlacement = 'top' | 'bottom';
   host: {
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir === 'rtl'`,
-    '[class.ant-mentions-borderless]': `nzVariant === 'borderless'`,
-    '[class.ant-mentions-filled]': `nzVariant === 'filled'`,
-    '[class.ant-mentions-underlined]': `nzVariant === 'underlined'`,
+    '[class.ant-mentions-borderless]': `finalVariant() === 'borderless'`,
+    '[class.ant-mentions-filled]': `finalVariant() === 'filled'`,
+    '[class.ant-mentions-underlined]': `finalVariant() === 'underlined'`,
     '[class.ant-mentions-focused]': `focused()`,
     '[class.ant-mentions-disabled]': `disabled()`
   },
@@ -165,7 +170,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzPlacement: MentionPlacement = 'bottom';
   @Input() nzSuggestions: NzSafeAny[] = [];
   @Input() nzStatus: NzStatus = '';
-  @Input() nzVariant: NzVariant = 'outlined';
+  @Input() nzVariant: NzVariant | undefined = undefined;
   @Input({ transform: booleanAttribute }) nzAllowClear = false;
   @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Output() readonly nzOnSelect = new EventEmitter<NzSafeAny>();
@@ -229,6 +234,12 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
+  private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
+
+  protected readonly variant = signal<NzVariant | undefined>(this.nzVariant);
+
+  protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
+
   constructor() {
     this.destroyRef.onDestroy(() => {
       this.closeDropdown();
@@ -264,7 +275,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzSuggestions, nzStatus } = changes;
+    const { nzSuggestions, nzStatus, nzVariant } = changes;
     if (nzSuggestions) {
       if (this.isOpen) {
         this.previousValue = null;
@@ -274,6 +285,9 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
     }
     if (nzStatus) {
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
+    }
+    if (nzVariant) {
+      this.variant.set(nzVariant.currentValue);
     }
   }
 

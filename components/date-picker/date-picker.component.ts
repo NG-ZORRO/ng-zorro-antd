@@ -50,6 +50,7 @@ import { slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/ani
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import {
   NZ_FORM_SIZE,
+  NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
   NzFormNoStatusService,
   NzFormStatusService
@@ -251,9 +252,9 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     '[class.ant-picker-small]': `finalSize() === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-rtl]': `dir() === 'rtl'`,
-    '[class.ant-picker-borderless]': `nzVariant === 'borderless'`,
-    '[class.ant-picker-filled]': `nzVariant === 'filled'`,
-    '[class.ant-picker-underlined]': `nzVariant === 'underlined'`,
+    '[class.ant-picker-borderless]': `finalVariant() === 'borderless'`,
+    '[class.ant-picker-filled]': `finalVariant() === 'filled'`,
+    '[class.ant-picker-underlined]': `finalVariant() === 'underlined'`,
     '[class.ant-picker-inline]': `nzInline()`,
     '(click)': 'onClickInputBox($event)'
   },
@@ -324,7 +325,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() nzSize: NzDatePickerSizeType = 'default';
   @Input() nzStatus: NzStatus = '';
   @Input() nzFormat!: string;
-  @Input() @WithConfig() nzVariant: NzVariant = 'outlined';
+  @Input() @WithConfig() nzVariant: NzVariant | undefined = undefined;
   @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
   @Input() nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;
@@ -423,9 +424,13 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     return this.size();
   });
 
+  protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
+
   private size = signal<NzSizeLDSType>(this.nzSize);
+  private variant = signal<NzVariant | undefined>(this.nzVariant);
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+  private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
 
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private document: Document = inject(DOCUMENT);
@@ -756,7 +761,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     nzFormat,
     nzRenderExtraFooter,
     nzMode,
-    nzSize
+    nzSize,
+    nzVariant
   }: SimpleChanges): void {
     if (nzPopupStyle) {
       // Always assign the popup style patch
@@ -797,6 +803,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
     if (nzSize) {
       this.size.set(nzSize.currentValue);
+    }
+
+    if (nzVariant) {
+      this.variant.set(nzVariant.currentValue);
     }
   }
 
