@@ -32,7 +32,7 @@ describe('NzAlertMarqueeComponent', () => {
     });
 
     it('should render the marquee container', () => {
-      expect(marquee.nativeElement.querySelector('.ant-alert-marquee')).not.toBeNull();
+      expect(marquee.nativeElement.classList).toContain('ant-alert-marquee');
     });
 
     it('should render exactly two tracks inside the container', () => {
@@ -108,15 +108,13 @@ describe('NzAlertMarqueeComponent', () => {
     });
 
     it('should not apply the pause-on-hover class by default', () => {
-      const container = marquee.nativeElement.querySelector('.ant-alert-marquee');
-      expect(container.classList).not.toContain('ant-alert-marquee-pause-on-hover');
+      expect(marquee.nativeElement.classList).not.toContain('ant-alert-marquee-pause-on-hover');
     });
 
     it('should apply the pause-on-hover class when nzPauseOnHover is true', () => {
       fixture.componentInstance.pauseOnHover.set(true);
       fixture.detectChanges();
-      const container = marquee.nativeElement.querySelector('.ant-alert-marquee');
-      expect(container.classList).toContain('ant-alert-marquee-pause-on-hover');
+      expect(marquee.nativeElement.classList).toContain('ant-alert-marquee-pause-on-hover');
     });
 
     it('should remove the pause-on-hover class when nzPauseOnHover is toggled back to false', () => {
@@ -124,8 +122,7 @@ describe('NzAlertMarqueeComponent', () => {
       fixture.detectChanges();
       fixture.componentInstance.pauseOnHover.set(false);
       fixture.detectChanges();
-      const container = marquee.nativeElement.querySelector('.ant-alert-marquee');
-      expect(container.classList).not.toContain('ant-alert-marquee-pause-on-hover');
+      expect(marquee.nativeElement.classList).not.toContain('ant-alert-marquee-pause-on-hover');
     });
   });
 
