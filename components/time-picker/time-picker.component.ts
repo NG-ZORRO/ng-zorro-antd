@@ -411,9 +411,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     return this.size();
   });
 
-  protected readonly finalVariant = computed(
-    () => (this.variant() === 'outlined' && this.formVariant?.()) || this.variant() || 'outlined'
-  );
+  protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
 
   protected dropdownTimePickerClass = computed(() => {
     const classList = [this.generateClass('dropdown')];

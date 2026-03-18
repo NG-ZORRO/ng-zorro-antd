@@ -1005,13 +1005,12 @@ describe('finalVariant', () => {
   afterEach(() => {
     TestBed.resetTestingModule();
   });
-  it('should use the formVariant when nzVariant is outlined', () => {
+  it('should use the formVariant when nzVariant is not explicitly set', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
     fixture = TestBed.createComponent(NzTestTimePickerVariantComponent);
     timePickerElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
-    fixture.componentInstance.variant.set('outlined');
     fixture.detectChanges();
     formVariantSignal.set('filled');
     fixture.detectChanges();
@@ -1030,12 +1029,14 @@ describe('finalVariant', () => {
     expect(timePickerElement.classList).toContain('ant-picker-borderless');
     expect(timePickerElement.classList).not.toContain('ant-picker-filled');
   });
-  it('should not apply formVariant when nzVariant is undefined', () => {
+  it('should not apply formVariant when nzVariant is explicitly set', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
     });
     fixture = TestBed.createComponent(NzTestTimePickerVariantComponent);
     timePickerElement = fixture.debugElement.query(By.directive(NzTimePickerComponent)).nativeElement;
+    fixture.detectChanges();
+    fixture.componentInstance.variant.set('outlined');
     fixture.detectChanges();
     formVariantSignal.set('filled');
     fixture.detectChanges();
