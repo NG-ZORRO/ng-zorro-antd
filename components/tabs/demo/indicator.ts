@@ -2,7 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzTabsModule, type NzIndicator } from 'ng-zorro-antd/tabs';
+import { NzTabsModule, type NzIndicator, type NzIndicatorAlign } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-indicator',
@@ -21,7 +21,7 @@ import { NzTabsModule, type NzIndicator } from 'ng-zorro-antd/tabs';
   `
 })
 export class NzDemoTabsIndicatorComponent {
-  readonly positionIndicator = signal<'start' | 'end' | 'center'>('start');
+  readonly positionIndicator = signal<NzIndicatorAlign>('start');
 
   protected readonly indicator = computed<NzIndicator>(() => ({
     size: origin => origin - 25,

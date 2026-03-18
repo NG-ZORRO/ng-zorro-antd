@@ -9,6 +9,7 @@ import { Directive, ElementRef, NgZone, inject, input } from '@angular/core';
 
 import { isAnimationEnabled } from 'ng-zorro-antd/core/animation';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
+import { isNil } from 'ng-zorro-antd/core/util';
 
 import { NzTabPositionMode, type NzIndicator, type NzIndicatorAlign } from './interfaces';
 
@@ -48,7 +49,7 @@ export class NzTabsInkBarDirective {
       this.el.style.left = '';
       this.el.style.width = '';
       this.el.style.height = coerceCssPixelValue(
-        size !== undefined && size !== null
+        !isNil(size)
           ? typeof size === 'number'
             ? size
             : size(element?.offsetHeight ?? 0)
@@ -70,9 +71,9 @@ export class NzTabsInkBarDirective {
       case 'start':
         return coerceCssPixelValue(itemOffset);
       case 'end':
-        return coerceCssPixelValue(itemOffset + itemSize - indicatorSize || 0);
+        return coerceCssPixelValue(itemOffset + itemSize - (indicatorSize || 0));
       case 'center':
-        return coerceCssPixelValue(itemOffset + (itemSize - indicatorSize) / 2 || 0);
+        return coerceCssPixelValue(itemOffset + (itemSize - (indicatorSize || 0)) / 2);
     }
   }
 }
