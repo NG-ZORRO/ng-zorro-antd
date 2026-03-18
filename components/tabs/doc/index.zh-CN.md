@@ -38,6 +38,7 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 | `[nzCanDeactivate]`          | 决定一个 tab 是否可以被切换                                        | `NzTabsCanDeactivateFn`                             | -                                     |
 | `[nzCentered]`               | 标签居中展示                                                       | `boolean`                                           | `false`                               |
 | `[nzDestroyInactiveTabPane]` | 被隐藏时是否销毁 DOM 结构                                          | `boolean`                                           | `false`                               |
+| `[nzIndicator]`              | 自定义指示条宽度和对齐方式                                         | `NzIndicator`                                       | -                                     |
 | `(nzSelectedIndexChange)`    | 当前激活 tab 面板的 序列号变更回调函数                             | `EventEmitter<number>`                              | -                                     |
 | `(nzSelectChange)`           | 当前激活 tab 面板变更回调函数                                      | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                     |
 
