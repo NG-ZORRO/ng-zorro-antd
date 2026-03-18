@@ -76,6 +76,23 @@ describe('modal with animation', () => {
     );
   }
 
+  it('should apply enter class immediately to prevent flicker', () => {
+    modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
+    const backdropElement = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
+    // Enter class should be applied synchronously (before requestAnimationFrame)
+    // This ensures the modal starts hidden (scale(0), opacity: 0) to prevent flicker
+    expect(modalContentElement!.classList).toContain('ant-zoom-enter');
+    expect(modalContentElement!.classList).not.toContain('ant-zoom-enter-active');
+    if (backdropElement) {
+      expect(backdropElement.classList).toContain('ant-fade-enter');
+      expect(backdropElement.classList).not.toContain('ant-fade-enter-active');
+    }
+  });
+
   it('should apply animations class', async () => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent
