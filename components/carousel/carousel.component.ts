@@ -353,6 +353,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
    * Drag carousel.
    */
   pointerDown = (event: TouchEvent | MouseEvent): void => {
+    /* istanbul ignore if  */
+    if (this.nzEnableSwipe && this.platform.IOS && event instanceof TouchEvent) {
+      this.preventIOSSafariNavigation(event);
+    }
+
     if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
       this.clearScheduledTransition();
       this.gestureRect = this.slickListEl.getBoundingClientRect();
@@ -388,6 +393,24 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnC
       });
     }
   };
+
+  /**
+   * @link https://github.com/vercel/commerce/pull/132/files
+   */
+  /* istanbul ignore next */
+  private preventIOSSafariNavigation(event: TouchEvent): void {
+    const navigationGestureMargin = 10;
+    const touch = event.touches[0];
+    const touchCenterX = touch.pageX;
+    const touchRadius = touch.radiusX;
+
+    if (
+      touchCenterX - touchRadius < navigationGestureMargin ||
+      touchCenterX + touchRadius > window.innerWidth - navigationGestureMargin
+    ) {
+      event.preventDefault();
+    }
+  }
 
   layout(): void {
     this.strategy?.withCarouselContents(this.carouselContents);
