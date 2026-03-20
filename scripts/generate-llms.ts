@@ -13,7 +13,7 @@ import { resolve, join } from 'path';
  */
 export async function generateLLms(): Promise<void> {
   const cwd = process.cwd();
-  const siteDir = resolve(cwd, 'site', 'doc');
+  const siteDir = resolve(cwd, 'site');
   const docsDir = ['components', 'docs'];
 
   const matchSuffix = '.en-US.md';

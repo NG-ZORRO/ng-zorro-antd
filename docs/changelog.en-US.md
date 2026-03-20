@@ -16,6 +16,23 @@ tag: '{{version}}'
 
 ---
 
+## 21.2.0
+
+`2026-03-20`
+
+### Features
+
+- **alert:** add loop text ([#9697](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9697)) ([6b45037](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6b45037e4d71d7df60942ead1fab0ed06ac31911))
+- **form:** support `nzVariant` ([#9694](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9694)) ([51d6eb6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/51d6eb6e1c3b18e3a5dca7da266476a091ac2eaf))
+- **input-number:** add `emitter` in `nzOnStep` event options ([#9716](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9716)) ([f83af1e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f83af1e87a6eaab041c38f0ed7b26ff8d84568c4))
+- **input:** supports custom count logic for input-wrapper ([#9645](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9645)) ([2450a60](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2450a60e12b9707f71d603092207485decc9d127))
+- **tabs:** support `nzIndicator` ([#9704](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9704)) ([02befe7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/02befe7a77e2a67f41312bb498cc34372f3408c1))
+
+### Bug Fixes
+
+- **modal:** prevent flicker on open ([#9728](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9728)) ([56ad81d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/56ad81d90ee7bf5b63f53b4e4c5cb53785ae5c12))
+- **select:** fix dropdown position in Safari ([#9724](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9724)) ([1081620](https://github.com/NG-ZORRO/ng-zorro-antd/commit/10816209670407610b53ce8f2051fbd354fb620e))
+
 ## 21.1.1
 
 `2026-03-06`
