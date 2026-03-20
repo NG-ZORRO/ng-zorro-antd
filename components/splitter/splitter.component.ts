@@ -187,9 +187,8 @@ export class NzSplitterComponent {
     let emptyCount = 0;
     const containerSize = this.containerSize();
     const innerSizes = this.innerSizes();
-    /**
-     * Get the calculated size, min and max percentage of each panel
-     */
+
+    // Get the calculated size, min and max percentage of each panel
     const sizes = this.panelProps().map((panel, index) => {
       const size = panel.size ?? innerSizes[index];
 
@@ -200,7 +199,16 @@ export class NzSplitterComponent {
       } else if (size || size === 0) {
         const num = Number(size);
         if (!isNaN(num)) {
-          percentage = num / containerSize;
+          if (
+            typeof innerSizes[index] === 'number' &&
+            innerSizes[index] >= 0 &&
+            innerSizes[index] <= 1 &&
+            panel.size === undefined
+          ) {
+            percentage = innerSizes[index];
+          } else {
+            percentage = num / containerSize;
+          }
         }
       } else {
         percentage = undefined;
@@ -429,8 +437,8 @@ export class NzSplitterComponent {
    */
   private updateOffset(index: number, offset: number): void {
     const containerSize = this.containerSize();
-    const limitSizes = this.sizes().map(p => [p.min, p.max]);
-    const pxSizes = this.sizes().map(p => p.percentage * containerSize);
+    const sizes = this.sizes();
+    const pxSizes = sizes.map(p => p.percentage * containerSize);
 
     const getLimitSize = (size: string | number | undefined, defaultLimit: number): number => {
       if (typeof size === 'string') {
@@ -463,10 +471,10 @@ export class NzSplitterComponent {
     const nextIndex = mergedIndex + 1;
 
     // Get boundary
-    const startMinSize = getLimitSize(limitSizes[mergedIndex][0], 0);
-    const endMinSize = getLimitSize(limitSizes[nextIndex][0], 0);
-    const startMaxSize = getLimitSize(limitSizes[mergedIndex][1], containerSize);
-    const endMaxSize = getLimitSize(limitSizes[nextIndex][1], containerSize);
+    const startMinSize = getLimitSize(sizes[mergedIndex].min, 0);
+    const endMinSize = getLimitSize(sizes[nextIndex].min, 0);
+    const startMaxSize = getLimitSize(sizes[mergedIndex].max, containerSize);
+    const endMaxSize = getLimitSize(sizes[nextIndex].max, containerSize);
 
     let mergedOffset = offset;
 
@@ -487,7 +495,9 @@ export class NzSplitterComponent {
     // Do offset
     pxSizes[mergedIndex] += mergedOffset;
     pxSizes[nextIndex] -= mergedOffset;
-    this.innerSizes.set(pxSizes);
+
+    const percentageSizes = pxSizes.map(size => size / containerSize);
+    this.innerSizes.set(percentageSizes);
     this.nzResize.emit(pxSizes);
   }
 
