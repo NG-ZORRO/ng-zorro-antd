@@ -583,15 +583,15 @@ describe('mention', () => {
       expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
 
-    it('should form value correct', fakeAsync(() => {
+    it('should form value correct', () => {
       const textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       fixture.detectChanges();
-      typeInElement(' World', textarea);
+      expect(fixture.componentInstance.mention.value).toBe(textarea.value);
+      typeInElement(`${textarea.value} World`, textarea);
       dispatchEvent(textarea, new FocusEvent('blur'));
       fixture.detectChanges();
-      tick();
       expect(fixture.componentInstance.mention.value).toBe(textarea.value);
-    }));
+    });
   });
 
   describe('variant', () => {
