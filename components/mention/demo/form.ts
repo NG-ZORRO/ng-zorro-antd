@@ -24,12 +24,12 @@ import { NzMentionComponent, NzMentionModule } from 'ng-zorro-antd/mention';
         <nz-form-control [nzSm]="16" nzErrorTip="More than one must be selected!">
           <nz-mention #mentions [nzSuggestions]="suggestions">
             <textarea
-              rows="1"
+              nz-input
+              nzMentionTrigger
+              formControlName="mention"
+              rows="3"
               id="mention"
               placeholder="input here"
-              formControlName="mention"
-              nzMentionTrigger
-              nz-input
             ></textarea>
           </nz-mention>
         </nz-form-control>
@@ -65,9 +65,12 @@ export class NzDemoMentionFormComponent {
   };
 
   private fb = inject(FormBuilder);
-  validateForm = this.fb.group({
-    mention: ['@afc163 ', [Validators.required, this.mentionValidator]]
-  });
+  validateForm = this.fb.group(
+    {
+      mention: ['Hello @afc163 ', [Validators.required, this.mentionValidator]]
+    },
+    { updateOn: 'blur' }
+  );
 
   get mention(): FormControl<string | null> {
     return this.validateForm.controls.mention;
@@ -76,9 +79,11 @@ export class NzDemoMentionFormComponent {
   submitForm(): void {
     this.mention.markAsDirty();
     this.mention.updateValueAndValidity();
+
+    console.log('form value: ', this.validateForm.value);
     if (this.mention.valid) {
-      console.log('Submit!!!', this.mention.value);
-      console.log(this.mentionChild.getMentions());
+      console.log('Submit:', this.mention.value);
+      console.log('Mentions:', this.mentionChild.getMentions());
     } else {
       console.log('Errors in form!!!');
     }
@@ -86,7 +91,7 @@ export class NzDemoMentionFormComponent {
 
   resetForm(): void {
     this.validateForm.reset({
-      mention: '@afc163 '
+      mention: 'Hello @afc163 '
     });
   }
 }
