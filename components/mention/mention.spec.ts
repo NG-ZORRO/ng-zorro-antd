@@ -18,7 +18,7 @@ import {
   type WritableSignal
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -26,6 +26,7 @@ import { Subject } from 'rxjs';
 import { NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
   createKeyboardEvent,
+  dispatchEvent,
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   MockNgZone,
@@ -581,6 +582,16 @@ describe('mention', () => {
       fixture.detectChanges();
       expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
+
+    it('should form value correct', fakeAsync(() => {
+      const textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
+      fixture.detectChanges();
+      typeInElement(' World', textarea);
+      dispatchEvent(textarea, new FocusEvent('blur'));
+      fixture.detectChanges();
+      tick();
+      expect(fixture.componentInstance.mention.value).toBe(textarea.value);
+    }));
   });
 
   describe('variant', () => {
@@ -928,13 +939,13 @@ class NzTestStatusMentionComponent {
 }
 
 @Component({
-  imports: [NzFormModule, NzMentionModule],
+  imports: [NzFormModule, ReactiveFormsModule, NzMentionModule],
   template: `
     <form nz-form>
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
           <nz-mention [nzSuggestions]="[]">
-            <textarea rows="1" nzMentionTrigger></textarea>
+            <textarea rows="1" nzMentionTrigger [formControl]="mention"></textarea>
           </nz-mention>
         </nz-form-control>
       </nz-form-item>
@@ -944,6 +955,8 @@ class NzTestStatusMentionComponent {
 class NzTestMentionInFormComponent {
   status: NzFormControlStatusType = 'error';
   feedback = true;
+
+  mention = new FormControl('Hello @iaosee', { updateOn: 'blur' });
 }
 
 @Component({
