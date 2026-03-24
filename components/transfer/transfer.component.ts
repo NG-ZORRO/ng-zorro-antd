@@ -10,7 +10,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnInit,
@@ -166,7 +165,10 @@ import { NzTransferListComponent } from './transfer-list.component';
     class: 'ant-transfer',
     '[class.ant-transfer-rtl]': `dir === 'rtl'`,
     '[class.ant-transfer-disabled]': `nzDisabled`,
-    '[class.ant-transfer-customize-list]': `nzRenderList`
+    '[class.ant-transfer-customize-list]': `nzRenderList`,
+    '(window:keydown.shift)': 'onTriggerShiftDown()',
+    '(window:keyup.shift)': 'onTriggerShiftUp()',
+    '(mousedown)': 'onTriggerMouseDown($event)'
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -236,17 +238,14 @@ export class NzTransferComponent implements OnInit, OnChanges {
 
   isShiftPressed = false;
 
-  @HostListener('window:keydown.shift')
   onTriggerShiftDown(): void {
     this.isShiftPressed = true;
   }
 
-  @HostListener('window:keyup.shift')
   onTriggerShiftUp(): void {
     this.isShiftPressed = false;
   }
 
-  @HostListener('mousedown', ['$event'])
   onTriggerMouseDown(event: MouseEvent): void {
     const isInsideTransfer = (event.target as HTMLElement).closest('.ant-transfer-list');
     if (event.shiftKey && isInsideTransfer) {
