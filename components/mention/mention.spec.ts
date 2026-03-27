@@ -583,7 +583,7 @@ describe('mention', () => {
       expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
 
-    it('should form value correct', () => {
+    it('should trigger form value update onblur', () => {
       const textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       fixture.detectChanges();
       expect(fixture.componentInstance.mention.value).toBe(textarea.value);
