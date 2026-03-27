@@ -36,7 +36,8 @@ import { Mention } from './mention.component';
     }
   ],
   host: {
-    autocomplete: 'off'
+    autocomplete: 'off',
+    '(blur)': 'handleBlur()'
   }
 })
 export class NzMentionTriggerDirective implements ControlValueAccessor {
@@ -117,6 +118,7 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
+
   registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
@@ -127,6 +129,10 @@ export class NzMentionTriggerDirective implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled.set(isDisabled);
+  }
+
+  protected handleBlur(): void {
+    this.onTouched();
   }
 
   private setupEventListener<TEvent extends Event>(eventName: string, eventEmitter: EventEmitter<TEvent>): void {
