@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-我们为 `nz-cron-expression` 输入框定义了两种规则类型（五段式， 六段式），分别为: `nzType="linux"`、`nzType="spring"`。
+输入框支持五段式和六段式两种规则类型，分别为: `nzType="linux"`、`nzType="spring"`。
 
 ## en-US
 

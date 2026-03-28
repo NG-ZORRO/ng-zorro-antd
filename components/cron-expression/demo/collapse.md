@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-`[nzCollapseDisable]="true"`
+可以通过 `nzCollapseDisable` 隐藏折叠面板。
 
 ## en-US
 
-`[nzCollapseDisable]="true"`
+Use `nzCollapseDisable` to hide collapse panel.

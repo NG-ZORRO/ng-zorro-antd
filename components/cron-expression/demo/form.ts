@@ -7,10 +7,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
-  selector: 'nz-demo-cron-expression-use',
+  selector: 'nz-demo-cron-expression-form',
   imports: [ReactiveFormsModule, NzButtonModule, NzCronExpressionModule, NzFormModule, NzInputModule],
   template: `
-    <form nz-form nzLayout="vertical" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form nz-form nzLayout="vertical" [formGroup]="form" (ngSubmit)="submit()">
       <nz-form-item>
         <nz-form-label [nzSpan]="6">name</nz-form-label>
         <nz-form-control [nzSpan]="14">
@@ -31,15 +31,15 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       </nz-form-item>
       <nz-form-item>
         <nz-form-control>
-          <button nz-button nzType="primary" [disabled]="!validateForm.valid">submit</button>
+          <button nz-button nzType="primary" [disabled]="!form.valid">submit</button>
         </nz-form-control>
       </nz-form-item>
     </form>
   `
 })
-export class NzDemoCronExpressionUseComponent {
+export class NzDemoCronExpressionFormComponent {
   private fb = inject(FormBuilder);
-  validateForm: FormGroup<{
+  form: FormGroup<{
     username: FormControl<string | null>;
     cronLinux: FormControl<string | null>;
     cronSpring: FormControl<string | null>;
@@ -49,7 +49,7 @@ export class NzDemoCronExpressionUseComponent {
     cronSpring: ['0 * 1 * * *', [Validators.required]]
   });
 
-  submitForm(): void {
-    console.log(this.validateForm.value);
+  submit(): void {
+    console.log(this.form.value);
   }
 }

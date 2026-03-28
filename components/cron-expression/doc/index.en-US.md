@@ -1,6 +1,6 @@
 ---
 category: Components
-subtitle: cron form
+subtitle: Cron Form
 type: Data Entry
 title: Cron Expression
 cols: 1

@@ -2,12 +2,12 @@
 order: 1
 title:
   zh-CN: 三种大小
-  en-US: Three sizes of Input
+  en-US: Three sizes
 ---
 
 ## zh-CN
 
-我们为 `nz-cron-expression` 输入框定义了三种尺寸（大、默认、小），高度分别为 `40px`、`32px` 和 `24px`。
+输入框支持 `large` (40px)、`default` (32px) 和 `small` (24px) 三种尺寸。
 
 ## en-US
 
