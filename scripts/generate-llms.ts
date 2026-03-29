@@ -3,15 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ensureDir, readFileSync, writeFile } from 'fs-extra';
+import fsExtra from 'fs-extra';
 import { glob } from 'glob';
 
+import { readdirSync, readFileSync as fsReadFileSync } from 'fs';
 import { resolve, join } from 'path';
+
+const { ensureDir, readFileSync, writeFile } = fsExtra;
 
 interface DocItem {
   title: string;
   url: string;
+  mdUrl: string; // URL for individual .md file
   category: 'docs' | 'components';
+  componentName?: string; // For components, the component folder name
   content?: string;
 }
 
@@ -47,6 +52,10 @@ export async function generateLLms(): Promise<void> {
   chineseResult.docs.sort((a, b) => a.title.localeCompare(b.title));
   chineseResult.components.sort((a, b) => a.title.localeCompare(b.title));
 
+  // Generate individual .md files for each component/doc
+  await generateIndividualFiles(englishResult, siteDir, 'en', cwd);
+  await generateIndividualFiles(chineseResult, siteDir, 'cn', cwd);
+
   // Generate llms.txt (navigation)
   const llmsNavContent = generateNavigationContent(englishResult, chineseResult);
 
@@ -58,7 +67,9 @@ export async function generateLLms(): Promise<void> {
 
   await writeFile(join(siteDir, 'llms.txt'), llmsNavContent);
   await writeFile(join(siteDir, 'llms-full.txt'), englishFullContent);
-  await writeFile(join(siteDir, 'llms-full-cn.txt'), chineseFullContent);
+  // Add BOM for Chinese file to help browser recognize UTF-8 encoding
+  // eslint-disable-next-line prefer-template
+  await writeFile(join(siteDir, 'llms-full-cn.txt'), '\ufeff' + chineseFullContent);
   console.log(
     `Generated llms.txt, llms-full.txt (${englishResult.components.length} components), llms-full-cn.txt (${chineseResult.components.length} components)`
   );
@@ -71,6 +82,7 @@ function processDocs(docs: string[], ignoreDocs: string[], cwd: string, lang: 'e
   };
 
   const matchSuffix = lang === 'en' ? '.en-US.md' : '.zh-CN.md';
+  const langSuffix = lang === 'en' ? 'en' : 'cn';
 
   for (const markdown of docs) {
     if (ignoreDocs.some(title => markdown.includes(title))) {
@@ -100,19 +112,39 @@ function processDocs(docs: string[], ignoreDocs: string[], cwd: string, lang: 'e
       title = lang === 'cn' ? `${title}（实验性）` : `${title} (Experimental)`;
     }
 
-    // Generate URL
-    let url = `https://ng.ant.design/${markdown.replace(matchSuffix, '')}/${lang === 'en' ? 'en' : 'cn'}`;
+    // Generate URL for web page
+    let url = `https://ng.ant.design/${markdown.replace(matchSuffix, '')}/${langSuffix}`;
     if (url.includes('/components/')) {
       url = url.replace('/doc/index', '');
     }
 
-    // Parse content (remove frontmatter)
-    const parsedContent = fsContent.replace(/^---[\s\S]*?---\n/, '').trim();
+    // Generate URL for individual .md file
+    // e.g., components/button/doc/index.en-US.md -> components/button.en.md
+    // e.g., docs/getting-started.en-US.md -> docs/getting-started.en.md
+    let mdUrl: string;
+    if (markdown.startsWith('components/')) {
+      // Extract component name from path like "components/button/doc/index.en-US.md"
+      const match = markdown.match(/^components\/([^/]+)\//);
+      const componentName = match ? match[1] : 'unknown';
+      mdUrl = `https://ng.ant.design/components/${componentName}.${langSuffix}.md`;
+    } else {
+      // For docs, just replace suffix
+      mdUrl = `https://ng.ant.design/${markdown.replace(matchSuffix, `.${langSuffix}.md`)}`;
+    }
+
+    // Keep frontmatter, just trim whitespace
+    const parsedContent = fsContent.trim();
+
+    // Extract component name for demo lookup
+    const componentNameMatch = markdown.match(/^components\/([^/]+)\//);
+    const componentName = componentNameMatch ? componentNameMatch[1] : undefined;
 
     const docItem: DocItem = {
       title,
       url,
+      mdUrl,
       category: markdown.startsWith('components/') ? 'components' : 'docs',
+      componentName,
       content: parsedContent
     };
 
@@ -140,34 +172,117 @@ function generateNavigationContent(englishResult: ProcessResult, chineseResult: 
     '',
     '## Docs (EN)',
     '',
-    ...englishResult.docs.map(({ title, url }) => `- [${title}](${url})`),
+    ...englishResult.docs.map(({ title, url, mdUrl }) => `- [${title}](${url}) | [.md](${mdUrl})`),
     '',
     '## Docs (CN)',
     '',
-    ...chineseResult.docs.map(({ title, url }) => `- [${title}](${url})`),
+    ...chineseResult.docs.map(({ title, url, mdUrl }) => `- [${title}](${url}) | [.md](${mdUrl})`),
     '',
     '## Components (EN)',
     '',
-    ...englishResult.components.map(({ title, url }) => `- [${title}](${url})`),
+    ...englishResult.components.map(({ title, url, mdUrl }) => `- [${title}](${url}) | [.md](${mdUrl})`),
     '',
     '## Components (CN)',
     '',
-    ...chineseResult.components.map(({ title, url }) => `- [${title}](${url})`),
+    ...chineseResult.components.map(({ title, url, mdUrl }) => `- [${title}](${url}) | [.md](${mdUrl})`),
     ''
   ].join('\n');
+}
+
+async function generateIndividualFiles(
+  result: ProcessResult,
+  siteDir: string,
+  lang: 'en' | 'cn',
+  cwd: string
+): Promise<void> {
+  const allItems = [...result.docs, ...result.components];
+
+  for (const item of allItems) {
+    // Extract path from mdUrl: https://ng.ant.design/components/button.en.md -> components/button.en.md
+    const mdPath = item.mdUrl.replace('https://ng.ant.design/', '');
+
+    // Get demo code for components
+    let demoSection = '';
+    if (item.componentName) {
+      demoSection = getDemoCode(item.componentName, lang, cwd);
+    }
+
+    const content = [item.content, demoSection].filter(Boolean).join('\n');
+
+    const outputPath = join(siteDir, mdPath);
+    await ensureDir(resolve(siteDir, mdPath.split('/').slice(0, -1).join('/')));
+    // Add BOM for Chinese file to help browser recognize UTF-8 encoding
+    // eslint-disable-next-line prefer-template
+    await writeFile(outputPath, lang === 'en' ? content : '\ufeff' + content);
+  }
+}
+
+function getDemoCode(componentName: string, lang: 'en' | 'cn', cwd: string): string {
+  const demoDir = join(cwd, 'components', componentName, 'demo');
+  const demoCode: string[] = [];
+  const langKey = lang === 'en' ? 'en-US' : 'zh-CN';
+
+  try {
+    // Find all .ts demo files
+    const demoFiles = readdirSync(demoDir).filter((f: string) => f.endsWith('.ts'));
+
+    for (const demoFile of demoFiles) {
+      const demoName = demoFile.replace('.ts', '');
+      const tsPath = join(demoDir, demoFile);
+      const mdPath = join(demoDir, `${demoName}.md`);
+
+      // Read demo code
+      const tsContent = fsReadFileSync(tsPath, 'utf-8');
+
+      // Read demo title from .md file frontmatter
+      let title = '';
+      let description = '';
+      try {
+        const mdContent = fsReadFileSync(mdPath, 'utf-8');
+
+        // Extract title from frontmatter (priority)
+        // Format: title:\n   zh-CN: 标题\n   en-US: Title
+        const titleRegex = new RegExp(`title:[\\s\\S]*?${langKey}:\\s*(.+?)(?:\\n|\\s*$)`, 'm');
+        const titleMatch = mdContent.match(titleRegex);
+        if (titleMatch) {
+          title = titleMatch[1].trim();
+        }
+
+        // Extract description from language section (secondary)
+        const langSectionRegex = new RegExp(`## ${langKey}\\s*\\n([\\s\\S]*?)(?=## |$)`, 'i');
+        const descMatch = mdContent.match(langSectionRegex);
+        if (descMatch) {
+          description = descMatch[1].trim();
+        }
+      } catch {
+        // If .md file doesn't exist, use demo name as title
+      }
+
+      const demoParts = [`### ${title || demoName}`, ''];
+      if (description) {
+        demoParts.push(description, '');
+      }
+      demoParts.push('```typescript', tsContent.trim(), '```', '');
+      demoCode.push(demoParts.join('\n'));
+    }
+
+    if (demoCode.length > 0) {
+      return ['', '---', '', `## ${lang === 'en' ? 'Examples' : '代码示例'}`, '', ...demoCode].join('\n');
+    }
+  } catch {
+    // Demo directory doesn't exist or can't be read
+  }
+
+  return '';
 }
 
 function generateFullContent(result: ProcessResult, lang: 'en' | 'cn'): string {
   const langLabel = lang === 'en' ? 'English' : '中文';
 
-  const docsContent = result.docs
-    .map(doc => [`## ${doc.title}`, '', `Source: ${doc.url}`, '', doc.content || '', '', '---', ''].join('\n'))
-    .join('\n');
+  const docsContent = result.docs.map(doc => [doc.content, '', '---', ''].join('\n')).join('\n');
 
   const componentsContent = result.components
-    .map(component =>
-      [`## ${component.title}`, '', `Source: ${component.url}`, '', component.content || '', '', '---', ''].join('\n')
-    )
+    .map(component => [component.content, '', '---', ''].join('\n'))
     .join('\n');
 
   return [
@@ -188,11 +303,8 @@ function generateFullContent(result: ProcessResult, lang: 'en' | 'cn'): string {
   ].join('\n');
 }
 
-(async () => {
-  if (require.main === module) {
-    await generateLLms();
-  }
-})().catch(e => {
+// Run if executed directly
+generateLLms().catch(e => {
   console.error(e);
   process.exit(1);
 });
