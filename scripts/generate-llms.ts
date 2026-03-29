@@ -3,13 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import fsExtra from 'fs-extra';
+import { ensureDir, readdirSync, readFileSync, writeFile } from 'fs-extra';
 import { glob } from 'glob';
 
-import { readdirSync, readFileSync as fsReadFileSync } from 'fs';
 import { resolve, join } from 'path';
-
-const { ensureDir, readFileSync, writeFile } = fsExtra;
 
 interface DocItem {
   title: string;
@@ -232,13 +229,13 @@ function getDemoCode(componentName: string, lang: 'en' | 'cn', cwd: string): str
       const mdPath = join(demoDir, `${demoName}.md`);
 
       // Read demo code
-      const tsContent = fsReadFileSync(tsPath, 'utf-8');
+      const tsContent = readFileSync(tsPath, 'utf-8');
 
       // Read demo title from .md file frontmatter
       let title = '';
       let description = '';
       try {
-        const mdContent = fsReadFileSync(mdPath, 'utf-8');
+        const mdContent = readFileSync(mdPath, 'utf-8');
 
         // Extract title from frontmatter (priority)
         // Format: title:\n   zh-CN: 标题\n   en-US: Title
