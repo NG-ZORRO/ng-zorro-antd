@@ -207,7 +207,7 @@ async function generateIndividualFiles(
     const content = [item.content, demoSection].filter(Boolean).join('\n');
 
     const outputPath = join(siteDir, mdPath);
-    await ensureDir(resolve(siteDir, mdPath.split('/').slice(0, -1).join('/')));
+    await ensureDir(dirname(outputPath));
     // Add BOM for Chinese file to help browser recognize UTF-8 encoding
     // eslint-disable-next-line prefer-template
     await writeFile(outputPath, lang === 'en' ? content : '\ufeff' + content);
