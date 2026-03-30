@@ -30,6 +30,17 @@
               "site/robots.txt",
               "site/llms.txt",
               "site/llms-full.txt",
+              "site/llms-full-cn.txt",
+              {
+                "glob": "**/*.md",
+                "input": "site/components",
+                "output": "/components/"
+              },
+              {
+                "glob": "**/*.md",
+                "input": "site/docs",
+                "output": "/docs/"
+              },
               {
                 "glob": "**/*",
                 "input": "node_modules/@ant-design/icons-angular/src/inline-svg/",

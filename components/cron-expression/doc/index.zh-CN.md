@@ -1,6 +1,6 @@
 ---
 category: Components
-subtitle: cron 表单
+subtitle: Cron 表单
 type: 数据录入
 title: Cron Expression
 cols: 1
