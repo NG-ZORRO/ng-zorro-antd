@@ -64,7 +64,7 @@ export class ComponentMetaComponent {
     return `https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/${this.name()}/doc/index.${lang}.md`;
   });
   readonly llm = computed(() => {
-    const lang = this.isEn() ? 'en' : 'zh';
+    const lang = this.isEn() ? 'en' : 'cn';
     return `https://ng.ant.design/components/${this.name()}.${lang}.md`;
   });
   readonly copied = signal(false);
@@ -90,9 +90,12 @@ export class ComponentMetaComponent {
   readonly issues = resource({
     params: () => ({ component: this.componentName() }),
     loader: ({ params }) => {
-      const q = [`repo:NG-ZORRO/ng-zorro-antd`, 'is:issue', 'is:open', `label:"Component: ${params.component}"`].join(
-        ' '
-      );
+      const q = [
+        'repo:NG-ZORRO/ng-zorro-antd',
+        'is:issue',
+        'is:open',
+        'label:"Component: ' + params.component + '"'
+      ].join(' ');
       return fetch(`https://api.github.com/search/issues?q=${encodeURIComponent(q)}`)
         .then(res => res.json())
         .then(res => res.total_count);

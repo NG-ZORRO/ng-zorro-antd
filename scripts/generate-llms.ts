@@ -64,11 +64,11 @@ export async function generateLLms(): Promise<void> {
 
   // Add BOM to all files to help browser recognize UTF-8 encoding regardless of Content-Type header
   // eslint-disable-next-line prefer-template
-  await writeFile(join(siteDir, 'llms.txt'), '\ufeff' + llmsNavContent);
+  await writeFile(join(siteDir, 'llms.txt'), '\ufeff' + llmsNavContent, 'utf-8');
   // eslint-disable-next-line prefer-template
-  await writeFile(join(siteDir, 'llms-full.txt'), '\ufeff' + englishFullContent);
+  await writeFile(join(siteDir, 'llms-full.txt'), '\ufeff' + englishFullContent, 'utf-8');
   // eslint-disable-next-line prefer-template
-  await writeFile(join(siteDir, 'llms-full-cn.txt'), '\ufeff' + chineseFullContent);
+  await writeFile(join(siteDir, 'llms-full-cn.txt'), '\ufeff' + chineseFullContent, 'utf-8');
   console.log(
     `Generated llms.txt, llms-full.txt (${englishResult.components.length} components), llms-full-cn.txt (${chineseResult.components.length} components)`
   );
