@@ -339,10 +339,13 @@ export class NzInputWrapperComponent {
     });
 
     effect(() => {
-      const inputValue = this.inputValue();
-      const formattedValue = this.formattedValue();
-      if (formattedValue !== inputValue) {
-        this.inputDir().ngControl?.control?.setValue(formattedValue);
+      if (this.nzCount()) {
+        const inputValue = this.inputValue();
+        const formattedValue = this.formattedValue();
+
+        if (isNotNil(inputValue) && formattedValue !== inputValue) {
+          this.inputDir().ngControl?.control?.setValue(formattedValue);
+        }
       }
     });
   }
