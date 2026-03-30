@@ -28,10 +28,16 @@
     </nz-flex>
   </nz-descriptions-item>
   <nz-descriptions-item [nzTitle]="isEn() ? 'Docs' : '文档'">
-    <a nz-button nzType="text" nzSize="small" [attr.href]="document()" target="_blank" rel="noopener noreferrer">
-      <nz-icon nzType="edit" />
-      <span nz-typography>{{ isEn() ? 'Edit this page' : '编辑此页' }}</span>
-    </a>
+    <nz-flex nzGap="small">
+      <a nz-button nzType="text" nzSize="small" [attr.href]="document()" target="_blank" rel="noopener noreferrer">
+        <nz-icon nzType="edit" />
+        <span nz-typography>{{ isEn() ? 'Edit this page' : '编辑此页' }}</span>
+      </a>
+      <a nz-button nzType="text" nzSize="small" [attr.href]="llm()" target="_blank" rel="noopener noreferrer">
+        <nz-icon nzType="file-text" />
+        <span nz-typography>LLMs.md</span>
+      </a>
+    </nz-flex>
   </nz-descriptions-item>
 </nz-descriptions>
 

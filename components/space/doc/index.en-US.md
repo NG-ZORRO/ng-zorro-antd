@@ -37,7 +37,7 @@ type NzSpaceSize = 'small' | 'middle' | 'large' | number;
 
 ### nz-space-compact
 
-Use `<nz-space-compact>` when child form components are compactly connected and the border is collapsed. The supported components are：
+Use `<nz-space-compact>` when child form components are compactly connected and the border is collapsed. The supported components are:
 
 - Button
 - Cascader
