@@ -1,5 +1,6 @@
 ---
 order: 18
+version: 21.2.0
 title:
   zh-CN: 定制计数能力
   en-US: Custom count logic

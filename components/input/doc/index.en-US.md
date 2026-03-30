@@ -39,15 +39,15 @@ You can get instance by `ViewChild`
 
 Use when you need to add extra functionality to `[nz-input]`.
 
-| Property          | Description                                                           | Type                     | Default |
-| ----------------- | --------------------------------------------------------------------- | ------------------------ | ------- |
+| Property          | Description                                                           | Type                     | Default | Version |
+| ----------------- | --------------------------------------------------------------------- | ------------------------ | ------- | ------- |
 | `[nzAddonBefore]` | The label text displayed before (on the left side of) the input field | `string`                 | -       |
 | `[nzAddonAfter]`  | The label text displayed after (on the right side of) the input field | `string`                 | -       |
 | `[nzPrefix]`      | The prefix icon for the Input                                         | `string`                 | -       |
 | `[nzSuffix]`      | The suffix icon for the Input                                         | `string`                 | -       |
 | `[nzAllowClear]`  | If allow to remove input content with clear icon                      | `boolean`                | `false` |
-| `[nzShowCount]`   | Should the character count be displayed                               | `boolean`                | `false` |
-| `[nzCount]`       | Custom character counting config                                      | `NzCountConfig`          | -       |
+| `[nzShowCount]`   | Should the character count be displayed                               | `boolean`                | `false` | 21.2.0  |
+| `[nzCount]`       | Custom character counting config                                      | `NzCountConfig`          | -       | 21.2.0  |
 | `(nzClear)`       | Event emitted when the clear icon is clicked                          | `OutputEmitterRef<void>` | -       |
 
 #### NzCountConfig

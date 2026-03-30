@@ -1,3 +1,10 @@
+## [21.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.2.0...21.2.1) (2026-03-30)
+
+### Bug Fixes
+
+- **mention:** fix mention-trigger does not trigger form updates ([#9734](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9734)) ([0ccef3a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0ccef3aff94c7d267e63a88d2e975e6ee84e1f0f))
+- **select,tree-select,mention,cascader:** fix wrong popup layer position ([#9742](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9742)) ([2e25d3b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2e25d3beeee4430bbf920fc4b7fd40d87cb5bd33))
+
 ## [21.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.1.1...21.2.0) (2026-03-20)
 
 ### Features

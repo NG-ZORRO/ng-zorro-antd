@@ -1,5 +1,6 @@
 ---
 order: 17
+version: 21.2.0
 title:
   zh-CN: 指示条
   en-US: Indicator

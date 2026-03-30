@@ -63,7 +63,7 @@ A form consists of one or more form fields whose type includes input, textarea, 
 | `[nzLabelWrap]`       | Set default props `[nzLabelWrap]` value of `nz-form-label`                                              | `boolean`                                                | `false`                                         |               |         |
 | `[nzRequiredMark]`    | Required mark style. Can use required mark or optional mark.                                            | `NzRequiredMark`                                         | `true`                                          |               | 20.4.0  |
 | `[nzSize]`            | Set field component size                                                                                | `small` \| `default` \| `large`                          |                                                 | -             | 21.1.0  |
-| `[nzVariant]`         | Set form variant                                                                                        | `'outlined' \| 'filled' \| 'borderless' \| 'underlined'` | `'outlined'`                                    |               |         |
+| `[nzVariant]`         | Set form variant                                                                                        | `'outlined' \| 'filled' \| 'borderless' \| 'underlined'` | `'outlined'`                                    |               | 21.2.0  |
 
 ### nz-form-item
 
