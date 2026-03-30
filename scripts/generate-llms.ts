@@ -6,7 +6,7 @@
 import { ensureDir, readdirSync, readFileSync, writeFile } from 'fs-extra';
 import { glob } from 'glob';
 
-import { resolve, join } from 'path';
+import { dirname, join, resolve } from 'path';
 
 interface DocItem {
   title: string;
