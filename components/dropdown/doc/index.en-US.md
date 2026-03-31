@@ -37,7 +37,7 @@ You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items a
 
 Wrap Dropdown Menu and pass to `[nz-dropdown]` and `NzContextMenuService`, you can export it via Template Syntax `nzDropdownMenu`
 
-> Note：Every `[nz-dropdown]` should pass independent `nz-dropdown-menu`.
+> Note: Every `[nz-dropdown]` should pass independent `nz-dropdown-menu`.
 
 ```html
 <a nz-dropdown [nzDropdownMenu]="menu">Hover me</a>

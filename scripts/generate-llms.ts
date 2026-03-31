@@ -62,11 +62,13 @@ export async function generateLLms(): Promise<void> {
   // Generate llms-full-cn.txt (Chinese content)
   const chineseFullContent = generateFullContent(chineseResult, 'cn');
 
-  await writeFile(join(siteDir, 'llms.txt'), llmsNavContent);
-  await writeFile(join(siteDir, 'llms-full.txt'), englishFullContent);
-  // Add BOM for Chinese file to help browser recognize UTF-8 encoding
+  // Add BOM to all files to help browser recognize UTF-8 encoding regardless of Content-Type header
   // eslint-disable-next-line prefer-template
-  await writeFile(join(siteDir, 'llms-full-cn.txt'), '\ufeff' + chineseFullContent);
+  await writeFile(join(siteDir, 'llms.txt'), '\ufeff' + llmsNavContent, 'utf-8');
+  // eslint-disable-next-line prefer-template
+  await writeFile(join(siteDir, 'llms-full.txt'), '\ufeff' + englishFullContent, 'utf-8');
+  // eslint-disable-next-line prefer-template
+  await writeFile(join(siteDir, 'llms-full-cn.txt'), '\ufeff' + chineseFullContent, 'utf-8');
   console.log(
     `Generated llms.txt, llms-full.txt (${englishResult.components.length} components), llms-full-cn.txt (${chineseResult.components.length} components)`
   );
@@ -208,9 +210,9 @@ async function generateIndividualFiles(
 
     const outputPath = join(siteDir, mdPath);
     await ensureDir(dirname(outputPath));
-    // Add BOM for Chinese file to help browser recognize UTF-8 encoding
+    // Add BOM to help browser recognize UTF-8 encoding regardless of Content-Type header
     // eslint-disable-next-line prefer-template
-    await writeFile(outputPath, lang === 'en' ? content : '\ufeff' + content);
+    await writeFile(outputPath, '\ufeff' + content, 'utf-8');
   }
 }
 

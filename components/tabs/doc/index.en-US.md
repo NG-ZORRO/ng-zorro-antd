@@ -19,8 +19,8 @@ Ant Design has 3 types of Tabs for different situations.
 
 ### nz-tabs
 
-| Property                     | Description                                                                               | Type                                                | Default                            | Global Config |
-| ---------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------- | ------------- |
+| Property                     | Description                                                                               | Type                                                | Default                            | Global Config | Version |
+| ---------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------- | ------------- | ------- |
 | `[nzSelectedIndex]`          | Current tab's index                                                                       | `number`                                            | -                                  |
 | `[nzAnimated]`               | Whether to change tabs with animation. Only works while `nzTabPosition="top" \| "bottom"` | `boolean \| {inkBar:boolean, tabPane:boolean}`      | `true`, `false` when `type="card"` | ✅            |
 | `[nzSize]`                   | preset tab bar size                                                                       | `'large' \| 'small' \| 'default'`                   | `'default'`                        | ✅            |
@@ -35,7 +35,7 @@ Ant Design has 3 types of Tabs for different situations.
 | `[nzCanDeactivate]`          | Determine if a tab can be deactivated                                                     | `NzTabsCanDeactivateFn`                             | -                                  |
 | `[nzCentered]`               | Centers tabs                                                                              | `boolean`                                           | `false`                            |
 | `[nzDestroyInactiveTabPane]` | Whether destroy inactive TabPane when change tab                                          | `boolean`                                           | `false`                            |
-| `[nzIndicator]`              | Custom indicator size and align                                                           | `NzIndicator`                                       | -                                  |
+| `[nzIndicator]`              | Custom indicator size and align                                                           | `NzIndicator`                                       | -                                  |               | 21.2.0  |
 | `(nzSelectedIndexChange)`    | Current tab's index change callback                                                       | `EventEmitter<number>`                              | -                                  |
 | `(nzSelectChange)`           | Current tab's change callback                                                             | `EventEmitter<{index: number,tab: NzTabComponent}>` | -                                  |
 

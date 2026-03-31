@@ -18,7 +18,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     </nz-spin>
     <br />
     <div>
-      Loading state：
+      Loading state:
       <nz-switch [(ngModel)]="isSpinning" />
     </div>
   `

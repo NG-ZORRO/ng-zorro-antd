@@ -713,7 +713,7 @@ describe('cascader', () => {
 
     it('should click option to expand', () => {
       fixture.detectChanges();
-      expect(getAllColumns().length).toBe(0); // 0列：未显示菜单
+      expect(getAllColumns().length).toBe(0);
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
@@ -732,7 +732,7 @@ describe('cascader', () => {
 
     it('should click option to change column count', () => {
       fixture.detectChanges();
-      expect(getAllColumns().length).toBe(0); // 0列：未显示菜单
+      expect(getAllColumns().length).toBe(0);
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);

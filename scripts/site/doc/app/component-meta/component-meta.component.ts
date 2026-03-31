@@ -7,7 +7,6 @@ import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'component-meta',
@@ -64,6 +63,10 @@ export class ComponentMetaComponent {
     const lang = this.isEn() ? 'en-US' : 'zh-CN';
     return `https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/${this.name()}/doc/index.${lang}.md`;
   });
+  readonly llm = computed(() => {
+    const lang = this.isEn() ? 'en' : 'cn';
+    return `https://ng.ant.design/components/${this.name()}.${lang}.md`;
+  });
   readonly copied = signal(false);
 
   // the name of component in camel case
@@ -88,14 +91,14 @@ export class ComponentMetaComponent {
     params: () => ({ component: this.componentName() }),
     loader: ({ params }) => {
       const q = [
-        `repo:NG-ZORRO/ng-zorro-antd`,
+        'repo:NG-ZORRO/ng-zorro-antd',
         'is:issue',
         'is:open',
-        `label:"Component: ${params.component}"`
+        'label:"Component: ' + params.component + '"'
       ].join(' ');
       return fetch(`https://api.github.com/search/issues?q=${encodeURIComponent(q)}`)
         .then(res => res.json())
-        .then(res => res.total_count)
+        .then(res => res.total_count);
     }
   });
 

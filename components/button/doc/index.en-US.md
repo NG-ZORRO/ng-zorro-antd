@@ -29,7 +29,7 @@ And 4 other properties additionally.
 
 ### [nz-button]
 
-> Note：nz-button is a Directive, it accepts all props which are supported by [native button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button).
+> Note: nz-button is a Directive, it accepts all props which are supported by [native button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button).
 
 To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`disabled`.
 

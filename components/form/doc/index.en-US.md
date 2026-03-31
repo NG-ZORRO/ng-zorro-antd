@@ -19,11 +19,11 @@ description: High-performance form component with data domain management. Includ
 
 ## Form
 
-You can align the controls of a `form` using the `layout` prop：
+You can align the controls of a `form` using the `layout` prop:
 
-- `horizontal`：to horizontally align the `label`s and controls of the fields. (Default)
-- `vertical`：to vertically align the `label`s and controls of the fields.
-- `inline`：to render form fields in one line.
+- `horizontal`: to horizontally align the `label`s and controls of the fields. (Default)
+- `vertical`: to vertically align the `label`s and controls of the fields.
+- `inline`: to render form fields in one line.
 
 ### nz-form-item
 
@@ -63,7 +63,7 @@ A form consists of one or more form fields whose type includes input, textarea, 
 | `[nzLabelWrap]`       | Set default props `[nzLabelWrap]` value of `nz-form-label`                                              | `boolean`                                                | `false`                                         |               |         |
 | `[nzRequiredMark]`    | Required mark style. Can use required mark or optional mark.                                            | `NzRequiredMark`                                         | `true`                                          |               | 20.4.0  |
 | `[nzSize]`            | Set field component size                                                                                | `small` \| `default` \| `large`                          |                                                 | -             | 21.1.0  |
-| `[nzVariant]`         | Set form variant                                                                                        | `'outlined' \| 'filled' \| 'borderless' \| 'underlined'` | `'outlined'`                                    |               |         |
+| `[nzVariant]`         | Set form variant                                                                                        | `'outlined' \| 'filled' \| 'borderless' \| 'underlined'` | `'outlined'`                                    |               | 21.2.0  |
 
 ### nz-form-item
 
@@ -89,7 +89,7 @@ The label of the form item, optional.
 
 ### nz-form-control
 
-> Note：Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you
+> Note: Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you
 > have to notify `nz-form-control` to update its status with `updateValueAndValidity` when you update form status using
 > methods like `markAsDirty`.
 

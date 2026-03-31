@@ -1,5 +1,6 @@
 ---
 order: 8
+version: 21.2.0
 title:
   zh-CN: 滚动公告
   en-US: Loop Banner
