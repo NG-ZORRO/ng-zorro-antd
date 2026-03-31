@@ -12,7 +12,7 @@ import {
   OverlayModule
 } from '@angular/cdk/overlay';
 import { _getEventTarget } from '@angular/cdk/platform';
-import { SlicePipe } from '@angular/common';
+import { NgTemplateOutlet, SlicePipe } from '@angular/common';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -221,55 +221,63 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
         (mouseenter)="onTriggerMouseEnter()"
         (mouseleave)="onTriggerMouseLeave($event)"
       >
-        <div
-          #menu
-          class="ant-cascader-menus"
-          [class.ant-cascader-rtl]="dir === 'rtl'"
-          [class.ant-cascader-menus-hidden]="!menuVisible()"
-          [class.ant-cascader-menu-empty]="shouldShowEmpty"
-          [class]="nzMenuClassName"
-          [style]="nzMenuStyle"
-        >
-          @if (shouldShowEmpty) {
-            <ul class="ant-cascader-menu" [style.width]="dropdownWidthStyle" [style.height]="dropdownHeightStyle">
-              <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
-                <nz-embed-empty
-                  class="ant-cascader-menu-item-content"
-                  nzComponentName="cascader"
-                  [specificContent]="nzNotFoundContent"
-                />
-              </li>
+        @if (nzPopupRender) {
+          <ng-container [ngTemplateOutlet]="nzPopupRender" [ngTemplateOutletContext]="{ $implicit: menuTemplate }" />
+        } @else {
+          <ng-container [ngTemplateOutlet]="menuTemplate" />
+        }
+      </div>
+    </ng-template>
+
+    <ng-template #menuTemplate>
+      <div
+        #menu
+        class="ant-cascader-menus"
+        [class.ant-cascader-rtl]="dir === 'rtl'"
+        [class.ant-cascader-menus-hidden]="!menuVisible()"
+        [class.ant-cascader-menu-empty]="shouldShowEmpty"
+        [class]="nzMenuClassName"
+        [style]="nzMenuStyle"
+      >
+        @if (shouldShowEmpty) {
+          <ul class="ant-cascader-menu" [style.width]="dropdownWidthStyle" [style.height]="dropdownHeightStyle">
+            <li class="ant-cascader-menu-item ant-cascader-menu-item-disabled">
+              <nz-embed-empty
+                class="ant-cascader-menu-item-content"
+                nzComponentName="cascader"
+                [specificContent]="nzNotFoundContent"
+              />
+            </li>
+          </ul>
+        } @else {
+          @for (options of cascaderService.columns; track options; let i = $index) {
+            <ul
+              class="ant-cascader-menu"
+              role="menuitemcheckbox"
+              [class]="nzColumnClassName"
+              [style.height]="dropdownHeightStyle"
+            >
+              @for (option of options; track option) {
+                <li
+                  nz-cascader-option
+                  [expandIcon]="nzExpandIcon"
+                  [columnIndex]="i"
+                  [nzLabelProperty]="nzLabelProperty"
+                  [optionTemplate]="nzOptionRender"
+                  [activated]="isOptionActivated(option, i)"
+                  [highlightText]="inSearchingMode ? inputValue : ''"
+                  [node]="option"
+                  [dir]="dir"
+                  [checkable]="nzMultiple"
+                  (mouseenter)="onOptionMouseEnter(option, i, $event)"
+                  (mouseleave)="onOptionMouseLeave(option, i, $event)"
+                  (click)="onOptionClick(option, i, $event)"
+                  (check)="onOptionCheck(option, i)"
+                ></li>
+              }
             </ul>
-          } @else {
-            @for (options of cascaderService.columns; track options; let i = $index) {
-              <ul
-                class="ant-cascader-menu"
-                role="menuitemcheckbox"
-                [class]="nzColumnClassName"
-                [style.height]="dropdownHeightStyle"
-              >
-                @for (option of options; track option) {
-                  <li
-                    nz-cascader-option
-                    [expandIcon]="nzExpandIcon"
-                    [columnIndex]="i"
-                    [nzLabelProperty]="nzLabelProperty"
-                    [optionTemplate]="nzOptionRender"
-                    [activated]="isOptionActivated(option, i)"
-                    [highlightText]="inSearchingMode ? inputValue : ''"
-                    [node]="option"
-                    [dir]="dir"
-                    [checkable]="nzMultiple"
-                    (mouseenter)="onOptionMouseEnter(option, i, $event)"
-                    (mouseleave)="onOptionMouseLeave(option, i, $event)"
-                    (click)="onOptionClick(option, i, $event)"
-                    (check)="onOptionCheck(option, i)"
-                  ></li>
-                }
-              </ul>
-            }
           }
-        </div>
+        }
       </div>
     </ng-template>
   `,
@@ -303,6 +311,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   imports: [
+    NgTemplateOutlet,
     SlicePipe,
     OverlayModule,
     FormsModule,
@@ -400,6 +409,7 @@ export class NzCascaderComponent
   @Input() nzPrefix: string | TemplateRef<void> | null = null;
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
   @Input() nzExpandIcon: string | TemplateRef<void> = '';
+  @Input() nzPopupRender: TemplateRef<{ $implicit: TemplateRef<void> }> | null = null;
 
   get treeService(): NzCascaderTreeService {
     return this.nzTreeService as NzCascaderTreeService;
