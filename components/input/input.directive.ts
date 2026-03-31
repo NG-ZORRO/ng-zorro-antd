@@ -153,9 +153,11 @@ export class NzInputDirective implements OnInit {
       this.controlDisabled.set(!!this.ngControl!.disabled);
     });
 
-    this.ngControl?.valueChanges?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
-      this.value.set(value);
-    });
+    this.ngControl?.valueChanges
+      ?.pipe(startWith(this.ngControl?.control?.value), takeUntilDestroyed(this.destroyRef))
+      .subscribe(value => {
+        this.value.set(value ?? '');
+      });
   }
 
   private renderFeedbackIcon(): void {
