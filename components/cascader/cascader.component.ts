@@ -23,13 +23,13 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  HostListener,
   inject,
   Input,
   NgZone,
   numberAttribute,
   OnChanges,
   OnInit,
+  output,
   Output,
   QueryList,
   Renderer2,
@@ -142,7 +142,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                   [mirrorSync]="true"
                   [disabled]="nzDisabled"
                   [autofocus]="nzAutoFocus"
-                  [focusTrigger]="menuVisible()"
+                  [focusTrigger]="menuOpen()"
                 />
               </div>
             </div>
@@ -155,7 +155,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
               [mirrorSync]="false"
               [disabled]="nzDisabled"
               [autofocus]="nzAutoFocus"
-              [focusTrigger]="menuVisible()"
+              [focusTrigger]="menuOpen()"
             />
 
             @if (showLabelRender) {
@@ -180,7 +180,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       @if (nzShowArrow) {
         <span class="ant-select-arrow" [class.ant-select-arrow-loading]="isLoading">
           @if (!isLoading) {
-            <nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuVisible()" />
+            <nz-icon [nzType]="$any(nzSuffixIcon)" [class.ant-cascader-picker-arrow-expand]="menuOpen()" />
           } @else {
             <nz-icon nzType="loading" />
           }
@@ -203,7 +203,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
       [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayPositions]="positions"
       cdkConnectedOverlayTransformOriginOn=".ant-cascader-dropdown"
-      [cdkConnectedOverlayOpen]="menuVisible()"
+      [cdkConnectedOverlayOpen]="menuOpen()"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="closeMenu()"
       (positionChange)="onPositionChange($event)"
@@ -225,7 +225,7 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
           #menu
           class="ant-cascader-menus"
           [class.ant-cascader-rtl]="dir === 'rtl'"
-          [class.ant-cascader-menus-hidden]="!menuVisible()"
+          [class.ant-cascader-menus-hidden]="!menuOpen()"
           [class.ant-cascader-menu-empty]="shouldShowEmpty"
           [class]="nzMenuClassName"
           [style]="nzMenuStyle"
@@ -295,11 +295,14 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     '[class.ant-select-borderless]': `finalVariant() === 'borderless'`,
     '[class.ant-select-filled]': `finalVariant() === 'filled'`,
     '[class.ant-select-underlined]': `finalVariant() === 'underlined'`,
-    '[class.ant-select-open]': 'menuVisible()',
+    '[class.ant-select-open]': 'menuOpen()',
     '[class.ant-select-focused]': 'isFocused',
     '[class.ant-select-multiple]': 'nzMultiple',
     '[class.ant-select-single]': '!nzMultiple',
-    '[class.ant-select-rtl]': `dir === 'rtl'`
+    '[class.ant-select-rtl]': `dir === 'rtl'`,
+    '(click)': 'onTriggerClick()',
+    '(mouseenter)': 'onTriggerMouseEnter()',
+    '(mouseleave)': 'onTriggerMouseLeave($event)'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   imports: [
@@ -405,7 +408,11 @@ export class NzCascaderComponent
     return this.nzTreeService as NzCascaderTreeService;
   }
 
+  /**
+   * @deprecated Use `nzOpenChange` instead. This will be removed in v23.0.0.
+   */
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
+  readonly nzOpenChange = output<boolean>();
   @Output() readonly nzSelectionChange = new EventEmitter<NzCascaderOption[]>();
   @Output() readonly nzRemoved = new EventEmitter<NzCascaderOption>();
   @Output() readonly nzClear = new EventEmitter<void>();
@@ -422,7 +429,7 @@ export class NzCascaderComponent
   shouldShowEmpty: boolean = false;
 
   el: HTMLElement = this.elementRef.nativeElement;
-  readonly menuVisible = signal(false);
+  readonly menuOpen = signal(false);
   isLoading = false;
   labelRenderText?: string;
   labelRenderContext = {};
@@ -510,7 +517,7 @@ export class NzCascaderComponent
   }
 
   private get openControlled(): boolean {
-    return this.nzOpen !== undefined;
+    return isNotNil(this.nzOpen);
   }
 
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
@@ -567,11 +574,9 @@ export class NzCascaderComponent
       } else {
         const shouldClose =
           // keep menu opened if multiple mode
-          !this.nzMultiple &&
-          (node.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover')) &&
-          !this.openControlled;
+          !this.nzMultiple && (node.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover'));
         if (shouldClose) {
-          this.delaySetMenuVisible(false);
+          this.delaySetMenuOpen(false);
         }
         this.nzSelectionChange.emit(this.getAncestorOptionList(node));
         this.cdr.markForCheck();
@@ -604,7 +609,7 @@ export class NzCascaderComponent
   ngOnChanges(changes: SimpleChanges): void {
     const { nzOpen, nzStatus, nzSize, nzPlacement, nzOptions, nzVariant } = changes;
     if (nzOpen && this.openControlled) {
-      this.setMenuVisible(nzOpen.currentValue);
+      this.setMenuOpen(nzOpen.currentValue);
     }
     if (nzOptions) {
       this.updateOptions();
@@ -666,32 +671,39 @@ export class NzCascaderComponent
       });
   }
 
-  delaySetMenuVisible(visible: boolean, delay: number = 100, setOpening: boolean = false): void {
+  delaySetMenuOpen(open: boolean, delay: number = 100, setOpening: boolean = false): void {
     this.clearDelayMenuTimer();
     if (delay) {
-      if (visible && setOpening) {
+      if (open && setOpening) {
         this.isOpening = true;
       }
       this.delayMenuTimer = setTimeout(() => {
-        this.setMenuVisible(visible);
+        this.setMenuOpen(open);
         this.cdr.detectChanges();
         this.clearDelayMenuTimer();
-        if (visible) {
+        if (open) {
           setTimeout(() => {
             this.isOpening = false;
           }, 100);
         }
       }, delay);
     } else {
-      this.setMenuVisible(visible);
+      this.setMenuOpen(open);
     }
   }
 
-  setMenuVisible(visible: boolean): void {
-    if (this.nzDisabled || this.menuVisible() === visible) {
+  setMenuOpen(open: boolean): void {
+    if (this.nzDisabled || this.menuOpen() === open) {
       return;
     }
-    if (visible) {
+
+    if (this.openControlled && this.nzOpen !== open) {
+      this.nzVisibleChange.emit(open);
+      this.nzOpenChange.emit(open);
+      return;
+    }
+
+    if (open) {
       this.cascaderService.$redraw.next();
       this.updateSelectedNodes(true);
       this.scrollToActivatedOptions();
@@ -699,8 +711,9 @@ export class NzCascaderComponent
       this.inputValue = '';
     }
 
-    this.menuVisible.set(visible);
-    this.nzVisibleChange.emit(visible);
+    this.menuOpen.set(open);
+    this.nzVisibleChange.emit(open);
+    this.nzOpenChange.emit(open);
     this.cdr.detectChanges();
   }
 
@@ -721,9 +734,7 @@ export class NzCascaderComponent
     this.labelRenderText = '';
     this.labelRenderContext = {};
     this.inputValue = '';
-    if (!this.openControlled) {
-      this.setMenuVisible(false);
-    }
+    this.setMenuOpen(false);
     this.cascaderService.clear();
     this.nzClear.emit();
   }
@@ -768,7 +779,7 @@ export class NzCascaderComponent
   }
 
   handleInputBlur(): void {
-    this.menuVisible() ? this.focus() : this.blur();
+    this.menuOpen() ? this.focus() : this.blur();
   }
 
   handleInputFocus(): void {
@@ -779,38 +790,29 @@ export class NzCascaderComponent
     this.isComposing = isComposing;
   }
 
-  @HostListener('click')
   onTriggerClick(): void {
-    if (this.nzDisabled || this.openControlled) {
+    if (this.nzDisabled) {
       return;
     }
     if (this.nzShowSearch) {
       this.focus();
     }
     if (this.isActionTrigger('click')) {
-      this.delaySetMenuVisible(!this.menuVisible(), 100);
+      this.delaySetMenuOpen(!this.menuOpen(), 100);
     }
     this.onTouched();
   }
 
-  @HostListener('mouseenter')
   onTriggerMouseEnter(): void {
-    if (this.nzDisabled || !this.isActionTrigger('hover') || this.openControlled) {
+    if (this.nzDisabled || !this.isActionTrigger('hover')) {
       return;
     }
 
-    this.delaySetMenuVisible(true, this.nzMouseEnterDelay, true);
+    this.delaySetMenuOpen(true, this.nzMouseEnterDelay, true);
   }
 
-  @HostListener('mouseleave', ['$event'])
   onTriggerMouseLeave(event: MouseEvent): void {
-    if (
-      this.nzDisabled ||
-      !this.menuVisible() ||
-      this.isOpening ||
-      !this.isActionTrigger('hover') ||
-      this.openControlled
-    ) {
+    if (this.nzDisabled || !this.menuOpen() || this.isOpening || !this.isActionTrigger('hover')) {
       event.preventDefault();
       return;
     }
@@ -820,7 +822,7 @@ export class NzCascaderComponent
     if (hostEl.contains(mouseTarget) || (menuEl && menuEl.contains(mouseTarget))) {
       return;
     }
-    this.delaySetMenuVisible(false, this.nzMouseLeaveDelay);
+    this.delaySetMenuOpen(false, this.nzMouseLeaveDelay);
   }
 
   onOptionMouseEnter(node: NzTreeNode, columnIndex: number, event: Event): void {
@@ -1006,7 +1008,7 @@ export class NzCascaderComponent
 
   onClickOutside(event: MouseEvent): void {
     const target = _getEventTarget(event);
-    if (!this.el.contains(target as Node) && !this.openControlled) {
+    if (!this.el.contains(target as Node)) {
       this.closeMenu();
     }
   }
@@ -1078,7 +1080,7 @@ export class NzCascaderComponent
       this.cascaderService.activatedNodes.pop(); // Remove the last one
       this.cascaderService.setNodeDeactivatedSinceColumn(this.cascaderService.activatedNodes.length); // collapse menu
       if (!this.cascaderService.activatedNodes.length) {
-        this.setMenuVisible(false);
+        this.setMenuOpen(false);
       }
     }
   }
@@ -1134,7 +1136,7 @@ export class NzCascaderComponent
   closeMenu(): void {
     this.blur();
     this.clearDelayMenuTimer();
-    this.setMenuVisible(false);
+    this.setMenuOpen(false);
     // if select none, clear previous state
     if (!this.hasValue && this.cascaderService.columns.length) {
       this.cascaderService.dropBehindColumns(0);
@@ -1146,7 +1148,7 @@ export class NzCascaderComponent
    * and may exceed the boundary of browser's window.
    */
   private reposition(): void {
-    if (this.overlay && this.overlay.overlayRef && this.menuVisible()) {
+    if (this.overlay && this.overlay.overlayRef && this.menuOpen()) {
       Promise.resolve().then(() => {
         this.overlay.overlayRef.updatePosition();
         this.cdr.markForCheck();
@@ -1273,9 +1275,9 @@ export class NzCascaderComponent
         }
 
         // Press any keys above to reopen menu.
-        if (!this.menuVisible() && keyCode !== BACKSPACE && keyCode !== ESCAPE && !this.openControlled) {
-          // The `setMenuVisible` runs `detectChanges()`, so we don't need to run `markForCheck()` additionally.
-          return this.ngZone.run(() => this.setMenuVisible(true));
+        if (!this.menuOpen() && keyCode !== BACKSPACE && keyCode !== ESCAPE) {
+          // The `setMenuOpen` runs `detectChanges()`, so we don't need to run `markForCheck()` additionally.
+          return this.ngZone.run(() => this.setMenuOpen(true));
         }
 
         // Make these keys work as default in searching mode.
@@ -1283,7 +1285,7 @@ export class NzCascaderComponent
           return;
         }
 
-        if (!this.menuVisible()) {
+        if (!this.menuOpen()) {
           return;
         }
 

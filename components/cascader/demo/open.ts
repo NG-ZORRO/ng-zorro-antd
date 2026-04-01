@@ -58,7 +58,7 @@ const options: NzCascaderOption[] = [
         [ngModel]="values"
         [nzOpen]="open"
         (nzSelectionChange)="onSelectionChange($event)"
-        (nzVisibleChange)="onVisibleChange($event)"
+        (nzOpenChange)="onOpenChange($event)"
       />
     </div>
   `
@@ -72,7 +72,9 @@ export class NzDemoCascaderOpenComponent {
     console.log(selectedOptions);
   }
 
-  onVisibleChange(visible: boolean): void {
-    console.log(visible);
+  onOpenChange(open: boolean): void {
+    console.log(open);
+    // You can set the `open` variable in `(nzOpenChange)` to control the open state.
+    // this.open = open;
   }
 }
