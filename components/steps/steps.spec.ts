@@ -77,9 +77,9 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-tail')).toBeTruthy();
-      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-tail')).toBeTruthy();
-      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-tail')).toBeFalsy();
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-rail')).toBeTruthy();
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-rail')).toBeTruthy();
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-rail')).toBeFalsy();
     }));
 
     it('should title correct', () => {
@@ -101,13 +101,13 @@ describe('steps', () => {
 
     it('should description correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-content').innerText.trim()).toBe(
         '0description'
       );
-      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-content').innerText.trim()).toBe(
         '1description'
       );
-      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-content').innerText.trim()).toBe(
         '2description'
       );
     });
@@ -297,15 +297,9 @@ describe('steps', () => {
 
     it('should description display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
-        'description'
-      );
-      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
-        'description'
-      );
-      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
-        'description'
-      );
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-content').innerText.trim()).toBe('description');
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-content').innerText.trim()).toBe('description');
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-content').innerText.trim()).toBe('description');
     });
 
     it('should icon display correct', () => {
@@ -340,13 +334,13 @@ describe('steps', () => {
 
     it('should description display correct', () => {
       fixture.detectChanges();
-      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+      expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-content').innerText.trim()).toBe(
         'descriptionTemplate'
       );
-      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+      expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-content').innerText.trim()).toBe(
         'descriptionTemplate'
       );
-      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-description').innerText.trim()).toBe(
+      expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-content').innerText.trim()).toBe(
         'descriptionTemplate'
       );
     });
@@ -417,7 +411,7 @@ describe('steps', () => {
       tick();
       fixture.detectChanges();
       innerSteps
-        .map(step => step.nativeElement.querySelector('.ant-steps-item-container'))
+        .map(step => step.nativeElement.querySelector('.ant-steps-item-wrapper'))
         .forEach((e: HTMLElement) => {
           expect(e.getAttribute('role')).toBe('button');
         });
@@ -428,7 +422,7 @@ describe('steps', () => {
       tick();
       fixture.detectChanges();
       spyOn(testComponent, 'onIndexChange');
-      innerSteps[1].nativeElement.querySelector('.ant-steps-item-container').click();
+      innerSteps[1].nativeElement.querySelector('.ant-steps-item-wrapper').click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).toHaveBeenCalledWith(1);
     }));
@@ -438,7 +432,7 @@ describe('steps', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      const step = innerSteps[0].nativeElement.querySelector('.ant-steps-item-container') as HTMLElement;
+      const step = innerSteps[0].nativeElement.querySelector('.ant-steps-item-wrapper') as HTMLElement;
       expect(step.getAttribute('role')).not.toBe('button');
       spyOn(testComponent, 'onIndexChange');
       step.click();
@@ -465,12 +459,12 @@ describe('steps', () => {
       innerSteps[1].componentInstance.disable();
       fixture.detectChanges();
       spyOn(testComponent, 'onIndexChange');
-      innerSteps[1].nativeElement.querySelector('.ant-steps-item-container').click();
+      innerSteps[1].nativeElement.querySelector('.ant-steps-item-wrapper').click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).not.toHaveBeenCalled();
       innerSteps[1].componentInstance.enable();
       fixture.detectChanges();
-      innerSteps[1].nativeElement.querySelector('.ant-steps-item-container').click();
+      innerSteps[1].nativeElement.querySelector('.ant-steps-item-wrapper').click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).toHaveBeenCalledTimes(1);
       expect(testComponent.onIndexChange).toHaveBeenCalledWith(1);
