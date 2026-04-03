@@ -89,20 +89,36 @@ describe('nz-float-button-group', () => {
       testComponent.nzOpen = true;
       testComponent.nzTrigger = 'click';
       fixture.detectChanges();
+      const openChangeSpy = spyOn(groupComponent.nzOpenChange, 'emit');
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
       fixture.detectChanges();
       expect(resultEl.nativeElement.getElementsByClassName('anticon')[0].getAttribute('nztype') === 'close').toBe(true);
+      expect(openChangeSpy).toHaveBeenCalledWith(false);
+      expect(openChangeSpy).toHaveBeenCalledTimes(1);
     });
 
     it('nzOpen false', () => {
       testComponent.nzOpen = false;
       testComponent.nzTrigger = 'click';
       fixture.detectChanges();
+      const openChangeSpy = spyOn(groupComponent.nzOpenChange, 'emit');
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
       fixture.detectChanges();
       expect(resultEl.nativeElement.getElementsByClassName('anticon')[0].getAttribute('nztype') === 'close').toBe(
         false
       );
+      expect(openChangeSpy).toHaveBeenCalledWith(true);
+      expect(openChangeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('nzOpenChange should emit in controlled mode', () => {
+      testComponent.nzOpen = true;
+      testComponent.nzTrigger = 'click';
+      fixture.detectChanges();
+      const openChangeSpy = spyOn(groupComponent.nzOpenChange, 'emit');
+      resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
+      fixture.detectChanges();
+      expect(openChangeSpy).toHaveBeenCalledWith(false);
     });
 
     describe('float-button-group placement', () => {
