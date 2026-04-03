@@ -37,7 +37,6 @@
       }
     ],
     "import-notation": null,
-    "at-rule-prelude-no-invalid": null,
     "no-descending-specificity": null,
     "no-invalid-position-at-import-rule": null,
     "declaration-empty-line-before": null,

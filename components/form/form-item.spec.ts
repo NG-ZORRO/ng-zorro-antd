@@ -8,7 +8,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NzFormModule } from 'ng-zorro-antd/form/form.module';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 import { NzFormItemComponent } from './form-item.component';
 
