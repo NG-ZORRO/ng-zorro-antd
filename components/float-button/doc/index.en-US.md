@@ -29,12 +29,13 @@ description: A button that floats at the top of the page.
 
 ### nz-float-button-group
 
-| Property           | Description                                   | Type                                     | Default |
-| ------------------ | --------------------------------------------- | ---------------------------------------- | ------- |
-| `[nzTrigger]`      | Which action can trigger menu open/close      | `'click' \| 'hover'`                     | -       |
-| `[nzPlacement]`    | Customize menu animation placement            | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` |
-| `[nzOpen]`         | Whether the menu is visible or not            | `boolean`                                | -       |
-| `(nzOnOpenChange)` | Callback executed when active menu is changed | `EventEmitter<boolean>`                  | -       |
+| Property               | Description                                                                                    | Type                                     | Default |
+| ---------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------- | ------- |
+| `[nzTrigger]`          | Which action can trigger menu open/close                                                       | `'click' \| 'hover'`                     | -       |
+| `[nzPlacement]`        | Customize menu animation placement                                                             | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` |
+| `[nzOpen]`             | Whether the menu is visible or not                                                             | `boolean`                                | -       |
+| `(nzOpenChange)`       | Callback executed when active menu is changed                                                  | `EventEmitter<boolean>`                  | -       |
+| ~~`(nzOnOpenChange)`~~ | Callback executed when active menu is changed, deprecated, please use `(nzOpenChange)` instead | `EventEmitter<boolean>`                  | -       |
 
 ### nz-float-button-top
 

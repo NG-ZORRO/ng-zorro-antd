@@ -76,7 +76,12 @@ export class NzFloatButtonGroupComponent {
   readonly nzTrigger = input<'click' | 'hover' | null>(null);
   readonly nzOpen = input<boolean | null>(null);
   readonly nzPlacement = input<NzFourDirectionType>('top');
+
+  /**
+   * @deprecated Use `nzOpenChange` instead. This will be removed in v23.0.0.
+   */
   readonly nzOnOpenChange = output<boolean>();
+  readonly nzOpenChange = output<boolean>();
 
   protected readonly dir = inject(Directionality).valueSignal;
   protected readonly open = linkedSignal<boolean>(() => !!this.nzOpen());
@@ -133,10 +138,14 @@ export class NzFloatButtonGroupComponent {
   }
 
   private handleEvent(type: 'click' | 'hover', isOpen: boolean): void {
-    if (this.nzTrigger() !== type || this.isControlledMode() || this.open() === isOpen) {
+    if (this.nzTrigger() !== type || this.open() === isOpen) {
       return;
     }
-    this.open.set(isOpen);
+
+    if (!this.isControlledMode()) {
+      this.open.set(isOpen);
+    }
+    this.nzOpenChange.emit(isOpen);
     this.nzOnOpenChange.emit(isOpen);
   }
 

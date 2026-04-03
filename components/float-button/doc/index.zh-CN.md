@@ -30,12 +30,13 @@ description: 悬浮于页面上方的按钮。
 
 ### nz-float-button-group
 
-| 参数               | 说明                             | 类型                                     | 默认值  |
-| ------------------ | -------------------------------- | ---------------------------------------- | ------- |
-| `[nzTrigger]`      | 触发方式（有触发方式为菜单模式） | `'click' \| 'hover'`                     | -       |
-| `[nzPlacement]`    | 自定义菜单弹出位置               | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` |
-| `[nzOpen]`         | 受控展开                         | `boolean`                                | -       |
-| `(nzOnOpenChange)` | 展开收起时的回调                 | `EventEmitter<boolean>`                  | -       |
+| 参数                   | 说明                                                   | 类型                                     | 默认值  |
+| ---------------------- | ------------------------------------------------------ | ---------------------------------------- | ------- |
+| `[nzTrigger]`          | 触发方式（有触发方式为菜单模式）                       | `'click' \| 'hover'`                     | -       |
+| `[nzPlacement]`        | 自定义菜单弹出位置                                     | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` |
+| `[nzOpen]`             | 受控展开                                               | `boolean`                                | -       |
+| `(nzOpenChange)`       | 展开收起时的回调                                       | `EventEmitter<boolean>`                  | -       |
+| ~~`(nzOnOpenChange)`~~ | 展开收起时的回调，已废弃，请使用 `(nzOpenChange)` 代替 | `EventEmitter<boolean>`                  | -       |
 
 ### nz-float-button-top
 
