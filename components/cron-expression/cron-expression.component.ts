@@ -63,13 +63,13 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
           [class.ant-input-sm]="nzSize === 'small'"
           [class.ant-input-borderless]="nzBorderless"
           [class.ant-cron-expression-input-group-focus]="focus && !nzBorderless"
-          [class.ant-input-status-error]="!validateForm.valid && !nzBorderless"
-          [class.ant-cron-expression-input-group-error-focus]="!validateForm.valid && focus && !nzBorderless"
+          [class.ant-input-status-error]="form.invalid && !nzBorderless"
+          [class.ant-cron-expression-input-group-error-focus]="form.invalid && focus && !nzBorderless"
           [class.ant-input-disabled]="nzDisabled"
         >
           @for (label of labels; track label) {
             <nz-cron-expression-input
-              [value]="this.validateForm.controls[label].value"
+              [value]="form.controls[label].value"
               [label]="label"
               [disabled]="nzDisabled"
               (focusEffect)="focusEffect($event)"
@@ -91,7 +91,7 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
         @if (!nzCollapseDisable) {
           <nz-cron-expression-preview
             [TimeList]="nextTimeList"
-            [visible]="validateForm.valid"
+            [visible]="form.valid"
             [locale]="locale"
             [nzSemantic]="nzSemantic"
             (loadMorePreview)="loadMorePreview()"
@@ -149,8 +149,8 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
   protected readonly cronValidatorFn: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     if (control.value) {
       try {
-        const cron = this.labels.map(label => control.value[label]);
-        CronExpressionParser.parse(cron.join(' '));
+        const cron = this.labels.map(label => control.value[label]).join(' ');
+        CronExpressionParser.parse(cron);
       } catch {
         return { error: true };
       }
@@ -158,7 +158,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
     return null;
   };
 
-  protected readonly validateForm = this.formBuilder.nonNullable.group(
+  protected readonly form = this.formBuilder.nonNullable.group(
     {
       second: ['0', Validators.required],
       minute: ['*', Validators.required],
@@ -179,7 +179,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
       obj[label] = values[idx];
       return obj;
     }, {} as Cron);
-    this.validateForm.patchValue(valueObject);
+    this.form.patchValue(valueObject);
   }
 
   writeValue(value: string | null): void {
@@ -197,7 +197,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
   }
 
   validate(): ValidationErrors | null {
-    return this.validateForm.valid ? null : { error: true };
+    return this.form.valid ? null : { error: true };
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -212,9 +212,9 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
       this.cdr.markForCheck();
     });
     this.cronFormType();
-    this.previewDate(this.validateForm.value);
+    this.previewDate(this.form.value);
 
-    this.validateForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+    this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       this.onChange(Object.values(value).join(' '));
       this.previewDate(value);
       this.cdr.markForCheck();
@@ -230,11 +230,11 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
     }
   }
 
-  cronFormType(): void {
+  private cronFormType(): void {
     if (this.nzType === 'spring') {
-      this.validateForm.controls.second.enable();
+      this.form.controls.second.enable();
     } else {
-      this.validateForm.controls.second.disable();
+      this.form.controls.second.disable();
     }
   }
 
@@ -278,7 +278,7 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
   }
 
   getValue(item: CronChangeType): void {
-    this.validateForm.controls[item.label].patchValue(item.value);
+    this.form.controls[item.label].patchValue(item.value);
     this.cdr.markForCheck();
   }
 }
