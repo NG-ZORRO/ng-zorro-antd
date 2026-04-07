@@ -12,7 +12,10 @@
   background-color: @select-background;
   border: @border-width-base @border-style-base @select-border-color;
   border-radius: @control-border-radius;
-  transition: all 0.3s @ease-in-out;
+  transition:
+    border-color 0.3s @ease-in-out,
+    box-shadow 0.3s @ease-in-out,
+    background-color 0.3s @ease-in-out;
 
   input {
     cursor: pointer;
