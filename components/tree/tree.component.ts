@@ -228,7 +228,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnChanges, Co
   @Input({ transform: booleanAttribute }) nzDraggable: boolean = false;
   @Input({ transform: booleanAttribute }) nzMultiple = false;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() nzVirtualItemSize = 28;
+  @Input() @WithConfig() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
   @Input() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: string | null = null;
