@@ -6,3 +6,5 @@
 import { TemplateRef } from '@angular/core';
 
 export type NzRequiredMark = boolean | 'optional' | TemplateRef<{ $implicit: TemplateRef<void>; required: boolean }>;
+
+export type NzFormItemLayout = 'horizontal' | 'vertical';
