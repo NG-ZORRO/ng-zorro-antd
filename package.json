@@ -76,7 +76,7 @@
     "chalk": "^4.1.0",
     "conventional-changelog": "^7.1.1",
     "conventional-changelog-conventionalcommits": "^9.1.0",
-    "cron-parser": "^4.6.0",
+    "cron-parser": "^5.5.0",
     "cross-env": "^10.0.0",
     "d3": "^6.3.1",
     "dagre": "^0.8.5",

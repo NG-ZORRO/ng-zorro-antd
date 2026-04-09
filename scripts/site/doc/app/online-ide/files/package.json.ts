@@ -30,7 +30,7 @@ export default (nzVersion: string, ngVersion: string) => {
       d3: '^6.3.1',
       dagre: '^0.8.5',
       'dagre-compound': '^0.0.8',
-      'cron-parser': '^4.6.0',
+      'cron-parser': '^5.5.0',
       'monaco-editor': '^0.33.0'
     },
     devDependencies: {
