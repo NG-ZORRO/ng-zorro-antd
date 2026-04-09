@@ -13,8 +13,9 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
         nzIcon="customer-service"
         [nzOpen]="isOpen"
         nzType="primary"
-        nzTrigger="hover"
+        nzTrigger="click"
         style="right: 24px"
+        (nzOpenChange)="onOpenChange($event)"
       >
         <nz-float-button />
         <nz-float-button nzIcon="comment" />
@@ -35,4 +36,10 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 })
 export class NzDemoFloatButtonOpenComponent {
   isOpen: boolean = true;
+
+  onOpenChange(open: boolean): void {
+    console.log(open);
+    // You can set the `isOpen` variable in `(nzOpenChange)` to control the open state.
+    // this.isOpen = open;
+  }
 }
