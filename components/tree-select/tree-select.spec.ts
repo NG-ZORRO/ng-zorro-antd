@@ -429,6 +429,24 @@ describe('tree-select', () => {
     });
   });
 
+  describe('nzPopupRender', () => {
+    let fixture: ComponentFixture<NzTestTreeSelectDropdownRenderComponent>;
+    let treeSelect: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTreeSelectDropdownRenderComponent);
+      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+    });
+
+    it('should render content', fakeAsync(() => {
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      flush();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.custom-dropdown')).toBeTruthy();
+    }));
+  });
+
   describe('checkable', () => {
     let fixture: ComponentFixture<NzTestTreeSelectCheckableComponent>;
     let testComponent: NzTestTreeSelectCheckableComponent;
@@ -1261,4 +1279,18 @@ export class TestTreeSelectFinalSizeComponent {
 })
 export class TestTreeSelectFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
+}
+
+@Component({
+  imports: [NzTreeSelectModule],
+  template: `
+    <nz-tree-select [nzNodes]="nodes" [nzPopupRender]="render">
+      <ng-template #render>
+        <div class="custom-dropdown">custom dropdown</div>
+      </ng-template>
+    </nz-tree-select>
+  `
+})
+export class NzTestTreeSelectDropdownRenderComponent {
+  nodes = [{ title: 'node1', key: '1' }];
 }
