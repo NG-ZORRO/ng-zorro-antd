@@ -25,6 +25,7 @@ import {
   ZERO
 } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { CommonModule } from '@angular/common';
 import {
   Component,
   DebugElement,
@@ -2471,6 +2472,63 @@ describe('cascader', () => {
   });
 });
 
+describe('nzPopupRender', () => {
+  let overlayContainer: OverlayContainer;
+  let overlayContainerElement: HTMLElement;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting(), provideNzNoAnimation(), provideZoneChangeDetection()]
+    });
+  });
+
+  beforeEach(
+    testingInject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+      overlayContainer = currentOverlayContainer;
+      overlayContainerElement = currentOverlayContainer.getContainerElement();
+    })
+  );
+
+  afterEach(() => {
+    overlayContainer.ngOnDestroy();
+  });
+
+  it('should render custom footer when nzPopupRender is provided', fakeAsync(() => {
+    const fixture = TestBed.createComponent(NzDemoCascaderPopupRenderComponent);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    component.cascader.setMenuVisible(true);
+    fixture.detectChanges();
+    tick(200);
+    fixture.detectChanges();
+
+    const customFooter = overlayContainerElement.querySelector('.custom-footer');
+    expect(customFooter).toBeTruthy();
+    expect(customFooter?.textContent).toBe('Custom Footer');
+
+    const menu = overlayContainerElement.querySelector('.ant-cascader-menus');
+    expect(menu).toBeTruthy();
+  }));
+
+  it('should render default menu when nzPopupRender is not provided', fakeAsync(() => {
+    const fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    component.cascader.setMenuVisible(true);
+    fixture.detectChanges();
+    tick(200);
+    fixture.detectChanges();
+
+    const menu = overlayContainerElement.querySelector('.ant-cascader-menus');
+    expect(menu).toBeTruthy();
+
+    const customFooter = overlayContainerElement.querySelector('.custom-footer');
+    expect(customFooter).toBeFalsy();
+  }));
+});
+
 describe('finalSize', () => {
   let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
   let cascaderElement: HTMLElement;
@@ -3000,4 +3058,21 @@ export class NzDemoCascaderInFormComponent {
 })
 export class TestCascaderFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
+}
+
+@Component({
+  imports: [CommonModule, FormsModule, NzCascaderModule],
+  template: `
+    <nz-cascader [nzOptions]="nzOptions" [nzPopupRender]="popupRenderTpl" [(ngModel)]="values" />
+
+    <ng-template #popupRenderTpl let-menu>
+      <ng-container [ngTemplateOutlet]="menu" />
+      <div class="custom-footer">Custom Footer</div>
+    </ng-template>
+  `
+})
+export class NzDemoCascaderPopupRenderComponent {
+  @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
+  nzOptions: NzSafeAny[] = options1;
+  values: string[] | null = null;
 }

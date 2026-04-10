@@ -43,6 +43,7 @@ description: 级联选择框。
 | `[nzOpen]`            | 控制浮层显隐                                                                               | `boolean`                                                             | `false`        | -            | 20.2.0 |
 | `[nzPlaceHolder]`     | 输入框占位文本                                                                             | `string`                                                              | `'请选择'`     |
 | `[nzPlacement]`       | 浮层弹出位置                                                                               | `'bottomLeft' \| 'bottomRight' \| 'topLeft' \| 'topRight'`            | `'bottomLeft'` |
+| `[nzPopupRender]`     | 自定义下拉框内容                                                                           | `TemplateRef<{ $implicit: TemplateRef<void> }>`                       | -              |
 | `[nzShowArrow]`       | 是否显示箭头                                                                               | `boolean`                                                             | `true`         |
 | `[nzShowInput]`       | 显示输入框                                                                                 | `boolean`                                                             | `true`         |
 | `[nzShowSearch]`      | 是否支持搜索，默认情况下对 `label` 进行全匹配搜索，不能和 `[nzLoadData]` 同时使用          | `boolean \| NzShowSearchOptions`                                      | `false`        |
