@@ -1,0 +1,38 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates
+
+registries:
+  npm-mirror:
+    type: npm-registry
+    url: https://registry.npmmirror.com
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    registries:
+      - npm-mirror
+    schedule:
+      interval: daily
+      time: "05:00"
+      timezone: Asia/Shanghai
+    groups:
+      dependencies:
+        dependency-type: production
+        update-types: [major, minor]
+      dev-dependencies:
+        dependency-type: development
+        update-types: [major]
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: "@ant-design*"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    labels:
+      - github-actions
+      - dependencies
