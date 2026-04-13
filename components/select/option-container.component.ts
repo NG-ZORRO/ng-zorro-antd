@@ -134,10 +134,19 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   }
 
   onScrolledIndexChange(index: number): void {
-    this.scrolledIndex = index;
-    if (index === this.listOfContainerItem.length - this.maxItemLength - 1) {
+    /**
+     * CDK's scrolledIndexChange uses debounce internally, which may skip indices
+     * during fast scrolling. Therefore, emit only once when crossing the bottom threshold
+     * by comparing current and previous scroll positions.
+     */
+    const isAtBottom = this.listOfContainerItem.length - index <= this.maxItemLength + 1;
+    const wasAtBottom = this.listOfContainerItem.length - this.scrolledIndex <= this.maxItemLength + 1;
+
+    if (isAtBottom && !wasAtBottom) {
       this.scrollToBottom.emit();
     }
+
+    this.scrolledIndex = index;
   }
 
   scrollToActivatedValue(): void {
