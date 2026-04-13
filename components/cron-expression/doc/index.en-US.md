@@ -17,7 +17,7 @@ When you want to use cron expression in Angular.
 Install `cron-parser` in your project first:
 
 ```sh
-npm install cron-parser
+npm install cron-parser@^5.5.0
 ```
 
 ### nz-cron-expression

@@ -17,7 +17,7 @@ description: 显示和编辑 cron 表达式。
 别忘记先安装 cron-parser：
 
 ```sh
-npm install cron-parser
+npm install cron-parser@^5.5.0
 ```
 
 ### nz-cron-expression
