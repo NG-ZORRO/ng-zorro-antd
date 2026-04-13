@@ -16,6 +16,17 @@ tag: '{{version}}'
 
 ---
 
+## 21.2.2
+
+`2026-04-13`
+
+### Bug Fixes
+
+- **input:** 使用 ng control 值初始化 value ([#9748](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9748)) ([c650b8a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c650b8a1793b2f5e8178d422fc8d7726c2bf263b))
+- **input:** 修复使用 ngModel 时值不正确的问题 ([#9745](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9745)) ([69f4efd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/69f4efd309e2bb8b47cceca086db9448fabfd3bc))
+- **select:** 快速滚动导致 `scrollToBottom` 输出未被触发 ([#8771](https://github.com/NG-ZORRO/ng-zorro-antd/issues/8771)) ([9c302a6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9c302a63de4f0b6055e08666574b708b9af9a2b8))
+- **select:** 修复懒加载路由下过渡动画异常的问题 ([#9756](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9756)) ([49be18e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/49be18e777ca6ccba512ecb3c424121735f0f86c))
+
 ## 21.2.1
 
 `2026-03-30`
