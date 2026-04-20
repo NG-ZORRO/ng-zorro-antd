@@ -269,10 +269,10 @@ describe('cascader', () => {
     it('should open work', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).not.toContain('ant-select-open');
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-open');
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
       expect(testComponent.cascader.nzOptions).toEqual(options1);
     });
 
@@ -284,8 +284,8 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
 
       cascader.nativeElement.click();
       fixture.detectChanges();
@@ -293,8 +293,8 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
     }));
 
     it('should mouse hover toggle open', fakeAsync(() => {
@@ -302,21 +302,21 @@ describe('cascader', () => {
       testComponent.nzTriggerAction = 'hover';
       fixture.detectChanges();
       expect(testComponent.nzDisabled).toBe(false);
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
       dispatchMouseEvent(cascader.nativeElement, 'mouseenter');
       tick(300);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
 
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
       tick(300);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
     }));
 
     it('should mouse hover toggle open immediately', fakeAsync(() => {
@@ -325,28 +325,28 @@ describe('cascader', () => {
       testComponent.nzMouseEnterDelay = 0;
       testComponent.nzMouseLeaveDelay = 0;
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       dispatchMouseEvent(cascader.nativeElement, 'mouseenter');
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
     }));
 
     it('should clear timer on option mouseenter and mouseleave', fakeAsync(() => {
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      testComponent.cascader.setMenuVisible(true);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       flush();
       fixture.detectChanges();
       const optionEl = getItemAtColumnAndRow(1, 1)!;
@@ -376,19 +376,19 @@ describe('cascader', () => {
       testComponent.nzDisabled = true;
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-disabled');
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
       cascader.nativeElement.click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
-      testComponent.cascader.setMenuVisible(true);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
     }));
 
     it('should disabled state work', fakeAsync(() => {
@@ -397,13 +397,13 @@ describe('cascader', () => {
       testComponent.cascader.setDisabledState(true);
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-disabled');
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
       cascader.nativeElement.click();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
     }));
 
     it('should disabled mouse hover open', fakeAsync(() => {
@@ -411,40 +411,40 @@ describe('cascader', () => {
       testComponent.nzDisabled = true;
       fixture.detectChanges();
       expect(testComponent.cascader.nzDisabled).toBe(true);
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
       dispatchMouseEvent(cascader.nativeElement, 'mouseenter');
       tick(300);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
 
       testComponent.nzDisabled = false;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(testComponent.cascader.nzDisabled).toBe(false);
-      expect(testComponent.cascader.menuVisible()).toBe(true);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
       testComponent.nzDisabled = true;
       fixture.detectChanges();
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
       tick(300);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
     }));
 
     it('should mouse leave not work when menu not open', fakeAsync(() => {
       testComponent.nzTriggerAction = ['hover'];
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
       fixture.detectChanges();
       tick(300);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
-      expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
+      expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
     }));
 
     it('should clear value work', fakeAsync(() => {
@@ -499,7 +499,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).not.toContain('ant-select-focused');
 
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       getInputEl().dispatchEvent(fakeInputFocusEvent);
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-focused');
@@ -540,7 +540,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('menu-classA');
       expect(overlayContainerElement.querySelector('.ant-cascader-menu')!.classList).toContain('column-classA');
     }));
@@ -551,7 +551,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       const targetElement = overlayContainerElement.querySelector('.menu-classA') as HTMLElement;
       expect(targetElement.style.height).toBe('120px');
     }));
@@ -715,7 +715,7 @@ describe('cascader', () => {
     it('should click option to expand', () => {
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(0);
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu')!.firstElementChild as HTMLElement;
@@ -734,7 +734,7 @@ describe('cascader', () => {
     it('should click option to change column count', () => {
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(0);
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -762,7 +762,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush(); // wait for cdk-overlay to open
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(getAllColumns().length).toBe(3);
 
       let itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -787,20 +787,20 @@ describe('cascader', () => {
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
 
       const itemEl4 = getItemAtColumnAndRow(2, 2)!;
-      itemEl4.click(); // 选中一个叶子
+      itemEl4.click(); // click leaf node
       fixture.detectChanges();
       tick(300);
       fixture.detectChanges();
       flush(); // wait for cdk-overlay close
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.values!.join(',')).toBe('zhejiang,ningbo');
     }));
 
     it('should click option to change column count 3', () => {
       testComponent.nzOptions = options3;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -824,7 +824,7 @@ describe('cascader', () => {
     it('should click disabled option false to expand', fakeAsync(() => {
       testComponent.nzOptions = options2;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       const optionEl1 = getItemAtColumnAndRow(1, 1)!;
       const optionEl2 = getItemAtColumnAndRow(1, 2)!;
@@ -843,61 +843,61 @@ describe('cascader', () => {
 
     it('should click leaf option to close menu', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       getItemAtColumnAndRow(1, 1)!.click();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       getItemAtColumnAndRow(2, 1)!.click();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       getItemAtColumnAndRow(3, 1)!.click();
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(getAllColumns().length).toBe(0);
     }));
 
     it('should open menu when press DOWN_ARROW', fakeAsync(() => {
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
     }));
 
     it('should open menu when press UP_ARROW', fakeAsync(() => {
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
     }));
 
     it('should close menu when press ESC', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ESCAPE);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
     }));
 
     it('should init menu when selecting cancel', fakeAsync(() => {
       // cancel select by ESCAPE
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       let itemEl1 = getItemAtColumnAndRow(1, 1)!;
       itemEl1.click();
       let itemEl2 = getItemAtColumnAndRow(2, 1)!;
@@ -910,12 +910,12 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.cascaderService.columns.length).toBe(1);
 
       // cancel select by clicking outside
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       itemEl1 = getItemAtColumnAndRow(1, 1)!;
       itemEl1.click();
       itemEl2 = getItemAtColumnAndRow(2, 1)!;
@@ -928,14 +928,14 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.cascaderService.columns.length).toBe(1);
     }));
 
     it('should nzBackdrop works', fakeAsync(() => {
       testComponent.nzBackdrop = true;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       const boundingBox = overlayContainerElement.children[0];
       expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
@@ -943,7 +943,7 @@ describe('cascader', () => {
 
     it('should navigate up when press UP_ARROW', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:last-child'
@@ -962,7 +962,7 @@ describe('cascader', () => {
 
     it('should navigate down when press DOWN_ARROW', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
@@ -973,7 +973,7 @@ describe('cascader', () => {
 
     it('should navigate right when press RIGHT_ARROW', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges();
@@ -998,7 +998,7 @@ describe('cascader', () => {
     it('should navigate left when press LEFT_ARROW', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       flush(); // wait for cdk-overlay to open
       fixture.detectChanges();
@@ -1030,13 +1030,13 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBeFalse();
+      expect(testComponent.cascader.menuOpen()).toBeFalse();
     }));
 
     it('should navigate left when press BACKSPACE', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       flush(); // wait for cdk-overlay to open
       fixture.detectChanges();
@@ -1057,7 +1057,7 @@ describe('cascader', () => {
 
     it('when there is only one column activated, pressing LEFT should fold the menu', fakeAsync(() => {
       testComponent.values = ['zhejiang', 'ningbo'];
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -1066,13 +1066,13 @@ describe('cascader', () => {
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBeFalse();
+      expect(testComponent.cascader.menuOpen()).toBeFalse();
     }));
 
     it('should select option when press ENTER', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.values).toBeNull();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW); // active 1
       fixture.detectChanges();
@@ -1102,13 +1102,13 @@ describe('cascader', () => {
       expect(testComponent.values![2]).toBe('xihu');
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
     }));
 
     it('should key nav disabled option correct', fakeAsync(() => {
       testComponent.nzOptions = options2;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       const optionEl1 = getItemAtColumnAndRow(1, 1)!;
       const optionEl2 = getItemAtColumnAndRow(1, 2)!;
@@ -1169,20 +1169,20 @@ describe('cascader', () => {
 
       fixture.detectChanges();
       keys.forEach(key => {
-        expect(testComponent.cascader.menuVisible()).toBe(false);
+        expect(testComponent.cascader.menuOpen()).toBe(false);
         dispatchKeyboardEvent(cascader.nativeElement, 'keydown', key);
         fixture.detectChanges();
-        expect(testComponent.cascader.menuVisible()).toBe(false);
+        expect(testComponent.cascader.menuOpen()).toBe(false);
       });
     }));
 
     it('should expand option on hover', fakeAsync(() => {
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
-      expect(getAllColumns().length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0 column
       expect(testComponent.values).toBeNull(); // not select yet
 
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
@@ -1247,18 +1247,18 @@ describe('cascader', () => {
       expect(testComponent.values![2]).toBe('xihu');
       flush();
       fixture.detectChanges();
-      expect(getAllColumns().length).toBe(0); // 0列
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(getAllColumns().length).toBe(0);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
     }));
 
     it('should not expand disabled option on hover', fakeAsync(() => {
       testComponent.nzExpandTrigger = 'hover';
       testComponent.nzOptions = options2;
       fixture.detectChanges();
-      expect(getAllColumns().length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
@@ -1287,7 +1287,7 @@ describe('cascader', () => {
       fixture.detectChanges();
 
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
-      testComponent.cascader.setMenuVisible(true); // Open cascader dropdown.
+      testComponent.cascader.setMenuOpen(true); // Open cascader dropdown.
 
       fixture.detectChanges();
       tick(500);
@@ -1309,10 +1309,10 @@ describe('cascader', () => {
       testComponent.nzChangeOnSelect = true;
       fixture.detectChanges();
       expect(testComponent.values).toBeNull();
-      expect(getAllColumns().length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
@@ -1323,7 +1323,7 @@ describe('cascader', () => {
       itemEl1.click();
       fixture.detectChanges();
 
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(getAllColumns().length).toBe(2);
       expect(testComponent.values).toBeDefined();
@@ -1337,7 +1337,7 @@ describe('cascader', () => {
       itemEl2.click();
       fixture.detectChanges();
 
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(getAllColumns().length).toBe(3);
@@ -1363,8 +1363,8 @@ describe('cascader', () => {
       expect(testComponent.values![2]).toBe('xihu');
       flush();
       fixture.detectChanges();
-      expect(getAllColumns().length).toBe(0); // 0列
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(getAllColumns().length).toBe(0);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
     }));
 
     it('should not change on hover work', fakeAsync(() => {
@@ -1372,10 +1372,10 @@ describe('cascader', () => {
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
       expect(testComponent.values).toBeNull();
-      expect(getAllColumns().length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
@@ -1387,7 +1387,7 @@ describe('cascader', () => {
       tick(200);
       fixture.detectChanges();
 
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(getAllColumns().length).toBe(2);
       expect(testComponent.values).toBeNull(); // mouseenter does not trigger selection
@@ -1400,7 +1400,7 @@ describe('cascader', () => {
       tick(200);
       fixture.detectChanges();
 
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(getAllColumns().length).toBe(3);
@@ -1429,15 +1429,15 @@ describe('cascader', () => {
       expect(testComponent.values![2]).toBe('xihu');
       flush();
       fixture.detectChanges();
-      expect(getAllColumns().length).toBe(0); // 0列
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(getAllColumns().length).toBe(0);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
     }));
 
     it('should change on function work', fakeAsync(() => {
       testComponent.nzChangeOn = testComponent.fakeChangeOn;
       fixture.detectChanges();
       expect(testComponent.values).toBeNull();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
@@ -1458,7 +1458,7 @@ describe('cascader', () => {
       tick(200);
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values!.length).toBe(1);
       expect(testComponent.values![0]).toBe('zhejiang');
@@ -1472,7 +1472,7 @@ describe('cascader', () => {
       cascader.nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -1484,7 +1484,7 @@ describe('cascader', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.cascader.inSearchingMode).toBe(false);
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
     }));
@@ -1500,7 +1500,7 @@ describe('cascader', () => {
       // input search value
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.cascader.inSearchingMode).toBe(true);
       let itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
@@ -1510,7 +1510,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.cascader.inSearchingMode).toBe(false);
 
       itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -1526,7 +1526,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ESCAPE);
       fixture.detectChanges();
       flush();
@@ -1541,7 +1541,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       cascader.nativeElement.click();
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -1553,7 +1553,7 @@ describe('cascader', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.cascader.inSearchingMode).toBe(false);
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
     }));
@@ -1564,7 +1564,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       cascader.nativeElement.click();
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -1576,7 +1576,7 @@ describe('cascader', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.cascader.inSearchingMode).toBe(false);
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('zhejiang-new,hangzhou-new,xihu-new');
     }));
@@ -1588,7 +1588,7 @@ describe('cascader', () => {
         }
       } as NzShowSearchOptions;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -1600,7 +1600,7 @@ describe('cascader', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.cascader.inSearchingMode).toBe(false);
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
     }));
@@ -1614,7 +1614,7 @@ describe('cascader', () => {
         }
       } as NzShowSearchOptions;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -1626,7 +1626,7 @@ describe('cascader', () => {
       flush();
       fixture.detectChanges();
       expect(testComponent.cascader.inSearchingMode).toBe(false);
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values!.join(',')).toBe('jiangsu,nanjing,zhonghuamen');
     }));
@@ -1634,7 +1634,7 @@ describe('cascader', () => {
     it('should forbid disabled search options to be clicked', fakeAsync(() => {
       testComponent.nzOptions = options4;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -1645,15 +1645,14 @@ describe('cascader', () => {
       tick(300);
       fixture.detectChanges();
       expect(testComponent.cascader.inSearchingMode).toBe(true);
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.cascader.inputValue).toBe('o');
-      // expect(testComponent.values).toBe(null);
     }));
 
     it('should pass disabled property to children when searching', () => {
       testComponent.nzOptions = options4;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       expect(testComponent.cascader.cascaderService.columns[0][0].isDisabled).toBe(true);
@@ -1664,7 +1663,7 @@ describe('cascader', () => {
     it('should support arrow in search mode', done => {
       testComponent.nzOptions = options2;
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       const itemEl2 = getItemAtColumnAndRow(1, 2)!;
@@ -1688,7 +1687,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.nzShowSearch = true;
       testComponent.cascader.inputValue = 'o';
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -1722,7 +1721,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
       testComponent.cascader.inputValue = 'Roo';
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(testComponent.cascader.inSearchingMode).toBe(true);
@@ -1734,7 +1733,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.nzShowSearch = true;
       cascader.nativeElement.click();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       fixture.detectChanges();
       let itemEl1 = getItemAtColumnAndRow(1, 1)!;
@@ -1759,7 +1758,7 @@ describe('cascader', () => {
       testComponent.nzExpandIcon = 'home';
 
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1);
       expect(itemEl1?.querySelector('.anticon-home')).toBeTruthy();
@@ -1768,7 +1767,7 @@ describe('cascader', () => {
 
     it('should nzPlacement works', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       let element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(true);
@@ -1777,10 +1776,10 @@ describe('cascader', () => {
       expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
 
       const setNzPlacement = (placement: NzCascaderPlacement): void => {
-        testComponent.cascader.setMenuVisible(false);
+        testComponent.cascader.setMenuOpen(false);
         fixture.detectChanges();
         testComponent.nzPlacement = placement;
-        testComponent.cascader.setMenuVisible(true);
+        testComponent.cascader.setMenuOpen(true);
         fixture.detectChanges();
         tick();
         fixture.detectChanges();
@@ -1811,7 +1810,7 @@ describe('cascader', () => {
     it('should cascade work when the value of ngModel that is not existed in options', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.values = ['zhejiang', 'a'];
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       getItemAtColumnAndRow(1, 1)!.click();
       getItemAtColumnAndRow(2, 1)!.click();
@@ -1824,7 +1823,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       // First open - should display activated columns correctly
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -1854,11 +1853,11 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(false);
+      expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.values).toEqual(['zhejiang', 'hangzhou', 'xihu']);
 
       // Reopen menu - should display activated columns correctly based on current value
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -1879,28 +1878,28 @@ describe('cascader', () => {
       }));
 
       it('should nzOpen can control the visibility of menu', fakeAsync(() => {
-        expect(testComponent.cascader.menuVisible()).toBe(true);
-        expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
+        expect(testComponent.cascader.menuOpen()).toBe(true);
+        expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
         testComponent.nzOpen = false;
         flush();
         fixture.detectChanges();
-        expect(testComponent.cascader.menuVisible()).toBe(false);
-        expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
+        expect(testComponent.cascader.menuOpen()).toBe(false);
+        expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
       }));
 
       it('should not hide menu by click leaf option or outside place when nzOpen is true', fakeAsync(() => {
-        expect(testComponent.cascader.menuVisible()).toBe(true);
+        expect(testComponent.cascader.menuOpen()).toBe(true);
         getItemAtColumnAndRow(1, 1)!.click();
         getItemAtColumnAndRow(2, 1)!.click();
         getItemAtColumnAndRow(3, 1)!.click(); // zhejiang, hangzhou, xihu
         flush();
         fixture.detectChanges();
         expect(testComponent.onValueChanges).toHaveBeenCalled();
-        expect(testComponent.cascader.menuVisible()).toBe(true);
+        expect(testComponent.cascader.menuOpen()).toBe(true);
         spyOn(testComponent.cascader, 'onClickOutside');
         dispatchFakeEvent(document.body, 'click');
         expect(testComponent.cascader.onClickOutside).toHaveBeenCalled();
-        expect(testComponent.cascader.menuVisible()).toBe(true);
+        expect(testComponent.cascader.menuOpen()).toBe(true);
       }));
 
       it('should not hide menu by clear options under multiple mode when nzOpen is true', fakeAsync(() => {
@@ -1916,12 +1915,41 @@ describe('cascader', () => {
         expect(testComponent.values).toEqual([['zhejiang', 'hangzhou'], ['jiangsu']]);
         flush();
         fixture.detectChanges();
-        expect(testComponent.cascader.menuVisible()).toBe(true);
+        expect(testComponent.cascader.menuOpen()).toBe(true);
         spyOn(testComponent.cascader, 'clearSelection');
         expect(cascader.nativeElement.querySelector('.ant-select-clear .anticon')).toBeDefined();
         cascader.nativeElement.querySelector('.ant-select-clear .anticon').click();
         expect(cascader.componentInstance.clearSelection).toHaveBeenCalled();
-        expect(testComponent.cascader.menuVisible()).toBe(true);
+        expect(testComponent.cascader.menuOpen()).toBe(true);
+      }));
+
+      it('should still emit nzOpenChange event when user click outside / option / cascader self', fakeAsync(() => {
+        expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
+        expect(testComponent.cascader.menuOpen()).toBe(true);
+        cascader.nativeElement.click();
+        fixture.detectChanges();
+        tick(200);
+        fixture.detectChanges();
+        expect(testComponent.cascader.menuOpen()).toBe(true);
+        expect(testComponent.onOpenChange).toHaveBeenCalledWith(false);
+        expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
+
+        getItemAtColumnAndRow(1, 1)!.click();
+        getItemAtColumnAndRow(2, 1)!.click();
+        getItemAtColumnAndRow(3, 1)!.click();
+        flush();
+        fixture.detectChanges();
+        expect(testComponent.cascader.menuOpen()).toBe(true);
+        expect(testComponent.onOpenChange).toHaveBeenCalledWith(false);
+        expect(testComponent.onOpenChange).toHaveBeenCalledTimes(3);
+
+        dispatchFakeEvent(document.body, 'click');
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+        expect(testComponent.cascader.menuOpen()).toBe(true);
+        expect(testComponent.onOpenChange).toHaveBeenCalledWith(false);
+        expect(testComponent.onOpenChange).toHaveBeenCalledTimes(4);
       }));
     });
   });
@@ -1991,7 +2019,7 @@ describe('cascader', () => {
     }));
 
     it('should check state conduct up and down', fakeAsync(() => {
-      cascader.componentInstance.setMenuVisible(true);
+      cascader.componentInstance.setMenuOpen(true);
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
@@ -2042,7 +2070,7 @@ describe('cascader', () => {
     }));
 
     it('should click checkbox not set option activated', fakeAsync(() => {
-      cascader.componentInstance.setMenuVisible(true);
+      cascader.componentInstance.setMenuOpen(true);
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
@@ -2059,7 +2087,7 @@ describe('cascader', () => {
     }));
 
     it('should change check state when click leaf node', fakeAsync(() => {
-      cascader.componentInstance.setMenuVisible(true);
+      cascader.componentInstance.setMenuOpen(true);
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
@@ -2090,7 +2118,7 @@ describe('cascader', () => {
     it('should change check state trigger ngModelChange', fakeAsync(() => {
       spyOn(testComponent, 'onChanges');
       expect(testComponent.onChanges).not.toHaveBeenCalled();
-      cascader.componentInstance.setMenuVisible(true);
+      cascader.componentInstance.setMenuOpen(true);
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
@@ -2103,7 +2131,7 @@ describe('cascader', () => {
     }));
 
     it('should support ENTER key to toggle option checked state in multiple mode', fakeAsync(() => {
-      cascader.componentInstance.setMenuVisible(true);
+      cascader.componentInstance.setMenuOpen(true);
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
@@ -2129,7 +2157,7 @@ describe('cascader', () => {
     }));
 
     it('should not activate option with isDisableCheckbox by pressing RIGHT ARROW key', fakeAsync(() => {
-      cascader.componentInstance.setMenuVisible(true);
+      cascader.componentInstance.setMenuOpen(true);
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
@@ -2149,7 +2177,7 @@ describe('cascader', () => {
     }));
 
     it('should not activate option with isDisableCheckbox in moveUpOrDown method', fakeAsync(() => {
-      cascader.componentInstance.setMenuVisible(true);
+      cascader.componentInstance.setMenuOpen(true);
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
@@ -2187,7 +2215,7 @@ describe('cascader', () => {
         console.log(testComponent.values);
         tick();
         fixture.detectChanges();
-        cascader.componentInstance.setMenuVisible(true);
+        cascader.componentInstance.setMenuOpen(true);
         fixture.detectChanges();
         const checkbox = getCheckboxAtColumnAndRow(2, 3)!;
         checkbox.click();
@@ -2227,11 +2255,11 @@ describe('cascader', () => {
 
       fixture.detectChanges();
       expect(testComponent.values).toBeNull();
-      expect(getAllColumns().length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0);
       expect(testComponent.values).toBeNull(); // not select yet
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(0);
 
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(1);
       tick(1000); // wait for first row to load finish
@@ -2304,7 +2332,7 @@ describe('cascader', () => {
 
     it('should not emit error after clear search and reopen it', fakeAsync(() => {
       fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       tick(1000); // wait for first row to load finish
       fixture.detectChanges();
@@ -2336,7 +2364,7 @@ describe('cascader', () => {
       flush();
       fixture.detectChanges();
       cascader.nativeElement.querySelector('.ant-select-clear .anticon').click();
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
     }));
@@ -2368,14 +2396,14 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible()).toBe(true);
+      expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-rtl');
     }));
 
     it('should item arrow display correct direction', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.nzOptions = options3;
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       itemEl1.click();
@@ -2390,7 +2418,7 @@ describe('cascader', () => {
 
     it('should pressing the left and right keys can correctly expand and collapse content', fakeAsync(() => {
       testComponent.nzOptions = options3;
-      testComponent.cascader.setMenuVisible(true);
+      testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
@@ -2498,7 +2526,7 @@ describe('nzPopupRender', () => {
     const component = fixture.componentInstance;
     fixture.detectChanges();
 
-    component.cascader.setMenuVisible(true);
+    component.cascader.setMenuOpen(true);
     fixture.detectChanges();
     tick(200);
     fixture.detectChanges();
@@ -2516,7 +2544,7 @@ describe('nzPopupRender', () => {
     const component = fixture.componentInstance;
     fixture.detectChanges();
 
-    component.cascader.setMenuVisible(true);
+    component.cascader.setMenuOpen(true);
     fixture.detectChanges();
     tick(200);
     fixture.detectChanges();
@@ -2898,7 +2926,7 @@ const options5: NzSafeAny[] = [];
       [nzPlacement]="nzPlacement"
       [nzVariant]="nzVariant"
       (ngModelChange)="onValueChanges($event)"
-      (nzVisibleChange)="onVisibleChange($event)"
+      (nzOpenChange)="onOpenChange($event)"
       (nzClear)="onClear()"
     />
 
@@ -2945,7 +2973,7 @@ export class NzDemoCascaderDefaultComponent {
   nzPlacement: NzCascaderPlacement = 'bottomLeft';
   nzVariant: NzVariant = 'outlined';
 
-  onVisibleChange = jasmine.createSpy<(visible: boolean) => void>('open change');
+  onOpenChange = jasmine.createSpy<(open: boolean) => void>('open change');
   onValueChanges = jasmine.createSpy('value change');
   onClear(): void {}
   fakeChangeOn = (node: NzSafeAny, _index: number): boolean => node.value === 'zhejiang';
@@ -2958,7 +2986,7 @@ export class NzDemoCascaderDefaultComponent {
       [(ngModel)]="values"
       [nzLoadData]="nzLoadData"
       (ngModelChange)="onValueChanges($event)"
-      (nzVisibleChange)="onVisibleChange($event)"
+      (nzOpenChange)="onOpenChange($event)"
     />
   `
 })
@@ -3004,7 +3032,7 @@ export class NzDemoCascaderLoadDataComponent {
   };
 
   addCallTimes(): void {}
-  onVisibleChange = jasmine.createSpy<(visible: boolean) => void>('open change');
+  onOpenChange = jasmine.createSpy<(open: boolean) => void>('open change');
   onValueChanges = jasmine.createSpy('value change');
 }
 
