@@ -1,5 +1,5 @@
 ---
-order: 11
+order: 9
 title:
   zh-CN: 手动指定表单状态
   en-US: Manual Set Validation Status

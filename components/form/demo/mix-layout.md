@@ -1,5 +1,6 @@
 ---
-order: 20
+order: 12
+version: 21.3.0
 title:
   zh-CN: 表单混合布局
   en-US: Form mix layout

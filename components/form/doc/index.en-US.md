@@ -69,9 +69,9 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 Used to separate the item in forms, contains label(optional) and control field.
 
-| Property     | Description      | Type                         | Default Value | Global Config | Version |
-| ------------ | ---------------- | ---------------------------- | ------------- | ------------- | ------- |
-| `[nzLayout]` | Form item layout | `'horizontal' \| 'vertical'` | `undefined`   |               |         |
+| Property     | Description      | Type                         | Default Value | Version |
+| ------------ | ---------------- | ---------------------------- | ------------- | ------- |
+| `[nzLayout]` | Form item layout | `'horizontal' \| 'vertical'` | -             | 21.3.0  |
 
 > All api in [nz-row](/components/grid/en) can be used in `nz-form-item`.
 
