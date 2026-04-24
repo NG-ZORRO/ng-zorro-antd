@@ -1,5 +1,5 @@
 ---
-order: 9
+order: 6
 title:
   zh-CN: 响应式表单验证
   en-US: Reactive Forms Validation
