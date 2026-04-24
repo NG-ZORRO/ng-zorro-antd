@@ -3,9 +3,9 @@
 
   &.@{steps-prefix-cls}-small {
     .@{steps-prefix-cls}-item {
-      &-container {
-        margin-left: -12px;
-      }
+    &-wrapper {
+      margin-left: -12px;
+    }
     }
   }
 
@@ -13,7 +13,7 @@
     overflow: visible;
     text-align: center;
 
-    &-container {
+    &-wrapper {
       display: inline-block;
       height: 100%;
       margin-left: -16px;
@@ -21,13 +21,14 @@
       text-align: left;
       transition: opacity 0.3s;
 
+      .@{steps-prefix-cls}-item-header,
       .@{steps-prefix-cls}-item-content {
         max-width: @steps-nav-content-max-width;
       }
 
       .@{steps-prefix-cls}-item-title {
         max-width: 100%;
-        padding-right: 0;
+        padding-right: 8px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -39,7 +40,7 @@
     }
 
     &:not(.@{steps-prefix-cls}-item-active) {
-      .@{steps-prefix-cls}-item-container[role='button'] {
+      .@{steps-prefix-cls}-item-wrapper[role='button'] {
         cursor: pointer;
 
         &:hover {
@@ -119,7 +120,7 @@
       text-align: center;
       transform: rotate(135deg);
     }
-    > .@{steps-prefix-cls}-item-container > .@{steps-prefix-cls}-item-tail {
+    > .@{steps-prefix-cls}-item-wrapper > .@{steps-prefix-cls}-item-section > .@{steps-prefix-cls}-item-header > .@{steps-prefix-cls}-item-rail {
       visibility: hidden;
     }
   }
@@ -127,8 +128,10 @@
 
 .@{steps-prefix-cls}-navigation.@{steps-prefix-cls}-horizontal {
   > .@{steps-prefix-cls}-item
-    > .@{steps-prefix-cls}-item-container
-    > .@{steps-prefix-cls}-item-tail {
+    > .@{steps-prefix-cls}-item-wrapper
+    > .@{steps-prefix-cls}-item-section
+    > .@{steps-prefix-cls}-item-header
+    > .@{steps-prefix-cls}-item-rail {
     visibility: hidden;
   }
 }
