@@ -19,8 +19,8 @@ import {
 import { FormsModule } from '@angular/forms';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate } from 'ng-zorro-antd/core/time';
-import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
 
@@ -78,7 +78,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
   imports: [NzSelectModule, FormsModule, NzRadioModule, NzStringTemplateOutletDirective]
 })
 export class NzCalendarHeaderComponent implements OnInit, OnChanges {
-  private readonly dateHelper = inject(DateHelperService);
+  private readonly dateAdapter = inject(NzDateAdapter);
   private readonly i18n = inject(NzI18nService);
 
   @Input() mode: 'month' | 'year' = 'month';
@@ -150,7 +150,7 @@ export class NzCalendarHeaderComponent implements OnInit, OnChanges {
 
     for (let i = 0; i < 12; i++) {
       const dateInMonth = this.activeDate.setMonth(i);
-      const monthText = this.dateHelper.format(dateInMonth.nativeDate, 'MMM');
+      const monthText = this.dateAdapter.format(dateInMonth.nativeDate, 'MMM');
       this.months.push({ label: monthText, value: i });
     }
   }

@@ -63,3 +63,6 @@ Thumbs.db
 
 # Local AI Agents skills
 .qwen/skills
+
+# Agents
+.claude/projects/

@@ -5,10 +5,10 @@
 
 export * from './nz-i18n.module';
 export * from './nz-i18n.service';
-export * from './date-config';
 export * from './nz-i18n.interface';
 export * from './nz-i18n.token';
 export * from './nz-i18n.pipe';
+export * from './date-config';
 export * from './date-helper.service';
 
 export { default as ar_EG } from './languages/ar_EG';

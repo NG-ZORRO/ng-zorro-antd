@@ -16,6 +16,7 @@ import { vi } from 'vitest';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import { dispatchFakeEvent, dispatchMouseEvent, testDirectionality, typeInElement } from 'ng-zorro-antd/core/testing';
+import { provideNzDateAdapter } from 'ng-zorro-antd/core/time';
 import { NzPlacement, NzStatus, NzVariant, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
@@ -34,7 +35,7 @@ describe('time-picker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation()]
+      providers: [provideNzNoAnimation(), provideNzDateAdapter()]
     });
   });
 
@@ -877,7 +878,7 @@ describe('time-picker', () => {
 });
 
 testDirectionality(() => NzTestTimePickerComponent, By.directive(NzTimePickerComponent), 'ant-picker', {
-  providers: [provideNzNoAnimation()]
+  providers: [provideNzNoAnimation(), provideNzDateAdapter()]
 });
 
 describe('time-picker size', () => {

@@ -36,9 +36,11 @@ import {
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
-export type CandyDateMode = 'decade' | 'year' | 'quarter' | 'month' | 'day' | 'hour' | 'minute' | 'second';
+import { DateMode } from './date-adapter';
+import { WeekDayIndex } from './date-config';
+
+export type CandyDateMode = DateMode;
 export type NormalizedMode = 'decade' | 'year' | 'month';
-export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type CandyDateType = CandyDate | Date | null;
 export type SingleValue = CandyDate | null;
 export type CompatibleValue = SingleValue | SingleValue[];
@@ -91,6 +93,8 @@ export function cloneDate(value: CompatibleValue): CompatibleValue {
  * NOTE: every new API return new CandyDate object without side effects to the former Date object
  * NOTE: most APIs are based on local time other than customized locale id (this needs tobe support in future)
  * TODO: support format() against to angular's core API
+ *
+ * @deprecated Use `NzDateAdapter` directly instead. Will be removed in v23.
  */
 export class CandyDate implements IndexableObject {
   nativeDate: Date;

@@ -36,8 +36,6 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { Observable, of } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
-import { isValid } from 'date-fns';
-
 import { slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import {
@@ -49,6 +47,7 @@ import {
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
+import { NzDateAdapter } from 'ng-zorro-antd/core/time';
 import {
   NgClassInterface,
   NzPlacement,
@@ -59,7 +58,7 @@ import {
   NzVariant
 } from 'ng-zorro-antd/core/types';
 import { generateClassName, getStatusClassNames, isNil } from 'ng-zorro-antd/core/util';
-import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
@@ -195,16 +194,15 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  public nzConfigService = inject(NzConfigService);
-  protected i18n = inject(NzI18nService);
-  private elementRef = inject(ElementRef);
-  private renderer = inject(Renderer2);
-  private cdr = inject(ChangeDetectorRef);
-  private dateHelper = inject(DateHelperService);
-  private platform = inject(Platform);
-  private destroyRef = inject(DestroyRef);
-
+  public readonly nzConfigService = inject(NzConfigService);
+  protected readonly i18n = inject(NzI18nService);
   protected readonly dir = inject(Directionality).valueSignal;
+  private readonly elementRef = inject(ElementRef);
+  private readonly renderer = inject(Renderer2);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly dateAdapter = inject(NzDateAdapter);
+  private readonly platform = inject(Platform);
+  private readonly destroyRef = inject(DestroyRef);
 
   private _onChange?: (value: Date | null) => void;
   private _onTouched?: () => void;
@@ -287,11 +285,12 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   setValue(value: Date | null, syncPreValue: boolean = false): void {
+    const validValue = this.dateAdapter.isValid(value!) ? new Date(value!) : null;
     if (syncPreValue) {
-      this.preValue = isValid(value) ? new Date(value!) : null;
+      this.preValue = validValue;
     }
-    this.value = isValid(value) ? new Date(value!) : null;
-    this.inputValue = this.dateHelper.format(value, this.nzFormat);
+    this.value = validValue;
+    this.inputValue = this.dateAdapter.format(value, this.nzFormat);
     this.cdr.markForCheck();
   }
 
@@ -361,7 +360,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   onKeyupEnter(): void {
-    if (this.nzOpen && isValid(this.value)) {
+    if (this.nzOpen && this.dateAdapter.isValid(this.value!)) {
       this.setCurrentValueAndClose();
     } else if (!this.nzOpen) {
       this.open();
@@ -480,8 +479,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   parseTimeString(str: string): void {
-    const value = this.dateHelper.parseTime(str, this.nzFormat) || null;
-    if (isValid(value)) {
+    const value = this.dateAdapter.parseTime(str, this.nzFormat) || null;
+    if (this.dateAdapter.isValid(value!)) {
       this.value = value;
       this.cdr.markForCheck();
     }

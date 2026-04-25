@@ -5,6 +5,8 @@
 
 import { NgModule } from '@angular/core';
 
+import { provideNzDateAdapter } from 'ng-zorro-antd/core/time';
+
 import {
   NzDateCellDirective,
   NzDateFullCellDirective,
@@ -29,6 +31,7 @@ import { NzCalendarComponent } from './calendar.component';
     NzDateFullCellDirective,
     NzMonthCellDirective,
     NzMonthFullCellDirective
-  ]
+  ],
+  providers: [provideNzDateAdapter()]
 })
 export class NzCalendarModule {}

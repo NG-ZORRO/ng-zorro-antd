@@ -5,6 +5,8 @@
 
 import { NgModule } from '@angular/core';
 
+import { provideNzDateAdapter } from 'ng-zorro-antd/core/time';
+
 import { CalendarFooterComponent } from './calendar-footer.component';
 import { NzDatePickerComponent } from './date-picker.component';
 import { DateRangePopupComponent } from './date-range-popup.component';
@@ -34,6 +36,7 @@ import { NzYearPickerComponent } from './year-picker.component';
     NzYearPickerComponent,
     NzWeekPickerComponent,
     NzQuarterPickerComponent
-  ]
+  ],
+  providers: [provideNzDateAdapter()]
 })
 export class NzDatePickerModule {}

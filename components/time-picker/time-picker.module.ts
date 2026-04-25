@@ -5,11 +5,14 @@
 
 import { NgModule } from '@angular/core';
 
+import { provideNzDateAdapter } from 'ng-zorro-antd/core/time';
+
 import { NzTimePickerPanelComponent } from './time-picker-panel.component';
 import { NzTimePickerComponent } from './time-picker.component';
 
 @NgModule({
   imports: [NzTimePickerComponent, NzTimePickerPanelComponent],
-  exports: [NzTimePickerPanelComponent, NzTimePickerComponent]
+  exports: [NzTimePickerPanelComponent, NzTimePickerComponent],
+  providers: [provideNzDateAdapter()]
 })
 export class NzTimePickerModule {}
