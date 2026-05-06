@@ -273,7 +273,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-open');
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
-      expect(testComponent.cascader.nzOptions).toEqual(options1);
+      expect(testComponent.cascader.nzOptions).toEqual(options1());
     });
 
     it('should click toggle open', fakeAsync(() => {
@@ -565,7 +565,6 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.cascader.nzOptions).toEqual(options1);
       expect(cascader.nativeElement.querySelector('.ant-select-selection-search-input')).toBeNull();
       expect(cascader.nativeElement.querySelector('.ant-select-clear')).toBeNull();
       expect(cascader.nativeElement.querySelector('.ant-select-selection-item')).toBeNull();
@@ -589,7 +588,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(getLabelText().trim()).toBe('Zhejiang | Hangzhou | West Lake');
+      expect(getLabelText()).toBe('Zhejiang | Hangzhou | West Lake');
       // fix clear
       testComponent.cascader.clearSelection();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
@@ -597,12 +596,40 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(getLabelText().trim()).toBe('Zhejiang | Hangzhou | West Lake');
+      expect(getLabelText()).toBe('Zhejiang | Hangzhou | West Lake');
+    }));
+
+    it('should label template work on multiple', fakeAsync(() => {
+      testComponent.nzMultiple = true;
+      testComponent.values = [['zhejiang', 'hangzhou']];
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getLabelText()).toBe('Zhejiang / Hangzhou');
+
+      testComponent.values = [['jiangsu']]; // 'Jiangsu / Nanjing / Zhong Hua Men'
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getLabelText()).toBe('Jiangsu');
+
+      testComponent.nzLabelRender = testComponent.renderTpl;
+      testComponent.values = [['zhejiang', 'hangzhou']];
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getLabelText().trim()).toBe('Zhejiang | Hangzhou');
+
+      testComponent.values = [['jiangsu']]; // 'Jiangsu / Nanjing / Zhong Hua Men'
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getLabelText()).toBe('Jiangsu');
     }));
 
     it('should write value work', fakeAsync(() => {
       const control = testComponent.cascader;
-      testComponent.nzOptions = options1;
+      testComponent.nzOptions = options1();
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(0);
       control.writeValue(null);
@@ -641,7 +668,7 @@ describe('cascader', () => {
       expect(values3[0]).toBe('zhejiang');
       expect(values3[1]).toBe('hangzhou');
       expect(values3[2]).toBe('xihu');
-      expect(control.labelRenderText).toBe('zhejiang / hangzhou / xihu');
+      expect(getLabelText()).toBe('zhejiang / hangzhou / xihu');
     }));
 
     it('should write value work on setting `nzOptions` async', fakeAsync(() => {
@@ -668,12 +695,12 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
       expect(control.getSubmitValue()[0]).toBe('zhejiang');
-      expect(control.labelRenderText).toBe('zhejiang');
-      testComponent.nzOptions = options1; // update the nzOptions like async
+      expect(getLabelText()).toBe('zhejiang');
+      testComponent.nzOptions = options1(); // update the nzOptions like async
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
       expect(control.getSubmitValue()[0]).toBe('zhejiang');
-      expect(control.labelRenderText).toBe('Zhejiang');
+      expect(getLabelText()).toBe('Zhejiang');
     }));
 
     it('should write value work on setting `nzOptions` async (match)', fakeAsync(() => {
@@ -684,14 +711,14 @@ describe('cascader', () => {
       flush(); // force value to be written
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
-      expect(control.labelRenderText).toBe('zhejiang / hangzhou / xihu');
-      testComponent.nzOptions = options1; // update the nzOptions like async
+      expect(getLabelText()).toBe('zhejiang / hangzhou / xihu');
+      testComponent.nzOptions = options1(); // update the nzOptions like async
       fixture.detectChanges();
       const values = control.getSubmitValue();
       expect(values![0]).toBe('zhejiang');
       expect(values![1]).toBe('hangzhou');
       expect(values![2]).toBe('xihu');
-      expect(control.labelRenderText).toBe('Zhejiang / Hangzhou / West Lake');
+      expect(getLabelText()).toBe('Zhejiang / Hangzhou / West Lake');
     }));
 
     it('should write value work on setting `nzOptions` async (not match)', fakeAsync(() => {
@@ -702,14 +729,14 @@ describe('cascader', () => {
       flush(); // force value to be written
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(3);
-      expect(control.labelRenderText).toBe('zhejiang2 / hangzhou2 / xihu2');
-      testComponent.nzOptions = options1; // update the nzOptions like async
+      expect(getLabelText()).toBe('zhejiang2 / hangzhou2 / xihu2');
+      testComponent.nzOptions = options1(); // update the nzOptions like async
       fixture.detectChanges(); // but still the values is not match
       const values = control.getSubmitValue();
       expect(values![0]).toBe('zhejiang2');
       expect(values![1]).toBe('hangzhou2');
       expect(values![2]).toBe('xihu2');
-      expect(control.labelRenderText).toBe('zhejiang2 / hangzhou2 / xihu2');
+      expect(getLabelText()).toBe('zhejiang2 / hangzhou2 / xihu2');
     }));
 
     it('should click option to expand', () => {
@@ -2693,61 +2720,63 @@ const ID_NAME_LIST = [
   }
 ];
 
-const options1: NzCascaderOption[] = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    v: 'zhejiang-new',
-    l: 'Zhejiang New',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        v: 'hangzhou-new',
-        l: 'Hangzhou New',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-            v: 'xihu-new',
-            l: 'West Lake New',
-            isLeaf: true
-          }
-        ]
-      },
-      {
-        value: 'ningbo',
-        label: 'Ningbo',
-        v: 'ningbo-new',
-        l: 'Ningbo New',
-        isLeaf: true
-      }
-    ]
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    v: 'jiangsu-new',
-    l: 'Jiangsu New',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        v: 'nanjing-new',
-        l: 'Nanjing New',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-            v: 'zhonghuamen-new',
-            l: 'Zhong Hua Men New',
-            isLeaf: true
-          }
-        ]
-      }
-    ]
-  }
-];
+function options1(): NzCascaderOption[] {
+  return [
+    {
+      value: 'zhejiang',
+      label: 'Zhejiang',
+      v: 'zhejiang-new',
+      l: 'Zhejiang New',
+      children: [
+        {
+          value: 'hangzhou',
+          label: 'Hangzhou',
+          v: 'hangzhou-new',
+          l: 'Hangzhou New',
+          children: [
+            {
+              value: 'xihu',
+              label: 'West Lake',
+              v: 'xihu-new',
+              l: 'West Lake New',
+              isLeaf: true
+            }
+          ]
+        },
+        {
+          value: 'ningbo',
+          label: 'Ningbo',
+          v: 'ningbo-new',
+          l: 'Ningbo New',
+          isLeaf: true
+        }
+      ]
+    },
+    {
+      value: 'jiangsu',
+      label: 'Jiangsu',
+      v: 'jiangsu-new',
+      l: 'Jiangsu New',
+      children: [
+        {
+          value: 'nanjing',
+          label: 'Nanjing',
+          v: 'nanjing-new',
+          l: 'Nanjing New',
+          children: [
+            {
+              value: 'zhonghuamen',
+              label: 'Zhong Hua Men',
+              v: 'zhonghuamen-new',
+              l: 'Zhong Hua Men New',
+              isLeaf: true
+            }
+          ]
+        }
+      ]
+    }
+  ];
+}
 
 const options2 = [
   {
@@ -2941,7 +2970,7 @@ export class NzDemoCascaderDefaultComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
   @ViewChild('renderTpl', { static: true }) renderTpl!: TemplateRef<NzSafeAny>;
 
-  nzOptions: NzSafeAny[] | null = options1;
+  nzOptions: NzSafeAny[] | null = options1();
   values: string[] | string[][] | number[] | null = null;
 
   nzOpen: boolean | undefined;
@@ -3046,7 +3075,7 @@ export class NzDemoCascaderLoadDataComponent {
 })
 export class NzDemoCascaderRtlComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
-  nzOptions: NzSafeAny[] | null = options1;
+  nzOptions: NzSafeAny[] | null = options1();
   @ViewChild(Dir) dir!: Dir;
   direction: Direction = 'rtl';
 }
@@ -3056,7 +3085,7 @@ export class NzDemoCascaderRtlComponent {
   template: `<nz-cascader [nzOptions]="nzOptions" [nzStatus]="status" />`
 })
 export class NzDemoCascaderStatusComponent {
-  nzOptions: NzSafeAny[] | null = options1;
+  nzOptions: NzSafeAny[] | null = options1();
   status: NzStatus = 'error';
 }
 
@@ -3077,7 +3106,7 @@ export class NzDemoCascaderInFormComponent {
   validateForm = this.fb.group({
     demo: this.fb.control<string[] | null>(null, Validators.required)
   });
-  nzOptions: NzSafeAny[] | null = options1;
+  nzOptions: NzSafeAny[] | null = options1();
 }
 
 @Component({
@@ -3101,6 +3130,6 @@ export class TestCascaderFinalVariantComponent {
 })
 export class NzDemoCascaderPopupRenderComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
-  nzOptions: NzSafeAny[] = options1;
+  nzOptions: NzSafeAny[] = options1();
   values: string[] | null = null;
 }

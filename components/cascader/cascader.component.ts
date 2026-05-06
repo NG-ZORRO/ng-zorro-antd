@@ -85,6 +85,7 @@ import {
 } from 'ng-zorro-antd/select';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
+import { defaultDisplayRender, NzDisplayRenderContextPipe, NzDisplayRenderPipe } from './cascader-display-render.pipe';
 import { NzCascaderOptionComponent } from './cascader-option.component';
 import { NzCascaderTreeService } from './cascader-tree.service';
 import { NzCascaderService } from './cascader.service';
@@ -95,11 +96,11 @@ import {
   NzCascaderPlacement,
   NzCascaderSize,
   NzCascaderTriggerType,
+  NzDisplayRenderContext,
   NzShowSearchOptions
 } from './typings';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
-const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -122,7 +123,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
                   <nz-select-item
                     deletable
                     [disabled]="nzDisabled"
-                    [label]="nzDisplayWith(getAncestorOptionList(node))"
+                    [label]="node | nzDisplayRender: (nzLabelRender ? undefined : nzDisplayWith)"
+                    [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
+                    [contentTemplateOutletContext]="node | nzDisplayRenderContext"
                     (delete)="removeSelected(node)"
                   />
                 </div>
@@ -161,9 +164,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
             @if (showLabelRender) {
               <nz-select-item
                 [disabled]="nzDisabled"
-                [label]="labelRenderText"
+                [label]="selectedNodes[0] | nzDisplayRender"
                 [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
-                [contentTemplateOutletContext]="labelRenderContext"
+                [contentTemplateOutletContext]="selectedNodes[0] | nzDisplayRenderContext"
               />
             }
           }
@@ -328,7 +331,9 @@ const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
     NzSelectPlaceholderComponent,
     NzSelectSearchComponent,
     NzCascaderOptionComponent,
-    NzStringTemplateOutletDirective
+    NzStringTemplateOutletDirective,
+    NzDisplayRenderPipe,
+    NzDisplayRenderContextPipe
   ]
 })
 export class NzCascaderComponent
@@ -378,7 +383,7 @@ export class NzCascaderComponent
   @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
   @Input() nzValueProperty: string = 'value';
   @Input() nzLabelProperty: string = 'label';
-  @Input() nzLabelRender: TemplateRef<typeof this.labelRenderContext> | null = null;
+  @Input() nzLabelRender: TemplateRef<NzDisplayRenderContext> | null = null;
   @Input() @WithConfig() nzVariant: NzVariant | undefined = undefined;
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig() nzSize: NzCascaderSize = 'default';
@@ -405,6 +410,9 @@ export class NzCascaderComponent
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny> | Observable<NzSafeAny>;
+  /**
+   * @deprecated Use `nzLabelRender` instead. This will be removed in v22.0.0.
+   */
   @Input() nzDisplayWith: (nodes: NzCascaderOption[]) => string | undefined = (nodes: NzCascaderOption[]) => {
     return defaultDisplayRender(nodes.map(n => this.cascaderService.getOptionLabel(n!)));
   };
@@ -441,8 +449,6 @@ export class NzCascaderComponent
   el: HTMLElement = this.elementRef.nativeElement;
   readonly menuOpen = signal(false);
   isLoading = false;
-  labelRenderText?: string;
-  labelRenderContext = {};
   onChange = Function.prototype;
   onTouched = Function.prototype;
   positions: ConnectionPositionPair[] = [...DEFAULT_CASCADER_POSITIONS];
@@ -567,7 +573,6 @@ export class NzCascaderComponent
     srv.$redraw.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       // These operations would not mutate data.
       this.checkChildren();
-      this.setDisplayLabel();
       this.cdr.detectChanges();
       this.reposition();
       this.setDropdownStyles();
@@ -741,8 +746,6 @@ export class NzCascaderComponent
     }
 
     this.clearSelectedNodes();
-    this.labelRenderText = '';
-    this.labelRenderContext = {};
     this.inputValue = '';
     this.setMenuOpen(false);
     this.cascaderService.clear();
@@ -1173,21 +1176,6 @@ export class NzCascaderComponent
     if (this.cascaderItems) {
       this.cascaderItems.forEach(item => item.markForCheck());
     }
-  }
-
-  private setDisplayLabel(): void {
-    if (this.nzMultiple) {
-      return;
-    }
-
-    const node = this.selectedNodes.length ? this.selectedNodes[0] : null;
-    const selectedOptions = this.getAncestorOptionList(node);
-    const labels: string[] = selectedOptions.map(o => this.cascaderService.getOptionLabel(o));
-
-    if (this.isLabelRenderTemplate) {
-      this.labelRenderContext = { labels, selectedOptions };
-    }
-    this.labelRenderText = defaultDisplayRender.call(this, labels);
   }
 
   private setDropdownStyles(): void {

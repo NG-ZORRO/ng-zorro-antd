@@ -62,3 +62,8 @@ export interface NzCascaderComponentAsSource {
 
   nzLoadData?(node: NzCascaderOption, index: number): PromiseLike<NzSafeAny> | Observable<NzSafeAny>;
 }
+
+export interface NzDisplayRenderContext {
+  labels: string[];
+  selectedOptions: NzCascaderOption[];
+}
