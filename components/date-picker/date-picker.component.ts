@@ -89,6 +89,7 @@ import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDi
 
 import { DatePickerService } from './date-picker.service';
 import { DateRangePopupComponent } from './date-range-popup.component';
+import { NzRangePickerComponent } from './range-picker.component';
 import {
   CompatibleDate,
   DisabledTimeFn,
@@ -297,7 +298,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
   static ngAcceptInputType_nzMode: NzDateMode | string;
 
-  isRange: boolean = false; // Indicate whether the value is a range value
+  isRange = !!inject(NzRangePickerComponent, { self: true, optional: true }); // Indicate whether the value is a range value
   extraFooter?: TemplateRef<NzSafeAny> | string;
 
   // status
@@ -434,6 +435,11 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private document: Document = inject(DOCUMENT);
+
+  constructor() {
+    this.datePickerService.isRange = this.isRange;
+    this.datePickerService.initValue(true);
+  }
 
   ngAfterViewInit(): void {
     if (this.nzAutoFocus) {
@@ -694,9 +700,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
       this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.setLocale());
     }
 
-    // Default value
-    this.datePickerService.isRange = this.isRange;
-    this.datePickerService.initValue(true);
     this.datePickerService.emitValue$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       const granularityComparison = this.showTime ? 'second' : 'day';
       const value = this.datePickerService.value;
