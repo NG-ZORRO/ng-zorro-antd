@@ -127,6 +127,40 @@ describe('color-picker', () => {
     expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
   });
 
+  it('color-picker should default to bottomLeft placement with corner fallbacks (#9711)', fakeAsync(() => {
+    testComponent.nzOpen = true;
+    fixture.detectChanges();
+    waitingForTooltipToggling();
+
+    const popover = overlayContainerElement.querySelector('.ant-popover');
+    expect(popover).toBeTruthy();
+    expect(popover!.classList).toContain('ant-popover-placement-bottomLeft');
+
+    const colorPicker = resultEl.componentInstance as NzColorPickerComponent & { popoverPlacements: string[] };
+    expect(colorPicker.popoverPlacements).toEqual(['bottomLeft', 'bottomRight', 'topLeft', 'topRight']);
+  }));
+
+  it('color-picker should remain fully visible when triggered near the bottom-right edge (#9711)', fakeAsync(() => {
+    const trigger = resultEl.nativeElement.querySelector('.ant-color-picker-trigger') as HTMLElement;
+    trigger.style.position = 'fixed';
+    trigger.style.right = '0px';
+    trigger.style.bottom = '0px';
+    fixture.detectChanges();
+
+    testComponent.nzOpen = true;
+    fixture.detectChanges();
+    waitingForTooltipToggling();
+
+    const popover = overlayContainerElement.querySelector('.ant-popover') as HTMLElement;
+    expect(popover).toBeTruthy();
+
+    const rect = popover.getBoundingClientRect();
+    expect(rect.right).toBeLessThanOrEqual(window.innerWidth);
+    expect(rect.bottom).toBeLessThanOrEqual(window.innerHeight);
+    expect(rect.left).toBeGreaterThanOrEqual(0);
+    expect(rect.top).toBeGreaterThanOrEqual(0);
+  }));
+
   it('color-picker nzAllowClear', fakeAsync(() => {
     testComponent.nzAllowClear = true;
     fixture.detectChanges();
