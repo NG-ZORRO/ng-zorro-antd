@@ -69,9 +69,9 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
       <table>
         <tbody>
           @if (nzLayout === 'horizontal') {
-            @for (row of itemMatrix; track row; let i = $index) {
+            @for (row of itemMatrix; track $index; let i = $index) {
               <tr class="ant-descriptions-row">
-                @for (item of row; track item; let isLast = $last) {
+                @for (item of row; track $index; let isLast = $last) {
                   @if (!nzBordered) {
                     <td class="ant-descriptions-item" [colSpan]="item.span">
                       <div class="ant-descriptions-item-container">
@@ -102,9 +102,9 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
 
           @if (nzLayout === 'vertical') {
             @if (!nzBordered) {
-              @for (row of itemMatrix; track row; let i = $index) {
+              @for (row of itemMatrix; track $index; let i = $index) {
                 <tr class="ant-descriptions-row">
-                  @for (item of row; track item; let isLast = $last) {
+                  @for (item of row; track $index; let isLast = $last) {
                     <td class="ant-descriptions-item" [colSpan]="item.span">
                       <div class="ant-descriptions-item-container">
                         <span class="ant-descriptions-item-label" [class.ant-descriptions-item-no-colon]="!nzColon">
@@ -117,7 +117,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                   }
                 </tr>
                 <tr class="ant-descriptions-row">
-                  @for (item of row; track item; let isLast = $last) {
+                  @for (item of row; track $index; let isLast = $last) {
                     <td class="ant-descriptions-item" [colSpan]="item.span">
                       <div class="ant-descriptions-item-container">
                         <span class="ant-descriptions-item-content">
@@ -129,9 +129,9 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                 </tr>
               }
             } @else {
-              @for (row of itemMatrix; track row; let i = $index) {
+              @for (row of itemMatrix; track $index; let i = $index) {
                 <tr class="ant-descriptions-row">
-                  @for (item of row; track item; let isLast = $last) {
+                  @for (item of row; track $index; let isLast = $last) {
                     <td class="ant-descriptions-item-label" [colSpan]="item.span">
                       <ng-container *nzStringTemplateOutlet="item.title">
                         {{ item.title }}
@@ -140,7 +140,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
                   }
                 </tr>
                 <tr class="ant-descriptions-row">
-                  @for (item of row; track item; let isLast = $last) {
+                  @for (item of row; track $index; let isLast = $last) {
                     <td class="ant-descriptions-item-content" [colSpan]="item.span">
                       <ng-template [ngTemplateOutlet]="item.content" />
                     </td>
