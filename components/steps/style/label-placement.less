@@ -2,16 +2,25 @@
   .@{steps-prefix-cls}-item {
     overflow: visible;
 
-    &-tail {
+    &-header &-rail {
       margin-left: 58px;
       padding: 3.5px 24px;
     }
 
+    &-header,
     &-content {
       display: block;
       width: ((@steps-icon-size / 2) + 42px) * 2;
       margin-top: 8px;
       text-align: center;
+    }
+
+    &-header {
+      margin-top: 8px;
+    }
+
+    &-content {
+      margin-top: 0;
     }
 
     &-icon {
