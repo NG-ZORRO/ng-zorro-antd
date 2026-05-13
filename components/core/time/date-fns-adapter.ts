@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, inject } from '@angular/core';
+import { EnvironmentProviders, Injectable, makeEnvironmentProviders, inject } from '@angular/core';
 
 import {
   type Locale,
@@ -44,13 +44,14 @@ import {
 } from 'date-fns';
 
 import { NzDateAdapter, DateMode } from './date-adapter';
-import { NZ_DATE_CONFIG, NZ_DATE_LOCALE } from './date-config';
+import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } from './date-config';
 
 /**
  * Date adapter for date-fns.
  *
- * @note This adapter will be removed from built-in adapters in a future major version,
- * then there will be a separate date-fns adapter available.
+ * To use this adapter, add `provideNzDateFnsAdapter()` to your application providers.
+ *
+ * @note Requires date-fns as a peer dependency.
  */
 @Injectable()
 export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
@@ -155,7 +156,14 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
     if (!this.isValid(date)) {
       throw new Error('DateFnsDateAdapter: Cannot format invalid date.');
     }
-    return fnsFormat(date, displayFormat as string, { locale: this.locale });
+    // Convert Angular-style bracket literals to date-fns single-quote literals
+    // e.g., 'yyyy-[Q]Q' → 'yyyy-'Q'Q'
+    const formatString = (displayFormat as string).replace(/\[(.*?)\]/g, "'$1'");
+    return fnsFormat(date, formatString, {
+      locale: this.locale,
+      useAdditionalWeekYearTokens: true,
+      useAdditionalDayOfYearTokens: true
+    });
   }
 
   override parse(value: unknown, parseFormat: unknown): Date | null {
@@ -169,9 +177,22 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
       return new Date(value);
     }
     if (typeof value === 'string') {
-      return fnsParse(value, parseFormat as string, new Date(), {
+      // Convert Angular-style bracket literals to date-fns single-quote literals
+      const formatString = (parseFormat as string).replace(/\[(.*?)\]/g, "'$1'");
+      // For ISO 8601 date-only strings (yyyy-MM-dd), use native Date parsing for UTC consistency
+      // This aligns with NativeDateAdapter behavior and JavaScript's default ISO parsing
+      const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      if (formatString === 'yyyy-MM-dd' && isoDateRegex.test(value)) {
+        const parsed = new Date(value);
+        if (this.isValid(parsed)) {
+          return parsed;
+        }
+      }
+      return fnsParse(value, formatString, new Date(), {
         locale: this.locale,
-        weekStartsOn: this.getFirstDayOfWeek() as 0 | 1 | 2 | 3 | 4 | 5 | 6
+        weekStartsOn: this.getFirstDayOfWeek() as 0 | 1 | 2 | 3 | 4 | 5 | 6,
+        useAdditionalWeekYearTokens: true,
+        useAdditionalDayOfYearTokens: true
       });
     }
     return null;
@@ -380,4 +401,28 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
   override calendarStartOfWeek(date: Date): Date {
     return startOfWeek(date, { weekStartsOn: this.getFirstDayOfWeek() as 0 | 1 | 2 | 3 | 4 | 5 | 6 });
   }
+}
+
+/**
+ * Provides the DateFnsDateAdapter as the NzDateAdapter implementation.
+ * DateFnsDateAdapter uses date-fns library for date operations.
+ *
+ * @param config Optional configuration for the adapter
+ * @returns EnvironmentProviders for the DateFnsDateAdapter
+ *
+ * @example
+ * ```typescript
+ * export const appConfig: ApplicationConfig = {
+ *   providers: [provideNzDateFnsAdapter()]
+ * };
+ * ```
+ *
+ * @note Requires date-fns as a peer dependency.
+ */
+export function provideNzDateFnsAdapter(config?: NzDateConfig): EnvironmentProviders {
+  return makeEnvironmentProviders([
+    DateFnsDateAdapter,
+    { provide: NzDateAdapter, useExisting: DateFnsDateAdapter },
+    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...config } }
+  ]);
 }

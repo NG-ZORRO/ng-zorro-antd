@@ -6,16 +6,15 @@
 import { TestBed } from '@angular/core/testing';
 
 import { NzDateAdapter } from './date-adapter';
-import { NZ_DATE_CONFIG, NZ_DATE_LOCALE } from './date-config';
-import { NativeDateAdapter } from './native-adapter';
-import { provideNzDateAdapter } from './provider';
+import { NZ_DATE_LOCALE } from './date-config';
+import { NativeDateAdapter, provideNzNativeDateAdapter } from './native-adapter';
 
 describe('NativeDateAdapter', () => {
   let adapter: NativeDateAdapter;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzDateAdapter(NativeDateAdapter), { provide: NZ_DATE_LOCALE, useValue: 'en-US' }]
+      providers: [provideNzNativeDateAdapter(), { provide: NZ_DATE_LOCALE, useValue: 'en-US' }]
     });
     adapter = TestBed.inject(NzDateAdapter) as NativeDateAdapter;
   });
@@ -314,11 +313,7 @@ describe('NativeDateAdapter', () => {
     it('should return configured firstDayOfWeek', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [
-          provideNzDateAdapter(NativeDateAdapter),
-          { provide: NZ_DATE_LOCALE, useValue: 'en-US' },
-          { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4 } }
-        ]
+        providers: [provideNzNativeDateAdapter({ firstDayOfWeek: 4 }), { provide: NZ_DATE_LOCALE, useValue: 'en-US' }]
       });
       const a = TestBed.inject(NzDateAdapter) as NativeDateAdapter;
       expect(a.getFirstDayOfWeek()).toBe(4);
@@ -327,7 +322,7 @@ describe('NativeDateAdapter', () => {
     it('should return 1 for zh-cn locale', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [provideNzDateAdapter(NativeDateAdapter), { provide: NZ_DATE_LOCALE, useValue: 'zh-cn' }]
+        providers: [provideNzNativeDateAdapter(), { provide: NZ_DATE_LOCALE, useValue: 'zh-cn' }]
       });
       const a = TestBed.inject(NzDateAdapter) as NativeDateAdapter;
       expect(a.getFirstDayOfWeek()).toBe(1);

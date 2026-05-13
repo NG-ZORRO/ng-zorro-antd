@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { InjectionToken, Type } from '@angular/core';
+import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders, Type } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 /** NG-ZORRO specific: Date granularity mode for comparison operations */
@@ -18,6 +18,24 @@ const NOT_IMPLEMENTED = 'NzDateAdapter: method not implemented. Override this me
 export const NZ_DATE_ADAPTER = new InjectionToken<Type<NzDateAdapter<unknown>>>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-date-adapter-type' : ''
 );
+
+/**
+ * Provides a custom NzDateAdapter implementation.
+ * Use this when you want to provide your own adapter implementation.
+ *
+ * @param adapterClass The adapter class to use (must extend NzDateAdapter)
+ * @returns EnvironmentProviders for the adapter
+ *
+ * @example
+ * ```typescript
+ * export const appConfig: ApplicationConfig = {
+ *   providers: [provideNzDateAdapter(JalaliDateAdapter)]
+ * };
+ * ```
+ */
+export function provideNzDateAdapter<T extends NzDateAdapter<unknown>>(adapterClass: Type<T>): EnvironmentProviders {
+  return makeEnvironmentProviders([adapterClass, { provide: NzDateAdapter, useExisting: adapterClass }]);
+}
 
 /**
  * NzDateAdapter is the abstraction boundary between ng-zorro-antd and any date library.

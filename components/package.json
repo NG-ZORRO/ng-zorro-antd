@@ -29,15 +29,20 @@
   "dependencies": {
     "@angular/cdk": "^22.0.0",
     "@ant-design/icons-angular": "^22.0.0",
-    "@ctrl/tinycolor": "^3.6.0",
-    "date-fns": "^2.16.1"
+    "@ctrl/tinycolor": "^3.6.0"
   },
   "peerDependencies": {
     "@angular/common": "^22.0.0",
     "@angular/forms": "^22.0.0",
     "@angular/core": "^22.0.0",
     "@angular/platform-browser": "^22.0.0",
-    "@angular/router": "^22.0.0"
+    "@angular/router": "^22.0.0",
+    "date-fns": ">=2.20.0 <5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "date-fns": {
+      "optional": true
+    }
   },
   "exports": {
     "./ng-zorro-antd.aliyun.min.css": {

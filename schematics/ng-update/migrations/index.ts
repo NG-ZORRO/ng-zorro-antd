@@ -6,11 +6,13 @@
 import { NullableDevkitMigration } from '@angular/cdk/schematics';
 
 import { ClassNamesMigration } from './class-names';
+import { DateAdapterMigration } from './date-adapter';
 import { ImportSpecifiersMigration } from './import-specifiers';
 import { OutputNamesMigration } from './output-names';
 
 export const nzMigrations: NullableDevkitMigration[] = [
   ClassNamesMigration,
   ImportSpecifiersMigration,
-  OutputNamesMigration
+  OutputNamesMigration,
+  DateAdapterMigration
 ];

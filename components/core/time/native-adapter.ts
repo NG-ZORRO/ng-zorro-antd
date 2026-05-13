@@ -3,12 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, inject } from '@angular/core';
+import { EnvironmentProviders, Injectable, makeEnvironmentProviders, inject } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzDateAdapter, DateMode } from './date-adapter';
-import { NZ_DATE_CONFIG, NZ_DATE_LOCALE } from './date-config';
+import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } from './date-config';
 
 /** Matches strings that look like ISO 8601 dates (e.g. 2024-01-15, 2024-01-15T10:30:00). */
 const ISO_8601_REGEX = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|(?:(?:\+|-)\d{2}:\d{2}))?)?$/;
@@ -575,4 +575,26 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
 
     return result;
   }
+}
+
+/**
+ * Provides the NativeDateAdapter as the NzDateAdapter implementation.
+ * NativeDateAdapter is a zero-dependency adapter using native Date and Intl.DateTimeFormat.
+ *
+ * @param config Optional configuration for the adapter
+ * @returns EnvironmentProviders for the NativeDateAdapter
+ *
+ * @example
+ * ```typescript
+ * export const appConfig: ApplicationConfig = {
+ *   providers: [provideNzNativeDateAdapter()]
+ * };
+ * ```
+ */
+export function provideNzNativeDateAdapter(config?: NzDateConfig): EnvironmentProviders {
+  return makeEnvironmentProviders([
+    NativeDateAdapter,
+    { provide: NzDateAdapter, useExisting: NativeDateAdapter },
+    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...config } }
+  ]);
 }

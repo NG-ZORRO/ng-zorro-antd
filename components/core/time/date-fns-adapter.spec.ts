@@ -8,16 +8,15 @@ import { TestBed } from '@angular/core/testing';
 import { enUS } from 'date-fns/locale';
 
 import { NzDateAdapter } from './date-adapter';
-import { NZ_DATE_CONFIG, NZ_DATE_LOCALE } from './date-config';
-import { DateFnsDateAdapter } from './date-fns-adapter';
-import { provideNzDateAdapter } from './provider';
+import { NZ_DATE_LOCALE } from './date-config';
+import { DateFnsDateAdapter, provideNzDateFnsAdapter } from './date-fns-adapter';
 
 describe('DateFnsDateAdapter', () => {
   let adapter: DateFnsDateAdapter;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzDateAdapter(DateFnsDateAdapter), { provide: NZ_DATE_LOCALE, useValue: enUS }]
+      providers: [provideNzDateFnsAdapter(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
     });
     adapter = TestBed.inject(NzDateAdapter) as DateFnsDateAdapter;
   });
@@ -278,10 +277,7 @@ describe('DateFnsDateAdapter', () => {
     it('should return configured firstDayOfWeek', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [
-          provideNzDateAdapter(DateFnsDateAdapter),
-          { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4 } }
-        ]
+        providers: [provideNzDateFnsAdapter({ firstDayOfWeek: 4 }), { provide: NZ_DATE_LOCALE, useValue: enUS }]
       });
       const a = TestBed.inject(NzDateAdapter) as DateFnsDateAdapter;
       expect(a.getFirstDayOfWeek()).toBe(4);

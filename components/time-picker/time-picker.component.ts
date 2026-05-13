@@ -285,11 +285,11 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   setValue(value: Date | null, syncPreValue: boolean = false): void {
-    const validValue = this.dateAdapter.isValid(value!) ? new Date(value!) : null;
+    const valid = this.dateAdapter.isValid(value);
     if (syncPreValue) {
-      this.preValue = validValue;
+      this.preValue = valid ? new Date(value!) : null;
     }
-    this.value = validValue;
+    this.value = valid ? new Date(value!) : null;
     this.inputValue = this.dateAdapter.format(value, this.nzFormat);
     this.cdr.markForCheck();
   }
