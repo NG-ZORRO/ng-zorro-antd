@@ -5,6 +5,7 @@
 -->
 <input
   type="file"
+  [attr.id]="nzId()"
   #file
   (change)="onChange($event)"
   [attr.accept]="options.accept"

@@ -81,6 +81,7 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
 
   // #region fields
 
+  readonly nzId = input<string>();
   @Input() nzType: NzUploadType = 'select';
   @Input({ transform: numberAttribute }) nzLimit = 0;
   @Input({ transform: numberAttribute }) nzSize = 0;
