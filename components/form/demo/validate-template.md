@@ -1,5 +1,5 @@
 ---
-order: 10
+order: 7
 title:
   zh-CN: 模板驱动表单验证
   en-US: Template-driven Forms Validation

@@ -3,7 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, ViewEncapsulation } from '@angular/core';
+
+import type { NzFormItemLayout } from './types';
 
 export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | '';
 
@@ -20,12 +22,16 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
     '[class.ant-form-item-has-error]': 'status === "error"',
     '[class.ant-form-item-is-validating]': 'status === "validating"',
     '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
-    '[class.ant-form-item-with-help]': 'withHelpClass'
+    '[class.ant-form-item-with-help]': 'withHelpClass',
+    '[class.ant-form-item-horizontal]': 'nzLayout() === "horizontal"',
+    '[class.ant-form-item-vertical]': 'nzLayout() === "vertical"'
   },
   template: `<ng-content />`
 })
 export class NzFormItemComponent {
   private cdr = inject(ChangeDetectorRef);
+
+  readonly nzLayout = input<NzFormItemLayout>();
 
   status: NzFormControlStatusType = '';
   hasFeedback = false;

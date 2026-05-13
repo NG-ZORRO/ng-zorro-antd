@@ -1,5 +1,5 @@
 ---
-order: 11
+order: 8
 title:
   zh-CN: 自动提示
   en-US: Auto tips

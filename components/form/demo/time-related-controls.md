@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 5
 title:
   zh-CN: 时间类控件
   en-US: Time-related Controls
