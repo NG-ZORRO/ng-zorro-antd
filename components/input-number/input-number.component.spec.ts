@@ -438,21 +438,24 @@ describe('input-number', () => {
 
   it('should be set mouse wheel', () => {
     const input = hostElement.querySelector('input')!;
+    component.value = 0;
     dispatchEvent(input, new WheelEvent('wheel', { deltaY: -100 }));
     expect(component.value).toBe(1);
     dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
     expect(component.value).toBe(0);
 
+    component.value = 0;
     component.disabled = true;
     fixture.detectChanges();
     dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
     expect(component.value).toBe(0);
 
+    component.value = 1;
     component.disabled = false;
     component.readonly = true;
     fixture.detectChanges();
     dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
-    expect(component.value).toBe(0);
+    expect(component.value).toBe(1);
   });
 
   it('should be work onStep', () => {
