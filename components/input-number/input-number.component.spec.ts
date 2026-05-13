@@ -447,6 +447,12 @@ describe('input-number', () => {
     fixture.detectChanges();
     dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
     expect(component.value).toBe(0);
+
+    component.disabled = false;
+    component.readonly = true;
+    fixture.detectChanges();
+    dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
+    expect(component.value).toBe(0);
   });
 
   it('should be work onStep', () => {
