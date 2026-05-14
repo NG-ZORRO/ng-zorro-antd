@@ -55,6 +55,7 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetCol
       [class.ant-color-picker-lg]="finalSize() === 'large'"
       nz-popover
       [nzPopoverContent]="colorPicker"
+      [nzPopoverPlacement]="popoverPlacements"
       [nzPopoverTrigger]="!nzDisabled ? nzTrigger : null"
       [nzPopoverVisible]="nzOpen"
       (nzPopoverVisibleChange)="nzOnOpenChange.emit($event)"
@@ -143,6 +144,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
   private isNzDisableFirstChange: boolean = true;
+  protected readonly popoverPlacements = ['bottomLeft', 'bottomRight', 'topLeft', 'topRight'];
   blockColor: string = '';
   clearColor: boolean = false;
   showText: string = defaultColor.toHexString();
