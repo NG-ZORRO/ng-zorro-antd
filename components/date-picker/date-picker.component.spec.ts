@@ -20,6 +20,7 @@ import {
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, inject as testingInject, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -1528,6 +1529,36 @@ describe('in form', () => {
   });
 });
 
+describe('signal forms (formField)', () => {
+  let fixture: ComponentFixture<NzTestDatePickerInSignalFormComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNoopAnimations()]
+    });
+  });
+
+  it('should display the initial value provided via [formField]', fakeAsync(() => {
+    fixture = TestBed.createComponent(NzTestDatePickerInSignalFormComponent);
+    fixture.componentInstance.model.set({ date: new Date('2020-04-08') });
+    fixture.detectChanges();
+    flush();
+    fixture.detectChanges();
+    expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
+  }));
+
+  it('should display a value assigned to the model after creation', fakeAsync(() => {
+    fixture = TestBed.createComponent(NzTestDatePickerInSignalFormComponent);
+    fixture.detectChanges();
+    flush();
+    fixture.componentInstance.model.set({ date: new Date('2020-04-08') });
+    fixture.detectChanges();
+    flush();
+    fixture.detectChanges();
+    expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
+  }));
+});
+
 describe('finalSize', () => {
   let fixture: ComponentFixture<TestDatePickerFinalSizeComponent>;
   let datePickerElement: HTMLElement;
@@ -1804,4 +1835,13 @@ export class TestDatePickerFinalSizeComponent {
 })
 export class TestDatePickerFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
+}
+
+@Component({
+  imports: [FormField, NzDatePickerModule],
+  template: `<nz-date-picker [formField]="myForm.date" />`
+})
+class NzTestDatePickerInSignalFormComponent {
+  readonly model = signal<{ date: Date | null }>({ date: null });
+  readonly myForm = form(this.model);
 }

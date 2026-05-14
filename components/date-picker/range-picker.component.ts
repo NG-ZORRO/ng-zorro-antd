@@ -3,18 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, inject } from '@angular/core';
-
-import { NzDatePickerComponent } from './date-picker.component';
+import { Directive } from '@angular/core';
 
 @Directive({
   selector: 'nz-range-picker',
   exportAs: 'nzRangePicker'
 })
-export class NzRangePickerComponent {
-  datePicker = inject(NzDatePickerComponent, { host: true });
-
-  constructor() {
-    this.datePicker.isRange = true;
-  }
-}
+export class NzRangePickerComponent {}
