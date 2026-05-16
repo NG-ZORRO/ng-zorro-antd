@@ -74,29 +74,29 @@ export class NzColDirective {
     const push = this.nzPush();
     const pull = this.nzPull();
 
-    const classes = [CLASS_NAME];
+    const classList = [CLASS_NAME];
 
     if (isNotNil(span)) {
-      classes.push(this.generateClass(`${span}`));
+      classList.push(this.generateClass(`${span}`));
     }
 
     if (order) {
-      classes.push(this.generateClass(`order-${order}`));
+      classList.push(this.generateClass(`order-${order}`));
     }
 
     if (offset) {
-      classes.push(this.generateClass(`offset-${offset}`));
+      classList.push(this.generateClass(`offset-${offset}`));
     }
 
     if (push) {
-      classes.push(this.generateClass(`push-${push}`));
+      classList.push(this.generateClass(`push-${push}`));
     }
 
     if (pull) {
-      classes.push(this.generateClass(`pull-${pull}`));
+      classList.push(this.generateClass(`pull-${pull}`));
     }
 
-    return classes.concat(this.responsiveClass());
+    return classList.concat(this.responsiveClass());
   });
 
   protected readonly flexStyle = computed(() => {
@@ -128,7 +128,7 @@ export class NzColDirective {
   });
 
   private generateClassList(props: Partial<ResponsiveLike<ColSpanType | ColSize | null>>): string[] {
-    const classes: string[] = [];
+    const classList: string[] = [];
 
     responsiveArray.forEach(size => {
       let sizeProps: ColSize = {};
@@ -142,27 +142,27 @@ export class NzColDirective {
       const { span, pull, push, offset, order } = sizeProps;
 
       if (isNotNil(span)) {
-        classes.push(this.generateClass(`${size}-${span}`));
+        classList.push(this.generateClass(`${size}-${span}`));
       }
 
       if (order || order === 0) {
-        classes.push(this.generateClass(`${size}-order-${order}`));
+        classList.push(this.generateClass(`${size}-order-${order}`));
       }
 
       if (offset || offset === 0) {
-        classes.push(this.generateClass(`${size}-offset-${offset}`));
+        classList.push(this.generateClass(`${size}-offset-${offset}`));
       }
 
       if (push || push === 0) {
-        classes.push(this.generateClass(`${size}-push-${push}`));
+        classList.push(this.generateClass(`${size}-push-${push}`));
       }
 
       if (pull || pull === 0) {
-        classes.push(this.generateClass(`${size}-pull-${pull}`));
+        classList.push(this.generateClass(`${size}-pull-${pull}`));
       }
     });
 
-    return classes;
+    return classList;
   }
 
   private generateClass(suffix: string): string {

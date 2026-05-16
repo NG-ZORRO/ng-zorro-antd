@@ -15,8 +15,8 @@ import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { generateClassName, isNotNil, isNumber, isPlainObject } from 'ng-zorro-antd/core/util';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between' | 'space-evenly';
-export type NzAlign = 'top' | 'middle' | 'bottom';
-export type Gutter = number | string | undefined | Partial<ResponsiveLike<number>>;
+export type NzAlign = 'top' | 'middle' | 'bottom' | 'stretch';
+export type Gutter = number | string | undefined | Partial<ResponsiveLike<number | string>>;
 
 type Gap = number | string | undefined;
 
@@ -72,7 +72,7 @@ export class NzRowDirective {
         Object.keys(gridResponsiveMap).map(screen => {
           const bp = screen as NzBreakpointKey;
           if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches && g[bp]) {
-            results[index] = g[bp]!;
+            results[index] = g[bp];
           }
         });
       } else {
@@ -82,7 +82,7 @@ export class NzRowDirective {
     return results;
   });
 
-  readonly gutterStyle = computed<NgStyleInterface>(() => {
+  protected readonly gutterStyle = computed<NgStyleInterface>(() => {
     const [gutterH, gutterV] = this.gutter();
     const style: NgStyleInterface = {};
 
