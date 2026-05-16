@@ -2,7 +2,7 @@
 order: 4
 title:
   zh-CN: 排版
-  en-US: Layout
+  en-US: Typesetting
 ---
 
 ## zh-CN

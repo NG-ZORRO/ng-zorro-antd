@@ -15,6 +15,10 @@ export function isNil(value: unknown): value is null | undefined {
   return typeof value === 'undefined' || value === null;
 }
 
+export const isPlainObject = <T extends object = object>(val: NzSafeAny): val is T => {
+  return val !== null && typeof val === 'object';
+};
+
 /**
  * Examine if two objects are shallowly equaled.
  */
@@ -48,6 +52,10 @@ export function shallowEqual(objA?: IndexableObject, objB?: IndexableObject): bo
   }
 
   return true;
+}
+
+export function isNumber(value: NzSafeAny): value is number {
+  return typeof value === 'number' && !Number.isNaN(value);
 }
 
 export function isNonEmptyString(value: NzSafeAny): boolean {
