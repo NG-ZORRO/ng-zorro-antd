@@ -30,6 +30,8 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
       </div>
     </div>
 
+    <br />
+
     <div class="gutter-example">
       <div nz-row [nzGutter]="[hGutter, vGutter]">
         @for (i of array; track $index) {
@@ -38,6 +40,15 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
           </div>
         }
 
+        @for (i of array; track $index) {
+          <div nz-col class="gutter-row" [nzSpan]="24 / count">
+            <div class="grid-config">Column</div>
+          </div>
+        }
+      </div>
+
+      Another Row:
+      <div nz-row [nzGutter]="[hGutter, vGutter]">
         @for (i of array; track $index) {
           <div nz-col class="gutter-row" [nzSpan]="24 / count">
             <div class="grid-config">Column</div>

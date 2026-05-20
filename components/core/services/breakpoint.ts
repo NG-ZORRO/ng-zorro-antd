@@ -20,9 +20,19 @@ export enum NzBreakpointEnum {
   xs = 'xs'
 }
 
-export type BreakpointMap = Record<NzBreakpointEnum, string>;
-export type BreakpointBooleanMap = Record<NzBreakpointEnum, boolean>;
-export type NzBreakpointKey = keyof typeof NzBreakpointEnum;
+export const responsiveArray = ['xxl', 'xl', 'lg', 'md', 'sm', 'xs'] as const;
+export type Breakpoint = (typeof responsiveArray)[number];
+
+export type ResponsiveLike<T> = {
+  [key in Breakpoint]: T;
+};
+
+export type BreakpointMap = ResponsiveLike<string>;
+export type BreakpointBooleanMap = ResponsiveLike<boolean>;
+/**
+ * @deprecated intended to be removed in v22, please use {@link Breakpoint} instead
+ */
+export type NzBreakpointKey = Breakpoint;
 
 export const gridResponsiveMap: BreakpointMap = {
   xs: '(max-width: 575px)',
@@ -46,34 +56,29 @@ export const siderResponsiveMap: BreakpointMap = {
   providedIn: 'root'
 })
 export class NzBreakpointService {
-  private resizeService = inject(NzResizeService);
-  private mediaMatcher = inject(MediaMatcher);
+  private readonly resizeService = inject(NzResizeService);
+  private readonly mediaMatcher = inject(MediaMatcher);
 
   constructor() {
-    this.resizeService
-      .connect()
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {});
+    this.resizeService.connect().pipe(takeUntilDestroyed()).subscribe();
   }
 
   subscribe(breakpointMap: BreakpointMap): Observable<NzBreakpointEnum>;
   subscribe(breakpointMap: BreakpointMap, fullMap: true): Observable<BreakpointBooleanMap>;
   subscribe(breakpointMap: BreakpointMap, fullMap?: true): Observable<NzBreakpointEnum | BreakpointBooleanMap> {
     if (fullMap) {
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-      const get = () => this.matchMedia(breakpointMap, true);
       return this.resizeService.connect().pipe(
-        map(get),
-        startWith(get()),
-        distinctUntilChanged(
-          (x: [NzBreakpointEnum, BreakpointBooleanMap], y: [NzBreakpointEnum, BreakpointBooleanMap]) => x[0] === y[0]
-        ),
+        startWith(void 0),
+        map(() => this.matchMedia(breakpointMap, true)),
+        distinctUntilChanged((x, y) => x[0] === y[0]),
         map(x => x[1])
       );
     } else {
-      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-      const get = () => this.matchMedia(breakpointMap);
-      return this.resizeService.connect().pipe(map(get), startWith(get()), distinctUntilChanged());
+      return this.resizeService.connect().pipe(
+        startWith(void 0),
+        map(() => this.matchMedia(breakpointMap)),
+        distinctUntilChanged()
+      );
     }
   }
 
@@ -91,7 +96,7 @@ export class NzBreakpointService {
       const castBP = breakpoint as NzBreakpointEnum;
       const matched = this.mediaMatcher.matchMedia(gridResponsiveMap[castBP]).matches;
 
-      breakpointBooleanMap[breakpoint as NzBreakpointEnum] = matched;
+      breakpointBooleanMap[castBP] = matched;
 
       if (matched) {
         bp = castBP;
