@@ -7,7 +7,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
-import { computed, Directive, inject, input, signal } from '@angular/core';
+import { booleanAttribute, computed, Directive, inject, input, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { ResponsiveLike, NzBreakpointKey, gridResponsiveMap, NzBreakpointService } from 'ng-zorro-antd/core/services';
@@ -29,6 +29,7 @@ const CLASS_NAME = 'ant-row';
     class: 'ant-row',
     '[class]': `flexClass() + ' ' + alignClass()`,
     '[class.ant-row-rtl]': `dir() === 'rtl'`,
+    '[class.ant-row-no-wrap]': `nzWrap() === false`,
     '[style]': `gutterStyle()`
   }
 })
@@ -41,6 +42,7 @@ export class NzRowDirective {
   readonly nzAlign = input<NzAlign | null>(null);
   readonly nzJustify = input<NzJustify | null>(null);
   readonly nzGutter = input<Gutter | [Gutter, Gutter] | null>(undefined);
+  readonly nzWrap = input(true, { transform: booleanAttribute });
 
   /**
    * Internal signal tracking the current breakpoint.
