@@ -61,6 +61,22 @@ describe('grid', () => {
       });
     });
 
+    it('should not apply ant-row-no-wrap class by default', () => {
+      expect(rowElement.classList).not.toContain('ant-row-no-wrap');
+    });
+
+    it('should apply ant-row-no-wrap class when nzWrap is false', () => {
+      component.wrap.set(false);
+      fixture.detectChanges();
+      expect(rowElement.classList).toContain('ant-row-no-wrap');
+    });
+
+    it('should not apply ant-row-no-wrap class when nzWrap is true', () => {
+      component.wrap.set(true);
+      fixture.detectChanges();
+      expect(rowElement.classList).not.toContain('ant-row-no-wrap');
+    });
+
     it('should gutter number work', () => {
       expect(rowElement.style.cssText).toBe('');
       expect(colElement.style.cssText).toBe('');
@@ -245,7 +261,7 @@ describe('grid', () => {
 @Component({
   imports: [NzGridModule],
   template: `
-    <div nz-row [nzGutter]="gutter()" [nzJustify]="justify()" [nzAlign]="align()">
+    <div nz-row [nzGutter]="gutter()" [nzJustify]="justify()" [nzAlign]="align()" [nzWrap]="wrap()">
       <div nz-col></div>
     </div>
   `
@@ -255,6 +271,7 @@ export class TestGridComponent {
   flex = signal<string | null>(null);
   justify = signal<NzJustify | null>(null);
   align = signal<NzAlign | null>(null);
+  wrap = signal<boolean>(true);
 }
 
 @Component({

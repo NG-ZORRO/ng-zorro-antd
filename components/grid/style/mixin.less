@@ -13,13 +13,13 @@
     max-width: percentage((@index / @grid-columns));
   }
   .@{col-prefix-cls}@{class}-push-@{index} {
-    left: percentage((@index / @grid-columns));
+    inset-inline-start: percentage((@index / @grid-columns));
   }
   .@{col-prefix-cls}@{class}-pull-@{index} {
-    right: percentage((@index / @grid-columns));
+    inset-inline-end: percentage((@index / @grid-columns));
   }
   .@{col-prefix-cls}@{class}-offset-@{index} {
-    margin-left: percentage((@index / @grid-columns));
+    margin-inline-start: percentage((@index / @grid-columns));
   }
   .@{col-prefix-cls}@{class}-order-@{index} {
     order: @index;
@@ -32,19 +32,19 @@
     display: none;
   }
   .@{col-prefix-cls}-push-@{index} {
-    left: auto;
+    inset-inline-start: auto;
   }
   .@{col-prefix-cls}-pull-@{index} {
-    right: auto;
+    inset-inline-end: auto;
   }
   .@{col-prefix-cls}@{class}-push-@{index} {
-    left: auto;
+    inset-inline-start: auto;
   }
   .@{col-prefix-cls}@{class}-pull-@{index} {
-    right: auto;
+    inset-inline-end: auto;
   }
   .@{col-prefix-cls}@{class}-offset-@{index} {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
   .@{col-prefix-cls}@{class}-order-@{index} {
     order: 0;
