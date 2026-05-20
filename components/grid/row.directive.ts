@@ -29,7 +29,7 @@ const CLASS_NAME = 'ant-row';
     class: 'ant-row',
     '[class]': `flexClass() + ' ' + alignClass()`,
     '[class.ant-row-rtl]': `dir() === 'rtl'`,
-    '[class.ant-row-no-wrap]': `nzWrap() === false`,
+    '[class.ant-row-no-wrap]': `!nzWrap()`,
     '[style]': `gutterStyle()`
   }
 })
