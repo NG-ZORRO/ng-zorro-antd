@@ -8,6 +8,7 @@ import { Component, signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ResponsiveLike } from 'ng-zorro-antd/core/services';
 import { provideMockDirectionality, sleep } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -75,6 +76,32 @@ describe('grid', () => {
       component.wrap.set(true);
       fixture.detectChanges();
       expect(rowElement.classList).not.toContain('ant-row-no-wrap');
+    });
+
+    it('should apply className according to responsive align', async () => {
+      component.align.set({ xs: 'top', sm: 'middle', md: 'bottom' });
+      await setWindowWidth(480);
+      expect(rowElement.classList).toContain('ant-row-top');
+      expect(rowElement.classList).not.toContain('ant-row-middle');
+      await setWindowWidth(600);
+      expect(rowElement.classList).toContain('ant-row-middle');
+      expect(rowElement.classList).not.toContain('ant-row-top');
+      await setWindowWidth(800);
+      expect(rowElement.classList).toContain('ant-row-bottom');
+      expect(rowElement.classList).not.toContain('ant-row-middle');
+    });
+
+    it('should apply className according to responsive justify', async () => {
+      component.justify.set({ xs: 'start', sm: 'center', md: 'space-between' });
+      await setWindowWidth(480);
+      expect(rowElement.classList).toContain('ant-row-start');
+      expect(rowElement.classList).not.toContain('ant-row-center');
+      await setWindowWidth(600);
+      expect(rowElement.classList).toContain('ant-row-center');
+      expect(rowElement.classList).not.toContain('ant-row-start');
+      await setWindowWidth(800);
+      expect(rowElement.classList).toContain('ant-row-space-between');
+      expect(rowElement.classList).not.toContain('ant-row-center');
     });
 
     it('should gutter number work', () => {
@@ -269,8 +296,8 @@ describe('grid', () => {
 export class TestGridComponent {
   gutter = signal<Gutter | [Gutter, Gutter] | null>(null);
   flex = signal<string | null>(null);
-  justify = signal<NzJustify | null>(null);
-  align = signal<NzAlign | null>(null);
+  justify = signal<NzJustify | Partial<ResponsiveLike<NzJustify>> | null>(null);
+  align = signal<NzAlign | Partial<ResponsiveLike<NzAlign>> | null>(null);
   wrap = signal<boolean>(true);
 }
 
