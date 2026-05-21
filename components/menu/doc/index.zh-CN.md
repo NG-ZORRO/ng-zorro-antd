@@ -91,9 +91,9 @@ description: 为页面和功能提供导航的菜单列表。
 <li nz-menu-group nzTitle="SubTitle" nzIcon="appstore"></li>
 
 <li nz-menu-group>
-  < title>
-  <nz-icon nzType="appstore" />
-  <span>SubTitle</span>
+  <span title>
+    <nz-icon nzType="appstore" />
+    <span>SubTitle</span>
   </span>
 </li>
 
