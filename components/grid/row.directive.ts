@@ -10,7 +10,7 @@ import { Platform } from '@angular/cdk/platform';
 import { booleanAttribute, computed, Directive, inject, input, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
-import { ResponsiveLike, NzBreakpointKey, gridResponsiveMap, NzBreakpointService } from 'ng-zorro-antd/core/services';
+import { Breakpoint, ResponsiveLike, gridResponsiveMap, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { generateClassName, isNotNil, isNumber, isPlainObject } from 'ng-zorro-antd/core/util';
 
@@ -74,7 +74,7 @@ export class NzRowDirective {
     normalizedGutter.forEach((g, index) => {
       if (isPlainObject(g)) {
         Object.keys(gridResponsiveMap).map(screen => {
-          const bp = screen as NzBreakpointKey;
+          const bp = screen as Breakpoint;
           if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches && g[bp]) {
             results[index] = g[bp];
           }
@@ -111,7 +111,7 @@ export class NzRowDirective {
     if (isPlainObject<Partial<ResponsiveLike<T>>>(value)) {
       let result: T | null = null;
       Object.keys(gridResponsiveMap).forEach(screen => {
-        const bp = screen as NzBreakpointKey;
+        const bp = screen as Breakpoint;
         if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches && value[bp]) {
           result = value[bp] as T;
         }

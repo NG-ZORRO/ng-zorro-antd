@@ -56,6 +56,7 @@ export class NzColDirective {
   readonly nzLg = input<ColSpanType | ColSize | null>();
   readonly nzXl = input<ColSpanType | ColSize | null>();
   readonly nzXXl = input<ColSpanType | ColSize | null>();
+  readonly nzXXXl = input<ColSpanType | ColSize | null>();
 
   protected readonly responsiveClass = computed(() => {
     const xs = this.nzXs();
@@ -64,7 +65,8 @@ export class NzColDirective {
     const lg = this.nzLg();
     const xl = this.nzXl();
     const xxl = this.nzXXl();
-    return this.generateClassList({ xs, sm, md, lg, xl, xxl });
+    const xxxl = this.nzXXXl();
+    return this.generateClassList({ xs, sm, md, lg, xl, xxl, xxxl });
   });
 
   protected readonly hostClass = computed(() => {

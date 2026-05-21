@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -14,7 +14,6 @@ import {
   DestroyRef,
   Input,
   OnChanges,
-  OnInit,
   QueryList,
   SimpleChanges,
   TemplateRef,
@@ -26,16 +25,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge } from 'rxjs';
 import { auditTime, startWith, switchMap, tap } from 'rxjs/operators';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzBreakpointEnum, NzBreakpointService, gridResponsiveMap } from 'ng-zorro-antd/core/services';
+import { NzBreakpointEnum, NzBreakpointService, ResponsiveLike, gridResponsiveMap } from 'ng-zorro-antd/core/services';
 
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'descriptions';
-const defaultColumnMap: Record<NzBreakpointEnum, number> = {
+const defaultColumnMap: ResponsiveLike<number> = {
+  xxxl: 4,
   xxl: 3,
   xl: 3,
   lg: 3,
@@ -43,6 +43,7 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
   sm: 2,
   xs: 1
 };
+const DEFAULT_COLUMN_NUM = 3;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -158,40 +159,31 @@ const defaultColumnMap: Record<NzBreakpointEnum, number> = {
     '[class.ant-descriptions-bordered]': 'nzBordered',
     '[class.ant-descriptions-middle]': 'nzSize === "middle"',
     '[class.ant-descriptions-small]': 'nzSize === "small"',
-    '[class.ant-descriptions-rtl]': 'dir === "rtl"'
+    '[class.ant-descriptions-rtl]': `dir() === "rtl"`
   },
   imports: [NzOutletModule, NgTemplateOutlet]
 })
-export class NzDescriptionsComponent implements OnChanges, AfterContentInit, OnInit {
-  public nzConfigService = inject(NzConfigService);
-  private cdr = inject(ChangeDetectorRef);
-  private breakpointService = inject(NzBreakpointService);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
+export class NzDescriptionsComponent implements OnChanges, AfterContentInit {
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly breakpointService = inject(NzBreakpointService);
+  private readonly destroyRef = inject(DestroyRef);
+  protected readonly dir = inject(Directionality).valueSignal;
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ContentChildren(NzDescriptionsItemComponent) items!: QueryList<NzDescriptionsItemComponent>;
 
   @Input({ transform: booleanAttribute }) @WithConfig() nzBordered: boolean = false;
   @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
-  @Input() @WithConfig() nzColumn: number | Record<NzBreakpointEnum, number> = defaultColumnMap;
+  @Input() @WithConfig() nzColumn: number | Partial<ResponsiveLike<number>> = defaultColumnMap;
   @Input() @WithConfig() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
   @Input() nzExtra?: string | TemplateRef<void>;
   @Input({ transform: booleanAttribute }) @WithConfig() nzColon: boolean = true;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
-  realColumn = 3;
-  dir: Direction = 'ltr';
+  realColumn = DEFAULT_COLUMN_NUM;
 
-  private breakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
-
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-    });
-  }
+  private breakpoint = NzBreakpointEnum.md;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzColumn) {
@@ -263,7 +255,7 @@ export class NzDescriptionsComponent implements OnChanges, AfterContentInit, OnI
 
   private getColumn(): number {
     if (typeof this.nzColumn !== 'number') {
-      return this.nzColumn[this.breakpoint];
+      return this.nzColumn[this.breakpoint] ?? DEFAULT_COLUMN_NUM;
     }
 
     return this.nzColumn;

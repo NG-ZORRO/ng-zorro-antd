@@ -3,11 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { provideMockDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -223,27 +224,29 @@ describe('nz-layout', () => {
   });
 
   describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestLayoutRtlComponent>;
+    let fixture: ComponentFixture<NzLayoutBasicComponent>;
     let layouts: DebugElement[];
+    let dir: Directionality;
 
     beforeEach(() => {
       // todo: use zoneless
       TestBed.configureTestingModule({
-        providers: [provideZoneChangeDetection()]
+        providers: [provideMockDirectionality()]
       });
-      fixture = TestBed.createComponent(NzTestLayoutRtlComponent);
+      fixture = TestBed.createComponent(NzLayoutBasicComponent);
       layouts = fixture.debugElement.queryAll(By.directive(NzLayoutComponent));
+      dir = TestBed.inject(Directionality);
     });
 
-    it('should className correct on dir change', fakeAsync(() => {
+    it('should className correct on dir change', () => {
+      dir.valueSignal.set('rtl');
       fixture.detectChanges();
       expect(layouts.every(layout => layout.nativeElement.classList.contains('ant-layout-rtl'))).toBe(true);
 
-      fixture.componentInstance.direction = 'ltr';
+      dir.valueSignal.set('ltr');
       fixture.detectChanges();
-
       expect(layouts.every(layout => layout.nativeElement.classList.contains('ant-layout-rtl'))).toBe(false);
-    }));
+    });
   });
 });
 
@@ -371,16 +374,3 @@ export class NzLayoutResponsiveComponent {
   `
 })
 export class NzLayoutBasicComponent {}
-
-@Component({
-  imports: [BidiModule, NzLayoutBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-layout-basic />
-    </div>
-  `
-})
-export class NzTestLayoutRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-}

@@ -91,8 +91,8 @@ Layout uses a 24 grid layout to define the width of each "box", but does not rig
 
 ### [nz-col]
 
-| Property     | Description                                                                                            | Type               | Default |
-| ------------ | ------------------------------------------------------------------------------------------------------ | ------------------ | ------- |
+| Property     | Description                                                                                            | Type               | Default | Version |
+| ------------ | ------------------------------------------------------------------------------------------------------ | ------------------ | ------- | ------- |
 | `[nzFlex]`   | Flex layout style                                                                                      | `string \| number` | -       |
 | `[nzOffset]` | The number of cells to offset Col from the left                                                        | `number`           | `0`     |
 | `[nzOrder]`  | Raster order                                                                                           | `number`           | `0`     |
@@ -105,5 +105,6 @@ Layout uses a 24 grid layout to define the width of each "box", but does not rig
 | `[nzLg]`     | `screen ≥ 992px`, could be a `span` value or an object containing above props                          | `number \| object` | -       |
 | `[nzXl]`     | `screen ≥ 1200px`, could be a `span` value or an object containing above props                         | `number \| object` | -       |
 | `[nzXXl]`    | `screen ≥ 1600px`, could be a `span` value or an object containing above props                         | `number \| object` | -       |
+| `[nzXXXl]`   | `screen ≥ 1920px`, could be a `span` value or an object containing above props                         | `number \| object` | -       | 21.3.0  |
 
 The breakpoints of responsive grid follow [BootStrap 4 media queries rules](https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints)(not including `occasionally part`).

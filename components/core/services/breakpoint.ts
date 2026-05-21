@@ -12,6 +12,7 @@ import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { NzResizeService } from './resize';
 
 export enum NzBreakpointEnum {
+  xxxl = 'xxxl',
   xxl = 'xxl',
   xl = 'xl',
   lg = 'lg',
@@ -20,7 +21,7 @@ export enum NzBreakpointEnum {
   xs = 'xs'
 }
 
-export const responsiveArray = ['xxl', 'xl', 'lg', 'md', 'sm', 'xs'] as const;
+export const responsiveArray = ['xxxl', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs'] as const;
 export type Breakpoint = (typeof responsiveArray)[number];
 
 export type ResponsiveLike<T> = {
@@ -40,7 +41,8 @@ export const gridResponsiveMap: BreakpointMap = {
   md: '(min-width: 768px)',
   lg: '(min-width: 992px)',
   xl: '(min-width: 1200px)',
-  xxl: '(min-width: 1600px)'
+  xxl: '(min-width: 1600px)',
+  xxxl: '(min-width: 1920px)'
 };
 
 export const siderResponsiveMap: BreakpointMap = {
@@ -49,7 +51,8 @@ export const siderResponsiveMap: BreakpointMap = {
   md: '(max-width: 767.98px)',
   lg: '(max-width: 991.98px)',
   xl: '(max-width: 1199.98px)',
-  xxl: '(max-width: 1599.98px)'
+  xxl: '(max-width: 1599.98px)',
+  xxxl: '(max-width: 1919.98px)'
 };
 
 @Injectable({
