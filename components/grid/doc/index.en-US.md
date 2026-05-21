@@ -93,18 +93,18 @@ Layout uses a 24 grid layout to define the width of each "box", but does not rig
 
 | Property     | Description                                                                                            | Type               | Default | Version |
 | ------------ | ------------------------------------------------------------------------------------------------------ | ------------------ | ------- | ------- |
-| `[nzFlex]`   | Flex layout style                                                                                      | `string \| number` | -       |
-| `[nzOffset]` | The number of cells to offset Col from the left                                                        | `number`           | `0`     |
-| `[nzOrder]`  | Raster order                                                                                           | `number`           | `0`     |
-| `[nzPull]`   | The number of cells that raster is moved to the left                                                   | `number`           | `0`     |
-| `[nzPush]`   | The number of cells that raster is moved to the right                                                  | `number`           | `0`     |
-| `[nzSpan]`   | Raster number of cells to occupy, 0 corresponds to `display: none`                                     | `number`           | -       |
-| `[nzXs]`     | `screen < 576px` and also default setting, could be a `span` value or an object containing above props | `number \| object` | -       |
-| `[nzSm]`     | `screen ≥ 576px`, could be a `span` value or an object containing above props                          | `number \| object` | -       |
-| `[nzMd]`     | `screen ≥ 768px`, could be a `span` value or an object containing above props                          | `number \| object` | -       |
-| `[nzLg]`     | `screen ≥ 992px`, could be a `span` value or an object containing above props                          | `number \| object` | -       |
-| `[nzXl]`     | `screen ≥ 1200px`, could be a `span` value or an object containing above props                         | `number \| object` | -       |
-| `[nzXXl]`    | `screen ≥ 1600px`, could be a `span` value or an object containing above props                         | `number \| object` | -       |
+| `[nzFlex]`   | Flex layout style                                                                                      | `string \| number` | -       |         |
+| `[nzOffset]` | The number of cells to offset Col from the left                                                        | `number`           | `0`     |         |
+| `[nzOrder]`  | Raster order                                                                                           | `number`           | `0`     |         |
+| `[nzPull]`   | The number of cells that raster is moved to the left                                                   | `number`           | `0`     |         |
+| `[nzPush]`   | The number of cells that raster is moved to the right                                                  | `number`           | `0`     |         |
+| `[nzSpan]`   | Raster number of cells to occupy, 0 corresponds to `display: none`                                     | `number`           | -       |         |
+| `[nzXs]`     | `screen < 576px` and also default setting, could be a `span` value or an object containing above props | `number \| object` | -       |         |
+| `[nzSm]`     | `screen ≥ 576px`, could be a `span` value or an object containing above props                          | `number \| object` | -       |         |
+| `[nzMd]`     | `screen ≥ 768px`, could be a `span` value or an object containing above props                          | `number \| object` | -       |         |
+| `[nzLg]`     | `screen ≥ 992px`, could be a `span` value or an object containing above props                          | `number \| object` | -       |         |
+| `[nzXl]`     | `screen ≥ 1200px`, could be a `span` value or an object containing above props                         | `number \| object` | -       |         |
+| `[nzXXl]`    | `screen ≥ 1600px`, could be a `span` value or an object containing above props                         | `number \| object` | -       |         |
 | `[nzXXXl]`   | `screen ≥ 1920px`, could be a `span` value or an object containing above props                         | `number \| object` | -       | 21.3.0  |
 
 The breakpoints of responsive grid follow [BootStrap 4 media queries rules](https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints)(not including `occasionally part`).
