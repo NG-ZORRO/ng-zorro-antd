@@ -23,6 +23,7 @@ tag: '{{version}}'
 ### Features
 
 - **cascader:** 支持 `nzPopupRender` 属性 ([#9751](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9751)) ([fcd9be8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fcd9be841f9bf7b761f4f5729c95c37e8eeaf7eb))
+- **cascader:** 对齐 Ant Design Cascader 的 Open 受控行为 ([#9747](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9747)) ([91293df](https://github.com/NG-ZORRO/ng-zorro-antd/commit/91293df0dc4c103733934abfdcfdbca39aa4c50c))
 - **cron-expression:** 升级 `cron-parser` 至 v5 ([#9757](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9757)) ([ff5c160](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ff5c160d46627cd6dcbc1d4870a5dbf4ba26d458))
 - **form:** 支持混合布局 ([#9755](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9755)) ([db46533](https://github.com/NG-ZORRO/ng-zorro-antd/commit/db465330dcd5f128ddd8ae55a092559e108ca9ff))
 - **grid:** 为 row 指令新增 `nzWrap` 属性 ([#9789](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9789)) ([ece8bae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ece8bae11241e579d7a675ee93b01242eee825d8))
@@ -37,6 +38,7 @@ tag: '{{version}}'
 - **color-picker:** 修复当触发元素靠近视口边缘时弹出框被裁剪的问题 ([#9784](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9784)) ([284e6d3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/284e6d300673953a22df7db5afaf92b2fac005f1))
 - **date-picker:** 修复使用 signal 表单时初始值未设置的问题 ([#9778](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9778)) ([aff39fb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/aff39fb786c0f0a292d1785c006132c65460d11a))
 - **descriptions:** 修复 `NG0956` 错误 ([#9781](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9781)) ([7f1b3ec](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7f1b3ecfd04d0d0f3e455475e5cc8819fdc38b91))
+- **float-button:** 对齐 Ant Design FloatButton 的 Open 受控行为 ([#9754](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9754)) ([f19811d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f19811d4d56d7d1ab529d7baa3ce14076cf448a9))
 - **input-number:** 当输入框为只读时阻止滚轮事件 ([#9785](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9785)) ([c857db8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c857db8c5847878a16df79f05f162692bd94b984))
 - **input-number:** 修复输入过长时文字与操作按钮重叠的问题 ([#9768](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9768)) ([7c3272c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7c3272c01ccf307702f2a3440c8ff501cb9c86c6))
 

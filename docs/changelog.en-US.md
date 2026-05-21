@@ -23,6 +23,7 @@ tag: '{{version}}'
 ### Features
 
 - **cascader:** support `nzPopupRender` ([#9751](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9751)) ([fcd9be8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fcd9be841f9bf7b761f4f5729c95c37e8eeaf7eb))
+- **cascader:** align `nzOpen` behavior with ant design ([#9747](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9747)) ([91293df](https://github.com/NG-ZORRO/ng-zorro-antd/commit/91293df0dc4c103733934abfdcfdbca39aa4c50c))
 - **cron-expression:** bump `cron-parser` to v5 ([#9757](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9757)) ([ff5c160](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ff5c160d46627cd6dcbc1d4870a5dbf4ba26d458))
 - **form:** support mix layout ([#9755](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9755)) ([db46533](https://github.com/NG-ZORRO/ng-zorro-antd/commit/db465330dcd5f128ddd8ae55a092559e108ca9ff))
 - **grid:** add `nzWrap` input to row directive ([#9789](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9789)) ([ece8bae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ece8bae11241e579d7a675ee93b01242eee825d8))
@@ -37,6 +38,7 @@ tag: '{{version}}'
 - **color-picker:** popover clipped when trigger is near viewport edge ([#9784](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9784)) ([284e6d3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/284e6d300673953a22df7db5afaf92b2fac005f1))
 - **date-picker:** initial value not set with signal form ([#9778](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9778)) ([aff39fb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/aff39fb786c0f0a292d1785c006132c65460d11a))
 - **descriptions:** fix `NG0956` error ([#9781](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9781)) ([7f1b3ec](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7f1b3ecfd04d0d0f3e455475e5cc8819fdc38b91))
+- **float-button:** align `nzOpen` behavior with Ant Design ([#9754](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9754)) ([f19811d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f19811d4d56d7d1ab529d7baa3ce14076cf448a9))
 - **input-number:** prevent wheel event when input is read-only ([#9785](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9785)) ([c857db8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c857db8c5847878a16df79f05f162692bd94b984))
 - **input-number:** text overlaps handler when input too long ([#9768](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9768)) ([7c3272c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7c3272c01ccf307702f2a3440c8ff501cb9c86c6))
 
