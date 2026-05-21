@@ -14,7 +14,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
+import { Breakpoint } from 'ng-zorro-antd/core/services';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
@@ -58,17 +58,21 @@ export class NzSiderTriggerComponent implements OnChanges, OnInit {
   @Input() matchBreakPoint = false;
   @Input() nzCollapsedWidth: number | null = null;
   @Input() siderWidth: string | null = null;
-  @Input() nzBreakpoint: NzBreakpointKey | null = null;
+  @Input() nzBreakpoint: Breakpoint | null = null;
+
   isZeroTrigger = false;
   isNormalTrigger = false;
+
   updateTriggerType(): void {
     this.isZeroTrigger =
       this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.matchBreakPoint) || !this.nzBreakpoint);
     this.isNormalTrigger = this.nzCollapsedWidth !== 0;
   }
+
   ngOnInit(): void {
     this.updateTriggerType();
   }
+
   ngOnChanges(): void {
     this.updateTriggerType();
   }

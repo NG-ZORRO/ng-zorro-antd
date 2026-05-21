@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -13,14 +13,12 @@ import {
   DestroyRef,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
   inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -66,6 +64,7 @@ import {
                 [nzLg]="nzGrid.lg || null"
                 [nzXl]="nzGrid.xl || null"
                 [nzXXl]="nzGrid.xxl || null"
+                [nzXXXl]="nzGrid.xxxl || null"
               >
                 <ng-template
                   [ngTemplateOutlet]="nzRenderItem"
@@ -117,7 +116,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-list',
-    '[class.ant-list-rtl]': `dir === 'rtl'`,
+    '[class.ant-list-rtl]': `dir() === 'rtl'`,
     '[class.ant-list-vertical]': 'nzItemLayout === "vertical"',
     '[class.ant-list-lg]': 'nzSize === "large"',
     '[class.ant-list-sm]': 'nzSize === "small"',
@@ -137,9 +136,9 @@ import {
     NzListPaginationComponent
   ]
 })
-export class NzListComponent implements AfterContentInit, OnChanges, OnInit {
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
+export class NzListComponent implements AfterContentInit, OnChanges {
+  protected readonly dir = inject(Directionality).valueSignal;
+  private readonly destroyRef = inject(DestroyRef);
 
   @Input() nzDataSource?: NzSafeAny[];
   @Input({ transform: booleanAttribute }) nzBordered = false;
@@ -159,8 +158,7 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnInit {
   @ContentChild(NzListPaginationComponent) nzListPaginationComponent!: NzListPaginationComponent;
   @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective!: NzListLoadMoreDirective;
 
-  hasSomethingAfterLastItem = false;
-  dir: Direction = 'ltr';
+  protected hasSomethingAfterLastItem = false;
   private itemLayoutNotifySource = new BehaviorSubject<NzDirectionVHType>(this.nzItemLayout);
 
   get itemLayoutNotify$(): Observable<NzDirectionVHType> {
@@ -171,14 +169,7 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnInit {
     this.destroyRef.onDestroy(() => this.itemLayoutNotifySource.unsubscribe());
   }
 
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-    });
-  }
-
-  getSomethingAfterLastItem(): boolean {
+  private getSomethingAfterLastItem(): boolean {
     return !!(
       this.nzLoadMore ||
       this.nzPagination ||
@@ -188,6 +179,7 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnInit {
       this.nzListLoadMoreDirective
     );
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzItemLayout) {
       this.itemLayoutNotifySource.next(this.nzItemLayout);

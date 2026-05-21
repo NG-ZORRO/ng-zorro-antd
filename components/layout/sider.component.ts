@@ -24,7 +24,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzBreakpointKey, NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
+import { Breakpoint, NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 import { inNextTick, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
 
@@ -79,7 +79,7 @@ export class NzSiderComponent implements OnInit, OnChanges, AfterContentInit {
   @Input() nzWidth: string | number = 200;
   @Input() nzTheme: 'light' | 'dark' = 'dark';
   @Input() nzCollapsedWidth = 80;
-  @Input() nzBreakpoint: NzBreakpointKey | null = null;
+  @Input() nzBreakpoint: Breakpoint | null = null;
   @Input() nzZeroTrigger: TemplateRef<void> | null = null;
   @Input() nzTrigger: TemplateRef<void> | undefined | null = undefined;
   @Input({ transform: booleanAttribute }) nzReverseArrow = false;
