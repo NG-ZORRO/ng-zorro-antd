@@ -39,8 +39,8 @@ export class NzRowDirective {
   private readonly breakpointService = inject(NzBreakpointService);
   protected readonly dir = inject(Directionality).valueSignal;
 
-  readonly nzAlign = input<NzAlign | null>(null);
-  readonly nzJustify = input<NzJustify | null>(null);
+  readonly nzAlign = input<NzAlign | Partial<ResponsiveLike<NzAlign>> | null>(null);
+  readonly nzJustify = input<NzJustify | Partial<ResponsiveLike<NzJustify>> | null>(null);
   readonly nzGutter = input<Gutter | [Gutter, Gutter] | null>(undefined);
   readonly nzWrap = input(true, { transform: booleanAttribute });
 
@@ -53,12 +53,14 @@ export class NzRowDirective {
     : signal(undefined);
 
   protected readonly alignClass = computed<string>(() => {
-    const align = this.nzAlign();
+    this.currentBreakpoint();
+    const align = this.resolveResponsiveValue(this.nzAlign());
     return isNotNil(align) ? this.generateClass(align) : '';
   });
 
   protected readonly flexClass = computed<string>(() => {
-    const justify = this.nzJustify();
+    this.currentBreakpoint();
+    const justify = this.resolveResponsiveValue(this.nzJustify());
     return isNotNil(justify) ? this.generateClass(justify) : '';
   });
 
@@ -100,5 +102,22 @@ export class NzRowDirective {
 
   private generateClass(suffix: string): string {
     return generateClassName(CLASS_NAME, suffix);
+  }
+
+  private resolveResponsiveValue<T extends string>(value: T | Partial<ResponsiveLike<T>> | null): T | null {
+    if (!isNotNil(value)) {
+      return null;
+    }
+    if (isPlainObject<Partial<ResponsiveLike<T>>>(value)) {
+      let result: T | null = null;
+      Object.keys(gridResponsiveMap).forEach(screen => {
+        const bp = screen as NzBreakpointKey;
+        if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches && value[bp]) {
+          result = value[bp] as T;
+        }
+      });
+      return result;
+    }
+    return value;
   }
 }
