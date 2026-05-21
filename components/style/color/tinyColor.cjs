@@ -1,4 +1,4 @@
-const tinycolor = require('./tinycolor2');
+const tinycolor = require('./tinycolor2.cjs');
 
 module.exports = {
   install: function (less, pluginManager, functions) {
