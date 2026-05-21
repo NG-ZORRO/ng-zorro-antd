@@ -1,4 +1,4 @@
-const tinycolor = require('./tinycolor2');
+const tinycolor = require('./tinycolor2.cjs');
 
 var hueStep = 2;
 var saturationStep = 0.16;
