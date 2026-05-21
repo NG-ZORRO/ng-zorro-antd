@@ -16,6 +16,32 @@ tag: '{{version}}'
 
 ---
 
+## 21.3.0
+
+`2026-05-22`
+
+### Features
+
+- **cascader:** support `nzPopupRender` ([#9751](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9751)) ([fcd9be8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fcd9be841f9bf7b761f4f5729c95c37e8eeaf7eb))
+- **cascader:** align `nzOpen` behavior with ant design ([#9747](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9747)) ([91293df](https://github.com/NG-ZORRO/ng-zorro-antd/commit/91293df0dc4c103733934abfdcfdbca39aa4c50c))
+- **cron-expression:** bump `cron-parser` to v5 ([#9757](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9757)) ([ff5c160](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ff5c160d46627cd6dcbc1d4870a5dbf4ba26d458))
+- **form:** support mix layout ([#9755](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9755)) ([db46533](https://github.com/NG-ZORRO/ng-zorro-antd/commit/db465330dcd5f128ddd8ae55a092559e108ca9ff))
+- **grid:** add `nzWrap` input to row directive ([#9789](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9789)) ([ece8bae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ece8bae11241e579d7a675ee93b01242eee825d8))
+- **grid:** add `xxxl` (1920px) breakpoint for FHD screen ([#9792](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9792)) ([0e091b5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0e091b55df80721a622c82a2cf39043047bfb5b4))
+- **grid:** support responsive object type for `nzAlign` and `nzJustify` ([#9790](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9790)) ([1293d42](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1293d424130c4baea1030e983132d1ce1c1509cb))
+- **grid:** support string css unit for `nzGutter` ([#9786](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9786)) ([e330e21](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e330e2163730e6d661eb741b8b78202903d0d286))
+- **upload:** support `nzId` ([#9783](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9783)) ([a27cd9a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a27cd9a612c1e1912e341c9828187947c8c4cfc0))
+
+### Bug Fixes
+
+- **cascader:** apply `nzLabelRender` in multiple mode ([#9775](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9775)) ([7f188f2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7f188f2f91168391edf1b5a5880ba645d0f1dc46))
+- **color-picker:** popover clipped when trigger is near viewport edge ([#9784](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9784)) ([284e6d3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/284e6d300673953a22df7db5afaf92b2fac005f1))
+- **date-picker:** initial value not set with signal form ([#9778](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9778)) ([aff39fb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/aff39fb786c0f0a292d1785c006132c65460d11a))
+- **descriptions:** fix `NG0956` error ([#9781](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9781)) ([7f1b3ec](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7f1b3ecfd04d0d0f3e455475e5cc8819fdc38b91))
+- **float-button:** align `nzOpen` behavior with Ant Design ([#9754](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9754)) ([f19811d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f19811d4d56d7d1ab529d7baa3ce14076cf448a9))
+- **input-number:** prevent wheel event when input is read-only ([#9785](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9785)) ([c857db8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c857db8c5847878a16df79f05f162692bd94b984))
+- **input-number:** text overlaps handler when input too long ([#9768](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9768)) ([7c3272c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7c3272c01ccf307702f2a3440c8ff501cb9c86c6))
+
 ## 21.2.2
 
 `2026-04-13`
