@@ -92,7 +92,7 @@ You can set the title of `[nz-menu-group]` in the following ways.
 <li nz-menu-group nzTitle="SubTitle" nzIcon="appstore"></li>
 
 <li nz-menu-group>
-  < title>
+  <span title>
     <nz-icon nzType="appstore" />
     <span>SubTitle</span>
   </span>
