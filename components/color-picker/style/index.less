@@ -53,7 +53,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-image: linear-gradient(0deg, #000, transparent), linear-gradient(90deg, #fff, hsla(0deg, 0%, 100%, 0));
+    background-image: linear-gradient(0deg, #000, transparent), linear-gradient(90deg, #fff, hsl(0deg, 0%, 100%, 0));
     border-radius: inherit;
   }
 
@@ -94,9 +94,9 @@
 
     &-alpha {
       background-image: conic-gradient(
-        rgba(0, 0, 0, 0.06) 0 25%,
+        rgb(0, 0, 0, 0.06) 0 25%,
         transparent 0 50%,
-        rgba(0, 0, 0, 0.06) 0 75%,
+        rgb(0, 0, 0, 0.06) 0 75%,
         transparent 0
       );
       background-size: 8px 8px;
@@ -169,6 +169,7 @@
         align-items: center;
 
         .@{color-picker-prefix-cls}-slider {
+          flex: 1;
           margin-bottom: 0;
         }
       }
@@ -360,7 +361,7 @@
     // For bright backgrounds, use dark tick for contrast
     &-color-bright&-color-checked::after,
     &-color-checked&-color-bright::after {
-      border-color: rgba(0, 0, 0, 0.88);
+      border-color: rgb(0, 0, 0, 0.88);
     }
   }
 }
