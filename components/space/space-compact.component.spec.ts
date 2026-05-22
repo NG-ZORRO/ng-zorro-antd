@@ -42,7 +42,6 @@ describe('space compact', () => {
     const spaceCompactElement: HTMLElement = fixture.nativeElement;
     const nzInput = spaceCompactElement.querySelector('input[nz-input]');
     const nzInputWrapper = spaceCompactElement.querySelector('nz-input-wrapper');
-    const nzInputGroup = spaceCompactElement.querySelector('nz-input-group');
     const nzInputNumber = spaceCompactElement.querySelector('nz-input-number');
     const nzDatePicker = spaceCompactElement.querySelector('nz-date-picker');
     const nzRangePicker = spaceCompactElement.querySelector('nz-range-picker');
@@ -55,7 +54,6 @@ describe('space compact', () => {
     expect(nzInput).toBeTruthy();
     expect(nzInputNumber).toBeTruthy();
     expect(nzInputWrapper).toBeTruthy();
-    expect(nzInputGroup).toBeTruthy();
     expect(nzDatePicker).toBeTruthy();
     expect(nzRangePicker).toBeTruthy();
     expect(nzTimePicker).toBeTruthy();
@@ -67,7 +65,6 @@ describe('space compact', () => {
     expect(nzInput!.classList).toContain('ant-input-compact-item');
     expect(nzInputWrapper!.classList).toContain('ant-input-compact-item');
     expect(nzInputWrapper!.querySelector('input.ant-input-compact-item')).toBeFalsy();
-    expect(nzInputGroup!.classList).toContain('ant-input-compact-item');
 
     expect(nzInputNumber!.classList).toContain('ant-input-number-compact-item');
 
@@ -246,7 +243,6 @@ describe('space compact direction', () => {
         <span nzInputPrefix>Prefix</span>
         <input nz-input />
       </nz-input-wrapper>
-      <nz-input-group><input nz-input /></nz-input-group>
       <nz-input-number />
       <nz-date-picker />
       <nz-range-picker />

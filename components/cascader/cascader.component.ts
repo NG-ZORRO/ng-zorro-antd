@@ -42,8 +42,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, merge, Observable, of } from 'rxjs';
-import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
 
 import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
@@ -51,7 +51,6 @@ import {
   NZ_FORM_SIZE,
   NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
-  NzFormNoStatusService,
   NzFormStatusService
 } from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -85,7 +84,7 @@ import {
 } from 'ng-zorro-antd/select';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
-import { defaultDisplayRender, NzDisplayRenderContextPipe, NzDisplayRenderPipe } from './cascader-display-render.pipe';
+import { NzDisplayRenderContextPipe, NzDisplayRenderPipe } from './cascader-display-render.pipe';
 import { NzCascaderOptionComponent } from './cascader-option.component';
 import { NzCascaderTreeService } from './cascader-tree.service';
 import { NzCascaderService } from './cascader.service';
@@ -123,7 +122,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
                   <nz-select-item
                     deletable
                     [disabled]="nzDisabled"
-                    [label]="node | nzDisplayRender: (nzLabelRender ? undefined : nzDisplayWith)"
+                    [label]="node | nzDisplayRender"
                     [contentTemplateOutlet]="isLabelRenderTemplate ? nzLabelRender : null"
                     [contentTemplateOutletContext]="node | nzDisplayRenderContext"
                     (delete)="removeSelected(node)"
@@ -340,13 +339,16 @@ export class NzCascaderComponent
   extends NzTreeBase
   implements NzCascaderComponentAsSource, OnInit, OnChanges, ControlValueAccessor
 {
-  private ngZone = inject(NgZone);
-  private cdr = inject(ChangeDetectorRef);
-  private i18nService = inject(NzI18nService);
-  private elementRef = inject(ElementRef<HTMLElement>);
-  private renderer = inject(Renderer2);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
+  public readonly cascaderService = inject(NzCascaderService);
+  private readonly ngZone = inject(NgZone);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly i18nService = inject(NzI18nService);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly renderer = inject(Renderer2);
+  private readonly directionality = inject(Directionality);
+  private readonly destroyRef = inject(DestroyRef);
+  protected readonly nzFormStatusService = inject(NzFormStatusService, { optional: true });
+  protected readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -410,12 +412,6 @@ export class NzCascaderComponent
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny> | Observable<NzSafeAny>;
-  /**
-   * @deprecated Use `nzLabelRender` instead. This will be removed in v22.0.0.
-   */
-  @Input() nzDisplayWith: (nodes: NzCascaderOption[]) => string | undefined = (nodes: NzCascaderOption[]) => {
-    return defaultDisplayRender(nodes.map(n => this.cascaderService.getOptionLabel(n!)));
-  };
   // TODO: RTL
   @Input() nzPrefix: string | TemplateRef<void> | null = null;
   @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
@@ -536,11 +532,6 @@ export class NzCascaderComponent
     return isNotNil(this.nzOpen);
   }
 
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-  nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
-  public cascaderService = inject(NzCascaderService);
-
   constructor() {
     super(inject(NzCascaderTreeService));
     this.cascaderService.withComponent(this);
@@ -562,8 +553,6 @@ export class NzCascaderComponent
     this.nzFormStatusService?.formStatusChanges
       .pipe(
         distinctUntilChanged((pre, cur) => pre.status === cur.status && pre.hasFeedback === cur.hasFeedback),
-        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : of(false)),
-        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => this.setStatusStyles(status, hasFeedback));

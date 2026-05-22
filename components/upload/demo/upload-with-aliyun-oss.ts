@@ -11,7 +11,7 @@ import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd
     <nz-upload
       nzName="file"
       [(nzFileList)]="files"
-      [nzTransformFile]="transformFile"
+      [nzBeforeUpload]="beforeUpload"
       [nzData]="getExtraData"
       [nzAction]="mockOSSData.host"
       (nzChange)="onChange($event)"
@@ -35,11 +35,11 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     signature: 'ZGFob25nc2hhbw=='
   };
 
-  transformFile = (file: NzUploadFile): NzUploadFile => {
+  beforeUpload = (file: NzUploadFile): boolean => {
     const suffix = file.name.slice(file.name.lastIndexOf('.'));
     const filename = Date.now() + suffix;
     file.url = this.mockOSSData.dir + filename;
-    return file;
+    return true;
   };
 
   getExtraData = (file: NzUploadFile): {} => {

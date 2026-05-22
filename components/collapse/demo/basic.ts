@@ -8,7 +8,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
   template: `
     <nz-collapse>
       @for (panel of panels; track panel) {
-        <nz-collapse-panel [nzHeader]="panel.name" [nzActive]="panel.active" [nzDisabled]="panel.disabled">
+        <nz-collapse-panel [nzHeader]="panel.name" [nzActive]="panel.active" nzCollapsible="disabled">
           <p style="margin:0;">
             A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome
             guest in many households across the world.
@@ -19,7 +19,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
   `
 })
 export class NzDemoCollapseBasicComponent {
-  panels = [
+  readonly panels = [
     {
       active: true,
       name: 'This is panel header 1',

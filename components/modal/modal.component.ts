@@ -32,7 +32,7 @@ import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { NzModalRef } from './modal-ref';
 import { NzModalTitleDirective } from './modal-title.directive';
-import { ModalButtonOptions, ModalOptions, ModalTypes, OnClickCallback, StyleObjectLike } from './modal-types';
+import { ModalButtonOptions, ModalOptions, ModalTypes, StyleObjectLike } from './modal-types';
 import { NzModalService } from './modal.service';
 import { getConfigFromComponent } from './utils';
 
@@ -82,20 +82,8 @@ export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   @Input() nzModalType: ModalTypes = 'default';
   @Input() nzAutofocus: 'ok' | 'cancel' | 'auto' | null = 'auto';
 
-  /**
-   * @note The input usage will be removed in v22.
-   */
-  @Input()
-  @Output()
-  readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> | NzSafeAny = new EventEmitter<T>();
-
-  /**
-   * @note The input usage will be removed in v22.
-   */
-  @Input()
-  @Output()
-  readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> | NzSafeAny = new EventEmitter<T>();
-
+  @Output() readonly nzOnOk = new EventEmitter<T>();
+  @Output() readonly nzOnCancel = new EventEmitter<T>();
   @Output() readonly nzAfterOpen = new EventEmitter<void>();
   @Output() readonly nzAfterClose = new EventEmitter<R>();
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();

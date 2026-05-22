@@ -41,7 +41,6 @@ import {
   NzUploadChangeParam,
   NzUploadFile,
   NzUploadListType,
-  NzUploadTransformFileType,
   NzUploadType,
   NzUploadXHRArgs,
   UploadFilter,
@@ -120,11 +119,6 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() nzPreview?: (file: NzUploadFile) => void;
   @Input() nzPreviewFile?: (file: NzUploadFile) => Observable<string>;
   @Input() nzPreviewIsImage?: (file: NzUploadFile) => boolean;
-  /**
-   * @deprecated will be removed in v22.0.0
-   * Use `nzBeforeUpload` instead.
-   */
-  @Input() nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
   @Input() nzDownload?: (file: NzUploadFile) => void;
   @Input() nzIconRender: NzIconRenderTemplate | null = null;
   @Input() nzFileListRender: TemplateRef<{ $implicit: NzUploadFile[] }> | null = null;
@@ -179,7 +173,6 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
       multiple: this.nzMultiple,
       withCredentials: this.nzWithCredentials,
       filters,
-      transformFile: this.nzTransformFile,
       onStart: this.onStart,
       onProgress: this.onProgress,
       onSuccess: this.onSuccess,

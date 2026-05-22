@@ -72,14 +72,6 @@ describe('input', () => {
         expect(inputElement.nativeElement.classList).toContain('ant-input-lg');
       });
 
-      it('should nzStepperLess work', () => {
-        fixture.detectChanges();
-        expect(inputElement.nativeElement.classList).toContain('ant-input-stepperless');
-        testComponent.stepperless = false;
-        fixture.detectChanges();
-        expect(inputElement.nativeElement.classList).not.toContain('ant-input-stepperless');
-      });
-
       it('should be focus / blur work', async () => {
         const input = inputElement.nativeElement;
         testComponent.inputDirective().focus();
@@ -317,6 +309,7 @@ describe('input', () => {
       fixture.detectChanges();
       expect(inputElement.classList).toContain('ant-input-lg');
     });
+
     it('should set correctly the size from the compactSize signal', () => {
       TestBed.configureTestingModule({
         providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
@@ -329,6 +322,7 @@ describe('input', () => {
       fixture.detectChanges();
       expect(inputElement.classList).toContain('ant-input-lg');
     });
+
     it('should set correctly the size from the nzSize input', () => {
       TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestInputFinalSizeComponent);
@@ -441,21 +435,11 @@ export class NzTestInputWithDirComponent {
 
 @Component({
   imports: [NzInputModule],
-  template: `
-    <input
-      nz-input
-      [nzSize]="size"
-      [disabled]="disabled"
-      [nzVariant]="variant"
-      [nzStepperless]="stepperless"
-      [value]="value"
-    />
-  `
+  template: `<input nz-input [nzSize]="size" [disabled]="disabled" [nzVariant]="variant" [value]="value" />`
 })
 export class NzTestInputWithInputComponent {
   size: NzSizeLDSType = 'default';
   disabled = false;
-  stepperless = true;
   variant: NzVariant = 'outlined';
   value = 'NzTestInput';
   inputDirective = viewChild.required(NzInputDirective);

@@ -35,7 +35,6 @@ import {
   NzUploadChangeParam,
   NzUploadFile,
   NzUploadListType,
-  NzUploadTransformFileType,
   NzUploadType,
   UploadFilter,
   ZipButtonOptions
@@ -335,28 +334,6 @@ describe('upload', () => {
           instance.nzHeaders = null;
           fixture.detectChanges();
           pageObject.postSmall().expectChange();
-        });
-      });
-
-      describe('[nzTransformFile]', () => {
-        it('should be from small to big', () => {
-          instance.nzTransformFile = () => new File([`1`], `1.png`);
-          fixture.detectChanges();
-          pageObject.postLarge();
-          const req = httpMock.expectOne(instance.nzAction as string);
-          expect((req.request.body.get('file') as NzUploadFile).size).toBe(1);
-          req.flush({});
-          httpMock.verify();
-        });
-
-        it('should return Observable', () => {
-          instance.nzTransformFile = () => of(new File([`123`], `1.png`));
-          fixture.detectChanges();
-          pageObject.postLarge();
-          const req = httpMock.expectOne(instance.nzAction as string);
-          expect((req.request.body.get('file') as NzUploadFile).size).toBe(3);
-          req.flush({});
-          httpMock.verify();
         });
       });
 
@@ -1503,7 +1480,6 @@ describe('upload', () => {
         [nzPreviewFile]="previewFile"
         [nzRemove]="onRemove"
         [nzDirectory]="directory"
-        [nzTransformFile]="nzTransformFile"
         [nzIconRender]="nzIconRender"
         [nzFileListRender]="nzFileListRender"
         [nzMaxCount]="nzMaxCount"
@@ -1554,7 +1530,6 @@ class TestUploadComponent {
   nzShowUploadList: boolean | NzShowUploadList = true;
   nzShowButton = true;
   nzWithCredentials = false;
-  nzTransformFile!: (file: NzUploadFile) => NzUploadTransformFileType;
   nzIconRender: NzIconRenderTemplate | null = null;
   nzFileListRender: TemplateRef<{ $implicit: NzUploadFile[] }> | null = null;
   nzMaxCount: number | undefined = undefined;

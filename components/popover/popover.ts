@@ -92,7 +92,6 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
-      [cdkConnectedOverlayPush]="cdkConnectedOverlayPush"
       [nzArrowPointAtCenter]="nzArrowPointAtCenter"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"

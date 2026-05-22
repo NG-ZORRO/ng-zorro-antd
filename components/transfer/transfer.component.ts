@@ -25,11 +25,11 @@ import {
   DestroyRef
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, of as observableOf, of } from 'rxjs';
-import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzFormNoStatusService, NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzFormStatusService } from 'ng-zorro-antd/core/form';
 import { NgClassInterface, NgStyleInterface, NzSafeAny, NzStatus, NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { getStatusClassNames, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
@@ -182,7 +182,6 @@ export class NzTransferComponent implements OnInit, OnChanges {
   private renderer = inject(Renderer2);
   private directionality = inject(Directionality);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   @ViewChildren(NzTransferListComponent) lists!: QueryList<NzTransferListComponent>;
   locale!: NzTransferI18nInterface;
@@ -388,8 +387,6 @@ export class NzTransferComponent implements OnInit, OnChanges {
     this.nzFormStatusService?.formStatusChanges
       .pipe(
         distinctUntilChanged((pre, cur) => pre.status === cur.status && pre.hasFeedback === cur.hasFeedback),
-        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
-        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {

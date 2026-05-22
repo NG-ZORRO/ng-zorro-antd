@@ -3,57 +3,47 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DebugElement, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzFormItemFeedbackIconComponent } from './nz-form-item-feedback-icon.component';
+import { provideNzNoAnimation } from '../animation';
+
+const CLASS_NAME = 'ant-form-item-feedback-icon';
 
 describe('nz-form-item-feedback-icon', () => {
   let fixture: ComponentFixture<NzFormItemFeedbackIconComponent>;
-  let component: NzFormItemFeedbackIconComponent;
-  let feedback: DebugElement;
-  let firstChange = true;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNzNoAnimation(), provideNzIconsTesting()]
     });
     fixture = TestBed.createComponent(NzFormItemFeedbackIconComponent);
-    component = fixture.componentInstance;
-    feedback = fixture.debugElement;
     fixture.detectChanges();
   });
 
-  function changeStatus(status: NzValidateStatus): void {
-    const previousStatus: NzValidateStatus = component.status;
-    component.status = status;
-    component.ngOnChanges({ status: new SimpleChange(previousStatus, status, firstChange) });
-    firstChange = false;
-    fixture.detectChanges();
-  }
-
   it('should className correct', () => {
-    changeStatus('');
-    expect(fixture.nativeElement.classList).toContain('ant-form-item-feedback-icon');
+    expect(fixture.nativeElement.classList).toContain(CLASS_NAME);
 
-    changeStatus('success');
-    expect(fixture.nativeElement.classList).toContain('ant-form-item-feedback-icon-success');
+    fixture.componentRef.setInput('status', 'success');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.classList).toContain(`${CLASS_NAME}-success`);
     expect(fixture.nativeElement.querySelector('.anticon-check-circle-fill')).toBeTruthy();
 
-    changeStatus('error');
-    expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-error');
-    expect(feedback.nativeElement.querySelector('.anticon-close-circle-fill')).toBeTruthy();
+    fixture.componentRef.setInput('status', 'error');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.classList).toContain(`${CLASS_NAME}-error`);
+    expect(fixture.nativeElement.querySelector('.anticon-close-circle-fill')).toBeTruthy();
 
-    changeStatus('warning');
-    expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-warning');
-    expect(feedback.nativeElement.querySelector('.anticon-exclamation-circle-fill')).toBeTruthy();
+    fixture.componentRef.setInput('status', 'warning');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.classList).toContain(`${CLASS_NAME}-warning`);
+    expect(fixture.nativeElement.querySelector('.anticon-exclamation-circle-fill')).toBeTruthy();
 
-    changeStatus('validating');
-    expect(feedback.nativeElement.classList).toContain('ant-form-item-feedback-icon-validating');
-    expect(feedback.nativeElement.querySelector('.anticon-loading')).toBeTruthy();
+    fixture.componentRef.setInput('status', 'validating');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.classList).toContain(`${CLASS_NAME}-validating`);
+    expect(fixture.nativeElement.querySelector('.anticon-loading')).toBeTruthy();
   });
 });

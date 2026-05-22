@@ -29,7 +29,6 @@ import {
   NZ_FORM_SIZE,
   NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
-  NzFormNoStatusService,
   NzFormStatusService
 } from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
@@ -57,7 +56,6 @@ const PREFIX_CLS = 'ant-input';
     '[attr.disabled]': 'finalDisabled() || null',
     '[attr.readonly]': 'readonly() || null',
     '[class.ant-input-rtl]': `dir() === 'rtl'`,
-    '[class.ant-input-stepperless]': `nzStepperless()`,
     '[class.ant-input-focused]': 'focused()'
   },
   hostDirectives: [NzSpaceCompactItemDirective],
@@ -68,7 +66,6 @@ export class NzInputDirective implements OnInit {
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private destroyRef = inject(DestroyRef);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
   private inputWrapper = inject(NZ_INPUT_WRAPPER, { host: true, optional: true });
   private focusMonitor = inject(FocusMonitor);
   private hostView = inject(ViewContainerRef);
@@ -80,10 +77,6 @@ export class NzInputDirective implements OnInit {
 
   readonly nzVariant = input<NzVariant>();
   readonly nzSize = input<NzSizeLDSType>('default');
-  /**
-   * @deprecated Will be removed in v22.
-   */
-  readonly nzStepperless = input(true, { transform: booleanAttribute });
   readonly nzStatus = input<NzStatus>('');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
@@ -161,7 +154,7 @@ export class NzInputDirective implements OnInit {
   }
 
   private renderFeedbackIcon(): void {
-    if (!this.status() || !this.hasFeedback() || this.inputWrapper || !!this.nzFormNoStatusService) {
+    if (!this.status() || !this.hasFeedback() || this.inputWrapper) {
       // remove feedback
       this.hostView.clear();
       this.feedbackRef = null;
@@ -170,8 +163,7 @@ export class NzInputDirective implements OnInit {
 
     this.feedbackRef = this.feedbackRef || this.hostView.createComponent(NzFormItemFeedbackIconComponent);
     this.feedbackRef.location.nativeElement.classList.add('ant-input-suffix');
-    this.feedbackRef.instance.status = this.status();
-    this.feedbackRef.instance.updateIcon();
+    this.feedbackRef.setInput('status', this.status());
   }
 
   focus(options?: InputFocusOptions): void {
