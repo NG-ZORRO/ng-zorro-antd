@@ -19,13 +19,22 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { toCssPixel } from 'ng-zorro-antd/core/util';
+import {
+  gridResponsiveMap,
+  NzBreakpointEnum,
+  NzBreakpointService,
+  type Breakpoint,
+  type ResponsiveLike
+} from 'ng-zorro-antd/core/services';
+import type { NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { isPlainObject, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
+export type NzAvatarSize = NzSizeLDSType | number | Partial<ResponsiveLike<number>>;
 
 /** https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-loading */
 type NzAvatarLoading = 'eager' | 'lazy';
@@ -65,8 +74,7 @@ type NzAvatarFetchPriority = 'high' | 'low' | 'auto';
     '[style.width]': 'customSize',
     '[style.height]': 'customSize',
     '[style.line-height]': 'customSize',
-    // nzSize type is number when customSize is true
-    '[style.font-size.px]': '(hasIcon && customSize) ? $any(nzSize) / 2 : null'
+    '[style.font-size.px]': 'hasIcon ? customSizeFont : null'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
@@ -74,7 +82,7 @@ type NzAvatarFetchPriority = 'high' | 'low' | 'auto';
 export class NzAvatarComponent implements OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   @Input() @WithConfig() nzShape: NzShapeSCType = 'circle';
-  @Input() @WithConfig() nzSize: NzSizeLDSType | number = 'default';
+  @Input() @WithConfig() nzSize: NzAvatarSize = 'default';
   @Input({ transform: numberAttribute }) @WithConfig() nzGap = 4;
   @Input() nzText?: string;
   @Input() nzSrc?: string;
@@ -89,13 +97,24 @@ export class NzAvatarComponent implements OnChanges {
   hasSrc: boolean = true;
   hasIcon: boolean = false;
   customSize: string | null = null;
+  customSizeFont: number | null = null;
 
   @ViewChild('textEl', { static: false }) textEl?: ElementRef<HTMLSpanElement>;
 
   private el: HTMLElement = inject(ElementRef).nativeElement;
   private cdr = inject(ChangeDetectorRef);
+  private breakpointService = inject(NzBreakpointService);
+  private currentBreakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
 
   constructor() {
+    this.breakpointService
+      .subscribe(gridResponsiveMap)
+      .pipe(takeUntilDestroyed())
+      .subscribe(bp => {
+        this.currentBreakpoint = bp;
+        this.setSizeStyle();
+        this.calcStringSize();
+      });
     afterEveryRender(() => this.calcStringSize());
   }
 
@@ -141,12 +160,24 @@ export class NzAvatarComponent implements OnChanges {
   }
 
   private setSizeStyle(): void {
-    if (typeof this.nzSize === 'number') {
-      this.customSize = toCssPixel(this.nzSize);
+    const size = this.getCurrentSize();
+
+    if (typeof size === 'number') {
+      this.customSize = toCssPixel(size);
+      this.customSizeFont = size / 2;
     } else {
       this.customSize = null;
+      this.customSizeFont = null;
     }
 
     this.cdr.markForCheck();
+  }
+
+  private getCurrentSize(): NzSizeLDSType | number | undefined {
+    if (isPlainObject<Partial<ResponsiveLike<number>>>(this.nzSize)) {
+      return this.nzSize[this.currentBreakpoint as Breakpoint];
+    }
+
+    return this.nzSize;
   }
 }

@@ -7,12 +7,13 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
 import { createFakeEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzAvatarGroupComponent } from './avatar-group.component';
-import { NzAvatarComponent } from './avatar.component';
+import { NzAvatarComponent, NzAvatarSize } from './avatar.component';
 import { NzAvatarModule } from './avatar.module';
 
 const imageBase64 =
@@ -230,7 +231,47 @@ describe('avatar', () => {
 
       context.nzIcon = 'user';
       await updateNonSignalsInput(fixture);
-      expect(hostStyle.fontSize === `${context.nzSize / 2}px`).toBe(true);
+      expect(hostStyle.fontSize === `${64 / 2}px`).toBe(true);
+    });
+
+    it('responsive size', async () => {
+      context.nzSize = { xs: 24, md: 40, lg: 64 };
+      context.nzIcon = 'user';
+      context.nzSrc = undefined;
+      await updateNonSignalsInput(fixture);
+
+      const hostStyle = dl.nativeElement.querySelector('nz-avatar').style;
+      context.comp['currentBreakpoint'] = NzBreakpointEnum.lg;
+      context.comp['setSizeStyle']();
+      fixture.detectChanges();
+      expect(hostStyle.height).toBe('64px');
+      expect(hostStyle.width).toBe('64px');
+      expect(hostStyle.lineHeight).toBe('64px');
+      expect(hostStyle.fontSize).toBe('32px');
+
+      context.comp['currentBreakpoint'] = NzBreakpointEnum.xs;
+      context.comp['setSizeStyle']();
+      fixture.detectChanges();
+      expect(hostStyle.height).toBe('24px');
+      expect(hostStyle.width).toBe('24px');
+      expect(hostStyle.lineHeight).toBe('24px');
+      expect(hostStyle.fontSize).toBe('12px');
+    });
+
+    it('should clear responsive size when current breakpoint has no value', async () => {
+      context.nzSize = { xs: 24 };
+      context.nzIcon = 'user';
+      context.nzSrc = undefined;
+      await updateNonSignalsInput(fixture);
+
+      const hostStyle = dl.nativeElement.querySelector('nz-avatar').style;
+      context.comp['currentBreakpoint'] = NzBreakpointEnum.lg;
+      context.comp['setSizeStyle']();
+      fixture.detectChanges();
+      expect(hostStyle.height).toBe('');
+      expect(hostStyle.width).toBe('');
+      expect(hostStyle.lineHeight).toBe('');
+      expect(hostStyle.fontSize).toBe('');
     });
 
     it('should set `lineHeight` on the text element considering `nzSize`', async () => {
@@ -369,7 +410,7 @@ function getScaleFromCSSTransform(transform: string): number {
 class TestAvatarComponent {
   @ViewChild('comp', { static: false }) comp!: NzAvatarComponent;
   nzShape: NzShapeSCType = 'square';
-  nzSize: NzSizeLDSType | number = 'large';
+  nzSize: NzAvatarSize = 'large';
   nzGap = 4;
   nzIcon?: string = 'user';
   nzText?: string = 'A';

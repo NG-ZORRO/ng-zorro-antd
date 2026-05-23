@@ -109,7 +109,7 @@ export interface AlertConfig {
 
 export interface AvatarConfig {
   nzShape?: NzShapeSCType;
-  nzSize?: NzSizeLDSType | number;
+  nzSize?: NzSizeLDSType | number | Partial<Record<NzBreakpointEnum, number>>;
   nzGap?: number;
 }
 
