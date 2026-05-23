@@ -7,7 +7,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
   selector: 'nz-demo-tag-draggable',
   imports: [CdkDropList, CdkDrag, NzTagModule],
   template: `
-    <div class="tag-list" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+    <div class="tag-list" cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)">
       @for (tag of tags; track tag) {
         <nz-tag cdkDrag>{{ tag }}</nz-tag>
       }
@@ -23,10 +23,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     .tag-list nz-tag {
       margin-inline-end: 0;
       cursor: move;
-    }
-
-    .tag-list.cdk-drop-list-dragging nz-tag:not(.cdk-drag-placeholder) {
-      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
 
     .tag-list .cdk-drag-placeholder {
