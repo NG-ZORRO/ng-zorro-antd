@@ -25,6 +25,7 @@
     "lint:fix": "npm run lint-fix:script && npm run lint-fix:style",
     "lint-fix:script": "npm run lint:script -- --fix",
     "lint-fix:style": "npm run lint:style -- --fix",
+    "generate:tokens": "tsx scripts/build/generate-design-tokens.ts",
     "pre-commit": "tsc -p components/tsconfig.json --noEmit && lint-staged",
     "prepare": "husky"
   },

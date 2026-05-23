@@ -69,6 +69,8 @@
   --@{ant-prefix}-info-color-deprecated-border: colorPalette('@{base-primary}', 3);
 }
 
+@import './token-css-variables';
+
 // -------- Colors -----------
 // >>> Primary
 @primary-color: ~'var(--@{ant-prefix}-primary-color)';
@@ -135,9 +137,8 @@
 // Popover background color
 @popover-background: @component-background;
 @popover-customize-border-color: @border-color-split;
-@font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-  'Noto Color Emoji';
+@font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 @code-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 @text-color: fade(@black, 85%);
 @text-color-secondary: fade(@black, 45%);
@@ -259,37 +260,47 @@
 @shadow-color: rgba(0, 0, 0, 0.15);
 @shadow-color-inverse: @component-background;
 @box-shadow-base: @shadow-2;
-@shadow-1-up: 0 -6px 16px -8px rgba(0, 0, 0, 0.08), 0 -9px 28px 0 rgba(0, 0, 0, 0.05),
+@shadow-1-up:
+  0 -6px 16px -8px rgba(0, 0, 0, 0.08),
+  0 -9px 28px 0 rgba(0, 0, 0, 0.05),
   0 -12px 48px 16px rgba(0, 0, 0, 0.03);
-@shadow-1-down: 0 6px 16px -8px rgba(0, 0, 0, 0.08), 0 9px 28px 0 rgba(0, 0, 0, 0.05),
+@shadow-1-down:
+  0 6px 16px -8px rgba(0, 0, 0, 0.08),
+  0 9px 28px 0 rgba(0, 0, 0, 0.05),
   0 12px 48px 16px rgba(0, 0, 0, 0.03);
-@shadow-1-left: -6px 0 16px -8px rgba(0, 0, 0, 0.08), -9px 0 28px 0 rgba(0, 0, 0, 0.05),
+@shadow-1-left:
+  -6px 0 16px -8px rgba(0, 0, 0, 0.08),
+  -9px 0 28px 0 rgba(0, 0, 0, 0.05),
   -12px 0 48px 16px rgba(0, 0, 0, 0.03);
-@shadow-1-right: 6px 0 16px -8px rgba(0, 0, 0, 0.08), 9px 0 28px 0 rgba(0, 0, 0, 0.05),
+@shadow-1-right:
+  6px 0 16px -8px rgba(0, 0, 0, 0.08),
+  9px 0 28px 0 rgba(0, 0, 0, 0.05),
   12px 0 48px 16px rgba(0, 0, 0, 0.03);
-@shadow-2: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+@shadow-2:
+  0 3px 6px -4px rgba(0, 0, 0, 0.12),
+  0 6px 16px 0 rgba(0, 0, 0, 0.08),
   0 9px 28px 8px rgba(0, 0, 0, 0.05);
 
 // Buttons
 @btn-font-weight: 400;
-@btn-border-radius-base: @border-radius-base;
-@btn-border-radius-sm: @border-radius-base;
+@btn-border-radius-base: ~'var(--@{ant-prefix}-button-border-radius)';
+@btn-border-radius-sm: ~'var(--@{ant-prefix}-button-border-radius-sm)';
 @btn-border-width: @border-width-base;
 @btn-border-style: @border-style-base;
-@btn-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-@btn-primary-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+@btn-shadow: ~'var(--@{ant-prefix}-button-shadow)';
+@btn-primary-shadow: ~'var(--@{ant-prefix}-button-primary-shadow)';
 @btn-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
 
-@btn-primary-color: #fff;
-@btn-primary-bg: @primary-color;
+@btn-primary-color: ~'var(--@{ant-prefix}-button-primary-color)';
+@btn-primary-bg: ~'var(--@{ant-prefix}-button-primary-bg)';
 
-@btn-default-color: @text-color;
-@btn-default-bg: @component-background;
-@btn-default-border: @border-color-base;
+@btn-default-color: ~'var(--@{ant-prefix}-button-default-color)';
+@btn-default-bg: ~'var(--@{ant-prefix}-button-default-bg)';
+@btn-default-border: ~'var(--@{ant-prefix}-button-default-border)';
 
 @btn-danger-color: #fff;
-@btn-danger-bg: @error-color;
-@btn-danger-border: @error-color;
+@btn-danger-bg: ~'var(--@{ant-prefix}-button-danger-bg)';
+@btn-danger-border: ~'var(--@{ant-prefix}-button-danger-border)';
 
 @btn-disable-color: @disabled-color;
 @btn-disable-bg: @disabled-bg;
@@ -500,18 +511,15 @@
 @input-padding-horizontal-sm: @control-padding-horizontal-sm - @line-width;
 @input-padding-horizontal-lg: @input-padding-horizontal;
 @input-padding-vertical-base: max(
-  (round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) -
-    @border-width-base,
+  (round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) - @border-width-base,
   3px
 );
 @input-padding-vertical-sm: max(
-  (round(((@input-height-sm - @font-size-base * @line-height-base) / 2) * 10) / 10) -
-    @border-width-base,
+  (round(((@input-height-sm - @font-size-base * @line-height-base) / 2) * 10) / 10) - @border-width-base,
   0
 );
-@input-padding-vertical-lg: (
-    ceil(((@input-height-lg - @font-size-lg * @line-height-base) / 2) * 10) / 10
-  ) - @border-width-base;
+@input-padding-vertical-lg: (ceil(((@input-height-lg - @font-size-lg * @line-height-base) / 2) * 10) / 10) -
+  @border-width-base;
 @input-placeholder-color: hsv(0, 0, 75%);
 @input-color: @text-color;
 @input-icon-color: @input-color;
@@ -760,11 +768,11 @@
 
 // Tag
 // --
-@tag-border-radius: @border-radius-base;
-@tag-default-bg: @background-color-light;
-@tag-default-color: @text-color;
-@tag-font-size: @font-size-sm;
-@tag-line-height: 20px;
+@tag-border-radius: ~'var(--@{ant-prefix}-tag-border-radius)';
+@tag-default-bg: ~'var(--@{ant-prefix}-tag-default-bg)';
+@tag-default-color: ~'var(--@{ant-prefix}-tag-default-color)';
+@tag-font-size: ~'var(--@{ant-prefix}-tag-font-size)';
+@tag-line-height: ~'var(--@{ant-prefix}-tag-line-height)';
 
 // TimePicker
 // ---
@@ -821,24 +829,23 @@
 
 // Card
 // ---
-@card-head-color: @heading-color;
-@card-head-background: transparent;
-@card-head-font-size: @font-size-lg;
+@card-head-color: ~'var(--@{ant-prefix}-card-head-color)';
+@card-head-background: ~'var(--@{ant-prefix}-card-head-bg)';
+@card-head-font-size: ~'var(--@{ant-prefix}-card-head-font-size)';
 @card-head-font-size-sm: @font-size-base;
 @card-head-padding: 16px;
 @card-head-padding-sm: (@card-head-padding / 2);
 @card-head-height: 48px;
 @card-head-height-sm: 36px;
 @card-inner-head-padding: 12px;
-@card-padding-base: 24px;
-@card-padding-base-sm: (@card-padding-base / 2);
-@card-actions-background: @component-background;
+@card-padding-base: ~'var(--@{ant-prefix}-card-padding)';
+@card-padding-base-sm: 12px;
+@card-actions-background: ~'var(--@{ant-prefix}-card-actions-bg)';
 @card-actions-li-margin: 12px 0;
 @card-skeleton-bg: #cfd8dc;
-@card-background: @component-background;
-@card-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12),
-  0 5px 12px 4px rgba(0, 0, 0, 0.09);
-@card-radius: @border-radius-base;
+@card-background: ~'var(--@{ant-prefix}-card-background)';
+@card-shadow: ~'var(--@{ant-prefix}-card-shadow)';
+@card-radius: ~'var(--@{ant-prefix}-card-radius)';
 @card-head-tabs-margin-bottom: -17px;
 @card-head-extra-color: @text-color;
 
@@ -862,9 +869,8 @@
 @tabs-card-head-background: @background-color-light;
 @tabs-card-height: 40px;
 @tabs-card-active-color: @primary-color;
-@tabs-card-horizontal-padding: (
-    (@tabs-card-height - floor(@font-size-base * @line-height-base)) / 2
-  ) - @border-width-base @padding-md;
+@tabs-card-horizontal-padding: ((@tabs-card-height - floor(@font-size-base * @line-height-base)) / 2) -
+  @border-width-base @padding-md;
 @tabs-card-horizontal-padding-sm: 6px @padding-md;
 @tabs-card-horizontal-padding-lg: 7px @padding-md 6px;
 @tabs-title-font-size: @font-size-base;
@@ -1028,23 +1034,23 @@
 
 // Alert
 // ---
-@alert-success-border-color: @success-color-deprecated-border;
-@alert-success-bg-color: @success-color-deprecated-bg;
-@alert-success-icon-color: @success-color;
-@alert-info-border-color: @info-color-deprecated-border;
-@alert-info-bg-color: @info-color-deprecated-bg;
-@alert-info-icon-color: @info-color;
-@alert-warning-border-color: @warning-color-deprecated-border;
-@alert-warning-bg-color: @warning-color-deprecated-bg;
-@alert-warning-icon-color: @warning-color;
-@alert-error-border-color: @error-color-deprecated-border;
-@alert-error-bg-color: @error-color-deprecated-bg;
-@alert-error-icon-color: @error-color;
-@alert-message-color: @heading-color;
+@alert-success-border-color: ~'var(--@{ant-prefix}-alert-success-border)';
+@alert-success-bg-color: ~'var(--@{ant-prefix}-alert-success-bg)';
+@alert-success-icon-color: ~'var(--@{ant-prefix}-alert-success-icon)';
+@alert-info-border-color: ~'var(--@{ant-prefix}-alert-info-border)';
+@alert-info-bg-color: ~'var(--@{ant-prefix}-alert-info-bg)';
+@alert-info-icon-color: ~'var(--@{ant-prefix}-alert-info-icon)';
+@alert-warning-border-color: ~'var(--@{ant-prefix}-alert-warning-border)';
+@alert-warning-bg-color: ~'var(--@{ant-prefix}-alert-warning-bg)';
+@alert-warning-icon-color: ~'var(--@{ant-prefix}-alert-warning-icon)';
+@alert-error-border-color: ~'var(--@{ant-prefix}-alert-error-border)';
+@alert-error-bg-color: ~'var(--@{ant-prefix}-alert-error-bg)';
+@alert-error-icon-color: ~'var(--@{ant-prefix}-alert-error-icon)';
+@alert-message-color: ~'var(--@{ant-prefix}-alert-message-color)';
 @alert-text-color: @text-color;
-@alert-close-color: @text-color-secondary;
+@alert-close-color: ~'var(--@{ant-prefix}-alert-close-color)';
 @alert-close-hover-color: @icon-color-hover;
-@alert-padding-vertical: @padding-xs;
+@alert-padding-vertical: ~'var(--@{ant-prefix}-alert-padding-vertical)';
 @alert-padding-horizontal: @padding-md - 1px;
 @alert-no-icon-padding-vertical: @padding-xs;
 @alert-with-description-no-icon-padding-vertical: @padding-md - 1px;
@@ -1052,7 +1058,7 @@
 @alert-with-description-padding: @alert-with-description-padding-vertical 15px
   @alert-with-description-no-icon-padding-vertical @alert-with-description-icon-size;
 @alert-icon-top: 8px + @font-size-base * (@line-height-base / 2) - (@font-size-base / 2);
-@alert-with-description-icon-size: 24px;
+@alert-with-description-icon-size: ~'var(--@{ant-prefix}-alert-with-description-icon-size)';
 
 // List
 // ---
