@@ -398,7 +398,13 @@ describe('input-number', () => {
     expect(input.selectionEnd).toBe(String(component.value).length);
   });
 
-  describe('should nzVariant work', () => {
+  describe('should variant work', () => {
+    it('outlined', () => {
+      component.variant = 'outlined';
+      fixture.detectChanges();
+      expect(hostElement.classList).toContain('ant-input-number-outlined');
+    });
+
     it('filled', () => {
       fixture.detectChanges();
       expect(hostElement.classList).not.toContain('ant-input-number-filled');
@@ -623,7 +629,15 @@ describe('input-number with affixes or addons', () => {
     );
   });
 
-  describe('should be apply nzVariant class', () => {
+  describe('should be apply variant class', () => {
+    it('outlined', () => {
+      component.variant = 'outlined';
+      fixture.detectChanges();
+      expect(component.withContentAffixes().nativeElement.classList).toContain(
+        'ant-input-number-affix-wrapper-outlined'
+      );
+    });
+
     it('filled', () => {
       fixture.detectChanges();
       expect(component.withContentAffixes().nativeElement.classList).not.toContain(

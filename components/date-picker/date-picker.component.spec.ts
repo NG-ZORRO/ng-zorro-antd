@@ -588,7 +588,13 @@ describe('NzDatePickerComponent', () => {
       expect(debugElement.query(By.css(`.anticon-clock-circle`))).toBeDefined();
     }));
 
-    describe('should support nzVariant', () => {
+    describe('should variant work', () => {
+      it('outlined', () => {
+        fixtureInstance.nzVariant = 'outlined';
+        fixture.detectChanges();
+        expect(debugElement.query(By.css(`.ant-picker-outlined`))).toBeDefined();
+      });
+
       it('borderless', () => {
         fixture.detectChanges();
         expect(debugElement.query(By.css(`.ant-picker-borderless`))).toBeNull();

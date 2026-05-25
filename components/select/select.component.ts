@@ -210,6 +210,7 @@ export type NzSelectSizeType = NzSizeLDSType;
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-show-search]': `(nzShowSearch || nzMode !== 'default') && !nzDisabled`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
+    '[class.ant-select-outlined]': `finalVariant() === 'outlined'`,
     '[class.ant-select-borderless]': `finalVariant() === 'borderless'`,
     '[class.ant-select-filled]': `finalVariant() === 'filled'`,
     '[class.ant-select-underlined]': `finalVariant() === 'underlined'`,

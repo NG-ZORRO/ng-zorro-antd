@@ -243,6 +243,11 @@ describe('cascader', () => {
     });
 
     describe('should variant works', () => {
+      it('outlined', () => {
+        testComponent.nzVariant = 'outlined';
+        fixture.detectChanges();
+        expect(cascader.nativeElement.classList).toContain('ant-select-outlined');
+      });
       it('filled', () => {
         fixture.detectChanges();
         expect(cascader.nativeElement.classList).not.toContain('ant-select-filled');

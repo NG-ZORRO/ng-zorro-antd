@@ -99,6 +99,12 @@ describe('tree-select', () => {
     }));
 
     describe('should variant works', () => {
+      it('outlined', () => {
+        testComponent.variant = 'outlined';
+        fixture.detectChanges();
+        expect(treeSelect.nativeElement.classList).toContain('ant-select-outlined');
+      });
+
       it('filled', () => {
         fixture.detectChanges();
         expect(treeSelect.nativeElement.classList).not.toContain('ant-select-filled');

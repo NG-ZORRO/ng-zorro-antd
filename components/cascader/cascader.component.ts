@@ -296,6 +296,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
   ],
   host: {
     '[attr.tabIndex]': '"0"',
+    class: 'ant-select ant-cascader',
     '[class.ant-select-in-form-item]': '!!nzFormStatusService',
     '[class.ant-select-lg]': 'finalSize() === "large"',
     '[class.ant-select-sm]': 'finalSize() === "small"',
@@ -303,6 +304,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
     '[class.ant-select-show-arrow]': 'nzShowArrow',
     '[class.ant-select-show-search]': '!!nzShowSearch',
     '[class.ant-select-disabled]': 'nzDisabled',
+    '[class.ant-select-outlined]': `finalVariant() === 'outlined'`,
     '[class.ant-select-borderless]': `finalVariant() === 'borderless'`,
     '[class.ant-select-filled]': `finalVariant() === 'filled'`,
     '[class.ant-select-underlined]': `finalVariant() === 'underlined'`,
@@ -544,8 +546,6 @@ export class NzCascaderComponent
   constructor() {
     super(inject(NzCascaderTreeService));
     this.cascaderService.withComponent(this);
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-cascader');
 
     this.destroyRef.onDestroy(() => {
       this.clearDelayMenuTimer();

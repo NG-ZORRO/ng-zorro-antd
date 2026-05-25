@@ -5,9 +5,10 @@
 
 import { NgClassInterface, NzVariant } from 'ng-zorro-antd/core/types';
 
-export function getVariantClassNames(prefixCls: string, variant?: NzVariant, borderless?: boolean): NgClassInterface {
+export function getVariantClassNames(prefixCls: string, variant?: NzVariant): NgClassInterface {
   return {
-    [`${prefixCls}-borderless`]: variant === 'borderless' || (variant === 'outlined' && borderless),
+    [`${prefixCls}-outlined`]: variant === 'outlined',
+    [`${prefixCls}-borderless`]: variant === 'borderless',
     [`${prefixCls}-filled`]: variant === 'filled',
     [`${prefixCls}-underlined`]: variant === 'underlined'
   };

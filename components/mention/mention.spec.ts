@@ -605,34 +605,36 @@ describe('mention', () => {
       tick();
     }));
 
-    it('should have default outlined variant', () => {
-      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
-      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
-      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
-    });
+    describe('should variant work', () => {
+      it('outlined', () => {
+        fixture.componentInstance.variant = 'outlined';
+        fixture.detectChanges();
+        expect(mention.nativeElement.classList).toContain('ant-mentions-outlined');
+      });
 
-    it('should apply borderless variant correctly', () => {
-      fixture.componentInstance.variant = 'borderless';
-      fixture.detectChanges();
-      expect(mention.nativeElement.classList).toContain('ant-mentions-borderless');
-      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
-      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
-    });
+      it('filled', () => {
+        fixture.detectChanges();
+        expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+        fixture.componentInstance.variant = 'filled';
+        fixture.detectChanges();
+        expect(mention.nativeElement.classList).toContain('ant-mentions-filled');
+      });
 
-    it('should apply filled variant correctly', () => {
-      fixture.componentInstance.variant = 'filled';
-      fixture.detectChanges();
-      expect(mention.nativeElement.classList).toContain('ant-mentions-filled');
-      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
-      expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
-    });
+      it('borderless', () => {
+        fixture.detectChanges();
+        expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
+        fixture.componentInstance.variant = 'borderless';
+        fixture.detectChanges();
+        expect(mention.nativeElement.classList).toContain('ant-mentions-borderless');
+      });
 
-    it('should apply underlined variant correctly', () => {
-      fixture.componentInstance.variant = 'underlined';
-      fixture.detectChanges();
-      expect(mention.nativeElement.classList).toContain('ant-mentions-underlined');
-      expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
-      expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
+      it('underlined', () => {
+        fixture.detectChanges();
+        expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
+        fixture.componentInstance.variant = 'underlined';
+        fixture.detectChanges();
+        expect(mention.nativeElement.classList).toContain('ant-mentions-underlined');
+      });
     });
 
     it('should switch between variants correctly', () => {

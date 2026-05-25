@@ -360,7 +360,12 @@ describe('time-picker', () => {
       expect(result.getSeconds()).toEqual(30);
     }));
 
-    describe('should nzVariant works', () => {
+    describe('should variant works', () => {
+      it('outlined', () => {
+        fixture.componentInstance.nzVariant = 'outlined';
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css(`.ant-picker-outlined`))).toBeDefined();
+      });
       it('filled', () => {
         fixture.detectChanges();
         expect(fixture.debugElement.query(By.css(`.ant-picker-filled`))).toBeNull();
