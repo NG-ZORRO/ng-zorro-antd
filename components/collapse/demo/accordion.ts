@@ -16,16 +16,10 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
   `
 })
 export class NzDemoCollapseAccordionComponent {
-  panels = [
+  readonly panels = [
     {
       active: true,
-      name: 'This is panel header 1',
-      childPanel: [
-        {
-          active: false,
-          name: 'This is panel header 1-1'
-        }
-      ]
+      name: 'This is panel header 1'
     },
     {
       active: false,
