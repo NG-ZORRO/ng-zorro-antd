@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, of, Subscription } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -249,13 +249,6 @@ export class NzUploadBtnComponent implements OnInit {
       const dataResult = (data as (file: NzUploadFile) => {} | Observable<{}>)(file);
       if (dataResult instanceof Observable) {
         process$ = process$.pipe(
-          /**
-           * this is a little bit tricky but here is the explanation:
-           * Potentially, people can use the `beforeUpload` hook to transform the file, and also `nzTransformFile` hook to transform the file,
-           * if beforeUpload hook transform the file, so nzTransformFile hook must not be called, otherwise the file will be transformed twice
-           * Normally this can not happen, but it is possible until we remove the `nzTransformFile` hook
-           */
-          filter(() => !processedFile),
           switchMap(() => dataResult),
           map(res => {
             args.data = res;
