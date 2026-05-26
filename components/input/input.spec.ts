@@ -102,7 +102,13 @@ describe('input', () => {
         expect(input.selectionEnd).toBe(testComponent.value.length);
       });
 
-      describe('should nzVariant work', () => {
+      describe('should variant work', () => {
+        it('outlined', () => {
+          testComponent.variant = 'outlined';
+          fixture.detectChanges();
+          expect(inputElement.nativeElement.classList).toContain('ant-input-outlined');
+        });
+
         it('filled', () => {
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).not.toContain('ant-input-filled');

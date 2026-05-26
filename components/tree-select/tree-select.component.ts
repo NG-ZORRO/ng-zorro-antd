@@ -278,6 +278,7 @@ const listOfPositions = [
     '[class.ant-select-single]': '!isMultiple',
     '[class.ant-select-show-arrow]': '!isMultiple',
     '[class.ant-select-show-search]': '!isMultiple',
+    '[class.ant-select-outlined]': 'finalVariant() === "outlined"',
     '[class.ant-select-borderless]': 'finalVariant() === "borderless"',
     '[class.ant-select-filled]': 'finalVariant() === "filled"',
     '[class.ant-select-underlined]': 'finalVariant() === "underlined"',

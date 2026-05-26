@@ -49,6 +49,7 @@ const PREFIX_CLS = 'ant-input';
     '[attr.type]': 'type()',
     '[class]': 'classes()',
     '[class.ant-input-disabled]': 'finalDisabled()',
+    '[class.ant-input-outlined]': `finalVariant() === 'outlined'`,
     '[class.ant-input-borderless]': `finalVariant() === 'borderless'`,
     '[class.ant-input-filled]': `finalVariant() === 'filled'`,
     '[class.ant-input-underlined]': `finalVariant() === 'underlined'`,

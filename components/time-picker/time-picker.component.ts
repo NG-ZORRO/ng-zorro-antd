@@ -166,6 +166,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-focused]': `focused`,
     '[class.ant-picker-rtl]': `dir() === 'rtl'`,
+    '[class.ant-picker-outlined]': `finalVariant() === 'outlined'`,
     '[class.ant-picker-borderless]': `finalVariant() === 'borderless'`,
     '[class.ant-picker-filled]': `finalVariant() === 'filled'`,
     '[class.ant-picker-underlined]': `finalVariant() === 'underlined'`,

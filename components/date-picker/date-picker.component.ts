@@ -253,6 +253,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     '[class.ant-picker-small]': `finalSize() === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
     '[class.ant-picker-rtl]': `dir() === 'rtl'`,
+    '[class.ant-picker-outlined]': `finalVariant() === 'outlined'`,
     '[class.ant-picker-borderless]': `finalVariant() === 'borderless'`,
     '[class.ant-picker-filled]': `finalVariant() === 'filled'`,
     '[class.ant-picker-underlined]': `finalVariant() === 'underlined'`,

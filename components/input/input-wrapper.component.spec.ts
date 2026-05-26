@@ -75,6 +75,15 @@ describe('input-wrapper', () => {
   });
 
   describe('should be apply variant class', () => {
+    it('outlined', () => {
+      component.variant = 'outlined';
+      fixture.detectChanges();
+      expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-outlined');
+      expect(component.withContentAddons().nativeElement.classList).toContain('ant-input-group-wrapper-outlined');
+      expect(component.withContentMix().nativeElement.classList).toContain('ant-input-group-wrapper-outlined');
+      expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-outlined')).toBeTruthy();
+    });
+
     it('filled', () => {
       fixture.detectChanges();
       expect(component.withContentAffixes().nativeElement.classList).not.toContain('ant-input-affix-wrapper-filled');
