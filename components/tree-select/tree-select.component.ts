@@ -12,7 +12,7 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { _getEventTarget } from '@angular/cdk/platform';
+import { Platform, _getEventTarget } from '@angular/cdk/platform';
 import { SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
@@ -51,8 +51,8 @@ import {
   NzFormStatusService
 } from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
+import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
+import { cancelAnimationFrame, requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NzFormatEmitEvent,
   NzTreeBase,
@@ -82,12 +82,6 @@ import { NzTreeSelectService } from './tree-select.service';
 export type NzPlacementType = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | '';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'treeSelect';
 const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown';
-const listOfPositions = [
-  POSITION_MAP.bottomLeft,
-  POSITION_MAP.bottomRight,
-  POSITION_MAP.topRight,
-  POSITION_MAP.topLeft
-];
 
 @Component({
   selector: 'nz-tree-select',
@@ -124,8 +118,10 @@ const listOfPositions = [
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         [animate.enter]="slideAnimationEnter()"
         [animate.leave]="slideAnimationLeave()"
-        [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottom'"
-        [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'top'"
+        [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottomLeft'"
+        [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'topLeft'"
+        [class.ant-select-dropdown-placement-bottomRight]="dropdownPosition === 'bottomRight'"
+        [class.ant-select-dropdown-placement-topRight]="dropdownPosition === 'topRight'"
         [class.ant-tree-select-dropdown-rtl]="dir() === 'rtl'"
         [dir]="dir()"
         [style]="nzDropdownStyle"
@@ -294,11 +290,13 @@ const listOfPositions = [
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  private renderer = inject(Renderer2);
-  private cdr = inject(ChangeDetectorRef);
-  private elementRef = inject(ElementRef);
-  private focusMonitor = inject(FocusMonitor);
-  private destroyRef = inject(DestroyRef);
+  private readonly renderer = inject(Renderer2);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly elementRef = inject(ElementRef);
+  private readonly focusMonitor = inject(FocusMonitor);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly platform = inject(Platform);
+  private requestId: number = -1;
 
   protected readonly slideAnimationEnter = slideAnimationEnter();
   protected readonly slideAnimationLeave = slideAnimationLeave();
@@ -378,7 +376,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   isNotFound = false;
   focused = false;
   inputValue = '';
-  dropdownPosition: 'top' | 'center' | 'bottom' = 'bottom';
+  dropdownPosition: NzPlacementType = 'bottomLeft';
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
@@ -520,9 +518,14 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
 
-    if (nzPlacement && this.nzPlacement) {
-      if (POSITION_MAP[this.nzPlacement]) {
-        this.positions = [POSITION_MAP[this.nzPlacement]];
+    if (nzPlacement) {
+      const { currentValue } = nzPlacement;
+      this.dropdownPosition = currentValue as NzPlacementType;
+      const listOfPlacement = ['bottomLeft', 'topLeft', 'bottomRight', 'topRight'];
+      if (currentValue && listOfPlacement.includes(currentValue)) {
+        this.positions = [POSITION_MAP[currentValue as POSITION_TYPE]];
+      } else {
+        this.positions = listOfPlacement.map(e => POSITION_MAP[e as POSITION_TYPE]);
       }
     }
     if (nzSize) {
@@ -733,7 +736,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.dropdownPosition = position.connectionPair.originY;
+    const placement = getPlacementName(position);
+    this.dropdownPosition = placement as NzPlacementType;
   }
 
   onClearSelection(): void {
@@ -757,8 +761,20 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    if (!this.nzPlacement || !listOfPositions.includes(POSITION_MAP[this.nzPlacement])) {
-      this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    if (this.platform.isBrowser && this.cdkOverlayOrigin.elementRef.nativeElement) {
+      const triggerWidth = this.triggerWidth;
+      cancelAnimationFrame(this.requestId);
+      this.requestId = requestAnimationFrame(() => {
+        // Blink triggers style and layout pipelines anytime the `getBoundingClientRect()` is called, which may cause a
+        // frame drop. That's why it's scheduled through the `requestAnimationFrame` to unload the composite thread.
+        this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+        if (triggerWidth !== this.triggerWidth) {
+          // The `requestAnimationFrame` will trigger change detection, but we're inside an `OnPush` component which won't have
+          // the `ChecksEnabled` state. Calling `markForCheck()` will allow Angular to run the change detection from the root component
+          // down to the `nz-select`. But we'll trigger only local change detection if the `triggerWidth` has been changed.
+          this.cdr.detectChanges();
+        }
+      });
     }
   }
 
