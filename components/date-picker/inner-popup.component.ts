@@ -285,12 +285,13 @@ export class InnerPopupComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.activeDate && !changes.activeDate.currentValue) {
+    const { activeDate, panelMode } = changes;
+    if (activeDate && !activeDate.currentValue) {
       this.activeDate = new CandyDate();
     }
-    // New Antd vesion has merged 'date' ant 'time' to one panel,
+    // New antd version has merged 'date' ant 'time' to one panel,
     // So there is not 'time' panel
-    if (changes.panelMode && changes.panelMode.currentValue === 'time') {
+    if (panelMode && panelMode.currentValue === 'time') {
       this.panelMode = 'date';
     }
   }

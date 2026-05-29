@@ -4,19 +4,15 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, provideZoneChangeDetection } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 
 import { NzDatePickerModule } from './date-picker.module';
-
-registerLocaleData(zh);
 
 describe('week-picker', () => {
   let fixture: ComponentFixture<NzTestWeekPickerComponent>;
@@ -24,10 +20,9 @@ describe('week-picker', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(() => {
-    // todo: use zoneless
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -36,139 +31,110 @@ describe('week-picker', () => {
     overlayContainerElement = oc.getContainerElement();
   }));
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(NzTestWeekPickerComponent);
     fixtureInstance = fixture.componentInstance;
-    // set initial mode
-    fixtureInstance.useSuite = 1;
-    fixture.detectChanges();
   });
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
 
-  it('should show week num for nz-week-picker component', fakeAsync(() => {
-    fixtureInstance.nzFormat = undefined; // cover branch
-    fixture.detectChanges();
-    openPickerByClickTrigger();
+  it('should show week num for date-picker with week mode', async () => {
+    await fixture.whenStable();
+    await openPickerByClickTrigger();
+
     expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
-  }));
+  });
 
-  it('should change input value when click week', fakeAsync(() => {
-    fixtureInstance.nzValue = new Date('2020-02-25');
-    fixture.detectChanges();
-    flush();
-    fixture.detectChanges();
-    openPickerByClickTrigger();
+  it('should show week num for week-picker component', async () => {
+    fixtureInstance.useDatePicker = false;
+    await fixture.whenStable();
+    await openPickerByClickTrigger();
+
+    expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
+  });
+
+  it('should change input value when click week', async () => {
+    fixtureInstance.value = new Date('2020-02-25');
+    await fixture.whenStable();
+    await openPickerByClickTrigger();
+
     dispatchMouseEvent(queryFromOverlay('.ant-picker-cell'), 'click');
-    fixture.detectChanges();
-    tick(500);
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(getPickerInput(fixture.debugElement).value).toBe('2020-05');
-  }));
+  });
 
-  it('should change panel to week from month', fakeAsync(() => {
-    fixtureInstance.nzValue = new Date('2020-02-25');
-    fixture.detectChanges();
-    openPickerByClickTrigger();
+  it('should change panel to week from month', async () => {
+    fixtureInstance.value = new Date('2020-02-25');
+    await fixture.whenStable();
+    await openPickerByClickTrigger();
+
     dispatchMouseEvent(queryFromOverlay('.ant-picker-header-month-btn'), 'click');
-    fixture.detectChanges();
+    await fixture.whenStable();
     dispatchMouseEvent(queryFromOverlay('.ant-picker-cell'), 'click');
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(queryFromOverlay('.ant-picker-week-panel')).toBeTruthy();
-  }));
+  });
 
-  it('should show week num', fakeAsync(() => {
-    fixtureInstance.useSuite = 2;
-    fixture.whenRenderingDone().then(() => {
-      tick(500);
-      fixture.detectChanges();
-      fixtureInstance.nzFormat = undefined; // cover branch
-      fixture.detectChanges();
-      openPickerByClickTrigger();
-      expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
-    });
-  }));
+  it('should maintain week highlighting after clicking next month button', async () => {
+    await testWeekHighlightingAfterNavigation('.ant-picker-header-next-btn');
+  });
 
-  // Test for issue #9650 - week highlighting should persist after step button clicks
-  testWeekHighlightingAfterNavigation(
-    'should maintain week highlighting after clicking next month button',
-    '.ant-picker-header-next-btn'
-  );
+  it('should maintain week highlighting after clicking previous month button', async () => {
+    await testWeekHighlightingAfterNavigation('.ant-picker-header-prev-btn');
+  });
 
-  testWeekHighlightingAfterNavigation(
-    'should maintain week highlighting after clicking previous month button',
-    '.ant-picker-header-prev-btn'
-  );
+  it('should maintain week highlighting after clicking next year button', async () => {
+    await testWeekHighlightingAfterNavigation('.ant-picker-header-super-next-btn');
+  });
 
-  testWeekHighlightingAfterNavigation(
-    'should maintain week highlighting after clicking next year button',
-    '.ant-picker-header-super-next-btn'
-  );
-
-  testWeekHighlightingAfterNavigation(
-    'should maintain week highlighting after clicking previous year button',
-    '.ant-picker-header-super-prev-btn'
-  );
-  ////////////
+  it('should maintain week highlighting after clicking previous year button', async () => {
+    await testWeekHighlightingAfterNavigation('.ant-picker-header-super-prev-btn');
+  });
 
   function queryFromOverlay(selector: string): HTMLElement {
     return overlayContainerElement.querySelector(selector) as HTMLElement;
   }
 
-  function openPickerByClickTrigger(): void {
+  async function openPickerByClickTrigger(): Promise<void> {
     dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-    fixture.detectChanges();
-    tick(500);
-    fixture.detectChanges();
+    await fixture.whenStable();
   }
-  
-  function testWeekHighlightingAfterNavigation(testName: string, buttonSelector: string): void {
-    it(
-      testName,
-      fakeAsync(() => {
-        fixtureInstance.nzValue = new Date('2020-02-25');
-        fixture.detectChanges();
-        flush();
-        fixture.detectChanges();
-        openPickerByClickTrigger();
 
-        // Verify week highlighting is present initially
-        expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
-        expect(queryFromOverlay('.ant-picker-week-panel')).toBeTruthy();
+  // Test for issue #9650 - week highlighting should persist after step button clicks
+  async function testWeekHighlightingAfterNavigation(buttonSelector: string): Promise<void> {
+    fixtureInstance.value = new Date('2020-02-25');
+    await fixture.whenStable();
+    await openPickerByClickTrigger();
 
-        // Click navigation button
-        const navigationButton = queryFromOverlay(buttonSelector);
-        expect(navigationButton).toBeTruthy();
-        dispatchMouseEvent(navigationButton, 'click');
-        fixture.detectChanges();
-        tick(500);
-        fixture.detectChanges();
+    // Verify week highlighting is present initially
+    expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
+    expect(queryFromOverlay('.ant-picker-week-panel')).toBeTruthy();
 
-        // Verify week highlighting still exists after navigation
-        expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
-        expect(queryFromOverlay('.ant-picker-week-panel')).toBeTruthy();
-      })
-    );
+    // Click navigation button
+    const navigationButton = queryFromOverlay(buttonSelector);
+    expect(navigationButton).toBeTruthy();
+    dispatchMouseEvent(navigationButton, 'click');
+    await fixture.whenStable();
+
+    // Verify week highlighting still exists after navigation
+    expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
+    expect(queryFromOverlay('.ant-picker-week-panel')).toBeTruthy();
   }
 });
 
 @Component({
   imports: [NzDatePickerModule, FormsModule],
   template: `
-    @switch (useSuite) {
-      @case (1) {
-        <nz-date-picker nzMode="week" [nzFormat]="nzFormat!" [ngModel]="nzValue" />
-      }
-      @case (2) {
-        <nz-week-picker [ngModel]="nzValue" />
-      }
+    @if (useDatePicker) {
+      <nz-date-picker nzMode="week" [ngModel]="value" />
+    } @else {
+      <nz-week-picker [ngModel]="value" />
     }
   `
 })
 export class NzTestWeekPickerComponent {
-  useSuite!: 1 | 2;
-  nzFormat?: string;
-  nzValue: Date | null = null;
+  useDatePicker = true;
+  value: Date | null = null;
 }
