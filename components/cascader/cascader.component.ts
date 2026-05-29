@@ -202,6 +202,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayOffsetY]="dropdownPosition.startsWith('top') ? -4 : 4"
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayPositions]="positions"
