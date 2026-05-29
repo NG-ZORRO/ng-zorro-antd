@@ -13,7 +13,7 @@ import {
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
 import { _getEventTarget } from '@angular/cdk/platform';
-import { SlicePipe } from '@angular/common';
+import { NgTemplateOutlet, SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -100,6 +100,7 @@ const listOfPositions = [
     NzEmptyModule,
     CdkOverlayOrigin,
     SlicePipe,
+    NgTemplateOutlet,
     NzSelectModule,
     NzFormItemFeedbackIconComponent,
     NzStringTemplateOutletDirective
@@ -131,6 +132,7 @@ const listOfPositions = [
         [dir]="dir()"
         [style]="nzDropdownStyle"
       >
+        <ng-template [ngTemplateOutlet]="nzPopupRender" />
         <nz-tree
           #treeRef
           [hidden]="isNotFound"
@@ -347,6 +349,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
   @Input({ transform: numberAttribute }) nzMaxTagCount!: number;
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }> | null = null;
+  @Input() nzPopupRender: TemplateRef<{ $implicit: TemplateRef<void> }> | null = null;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
   @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
