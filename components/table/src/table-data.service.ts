@@ -104,10 +104,12 @@ export class NzTableDataService<T> {
     takeUntilDestroyed(this.destroyRef),
     filter(value => {
       const [pageIndex, pageSize, listOfData] = value;
-      const maxPageIndex = Math.ceil(listOfData.length / pageSize) || 1;
+      const maxPageIndex = pageSize > 0 ? Math.ceil(listOfData.length / pageSize) || 1 : 1;
       return pageIndex <= maxPageIndex;
     }),
-    map(([pageIndex, pageSize, listOfData]) => listOfData.slice((pageIndex - 1) * pageSize, pageIndex * pageSize))
+    map(([pageIndex, pageSize, listOfData]) =>
+      pageSize > 0 ? listOfData.slice((pageIndex - 1) * pageSize, pageIndex * pageSize) : listOfData
+    )
   );
   listOfCurrentPageData$ = this.frontPagination$.pipe(
     switchMap(pagination => (pagination ? this.listOfFrontEndCurrentPageData$ : this.listOfDataAfterCalc$))
@@ -119,9 +121,6 @@ export class NzTableDataService<T> {
   );
 
   updatePageSize(size: number): void {
-    if (!Number.isFinite(size) || size <= 0) {
-      throw new Error('`nzPageSize` must be a positive number.');
-    }
     this.pageSize$.next(size);
   }
   updateFrontPagination(pagination: boolean): void {
