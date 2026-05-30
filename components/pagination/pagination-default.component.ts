@@ -146,6 +146,9 @@ export class NzPaginationDefaultComponent implements OnChanges, OnInit {
   }
 
   getLastIndex(total: number, pageSize: number): number {
+    if (!Number.isFinite(pageSize) || pageSize <= 0) {
+      throw new Error('`nzPageSize` must be a positive number.');
+    }
     return Math.ceil(total / pageSize);
   }
 

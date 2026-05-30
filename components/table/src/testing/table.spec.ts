@@ -79,6 +79,11 @@ describe('nz-table', () => {
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
     });
 
+    it('should throw when pageSize is zero', () => {
+      testComponent.pageSize = 0;
+      expect(() => fixture.detectChanges()).toThrowError('`nzPageSize` must be a positive number.');
+    });
+
     it('should pageSize change check pageIndex bounding', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.pageSize).toBe(10);

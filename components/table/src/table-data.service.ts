@@ -119,6 +119,9 @@ export class NzTableDataService<T> {
   );
 
   updatePageSize(size: number): void {
+    if (!Number.isFinite(size) || size <= 0) {
+      throw new Error('`nzPageSize` must be a positive number.');
+    }
     this.pageSize$.next(size);
   }
   updateFrontPagination(pagination: boolean): void {
