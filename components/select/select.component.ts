@@ -162,7 +162,7 @@ export type NzSelectSizeType = NzSizeLDSType;
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
-      [cdkConnectedOverlayOffsetY]="dropdownPosition.startsWith('top') ? -4 : 4"
+      [cdkConnectedOverlayOffsetY]="placement().startsWith('top') ? -4 : 4"
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
@@ -180,12 +180,12 @@ export type NzSelectSizeType = NzSizeLDSType;
         [itemSize]="nzOptionHeightPx"
         [maxItemLength]="nzOptionOverflowSize"
         [matchWidth]="nzDropdownMatchSelectWidth"
-        [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottomLeft'"
-        [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'topLeft'"
-        [class.ant-select-dropdown-placement-bottomRight]="dropdownPosition === 'bottomRight'"
-        [class.ant-select-dropdown-placement-topRight]="dropdownPosition === 'topRight'"
-        [animate.enter]="selectAnimationEnter()"
-        [animate.leave]="selectAnimationLeave()"
+        [class.ant-select-dropdown-placement-bottomLeft]="placement() === 'bottomLeft'"
+        [class.ant-select-dropdown-placement-topLeft]="placement() === 'topLeft'"
+        [class.ant-select-dropdown-placement-bottomRight]="placement() === 'bottomRight'"
+        [class.ant-select-dropdown-placement-topRight]="placement() === 'topRight'"
+        [animate.enter]="slideAnimationEnter()"
+        [animate.leave]="slideAnimationLeave()"
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         [listOfContainerItem]="listOfContainerItem"
         [menuItemSelectedIcon]="nzMenuItemSelectedIcon"
@@ -333,8 +333,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   });
 
   protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
-  private size = signal<NzSizeLDSType>(this.nzSize);
-  private variant = signal<NzVariant | undefined>(this.nzVariant);
+  private readonly size = signal<NzSizeLDSType>(this.nzSize);
+  private readonly variant = signal<NzVariant | undefined>(this.nzVariant);
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
   private readonly formVariant = inject(NZ_FORM_VARIANT, { optional: true });
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
@@ -349,18 +349,22 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  dropdownPosition: NzSelectPlacementType = 'bottomLeft';
   triggerWidth: number | null = null;
   listOfContainerItem: NzSelectItemInterface[] = [];
   listOfTopItem: NzSelectItemInterface[] = [];
   activatedValue: NzSafeAny | null = null;
   listOfValue: NzSafeAny[] = [];
   focused = false;
-  protected readonly dir = inject(Directionality).valueSignal;
   positions: ConnectionPositionPair[] = [];
 
-  protected readonly selectAnimationEnter = slideAnimationEnter();
-  protected readonly selectAnimationLeave = slideAnimationLeave();
+  protected readonly dir = inject(Directionality).valueSignal;
+  protected readonly placement = signal<NzSelectPlacementType>('bottomLeft');
+  protected readonly slideAnimationEnter = slideAnimationEnter(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
+  protected readonly slideAnimationLeave = slideAnimationLeave(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
 
   // status
   prefixCls: string = 'ant-select';
@@ -612,7 +616,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     const placement = getPlacementName(position);
-    this.dropdownPosition = placement as NzSelectPlacementType;
+    this.placement.set(placement as NzSelectPlacementType);
   }
 
   updateCdkConnectedOverlayStatus(): void {
@@ -719,7 +723,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
     }
     if (nzPlacement) {
       const { currentValue } = nzPlacement;
-      this.dropdownPosition = currentValue as NzSelectPlacementType;
+      this.placement.set(currentValue);
       const listOfPlacement = ['bottomLeft', 'topLeft', 'bottomRight', 'topRight'];
       if (currentValue && listOfPlacement.includes(currentValue)) {
         this.positions = [POSITION_MAP[currentValue as POSITION_TYPE]];

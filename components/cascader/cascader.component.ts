@@ -80,7 +80,6 @@ import {
   NzSelectClearComponent,
   NzSelectItemComponent,
   NzSelectPlaceholderComponent,
-  NzSelectPlacementType,
   NzSelectSearchComponent
 } from 'ng-zorro-antd/select';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
@@ -202,7 +201,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
-      [cdkConnectedOverlayOffsetY]="dropdownPosition.startsWith('top') ? -4 : 4"
+      [cdkConnectedOverlayOffsetY]="placement().startsWith('top') ? -4 : 4"
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="overlayOrigin"
       [cdkConnectedOverlayPositions]="positions"
@@ -214,13 +213,13 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
     >
       <div
         class="ant-select-dropdown ant-cascader-dropdown"
-        [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottomLeft'"
-        [class.ant-select-dropdown-placement-bottomRight]="dropdownPosition === 'bottomRight'"
-        [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'topLeft'"
-        [class.ant-select-dropdown-placement-topRight]="dropdownPosition === 'topRight'"
+        [class.ant-select-dropdown-placement-bottomLeft]="placement() === 'bottomLeft'"
+        [class.ant-select-dropdown-placement-bottomRight]="placement() === 'bottomRight'"
+        [class.ant-select-dropdown-placement-topLeft]="placement() === 'topLeft'"
+        [class.ant-select-dropdown-placement-topRight]="placement() === 'topRight'"
         [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
-        [animate.enter]="cascaderAnimationEnter()"
-        [animate.leave]="cascaderAnimationLeave()"
+        [animate.enter]="slideAnimationEnter()"
+        [animate.leave]="slideAnimationLeave()"
         [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
         (mouseenter)="onTriggerMouseEnter()"
         (mouseleave)="onTriggerMouseLeave($event)"
@@ -354,8 +353,13 @@ export class NzCascaderComponent
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ViewChild('selectContainer', { static: false }) selectContainer!: ElementRef;
-  protected readonly cascaderAnimationEnter = slideAnimationEnter();
-  protected readonly cascaderAnimationLeave = slideAnimationLeave();
+
+  protected readonly slideAnimationEnter = slideAnimationEnter(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
+  protected readonly slideAnimationLeave = slideAnimationLeave(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
 
   @ViewChild(NzSelectSearchComponent)
   set input(inputComponent: NzSelectSearchComponent | undefined) {
@@ -461,7 +465,6 @@ export class NzCascaderComponent
    */
   dropdownWidthStyle?: string;
   dropdownHeightStyle: 'auto' | '' = '';
-  dropdownPosition: NzCascaderPlacement = 'bottomLeft';
   isFocused = false;
 
   locale!: NzCascaderI18nInterface;
@@ -484,6 +487,7 @@ export class NzCascaderComponent
   });
 
   protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
+  protected readonly placement = signal<NzCascaderPlacement>('bottomLeft');
 
   private size = signal<NzSizeLDSType>(this.nzSize);
   private readonly variant = signal<NzVariant | undefined>(this.nzVariant);
@@ -641,7 +645,7 @@ export class NzCascaderComponent
     }
     if (nzPlacement) {
       const { currentValue } = nzPlacement;
-      this.dropdownPosition = currentValue as NzCascaderPlacement;
+      this.placement.set(currentValue);
       const listOfPlacement = ['bottomLeft', 'topLeft', 'bottomRight', 'topRight'];
       if (currentValue && listOfPlacement.includes(currentValue)) {
         this.positions = [POSITION_MAP[currentValue as POSITION_TYPE]];
@@ -1029,7 +1033,7 @@ export class NzCascaderComponent
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     const placement = getPlacementName(position);
-    this.dropdownPosition = placement as NzSelectPlacementType;
+    this.placement.set(placement as NzCascaderPlacement);
   }
 
   private updateOptions(): void {

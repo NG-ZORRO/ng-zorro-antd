@@ -6,7 +6,7 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, ViewEncapsulation } from '@angular/core';
 
-import { SLIDE_ANIMATION_CLASS, withAnimationCheck } from 'ng-zorro-antd/core/animation';
+import { SLIDE_UP_ANIMATION_CLASS, withAnimationCheck } from 'ng-zorro-antd/core/animation';
 import { generateClassName, getClassListFromValue } from 'ng-zorro-antd/core/util';
 
 import { NzIsMenuInsideDropdownToken } from './menu.token';
@@ -23,7 +23,7 @@ const ANIMATION_CLASS = {
     enter: `${ANIMATION_PREFIX}-enter ${ANIMATION_PREFIX}-enter-active`,
     leave: `${ANIMATION_PREFIX}-leave ${ANIMATION_PREFIX}-leave-active`
   },
-  horizontal: SLIDE_ANIMATION_CLASS
+  horizontal: SLIDE_UP_ANIMATION_CLASS
 };
 
 @Component({
