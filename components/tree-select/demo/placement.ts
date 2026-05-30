@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzTreeSelectModule, NzPlacementType } from 'ng-zorro-antd/tree-select';
+import { NzPlacementType, NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-placement',
@@ -22,6 +22,7 @@ import { NzTreeSelectModule, NzPlacementType } from 'ng-zorro-antd/tree-select';
       [nzNodes]="nodes"
       [nzDropdownStyle]="{ width: '300px' }"
       nzDefaultExpandAll
+      [nzDropdownMatchSelectWidth]="false"
       (ngModelChange)="onChange($event)"
     />
   `
