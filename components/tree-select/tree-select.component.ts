@@ -102,7 +102,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
-      [cdkConnectedOverlayOffsetY]="dropdownPosition.startsWith('top') ? -4 : 4"
+      [cdkConnectedOverlayOffsetY]="placement().startsWith('top') ? -4 : 4"
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayPositions]="nzPlacement ? positions : []"
@@ -119,10 +119,10 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         [animate.enter]="slideAnimationEnter()"
         [animate.leave]="slideAnimationLeave()"
-        [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottomLeft'"
-        [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'topLeft'"
-        [class.ant-select-dropdown-placement-bottomRight]="dropdownPosition === 'bottomRight'"
-        [class.ant-select-dropdown-placement-topRight]="dropdownPosition === 'topRight'"
+        [class.ant-select-dropdown-placement-bottomLeft]="placement() === 'bottomLeft'"
+        [class.ant-select-dropdown-placement-topLeft]="placement() === 'topLeft'"
+        [class.ant-select-dropdown-placement-bottomRight]="placement() === 'bottomRight'"
+        [class.ant-select-dropdown-placement-topRight]="placement() === 'topRight'"
         [class.ant-tree-select-dropdown-rtl]="dir() === 'rtl'"
         [dir]="dir()"
         [style]="nzDropdownStyle"
@@ -299,8 +299,12 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   private readonly platform = inject(Platform);
   private requestId: number = -1;
 
-  protected readonly slideAnimationEnter = slideAnimationEnter();
-  protected readonly slideAnimationLeave = slideAnimationLeave();
+  protected readonly slideAnimationEnter = slideAnimationEnter(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
+  protected readonly slideAnimationLeave = slideAnimationLeave(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
 
   @Input() nzId: string | null = null;
   @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
@@ -377,7 +381,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   isNotFound = false;
   focused = false;
   inputValue = '';
-  dropdownPosition: NzPlacementType = 'bottomLeft';
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
@@ -395,8 +398,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   });
 
   protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
+  protected readonly placement = signal<NzPlacementType>('bottomLeft');
 
-  private size = signal<NzSizeLDSType>(this.nzSize);
+  private readonly size = signal<NzSizeLDSType>(this.nzSize);
   private readonly variant = signal<NzVariant | undefined>(this.nzVariant);
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
@@ -521,7 +525,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
     if (nzPlacement) {
       const { currentValue } = nzPlacement;
-      this.dropdownPosition = currentValue as NzPlacementType;
+      this.placement.set(currentValue);
       const listOfPlacement = ['bottomLeft', 'topLeft', 'bottomRight', 'topRight'];
       if (currentValue && listOfPlacement.includes(currentValue)) {
         this.positions = [POSITION_MAP[currentValue as POSITION_TYPE]];
@@ -738,7 +742,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     const placement = getPlacementName(position);
-    this.dropdownPosition = placement as NzPlacementType;
+    this.placement.set(placement as NzPlacementType);
   }
 
   onClearSelection(): void {
