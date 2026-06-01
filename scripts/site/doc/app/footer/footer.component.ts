@@ -30,7 +30,7 @@ import { FooterItemComponent } from './footer-item.component';
               [link]="language() === 'zh' ? 'https://angular.cn/' : 'https://angular.dev/'"
             />
             <app-footer-item
-              title="Angular Aira"
+              title="Angular Aria"
               [link]="language() === 'zh' ? 'https://angular.cn/guide/aria/overview' : 'https://angular.dev/guide/aria/overview'"
             />
             <app-footer-item
