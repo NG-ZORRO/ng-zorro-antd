@@ -3,19 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  DestroyRef,
   ElementRef,
   EventEmitter,
   inject,
   Input,
   OnChanges,
-  OnInit,
   Output,
   Renderer2,
   SimpleChanges,
@@ -23,7 +20,6 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
@@ -59,7 +55,7 @@ import { PaginationItemRenderContext } from './pagination.types';
             [active]="pageIndex === page.index"
             (gotoIndex)="jumpPage($event)"
             (diffIndex)="jumpDiff($event)"
-            [direction]="dir"
+            [direction]="dir()"
           ></li>
         }
 
@@ -84,13 +80,11 @@ import { PaginationItemRenderContext } from './pagination.types';
   `,
   imports: [NgTemplateOutlet, NzPaginationItemComponent, NzPaginationOptionsComponent],
   host: {
-    '[class.ant-pagination-rtl]': "dir === 'rtl'"
+    '[class.ant-pagination-rtl]': `dir() === 'rtl'`
   }
 })
-export class NzPaginationDefaultComponent implements OnChanges, OnInit {
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly directionality = inject(Directionality);
-  private readonly destroyRef = inject(DestroyRef);
+export class NzPaginationDefaultComponent implements OnChanges {
+  protected readonly dir = inject(Directionality).valueSignal;
 
   @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() nzSize: 'default' | 'small' = 'default';
@@ -106,23 +100,14 @@ export class NzPaginationDefaultComponent implements OnChanges, OnInit {
   @Input() pageSizeOptions: number[] = [10, 20, 30, 40];
   @Output() readonly pageIndexChange = new EventEmitter<number>();
   @Output() readonly pageSizeChange = new EventEmitter<number>();
+
   ranges = [0, 0];
   listOfPageItem: Array<Partial<NzPaginationItemComponent>> = [];
-
-  dir: Direction = 'ltr';
 
   constructor() {
     const el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
     const renderer = inject(Renderer2);
     renderer.removeChild(renderer.parentNode(el), el);
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
   }
 
   jumpPage(index: number): void {
@@ -146,7 +131,8 @@ export class NzPaginationDefaultComponent implements OnChanges, OnInit {
   }
 
   getLastIndex(total: number, pageSize: number): number {
-    return Math.ceil(total / pageSize);
+    const maxPage = pageSize > 0 ? Math.ceil(total / pageSize) : 0;
+    return maxPage || 1;
   }
 
   buildIndexes(): void {

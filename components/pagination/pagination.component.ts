@@ -162,7 +162,8 @@ export class NzPaginationComponent implements OnInit, OnChanges {
   }
 
   getLastIndex(total: number, pageSize: number): number {
-    return Math.ceil(total / pageSize);
+    const maxPage = pageSize > 0 ? Math.ceil(total / pageSize) : 0;
+    return maxPage || 1;
   }
 
   ngOnInit(): void {
