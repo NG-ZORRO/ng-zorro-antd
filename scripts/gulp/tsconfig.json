@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
     "lib": [
-      "es2015",
+      "es2022",
       "dom"
     ],
     "module": "commonjs",
-    "moduleResolution": "node",
-    "ignoreDeprecations": "6.0",
-    "rootDir": ".",
+    "moduleResolution": "bundler",
+    "rootDir": "..",
     "outDir": "../../dist",
     "esModuleInterop": true,
     "strictNullChecks": true,
@@ -15,12 +14,11 @@
     "noImplicitThis": true,
     "noEmitOnError": true,
     "noImplicitAny": true,
-    "target": "es5",
+    "target": "ES2015",
     "types": [
       "node",
       "../build/less.d.ts"
-    ],
-    "baseUrl": "."
+    ]
   },
   "files": [
     "gulpfile.ts"
