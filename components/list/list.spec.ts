@@ -5,7 +5,14 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { AsyncPipe } from '@angular/common';
-import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, timer } from 'rxjs';
@@ -299,7 +306,8 @@ describe('list RTL', () => {
         <span class="extra-content">extra content</span>
       </ng-template>
     </nz-list>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestListComponent {
   @ViewChild('comp', { static: false }) comp!: NzListComponent;
@@ -329,7 +337,8 @@ class TestListComponent {
       <ng-template #nzFooter><p class="list-footer">footer</p></ng-template>
       <ng-template #nzHeader><p class="list-header">header</p></ng-template>
     </nz-list>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestListWithTemplateComponent {
   @ViewChild('nzFooter', { static: false }) nzFooter!: TemplateRef<void>;
@@ -371,7 +380,8 @@ class TestListWithTemplateComponent {
         </nz-list-item-meta>
       </nz-list-item>
     </nz-list>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestListItemComponent {
   noFlex = false;
@@ -383,7 +393,8 @@ class TestListItemComponent {
     <div [dir]="direction">
       <nz-test-list />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestListRtlComponent {
   @ViewChild(Dir) dir!: Dir;

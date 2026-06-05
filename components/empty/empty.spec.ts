@@ -3,7 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, TemplateRef, ViewChild, inject, provideZoneChangeDetection } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  TemplateRef,
+  ViewChild,
+  inject,
+  provideZoneChangeDetection
+} from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -280,7 +288,8 @@ describe('empty', () => {
       <ng-template #contentTpl>Content</ng-template>
       <ng-template #footerTpl>Footer</ng-template>
     </nz-empty>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzEmptyTestBasicComponent {
   @ViewChild('imageTpl', { static: false }) imageTpl!: TemplateRef<void>;
@@ -299,7 +308,8 @@ export class NzEmptyTestBasicComponent {
     <ng-template #tpl let-component>
       <div>I am in template {{ component }}</div>
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzEmptyTestServiceComponent {
   @ViewChild('tpl', { static: false }) template!: TemplateRef<string>;
@@ -319,7 +329,8 @@ export class NzEmptyTestServiceComponent {
 
 @Component({
   selector: 'nz-empty-test-custom',
-  template: `<div>I'm in component {{ name }}</div>`
+  template: `<div>I'm in component {{ name }}</div>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzEmptyTestCustomComponent {
   name = inject(NZ_EMPTY_COMPONENT_NAME);

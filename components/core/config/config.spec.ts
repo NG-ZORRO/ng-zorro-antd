@@ -3,7 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, inject, input, Input, inputBinding, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  input,
+  Input,
+  inputBinding,
+  signal
+} from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { NzButtonSize } from 'ng-zorro-antd/button';
@@ -16,7 +25,8 @@ const withConfig = withConfigFactory(NZ_CONFIG_MODULE_NAME);
 
 @Component({
   selector: 'nz-with-config',
-  template: ``
+  template: ``,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzWithConfigTestComponent {
   readonly elementRef = inject(ElementRef);
@@ -27,7 +37,8 @@ class NzWithConfigTestComponent {
 
 @Component({
   selector: 'nz-with-config-signal',
-  template: ``
+  template: ``,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzWithConfigSignalTestComponent {
   readonly elementRef = inject(ElementRef);

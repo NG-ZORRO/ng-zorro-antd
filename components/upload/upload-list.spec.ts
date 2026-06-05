@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
@@ -319,7 +319,8 @@ describe('upload-list', () => {
       [previewIsImage]="previewIsImage"
       [onRemove]="onRemove!"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestUploadListComponent {
   @ViewChild('list', { static: false }) comp!: NzUploadListComponent;

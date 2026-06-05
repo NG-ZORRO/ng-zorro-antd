@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -78,7 +78,8 @@ describe('nz-countdown', () => {
     <ng-template #tpl let-diff>
       {{ diff }}
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCountdownComponent {
   @ViewChild(NzCountdownComponent, { static: true }) countdown!: NzCountdownComponent;

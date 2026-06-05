@@ -1525,7 +1525,8 @@ class TestWithViewContainerDirective {
 @Component({
   selector: 'test-with-child-view-container',
   imports: [TestWithViewContainerDirective],
-  template: `<nz-test-with-view-container />`
+  template: `<nz-test-with-view-container />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestWithChildViewContainerComponent {
   @ViewChild(TestWithViewContainerDirective) childWithViewContainer!: TestWithViewContainerDirective;
@@ -1552,7 +1553,8 @@ class TestWithOnPushViewContainerComponent {
       <span class="modal-template-data">My favorite UI framework is {{ data }}</span>
       {{ setModalRef(modalRef) }}
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestWithServiceComponent {
   value?: string;
@@ -1578,7 +1580,8 @@ class TestWithServiceComponent {
     <div class="modal-data">My favorite UI Library is {{ nzModalData }}</div>
     <input />
     <button (click)="destroyModal()">destroy</button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestWithModalContentComponent {
   @Input() value: string = inject(NZ_MODAL_DATA);
@@ -1606,7 +1609,8 @@ class TestWithModalContentComponent {
       Test Content
     </nz-modal>
     <ng-template><span class="template-test">Test Template Content</span></ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestModalComponent {
   readonly visible = model(false);
@@ -1631,6 +1635,7 @@ class TestModalComponent {
 
 @Component({
   selector: 'test-modal-without-focusable-elements',
-  template: '<p>Modal</p>'
+  template: '<p>Modal</p>',
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestModalWithoutFocusableElementsComponent {}

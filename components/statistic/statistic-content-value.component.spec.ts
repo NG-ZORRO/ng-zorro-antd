@@ -4,7 +4,7 @@
  */
 
 import { DecimalPipe } from '@angular/common';
-import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -54,7 +54,8 @@ describe('nz-statistic-content-value', () => {
   template: `
     <nz-statistic-content-value [nzValue]="(value | number)!" [nzValueTemplate]="template" />
     <ng-template #tpl let-value>It's {{ value }}</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestNumberComponent {
   @ViewChild('tpl', { static: true }) tpl?: TemplateRef<{ $implicit: NzStatisticValueType }>;

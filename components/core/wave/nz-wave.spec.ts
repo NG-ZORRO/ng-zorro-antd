@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -262,7 +262,8 @@ describe('nz-wave disable/enable', () => {
         Button
       </button>
     }
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class WaveContainerWithButtonComponent {
   disabled = false;
@@ -289,7 +290,8 @@ class WaveContainerWithButtonComponent {
         <button>Button</button>
       </div>
     }
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class WaveContainerWithExtraNodeComponent {
   disabledClass = false;

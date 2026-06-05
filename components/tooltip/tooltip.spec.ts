@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -416,7 +416,8 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
     </div>
 
     <ng-template #template>title-template</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTooltipTestComponent {
   @ViewChild('titleString', { static: false }) titleString!: ElementRef;
@@ -452,7 +453,8 @@ export class NzTooltipTestComponent {
   template: `
     <button nz-element #button="nzElement">Action</button>
     <a nz-tooltip nzTooltipTitle="This action could not be revoked!" [nzTooltipOrigin]="button.elementRef">Notice</a>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTooltipTargetComponent {
   @ViewChild(NzTooltipDirective) tooltip?: NzTooltipDirective;
@@ -471,7 +473,8 @@ export class NzTestTooltipTargetComponent {
     >
       Tooltip
     </a>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTooltipArrowComponent {
   @ViewChild('titleString', { static: false, read: NzTooltipDirective }) tooltipDirective!: NzTooltipDirective;

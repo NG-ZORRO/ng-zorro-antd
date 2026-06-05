@@ -9,6 +9,7 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import {
   ApplicationRef,
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   inject,
@@ -1739,7 +1740,8 @@ describe('finalVariant', () => {
       <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
     </ng-template>
     <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestDatePickerComponent {
   useSuite!: 1 | 2 | 3 | 4 | 5;
@@ -1802,7 +1804,8 @@ class NzTestDatePickerComponent {
 
 @Component({
   imports: [NzDatePickerModule],
-  template: `<nz-date-picker [nzStatus]="status" />`
+  template: `<nz-date-picker [nzStatus]="status" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestDatePickerStatusComponent {
   status: NzStatus = 'error';
@@ -1818,7 +1821,8 @@ class NzTestDatePickerStatusComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestDatePickerInFormComponent {
   private fb = inject(FormBuilder);
@@ -1829,7 +1833,8 @@ class NzTestDatePickerInFormComponent {
 
 @Component({
   imports: [NzDatePickerModule],
-  template: `<nz-date-picker [nzSize]="size" />`
+  template: `<nz-date-picker [nzSize]="size" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestDatePickerFinalSizeComponent {
   size: NzDatePickerSizeType = 'default';
@@ -1837,7 +1842,8 @@ export class TestDatePickerFinalSizeComponent {
 
 @Component({
   imports: [NzDatePickerModule],
-  template: `<nz-date-picker [nzVariant]="variant()" />`
+  template: `<nz-date-picker [nzVariant]="variant()" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestDatePickerFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
@@ -1845,7 +1851,8 @@ export class TestDatePickerFinalVariantComponent {
 
 @Component({
   imports: [FormField, NzDatePickerModule],
-  template: `<nz-date-picker [formField]="myForm.date" />`
+  template: `<nz-date-picker [formField]="myForm.date" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestDatePickerInSignalFormComponent {
   readonly model = signal<{ date: Date | null }>({ date: null });

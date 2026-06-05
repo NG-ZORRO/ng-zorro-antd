@@ -4,7 +4,14 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -449,7 +456,8 @@ describe('progress', () => {
       [nzSteps]="steps"
     />
     <ng-template #formatterTemplate let-percent>{{ percent }} / 100</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestProgressLineComponent {
   @ViewChild('formatterTemplate') formatterTemplate!: TemplateRef<{ $implicit: number }>;
@@ -478,7 +486,8 @@ export class NzTestProgressLineComponent {
       [nzPercent]="percent"
       [nzStrokeLinecap]="strokeLinecap"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestProgressDashBoardComponent {
   status?: NzProgressStatusType;
@@ -501,7 +510,8 @@ export class NzTestProgressDashBoardComponent {
       [nzStrokeColor]="strokeColor"
       [nzStrokeLinecap]="strokeLinecap"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestProgressCircleComponent {
   gapDegree?: number;
@@ -512,7 +522,8 @@ export class NzTestProgressCircleComponent {
 
 @Component({
   imports: [NzProgressModule],
-  template: `<nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60" />`
+  template: `<nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestProgressCircleSuccessComponent {}
 
@@ -522,7 +533,8 @@ export class NzTestProgressCircleSuccessComponent {}
     <div [dir]="direction">
       <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60" />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestProgressRtlComponent {
   @ViewChild(Dir) dir!: Dir;

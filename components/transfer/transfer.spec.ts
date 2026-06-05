@@ -6,6 +6,7 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   ApplicationRef,
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   OnInit,
@@ -641,7 +642,8 @@ interface AbstractTestTransferComponent {
     <ng-template #footer>
       <p id="transfer-footer">footer</p>
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestTransferComponent implements OnInit, AbstractTestTransferComponent {
   @ViewChild('comp', { static: false }) comp!: NzTransferComponent;
@@ -706,7 +708,8 @@ class TestTransferComponent implements OnInit, AbstractTestTransferComponent {
         {{ item.title }}
       </ng-template>
     </nz-transfer>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestTransferCustomRenderComponent implements OnInit, AbstractTestTransferComponent {
   @ViewChild('comp', { static: false }) comp!: NzTransferComponent;
@@ -732,7 +735,8 @@ class TestTransferCustomRenderComponent implements OnInit, AbstractTestTransferC
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/996
 @Component({
   imports: [NzTransferModule],
-  template: `<nz-transfer [nzDataSource]="list" />`
+  template: `<nz-transfer [nzDataSource]="list" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class Test996Component implements OnInit {
   @ViewChild(NzTransferComponent, { static: true }) comp!: NzTransferComponent;
@@ -753,7 +757,8 @@ class Test996Component implements OnInit {
     <div [dir]="direction">
       <nz-test-transfer />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTransferRtlComponent {
   @ViewChild(Dir) dir!: Dir;
@@ -762,7 +767,8 @@ export class NzTestTransferRtlComponent {
 
 @Component({
   imports: [NzTransferModule],
-  template: `<nz-transfer [nzDataSource]="[]" [nzStatus]="status" />`
+  template: `<nz-transfer [nzDataSource]="[]" [nzStatus]="status" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTransferStatusComponent {
   status: NzStatus = 'error';
@@ -778,7 +784,8 @@ export class NzTestTransferStatusComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTransferInFormComponent {
   status: NzFormControlStatusType = 'error';

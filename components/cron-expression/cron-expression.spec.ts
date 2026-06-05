@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -149,7 +149,8 @@ describe('cron-expression', () => {
       <button nz-button nzType="primary">Test</button>
     </ng-template>
     <ng-template #semanticTemplate>Test</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCronExpressionComponent {
   nzSize: NzCronExpressionSize = 'default';
@@ -160,7 +161,8 @@ export class NzTestCronExpressionComponent {
 
 @Component({
   imports: [NzCronExpressionModule],
-  template: `<nz-cron-expression [nzType]="nzType" />`
+  template: `<nz-cron-expression [nzType]="nzType" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCronExpressionTypeComponent {
   nzType: 'linux' | 'spring' = 'spring';
@@ -168,7 +170,8 @@ export class NzTestCronExpressionTypeComponent {
 
 @Component({
   imports: [ReactiveFormsModule, NzCronExpressionModule],
-  template: `<nz-cron-expression [formControl]="formControl" />`
+  template: `<nz-cron-expression [formControl]="formControl" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCronExpressionFormComponent {
   formControl = new FormControl('1 1 1 * *');

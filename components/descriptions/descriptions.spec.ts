@@ -4,7 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -168,7 +168,8 @@ describe('descriptions', () => {
         <nz-descriptions-item [nzTitle]="itemTitle + $index" [nzSpan]="col" />
       }
     </nz-descriptions>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestDescriptionsComponent {
   bordered = false;

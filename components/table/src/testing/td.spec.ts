@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -172,7 +172,8 @@ describe('nz-td', () => {
       [nzLeft]="left"
       [nzRight]="right"
     ></td>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTdComponent {
   checked = false;
@@ -189,6 +190,7 @@ export class NzTestTdComponent {
 
 @Component({
   imports: [NzTableModule],
-  template: `<td class="nz-disable-td" [nzChecked]="true"></td>`
+  template: `<td class="nz-disable-td" [nzChecked]="true"></td>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestDisableTdComponent {}

@@ -5,7 +5,7 @@
 
 import { ESCAPE, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -727,7 +727,8 @@ describe('image preview', () => {
 @Component({
   selector: 'test-image-basic',
   imports: [NzImageModule],
-  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" />`
+  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestImageBasicComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
@@ -738,7 +739,8 @@ export class TestImageBasicComponent {
 @Component({
   selector: 'test-image-placeholder',
   imports: [NzImageModule],
-  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />`
+  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestImagePlaceholderComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
@@ -750,7 +752,8 @@ export class TestImagePlaceholderComponent {
 @Component({
   selector: 'test-image-fallback',
   imports: [NzImageModule],
-  template: `<img alt="" nz-image [nzSrc]="src" [nzFallback]="fallback" />`
+  template: `<img alt="" nz-image [nzSrc]="src" [nzFallback]="fallback" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestImageFallbackComponent {
   @ViewChild(NzImageDirective) image!: NzImageDirective;
@@ -768,7 +771,8 @@ export class TestImageFallbackComponent {
     </nz-image-group>
     <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
     <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestImagePreviewGroupComponent {
   disablePreview = false;

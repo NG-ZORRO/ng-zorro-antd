@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -55,25 +55,29 @@ describe('transition-patch', () => {
 
 @Component({
   imports: [NzButtonModule, NzTransitionPatchModule],
-  template: `<button nz-button></button>`
+  template: `<button nz-button></button>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestTransitionPatchComponent {}
 
 @Component({
   imports: [NzButtonModule, NzTransitionPatchModule],
-  template: `<button nz-button hidden></button>`
+  template: `<button nz-button hidden></button>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestTransitionPatchHiddenComponent {}
 
 @Component({
   imports: [NzButtonModule, NzTransitionPatchModule],
-  template: `<button nz-button hidden="abc"></button>`
+  template: `<button nz-button hidden="abc"></button>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestTransitionPatchRestoreComponent {}
 
 @Component({
   imports: [NzButtonModule, NzTransitionPatchModule],
-  template: `<button nz-button [hidden]="hidden"></button>`
+  template: `<button nz-button [hidden]="hidden"></button>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestTransitionPatchHiddenBindingComponent {
   hidden?: boolean = false;

@@ -5,6 +5,7 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   OnInit,
@@ -375,7 +376,8 @@ type NzPageSizeChangeFn = (pageSize: number) => void;
         }
       </tbody>
     </nz-table>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTableBasicComponent implements OnInit {
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<BasicTestDataItem>;
@@ -466,7 +468,8 @@ interface ScrollTestDataItem {
   styles: `
     @import '../../../style/testing.less';
     @import '../../../style/entry.less';
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTableScrollComponent implements OnInit {
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<ScrollTestDataItem>;
@@ -510,7 +513,8 @@ export class NzTestTableScrollComponent implements OnInit {
         }
       </tbody>
     </nz-table>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTableSpecCrashComponent {
   data: Array<{ id: number; name: string }> = [];
@@ -567,7 +571,8 @@ interface RtlTestDataItem {
         </tbody>
       </nz-table>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTableRtlComponent implements OnInit {
   @ViewChild(Dir) dir!: Dir;

@@ -4,7 +4,14 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ElementRef, provideZoneChangeDetection, signal, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  provideZoneChangeDetection,
+  signal,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -349,7 +356,8 @@ describe('popconfirm', () => {
     <a nz-popconfirm #iconTemplate [nzIcon]="icon">Delete</a>
 
     <ng-template #titleTemplate>title-template</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzPopconfirmTestNewComponent {
   confirm = jasmine.createSpy('confirm');

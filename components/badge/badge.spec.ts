@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -352,7 +352,8 @@ describe('badge', () => {
         <a></a>
       }
     </nz-badge>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestBadgeBasicComponent {
   count = 5;
@@ -376,7 +377,8 @@ export class NzTestBadgeBasicComponent {
     <div [dir]="direction">
       <nz-badge [nzCount]="count" />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestBadgeRtlComponent {
   direction: Direction = 'rtl';

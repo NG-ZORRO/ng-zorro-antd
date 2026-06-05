@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -186,7 +186,8 @@ describe('checkbox group with custom layout', () => {
       [(ngModel)]="value"
       [disabled]="controlDisabled"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class CheckboxGroupTestComponent {
   options: string[] | number[] | NzCheckboxOption[] = [
@@ -208,7 +209,8 @@ class CheckboxGroupTestComponent {
       <label nz-checkbox nzValue="B">B</label>
       <label nz-checkbox nzValue="C">C</label>
     </nz-checkbox-group>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class CheckboxGroupWithCustomLayoutTestComponent {
   value: string[] = [];

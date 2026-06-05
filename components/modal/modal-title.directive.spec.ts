@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -87,7 +87,8 @@ describe('modal title directive', () => {
       </div>
       <div *nzModalTitle>Custom Modal Title</div>
     </nz-modal>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveTitleComponent {
   isVisible = false;
@@ -112,7 +113,8 @@ class TestDirectiveTitleComponent {
       </div>
       <div *nzModalTitle>Custom Modal Title</div>
     </nz-modal>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveTitleWithInitOpenedComponent {
   isVisible = true;
@@ -122,7 +124,8 @@ class TestDirectiveTitleWithInitOpenedComponent {
 
 @Component({
   imports: [NzModalModule],
-  template: `<div *nzModalTitle>Custom Modal Title</div>`
+  template: `<div *nzModalTitle>Custom Modal Title</div>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveTitleInServiceComponent {
   @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) NzModalTitleDirective!: TemplateRef<NzSafeAny>;

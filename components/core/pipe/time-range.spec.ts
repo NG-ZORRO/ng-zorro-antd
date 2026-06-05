@@ -3,14 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 
 @Component({
   imports: [NzPipesModule],
-  template: ` {{ diff | nzTimeRange: format }} `
+  template: ` {{ diff | nzTimeRange: format }} `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimeRangeComponent {
   diff = 1000 * 60 * 60 * 24 * 2 + 1000 * 30;

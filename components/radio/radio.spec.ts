@@ -4,7 +4,15 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ApplicationRef, Component, DebugElement, provideZoneChangeDetection, signal, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  signal,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -500,7 +508,8 @@ describe('radio', () => {
     >
       Radio
     </label>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioSingleComponent {
   @ViewChild(NzRadioComponent, { static: false }) nzRadioComponent!: NzRadioComponent;
@@ -512,7 +521,8 @@ export class NzTestRadioSingleComponent {
 
 @Component({
   imports: [FormsModule, NzRadioModule],
-  template: `<label nz-radio-button>Radio</label>`
+  template: `<label nz-radio-button>Radio</label>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioButtonComponent {}
 
@@ -532,7 +542,8 @@ export class NzTestRadioButtonComponent {}
       <label nz-radio-button nzValue="C">C</label>
       <label nz-radio-button nzValue="D">D</label>
     </nz-radio-group>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioGroupComponent {
   size: NzSizeLDSType = 'default';
@@ -548,7 +559,8 @@ export class NzTestRadioGroupComponent {
     <form>
       <label nz-radio [formControl]="formControl" [nzDisabled]="disabled"></label>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioFormComponent {
   formControl = new FormControl(false);
@@ -575,7 +587,8 @@ export class NzTestRadioFormComponent {
         <label nz-radio-button nzValue="D">D</label>
       </nz-radio-group>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioGroupFormComponent {
   formControl = new FormControl('B');
@@ -601,7 +614,8 @@ export class NzTestRadioGroupFormComponent {
       <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled">C</label>
       <label nz-radio-button nzValue="D">D</label>
     </nz-radio-group>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioGroupDisabledComponent {
   size: NzSizeLDSType = 'default';
@@ -622,7 +636,8 @@ export class NzTestRadioGroupDisabledComponent {
         }
       </nz-radio-group>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioGroupDisabledFormComponent {
   formControl = new FormControl({ value: 'B', disabled: true });
@@ -638,7 +653,8 @@ export class NzTestRadioGroupDisabledFormComponent {
       <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled">C</label>
       <label nz-radio-button nzValue="D">D</label>
     </nz-radio-group>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioGroupSolidComponent {
   value = 'A';
@@ -656,7 +672,8 @@ export class NzTestRadioGroupSolidComponent {
         </label>
       }
     </nz-radio-group>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioGroupLabelNgModelComponent {
   items = [
@@ -685,7 +702,8 @@ export class NzTestRadioGroupLabelNgModelComponent {
     <div [dir]="direction">
       <nz-test-radio-single />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioSingleRtlComponent {
   @ViewChild(Dir) dir!: Dir;
@@ -698,7 +716,8 @@ export class NzTestRadioSingleRtlComponent {
     <div [dir]="direction">
       <label nz-radio-button>Radio</label>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioButtonRtlComponent {
   @ViewChild(Dir) dir!: Dir;
@@ -711,7 +730,8 @@ export class NzTestRadioButtonRtlComponent {
     <div [dir]="direction">
       <nz-test-radio-group />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestRadioGroupRtlComponent {
   @ViewChild(Dir) dir!: Dir;
@@ -720,7 +740,8 @@ export class NzTestRadioGroupRtlComponent {
 
 @Component({
   imports: [NzRadioModule],
-  template: `<nz-radio-group [nzSize]="size" />`
+  template: `<nz-radio-group [nzSize]="size" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestRadioGroupFinalSizeComponent {
   size: NzSizeLDSType = 'default';

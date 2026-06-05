@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -137,7 +137,8 @@ describe('string template outlet', () => {
     <ng-template #stringTpl let-data>The data is {{ data }}</ng-template>
     <ng-template #emptyTpl>Empty Template</ng-template>
     <ng-template #dataTimeTpl let-data let-time="time">The data is {{ data }}, The time is {{ time }}</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class StringTemplateOutletTestComponent {
   @ViewChild('stringTpl') stringTpl!: TemplateRef<NzSafeAny>;

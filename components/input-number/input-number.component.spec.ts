@@ -6,6 +6,7 @@
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ApplicationRef,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   provideZoneChangeDetection,
@@ -795,7 +796,8 @@ describe('finalVariant', () => {
       [nzChangeOnWheel]="changeOnWheel"
       (nzOnStep)="onStep($event)"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class InputNumberTestComponent {
   id: string | null = null;
@@ -874,7 +876,8 @@ class InputNumberTestComponent {
       <span nzInputAddonBefore>Before</span>
       <span nzInputAddonAfter>After</span>
     </nz-input-number>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class InputNumberWithAffixesAndAddonsTestComponent {
   disabled = false;
@@ -891,7 +894,8 @@ class InputNumberWithAffixesAndAddonsTestComponent {
 
 @Component({
   imports: [NzInputNumberModule],
-  template: `<nz-input-number [nzSize]="size" />`
+  template: `<nz-input-number [nzSize]="size" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestInputNumberFinalSizeComponent {
   size: NzSizeLDSType = 'default';
@@ -899,7 +903,8 @@ class TestInputNumberFinalSizeComponent {
 
 @Component({
   imports: [NzInputNumberModule],
-  template: `<nz-input-number [nzVariant]="variant()" />`
+  template: `<nz-input-number [nzVariant]="variant()" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestInputNumberFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);

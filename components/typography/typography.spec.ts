@@ -5,7 +5,14 @@
 
 import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ApplicationRef, Component, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  Component,
+  NgZone,
+  provideZoneChangeDetection,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -563,7 +570,8 @@ describe('change detection behavior', () => {
     <span nz-typography><u>Ant Design</u></span>
     <span nz-typography><del>Ant Design</del></span>
     <span nz-typography><strong>Ant Design</strong></span>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTypographyComponent {}
 
@@ -583,7 +591,8 @@ export class NzTestTypographyComponent {}
       [nzCopyTooltips]="tooltips"
       [nzCopyIcons]="icons"
     ></p>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTypographyCopyComponent {
   tooltips: [string, string] | null = ['click here', 'coped'];
@@ -602,7 +611,8 @@ export class NzTestTypographyCopyComponent {
       (nzContentChange)="onChange($event)"
       [nzContent]="str"
     ></p>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTypographyEditComponent {
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
@@ -651,7 +661,8 @@ export class NzTestTypographyEditComponent {
       [nzSuffix]="suffix"
       class="dynamic"
     ></p>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTypographyEllipsisComponent {
   expandable = false;

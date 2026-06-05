@@ -4,7 +4,14 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ApplicationRef, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -256,7 +263,8 @@ describe('checkbox', () => {
     >
       Checkbox
     </label>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCheckboxSingleComponent {
   @ViewChild(NzCheckboxComponent, { static: false }) nzCheckboxComponent!: NzCheckboxComponent;
@@ -273,7 +281,8 @@ export class NzTestCheckboxSingleComponent {
     <form>
       <label nz-checkbox [formControl]="formControl" [nzDisabled]="disabled"></label>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCheckboxFormComponent {
   formControl = new FormControl(false);
@@ -294,7 +303,8 @@ export class NzTestCheckboxFormComponent {
     <div [dir]="direction">
       <nz-test-single-checkbox />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCheckboxSingleRtlComponent {
   @ViewChild(Dir) dir!: Dir;

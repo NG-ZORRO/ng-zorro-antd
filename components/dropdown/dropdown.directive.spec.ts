@@ -5,7 +5,7 @@
 
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -266,7 +266,8 @@ describe('dropdown', () => {
         <li nz-menu-item>3rd menu item</li>
       </ul>
     </nz-dropdown-menu>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestDropdownComponent {
   backdrop = false;
@@ -296,7 +297,8 @@ export class NzTestDropdownComponent {
         <li nz-menu-item (click)="visible = false" class="close-menu">Clicking me will close the menu</li>
       </ul>
     </nz-dropdown-menu>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestDropdownVisibleComponent {
   visible = false;
@@ -312,7 +314,8 @@ export class NzTestDropdownVisibleComponent {
         <li nz-menu-item>1st menu item</li>
       </ul>
     </nz-dropdown-menu>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestDropdownArrowComponent {
   arrow = false;

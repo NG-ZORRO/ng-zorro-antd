@@ -9,6 +9,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import {
   ApplicationRef,
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   NgZone,
@@ -849,7 +850,8 @@ describe('finalVariant', () => {
         <textarea rows="1" nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       }
     </nz-mention>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestSimpleMentionComponent {
   inputValue: string = '@angular';
@@ -875,7 +877,8 @@ class NzTestSimpleMentionComponent {
         <span class="custom">{{ framework.name }} - {{ framework.type }}</span>
       </ng-container>
     </nz-mention>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestPropertyMentionComponent {
   inputValue: string = '@angular';
@@ -922,7 +925,8 @@ class NzTestPropertyMentionComponent {
         <textarea rows="1" nz-input nzMentionTrigger></textarea>
       </nz-mention>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestDirMentionComponent {
   direction: Direction = 'ltr';
@@ -934,7 +938,8 @@ class NzTestDirMentionComponent {
     <nz-mention [nzSuggestions]="[]" [nzStatus]="status">
       <textarea rows="1" nz-input nzMentionTrigger></textarea>
     </nz-mention>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestStatusMentionComponent {
   status: NzStatus = 'error';
@@ -952,7 +957,8 @@ class NzTestStatusMentionComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestMentionInFormComponent {
   status: NzFormControlStatusType = 'error';
@@ -967,7 +973,8 @@ class NzTestMentionInFormComponent {
     <nz-mention [nzSuggestions]="suggestions" [nzVariant]="variant">
       <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
     </nz-mention>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestVariantMentionComponent {
   inputValue: string = '@angular';
@@ -990,7 +997,8 @@ class NzTestVariantMentionComponent {
         <span class="custom-clear-icon">×</span>
       </ng-template>
     </nz-mention>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestClearMentionComponent {
   inputValue = '';
@@ -1009,7 +1017,8 @@ class NzTestClearMentionComponent {
     <nz-mention [nzSuggestions]="suggestions" [nzVariant]="variant()">
       <textarea nz-input nzMentionTrigger></textarea>
     </nz-mention>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestFinalVariantMentionComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);

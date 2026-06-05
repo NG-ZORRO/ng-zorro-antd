@@ -4,7 +4,13 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, NO_ERRORS_SCHEMA, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  NO_ERRORS_SCHEMA,
+  provideZoneChangeDetection,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -153,7 +159,8 @@ describe('card', () => {
       <p>Card content</p>
       <p>Card content</p>
     </nz-card>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestCardSizeComponent {
   size: NzSizeDSType = 'default';
@@ -169,7 +176,8 @@ class TestCardSizeComponent {
         <p>Card content</p>
       </nz-card>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCardRtlComponent {
   @ViewChild(Dir) dir!: Dir;

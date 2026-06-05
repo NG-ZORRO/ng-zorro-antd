@@ -4,7 +4,7 @@
  */
 
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -313,7 +313,8 @@ const TREE_DATA: TreeNode[] = [
         </nz-tree-node-option>
       </nz-tree-node>
     </nz-tree-view>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeViewBasicWithChildrenAccessorComponent implements OnInit {
   @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<TreeNode>;
@@ -352,7 +353,8 @@ export class NzTestTreeViewBasicWithChildrenAccessorComponent implements OnInit 
         </nz-tree-node-option>
       </nz-tree-node>
     </nz-tree-view>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeViewLineComponent implements OnInit {
   @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<TreeNode>;

@@ -563,7 +563,8 @@ export class NzTestOuterStepsComponent {
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
     <ng-template #iconTemplate><nz-icon nzType="smile-o" /></ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInnerStepStringComponent {
   @ViewChild('titleTemplate', { static: false }) titleTemplate?: TemplateRef<void>;
@@ -587,7 +588,8 @@ export class NzTestInnerStepStringComponent {
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
     <ng-template #iconTemplate><nz-icon nzType="smile-o" /></ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInnerStepTemplateComponent {}
 
@@ -599,7 +601,8 @@ export class NzTestInnerStepTemplateComponent {}
         <nz-step />
       }
     </nz-steps>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestStepForComponent {
   steps = [1, 2, 3];
@@ -616,7 +619,8 @@ export class NzTestStepForComponent {
         <nz-step />
       }
     </nz-steps>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestStepAsyncComponent implements OnInit {
   steps: number[] = [];
@@ -630,7 +634,8 @@ export class NzTestStepAsyncComponent implements OnInit {
 
 @Component({
   imports: [BidiModule, NzTestOuterStepsComponent],
-  template: `<nz-test-outer-steps [dir]="direction" />`
+  template: `<nz-test-outer-steps [dir]="direction" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestOuterStepsRtlComponent {
   @ViewChild(Dir) dir!: Dir;

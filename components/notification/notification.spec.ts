@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { NzConfigService, provideNzConfig } from 'ng-zorro-antd/core/config';
@@ -16,7 +16,8 @@ import { NzNotificationService } from './notification.service';
 
 @Component({
   selector: 'nz-test-notification',
-  template: `<ng-template let-data="data">test template content {{ data }}</ng-template>`
+  template: `<ng-template let-data="data">test template content {{ data }}</ng-template>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestNotificationComponent {
   @ViewChild(TemplateRef, { static: true }) demoTemplateRef!: TemplateRef<{

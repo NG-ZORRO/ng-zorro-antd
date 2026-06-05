@@ -5,7 +5,15 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { Component, DebugElement, DOCUMENT, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  DOCUMENT,
+  ElementRef,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
@@ -393,7 +401,8 @@ describe('affix', () => {
       <button id="content">Affix Button</button>
     </nz-affix>
     <div id="target"></div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestAffixComponent {
   @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, inject, NgZone, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, NgZone, provideZoneChangeDetection } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TestBed } from '@angular/core/testing';
 import { fromEvent } from 'rxjs';
@@ -13,7 +13,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from './from-event-outside-angular';
 
 @Component({
-  template: ``
+  template: ``,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestComponent {
   readonly recorder: NzSafeAny[] = [];

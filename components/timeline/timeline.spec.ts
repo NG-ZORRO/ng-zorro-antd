@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -256,7 +256,8 @@ describe('nz-timeline', () => {
         <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
       }
     </nz-timeline>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimelineBasicComponent {
   color = 'blue';
@@ -276,7 +277,8 @@ export class NzTestTimelineBasicComponent {
       <nz-timeline-item nzColor="#781241">Technical testing 2015-09-01</nz-timeline-item>
       <nz-timeline-item nzColor="red">Network problems being solved 2015-09-01</nz-timeline-item>
     </nz-timeline>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimelineCustomColorComponent {}
 
@@ -288,7 +290,8 @@ export class NzTestTimelineCustomColorComponent {}
       <nz-timeline-item>Technical testing 2015-09-01</nz-timeline-item>
       <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
     </nz-timeline>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimelinePendingComponent {}
 
@@ -299,7 +302,8 @@ export class NzTestTimelinePendingComponent {}
       <nz-timeline-item nzPosition="right">Right</nz-timeline-item>
       <nz-timeline-item nzPosition="left">Left</nz-timeline-item>
     </nz-timeline>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimelineCustomPositionComponent {}
 
@@ -309,7 +313,8 @@ export class NzTestTimelineCustomPositionComponent {}
     <div [dir]="direction">
       <nz-test-basic-timeline />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimelineRtlComponent {
   @ViewChild(Dir) dir!: Dir;
@@ -325,7 +330,8 @@ export class NzTestTimelineRtlComponent {
       }
     </nz-timeline>
     <span (click)="reset()">reset</span>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimelineClearItemsComponent {
   @ViewChild(NzTimelineComponent)

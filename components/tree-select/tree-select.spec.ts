@@ -8,6 +8,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
 import {
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   NgZone,
@@ -32,7 +33,7 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
-import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
@@ -59,6 +60,7 @@ describe('tree-select', () => {
         }
       ]
     });
+    (NzTreeSelectComponent as NzSafeAny).ɵcmp.onPush = false;
   });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -966,7 +968,8 @@ describe('finalVariant', () => {
       nzDropdownClassName="class1 class2"
     />
     <ng-template #affixTemplate>icon</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeSelectBasicComponent {
   @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent!: NzTreeSelectComponent;
@@ -1062,7 +1065,8 @@ export class NzTestTreeSelectBasicComponent {
       [nzCheckStrictly]="checkStrictly"
       [(ngModel)]="value"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeSelectCheckableComponent {
   @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent!: NzTreeSelectComponent;
@@ -1141,7 +1145,8 @@ export class NzTestTreeSelectCheckableComponent {
     <form>
       <nz-tree-select [formControl]="formControl" [nzNodes]="nodes" />
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeSelectFormComponent {
   formControl = new FormControl('10021');
@@ -1182,7 +1187,8 @@ export class NzTestTreeSelectFormComponent {
         </span>
       </ng-template>
     </nz-tree-select>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeSelectCustomizedIconComponent {
   value?: string;
@@ -1214,7 +1220,8 @@ export class NzTestTreeSelectCustomizedIconComponent {
       nzPlaceHolder="Please select"
       [(ngModel)]="value"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeSelectStatusComponent {
   status: NzStatus = 'error';
@@ -1252,7 +1259,8 @@ export class NzTestTreeSelectStatusComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeSelectInFormComponent {
   status: NzFormControlStatusType = 'error';
@@ -1294,7 +1302,8 @@ function dig(path = '0', level = 3): NzTreeNodeOptions[] {
       nzHideUnMatched="true"
       [nzDropdownMatchSelectWidth]="true"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeSelectVirtualScrollComponent {
   nodes: NzTreeNodeOptions[] = dig();
@@ -1302,7 +1311,8 @@ export class NzTestTreeSelectVirtualScrollComponent {
 
 @Component({
   imports: [NzTreeSelectModule],
-  template: `<nz-tree-select [nzNodes]="[]" [nzSize]="size" />`
+  template: `<nz-tree-select [nzNodes]="[]" [nzSize]="size" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestTreeSelectFinalSizeComponent {
   size: NzSizeLDSType = 'default';
@@ -1310,7 +1320,8 @@ export class TestTreeSelectFinalSizeComponent {
 
 @Component({
   imports: [NzTreeSelectComponent],
-  template: `<nz-tree-select [nzVariant]="variant()" />`
+  template: `<nz-tree-select [nzVariant]="variant()" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestTreeSelectFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);

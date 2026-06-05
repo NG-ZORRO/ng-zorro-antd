@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzTableModule } from '../table.module';
@@ -75,7 +75,8 @@ describe('tfoot', () => {
         <td colspan="2">summary</td>
       </tfoot>
     </nz-table>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestComponent {
   scrollX: string | null = null;

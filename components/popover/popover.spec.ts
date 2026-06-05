@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -208,7 +208,8 @@ describe('popover', () => {
     </a>
     <ng-template #templateTitleContext let-item>{{ item }}</ng-template>
     <ng-template #templateContentContext let-item>{{ item }}</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzPopoverTestComponent {
   @ViewChild('stringPopover', { static: false }) stringPopover!: ElementRef;

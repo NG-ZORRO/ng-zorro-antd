@@ -4,7 +4,14 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -331,7 +338,8 @@ describe('collapse', () => {
         <p>Panel02</p>
       </nz-collapse-panel>
     </nz-collapse>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCollapseBasicComponent {
   @ViewChild('headerTemplate', { static: false }) headerTemplate!: TemplateRef<void>;
@@ -355,7 +363,8 @@ export class NzTestCollapseBasicComponent {
         <p>Panel01</p>
       </nz-collapse-panel>
     </nz-collapse>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCollapseTemplateComponent {}
 
@@ -376,7 +385,8 @@ export class NzTestCollapseTemplateComponent {}
         <nz-icon nzType="caret-right" class="ant-collapse-arrow" />
       </ng-template>
     </nz-collapse>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCollapseIconComponent {}
 
@@ -393,7 +403,8 @@ export class NzTestCollapseIconComponent {}
         <p>Content</p>
       </nz-collapse-panel>
     </nz-collapse>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCollapseCollapsibleComponent {
   active = false;
@@ -409,7 +420,8 @@ export class NzTestCollapseCollapsibleComponent {
         <p>content</p>
       </nz-collapse-panel>
     </nz-collapse>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCollapseSizeSpecComponent {
   size: 'small' | 'middle' | 'large' = 'middle';

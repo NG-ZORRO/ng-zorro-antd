@@ -27,6 +27,7 @@ import {
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   inject,
@@ -91,6 +92,7 @@ describe('cascader', () => {
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting(), provideNzNoAnimation(), provideZoneChangeDetection()]
     });
+    (NzDemoCascaderMultipleComponent as NzSafeAny).ɵcmp.onPush = false;
   });
 
   beforeEach(
@@ -2969,7 +2971,8 @@ const options5: NzSafeAny[] = [];
         {{ label }}{{ $last ? '' : ' | ' }}
       }
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDemoCascaderDefaultComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
@@ -3022,7 +3025,8 @@ export class NzDemoCascaderDefaultComponent {
       (ngModelChange)="onValueChanges($event)"
       (nzOpenChange)="onOpenChange($event)"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDemoCascaderLoadDataComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
@@ -3076,7 +3080,8 @@ export class NzDemoCascaderLoadDataComponent {
     <div [dir]="direction">
       <nz-cascader [nzOptions]="nzOptions" />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDemoCascaderRtlComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
@@ -3087,7 +3092,8 @@ export class NzDemoCascaderRtlComponent {
 
 @Component({
   imports: [FormsModule, NzCascaderModule],
-  template: `<nz-cascader [nzOptions]="nzOptions" [nzStatus]="status" />`
+  template: `<nz-cascader [nzOptions]="nzOptions" [nzStatus]="status" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDemoCascaderStatusComponent {
   nzOptions: NzSafeAny[] | null = options1();
@@ -3104,7 +3110,8 @@ export class NzDemoCascaderStatusComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDemoCascaderInFormComponent {
   private fb = inject(FormBuilder);
@@ -3116,7 +3123,8 @@ export class NzDemoCascaderInFormComponent {
 
 @Component({
   imports: [NzCascaderModule],
-  template: ` <nz-cascader [nzVariant]="variant()" /> `
+  template: ` <nz-cascader [nzVariant]="variant()" /> `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestCascaderFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
@@ -3131,7 +3139,8 @@ export class TestCascaderFinalVariantComponent {
       <ng-container [ngTemplateOutlet]="menu" />
       <div class="custom-footer">Custom Footer</div>
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDemoCascaderPopupRenderComponent {
   @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -76,7 +76,8 @@ describe('textarea-count', () => {
     <nz-textarea-count>
       <textarea rows="4" nz-input [(ngModel)]="inputValue"></textarea>
     </nz-textarea-count>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInputTextareaCountWithoutMaxComponent {
   inputValue = '';
@@ -88,7 +89,8 @@ export class NzTestInputTextareaCountWithoutMaxComponent {
     <nz-textarea-count [nzMaxCharacterCount]="100">
       <textarea rows="4" nz-input [(ngModel)]="inputValue"></textarea>
     </nz-textarea-count>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInputTextareaCountWithMaxComponent {
   inputValue = '';

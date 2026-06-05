@@ -4,7 +4,13 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, provideZoneChangeDetection, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -289,7 +295,8 @@ describe('check-list', () => {
       [nzTitle]="title"
       [nzFooter]="footer"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCheckListBasicComponent {
   visible: boolean = false;

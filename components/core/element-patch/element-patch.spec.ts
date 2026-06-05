@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzElementPatchDirective } from './element-patch.directive';
@@ -24,7 +24,8 @@ describe('nz-element', () => {
 
 @Component({
   imports: [NzElementPatchDirective],
-  template: `<button nz-element>Action</button> `
+  template: `<button nz-element>Action</button> `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestElementPatchComponent {
   @ViewChild(NzElementPatchDirective) element!: NzElementPatchDirective;

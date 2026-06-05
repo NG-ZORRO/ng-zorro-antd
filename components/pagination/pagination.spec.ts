@@ -5,7 +5,14 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, DebugElement, provideZoneChangeDetection, signal, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  signal,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -461,7 +468,8 @@ describe('pagination', () => {
       [nzShowSizeChanger]="showSizeChanger"
       [nzShowQuickJumper]="showQuickJumper"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestPaginationComponent {
   @ViewChild(NzPaginationComponent, { static: false }) nzPaginationComponent!: NzPaginationComponent;
@@ -496,7 +504,8 @@ export class NzTestPaginationComponent {
         }
       }
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestPaginationRenderComponent {
   nzAlign = signal<NzPaginationAlign>('start');
@@ -509,7 +518,8 @@ export class NzTestPaginationRenderComponent {
     <ng-template #rangeTemplate let-range="range" let-total>
       {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestPaginationTotalComponent {
   pageIndex = 1;
@@ -517,7 +527,8 @@ export class NzTestPaginationTotalComponent {
 
 @Component({
   imports: [NzPaginationModule],
-  template: `<nz-pagination nzResponsive />`
+  template: `<nz-pagination nzResponsive />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestPaginationAutoResizeComponent {}
 
@@ -527,7 +538,8 @@ export class NzTestPaginationAutoResizeComponent {}
     <div [dir]="direction">
       <nz-pagination [nzSimple]="false" [(nzPageIndex)]="pageIndex" [nzTotal]="total" [(nzPageSize)]="pageSize" />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestPaginationRtlComponent {
   @ViewChild(Dir) dir!: Dir;

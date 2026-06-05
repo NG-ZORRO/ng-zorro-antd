@@ -5,7 +5,7 @@
 
 import { BidiModule } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -677,7 +677,8 @@ describe('segmented animation', () => {
       [nzName]="name"
       (nzValueChange)="handleValueChange($event)"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzSegmentedTestComponent {
   size: NzSizeLDSType = 'default';
@@ -695,7 +696,8 @@ export class NzSegmentedTestComponent {
 
 @Component({
   imports: [NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" />`
+  template: `<nz-segmented [nzOptions]="options" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzSegmentedDomStructureTestComponent {
   options: NzSegmentedOptions = [
@@ -707,7 +709,8 @@ export class NzSegmentedDomStructureTestComponent {
 
 @Component({
   imports: [FormsModule, NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" [(ngModel)]="value" (ngModelChange)="handleValueChange($event)" />`
+  template: `<nz-segmented [nzOptions]="options" [(ngModel)]="value" (ngModelChange)="handleValueChange($event)" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzSegmentedNgModelTestComponent {
   options: NzSegmentedOptions = [1, 2, 3];
@@ -720,7 +723,8 @@ export class NzSegmentedNgModelTestComponent {
 
 @Component({
   imports: [ReactiveFormsModule, NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" [formControl]="formControl" />`
+  template: `<nz-segmented [nzOptions]="options" [formControl]="formControl" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzSegmentedInReactiveFormTestComponent {
   options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
@@ -729,7 +733,8 @@ export class NzSegmentedInReactiveFormTestComponent {
 
 @Component({
   imports: [FormsModule, NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" nzVertical (nzValueChange)="handleValueChange($event)" />`
+  template: `<nz-segmented [nzOptions]="options" nzVertical (nzValueChange)="handleValueChange($event)" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzSegmentedVerticalTestComponent {
   options: NzSegmentedOptions = [1, 2, 3];
@@ -741,7 +746,8 @@ export class NzSegmentedVerticalTestComponent {
 
 @Component({
   imports: [BidiModule, NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" dir="rtl" />`
+  template: `<nz-segmented [nzOptions]="options" dir="rtl" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzSegmentedRtlTestComponent {
   options: NzSegmentedOptions = [1, 2, 3];

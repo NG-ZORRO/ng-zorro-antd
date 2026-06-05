@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -76,7 +76,8 @@ describe('nz-form-item', () => {
       <nz-form-item nzLayout="vertical" />
       <nz-form-item />
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestHorizontalFormWithVerticalItemComponent {}
 
@@ -87,6 +88,7 @@ export class NzTestHorizontalFormWithVerticalItemComponent {}
       <nz-form-item nzLayout="horizontal" />
       <nz-form-item />
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestVerticalFormWithHorizontalItemComponent {}

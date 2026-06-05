@@ -3,7 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AnimationCallbackEvent, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import {
+  AnimationCallbackEvent,
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   AbstractControl,
@@ -438,7 +444,8 @@ describe('form-control', () => {
     <nz-form-item>
       <nz-form-control [nzHasFeedback]="hasFeedback" [nzValidateStatus]="status" />
     </nz-form-item>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestStaticFormControlComponent {
   hasFeedback = false;
@@ -463,7 +470,8 @@ export class NzTestStaticFormControlComponent {
         <input formControlName="input2" />
       </nz-form-control>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestReactiveFormControlComponent {
   formGroup: FormGroup<{
@@ -494,7 +502,8 @@ export class NzTestReactiveFormControlComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestReactiveFormControlInitStatusComponent {
   formGroup: FormGroup;
@@ -539,7 +548,8 @@ export class NzTestReactiveFormControlInitStatusComponent {
         </nz-form-item>
       }
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestReactiveFormAutoTipsComponent {
   formGroup: FormGroup<{
@@ -637,7 +647,8 @@ function isMobile(value: string): boolean {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestNoopAnimationsFormControlComponent {
   formGroup: FormGroup<{ input: FormControl<string | null> }>;
