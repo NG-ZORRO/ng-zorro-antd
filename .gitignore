@@ -49,6 +49,7 @@ testem.log
 .eslintcache
 yarn-error.log
 report.*.json
+monospace.json
 
 # e2e
 /e2e/*.js
@@ -58,4 +59,5 @@ report.*.json
 .DS_Store
 Thumbs.db
 
-monospace.json
+# Local AI Agents skills
+.qwen/skills

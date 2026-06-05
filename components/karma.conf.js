@@ -5,6 +5,18 @@ const tags = process.env && process.env['NG_TEST_TAGS'];
 const processENV = require('process');
 processENV.env.CHROME_BIN = require('puppeteer').executablePath();
 
+function AngularBuildCleanupReporter() {
+  this.onExit = done => {
+    try {
+      // The Angular 22 Karma builder leaves esbuild's service process alive after a single run.
+      const esbuildPath = require.resolve('esbuild', { paths: [require.resolve('@angular/build')] });
+      require(esbuildPath).stop();
+    } finally {
+      done();
+    }
+  };
+}
+
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -16,7 +28,8 @@ module.exports = function (config) {
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
       require('karma-junit-reporter'),
-      require('karma-viewport')
+      require('karma-viewport'),
+      { 'reporter:angular-build-cleanup': ['type', AngularBuildCleanupReporter] }
     ],
     client: {
       jasmine: {
@@ -30,7 +43,7 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, '../coverage-report'),
       reporters: [{ type: 'html' }, { type: 'text-summary' }, { type: 'lcovonly' }, { type: 'cobertura' }]
     },
-    reporters: ['progress', 'kjhtml', 'spec', 'junit'],
+    reporters: ['progress', 'kjhtml', 'spec', 'junit', 'angular-build-cleanup'],
     junitReporter: {
       outputDir: 'junit'
     },
@@ -50,7 +63,7 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessCI: {
         base: 'ChromeHeadless',
-        flags: ['--disable-gpu', '--no-sandbox']
+        flags: ['--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage']
       }
     },
     singleRun: false,
