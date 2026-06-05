@@ -23,7 +23,7 @@ const defaultOptions = {
   name: 'test',
   inlineStyle: false,
   inlineTemplate: false,
-  changeDetection: ChangeDetection.Default,
+  changeDetection: ChangeDetection.Eager,
   style: Style.Less,
   type: 'Component',
   skipTests: false,

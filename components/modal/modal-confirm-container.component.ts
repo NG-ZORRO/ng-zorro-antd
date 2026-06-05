@@ -92,7 +92,7 @@ import { BaseModalContainerComponent } from './modal-container.directive';
   `,
   hostDirectives: [CdkScrollable],
   // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     tabindex: '-1',
     role: 'dialog',

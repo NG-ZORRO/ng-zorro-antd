@@ -6,6 +6,8 @@
     ],
     "module": "commonjs",
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
+    "rootDir": ".",
     "outDir": "../../dist",
     "esModuleInterop": true,
     "strictNullChecks": true,

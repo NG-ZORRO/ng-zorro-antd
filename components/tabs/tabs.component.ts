@@ -67,7 +67,7 @@ let nextId = 0;
   selector: 'nz-tabs',
   exportAs: 'nzTabs',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NZ_TAB_SET,

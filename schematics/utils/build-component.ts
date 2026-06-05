@@ -24,7 +24,6 @@ import {
 } from '@angular-devkit/schematics';
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
 import { Schema as ComponentOptions, Style } from '@schematics/angular/component/schema';
-import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import { ProjectDefinition, readWorkspace } from '@schematics/angular/utility';
 import { addDeclarationToModule, addExportToModule, getDecoratorMetadata } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
@@ -32,6 +31,7 @@ import { buildRelativePath, findModuleFromOptions } from '@schematics/angular/ut
 import { parseName } from '@schematics/angular/utility/parse-name';
 import { validateHtmlSelector } from '@schematics/angular/utility/validation';
 import { ProjectType } from '@schematics/angular/utility/workspace-models';
+import * as ts from 'typescript';
 
 import { readFileSync, statSync } from 'fs';
 import { dirname, join, resolve } from 'path';

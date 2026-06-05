@@ -46,24 +46,24 @@ export class NzIconService extends IconService {
 
   normalizeSvgElement(svg: SVGElement): void {
     if (!svg.getAttribute('viewBox')) {
-      this._renderer.setAttribute(svg, 'viewBox', '0 0 1024 1024');
+      this.renderer.setAttribute(svg, 'viewBox', '0 0 1024 1024');
     }
     if (!svg.getAttribute('width') || !svg.getAttribute('height')) {
-      this._renderer.setAttribute(svg, 'width', '1em');
-      this._renderer.setAttribute(svg, 'height', '1em');
+      this.renderer.setAttribute(svg, 'width', '1em');
+      this.renderer.setAttribute(svg, 'height', '1em');
     }
     if (!svg.getAttribute('fill')) {
-      this._renderer.setAttribute(svg, 'fill', 'currentColor');
+      this.renderer.setAttribute(svg, 'fill', 'currentColor');
     }
   }
 
   fetchFromIconfont(opt: NzIconfontOption): void {
     const { scriptUrl } = opt;
-    if (this._document && !this.iconfontCache.has(scriptUrl)) {
-      const script = this._renderer.createElement('script');
-      this._renderer.setAttribute(script, 'src', scriptUrl);
-      this._renderer.setAttribute(script, 'data-namespace', scriptUrl.replace(/^(https?|http):/g, ''));
-      this._renderer.appendChild(this._document.body, script);
+    if (this.document && !this.iconfontCache.has(scriptUrl)) {
+      const script = this.renderer.createElement('script');
+      this.renderer.setAttribute(script, 'src', scriptUrl);
+      this.renderer.setAttribute(script, 'data-namespace', scriptUrl.replace(/^(https?|http):/g, ''));
+      this.renderer.appendChild(this.document.body, script);
       this.iconfontCache.add(scriptUrl);
     }
   }
@@ -73,7 +73,8 @@ export class NzIconService extends IconService {
   }
 
   constructor() {
-    super([...NZ_ICONS_USED_BY_ZORRO, ...(inject(NZ_ICONS, { optional: true }) || [])]);
+    super();
+    this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(inject(NZ_ICONS, { optional: true }) || []));
 
     this.onConfigChange();
     this.configDefaultTwotoneColor();

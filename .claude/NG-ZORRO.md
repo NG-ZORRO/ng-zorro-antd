@@ -98,7 +98,7 @@ Each component located in the `components/` folder is composed of the following 
 
 ### Development environment requirements
 
-- Node.js v20.19.0 or higher
+- Node.js v22.22.3 or higher
 - npm recommended
 
 ### Install dependencies
