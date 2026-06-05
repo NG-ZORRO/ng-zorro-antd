@@ -73,7 +73,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-loading]': `nzLoading`,
     '[class.ant-btn-background-ghost]': `nzGhost`,
     '[class.ant-btn-block]': `nzBlock`,
-    '[class.ant-input-search-button]': `nzSearch`,
     '[class.ant-btn-rtl]': `dir() === 'rtl'`,
     '[class.ant-btn-icon-only]': `iconOnly()`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
@@ -83,19 +82,16 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   providers: [{ provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'btn' }]
 })
 export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContentInit, OnInit {
-  private elementRef: ElementRef<HTMLButtonElement | HTMLAnchorElement> = inject(ElementRef);
-  private cdr = inject(ChangeDetectorRef);
-  private renderer = inject(Renderer2);
-  private destroyRef = inject(DestroyRef);
+  private readonly elementRef: ElementRef<HTMLButtonElement | HTMLAnchorElement> = inject(ElementRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly renderer = inject(Renderer2);
+  private readonly destroyRef = inject(DestroyRef);
+  protected readonly dir = inject(Directionality).valueSignal;
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
   @Input({ transform: booleanAttribute }) nzBlock: boolean = false;
   @Input({ transform: booleanAttribute }) nzGhost: boolean = false;
-  /**
-   * @deprecated Will be removed in v22.0.0. Please use `nz-input-search` instead.
-   */
-  @Input({ transform: booleanAttribute }) nzSearch: boolean = false;
   @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
   @Input({ transform: booleanAttribute }) nzDanger: boolean = false;
   @Input({ transform: booleanAttribute }) disabled: boolean = false;
@@ -103,15 +99,13 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
-  protected readonly dir = inject(Directionality).valueSignal;
 
   private readonly elementOnly = signal(false);
   private readonly size = signal<NzSizeLDSType>(this.nzSize);
 
-  private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
-
-  private readonly compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private readonly loading$ = new Subject<boolean>();
+  private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
+  private readonly compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
 
   protected readonly finalSize = computed(() => {
     if (this.formSize?.()) {
@@ -125,7 +119,6 @@ export class NzButtonComponent implements OnChanges, AfterViewInit, AfterContent
 
   readonly iconDir = contentChild(NzIconDirective);
   readonly loadingIconDir = viewChild(NzIconDirective);
-
   readonly iconOnly = computed(() => this.elementOnly() && (!!this.iconDir() || !!this.loadingIconDir()));
 
   constructor() {

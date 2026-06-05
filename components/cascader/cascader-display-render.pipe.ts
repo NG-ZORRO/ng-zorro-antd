@@ -9,7 +9,7 @@ import { NzTreeNode } from 'ng-zorro-antd/tree';
 
 import { NzCascaderTreeService } from './cascader-tree.service';
 import { NzCascaderService } from './cascader.service';
-import { NzCascaderOption, NzDisplayRenderContext } from './typings';
+import { NzDisplayRenderContext } from './typings';
 
 export const defaultDisplayRender = (labels: string[]): string => labels.join(' / ');
 
@@ -20,11 +20,11 @@ export class NzDisplayRenderPipe implements PipeTransform {
   private cascaderService = inject(NzCascaderService);
   private cascaderTreeService = inject(NzCascaderTreeService);
 
-  transform(node: NzTreeNode, deprecatedDisplayWith?: (nodes: NzCascaderOption[]) => string | undefined): string {
+  transform(node: NzTreeNode): string {
     const ancestors = this.cascaderTreeService.getAncestorNodeList(node);
     const selectedOptions = this.cascaderTreeService.toOptions(ancestors);
     const labels = selectedOptions.map(o => this.cascaderService.getOptionLabel(o));
-    return deprecatedDisplayWith ? deprecatedDisplayWith(selectedOptions)! : defaultDisplayRender(labels);
+    return defaultDisplayRender(labels);
   }
 }
 

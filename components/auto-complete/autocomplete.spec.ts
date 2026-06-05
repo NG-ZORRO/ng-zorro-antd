@@ -959,9 +959,7 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       dispatchFakeEvent(input, 'blur');
       fixture.detectChanges();
-      expect(componentInstance.trigger['getConnectedElement']().nativeElement).toEqual(
-        componentInstance.inputRef.nativeElement
-      );
+      expect(componentInstance.trigger['elementRef'].nativeElement).toEqual(componentInstance.inputRef.nativeElement);
     });
   });
 });

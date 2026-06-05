@@ -42,8 +42,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, combineLatest, merge, of as observableOf } from 'rxjs';
-import { distinctUntilChanged, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, merge } from 'rxjs';
+import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
 
 import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
@@ -51,7 +51,6 @@ import {
   NZ_FORM_SIZE,
   NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
-  NzFormNoStatusService,
   NzFormStatusService
 } from 'ng-zorro-antd/core/form';
 import { getPlacementName, NzOverlayModule, POSITION_MAP, POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
@@ -245,9 +244,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   private readonly focusMonitor = inject(FocusMonitor);
   private readonly destroyRef = inject(DestroyRef);
 
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-  protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
+  protected readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  protected readonly nzFormStatusService = inject(NzFormStatusService, { optional: true });
 
   @Input() nzId: string | null = null;
   @Input() nzSize: NzSelectSizeType = 'default';
@@ -742,11 +740,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
       .pipe(
-        distinctUntilChanged((pre, cur) => {
-          return pre.status === cur.status && pre.hasFeedback === cur.hasFeedback;
-        }),
-        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : observableOf(false)),
-        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
+        distinctUntilChanged((pre, cur) => pre.status === cur.status && pre.hasFeedback === cur.hasFeedback),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {

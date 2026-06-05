@@ -35,7 +35,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { isValid } from 'date-fns';
 
@@ -45,7 +45,6 @@ import {
   NZ_FORM_SIZE,
   NZ_FORM_VARIANT,
   NzFormItemFeedbackIconComponent,
-  NzFormNoStatusService,
   NzFormStatusService
 } from 'ng-zorro-antd/core/form';
 import { warn } from 'ng-zorro-antd/core/logger';
@@ -440,14 +439,11 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   private readonly variant = signal<NzVariant | undefined>(this.nzVariant);
   private compactSize = inject(NZ_SPACE_COMPACT_SIZE, { optional: true });
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
-  private nzFormNoStatusService = inject(NzFormNoStatusService, { optional: true });
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
       .pipe(
         distinctUntilChanged((pre, cur) => pre.status === cur.status && pre.hasFeedback === cur.hasFeedback),
-        withLatestFrom(this.nzFormNoStatusService ? this.nzFormNoStatusService.noFormStatus : of(false)),
-        map(([{ status, hasFeedback }, noStatus]) => ({ status: noStatus ? '' : status, hasFeedback })),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ status, hasFeedback }) => {

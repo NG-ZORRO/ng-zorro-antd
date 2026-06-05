@@ -23,11 +23,6 @@ export interface ColSize {
   order?: ColSpanType;
 }
 
-/**
- * @deprecated intended to be removed in v22, please use {@link ColSize} instead
- */
-export type EmbeddedProperty = ColSize;
-
 const CLASS_NAME = 'ant-col';
 
 @Directive({

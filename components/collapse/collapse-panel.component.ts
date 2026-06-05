@@ -44,8 +44,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
       #collapseHeader
       role="button"
       [attr.aria-expanded]="active()"
-      [attr.aria-disabled]="nzDisabled || nzCollapsible === 'disabled'"
-      [attr.tabindex]="nzDisabled || nzCollapsible === 'disabled' ? -1 : 0"
+      [attr.aria-disabled]="disabled"
+      [attr.tabindex]="disabled ? -1 : 0"
       class="ant-collapse-header"
       [class.ant-collapse-collapsible-icon]="nzCollapsible === 'icon'"
       [class.ant-collapse-collapsible-header]="nzCollapsible === 'header'"
@@ -82,7 +82,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
     class: 'ant-collapse-item',
     '[class.ant-collapse-no-arrow]': '!nzShowArrow',
     '[class.ant-collapse-item-active]': 'active()',
-    '[class.ant-collapse-item-disabled]': `nzDisabled || nzCollapsible === 'disabled'`
+    '[class.ant-collapse-item-disabled]': `disabled`
   },
   imports: [NzOutletModule, NzIconModule, NzAnimationCollapseDirective]
 })
@@ -95,16 +95,16 @@ export class NzCollapsePanelComponent implements AfterViewInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   readonly nzActive = input(false, { transform: booleanAttribute });
-  /**
-   * @deprecated Will be removed in v22, please use `nzCollapsible` with the value `'disabled'` instead.
-   */
-  @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) @WithConfig() nzShowArrow: boolean = true;
   @Input() nzExtra?: string | TemplateRef<void>;
   @Input() nzHeader?: string | TemplateRef<void>;
   @Input() nzExpandedIcon?: string | TemplateRef<void>;
   @Input() nzCollapsible?: 'disabled' | 'header' | 'icon';
   readonly nzActiveChange = output<boolean>();
+
+  protected get disabled(): boolean {
+    return this.nzCollapsible === 'disabled';
+  }
 
   /**
    * @description Actual active state of the panel.
@@ -132,7 +132,7 @@ export class NzCollapsePanelComponent implements AfterViewInit {
         : (header.nativeElement as HTMLElement);
     fromEventOutsideAngular(element, 'click')
       .pipe(
-        filter(() => !this.nzDisabled && this.nzCollapsible !== 'disabled'),
+        filter(() => !this.disabled),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {

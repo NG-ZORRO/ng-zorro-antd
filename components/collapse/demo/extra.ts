@@ -11,12 +11,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   template: `
     <nz-collapse [nzExpandIconPosition]="expandIconPosition">
       @for (panel of panels; track panel) {
-        <nz-collapse-panel
-          [nzHeader]="panel.name"
-          [nzActive]="panel.active"
-          [nzExtra]="extraTpl"
-          [nzDisabled]="panel.disabled"
-        >
+        <nz-collapse-panel [nzHeader]="panel.name" [nzActive]="panel.active" [nzExtra]="extraTpl">
           <p style="margin:0;">
             A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome
             guest in many households across the world.
@@ -39,20 +34,17 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 export class NzDemoCollapseExtraComponent {
   expandIconPosition: 'start' | 'end' = 'start';
 
-  panels = [
+  readonly panels = [
     {
       active: true,
-      name: 'This is panel header 1',
-      disabled: false
+      name: 'This is panel header 1'
     },
     {
       active: false,
-      disabled: false,
       name: 'This is panel header 2'
     },
     {
       active: false,
-      disabled: true,
       name: 'This is panel header 3'
     }
   ];

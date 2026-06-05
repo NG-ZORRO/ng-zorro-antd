@@ -5,6 +5,5 @@
 
 export * from './interface';
 export { NzTransferListComponent } from './transfer-list.component';
-export { NzTransferSearchComponent } from './transfer-search.component';
 export { NzTransferComponent } from './transfer.component';
 export { NzTransferModule } from './transfer.module';

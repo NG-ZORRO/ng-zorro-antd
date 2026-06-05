@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, of, Subscription } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -205,7 +205,7 @@ export class NzUploadBtnComponent implements OnInit {
     let transformedFile: string | Blob | File | NzUploadFile | undefined;
     const opt = this.options;
     const { uid } = file;
-    const { action, data, headers, transformFile } = opt;
+    const { action, data, headers } = opt;
 
     const args: NzUploadXHRArgs = {
       action: typeof action === 'string' ? action : '',
@@ -245,29 +245,10 @@ export class NzUploadBtnComponent implements OnInit {
       }
     }
 
-    if (typeof transformFile === 'function') {
-      const transformResult = transformFile(file);
-      process$ = process$.pipe(
-        switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult))),
-        tap(newFile => (transformedFile = newFile))
-      );
-    }
-
-    /**
-     * TODO
-     * All this part of code needs to be removed in v22.0.0 when we will remove the `nzTransformFile` hook
-     */
     if (typeof data === 'function') {
       const dataResult = (data as (file: NzUploadFile) => {} | Observable<{}>)(file);
       if (dataResult instanceof Observable) {
         process$ = process$.pipe(
-          /**
-           * this is a little bit tricky but here is the explanation:
-           * Potentially, people can use the `beforeUpload` hook to transform the file, and also `nzTransformFile` hook to transform the file,
-           * if beforeUpload hook transform the file, so nzTransformFile hook must not be called, otherwise the file will be transformed twice
-           * Normally this can not happen, but it is possible until we remove the `nzTransformFile` hook
-           */
-          filter(() => !processedFile),
           switchMap(() => dataResult),
           map(res => {
             args.data = res;

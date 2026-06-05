@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Observable, Observer } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 
@@ -19,10 +20,9 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 })
 export class NzDemoUploadTransformFileComponent {
   transformFile = (file: NzUploadFile): Observable<Blob> =>
-    new Observable((observer: Observer<Blob>) => {
+    new Observable(observer => {
       const reader = new FileReader();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      reader.readAsDataURL(file as any);
+      reader.readAsDataURL(file as NzSafeAny);
       reader.onload = () => {
         const canvas = document.createElement('canvas');
         const img = document.createElement('img');

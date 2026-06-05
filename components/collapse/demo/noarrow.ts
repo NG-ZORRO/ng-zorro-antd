@@ -19,7 +19,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
   `
 })
 export class NzDemoCollapseNoarrowComponent {
-  panels = [
+  readonly panels = [
     {
       active: true,
       name: 'This is panel header 1',

@@ -6,11 +6,10 @@
 import { NgModule } from '@angular/core';
 
 import { NzTransferListComponent } from './transfer-list.component';
-import { NzTransferSearchComponent } from './transfer-search.component';
 import { NzTransferComponent } from './transfer.component';
 
 @NgModule({
-  imports: [NzTransferComponent, NzTransferListComponent, NzTransferSearchComponent],
+  imports: [NzTransferComponent, NzTransferListComponent],
   exports: [NzTransferComponent]
 })
 export class NzTransferModule {}

@@ -64,8 +64,6 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
   abstract overlayClassName?: string;
   abstract overlayStyle?: NgStyleInterface;
   abstract overlayClickable?: boolean;
-  /** @deprecated Default is false, and customization is no longer supported. This will be removed in v22.0.0. */
-  cdkConnectedOverlayPush?: boolean = false;
   visibleChange = new EventEmitter<boolean>();
 
   /**
@@ -285,7 +283,6 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
       overlayStyle: ['nzOverlayStyle', () => this._overlayStyle],
       overlayClickable: ['nzOverlayClickable', () => this._overlayClickable],
       arrowPointAtCenter: ['nzArrowPointAtCenter', () => this.arrowPointAtCenter],
-      cdkConnectedOverlayPush: ['cdkConnectedOverlayPush', () => this.cdkConnectedOverlayPush],
       ...this.getProxyPropertyMap()
     };
 
@@ -359,8 +356,6 @@ export abstract class NzTooltipBaseComponent {
   nzBackdrop = false;
   nzMouseEnterDelay?: number;
   nzMouseLeaveDelay?: number;
-  /** @deprecated Default is false, and customization is no longer supported. This will be removed in v22.0.0. */
-  cdkConnectedOverlayPush?: boolean = false;
 
   nzVisibleChange = new Subject<boolean>();
 

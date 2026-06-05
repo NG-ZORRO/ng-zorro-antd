@@ -3,16 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  inject,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, ViewEncapsulation } from '@angular/core';
 
 import { NzValidateStatus } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -23,6 +14,7 @@ const iconTypeMap = {
   success: 'check-circle-fill',
   warning: 'exclamation-circle-fill'
 } as const;
+const CLASS_NAME = 'ant-form-item-feedback-icon';
 
 @Component({
   selector: 'nz-form-item-feedback-icon',
@@ -31,30 +23,28 @@ const iconTypeMap = {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (iconType) {
-      <nz-icon [nzType]="iconType" />
+    @if (iconType(); as type) {
+      <nz-icon [nzType]="type" />
     }
   `,
   host: {
-    class: 'ant-form-item-feedback-icon',
-    '[class.ant-form-item-feedback-icon-error]': 'status==="error"',
-    '[class.ant-form-item-feedback-icon-warning]': 'status==="warning"',
-    '[class.ant-form-item-feedback-icon-success]': 'status==="success"',
-    '[class.ant-form-item-feedback-icon-validating]': 'status==="validating"'
+    '[class]': 'class()'
   }
 })
-export class NzFormItemFeedbackIconComponent implements OnChanges {
-  public cdr = inject(ChangeDetectorRef);
-  @Input() status: NzValidateStatus = '';
-
-  iconType: (typeof iconTypeMap)[keyof typeof iconTypeMap] | null = null;
-
-  ngOnChanges(_changes: SimpleChanges): void {
-    this.updateIcon();
-  }
-
-  updateIcon(): void {
-    this.iconType = this.status ? iconTypeMap[this.status] : null;
-    this.cdr.markForCheck();
-  }
+export class NzFormItemFeedbackIconComponent {
+  readonly status = input<NzValidateStatus>('');
+  protected readonly iconType = computed(() => {
+    const status = this.status();
+    return status ? iconTypeMap[status] : null;
+  });
+  protected readonly class = computed(() => {
+    const status = this.status();
+    return {
+      [CLASS_NAME]: true,
+      [`${CLASS_NAME}-error`]: status === 'error',
+      [`${CLASS_NAME}-warning`]: status === 'warning',
+      [`${CLASS_NAME}-success`]: status === 'success',
+      [`${CLASS_NAME}-validating`]: status === 'validating'
+    };
+  });
 }

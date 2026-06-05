@@ -30,10 +30,6 @@ export type ResponsiveLike<T> = {
 
 export type BreakpointMap = ResponsiveLike<string>;
 export type BreakpointBooleanMap = ResponsiveLike<boolean>;
-/**
- * @deprecated intended to be removed in v22, please use {@link Breakpoint} instead
- */
-export type NzBreakpointKey = Breakpoint;
 
 export const gridResponsiveMap: BreakpointMap = {
   xs: '(max-width: 575px)',

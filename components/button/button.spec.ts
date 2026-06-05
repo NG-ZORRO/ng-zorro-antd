@@ -17,7 +17,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 
 import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
-import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
@@ -59,13 +59,6 @@ describe('button', () => {
       component.nzGhost = true;
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-background-ghost');
-    });
-
-    it('should apply classname based on nzSearch', () => {
-      expect(buttonElement.classList).not.toContain('ant-input-search-button');
-      component.nzSearch = true;
-      fixture.detectChanges();
-      expect(buttonElement.classList).toContain('ant-input-search-button');
     });
 
     it('should apply classname based on nzLoading', () => {
@@ -265,23 +258,6 @@ describe('button', () => {
       expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
     }));
   });
-
-  describe('basic', () => {
-    let fixture: ComponentFixture<NzButtonComponent>;
-    let component: NzButtonComponent;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzButtonComponent);
-      component = fixture.componentInstance;
-    });
-
-    it('correct value for listOfNode', () => {
-      component['elementRef'] = {
-        nativeElement: {} as NzSafeAny
-      };
-      expect(component.iconOnly()).toBeFalsy();
-    });
-  });
 });
 
 describe('anchor', () => {
@@ -360,7 +336,6 @@ describe('finalSize', () => {
       nz-button
       [nzType]="nzType"
       [nzGhost]="nzGhost"
-      [nzSearch]="nzSearch"
       [nzLoading]="nzLoading"
       [nzDanger]="nzDanger"
       [nzShape]="nzShape"
@@ -374,7 +349,6 @@ describe('finalSize', () => {
 export class TestButtonComponent {
   @Input() nzBlock: boolean = false;
   @Input() nzGhost: boolean = false;
-  @Input() nzSearch: boolean = false;
   @Input() nzLoading: boolean = false;
   @Input() nzDanger: boolean = false;
   @Input() nzType: NzButtonType = null;
@@ -482,7 +456,6 @@ export class TestButtonIconOnlyLoadingComponent {}
         nz-button
         [nzType]="nzType"
         [nzGhost]="nzGhost"
-        [nzSearch]="nzSearch"
         [nzLoading]="nzLoading"
         [nzDanger]="nzDanger"
         [nzShape]="nzShape"

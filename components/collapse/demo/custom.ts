@@ -41,18 +41,15 @@ export class NzDemoCollapseCustomComponent {
   readonly panels = [
     {
       active: true,
-      disabled: false,
       name: 'This is panel header 1'
     },
     {
       active: false,
-      disabled: true,
       name: 'This is panel header 2',
       icon: 'double-right'
     },
     {
       active: false,
-      disabled: false,
       name: 'This is panel header 3'
     }
   ];
