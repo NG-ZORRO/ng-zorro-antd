@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -9,11 +9,11 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   template: `<button nz-button nzType="default" (click)="createBasicMessage()">Customized display duration</button>`
 })
 export class NzDemoMessageDurationComponent {
+  private readonly message = inject(NzMessageService);
+
   createBasicMessage(): void {
     this.message.success('This is a prompt message for success, and it will disappear in 10 seconds', {
       nzDuration: 10000
     });
   }
-
-  constructor(private message: NzMessageService) {}
 }

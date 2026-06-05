@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -25,10 +25,9 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoPopconfirmDynamicTriggerComponent {
+  private readonly nzMessageService = inject(NzMessageService);
+
   switchValue = false;
-
-  constructor(private nzMessageService: NzMessageService) {}
-
   cancel(): void {
     this.nzMessageService.info('click cancel');
   }

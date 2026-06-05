@@ -90,10 +90,13 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzI18nTestComponent implements OnDestroy {
-  private localeSubscription: Subscription;
-  locale = inject(NZ_I18N);
+  private readonly initialLocale = inject(NZ_I18N);
+  private readonly nzI18nService = inject(NzI18nService);
 
-  constructor(private nzI18nService: NzI18nService) {
+  locale = this.initialLocale;
+
+  private localeSubscription: Subscription;
+  constructor() {
     this.localeSubscription = this.nzI18nService.localeChange.subscribe(locale => {
       this.updateLocale(locale);
     });

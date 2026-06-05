@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -24,7 +24,7 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadPreviewFileComponent {
-  constructor(private http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   previewFile = (file: NzUploadFile): Observable<string> => {
     console.log('Your upload file:', file);

@@ -1,5 +1,5 @@
 import { LowerCasePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzContextMenuService, NzDropdownMenuComponent, NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -71,6 +71,8 @@ import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree'
   `
 })
 export class NzDemoTreeDirectoryComponent {
+  private readonly nzContextMenuService = inject(NzContextMenuService);
+
   activatedNode?: NzTreeNode;
   readonly nodes = [
     {
@@ -93,9 +95,6 @@ export class NzDemoTreeDirectoryComponent {
       ]
     }
   ];
-
-  constructor(private nzContextMenuService: NzContextMenuService) {}
-
   openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
     if (data instanceof NzTreeNode) {

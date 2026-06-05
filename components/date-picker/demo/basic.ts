@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { getISOWeek } from 'date-fns';
@@ -30,11 +30,10 @@ import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
   `
 })
 export class NzDemoDatePickerBasicComponent {
+  private readonly i18n = inject(NzI18nService);
+
   date = null;
   isEnglish = false;
-
-  constructor(private i18n: NzI18nService) {}
-
   onChange(result: Date): void {
     console.log('onChange: ', result);
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -43,10 +43,9 @@ import { NzNotificationPlacement, NzNotificationService } from 'ng-zorro-antd/no
   `
 })
 export class NzDemoNotificationPlacementComponent {
+  private readonly notification = inject(NzNotificationService);
+
   placement = 'topRight';
-
-  constructor(private notification: NzNotificationService) {}
-
   createNotification(position: NzNotificationPlacement): void {
     this.notification.blank(
       'Notification Title',

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
@@ -9,10 +9,9 @@ import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
   template: `<button nz-button nzType="primary" (click)="showConfirm()">Confirm</button>`
 })
 export class NzDemoModalConfirmPromiseComponent {
-  confirmModal?: NzModalRef; // For testing by now
+  private readonly modal = inject(NzModalService);
 
-  constructor(private modal: NzModalService) {}
-
+  confirmModal?: NzModalRef;
   showConfirm(): void {
     this.confirmModal = this.modal.confirm({
       nzTitle: 'Do you Want to delete these items?',

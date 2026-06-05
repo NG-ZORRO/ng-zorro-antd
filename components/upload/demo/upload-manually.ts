@@ -1,5 +1,5 @@
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -31,13 +31,10 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadUploadManuallyComponent {
+  private readonly http = inject(HttpClient);
+  private readonly messageService = inject(NzMessageService);
   uploading = false;
   fileList: NzUploadFile[] = [];
-
-  constructor(
-    private http: HttpClient,
-    private messageService: NzMessageService
-  ) {}
 
   beforeUpload = (file: NzUploadFile): boolean => {
     this.fileList = this.fileList.concat(file);

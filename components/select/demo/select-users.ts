@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
@@ -49,6 +49,8 @@ interface MockUser {
   `
 })
 export class NzDemoSelectSelectUsersComponent implements OnInit {
+  private readonly http = inject(HttpClient);
+
   randomUserUrl = 'https://api.randomuser.me/?results=5';
   searchChange$ = new BehaviorSubject('');
   optionList: string[] = [];
@@ -59,9 +61,6 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
     this.loading = true;
     this.searchChange$.next(value);
   }
-
-  constructor(private http: HttpClient) {}
-
   ngOnInit(): void {
     this.searchChange$
       .pipe(

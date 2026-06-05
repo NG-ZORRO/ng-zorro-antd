@@ -1,5 +1,5 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -32,11 +32,12 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   `
 })
 export class NzDemoMentionPreviewComponent {
+  private readonly sanitizer = inject(DomSanitizer);
+
   inputValue: string = 'Switch tab view preview @NG-ZORRO ';
   preview?: SafeHtml;
   suggestions = ['NG-ZORRO', 'angular', 'Reactive-Extensions'];
-
-  constructor(private sanitizer: DomSanitizer) {
+  constructor() {
     this.renderPreView();
   }
 

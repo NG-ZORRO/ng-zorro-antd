@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
@@ -19,7 +19,7 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
   `
 })
 export class NzDemoModalInfoComponent {
-  constructor(private modal: NzModalService) {}
+  private readonly modal = inject(NzModalService);
 
   info(): void {
     this.modal.info({

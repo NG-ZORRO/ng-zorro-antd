@@ -33,9 +33,8 @@ export const DEFAULT_TWOTONE_COLOR = '#1890ff';
   providedIn: 'root'
 })
 export class NzIconService extends IconService {
-  protected nzConfigService = inject(NzConfigService);
-  private platform = inject(Platform);
-
+  protected readonly nzConfigService = inject(NzConfigService);
+  private readonly platform = inject(Platform);
   configUpdated$ = new Subject<void>();
 
   protected override get _disableDynamicLoading(): boolean {
@@ -120,11 +119,10 @@ export const NZ_ICONS_PATCH = new InjectionToken<IconDefinition[]>('nz_icons_pat
 
 @Injectable()
 export class NzIconPatchService {
+  private readonly extraIcons = inject(NZ_ICONS_PATCH, { self: true });
+  private readonly rootIconService = inject(NzIconService);
+
   patched = false;
-  private extraIcons = inject(NZ_ICONS_PATCH, { self: true });
-
-  constructor(private rootIconService: NzIconService) {}
-
   doPatch(): void {
     if (this.patched) {
       return;

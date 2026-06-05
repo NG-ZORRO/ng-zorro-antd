@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -23,7 +23,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
   `
 })
 export class NzDemoPopconfirmAsyncComponent {
-  constructor(private nzMessageService: NzMessageService) {}
+  private readonly nzMessageService = inject(NzMessageService);
 
   cancel(): void {
     this.nzMessageService.info('click cancel');

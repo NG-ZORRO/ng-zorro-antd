@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -26,7 +26,7 @@ import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadDragComponent {
-  constructor(private messageService: NzMessageService) {}
+  private readonly messageService = inject(NzMessageService);
 
   handleChange({ file, fileList }: NzUploadChangeParam): void {
     const status = file.status;

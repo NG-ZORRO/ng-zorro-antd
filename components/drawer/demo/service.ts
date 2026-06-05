@@ -28,14 +28,13 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   `
 })
 export class NzDemoDrawerServiceComponent {
+  private readonly drawerService = inject(NzDrawerService);
+
   @ViewChild('drawerTemplate', { static: false }) drawerTemplate?: TemplateRef<{
     $implicit: { value: string };
     drawerRef: NzDrawerRef<string>;
   }>;
   value = 'ng';
-
-  constructor(private drawerService: NzDrawerService) {}
-
   openTemplate(): void {
     const drawerRef = this.drawerService.create({
       nzTitle: 'Template',
@@ -95,11 +94,8 @@ export class NzDemoDrawerServiceComponent {
   `
 })
 export class NzDrawerCustomComponent {
-  // @Input() value = '';
-  nzData: { value: string } = inject(NZ_DRAWER_DATA);
-
-  constructor(private drawerRef: NzDrawerRef<string>) {}
-
+  readonly nzData = inject(NZ_DRAWER_DATA);
+  private readonly drawerRef = inject(NzDrawerRef);
   close(): void {
     this.drawerRef.close(this.nzData);
   }

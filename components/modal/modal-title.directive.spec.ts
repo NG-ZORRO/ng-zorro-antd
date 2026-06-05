@@ -4,8 +4,15 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild,
+  inject
+} from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -35,10 +42,12 @@ describe('modal title directive', () => {
     fixture.detectChanges();
   });
 
-  beforeEach(inject([OverlayContainer, NzModalService], (oc: OverlayContainer, m: NzModalService) => {
-    overlayContainer = oc;
-    modalService = m;
-  }));
+  beforeEach(
+    testingInject([OverlayContainer, NzModalService], (oc: OverlayContainer, m: NzModalService) => {
+      overlayContainer = oc;
+      modalService = m;
+    })
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -128,10 +137,9 @@ class TestDirectiveTitleWithInitOpenedComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveTitleInServiceComponent {
+  public readonly nzModalRef = inject(NzModalRef);
+
   @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) NzModalTitleDirective!: TemplateRef<NzSafeAny>;
-
-  constructor(public nzModalRef: NzModalRef) {}
-
   handleCancel(): void {
     this.nzModalRef.close();
   }

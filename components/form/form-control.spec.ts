@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DebugElement,
+  inject,
   provideZoneChangeDetection
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -474,6 +475,8 @@ export class NzTestStaticFormControlComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestReactiveFormControlComponent {
+  private readonly formBuilder = inject(FormBuilder);
+
   formGroup: FormGroup<{
     input: FormControl<string | null>;
     input2: FormControl<string | null>;
@@ -481,7 +484,7 @@ export class NzTestReactiveFormControlComponent {
   }>;
   validateStatus: FormControl<string | null>;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor() {
     this.formGroup = this.formBuilder.group({
       input: this.formBuilder.control('', [Validators.required]),
       input2: this.formBuilder.control('', [Validators.required]),
@@ -506,9 +509,10 @@ export class NzTestReactiveFormControlComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestReactiveFormControlInitStatusComponent {
+  private readonly formBuilder = inject(FormBuilder);
   formGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor() {
     this.formGroup = this.formBuilder.group({
       input: ['', [Validators.required]]
     });
@@ -552,6 +556,9 @@ export class NzTestReactiveFormControlInitStatusComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestReactiveFormAutoTipsComponent {
+  private readonly formBuilder = inject(FormBuilder);
+  public readonly i18n = inject(NzI18nService);
+
   formGroup: FormGroup<{
     username: FormControl<string | null>;
     mobile: FormControl<string | null>;
@@ -588,10 +595,7 @@ export class NzTestReactiveFormAutoTipsComponent {
     }
   };
 
-  constructor(
-    private formBuilder: FormBuilder,
-    public i18n: NzI18nService
-  ) {
+  constructor() {
     const { required, minLength, email, mobile } = MyValidators;
     this.formGroup = this.formBuilder.group({
       username: ['', [required, minLength(6)]],
@@ -651,9 +655,10 @@ function isMobile(value: string): boolean {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestNoopAnimationsFormControlComponent {
+  private readonly formBuilder = inject(FormBuilder);
   formGroup: FormGroup<{ input: FormControl<string | null> }>;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor() {
     this.formGroup = this.formBuilder.group({
       input: this.formBuilder.control('', [Validators.required])
     });

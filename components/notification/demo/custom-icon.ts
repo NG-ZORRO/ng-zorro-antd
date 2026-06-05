@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -26,7 +26,7 @@ import { type NzNotificationComponent, NzNotificationService } from 'ng-zorro-an
   `
 })
 export class NzDemoNotificationCustomIconComponent {
-  constructor(private notification: NzNotificationService) {}
+  private readonly notification = inject(NzNotificationService);
 
   createNotification(template: TemplateRef<{ $implicit: NzNotificationComponent; data: undefined }>): void {
     this.notification.template(template);

@@ -55,14 +55,11 @@ interface IModalData {
   `
 })
 export class NzDemoModalServiceComponent {
+  private readonly modal = inject(NzModalService);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+
   tplModalButtonLoading = false;
   disabled = false;
-
-  constructor(
-    private modal: NzModalService,
-    private viewContainerRef: ViewContainerRef
-  ) {}
-
   createModal(): void {
     this.modal.create({
       nzTitle: 'Modal Title',
@@ -194,12 +191,11 @@ export class NzDemoModalServiceComponent {
   `
 })
 export class NzModalCustomComponent {
-  @Input() title?: string;
-  @Input() subtitle?: string;
-
   readonly modalRef = inject(NzModalRef);
   readonly nzModalData = inject<IModalData>(NZ_MODAL_DATA);
 
+  @Input() title?: string;
+  @Input() subtitle?: string;
   destroyModal(): void {
     this.modalRef.destroy({ data: 'this the result data' });
   }

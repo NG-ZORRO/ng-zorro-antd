@@ -13,7 +13,8 @@ import {
   OnInit,
   provideZoneChangeDetection,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  inject
 } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -540,6 +541,8 @@ describe('steps', () => {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTestOuterStepsComponent {
+  public readonly cdr = inject(ChangeDetectorRef);
+
   @ViewChild('progressTemplate', { static: false }) progressTemplate?: NzProgressDotTemplate;
   current = 0;
   direction: NzDirectionVHType = 'horizontal';
@@ -549,7 +552,6 @@ export class NzTestOuterStepsComponent {
   subtitle?: string | TemplateRef<void>;
   progressDot: BooleanInput | NzProgressDotTemplate | undefined | null = false;
   startIndex = 0;
-  constructor(public cdr: ChangeDetectorRef) {}
 }
 
 @Component({

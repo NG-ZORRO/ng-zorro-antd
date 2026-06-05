@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -19,7 +19,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   `
 })
 export class NzDemoNotificationWithIconComponent {
-  constructor(private notification: NzNotificationService) {}
+  private readonly notification = inject(NzNotificationService);
 
   createNotification(type: string): void {
     this.notification.create(

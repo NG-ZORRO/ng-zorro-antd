@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzContextMenuService, NzDropdownMenuComponent, NzDropdownModule } from 'ng-zorro-antd/dropdown';
 
@@ -38,9 +38,9 @@ import { NzContextMenuService, NzDropdownMenuComponent, NzDropdownModule } from 
   `
 })
 export class NzDemoDropdownContextMenuComponent {
+  private readonly nzContextMenuService = inject(NzContextMenuService);
+
   contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
     this.nzContextMenuService.create($event, menu);
   }
-
-  constructor(private nzContextMenuService: NzContextMenuService) {}
 }

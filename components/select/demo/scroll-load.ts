@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -41,13 +41,12 @@ interface MockUser {
   `
 })
 export class NzDemoSelectScrollLoadComponent implements OnInit {
+  private readonly http = inject(HttpClient);
+
   readonly randomUserUrl: string = 'https://api.randomuser.me/?results=10';
   optionList: string[] = [];
   selectedUser: string | null = null;
   isLoading = false;
-
-  constructor(private http: HttpClient) {}
-
   ngOnInit(): void {
     this.loadMore();
   }

@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DebugElement,
+  inject,
   provideZoneChangeDetection,
   TemplateRef,
   ViewChild
@@ -181,6 +182,8 @@ describe('spin', () => {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSpinBasicComponent {
+  public readonly nzConfigService = inject(NzConfigService);
+
   @ViewChild('indicatorTemplate', { static: false }) indicatorTemplate!: TemplateRef<void>;
 
   size: NzSizeLDSType = 'default';
@@ -189,8 +192,6 @@ export class NzTestSpinBasicComponent {
   indicator!: TemplateRef<NzSafeAny>;
   tip!: string;
   simple = false;
-
-  constructor(public nzConfigService: NzConfigService) {}
 }
 
 @Component({
