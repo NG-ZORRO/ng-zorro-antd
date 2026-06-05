@@ -101,8 +101,7 @@ let nextId = 0;
             (click)="clickNavItem(tab, $index, $event)"
             (contextmenu)="contextmenuNavItem(tab, $event)"
           >
-            <button
-              type="button"
+            <div
               role="tab"
               [id]="getTabContentId($index)"
               [attr.tabIndex]="getTabIndex(tab, $index)"
@@ -127,7 +126,7 @@ let nextId = 0;
                   (click)="onClose($index, $event)"
                 ></button>
               }
-            </button>
+            </div>
           </div>
         }
       </nz-tabs-nav>

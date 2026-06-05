@@ -16,6 +16,19 @@ tag: '{{version}}'
 
 ---
 
+## 21.3.1
+
+`2026-06-05`
+
+### Bug Fixes
+
+- **\*:** apply outlined variant class ([#9806](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9806)) ([e5f536b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e5f536b3a4be7c309b5563f01a3e367c00376e9f))
+- **cascader,select,tree-select:** fix slide animations direction ([#9814](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9814)) ([487a511](https://github.com/NG-ZORRO/ng-zorro-antd/commit/487a511467660f06f1d2c4bde961d00ccf2177e2))
+- **color-picker:** fix slider styles ([#9802](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9802)) ([af91cf5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af91cf5aa8a5c6cd0a1a35a2a31d6df1e0743e11))
+- **date-picker:** week highlight not work after step action ([#9812](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9812)) ([1a6312a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1a6312a85cd2fbe477171a4249edb7b953f1e2b9))
+- **pagination,table:** avoid crash when page size is 0 ([#9813](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9813)) ([ef6bc8a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ef6bc8a4b5d01aa84ea513e47ac9346b3208b628))
+- **tree-select:** fix placement class ([#9809](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9809)) ([3fcd43d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3fcd43dfbb59ed2ef4d75164eaa4e0e0b4e90edf))
+
 ## 21.3.0
 
 `2026-05-22`

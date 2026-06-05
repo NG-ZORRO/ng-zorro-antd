@@ -135,6 +135,7 @@ export type MentionPlacement = 'top' | 'bottom';
   host: {
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir === 'rtl'`,
+    '[class.ant-mentions-outlined]': `finalVariant() === 'outlined'`,
     '[class.ant-mentions-borderless]': `finalVariant() === 'borderless'`,
     '[class.ant-mentions-filled]': `finalVariant() === 'filled'`,
     '[class.ant-mentions-underlined]': `finalVariant() === 'underlined'`,

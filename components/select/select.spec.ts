@@ -268,7 +268,13 @@ describe('select', () => {
       expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('test_label');
     }));
 
-    describe('should nzVariant works', () => {
+    describe('should variant works', () => {
+      it('outlined', () => {
+        component.nzVariant = 'outlined';
+        fixture.detectChanges();
+        expect(selectElement.classList).toContain('ant-select-outlined');
+      });
+
       it('filled', () => {
         fixture.detectChanges();
         expect(selectElement.classList).not.toContain('ant-select-filled');

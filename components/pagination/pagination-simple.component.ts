@@ -124,7 +124,8 @@ export class NzPaginationSimpleComponent implements OnChanges, OnInit {
   }
 
   updateBindingValue(): void {
-    this.lastIndex = Math.ceil(this.total / this.pageSize);
+    const maxPage = this.pageSize > 0 ? Math.ceil(this.total / this.pageSize) : 0;
+    this.lastIndex = maxPage || 1;
     this.isFirstIndex = this.pageIndex === 1;
     this.isLastIndex = this.pageIndex === this.lastIndex;
   }

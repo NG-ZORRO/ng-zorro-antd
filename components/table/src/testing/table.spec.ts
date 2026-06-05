@@ -79,6 +79,13 @@ describe('nz-table', () => {
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
     });
 
+    it('should not crash when pageSize is zero', () => {
+      testComponent.pageSize = 0;
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelectorAll('.ant-table-tbody tr').length).toBe(20);
+      expect(table.nativeElement.querySelectorAll('.ant-pagination-item').length).toBe(1);
+    });
+
     it('should pageSize change check pageIndex bounding', fakeAsync(() => {
       fixture.detectChanges();
       expect(testComponent.pageSize).toBe(10);

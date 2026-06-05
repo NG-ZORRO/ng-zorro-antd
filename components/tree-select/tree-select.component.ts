@@ -12,7 +12,7 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { _getEventTarget } from '@angular/cdk/platform';
+import { Platform, _getEventTarget } from '@angular/cdk/platform';
 import { SlicePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
@@ -50,8 +50,8 @@ import {
   NzFormStatusService
 } from 'ng-zorro-antd/core/form';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { NzOverlayModule, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
+import { NzOverlayModule, POSITION_MAP, POSITION_TYPE, getPlacementName } from 'ng-zorro-antd/core/overlay';
+import { cancelAnimationFrame, requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
 import {
   NzFormatEmitEvent,
   NzTreeBase,
@@ -81,12 +81,6 @@ import { NzTreeSelectService } from './tree-select.service';
 export type NzPlacementType = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | '';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'treeSelect';
 const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown';
-const listOfPositions = [
-  POSITION_MAP.bottomLeft,
-  POSITION_MAP.bottomRight,
-  POSITION_MAP.topRight,
-  POSITION_MAP.topLeft
-];
 
 @Component({
   selector: 'nz-tree-select',
@@ -107,6 +101,7 @@ const listOfPositions = [
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayOffsetY]="placement().startsWith('top') ? -4 : 4"
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayPositions]="nzPlacement ? positions : []"
@@ -123,8 +118,10 @@ const listOfPositions = [
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         [animate.enter]="slideAnimationEnter()"
         [animate.leave]="slideAnimationLeave()"
-        [class.ant-select-dropdown-placement-bottomLeft]="dropdownPosition === 'bottom'"
-        [class.ant-select-dropdown-placement-topLeft]="dropdownPosition === 'top'"
+        [class.ant-select-dropdown-placement-bottomLeft]="placement() === 'bottomLeft'"
+        [class.ant-select-dropdown-placement-topLeft]="placement() === 'topLeft'"
+        [class.ant-select-dropdown-placement-bottomRight]="placement() === 'bottomRight'"
+        [class.ant-select-dropdown-placement-topRight]="placement() === 'topRight'"
         [class.ant-tree-select-dropdown-rtl]="dir() === 'rtl'"
         [dir]="dir()"
         [style]="nzDropdownStyle"
@@ -277,6 +274,7 @@ const listOfPositions = [
     '[class.ant-select-single]': '!isMultiple',
     '[class.ant-select-show-arrow]': '!isMultiple',
     '[class.ant-select-show-search]': '!isMultiple',
+    '[class.ant-select-outlined]': 'finalVariant() === "outlined"',
     '[class.ant-select-borderless]': 'finalVariant() === "borderless"',
     '[class.ant-select-filled]': 'finalVariant() === "filled"',
     '[class.ant-select-underlined]': 'finalVariant() === "underlined"',
@@ -297,11 +295,17 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   private readonly elementRef = inject(ElementRef);
   private readonly focusMonitor = inject(FocusMonitor);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly platform = inject(Platform);
   protected readonly nzFormStatusService = inject(NzFormStatusService, { optional: true });
   protected readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
+  private requestId: number = -1;
 
-  protected readonly slideAnimationEnter = slideAnimationEnter();
-  protected readonly slideAnimationLeave = slideAnimationLeave();
+  protected readonly slideAnimationEnter = slideAnimationEnter(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
+  protected readonly slideAnimationLeave = slideAnimationLeave(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
 
   @Input() nzId: string | null = null;
   @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
@@ -378,7 +382,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   isNotFound = false;
   focused = false;
   inputValue = '';
-  dropdownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
@@ -396,8 +399,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   });
 
   protected readonly finalVariant = computed(() => this.variant() || this.formVariant?.() || 'outlined');
+  protected readonly placement = signal<NzPlacementType>('bottomLeft');
 
-  private size = signal<NzSizeLDSType>(this.nzSize);
+  private readonly size = signal<NzSizeLDSType>(this.nzSize);
   private readonly variant = signal<NzVariant | undefined>(this.nzVariant);
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
@@ -512,9 +516,14 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.setStatusStyles(this.nzStatus, this.hasFeedback);
     }
 
-    if (nzPlacement && this.nzPlacement) {
-      if (POSITION_MAP[this.nzPlacement]) {
-        this.positions = [POSITION_MAP[this.nzPlacement]];
+    if (nzPlacement) {
+      const { currentValue } = nzPlacement;
+      this.placement.set(currentValue);
+      const listOfPlacement = ['bottomLeft', 'topLeft', 'bottomRight', 'topRight'];
+      if (currentValue && listOfPlacement.includes(currentValue)) {
+        this.positions = [POSITION_MAP[currentValue as POSITION_TYPE]];
+      } else {
+        this.positions = listOfPlacement.map(e => POSITION_MAP[e as POSITION_TYPE]);
       }
     }
     if (nzSize) {
@@ -725,7 +734,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.dropdownPosition = position.connectionPair.originY;
+    const placement = getPlacementName(position);
+    this.placement.set(placement as NzPlacementType);
   }
 
   onClearSelection(): void {
@@ -749,8 +759,20 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   updateCdkConnectedOverlayStatus(): void {
-    if (!this.nzPlacement || !listOfPositions.includes(POSITION_MAP[this.nzPlacement])) {
-      this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+    if (this.platform.isBrowser && this.cdkOverlayOrigin.elementRef.nativeElement) {
+      const triggerWidth = this.triggerWidth;
+      cancelAnimationFrame(this.requestId);
+      this.requestId = requestAnimationFrame(() => {
+        // Blink triggers style and layout pipelines anytime the `getBoundingClientRect()` is called, which may cause a
+        // frame drop. That's why it's scheduled through the `requestAnimationFrame` to unload the composite thread.
+        this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
+        if (triggerWidth !== this.triggerWidth) {
+          // The `requestAnimationFrame` will trigger change detection, but we're inside an `OnPush` component which won't have
+          // the `ChecksEnabled` state. Calling `markForCheck()` will allow Angular to run the change detection from the root component
+          // down to the `nz-select`. But we'll trigger only local change detection if the `triggerWidth` has been changed.
+          this.cdr.detectChanges();
+        }
+      });
     }
   }
 
