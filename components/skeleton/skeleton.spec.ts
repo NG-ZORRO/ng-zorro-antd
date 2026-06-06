@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -243,7 +243,8 @@ describe('skeleton element', () => {
       [nzParagraph]="nzParagraph"
       [nzRound]="nzRound"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSkeletonComponent {
   nzActive: boolean = false;
@@ -270,7 +271,8 @@ export class NzTestSkeletonComponent {
         <nz-skeleton-element nzType="image" [nzActive]="nzActive" />
       }
     }
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSkeletonElementComponent {
   useSuite = 1;

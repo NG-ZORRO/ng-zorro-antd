@@ -4,7 +4,14 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DebugElement,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -180,7 +187,8 @@ describe('alert', () => {
       [nzAction]="action"
       (nzOnClose)="onClose($event)"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDemoTestBasicComponent {
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;
@@ -198,7 +206,8 @@ export class NzDemoTestBasicComponent {
 
 @Component({
   imports: [NzAlertModule],
-  template: `<nz-alert nzBanner />`
+  template: `<nz-alert nzBanner />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDemoTestBannerComponent {}
 
@@ -208,7 +217,8 @@ export class NzDemoTestBannerComponent {}
     <div [dir]="direction">
       <nz-test-basic-alert />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestAlertRtlComponent {
   @ViewChild(Dir) dir!: Dir;
@@ -229,7 +239,8 @@ export class NzTestAlertRtlComponent {
     <ng-template #customIconTemplate>
       <div> S </div>
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestAlertCustomIconComponent {}
 

@@ -9,21 +9,22 @@ import {
   ChangeDetectorRef,
   DestroyRef,
   Directive,
-  Input,
+  input,
   NgZone,
-  OnChanges,
   PLATFORM_ID,
   PendingTasks,
-  Renderer2,
-  SimpleChanges,
   booleanAttribute,
   inject,
-  numberAttribute
+  numberAttribute,
+  effect,
+  computed,
+  ElementRef,
+  Renderer2
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { animationFrameScheduler, asapScheduler, debounceTime, finalize } from 'rxjs';
 
-import { IconDirective, ThemeType } from '@ant-design/icons-angular';
+import { IconBase, RenderMeta, ThemeType } from '@ant-design/icons-angular';
 
 import { warn } from 'ng-zorro-antd/core/logger';
 import { wrapIntoObservable } from 'ng-zorro-antd/core/util';
@@ -34,81 +35,92 @@ import { NzIconPatchService, NzIconService } from './icon.service';
   selector: 'nz-icon,[nz-icon]',
   exportAs: 'nzIcon',
   host: {
-    class: 'anticon',
-    '[class]': `'anticon-' + type`,
-    '[class.anticon-spin]': `nzSpin || type === 'loading'`,
     role: 'img',
-    '[attr.aria-label]': 'type'
+    '[class]': `hostClass()`,
+    '[attr.aria-label]': 'nzType()'
   }
 })
-export class NzIconDirective extends IconDirective implements OnChanges, AfterContentChecked {
+export class NzIconDirective extends IconBase implements AfterContentChecked {
   private readonly ngZone = inject(NgZone);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
-  public readonly renderer = inject(Renderer2);
-  private destroyRef = inject(DestroyRef);
-  private pendingTasks = inject(PendingTasks);
-  private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly pendingTasks = inject(PendingTasks);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  protected readonly el = inject(ElementRef).nativeElement as HTMLElement;
+  protected readonly renderer = inject(Renderer2);
+  protected readonly iconService = inject(NzIconService);
 
-  @Input({ transform: booleanAttribute }) nzSpin: boolean = false;
-  @Input({ transform: numberAttribute }) nzRotate: number = 0;
-  @Input()
-  set nzType(value: string) {
-    this.type = value;
+  readonly nzType = input<string>();
+  readonly nzTheme = input<ThemeType>();
+  readonly nzTwotoneColor = input<string>();
+  readonly nzSpin = input(false, { transform: booleanAttribute });
+  readonly nzRotate = input(0, { transform: numberAttribute });
+  readonly nzIconfont = input<string>();
+
+  protected readonly hostClass = computed(() => {
+    const type = this.nzType();
+    const spin = this.nzSpin();
+    const cls = ['anticon'];
+    if (type) {
+      cls.push(`anticon-${type}`);
+    }
+    if (spin || type === 'loading') {
+      cls.push('anticon-spin');
+    }
+    return cls;
+  });
+
+  protected get selfRenderMeta(): RenderMeta {
+    return {
+      type: this.nzType() as string,
+      theme: this.nzTheme(),
+      twoToneColor: this.nzTwotoneColor()
+    };
   }
 
-  @Input()
-  set nzTheme(value: ThemeType) {
-    this.theme = value;
-  }
-
-  @Input()
-  set nzTwotoneColor(value: string) {
-    this.twoToneColor = value;
-  }
-
-  @Input()
-  set nzIconfont(value: string) {
-    this.iconfont = value;
-  }
-
-  hostClass?: string;
-
-  private readonly el: HTMLElement;
-  private iconfont?: string;
-
-  constructor(public readonly iconService: NzIconService) {
-    super(iconService);
+  constructor() {
+    super();
     inject(NzIconPatchService, { optional: true })?.doPatch();
-    this.el = this._elementRef.nativeElement;
-  }
 
-  override ngOnChanges(changes: SimpleChanges): void {
-    const { nzType, nzTwotoneColor, nzTheme, nzRotate, nzSpin } = changes;
-
-    if (nzType || nzTwotoneColor || nzTheme || nzSpin) {
+    let renderedIcon = false;
+    effect(() => {
+      void this.nzType();
+      void this.nzTwotoneColor();
+      void this.nzTheme();
       // This is used to reduce the number of change detections
       // while the icon is being loaded asynchronously.
-      this.ngZone.runOutsideAngular(() => this.changeIcon2());
-    } else if (nzRotate) {
-      this.handleRotate(this.el.firstChild as SVGElement);
-    } else {
-      this._setSVGElement(this.iconService.createIconfontIcon(`#${this.iconfont}`));
-    }
+      if (this.nzType()) {
+        renderedIcon = true;
+        this.ngZone.runOutsideAngular(() => this.changeIcon2());
+      } else if (renderedIcon) {
+        renderedIcon = false;
+        this._clearSVGElement();
+      }
+    });
+
+    effect(() => {
+      void this.nzRotate();
+      this.handleRotate(this.el.firstChild as SVGElement | null);
+    });
+
+    effect(() => {
+      const iconfont = this.nzIconfont();
+      if (iconfont) {
+        this._setSVGElement(this.iconService.createIconfontIcon(`#${iconfont}`));
+      }
+    });
   }
 
   /**
    * If custom content is provided, try to normalize SVG elements.
    */
   ngAfterContentChecked(): void {
-    if (!this.type) {
+    if (!this.nzType()) {
       const children = this.el.children;
-      let length = children.length;
-      if (!this.type && children.length) {
-        while (length--) {
-          const child = children[length];
-          if (child.tagName.toLowerCase() === 'svg') {
-            this.iconService.normalizeSvgElement(child as SVGElement);
-          }
+      for (let index = children.length - 1; index >= 0; index--) {
+        const child = children[index];
+        if (child.tagName.toLowerCase() === 'svg') {
+          this.iconService.normalizeSvgElement(child as SVGElement);
         }
       }
     }
@@ -132,7 +144,7 @@ export class NzIconDirective extends IconDirective implements OnChanges, AfterCo
     );
 
     svgOrRemove$.subscribe({
-      next: svgOrRemove => {
+      next: svg => {
         // Get back into the Angular zone after completing all the tasks.
         // Since we manually run change detection locally, we have to re-enter
         // the zone because the change detection might also be run on other local
@@ -144,9 +156,9 @@ export class NzIconDirective extends IconDirective implements OnChanges, AfterCo
           // #7186
           this.changeDetectorRef.detectChanges();
 
-          if (svgOrRemove) {
-            this.setSVGData(svgOrRemove);
-            this.handleRotate(svgOrRemove);
+          if (svg) {
+            this.setSVGData(svg);
+            this.handleRotate(svg);
           }
         });
       },
@@ -154,16 +166,21 @@ export class NzIconDirective extends IconDirective implements OnChanges, AfterCo
     });
   }
 
-  private handleRotate(svg: SVGElement): void {
-    if (this.nzRotate) {
-      this.renderer.setAttribute(svg, 'style', `transform: rotate(${this.nzRotate}deg)`);
+  private handleRotate(svg: SVGElement | null): void {
+    if (!svg) {
+      return;
+    }
+
+    const rotate = this.nzRotate();
+    if (rotate) {
+      this.renderer.setAttribute(svg, 'style', `transform: rotate(${rotate}deg)`);
     } else {
       this.renderer.removeAttribute(svg, 'style');
     }
   }
 
   private setSVGData(svg: SVGElement): void {
-    this.renderer.setAttribute(svg, 'data-icon', this.type as string);
+    this.renderer.setAttribute(svg, 'data-icon', this.nzType() as string);
     this.renderer.setAttribute(svg, 'aria-hidden', 'true');
   }
 }

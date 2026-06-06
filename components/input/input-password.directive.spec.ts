@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzInputModule } from './input.module';
@@ -79,7 +79,8 @@ describe('input-password', () => {
         <ng-template nzInputPasswordIcon let-visible>{{ visible ? 'hide' : 'show' }}</ng-template>
       }
     </nz-input-password>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class InputPasswordTestComponent {
   visibilityToggle = true;

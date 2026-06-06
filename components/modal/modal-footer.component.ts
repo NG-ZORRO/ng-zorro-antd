@@ -73,7 +73,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
   host: {
     class: 'ant-modal-footer'
   },
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NzOutletModule, NzButtonModule]
 })
 export class NzModalFooterComponent {

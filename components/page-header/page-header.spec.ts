@@ -5,11 +5,12 @@
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
-import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzDemoPageHeaderBasicComponent } from './demo/basic';
@@ -26,6 +27,15 @@ describe('page-header', () => {
     // todo: use zoneless
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
+    });
+    [
+      NzDemoPageHeaderBasicComponent,
+      NzDemoPageHeaderBreadcrumbComponent,
+      NzDemoPageHeaderContentComponent,
+      NzDemoPageHeaderGhostComponent,
+      NzDemoPageHeaderResponsiveComponent
+    ].forEach(comp => {
+      (comp as NzSafeAny).ɵcmp.onPush = false;
     });
     location = TestBed.inject(Location);
     spyOn(location, 'getState').and.returnValue({ navigationId: 2 });
@@ -196,7 +206,8 @@ describe('page-header', () => {
     <div [dir]="direction">
       <nz-demo-page-header-basic />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDemoPageHeaderRtlComponent {
   @ViewChild(Dir) dir!: Dir;

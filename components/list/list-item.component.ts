@@ -11,7 +11,6 @@ import {
   Component,
   ContentChild,
   DestroyRef,
-  HostBinding,
   Input,
   TemplateRef,
   ViewEncapsulation,
@@ -68,7 +67,8 @@ import { NzListComponent } from './list.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'ant-list-item'
+    class: 'ant-list-item',
+    '[class.ant-list-item-no-flex]': 'nzNoFlex'
   },
   imports: [NzListItemActionsComponent, NzOutletModule, NgTemplateOutlet, NzListItemExtraComponent]
 })
@@ -80,7 +80,7 @@ export class NzListItemComponent implements AfterViewInit {
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzContent?: string | TemplateRef<void>;
   @Input() nzExtra: TemplateRef<void> | null = null;
-  @Input({ transform: booleanAttribute }) @HostBinding('class.ant-list-item-no-flex') nzNoFlex: boolean = false;
+  @Input({ transform: booleanAttribute }) nzNoFlex: boolean = false;
 
   @ContentChild(NzListItemExtraComponent) listItemExtraDirective?: NzListItemExtraComponent;
 

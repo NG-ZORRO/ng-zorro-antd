@@ -5,7 +5,7 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
-import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
@@ -561,7 +561,8 @@ function swipe(carousel: NzCarouselComponent, distance: number): void {
         <a>{{ index + 1 }}</a>
       </ng-template>
     </nz-carousel>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCarouselBasicComponent {
   @ViewChild(NzCarouselComponent, { static: false }) nzCarouselComponent!: NzCarouselComponent;
@@ -586,7 +587,8 @@ export class NzTestCarouselBasicComponent {
         </div>
       }
     </nz-carousel>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCarouselActiveIndexComponent {
   @ViewChild(NzCarouselComponent, { static: true }) nzCarouselComponent!: NzCarouselComponent;
@@ -609,7 +611,8 @@ export class NzTestCarouselActiveIndexComponent {
         </div>
       }
     </nz-carousel>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCarouselArrowsComponent {
   @ViewChild(NzCarouselComponent, { static: true }) nzCarouselComponent!: NzCarouselComponent;
@@ -628,7 +631,8 @@ export class NzTestCarouselArrowsComponent {
         </div>
       }
     </nz-carousel>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCarouselNoSwipeComponent {
   @ViewChild(NzCarouselComponent, { static: true }) nzCarouselComponent!: NzCarouselComponent;

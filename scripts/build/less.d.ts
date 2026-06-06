@@ -9,12 +9,12 @@ declare module 'less-vars-to-js' {
     resolveVariables: boolean;
   }
 
-  export default function lessToJs(vars: string, options?: Partial<ConvertOptions>): Record<string, string | number>;
+  export default function lessToJs(vars: string, options?: Partial<ConvertOption>): Record<string, string | number>;
 }
 
-abstract class LessPlugin implements Less.Plugin {
+declare abstract class LessPlugin implements Less.Plugin {
   constructor(options?: Record<string, unknown>);
-  install: (less: LessStatic, pluginManager: PluginManager) => void;
+  install: (less: LessStatic, pluginManager: Less.PluginManager) => void;
   minVersion?: [number, number, number] | undefined;
 }
 

@@ -7,6 +7,7 @@ import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import {
   ApplicationRef,
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   provideZoneChangeDetection,
@@ -371,7 +372,8 @@ describe('finalSize', () => {
       [nzCheckedChildren]="checkedChildren"
       [nzUnCheckedChildren]="unCheckedChildren"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSwitchBasicComponent {
   @ViewChild(NzSwitchComponent, { static: false }) nzSwitchComponent!: NzSwitchComponent;
@@ -393,7 +395,8 @@ export class NzTestSwitchBasicComponent {
     <ng-template #checkedChildrenTemplate><nz-icon nzType="check" /></ng-template>
     <ng-template #unCheckedChildrenTemplate><nz-icon nzType="close" /></ng-template>
     <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSwitchTemplateComponent {}
 
@@ -403,7 +406,8 @@ export class NzTestSwitchTemplateComponent {}
     <form>
       <nz-switch [formControl]="formControl" [nzDisabled]="disabled" />
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSwitchFormComponent {
   formControl = new FormControl(true);
@@ -425,7 +429,8 @@ export class NzTestSwitchFormComponent {
     <div [dir]="direction">
       <nz-switch [(ngModel)]="switchValue" />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSwitchRtlComponent {
   @ViewChild(Dir) dir!: Dir;

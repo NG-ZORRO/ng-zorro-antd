@@ -4,7 +4,14 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -127,7 +134,8 @@ describe('float-button', () => {
       <nz-icon nzType="question-circle" nzTheme="outline" />
     </ng-template>
     <ng-template #description>HELP</ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestFloatButtonBasicComponent {
   nzHref: string | null = null;
@@ -154,7 +162,8 @@ export class NzTestFloatButtonBasicComponent {
     <div [dir]="direction">
       <nz-float-button />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestFloatButtonRtlComponent {
   @ViewChild(Dir) dir!: Dir;

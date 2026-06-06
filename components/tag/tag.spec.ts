@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -167,7 +167,8 @@ describe('tag', () => {
     >
       Tag 1
     </nz-tag>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTagBasicComponent {
   mode: 'default' | 'closeable' | 'checkable' = 'default';
@@ -181,7 +182,8 @@ export class NzTestTagBasicComponent {
 
 @Component({
   imports: [NzTagModule],
-  template: `<nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>`
+  template: `<nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {
@@ -195,7 +197,8 @@ export class NzTestTagPreventComponent {
     <div [dir]="direction">
       <nz-test-basic-tag />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTagRtlComponent {
   direction: Direction = 'rtl';

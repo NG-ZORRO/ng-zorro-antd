@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subject, Subscription } from 'rxjs';
 
@@ -12,7 +12,8 @@ import { createMouseEvent, createTouchEvent, dispatchMouseEvent, dispatchTouchEv
 import { NzDragService } from './drag';
 
 @Component({
-  template: ''
+  template: '',
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestDragServiceComponent {
   public nzDragService = inject(NzDragService);

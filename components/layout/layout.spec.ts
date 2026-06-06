@@ -4,7 +4,14 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -273,7 +280,8 @@ describe('nz-layout', () => {
     <ng-template #trigger>
       <nz-icon nzType="up" />
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzLayoutCustomTriggerComponent {
   isCollapsed = false;
@@ -299,7 +307,8 @@ export class NzLayoutCustomTriggerComponent {
         <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzLayoutSideComponent {
   isCollapsed = false;
@@ -329,7 +338,8 @@ export class NzLayoutSideComponent {
     <ng-template #zeroTrigger>
       <nz-icon nzType="menu-fold" nzTheme="outline" />
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzLayoutResponsiveComponent {
   isCollapsed = false;
@@ -371,6 +381,7 @@ export class NzLayoutResponsiveComponent {
         <nz-footer>Footer</nz-footer>
       </nz-layout>
     </nz-layout>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzLayoutBasicComponent {}

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 
@@ -86,7 +86,8 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
 });
 
 @Component({
-  template: ''
+  template: '',
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzI18nTestComponent implements OnDestroy {
   private localeSubscription: Subscription;

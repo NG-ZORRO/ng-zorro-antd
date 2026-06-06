@@ -6,7 +6,7 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -428,7 +428,8 @@ describe('calendar', () => {
   template: `
     <nz-calendar />
     <nz-calendar [(nzMode)]="mode" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestCalendarModeComponent {
   mode: 'month' | 'year' = 'month';
@@ -441,7 +442,8 @@ class NzTestCalendarModeComponent {
     <nz-calendar [(nzValue)]="date0" />
     <nz-calendar [(ngModel)]="date1" />
     <nz-calendar [(nzValue)]="date2" [(nzMode)]="mode" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestCalendarValueComponent {
   date0 = new Date(2001, 1, 3);
@@ -455,7 +457,8 @@ class NzTestCalendarValueComponent {
   template: `
     <nz-calendar />
     <nz-calendar [nzFullscreen]="fullscreen" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestCalendarFullscreenComponent {
   fullscreen = true;
@@ -470,7 +473,8 @@ class NzTestCalendarFullscreenComponent {
     <nz-calendar>
       <ng-container *nzDateCell>Bar</ng-container>
     </nz-calendar>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestCalendarDateCellComponent {}
 
@@ -482,7 +486,8 @@ class NzTestCalendarDateCellComponent {}
     <nz-calendar>
       <ng-container *nzDateFullCell>Bar</ng-container>
     </nz-calendar>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestCalendarDateFullCellComponent {}
 
@@ -494,7 +499,8 @@ class NzTestCalendarDateFullCellComponent {}
     <nz-calendar nzMode="year">
       <ng-container *nzMonthCell>Bar</ng-container>
     </nz-calendar>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestCalendarMonthCellComponent {}
 
@@ -506,7 +512,8 @@ class NzTestCalendarMonthCellComponent {}
     <nz-calendar nzMode="year">
       <ng-container *nzMonthFullCell>Bar</ng-container>
     </nz-calendar>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestCalendarMonthFullCellComponent {}
 
@@ -519,7 +526,8 @@ class NzTestCalendarMonthFullCellComponent {}
       (nzPanelChange)="panelChange($event)"
       (nzSelectChange)="selectChange($event)"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestCalendarChangesComponent {
   mode: 'month' | 'year' = 'month';
@@ -534,7 +542,8 @@ class NzTestCalendarChangesComponent {
     <div [dir]="direction">
       <nz-calendar />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestCalendarRtlComponent {
   @ViewChild(Dir) dir!: Dir;

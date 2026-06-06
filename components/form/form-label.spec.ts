@@ -6,6 +6,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   provideZoneChangeDetection,
@@ -246,7 +247,8 @@ describe('form-label', () => {
       [nzLabelAlign]="align"
       [nzLabelWrap]="labelWrap"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestFormLabelComponent {
   forValue = 'test';
@@ -282,7 +284,8 @@ export class NzTestFormLabelComponent {
       }
       <ng-container *ngTemplateOutlet="label" />
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestFormLabelRequiredMarkComponent implements AfterViewInit {
   requiredMark: NzRequiredMark = true;

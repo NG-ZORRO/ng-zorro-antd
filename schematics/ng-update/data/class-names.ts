@@ -6,7 +6,7 @@
 import { ClassNameUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const classNames: VersionChanges<ClassNameUpgradeData> = {
-  [TargetVersion.V21]: [{
+  [TargetVersion.V22]: [{
     pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9238',
     changes: [{
       replace: 'NzTabsetComponent',

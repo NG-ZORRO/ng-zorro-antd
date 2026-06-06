@@ -6,6 +6,7 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import {
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   ElementRef,
@@ -656,7 +657,8 @@ describe('menu', () => {
         </ul>
       </li>
     </ul>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestMenuHorizontalComponent {
   width = 200;
@@ -684,7 +686,8 @@ export class NzTestMenuHorizontalComponent {
         </ul>
       </li>
     </ul>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestMenuInlineComponent {
   disabled = false;
@@ -738,7 +741,8 @@ export class NzTestMenuInlineComponent {
       </li>
       <li nz-menu-item nzDanger>Navigation Five</li>
     </ul>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestBasicMenuHorizontalComponent {}
 
@@ -788,7 +792,8 @@ export class NzTestBasicMenuHorizontalComponent {}
         </ul>
       </li>
     </ul>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestBasicMenuInlineComponent {}
 
@@ -808,7 +813,8 @@ export class NzTestBasicMenuInlineComponent {}
         </ul>
       </li>
     </ul>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSubMenuSelectedComponent {}
 
@@ -845,7 +851,8 @@ export class NzTestSubMenuSelectedComponent {}
         </li>
       </ul>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestMenuInlineCollapsedComponent {
   isCollapsed = false;
@@ -913,7 +920,8 @@ export class NzTestMenuInlineCollapsedComponent {
         </ul>
       </li>
     </ul>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestMenuSiderCurrentComponent {
   openMap: Record<string, boolean> = {
@@ -971,7 +979,8 @@ export class NzTestMenuSiderCurrentComponent {
         </ul>
       </li>
     </ul>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestMenuSwitchModeComponent {
   mode = false;
@@ -1018,7 +1027,8 @@ export class NzTestMenuSwitchModeComponent {
         </ul>
       </li>
     </ul>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestMenuThemeComponent {
   theme = true;

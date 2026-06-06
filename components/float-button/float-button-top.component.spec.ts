@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -244,7 +244,8 @@ class MockNzScrollService {
     <ng-template #customIcon>
       <div class="custom-icon"></div>
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestFloatButtonTopComponent {
   @ViewChild(NzFloatButtonTopComponent, { static: true })
@@ -267,7 +268,8 @@ class TestFloatButtonTopComponent {
     <div [dir]="direction">
       <nz-float-button-top />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestFloatButtonTopRtlComponent {
   direction: Direction = 'rtl';

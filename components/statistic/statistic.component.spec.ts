@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -75,7 +75,8 @@ describe('statistic', () => {
   imports: [NzStatisticModule],
   template: `
     <nz-statistic [nzValue]="123.45" [nzTitle]="title" [nzSuffix]="suffix" [nzPrefix]="prefix" [nzLoading]="loading" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestStatisticComponent {
   title = 'title';
@@ -90,7 +91,8 @@ export class NzTestStatisticComponent {
     <div [dir]="direction">
       <nz-statistic [nzValue]="123.45" nzTitle="test title" />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestStatisticRtlComponent {
   @ViewChild(Dir) dir!: Dir;

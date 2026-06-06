@@ -4,7 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { Component, DebugElement, DOCUMENT, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, DOCUMENT, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -348,7 +348,8 @@ describe('anchor', () => {
   styles: `
     @import '../style/testing.less';
     @import './style/patch.less';
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestComponent {
   @ViewChild(NzAnchorComponent, { static: false }) comp!: NzAnchorComponent;

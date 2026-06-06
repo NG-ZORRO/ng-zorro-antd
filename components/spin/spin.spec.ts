@@ -4,7 +4,14 @@
  */
 
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -170,7 +177,8 @@ describe('spin', () => {
     >
       <div>test</div>
     </nz-spin>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSpinBasicComponent {
   @ViewChild('indicatorTemplate', { static: false }) indicatorTemplate!: TemplateRef<void>;
@@ -191,7 +199,8 @@ export class NzTestSpinBasicComponent {
     <div [dir]="direction">
       <nz-test-basic-spin />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSpinRtlComponent {
   @ViewChild(Dir) dir!: Dir;

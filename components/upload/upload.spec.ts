@@ -9,6 +9,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   ApplicationRef,
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   provideZoneChangeDetection,
@@ -1498,7 +1499,8 @@ describe('upload', () => {
     <ng-template #fileListRender>
       <span class="fileListRender">asdf</span>
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestUploadComponent {
   @ViewChild('upload', { static: false }) comp!: NzUploadComponent;
@@ -1559,7 +1561,8 @@ class TestUploadComponent {
 @Component({
   selector: 'nz-test-upload-btn',
   imports: [NzUploadBtnComponent],
-  template: `<div nz-upload-btn #btn [options]="options" class="test">UPLOAD</div>`
+  template: `<div nz-upload-btn #btn [options]="options" class="test">UPLOAD</div>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestUploadBtnComponent {
   @ViewChild('btn', { static: false }) comp!: NzUploadBtnComponent;

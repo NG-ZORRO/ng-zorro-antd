@@ -3,7 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, provideZoneChangeDetection, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  ViewEncapsulation
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -199,7 +205,8 @@ describe('NgxColorPickerComponent', () => {
   styles: `
     @import '../../style/testing.less';
     @import '../style/entry.less';
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzxTestColorPickerComponent {
   value = '';

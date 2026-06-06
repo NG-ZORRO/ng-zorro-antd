@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ANIMATION_MODULE_TYPE, Component, signal } from '@angular/core';
+import { ANIMATION_MODULE_TYPE, ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -17,7 +17,8 @@ import {
 
 @Component({
   template: `<div #element [nzNoAnimation]="noAnimation()" data-testid="test-element"></div>`,
-  imports: [NzNoAnimationDirective]
+  imports: [NzNoAnimationDirective],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestComponent {
   noAnimation = signal(false);

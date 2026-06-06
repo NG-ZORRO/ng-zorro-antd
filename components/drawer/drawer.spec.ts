@@ -6,7 +6,15 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, Input, TemplateRef, ViewChild, inject, provideZoneChangeDetection } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  TemplateRef,
+  ViewChild,
+  inject,
+  provideZoneChangeDetection
+} from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, inject as testingInject, tick } from '@angular/core/testing';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -859,7 +867,8 @@ describe('NzDrawerService', () => {
         <p>Some contents...</p>
       </ng-container>
     </nz-drawer>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestDrawerComponent {
   visible = false;
@@ -899,7 +908,8 @@ class NzTestDrawerComponent {
     <ng-template #drawerTemplate>
       <span>Template</span>
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestDrawerWithServiceComponent {
   @ViewChild('drawerTemplate', { static: false }) drawerTemplate!: TemplateRef<{
@@ -930,7 +940,8 @@ class NzTestDrawerWithServiceComponent {
       <p>Custom Component</p>
       <button class="close-btn" (click)="close()" nz-button>Close</button>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDrawerCustomComponent {
   @Input() value: NzSafeAny;
@@ -955,7 +966,8 @@ export class NzDrawerCustomComponent {
         </ng-container>
       </nz-drawer>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestDrawerRtlComponent {
   @ViewChild(Dir) dir!: Dir;

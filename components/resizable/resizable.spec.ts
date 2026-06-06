@@ -3,11 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, ElementRef, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  NgZone,
+  provideZoneChangeDetection,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzResizableModule } from 'ng-zorro-antd/resizable/resizable.module';
 
@@ -36,6 +45,15 @@ describe('resizable', () => {
           }
         }
       ]
+    });
+    [
+      NzDemoResizableBasicComponent,
+      NzDemoResizableCustomizeComponent,
+      NzDemoResizableGridComponent,
+      NzDemoResizableLockAspectRatioComponent,
+      NzDemoResizablePreviewComponent
+    ].forEach(comp => {
+      (comp as NzSafeAny).ɵcmp.onPush = false;
     });
   }));
 
@@ -403,7 +421,7 @@ describe('resizable', () => {
     it('should disabled work', done => {
       testComponent.disabled = true;
       fixture.detectChanges();
-      expect(resizableEle.classList).toContain(`nz-resizable-disabled`);
+      expect(resizableEle.classList).toContain('nz-resizable-disabled');
       expect(testComponent.width).toBe(400);
       const rect = resizableEle.getBoundingClientRect();
       const handle = resizableEle.querySelector('.nz-resizable-handle-left') as HTMLElement;
@@ -782,7 +800,8 @@ function afterNextFrameRender(callbackFn: () => void): void {
       width: 200px;
       height: 200px;
     }
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestResizableBoundsComponent {
   @ViewChild('boxRef', { static: false }) boxRef!: ElementRef<HTMLDivElement>;

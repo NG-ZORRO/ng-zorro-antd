@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, NgModule, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, NgModule, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -222,7 +222,8 @@ describe('nz-icon injection', () => {
   template: `
     <nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate" />
     <nz-icon nzType="loading" [nzTheme]="theme" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestIconExtensionsComponent {
   type = 'question';
@@ -243,7 +244,8 @@ export class NzTestIconExtensionsComponent {
         />
       </svg>
     </nz-icon>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestIconCustomComponent {}
 
@@ -253,7 +255,8 @@ export class NzTestIconCustomComponent {}
     <nz-icon nzIconfont="icon-tuichu" />
     <nz-icon nzIconfont="icon-facebook" />
     <nz-icon nzIconfont="icon-twitter" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestIconIconfontComponent {
   constructor(private iconService: NzIconService) {
@@ -273,7 +276,8 @@ class ChildModule {}
   template: `
     <nz-icon nzType="home" />
     <nz-icon nzType="question" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestIconMultiInjectionComponent {}
 
@@ -283,6 +287,7 @@ class NzTestIconMultiInjectionComponent {}
   template: `
     <nz-icon nzType="home" />
     <nz-icon nzType="question" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestIconMultiInjectionStandaloneComponent {}

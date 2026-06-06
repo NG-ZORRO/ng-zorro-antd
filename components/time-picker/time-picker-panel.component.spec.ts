@@ -3,7 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -374,7 +381,8 @@ describe('time-picker-panel', () => {
       [nzMinuteStep]="minuteStep"
       [nzHourStep]="hourStep"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePanelComponent {
   @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent!: NzTimePickerPanelComponent;
@@ -402,7 +410,8 @@ export class NzTestTimePanelComponent {
       [nzHideDisabledOptions]="hideDisabledOptions"
       [nzHourStep]="hourStep"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePanelDisabledComponent {
   @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent!: NzTimePickerPanelComponent;
@@ -446,7 +455,8 @@ export class NzTestTimePanelDisabledComponent {
       [nzHourStep]="hourStep"
       [format]="format"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTest12HourTimePanelComponent {
   @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent!: NzTimePickerPanelComponent;
@@ -468,7 +478,8 @@ export class NzTest12HourTimePanelComponent {
       [nzDisabledSeconds]="disabledSeconds"
       [nzHideDisabledOptions]="false"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTest12HourTimePanelDisabledComponent {
   @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent!: NzTimePickerPanelComponent;

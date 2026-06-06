@@ -4,8 +4,10 @@
     "outDir": "../../dist",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
-    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "bundler",
+    "rootDir": "..",
+    "target": "ES2017",
     "typeRoots": [
       "../../node_modules/@types"
     ],

@@ -5,7 +5,7 @@
 
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
-import { ChangeDetection, Style } from '@schematics/angular/component/schema';
+import { Style } from '@schematics/angular/component/schema';
 
 import { createTestApp } from '../testing/test-app';
 
@@ -23,7 +23,7 @@ const defaultOptions = {
   name: 'test',
   inlineStyle: false,
   inlineTemplate: false,
-  changeDetection: ChangeDetection.Default,
+  changeDetection: 'Default',
   style: Style.Less,
   type: 'Component',
   skipTests: false,

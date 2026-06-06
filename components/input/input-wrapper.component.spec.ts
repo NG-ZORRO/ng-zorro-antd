@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, provideZoneChangeDetection, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, provideZoneChangeDetection, viewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -413,7 +413,8 @@ describe('input-wrapper with count config', () => {
     <nz-input-wrapper [nzAllowClear]="allowClear" (nzClear)="onClear()">
       <input nz-input [(ngModel)]="value" [disabled]="disabled" [readonly]="readonly" />
     </nz-input-wrapper>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class InputAllowClearTestComponent {
   allowClear = true;
@@ -462,7 +463,8 @@ class InputAllowClearTestComponent {
     <nz-input-wrapper #onlyInput>
       <input nz-input [nzSize]="size" [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
     </nz-input-wrapper>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class InputWithAffixesAndAddonsTestComponent {
   size: NzSizeLDSType = 'default';
@@ -489,7 +491,8 @@ class InputWithAffixesAndAddonsTestComponent {
     <nz-input-wrapper #withCountConfig [nzShowCount]="showCount" [nzCount]="countConfig">
       <input nz-input [(ngModel)]="value" />
     </nz-input-wrapper>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class InputWithCountTestComponent {
   value = '';

@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -92,7 +92,8 @@ describe('modal footer directive', () => {
         <button id="btn-template" nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
       </div>
     </nz-modal>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveFooterComponent {
   isVisible = false;
@@ -120,7 +121,8 @@ class TestDirectiveFooterComponent {
         <button id="btn-template" nz-button nzType="default">Custom Callback</button>
       </div>
     </nz-modal>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveFooterWithInitOpenedComponent {
   isVisible = true;
@@ -135,7 +137,8 @@ class TestDirectiveFooterWithInitOpenedComponent {
     <div *nzModalFooter>
       <button id="btn-template" nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveFooterInServiceComponent {
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })

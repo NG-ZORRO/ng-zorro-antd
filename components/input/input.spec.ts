@@ -5,6 +5,7 @@
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import {
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   provideZoneChangeDetection,
@@ -433,7 +434,8 @@ describe('input', () => {
         <nz-icon nzInputAddonAfter nzType="setting" />
       </nz-input-wrapper>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInputWithDirComponent {
   dir: Direction = 'ltr';
@@ -441,7 +443,8 @@ export class NzTestInputWithDirComponent {
 
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [nzSize]="size" [disabled]="disabled" [nzVariant]="variant" [value]="value" />`
+  template: `<input nz-input [nzSize]="size" [disabled]="disabled" [nzVariant]="variant" [value]="value" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInputWithInputComponent {
   size: NzSizeLDSType = 'default';
@@ -453,7 +456,8 @@ export class NzTestInputWithInputComponent {
 
 @Component({
   imports: [NzInputModule],
-  template: `<textarea nz-input></textarea>`
+  template: `<textarea nz-input></textarea>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInputWithTextAreaComponent {}
 
@@ -463,7 +467,8 @@ export class NzTestInputWithTextAreaComponent {}
     <form>
       <input nz-input [formControl]="formControl" />
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInputFormComponent {
   formControl = new FormControl('abc');
@@ -476,7 +481,8 @@ export class NzTestInputFormComponent {
 // status
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [nzStatus]="status" />`
+  template: `<input nz-input [nzStatus]="status" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInputWithStatusComponent {
   status: NzStatus = 'error';
@@ -492,7 +498,8 @@ export class NzTestInputWithStatusComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInputInFormComponent {
   status: NzFormControlStatusType = 'error';
@@ -501,7 +508,8 @@ export class NzTestInputInFormComponent {
 
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [type]="type" />`
+  template: `<input nz-input [type]="type" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestInputWithTypeComponent {
   type: string | null = null;
@@ -509,7 +517,8 @@ export class NzTestInputWithTypeComponent {
 
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [nzSize]="size" />`
+  template: `<input nz-input [nzSize]="size" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestInputFinalSizeComponent {
   size: NzSizeLDSType = 'default';
@@ -517,7 +526,8 @@ export class TestInputFinalSizeComponent {
 
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [nzVariant]="variant()" />`
+  template: `<input nz-input [nzVariant]="variant()" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestInputFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);

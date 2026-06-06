@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, DebugElement, destroyPlatform } from '@angular/core';
+import { ApplicationRef, ChangeDetectionStrategy, Component, DebugElement, destroyPlatform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { bootstrapApplication, By } from '@angular/platform-browser';
 import { renderApplication } from '@angular/platform-server';
@@ -154,7 +154,8 @@ describe('watermark (SSR)', () => {
       [nzOffset]="nzOffset"
       class="watermark"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestWatermarkBasicComponent {
   nzContent: string | string[] = 'NG Ant Design';

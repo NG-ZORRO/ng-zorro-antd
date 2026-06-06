@@ -6,6 +6,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   provideZoneChangeDetection,
@@ -218,7 +219,8 @@ describe('form', () => {
 
 @Component({
   imports: [NzFormModule],
-  template: `<form nz-form [nzLayout]="layout"></form>`
+  template: `<form nz-form [nzLayout]="layout"></form>`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestFormDirectiveComponent {
   layout: NzFormLayoutType = 'horizontal';
@@ -240,7 +242,8 @@ export class NzTestFormDirectiveComponent {
         </nz-form-item>
       }
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestFormLabelIntegrateComponent {
   defaultNoColon = false;
@@ -272,7 +275,8 @@ export class NzTestFormLabelIntegrateComponent {
       }
       <ng-container *ngTemplateOutlet="label" />
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestFormRequiredMarkComponent implements AfterViewInit {
   requiredMark: NzRequiredMark = true;

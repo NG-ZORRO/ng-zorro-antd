@@ -4,7 +4,14 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, provideZoneChangeDetection, signal, WritableSignal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideZoneChangeDetection,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -298,7 +305,8 @@ describe('color-picker', () => {
     <ng-template #flipFlop>
       <button nz-button nzType="primary">Color</button>
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestColorPickerComponent {
   nzFormat: NzColorPickerFormatType | null = null;
@@ -473,7 +481,8 @@ describe('nz-color-picker with presets', () => {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestColorPickerFormComponent {
   validateForm = new FormGroup({
@@ -491,7 +500,8 @@ export class NzTestColorPickerFormComponent {
 
 @Component({
   imports: [NzColorPickerModule],
-  template: ` <nz-color-picker [nzPresets]="presets" nzValue="#1677ff" (nzOnChange)="onColorChange($event)" /> `
+  template: ` <nz-color-picker [nzPresets]="presets" nzValue="#1677ff" (nzOnChange)="onColorChange($event)" /> `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestColorPickerPresetsComponent {
   presets: NzPresetColor[] | null = [
@@ -622,7 +632,8 @@ describe('nz-color-picker form size', () => {
 
 @Component({
   imports: [NzColorPickerModule],
-  template: `<nz-color-picker [nzSize]="size" />`
+  template: `<nz-color-picker [nzSize]="size" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestColorPickerFormSizeComponent {
   size: NzSizeLDSType = 'default';

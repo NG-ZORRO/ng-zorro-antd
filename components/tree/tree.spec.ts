@@ -3,7 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  Component,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
@@ -648,7 +655,8 @@ describe('tree', () => {
     <ng-template #expandedIconTpl let-node>
       <nz-icon nzType="smile" class="ant-tree-switcher-icon" />
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeBasicControlledComponent {
   @ViewChild('treeComponent', { static: true }) treeComponent!: NzTreeComponent;
@@ -723,7 +731,8 @@ export class NzTestTreeBasicControlledComponent {
       (nzOnDrop)="onDrop()"
       (nzOnDragEnd)="onDragEnd()"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeDraggableComponent {
   @ViewChild(NzTreeComponent, { static: true }) treeComponent!: NzTreeComponent;
@@ -785,7 +794,8 @@ export class NzTestTreeDraggableComponent {
       [nzAsyncData]="asyncData"
       [nzHideUnMatched]="hideUnMatched"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTreeBasicSearchComponent {
   @ViewChild(NzTreeComponent, { static: true }) treeComponent!: NzTreeComponent;

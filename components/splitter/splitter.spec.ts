@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
-import { Component, DebugElement, DOCUMENT, NgZone, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, DOCUMENT, NgZone, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
@@ -55,7 +55,8 @@ interface PanelProps {
       height: 100px;
       width: 100px;
     }
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzSplitterTestComponent {
   readonly vertical = signal(false);

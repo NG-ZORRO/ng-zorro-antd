@@ -3,7 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, provideZoneChangeDetection, signal, type WritableSignal } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  Component,
+  provideZoneChangeDetection,
+  signal,
+  type WritableSignal
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -254,7 +261,8 @@ describe('space compact direction', () => {
         <button nz-button nzType="primary">btn</button>
       }
     </nz-space-compact>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SpaceCompactTestComponent {
   block: boolean = false;
@@ -270,7 +278,8 @@ class SpaceCompactTestComponent {
       <button nz-button nzType="primary">btn</button>
       <button nz-button nzType="primary">btn</button>
     </nz-space-compact>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SpaceCompactDirectionTestComponent {
   direction: NzSpaceDirection = 'horizontal';

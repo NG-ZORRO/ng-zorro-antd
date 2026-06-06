@@ -981,7 +981,8 @@ describe('auto-complete', () => {
         }
       </nz-autocomplete>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestSimpleAutocompleteComponent {
   inputValue!: string;
@@ -1017,7 +1018,8 @@ class NzTestSimpleAutocompleteComponent {
         #auto
       />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestAutocompletePropertyComponent {
   inputValue?: string;
@@ -1031,7 +1033,8 @@ class NzTestAutocompletePropertyComponent {
 
 @Component({
   imports: [NzAutocompleteModule],
-  template: `<input [nzAutocomplete]="null!" />`
+  template: `<input [nzAutocomplete]="null!" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
@@ -1083,7 +1086,8 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
         </nz-auto-optgroup>
       }
     </nz-autocomplete>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestAutocompleteGroupComponent {
   inputValue!: string;
@@ -1140,7 +1144,8 @@ class NzTestAutocompleteGroupComponent {
         }
       </nz-autocomplete>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestAutocompleteWithFormComponent {
   formControl = new FormControl('Burns');
@@ -1159,7 +1164,8 @@ class NzTestAutocompleteWithFormComponent {
         </nz-auto-option>
       }
     </nz-autocomplete>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestAutocompleteDifferentValueWithFormComponent {
   formControl = new FormControl('lucy');
@@ -1181,7 +1187,8 @@ class NzTestAutocompleteDifferentValueWithFormComponent {
         </nz-auto-option>
       }
     </nz-autocomplete>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestAutocompleteWithObjectOptionComponent {
   formControl = new FormControl<string | { label: string; value: string } | null>({ label: 'Lucy', value: 'lucy' });
@@ -1209,7 +1216,8 @@ class NzTestAutocompleteWithObjectOptionComponent {
         <nz-auto-option nzValue="value">label</nz-auto-option>
       </nz-autocomplete>
     </nz-input-wrapper>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestAutocompleteWithGroupInputComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: true }) trigger!: NzAutocompleteTriggerDirective;

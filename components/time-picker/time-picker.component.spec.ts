@@ -8,6 +8,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import {
+  ChangeDetectionStrategy,
   Component,
   DebugElement,
   provideZoneChangeDetection,
@@ -1083,7 +1084,8 @@ describe('finalVariant', () => {
       [nzDefaultOpenValue]="defaultOpenValue"
       [nzVariant]="nzVariant"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePickerComponent {
   open = false;
@@ -1104,7 +1106,8 @@ export class NzTestTimePickerComponent {
 
 @Component({
   imports: [NzTimePickerComponent],
-  template: `<nz-time-picker [nzStatus]="status" />`
+  template: `<nz-time-picker [nzStatus]="status" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePickerStatusComponent {
   status: NzStatus = 'error';
@@ -1116,7 +1119,8 @@ export class NzTestTimePickerStatusComponent {
     <div [dir]="dir">
       <nz-time-picker [nzPlacement]="nzPlacement" />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePickerDirComponent {
   dir: Direction = 'ltr';
@@ -1133,7 +1137,8 @@ export class NzTestTimePickerDirComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePickerInFormComponent {
   timePickerForm = new FormGroup({
@@ -1155,7 +1160,8 @@ export class NzTestTimePickerInFormComponent {
     <ng-template #prefixTemplate>
       <nz-icon nzType="clock-circle" />
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePickerPrefixTemplateComponent {}
 
@@ -1168,7 +1174,8 @@ export class NzTestTimePickerPrefixTemplateComponent {}
       [nzNeedConfirm]="needConfirm"
       [nzDefaultOpenValue]="defaultOpenValue"
     />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePickerConfirmationComponent {
   date: Date | null = null;
@@ -1180,7 +1187,8 @@ export class NzTestTimePickerConfirmationComponent {
 
 @Component({
   imports: [NzTimePickerComponent, FormsModule],
-  template: ` <nz-time-picker [nzPlacement]="nzPlacement" [(ngModel)]="date" /> `
+  template: ` <nz-time-picker [nzPlacement]="nzPlacement" [(ngModel)]="date" /> `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePickerPlacementComponent {
   nzPlacement: NzPlacement = 'bottomLeft';
@@ -1190,7 +1198,8 @@ export class NzTestTimePickerPlacementComponent {
 
 @Component({
   imports: [NzTimePickerComponent],
-  template: ` <nz-time-picker [nzSize]="size" /> `
+  template: ` <nz-time-picker [nzSize]="size" /> `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestTimePickerSizeComponent {
   size: NzSizeLDSType = 'default';
@@ -1198,7 +1207,8 @@ class NzTestTimePickerSizeComponent {
 
 @Component({
   imports: [NzTimePickerComponent],
-  template: `<nz-time-picker [nzVariant]="variant()" />`
+  template: `<nz-time-picker [nzVariant]="variant()" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimePickerVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);

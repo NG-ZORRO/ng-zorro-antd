@@ -3,7 +3,6 @@
 // optionalChainNotNullable: https://github.com/angular/angular/issues/46918
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "module": "es2020",
     "importHelpers": true,
     "esModuleInterop": true,

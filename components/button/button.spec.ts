@@ -6,6 +6,7 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   ApplicationRef,
+  ChangeDetectionStrategy,
   Component,
   Input,
   provideZoneChangeDetection,
@@ -344,7 +345,8 @@ describe('finalSize', () => {
     >
       button
     </button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonComponent {
   @Input() nzBlock: boolean = false;
@@ -364,7 +366,8 @@ export class TestButtonComponent {
       <nz-icon nzType="poweroff" />
       {{ 'Click me!' }}
     </button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonBindingComponent {
   loading = false;
@@ -382,7 +385,8 @@ export class TestButtonBindingComponent {
       text
       <nz-icon nzType="caret-down" />
     </button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonWithIconComponent {}
 
@@ -392,7 +396,8 @@ export class TestButtonWithIconComponent {}
     <button nz-button>
       <nz-icon nzType="caret-down" />
     </button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonIconOnlyComponent {}
 
@@ -402,7 +407,8 @@ export class TestButtonIconOnlyComponent {}
     <button nz-button>
       <u nz-icon nzType="up"></u>
     </button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonIconOnlyWithAnyTagComponent {}
 
@@ -413,7 +419,8 @@ export class TestButtonIconOnlyWithAnyTagComponent {}
       <nz-icon nzType="down" />
       <!-- comment -->
     </button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonIconOnlyWithCommentComponent {}
 
@@ -424,7 +431,8 @@ export class TestButtonIconOnlyWithCommentComponent {}
       <nz-icon nzType="down" />
       text
     </button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonIconOnlyWithTextComponent {}
 
@@ -434,7 +442,8 @@ export class TestButtonIconOnlyWithTextComponent {}
     <button nz-button>
       <span>text</span>
     </button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonIconOnlyWithoutIconComponent {}
 
@@ -444,7 +453,8 @@ export class TestButtonIconOnlyWithoutIconComponent {}
     <button nz-button nzLoading>
       <nz-icon nzType="caret-down" />
     </button>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonIconOnlyLoadingComponent {}
 
@@ -465,7 +475,8 @@ export class TestButtonIconOnlyLoadingComponent {}
         button
       </button>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonRtlComponent extends TestButtonComponent {
   @ViewChild(Dir) dir!: Dir;
@@ -474,7 +485,8 @@ export class TestButtonRtlComponent extends TestButtonComponent {
 
 @Component({
   imports: [NzButtonModule],
-  template: '<a nz-button [disabled]="disabled">anchor</a>'
+  template: '<a nz-button [disabled]="disabled">anchor</a>',
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestAnchorComponent {
   disabled = false;
@@ -482,7 +494,8 @@ export class TestAnchorComponent {
 
 @Component({
   imports: [NzButtonModule],
-  template: ` <button nz-button [nzSize]="size">Button</button> `
+  template: ` <button nz-button [nzSize]="size">Button</button> `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonFinalSizeComponent {
   size: NzButtonSize = 'default';

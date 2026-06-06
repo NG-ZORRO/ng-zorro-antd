@@ -6,7 +6,7 @@
 import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -1033,7 +1033,8 @@ const styles = `
 @Component({
   imports: [NzSliderModule],
   template: `<nz-slider [nzDisabled]="disabled" />`,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestSliderComponent {
   disabled = false;
@@ -1042,7 +1043,8 @@ class NzTestSliderComponent {
 @Component({
   imports: [NzSliderModule],
   template: `<nz-slider [nzMin]="min" [nzMax]="max" />`,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderWithMinAndMaxComponent {
   min = 4;
@@ -1052,13 +1054,15 @@ class SliderWithMinAndMaxComponent {
 @Component({
   imports: [FormsModule, NzSliderModule],
   template: `<nz-slider [ngModel]="26" />`,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderWithValueComponent {}
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider [nzMarks]="marks" />`
+  template: `<nz-slider [nzMarks]="marks" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderWithMarksComponent {
   marks: Record<number, string> = { 100: '(100%)', 0: '(0%)' };
@@ -1067,7 +1071,8 @@ class SliderWithMarksComponent {
 @Component({
   imports: [NzSliderModule],
   template: `<nz-slider [nzStep]="step" />`,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderWithStepComponent {
   step = 25;
@@ -1076,28 +1081,32 @@ class SliderWithStepComponent {
 @Component({
   imports: [FormsModule, NzSliderModule],
   template: `<nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6" />`,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
   imports: [FormsModule, NzSliderModule],
   template: `<nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5" />`,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderWithValueZeroComponent {}
 
 @Component({
   imports: [FormsModule, NzSliderModule],
   template: `<nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6" />`,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
   imports: [NzSliderModule],
   template: `<nz-slider nzVertical />`,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class VerticalSliderComponent {}
 
@@ -1107,7 +1116,8 @@ class VerticalSliderComponent {}
     <nz-slider nzReverse [nzMarks]="marks" />
     <nz-slider nzReverse nzRange />
     <nz-slider nzVertical nzReverse />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class ReverseSliderComponent {
   marks: Record<number, string> = { 100: '(100%)', 0: '(0%)' };
@@ -1116,7 +1126,8 @@ class ReverseSliderComponent {
 @Component({
   imports: [NzSliderModule],
   template: `<nz-slider [nzMin]="4" [nzMax]="6" nzReverse />`,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class ReverseSliderWithMinAndMaxComponent {}
 
@@ -1134,7 +1145,8 @@ class ReverseSliderWithMinAndMaxComponent {}
       [nzMax]="max"
     />
   `,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class MixedSliderComponent {
   dots = false;
@@ -1157,7 +1169,8 @@ class MixedSliderComponent {
       <nz-slider [formControl]="formControl" [nzDisabled]="disabled" />
     </form>
   `,
-  styles: [styles]
+  styles: [styles],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderWithFormControlComponent {
   formControl = new FormControl(42);
@@ -1175,7 +1188,8 @@ class SliderWithFormControlComponent {
 
 @Component({
   imports: [FormsModule, NzSliderModule],
-  template: `<nz-slider [nzTooltipVisible]="show" [ngModel]="value" />`
+  template: `<nz-slider [nzTooltipVisible]="show" [ngModel]="value" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
@@ -1185,7 +1199,8 @@ class SliderShowTooltipComponent {
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider [nzRange]="range" [nzDisabled]="disabled" />`
+  template: `<nz-slider [nzRange]="range" [nzDisabled]="disabled" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestSliderKeyboardComponent {
   range = false;
@@ -1199,7 +1214,8 @@ class NzTestSliderKeyboardComponent {
     <ng-template #titleTemplate let-value>
       <span>Slider value: {{ value }}</span>
     </ng-template>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 class SliderShowTemplateTooltipComponent {
   show: NzSliderShowTooltip = 'default';
@@ -1316,7 +1332,8 @@ function dispatchMouseenterEvent(element: HTMLElement): void {
     <div [dir]="direction">
       <nz-slider />
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestSliderRtlComponent {
   @ViewChild(Dir) dir!: Dir;

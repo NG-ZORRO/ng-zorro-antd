@@ -4,7 +4,7 @@
  */
 
 import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -25,7 +25,8 @@ import { NzResultModule } from './result.module';
       <div nz-result-content>Content</div>
       <div nz-result-extra>Content Extra</div>
     </nz-result>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestResultBasicComponent {
   icon?: string = 'success';
@@ -37,7 +38,8 @@ export class NzTestResultBasicComponent {
 
 @Component({
   imports: [BidiModule, NzTestResultBasicComponent],
-  template: `<nz-test-basic-result [dir]="direction" />`
+  template: `<nz-test-basic-result [dir]="direction" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestResultRtlComponent {
   direction: Direction = 'rtl';
@@ -46,7 +48,8 @@ export class NzTestResultRtlComponent {
 @Component({
   selector: 'nz-test-status-icon-result',
   imports: [NzResultModule],
-  template: `<nz-result [nzStatus]="status" nzTitle="Test Title" />`
+  template: `<nz-result [nzStatus]="status" nzTitle="Test Title" />`,
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestResultStatusIconComponent {
   status: NzResultStatusType = 'success';
