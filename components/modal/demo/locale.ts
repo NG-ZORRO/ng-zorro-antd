@@ -32,6 +32,7 @@ export class NzDemoModalLocaleComponent {
   private readonly modalService = inject(NzModalService);
 
   isVisible = false;
+
   showModal(): void {
     this.isVisible = true;
   }

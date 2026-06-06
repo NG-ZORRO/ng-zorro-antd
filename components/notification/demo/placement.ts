@@ -46,6 +46,7 @@ export class NzDemoNotificationPlacementComponent {
   private readonly notification = inject(NzNotificationService);
 
   placement = 'topRight';
+
   createNotification(position: NzNotificationPlacement): void {
     this.notification.blank(
       'Notification Title',

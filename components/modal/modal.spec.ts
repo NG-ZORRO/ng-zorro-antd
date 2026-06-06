@@ -1580,10 +1580,11 @@ class TestWithServiceComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestWithModalContentComponent {
-  readonly value = inject(NZ_MODAL_DATA);
-  readonly nzModalData = inject(NZ_MODAL_DATA);
+  readonly value = inject<string>(NZ_MODAL_DATA);
+  readonly nzModalData = inject<string>(NZ_MODAL_DATA);
   readonly modalRef = inject(NzModalRef);
   readonly modalInjector = inject(Injector);
+
   destroyModal(): void {
     this.modalRef.destroy();
   }

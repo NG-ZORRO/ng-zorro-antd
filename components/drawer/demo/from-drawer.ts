@@ -1,5 +1,5 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -25,7 +25,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       [nzBodyStyle]="{ overflow: 'auto' }"
       [nzMaskClosable]="false"
       [nzWidth]="720"
-      [nzVisible]="visible"
+      [nzVisible]="visible()"
       nzTitle="Create"
       [nzFooter]="footerTpl"
       (nzOnClose)="close()"
@@ -115,13 +115,13 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoDrawerFromDrawerComponent {
-  visible = false;
+  readonly visible = signal(false);
 
   open(): void {
-    this.visible = true;
+    this.visible.set(true);
   }
 
   close(): void {
-    this.visible = false;
+    this.visible.set(false);
   }
 }

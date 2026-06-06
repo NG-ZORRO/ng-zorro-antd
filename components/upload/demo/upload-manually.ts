@@ -33,6 +33,7 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 export class NzDemoUploadUploadManuallyComponent {
   private readonly http = inject(HttpClient);
   private readonly messageService = inject(NzMessageService);
+
   uploading = false;
   fileList: NzUploadFile[] = [];
 

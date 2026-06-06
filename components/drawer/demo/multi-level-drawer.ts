@@ -57,7 +57,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 export class NzDemoDrawerMultiLevelDrawerComponent {
   visible = false;
   childrenVisible = false;
-
   vegetables = ['asparagus', 'bamboo', 'potato', 'carrot', 'cilantro', 'potato', 'eggplant'];
 
   open(): void {

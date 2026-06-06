@@ -28,6 +28,7 @@ export class NzDemoPopconfirmDynamicTriggerComponent {
   private readonly nzMessageService = inject(NzMessageService);
 
   switchValue = false;
+
   cancel(): void {
     this.nzMessageService.info('click cancel');
   }

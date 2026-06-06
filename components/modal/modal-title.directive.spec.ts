@@ -57,8 +57,8 @@ describe('modal title directive', () => {
     testComponent.showModal();
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(true);
-    const modalRef = testComponent.nzModalComponent.getModalRef();
-    expect(modalRef!.getConfig().nzTitle).toEqual(testComponent.nzModalTitleDirective);
+    const modalRef = testComponent.modalComponent.getModalRef();
+    expect(modalRef!.getConfig().nzTitle).toEqual(testComponent.modalTitleDir);
 
     testComponent.handleCancel();
     fixture.detectChanges();
@@ -71,9 +71,9 @@ describe('modal title directive', () => {
     expect(initOpenedComponent.isVisible).toBe(true);
     flush();
     initOpenedComponentFixture.detectChanges();
-    const modalRef = initOpenedComponent.nzModalComponent.getModalRef();
+    const modalRef = initOpenedComponent.modalComponent.getModalRef();
 
-    expect(modalRef!.getConfig().nzTitle).toEqual(initOpenedComponent.nzModalTitleDirective);
+    expect(modalRef!.getConfig().nzTitle).toEqual(initOpenedComponent.modalTitleDir);
 
     initOpenedComponentFixture.detectChanges();
   }));
@@ -83,7 +83,7 @@ describe('modal title directive', () => {
     fixture.detectChanges();
 
     expect(modalRef.componentInstance!.nzModalRef).toBe(modalRef);
-    expect(modalRef.componentInstance!.NzModalTitleDirective).toEqual(modalRef.getConfig().nzTitle as TemplateRef<{}>);
+    expect(modalRef.componentInstance!.modalTitleDir).toEqual(modalRef.getConfig().nzTitle as TemplateRef<{}>);
   });
 });
 
@@ -101,8 +101,8 @@ describe('modal title directive', () => {
 })
 class TestDirectiveTitleComponent {
   isVisible = false;
-  @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
-  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) nzModalTitleDirective!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalComponent) modalComponent!: NzModalComponent;
+  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
 
   handleCancel(): void {
     this.isVisible = false;
@@ -127,8 +127,8 @@ class TestDirectiveTitleComponent {
 })
 class TestDirectiveTitleWithInitOpenedComponent {
   isVisible = true;
-  @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
-  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) nzModalTitleDirective!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalComponent) modalComponent!: NzModalComponent;
+  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
 }
 
 @Component({
@@ -137,9 +137,10 @@ class TestDirectiveTitleWithInitOpenedComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveTitleInServiceComponent {
-  public readonly nzModalRef = inject(NzModalRef);
+  readonly nzModalRef = inject(NzModalRef);
 
-  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) NzModalTitleDirective!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
+
   handleCancel(): void {
     this.nzModalRef.close();
   }

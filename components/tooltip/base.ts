@@ -132,13 +132,10 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
   protected readonly triggerDisposables: VoidFunction[] = [];
 
   private delayTimer?: ReturnType<typeof setTimeout>;
-  protected componentType: Type<NzTooltipBaseComponent>;
 
   // componentType is supplied by subclasses, not Angular DI.
   // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor(componentType: Type<NzTooltipBaseComponent>) {
-    this.componentType = componentType;
-
+  constructor(protected componentType: Type<NzTooltipBaseComponent>) {
     this.destroyRef.onDestroy(() => {
       // Clear toggling timer. Issue #3875 #4317 #4386
       this.clearTogglingTimer();

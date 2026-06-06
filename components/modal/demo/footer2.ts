@@ -29,14 +29,14 @@ import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
         <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
       </div>
     </nz-modal>
-  `,
-  styles: []
+  `
 })
 export class NzDemoModalFooter2Component {
   private readonly modalService = inject(NzModalService);
 
   isVisible = false;
   isConfirmLoading = false;
+
   showModal1(): void {
     this.isVisible = true;
   }
@@ -79,9 +79,9 @@ export class NzDemoModalFooter2Component {
   `
 })
 export class NzModalCustomFooterComponent {
-  private readonly modal = inject(NzModalRef);
+  private readonly modalRef = inject(NzModalRef);
 
   destroyModal(): void {
-    this.modal.destroy();
+    this.modalRef.destroy();
   }
 }

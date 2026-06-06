@@ -55,13 +55,14 @@ interface IModalData {
   `
 })
 export class NzDemoModalServiceComponent {
-  private readonly modal = inject(NzModalService);
+  private readonly modalService = inject(NzModalService);
   private readonly viewContainerRef = inject(ViewContainerRef);
 
   tplModalButtonLoading = false;
   disabled = false;
+
   createModal(): void {
-    this.modal.create({
+    this.modalService.create({
       nzTitle: 'Modal Title',
       nzContent: 'string, will close after 1 sec',
       nzClosable: false,
@@ -70,7 +71,7 @@ export class NzDemoModalServiceComponent {
   }
 
   createTplModal(tplTitle: TemplateRef<{}>, tplContent: TemplateRef<{}>, tplFooter: TemplateRef<{}>): void {
-    this.modal.create({
+    this.modalService.create({
       nzTitle: tplTitle,
       nzContent: tplContent,
       nzFooter: tplFooter,
@@ -89,7 +90,7 @@ export class NzDemoModalServiceComponent {
   }
 
   createComponentModal(): void {
-    const modal = this.modal.create<NzModalCustomComponent, IModalData>({
+    const modal = this.modalService.create<NzModalCustomComponent, IModalData>({
       nzTitle: 'Modal Title',
       nzContent: NzModalCustomComponent,
       nzViewContainerRef: this.viewContainerRef,
@@ -119,7 +120,7 @@ export class NzDemoModalServiceComponent {
   }
 
   createCustomButtonModal(): void {
-    const modal: NzModalRef = this.modal.create({
+    const modal = this.modalService.create({
       nzTitle: 'custom button demo',
       nzContent: 'pass array of button config to nzFooter to create multiple buttons',
       nzFooter: [
@@ -131,7 +132,8 @@ export class NzDemoModalServiceComponent {
         {
           label: 'Confirm',
           type: 'primary',
-          onClick: () => this.modal.confirm({ nzTitle: 'Confirm Modal Title', nzContent: 'Confirm Modal Content' })
+          onClick: () =>
+            this.modalService.confirm({ nzTitle: 'Confirm Modal Title', nzContent: 'Confirm Modal Content' })
         },
         {
           label: 'Change Button Status',
@@ -162,7 +164,7 @@ export class NzDemoModalServiceComponent {
 
     ['create', 'info', 'success', 'error'].forEach(method =>
       // @ts-ignore
-      this.modal[method]({
+      this.modalService[method]({
         nzMask: false,
         nzTitle: `Test ${method} title`,
         nzContent: `Test content: <b>${method}</b>`,
@@ -170,9 +172,9 @@ export class NzDemoModalServiceComponent {
       })
     );
 
-    this.modal.afterAllClose.subscribe(() => console.log('afterAllClose emitted!'));
+    this.modalService.afterAllClose.subscribe(() => console.log('afterAllClose emitted!'));
 
-    setTimeout(() => this.modal.closeAll(), 2000);
+    setTimeout(() => this.modalService.closeAll(), 2000);
   }
 }
 
@@ -183,8 +185,8 @@ export class NzDemoModalServiceComponent {
     <h2>{{ title }}</h2>
     <h4>{{ subtitle }}</h4>
     <p>
-      My favorite framework is {{ nzModalData.favoriteFramework }} and my favorite library is
-      {{ nzModalData.favoriteLibrary }}
+      My favorite framework is {{ modalData.favoriteFramework }} and my favorite library is
+      {{ modalData.favoriteLibrary }}
     </p>
     <br />
     <button nz-button (click)="destroyModal()">destroy modal in the component</button>
@@ -192,10 +194,11 @@ export class NzDemoModalServiceComponent {
 })
 export class NzModalCustomComponent {
   readonly modalRef = inject(NzModalRef);
-  readonly nzModalData = inject<IModalData>(NZ_MODAL_DATA);
+  readonly modalData = inject<IModalData>(NZ_MODAL_DATA);
 
   @Input() title?: string;
   @Input() subtitle?: string;
+
   destroyModal(): void {
     this.modalRef.destroy({ data: 'this the result data' });
   }

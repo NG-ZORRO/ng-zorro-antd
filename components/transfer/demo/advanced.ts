@@ -31,6 +31,7 @@ export class NzDemoTransferAdvancedComponent implements OnInit {
   private readonly messageService = inject(NzMessageService);
 
   list: TransferItem[] = [];
+
   ngOnInit(): void {
     this.getData();
   }

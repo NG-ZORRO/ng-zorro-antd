@@ -29,13 +29,9 @@ export function DATE_HELPER_SERVICE_FACTORY(): DateHelperService {
 export abstract class DateHelperService {
   protected config: NzDateConfig = mergeDateConfig(inject(NZ_DATE_CONFIG, { optional: true }));
 
-  protected i18n: NzI18nService;
-
   // i18n is supplied by DATE_HELPER_SERVICE_FACTORY when choosing the concrete helper.
   // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor(i18n: NzI18nService) {
-    this.i18n = i18n;
-  }
+  constructor(protected i18n: NzI18nService) {}
 
   abstract getISOWeek(date: Date): number;
   abstract getFirstDayOfWeek(): WeekDayIndex;

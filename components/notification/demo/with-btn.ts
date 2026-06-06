@@ -17,7 +17,9 @@ import { NzNotificationComponent, NzNotificationService } from 'ng-zorro-antd/no
 export class NzDemoNotificationWithBtnComponent {
   private readonly notification = inject(NzNotificationService);
 
-  @ViewChild('notificationBtnTpl', { static: true }) btnTemplate!: TemplateRef<{ $implicit: NzNotificationComponent }>;
+  @ViewChild('notificationBtnTpl', { static: true })
+  btnTemplate!: TemplateRef<{ $implicit: NzNotificationComponent }>;
+
   createNotification(): void {
     this.notification.blank(
       'Notification Title',

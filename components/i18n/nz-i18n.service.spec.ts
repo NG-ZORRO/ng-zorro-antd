@@ -3,10 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Subscription } from 'rxjs';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NZ_I18N, provideNzI18n } from 'ng-zorro-antd/i18n/nz-i18n.token';
 
 import en_US from './languages/en_US';
@@ -18,12 +19,12 @@ describe('i18n service', () => {
   let srv: NzI18nService;
   let fixture: ComponentFixture<NzI18nTestComponent>;
   let testComponent: NzI18nTestComponent;
-  const DEFAULT_LAN = zh_CN;
+  const DEFAULT_LANG = zh_CN;
 
   describe('#setLocale', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [provideNzI18n(DEFAULT_LAN)]
+        providers: [provideNzI18n(DEFAULT_LANG)]
       });
 
       fixture = TestBed.createComponent(NzI18nTestComponent);
@@ -33,11 +34,11 @@ describe('i18n service', () => {
 
     it('should be provide interface be right', () => {
       fixture = TestBed.createComponent(NzI18nTestComponent);
-      expect(fixture.componentInstance.locale === DEFAULT_LAN).toBe(true);
+      expect(fixture.componentInstance.locale === DEFAULT_LANG).toBe(true);
     });
 
     it('should be auto default zh_CN', () => {
-      expect(testComponent.locale.locale).toBe(DEFAULT_LAN.locale);
+      expect(testComponent.locale.locale).toBe(DEFAULT_LANG.locale);
     });
 
     it('should trigger changed when set different lang', () => {
@@ -56,7 +57,7 @@ describe('i18n service', () => {
 
     it('should warn when locale for a component is not provided', () => {
       const spy = spyOn(console, 'warn');
-      srv.setLocale({ locale: 'not_existing_language' } as any); // eslint-disable-line  @typescript-eslint/no-explicit-any
+      srv.setLocale({ locale: 'not_existing_language' } as NzSafeAny);
       expect(srv.getLocaleData('global.placeholder')).toBeTruthy();
       expect(spy).toHaveBeenCalledWith(
         '[NG-ZORRO]:',
@@ -86,24 +87,18 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
 });
 
 @Component({
-  template: '',
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: ''
 })
-export class NzI18nTestComponent implements OnDestroy {
+export class NzI18nTestComponent {
   private readonly initialLocale = inject(NZ_I18N);
   private readonly nzI18nService = inject(NzI18nService);
 
   locale = this.initialLocale;
 
-  private localeSubscription: Subscription;
   constructor() {
-    this.localeSubscription = this.nzI18nService.localeChange.subscribe(locale => {
+    this.nzI18nService.localeChange.pipe(takeUntilDestroyed()).subscribe(locale => {
       this.updateLocale(locale);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.localeSubscription.unsubscribe();
   }
 
   updateLocale(locale: NzI18nInterface): void {

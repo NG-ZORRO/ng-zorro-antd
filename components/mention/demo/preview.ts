@@ -37,6 +37,7 @@ export class NzDemoMentionPreviewComponent {
   inputValue: string = 'Switch tab view preview @NG-ZORRO ';
   preview?: SafeHtml;
   suggestions = ['NG-ZORRO', 'angular', 'Reactive-Extensions'];
+
   constructor() {
     this.renderPreView();
   }

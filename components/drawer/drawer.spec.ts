@@ -943,10 +943,11 @@ class NzTestDrawerWithServiceComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDrawerCustomComponent {
-  readonly nzData = inject(NZ_DRAWER_DATA);
+  readonly nzData = inject<{ value: string }>(NZ_DRAWER_DATA);
   private readonly drawerRef = inject(NzDrawerRef);
 
   @Input() value: NzSafeAny;
+
   close(): void {
     this.drawerRef.close(this.value);
   }

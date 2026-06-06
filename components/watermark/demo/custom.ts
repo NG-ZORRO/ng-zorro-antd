@@ -130,6 +130,7 @@ import { FontType, NzWatermarkModule } from 'ng-zorro-antd/watermark';
 export class NzDemoWatermarkCustomComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
+
   form = this.fb.group({
     content: 'NG Ant Design',
     fontSize: 16,

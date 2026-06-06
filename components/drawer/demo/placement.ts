@@ -34,6 +34,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 export class NzDemoDrawerPlacementComponent {
   visible = false;
   placement: NzDrawerPlacement = 'left';
+
   open(): void {
     this.visible = true;
   }

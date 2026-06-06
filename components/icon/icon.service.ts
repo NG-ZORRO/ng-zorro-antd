@@ -121,8 +121,8 @@ export const NZ_ICONS_PATCH = new InjectionToken<IconDefinition[]>('nz_icons_pat
 export class NzIconPatchService {
   private readonly extraIcons = inject(NZ_ICONS_PATCH, { self: true });
   private readonly rootIconService = inject(NzIconService);
-
   patched = false;
+
   doPatch(): void {
     if (this.patched) {
       return;
