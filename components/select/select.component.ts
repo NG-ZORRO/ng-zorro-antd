@@ -129,6 +129,7 @@ export type NzSelectSizeType = NzSizeLDSType;
       [tokenSeparators]="nzTokenSeparators"
       [showSearch]="nzShowSearch"
       [autofocus]="nzAutoFocus"
+      [searchDebounce]="nzSearchDebounce"
       [listOfTopItem]="listOfTopItem"
       [prefix]="nzPrefix"
       (inputValueChange)="onInputValueChange($event)"
@@ -252,6 +253,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzStatus: NzStatus = '';
   @Input() @WithConfig() nzVariant: NzVariant | undefined = undefined;
   @Input() @WithConfig() nzOptionHeightPx = 32;
+  @Input() nzSearchDebounce = 300;
   @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string[] | string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;

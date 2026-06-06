@@ -1798,6 +1798,7 @@ describe('select finalVariant', () => {
       [nzAllowClear]="nzAllowClear"
       [nzVariant]="nzVariant"
       [nzShowSearch]="nzShowSearch"
+      [nzSearchDebounce]="0"
       [nzLoading]="nzLoading"
       [nzAutoFocus]="nzAutoFocus"
       [nzServerSearch]="nzServerSearch"

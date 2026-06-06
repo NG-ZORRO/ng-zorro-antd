@@ -23,6 +23,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, Subject } from 'rxjs';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -136,6 +137,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   @Input() listOfTopItem: NzSelectItemInterface[] = [];
   @Input() tokenSeparators: string[] = [];
   @Input() prefix: TemplateRef<NzSafeAny> | string | null = null;
+  @Input() searchDebounce = 300;
   @Output() readonly tokenize = new EventEmitter<string[]>();
   @Output() readonly inputValueChange = new EventEmitter<string>();
   @Output() readonly deleteItem = new EventEmitter<NzSelectItemInterface>();
@@ -145,6 +147,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   isShowSingleLabel = false;
   isComposing = false;
   inputValue: string | null = null;
+  private readonly inputValue$ = new Subject<string>();
 
   updateTemplateVariable(): void {
     const isSelectedValueEmpty = this.listOfTopItem.length === 0;
@@ -263,5 +266,10 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
           }
         }
       });
+
+    this.inputValue$.pipe(debounceTime(this.searchDebounce), takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+      this.inputValueChange.emit(value);
+      this.tokenSeparate(value, this.tokenSeparators);
+    });
   }
 }
