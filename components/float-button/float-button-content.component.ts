@@ -4,7 +4,7 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, TemplateRef } from '@angular/core';
+import { Component, input, TemplateRef } from '@angular/core';
 
 import { NzBadgeComponent } from 'ng-zorro-antd/badge';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -17,7 +17,6 @@ import { NzFloatButtonBadge } from './typings';
   selector: 'nz-float-button-content',
   exportAs: 'nzFloatButtonContent',
   imports: [NzIconModule, NzOutletModule, NzBadgeComponent, NgTemplateOutlet],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (nzBadge()) {
       <nz-badge

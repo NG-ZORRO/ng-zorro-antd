@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import type { Color } from './interfaces/color';
 import { defaultColor, generateColor } from './util/util';
@@ -12,7 +12,6 @@ import { defaultColor, generateColor } from './util/util';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-antd-color-block',
   template: `<div class="ant-color-picker-color-block-inner" [style.background-color]="color"></div>`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-color-picker-color-block ant-color-picker-presets-color',
     '[class.ant-color-picker-presets-color-checked]': 'isChecked',

@@ -6,7 +6,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -22,7 +21,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 @Component({
   selector: 'nz-select-item',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *nzStringTemplateOutlet="contentTemplateOutlet; context: templateOutletContext">
       @if (displayLabelInHtml) {

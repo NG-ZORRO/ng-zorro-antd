@@ -7,7 +7,6 @@ import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   computed,
@@ -56,7 +55,6 @@ interface UploadListFile extends NzUploadFile {
     '[class]': 'class()'
   },
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzTooltipModule, NgTemplateOutlet, NzIconModule, NzButtonModule, NzProgressModule]
 })
 export class NzUploadListComponent implements OnChanges {

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, input, ViewEncapsulation } from '@angular/core';
 
 import type { NzFormItemLayout } from './types';
 
@@ -13,7 +13,6 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
 @Component({
   selector: 'nz-form-item',
   exportAs: 'nzFormItem',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-form-item',

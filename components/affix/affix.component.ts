@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   DOCUMENT,
@@ -48,7 +47,6 @@ const NOOP_EVENT = {} as Event;
       <ng-content />
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzAffixComponent implements OnChanges {

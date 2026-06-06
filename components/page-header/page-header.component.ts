@@ -7,7 +7,6 @@ import { Directionality } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -80,7 +79,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     <ng-content select="nz-page-header-content, [nz-page-header-content]" />
     <ng-content select="nz-page-header-footer, [nz-page-header-footer]" />
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-page-header',

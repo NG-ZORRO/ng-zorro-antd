@@ -6,7 +6,6 @@
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   Directive,
   inject,
@@ -56,8 +55,7 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
   selector: 'nz-comment-action',
   exportAs: 'nzCommentAction',
   template: '<ng-template><ng-content /></ng-template>',
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class NzCommentActionComponent implements OnInit {
   @ViewChild(TemplateRef, { static: true }) implicitContent!: TemplateRef<void>;

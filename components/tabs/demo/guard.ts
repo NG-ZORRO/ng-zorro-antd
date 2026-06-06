@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
@@ -13,8 +13,7 @@ import { NzTabsCanDeactivateFn, NzTabsModule } from 'ng-zorro-antd/tabs';
         <nz-tab [nzTitle]="'Tab' + tab">Content of tab {{ tab }}</nz-tab>
       }
     </nz-tabs>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  `
 })
 export class NzDemoTabsGuardComponent {
   tabs = [1, 2, 3, 4];

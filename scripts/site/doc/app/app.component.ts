@@ -67,7 +67,6 @@ const defaultKeywords =
     NavProgressBar
   ],
   templateUrl: './app.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[dir]': 'dir()'
   },

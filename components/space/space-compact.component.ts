@@ -3,16 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  booleanAttribute,
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  ElementRef,
-  inject,
-  input,
-  signal
-} from '@angular/core';
+import { booleanAttribute, Component, computed, ElementRef, inject, input, signal } from '@angular/core';
 
 import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -31,8 +22,7 @@ import { NZ_SPACE_COMPACT_ITEMS, NZ_SPACE_COMPACT_SIZE } from './space-compact.t
   providers: [
     { provide: NZ_SPACE_COMPACT_SIZE, useFactory: () => inject(NzSpaceCompactComponent).finalSize },
     { provide: NZ_SPACE_COMPACT_ITEMS, useFactory: () => signal([]) }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
 })
 export class NzSpaceCompactComponent {
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });

@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
@@ -52,10 +51,9 @@ const statusColorMap = new Map([
 const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-progress',
   exportAs: 'nzProgress',
+  encapsulation: ViewEncapsulation.None,
   imports: [NzIconModule, NzOutletModule, NgTemplateOutlet],
   template: `
     <ng-template #progressInfoTemplate>

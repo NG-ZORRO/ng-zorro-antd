@@ -3,16 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
@@ -24,7 +15,6 @@ import { generateColor } from './util/util';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-antd-color-preset',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzCollapseModule, NgAntdColorBlockComponent],
   template: `
     <div class="ant-color-picker-presets">

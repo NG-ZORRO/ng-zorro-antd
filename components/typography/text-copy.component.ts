@@ -5,7 +5,6 @@
 
 import { Clipboard } from '@angular/cdk/clipboard';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -46,7 +45,6 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       </ng-container>
     </button>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   imports: [NzTooltipModule, NzTransButtonModule, NzIconModule, NzOutletModule]
 })

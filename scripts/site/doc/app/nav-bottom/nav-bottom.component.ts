@@ -12,7 +12,6 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-nav-bottom',
   imports: [RouterLink, NzIconModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="prev-next-nav">
       @if (index() > 1) {

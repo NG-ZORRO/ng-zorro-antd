@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   NgZone,
@@ -26,7 +25,6 @@ import { NzTreeNodeComponent } from './node';
 @Component({
   selector: 'nz-tree-node-option',
   template: `<span class="ant-tree-title"><ng-content /></span>`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-tree-node-content-wrapper',
     '[class.ant-tree-node-content-wrapper-open]': 'isExpanded',

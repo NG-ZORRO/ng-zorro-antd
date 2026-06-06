@@ -19,7 +19,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   computed,
@@ -70,6 +69,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 @Component({
   selector: 'nz-drawer',
   exportAs: 'nzDrawer',
+  imports: [NzNoAnimationDirective, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet, CdkScrollable],
   template: `
     <ng-template #drawerTemplate>
       <div
@@ -148,24 +148,21 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
         </div>
       </div>
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzNoAnimationDirective, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet, CdkScrollable]
+  `
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
   extends NzDrawerRef<T, R>
   implements OnInit, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
 {
-  private cdr = inject(ChangeDetectorRef);
-  private renderer = inject(Renderer2);
-  private injector = inject(Injector);
-  private changeDetectorRef = inject(ChangeDetectorRef);
-  private focusTrapFactory = inject(FocusTrapFactory);
-  private viewContainerRef = inject(ViewContainerRef);
-  private overlayKeyboardDispatcher = inject(OverlayKeyboardDispatcher);
+  private readonly renderer = inject(Renderer2);
+  private readonly injector = inject(Injector);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private readonly focusTrapFactory = inject(FocusTrapFactory);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly overlayKeyboardDispatcher = inject(OverlayKeyboardDispatcher);
   private readonly directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
-  private document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly document = inject(DOCUMENT);
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 

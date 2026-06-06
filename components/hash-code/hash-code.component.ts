@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -22,10 +21,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzModeType } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzIconModule, NzStringTemplateOutletDirective],
   selector: 'nz-hash-code',
   exportAs: 'nzHashCode',
+  imports: [NzIconModule, NzStringTemplateOutletDirective],
   template: `
     @if (nzMode !== 'single' && nzMode !== 'rect') {
       <div class="ant-hash-code-header">

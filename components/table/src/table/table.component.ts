@@ -8,7 +8,6 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   ContentChild,
   EventEmitter,
@@ -60,7 +59,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   selector: 'nz-table',
   exportAs: 'nzTable',
   providers: [NzTableStyleService, NzTableDataService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-spin [nzDelay]="nzLoadingDelay" [nzSpinning]="nzLoading" [nzIndicator]="nzLoadingIndicator">

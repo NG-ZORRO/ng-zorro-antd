@@ -19,7 +19,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   computed,
@@ -131,7 +130,6 @@ export type MentionPlacement = 'top' | 'bottom';
       </span>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-mentions',
     '[class.ant-mentions-rtl]': `dir() === 'rtl'`,

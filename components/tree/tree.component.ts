@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -174,7 +173,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
       }
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     NzTreeService,
     NzAnimationTreeCollapseService,

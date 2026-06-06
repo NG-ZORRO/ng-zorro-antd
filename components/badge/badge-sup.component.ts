@@ -5,7 +5,6 @@
 
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   inject,
   Input,
@@ -24,7 +23,6 @@ import { NgStyleInterface, NzSafeAny, NzSizeDSType } from 'ng-zorro-antd/core/ty
   selector: 'nz-badge-sup',
   exportAs: 'nzBadgeSup',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzNoAnimationDirective],
   template: `
     @if (count <= nzOverflowCount) {

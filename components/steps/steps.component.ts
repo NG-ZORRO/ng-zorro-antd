@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -37,10 +36,9 @@ export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
 export type NzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-steps',
   exportAs: 'nzSteps',
+  encapsulation: ViewEncapsulation.None,
   template: `<ng-content />`,
   host: {
     class: 'ant-steps',

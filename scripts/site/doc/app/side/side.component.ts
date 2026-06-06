@@ -20,7 +20,6 @@ type I18n<T> = {
   selector: 'app-side',
   imports: [RouterLink, NgTemplateOutlet, NzMenuModule, NzTagModule, BidiModule],
   templateUrl: './side.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SideComponent {
   protected readonly routerList = ROUTER_LIST;

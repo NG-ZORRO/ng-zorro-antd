@@ -5,7 +5,6 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -35,7 +34,6 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
   exportAs: 'nzRadioGroup',
   template: `<ng-content />`,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     NzRadioService,
     {

@@ -38,7 +38,6 @@ declare const docsearch: any;
     '[class.narrow-mode]': 'app.responsive()',
     '(document:keyup.s)': 'onKeyUp($any($event))'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class SearchbarComponent {

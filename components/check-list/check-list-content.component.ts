@@ -4,16 +4,7 @@
  */
 
 import { DecimalPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  output,
-  signal,
-  TemplateRef,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, computed, input, output, signal, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -27,7 +18,6 @@ import { NzItemProps } from './typings';
 
 @Component({
   selector: 'nz-check-list-content',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   imports: [NzIconModule, NzProgressModule, NzOutletModule, NzCheckboxModule, NzButtonModule, FormsModule, DecimalPipe],
   template: `

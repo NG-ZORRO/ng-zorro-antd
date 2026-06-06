@@ -5,7 +5,6 @@ import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-github-btn',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a
       class="gh-btn"

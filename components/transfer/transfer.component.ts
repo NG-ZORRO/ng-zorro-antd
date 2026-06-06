@@ -5,7 +5,6 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -48,6 +47,7 @@ import { NzTransferListComponent } from './transfer-list.component';
 @Component({
   selector: 'nz-transfer',
   exportAs: 'nzTransfer',
+  imports: [NzTransferListComponent, NzIconModule, NzButtonModule],
   template: `
     <nz-transfer-list
       class="ant-transfer-list"
@@ -170,9 +170,7 @@ import { NzTransferListComponent } from './transfer-list.component';
     '(window:keyup.shift)': 'onTriggerShiftUp()',
     '(mousedown)': 'onTriggerMouseDown($event)'
   },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzTransferListComponent, NzIconModule, NzButtonModule]
+  encapsulation: ViewEncapsulation.None
 })
 export class NzTransferComponent implements OnInit, OnChanges {
   private destroyRef = inject(DestroyRef);

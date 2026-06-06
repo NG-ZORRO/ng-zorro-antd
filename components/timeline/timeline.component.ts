@@ -7,7 +7,6 @@ import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -33,11 +32,10 @@ import { TimelineService } from './timeline.service';
 import { NzTimelineMode, NzTimelinePosition } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-timeline',
-  providers: [TimelineService],
   exportAs: 'nzTimeline',
+  encapsulation: ViewEncapsulation.None,
+  providers: [TimelineService],
   template: `
     <ul
       class="ant-timeline"

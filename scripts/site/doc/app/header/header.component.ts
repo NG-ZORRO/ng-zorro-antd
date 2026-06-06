@@ -38,7 +38,6 @@ import { SearchbarComponent } from './searchbar.component';
     NavigationComponent,
     UpperCasePipe
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
   private readonly nzConfigService = inject(NzConfigService);

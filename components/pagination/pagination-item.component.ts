@@ -24,7 +24,6 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
 @Component({
   selector: 'li[nz-pagination-item]',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #renderItemTemplate let-type let-page="page">
       @switch (type) {

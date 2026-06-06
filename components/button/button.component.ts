@@ -9,7 +9,6 @@ import {
   afterEveryRender,
   AfterViewInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   computed,
@@ -48,7 +47,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   selector: 'button[nz-button], a[nz-button]',
   exportAs: 'nzButton',
   imports: [NzIconModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzLoading) {

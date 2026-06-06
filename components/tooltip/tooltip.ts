@@ -6,7 +6,6 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   Directive,
   ElementRef,
@@ -75,7 +74,6 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
 @Component({
   selector: 'nz-tooltip',
   exportAs: 'nzTooltipComponent',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <ng-template

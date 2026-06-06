@@ -4,16 +4,7 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ContentChild,
-  ElementRef,
-  inject,
-  Input,
-  TemplateRef,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ContentChild, ElementRef, inject, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
@@ -66,7 +57,6 @@ import {
       </div>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-list-item-meta'

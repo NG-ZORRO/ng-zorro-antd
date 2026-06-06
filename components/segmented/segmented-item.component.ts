@@ -7,7 +7,6 @@ import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keyc
 import { NgTemplateOutlet } from '@angular/common';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
@@ -67,7 +66,6 @@ import { NzSegmentedService } from './segmented.service';
     '(click)': 'handleClick()',
     '(keydown)': 'handleKeydown($event)'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzSegmentedItemComponent implements OnInit {

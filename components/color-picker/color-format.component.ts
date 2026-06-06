@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   EventEmitter,
@@ -38,7 +37,6 @@ import { NzColorPickerFormatType, ValidFormKey } from './typings';
 @Component({
   selector: 'nz-color-format',
   exportAs: 'nzColorFormat',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, NzSelectModule, NzInputModule, NzInputNumberModule],
   template: `
     <div class="ant-color-picker-format-select">

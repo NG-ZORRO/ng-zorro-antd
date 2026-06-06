@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, booleanAttribute } from '@angular/core';
+import { Component, Input, booleanAttribute } from '@angular/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component, Input, booleanAttribute } from '@an
   template: `
     <span [class.ant-tree-checkbox-inner]="!nzSelectMode" [class.ant-select-tree-checkbox-inner]="nzSelectMode"></span>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ant-select-tree-checkbox]': `nzSelectMode`,
     '[class.ant-select-tree-checkbox-checked]': `nzSelectMode && isChecked`,

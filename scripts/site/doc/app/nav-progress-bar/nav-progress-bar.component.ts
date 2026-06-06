@@ -7,7 +7,6 @@ import { filter, map } from 'rxjs';
   selector: 'app-nav-progress-bar',
   template: '',
   styleUrl: './nav-progress-bar.component.less',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'nav-progress-bar',
     '[hidden]': '!navigating()'

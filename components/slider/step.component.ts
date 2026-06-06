@@ -5,7 +5,6 @@
 
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   Input,
   numberAttribute,
@@ -17,10 +16,9 @@ import {
 import { NzDisplayedStep, NzExtendedMark } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-slider-step',
   exportAs: 'nzSliderStep',
+  encapsulation: ViewEncapsulation.None,
   template: `
     @for (step of steps; track step.value) {
       <span class="ant-slider-dot" [class.ant-slider-dot-active]="step.active" [style]="step.style!"></span>

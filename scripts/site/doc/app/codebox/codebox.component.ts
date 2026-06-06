@@ -26,7 +26,6 @@ import { NzHighlightComponent } from './highlight.component';
 @Component({
   selector: 'nz-code-box',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzIconModule, NzTooltipModule, NzHighlightComponent],
   templateUrl: './codebox.component.html',
   styleUrl: './codebox.component.less',

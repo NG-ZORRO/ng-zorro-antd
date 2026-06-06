@@ -4,7 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, ViewEncapsulation } from '@angular/core';
+import { Component, computed, inject, input, output, ViewEncapsulation } from '@angular/core';
 
 import { SLIDE_UP_ANIMATION_CLASS, withAnimationCheck } from 'ng-zorro-antd/core/animation';
 import { generateClassName, getClassListFromValue } from 'ng-zorro-antd/core/util';
@@ -30,7 +30,6 @@ const ANIMATION_CLASS = {
   selector: '[nz-submenu-none-inline-child]',
   exportAs: 'nzSubmenuNoneInlineChild',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [class]="mergedMenuClass()">
       <ng-content />

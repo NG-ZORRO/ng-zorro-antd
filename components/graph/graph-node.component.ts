@@ -6,7 +6,6 @@
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -46,7 +45,6 @@ const translate = (x: number, y: number): string => `translate(${coerceCssPixelV
       }
     </svg:g>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[id]': 'node.id || node.name',
     '[class.nz-graph-node-expanded]': 'node.expanded',

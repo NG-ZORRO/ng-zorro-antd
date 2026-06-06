@@ -3,15 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  input,
-  TemplateRef,
-  Component,
-  ViewEncapsulation,
-  viewChild,
-  booleanAttribute,
-  ChangeDetectionStrategy
-} from '@angular/core';
+import { input, TemplateRef, Component, ViewEncapsulation, viewChild, booleanAttribute } from '@angular/core';
 
 import { NzSplitterCollapsible } from './typings';
 
@@ -23,8 +15,7 @@ import { NzSplitterCollapsible } from './typings';
       <ng-content />
     </ng-template>
   `,
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class NzSplitterPanelComponent {
   readonly nzDefaultSize = input<number | string>();

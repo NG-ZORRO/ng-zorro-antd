@@ -5,7 +5,6 @@
 
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   inject,
@@ -53,7 +52,6 @@ function MenuGroupFactory(): boolean {
     '[class.ant-menu-item-group]': '!isMenuInsideDropdown',
     '[class.ant-dropdown-menu-item-group]': 'isMenuInsideDropdown'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzMenuGroupComponent implements AfterViewInit {

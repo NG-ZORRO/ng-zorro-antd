@@ -3,14 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Directive, Input, TemplateRef } from '@angular/core';
+import { Component, Directive, Input, TemplateRef } from '@angular/core';
 
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 @Component({
   selector: 'nz-list-empty',
   exportAs: 'nzListHeader',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<nz-embed-empty nzComponentName="list" [specificContent]="nzNoResult" />`,
   host: {
     class: 'ant-list-empty-text'
@@ -24,7 +23,6 @@ export class NzListEmptyComponent {
 @Component({
   selector: 'nz-list-header',
   exportAs: 'nzListHeader',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: {
     class: 'ant-list-header'
@@ -35,7 +33,6 @@ export class NzListHeaderComponent {}
 @Component({
   selector: 'nz-list-footer',
   exportAs: 'nzListFooter',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: {
     class: 'ant-list-footer'
@@ -46,7 +43,6 @@ export class NzListFooterComponent {}
 @Component({
   selector: 'nz-list-pagination',
   exportAs: 'nzListPagination',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: {
     class: 'ant-list-pagination'

@@ -6,7 +6,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -68,8 +67,7 @@ export interface NzCheckboxOption {
     class: 'ant-checkbox-group',
     '[class.ant-checkbox-group-rtl]': `dir() === 'rtl'`
   },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor {
   private onChange: OnChangeType = () => {};

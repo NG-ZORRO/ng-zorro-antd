@@ -6,7 +6,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   computed,
@@ -39,7 +38,6 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetCol
 @Component({
   selector: 'nz-color-picker',
   exportAs: 'nzColorPicker',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgAntdColorPickerModule,
     NzPopoverDirective,

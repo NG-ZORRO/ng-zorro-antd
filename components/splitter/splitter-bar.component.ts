@@ -4,7 +4,7 @@
  */
 
 import { coerceCssPixelValue } from '@angular/cdk/coercion';
-import { ChangeDetectionStrategy, Component, computed, input, output, ViewEncapsulation } from '@angular/core';
+import { Component, computed, input, output, ViewEncapsulation } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { getEventWithPoint } from 'ng-zorro-antd/resizable';
@@ -57,8 +57,7 @@ import { NzSplitterCollapseOption } from './typings';
     '[attr.aria-valuemin]': 'getValidNumber(ariaMin())',
     '[attr.aria-valuemax]': 'getValidNumber(ariaMax())'
   },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class NzSplitterBarComponent {
   readonly ariaNow = input.required<number>();

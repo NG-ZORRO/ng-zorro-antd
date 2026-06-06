@@ -6,7 +6,6 @@
 import { isPlatformServer } from '@angular/common';
 import {
   afterNextRender,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -34,7 +33,6 @@ const FontGap = 3;
 @Component({
   selector: 'nz-watermark',
   exportAs: 'nzWatermark',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   styles: `
     :host {

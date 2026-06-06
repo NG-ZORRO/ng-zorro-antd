@@ -5,7 +5,6 @@
 
 import {
   afterEveryRender,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -68,7 +67,6 @@ type NzAvatarFetchPriority = 'high' | 'low' | 'auto';
     // nzSize type is number when customSize is true
     '[style.font-size.px]': '(hasIcon && customSize) ? $any(nzSize) / 2 : null'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {

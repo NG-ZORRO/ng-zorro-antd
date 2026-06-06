@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
@@ -13,7 +13,6 @@ import { defaultColor } from './src/util/util';
 @Component({
   selector: 'nz-color-block',
   exportAs: 'nzColorBlock',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgAntdColorPickerModule],
   template: `<ng-antd-color-block [color]="nzColor" (nzOnClick)="nzOnClick.emit()" />`,
   host: {

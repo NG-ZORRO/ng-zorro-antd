@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -28,10 +27,9 @@ const NzEmptyDefaultImages = ['default', 'simple'] as const;
 type NzEmptyNotFoundImageType = (typeof NzEmptyDefaultImages)[number] | null | string | TemplateRef<void>;
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-empty',
   exportAs: 'nzEmpty',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="ant-empty-image">
       @if (!isImageBuildIn) {

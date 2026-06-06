@@ -4,15 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import {
-  booleanAttribute,
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  numberAttribute,
-  OnChanges,
-  ViewEncapsulation
-} from '@angular/core';
+import { booleanAttribute, Component, Input, numberAttribute, OnChanges, ViewEncapsulation } from '@angular/core';
 
 export interface NzSliderTrackStyle {
   bottom?: string | null;
@@ -27,8 +19,7 @@ export interface NzSliderTrackStyle {
   selector: 'nz-slider-track',
   exportAs: 'nzSliderTrack',
   template: `<div class="ant-slider-track" [style]="style"></div>`,
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class NzSliderTrackComponent implements OnChanges {
   @Input({ transform: numberAttribute }) offset: number = 0;

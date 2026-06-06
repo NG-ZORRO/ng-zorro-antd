@@ -5,7 +5,6 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import {
-  ChangeDetectionStrategy,
   Component,
   Input,
   OnChanges,
@@ -31,7 +30,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   selector: 'nz-badge',
   exportAs: 'nzBadge',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzBadgeSupComponent, NzOutletModule],
   template: `
     @if ((nzStatus || nzColor) && !showSup && !nzCount) {

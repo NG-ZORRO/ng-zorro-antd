@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -39,8 +38,7 @@ import { getConfigFromComponent } from './utils';
 @Component({
   selector: 'nz-modal',
   exportAs: 'nzModal',
-  template: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: ``
 })
 export class NzModalComponent<T extends ModalOptions = NzSafeAny, R = NzSafeAny>
   implements OnChanges, NzModalLegacyAPI<T, R>

@@ -32,7 +32,6 @@ interface Contributor {
 
 @Component({
   selector: 'app-contributors-list',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzAvatarModule, NzTooltipModule, NzFlexModule],
   template: `
     <ul nz-flex nzWrap="wrap" nzGap="small" [style.margin-top.px]="120">

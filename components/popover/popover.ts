@@ -5,7 +5,6 @@
 
 import { OverlayModule } from '@angular/cdk/overlay';
 import {
-  ChangeDetectionStrategy,
   Component,
   Directive,
   ElementRef,
@@ -81,7 +80,6 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
 @Component({
   selector: 'nz-popover',
   exportAs: 'nzPopoverComponent',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <ng-template

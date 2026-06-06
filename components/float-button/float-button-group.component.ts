@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   contentChildren,
@@ -33,7 +32,6 @@ const CLASS_NAME = 'ant-float-btn-group';
   selector: 'nz-float-button-group',
   exportAs: 'nzFloatButtonGroup',
   imports: [NzFloatButtonComponent, NzIconModule, NgTemplateOutlet],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (!isMenuMode()) {
       <ng-container *ngTemplateOutlet="menu" />

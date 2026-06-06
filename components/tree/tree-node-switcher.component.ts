@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, booleanAttribute } from '@angular/core';
+import { Component, Input, TemplateRef, booleanAttribute } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
@@ -39,7 +39,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       }
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ant-select-tree-switcher]': 'nzSelectMode',
     '[class.ant-select-tree-switcher-noop]': 'nzSelectMode && isLeaf',

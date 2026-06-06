@@ -4,16 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ContentChildren,
-  inject,
-  Input,
-  QueryList,
-  TemplateRef,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ContentChildren, inject, Input, QueryList, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
@@ -57,7 +48,6 @@ import { NzCommentActionComponent as CommentAction, NzCommentActionHostDirective
     </div>
   `,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ant-comment]': `true`,
     '[class.ant-comment-rtl]': `dir() === "rtl"`

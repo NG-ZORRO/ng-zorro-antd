@@ -6,7 +6,6 @@
 import { BACKSPACE, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -40,7 +39,6 @@ import { NzInputDirective } from './input.directive';
   selector: 'nz-input-otp',
   exportAs: 'nzInputOtp',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @for (item of otpArray.controls; track $index) {
       <input

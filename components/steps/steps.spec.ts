@@ -523,8 +523,7 @@ describe('steps', () => {
       <span class="insert-span">{{ status }}{{ index }}</span>
       <ng-template [ngTemplateOutlet]="dot" />
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  `
 })
 export class NzTestOuterStepsComponent {
   public readonly cdr = inject(ChangeDetectorRef);

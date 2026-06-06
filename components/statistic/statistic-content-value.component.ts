@@ -4,24 +4,14 @@
  */
 
 import { getLocaleNumberSymbol, NgTemplateOutlet, NumberSymbol } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Input,
-  LOCALE_ID,
-  OnChanges,
-  TemplateRef,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, inject, Input, LOCALE_ID, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { NzStatisticValueType } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-statistic-content-value',
   exportAs: 'nzStatisticContentValue',
+  encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzValueTemplate) {
       <ng-container [ngTemplateOutlet]="nzValueTemplate" [ngTemplateOutletContext]="{ $implicit: nzValue }" />

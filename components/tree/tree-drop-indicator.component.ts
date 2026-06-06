@@ -4,15 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnChanges,
-  numberAttribute,
-  inject
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, numberAttribute, inject } from '@angular/core';
 
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
@@ -20,7 +12,6 @@ import { NgStyleInterface } from 'ng-zorro-antd/core/types';
   selector: 'nz-tree-drop-indicator',
   exportAs: 'nzTreeDropIndicator',
   template: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-tree-drop-indicator',
     '[style]': 'style'

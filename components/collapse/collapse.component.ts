@@ -4,15 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import {
-  booleanAttribute,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  inject,
-  Input,
-  ViewEncapsulation
-} from '@angular/core';
+import { booleanAttribute, ChangeDetectorRef, Component, inject, Input, ViewEncapsulation } from '@angular/core';
 
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import type { NzSizeLMSType } from 'ng-zorro-antd/core/types';
@@ -24,7 +16,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
 @Component({
   selector: 'nz-collapse',
   exportAs: 'nzCollapse',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `<ng-content />`,
   host: {

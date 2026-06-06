@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   Component,
   ContentChild,
   EventEmitter,
@@ -37,7 +36,6 @@ export const NZ_TAB_SET = new InjectionToken<NzSafeAny>(typeof ngDevMode !== 'un
   selector: 'nz-tab',
   exportAs: 'nzTab',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #tabLinkTemplate>
       <ng-content select="[nz-tab-link]" />

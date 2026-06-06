@@ -5,7 +5,6 @@
 
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   inject,
@@ -64,7 +63,6 @@ import {
     }
   `,
   imports: [NzSkeletonElementDirective, NzSkeletonElementAvatarComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {

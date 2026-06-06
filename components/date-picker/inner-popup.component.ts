@@ -5,7 +5,6 @@
 
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -30,7 +29,6 @@ import { PREFIX_CLASS } from './util';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'inner-popup',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div (mouseleave)="onLeave()" [class.ant-picker-datetime-panel]="showTimePicker">
       <div class="{{ prefixCls }}-{{ panelMode }}-panel">

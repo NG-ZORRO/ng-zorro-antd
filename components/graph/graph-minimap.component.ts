@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, NgZone } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, NgZone } from '@angular/core';
 
 import type { ZoomBehavior } from 'd3-zoom';
 
@@ -35,7 +35,6 @@ import { NzZoomTransform } from './interface';
     <!-- Additional canvas to use as buffer to avoid flickering between updates -->
     <canvas class="buffer"></canvas>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.nz-graph-minimap]': 'true'
   }

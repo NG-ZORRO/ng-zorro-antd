@@ -8,7 +8,6 @@ import { Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -43,7 +42,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
 @Component({
   selector: 'nz-switch',
   exportAs: 'nzSwitch',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [
     {

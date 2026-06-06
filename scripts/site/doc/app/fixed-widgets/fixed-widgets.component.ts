@@ -8,7 +8,6 @@ import { ThemingIcon } from './theming-icon';
 
 @Component({
   selector: 'app-fixed-widgets',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzDropdownModule, ThemingIcon],
   template: `
     <div class="fixed-widgets">

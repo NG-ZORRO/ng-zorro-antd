@@ -5,7 +5,6 @@
 
 import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -48,7 +47,6 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   selector: 'nz-resize-handle, [nz-resize-handle]',
   exportAs: 'nzResizeHandle',
   template: `<ng-content />`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'nz-resizable-handle',
     '[class.nz-resizable-handle-top]': `nzDirection === 'top'`,

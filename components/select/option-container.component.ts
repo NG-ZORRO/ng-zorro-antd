@@ -8,7 +8,6 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   inject,
@@ -34,7 +33,6 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
 @Component({
   selector: 'nz-option-container',
   exportAs: 'nzOptionContainer',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <div>

@@ -5,7 +5,6 @@
 
 import {
   AfterContentInit,
-  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   Input,
@@ -33,7 +32,6 @@ import { NzSubmenuService } from './submenu.service';
 @Component({
   selector: '[nz-menu-item]',
   exportAs: 'nzMenuItem',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <span class="ant-menu-title-content">

@@ -8,7 +8,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -76,8 +75,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
       </div>
     </ng-template>
   `,
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class NzAnchorComponent implements AfterViewInit, OnChanges {
   public nzConfigService = inject(NzConfigService);

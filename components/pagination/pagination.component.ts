@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -40,7 +39,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
   selector: 'nz-pagination',
   exportAs: 'nzPagination',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (showPagination) {
       @if (nzSimple) {

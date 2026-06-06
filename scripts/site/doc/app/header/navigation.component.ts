@@ -61,7 +61,6 @@ import { AppService } from '../app.service';
   host: {
     id: 'nav'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NavigationComponent {

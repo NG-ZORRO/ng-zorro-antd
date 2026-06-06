@@ -3,15 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewEncapsulation,
-  booleanAttribute
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, booleanAttribute } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -19,10 +11,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { CronChangeType, TimeType } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-cron-expression-input',
   exportAs: 'nzCronExpressionInput',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="ant-cron-expression-input">
       <input

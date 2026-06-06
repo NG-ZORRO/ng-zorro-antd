@@ -5,7 +5,6 @@
 
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -21,10 +20,9 @@ import { NzCronExpressionCronErrorI18n } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-cron-expression-preview',
   exportAs: 'nzCronExpressionPreview',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="ant-collapse ant-collapse-borderless ant-cron-expression-preview">
       <div class="ant-cron-expression-preview-dateTime" [class.ant-cron-expression-preview-dateTime-center]="!isExpand">

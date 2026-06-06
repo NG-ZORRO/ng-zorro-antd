@@ -6,7 +6,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -160,7 +159,6 @@ import { RenderListContext, TransferDirection, TransferItem, TransferStat } from
     }
   `,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-transfer-list',
     '[class.ant-transfer-list-with-footer]': '!!footer'

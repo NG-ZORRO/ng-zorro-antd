@@ -5,7 +5,6 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -86,8 +85,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
     '[class.ant-picker-calendar-mini]': '!nzFullscreen',
     '[class.ant-picker-calendar-rtl]': `dir() === 'rtl'`
   },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
   private readonly cdr = inject(ChangeDetectorRef);

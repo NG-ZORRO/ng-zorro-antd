@@ -8,7 +8,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -65,7 +64,6 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
 @Component({
   selector: 'nz-autocomplete',
   exportAs: 'nzAutocomplete',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   imports: [NgTemplateOutlet, NzAutocompleteOptionComponent, NzNoAnimationDirective],
   template: `

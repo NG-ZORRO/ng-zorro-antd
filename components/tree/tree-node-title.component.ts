@@ -5,7 +5,6 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
@@ -54,7 +53,6 @@ import { NzTreeDropIndicatorComponent } from './tree-drop-indicator.component';
       <nz-tree-drop-indicator [dropPosition]="dragPosition" [level]="context.level" />
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[attr.title]': 'title',
     '[attr.draggable]': 'canDraggable',

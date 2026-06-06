@@ -7,7 +7,6 @@ import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -71,10 +70,9 @@ function isDataSource(value: NzSafeAny): value is NzGraphData {
 }
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-graph',
   exportAs: 'nzGraph',
+  encapsulation: ViewEncapsulation.None,
   providers: [{ provide: NzGraph, useExisting: forwardRef(() => NzGraphComponent) }],
   template: `
     <ng-content />

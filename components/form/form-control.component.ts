@@ -7,7 +7,6 @@ import {
   AfterContentInit,
   AnimationCallbackEvent,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -39,7 +38,6 @@ import { NzFormDirective } from './form.directive';
   selector: 'nz-form-control',
   exportAs: 'nzFormControl',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="ant-form-item-control-input">
       <div class="ant-form-item-control-input-content">

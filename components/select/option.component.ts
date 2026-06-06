@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   Component,
   Input,
   OnChanges,
@@ -28,7 +27,6 @@ import { NzOptionGroupComponent } from './option-group.component';
   selector: 'nz-option',
   exportAs: 'nzOption',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template>
       <ng-content />

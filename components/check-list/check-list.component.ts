@@ -5,7 +5,6 @@
 
 import { DecimalPipe } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -29,7 +28,6 @@ import { NzItemProps } from './typings';
 
 @Component({
   selector: 'nz-check-list',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   imports: [
     NzPopoverModule,

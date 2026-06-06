@@ -111,7 +111,6 @@ import { FooterItemComponent } from './footer-item.component';
       </section>
     </footer>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent {
   protected readonly language = inject(APP_LANGUAGE);
