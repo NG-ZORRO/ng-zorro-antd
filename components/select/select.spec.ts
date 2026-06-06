@@ -598,14 +598,14 @@ describe('select', () => {
       fixture.detectChanges();
       const inputElement = selectElement.querySelector('input')!;
 
-      // With debounce of 300ms, search should not fire immediately
+      // With debounce of 0ms, search should not fire immediately
       inputElement.value = 'test';
       dispatchFakeEvent(inputElement, 'input');
       fixture.detectChanges();
       expect(component.searchValueChange).not.toHaveBeenCalled();
 
       // After debounce time passes, search should fire
-      tick(300);
+      tick(0);
       fixture.detectChanges();
       expect(component.searchValueChange).toHaveBeenCalledWith('test');
     }));
