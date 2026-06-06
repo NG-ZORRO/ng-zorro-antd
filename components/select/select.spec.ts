@@ -587,6 +587,28 @@ describe('select', () => {
       expect(component.openChange).toHaveBeenCalledWith(false);
       expect(component.openChange).toHaveBeenCalledTimes(1);
     }));
+
+    it('should nzSearchDebounce works', fakeAsync(() => {
+      component.listOfOption = [
+        { nzValue: 'test_01', nzLabel: 'test_01' },
+        { nzValue: 'test_02', nzLabel: 'test_02' }
+      ];
+      component.nzShowSearch = true;
+      component.nzOpen = true;
+      fixture.detectChanges();
+      const inputElement = selectElement.querySelector('input')!;
+
+      // With debounce of 300ms, search should not fire immediately
+      inputElement.value = 'test';
+      dispatchFakeEvent(inputElement, 'input');
+      fixture.detectChanges();
+      expect(component.searchValueChange).not.toHaveBeenCalled();
+
+      // After debounce time passes, search should fire
+      tick(300);
+      fixture.detectChanges();
+      expect(component.searchValueChange).toHaveBeenCalledWith('test');
+    }));
   });
 
   describe('multiple template mode', () => {
