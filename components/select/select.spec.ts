@@ -1916,6 +1916,7 @@ export class TestSelectTemplateDefaultComponent {
       [nzMaxMultipleCount]="nzMaxMultipleCount"
       [compareWith]="compareWith"
       [nzAutoClearSearchValue]="nzAutoClearSearchValue"
+      [nzSearchDebounce]="0"
       [(nzOpen)]="nzOpen"
       (ngModelChange)="valueChange($event)"
       (nzOpenChange)="valueChange($event)"
@@ -1951,6 +1952,7 @@ export class TestSelectTemplateMultipleComponent {
       [(ngModel)]="value"
       [nzSize]="nzSize"
       [nzMaxTagCount]="nzMaxTagCount"
+      [nzSearchDebounce]="0"
       [nzTokenSeparators]="nzTokenSeparators"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
       (ngModelChange)="valueChange($event)"
@@ -1988,6 +1990,7 @@ export class TestSelectTemplateTagsComponent {
       [nzCustomTemplate]="nzCustomTemplate ?? null"
       [nzSuffixIcon]="nzSuffixIcon"
       [nzClearIcon]="nzClearIcon"
+      [nzSearchDebounce]="0"
       [nzShowArrow]="nzShowArrow"
       [nzFilterOption]="nzFilterOption"
       [compareWith]="compareWith"
@@ -2059,6 +2062,7 @@ export class TestSelectReactiveDefaultComponent {
       [nzRemoveIcon]="nzRemoveIcon"
       [nzMaxMultipleCount]="nzMaxMultipleCount"
       [compareWith]="compareWith"
+      [nzSearchDebounce]="0"
       [nzAutoClearSearchValue]="nzAutoClearSearchValue"
       [(nzOpen)]="nzOpen"
       (ngModelChange)="valueChange($event)"
@@ -2093,6 +2097,7 @@ export class TestSelectReactiveMultipleComponent {
       [nzOptions]="listOfOption"
       [nzSize]="nzSize"
       [nzMaxTagCount]="nzMaxTagCount"
+      [nzSearchDebounce]="0"
       [nzMaxMultipleCount]="nzMaxMultipleCount"
       [nzTokenSeparators]="nzTokenSeparators"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder ?? null"
@@ -2116,7 +2121,7 @@ export class TestSelectReactiveTagsComponent {
 
 @Component({
   imports: [NzSelectModule],
-  template: `<nz-select [nzStatus]="status" />`,
+  template: `<nz-select [nzStatus]="status" [nzSearchDebounce]="0" />`,
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestSelectStatusComponent {
@@ -2129,7 +2134,7 @@ export class TestSelectStatusComponent {
     <form nz-form [formGroup]="selectForm">
       <nz-form-item>
         <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
-          <nz-select formControlName="selectControl" [nzOptions]="[]" [nzDisabled]="disabled" />
+          <nz-select formControlName="selectControl" [nzOptions]="[]" [nzSearchDebounce]="0" [nzDisabled]="disabled" />
         </nz-form-control>
       </nz-form-item>
     </form>
@@ -2156,7 +2161,7 @@ export class TestSelectInFormComponent {
 
 @Component({
   imports: [NzSelectModule],
-  template: `<nz-select [nzSize]="size" />`,
+  template: `<nz-select [nzSize]="size" [nzSearchDebounce]="0" />`,
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestSelectFinalSizeComponent {
@@ -2165,7 +2170,7 @@ export class TestSelectFinalSizeComponent {
 
 @Component({
   imports: [NzSelectModule],
-  template: `<nz-select [nzVariant]="variant()" />`,
+  template: `<nz-select [nzVariant]="variant()" [nzSearchDebounce]="0" />`,
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestSelectFinalVariantComponent {
