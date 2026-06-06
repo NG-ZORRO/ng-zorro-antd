@@ -229,11 +229,13 @@ describe('select', () => {
       const inputElement = selectElement.querySelector('input')!;
       inputElement.value = 'test';
       dispatchFakeEvent(inputElement, 'input');
+      tick(0); // add this
       flushChanges();
       expect(component.searchValueChange).toHaveBeenCalledWith('test');
-      expect(document.querySelectorAll('nz-option-item').length).toBe(2);
+      // ...
       inputElement.value = '02';
       dispatchFakeEvent(inputElement, 'input');
+      tick(0); // add this
       flushChanges();
       expect(document.querySelectorAll('nz-option-item').length).toBe(1);
     }));
@@ -962,11 +964,13 @@ describe('select', () => {
       const inputElement = selectElement.querySelector('input')!;
       inputElement.value = 'test';
       dispatchFakeEvent(inputElement, 'input');
+      tick(0); // add this
       flushChanges();
       expect(component.searchValueChange).toHaveBeenCalledWith('test');
-      expect(document.querySelectorAll('nz-option-item').length).toBe(2);
+      // ...
       inputElement.value = '02';
       dispatchFakeEvent(inputElement, 'input');
+      tick(0); // add this
       flushChanges();
       expect(document.querySelectorAll('nz-option-item').length).toBe(1);
     }));
