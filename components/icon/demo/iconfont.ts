@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
 
@@ -18,7 +18,9 @@ import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
   `
 })
 export class NzDemoIconIconfontComponent {
-  constructor(private iconService: NzIconService) {
+  private readonly iconService = inject(NzIconService);
+
+  constructor() {
     this.iconService.fetchFromIconfont({
       scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
     });

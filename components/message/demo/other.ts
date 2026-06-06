@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -18,9 +18,9 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   `
 })
 export class NzDemoMessageOtherComponent {
+  private readonly message = inject(NzMessageService);
+
   createMessage(type: string): void {
     this.message.create(type, `This is a message of ${type}`);
   }
-
-  constructor(private message: NzMessageService) {}
 }

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-confirm-promise',
@@ -9,12 +9,10 @@ import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
   template: `<button nz-button nzType="primary" (click)="showConfirm()">Confirm</button>`
 })
 export class NzDemoModalConfirmPromiseComponent {
-  confirmModal?: NzModalRef; // For testing by now
-
-  constructor(private modal: NzModalService) {}
+  private readonly modalService = inject(NzModalService);
 
   showConfirm(): void {
-    this.confirmModal = this.modal.confirm({
+    this.modalService.confirm({
       nzTitle: 'Do you Want to delete these items?',
       nzContent: 'When clicked the OK button, this dialog will be closed after 1 second',
       nzOnOk: () =>

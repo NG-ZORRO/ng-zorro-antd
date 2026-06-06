@@ -25,7 +25,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -94,9 +94,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
   imports: [NzOutletModule, NzIconModule]
 })
 export class NzPageHeaderComponent implements AfterViewInit, OnInit {
-  private location = inject(Location);
-  private destroyRef = inject(DestroyRef);
-
+  private readonly location = inject(Location);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly elementRef = inject(ElementRef);
+  private readonly nzResizeObserver = inject(NzResizeObserver);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly directionality = inject(Directionality);
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
@@ -114,14 +117,6 @@ export class NzPageHeaderComponent implements AfterViewInit, OnInit {
   dir: Direction = 'ltr';
 
   enableBackButton = true;
-
-  constructor(
-    public nzConfigService: NzConfigService,
-    private elementRef: ElementRef,
-    private nzResizeObserver: NzResizeObserver,
-    private cdr: ChangeDetectorRef,
-    private directionality: Directionality
-  ) {}
 
   ngOnInit(): void {
     this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {

@@ -4,8 +4,15 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild,
+  inject
+} from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -36,10 +43,12 @@ describe('modal footer directive', () => {
     fixture.detectChanges();
   });
 
-  beforeEach(inject([OverlayContainer, NzModalService], (oc: OverlayContainer, m: NzModalService) => {
-    overlayContainer = oc;
-    modalService = m;
-  }));
+  beforeEach(
+    testingInject([OverlayContainer, NzModalService], (oc: OverlayContainer, m: NzModalService) => {
+      overlayContainer = oc;
+      modalService = m;
+    })
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -141,10 +150,10 @@ class TestDirectiveFooterWithInitOpenedComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveFooterInServiceComponent {
+  public readonly nzModalRef = inject(NzModalRef);
+
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
   nzModalFooterDirective!: TemplateRef<NzSafeAny>;
-
-  constructor(public nzModalRef: NzModalRef) {}
 
   handleCancel(): void {
     this.nzModalRef.close();

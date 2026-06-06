@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
@@ -9,7 +9,7 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
   template: `<button nz-button (click)="success()">Success</button>`
 })
 export class NzDemoModalManualComponent {
-  constructor(private modalService: NzModalService) {}
+  private readonly modalService = inject(NzModalService);
 
   success(): void {
     const modal = this.modalService.success({

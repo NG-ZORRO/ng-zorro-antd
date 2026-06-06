@@ -312,12 +312,11 @@ export class NzEmptyTestBasicComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzEmptyTestServiceComponent {
+  public readonly configService = inject(NzConfigService);
+
   @ViewChild('tpl', { static: false }) template!: TemplateRef<string>;
 
   noResult!: string;
-
-  constructor(public configService: NzConfigService) {}
-
   reset(): void {
     this.configService.set('empty', { nzDefaultEmptyContent: undefined });
   }
@@ -333,5 +332,5 @@ export class NzEmptyTestServiceComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzEmptyTestCustomComponent {
-  name = inject(NZ_EMPTY_COMPONENT_NAME);
+  readonly name = inject(NZ_EMPTY_COMPONENT_NAME);
 }

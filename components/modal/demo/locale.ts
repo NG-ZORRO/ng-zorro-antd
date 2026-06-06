@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
@@ -29,9 +29,9 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
   `
 })
 export class NzDemoModalLocaleComponent {
-  isVisible = false;
+  private readonly modalService = inject(NzModalService);
 
-  constructor(private modalService: NzModalService) {}
+  isVisible = false;
 
   showModal(): void {
     this.isVisible = true;

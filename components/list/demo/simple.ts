@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -57,6 +57,8 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
   `
 })
 export class NzDemoListSimpleComponent {
+  public readonly msg = inject(NzMessageService);
+
   data = [
     'Racing car sprays burning fuel into crowd.',
     'Japanese princess to wed commoner.',
@@ -64,6 +66,4 @@ export class NzDemoListSimpleComponent {
     'Man charged over missing wedding girl.',
     'Los Angeles battles huge wildfires.'
   ];
-
-  constructor(public msg: NzMessageService) {}
 }

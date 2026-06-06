@@ -3,7 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, NgModule, provideZoneChangeDetection } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  NgModule,
+  inject,
+  provideZoneChangeDetection
+} from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -226,12 +233,12 @@ describe('nz-icon injection', () => {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestIconExtensionsComponent {
+  public readonly iconService = inject(NzIconService);
+
   type = 'question';
   theme: 'fill' | 'outline' | 'twotone' = 'outline';
   spin = true;
   rotate = 0;
-
-  constructor(public iconService: NzIconService) {}
 }
 
 @Component({
@@ -259,7 +266,9 @@ export class NzTestIconCustomComponent {}
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestIconIconfontComponent {
-  constructor(private iconService: NzIconService) {
+  private readonly iconService = inject(NzIconService);
+
+  constructor() {
     this.iconService.fetchFromIconfont({
       scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
     });

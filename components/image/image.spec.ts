@@ -5,8 +5,8 @@
 
 import { ESCAPE, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, DebugElement, NgZone, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement, NgZone, ViewChild, inject } from '@angular/core';
+import { ComponentFixture, fakeAsync, inject as testingInject, TestBed, tick } from '@angular/core/testing';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import {
@@ -197,11 +197,13 @@ describe('image preview', () => {
     });
   });
 
-  beforeEach(inject([OverlayContainer, NzConfigService], (oc: OverlayContainer, cs: NzConfigService) => {
-    overlayContainer = oc;
-    configService = cs;
-    overlayContainerElement = oc.getContainerElement();
-  }));
+  beforeEach(
+    testingInject([OverlayContainer, NzConfigService], (oc: OverlayContainer, cs: NzConfigService) => {
+      overlayContainer = oc;
+      configService = cs;
+      overlayContainerElement = oc.getContainerElement();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestImagePreviewGroupComponent);
@@ -775,6 +777,8 @@ export class TestImageFallbackComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestImagePreviewGroupComponent {
+  private readonly nzImageService = inject(NzImageService);
+
   disablePreview = false;
   firstSrc = '';
   secondSrc = '';
@@ -785,8 +789,6 @@ export class TestImagePreviewGroupComponent {
 
   @ViewChild(NzImageGroupComponent) nzImageGroup!: NzImageGroupComponent;
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
-
-  constructor(private nzImageService: NzImageService) {}
 
   createByService(): void {
     this.previewRef = this.nzImageService.preview(this.images, { nzZoom: 1.5, nzRotate: 0 });

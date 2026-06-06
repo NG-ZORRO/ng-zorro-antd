@@ -5,8 +5,8 @@
 
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, Provider, Type, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, Provider, Type, ViewChild, inject } from '@angular/core';
+import { ComponentFixture, fakeAsync, inject as testingInject, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
@@ -26,7 +26,7 @@ describe('context-menu', () => {
       providers: [provideNoopAnimations(), ...providers]
     });
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
+    testingInject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     })();
@@ -34,10 +34,12 @@ describe('context-menu', () => {
     return TestBed.createComponent<T>(component);
   }
 
-  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-    currentOverlayContainer.ngOnDestroy();
-    overlayContainer.ngOnDestroy();
-  }));
+  afterEach(
+    testingInject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+      currentOverlayContainer.ngOnDestroy();
+      overlayContainer.ngOnDestroy();
+    })
+  );
 
   it('should create dropdown', fakeAsync(() => {
     const fixture = createComponent(NzTestDropdownContextMenuComponent);
@@ -175,7 +177,7 @@ describe('context-menu', () => {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestDropdownContextMenuComponent {
-  @ViewChild(NzDropdownMenuComponent, { static: true }) nzDropdownMenuComponent!: NzDropdownMenuComponent;
+  public readonly nzContextMenuService = inject(NzContextMenuService);
 
-  constructor(public nzContextMenuService: NzContextMenuService) {}
+  @ViewChild(NzDropdownMenuComponent, { static: true }) nzDropdownMenuComponent!: NzDropdownMenuComponent;
 }

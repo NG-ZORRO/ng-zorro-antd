@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -9,7 +9,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   template: `<button nz-button nzType="primary" (click)="createBasicMessage()">Display normal message</button>`
 })
 export class NzDemoMessageInfoComponent {
-  constructor(private message: NzMessageService) {}
+  private readonly message = inject(NzMessageService);
 
   createBasicMessage(): void {
     this.message.info('This is a normal message');

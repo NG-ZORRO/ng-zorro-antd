@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
@@ -79,12 +79,11 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   `
 })
 export class NzDemoEmptyConfigComponent {
+  private readonly nzConfigService = inject(NzConfigService);
+
   @ViewChild('customTpl', { static: false }) customTpl?: TemplateRef<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   customize = false;
-
-  constructor(private nzConfigService: NzConfigService) {}
-
   onConfigChange(): void {
     if (this.customize) {
       this.nzConfigService.set('empty', { nzDefaultEmptyContent: this.customTpl });

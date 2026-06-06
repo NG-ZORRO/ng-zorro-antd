@@ -912,6 +912,8 @@ class NzTestDrawerComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 class NzTestDrawerWithServiceComponent {
+  private readonly drawerService = inject(NzDrawerService);
+
   @ViewChild('drawerTemplate', { static: false }) drawerTemplate!: TemplateRef<{
     $implicit: number;
     drawerRef: NzDrawerRef;
@@ -919,9 +921,6 @@ class NzTestDrawerWithServiceComponent {
   templateOpenSpy = jasmine.createSpy('template afterOpen spy');
   templateCloseSpy = jasmine.createSpy('template afterClose spy');
   templateDrawerRef?: NzDrawerRef;
-
-  constructor(private drawerService: NzDrawerService) {}
-
   openTemplate(): void {
     this.templateDrawerRef = this.drawerService.create({
       nzTitle: 'Service',
@@ -944,10 +943,10 @@ class NzTestDrawerWithServiceComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzDrawerCustomComponent {
-  @Input() value: NzSafeAny;
-  nzData: { value: string } = inject(NZ_DRAWER_DATA);
+  readonly nzData = inject<{ value: string }>(NZ_DRAWER_DATA);
+  private readonly drawerRef = inject(NzDrawerRef);
 
-  constructor(private drawerRef: NzDrawerRef) {}
+  @Input() value: NzSafeAny;
 
   close(): void {
     this.drawerRef.close(this.value);

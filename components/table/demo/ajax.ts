@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -49,6 +49,8 @@ interface RandomUser {
   `
 })
 export class NzDemoTableAjaxComponent implements OnInit {
+  private readonly http = inject(HttpClient);
+
   total = 1;
   listOfRandomUser: RandomUser[] = [];
   loading = true;
@@ -82,9 +84,6 @@ export class NzDemoTableAjaxComponent implements OnInit {
     const sortOrder = (currentSort && currentSort.value) || null;
     this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
   }
-
-  constructor(private http: HttpClient) {}
-
   ngOnInit(): void {
     this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);
   }

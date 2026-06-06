@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageComponent, NzMessageService } from 'ng-zorro-antd/message';
@@ -12,13 +12,12 @@ import { NzMessageComponent, NzMessageService } from 'ng-zorro-antd/message';
   `
 })
 export class NzDemoMessageTemplateComponent {
+  private readonly message = inject(NzMessageService);
+
   @ViewChild('customTemplate', { static: true }) customTemplate!: TemplateRef<{
     $implicit: NzMessageComponent;
     data: string;
   }>;
-
-  constructor(private message: NzMessageService) {}
-
   showMessage(): void {
     this.message.success(this.customTemplate, { nzData: 'Angular' });
   }

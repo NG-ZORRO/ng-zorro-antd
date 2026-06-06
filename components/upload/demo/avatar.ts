@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -34,11 +34,10 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadAvatarComponent {
+  private readonly messageService = inject(NzMessageService);
+
   loading = false;
   avatarUrl?: string;
-
-  constructor(private messageService: NzMessageService) {}
-
   beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]): Observable<boolean> =>
     new Observable((observer: Observer<boolean>) => {
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';

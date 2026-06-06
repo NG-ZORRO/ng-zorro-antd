@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
@@ -29,14 +29,13 @@ import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
         <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
       </div>
     </nz-modal>
-  `,
-  styles: []
+  `
 })
 export class NzDemoModalFooter2Component {
+  private readonly modalService = inject(NzModalService);
+
   isVisible = false;
   isConfirmLoading = false;
-
-  constructor(private modalService: NzModalService) {}
 
   showModal1(): void {
     this.isVisible = true;
@@ -80,9 +79,9 @@ export class NzDemoModalFooter2Component {
   `
 })
 export class NzModalCustomFooterComponent {
-  constructor(private modal: NzModalRef) {}
+  private readonly modalRef = inject(NzModalRef);
 
   destroyModal(): void {
-    this.modal.destroy();
+    this.modalRef.destroy();
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
 
@@ -17,7 +17,9 @@ const ngZorroIconLiteral =
   `
 })
 export class NzDemoIconNamespaceComponent {
-  constructor(private iconService: NzIconService) {
+  private readonly iconService = inject(NzIconService);
+
+  constructor() {
     this.iconService.addIconLiteral('ng-zorro:antd', ngZorroIconLiteral);
   }
 }

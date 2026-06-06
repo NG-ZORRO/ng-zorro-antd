@@ -4,8 +4,15 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  provideZoneChangeDetection,
+  TemplateRef,
+  ViewChild,
+  inject
+} from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -35,10 +42,12 @@ describe('modal title directive', () => {
     fixture.detectChanges();
   });
 
-  beforeEach(inject([OverlayContainer, NzModalService], (oc: OverlayContainer, m: NzModalService) => {
-    overlayContainer = oc;
-    modalService = m;
-  }));
+  beforeEach(
+    testingInject([OverlayContainer, NzModalService], (oc: OverlayContainer, m: NzModalService) => {
+      overlayContainer = oc;
+      modalService = m;
+    })
+  );
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -48,8 +57,8 @@ describe('modal title directive', () => {
     testComponent.showModal();
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(true);
-    const modalRef = testComponent.nzModalComponent.getModalRef();
-    expect(modalRef!.getConfig().nzTitle).toEqual(testComponent.nzModalTitleDirective);
+    const modalRef = testComponent.modalComponent.getModalRef();
+    expect(modalRef!.getConfig().nzTitle).toEqual(testComponent.modalTitleDir);
 
     testComponent.handleCancel();
     fixture.detectChanges();
@@ -62,9 +71,9 @@ describe('modal title directive', () => {
     expect(initOpenedComponent.isVisible).toBe(true);
     flush();
     initOpenedComponentFixture.detectChanges();
-    const modalRef = initOpenedComponent.nzModalComponent.getModalRef();
+    const modalRef = initOpenedComponent.modalComponent.getModalRef();
 
-    expect(modalRef!.getConfig().nzTitle).toEqual(initOpenedComponent.nzModalTitleDirective);
+    expect(modalRef!.getConfig().nzTitle).toEqual(initOpenedComponent.modalTitleDir);
 
     initOpenedComponentFixture.detectChanges();
   }));
@@ -74,7 +83,7 @@ describe('modal title directive', () => {
     fixture.detectChanges();
 
     expect(modalRef.componentInstance!.nzModalRef).toBe(modalRef);
-    expect(modalRef.componentInstance!.NzModalTitleDirective).toEqual(modalRef.getConfig().nzTitle as TemplateRef<{}>);
+    expect(modalRef.componentInstance!.modalTitleDir).toEqual(modalRef.getConfig().nzTitle as TemplateRef<{}>);
   });
 });
 
@@ -92,8 +101,8 @@ describe('modal title directive', () => {
 })
 class TestDirectiveTitleComponent {
   isVisible = false;
-  @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
-  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) nzModalTitleDirective!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalComponent) modalComponent!: NzModalComponent;
+  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
 
   handleCancel(): void {
     this.isVisible = false;
@@ -118,8 +127,8 @@ class TestDirectiveTitleComponent {
 })
 class TestDirectiveTitleWithInitOpenedComponent {
   isVisible = true;
-  @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
-  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) nzModalTitleDirective!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalComponent) modalComponent!: NzModalComponent;
+  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
 }
 
 @Component({
@@ -128,9 +137,9 @@ class TestDirectiveTitleWithInitOpenedComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestDirectiveTitleInServiceComponent {
-  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) NzModalTitleDirective!: TemplateRef<NzSafeAny>;
+  readonly nzModalRef = inject(NzModalRef);
 
-  constructor(public nzModalRef: NzModalRef) {}
+  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
 
   handleCancel(): void {
     this.nzModalRef.close();

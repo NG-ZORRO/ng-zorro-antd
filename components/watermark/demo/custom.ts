@@ -128,7 +128,8 @@ import { FontType, NzWatermarkModule } from 'ng-zorro-antd/watermark';
   `
 })
 export class NzDemoWatermarkCustomComponent implements OnInit {
-  private fb = inject(NonNullableFormBuilder);
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   form = this.fb.group({
     content: 'NG Ant Design',
@@ -147,8 +148,6 @@ export class NzDemoWatermarkCustomComponent implements OnInit {
   };
   gap: [number, number] = [100, 100];
   offset: [number, number] = [50, 50];
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe(item => {

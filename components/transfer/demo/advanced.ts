@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -28,9 +28,9 @@ import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
   `
 })
 export class NzDemoTransferAdvancedComponent implements OnInit {
-  list: TransferItem[] = [];
+  private readonly messageService = inject(NzMessageService);
 
-  constructor(private messageService: NzMessageService) {}
+  list: TransferItem[] = [];
 
   ngOnInit(): void {
     this.getData();

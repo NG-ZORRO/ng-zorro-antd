@@ -13,6 +13,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  inject,
   NgZone,
   OnInit,
   provideZoneChangeDetection,
@@ -21,7 +22,15 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  discardPeriodicTasks,
+  fakeAsync,
+  flush,
+  inject as testingInject,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -68,15 +77,19 @@ describe('auto-complete', () => {
     });
   });
 
-  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-    overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
-  }));
+  beforeEach(
+    testingInject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })
+  );
 
-  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-    currentOverlayContainer.ngOnDestroy();
-    overlayContainer.ngOnDestroy();
-  }));
+  afterEach(
+    testingInject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+      currentOverlayContainer.ngOnDestroy();
+      overlayContainer.ngOnDestroy();
+    })
+  );
 
   describe('toggling', () => {
     let fixture: ComponentFixture<NzTestSimpleAutocompleteComponent>;
@@ -1051,10 +1064,9 @@ class NzTestAutocompleteWithoutPanelComponent {
   `
 })
 class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
+  readonly cdr = inject(ChangeDetectorRef);
   options: string[] = [];
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     setTimeout(() => {

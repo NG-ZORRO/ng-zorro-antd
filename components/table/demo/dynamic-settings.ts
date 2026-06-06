@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -149,6 +149,8 @@ interface Setting {
   `
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+
   settingForm: FormGroup<{ [K in keyof Setting]: FormControl<Setting[K]> }>;
   listOfData: readonly ItemData[] = [];
   displayData: readonly ItemData[] = [];
@@ -256,7 +258,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     return data;
   }
 
-  constructor(private formBuilder: NonNullableFormBuilder) {
+  constructor() {
     this.settingForm = this.formBuilder.group({
       bordered: [false],
       loading: [false],

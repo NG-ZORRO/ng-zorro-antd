@@ -13,7 +13,6 @@ import {
   Component,
   Directive,
   Injector,
-  Input,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -1519,7 +1518,7 @@ describe('modal', () => {
   selector: 'nz-test-with-view-container'
 })
 class TestWithViewContainerDirective {
-  constructor(public viewContainerRef: ViewContainerRef) {}
+  public readonly viewContainerRef = inject(ViewContainerRef);
 }
 
 @Component({
@@ -1542,7 +1541,7 @@ class TestWithChildViewContainerComponent {
   template: 'hello'
 })
 class TestWithOnPushViewContainerComponent {
-  constructor(public viewContainerRef: ViewContainerRef) {}
+  public readonly viewContainerRef = inject(ViewContainerRef);
 }
 
 @Component({
@@ -1557,15 +1556,12 @@ class TestWithOnPushViewContainerComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestWithServiceComponent {
+  public readonly nzModalService = inject(NzModalService);
+  public readonly viewContainerRef = inject(ViewContainerRef);
+
   value?: string;
   modalRef?: NzModalRef;
   @ViewChild(TemplateRef) templateRef!: TemplateRef<{}>;
-
-  constructor(
-    public nzModalService: NzModalService,
-    public viewContainerRef: ViewContainerRef
-  ) {}
-
   setModalRef(modalRef: NzModalRef): string {
     this.modalRef = modalRef;
     return '';
@@ -1584,10 +1580,10 @@ class TestWithServiceComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 class TestWithModalContentComponent {
-  @Input() value: string = inject(NZ_MODAL_DATA);
-  nzModalData: string = inject(NZ_MODAL_DATA);
-  modalRef = inject(NzModalRef);
-  modalInjector = inject(Injector);
+  readonly value = inject<string>(NZ_MODAL_DATA);
+  readonly nzModalData = inject<string>(NZ_MODAL_DATA);
+  readonly modalRef = inject(NzModalRef);
+  readonly modalInjector = inject(Injector);
 
   destroyModal(): void {
     this.modalRef.destroy();
