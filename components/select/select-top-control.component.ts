@@ -164,7 +164,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
     if (value !== this.inputValue) {
       this.inputValue = value;
       this.updateTemplateVariable();
-      this.inputValueChange.emit(value);
+      this.inputValue$.next(value);
       this.tokenSeparate(value, this.tokenSeparators);
     }
   }
