@@ -91,6 +91,7 @@ export class NzAffixComponent implements OnChanges {
 
   constructor() {
     effect(() => {
+      // should update position on dir change
       void this.dir();
       this.registerListeners();
       this.updatePosition(NOOP_EVENT);
@@ -176,7 +177,6 @@ export class NzAffixComponent implements OnChanges {
     } else {
       wrapEl.classList.remove(NZ_AFFIX_CLS_PREFIX);
     }
-    this.updateRtlClass();
     if ((affixStyle && !originalAffixStyle) || (!affixStyle && originalAffixStyle)) {
       this.nzChange.emit(fixed);
     }
@@ -284,15 +284,6 @@ export class NzAffixComponent implements OnChanges {
 
     if (e.type === 'resize') {
       this.syncPlaceholderStyle(e);
-    }
-  }
-
-  private updateRtlClass(): void {
-    const wrapEl = this.fixedEl.nativeElement;
-    if (this.dir() === 'rtl' && wrapEl.classList.contains(NZ_AFFIX_CLS_PREFIX)) {
-      wrapEl.classList.add(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
-    } else {
-      wrapEl.classList.remove(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
     }
   }
 }

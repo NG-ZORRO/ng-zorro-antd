@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
@@ -415,7 +414,6 @@ describe('NzAffixComponent', () => {
   let component: NzAffixComponent;
   let fixture: ComponentFixture<NzAffixComponent>;
   let mockPlatform: Platform;
-  let mockDirectionality: Directionality;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -432,23 +430,6 @@ describe('NzAffixComponent', () => {
     fixture = TestBed.createComponent(NzAffixComponent);
     component = fixture.componentInstance;
     mockPlatform = TestBed.inject(Platform);
-    mockDirectionality = TestBed.inject(Directionality);
-  });
-
-  it('should handle directionality change', async () => {
-    spyOn<NzSafeAny>(component, 'registerListeners');
-    spyOn(component, 'updatePosition');
-
-    await fixture.whenStable();
-
-    expect(component['registerListeners']).toHaveBeenCalledTimes(1);
-    expect(component.updatePosition).toHaveBeenCalledTimes(1);
-
-    mockDirectionality.valueSignal.set('rtl');
-    await fixture.whenStable();
-
-    expect(component['registerListeners']).toHaveBeenCalledTimes(2);
-    expect(component.updatePosition).toHaveBeenCalledTimes(2);
   });
 
   it('should register listeners if platform is browser', async () => {

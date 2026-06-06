@@ -125,10 +125,10 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
   }
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges {
-  public slider = inject(ElementRef<HTMLElement>);
-  private destroyRef = inject(DestroyRef);
-  private cdr = inject(ChangeDetectorRef);
-  private platform = inject(Platform);
+  public readonly slider = inject(ElementRef<HTMLElement>);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly platform = inject(Platform);
   protected readonly dir = inject(Directionality).valueSignal;
 
   @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
@@ -350,13 +350,14 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   private getLogicalValue(value: number): number {
+    const rtl = !this.nzVertical && this.dir() === 'rtl';
     if (this.nzReverse) {
-      if (!this.nzVertical && this.dir() === 'rtl') {
+      if (rtl) {
         return value;
       }
       return this.nzMax - value + this.nzMin;
     }
-    if (!this.nzVertical && this.dir() === 'rtl') {
+    if (rtl) {
       return this.nzMax - value + this.nzMin;
     }
 

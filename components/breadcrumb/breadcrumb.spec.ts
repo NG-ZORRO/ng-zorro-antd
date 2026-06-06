@@ -19,8 +19,6 @@ import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
 import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';
 import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
 
-const CLASS_NAME = 'ant-breadcrumb';
-
 describe('breadcrumb', () => {
   describe('basic', () => {
     let fixture: ComponentFixture<NzDemoBreadcrumbBasicComponent>;
@@ -276,7 +274,7 @@ describe('breadcrumb', () => {
     }));
   });
 
-  testDirectionality(() => NzDemoBreadcrumbBasicComponent, By.directive(NzBreadCrumbComponent), CLASS_NAME);
+  testDirectionality(() => NzDemoBreadcrumbBasicComponent, By.directive(NzBreadCrumbComponent), 'ant-breadcrumb');
 });
 
 function flushFixture(fixture: ComponentFixture<NzSafeAny>): void {

@@ -16,5 +16,11 @@ export function isTargetWindow(target: Element | Window): target is Window {
 }
 
 export function getTargetRect(target: Element | Window): SimpleRect {
-  return !isTargetWindow(target) ? target.getBoundingClientRect() : { top: 0, left: 0, bottom: 0 };
+  return !isTargetWindow(target)
+    ? target.getBoundingClientRect()
+    : {
+        top: 0,
+        left: 0,
+        bottom: 0
+      };
 }

@@ -6,6 +6,7 @@
 import { TemplateRef } from '@angular/core';
 
 /**
+ * https://angular.io/errors/NG3003
  * An intermediate interface for {@link NzBreadCrumbComponent} & {@link NzBreadCrumbItemComponent}
  */
 export abstract class NzBreadcrumb {

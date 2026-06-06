@@ -5,8 +5,10 @@
 
 import { Platform } from '@angular/cdk/platform';
 import {
+  ChangeDetectorRef,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   inject,
   Input,
@@ -44,8 +46,10 @@ const REFRESH_INTERVAL = 1000 / 30;
   imports: [NzStatisticComponent, NzPipesModule]
 })
 export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges {
-  private ngZone = inject(NgZone);
-  private platform = inject(Platform);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly ngZone = inject(NgZone);
+  private readonly platform = inject(Platform);
 
   @Input() nzFormat: string = 'HH:mm:ss';
   @Output() readonly nzCountdownFinish = new EventEmitter<void>();

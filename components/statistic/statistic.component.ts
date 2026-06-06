@@ -6,9 +6,7 @@
 import { Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  DestroyRef,
   Input,
   TemplateRef,
   ViewEncapsulation,
@@ -57,6 +55,8 @@ import { NzStatisticValueType } from './typings';
   imports: [NzSkeletonModule, NzStatisticContentValueComponent, NzOutletModule]
 })
 export class NzStatisticComponent {
+  protected readonly dir = inject(Directionality).valueSignal;
+
   @Input() nzPrefix?: string | TemplateRef<void>;
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
@@ -64,8 +64,4 @@ export class NzStatisticComponent {
   @Input() nzValueStyle: NgStyleInterface = {};
   @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
   @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
-
-  protected cdr = inject(ChangeDetectorRef);
-  protected destroyRef = inject(DestroyRef);
-  protected readonly dir = inject(Directionality).valueSignal;
 }
