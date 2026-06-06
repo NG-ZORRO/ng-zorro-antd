@@ -34,7 +34,7 @@ import {
   input
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { animationFrameScheduler, asapScheduler, merge, of } from 'rxjs';
+import { animationFrameScheduler, asapScheduler, merge } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -132,7 +132,8 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   private ngZone = inject(NgZone);
   private viewportRuler = inject(ViewportRuler);
   private nzResizeObserver = inject(NzResizeObserver);
-  private dir = inject(Directionality);
+  private readonly directionality = inject(Directionality);
+  protected readonly dir = this.directionality.valueSignal;
   private destroyRef = inject(DestroyRef);
 
   @Output() readonly indexFocused: EventEmitter<number> = new EventEmitter<number>();
@@ -224,7 +225,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   ngAfterViewInit(): void {
-    const dirChange = this.dir ? this.dir.change.asObservable() : of(null);
+    const dirChange = this.directionality.change.asObservable();
     const resize = this.viewportRuler.change(150);
 
     const realign = (): void => {
@@ -569,7 +570,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   private getLayoutDirection(): Direction {
-    return this.dir && this.dir.value === 'rtl' ? 'rtl' : 'ltr';
+    return this.dir() === 'rtl' ? 'rtl' : 'ltr';
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -19,7 +19,7 @@ import { By } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { provideMockDirectionality, sleep } from 'ng-zorro-antd/core/testing';
+import { sleep } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toCssPixelNumber } from 'ng-zorro-antd/core/util';
 
@@ -425,7 +425,6 @@ describe('NzAffixComponent', () => {
         { provide: Renderer2, useValue: jasmine.createSpyObj('Renderer2', ['setStyle', 'addClass', 'removeClass']) },
         { provide: ElementRef, useValue: new ElementRef(document.createElement('div')) },
         { provide: DOCUMENT, useValue: document },
-        provideMockDirectionality(),
         { provide: Platform, useValue: { isBrowser: true } }
       ]
     });
@@ -485,31 +484,6 @@ describe('NzAffixComponent', () => {
 
     expect(component['setAffixStyle']).toHaveBeenCalled();
     expect(component['setPlaceholderStyle']).toHaveBeenCalled();
-  });
-
-  it('should update RTL class when direction changes', () => {
-    const fixedEl = component['fixedEl'].nativeElement;
-    fixedEl.classList.add('ant-affix');
-    component['updateRtlClass']();
-
-    expect(fixedEl.classList.contains('ant-affix-rtl')).toBeFalse();
-
-    mockDirectionality.valueSignal.set('rtl');
-    component['updateRtlClass']();
-
-    expect(fixedEl.classList.contains('ant-affix-rtl')).toBeTrue();
-
-    mockDirectionality.valueSignal.set('ltr');
-    component['updateRtlClass']();
-
-    expect(fixedEl.classList.contains('ant-affix-rtl')).toBeFalse();
-
-    mockDirectionality.valueSignal.set('rtl');
-    fixedEl.classList.remove('ant-affix');
-    fixedEl.classList.add('ant-affix-rtl');
-    component['updateRtlClass']();
-
-    expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
   });
 
   it('should not perform position updates if platform is not browser', () => {

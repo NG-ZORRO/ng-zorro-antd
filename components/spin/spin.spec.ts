@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,6 +16,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -149,18 +149,7 @@ describe('spin', () => {
     }));
   });
 
-  describe('RTL', () => {
-    it('should className correct on dir change', () => {
-      const fixture = TestBed.createComponent(NzTestSpinRtlComponent);
-      const spin = fixture.debugElement.query(By.directive(NzSpinComponent));
-      fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin').classList).toContain('ant-spin-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin').classList).not.toContain('ant-spin-rtl');
-    });
-  });
+  testDirectionality(() => NzTestSpinBasicComponent, By.css('.ant-spin'), 'ant-spin');
 });
 
 @Component({
@@ -192,18 +181,4 @@ export class NzTestSpinBasicComponent {
   indicator!: TemplateRef<NzSafeAny>;
   tip!: string;
   simple = false;
-}
-
-@Component({
-  imports: [BidiModule, NzTestSpinBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-basic-spin />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestSpinRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }

@@ -21,7 +21,7 @@ import {
   signal,
   untracked
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -75,15 +75,13 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor {
   private onChange: OnChangeType = () => {};
   private onTouched: OnTouchedType = () => {};
   private isDisabledFirstChange = true;
-  private readonly directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
 
   readonly nzName = input<string | null>(null);
   readonly nzDisabled = input(false, { transform: booleanAttribute });
   readonly nzOptions = input<NzCheckboxOption[] | string[] | number[]>([]);
   readonly value = signal<Array<NzCheckboxOption['value']> | null>(null);
   readonly finalDisabled = linkedSignal(() => this.nzDisabled());
-
-  protected readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
   protected readonly normalizedOptions = computed(() => normalizeOptions(this.nzOptions()));
 
   constructor() {

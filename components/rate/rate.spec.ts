@@ -3,14 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent, testDirectionality } from 'ng-zorro-antd/core/testing';
 
 import { NzRateComponent } from './rate.component';
 import { NzRateModule } from './rate.module';
@@ -293,25 +292,7 @@ describe('rate', () => {
     }));
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestRateRtlComponent>;
-    let rate: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestRateRtlComponent);
-      fixture.detectChanges();
-      rate = fixture.debugElement.query(By.directive(NzRateComponent));
-    });
-
-    it('should className correct on dir change', fakeAsync(() => {
-      fixture.detectChanges();
-      expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(rate.nativeElement.firstElementChild!.classList).not.toContain('ant-rate-rtl');
-    }));
-  });
+  testDirectionality(() => NzTestRateBasicComponent, By.css('.ant-rate'), 'ant-rate');
 
   describe('rate character', () => {
     let fixture: ComponentFixture<NzTestRateCharacterComponent>;
@@ -390,20 +371,6 @@ export class NzTestRateFormComponent {
   enable(): void {
     this.formControl.enable();
   }
-}
-
-@Component({
-  imports: [BidiModule, NzTestRateBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-rate />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestRateRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }
 
 @Component({

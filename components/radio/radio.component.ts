@@ -4,7 +4,7 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -73,12 +73,12 @@ import { NzRadioService } from './radio.service';
     '[class.ant-radio-button-wrapper-checked]': 'isChecked && isRadioButton',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled && !isRadioButton',
     '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled && isRadioButton',
-    '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir === 'rtl'`,
-    '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir === 'rtl'`
+    '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir() === 'rtl'`,
+    '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir() === 'rtl'`
   }
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnInit {
-  private readonly directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private readonly nzRadioService = inject(NzRadioService, { optional: true });
   private readonly ngZone = inject(NgZone);
   private readonly elementRef = inject(ElementRef);
@@ -98,8 +98,6 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzAutoFocus = false;
   @Input({ alias: 'nz-radio-button', transform: booleanAttribute }) isRadioButton = false;
-
-  dir: Direction = 'ltr';
 
   focus(): void {
     this.focusMonitor.focusVia(this.inputElement!, 'keyboard');
@@ -176,13 +174,6 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
           }
         }
       });
-
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
 
     this.setupClickListener();
   }

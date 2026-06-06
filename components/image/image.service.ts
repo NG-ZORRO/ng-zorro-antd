@@ -31,7 +31,7 @@ export interface NzImageService {
 export class NzImageService {
   private injector = inject(Injector);
   private nzConfigService = inject(NzConfigService);
-  private directionality = inject(Directionality);
+  private readonly directionality = inject(Directionality);
 
   preview(
     images: NzImage[],
@@ -78,7 +78,7 @@ export class NzImageService {
       scrollStrategy: createBlockScrollStrategy(this.injector),
       positionStrategy: createGlobalPositionStrategy(this.injector),
       disposeOnNavigation: config.nzCloseOnNavigation ?? globalConfig.nzCloseOnNavigation ?? true,
-      direction: config.nzDirection || globalConfig.nzDirection || this.directionality.value
+      direction: config.nzDirection || globalConfig.nzDirection || this.directionality.valueSignal()
     });
   }
 }

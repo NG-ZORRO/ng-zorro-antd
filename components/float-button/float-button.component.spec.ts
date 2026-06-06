@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -16,6 +15,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -100,20 +100,7 @@ describe('float-button', () => {
     });
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestFloatButtonRtlComponent>;
-    let resultEl: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestFloatButtonRtlComponent);
-      resultEl = fixture.debugElement.query(By.directive(NzFloatButtonComponent));
-    });
-
-    it('rtl', () => {
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.classList).toContain('ant-float-btn-rtl');
-    });
-  });
+  testDirectionality(() => NzTestFloatButtonBasicComponent, By.directive(NzFloatButtonComponent), 'ant-float-btn');
 });
 
 @Component({
@@ -154,18 +141,4 @@ export class NzTestFloatButtonBasicComponent {
   onClick(value: boolean): void {
     this.isClick = value;
   }
-}
-
-@Component({
-  imports: [BidiModule, NzFloatButtonModule],
-  template: `
-    <div [dir]="direction">
-      <nz-float-button />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestFloatButtonRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -51,7 +51,7 @@ export type NzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; 
     '[class.ant-steps-dot]': 'showProcessDot',
     '[class.ant-steps-small]': `nzSize === 'small'`,
     '[class.ant-steps-navigation]': `nzType === 'navigation'`,
-    '[class.ant-steps-rtl]': `dir === 'rtl'`,
+    '[class.ant-steps-rtl]': `dir() === 'rtl'`,
     '[class.ant-steps-with-progress]': 'showProgress'
   }
 })
@@ -60,7 +60,7 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
 
   private cdr = inject(ChangeDetectorRef);
   private ngZone = inject(NgZone);
-  private directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private destroyRef = inject(DestroyRef);
 
   @ContentChildren(NzStepComponent) steps!: QueryList<NzStepComponent>;
@@ -91,7 +91,6 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   showProcessDot = false;
   showProgress = false;
   customProcessDotTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
-  dir: Direction = 'ltr';
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzStartIndex, nzDirection, nzStatus, nzCurrent, nzSize } = changes;
@@ -101,12 +100,6 @@ export class NzStepsComponent implements OnChanges, OnInit, AfterContentInit {
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
     this.updateChildrenSteps();
   }
 

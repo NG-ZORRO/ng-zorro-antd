@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   BACKSPACE,
   COMMA,
@@ -48,7 +48,9 @@ import {
   createFakeEvent,
   dispatchFakeEvent,
   dispatchKeyboardEvent,
-  dispatchMouseEvent
+  dispatchMouseEvent,
+  provideMockDirectionality,
+  testDirectionality
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus, NzVariant, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -2404,70 +2406,6 @@ describe('cascader', () => {
     }));
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzDemoCascaderRtlComponent>;
-    let cascader: DebugElement;
-    let testComponent: NzDemoCascaderRtlComponent;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoCascaderRtlComponent);
-      testComponent = fixture.debugElement.componentInstance;
-      cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
-    });
-
-    it('should className correct', () => {
-      fixture.detectChanges();
-      expect(cascader.nativeElement.className).toContain('ant-select-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(cascader.nativeElement.className).not.toContain('ant-select-rtl');
-    });
-
-    it('should menu class work', fakeAsync(() => {
-      fixture.detectChanges();
-      cascader.nativeElement.click();
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
-      expect(testComponent.cascader.menuOpen()).toBe(true);
-      expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-rtl');
-    }));
-
-    it('should item arrow display correct direction', fakeAsync(() => {
-      fixture.detectChanges();
-      testComponent.nzOptions = options3;
-      testComponent.cascader.setMenuOpen(true);
-      fixture.detectChanges();
-      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
-      itemEl1.click();
-      fixture.detectChanges();
-      tick(600);
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      const itemEl21 = getItemAtColumnAndRow(2, 1)!;
-      expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-left');
-    }));
-
-    it('should pressing the left and right keys can correctly expand and collapse content', fakeAsync(() => {
-      testComponent.nzOptions = options3;
-      testComponent.cascader.setMenuOpen(true);
-      fixture.detectChanges();
-      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
-      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
-      fixture.detectChanges();
-      const zhejiangItemEl = getItemAtColumnAndRow(1, 1)!;
-      const hangzhouItemEl = getItemAtColumnAndRow(2, 1)!;
-      expect(zhejiangItemEl.classList).toContain('ant-cascader-menu-item-active');
-      expect(hangzhouItemEl.classList).toContain('ant-cascader-menu-item-active');
-      dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
-      fixture.detectChanges();
-      expect(hangzhouItemEl.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(zhejiangItemEl.classList).toContain('ant-cascader-menu-item-active');
-    }));
-  });
-
   describe('Status', () => {
     let fixture: ComponentFixture<NzDemoCascaderStatusComponent>;
     let cascader: DebugElement;
@@ -2532,6 +2470,59 @@ describe('cascader', () => {
       );
     });
   });
+});
+
+testDirectionality(() => NzDemoCascaderDefaultComponent, By.directive(NzCascaderComponent), 'ant-select', {
+  providers: [provideNzIconsTesting(), provideNzNoAnimation()]
+});
+
+describe('cascader RTL behavior', () => {
+  let overlayContainerElement: HTMLElement;
+  let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
+  let cascader: DebugElement;
+  let testComponent: NzDemoCascaderDefaultComponent;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockDirectionality()]
+    });
+    const dir = TestBed.inject(Directionality);
+    dir.valueSignal.set('rtl');
+    overlayContainerElement = TestBed.inject(OverlayContainer).getContainerElement();
+    fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
+    testComponent = fixture.debugElement.componentInstance;
+    cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+  });
+
+  it('should menu class work', fakeAsync(() => {
+    fixture.detectChanges();
+    cascader.nativeElement.click();
+    fixture.detectChanges();
+    tick(200);
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-rtl');
+  }));
+
+  it('should pressing the left and right keys can correctly expand and collapse content', fakeAsync(() => {
+    testComponent.nzOptions = options3;
+    testComponent.cascader.setMenuOpen(true);
+    fixture.detectChanges();
+    dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+    dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
+    fixture.detectChanges();
+    const zhejiangItemEl = overlayContainerElement
+      .querySelectorAll('.ant-cascader-menu')[0]
+      ?.querySelectorAll('.ant-cascader-menu-item')[0];
+    const hangzhouItemEl = overlayContainerElement
+      .querySelectorAll('.ant-cascader-menu')[1]
+      ?.querySelectorAll('.ant-cascader-menu-item')[0];
+    expect(zhejiangItemEl!.classList).toContain('ant-cascader-menu-item-active');
+    expect(hangzhouItemEl!.classList).toContain('ant-cascader-menu-item-active');
+    dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
+    fixture.detectChanges();
+    expect(hangzhouItemEl!.classList).not.toContain('ant-cascader-menu-item-active');
+    expect(zhejiangItemEl!.classList).toContain('ant-cascader-menu-item-active');
+  }));
 });
 
 describe('nzPopupRender', () => {
@@ -3072,22 +3063,6 @@ export class NzDemoCascaderLoadDataComponent {
   addCallTimes(): void {}
   onOpenChange = jasmine.createSpy<(open: boolean) => void>('open change');
   onValueChanges = jasmine.createSpy('value change');
-}
-
-@Component({
-  imports: [BidiModule, NzCascaderModule],
-  template: `
-    <div [dir]="direction">
-      <nz-cascader [nzOptions]="nzOptions" />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzDemoCascaderRtlComponent {
-  @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
-  nzOptions: NzSafeAny[] | null = options1();
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }
 
 @Component({

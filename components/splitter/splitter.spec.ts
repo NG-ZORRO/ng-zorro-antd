@@ -3,13 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, DebugElement, DOCUMENT, NgZone, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
 
-import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
+import {
+  dispatchMouseEvent,
+  dispatchTouchEvent,
+  MockNgZone,
+  provideMockDirectionality
+} from 'ng-zorro-antd/core/testing';
 
 import { NzSplitterModule } from './splitter.module';
 import { NzSplitterCollapsible } from './typings';
@@ -24,7 +28,7 @@ interface PanelProps {
 }
 
 @Component({
-  imports: [BidiModule, NzSplitterModule],
+  imports: [NzSplitterModule],
   template: `
     <nz-splitter
       [nzLazy]="lazy()"
@@ -65,11 +69,6 @@ class NzSplitterTestComponent {
   readonly onResizeStart = (_sizes: number[]): void => void 0;
   readonly onResize = (_sizes: number[]): void => void 0;
   readonly onResizeEnd = (_sizes: number[]): void => void 0;
-}
-
-class MockDirectionality {
-  value: Direction = 'rtl';
-  change = new Subject();
 }
 
 /* -------------------------- Test Cases -------------------------- */
@@ -598,15 +597,14 @@ describe('nz-splitter', () => {
   });
 
   describe('directionality', () => {
+    let dir: Directionality;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [
-          {
-            provide: Directionality,
-            useClass: MockDirectionality
-          }
-        ]
+        providers: [provideMockDirectionality()]
       });
+      dir = TestBed.inject(Directionality);
+      dir.valueSignal.set('rtl');
       fixture = TestBed.createComponent(NzSplitterTestComponent);
       container = fixture.debugElement;
       component = fixture.componentInstance;

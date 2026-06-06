@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
 import {
   AfterViewInit,
@@ -16,7 +16,6 @@ import {
   EventEmitter,
   inject,
   Input,
-  OnInit,
   Output,
   TemplateRef,
   ViewEncapsulation
@@ -89,17 +88,17 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     '[class.ant-page-header-ghost]': 'nzGhost',
     '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb',
     '[class.ant-page-header-compact]': 'compact',
-    '[class.ant-page-header-rtl]': `dir === 'rtl'`
+    '[class.ant-page-header-rtl]': `dir() === 'rtl'`
   },
   imports: [NzOutletModule, NzIconModule]
 })
-export class NzPageHeaderComponent implements AfterViewInit, OnInit {
+export class NzPageHeaderComponent implements AfterViewInit {
   private readonly location = inject(Location);
   private readonly destroyRef = inject(DestroyRef);
   private readonly elementRef = inject(ElementRef);
   private readonly nzResizeObserver = inject(NzResizeObserver);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
@@ -114,17 +113,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnInit {
   nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
   compact = false;
-  dir: Direction = 'ltr';
-
   enableBackButton = true;
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
-  }
 
   ngAfterViewInit(): void {
     if (!this.nzBack.observers.length) {
@@ -158,7 +147,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnInit {
   }
 
   getBackIcon(): string {
-    if (this.dir === 'rtl') {
+    if (this.dir() === 'rtl') {
       return 'arrow-right';
     }
     return 'arrow-left';

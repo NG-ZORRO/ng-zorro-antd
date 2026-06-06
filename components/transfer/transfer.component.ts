@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -72,7 +72,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
     />
-    @if (dir !== 'rtl') {
+    @if (dir() !== 'rtl') {
       <div class="ant-transfer-operation">
         @if (!nzOneWay) {
           <button
@@ -163,7 +163,7 @@ import { NzTransferListComponent } from './transfer-list.component';
   `,
   host: {
     class: 'ant-transfer',
-    '[class.ant-transfer-rtl]': `dir === 'rtl'`,
+    '[class.ant-transfer-rtl]': `dir() === 'rtl'`,
     '[class.ant-transfer-disabled]': `nzDisabled`,
     '[class.ant-transfer-customize-list]': `nzRenderList`,
     '(window:keydown.shift)': 'onTriggerShiftDown()',
@@ -180,7 +180,7 @@ export class NzTransferComponent implements OnInit, OnChanges {
   private i18n = inject(NzI18nService);
   private elementRef = inject(ElementRef<HTMLElement>);
   private renderer = inject(Renderer2);
-  private directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
 
   @ViewChildren(NzTransferListComponent) lists!: QueryList<NzTransferListComponent>;
@@ -188,7 +188,6 @@ export class NzTransferComponent implements OnInit, OnChanges {
 
   leftFilter = '';
   rightFilter = '';
-  dir: Direction = 'ltr';
 
   // status
   prefixCls: string = 'ant-transfer';
@@ -396,12 +395,6 @@ export class NzTransferComponent implements OnInit, OnChanges {
     this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Transfer');
       this.markForCheckAllList();
-    });
-
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
     });
   }
 

@@ -3,11 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
@@ -139,18 +140,7 @@ describe('tag', () => {
     }));
   });
 
-  describe('RTL', () => {
-    it('should className correct on dir change', () => {
-      const fixture = TestBed.createComponent(NzTestTagRtlComponent);
-      const tag = fixture.debugElement.query(By.directive(NzTagComponent));
-      fixture.detectChanges();
-      expect(tag.nativeElement.className).toContain('ant-tag-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(tag.nativeElement.className).not.toContain('ant-tag-rtl');
-    });
-  });
+  testDirectionality(() => NzTestTagBasicComponent, By.directive(NzTagComponent), 'ant-tag');
 });
 
 @Component({
@@ -189,17 +179,4 @@ export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {
     e.preventDefault();
   }
-}
-
-@Component({
-  imports: [BidiModule, NzTestTagBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-basic-tag />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestTagRtlComponent {
-  direction: Direction = 'rtl';
 }

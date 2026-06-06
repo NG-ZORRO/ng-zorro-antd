@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ENTER } from '@angular/cdk/keycodes';
 import {
   ChangeDetectionStrategy,
@@ -17,7 +16,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { createKeyboardEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { createKeyboardEvent, dispatchKeyboardEvent, testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 import { NzI18nService } from 'ng-zorro-antd/i18n/nz-i18n.service';
@@ -410,45 +409,7 @@ describe('pagination', () => {
     expect(nextText).toBe(en_US.Pagination.next_page);
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestPaginationRtlComponent>;
-    let pagination: DebugElement;
-    let paginationElement: HTMLElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestPaginationRtlComponent);
-      pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
-      fixture.detectChanges();
-      paginationElement = pagination.nativeElement.querySelector('ul')!;
-    });
-
-    it('should pagination className correct on dir change', () => {
-      fixture.detectChanges();
-      expect(pagination.nativeElement.classList).toContain('ant-pagination-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(pagination.nativeElement.classList).not.toContain('ant-pagination-rtl');
-    });
-
-    it('should render icons correct', () => {
-      fixture.detectChanges();
-      fixture.componentInstance.total = 500;
-      fixture.detectChanges();
-      fixture.componentInstance.pageIndex = 7;
-      fixture.detectChanges();
-      const prev = paginationElement.firstElementChild as HTMLElement;
-      const next = paginationElement.lastElementChild as HTMLElement;
-      expect(prev.querySelector('.anticon')?.classList.contains('anticon-right')).toBe(true);
-      expect(next.querySelector('.anticon')?.classList.contains('anticon-left')).toBe(true);
-
-      const prev_5 = paginationElement.querySelector('.ant-pagination-jump-prev') as HTMLElement;
-      const next_5 = paginationElement.querySelector('.ant-pagination-jump-next') as HTMLElement;
-
-      expect(prev_5.querySelector('.anticon')?.classList.contains('anticon-double-right')).toBe(true);
-      expect(next_5.querySelector('.anticon')?.classList.contains('anticon-double-left')).toBe(true);
-    });
-  });
+  testDirectionality(() => NzTestPaginationComponent, By.directive(NzPaginationComponent), 'ant-pagination');
 });
 
 @Component({
@@ -531,20 +492,3 @@ export class NzTestPaginationTotalComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestPaginationAutoResizeComponent {}
-
-@Component({
-  imports: [BidiModule, NzPaginationModule],
-  template: `
-    <div [dir]="direction">
-      <nz-pagination [nzSimple]="false" [(nzPageIndex)]="pageIndex" [nzTotal]="total" [(nzPageSize)]="pageSize" />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestPaginationRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-  pageIndex = 1;
-  pageSize = 10;
-  total = 50;
-}

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
@@ -41,7 +40,6 @@ import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
   MockNgZone,
-  provideMockDirectionality,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -67,7 +65,6 @@ describe('auto-complete', () => {
         // todo: use zoneless
         provideZoneChangeDetection(),
         provideNoopAnimations(),
-        provideMockDirectionality(),
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
@@ -1239,28 +1236,16 @@ class NzTestAutocompleteWithGroupInputComponent {
 describe('auto-complete', () => {
   let component: NzAutocompleteComponent;
   let fixture: ComponentFixture<NzAutocompleteComponent>;
-  let mockDirectionality: Directionality;
 
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection(), provideMockDirectionality()]
+      providers: [provideZoneChangeDetection()]
     });
 
     fixture = TestBed.createComponent(NzAutocompleteComponent);
     component = fixture.componentInstance;
-    mockDirectionality = TestBed.inject(Directionality);
   });
-
-  it('should change dir', fakeAsync(() => {
-    spyOn(component['changeDetectorRef'], 'detectChanges');
-    component.ngOnInit();
-    expect(component.dir).toEqual('ltr');
-    mockDirectionality.change.next('rtl');
-    tick();
-    expect(component.dir).toEqual('rtl');
-    expect(component['changeDetectorRef'].detectChanges).toHaveBeenCalled();
-  }));
 
   it('should normalizeDataSource return correct value', () => {
     let changes: SimpleChanges = {

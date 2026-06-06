@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -18,7 +17,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
-import { createMouseEvent } from 'ng-zorro-antd/core/testing';
+import { createMouseEvent, testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 import { NzRadioGroupComponent } from './radio-group.component';
@@ -425,40 +424,9 @@ describe('radio', () => {
     });
   });
 
-  describe('RTL', () => {
-    it('should single radio className correct', () => {
-      const fixture = TestBed.createComponent(NzTestRadioSingleRtlComponent);
-      const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
-      fixture.detectChanges();
-      expect(radio.nativeElement.className).toContain('ant-radio-wrapper-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(radio.nativeElement.className).not.toContain('ant-radio-wrapper-rtl');
-    });
-
-    it('should radio button className correct', () => {
-      const fixture = TestBed.createComponent(NzTestRadioButtonRtlComponent);
-      const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
-      fixture.detectChanges();
-      expect(radio.nativeElement.className).toContain('ant-radio-button-wrapper-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(radio.nativeElement.className).not.toContain('ant-radio-button-wrapper-rtl');
-    });
-
-    it('should radio group className correct', () => {
-      const fixture = TestBed.createComponent(NzTestRadioGroupRtlComponent);
-      const radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
-      fixture.detectChanges();
-      expect(radioGroup.nativeElement.classList).toContain('ant-radio-group-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(radioGroup.nativeElement.className).not.toContain('ant-radio-group-rtl');
-    });
-  });
+  testDirectionality(() => NzTestRadioSingleComponent, By.directive(NzRadioComponent), 'ant-radio-wrapper');
+  testDirectionality(() => NzTestRadioButtonComponent, By.directive(NzRadioComponent), 'ant-radio-button-wrapper');
+  testDirectionality(() => NzTestRadioGroupComponent, By.directive(NzRadioGroupComponent), 'ant-radio-group');
 
   describe('finalSize', () => {
     let fixture: ComponentFixture<TestRadioGroupFinalSizeComponent>;
@@ -694,48 +662,6 @@ export class NzTestRadioGroupLabelNgModelComponent {
       checked: false
     }
   ];
-}
-
-@Component({
-  imports: [BidiModule, NzTestRadioSingleComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-radio-single />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestRadioSingleRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-}
-
-@Component({
-  imports: [BidiModule, NzRadioModule],
-  template: `
-    <div [dir]="direction">
-      <label nz-radio-button>Radio</label>
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestRadioButtonRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-}
-
-@Component({
-  imports: [BidiModule, NzTestRadioGroupComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-radio-group />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestRadioGroupRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }
 
 @Component({

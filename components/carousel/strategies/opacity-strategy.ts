@@ -16,7 +16,7 @@ export class NzCarouselOpacityStrategy extends NzCarouselBaseStrategy {
     if (this.contents) {
       this.slickTrackEl.style.width = `${this.length * this.unitWidth}px`;
 
-      this.contents.forEach((content: NzCarouselContentDirective, i: number) => {
+      this.contents.forEach((content, i: number) => {
         this.renderer.setStyle(content.el, 'opacity', this.carouselComponent!.activeIndex === i ? '1' : '0');
         this.renderer.setStyle(content.el, 'position', 'relative');
         this.renderer.setStyle(content.el, 'width', `${this.unitWidth}px`);
@@ -30,7 +30,7 @@ export class NzCarouselOpacityStrategy extends NzCarouselBaseStrategy {
     const { to: t } = this.getFromToInBoundary(_f, _t);
     const complete$ = new Subject<void>();
 
-    this.contents.forEach((content: NzCarouselContentDirective, i: number) => {
+    this.contents.forEach((content, i: number) => {
       this.renderer.setStyle(content.el, 'opacity', t === i ? '1' : '0');
     });
 
@@ -43,7 +43,7 @@ export class NzCarouselOpacityStrategy extends NzCarouselBaseStrategy {
   }
 
   override dispose(): void {
-    this.contents.forEach((content: NzCarouselContentDirective) => {
+    this.contents.forEach(content => {
       this.renderer.setStyle(content.el, 'transition', null);
       this.renderer.setStyle(content.el, 'opacity', null);
       this.renderer.setStyle(content.el, 'width', null);

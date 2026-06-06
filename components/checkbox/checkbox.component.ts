@@ -4,7 +4,7 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -74,7 +74,7 @@ import { NZ_CHECKBOX_GROUP } from './tokens';
     '[class.ant-checkbox-wrapper-in-form-item]': '!!nzFormStatusService',
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
     '[class.ant-checkbox-wrapper-disabled]': 'nzDisabled || checkboxGroupComponent?.finalDisabled()',
-    '[class.ant-checkbox-rtl]': `dir === 'rtl'`
+    '[class.ant-checkbox-rtl]': `dir() === 'rtl'`
   },
   imports: [FormsModule]
 })
@@ -83,12 +83,11 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, AfterV
   private elementRef = inject(ElementRef<HTMLElement>);
   private cdr = inject(ChangeDetectorRef);
   private focusMonitor = inject(FocusMonitor);
-  private directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private destroyRef = inject(DestroyRef);
   protected checkboxGroupComponent = inject(NZ_CHECKBOX_GROUP, { optional: true });
   protected nzFormStatusService = inject(NzFormStatusService, { optional: true });
 
-  dir: Direction = 'ltr';
   private isNzDisableFirstChange: boolean = true;
 
   onChange: OnChangeType = () => {};
@@ -159,13 +158,6 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, AfterV
           Promise.resolve().then(() => this.onTouched());
         }
       });
-
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
 
     fromEventOutsideAngular(this.elementRef.nativeElement, 'click')
       .pipe(takeUntilDestroyed(this.destroyRef))

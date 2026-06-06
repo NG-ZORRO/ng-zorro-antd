@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -19,6 +18,7 @@ import {
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { BooleanInput, NzDirectionVHType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -499,21 +499,7 @@ describe('steps', () => {
         });
     }));
   });
-  describe('RTL', () => {
-    it('should className correct on dir change', fakeAsync(() => {
-      const fixture = TestBed.createComponent(NzTestOuterStepsRtlComponent);
-      const outStep = fixture.debugElement.query(By.directive(NzStepsComponent));
-      fixture.componentInstance.direction = 'rtl';
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(outStep.nativeElement.classList).toContain('ant-steps-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(outStep.nativeElement.classList).not.toContain('ant-steps-rtl');
-    }));
-  });
+  testDirectionality(() => NzTestOuterStepsComponent, By.directive(NzStepsComponent), 'ant-steps');
 });
 
 @Component({
@@ -632,14 +618,4 @@ export class NzTestStepAsyncComponent implements OnInit {
       this.steps = [1, 2, 3];
     }, 1000);
   }
-}
-
-@Component({
-  imports: [BidiModule, NzTestOuterStepsComponent],
-  template: `<nz-test-outer-steps [dir]="direction" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestOuterStepsRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }

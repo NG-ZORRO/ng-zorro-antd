@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -11,7 +10,12 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import {
+  dispatchEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent,
+  testDirectionality
+} from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 import { NzSegmentedComponent } from './segmented.component';
@@ -288,75 +292,7 @@ describe('segmented', () => {
     });
   });
 
-  describe('rtl', () => {
-    let fixture: ComponentFixture<NzSegmentedRtlTestComponent>;
-    let segmentedComponent: DebugElement;
-
-    function getSegmentedOptionByIndex(index: number): HTMLElement {
-      return segmentedComponent.nativeElement.querySelectorAll('.ant-segmented-item')[index];
-    }
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzSegmentedRtlTestComponent);
-      segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
-      fixture.detectChanges();
-    });
-
-    describe('keyboard interaction', () => {
-      let theFirstElement: HTMLElement;
-      let theSecondElement: HTMLElement;
-      let theThirdElement: HTMLElement;
-
-      beforeEach(() => {
-        fixture.detectChanges();
-        theFirstElement = getSegmentedOptionByIndex(0);
-        theSecondElement = getSegmentedOptionByIndex(1);
-        theThirdElement = getSegmentedOptionByIndex(2);
-      });
-
-      it('should left arrow works in rtl mode', fakeAsync(() => {
-        dispatchKeyboardEvent(theFirstElement, 'keydown', LEFT_ARROW);
-        tick(100);
-        fixture.detectChanges();
-        expect(theFirstElement.classList).not.toContain('ant-segmented-item-selected');
-        expect(theSecondElement.classList).toContain('ant-segmented-item-selected');
-
-        dispatchKeyboardEvent(theSecondElement, 'keydown', LEFT_ARROW);
-        tick(100);
-        fixture.detectChanges();
-        expect(theSecondElement.classList).not.toContain('ant-segmented-item-selected');
-        expect(theThirdElement.classList).toContain('ant-segmented-item-selected');
-
-        // when the last item is selected, the first item should be selected
-        dispatchKeyboardEvent(theThirdElement, 'keydown', LEFT_ARROW);
-        tick(100);
-        fixture.detectChanges();
-        expect(theThirdElement.classList).not.toContain('ant-segmented-item-selected');
-        expect(theFirstElement.classList).toContain('ant-segmented-item-selected');
-      }));
-
-      it('should right arrow works in rtl mode', fakeAsync(() => {
-        // when the first item is selected, the last item should be selected
-        dispatchKeyboardEvent(theFirstElement, 'keydown', RIGHT_ARROW);
-        tick(100);
-        fixture.detectChanges();
-        expect(theFirstElement.classList).not.toContain('ant-segmented-item-selected');
-        expect(theThirdElement.classList).toContain('ant-segmented-item-selected');
-
-        dispatchKeyboardEvent(theThirdElement, 'keydown', RIGHT_ARROW);
-        tick(100);
-        fixture.detectChanges();
-        expect(theThirdElement.classList).not.toContain('ant-segmented-item-selected');
-        expect(theSecondElement.classList).toContain('ant-segmented-item-selected');
-
-        dispatchKeyboardEvent(theSecondElement, 'keydown', RIGHT_ARROW);
-        tick(100);
-        fixture.detectChanges();
-        expect(theSecondElement.classList).not.toContain('ant-segmented-item-selected');
-        expect(theFirstElement.classList).toContain('ant-segmented-item-selected');
-      }));
-    });
-  });
+  testDirectionality(() => NzSegmentedTestComponent, By.directive(NzSegmentedComponent), 'ant-segmented');
 
   describe('DOM structure', () => {
     let fixture: ComponentFixture<NzSegmentedDomStructureTestComponent>;
@@ -742,13 +678,4 @@ export class NzSegmentedVerticalTestComponent {
   handleValueChange(_e: string | number): void {
     // empty
   }
-}
-
-@Component({
-  imports: [BidiModule, NzSegmentedModule],
-  template: `<nz-segmented [nzOptions]="options" dir="rtl" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzSegmentedRtlTestComponent {
-  options: NzSegmentedOptions = [1, 2, 3];
 }

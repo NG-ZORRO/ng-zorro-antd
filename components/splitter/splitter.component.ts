@@ -128,11 +128,10 @@ export class NzSplitterComponent {
 
   protected readonly destroy$ = inject(NzDestroyService);
   protected readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-  protected readonly directionality = inject(Directionality);
   protected readonly resizeObserver = inject(NzResizeObserver);
   protected readonly document = inject(DOCUMENT);
 
-  protected readonly dir = toSignal(this.directionality.change, { initialValue: this.directionality.value });
+  protected readonly dir = inject(Directionality).valueSignal;
 
   /** ------------------- Panels ------------------- */
   // Get all panels from content children

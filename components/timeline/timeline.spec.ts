@@ -3,10 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 
 import { NzDemoTimelineLabelComponent } from './demo/label';
 import { NzTimelineComponent } from './timeline.component';
@@ -201,28 +202,7 @@ describe('nz-timeline', () => {
     });
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestTimelineRtlComponent>;
-    let timeline: DebugElement;
-    let items: HTMLDivElement[] = [];
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestTimelineRtlComponent);
-      fixture.detectChanges();
-
-      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
-      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
-    });
-
-    it('should init className correct', () => {
-      expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-rtl');
-      expect(items.length).toBeGreaterThan(0);
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(timeline.nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-rtl');
-    });
-  });
+  testDirectionality(() => NzTestTimelineBasicComponent, By.css('.ant-timeline'), 'ant-timeline');
 
   describe('clear', () => {
     let fixture: ComponentFixture<NzTestTimelineClearItemsComponent>;
@@ -306,20 +286,6 @@ export class NzTestTimelinePendingComponent {}
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestTimelineCustomPositionComponent {}
-
-@Component({
-  imports: [BidiModule, NzTestTimelineBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-basic-timeline />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestTimelineRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-}
 
 @Component({
   imports: [NzTimelineModule],

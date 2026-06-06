@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -34,15 +34,6 @@ export class NzTestResultBasicComponent {
   status: NzResultStatusType = 'error';
   subtitle?: string = 'SubTitle';
   extra?: string = 'Extra';
-}
-
-@Component({
-  imports: [BidiModule, NzTestResultBasicComponent],
-  template: `<nz-test-basic-result [dir]="direction" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestResultRtlComponent {
-  direction: Direction = 'rtl';
 }
 
 @Component({
@@ -117,30 +108,7 @@ describe('nz-result', () => {
     });
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestResultRtlComponent>;
-    let resultEl: DebugElement;
-
-    beforeEach(() => {
-      // todo: use zoneless
-      TestBed.configureTestingModule({
-        providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
-      });
-
-      fixture = TestBed.createComponent(NzTestResultRtlComponent);
-      fixture.detectChanges();
-      resultEl = fixture.debugElement.query(By.directive(NzResultComponent));
-    });
-
-    it('should className correct', () => {
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.classList).toContain('ant-result-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.className).not.toContain('ant-result-rtl');
-    });
-  });
+  testDirectionality(() => NzTestResultBasicComponent, By.directive(NzResultComponent), 'ant-result');
 
   describe('default icon from status', () => {
     let fixture: ComponentFixture<NzTestResultStatusIconComponent>;

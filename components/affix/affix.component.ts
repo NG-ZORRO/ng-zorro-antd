@@ -57,7 +57,7 @@ export class NzAffixComponent implements OnChanges {
   private readonly platform = inject(Platform);
   private readonly renderer = inject(Renderer2);
   private readonly nzResizeObserver = inject(NzResizeObserver);
-  private readonly directionality = inject(Directionality);
+  private readonly dir = inject(Directionality).valueSignal;
   private readonly destroyRef = inject(DestroyRef);
   private readonly document = inject(DOCUMENT);
   private readonly placeholderNode: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
@@ -91,7 +91,7 @@ export class NzAffixComponent implements OnChanges {
 
   constructor() {
     effect(() => {
-      this.directionality.valueSignal();
+      void this.dir();
       this.registerListeners();
       this.updatePosition(NOOP_EVENT);
     });
@@ -121,7 +121,7 @@ export class NzAffixComponent implements OnChanges {
     const el = this.target === window ? this.document.body : (this.target as Element);
     this.positionChangeSubscription = this.ngZone.runOutsideAngular(() =>
       merge(
-        ...Object.keys(AffixRespondEvents).map(evName => fromEvent(this.target, evName)),
+        ...Object.keys(AffixRespondEvents).map(eventName => fromEvent(this.target, eventName)),
         this.offsetChanged$.pipe(map(() => NOOP_EVENT)),
         this.nzResizeObserver.observe(el)
       )
@@ -289,7 +289,7 @@ export class NzAffixComponent implements OnChanges {
 
   private updateRtlClass(): void {
     const wrapEl = this.fixedEl.nativeElement;
-    if (this.directionality.valueSignal() === 'rtl' && wrapEl.classList.contains(NZ_AFFIX_CLS_PREFIX)) {
+    if (this.dir() === 'rtl' && wrapEl.classList.contains(NZ_AFFIX_CLS_PREFIX)) {
       wrapEl.classList.add(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
     } else {
       wrapEl.classList.remove(`${NZ_AFFIX_CLS_PREFIX}-rtl`);

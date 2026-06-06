@@ -22,6 +22,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   ComponentRef,
   ContentChild,
   DestroyRef,
@@ -74,7 +75,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
       <div
         class="ant-drawer"
         [nzNoAnimation]="nzNoAnimation"
-        [class.ant-drawer-rtl]="dir === 'rtl'"
+        [class.ant-drawer-rtl]="dir() === 'rtl'"
         [class.ant-drawer-open]="isOpen"
         [class.no-mask]="!nzMask"
         [class.ant-drawer-top]="nzPlacement === 'top'"
@@ -162,7 +163,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private focusTrapFactory = inject(FocusTrapFactory);
   private viewContainerRef = inject(ViewContainerRef);
   private overlayKeyboardDispatcher = inject(OverlayKeyboardDispatcher);
-  private directionality = inject(Directionality);
+  private readonly directionality = inject(Directionality);
   private destroyRef = inject(DestroyRef);
   private document = inject(DOCUMENT);
 
@@ -299,7 +300,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   // from service config
   @WithConfig() nzDirection?: Direction = undefined;
 
-  dir: Direction = 'ltr';
+  protected readonly dir = computed(() => this.nzDirection || this.directionality.valueSignal());
 
   constructor() {
     super();
@@ -310,12 +311,6 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   }
 
   ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.nzDirection || this.directionality.value;
-
     this.attachOverlay();
     this.updateOverlayStyle();
     this.updateBodyOverflow();

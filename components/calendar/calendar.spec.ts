@@ -3,15 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n/date-config';
 
@@ -404,23 +404,7 @@ describe('calendar', () => {
     });
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestCalendarRtlComponent>;
-    let componentElement: HTMLElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestCalendarRtlComponent);
-      componentElement = fixture.debugElement.query(By.directive(Calendar)).nativeElement;
-      fixture.detectChanges();
-    });
-
-    it('should className correct on dir change', () => {
-      expect(componentElement.classList).toContain('ant-picker-calendar-rtl');
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(componentElement.classList).not.toContain('ant-picker-calendar-rtl');
-    });
-  });
+  testDirectionality(() => NzTestCalendarModeComponent, By.directive(Calendar), 'ant-picker-calendar');
 });
 
 @Component({
@@ -534,18 +518,4 @@ class NzTestCalendarChangesComponent {
   date0 = new Date(2014, 3, 14);
   panelChange = jasmine.createSpy('panelChange callback');
   selectChange = jasmine.createSpy('selectChange callback');
-}
-
-@Component({
-  imports: [BidiModule, NzCalendarModule],
-  template: `
-    <div [dir]="direction">
-      <nz-calendar />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestCalendarRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }
