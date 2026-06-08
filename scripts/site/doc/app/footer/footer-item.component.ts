@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 

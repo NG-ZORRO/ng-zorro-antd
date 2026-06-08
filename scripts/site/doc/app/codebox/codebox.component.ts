@@ -1,7 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Platform } from '@angular/cdk/platform';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,

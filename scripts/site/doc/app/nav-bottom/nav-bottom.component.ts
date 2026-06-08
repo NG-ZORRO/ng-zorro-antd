@@ -1,5 +1,5 @@
 import { Platform } from '@angular/cdk/platform';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';

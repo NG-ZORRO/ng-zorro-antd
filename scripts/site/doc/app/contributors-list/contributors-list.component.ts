@@ -1,6 +1,6 @@
 import { Platform } from '@angular/cdk/platform';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, OnInit, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, take } from 'rxjs/operators';
 

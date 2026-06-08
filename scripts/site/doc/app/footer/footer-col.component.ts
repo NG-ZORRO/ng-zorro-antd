@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 
 @Component({
   selector: 'div[app-footer-col]',

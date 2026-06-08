@@ -1,6 +1,6 @@
 import { Platform } from '@angular/cdk/platform';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AppService } from '../app.service';
 
 @Component({

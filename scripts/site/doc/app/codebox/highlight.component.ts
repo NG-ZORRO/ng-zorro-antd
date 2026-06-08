@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 import { NzSanitizerPipe } from 'ng-zorro-antd/pipes';
 
