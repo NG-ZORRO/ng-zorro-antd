@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -82,7 +82,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
     '[class.ant-pagination-simple]': 'nzSimple',
     '[class.ant-pagination-disabled]': 'nzDisabled',
     '[class.ant-pagination-mini]': `!nzSimple && size === 'small'`,
-    '[class.ant-pagination-rtl]': `dir === 'rtl'`,
+    '[class.ant-pagination-rtl]': `dir() === 'rtl'`,
     '[class.ant-pagination-start]': 'nzAlign() === "start"',
     '[class.ant-pagination-center]': 'nzAlign() === "center"',
     '[class.ant-pagination-end]': 'nzAlign() === "end"'
@@ -96,7 +96,7 @@ export class NzPaginationComponent implements OnInit, OnChanges {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly breakpointService = inject(NzBreakpointService);
   protected readonly nzConfigService = inject(NzConfigService);
-  private readonly directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private readonly destroyRef = inject(DestroyRef);
 
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
@@ -119,7 +119,6 @@ export class NzPaginationComponent implements OnInit, OnChanges {
   showPagination = true;
   locale!: NzPaginationI18nInterface;
   size: 'default' | 'small' = 'default';
-  dir: Direction = 'ltr';
 
   private total$ = new ReplaySubject<number>(1);
 
@@ -185,12 +184,6 @@ export class NzPaginationComponent implements OnInit, OnChanges {
           this.cdr.markForCheck();
         }
       });
-
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

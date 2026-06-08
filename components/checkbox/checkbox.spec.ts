@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -15,6 +14,8 @@ import {
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 
 import { NzCheckboxComponent } from './checkbox.component';
 import { NzCheckboxModule } from './checkbox.module';
@@ -235,18 +236,7 @@ describe('checkbox', () => {
     }));
   });
 
-  describe('RTL', () => {
-    it('should single checkbox className correct on dir change', () => {
-      const fixture = TestBed.createComponent(NzTestCheckboxSingleRtlComponent);
-      const checkbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
-      fixture.detectChanges();
-      expect(checkbox.nativeElement.classList).toContain('ant-checkbox-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(checkbox.nativeElement.classList).not.toContain('ant-checkbox-rtl');
-    });
-  });
+  testDirectionality(() => NzTestCheckboxSingleComponent, By.directive(NzCheckboxComponent), 'ant-checkbox');
 });
 
 @Component({
@@ -295,20 +285,6 @@ export class NzTestCheckboxFormComponent {
   enable(): void {
     this.formControl.enable();
   }
-}
-
-@Component({
-  imports: [BidiModule, NzTestCheckboxSingleComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-single-checkbox />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestCheckboxSingleRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }
 
 describe('checkbox component', () => {

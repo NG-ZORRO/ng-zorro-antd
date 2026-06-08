@@ -3,16 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DestroyRef,
   ElementRef,
   EventEmitter,
-  OnInit,
   Renderer2,
   TemplateRef,
   ViewChild,
@@ -21,7 +19,6 @@ import {
   inject,
   type AnimationCallbackEvent
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from 'rxjs';
 
 import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
@@ -45,7 +42,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
     <ng-template>
       <div
         class="ant-dropdown"
-        [class.ant-dropdown-rtl]="dir === 'rtl'"
+        [class.ant-dropdown-rtl]="dir() === 'rtl'"
         [class.ant-dropdown-show-arrow]="nzArrow"
         [class.ant-dropdown-placement-bottomLeft]="placement === 'bottomLeft'"
         [class.ant-dropdown-placement-bottomRight]="placement === 'bottomRight'"
@@ -73,13 +70,12 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzNoAnimationDirective]
 })
-export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
+export class NzDropdownMenuComponent implements AfterContentInit {
   private cdr = inject(ChangeDetectorRef);
   private elementRef = inject(ElementRef);
   private renderer = inject(Renderer2);
   public viewContainerRef = inject(ViewContainerRef);
-  private directionality = inject(Directionality);
-  private destroyRef = inject(DestroyRef);
+  protected readonly dir = inject(Directionality).valueSignal;
   noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
   public nzMenuService = inject(MenuService);
 
@@ -93,7 +89,6 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   nzOverlayStyle: IndexableObject = {};
   nzArrow: boolean = false;
   placement: NzPlacementType | 'bottom' | 'top' = 'bottomLeft';
-  dir: Direction = 'ltr';
 
   protected readonly dropdownAnimationEnter = slideAnimationEnter();
   protected readonly dropdownAnimationLeave = slideAnimationLeave();
@@ -114,15 +109,6 @@ export class NzDropdownMenuComponent implements AfterContentInit, OnInit {
   setValue<T extends keyof NzDropdownMenuComponent>(key: T, value: this[T]): void {
     this[key] = value;
     this.cdr.markForCheck();
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
   }
 
   ngAfterContentInit(): void {

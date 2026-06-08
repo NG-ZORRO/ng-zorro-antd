@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import {
@@ -19,7 +19,7 @@ import { ComponentFixture, TestBed, fakeAsync, inject as testingInject, tick } f
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchKeyboardEvent, provideMockDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -645,19 +645,24 @@ describe('NzDrawerComponent', () => {
     });
   });
   describe('RTL', () => {
-    let component: NzTestDrawerRtlComponent;
-    let fixture: ComponentFixture<NzTestDrawerRtlComponent>;
+    let component: NzTestDrawerComponent;
+    let fixture: ComponentFixture<NzTestDrawerComponent>;
     let overlayContainerElement: HTMLElement;
 
     beforeEach(() => {
       // todo: use zoneless
       TestBed.configureTestingModule({
-        providers: [provideNzNoAnimation(), provideNzIconsTesting(), provideZoneChangeDetection()]
+        providers: [
+          provideNzNoAnimation(),
+          provideNzIconsTesting(),
+          provideZoneChangeDetection(),
+          provideMockDirectionality()
+        ]
       });
     });
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestDrawerRtlComponent);
+      fixture = TestBed.createComponent(NzTestDrawerComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -668,15 +673,22 @@ describe('NzDrawerComponent', () => {
       })
     );
 
+    afterEach(() => {
+      component.close();
+      fixture.detectChanges();
+    });
+
     it('should className correct on dir change', () => {
+      const dir = TestBed.inject(Directionality);
       component.open();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-rtl')).toBe(false);
+
+      dir.valueSignal.set('rtl');
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-rtl')).toBe(true);
 
-      fixture.componentInstance.direction = 'ltr';
-      component.close();
-      fixture.detectChanges();
-      component.open();
+      dir.valueSignal.set('ltr');
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-rtl')).toBe(false);
     });
@@ -950,34 +962,5 @@ export class NzDrawerCustomComponent {
 
   close(): void {
     this.drawerRef.close(this.value);
-  }
-}
-
-@Component({
-  imports: [BidiModule, NzDrawerModule],
-  template: `
-    <div [dir]="direction">
-      <nz-drawer [nzVisible]="visible" (nzOnClose)="close()">
-        <ng-container *nzDrawerContent>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </ng-container>
-      </nz-drawer>
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestDrawerRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-  visible = false;
-
-  open(): void {
-    this.visible = true;
-  }
-
-  close(): void {
-    this.visible = false;
   }
 }

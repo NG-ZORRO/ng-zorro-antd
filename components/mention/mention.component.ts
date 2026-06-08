@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectionPositionPair,
@@ -134,7 +134,7 @@ export type MentionPlacement = 'top' | 'bottom';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-mentions',
-    '[class.ant-mentions-rtl]': `dir === 'rtl'`,
+    '[class.ant-mentions-rtl]': `dir() === 'rtl'`,
     '[class.ant-mentions-outlined]': `finalVariant() === 'outlined'`,
     '[class.ant-mentions-borderless]': `finalVariant() === 'borderless'`,
     '[class.ant-mentions-filled]': `finalVariant() === 'filled'`,
@@ -152,7 +152,7 @@ export type MentionPlacement = 'top' | 'bottom';
 })
 export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   private readonly ngZone = inject(NgZone);
-  private readonly directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly injector = inject(Injector);
   private readonly viewContainerRef = inject(ViewContainerRef);
@@ -192,7 +192,6 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   filteredSuggestions: string[] = [];
   suggestionTemplate: TemplateRef<{ $implicit: NzSafeAny }> | null = null;
   activeIndex = -1;
-  dir: Direction = 'ltr';
   // status
   prefixCls: string = 'ant-mentions';
   statusCls: NgClassInterface = {};
@@ -259,10 +258,6 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
       .subscribe(({ status, hasFeedback }) => {
         this.setStatusStyles(status, hasFeedback);
       });
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

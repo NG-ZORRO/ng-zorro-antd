@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
@@ -32,6 +31,7 @@ import {
   dispatchKeyboardEvent,
   MockNgZone,
   provideMockDirectionality,
+  testDirectionality,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzStatus, type NzVariant } from 'ng-zorro-antd/core/types';
@@ -74,24 +74,6 @@ describe('mention', () => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
-
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestDirMentionComponent>;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestDirMentionComponent);
-      fixture.detectChanges();
-    });
-
-    it('should classname correct', () => {
-      expect(fixture.debugElement.nativeElement.querySelector('nz-mention').classList).not.toContain(
-        'ant-mentions-rtl'
-      );
-      fixture.componentInstance.direction = 'rtl';
-      fixture.detectChanges();
-      expect(fixture.debugElement.nativeElement.querySelector('nz-mention').classList).toContain('ant-mentions-rtl');
-    });
-  });
 
   describe('toggling', () => {
     let fixture: ComponentFixture<NzTestSimpleMentionComponent>;
@@ -772,6 +754,10 @@ describe('mention', () => {
   });
 });
 
+testDirectionality(() => NzTestSimpleMentionComponent, By.directive(NzMentionComponent), 'ant-mentions', {
+  providers: [provideZoneChangeDetection(), provideNoopAnimations(), provideNzIconsTesting()]
+});
+
 describe('finalVariant', () => {
   let fixture: ComponentFixture<NzTestFinalVariantMentionComponent>;
   let mentionHtmlElement: HTMLElement;
@@ -915,21 +901,6 @@ class NzTestPropertyMentionComponent {
       ];
     }, 500);
   }
-}
-
-@Component({
-  imports: [BidiModule, NzInputModule, NzMentionModule],
-  template: `
-    <div [dir]="direction">
-      <nz-mention [nzSuggestions]="[]">
-        <textarea rows="1" nz-input nzMentionTrigger></textarea>
-      </nz-mention>
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-class NzTestDirMentionComponent {
-  direction: Direction = 'ltr';
 }
 
 @Component({

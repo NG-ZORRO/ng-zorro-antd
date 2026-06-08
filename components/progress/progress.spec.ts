@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,6 +13,8 @@ import {
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 
 import { NzProgressComponent } from './progress.component';
 import { NzProgressModule } from './progress.module';
@@ -418,26 +419,7 @@ describe('progress', () => {
     });
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestProgressRtlComponent>;
-    let progress: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestProgressRtlComponent);
-      fixture.detectChanges();
-      progress = fixture.debugElement.query(By.directive(NzProgressComponent));
-    });
-
-    it('should className correct', () => {
-      fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-
-      expect(progress.nativeElement.firstElementChild.classList).not.toContain('ant-progress-rtl');
-    });
-  });
+  testDirectionality(() => NzTestProgressLineComponent, By.css('.ant-progress'), 'ant-progress');
 });
 
 @Component({
@@ -526,17 +508,3 @@ export class NzTestProgressCircleComponent {
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class NzTestProgressCircleSuccessComponent {}
-
-@Component({
-  imports: [BidiModule, NzProgressModule],
-  template: `
-    <div [dir]="direction">
-      <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60" />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestProgressRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-}

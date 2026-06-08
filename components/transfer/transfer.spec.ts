@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -20,6 +19,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
@@ -446,24 +446,6 @@ describe('transfer', () => {
     }));
   });
 
-  describe('RTL', () => {
-    let componentElement: HTMLElement;
-    let fixture: ComponentFixture<NzTestTransferRtlComponent>;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestTransferRtlComponent);
-      componentElement = fixture.debugElement.query(By.directive(NzTransferComponent)).nativeElement;
-      fixture.detectChanges();
-    });
-
-    it('should className correct on dir change', fakeAsync(() => {
-      expect(componentElement.classList).toContain('ant-transfer-rtl');
-      fixture.debugElement.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(componentElement.classList).not.toContain('ant-transfer-rtl');
-    }));
-  });
-
   describe('transfer status', () => {
     let fixture: ComponentFixture<NzTestTransferStatusComponent>;
     let componentElement: HTMLElement;
@@ -603,6 +585,10 @@ describe('transfer', () => {
       return this;
     }
   }
+});
+
+testDirectionality(() => TestTransferComponent, By.directive(NzTransferComponent), 'ant-transfer', {
+  providers: [provideZoneChangeDetection(), provideNzIconsTesting(), provideNoopAnimations()]
 });
 
 interface AbstractTestTransferComponent {
@@ -749,20 +735,6 @@ class Test996Component implements OnInit {
 
     [0, 1].forEach(idx => (this.list[idx].direction = 'right'));
   }
-}
-
-@Component({
-  imports: [BidiModule, TestTransferComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-test-transfer />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestTransferRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }
 
 @Component({

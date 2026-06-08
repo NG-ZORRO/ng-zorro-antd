@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -11,13 +10,13 @@ import {
   Input,
   provideZoneChangeDetection,
   signal,
-  ViewChild,
   WritableSignal
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -209,24 +208,7 @@ describe('button', () => {
     });
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<TestButtonRtlComponent>;
-    let buttonElement: HTMLButtonElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(TestButtonRtlComponent);
-      buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-    });
-
-    it('should apply classname', () => {
-      fixture.detectChanges();
-      expect(buttonElement.classList).toContain('ant-btn-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(buttonElement.classList).not.toContain('ant-btn-rtl');
-    });
-  });
+  testDirectionality(() => TestButtonComponent, By.directive(NzButtonComponent), 'ant-btn');
 
   describe('change detection', () => {
     let fixture: ComponentFixture<TestButtonComponent>;
@@ -457,31 +439,6 @@ export class TestButtonIconOnlyWithoutIconComponent {}
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class TestButtonIconOnlyLoadingComponent {}
-
-@Component({
-  imports: [BidiModule, NzButtonModule],
-  template: `
-    <div [dir]="direction">
-      <button
-        nz-button
-        [nzType]="nzType"
-        [nzGhost]="nzGhost"
-        [nzLoading]="nzLoading"
-        [nzDanger]="nzDanger"
-        [nzShape]="nzShape"
-        [nzBlock]="nzBlock"
-        [nzSize]="nzSize"
-      >
-        button
-      </button>
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class TestButtonRtlComponent extends TestButtonComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-}
 
 @Component({
   imports: [NzButtonModule],

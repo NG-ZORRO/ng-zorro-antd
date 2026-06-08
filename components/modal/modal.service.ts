@@ -140,7 +140,7 @@ export class NzModalService implements OnDestroy {
       backdropClass: getValueWithConfig(config.nzMask, globalConfig.nzMask, true) ? MODAL_MASK_CLASS_NAME : '',
       positionStrategy: createGlobalPositionStrategy(this.injector),
       disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true),
-      direction: getValueWithConfig(config.nzDirection, globalConfig.nzDirection, this.directionality.value)
+      direction: getValueWithConfig(config.nzDirection, globalConfig.nzDirection, this.directionality.valueSignal())
     });
   }
 

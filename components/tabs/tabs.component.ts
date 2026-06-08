@@ -4,7 +4,7 @@
  */
 
 import { A11yModule } from '@angular/cdk/a11y';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { NgTemplateOutlet } from '@angular/common';
 import {
@@ -23,7 +23,6 @@ import {
   input,
   Input,
   NgZone,
-  OnInit,
   Output,
   QueryList,
   TemplateRef,
@@ -176,7 +175,7 @@ let nextId = 0;
     '[class.ant-tabs-editable]': `nzType === 'editable-card'`,
     '[class.ant-tabs-editable-card]': `nzType === 'editable-card'`,
     '[class.ant-tabs-centered]': `nzCentered`,
-    '[class.ant-tabs-rtl]': `dir === 'rtl'`,
+    '[class.ant-tabs-rtl]': `dir() === 'rtl'`,
     '[class.ant-tabs-top]': `nzTabPosition === 'top'`,
     '[class.ant-tabs-bottom]': `nzTabPosition === 'bottom'`,
     '[class.ant-tabs-left]': `nzTabPosition === 'left'`,
@@ -195,13 +194,13 @@ let nextId = 0;
     NzTabBodyComponent
   ]
 })
-export class NzTabsComponent implements OnInit, AfterContentChecked, AfterContentInit {
+export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   public nzConfigService = inject(NzConfigService);
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
-  private directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private destroyRef = inject(DestroyRef);
 
   @Input()
@@ -272,7 +271,6 @@ export class NzTabsComponent implements OnInit, AfterContentChecked, AfterConten
 
   readonly extraContents = contentChildren(NzTabBarExtraContentDirective);
 
-  dir: Direction = 'ltr';
   private readonly tabSetId!: number;
   private indexToSelect: number | null = 0;
   private selectedIndex: number | null = null;
@@ -287,14 +285,6 @@ export class NzTabsComponent implements OnInit, AfterContentChecked, AfterConten
       this.tabs.destroy();
       this.tabLabelSubscription.unsubscribe();
       this.canDeactivateSubscription.unsubscribe();
-    });
-  }
-
-  ngOnInit(): void {
-    this.dir = this.directionality.value;
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
     });
   }
 

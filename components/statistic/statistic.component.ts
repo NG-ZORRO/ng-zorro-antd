@@ -3,20 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  DestroyRef,
   Input,
-  OnInit,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
   inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
@@ -54,11 +50,13 @@ import { NzStatisticValueType } from './typings';
   `,
   host: {
     class: 'ant-statistic',
-    '[class.ant-statistic-rtl]': `dir === 'rtl'`
+    '[class.ant-statistic-rtl]': `dir() === 'rtl'`
   },
   imports: [NzSkeletonModule, NzStatisticContentValueComponent, NzOutletModule]
 })
-export class NzStatisticComponent implements OnInit {
+export class NzStatisticComponent {
+  protected readonly dir = inject(Directionality).valueSignal;
+
   @Input() nzPrefix?: string | TemplateRef<void>;
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
@@ -66,18 +64,4 @@ export class NzStatisticComponent implements OnInit {
   @Input() nzValueStyle: NgStyleInterface = {};
   @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
   @Input({ transform: booleanAttribute }) nzLoading: boolean = false;
-  dir: Direction = 'ltr';
-
-  protected cdr = inject(ChangeDetectorRef);
-  protected destroyRef = inject(DestroyRef);
-  private directionality = inject(Directionality);
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-  }
 }

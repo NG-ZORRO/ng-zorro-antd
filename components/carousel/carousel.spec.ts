@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -11,8 +10,7 @@ import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { dispatchKeyboardEvent, dispatchMouseEvent, testDirectionality } from 'ng-zorro-antd/core/testing';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselComponent } from './carousel.component';
@@ -639,15 +637,9 @@ export class NzTestCarouselNoSwipeComponent {
   array = [1, 2, 3, 4];
 }
 
-class MockDirectionality {
-  value = 'ltr';
-  change = new Subject();
-}
-
 describe('carousel', () => {
   let fixture: ComponentFixture<NzCarouselComponent>;
   let component: NzCarouselComponent;
-  let mockDirectionality: MockDirectionality;
   let mockObserve$: Subject<void>;
 
   beforeEach(() => {
@@ -661,10 +653,6 @@ describe('carousel', () => {
         // todo: use zoneless
         provideZoneChangeDetection(),
         {
-          provide: Directionality,
-          useClass: MockDirectionality
-        },
-        {
           provide: NzResizeObserver,
           useValue: nzResizeObserverSpy
         }
@@ -673,22 +661,7 @@ describe('carousel', () => {
 
     fixture = TestBed.createComponent(NzCarouselComponent);
     component = fixture.componentInstance;
-    mockDirectionality = TestBed.inject(Directionality) as unknown as MockDirectionality;
   });
-
-  it('directionality change detection', fakeAsync(() => {
-    spyOn<NzSafeAny>(component, 'markContentActive');
-    spyOn<NzSafeAny>(component['cdr'], 'detectChanges');
-    mockDirectionality.value = 'ltr';
-    component.ngOnInit();
-    expect(component.dir).toEqual('ltr');
-
-    mockDirectionality.change.next('rtl');
-    tick();
-    expect(component.dir).toEqual('rtl');
-    expect(component['markContentActive']).toHaveBeenCalled();
-    expect(component['cdr'].detectChanges).toHaveBeenCalled();
-  }));
 
   it('should not execute if keyCode is not of type LEFT_ARROW  or RIGHT_ARROW', fakeAsync(() => {
     component.ngOnInit();
@@ -719,4 +692,8 @@ describe('carousel', () => {
     tick(101);
     expect(component.layout).toHaveBeenCalled();
   }));
+});
+
+testDirectionality(() => NzTestCarouselBasicComponent, By.directive(NzCarouselComponent), 'ant-carousel', {
+  providers: [provideZoneChangeDetection()]
 });

@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -18,10 +17,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
-import { NzInputWrapperComponent } from 'ng-zorro-antd/input/input-wrapper.component';
 import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { NzFormControlStatusType, NzFormModule } from '../form';
@@ -171,28 +169,7 @@ describe('input', () => {
     });
   });
 
-  describe('input RTL', () => {
-    let fixture: ComponentFixture<NzTestInputWithDirComponent>;
-    let inputElement: DebugElement;
-    let inputGroupElement: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestInputWithDirComponent);
-      fixture.detectChanges();
-      inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
-      inputGroupElement = fixture.debugElement.query(By.directive(NzInputWrapperComponent));
-    });
-
-    it('should className correct on dir change', () => {
-      expect(inputElement.nativeElement.classList).not.toContain('ant-input-rtl');
-      expect(inputGroupElement.nativeElement.classList).not.toContain('ant-input-group-wrapper-rtl');
-
-      fixture.componentInstance.dir = 'rtl';
-      fixture.detectChanges();
-      expect(inputElement.nativeElement.classList).toContain('ant-input-rtl');
-      expect(inputGroupElement.nativeElement.classList).toContain('ant-input-group-wrapper-rtl');
-    });
-  });
+  testDirectionality(() => NzTestInputWithInputComponent, By.directive(NzInputDirective), 'ant-input');
 
   describe('input with status', () => {
     let fixture: ComponentFixture<NzTestInputWithStatusComponent>;
@@ -423,23 +400,6 @@ describe('input', () => {
     });
   });
 });
-
-@Component({
-  imports: [BidiModule, NzInputModule, NzIconModule],
-  template: `
-    <div [dir]="dir">
-      <input nz-input />
-      <nz-input-wrapper>
-        <input type="text" nz-input />
-        <nz-icon nzInputAddonAfter nzType="setting" />
-      </nz-input-wrapper>
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestInputWithDirComponent {
-  dir: Direction = 'ltr';
-}
 
 @Component({
   imports: [NzInputModule],

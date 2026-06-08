@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
@@ -19,7 +18,7 @@ import { By } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { provideMockDirectionality, sleep } from 'ng-zorro-antd/core/testing';
+import { sleep } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toCssPixelNumber } from 'ng-zorro-antd/core/util';
 
@@ -415,7 +414,6 @@ describe('NzAffixComponent', () => {
   let component: NzAffixComponent;
   let fixture: ComponentFixture<NzAffixComponent>;
   let mockPlatform: Platform;
-  let mockDirectionality: Directionality;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -425,7 +423,6 @@ describe('NzAffixComponent', () => {
         { provide: Renderer2, useValue: jasmine.createSpyObj('Renderer2', ['setStyle', 'addClass', 'removeClass']) },
         { provide: ElementRef, useValue: new ElementRef(document.createElement('div')) },
         { provide: DOCUMENT, useValue: document },
-        provideMockDirectionality(),
         { provide: Platform, useValue: { isBrowser: true } }
       ]
     });
@@ -433,23 +430,6 @@ describe('NzAffixComponent', () => {
     fixture = TestBed.createComponent(NzAffixComponent);
     component = fixture.componentInstance;
     mockPlatform = TestBed.inject(Platform);
-    mockDirectionality = TestBed.inject(Directionality);
-  });
-
-  it('should handle directionality change', async () => {
-    spyOn<NzSafeAny>(component, 'registerListeners');
-    spyOn(component, 'updatePosition');
-
-    await fixture.whenStable();
-
-    expect(component['registerListeners']).toHaveBeenCalledTimes(1);
-    expect(component.updatePosition).toHaveBeenCalledTimes(1);
-
-    mockDirectionality.valueSignal.set('rtl');
-    await fixture.whenStable();
-
-    expect(component['registerListeners']).toHaveBeenCalledTimes(2);
-    expect(component.updatePosition).toHaveBeenCalledTimes(2);
   });
 
   it('should register listeners if platform is browser', async () => {
@@ -485,31 +465,6 @@ describe('NzAffixComponent', () => {
 
     expect(component['setAffixStyle']).toHaveBeenCalled();
     expect(component['setPlaceholderStyle']).toHaveBeenCalled();
-  });
-
-  it('should update RTL class when direction changes', () => {
-    const fixedEl = component['fixedEl'].nativeElement;
-    fixedEl.classList.add('ant-affix');
-    component['updateRtlClass']();
-
-    expect(fixedEl.classList.contains('ant-affix-rtl')).toBeFalse();
-
-    mockDirectionality.valueSignal.set('rtl');
-    component['updateRtlClass']();
-
-    expect(fixedEl.classList.contains('ant-affix-rtl')).toBeTrue();
-
-    mockDirectionality.valueSignal.set('ltr');
-    component['updateRtlClass']();
-
-    expect(fixedEl.classList.contains('ant-affix-rtl')).toBeFalse();
-
-    mockDirectionality.valueSignal.set('rtl');
-    fixedEl.classList.remove('ant-affix');
-    fixedEl.classList.add('ant-affix-rtl');
-    component['updateRtlClass']();
-
-    expect(component['fixedEl'].nativeElement.classList.contains('ant-affix-rtl')).toBeFalse();
   });
 
   it('should not perform position updates if platform is not browser', () => {

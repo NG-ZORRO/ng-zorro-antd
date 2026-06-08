@@ -3,12 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzNoAnimationDirective, provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzBadgeComponent } from './badge.component';
@@ -307,27 +307,7 @@ describe('badge', () => {
     });
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestBadgeRtlComponent>;
-    let badge: DebugElement;
-    let badgeElement: HTMLElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestBadgeRtlComponent);
-      badge = fixture.debugElement.query(By.directive(NzBadgeComponent));
-      fixture.detectChanges();
-      badgeElement = badge.nativeElement;
-    });
-
-    it('should pagination className correct on dir change', () => {
-      fixture.detectChanges();
-      expect(badgeElement.classList).toContain('ant-badge-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(badgeElement.classList).not.toContain('ant-badge-rtl');
-    });
-  });
+  testDirectionality(() => NzTestBadgeBasicComponent, By.directive(NzBadgeComponent), 'ant-badge');
 });
 
 @Component({
@@ -369,18 +349,4 @@ export class NzTestBadgeBasicComponent {
   size: NzSizeDSType = 'default';
   noAnimation = true;
   color?: string;
-}
-
-@Component({
-  imports: [BidiModule, NzBadgeModule],
-  template: `
-    <div [dir]="direction">
-      <nz-badge [nzCount]="count" />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestBadgeRtlComponent {
-  direction: Direction = 'rtl';
-  count = 5;
 }

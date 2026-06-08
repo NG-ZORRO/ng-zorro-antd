@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction } from '@angular/cdk/bidi';
 import { InjectionToken, NgZone, QueryList } from '@angular/core';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
@@ -20,7 +19,6 @@ export interface NzCarouselComponentAsSource {
   slickListEl: HTMLElement;
   slickTrackEl: HTMLElement;
   activeIndex: number;
-  dir: Direction;
   ngZone: NgZone;
 }
 

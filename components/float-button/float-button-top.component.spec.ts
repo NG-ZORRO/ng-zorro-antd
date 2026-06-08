@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -11,7 +10,7 @@ import { By } from '@angular/platform-browser';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { sleep, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { sleep, testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzFloatButtonTopComponent } from './float-button-top.component';
@@ -198,14 +197,7 @@ describe('nz-float-button-top', () => {
     });
   });
 
-  describe('rtl', () => {
-    it('rtl', async () => {
-      const fixture = TestBed.createComponent(TestFloatButtonTopRtlComponent);
-      await fixture.whenStable();
-      const resultEl = fixture.debugElement.query(By.directive(NzFloatButtonTopComponent));
-      expect(resultEl.nativeElement.classList).toContain('ant-float-btn-rtl');
-    });
-  });
+  testDirectionality(() => TestFloatButtonTopComponent, By.directive(NzFloatButtonTopComponent), 'ant-float-btn');
 
   describe('animation', () => {
     it('should have correct animation classes', () => {
@@ -259,18 +251,4 @@ class TestFloatButtonTopComponent {
   setTarget(target: HTMLElement | string): void {
     this.target = target;
   }
-}
-
-@Component({
-  selector: 'test-float-button-top-rtl',
-  imports: [BidiModule, NzFloatButtonModule],
-  template: `
-    <div [dir]="direction">
-      <nz-float-button-top />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class TestFloatButtonTopRtlComponent {
-  direction: Direction = 'rtl';
 }

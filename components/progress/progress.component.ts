@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -11,14 +11,11 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
   ViewEncapsulation,
   numberAttribute,
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -83,7 +80,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
       [class.ant-progress-show-info]="nzShowInfo"
       [class.ant-progress-circle]="isCircleStyle"
       [class.ant-progress-steps]="isSteps"
-      [class.ant-progress-rtl]="dir === 'rtl'"
+      [class.ant-progress-rtl]="dir() === 'rtl'"
     >
       @if (nzType === 'line') {
         <div>
@@ -169,12 +166,11 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
     </div>
   `
 })
-export class NzProgressComponent implements OnChanges, OnInit {
+export class NzProgressComponent implements OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly directionality = inject(Directionality);
-  private readonly destroyRef = inject(DestroyRef);
+  protected readonly dir = inject(Directionality).valueSignal;
 
   @Input() @WithConfig() nzShowInfo: boolean = true;
   @Input() nzWidth = 132;
@@ -215,8 +211,6 @@ export class NzProgressComponent implements OnChanges, OnInit {
   trailPathStyle: NgStyleInterface | null = null;
   pathString?: string;
   icon!: string;
-
-  dir: Direction = 'ltr';
 
   get formatter(): NzProgressFormatter {
     return this.nzFormat || defaultFormatter;
@@ -292,14 +286,6 @@ export class NzProgressComponent implements OnChanges, OnInit {
         this.getSteps();
       }
     }
-  }
-
-  ngOnInit(): void {
-    this.directionality.change?.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(direction => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-    this.dir = this.directionality.value;
   }
 
   private updateIcon(): void {

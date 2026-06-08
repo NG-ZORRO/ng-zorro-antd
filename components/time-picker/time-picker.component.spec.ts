@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
@@ -23,7 +22,7 @@ import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
-import { dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchMouseEvent, testDirectionality, typeInElement } from 'ng-zorro-antd/core/testing';
 import { NzPlacement, NzStatus, NzVariant, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
@@ -639,45 +638,6 @@ describe('time-picker', () => {
     });
   });
 
-  describe('RTL', () => {
-    let testComponent: NzTestTimePickerDirComponent;
-    let fixture: ComponentFixture<NzTestTimePickerDirComponent>;
-    let timeElement: DebugElement;
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestTimePickerDirComponent);
-      testComponent = fixture.debugElement.componentInstance;
-      fixture.detectChanges();
-      timeElement = fixture.debugElement.query(By.directive(NzTimePickerComponent));
-    });
-
-    it('should className correct on dir change', () => {
-      expect(timeElement.nativeElement.classList).not.toContain('ant-picker-rtl');
-      testComponent.dir = 'rtl';
-      fixture.detectChanges();
-      expect(timeElement.nativeElement.classList).toContain('ant-picker-rtl');
-    });
-
-    it('should work correctly with placement in RTL mode', fakeAsync(() => {
-      testComponent.dir = 'rtl';
-      testComponent.nzPlacement = 'bottomLeft';
-      fixture.detectChanges();
-
-      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-
-      const dropdown = queryFromOverlay('.ant-picker-dropdown');
-      expect(dropdown.classList.contains('ant-picker-dropdown-rtl')).toBe(true);
-      expect(dropdown.classList.contains('ant-picker-dropdown-placement-bottomLeft')).toBe(true);
-
-      triggerInputBlur(fixture.debugElement);
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-    }));
-  });
-
   describe('prefix with template', () => {
     let fixture: ComponentFixture<NzTestTimePickerPrefixTemplateComponent>;
 
@@ -956,6 +916,10 @@ describe('time-picker', () => {
   }
 });
 
+testDirectionality(() => NzTestTimePickerComponent, By.directive(NzTimePickerComponent), 'ant-picker', {
+  providers: [provideNoopAnimations(), provideZoneChangeDetection()]
+});
+
 describe('time-picker size', () => {
   let fixture: ComponentFixture<NzTestTimePickerSizeComponent>;
   let timePickerElement: HTMLElement;
@@ -1111,20 +1075,6 @@ export class NzTestTimePickerComponent {
 })
 export class NzTestTimePickerStatusComponent {
   status: NzStatus = 'error';
-}
-
-@Component({
-  imports: [NzTimePickerComponent, BidiModule],
-  template: `
-    <div [dir]="dir">
-      <nz-time-picker [nzPlacement]="nzPlacement" />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestTimePickerDirComponent {
-  dir: Direction = 'ltr';
-  nzPlacement: NzPlacement = 'bottomLeft';
 }
 
 @Component({

@@ -3,13 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { provideZoneChangeDetection } from '@angular/core';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -168,48 +168,8 @@ describe('page-header', () => {
     fixture.detectChanges();
     expect(context.onBack).toHaveBeenCalled();
   });
-
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzDemoPageHeaderRtlComponent>;
-    let pageHeader: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoPageHeaderRtlComponent);
-      pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
-    });
-
-    it('should className correct', () => {
-      fixture.detectChanges();
-      expect(pageHeader.nativeElement.classList).toContain('ant-page-header-rtl');
-    });
-
-    it('should className correct after change Dir', () => {
-      fixture.detectChanges();
-      expect(pageHeader.nativeElement.classList).toContain('ant-page-header-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-
-      expect(pageHeader.nativeElement.classList).not.toContain('ant-page-header-rtl');
-    });
-
-    it('should have an default back icon', () => {
-      fixture.detectChanges();
-      expect(pageHeader.nativeElement.querySelector('.ant-page-header-back .anticon-arrow-right')).toBeTruthy();
-    });
-  });
 });
 
-@Component({
-  imports: [BidiModule, NzDemoPageHeaderBasicComponent],
-  template: `
-    <div [dir]="direction">
-      <nz-demo-page-header-basic />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzDemoPageHeaderRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
-}
+testDirectionality(() => NzDemoPageHeaderBasicComponent, By.directive(NzPageHeaderComponent), 'ant-page-header', {
+  providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
+});

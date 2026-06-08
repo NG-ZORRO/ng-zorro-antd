@@ -3,16 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { BidiModule, Dir, Direction } from '@angular/cdk/bidi';
 import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import {
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent,
+  testDirectionality
+} from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -961,62 +965,7 @@ describe('slider', () => {
     });
   });
 
-  describe('RTL', () => {
-    let fixture: ComponentFixture<NzTestSliderRtlComponent>;
-    let trackFillElement: HTMLElement;
-    let trackHandleElement: HTMLElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestSliderRtlComponent);
-      fixture.detectChanges();
-
-      getReferenceFromFixture(fixture);
-      trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
-      trackHandleElement = sliderNativeElement.querySelector('.ant-slider-handle') as HTMLElement;
-    });
-
-    it('should className correct on dir change', fakeAsync(() => {
-      expect(sliderNativeElement.classList).toContain('ant-slider-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(sliderNativeElement.classList).not.toContain('ant-slider-rtl');
-    }));
-
-    it('should update the track fill on click', fakeAsync(() => {
-      expect(trackFillElement.style.width).toBe('0%');
-
-      dispatchClickEventSequence(sliderNativeElement, 0.39, true);
-      fixture.detectChanges();
-
-      expect(trackFillElement.style.width).toBe('39%');
-    }));
-
-    it('should update track fill style on direction change', () => {
-      expect(trackFillElement.style.left).toBe('auto');
-      expect(trackFillElement.style.right).toBe('0%');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-
-      expect(trackFillElement.style.left).toBe('0%');
-      expect(trackFillElement.style.right).toBe('auto');
-    });
-
-    it('should update track handle style on direction change', () => {
-      dispatchClickEventSequence(sliderNativeElement, 0.39, true);
-      fixture.detectChanges();
-
-      expect(trackHandleElement.style.left).toBe('auto');
-      expect(trackHandleElement.style.right).toBe('39%');
-
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-
-      expect(trackHandleElement.style.right).toBe('auto');
-      expect(trackHandleElement.style.left).toBe('39%');
-    });
-  });
+  testDirectionality(() => NzTestSliderComponent, By.css('.ant-slider'), 'ant-slider');
 });
 
 const styles = `
@@ -1324,18 +1273,4 @@ function dispatchMouseenterEvent(element: HTMLElement): void {
   const x = dimensions.left;
 
   dispatchMouseEvent(element, 'mouseenter', x, y);
-}
-
-@Component({
-  imports: [BidiModule, NzSliderModule],
-  template: `
-    <div [dir]="direction">
-      <nz-slider />
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestSliderRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction: Direction = 'rtl';
 }

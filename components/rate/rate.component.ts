@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   booleanAttribute,
@@ -49,7 +49,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       #ulElement
       class="ant-rate"
       [class.ant-rate-disabled]="nzDisabled"
-      [class.ant-rate-rtl]="dir === 'rtl'"
+      [class.ant-rate-rtl]="dir() === 'rtl'"
       [class]="classMap"
       (keydown)="onKeyDown($event); $event.preventDefault()"
       (mouseleave)="onRateLeave(); $event.stopPropagation()"
@@ -89,7 +89,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   private readonly ngZone = inject(NgZone);
   private readonly renderer = inject(Renderer2);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private readonly destroyRef = inject(DestroyRef);
 
   @ViewChild('ulElement', { static: true }) ulElement!: ElementRef<HTMLUListElement>;
@@ -109,7 +109,6 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   classMap: NgClassType = {};
   starArray: number[] = [];
   starStyleArray: NgClassType[] = [];
-  dir: Direction = 'ltr';
 
   private hasHalf = false;
   private hoverValue = 0;
@@ -157,13 +156,6 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   }
 
   ngOnInit(): void {
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((direction: Direction) => {
-      this.dir = direction;
-      this.cdr.detectChanges();
-    });
-
-    this.dir = this.directionality.value;
-
     fromEventOutsideAngular<FocusEvent>(this.ulElement.nativeElement, 'focus')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {

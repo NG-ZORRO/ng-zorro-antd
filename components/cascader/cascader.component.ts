@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
@@ -216,7 +216,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
         [class.ant-select-dropdown-placement-bottomRight]="placement() === 'bottomRight'"
         [class.ant-select-dropdown-placement-topLeft]="placement() === 'topLeft'"
         [class.ant-select-dropdown-placement-topRight]="placement() === 'topRight'"
-        [class.ant-cascader-dropdown-rtl]="dir === 'rtl'"
+        [class.ant-cascader-dropdown-rtl]="dir() === 'rtl'"
         [animate.enter]="slideAnimationEnter()"
         [animate.leave]="slideAnimationLeave()"
         [nzNoAnimation]="noAnimation?.nzNoAnimation?.()"
@@ -235,7 +235,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
       <div
         #menu
         class="ant-cascader-menus"
-        [class.ant-cascader-rtl]="dir === 'rtl'"
+        [class.ant-cascader-rtl]="dir() === 'rtl'"
         [class.ant-cascader-menus-hidden]="!menuOpen()"
         [class.ant-cascader-menu-empty]="shouldShowEmpty"
         [class]="nzMenuClassName"
@@ -269,7 +269,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
                   [activated]="isOptionActivated(option, i)"
                   [highlightText]="inSearchingMode ? inputValue : ''"
                   [node]="option"
-                  [dir]="dir"
+                  [dir]="dir()"
                   [checkable]="nzMultiple"
                   (mouseenter)="onOptionMouseEnter(option, i, $event)"
                   (mouseleave)="onOptionMouseLeave(option, i, $event)"
@@ -311,7 +311,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
     '[class.ant-select-focused]': 'isFocused',
     '[class.ant-select-multiple]': 'nzMultiple',
     '[class.ant-select-single]': '!nzMultiple',
-    '[class.ant-select-rtl]': `dir === 'rtl'`,
+    '[class.ant-select-rtl]': `dir() === 'rtl'`,
     '(click)': 'onTriggerClick()',
     '(mouseenter)': 'onTriggerMouseEnter()',
     '(mouseleave)': 'onTriggerMouseLeave($event)'
@@ -347,7 +347,7 @@ export class NzCascaderComponent
   private readonly i18nService = inject(NzI18nService);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly renderer = inject(Renderer2);
-  private readonly directionality = inject(Directionality);
+  protected readonly dir = inject(Directionality).valueSignal;
   private readonly destroyRef = inject(DestroyRef);
   protected readonly nzFormStatusService = inject(NzFormStatusService, { optional: true });
   protected readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
@@ -464,8 +464,6 @@ export class NzCascaderComponent
   isFocused = false;
 
   locale!: NzCascaderI18nInterface;
-  dir: Direction = 'ltr';
-
   isComposing = false;
 
   protected get overlayOrigin(): ElementRef {
@@ -602,12 +600,6 @@ export class NzCascaderComponent
       .subscribe(() => this.setLocale());
 
     this.size.set(this.nzSize);
-
-    this.dir = this.directionality.value;
-    this.directionality.change.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.dir = this.directionality.value;
-      srv.$redraw.next();
-    });
 
     this.setupSelectionChangeListener();
     this.setupChangeListener();
@@ -1293,14 +1285,14 @@ export class NzCascaderComponent
               this.moveUpOrDown(true);
               break;
             case LEFT_ARROW:
-              if (this.dir === 'rtl') {
+              if (this.dir() === 'rtl') {
                 this.nextColumn();
               } else {
                 this.prevColumn();
               }
               break;
             case RIGHT_ARROW:
-              if (this.dir === 'rtl') {
+              if (this.dir() === 'rtl') {
                 this.prevColumn();
               } else {
                 this.nextColumn();
