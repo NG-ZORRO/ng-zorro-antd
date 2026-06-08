@@ -9,7 +9,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -108,7 +107,6 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
       />
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     '[class.ant-typography]': '!editing',

@@ -6,7 +6,6 @@
 import {
   afterNextRender,
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
@@ -21,7 +20,6 @@ import {
 
 @Component({
   selector: 'nz-alert-marquee',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <div #track1 class="ant-alert-marquee-track" [style.animation-duration.s]="animationDuration()">

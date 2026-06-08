@@ -3,17 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ViewEncapsulation, Input } from '@angular/core';
 
 import { NzCronExpressionLabelI18n } from 'ng-zorro-antd/i18n';
 
 import { TimeType } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-cron-expression-label',
   exportAs: 'nzCronExpressionLabel',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="ant-cron-expression-label" [class.ant-cron-expression-label-foucs]="labelFocus === type">
       <label>

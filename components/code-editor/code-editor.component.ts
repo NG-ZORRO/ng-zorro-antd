@@ -8,7 +8,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -44,10 +43,9 @@ type IStandaloneDiffEditor = editor.IStandaloneDiffEditor;
 declare const monaco: NzSafeAny;
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-code-editor',
   exportAs: 'nzCodeEditor',
+  encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzLoading) {
       <div class="ant-code-editor-loading">

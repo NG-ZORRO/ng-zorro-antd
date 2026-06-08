@@ -7,7 +7,6 @@ import { Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -40,10 +39,9 @@ import { NzRateItemComponent } from './rate-item.component';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-rate',
   exportAs: 'nzRate',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <ul
       #ulElement

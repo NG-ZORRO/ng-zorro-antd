@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -96,7 +95,6 @@ import { NzTreeNodeTitleComponent } from './tree-node-title.component';
       (contextmenu)="contextMenu($event)"
     />
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ant-select-tree-treenode]': `nzSelectMode`,
     '[class.ant-select-tree-treenode-disabled]': `nzSelectMode && isDisabled`,

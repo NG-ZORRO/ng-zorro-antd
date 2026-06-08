@@ -3,15 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  Directive,
-  inject,
-  Input
-} from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, Directive, inject, Input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { animationFrameScheduler, asapScheduler, merge } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
@@ -42,7 +34,6 @@ const BUILD_INDENTS_SCHEDULER = typeof requestAnimationFrame !== 'undefined' ? a
       <span class="ant-tree-indent-unit" [class.ant-tree-indent-unit-end]="!isEnd"></span>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-tree-indent'
   }

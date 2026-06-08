@@ -9,7 +9,6 @@ import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   contentChildren,
@@ -115,8 +114,7 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
     '[class.ant-splitter-vertical]': 'nzLayout() === "vertical"',
     '[class.ant-splitter-rtl]': 'dir() === "rtl"'
   },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class NzSplitterComponent {
   /** ------------------- Props ------------------- */

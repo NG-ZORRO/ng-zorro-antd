@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -33,7 +32,6 @@ import { NzTagColor } from './typings';
       <nz-icon nzType="close" class="ant-tag-close-icon" tabindex="-1" (click)="closeTag($event)" />
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-tag',

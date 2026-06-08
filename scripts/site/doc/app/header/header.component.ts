@@ -1,5 +1,5 @@
 import { NgTemplateOutlet, UpperCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, Version } from '@angular/core';
+import { Component, inject, signal, Version } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -38,7 +38,6 @@ import { SearchbarComponent } from './searchbar.component';
     NavigationComponent,
     UpperCasePipe
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
   private readonly nzConfigService = inject(NzConfigService);

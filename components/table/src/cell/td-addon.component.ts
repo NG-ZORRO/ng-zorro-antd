@@ -6,7 +6,6 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -28,7 +27,6 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
 @Component({
   selector:
     'td[nzChecked], td[nzDisabled], td[nzIndeterminate], td[nzIndentSize], td[nzExpand], td[nzShowExpand], td[nzShowCheckbox]',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzShowExpand || nzIndentSize > 0) {

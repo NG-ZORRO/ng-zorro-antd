@@ -5,7 +5,6 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -79,8 +78,7 @@ import { PREFIX_CLASS } from './util';
       }
     </div>
   `,
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class CalendarFooterComponent implements OnChanges {
   private dateHelper = inject(DateHelperService);

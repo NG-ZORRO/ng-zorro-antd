@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-footer-item',
   imports: [NzIconModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (link()) {
       <a [attr.href]="link()" target="_blank" rel="noopener">

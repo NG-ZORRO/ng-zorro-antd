@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { normalizePassiveListenerOptions, Platform } from '@angular/cdk/platform';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
@@ -66,7 +65,6 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
   host: {
     '[class]': 'class()'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzFloatButtonTopComponent implements OnInit {

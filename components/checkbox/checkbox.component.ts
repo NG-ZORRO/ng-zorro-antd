@@ -7,7 +7,6 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -36,7 +35,6 @@ import { NZ_CHECKBOX_GROUP } from './tokens';
 @Component({
   selector: '[nz-checkbox]',
   exportAs: 'nzCheckbox',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <span

@@ -4,7 +4,7 @@
  */
 
 import { Direction } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { NotificationConfig, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
@@ -28,10 +28,9 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
 };
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-notification-container',
   exportAs: 'nzNotificationContainer',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div
       class="ant-notification ant-notification-topLeft"

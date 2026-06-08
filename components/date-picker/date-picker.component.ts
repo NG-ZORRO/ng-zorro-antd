@@ -16,7 +16,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   computed,
@@ -108,10 +107,9 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
  * The base picker for all common APIs
  */
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-quarter-picker,nz-year-picker,nz-range-picker',
   exportAs: 'nzDatePicker',
+  encapsulation: ViewEncapsulation.None,
   template: `
     @if (!nzInline()) {
       @if (!isRange) {

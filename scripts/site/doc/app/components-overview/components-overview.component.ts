@@ -1,6 +1,5 @@
 import {
   afterNextRender,
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -44,7 +43,6 @@ import { ROUTER_LIST } from '../router';
   ],
   templateUrl: './components-overview.component.html',
   styleUrl: './components-overview.component.less',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export default class ComponentsOverviewComponent {

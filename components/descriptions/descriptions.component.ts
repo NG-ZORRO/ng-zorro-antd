@@ -7,7 +7,6 @@ import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -46,10 +45,9 @@ const defaultColumnMap: ResponsiveLike<number> = {
 const DEFAULT_COLUMN_NUM = 3;
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-descriptions',
   exportAs: 'nzDescriptions',
+  encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzTitle || nzExtra) {
       <div class="ant-descriptions-header">

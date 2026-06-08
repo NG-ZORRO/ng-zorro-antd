@@ -6,7 +6,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -26,7 +25,6 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 @Component({
   selector: 'nz-list-item-extra, [nz-list-item-extra]',
   exportAs: 'nzListItemExtra',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: {
     class: 'ant-list-item-extra'
@@ -37,7 +35,6 @@ export class NzListItemExtraComponent {}
 @Component({
   selector: 'nz-list-item-action',
   exportAs: 'nzListItemAction',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-template><ng-content /></ng-template>`
 })
 export class NzListItemActionComponent {
@@ -47,7 +44,6 @@ export class NzListItemActionComponent {
 @Component({
   selector: 'ul[nz-list-item-actions]',
   exportAs: 'nzListItemActions',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @for (i of actions; track i) {
       <li>

@@ -5,7 +5,6 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -33,7 +32,6 @@ import { CrossOrigin, ErrorCorrectionLevel, Excavation, ImageSettings, Modules }
 import { DEFAULT_BACKGROUND_COLOR, DEFAULT_FRONT_COLOR, DEFAULT_MINVERSION } from './utils';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-qrcode',
   exportAs: 'nzQRCode',
   template: `

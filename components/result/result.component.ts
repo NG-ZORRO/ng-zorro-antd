@@ -4,15 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  TemplateRef,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, computed, inject, input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -96,7 +88,6 @@ const ExceptionStatus = ['404', '500', '403'];
     NzResultServerErrorComponent,
     NzResultUnauthorizedComponent
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzResultComponent {

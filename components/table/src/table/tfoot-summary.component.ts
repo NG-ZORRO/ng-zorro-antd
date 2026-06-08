@@ -6,7 +6,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   inject,
   Input,
@@ -30,7 +29,6 @@ function fixedAttribute(value: NzTableSummaryFixedType | boolean | unknown): NzT
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
   selector: 'tfoot[nzSummary]',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <ng-template #contentTemplate>

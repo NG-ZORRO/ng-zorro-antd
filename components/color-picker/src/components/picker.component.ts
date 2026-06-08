@@ -6,7 +6,6 @@
 import {
   AfterViewInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DOCUMENT,
@@ -49,7 +48,6 @@ function getPosition(e: EventType): { pageX: number; pageY: number } {
       <div class="ant-color-picker-saturation" [style.background-color]="toHsb()"></div>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-color-picker-select',
     '(mousedown)': 'dragStartHandle($event)',

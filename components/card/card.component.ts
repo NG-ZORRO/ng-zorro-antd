@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -32,7 +31,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
 @Component({
   selector: 'nz-card',
   exportAs: 'nzCard',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzTitle || nzExtra || listOfNzCardTabComponent) {

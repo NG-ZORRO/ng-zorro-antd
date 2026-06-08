@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -26,10 +25,9 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-calendar-header',
   exportAs: 'nzCalendarHeader',
+  encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzCustomHeader) {
       <ng-container *nzStringTemplateOutlet="nzCustomHeader">{{ nzCustomHeader }}</ng-container>

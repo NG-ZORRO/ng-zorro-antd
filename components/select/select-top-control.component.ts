@@ -5,7 +5,6 @@
 
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -43,7 +42,6 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     NzSelectPlaceholderComponent,
     NzStringTemplateOutletDirective
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (prefix) {

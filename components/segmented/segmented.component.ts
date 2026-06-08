@@ -8,7 +8,6 @@ import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keyc
 import {
   afterNextRender,
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   contentChildren,
@@ -43,10 +42,9 @@ import { normalizeOptions, NzSegmentedOption, NzSegmentedOptions } from './types
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-segmented',
   exportAs: 'nzSegmented',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <!-- thumb motion div -->
     <div class="ant-segmented-group">

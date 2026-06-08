@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
@@ -14,8 +14,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
     <h4 class="ant-list-item-meta-title">
       <ng-content />
     </h4>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  `
 })
 export class NzListItemMetaTitleComponent {}
 
@@ -26,8 +25,7 @@ export class NzListItemMetaTitleComponent {}
     <div class="ant-list-item-meta-description">
       <ng-content />
     </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  `
 })
 export class NzListItemMetaDescriptionComponent {}
 
@@ -43,7 +41,6 @@ export class NzListItemMetaDescriptionComponent {}
       }
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzAvatarModule]
 })
 export class NzListItemMetaAvatarComponent {

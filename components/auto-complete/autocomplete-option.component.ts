@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -36,7 +35,6 @@ export class NzOptionSelectionChange {
 @Component({
   selector: 'nz-auto-option',
   exportAs: 'nzAutoOption',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="ant-select-item-option-content">

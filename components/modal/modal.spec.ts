@@ -1537,7 +1537,6 @@ class TestWithChildViewContainerComponent {
 
 @Component({
   selector: 'test-with-on-push-view-container',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: 'hello'
 })
 class TestWithOnPushViewContainerComponent {

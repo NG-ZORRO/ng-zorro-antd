@@ -5,7 +5,6 @@
 
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -26,7 +25,6 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 
 @Component({
   selector: 'tr[nz-table-measure-row]',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     @for (th of listOfMeasureColumn; track $index) {

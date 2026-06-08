@@ -5,16 +5,7 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  linkedSignal,
-  output,
-  TemplateRef
-} from '@angular/core';
+import { Component, computed, inject, input, linkedSignal, output, TemplateRef } from '@angular/core';
 
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -30,7 +21,6 @@ const CLASS_NAME = 'ant-float-btn';
   selector: 'nz-float-button',
   exportAs: 'nzFloatButton',
   imports: [NzButtonModule, NzFloatButtonContentComponent, NzBadgeModule, NgTemplateOutlet],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (!!nzHref()) {
       <a

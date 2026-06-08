@@ -1,5 +1,5 @@
 import { Platform } from '@angular/cdk/platform';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -12,7 +12,6 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-nav-bottom',
   imports: [RouterLink, NzIconModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="prev-next-nav">
       @if (index() > 1) {

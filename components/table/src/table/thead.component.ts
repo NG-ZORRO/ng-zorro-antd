@@ -8,7 +8,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -36,7 +35,6 @@ import { NzTrDirective } from './tr.directive';
 
 @Component({
   selector: 'thead:not(.ant-table-thead)',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <ng-template #contentTemplate>

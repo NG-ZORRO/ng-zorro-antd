@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'nz-tree-indent',
@@ -20,7 +20,6 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
       ></span>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[attr.aria-hidden]': 'true',
     '[class.ant-tree-indent]': '!nzSelectMode',

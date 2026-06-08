@@ -8,7 +8,6 @@ import {
   ANIMATION_MODULE_TYPE,
   AnimationCallbackEvent,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -94,7 +93,6 @@ export type NzAlertType = 'success' | 'info' | 'warning' | 'error';
       </div>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzAlertComponent implements OnChanges {

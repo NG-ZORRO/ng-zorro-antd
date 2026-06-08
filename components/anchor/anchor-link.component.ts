@@ -6,7 +6,6 @@
 import { Platform } from '@angular/cdk/platform';
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   ContentChild,
   DestroyRef,
@@ -48,7 +47,6 @@ import { NzAnchorComponent } from './anchor.component';
     }
   `,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-anchor-link'
   }

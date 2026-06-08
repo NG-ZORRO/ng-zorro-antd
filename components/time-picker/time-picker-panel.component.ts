@@ -5,7 +5,6 @@
 
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DebugElement,
@@ -44,7 +43,6 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-time-picker-panel',
   exportAs: 'nzTimePickerPanel',
   template: `

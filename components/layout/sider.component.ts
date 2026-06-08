@@ -6,7 +6,6 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -34,7 +33,6 @@ import { NzSiderTriggerComponent } from './sider-trigger.component';
   selector: 'nz-sider',
   exportAs: 'nzSider',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="ant-layout-sider-children">
       <ng-content />

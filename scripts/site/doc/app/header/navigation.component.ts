@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -61,7 +61,6 @@ import { AppService } from '../app.service';
   host: {
     id: 'nav'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NavigationComponent {

@@ -5,7 +5,6 @@
 
 import { ComponentPortal, Portal, PortalModule } from '@angular/cdk/portal';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   inject,
@@ -45,10 +44,9 @@ function getEmptySize(componentName: string): NzEmptySize {
 type NzEmptyContentType = 'component' | 'template' | 'string';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-embed-empty',
   exportAs: 'nzEmbedEmpty',
+  encapsulation: ViewEncapsulation.None,
   template: `
     @if (content) {
       @if (contentType === 'template' || contentType === 'string') {

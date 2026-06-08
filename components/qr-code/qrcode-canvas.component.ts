@@ -3,13 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, input, viewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, input, viewChild } from '@angular/core';
 
 import { CrossOrigin, Excavation, Modules } from './typing';
 import { DEFAULT_BACKGROUND_COLOR, DEFAULT_FRONT_COLOR, excavateModules, generatePath, isSupportPath2d } from './utils';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-qrcode-canvas',
   exportAs: 'nzQRCodeCanvas',
   template: `

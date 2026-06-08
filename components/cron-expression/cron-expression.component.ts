@@ -6,7 +6,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -50,10 +49,9 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
 }
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-cron-expression',
   exportAs: 'nzCronExpression',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="ant-cron-expression">
       <div class="ant-cron-expression-content">

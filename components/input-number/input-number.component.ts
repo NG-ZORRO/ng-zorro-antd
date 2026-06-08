@@ -10,7 +10,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   afterNextRender,
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   contentChild,
@@ -194,7 +193,6 @@ export interface NzInputNumberStepEvent {
     },
     { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input-number' }
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     '[class]': 'class()',

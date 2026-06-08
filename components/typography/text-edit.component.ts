@@ -7,7 +7,6 @@ import { ENTER, ESCAPE } from '@angular/cdk/keycodes';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   afterNextRender,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -59,7 +58,6 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       </button>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzTextEditComponent implements OnInit {

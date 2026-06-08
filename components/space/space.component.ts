@@ -6,7 +6,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -38,7 +37,6 @@ const SPACE_SIZE: Record<NzSpaceType, number> = {
 @Component({
   selector: 'nz-space, [nz-space]',
   exportAs: 'nzSpace',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-content />
     @for (item of items; track item) {

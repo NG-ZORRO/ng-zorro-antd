@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 import { NzImageDirective } from './image.directive';
 
@@ -11,7 +11,6 @@ import { NzImageDirective } from './image.directive';
   selector: 'nz-image-group',
   exportAs: 'nzImageGroup',
   template: '<ng-content />',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzImageGroupComponent {

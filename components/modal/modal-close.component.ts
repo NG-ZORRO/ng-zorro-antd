@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -24,7 +24,6 @@ import { ModalOptions } from './modal-types';
     class: 'ant-modal-close',
     'aria-label': 'Close'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzIconModule, NzOutletModule]
 })
 export class NzModalCloseComponent {

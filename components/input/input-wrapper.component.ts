@@ -9,7 +9,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   afterNextRender,
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   contentChild,
@@ -169,7 +168,6 @@ export interface NzCountConfig {
     { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'input' },
     { provide: NZ_INPUT_WRAPPER, useExisting: forwardRef(() => NzInputWrapperComponent) }
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   hostDirectives: [NzSpaceCompactItemDirective],
   host: {

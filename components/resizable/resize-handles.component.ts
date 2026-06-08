@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { NzCursorType, NzResizeDirection, NzResizeHandleComponent } from './resize-handle.component';
 
@@ -44,7 +44,6 @@ function normalizeResizeHandleOptions(value: Array<NzResizeDirection | NzResizeH
       <nz-resize-handle [nzDirection]="option.direction" [nzCursorType]="option.cursorType" />
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzResizeHandleComponent]
 })
 export class NzResizeHandlesComponent implements OnChanges {

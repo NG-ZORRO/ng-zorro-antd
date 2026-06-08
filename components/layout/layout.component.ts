@@ -4,14 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ContentChildren,
-  inject,
-  QueryList,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ContentChildren, inject, QueryList, ViewEncapsulation } from '@angular/core';
 
 import { NzSiderComponent } from './sider.component';
 
@@ -20,7 +13,6 @@ import { NzSiderComponent } from './sider.component';
   exportAs: 'nzLayout',
   template: `<ng-content />`,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-layout',
     '[class.ant-layout-rtl]': `dir() === 'rtl'`,

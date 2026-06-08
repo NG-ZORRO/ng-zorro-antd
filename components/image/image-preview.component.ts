@@ -6,7 +6,6 @@
 import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -137,7 +136,6 @@ const NZ_DEFAULT_ROTATE = 0;
       </div>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-image-preview-root',

@@ -6,7 +6,6 @@
 import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -38,6 +37,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
       useValue: true
     }
   ],
+  imports: [NzNoAnimationDirective],
   template: `
     <ng-template>
       <div
@@ -66,18 +66,16 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
       </div>
     </ng-template>
   `,
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NzNoAnimationDirective]
+  encapsulation: ViewEncapsulation.None
 })
 export class NzDropdownMenuComponent implements AfterContentInit {
-  private cdr = inject(ChangeDetectorRef);
-  private elementRef = inject(ElementRef);
-  private renderer = inject(Renderer2);
-  public viewContainerRef = inject(ViewContainerRef);
+  public readonly viewContainerRef = inject(ViewContainerRef);
+  public readonly nzMenuService = inject(MenuService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly elementRef = inject(ElementRef);
+  private readonly renderer = inject(Renderer2);
   protected readonly dir = inject(Directionality).valueSignal;
-  noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
-  public nzMenuService = inject(MenuService);
+  protected readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;

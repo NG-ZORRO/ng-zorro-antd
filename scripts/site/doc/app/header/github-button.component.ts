@@ -1,11 +1,10 @@
 import { Platform } from '@angular/cdk/platform';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-github-btn',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a
       class="gh-btn"

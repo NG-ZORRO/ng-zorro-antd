@@ -5,7 +5,6 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -48,8 +47,7 @@ const ANIMATION_CLASS_MAP: Record<AnimationState, string[]> = {
     '[attr.aria-hidden]': '!active()',
     '(transitionend)': '_onTransitionEnd($event)'
   },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class NzTabBodyComponent {
   private readonly elementRef = inject(ElementRef);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 
 import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 
@@ -8,7 +8,6 @@ import { ThemingIcon } from './theming-icon';
 
 @Component({
   selector: 'app-fixed-widgets',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzDropdownModule, ThemingIcon],
   template: `
     <div class="fixed-widgets">

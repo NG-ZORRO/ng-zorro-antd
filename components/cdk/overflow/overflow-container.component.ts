@@ -5,7 +5,6 @@
 
 import {
   Component,
-  ChangeDetectionStrategy,
   ContentChildren,
   QueryList,
   ElementRef,
@@ -33,8 +32,7 @@ import { NzOverflowSuffixDirective } from './overflow-suffix.directive';
     <ng-content select="[appOverflowRest]" />
     <ng-content select="[appOverflowSuffix]" />
   `,
-  providers: [NzResizeObserver],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  providers: [NzResizeObserver]
 })
 export class NzOverflowContainerComponent implements OnInit, AfterContentInit {
   private nzResizeObserver = inject(NzResizeObserver);

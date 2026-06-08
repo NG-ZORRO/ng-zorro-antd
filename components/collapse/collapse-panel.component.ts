@@ -6,7 +6,6 @@
 import {
   AfterViewInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -37,7 +36,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
 @Component({
   selector: 'nz-collapse-panel',
   exportAs: 'nzCollapsePanel',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <div

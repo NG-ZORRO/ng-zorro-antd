@@ -12,7 +12,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentChecked,
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -124,7 +123,6 @@ const CSS_TRANSFORM_TIME = 150;
     class: 'ant-tabs-nav',
     '(keydown)': 'handleKeydown($event)'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnChanges {

@@ -3,13 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-result-unauthorized',
   exportAs: 'nzResultUnauthorized',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <svg width="251" height="294">
       <g fill="none" fillRule="evenodd">

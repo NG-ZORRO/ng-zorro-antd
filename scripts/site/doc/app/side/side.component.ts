@@ -1,5 +1,5 @@
 import { BidiModule } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -20,7 +20,6 @@ type I18n<T> = {
   selector: 'app-side',
   imports: [RouterLink, NgTemplateOutlet, NzMenuModule, NzTagModule, BidiModule],
   templateUrl: './side.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SideComponent {
   protected readonly routerList = ROUTER_LIST;

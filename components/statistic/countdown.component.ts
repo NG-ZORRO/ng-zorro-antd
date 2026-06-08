@@ -6,7 +6,6 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectorRef,
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   EventEmitter,
@@ -27,10 +26,9 @@ import { NzStatisticComponent } from './statistic.component';
 const REFRESH_INTERVAL = 1000 / 30;
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-countdown',
   exportAs: 'nzCountdown',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <nz-statistic
       [nzValue]="diff"

@@ -1052,7 +1052,6 @@ class NzTestAutocompleteWithoutPanelComponent {
 
 @Component({
   imports: [NzAutocompleteModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div>
       <input [nzAutocomplete]="auto" />

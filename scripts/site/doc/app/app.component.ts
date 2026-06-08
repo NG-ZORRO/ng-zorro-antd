@@ -1,7 +1,7 @@
 import { BidiModule } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, Renderer2 } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { debounceTime, filter, startWith } from 'rxjs/operators';
@@ -67,7 +67,6 @@ const defaultKeywords =
     NavProgressBar
   ],
   templateUrl: './app.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[dir]': 'dir()'
   },

@@ -10,7 +10,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -59,10 +58,9 @@ import {
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-carousel',
   exportAs: 'nzCarousel',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div
       class="slick-initialized slick-slider"

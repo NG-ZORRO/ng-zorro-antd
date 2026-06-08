@@ -4,16 +4,7 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  viewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, viewChild, ViewEncapsulation } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -107,7 +98,6 @@ import { NzNotificationData } from './typings';
       </a>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzNotificationComponent extends NzMNComponent {

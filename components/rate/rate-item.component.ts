@@ -5,7 +5,6 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -18,10 +17,9 @@ import {
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: '[nz-rate-item]',
   exportAs: 'nzRateItem',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div
       class="ant-rate-star-second"

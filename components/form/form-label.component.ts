@@ -5,7 +5,6 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
@@ -42,7 +41,6 @@ function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormToolti
   selector: 'nz-form-label',
   exportAs: 'nzFormLabel',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <label
       [attr.for]="nzFor"

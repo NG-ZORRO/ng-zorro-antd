@@ -4,7 +4,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -30,7 +29,6 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
 @Component({
   selector: 'nz-tab-nav-operation',
   exportAs: 'nzTabNavOperation',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <button

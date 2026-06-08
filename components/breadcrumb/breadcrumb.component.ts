@@ -5,7 +5,6 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Injector,
@@ -52,7 +51,6 @@ export interface BreadcrumbOption {
     class: 'ant-breadcrumb',
     '[class.ant-breadcrumb-rtl]': `dir() === 'rtl'`
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzBreadCrumbComponent implements OnInit, NzBreadcrumb {

@@ -15,7 +15,6 @@ import { _getEventTarget } from '@angular/cdk/platform';
 import { NgTemplateOutlet, SlicePipe } from '@angular/common';
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   computed,
@@ -101,10 +100,9 @@ import {
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-cascader, [nz-cascader]',
   exportAs: 'nzCascader',
+  encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzShowInput) {
       <div #selectContainer class="ant-select-selector">

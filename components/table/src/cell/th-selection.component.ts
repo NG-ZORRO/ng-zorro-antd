@@ -5,7 +5,6 @@
 
 /* eslint-disable @angular-eslint/component-selector */
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -24,7 +23,6 @@ import { NzTableSelectionComponent } from '../addon/selection.component';
 @Component({
   selector: 'th[nzSelections],th[nzChecked],th[nzShowCheckbox],th[nzShowRowSelection]',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nz-table-selection
       [checked]="nzChecked"

@@ -4,15 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  TemplateRef,
-  ViewEncapsulation,
-  booleanAttribute,
-  inject
-} from '@angular/core';
+import { Component, Input, TemplateRef, ViewEncapsulation, booleanAttribute, inject } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
@@ -22,10 +14,10 @@ import { NzStatisticContentValueComponent } from './statistic-content-value.comp
 import { NzStatisticValueType } from './typings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
   selector: 'nz-statistic',
   exportAs: 'nzStatistic',
+  encapsulation: ViewEncapsulation.None,
+  imports: [NzSkeletonModule, NzStatisticContentValueComponent, NzOutletModule],
   template: `
     <div class="ant-statistic-title">
       <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
@@ -51,8 +43,7 @@ import { NzStatisticValueType } from './typings';
   host: {
     class: 'ant-statistic',
     '[class.ant-statistic-rtl]': `dir() === 'rtl'`
-  },
-  imports: [NzSkeletonModule, NzStatisticContentValueComponent, NzOutletModule]
+  }
 })
 export class NzStatisticComponent {
   protected readonly dir = inject(Directionality).valueSignal;

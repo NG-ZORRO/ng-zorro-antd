@@ -6,7 +6,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import {
   afterNextRender,
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -24,7 +23,6 @@ import { COMPOSITION_BUFFER_MODE, FormsModule } from '@angular/forms';
 @Component({
   selector: 'nz-select-search',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <input
       #inputElement
