@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -11,7 +11,8 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
     <nz-upload
       nzAction="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
       nzListType="picture"
-      [(nzFileList)]="fileList"
+      [nzFileList]="fileList()"
+      (nzFileListChange)="fileList.set($event)"
     >
       <button nz-button>
         <nz-icon nzType="upload" />
@@ -21,7 +22,7 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadPictureStyleComponent {
-  fileList: NzUploadFile[] = [
+  readonly fileList = signal<NzUploadFile[]>([
     {
       uid: '0',
       name: 'xxx.png',
@@ -40,5 +41,5 @@ export class NzDemoUploadPictureStyleComponent {
       name: 'zzz.png',
       status: 'error'
     }
-  ];
+  ]);
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { merge, Observable, timer } from 'rxjs';
 import { delay, finalize, map, scan } from 'rxjs/operators';
 
@@ -35,8 +35,8 @@ function mockAsyncStep(): Observable<number> {
   selector: 'nz-demo-steps-progress',
   imports: [NzButtonModule, NzStepsModule],
   template: `
-    <nz-steps [nzCurrent]="current">
-      @for (step of this.steps; track step.id) {
+    <nz-steps [nzCurrent]="current()">
+      @for (step of steps(); track step.id) {
         <nz-step
           [nzTitle]="step.title"
           [nzDescription]="step.description"
@@ -45,18 +45,18 @@ function mockAsyncStep(): Observable<number> {
       }
     </nz-steps>
     <div class="steps-action">
-      @if (current > 0) {
+      @if (current() > 0) {
         <button nz-button nzType="default" (click)="pre()">
           <span>Previous</span>
         </button>
       }
-      @if (current < 2) {
-        <button nz-button nzType="default" (click)="next()" [nzLoading]="processing">
+      @if (current() < 2) {
+        <button nz-button nzType="default" (click)="next()" [nzLoading]="processing()">
           <span>Next</span>
         </button>
       }
-      @if (current === 2) {
-        <button nz-button nzType="primary" (click)="done()" [nzLoading]="processing">
+      @if (current() === 2) {
+        <button nz-button nzType="primary" (click)="done()" [nzLoading]="processing()">
           <span>Done</span>
         </button>
       }
@@ -73,7 +73,7 @@ function mockAsyncStep(): Observable<number> {
   `
 })
 export class NzDemoStepsProgressComponent {
-  steps: Step[] = [
+  readonly steps = signal<Step[]>([
     {
       id: 1,
       title: `Step 1`,
@@ -95,12 +95,12 @@ export class NzDemoStepsProgressComponent {
       async: true,
       percentage: 0
     }
-  ];
-  current = 0;
-  processing = false;
+  ]);
+  readonly current = signal(0);
+  readonly processing = signal(false);
 
   pre(): void {
-    this.current -= 1;
+    this.current.update(current => current - 1);
   }
 
   next(): void {
@@ -113,24 +113,28 @@ export class NzDemoStepsProgressComponent {
   }
 
   loadingAndStep(): void {
-    if (this.current < this.steps.length) {
-      const step = this.steps[this.current];
+    if (this.current() < this.steps().length) {
+      const step = this.steps()[this.current()];
       if (step.async) {
-        this.processing = true;
+        this.processing.set(true);
         mockAsyncStep()
           .pipe(
             finalize(() => {
-              step.percentage = 0;
-              this.processing = false;
-              this.current += 1;
+              this.updatePercentage(step.id, 0);
+              this.processing.set(false);
+              this.current.update(current => current + 1);
             })
           )
           .subscribe(p => {
-            step.percentage = p;
+            this.updatePercentage(step.id, p);
           });
       } else {
-        this.current += 1;
+        this.current.update(current => current + 1);
       }
     }
+  }
+
+  private updatePercentage(id: number, percentage: number): void {
+    this.steps.update(steps => steps.map(step => (step.id === id && step.async ? { ...step, percentage } : step)));
   }
 }

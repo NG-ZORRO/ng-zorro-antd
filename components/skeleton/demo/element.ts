@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -21,33 +21,33 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       <nz-skeleton-element
         *nzSpaceItem
         nzType="button"
-        [nzActive]="elementActive"
-        [nzSize]="elementSize"
-        [nzShape]="buttonShape"
+        [nzActive]="elementActive()"
+        [nzSize]="elementSize()"
+        [nzShape]="buttonShape()"
       />
       <nz-skeleton-element
         *nzSpaceItem
         nzType="avatar"
-        [nzActive]="elementActive"
-        [nzSize]="elementSize"
-        [nzShape]="avatarShape"
+        [nzActive]="elementActive()"
+        [nzSize]="elementSize()"
+        [nzShape]="avatarShape()"
       />
       <nz-skeleton-element
         *nzSpaceItem
         nzType="input"
-        [nzActive]="elementActive"
-        [nzSize]="elementSize"
+        [nzActive]="elementActive()"
+        [nzSize]="elementSize()"
         style="width:200px"
       />
     </nz-space>
     <br />
     <br />
-    <nz-skeleton-element nzType="image" [nzActive]="elementActive" />
+    <nz-skeleton-element nzType="image" [nzActive]="elementActive()" />
     <nz-divider />
     <div nz-row nzAlign="middle" [nzGutter]="8">
       <div nz-col nzSpan="10">
         Size:
-        <nz-radio-group [(ngModel)]="elementSize">
+        <nz-radio-group [ngModel]="elementSize()" (ngModelChange)="elementSize.set($event)">
           <label nz-radio-button nzValue="default">Default</label>
           <label nz-radio-button nzValue="large">Large</label>
           <label nz-radio-button nzValue="small">Small</label>
@@ -55,7 +55,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       </div>
       <div nz-col nzSpan="5">
         Active:
-        <nz-switch [(ngModel)]="elementActive" />
+        <nz-switch [ngModel]="elementActive()" (ngModelChange)="elementActive.set($event)" />
       </div>
     </div>
     <br />
@@ -63,7 +63,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     <div nz-row nzAlign="middle" [nzGutter]="8">
       <div nz-col nzSpan="10">
         Button Shape:
-        <nz-radio-group [(ngModel)]="buttonShape">
+        <nz-radio-group [ngModel]="buttonShape()" (ngModelChange)="buttonShape.set($event)">
           <label nz-radio-button nzValue="default">Default</label>
           <label nz-radio-button nzValue="square">Square</label>
           <label nz-radio-button nzValue="circle">Circle</label>
@@ -72,7 +72,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       </div>
       <div nz-col nzSpan="10">
         Avatar Shape:
-        <nz-radio-group [(ngModel)]="avatarShape">
+        <nz-radio-group [ngModel]="avatarShape()" (ngModelChange)="avatarShape.set($event)">
           <label nz-radio-button nzValue="circle">Circle</label>
           <label nz-radio-button nzValue="square">Square</label>
         </nz-radio-group>
@@ -81,8 +81,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoSkeletonElementComponent {
-  elementActive = false;
-  buttonShape: NzSkeletonButtonShape = 'default';
-  avatarShape: NzSkeletonAvatarShape = 'circle';
-  elementSize: NzSkeletonInputSize = 'default';
+  readonly elementActive = signal(false);
+  readonly buttonShape = signal<NzSkeletonButtonShape>('default');
+  readonly avatarShape = signal<NzSkeletonAvatarShape>('circle');
+  readonly elementSize = signal<NzSkeletonInputSize>('default');
 }

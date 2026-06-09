@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -18,19 +18,19 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
   `
 })
 export class NzDemoModalBasicComponent {
-  isVisible = false;
+  readonly isVisible = signal(false);
 
   showModal(): void {
-    this.isVisible = true;
+    this.isVisible.set(true);
   }
 
   handleOk(): void {
     console.log('Button ok clicked!');
-    this.isVisible = false;
+    this.isVisible.set(false);
   }
 
   handleCancel(): void {
     console.log('Button cancel clicked!');
-    this.isVisible = false;
+    this.isVisible.set(false);
   }
 }

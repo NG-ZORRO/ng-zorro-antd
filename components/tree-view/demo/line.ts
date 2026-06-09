@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -42,11 +42,11 @@ const TREE_DATA: TreeNode[] = [
   imports: [FormsModule, NzIconModule, NzSwitchModule, NzTreeViewModule],
   template: `
     Show Leaf Icon:
-    <nz-switch [(ngModel)]="showLeafIcon" />
+    <nz-switch [ngModel]="showLeafIcon()" (ngModelChange)="showLeafIcon.set($event)" />
 
     <nz-tree-view [nzDataSource]="dataSource" [nzChildrenAccessor]="childrenAccessor">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodeIndentLine [nzExpandable]="false">
-        @if (showLeafIcon) {
+        @if (showLeafIcon()) {
           <nz-tree-node-toggle nzTreeNodeNoopToggle>
             <nz-icon nzType="file" nzTheme="outline" />
           </nz-tree-node-toggle>
@@ -74,7 +74,7 @@ export class NzDemoTreeViewLineComponent implements AfterViewInit, OnInit {
 
   readonly hasChild = (_: number, node: TreeNode): boolean => !!node.children?.length;
 
-  showLeafIcon = false;
+  readonly showLeafIcon = signal(false);
 
   dataSource!: NzTreeViewNestedDataSource<TreeNode>;
 

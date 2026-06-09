@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -11,9 +11,9 @@ import { NzTransferModule, TransferChange, TransferItem, TransferSelectChange } 
   imports: [FormsModule, NzSwitchModule, NzTableModule, NzTagModule, NzTransferModule],
   template: `
     <nz-transfer
-      [nzDataSource]="list"
-      [nzDisabled]="disabled"
-      [nzShowSearch]="showSearch"
+      [nzDataSource]="list()"
+      [nzDisabled]="disabled()"
+      [nzShowSearch]="showSearch()"
       [nzShowSelectAll]="false"
       [nzRenderList]="[renderList, renderList]"
       (nzSelectChange)="select($event)"
@@ -66,31 +66,36 @@ import { NzTransferModule, TransferChange, TransferItem, TransferSelectChange } 
       </ng-template>
     </nz-transfer>
     <div style="margin-top: 8px;">
-      <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled" />
-      <nz-switch [(ngModel)]="showSearch" nzCheckedChildren="showSearch" nzUnCheckedChildren="showSearch" />
+      <nz-switch
+        [ngModel]="disabled()"
+        (ngModelChange)="disabled.set($event)"
+        nzCheckedChildren="disabled"
+        nzUnCheckedChildren="disabled"
+      />
+      <nz-switch
+        [ngModel]="showSearch()"
+        (ngModelChange)="showSearch.set($event)"
+        nzCheckedChildren="showSearch"
+        nzUnCheckedChildren="showSearch"
+      />
     </div>
   `
 })
-export class NzDemoTransferTableTransferComponent implements OnInit {
-  list: TransferItem[] = [];
-  $asTransferItems = (data: unknown): TransferItem[] => data as TransferItem[];
-  disabled = false;
-  showSearch = false;
-
-  ngOnInit(): void {
-    for (let i = 0; i < 20; i++) {
-      this.list.push({
-        key: i.toString(),
-        title: `content${i + 1}`,
-        description: `description of content${i + 1}`,
-        disabled: i % 4 === 0,
-        tag: ['cat', 'dog', 'bird'][i % 3],
-        checked: false
-      });
-    }
-
-    [2, 3].forEach(idx => (this.list[idx].direction = 'right'));
-  }
+export class NzDemoTransferTableTransferComponent {
+  readonly list = signal<TransferItem[]>(
+    Array.from({ length: 20 }).map((_, i) => ({
+      key: i.toString(),
+      title: `content${i + 1}`,
+      description: `description of content${i + 1}`,
+      disabled: i % 4 === 0,
+      tag: ['cat', 'dog', 'bird'][i % 3],
+      checked: false,
+      direction: [2, 3].includes(i) ? 'right' : undefined
+    }))
+  );
+  readonly $asTransferItems = (data: unknown): TransferItem[] => data as TransferItem[];
+  readonly disabled = signal(false);
+  readonly showSearch = signal(false);
 
   select(ret: TransferSelectChange): void {
     console.log('nzSelectChange', ret);
@@ -100,15 +105,19 @@ export class NzDemoTransferTableTransferComponent implements OnInit {
     console.log('nzChange', ret);
     const listKeys = ret.list.map(l => l.key);
     const hasOwnKey = (e: TransferItem): boolean => e.hasOwnProperty('key');
-    this.list = this.list.map(e => {
-      if (listKeys.includes(e.key) && hasOwnKey(e)) {
-        if (ret.to === 'left') {
-          delete e.hide;
-        } else if (ret.to === 'right') {
-          e.hide = false;
+    this.list.update(list =>
+      list.map(e => {
+        if (listKeys.includes(e.key) && hasOwnKey(e)) {
+          if (ret.to === 'left') {
+            const next = { ...e };
+            delete next.hide;
+            return next;
+          } else if (ret.to === 'right') {
+            return { ...e, hide: false };
+          }
         }
-      }
-      return e;
-    });
+        return e;
+      })
+    );
   }
 }

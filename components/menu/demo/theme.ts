@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -14,7 +14,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     </nz-switch>
     <br />
     <br />
-    <ul nz-menu nzMode="inline" style="width: 240px;" [nzTheme]="theme ? 'dark' : 'light'">
+    <ul nz-menu nzMode="inline" style="width: 240px;" [nzTheme]="theme() ? 'dark' : 'light'">
       <li nz-submenu nzOpen nzTitle="Navigation One" nzIcon="mail">
         <ul>
           <li nz-menu-group nzTitle="Item 1">
@@ -54,5 +54,5 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoMenuThemeComponent {
-  theme = true;
+  readonly theme = signal(true);
 }

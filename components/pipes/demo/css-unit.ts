@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzToCssUnitPipe } from 'ng-zorro-antd/pipes';
@@ -11,9 +11,9 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
     <nz-slider [(ngModel)]="radiusValue" [nzMax]="100" [nzMin]="0" />
 
     <div class="wrap">
-      <div class="box" [style.border-radius]="radiusValue | nzToCssUnit">Default</div>
-      <div class="box" [style.border-radius]="radiusValue | nzToCssUnit: '%'">%</div>
-      <div class="box" [style.border-radius]="radiusValue | nzToCssUnit: 'rem'">rem</div>
+      <div class="box" [style.border-radius]="radiusValue() | nzToCssUnit">Default</div>
+      <div class="box" [style.border-radius]="radiusValue() | nzToCssUnit: '%'">%</div>
+      <div class="box" [style.border-radius]="radiusValue() | nzToCssUnit: 'rem'">rem</div>
     </div>
   `,
   styles: `
@@ -33,5 +33,5 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   `
 })
 export class NzDemoPipesCssUnitComponent {
-  radiusValue = 0;
+  readonly radiusValue = signal(0);
 }

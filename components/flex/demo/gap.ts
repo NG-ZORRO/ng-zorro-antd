@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -14,10 +14,10 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
       <span>Select gap:</span>
       <nz-segmented [nzOptions]="gapSegment" [(ngModel)]="selectedGap" />
     </div>
-    @if (selectedGap === 'custom') {
+    @if (selectedGap() === 'custom') {
       <nz-slider [nzMin]="0" [nzMax]="100" [(ngModel)]="customGapValue" />
     }
-    <div nz-flex [nzGap]="selectedGap === 'custom' ? customGapValue : selectedGap">
+    <div nz-flex [nzGap]="gap()">
       <button nz-button nzType="primary">Primary</button>
       <button nz-button nzType="dashed">Dashed</button>
       <button nz-button nzType="default">Default</button>
@@ -35,7 +35,8 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   `
 })
 export class NzDemoFlexGapComponent {
-  public gapSegment: string[] = ['small', 'middle', 'large', 'custom'];
-  public selectedGap = 'small';
-  public customGapValue = 0;
+  readonly gapSegment = ['small', 'middle', 'large', 'custom'];
+  readonly selectedGap = signal('small');
+  readonly customGapValue = signal(0);
+  readonly gap = computed(() => (this.selectedGap() === 'custom' ? this.customGapValue() : this.selectedGap()));
 }

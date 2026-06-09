@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -16,7 +16,7 @@ interface ItemData {
   selector: 'nz-demo-table-edit-row',
   imports: [FormsModule, NzInputModule, NzPopconfirmModule, NzTableModule],
   template: `
-    <nz-table #editRowTable nzBordered [nzData]="listOfData" nzTableLayout="fixed">
+    <nz-table #editRowTable nzBordered [nzData]="listOfData()" nzTableLayout="fixed">
       <thead>
         <tr>
           <th nzWidth="25%">Name</th>
@@ -28,15 +28,15 @@ interface ItemData {
       <tbody>
         @for (data of editRowTable.data; track data) {
           <tr>
-            @if (!editCache[data.id].edit) {
+            @if (!editCache()[data.id].edit) {
               <td>{{ data.name }}</td>
               <td>{{ data.age }}</td>
               <td>{{ data.address }}</td>
               <td><a (click)="startEdit(data.id)">Edit</a></td>
             } @else {
-              <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.name" /></td>
-              <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.age" /></td>
-              <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.address" /></td>
+              <td><input type="text" nz-input [(ngModel)]="editCache()[data.id].data.name" /></td>
+              <td><input type="text" nz-input [(ngModel)]="editCache()[data.id].data.age" /></td>
+              <td><input type="text" nz-input [(ngModel)]="editCache()[data.id].data.address" /></td>
               <td>
                 <a (click)="saveEdit(data.id)" class="save">Save</a>
                 <a nz-popconfirm nzPopconfirmTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
@@ -54,34 +54,45 @@ interface ItemData {
   `
 })
 export class NzDemoTableEditRowComponent implements OnInit {
-  editCache: { [key: string]: { edit: boolean; data: ItemData } } = {};
-  listOfData: ItemData[] = [];
+  readonly editCache = signal<{ [key: string]: { edit: boolean; data: ItemData } }>({});
+  readonly listOfData = signal<ItemData[]>([]);
 
   startEdit(id: string): void {
-    this.editCache[id].edit = true;
+    this.editCache.update(editCache => ({ ...editCache, [id]: { ...editCache[id], edit: true } }));
   }
 
   cancelEdit(id: string): void {
-    const index = this.listOfData.findIndex(item => item.id === id);
-    this.editCache[id] = {
-      data: { ...this.listOfData[index] },
-      edit: false
-    };
+    const index = this.listOfData().findIndex(item => item.id === id);
+    this.editCache.update(editCache => ({
+      ...editCache,
+      [id]: {
+        data: { ...this.listOfData()[index] },
+        edit: false
+      }
+    }));
   }
 
   saveEdit(id: string): void {
-    const index = this.listOfData.findIndex(item => item.id === id);
-    Object.assign(this.listOfData[index], this.editCache[id].data);
-    this.editCache[id].edit = false;
+    const edited = this.editCache()[id].data;
+    this.listOfData.update(listOfData => listOfData.map(item => (item.id === id ? { ...item, ...edited } : item)));
+    this.editCache.update(editCache => ({
+      ...editCache,
+      [id]: {
+        ...editCache[id],
+        edit: false
+      }
+    }));
   }
 
   updateEditCache(): void {
-    this.listOfData.forEach(item => {
-      this.editCache[item.id] = {
+    const editCache: { [key: string]: { edit: boolean; data: ItemData } } = {};
+    this.listOfData().forEach(item => {
+      editCache[item.id] = {
         edit: false,
         data: { ...item }
       };
     });
+    this.editCache.set(editCache);
   }
 
   ngOnInit(): void {
@@ -94,7 +105,7 @@ export class NzDemoTableEditRowComponent implements OnInit {
         address: `London Park no. ${i}`
       });
     }
-    this.listOfData = data;
+    this.listOfData.set(data);
     this.updateEditCache();
   }
 }

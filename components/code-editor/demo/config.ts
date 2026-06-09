@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
@@ -14,7 +14,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
     <p nz-paragraph style="margin-bottom: 8px;">
       Change Theme
       <nz-switch
-        [ngModel]="dark"
+        [ngModel]="dark()"
         (ngModelChange)="onDarkModeChange($event)"
         [nzUnCheckedChildren]="unchecked"
         [nzCheckedChildren]="checked"
@@ -30,16 +30,16 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
   `
 })
 export class NzDemoCodeEditorConfigComponent {
-  private nzConfigService = inject(NzConfigService);
+  private readonly nzConfigService = inject(NzConfigService);
 
-  dark = false;
+  readonly dark = signal(false);
 
-  code = `**All monaco editor instances on the same page always have the same color. It's a by-design of monaco editor.**
+  readonly code = `**All monaco editor instances on the same page always have the same color. It's a by-design of monaco editor.**
 
 You can refer to [this issue](https://github.com/Microsoft/monaco-editor/issues/338).`;
 
   onDarkModeChange(dark: boolean): void {
-    this.dark = dark;
+    this.dark.set(dark);
     const defaultEditorOption = this.nzConfigService.getConfigForComponent('codeEditor')?.defaultEditorOption || {};
     this.nzConfigService.set('codeEditor', {
       defaultEditorOption: {

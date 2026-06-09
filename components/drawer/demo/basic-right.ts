@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -10,7 +10,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
     <button nz-button nzType="primary" (click)="open()">Open</button>
     <nz-drawer
       [nzClosable]="false"
-      [nzVisible]="visible"
+      [nzVisible]="visible()"
       nzPlacement="right"
       nzTitle="Basic Drawer"
       (nzOnClose)="close()"
@@ -24,13 +24,13 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
   `
 })
 export class NzDemoDrawerBasicRightComponent {
-  visible = false;
+  readonly visible = signal(false);
 
   open(): void {
-    this.visible = true;
+    this.visible.set(true);
   }
 
   close(): void {
-    this.visible = false;
+    this.visible.set(false);
   }
 }

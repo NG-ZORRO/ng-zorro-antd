@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
@@ -26,8 +26,8 @@ interface MockUser {
       [(ngModel)]="selectedUser"
       (nzOnSearch)="onSearch($event)"
     >
-      @if (!loading) {
-        @for (o of optionList; track o) {
+      @if (!loading()) {
+        @for (o of optionList(); track o) {
           <nz-option [nzValue]="o" [nzLabel]="o" />
         }
       } @else {
@@ -51,14 +51,14 @@ interface MockUser {
 export class NzDemoSelectSelectUsersComponent implements OnInit {
   private readonly http = inject(HttpClient);
 
-  randomUserUrl = 'https://api.randomuser.me/?results=5';
-  searchChange$ = new BehaviorSubject('');
-  optionList: string[] = [];
-  selectedUser?: string;
-  loading = false;
+  readonly randomUserUrl = 'https://api.randomuser.me/?results=5';
+  readonly searchChange$ = new BehaviorSubject('');
+  readonly optionList = signal<string[]>([]);
+  readonly selectedUser = signal<string | undefined>(undefined);
+  readonly loading = signal(false);
 
   onSearch(value: string): void {
-    this.loading = true;
+    this.loading.set(true);
     this.searchChange$.next(value);
   }
   ngOnInit(): void {
@@ -68,8 +68,8 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
         switchMap(name => this.getRandomNameList(name))
       )
       .subscribe(data => {
-        this.optionList = data;
-        this.loading = false;
+        this.optionList.set(data);
+        this.loading.set(false);
       });
   }
 

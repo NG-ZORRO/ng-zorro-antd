@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -31,8 +31,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoSelectDefaultValueComponent {
-  listOfOption = ['Option 01', 'Option 02'];
-  listOfSelectedValue = ['Default 01', 'Default 02'];
-  defaultOption = [...this.listOfSelectedValue];
-  selectedValue = 'Default';
+  readonly listOfOption = ['Option 01', 'Option 02'];
+  readonly listOfSelectedValue = signal(['Default 01', 'Default 02']);
+  readonly defaultOption = [...this.listOfSelectedValue()];
+  readonly selectedValue = signal('Default');
 }

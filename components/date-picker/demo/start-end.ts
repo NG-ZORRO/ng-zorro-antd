@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -32,22 +32,25 @@ import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-pi
   `
 })
 export class NzDemoDatePickerStartEndComponent {
-  startValue: Date | null = null;
-  endValue: Date | null = null;
+  readonly startValue = signal<Date | null>(null);
+  readonly endValue = signal<Date | null>(null);
+
   @ViewChild('endDatePicker') endDatePicker!: NzDatePickerComponent;
 
-  disabledStartDate = (startValue: Date): boolean => {
-    if (!startValue || !this.endValue) {
+  readonly disabledStartDate = (startValue: Date): boolean => {
+    const endValue = this.endValue();
+    if (!startValue || !endValue) {
       return false;
     }
-    return startValue.getTime() > this.endValue.getTime();
+    return startValue.getTime() > endValue.getTime();
   };
 
-  disabledEndDate = (endValue: Date): boolean => {
-    if (!endValue || !this.startValue) {
+  readonly disabledEndDate = (endValue: Date): boolean => {
+    const startValue = this.startValue();
+    if (!endValue || !startValue) {
       return false;
     }
-    return endValue.getTime() <= this.startValue.getTime();
+    return endValue.getTime() <= startValue.getTime();
   };
 
   handleStartOpenChange(open: boolean): void {

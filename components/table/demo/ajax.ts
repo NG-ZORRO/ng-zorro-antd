@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -21,10 +21,10 @@ interface RandomUser {
   template: `
     <nz-table
       nzShowSizeChanger
-      [nzData]="listOfRandomUser"
+      [nzData]="listOfRandomUser()"
       [nzFrontPagination]="false"
-      [nzLoading]="loading"
-      [nzTotal]="total"
+      [nzLoading]="loading()"
+      [nzTotal]="total()"
       [nzPageSize]="pageSize"
       [nzPageIndex]="pageIndex"
       (nzQueryParams)="onQueryParamsChange($event)"
@@ -37,7 +37,7 @@ interface RandomUser {
         </tr>
       </thead>
       <tbody>
-        @for (data of listOfRandomUser; track data) {
+        @for (data of listOfRandomUser(); track data) {
           <tr>
             <td>{{ data.name.first }} {{ data.name.last }}</td>
             <td>{{ data.gender }}</td>
@@ -51,12 +51,12 @@ interface RandomUser {
 export class NzDemoTableAjaxComponent implements OnInit {
   private readonly http = inject(HttpClient);
 
-  total = 1;
-  listOfRandomUser: RandomUser[] = [];
-  loading = true;
-  pageSize = 10;
-  pageIndex = 1;
-  filterGender = [
+  readonly total = signal(1);
+  readonly listOfRandomUser = signal<RandomUser[]>([]);
+  readonly loading = signal(true);
+  readonly pageSize = 10;
+  readonly pageIndex = 1;
+  readonly filterGender = [
     { text: 'male', value: 'male' },
     { text: 'female', value: 'female' }
   ];
@@ -68,11 +68,11 @@ export class NzDemoTableAjaxComponent implements OnInit {
     sortOrder: string | null,
     filter: Array<{ key: string; value: string[] }>
   ): void {
-    this.loading = true;
+    this.loading.set(true);
     this.getUsers(pageIndex, pageSize, sortField, sortOrder, filter).subscribe(data => {
-      this.loading = false;
-      this.total = 200; // mock the total data here
-      this.listOfRandomUser = data.results;
+      this.loading.set(false);
+      this.total.set(200); // mock the total data here
+      this.listOfRandomUser.set(data.results);
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -19,7 +19,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     <br />
     <br />
 
-    @if (inputElem) {
+    @if (inputElem()) {
       <input #input="nzInput" nz-input [(ngModel)]="value" />
     } @else {
       <textarea #input="nzInput" nz-input rows="2" [(ngModel)]="value"> </textarea>
@@ -27,8 +27,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoInputFocusComponent {
-  value = 'NG-ZORRO love you!';
-  inputElem = true;
+  readonly value = signal('NG-ZORRO love you!');
+  readonly inputElem = signal(true);
 
   @ViewChild(NzInputDirective) input!: NzInputDirective;
 }

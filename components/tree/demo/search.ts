@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -10,13 +10,19 @@ import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
   imports: [FormsModule, NzIconModule, NzInputModule, NzTreeModule],
   template: `
     <nz-input-wrapper>
-      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
+      <input
+        type="text"
+        nz-input
+        placeholder="Search"
+        [ngModel]="searchValue()"
+        (ngModelChange)="searchValue.set($event)"
+      />
       <nz-icon nzInputSuffix nzType="search" />
     </nz-input-wrapper>
     <br />
     <nz-tree
       [nzData]="nodes"
-      [nzSearchValue]="searchValue"
+      [nzSearchValue]="searchValue()"
       (nzClick)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
       (nzSearchValueChange)="nzEvent($event)"
@@ -24,7 +30,7 @@ import { NzFormatEmitEvent, NzTreeModule } from 'ng-zorro-antd/tree';
   `
 })
 export class NzDemoTreeSearchComponent {
-  searchValue = '';
+  readonly searchValue = signal('');
 
   readonly nodes = [
     {

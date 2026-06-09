@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
@@ -7,13 +7,13 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
   selector: 'nz-demo-steps-clickable',
   imports: [NzDividerModule, NzStepsModule],
   template: `
-    <nz-steps [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
+    <nz-steps [nzCurrent]="index()" (nzIndexChange)="onIndexChange($event)">
       <nz-step nzTitle="Finished" [nzDisabled]="disable" nzDescription="This is a description." />
       <nz-step nzTitle="In Progress" nzDescription="This is a description." />
       <nz-step nzTitle="Waiting" nzDescription="This is a description." />
     </nz-steps>
     <nz-divider />
-    <nz-steps nzDirection="vertical" [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
+    <nz-steps nzDirection="vertical" [nzCurrent]="index()" (nzIndexChange)="onIndexChange($event)">
       <nz-step nzTitle="Finished" nzDescription="This is a description." />
       <nz-step nzTitle="In Progress" nzDescription="This is a description." />
       <nz-step nzTitle="Waiting" nzDescription="This is a description." />
@@ -21,9 +21,10 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
   `
 })
 export class NzDemoStepsClickableComponent {
-  index = 0;
+  readonly index = signal(0);
   disable = false;
+
   onIndexChange(index: number): void {
-    this.index = index;
+    this.index.set(index);
   }
 }

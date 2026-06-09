@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
@@ -9,7 +9,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   selector: 'nz-demo-collapse-extra',
   imports: [FormsModule, NzCollapseModule, NzIconModule, NzSelectModule],
   template: `
-    <nz-collapse [nzExpandIconPosition]="expandIconPosition">
+    <nz-collapse [nzExpandIconPosition]="expandIconPosition()">
       @for (panel of panels; track panel) {
         <nz-collapse-panel [nzHeader]="panel.name" [nzActive]="panel.active" [nzExtra]="extraTpl">
           <p style="margin:0;">
@@ -25,14 +25,14 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     </ng-template>
     <br />
     <span>Expand Icon Position: </span>
-    <nz-select [(ngModel)]="expandIconPosition">
+    <nz-select [ngModel]="expandIconPosition()" (ngModelChange)="expandIconPosition.set($event)">
       <nz-option nzValue="start" nzLabel="start" />
       <nz-option nzValue="end" nzLabel="end" />
     </nz-select>
   `
 })
 export class NzDemoCollapseExtraComponent {
-  expandIconPosition: 'start' | 'end' = 'start';
+  readonly expandIconPosition = signal<'start' | 'end'>('start');
 
   readonly panels = [
     {

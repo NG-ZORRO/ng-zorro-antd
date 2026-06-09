@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
@@ -46,5 +46,5 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoInputNumberAddonComponent {
-  value = 100;
+  readonly value = signal(100);
 }

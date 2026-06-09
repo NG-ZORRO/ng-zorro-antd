@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -25,8 +25,8 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoRadioRadiogroupOptionsComponent {
-  radioValue = 'Apple';
-  options = [
+  readonly radioValue = signal('Apple');
+  readonly options = [
     { label: 'Apple', value: 'Apple' },
     { label: 'Pear', value: 'Pear' },
     { label: 'Orange', value: 'Orange' }

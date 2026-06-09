@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -11,10 +11,10 @@ import { NzTrimPipe } from 'ng-zorro-antd/pipes';
     <input type="text" nz-input [(ngModel)]="str" />
     <br />
     <div>
-      <pre>{{ str }}</pre>
+      <pre>{{ str() }}</pre>
     </div>
     <div>
-      <pre>{{ str | nzTrim }}</pre>
+      <pre>{{ str() | nzTrim }}</pre>
     </div>
   `,
   styles: `
@@ -28,5 +28,5 @@ import { NzTrimPipe } from 'ng-zorro-antd/pipes';
   `
 })
 export class NzDemoPipesTrimComponent {
-  str = ' Ant Design ';
+  readonly str = signal(' Ant Design ');
 }

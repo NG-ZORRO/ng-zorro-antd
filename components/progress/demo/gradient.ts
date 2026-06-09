@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 
@@ -21,7 +21,6 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
       margin-bottom: 8px;
       display: inline-block;
     }
-  `,
-  encapsulation: ViewEncapsulation.None
+  `
 })
 export class NzDemoProgressGradientComponent {}

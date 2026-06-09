@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzCascaderModule, NzCascaderOption, NzCascaderPlacement } from 'ng-zorro-antd/cascader';
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
@@ -52,15 +52,15 @@ const options: NzCascaderOption[] = [
     <nz-segmented [nzOptions]="placements" (nzValueChange)="setPlacement($event)" />
     <br />
     <br />
-    <nz-cascader [nzOptions]="nzOptions" [nzPlacement]="placement" />
+    <nz-cascader [nzOptions]="nzOptions" [nzPlacement]="placement()" />
   `
 })
 export class NzDemoCascaderPlacementComponent {
   readonly nzOptions: NzCascaderOption[] = options;
-  placement: NzCascaderPlacement = 'topLeft';
+  readonly placement = signal<NzCascaderPlacement>('topLeft');
   readonly placements: NzCascaderPlacement[] = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'];
 
   setPlacement(placement: string | number): void {
-    this.placement = placement as NzCascaderPlacement;
+    this.placement.set(placement as NzCascaderPlacement);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -16,7 +16,7 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
         }
       </nz-select>
     </div>
-    <nz-tabs [nzTabPosition]="position">
+    <nz-tabs [nzTabPosition]="position()">
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
       }
@@ -24,9 +24,9 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
   `
 })
 export class NzDemoTabsPositionComponent {
-  position: NzTabPosition = 'top';
-  tabs = [1, 2, 3];
-  options = [
+  readonly position = signal<NzTabPosition>('top');
+  readonly tabs = [1, 2, 3];
+  readonly options = [
     { value: 'top', label: 'top' },
     { value: 'left', label: 'left' },
     { value: 'right', label: 'right' },

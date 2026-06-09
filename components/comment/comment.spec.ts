@@ -120,22 +120,24 @@ describe('comment', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css('nz-comment .ant-comment-content-detail textarea'))).toBeTruthy();
       let comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));
-      expect(component.data.length).toBe(0);
-      expect(component.data.length === comments.length).toBeTruthy();
+      expect(comments.length).toBe(0);
+      expect(component.data().length).toBe(0);
 
-      component.inputValue = 'Test Comment 0';
+      component.value.set('Test Comment 0');
       component.handleSubmit();
       tick(1000);
       fixture.detectChanges();
 
-      component.inputValue = 'Test Comment 1';
+      component.value.set('Test Comment 1');
       component.handleSubmit();
       tick(1000);
       fixture.detectChanges();
 
       comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));
+      expect(comments.length).toBeGreaterThan(0);
 
-      component.data.forEach((e, i) => {
+      const data = component.data();
+      data.forEach((e, i) => {
         const comment = comments[i];
         expect(comment.nativeElement.querySelector('nz-avatar[nz-comment-avatar]')).toBeTruthy();
         expect(comment.nativeElement.querySelector('.ant-comment-content-author-name').innerText).toBe(e.author);

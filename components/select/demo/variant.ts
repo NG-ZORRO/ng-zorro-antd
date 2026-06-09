@@ -35,7 +35,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   `
 })
 export class NzDemoSelectVariantComponent {
-  options = [
+  readonly options = [
     { label: 'Jack', value: 'jack' },
     { label: 'Lucy', value: 'lucy' },
     { label: 'Disabled', value: 'disabled', disabled: true }

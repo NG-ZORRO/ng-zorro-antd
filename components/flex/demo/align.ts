@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -19,7 +19,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
       <nz-segmented [nzOptions]="alignSegment" [(ngModel)]="selectedLAlignment" />
     </div>
 
-    <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification" [nzAlign]="selectedLAlignment">
+    <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification()" [nzAlign]="selectedLAlignment()">
       <button nz-button nzType="primary">Primary</button>
       <button nz-button nzType="primary">Primary</button>
       <button nz-button nzType="primary">Primary</button>
@@ -42,7 +42,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   `
 })
 export class NzDemoFlexAlignComponent {
-  public justifySegment: NzJustify[] = [
+  readonly justifySegment: NzJustify[] = [
     'flex-start',
     'center',
     'flex-end',
@@ -50,7 +50,7 @@ export class NzDemoFlexAlignComponent {
     'space-around',
     'space-evenly'
   ];
-  public alignSegment: NzAlign[] = ['flex-start', 'center', 'flex-end'];
-  public selectedJustification: NzJustify = 'flex-start';
-  public selectedLAlignment: NzAlign = 'flex-start';
+  readonly alignSegment: NzAlign[] = ['flex-start', 'center', 'flex-end'];
+  readonly selectedJustification = signal<NzJustify>('flex-start');
+  readonly selectedLAlignment = signal<NzAlign>('flex-start');
 }

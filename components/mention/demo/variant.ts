@@ -23,9 +23,9 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 })
 export class NzDemoMentionVariantComponent {
   inputValue = model('@afc163');
-  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
+  readonly suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
   variant = model<NzVariant>('outlined');
-  variants = [
+  readonly variants = [
     { label: 'Outlined', value: 'outlined' },
     { label: 'Filled', value: 'filled' },
     { label: 'Borderless', value: 'borderless' },

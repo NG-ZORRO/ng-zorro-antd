@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -14,9 +14,9 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
     </nz-radio-group>
     <br />
     <br />
-    <nz-date-picker [nzShowWeekNumber]="showWeekNumber" />
+    <nz-date-picker [nzShowWeekNumber]="showWeekNumber()" />
     <br />
-    <nz-range-picker [nzShowWeekNumber]="showWeekNumber" />
+    <nz-range-picker [nzShowWeekNumber]="showWeekNumber()" />
   `,
   styles: `
     nz-date-picker,
@@ -26,5 +26,5 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoDatePickerWeekNumberComponent {
-  showWeekNumber: boolean = false;
+  readonly showWeekNumber = signal(false);
 }

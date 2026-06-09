@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
@@ -7,7 +7,7 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
   selector: 'nz-demo-resizable-customize',
   imports: [NzIconModule, NzResizableModule],
   template: `
-    <div class="box" nz-resizable (nzResize)="onResize($event)" [style.height.px]="height" [style.width.px]="width">
+    <div class="box" nz-resizable (nzResize)="onResize($event)" [style.height.px]="height()" [style.width.px]="width()">
       content
       <nz-resize-handle nzDirection="bottomRight">
         <nz-icon class="bottom-right" nzType="caret-up" nzTheme="outline" [nzRotate]="135" />
@@ -57,15 +57,15 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
   `
 })
 export class NzDemoResizableCustomizeComponent {
-  width = 400;
-  height = 200;
+  readonly width = signal(400);
+  readonly height = signal(200);
   id = -1;
 
   onResize({ width, height }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
-      this.width = width!;
-      this.height = height!;
+      this.width.set(width!);
+      this.height.set(height!);
     });
   }
 }

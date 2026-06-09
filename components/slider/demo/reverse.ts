@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
@@ -8,11 +8,11 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-slider-reverse',
   imports: [FormsModule, NzSliderModule, NzSwitchModule],
   template: `
-    <nz-slider [ngModel]="30" [nzReverse]="reverse" />
-    <nz-slider nzRange [ngModel]="[20, 50]" [nzReverse]="reverse" />
-    <nz-slider [nzMarks]="marks" [ngModel]="30" [nzReverse]="reverse" />
+    <nz-slider [ngModel]="30" [nzReverse]="reverse()" />
+    <nz-slider nzRange [ngModel]="[20, 50]" [nzReverse]="reverse()" />
+    <nz-slider [nzMarks]="marks" [ngModel]="30" [nzReverse]="reverse()" />
     Reversed:
-    <nz-switch nzSize="small" [(ngModel)]="reverse" />
+    <nz-switch nzSize="small" [ngModel]="reverse()" (ngModelChange)="reverse.set($event)" />
   `,
   styles: `
     .ant-slider-with-marks {
@@ -21,9 +21,9 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoSliderReverseComponent {
-  reverse = true;
+  readonly reverse = signal(true);
 
-  marks: NzMarks = {
+  readonly marks: NzMarks = {
     0: '0°C',
     26: '26°C',
     37: '37°C',

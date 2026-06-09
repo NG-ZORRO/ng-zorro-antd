@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -8,23 +8,23 @@ import { MentionOnSearchTypes, NzMentionModule } from 'ng-zorro-antd/mention';
   selector: 'nz-demo-mention-async',
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
-    <nz-mention [nzSuggestions]="suggestions" [nzLoading]="loading" (nzOnSearchChange)="onSearchChange($event)">
+    <nz-mention [nzSuggestions]="suggestions()" [nzLoading]="loading()" (nzOnSearchChange)="onSearchChange($event)">
       <textarea rows="1" nzMentionTrigger nz-input [(ngModel)]="inputValue"></textarea>
     </nz-mention>
   `
 })
 export class NzDemoMentionAsyncComponent {
-  inputValue?: string;
-  loading = false;
-  suggestions: string[] = [];
+  readonly inputValue = signal<string | undefined>(undefined);
+  readonly loading = signal(false);
+  readonly suggestions = signal<string[]>([]);
 
   onSearchChange({ value }: MentionOnSearchTypes): void {
     console.log(`search: ${value}`);
-    this.loading = true;
+    this.loading.set(true);
     this.fetchSuggestions(value, suggestions => {
       console.log(suggestions);
-      this.suggestions = suggestions;
-      this.loading = false;
+      this.suggestions.set(suggestions);
+      this.loading.set(false);
     });
   }
 

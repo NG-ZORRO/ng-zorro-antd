@@ -195,7 +195,7 @@ describe('nz-timeline', () => {
     });
 
     it('should mode right not affecting classnames', () => {
-      fixture.componentInstance.mode = 'right';
+      fixture.componentInstance.mode.set('right');
       fixture.detectChanges();
 
       expect(timeline.nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-right');

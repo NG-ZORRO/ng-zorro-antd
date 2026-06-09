@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -10,7 +10,7 @@ import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd
   template: `
     <nz-upload
       nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-      [nzFileList]="fileList"
+      [nzFileList]="fileList()"
       (nzChange)="handleChange($event)"
     >
       <button nz-button>
@@ -21,14 +21,14 @@ import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd
   `
 })
 export class NzDemoUploadFileListComponent {
-  fileList: NzUploadFile[] = [
+  readonly fileList = signal<NzUploadFile[]>([
     {
       uid: '-1',
       name: 'xxx.png',
       status: 'done',
       url: 'http://www.baidu.com/xxx.png'
     }
-  ];
+  ]);
 
   handleChange(info: NzUploadChangeParam): void {
     let fileList = [...info.fileList];
@@ -46,6 +46,6 @@ export class NzDemoUploadFileListComponent {
       return file;
     });
 
-    this.fileList = fileList;
+    this.fileList.set(fileList);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
@@ -25,10 +25,10 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
   `
 })
 export class NzDemoPopoverControlComponent {
-  visible: boolean = false;
+  readonly visible = signal(false);
 
   clickMe(): void {
-    this.visible = false;
+    this.visible.set(false);
   }
 
   change(value: boolean): void {

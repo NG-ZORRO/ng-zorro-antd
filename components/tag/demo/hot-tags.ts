@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzTagModule } from 'ng-zorro-antd/tag';
 
@@ -12,7 +12,7 @@ const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
     @for (tag of hotTags; track $index) {
       <nz-tag
         nzMode="checkable"
-        [nzChecked]="selectedTags.indexOf(tag) > -1"
+        [nzChecked]="selectedTags().indexOf(tag) > -1"
         (nzCheckedChange)="handleChange($event, tag)"
       >
         {{ tag }}
@@ -21,15 +21,15 @@ const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
   `
 })
 export class NzDemoTagHotTagsComponent {
-  hotTags = tagsFromServer;
-  selectedTags: string[] = [];
+  readonly hotTags = tagsFromServer;
+  readonly selectedTags = signal<string[]>([]);
 
   handleChange(checked: boolean, tag: string): void {
     if (checked) {
-      this.selectedTags.push(tag);
+      this.selectedTags.update(tags => [...tags, tag]);
     } else {
-      this.selectedTags = this.selectedTags.filter(t => t !== tag);
+      this.selectedTags.update(tags => tags.filter(t => t !== tag));
     }
-    console.log('You are interested in: ', this.selectedTags);
+    console.log('You are interested in: ', this.selectedTags());
   }
 }

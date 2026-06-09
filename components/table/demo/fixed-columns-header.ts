@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NzTableModule } from 'ng-zorro-antd/table';
 
@@ -50,16 +50,10 @@ interface ItemData {
     </nz-table>
   `
 })
-export class NzDemoTableFixedColumnsHeaderComponent implements OnInit {
-  listOfData: ItemData[] = [];
-
-  ngOnInit(): void {
-    for (let i = 0; i < 100; i++) {
-      this.listOfData.push({
-        name: `Edward King ${i}`,
-        age: 32,
-        address: `London`
-      });
-    }
-  }
+export class NzDemoTableFixedColumnsHeaderComponent {
+  readonly listOfData: ItemData[] = Array.from({ length: 100 }).map((_, i) => ({
+    name: `Edward King ${i}`,
+    age: 32,
+    address: `London`
+  }));
 }

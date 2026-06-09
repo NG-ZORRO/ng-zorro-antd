@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
@@ -8,13 +8,13 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   selector: 'nz-demo-carousel-position',
   imports: [FormsModule, NzCarouselModule, NzRadioModule],
   template: `
-    <nz-radio-group [(ngModel)]="dotPosition">
+    <nz-radio-group [ngModel]="dotPosition()" (ngModelChange)="dotPosition.set($event)">
       <label nz-radio-button nzValue="bottom">Bottom</label>
       <label nz-radio-button nzValue="top">Top</label>
       <label nz-radio-button nzValue="left">Left</label>
       <label nz-radio-button nzValue="right">Right</label>
     </nz-radio-group>
-    <nz-carousel [nzDotPosition]="dotPosition">
+    <nz-carousel [nzDotPosition]="dotPosition()">
       @for (index of array; track index) {
         <div nz-carousel-content>
           <h3>{{ index }}</h3>
@@ -44,6 +44,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoCarouselPositionComponent {
-  array = [1, 2, 3, 4];
-  dotPosition = 'bottom';
+  readonly array = [1, 2, 3, 4];
+  readonly dotPosition = signal<'bottom' | 'top' | 'left' | 'right'>('bottom');
 }

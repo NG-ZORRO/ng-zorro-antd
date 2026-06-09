@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -16,7 +16,7 @@ import { NzSelectModule, NzSelectPlacementType } from 'ng-zorro-antd/select';
     </nz-radio-group>
     <br />
     <br />
-    <nz-select [(ngModel)]="selectedValue" [nzDropdownMatchSelectWidth]="false" [nzPlacement]="placement">
+    <nz-select [(ngModel)]="selectedValue" [nzDropdownMatchSelectWidth]="false" [nzPlacement]="placement()">
       <nz-option nzValue="HangZhou" nzLabel="HangZhou #310000" />
       <nz-option nzValue="NingBo" nzLabel="NingBo #315000" />
       <nz-option nzValue="WenZhou" nzLabel="WenZhou #325000" />
@@ -29,6 +29,6 @@ import { NzSelectModule, NzSelectPlacementType } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoSelectPlacementComponent {
-  placement: NzSelectPlacementType = 'topLeft';
-  selectedValue = 'HangZhou';
+  readonly placement = signal<NzSelectPlacementType>('topLeft');
+  readonly selectedValue = signal('HangZhou');
 }

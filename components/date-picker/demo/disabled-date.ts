@@ -36,8 +36,8 @@ import { DisabledTimeFn, DisabledTimePartial, NzDatePickerModule } from 'ng-zorr
   `
 })
 export class NzDemoDatePickerDisabledDateComponent {
-  today = new Date();
-  timeDefaultValue = setHours(new Date(), 0);
+  readonly today = new Date();
+  readonly timeDefaultValue = setHours(new Date(), 0);
 
   range(start: number, end: number): number[] {
     const result: number[] = [];
@@ -47,17 +47,17 @@ export class NzDemoDatePickerDisabledDateComponent {
     return result;
   }
 
-  disabledDate = (current: Date): boolean =>
+  readonly disabledDate = (current: Date): boolean =>
     // Can not select days before today and today
     differenceInCalendarDays(current, this.today) > 0;
 
-  disabledDateTime: DisabledTimeFn = () => ({
+  readonly disabledDateTime: DisabledTimeFn = () => ({
     nzDisabledHours: () => this.range(0, 24).splice(4, 20),
     nzDisabledMinutes: () => this.range(30, 60),
     nzDisabledSeconds: () => [55, 56]
   });
 
-  disabledRangeTime: DisabledTimeFn = (_value, type?: DisabledTimePartial) => {
+  readonly disabledRangeTime: DisabledTimeFn = (_value, type?: DisabledTimePartial) => {
     if (type === 'start') {
       return {
         nzDisabledHours: () => this.range(0, 60).splice(4, 20),

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -76,63 +76,63 @@ interface Setting {
     </div>
     <nz-table
       #dynamicTable
-      [nzScroll]="{ x: scrollX, y: scrollY }"
-      [nzData]="listOfData"
-      [nzTableLayout]="settingValue.tableLayout"
-      [nzBordered]="settingValue.bordered"
-      [nzSimple]="settingValue.simple"
-      [nzLoading]="settingValue.loading"
-      [nzPaginationType]="settingValue.paginationType"
-      [nzPaginationPosition]="settingValue.position"
-      [nzShowSizeChanger]="settingValue.sizeChanger"
-      [nzFrontPagination]="settingValue.pagination"
-      [nzShowPagination]="settingValue.pagination"
-      [nzFooter]="settingValue.footer ? 'Here is Footer' : null"
-      [nzTitle]="settingValue.title ? 'Here is Title' : null"
-      [nzSize]="settingValue.size"
+      [nzScroll]="{ x: scrollX(), y: scrollY() }"
+      [nzData]="listOfData()"
+      [nzTableLayout]="settingValue().tableLayout"
+      [nzBordered]="settingValue().bordered"
+      [nzSimple]="settingValue().simple"
+      [nzLoading]="settingValue().loading"
+      [nzPaginationType]="settingValue().paginationType"
+      [nzPaginationPosition]="settingValue().position"
+      [nzShowSizeChanger]="settingValue().sizeChanger"
+      [nzFrontPagination]="settingValue().pagination"
+      [nzShowPagination]="settingValue().pagination"
+      [nzFooter]="settingValue().footer ? 'Here is Footer' : null"
+      [nzTitle]="settingValue().title ? 'Here is Title' : null"
+      [nzSize]="settingValue().size"
       (nzCurrentPageDataChange)="currentPageDataChange($event)"
     >
       <thead>
-        @if (settingValue.header) {
+        @if (settingValue().header) {
           <tr>
-            @if (settingValue.expandable) {
-              <th nzWidth="40px" [nzLeft]="fixedColumn"></th>
+            @if (settingValue().expandable) {
+              <th nzWidth="40px" [nzLeft]="fixedColumn()"></th>
             }
-            @if (settingValue.checkbox) {
+            @if (settingValue().checkbox) {
               <th
                 nzWidth="60px"
-                [(nzChecked)]="allChecked"
-                [nzLeft]="fixedColumn"
-                [nzIndeterminate]="indeterminate"
+                [nzChecked]="allChecked()"
+                [nzLeft]="fixedColumn()"
+                [nzIndeterminate]="indeterminate()"
                 (nzCheckedChange)="checkAll($event)"
               ></th>
             }
-            <th [nzLeft]="fixedColumn">Name</th>
+            <th [nzLeft]="fixedColumn()">Name</th>
             <th>Age</th>
             <th>Address</th>
-            <th [nzRight]="fixedColumn">Action</th>
+            <th [nzRight]="fixedColumn()">Action</th>
           </tr>
         }
       </thead>
       <tbody>
         @for (data of dynamicTable.data; track data) {
           <tr>
-            @if (settingValue.expandable) {
-              <td [nzLeft]="fixedColumn" [(nzExpand)]="data.expand"></td>
+            @if (settingValue().expandable) {
+              <td [nzLeft]="fixedColumn()" [(nzExpand)]="data.expand"></td>
             }
-            @if (settingValue.checkbox) {
-              <td [nzLeft]="fixedColumn" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
+            @if (settingValue().checkbox) {
+              <td [nzLeft]="fixedColumn()" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
             }
-            <td [nzLeft]="fixedColumn">{{ data.name }}</td>
+            <td [nzLeft]="fixedColumn()">{{ data.name }}</td>
             <td>{{ data.age }}</td>
-            <td [nzEllipsis]="settingValue.ellipsis">{{ data.address }}</td>
-            <td [nzRight]="fixedColumn" [nzEllipsis]="settingValue.ellipsis">
+            <td [nzEllipsis]="settingValue().ellipsis">{{ data.address }}</td>
+            <td [nzRight]="fixedColumn()" [nzEllipsis]="settingValue().ellipsis">
               <a href="#">Delete</a>
               <nz-divider nzType="vertical" />
               <a href="#">More action</a>
             </td>
           </tr>
-          @if (settingValue.expandable) {
+          @if (settingValue().expandable) {
             <tr [nzExpand]="data.expand">
               <span>{{ data.description }}</span>
             </tr>
@@ -151,16 +151,35 @@ interface Setting {
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
   private readonly formBuilder = inject(NonNullableFormBuilder);
 
-  settingForm: FormGroup<{ [K in keyof Setting]: FormControl<Setting[K]> }>;
-  listOfData: readonly ItemData[] = [];
-  displayData: readonly ItemData[] = [];
-  allChecked = false;
-  indeterminate = false;
-  fixedColumn = false;
-  scrollX: string | null = null;
-  scrollY: string | null = null;
-  settingValue: Setting;
-  listOfSwitch = [
+  readonly settingForm: FormGroup<{ [K in keyof Setting]: FormControl<Setting[K]> }> = this.formBuilder.group({
+    bordered: [false],
+    loading: [false],
+    pagination: [true],
+    sizeChanger: [false],
+    title: [true],
+    header: [true],
+    footer: [true],
+    expandable: [true],
+    checkbox: [true],
+    fixHeader: [false],
+    noResult: [false],
+    ellipsis: [false],
+    simple: [false],
+    size: 'small' as NzTableSize,
+    paginationType: 'default' as NzTablePaginationType,
+    tableScroll: 'unset' as TableScroll,
+    tableLayout: 'auto' as NzTableLayout,
+    position: 'bottom' as NzTablePaginationPosition
+  });
+  readonly listOfData = signal<readonly ItemData[]>([]);
+  readonly displayData = signal<readonly ItemData[]>([]);
+  readonly allChecked = signal(false);
+  readonly indeterminate = signal(false);
+  readonly fixedColumn = signal(false);
+  readonly scrollX = signal<string | null>(null);
+  readonly scrollY = signal<string | null>(null);
+  readonly settingValue = signal(this.settingForm.value as Setting);
+  readonly listOfSwitch = [
     { name: 'Bordered', formControlName: 'bordered' },
     { name: 'Loading', formControlName: 'loading' },
     { name: 'Pagination', formControlName: 'pagination' },
@@ -175,7 +194,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     { name: 'Ellipsis', formControlName: 'ellipsis' },
     { name: 'Simple Pagination', formControlName: 'simple' }
   ];
-  listOfRadio = [
+  readonly listOfRadio = [
     {
       name: 'Size',
       formControlName: 'size',
@@ -222,20 +241,20 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   ];
 
   currentPageDataChange($event: readonly ItemData[]): void {
-    this.displayData = $event;
+    this.displayData.set($event);
     this.refreshStatus();
   }
 
   refreshStatus(): void {
-    const validData = this.displayData.filter(value => !value.disabled);
+    const validData = this.displayData().filter(value => !value.disabled);
     const allChecked = validData.length > 0 && validData.every(value => value.checked);
     const allUnChecked = validData.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = !allChecked && !allUnChecked;
+    this.allChecked.set(allChecked);
+    this.indeterminate.set(!allChecked && !allUnChecked);
   }
 
   checkAll(value: boolean): void {
-    this.displayData.forEach(data => {
+    this.displayData().forEach(data => {
       if (!data.disabled) {
         data.checked = value;
       }
@@ -258,49 +277,24 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     return data;
   }
 
-  constructor() {
-    this.settingForm = this.formBuilder.group({
-      bordered: [false],
-      loading: [false],
-      pagination: [true],
-      sizeChanger: [false],
-      title: [true],
-      header: [true],
-      footer: [true],
-      expandable: [true],
-      checkbox: [true],
-      fixHeader: [false],
-      noResult: [false],
-      ellipsis: [false],
-      simple: [false],
-      size: 'small' as NzTableSize,
-      paginationType: 'default' as NzTablePaginationType,
-      tableScroll: 'unset' as TableScroll,
-      tableLayout: 'auto' as NzTableLayout,
-      position: 'bottom' as NzTablePaginationPosition
-    });
-
-    this.settingValue = this.settingForm.value as Setting;
-  }
-
   ngOnInit(): void {
     this.settingForm.valueChanges.subscribe(value => {
-      this.settingValue = value as Setting;
+      this.settingValue.set(value as Setting);
     });
     this.settingForm.controls.tableScroll.valueChanges.subscribe(scroll => {
-      this.fixedColumn = scroll === 'fixed';
-      this.scrollX = scroll === 'scroll' || scroll === 'fixed' ? '100vw' : null;
+      this.fixedColumn.set(scroll === 'fixed');
+      this.scrollX.set(scroll === 'scroll' || scroll === 'fixed' ? '100vw' : null);
     });
     this.settingForm.controls.fixHeader.valueChanges.subscribe(fixed => {
-      this.scrollY = fixed ? '240px' : null;
+      this.scrollY.set(fixed ? '240px' : null);
     });
     this.settingForm.controls.noResult.valueChanges.subscribe(empty => {
       if (empty) {
-        this.listOfData = [];
+        this.listOfData.set([]);
       } else {
-        this.listOfData = this.generateData();
+        this.listOfData.set(this.generateData());
       }
     });
-    this.listOfData = this.generateData();
+    this.listOfData.set(this.generateData());
   }
 }

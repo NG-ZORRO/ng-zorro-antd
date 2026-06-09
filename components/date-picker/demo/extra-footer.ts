@@ -21,6 +21,6 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   `
 })
 export class NzDemoDatePickerExtraFooterComponent {
-  plainFooter = 'plain extra footer';
-  footerRender = (): string => 'extra footer';
+  readonly plainFooter = 'plain extra footer';
+  readonly footerRender = (): string => 'extra footer';
 }

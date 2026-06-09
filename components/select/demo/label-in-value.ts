@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -13,7 +13,7 @@ interface Option {
   selector: 'nz-demo-select-label-in-value',
   imports: [FormsModule, NzSelectModule],
   template: `
-    <p>The selected option's age is {{ selectedValue?.age }}</p>
+    <p>The selected option's age is {{ selectedValue()?.age }}</p>
     <br />
     <nz-select
       [(ngModel)]="selectedValue"
@@ -34,11 +34,11 @@ interface Option {
   `
 })
 export class NzDemoSelectLabelInValueComponent {
-  optionList: Option[] = [
+  readonly optionList: Option[] = [
     { label: 'Lucy', value: 'lucy', age: 20 },
     { label: 'Jack', value: 'jack', age: 22 }
   ];
-  selectedValue: Option = { label: 'Jack', value: 'jack', age: 22 };
+  readonly selectedValue = signal<Option>({ label: 'Jack', value: 'jack', age: 22 });
   readonly compareFn = (o1: Option, o2: Option): boolean => (o1 && o2 ? o1.value === o2.value : o1 === o2);
 
   log(value: Option): void {

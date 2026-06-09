@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -9,5 +9,5 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   template: ` <input nz-input placeholder="Basic usage" [(ngModel)]="value" /> `
 })
 export class NzDemoInputBasicComponent {
-  value?: string;
+  readonly value = signal<string | undefined>(undefined);
 }

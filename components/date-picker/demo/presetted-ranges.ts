@@ -27,7 +27,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   `
 })
 export class NzDemoDatePickerPresettedRangesComponent {
-  ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
+  readonly ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
 
   onChange(result: Date[]): void {
     console.log('From: ', result[0], ', to: ', result[1]);

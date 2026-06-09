@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { formatDistance } from 'date-fns';
 
@@ -24,20 +24,20 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
           nz-tooltip
           nzTooltipTitle="Like"
           nzType="like"
-          [nzTheme]="likes > 0 ? 'twotone' : 'outline'"
+          [nzTheme]="likes() > 0 ? 'twotone' : 'outline'"
           (click)="like()"
         />
-        <span class="count like">{{ likes }}</span>
+        <span class="count like">{{ likes() }}</span>
       </nz-comment-action>
       <nz-comment-action>
         <nz-icon
           nz-tooltip
           nzTooltipTitle="Dislike"
           nzType="dislike"
-          [nzTheme]="dislikes > 0 ? 'twotone' : 'outline'"
+          [nzTheme]="dislikes() > 0 ? 'twotone' : 'outline'"
           (click)="dislike()"
         />
-        <span class="count dislike">{{ dislikes }}</span>
+        <span class="count dislike">{{ dislikes() }}</span>
       </nz-comment-action>
       <nz-comment-action>Reply to</nz-comment-action>
     </nz-comment>
@@ -54,17 +54,17 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
   `
 })
 export class NzDemoCommentBasicComponent {
-  likes = 0;
-  dislikes = 0;
-  time = formatDistance(new Date(), new Date());
+  readonly likes = signal(0);
+  readonly dislikes = signal(0);
+  readonly time = formatDistance(new Date(), new Date());
 
   like(): void {
-    this.likes = 1;
-    this.dislikes = 0;
+    this.likes.set(1);
+    this.dislikes.set(0);
   }
 
   dislike(): void {
-    this.likes = 0;
-    this.dislikes = 1;
+    this.likes.set(0);
+    this.dislikes.set(1);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -11,24 +11,30 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   template: `
     <nz-row nzGutter="8">
       <nz-col nzSpan="12">
-        <nz-slider [nzMin]="1" [nzMax]="20" [(ngModel)]="value1" />
+        <nz-slider [nzMin]="1" [nzMax]="20" [ngModel]="value1()" (ngModelChange)="value1.set($event)" />
       </nz-col>
       <div nz-col nzSpan="4">
-        <nz-input-number [nzMin]="1" [nzMax]="20" [(ngModel)]="value1" />
+        <nz-input-number [nzMin]="1" [nzMax]="20" [ngModel]="value1()" (ngModelChange)="value1.set($event)" />
       </div>
     </nz-row>
 
     <nz-row nzGutter="8">
       <nz-col nzSpan="12">
-        <nz-slider [nzMin]="0" [nzMax]="1" [nzStep]="0.01" [(ngModel)]="value2" />
+        <nz-slider [nzMin]="0" [nzMax]="1" [nzStep]="0.01" [ngModel]="value2()" (ngModelChange)="value2.set($event)" />
       </nz-col>
       <nz-col nzSpan="4">
-        <nz-input-number [nzMin]="0" [nzMax]="1" [nzStep]="0.01" [(ngModel)]="value2" />
+        <nz-input-number
+          [nzMin]="0"
+          [nzMax]="1"
+          [nzStep]="0.01"
+          [ngModel]="value2()"
+          (ngModelChange)="value2.set($event)"
+        />
       </nz-col>
     </nz-row>
   `
 })
 export class NzDemoSliderInputNumberComponent {
-  value1 = 1;
-  value2 = 0;
+  readonly value1 = signal(1);
+  readonly value2 = signal(0);
 }

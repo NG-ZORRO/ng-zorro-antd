@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -10,7 +10,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   imports: [FormsModule, NzButtonModule, NzSpaceModule, NzSliderModule],
   template: `
     <nz-slider [(ngModel)]="size" />
-    <nz-space [nzSize]="size">
+    <nz-space [nzSize]="size()">
       <button *nzSpaceItem nz-button nzType="primary">Button</button>
       <button *nzSpaceItem nz-button nzType="default">Default</button>
       <button *nzSpaceItem nz-button nzType="dashed">Dashed</button>
@@ -19,5 +19,5 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   `
 })
 export class NzDemoSpaceCustomizeComponent {
-  size = 8;
+  readonly size = signal(8);
 }

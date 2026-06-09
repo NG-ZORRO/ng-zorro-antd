@@ -449,7 +449,7 @@ describe('steps', () => {
 
     it("should can't click when status is process", fakeAsync(() => {
       testComponent.disable = false;
-      testComponent.index = 0;
+      testComponent.index.set(0);
       fixture.detectChanges();
       tick();
       fixture.detectChanges();

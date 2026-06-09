@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -17,8 +17,8 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
   `
 })
 export class NzDemoMentionCustomTagComponent {
-  inputValue?: string;
-  webFrameworks = [
+  readonly inputValue = signal<string | undefined>(undefined);
+  readonly webFrameworks = [
     { name: 'React', type: 'JavaScript' },
     { name: 'Angular', type: 'JavaScript' },
     { name: 'Laravel', type: 'PHP' },
@@ -26,7 +26,7 @@ export class NzDemoMentionCustomTagComponent {
     { name: 'Django', type: 'Python' }
   ];
 
-  valueWith = (data: { name: string; type: string }): string => data.name;
+  readonly valueWith = (data: { name: string; type: string }): string => data.name;
 
   onSelect(value: string): void {
     console.log(value);

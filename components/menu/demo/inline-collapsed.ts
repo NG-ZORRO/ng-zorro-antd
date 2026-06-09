@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -11,14 +11,14 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
   template: `
     <div class="wrapper">
       <button nz-button nzType="primary" (click)="toggleCollapsed()">
-        <nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" />
+        <nz-icon [nzType]="isCollapsed() ? 'menu-unfold' : 'menu-fold'" />
       </button>
-      <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
+      <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed()">
         <li
           nz-menu-item
           nz-tooltip
           nzTooltipPlacement="right"
-          [nzTooltipTitle]="isCollapsed ? 'Navigation One' : ''"
+          [nzTooltipTitle]="isCollapsed() ? 'Navigation One' : ''"
           nzSelected
         >
           <nz-icon nzType="mail" />
@@ -58,9 +58,9 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
   `
 })
 export class NzDemoMenuInlineCollapsedComponent {
-  isCollapsed = false;
+  readonly isCollapsed = signal(false);
 
   toggleCollapsed(): void {
-    this.isCollapsed = !this.isCollapsed;
+    this.isCollapsed.update(isCollapsed => !isCollapsed);
   }
 }

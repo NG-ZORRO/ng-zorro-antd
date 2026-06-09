@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -9,5 +9,5 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   template: `<textarea rows="4" nz-input [(ngModel)]="inputValue"></textarea>`
 })
 export class NzDemoInputTextareaComponent {
-  inputValue?: string;
+  readonly inputValue = signal<string | undefined>(undefined);
 }

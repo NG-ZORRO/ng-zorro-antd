@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
@@ -52,11 +52,16 @@ const options: NzCascaderOption[] = [
   imports: [FormsModule, NzCascaderModule, NzFlexModule, NzSwitchModule],
   template: `
     <div nz-flex nzVertical nzGap="small">
-      <nz-switch [(ngModel)]="open" nzCheckedChildren="open" nzUnCheckedChildren="close" />
+      <nz-switch
+        [ngModel]="open()"
+        (ngModelChange)="open.set($event)"
+        nzCheckedChildren="open"
+        nzUnCheckedChildren="close"
+      />
       <nz-cascader
         [nzOptions]="nzOptions"
         [ngModel]="values"
-        [nzOpen]="open"
+        [nzOpen]="open()"
         (nzSelectionChange)="onSelectionChange($event)"
         (nzOpenChange)="onOpenChange($event)"
       />
@@ -65,8 +70,8 @@ const options: NzCascaderOption[] = [
 })
 export class NzDemoCascaderOpenComponent {
   readonly nzOptions = options;
-  values = ['zhejiang', 'hangzhou', 'xihu'];
-  open = false;
+  readonly values = ['zhejiang', 'hangzhou', 'xihu'];
+  readonly open = signal(false);
 
   onSelectionChange(selectedOptions: NzCascaderOption[]): void {
     console.log(selectedOptions);

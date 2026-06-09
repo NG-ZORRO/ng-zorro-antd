@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
@@ -21,14 +21,10 @@ import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
     </nz-transfer>
   `
 })
-export class NzDemoTransferCustomItemComponent implements OnInit {
-  list: Array<TransferItem & { description: string; icon: string }> = [];
+export class NzDemoTransferCustomItemComponent {
+  readonly list = this.getData();
 
-  ngOnInit(): void {
-    this.getData();
-  }
-
-  getData(): void {
+  getData(): Array<TransferItem & { description: string; icon: string }> {
     const ret: Array<TransferItem & { description: string; icon: string }> = [];
     for (let i = 0; i < 20; i++) {
       ret.push({
@@ -39,7 +35,7 @@ export class NzDemoTransferCustomItemComponent implements OnInit {
         icon: `frown-o`
       });
     }
-    this.list = ret;
+    return ret;
   }
 
   select(ret: {}): void {

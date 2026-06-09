@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -24,5 +24,5 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   `
 })
 export class NzDemoInputStatusComponent {
-  value?: string;
+  readonly value = signal<string | undefined>(undefined);
 }

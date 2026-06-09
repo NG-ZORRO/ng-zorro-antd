@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSliderModule } from 'ng-zorro-antd/slider';
@@ -8,14 +8,14 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-slider-basic',
   imports: [FormsModule, NzSliderModule, NzSwitchModule],
   template: `
-    <nz-slider [(ngModel)]="value1" [nzDisabled]="disabled" />
-    <nz-slider nzRange [(ngModel)]="value2" [nzDisabled]="disabled" />
+    <nz-slider [ngModel]="value1()" (ngModelChange)="value1.set($event)" [nzDisabled]="disabled()" />
+    <nz-slider nzRange [ngModel]="value2()" (ngModelChange)="value2.set($event)" [nzDisabled]="disabled()" />
     Disabled:
-    <nz-switch nzSize="small" [(ngModel)]="disabled" />
+    <nz-switch nzSize="small" [ngModel]="disabled()" (ngModelChange)="disabled.set($event)" />
   `
 })
 export class NzDemoSliderBasicComponent {
-  disabled = false;
-  value1 = 30;
-  value2 = [20, 50];
+  readonly disabled = signal(false);
+  readonly value1 = signal(30);
+  readonly value2 = signal([20, 50]);
 }

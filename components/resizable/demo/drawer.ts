@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -11,18 +11,18 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
     <button nz-button nzType="primary" (click)="open()">Open</button>
     <nz-drawer
       [nzClosable]="false"
-      [nzVisible]="visible"
+      [nzVisible]="visible()"
       [nzBodyStyle]="{
         padding: 0,
         height: 'calc(100vh - 55px)'
       }"
-      [nzWidth]="width"
+      [nzWidth]="width()"
       nzPlacement="left"
       nzTitle="Resizable Drawer"
       (nzOnClose)="close()"
     >
       <ng-container *nzDrawerContent>
-        @if (visible) {
+        @if (visible()) {
           <div class="drawer-body" nz-resizable nzBounds="window" [nzMinWidth]="256" (nzResize)="onResize($event)">
             <nz-resize-handles [nzDirections]="['right']" />
             <p>Some contents...</p>
@@ -42,22 +42,22 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
   `
 })
 export class NzDemoResizableDrawerComponent {
-  width = 256;
-  visible = false;
+  readonly width = signal(256);
+  readonly visible = signal(false);
   id = -1;
 
   onResize({ width }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
-      this.width = width!;
+      this.width.set(width!);
     });
   }
 
   open(): void {
-    this.visible = true;
+    this.visible.set(true);
   }
 
   close(): void {
-    this.visible = false;
+    this.visible.set(false);
   }
 }

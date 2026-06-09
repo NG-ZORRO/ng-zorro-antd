@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
@@ -7,22 +7,22 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   imports: [NzTabsModule],
   template: `
     <nz-tabs [(nzSelectedIndex)]="selectedIndex" nzType="editable-card" (nzAdd)="newTab()" (nzClose)="closeTab($event)">
-      @for (tab of tabs; track tab) {
+      @for (tab of tabs(); track tab) {
         <nz-tab nzClosable [nzTitle]="tab">Content of {{ tab }}</nz-tab>
       }
     </nz-tabs>
   `
 })
 export class NzDemoTabsEditableCardComponent {
-  tabs = ['Tab 1', 'Tab 2'];
-  selectedIndex = 0;
+  readonly tabs = signal(['Tab 1', 'Tab 2']);
+  readonly selectedIndex = signal(0);
 
   closeTab({ index }: { index: number }): void {
-    this.tabs.splice(index, 1);
+    this.tabs.update(tabs => tabs.filter((_, i) => i !== index));
   }
 
   newTab(): void {
-    this.tabs.push('New Tab');
-    this.selectedIndex = this.tabs.length;
+    this.tabs.update(tabs => [...tabs, 'New Tab']);
+    this.selectedIndex.set(this.tabs().length);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzAlertModule } from 'ng-zorro-antd/alert';
@@ -9,7 +9,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-spin-delay-and-debounce',
   imports: [FormsModule, NzAlertModule, NzSpinModule, NzSwitchModule],
   template: `
-    <nz-spin [nzSpinning]="isSpinning" [nzDelay]="500">
+    <nz-spin [nzSpinning]="isSpinning()" [nzDelay]="500">
       <nz-alert
         nzType="info"
         nzMessage="Alert message title"
@@ -19,10 +19,10 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     <br />
     <div>
       Loading state:
-      <nz-switch [(ngModel)]="isSpinning" />
+      <nz-switch [ngModel]="isSpinning()" (ngModelChange)="isSpinning.set($event)" />
     </div>
   `
 })
 export class NzDemoSpinDelayAndDebounceComponent {
-  isSpinning = false;
+  readonly isSpinning = signal(false);
 }

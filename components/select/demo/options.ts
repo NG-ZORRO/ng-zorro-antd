@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -18,7 +18,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoSelectOptionsComponent {
-  selectedValue = 'lucy';
+  readonly selectedValue = signal('lucy');
   readonly listOfOption = [
     { label: 'Jack', value: 'jack' },
     { label: 'Lucy', value: 'lucy' },

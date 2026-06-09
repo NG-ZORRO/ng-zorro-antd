@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, TemplateRef, ViewChild, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
@@ -83,9 +83,10 @@ export class NzDemoEmptyConfigComponent {
 
   @ViewChild('customTpl', { static: false }) customTpl?: TemplateRef<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-  customize = false;
+  readonly customize = signal(false);
+
   onConfigChange(): void {
-    if (this.customize) {
+    if (this.customize()) {
       this.nzConfigService.set('empty', { nzDefaultEmptyContent: this.customTpl });
     } else {
       this.nzConfigService.set('empty', { nzDefaultEmptyContent: undefined });

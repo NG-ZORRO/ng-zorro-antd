@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -24,13 +24,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         </ul>
       </nz-dropdown-menu>
     </ng-template>
-    <p>cron: {{ cron }} </p>
+    <p>cron: {{ cron() }} </p>
   `
 })
 export class NzDemoCronExpressionShortcutsComponent {
-  value: string = '1 1 * * *';
-  cron: string = '';
-  options = [
+  readonly value = signal('1 1 * * *');
+  readonly cron = signal('');
+  readonly options = [
     {
       label: 'Every hour',
       value: '0 0-23/1 * * *'
@@ -46,10 +46,10 @@ export class NzDemoCronExpressionShortcutsComponent {
   ];
 
   setValue(value: string): void {
-    this.value = value;
+    this.value.set(value);
   }
 
   getValue(value: string): void {
-    this.cron = value;
+    this.cron.set(value);
   }
 }

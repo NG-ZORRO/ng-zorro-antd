@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormRecord, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -12,7 +12,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   template: `
     <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
       <div nz-row [nzGutter]="24">
-        @for (control of controlArray; track control) {
+        @for (control of controlArray(); track control.index) {
           <div nz-col [nzSpan]="8" [hidden]="!control.show">
             <nz-form-item>
               <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
@@ -34,7 +34,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
           <button nz-button (click)="resetForm()">Clear</button>
           <a class="collapse" (click)="toggleCollapse()">
             Collapse
-            <nz-icon [nzType]="isCollapse ? 'down' : 'up'" />
+            <nz-icon [nzType]="isCollapse() ? 'down' : 'up'" />
           </a>
         </div>
       </div>
@@ -78,16 +78,19 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   `
 })
 export class NzDemoFormAdvancedSearchComponent implements OnInit {
-  private fb = inject(NonNullableFormBuilder);
-  validateForm: FormRecord<FormControl<string>> = this.fb.record({});
-  controlArray: Array<{ index: number; show: boolean }> = [];
-  isCollapse = true;
+  private readonly fb = inject(NonNullableFormBuilder);
+  readonly validateForm: FormRecord<FormControl<string>> = this.fb.record({});
+  readonly controlArray = signal<Array<{ index: number; show: boolean }>>([]);
+  readonly isCollapse = signal(true);
 
   toggleCollapse(): void {
-    this.isCollapse = !this.isCollapse;
-    this.controlArray.forEach((c, index) => {
-      c.show = this.isCollapse ? index < 6 : true;
-    });
+    this.isCollapse.update(isCollapse => !isCollapse);
+    this.controlArray.update(controlArray =>
+      controlArray.map((control, index) => ({
+        ...control,
+        show: this.isCollapse() ? index < 6 : true
+      }))
+    );
   }
 
   resetForm(): void {
@@ -95,9 +98,11 @@ export class NzDemoFormAdvancedSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const controlArray: Array<{ index: number; show: boolean }> = [];
     for (let i = 0; i < 10; i++) {
-      this.controlArray.push({ index: i, show: i < 6 });
+      controlArray.push({ index: i, show: i < 6 });
       this.validateForm.addControl(`field${i}`, this.fb.control(''));
     }
+    this.controlArray.set(controlArray);
   }
 }

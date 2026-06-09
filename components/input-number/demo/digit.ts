@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
@@ -9,5 +9,5 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
   template: `<nz-input-number [(ngModel)]="value" nzMin="0" nzMax="10" nzStep="0.1" nzPlaceHolder="Digital" />`
 })
 export class NzDemoInputNumberDigitComponent {
-  value = 0.1;
+  readonly value = signal(0.1);
 }

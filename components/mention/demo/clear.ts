@@ -20,7 +20,7 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 })
 export class NzDemoMentionClearComponent {
   inputValue = model('@afc163');
-  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
+  readonly suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
 
   onSelect(e: string): void {
     console.log(e);

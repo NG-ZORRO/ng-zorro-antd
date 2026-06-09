@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzDateMode, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 
@@ -17,10 +17,10 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
         <nz-option nzValue="quarter" nzLabel="Quarter" />
         <nz-option nzValue="year" nzLabel="Year" />
       </nz-select>
-      <nz-date-picker *nzSpaceItem [nzMode]="mode" />
+      <nz-date-picker *nzSpaceItem [nzMode]="mode()" />
     </nz-space>
   `
 })
 export class NzDemoDatePickerSwitchComponent {
-  mode = 'date';
+  readonly mode = signal<NzDateMode>('date');
 }

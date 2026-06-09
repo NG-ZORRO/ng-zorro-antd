@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -30,5 +30,5 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoSelectCustomContentComponent {
-  selectedValue = null;
+  readonly selectedValue = signal<string | null>(null);
 }

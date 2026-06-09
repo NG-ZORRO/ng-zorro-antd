@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -14,7 +14,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
       <label nz-radio nzValue="C">Option C</label>
       <label nz-radio nzValue="M">
         More...
-        @if (radioValue === 'M') {
+        @if (radioValue() === 'M') {
           <input type="text" nz-input />
         }
       </label>
@@ -34,5 +34,5 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoRadioRadiogroupMoreComponent {
-  radioValue = 'A';
+  readonly radioValue = signal('A');
 }

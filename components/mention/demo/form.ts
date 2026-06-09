@@ -55,7 +55,7 @@ export class NzDemoMentionFormComponent {
   readonly suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご', 'ParsaArvaneh'];
   @ViewChild('mentions', { static: true }) mentionChild!: NzMentionComponent;
 
-  mentionValidator: ValidatorFn = (control: AbstractControl): ValidationErrors => {
+  readonly mentionValidator: ValidatorFn = (control: AbstractControl): ValidationErrors => {
     if (!control.value) {
       return { required: true };
     } else if (this.mentionChild?.getMentions().length < 2) {
@@ -64,8 +64,8 @@ export class NzDemoMentionFormComponent {
     return {};
   };
 
-  private fb = inject(FormBuilder);
-  validateForm = this.fb.group(
+  private readonly fb = inject(FormBuilder);
+  readonly validateForm = this.fb.group(
     {
       mention: ['Hello @afc163 ', [Validators.required, this.mentionValidator]]
     },

@@ -56,6 +56,6 @@ export class NzDemoSelectPrefixAndSuffixComponent {
     { value: 'disabled', label: 'Disabled', disabled: true }
   ];
 
-  value = model('lucy');
-  multipleValue = model(['lucy']);
+  readonly value = model('lucy');
+  readonly multipleValue = model(['lucy']);
 }

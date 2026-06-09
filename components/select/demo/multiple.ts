@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -37,5 +37,5 @@ function alphabet(): string[] {
 })
 export class NzDemoSelectMultipleComponent {
   readonly listOfOption: string[] = alphabet();
-  listOfSelectedValue = ['a10', 'c12'];
+  readonly listOfSelectedValue = signal(['a10', 'c12']);
 }

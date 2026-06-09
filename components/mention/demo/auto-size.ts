@@ -22,7 +22,7 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 })
 export class NzDemoMentionAutoSizeComponent {
   readonly inputValue = model('@afc163');
-  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
+  readonly suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
 
   onSelect(suggestion: string): void {
     console.log(`onSelect ${suggestion}`);

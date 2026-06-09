@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -16,5 +16,5 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoRadioSolidComponent {
-  radioValue = 'A';
+  readonly radioValue = signal('A');
 }

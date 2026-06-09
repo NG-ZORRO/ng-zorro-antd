@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -10,7 +10,7 @@ import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
   template: `
     <nz-transfer
       [nzDataSource]="list"
-      [nzDisabled]="disabled"
+      [nzDisabled]="disabled()"
       nzShowSearch
       [nzFilterOption]="filterOption"
       (nzSearchChange)="search($event)"
@@ -18,23 +18,22 @@ import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
       (nzChange)="change($event)"
     />
     <br />
-    <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled" />
+    <nz-switch
+      [ngModel]="disabled()"
+      (ngModelChange)="disabled.set($event)"
+      nzCheckedChildren="disabled"
+      nzUnCheckedChildren="disabled"
+    />
   `
 })
-export class NzDemoTransferSearchComponent implements OnInit {
-  list: TransferItem[] = [];
-  disabled = false;
-
-  ngOnInit(): void {
-    for (let i = 0; i < 20; i++) {
-      this.list.push({
-        key: i.toString(),
-        title: `content${i + 1}`,
-        description: `description of content${i + 1}`,
-        direction: Math.random() * 2 > 1 ? 'right' : undefined
-      });
-    }
-  }
+export class NzDemoTransferSearchComponent {
+  readonly list: TransferItem[] = Array.from({ length: 20 }).map((_, i) => ({
+    key: i.toString(),
+    title: `content${i + 1}`,
+    description: `description of content${i + 1}`,
+    direction: Math.random() * 2 > 1 ? 'right' : undefined
+  }));
+  readonly disabled = signal(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filterOption(inputValue: string, item: any): boolean {

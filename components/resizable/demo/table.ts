@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -10,7 +10,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
     <nz-table #basicTable [nzData]="listOfData">
       <thead>
         <tr>
-          @for (col of cols; track col) {
+          @for (col of cols(); track col) {
             @if (col.width) {
               <th
                 nz-resizable
@@ -54,7 +54,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
   `
 })
 export class NzDemoResizableTableComponent {
-  cols: Array<{ title: string; width?: string }> = [
+  readonly cols = signal<Array<{ title: string; width?: string }>>([
     {
       title: 'Name',
       width: '180px'
@@ -70,9 +70,9 @@ export class NzDemoResizableTableComponent {
     {
       title: 'Actions'
     }
-  ];
+  ]);
 
-  listOfData = [
+  readonly listOfData = [
     {
       key: '1',
       name: 'John Brown',
@@ -94,6 +94,6 @@ export class NzDemoResizableTableComponent {
   ];
 
   onResize({ width }: NzResizeEvent, col: string): void {
-    this.cols = this.cols.map(e => (e.title === col ? { ...e, width: `${width}px` } : e));
+    this.cols.update(cols => cols.map(e => (e.title === col ? { ...e, width: `${width}px` } : e)));
   }
 }

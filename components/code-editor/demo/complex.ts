@@ -1,4 +1,4 @@
-import { Component, DOCUMENT, inject, Renderer2, ViewChild } from '@angular/core';
+import { Component, DOCUMENT, Renderer2, ViewChild, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCodeEditorComponent, NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
@@ -13,22 +13,22 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
   template: `
     <p nz-paragraph style="margin-bottom: 8px;">
       Loading
-      <nz-switch [(ngModel)]="loading" />
+      <nz-switch [ngModel]="loading()" (ngModelChange)="loading.set($event)" />
     </p>
     <nz-code-editor
       class="editor"
-      [class.full-screen]="fullScreen"
+      [class.full-screen]="fullScreen()"
       [ngModel]="code"
-      [nzLoading]="loading"
+      [nzLoading]="loading()"
       [nzToolkit]="toolkit"
       [nzEditorOption]="{ language: 'javascript' }"
     />
     <ng-template #toolkit>
       <nz-icon
-        [class.active]="fullScreen"
+        [class.active]="fullScreen()"
         nz-tooltip
         nzTooltipTitle="Toggle Fullscreen"
-        [nzType]="fullScreen ? 'fullscreen-exit' : 'fullscreen'"
+        [nzType]="fullScreen() ? 'fullscreen-exit' : 'fullscreen'"
         (click)="toggleFullScreen()"
       />
     </ng-template>
@@ -53,9 +53,9 @@ export class NzDemoCodeEditorComplexComponent {
   @ViewChild(NzCodeEditorComponent, { static: false }) editorComponent?: NzCodeEditorComponent;
   @ViewChild(NzTooltipDirective, { static: false }) tooltip?: NzTooltipDirective;
 
-  loading = true;
-  fullScreen = false;
-  code = `function flatten(arr) {
+  readonly loading = signal(true);
+  readonly fullScreen = signal(false);
+  readonly code = `function flatten(arr) {
   if (!(arr instanceof Array)) {
     throw new Error('The parameter must be an array.');
   }
@@ -76,12 +76,12 @@ export class NzDemoCodeEditorComplexComponent {
 }
 
 console.log(flatten(['1', 2, [[3]]]))`;
-  private document: Document = inject(DOCUMENT);
-  private renderer: Renderer2 = inject(Renderer2);
+  private readonly document = inject(DOCUMENT);
+  private readonly renderer = inject(Renderer2);
 
   toggleFullScreen(): void {
-    this.fullScreen = !this.fullScreen;
-    this.renderer.setStyle(this.document.body, 'overflow-y', this.fullScreen ? 'hidden' : null);
+    this.fullScreen.update(fullScreen => !fullScreen);
+    this.renderer.setStyle(this.document.body, 'overflow-y', this.fullScreen() ? 'hidden' : null);
     this.editorComponent?.layout();
     this.tooltip?.hide();
   }

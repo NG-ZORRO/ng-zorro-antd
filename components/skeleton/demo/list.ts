@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -10,15 +10,15 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-skeleton-list',
   imports: [FormsModule, NzIconModule, NzListModule, NzSkeletonModule, NzSwitchModule],
   template: `
-    <nz-switch [(ngModel)]="loading" />
+    <nz-switch [ngModel]="loading()" (ngModelChange)="loading.set($event)" />
     <nz-list [nzDataSource]="listData" [nzRenderItem]="item" nzItemLayout="vertical">
       <ng-template #item let-item>
         <nz-list-item
-          [nzContent]="loading ? ' ' : item.content"
-          [nzActions]="loading ? [] : [starAction, likeAction, msgAction]"
-          [nzExtra]="loading ? null : extra"
+          [nzContent]="loading() ? ' ' : item.content"
+          [nzActions]="loading() ? [] : [starAction, likeAction, msgAction]"
+          [nzExtra]="loading() ? null : extra"
         >
-          <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzAvatar]="true">
+          <nz-skeleton [nzLoading]="loading()" [nzActive]="true" [nzAvatar]="true">
             <ng-template #starAction>
               <nz-icon nzType="star-o" style="margin-right: 8px;" />
               156
@@ -46,8 +46,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoSkeletonListComponent {
-  loading = true;
-  listData = new Array(3).fill({}).map((_i, index) => ({
+  readonly loading = signal(true);
+  readonly listData = new Array(3).fill({}).map((_i, index) => ({
     href: 'https://ng.ant.design',
     title: `ant design part ${index}`,
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',

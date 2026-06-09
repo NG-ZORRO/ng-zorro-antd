@@ -22,12 +22,12 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 export class NzDemoSegmentedShapeComponent {
   currentSize = model<NzSizeLDSType>('default');
 
-  optionsSize = [
+  readonly optionsSize = [
     { value: 'small', label: 'Small' },
     { value: 'default', label: 'Medium' },
     { value: 'large', label: 'Large' }
   ];
-  options = [
+  readonly options = [
     { value: 'List', icon: 'bars' },
     { value: 'Kanban', icon: 'appstore' }
   ];
