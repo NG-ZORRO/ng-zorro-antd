@@ -70,25 +70,25 @@ describe('comment', () => {
       component.like();
       fixture.detectChanges();
 
-      expect(component.likes).toBe(1);
-      expect(component.dislikes).toBe(0);
+      expect(component.likes()).toBe(1);
+      expect(component.dislikes()).toBe(0);
       expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(
-        component.likes.toString()
+        component.likes().toString()
       );
       expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(
-        component.dislikes.toString()
+        component.dislikes().toString()
       );
 
       component.dislike();
       fixture.detectChanges();
 
-      expect(component.likes).toBe(0);
-      expect(component.dislikes).toBe(1);
+      expect(component.likes()).toBe(0);
+      expect(component.dislikes()).toBe(1);
       expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(
-        component.likes.toString()
+        component.likes().toString()
       );
       expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(
-        component.dislikes.toString()
+        component.dislikes().toString()
       );
     });
 
