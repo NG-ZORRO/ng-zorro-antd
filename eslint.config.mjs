@@ -98,6 +98,7 @@ export default tseslint.config(
       '@angular-eslint/no-lifecycle-call': 'off',
       '@angular-eslint/no-pipe-impure': 'error',
       '@angular-eslint/prefer-output-readonly': 'error',
+      '@angular-eslint/prefer-on-push-component-change-detection': 'warn',
       '@angular-eslint/use-component-selector': 'off',
       '@angular-eslint/use-component-view-encapsulation': 'off',
       '@angular-eslint/no-implicit-take-until-destroyed': 'error',
