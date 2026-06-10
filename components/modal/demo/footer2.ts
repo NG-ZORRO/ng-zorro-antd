@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
@@ -26,7 +26,7 @@ import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
       <div *nzModalFooter>
         <span>Modal Footer:</span>
         <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
-        <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
+        <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading()">Custom Submit</button>
       </div>
     </nz-modal>
   `
@@ -34,11 +34,11 @@ import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 export class NzDemoModalFooter2Component {
   private readonly modalService = inject(NzModalService);
 
-  isVisible = false;
-  isConfirmLoading = false;
+  readonly isVisible = signal(false);
+  readonly isConfirmLoading = signal(false);
 
   showModal1(): void {
-    this.isVisible = true;
+    this.isVisible.set(true);
   }
 
   showModal2(): void {
@@ -49,15 +49,15 @@ export class NzDemoModalFooter2Component {
   }
 
   handleOk(): void {
-    this.isConfirmLoading = true;
+    this.isConfirmLoading.set(true);
     setTimeout(() => {
-      this.isVisible = false;
-      this.isConfirmLoading = false;
+      this.isVisible.set(false);
+      this.isConfirmLoading.set(false);
     }, 3000);
   }
 
   handleCancel(): void {
-    this.isVisible = false;
+    this.isVisible.set(false);
   }
 }
 

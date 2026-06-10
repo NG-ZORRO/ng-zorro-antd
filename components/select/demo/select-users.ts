@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, map, switchMap, tap } from 'rxjs/operators';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -15,7 +14,7 @@ interface MockUser {
 
 @Component({
   selector: 'nz-demo-select-select-users',
-  imports: [FormsModule, NzIconModule, NzSelectModule],
+  imports: [NzIconModule, NzSelectModule],
   template: `
     <nz-select
       nzMode="multiple"
@@ -23,12 +22,11 @@ interface MockUser {
       nzAllowClear
       nzShowSearch
       nzServerSearch
-      [(ngModel)]="selectedUser"
-      (nzOnSearch)="onSearch($event)"
+      (nzOnSearch)="search($event)"
     >
-      @if (!loading) {
-        @for (o of optionList; track o) {
-          <nz-option [nzValue]="o" [nzLabel]="o" />
+      @if (!loading()) {
+        @for (user of options(); track user) {
+          <nz-option [nzValue]="user" [nzLabel]="user" />
         }
       } @else {
         <nz-option nzDisabled nzCustomContent>
@@ -51,33 +49,31 @@ interface MockUser {
 export class NzDemoSelectSelectUsersComponent implements OnInit {
   private readonly http = inject(HttpClient);
 
-  randomUserUrl = 'https://api.randomuser.me/?results=5';
-  searchChange$ = new BehaviorSubject('');
-  optionList: string[] = [];
-  selectedUser?: string;
-  loading = false;
+  readonly search$ = new BehaviorSubject('');
+  readonly options = signal<string[]>([]);
+  readonly loading = signal(false);
 
-  onSearch(value: string): void {
-    this.loading = true;
-    this.searchChange$.next(value);
+  search(value: string): void {
+    this.search$.next(value);
   }
+
   ngOnInit(): void {
-    this.searchChange$
+    this.search$
       .pipe(
         debounceTime(500),
+        tap(() => this.loading.set(true)),
         switchMap(name => this.getRandomNameList(name))
       )
       .subscribe(data => {
-        this.optionList = data;
-        this.loading = false;
+        this.options.set(data);
+        this.loading.set(false);
       });
   }
 
   getRandomNameList(name: string): Observable<string[]> {
-    return this.http.get<{ results: MockUser[] }>(`${this.randomUserUrl}`).pipe(
-      map(res => res.results),
-      catchError(() => of<MockUser[]>([])),
-      map(list => list.map(item => `${item.name.first} ${name}`))
+    return this.http.get<{ results: MockUser[] }>('https://api.randomuser.me/?results=5').pipe(
+      map(res => res.results.map(item => `${item.name.first} ${name}`)),
+      catchError(() => of<string[]>([]))
     );
   }
 }

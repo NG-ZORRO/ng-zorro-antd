@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -13,7 +13,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
       <label nz-radio-button nzValue="default"><span>Default</span></label>
       <label nz-radio-button nzValue="large"><span>Large</span></label>
     </nz-radio-group>
-    <nz-tabs [nzSize]="size">
+    <nz-tabs [nzSize]="size()">
       @for (tab of tabs; track tab) {
         <nz-tab [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
       }
@@ -21,6 +21,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   `
 })
 export class NzDemoTabsSizeComponent {
-  size: 'large' | 'default' | 'small' = 'small';
-  tabs = [1, 2, 3];
+  readonly size = signal<'large' | 'default' | 'small'>('small');
+  readonly tabs = [1, 2, 3];
 }

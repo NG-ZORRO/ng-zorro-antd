@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
@@ -80,8 +80,8 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
     }
   `
 })
-export class NzDemoTableSummaryComponent implements OnInit {
-  data = [
+export class NzDemoTableSummaryComponent {
+  readonly data = [
     {
       name: 'John Brown',
       borrow: 10,
@@ -104,22 +104,13 @@ export class NzDemoTableSummaryComponent implements OnInit {
     }
   ];
 
-  fixedData: Array<{ key: number; name: string; description: string }> = [];
-  totalBorrow = 0;
-  totalRepayment = 0;
-
-  ngOnInit(): void {
-    this.data.forEach(({ borrow, repayment }) => {
-      this.totalBorrow += borrow;
-      this.totalRepayment += repayment;
-    });
-
-    for (let i = 0; i < 20; i += 1) {
-      this.fixedData.push({
-        key: i,
-        name: ['Light', 'Bamboo', 'Little'][i % 3],
-        description: 'Everything that has a beginning, has an end.'
-      });
-    }
-  }
+  readonly fixedData: Array<{ key: number; name: string; description: string }> = Array.from({ length: 20 }).map(
+    (_, i) => ({
+      key: i,
+      name: ['Light', 'Bamboo', 'Little'][i % 3],
+      description: 'Everything that has a beginning, has an end.'
+    })
+  );
+  readonly totalBorrow = this.data.reduce((total, item) => total + item.borrow, 0);
+  readonly totalRepayment = this.data.reduce((total, item) => total + item.repayment, 0);
 }

@@ -1,5 +1,5 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -38,7 +38,7 @@ interface CustomColumn extends NzCustomColumn {
     <button nz-button nzType="primary" nzSize="small" (click)="showModal()" style="margin-bottom: 8px;">
       <nz-icon nzType="setting" nzTheme="outline" />
     </button>
-    <nz-table #basicTable [nzData]="listOfData" [nzCustomColumn]="customColumn">
+    <nz-table #basicTable [nzData]="listOfData" [nzCustomColumn]="customColumn()">
       <thead>
         <tr>
           <th nzCellControl="name">Name</th>
@@ -65,13 +65,13 @@ interface CustomColumn extends NzCustomColumn {
       </tbody>
     </nz-table>
 
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="Custom Column" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <nz-modal [nzVisible]="isVisible()" nzTitle="Custom Column" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <ng-container *nzModalContent>
         <div nz-row [nzGutter]="24">
           <div nz-col class="gutter-row" [nzSpan]="12">
             <div class="example-container">
               <p>Displayed (drag and drop to sort)</p>
-              @for (item of title; track item) {
+              @for (item of title(); track item) {
                 <div class="example-box">
                   {{ item.name }}
                 </div>
@@ -79,19 +79,19 @@ interface CustomColumn extends NzCustomColumn {
               <div
                 cdkDropList
                 #todoList="cdkDropList"
-                [cdkDropListData]="fix"
+                [cdkDropListData]="fix()"
                 [cdkDropListConnectedTo]="[doneList]"
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                @for (item of fix; track item) {
+                @for (item of fix(); track item) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
                     <nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, $index)" />
                   </div>
                 }
               </div>
-              @for (item of footer; track item) {
+              @for (item of footer(); track item) {
                 <div class="example-box">
                   {{ item.name }}
                 </div>
@@ -104,12 +104,12 @@ interface CustomColumn extends NzCustomColumn {
               <div
                 cdkDropList
                 #doneList="cdkDropList"
-                [cdkDropListData]="notFix"
+                [cdkDropListData]="notFix()"
                 [cdkDropListConnectedTo]="[todoList]"
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                @for (item of notFix; track item) {
+                @for (item of notFix(); track item) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
                     <nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, $index)" />
@@ -181,9 +181,7 @@ interface CustomColumn extends NzCustomColumn {
   `
 })
 export class NzDemoTableCustomColumnComponent implements OnInit {
-  private readonly cdr = inject(ChangeDetectorRef);
-
-  listOfData: Person[] = [
+  readonly listOfData: Person[] = [
     {
       key: '1',
       name: 'John Brown',
@@ -207,7 +205,7 @@ export class NzDemoTableCustomColumnComponent implements OnInit {
     }
   ];
 
-  customColumn: CustomColumn[] = [
+  readonly customColumn = signal<CustomColumn[]>([
     {
       name: 'Name',
       value: 'name',
@@ -243,18 +241,19 @@ export class NzDemoTableCustomColumnComponent implements OnInit {
       position: 'right',
       width: 200
     }
-  ];
+  ]);
 
-  isVisible: boolean = false;
-  title: CustomColumn[] = [];
-  footer: CustomColumn[] = [];
-  fix: CustomColumn[] = [];
-  notFix: CustomColumn[] = [];
+  readonly isVisible = signal(false);
+  readonly title = signal<CustomColumn[]>([]);
+  readonly footer = signal<CustomColumn[]>([]);
+  readonly fix = signal<CustomColumn[]>([]);
+  readonly notFix = signal<CustomColumn[]>([]);
+
   ngOnInit(): void {
-    this.title = this.customColumn.filter(item => item.position === 'left' && item.required);
-    this.footer = this.customColumn.filter(item => item.position === 'right' && item.required);
-    this.fix = this.customColumn.filter(item => item.default && !item.required);
-    this.notFix = this.customColumn.filter(item => !item.default && !item.required);
+    this.title.set(this.customColumn().filter(item => item.position === 'left' && item.required));
+    this.footer.set(this.customColumn().filter(item => item.position === 'right' && item.required));
+    this.fix.set(this.customColumn().filter(item => item.default && !item.required));
+    this.notFix.set(this.customColumn().filter(item => !item.default && !item.required));
   }
 
   drop(event: CdkDragDrop<CustomColumn[]>): void {
@@ -263,42 +262,30 @@ export class NzDemoTableCustomColumnComponent implements OnInit {
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
     }
-    this.fix = this.fix.map(item => {
-      item.default = true;
-      return item;
-    });
-    this.notFix = this.notFix.map(item => {
-      item.default = false;
-      return item;
-    });
-    this.cdr.markForCheck();
+    this.fix.set(this.fix().map(item => ({ ...item, default: true })));
+    this.notFix.set(this.notFix().map(item => ({ ...item, default: false })));
   }
 
   deleteCustom(value: CustomColumn, index: number): void {
-    value.default = false;
-    this.notFix = [...this.notFix, value];
-    this.fix.splice(index, 1);
-    this.cdr.markForCheck();
+    this.notFix.update(notFix => [...notFix, { ...value, default: false }]);
+    this.fix.update(fix => fix.filter((_, i) => i !== index));
   }
 
   addCustom(value: CustomColumn, index: number): void {
-    value.default = true;
-    this.fix = [...this.fix, value];
-    this.notFix.splice(index, 1);
-    this.cdr.markForCheck();
+    this.fix.update(fix => [...fix, { ...value, default: true }]);
+    this.notFix.update(notFix => notFix.filter((_, i) => i !== index));
   }
 
   showModal(): void {
-    this.isVisible = true;
+    this.isVisible.set(true);
   }
 
   handleOk(): void {
-    this.customColumn = [...this.title, ...this.fix, ...this.notFix, ...this.footer];
-    this.isVisible = false;
-    this.cdr.markForCheck();
+    this.customColumn.set([...this.title(), ...this.fix(), ...this.notFix(), ...this.footer()]);
+    this.isVisible.set(false);
   }
 
   handleCancel(): void {
-    this.isVisible = false;
+    this.isVisible.set(false);
   }
 }

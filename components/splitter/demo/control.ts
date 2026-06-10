@@ -1,4 +1,4 @@
-import { Component, model, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -40,8 +40,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoSplitterControlComponent {
-  resizable = model(true);
-  sizes = signal<Array<number | string>>(['50%', '50%']);
+  readonly resizable = signal(true);
+  readonly sizes = signal<Array<number | string>>(['50%', '50%']);
 
   setSizes(sizes: Array<number | string>): void {
     console.log('output', sizes);

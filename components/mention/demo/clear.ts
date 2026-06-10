@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -19,8 +19,8 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
   `
 })
 export class NzDemoMentionClearComponent {
-  inputValue = model('@afc163');
-  suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
+  readonly inputValue = signal('@afc163');
+  readonly suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
 
   onSelect(e: string): void {
     console.log(e);

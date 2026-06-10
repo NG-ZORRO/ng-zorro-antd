@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
@@ -15,9 +15,11 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
       nzPopoverTrigger="click"
       [nzPopoverContent]="contentTemplate"
       [nzPopoverOverlayClickable]="false"
-      [nzPopoverVisible]="visible"
+      [nzPopoverVisible]="visible()"
       (nzPopoverVisibleChange)="visibleChange($event)"
-      >Click me</button
+    >
+      Click me
+    </button>
     >
     <ng-template #contentTemplate>
       <button nz-button nzSize="small" nzType="primary" (click)="visibleChange(false)"> Close me </button>
@@ -25,9 +27,9 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
   `
 })
 export class NzDemoPopoverOverlayComponent {
-  visible = false;
+  readonly visible = signal(false);
 
   visibleChange(value: boolean): void {
-    this.visible = value;
+    this.visible.set(value);
   }
 }

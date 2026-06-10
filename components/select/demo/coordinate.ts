@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -13,7 +13,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
       }
     </nz-select>
     <nz-select [(ngModel)]="selectedCity">
-      @for (c of cityData[selectedProvince]; track c) {
+      @for (c of cityData[selectedProvince()]; track c) {
         <nz-option [nzValue]="c" [nzLabel]="c" />
       }
     </nz-select>
@@ -26,15 +26,15 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoSelectCoordinateComponent {
-  selectedProvince = 'Zhejiang';
-  selectedCity = 'Hangzhou';
-  provinceData = ['Zhejiang', 'Jiangsu'];
-  cityData: { [place: string]: string[] } = {
+  readonly selectedProvince = signal('Zhejiang');
+  readonly selectedCity = signal('Hangzhou');
+  readonly provinceData = ['Zhejiang', 'Jiangsu'];
+  readonly cityData: { [place: string]: string[] } = {
     Zhejiang: ['Hangzhou', 'Ningbo', 'Wenzhou'],
     Jiangsu: ['Nanjing', 'Suzhou', 'Zhenjiang']
   };
 
   provinceChange(value: string): void {
-    this.selectedCity = this.cityData[value][0];
+    this.selectedCity.set(this.cityData[value][0]);
   }
 }

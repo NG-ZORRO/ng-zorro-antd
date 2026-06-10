@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -21,28 +21,28 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
       <nz-skeleton-element
         *nzSpaceItem
         nzType="button"
-        [nzActive]="elementActive"
-        [nzSize]="elementSize"
-        [nzShape]="buttonShape"
+        [nzActive]="elementActive()"
+        [nzSize]="elementSize()"
+        [nzShape]="buttonShape()"
       />
       <nz-skeleton-element
         *nzSpaceItem
         nzType="avatar"
-        [nzActive]="elementActive"
-        [nzSize]="elementSize"
-        [nzShape]="avatarShape"
+        [nzActive]="elementActive()"
+        [nzSize]="elementSize()"
+        [nzShape]="avatarShape()"
       />
       <nz-skeleton-element
         *nzSpaceItem
         nzType="input"
-        [nzActive]="elementActive"
-        [nzSize]="elementSize"
+        [nzActive]="elementActive()"
+        [nzSize]="elementSize()"
         style="width:200px"
       />
     </nz-space>
     <br />
     <br />
-    <nz-skeleton-element nzType="image" [nzActive]="elementActive" />
+    <nz-skeleton-element nzType="image" [nzActive]="elementActive()" />
     <nz-divider />
     <div nz-row nzAlign="middle" [nzGutter]="8">
       <div nz-col nzSpan="10">
@@ -81,8 +81,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoSkeletonElementComponent {
-  elementActive = false;
-  buttonShape: NzSkeletonButtonShape = 'default';
-  avatarShape: NzSkeletonAvatarShape = 'circle';
-  elementSize: NzSkeletonInputSize = 'default';
+  readonly elementActive = signal(false);
+  readonly buttonShape = signal<NzSkeletonButtonShape>('default');
+  readonly avatarShape = signal<NzSkeletonAvatarShape>('circle');
+  readonly elementSize = signal<NzSkeletonInputSize>('default');
 }

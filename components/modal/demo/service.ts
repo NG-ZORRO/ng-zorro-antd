@@ -1,4 +1,4 @@
-import { Component, inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, inject, signal, TemplateRef, ViewContainerRef } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalRef, NzModalService, NZ_MODAL_DATA, NzModalModule } from 'ng-zorro-antd/modal';
@@ -29,7 +29,7 @@ interface IModalData {
     </ng-template>
     <ng-template #tplFooter let-ref="modalRef">
       <button nz-button (click)="ref.destroy()">Destroy</button>
-      <button nz-button nzType="primary" (click)="destroyTplModal(ref)" [nzLoading]="tplModalButtonLoading">
+      <button nz-button nzType="primary" (click)="destroyTplModal(ref)" [nzLoading]="tplModalButtonLoading()">
         Close after submit
       </button>
     </ng-template>
@@ -58,8 +58,7 @@ export class NzDemoModalServiceComponent {
   private readonly modalService = inject(NzModalService);
   private readonly viewContainerRef = inject(ViewContainerRef);
 
-  tplModalButtonLoading = false;
-  disabled = false;
+  readonly tplModalButtonLoading = signal(false);
 
   createModal(): void {
     this.modalService.create({
@@ -82,9 +81,9 @@ export class NzDemoModalServiceComponent {
   }
 
   destroyTplModal(modelRef: NzModalRef): void {
-    this.tplModalButtonLoading = true;
+    this.tplModalButtonLoading.set(true);
     setTimeout(() => {
-      this.tplModalButtonLoading = false;
+      this.tplModalButtonLoading.set(false);
       modelRef.destroy();
     }, 1000);
   }
@@ -103,7 +102,7 @@ export class NzDemoModalServiceComponent {
         {
           label: 'change component title from outside',
           onClick: componentInstance => {
-            componentInstance!.title = 'title in inner component is changed';
+            componentInstance!.title.set('title in inner component is changed');
           }
         }
       ]
@@ -115,7 +114,7 @@ export class NzDemoModalServiceComponent {
 
     // delay until modal instance created
     setTimeout(() => {
-      instance.subtitle = 'sub title is changed';
+      instance.subtitle.set('sub title is changed');
     }, 2000);
   }
 
@@ -182,8 +181,8 @@ export class NzDemoModalServiceComponent {
   selector: 'nz-modal-custom-component',
   imports: [NzButtonModule],
   template: `
-    <h2>{{ title }}</h2>
-    <h4>{{ subtitle }}</h4>
+    <h2>{{ title() }}</h2>
+    <h4>{{ subtitle() }}</h4>
     <p>
       My favorite framework is {{ modalData.favoriteFramework }} and my favorite library is
       {{ modalData.favoriteLibrary }}
@@ -196,8 +195,8 @@ export class NzModalCustomComponent {
   readonly modalRef = inject(NzModalRef);
   readonly modalData = inject<IModalData>(NZ_MODAL_DATA);
 
-  @Input() title?: string;
-  @Input() subtitle?: string;
+  readonly title = signal<string | undefined>(undefined);
+  readonly subtitle = signal<string | undefined>(undefined);
 
   destroyModal(): void {
     this.modalRef.destroy({ data: 'this the result data' });

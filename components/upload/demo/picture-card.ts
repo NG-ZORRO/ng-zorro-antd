@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -20,7 +20,7 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
       nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       nzListType="picture-card"
       [(nzFileList)]="fileList"
-      [nzShowButton]="fileList.length < 8"
+      [nzShowButton]="fileList().length < 8"
       [nzPreview]="handlePreview"
     >
       <div>
@@ -29,19 +29,19 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
       </div>
     </nz-upload>
     <nz-modal
-      [nzVisible]="previewVisible"
+      [nzVisible]="previewVisible()"
       [nzContent]="modalContent"
       [nzFooter]="null"
-      (nzOnCancel)="previewVisible = false"
+      (nzOnCancel)="previewVisible.set(false)"
     >
       <ng-template #modalContent>
-        <img [src]="previewImage" style="width: 100%" />
+        <img [src]="previewImage()" style="width: 100%" />
       </ng-template>
     </nz-modal>
   `
 })
 export class NzDemoUploadPictureCardComponent {
-  fileList: NzUploadFile[] = [
+  readonly fileList = signal<NzUploadFile[]>([
     {
       uid: '-1',
       name: 'image.png',
@@ -78,15 +78,15 @@ export class NzDemoUploadPictureCardComponent {
       name: 'image.png',
       status: 'error'
     }
-  ];
-  previewImage: string | undefined = '';
-  previewVisible = false;
+  ]);
+  readonly previewImage = signal<string | undefined>('');
+  readonly previewVisible = signal(false);
 
   handlePreview = async (file: NzUploadFile): Promise<void> => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj!);
     }
-    this.previewImage = file.url || file.preview;
-    this.previewVisible = true;
+    this.previewImage.set(file.url || file.preview);
+    this.previewVisible.set(true);
   };
 }

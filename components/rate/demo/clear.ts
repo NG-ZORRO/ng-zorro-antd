@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzRateModule } from 'ng-zorro-antd/rate';
@@ -15,5 +15,5 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
   `
 })
 export class NzDemoRateClearComponent {
-  value = 0;
+  readonly value = signal(0);
 }

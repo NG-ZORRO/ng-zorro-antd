@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
@@ -12,10 +12,10 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   template: `
     <nz-flex nzGap="small" nzAlign="center">
       <nz-switch [(ngModel)]="show" />
-      <nz-badge nzStandalone nzShowZero [nzCount]="show ? 11 : 0" [nzStyle]="{ backgroundColor: '#faad14' }" />
-      <nz-badge nzStandalone [nzCount]="show ? 25 : 0" />
-      <nz-badge nzStandalone [nzCount]="show ? iconTemplate : 0" />
-      <nz-badge nzStandalone [nzCount]="show ? 109 : 0" [nzStyle]="{ backgroundColor: '#52c41a' }" />
+      <nz-badge nzStandalone nzShowZero [nzCount]="show() ? 11 : 0" [nzStyle]="{ backgroundColor: '#faad14' }" />
+      <nz-badge nzStandalone [nzCount]="show() ? 25 : 0" />
+      <nz-badge nzStandalone [nzCount]="show() ? iconTemplate : 0" />
+      <nz-badge nzStandalone [nzCount]="show() ? 109 : 0" [nzStyle]="{ backgroundColor: '#52c41a' }" />
     </nz-flex>
 
     <ng-template #iconTemplate>
@@ -24,5 +24,5 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoBadgeNoWrapperComponent {
-  show = true;
+  readonly show = signal(true);
 }

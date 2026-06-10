@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -16,12 +16,12 @@ interface DataItem {
   selector: 'nz-demo-table-custom-filter-panel',
   imports: [FormsModule, NzButtonModule, NzDropdownModule, NzIconModule, NzInputModule, NzTableModule],
   template: `
-    <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
+    <nz-table #nzTable [nzData]="listOfDisplayData()" nzTableLayout="fixed">
       <thead>
         <tr>
           <th nzCustomFilter>
             Name
-            <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+            <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue().length > 0" [nzDropdownMenu]="menu">
               <nz-icon nzType="search" />
             </nz-filter-trigger>
           </th>
@@ -70,9 +70,9 @@ interface DataItem {
   `
 })
 export class NzDemoTableCustomFilterPanelComponent {
-  searchValue = '';
-  visible = false;
-  listOfData: DataItem[] = [
+  readonly searchValue = signal('');
+  readonly visible = signal(false);
+  readonly listOfData: DataItem[] = [
     {
       name: 'John Brown',
       age: 32,
@@ -94,15 +94,17 @@ export class NzDemoTableCustomFilterPanelComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  listOfDisplayData = [...this.listOfData];
+  readonly listOfDisplayData = signal([...this.listOfData]);
 
   reset(): void {
-    this.searchValue = '';
+    this.searchValue.set('');
     this.search();
   }
 
   search(): void {
-    this.visible = false;
-    this.listOfDisplayData = this.listOfData.filter((item: DataItem) => item.name.indexOf(this.searchValue) !== -1);
+    this.visible.set(false);
+    this.listOfDisplayData.set(
+      this.listOfData.filter((item: DataItem) => item.name.indexOf(this.searchValue()) !== -1)
+    );
   }
 }

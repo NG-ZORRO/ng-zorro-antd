@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -9,7 +9,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   template: `
     <nz-select nzMode="multiple" nzPlaceHolder="Inserted are removed" [(ngModel)]="listOfSelected">
       @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option" [nzHide]="!isSelected(option)" />
+        <nz-option [nzLabel]="option" [nzValue]="option" [nzHide]="isSelected(option)" />
       }
     </nz-select>
   `,
@@ -20,10 +20,10 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoSelectHideSelectedComponent {
-  listOfOption = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
-  listOfSelected: string[] = [];
+  readonly listOfOption = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
+  readonly listOfSelected = signal<string[]>([]);
 
   isSelected(value: string): boolean {
-    return this.listOfSelected.indexOf(value) !== -1;
+    return this.listOfSelected().indexOf(value) !== -1;
   }
 }

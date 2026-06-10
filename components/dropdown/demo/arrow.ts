@@ -23,5 +23,12 @@ import { NzFlexModule } from 'ng-zorro-antd/flex';
   `
 })
 export class NzDemoDropdownArrowComponent {
-  listOfPosition: NzPlacementType[] = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
+  readonly listOfPosition: NzPlacementType[] = [
+    'bottomLeft',
+    'bottomCenter',
+    'bottomRight',
+    'topLeft',
+    'topCenter',
+    'topRight'
+  ];
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -18,7 +18,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
       <label nz-radio-button nzValue="flip">Flip</label>
       <label nz-radio-button nzValue="fade">Fade (built-in)</label>
     </nz-radio-group>
-    <nz-carousel [nzEffect]="strategy">
+    <nz-carousel [nzEffect]="strategy()">
       @for (index of array; track index) {
         <div nz-carousel-content>
           <h3>{{ index }}</h3>
@@ -57,6 +57,6 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   ]
 })
 export class NzDemoCarouselCustomComponent {
-  strategy = 'transform-no-loop';
-  array = [1, 2, 3, 4];
+  readonly strategy = signal('transform-no-loop');
+  readonly array = [1, 2, 3, 4];
 }

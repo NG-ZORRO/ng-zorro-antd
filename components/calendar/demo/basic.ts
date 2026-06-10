@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCalendarMode, NzCalendarModule } from 'ng-zorro-antd/calendar';
@@ -9,8 +9,8 @@ import { NzCalendarMode, NzCalendarModule } from 'ng-zorro-antd/calendar';
   template: `<nz-calendar [(ngModel)]="date" [(nzMode)]="mode" (nzPanelChange)="panelChange($event)" />`
 })
 export class NzDemoCalendarBasicComponent {
-  date = new Date(2012, 11, 21);
-  mode: NzCalendarMode = 'month';
+  readonly date = signal(new Date(2012, 11, 21));
+  readonly mode = signal<NzCalendarMode>('month');
 
   panelChange(change: { date: Date; mode: string }): void {
     console.log(change.date, change.mode);

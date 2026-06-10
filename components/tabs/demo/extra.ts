@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -27,10 +27,10 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     <br />
 
     <nz-tabs>
-      @if (positions.includes('start')) {
+      @if (positions().includes('start')) {
         <button *nzTabBarExtraContent="'start'" nz-button [style.margin-right.px]="16">Start Extra Action</button>
       }
-      @if (positions.includes('end')) {
+      @if (positions().includes('end')) {
         <button *nzTabBarExtraContent="'end'" nz-button [style.margin-left.px]="16">End Extra Action</button>
       }
 
@@ -41,10 +41,10 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   `
 })
 export class NzDemoTabsExtraComponent {
-  tabs = [1, 2, 3];
-  positionOptions = [
+  readonly tabs = [1, 2, 3];
+  readonly positionOptions = [
     { label: 'start', value: 'start' },
     { label: 'end', value: 'end' }
   ];
-  positions = ['start', 'end'];
+  readonly positions = signal(['start', 'end']);
 }

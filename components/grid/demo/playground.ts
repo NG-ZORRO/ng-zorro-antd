@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -19,38 +19,31 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
       </div>
       <span>Column Count:</span>
       <div class="slider">
-        <nz-slider
-          [nzMarks]="marksCount"
-          [nzStep]="null"
-          [nzMin]="2"
-          [nzMax]="12"
-          [(ngModel)]="count"
-          (ngModelChange)="reGenerateArray($event)"
-        />
+        <nz-slider [nzMarks]="marksCount" [nzStep]="null" [nzMin]="2" [nzMax]="12" [(ngModel)]="count" />
       </div>
     </div>
 
     <br />
 
     <div class="gutter-example">
-      <div nz-row [nzGutter]="[hGutter, vGutter]">
-        @for (i of array; track $index) {
-          <div nz-col class="gutter-row" [nzSpan]="24 / count">
+      <div nz-row [nzGutter]="[hGutter(), vGutter()]">
+        @for (i of array(); track $index) {
+          <div nz-col class="gutter-row" [nzSpan]="24 / count()">
             <div class="grid-config">Column</div>
           </div>
         }
 
-        @for (i of array; track $index) {
-          <div nz-col class="gutter-row" [nzSpan]="24 / count">
+        @for (i of array(); track $index) {
+          <div nz-col class="gutter-row" [nzSpan]="24 / count()">
             <div class="grid-config">Column</div>
           </div>
         }
       </div>
 
       Another Row:
-      <div nz-row [nzGutter]="[hGutter, vGutter]">
-        @for (i of array; track $index) {
-          <div nz-col class="gutter-row" [nzSpan]="24 / count">
+      <div nz-row [nzGutter]="[hGutter(), vGutter()]">
+        @for (i of array(); track $index) {
+          <div nz-col class="gutter-row" [nzSpan]="24 / count()">
             <div class="grid-config">Column</div>
           </div>
         }
@@ -74,11 +67,11 @@ import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
   `
 })
 export class NzDemoGridPlaygroundComponent {
-  hGutter = 16;
-  vGutter = 16;
-  count = 4;
-  array = new Array(this.count);
-  marksHGutter: NzMarks = {
+  readonly hGutter = signal(16);
+  readonly vGutter = signal(16);
+  readonly count = signal(4);
+  readonly array = computed(() => new Array(this.count()));
+  readonly marksHGutter: NzMarks = {
     8: '8',
     16: '16',
     24: '24',
@@ -86,7 +79,7 @@ export class NzDemoGridPlaygroundComponent {
     40: '40',
     48: '48'
   };
-  marksVGutter: NzMarks = {
+  readonly marksVGutter: NzMarks = {
     8: '8',
     16: '16',
     24: '24',
@@ -94,7 +87,7 @@ export class NzDemoGridPlaygroundComponent {
     40: '40',
     48: '48'
   };
-  marksCount: NzMarks = {
+  readonly marksCount: NzMarks = {
     2: '2',
     3: '3',
     4: '4',
@@ -102,7 +95,4 @@ export class NzDemoGridPlaygroundComponent {
     8: '8',
     12: '12'
   };
-  reGenerateArray(count: number): void {
-    this.array = new Array(count);
-  }
 }

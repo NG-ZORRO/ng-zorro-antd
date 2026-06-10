@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -27,15 +27,15 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
   `
 })
 export class NzDemoMentionAvatarComponent {
-  inputValue?: string;
-  webFrameworks = [
+  readonly inputValue = signal('');
+  readonly webFrameworks = [
     { name: 'React', type: 'JavaScript', icon: 'https://zos.alipayobjects.com/rmsportal/LFIeMPzdLcLnEUe.svg' },
     { name: 'Angular', type: 'JavaScript', icon: 'https://zos.alipayobjects.com/rmsportal/PJTbxSvzYWjDZnJ.png' },
     { name: 'Dva', type: 'JavaScript', icon: 'https://zos.alipayobjects.com/rmsportal/EYPwSeEJKxDtVxI.png' },
     { name: 'Flask', type: 'Python', icon: 'https://zos.alipayobjects.com/rmsportal/xaypBUijfnpAlXE.png' }
   ];
 
-  valueWith = (data: { name: string; type: string; icon: string }): string => data.name;
+  readonly valueWith = (data: { name: string; type: string; icon: string }): string => data.name;
 
   onSelect(value: string): void {
     console.log(value);

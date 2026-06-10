@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
@@ -36,19 +36,20 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
       nzEllipsis
       nzEditable
       [nzEllipsisRows]="2"
-      [nzContent]="dynamicContent"
+      [nzContent]="dynamicContent()"
       (nzContentChange)="onChange($event)"
     ></p>
   `
 })
 export class NzDemoTypographyEllipsisComponent {
-  dynamicContent =
+  readonly dynamicContent = signal(
     'Ant Design, a design language for background applications, is refined by Ant UED Team. ' +
-    'Ant Design, a design language for background applications, is refined by Ant UED Team. ' +
-    'Ant Design, a design language for background applications, is refined by Ant UED Team. ' +
-    'Ant Design, a design language for background applications, is refined by Ant UED Team.';
+      'Ant Design, a design language for background applications, is refined by Ant UED Team. ' +
+      'Ant Design, a design language for background applications, is refined by Ant UED Team. ' +
+      'Ant Design, a design language for background applications, is refined by Ant UED Team.'
+  );
 
-  onChange(event: string): void {
-    this.dynamicContent = event;
+  onChange(content: string): void {
+    this.dynamicContent.set(content);
   }
 }

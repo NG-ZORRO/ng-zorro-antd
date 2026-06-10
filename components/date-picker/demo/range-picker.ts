@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { getISOWeek } from 'date-fns';
@@ -28,7 +28,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   `
 })
 export class NzDemoDatePickerRangePickerComponent {
-  date = null;
+  readonly date = signal<Date[] | null>(null);
 
   onChange(result: Date[]): void {
     console.log('onChange: ', result);

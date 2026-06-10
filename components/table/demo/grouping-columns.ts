@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NzTableModule } from 'ng-zorro-antd/table';
 
@@ -57,29 +57,22 @@ interface ItemData {
     </nz-table>
   `
 })
-export class NzDemoTableGroupingColumnsComponent implements OnInit {
-  listOfData: ItemData[] = [];
-  sortAgeFn = (a: ItemData, b: ItemData): number => a.age - b.age;
-  nameFilterFn = (list: string[], item: ItemData): boolean => list.some(name => item.name.indexOf(name) !== -1);
-  filterName = [
+export class NzDemoTableGroupingColumnsComponent {
+  readonly listOfData: ItemData[] = Array.from({ length: 100 }).map((_, i) => ({
+    name: 'John Brown',
+    age: i + 1,
+    street: 'Lake Park',
+    building: 'C',
+    number: 2035,
+    companyAddress: 'Lake Street 42',
+    companyName: 'SoftLake Co',
+    gender: 'M'
+  }));
+  readonly sortAgeFn = (a: ItemData, b: ItemData): number => a.age - b.age;
+  readonly nameFilterFn = (list: string[], item: ItemData): boolean =>
+    list.some(name => item.name.indexOf(name) !== -1);
+  readonly filterName = [
     { text: 'Joe', value: 'Joe' },
     { text: 'John', value: 'John' }
   ];
-
-  ngOnInit(): void {
-    const data: ItemData[] = [];
-    for (let i = 0; i < 100; i++) {
-      data.push({
-        name: 'John Brown',
-        age: i + 1,
-        street: 'Lake Park',
-        building: 'C',
-        number: 2035,
-        companyAddress: 'Lake Street 42',
-        companyName: 'SoftLake Co',
-        gender: 'M'
-      });
-    }
-    this.listOfData = data;
-  }
 }

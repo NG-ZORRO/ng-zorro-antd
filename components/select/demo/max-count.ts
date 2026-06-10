@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -16,17 +16,13 @@ function alphabet(): string[] {
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select
+      [nzOptions]="options"
       [nzMaxMultipleCount]="3"
       nzMode="multiple"
       nzPlaceHolder="Please select"
       nzAllowClear
-      [nzShowArrow]="true"
-      [(ngModel)]="listOfSelectedValue"
-    >
-      @for (item of listOfOption; track item) {
-        <nz-option [nzLabel]="item" [nzValue]="item" />
-      }
-    </nz-select>
+      [(ngModel)]="value"
+    />
   `,
   styles: `
     nz-select {
@@ -35,6 +31,6 @@ function alphabet(): string[] {
   `
 })
 export class NzDemoSelectMaxCountComponent {
-  readonly listOfOption: string[] = alphabet();
-  listOfSelectedValue = ['a10', 'c12'];
+  readonly options = alphabet().map(item => ({ label: item, value: item }));
+  readonly value = signal(['a10', 'c12']);
 }

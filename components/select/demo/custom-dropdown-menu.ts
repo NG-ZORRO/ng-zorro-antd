@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -10,7 +10,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   imports: [NzDividerModule, NzIconModule, NzInputModule, NzSelectModule],
   template: `
     <nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="custom dropdown render">
-      @for (item of listOfItem; track item) {
+      @for (item of listOfItem(); track item) {
         <nz-option [nzLabel]="item" [nzValue]="item" />
       }
     </nz-select>
@@ -45,13 +45,13 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoSelectCustomDropdownMenuComponent {
-  listOfItem = ['jack', 'lucy'];
+  readonly listOfItem = signal(['jack', 'lucy']);
   index = 0;
 
   addItem(input: HTMLInputElement): void {
     const value = input.value;
-    if (this.listOfItem.indexOf(value) === -1) {
-      this.listOfItem = [...this.listOfItem, input.value || `New item ${this.index++}`];
+    if (this.listOfItem().indexOf(value) === -1) {
+      this.listOfItem.update(listOfItem => [...listOfItem, value || `New item ${this.index++}`]);
     }
   }
 }

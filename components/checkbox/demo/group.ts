@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCheckboxModule, NzCheckboxOption } from 'ng-zorro-antd/checkbox';
@@ -17,23 +17,23 @@ import { NzCheckboxModule, NzCheckboxOption } from 'ng-zorro-antd/checkbox';
   `
 })
 export class NzDemoCheckboxGroupComponent {
-  options1: NzCheckboxOption[] = [
+  readonly options1: NzCheckboxOption[] = [
     { label: 'Apple', value: 'Apple' },
     { label: 'Pear', value: 'Pear' },
     { label: 'Orange', value: 'Orange' }
   ];
-  options2: NzCheckboxOption[] = [
+  readonly options2: NzCheckboxOption[] = [
     { label: 'Apple', value: 'Apple' },
     { label: 'Pear', value: 'Pear' },
     { label: 'Orange', value: 'Orange', disabled: true }
   ];
-  options3: NzCheckboxOption[] = [
+  readonly options3: NzCheckboxOption[] = [
     { label: 'Apple', value: 'Apple' },
     { label: 'Pear', value: 'Pear' },
     { label: 'Orange', value: 'Orange' }
   ];
 
-  value = ['Apple'];
+  readonly value = signal(['Apple']);
 
   log(value: string[]): void {
     console.log(value);

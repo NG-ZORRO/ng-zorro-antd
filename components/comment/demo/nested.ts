@@ -27,7 +27,7 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
   `
 })
 export class NzDemoCommentNestedComponent {
-  data = {
+  readonly data = {
     author: 'Han Solo',
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     content:

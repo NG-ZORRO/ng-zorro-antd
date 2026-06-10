@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
@@ -28,7 +28,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
         </nz-list-item>
       </ng-template>
     </nz-list>
-    <nz-drawer [nzVisible]="visible" [nzWidth]="640" [nzClosable]="false" (nzOnClose)="close()">
+    <nz-drawer [nzVisible]="visible()" [nzWidth]="640" [nzClosable]="false" (nzOnClose)="close()">
       <ng-container *nzDrawerContent>
         <p class="title">User Profile</p>
         <nz-descriptions [nzColumn]="2" nzTitle="Personal">
@@ -76,7 +76,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
   `
 })
 export class NzDemoDrawerUserProfileComponent {
-  data = [
+  readonly data = [
     {
       name: 'Lily'
     },
@@ -85,13 +85,13 @@ export class NzDemoDrawerUserProfileComponent {
     }
   ];
 
-  visible = false;
+  readonly visible = signal(false);
 
   open(): void {
-    this.visible = true;
+    this.visible.set(true);
   }
 
   close(): void {
-    this.visible = false;
+    this.visible.set(false);
   }
 }

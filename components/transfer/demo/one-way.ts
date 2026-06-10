@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -10,34 +10,25 @@ import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
   template: `
     <nz-transfer
       [nzDataSource]="list"
-      [nzDisabled]="disabled"
+      [nzDisabled]="disabled()"
       [nzTitles]="['Source', 'Target']"
       (nzSelectChange)="select($event)"
       [nzSelectedKeys]="['0', '2', '3']"
       nzOneWay
       (nzChange)="change($event)"
     />
-    <div style="margin-top: 8px;">
-      <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled" />
-      <div></div>
-    </div>
+    <br />
+    <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled" />
   `
 })
-export class NzDemoTransferOneWayComponent implements OnInit {
-  list: TransferItem[] = [];
-  disabled = false;
-
-  ngOnInit(): void {
-    for (let i = 0; i < 20; i++) {
-      this.list.push({
-        key: i.toString(),
-        title: `content${i + 1}`,
-        disabled: i % 3 < 1
-      });
-    }
-
-    [2, 3].forEach(idx => (this.list[idx].direction = 'right'));
-  }
+export class NzDemoTransferOneWayComponent {
+  readonly list: TransferItem[] = Array.from({ length: 20 }).map((_, i) => ({
+    key: i.toString(),
+    title: `content${i + 1}`,
+    disabled: i % 3 < 1,
+    direction: [2, 3].includes(i) ? 'right' : undefined
+  }));
+  readonly disabled = signal(false);
 
   select(ret: {}): void {
     console.log('nzSelectChange', ret);

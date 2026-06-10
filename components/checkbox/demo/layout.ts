@@ -8,7 +8,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
   selector: 'nz-demo-checkbox-layout',
   imports: [FormsModule, NzCheckboxModule, NzGridModule],
   template: `
-    <nz-checkbox-group [(ngModel)]="value" [style.width.%]="100" (ngModelChange)="log($event)">
+    <nz-checkbox-group ngModel="A" [style.width.%]="100">
       <nz-row>
         <nz-col nzSpan="8">
           <label nz-checkbox nzValue="A">A</label>
@@ -29,10 +29,4 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
     </nz-checkbox-group>
   `
 })
-export class NzDemoCheckboxLayoutComponent {
-  value = ['A'];
-
-  log(value: string[]): void {
-    console.log(value);
-  }
-}
+export class NzDemoCheckboxLayoutComponent {}

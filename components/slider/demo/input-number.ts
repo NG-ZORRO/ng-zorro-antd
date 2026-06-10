@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -29,6 +29,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   `
 })
 export class NzDemoSliderInputNumberComponent {
-  value1 = 1;
-  value2 = 0;
+  readonly value1 = signal(1);
+  readonly value2 = signal(0);
 }

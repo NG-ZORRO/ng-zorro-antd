@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
@@ -13,18 +12,9 @@ function alphabet(): string[] {
 
 @Component({
   selector: 'nz-demo-select-automatic-tokenization',
-  imports: [FormsModule, NzSelectModule],
+  imports: [NzSelectModule],
   template: `
-    <nz-select
-      [(ngModel)]="listOfTagOptions"
-      nzMode="tags"
-      [nzTokenSeparators]="[',']"
-      nzPlaceHolder="automatic tokenization"
-    >
-      @for (option of listOfOption; track option.value) {
-        <nz-option [nzLabel]="option.label" [nzValue]="option.value" />
-      }
-    </nz-select>
+    <nz-select nzMode="tags" nzPlaceHolder="automatic tokenization" [nzOptions]="options" [nzTokenSeparators]="[',']" />
   `,
   styles: `
     nz-select {
@@ -33,9 +23,8 @@ function alphabet(): string[] {
   `
 })
 export class NzDemoSelectAutomaticTokenizationComponent {
-  readonly listOfOption: Array<{ label: string; value: string }> = alphabet().map(item => ({
+  readonly options = alphabet().map(item => ({
     label: item,
     value: item
   }));
-  listOfTagOptions: string[] = [];
 }

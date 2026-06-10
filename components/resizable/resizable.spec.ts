@@ -120,8 +120,8 @@ describe('resizable', () => {
       fixture.detectChanges();
       afterNextFrameRender(() => {
         fixture.detectChanges();
-        expect(testComponent.width).toBe(600);
-        expect(testComponent.height).toBe(200);
+        expect(testComponent.width()).toBe(600);
+        expect(testComponent.height()).toBe(200);
         done();
       });
     });
@@ -143,8 +143,8 @@ describe('resizable', () => {
       fixture.detectChanges();
       afterNextFrameRender(() => {
         fixture.detectChanges();
-        expect(testComponent.width).toBe(80);
-        expect(testComponent.height).toBe(80);
+        expect(testComponent.width()).toBe(80);
+        expect(testComponent.height()).toBe(80);
         done();
       });
     });
@@ -153,12 +153,12 @@ describe('resizable', () => {
       let rect: DOMRect;
 
       beforeEach(() => {
-        testComponent.height = 200;
-        testComponent.width = 400;
+        testComponent.height.set(200);
+        testComponent.width.set(400);
         fixture.detectChanges();
         rect = resizableEle.getBoundingClientRect();
-        expect(testComponent.width).toBe(400);
-        expect(testComponent.height).toBe(200);
+        expect(testComponent.width()).toBe(400);
+        expect(testComponent.height()).toBe(200);
       });
 
       it('should touch event work', done => {
@@ -177,9 +177,9 @@ describe('resizable', () => {
         fixture.detectChanges();
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.height).toBeLessThanOrEqual(200);
-          expect(testComponent.height).toBeGreaterThanOrEqual(100);
-          expect(testComponent.resizeDirection).toEqual('top');
+          expect(testComponent.height()).toBeLessThanOrEqual(200);
+          expect(testComponent.height()).toBeGreaterThanOrEqual(100);
+          expect(testComponent.resizeDirection()).toEqual('top');
           done();
         });
       });
@@ -205,9 +205,9 @@ describe('resizable', () => {
         fixture.detectChanges();
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.height).toBeLessThanOrEqual(200);
-          expect(testComponent.height).toBeGreaterThanOrEqual(100);
-          expect(testComponent.resizeDirection).toEqual('top');
+          expect(testComponent.height()).toBeLessThanOrEqual(200);
+          expect(testComponent.height()).toBeGreaterThanOrEqual(100);
+          expect(testComponent.resizeDirection()).toEqual('top');
           done();
         });
       });
@@ -233,9 +233,9 @@ describe('resizable', () => {
         fixture.detectChanges();
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.height).toBeLessThanOrEqual(200);
-          expect(testComponent.height).toBeGreaterThanOrEqual(100);
-          expect(testComponent.resizeDirection).toEqual('bottom');
+          expect(testComponent.height()).toBeLessThanOrEqual(200);
+          expect(testComponent.height()).toBeGreaterThanOrEqual(100);
+          expect(testComponent.resizeDirection()).toEqual('bottom');
           done();
         });
       });
@@ -261,9 +261,9 @@ describe('resizable', () => {
         fixture.detectChanges();
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.width).toBeLessThanOrEqual(400);
-          expect(testComponent.width).toBeGreaterThanOrEqual(300);
-          expect(testComponent.resizeDirection).toEqual('left');
+          expect(testComponent.width()).toBeLessThanOrEqual(400);
+          expect(testComponent.width()).toBeGreaterThanOrEqual(300);
+          expect(testComponent.resizeDirection()).toEqual('left');
           done();
         });
       });
@@ -289,9 +289,9 @@ describe('resizable', () => {
         fixture.detectChanges();
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.width).toBeLessThanOrEqual(400);
-          expect(testComponent.width).toBeGreaterThanOrEqual(300);
-          expect(testComponent.resizeDirection).toEqual('right');
+          expect(testComponent.width()).toBeLessThanOrEqual(400);
+          expect(testComponent.width()).toBeGreaterThanOrEqual(300);
+          expect(testComponent.resizeDirection()).toEqual('right');
           done();
         });
       });
@@ -317,11 +317,11 @@ describe('resizable', () => {
         fixture.detectChanges();
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.width).toBeLessThanOrEqual(400);
-          expect(testComponent.width).toBeGreaterThanOrEqual(300);
-          expect(testComponent.height).toBeLessThanOrEqual(210);
-          expect(testComponent.height).toBeGreaterThanOrEqual(100);
-          expect(testComponent.resizeDirection).toEqual('topRight');
+          expect(testComponent.width()).toBeLessThanOrEqual(400);
+          expect(testComponent.width()).toBeGreaterThanOrEqual(300);
+          expect(testComponent.height()).toBeLessThanOrEqual(210);
+          expect(testComponent.height()).toBeGreaterThanOrEqual(100);
+          expect(testComponent.resizeDirection()).toEqual('topRight');
           done();
         });
       });
@@ -347,11 +347,11 @@ describe('resizable', () => {
         fixture.detectChanges();
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.width).toBeLessThanOrEqual(400);
-          expect(testComponent.width).toBeGreaterThanOrEqual(300);
-          expect(testComponent.height).toBeLessThanOrEqual(200);
-          expect(testComponent.height).toBeGreaterThanOrEqual(100);
-          expect(testComponent.resizeDirection).toEqual('topLeft');
+          expect(testComponent.width()).toBeLessThanOrEqual(400);
+          expect(testComponent.width()).toBeGreaterThanOrEqual(300);
+          expect(testComponent.height()).toBeLessThanOrEqual(200);
+          expect(testComponent.height()).toBeGreaterThanOrEqual(100);
+          expect(testComponent.resizeDirection()).toEqual('topLeft');
           done();
         });
       });
@@ -377,11 +377,11 @@ describe('resizable', () => {
         fixture.detectChanges();
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.width).toBeLessThanOrEqual(400);
-          expect(testComponent.width).toBeGreaterThanOrEqual(300);
-          expect(testComponent.height).toBeLessThanOrEqual(190);
-          expect(testComponent.height).toBeGreaterThanOrEqual(100);
-          expect(testComponent.resizeDirection).toEqual('bottomRight');
+          expect(testComponent.width()).toBeLessThanOrEqual(400);
+          expect(testComponent.width()).toBeGreaterThanOrEqual(300);
+          expect(testComponent.height()).toBeLessThanOrEqual(190);
+          expect(testComponent.height()).toBeGreaterThanOrEqual(100);
+          expect(testComponent.resizeDirection()).toEqual('bottomRight');
           done();
         });
       });
@@ -408,21 +408,21 @@ describe('resizable', () => {
 
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.width).toBeLessThanOrEqual(400);
-          expect(testComponent.width).toBeGreaterThanOrEqual(300);
-          expect(testComponent.height).toBeLessThanOrEqual(200);
-          expect(testComponent.height).toBeGreaterThanOrEqual(100);
-          expect(testComponent.resizeDirection).toEqual('bottomLeft');
+          expect(testComponent.width()).toBeLessThanOrEqual(400);
+          expect(testComponent.width()).toBeGreaterThanOrEqual(300);
+          expect(testComponent.height()).toBeLessThanOrEqual(200);
+          expect(testComponent.height()).toBeGreaterThanOrEqual(100);
+          expect(testComponent.resizeDirection()).toEqual('bottomLeft');
           done();
         });
       });
     });
 
     it('should disabled work', done => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       fixture.detectChanges();
       expect(resizableEle.classList).toContain('nz-resizable-disabled');
-      expect(testComponent.width).toBe(400);
+      expect(testComponent.width()).toBe(400);
       const rect = resizableEle.getBoundingClientRect();
       const handle = resizableEle.querySelector('.nz-resizable-handle-left') as HTMLElement;
       mouseMoveTrigger(
@@ -439,7 +439,7 @@ describe('resizable', () => {
       fixture.detectChanges();
       afterNextFrameRender(() => {
         fixture.detectChanges();
-        expect(testComponent.width).toBe(400);
+        expect(testComponent.width()).toBe(400);
         done();
       });
     });
@@ -481,7 +481,7 @@ describe('resizable', () => {
         fixture.detectChanges();
         zone.simulateZoneExit();
         fixture.detectChanges();
-        expect(testComponent.width).toBeGreaterThanOrEqual(600);
+        expect(testComponent.width()).toBeGreaterThanOrEqual(600);
         done();
       });
     });
@@ -504,7 +504,7 @@ describe('resizable', () => {
       const leftHandel = resizableEle.querySelector('.nz-resizable-handle-right') as HTMLElement;
       const topHandel = resizableEle.querySelector('.nz-resizable-handle-top') as HTMLElement;
       const bottomRightHandel = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
-      const ratio = testComponent.width / testComponent.height;
+      const ratio = testComponent.width() / testComponent.height();
       mouseMoveTrigger(
         leftHandel,
         {
@@ -547,7 +547,7 @@ describe('resizable', () => {
           fixture.detectChanges();
           afterNextFrameRender(() => {
             fixture.detectChanges();
-            expect(Math.round(testComponent.width / testComponent.height)).toBe(ratio);
+            expect(Math.round(testComponent.width() / testComponent.height())).toBe(ratio);
             done();
           });
         });
@@ -605,7 +605,7 @@ describe('resizable', () => {
       fixture.detectChanges();
       afterNextFrameRender(() => {
         fixture.detectChanges();
-        expect(testComponent.col).toBe(3);
+        expect(testComponent.col()).toBe(3);
         mouseMoveTrigger(
           handle,
           {
@@ -620,7 +620,7 @@ describe('resizable', () => {
         fixture.detectChanges();
         afterNextFrameRender(() => {
           fixture.detectChanges();
-          expect(testComponent.col).toBe(20);
+          expect(testComponent.col()).toBe(20);
           done();
         });
       });

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -18,8 +18,8 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
     <button nz-button nzType="primary" (click)="open()">Open</button>
     <nz-drawer
       [nzClosable]="false"
-      [nzVisible]="visible"
-      [nzPlacement]="placement"
+      [nzVisible]="visible()"
+      [nzPlacement]="placement()"
       nzTitle="Basic Drawer"
       (nzOnClose)="close()"
     >
@@ -32,14 +32,14 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoDrawerPlacementComponent {
-  visible = false;
-  placement: NzDrawerPlacement = 'left';
+  readonly visible = signal(false);
+  readonly placement = signal<NzDrawerPlacement>('left');
 
   open(): void {
-    this.visible = true;
+    this.visible.set(true);
   }
 
   close(): void {
-    this.visible = false;
+    this.visible.set(false);
   }
 }

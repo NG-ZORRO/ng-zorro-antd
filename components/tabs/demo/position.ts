@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -8,25 +8,23 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-position',
   imports: [FormsModule, NzSelectModule, NzTabsModule],
   template: `
-    <div style="margin-bottom: 16px;">
+    <div>
       Tab position:
-      <nz-select [(ngModel)]="position" style="width: 80px;">
-        @for (option of options; track option.value) {
-          <nz-option [nzLabel]="option.label" [nzValue]="option.value" />
-        }
-      </nz-select>
+      <nz-select [nzOptions]="options" [(ngModel)]="position" style="width: 80px;" />
     </div>
-    <nz-tabs [nzTabPosition]="position">
+    <br />
+    <br />
+    <nz-tabs [nzTabPosition]="position()">
       @for (tab of tabs; track tab) {
-        <nz-tab [nzTitle]="'Tab ' + tab">Content of tab {{ tab }}</nz-tab>
+        <nz-tab nzTitle="Tab {{ tab }}">Content of tab {{ tab }}</nz-tab>
       }
     </nz-tabs>
   `
 })
 export class NzDemoTabsPositionComponent {
-  position: NzTabPosition = 'top';
-  tabs = [1, 2, 3];
-  options = [
+  readonly position = signal<NzTabPosition>('top');
+  readonly tabs = [1, 2, 3];
+  readonly options = [
     { value: 'top', label: 'top' },
     { value: 'left', label: 'left' },
     { value: 'right', label: 'right' },

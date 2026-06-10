@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 
@@ -6,7 +6,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
   selector: 'nz-demo-steps-nav',
   imports: [NzStepsModule],
   template: `
-    <nz-steps nzType="navigation" nzSize="small" [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
+    <nz-steps nzType="navigation" nzSize="small" [nzCurrent]="index()" (nzIndexChange)="onIndexChange($event)">
       <nz-step nzTitle="Step 1" nzSubtitle="00:00:05" nzStatus="finish" nzDescription="This is a description." />
       <nz-step nzTitle="Step 2" nzSubtitle="00:01:02" nzStatus="process" nzDescription="This is a description." />
       <nz-step
@@ -16,13 +16,13 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
         nzDescription="This is a description."
       />
     </nz-steps>
-    <nz-steps nzType="navigation" [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
+    <nz-steps nzType="navigation" [nzCurrent]="index()" (nzIndexChange)="onIndexChange($event)">
       <nz-step nzTitle="Step 1" nzStatus="finish" />
       <nz-step nzTitle="Step 2" nzStatus="process" />
       <nz-step nzTitle="Step 3" nzStatus="wait" />
       <nz-step nzTitle="Step 4" nzStatus="wait" />
     </nz-steps>
-    <nz-steps nzType="navigation" nzSize="small" [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
+    <nz-steps nzType="navigation" nzSize="small" [nzCurrent]="index()" (nzIndexChange)="onIndexChange($event)">
       <nz-step nzTitle="finish 1" nzStatus="finish" />
       <nz-step nzTitle="finish 2" nzStatus="finish" />
       <nz-step nzTitle="current process" nzStatus="process" />
@@ -37,9 +37,9 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
   `
 })
 export class NzDemoStepsNavComponent {
-  index = 0;
+  readonly index = signal(0);
 
   onIndexChange(event: number): void {
-    this.index = event;
+    this.index.set(event);
   }
 }

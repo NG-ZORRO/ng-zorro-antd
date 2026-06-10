@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { formatDistance } from 'date-fns';
@@ -25,8 +25,8 @@ interface Data extends User {
   selector: 'nz-demo-comment-editor',
   imports: [FormsModule, NzAvatarModule, NzButtonModule, NzCommentModule, NzFormModule, NzInputModule, NzListModule],
   template: `
-    @if (data.length) {
-      <nz-list [nzDataSource]="data" [nzRenderItem]="item" nzItemLayout="horizontal">
+    @if (data().length) {
+      <nz-list [nzDataSource]="data()" [nzRenderItem]="item" nzItemLayout="horizontal">
         <ng-template #item let-item>
           <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
             <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar" />
@@ -42,10 +42,10 @@ interface Data extends User {
       <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar" />
       <nz-comment-content>
         <nz-form-item>
-          <textarea [(ngModel)]="inputValue" nz-input rows="4"></textarea>
+          <textarea [(ngModel)]="value" nz-input rows="4"></textarea>
         </nz-form-item>
         <nz-form-item>
-          <button nz-button nzType="primary" [nzLoading]="submitting" [disabled]="!inputValue" (click)="handleSubmit()">
+          <button nz-button nzType="primary" [nzLoading]="submitting()" [disabled]="!value()" (click)="handleSubmit()">
             Add Comment
           </button>
         </nz-form-item>
@@ -54,32 +54,34 @@ interface Data extends User {
   `
 })
 export class NzDemoCommentEditorComponent {
-  data: Data[] = [];
-  submitting = false;
-  user: User = {
+  readonly data = signal<Data[]>([]);
+  readonly submitting = signal(false);
+  readonly user: User = {
     author: 'Han Solo',
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
   };
-  inputValue = '';
+  readonly value = signal('');
 
   handleSubmit(): void {
-    this.submitting = true;
-    const content = this.inputValue;
-    this.inputValue = '';
+    this.submitting.set(true);
+    const content = this.value();
+    this.value.set('');
     setTimeout(() => {
-      this.submitting = false;
-      this.data = [
-        ...this.data,
-        {
-          ...this.user,
-          content,
-          datetime: new Date(),
-          displayTime: formatDistance(new Date(), new Date())
-        }
-      ].map(e => ({
-        ...e,
-        displayTime: formatDistance(new Date(), e.datetime)
-      }));
+      this.submitting.set(false);
+      this.data.update(data =>
+        [
+          ...data,
+          {
+            ...this.user,
+            content,
+            datetime: new Date(),
+            displayTime: formatDistance(new Date(), new Date())
+          }
+        ].map(e => ({
+          ...e,
+          displayTime: formatDistance(new Date(), e.datetime)
+        }))
+      );
     }, 800);
   }
 }

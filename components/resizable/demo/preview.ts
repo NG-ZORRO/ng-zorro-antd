@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
 
@@ -11,8 +11,8 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
       nz-resizable
       nzPreview
       (nzResizeEnd)="onResize($event)"
-      [style.height.px]="height"
-      [style.width.px]="width"
+      [style.height.px]="height()"
+      [style.width.px]="width()"
     >
       <nz-resize-handles />
       content
@@ -33,11 +33,11 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
   `
 })
 export class NzDemoResizablePreviewComponent {
-  width = 400;
-  height = 200;
+  readonly width = signal(400);
+  readonly height = signal(200);
 
   onResize({ width, height }: NzResizeEvent): void {
-    this.width = width!;
-    this.height = height!;
+    this.width.set(width!);
+    this.height.set(height!);
   }
 }

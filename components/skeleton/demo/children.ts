@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
@@ -8,14 +8,14 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
   imports: [NzButtonModule, NzSkeletonModule],
   template: `
     <div class="article">
-      <nz-skeleton [nzLoading]="loading">
+      <nz-skeleton [nzLoading]="loading()">
         <h4>Ant Design, a design language</h4>
         <p>
           We supply a series of design principles, practical patterns and high quality design resources (Sketch and
           Axure), to help people create their product prototypes beautifully and efficiently.
         </p>
       </nz-skeleton>
-      <button nz-button (click)="showSkeleton()" [disabled]="loading">Show Skeleton</button>
+      <button nz-button (click)="showSkeleton()" [disabled]="loading()">Show Skeleton</button>
     </div>
   `,
   styles: `
@@ -28,12 +28,10 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
   `
 })
 export class NzDemoSkeletonChildrenComponent {
-  loading = false;
+  readonly loading = signal(false);
 
   showSkeleton(): void {
-    this.loading = true;
-    setTimeout(() => {
-      this.loading = false;
-    }, 3000);
+    this.loading.set(true);
+    setTimeout(() => this.loading.set(false), 3000);
   }
 }

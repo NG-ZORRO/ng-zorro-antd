@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzDatePickerModule, NzDatePickerSizeType } from 'ng-zorro-antd/date-picker';
@@ -15,15 +15,15 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
     </nz-radio-group>
     <br />
     <br />
-    <nz-date-picker [nzSize]="size" />
+    <nz-date-picker [nzSize]="size()" />
     <br />
-    <nz-date-picker nzMode="week" [nzSize]="size" />
+    <nz-date-picker nzMode="week" [nzSize]="size()" />
     <br />
-    <nz-date-picker nzMode="month" [nzSize]="size" />
+    <nz-date-picker nzMode="month" [nzSize]="size()" />
     <br />
-    <nz-date-picker nzMode="quarter" [nzSize]="size" />
+    <nz-date-picker nzMode="quarter" [nzSize]="size()" />
     <br />
-    <nz-range-picker [nzSize]="size" />
+    <nz-range-picker [nzSize]="size()" />
   `,
   styles: `
     nz-date-picker,
@@ -33,5 +33,5 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoDatePickerSizeComponent {
-  size: NzDatePickerSizeType = 'default';
+  readonly size = signal<NzDatePickerSizeType>('default');
 }

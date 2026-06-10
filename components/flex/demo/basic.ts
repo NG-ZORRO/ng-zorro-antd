@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzFlexModule } from 'ng-zorro-antd/flex';
@@ -8,12 +8,12 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   selector: 'nz-demo-flex-basic',
   imports: [FormsModule, NzFlexModule, NzRadioModule],
   template: `
-    <nz-radio-group [(ngModel)]="isVertical">
+    <nz-radio-group [(ngModel)]="vertical">
       <label nz-radio [nzValue]="false">horizontal</label>
       <label nz-radio [nzValue]="true">vertical</label>
     </nz-radio-group>
 
-    <div nz-flex [nzVertical]="isVertical">
+    <div nz-flex [nzVertical]="vertical()">
       <div class="flex-item"></div>
       <div class="flex-item even"></div>
       <div class="flex-item"></div>
@@ -37,5 +37,5 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoFlexBasicComponent {
-  isVertical = false;
+  readonly vertical = signal(false);
 }

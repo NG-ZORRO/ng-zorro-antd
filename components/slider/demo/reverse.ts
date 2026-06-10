@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzMarks, NzSliderModule } from 'ng-zorro-antd/slider';
@@ -21,9 +21,9 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoSliderReverseComponent {
-  reverse = true;
+  readonly reverse = signal(true);
 
-  marks: NzMarks = {
+  readonly marks: NzMarks = {
     0: '0°C',
     26: '26°C',
     37: '37°C',

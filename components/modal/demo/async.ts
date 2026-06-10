@@ -1,4 +1,4 @@
-import { Component, model, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -22,8 +22,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
   `
 })
 export class NzDemoModalAsyncComponent {
-  visible = model(false);
-  loading = signal(false);
+  readonly visible = signal(false);
+  readonly loading = signal(false);
 
   showModal(): void {
     this.visible.set(true);

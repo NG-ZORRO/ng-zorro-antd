@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
@@ -7,28 +7,15 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 @Component({
   selector: 'nz-demo-auto-complete-non-case-sensitive',
   imports: [FormsModule, NzAutocompleteModule, NzInputModule],
-  encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="example-input">
-      <input
-        placeholder='try to type "b"'
-        nz-input
-        [(ngModel)]="inputValue"
-        (ngModelChange)="onChange($event)"
-        [nzAutocomplete]="auto"
-      />
-      <nz-autocomplete [nzDataSource]="filteredOptions" #auto />
-    </div>
+    <input placeholder='try to type "b"' nz-input [(ngModel)]="value" [nzAutocomplete]="auto" />
+    <nz-autocomplete [nzDataSource]="filteredOptions()" #auto />
   `
 })
 export class NzDemoAutoCompleteNonCaseSensitiveComponent {
-  inputValue?: string;
-  filteredOptions: string[] = [];
-  options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
-  constructor() {
-    this.filteredOptions = this.options;
-  }
-  onChange(value: string): void {
-    this.filteredOptions = this.options.filter(option => option.toLowerCase().indexOf(value.toLowerCase()) !== -1);
-  }
+  readonly value = signal<string>('');
+  readonly options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
+  readonly filteredOptions = computed(() =>
+    this.options.filter(option => option.toLowerCase().indexOf(this.value().toLowerCase()) !== -1)
+  );
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -13,7 +13,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
       <span>Select wrap:</span>
       <nz-segmented [nzOptions]="wrapSegment" [(ngModel)]="selectedWrap" />
     </div>
-    <div class="btn-wrapper" nz-flex nzGap="middle" [nzWrap]="selectedWrap">
+    <div class="btn-wrapper" nz-flex nzGap="middle" [nzWrap]="selectedWrap()">
       @for (_ of array; track _) {
         <button style="width: 100px" nz-button nzType="primary">Button {{ _ }}</button>
       }
@@ -35,7 +35,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   `
 })
 export class NzDemoFlexWrapComponent {
-  wrapSegment: NzWrap[] = ['wrap', 'wrap-reverse', 'nowrap'];
-  selectedWrap: NzWrap = 'wrap';
-  array = Array.from({ length: 20 }, (_, index) => index + 1);
+  readonly wrapSegment: NzWrap[] = ['wrap', 'wrap-reverse', 'nowrap'];
+  readonly selectedWrap = signal<NzWrap>('wrap');
+  readonly array = Array.from({ length: 20 }, (_, index) => index + 1);
 }

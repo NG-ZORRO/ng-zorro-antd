@@ -7,7 +7,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   selector: 'nz-demo-select-optgroup',
   imports: [FormsModule, NzSelectModule],
   template: `
-    <nz-select [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose" nzShowSearch>
+    <nz-select ngModel="lucy" nzAllowClear nzPlaceHolder="Choose" nzShowSearch>
       <nz-option-group nzLabel="Manager">
         <nz-option nzValue="jack" nzLabel="Jack" />
         <nz-option nzValue="lucy" nzLabel="Lucy" />
@@ -23,6 +23,4 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     }
   `
 })
-export class NzDemoSelectOptgroupComponent {
-  selectedValue = 'lucy';
-}
+export class NzDemoSelectOptgroupComponent {}

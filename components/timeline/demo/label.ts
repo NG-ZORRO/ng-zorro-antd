@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzRadioModule } from 'ng-zorro-antd/radio';
@@ -15,7 +15,7 @@ import { NzTimelineMode, NzTimelineModule } from 'ng-zorro-antd/timeline';
     </nz-radio-group>
     <br />
     <br />
-    <nz-timeline [nzMode]="mode">
+    <nz-timeline [nzMode]="mode()">
       <nz-timeline-item nzLabel="2015-09-01">Create a services</nz-timeline-item>
       <nz-timeline-item nzLabel="2015-09-01 09:12:11">Solve initial network problems</nz-timeline-item>
       <nz-timeline-item>Technical testing</nz-timeline-item>
@@ -24,5 +24,5 @@ import { NzTimelineMode, NzTimelineModule } from 'ng-zorro-antd/timeline';
   `
 })
 export class NzDemoTimelineLabelComponent {
-  mode: NzTimelineMode = 'left';
+  readonly mode = signal<NzTimelineMode>('left');
 }

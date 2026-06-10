@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -21,7 +21,7 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadPictureStyleComponent {
-  fileList: NzUploadFile[] = [
+  readonly fileList = signal<NzUploadFile[]>([
     {
       uid: '0',
       name: 'xxx.png',
@@ -40,5 +40,5 @@ export class NzDemoUploadPictureStyleComponent {
       name: 'zzz.png',
       status: 'error'
     }
-  ];
+  ]);
 }

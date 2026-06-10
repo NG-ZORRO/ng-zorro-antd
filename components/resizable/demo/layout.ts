@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
@@ -11,7 +11,7 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
       <nz-header>Header</nz-header>
       <nz-layout>
         <nz-sider
-          [nzWidth]="siderWidth"
+          [nzWidth]="siderWidth()"
           nz-resizable
           [nzMinWidth]="50"
           [nzMaxWidth]="300"
@@ -26,7 +26,7 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
           <div
             nz-resizable
             class="resizable-box"
-            [style.height.px]="contentHeight"
+            [style.height.px]="contentHeight()"
             [nzMaxHeight]="300"
             [nzMinHeight]="50"
             (nzResize)="onContentResize($event)"
@@ -97,21 +97,21 @@ import { NzResizableModule, NzResizeEvent } from 'ng-zorro-antd/resizable';
   `
 })
 export class NzDemoResizableLayoutComponent {
-  siderWidth = 120;
-  contentHeight = 200;
+  readonly siderWidth = signal(120);
+  readonly contentHeight = signal(200);
   id = -1;
 
   onSideResize({ width }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
-      this.siderWidth = width!;
+      this.siderWidth.set(width!);
     });
   }
 
   onContentResize({ height }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
-      this.contentHeight = height!;
+      this.contentHeight.set(height!);
     });
   }
 }

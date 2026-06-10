@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -42,32 +42,32 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
   `
 })
 export class NzDemoModalPositionComponent {
-  isVisibleTop = false;
-  isVisibleMiddle = false;
+  readonly isVisibleTop = signal(false);
+  readonly isVisibleMiddle = signal(false);
 
   showModalTop(): void {
-    this.isVisibleTop = true;
+    this.isVisibleTop.set(true);
   }
 
   showModalMiddle(): void {
-    this.isVisibleMiddle = true;
+    this.isVisibleMiddle.set(true);
   }
 
   handleOkTop(): void {
     console.log('点击了确定');
-    this.isVisibleTop = false;
+    this.isVisibleTop.set(false);
   }
 
   handleCancelTop(): void {
-    this.isVisibleTop = false;
+    this.isVisibleTop.set(false);
   }
 
   handleOkMiddle(): void {
     console.log('click ok');
-    this.isVisibleMiddle = false;
+    this.isVisibleMiddle.set(false);
   }
 
   handleCancelMiddle(): void {
-    this.isVisibleMiddle = false;
+    this.isVisibleMiddle.set(false);
   }
 }

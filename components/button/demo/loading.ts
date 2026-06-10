@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -13,8 +13,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     </button>
     <button nz-button nzType="primary" nzSize="small" nzLoading>Loading</button>
     <br />
-    <button nz-button nzType="primary" (click)="loadOne()" [nzLoading]="isLoadingOne">Click me!</button>
-    <button nz-button nzType="primary" (click)="loadTwo()" [nzLoading]="isLoadingTwo">
+    <button nz-button nzType="primary" [nzLoading]="loadings()[0]" (click)="enterLoading(0)">Click me!</button>
+    <button nz-button nzType="primary" [nzLoading]="loadings()[1]" (click)="enterLoading(1)">
       <nz-icon nzType="poweroff" />
       Click me!
     </button>
@@ -30,20 +30,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `
 })
 export class NzDemoButtonLoadingComponent {
-  isLoadingOne = false;
-  isLoadingTwo = false;
+  readonly loadings = signal<boolean[]>([false, false]);
 
-  loadOne(): void {
-    this.isLoadingOne = true;
-    setTimeout(() => {
-      this.isLoadingOne = false;
-    }, 5000);
-  }
+  enterLoading(index: number): void {
+    const update = (index: number, loading: boolean): void => {
+      this.loadings.update(loadings => loadings.map((item, i) => (i === index ? loading : item)));
+    };
 
-  loadTwo(): void {
-    this.isLoadingTwo = true;
-    setTimeout(() => {
-      this.isLoadingTwo = false;
-    }, 5000);
+    update(index, true);
+    setTimeout(() => update(index, false), 3000);
   }
 }

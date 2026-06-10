@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -16,8 +16,8 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
       nzTooltipTrigger="focus"
       nzTooltipPlacement="topLeft"
       nzTooltipOverlayClassName="numeric-input"
-      [ngModel]="value"
-      [nzTooltipTitle]="title"
+      [ngModel]="value()"
+      [nzTooltipTitle]="title()"
       placeholder="Input a number"
       (ngModelChange)="onChange($event)"
       (blur)="onBlur()"
@@ -35,8 +35,8 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
   `
 })
 export class NzDemoInputTooltipComponent {
-  value = '';
-  title = 'Input a number';
+  readonly value = signal('');
+  readonly title = signal('Input a number');
 
   @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
 
@@ -46,22 +46,24 @@ export class NzDemoInputTooltipComponent {
 
   // '.' at the end or only '-' in the input box.
   onBlur(): void {
-    if (this.value.charAt(this.value.length - 1) === '.' || this.value === '-') {
-      this.updateValue(this.value.slice(0, -1));
+    const value = this.value();
+    if (value.charAt(value.length - 1) === '.' || value === '-') {
+      this.updateValue(value.slice(0, -1));
     }
   }
 
   updateValue(value: string): void {
     const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
     if ((!isNaN(+value) && reg.test(value)) || value === '' || value === '-') {
-      this.value = value;
+      this.value.set(value);
     }
-    this.inputElement!.nativeElement.value = this.value;
+    this.inputElement!.nativeElement.value = this.value();
     this.updateTitle();
   }
 
   updateTitle(): void {
-    this.title = (this.value !== '-' ? this.formatNumber(this.value) : '-') || 'Input a number';
+    const value = this.value();
+    this.title.set((value !== '-' ? this.formatNumber(value) : '-') || 'Input a number');
   }
 
   formatNumber(value: string): string {

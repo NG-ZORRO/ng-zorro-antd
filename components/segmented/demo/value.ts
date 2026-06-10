@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
@@ -9,7 +9,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   template: `
     <nz-segmented [nzOptions]="options" [(ngModel)]="selectedValue" (ngModelChange)="handleModelChange($event)" />
     <br />
-    Selected value: {{ selectedValue }}
+    Selected value: {{ selectedValue() }}
   `,
   styles: `
     .ant-segmented {
@@ -18,8 +18,8 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   `
 })
 export class NzDemoSegmentedValueComponent {
-  selectedValue = 'Weekly';
-  options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
+  readonly selectedValue = signal('Weekly');
+  readonly options = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
 
   handleModelChange(value: string): void {
     console.log(value);

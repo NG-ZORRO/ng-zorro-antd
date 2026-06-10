@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Params, RouterLink } from '@angular/router';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -36,7 +36,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
         </a>
         Four.
       </nz-tab>
-      @for (tab of dynamicTabs; track tab.title) {
+      @for (tab of dynamicTabs(); track tab.title) {
         <nz-tab>
           <a
             *nzTabLink
@@ -54,14 +54,16 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   `
 })
 export class NzDemoTabsLinkRouterComponent {
-  dynamicTabs: Array<{ title: string; content: string; queryParams?: Params; routerLink: string[] }> = [];
+  readonly dynamicTabs = signal<Array<{ title: string; content: string; queryParams?: Params; routerLink: string[] }>>(
+    []
+  );
 
   newTab(): void {
-    const { length } = this.dynamicTabs;
+    const { length } = this.dynamicTabs();
     const newTabId = length + 1;
     const title = `NewTab${newTabId}`;
-    this.dynamicTabs = [
-      ...this.dynamicTabs,
+    this.dynamicTabs.update(dynamicTabs => [
+      ...dynamicTabs,
       {
         title,
         content: title,
@@ -70,6 +72,6 @@ export class NzDemoTabsLinkRouterComponent {
           tab: newTabId
         }
       }
-    ];
+    ]);
   }
 }

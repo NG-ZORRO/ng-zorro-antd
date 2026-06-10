@@ -1,5 +1,5 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
@@ -15,7 +15,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
       cdkDropListOrientation="horizontal"
       cdkDropListElementContainer=".ant-tabs-nav-list"
     >
-      @for (tab of tabs; track tab) {
+      @for (tab of tabs(); track tab) {
         <nz-tab [nzTitle]="title">
           {{ tab.content }}
         </nz-tab>
@@ -43,8 +43,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   `
 })
 export class NzDemoTabsDraggableComponent {
-  private cdr = inject(ChangeDetectorRef);
-  tabs = [
+  readonly tabs = signal([
     {
       name: 'Tab 1',
       content: 'Content of Tab Pane 1'
@@ -57,13 +56,14 @@ export class NzDemoTabsDraggableComponent {
       name: 'Tab 3',
       content: 'Content of Tab Pane 3'
     }
-  ];
-  selectedTabIndex = 0;
+  ]);
+  readonly selectedTabIndex = signal(0);
 
   drop(event: CdkDragDrop<string[]>): void {
-    const prevActive = this.tabs[this.selectedTabIndex];
-    moveItemInArray(this.tabs, event.previousIndex, event.currentIndex);
-    this.selectedTabIndex = this.tabs.indexOf(prevActive);
-    this.cdr.markForCheck();
+    const tabs = [...this.tabs()];
+    const prevActive = tabs[this.selectedTabIndex()];
+    moveItemInArray(tabs, event.previousIndex, event.currentIndex);
+    this.tabs.set(tabs);
+    this.selectedTabIndex.set(tabs.indexOf(prevActive));
   }
 }

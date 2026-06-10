@@ -2,7 +2,7 @@
 order: 2
 title:
   zh-CN: 多选
-  en-US: multiple selection
+  en-US: Multiple selection
 ---
 
 ## zh-CN

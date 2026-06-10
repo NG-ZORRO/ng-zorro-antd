@@ -8,7 +8,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   imports: [FormsModule, NzSelectModule],
   template: `
     <nz-select ngModel="lucy" [nzOptions]="listOfOption" />
-    <nz-select [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose" [nzOptions]="listOfGroupOption" />
+    <nz-select ngModel="lucy" nzAllowClear nzPlaceHolder="Choose" [nzOptions]="listOfGroupOption" />
   `,
   styles: `
     nz-select {
@@ -18,7 +18,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoSelectOptionsComponent {
-  selectedValue = 'lucy';
   readonly listOfOption = [
     { label: 'Jack', value: 'jack' },
     { label: 'Lucy', value: 'lucy' },

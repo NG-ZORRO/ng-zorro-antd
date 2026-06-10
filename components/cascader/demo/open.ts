@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
@@ -56,7 +56,7 @@ const options: NzCascaderOption[] = [
       <nz-cascader
         [nzOptions]="nzOptions"
         [ngModel]="values"
-        [nzOpen]="open"
+        [nzOpen]="open()"
         (nzSelectionChange)="onSelectionChange($event)"
         (nzOpenChange)="onOpenChange($event)"
       />
@@ -65,8 +65,8 @@ const options: NzCascaderOption[] = [
 })
 export class NzDemoCascaderOpenComponent {
   readonly nzOptions = options;
-  values = ['zhejiang', 'hangzhou', 'xihu'];
-  open = false;
+  readonly values = ['zhejiang', 'hangzhou', 'xihu'];
+  readonly open = signal(false);
 
   onSelectionChange(selectedOptions: NzCascaderOption[]): void {
     console.log(selectedOptions);
@@ -74,7 +74,5 @@ export class NzDemoCascaderOpenComponent {
 
   onOpenChange(open: boolean): void {
     console.log(open);
-    // You can set the `open` variable in `(nzOpenChange)` to control the open state.
-    // this.open = open;
   }
 }
