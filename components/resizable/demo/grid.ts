@@ -18,7 +18,7 @@ import { NzResizableModule, NzResizeEvent, NzResizeHandleOption } from 'ng-zorro
         [nzGridColumnCount]="24"
         [nzSpan]="col()"
       >
-        <nz-resize-handles [nzDirections]="directions" />
+        <nz-resize-handles [nzDirections]="directions()" />
         col-{{ col() }}
       </div>
       <div class="col right" nz-col [nzSpan]="24 - col()">col-{{ 24 - col() }}</div>
@@ -44,12 +44,12 @@ import { NzResizableModule, NzResizeEvent, NzResizeHandleOption } from 'ng-zorro
 export class NzDemoResizableGridComponent {
   readonly col = signal(8);
   id = -1;
-  directions: NzResizeHandleOption[] = [
+  readonly directions = signal<NzResizeHandleOption[]>([
     {
       direction: 'right',
       cursorType: 'grid'
     }
-  ];
+  ]);
 
   onResize({ col }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);

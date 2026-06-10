@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { addDays, formatDistance } from 'date-fns';
 
@@ -10,7 +10,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
   selector: 'nz-demo-comment-list',
   imports: [NzAvatarModule, NzCommentModule, NzListModule],
   template: `
-    <nz-list [nzDataSource]="data" [nzRenderItem]="item" nzItemLayout="horizontal">
+    <nz-list [nzDataSource]="data()" [nzRenderItem]="item" nzItemLayout="horizontal">
       <ng-template #item let-item>
         <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.datetime">
           <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar" />
@@ -24,7 +24,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
   `
 })
 export class NzDemoCommentListComponent {
-  data = [
+  readonly data = signal([
     {
       author: 'Han Solo',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
@@ -41,5 +41,5 @@ export class NzDemoCommentListComponent {
         '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
       datetime: formatDistance(new Date(), addDays(new Date(), 2))
     }
-  ];
+  ]);
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCascaderModule, NzCascaderOption } from 'ng-zorro-antd/cascader';
@@ -56,9 +56,7 @@ const getOptions = (): NzCascaderOption[] => [
 })
 export class NzDemoCascaderMultipleComponent {
   readonly nzOptions: NzCascaderOption[] = getOptions();
-  values: NzSafeAny[][] | null = null;
+  readonly values = signal<NzSafeAny[][]>([]);
 
-  onChanges(values: NzSafeAny[][]): void {
-    console.log(values, this.values);
-  }
+  onChanges(_values: NzSafeAny[][]): void {}
 }

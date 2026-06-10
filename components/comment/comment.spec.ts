@@ -3,12 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NO_ERRORS_SCHEMA, provideZoneChangeDetection } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { testDirectionality } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzCommentComponent } from './comment.component';
@@ -19,18 +18,9 @@ import { NzDemoCommentNestedComponent } from './demo/nested';
 
 describe('comment', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()],
+      providers: [provideNzIconsTesting()],
       schemas: [NO_ERRORS_SCHEMA]
-    });
-    [
-      NzDemoCommentBasicComponent,
-      NzDemoCommentListComponent,
-      NzDemoCommentEditorComponent,
-      NzDemoCommentNestedComponent
-    ].forEach(comp => {
-      (comp as NzSafeAny).ɵcmp.onPush = false;
     });
   });
 
@@ -92,15 +82,15 @@ describe('comment', () => {
       );
     });
 
-    it('should list work', () => {
+    it('should list work', async () => {
       const fixture = TestBed.createComponent(NzDemoCommentListComponent);
       const component = fixture.componentInstance;
-      fixture.detectChanges();
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
       let comments = fixture.debugElement.queryAll(By.directive(NzCommentComponent));
-      fixture.detectChanges();
-      expect(component.data.length === comments.length).toBeTruthy();
+      expect(component.data().length === comments.length).toBeTruthy();
 
-      component.data.forEach((e, i) => {
+      component.data().forEach((e, i) => {
         const comment = comments[i];
         expect(comment.nativeElement.querySelector('nz-avatar[nz-comment-avatar]')).toBeTruthy();
         expect(comment.nativeElement.querySelector('.ant-comment-content-author-name').innerText).toBe(e.author);
@@ -108,16 +98,17 @@ describe('comment', () => {
         expect(comment.nativeElement.querySelector('.ant-comment-content-author-time').innerText).toBe(e.datetime);
       });
 
-      component.data = [{ ...component.data[0] }];
-      fixture.detectChanges();
+      component.data.set([{ ...component.data()[0] }]);
+      await fixture.whenStable();
       comments = fixture.debugElement.queryAll(By.directive(NzCommentComponent));
-      expect(component.data.length === comments.length).toBeTruthy();
+      expect(component.data().length === comments.length).toBeTruthy();
     });
 
-    it('should editor work', fakeAsync(() => {
+    it('should editor work', async () => {
       const fixture = TestBed.createComponent(NzDemoCommentEditorComponent);
       const component = fixture.componentInstance;
-      fixture.detectChanges();
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
       expect(fixture.debugElement.query(By.css('nz-comment .ant-comment-content-detail textarea'))).toBeTruthy();
       let comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));
       expect(comments.length).toBe(0);
@@ -125,13 +116,11 @@ describe('comment', () => {
 
       component.value.set('Test Comment 0');
       component.handleSubmit();
-      tick(1000);
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture, 1000);
 
       component.value.set('Test Comment 1');
       component.handleSubmit();
-      tick(1000);
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture, 1000);
 
       comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));
       expect(comments.length).toBeGreaterThan(0);
@@ -144,7 +133,7 @@ describe('comment', () => {
         expect(comment.nativeElement.querySelector('.ant-comment-content-detail p').innerText).toBe(e.content);
         expect(comment.nativeElement.querySelector('.ant-comment-content-author-time').innerText).toBe(e.displayTime);
       });
-    }));
+    });
 
     it('should nested work', () => {
       const fixture = TestBed.createComponent(NzDemoCommentNestedComponent);

@@ -3,20 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ApplicationRef,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  NgZone,
-  provideZoneChangeDetection,
-  ViewChild
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ApplicationRef, Component, ElementRef, NgZone, signal, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzResizableModule } from 'ng-zorro-antd/resizable/resizable.module';
 
@@ -31,11 +22,9 @@ import { DEFAULT_RESIZE_DIRECTION } from './resize-handles.component';
 describe('resizable', () => {
   let zone: MockNgZone;
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        // todo: use zoneless
-        provideZoneChangeDetection(),
         provideNzIconsTesting(),
         {
           provide: NgZone,
@@ -46,16 +35,7 @@ describe('resizable', () => {
         }
       ]
     });
-    [
-      NzDemoResizableBasicComponent,
-      NzDemoResizableCustomizeComponent,
-      NzDemoResizableGridComponent,
-      NzDemoResizableLockAspectRatioComponent,
-      NzDemoResizablePreviewComponent
-    ].forEach(comp => {
-      (comp as NzSafeAny).ɵcmp.onPush = false;
-    });
-  }));
+  });
 
   describe('basic', () => {
     let fixture: ComponentFixture<NzDemoResizableBasicComponent>;
@@ -626,16 +606,16 @@ describe('resizable', () => {
       });
     });
 
-    it('should cursor type work', () => {
+    it('should cursor type work', async () => {
       expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-window')).toBeFalsy();
       expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-grid')).toBeTruthy();
-      testComponent.directions = [
+      testComponent.directions.set([
         {
           direction: 'right',
           cursorType: 'window'
         }
-      ];
-      fixture.detectChanges();
+      ]);
+      await updateNonSignalsInput(fixture);
       expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-window')).toBeTruthy();
       expect(resizableEle.querySelector('.nz-resizable-handle-cursor-type-grid')).toBeFalsy();
     });
@@ -670,6 +650,7 @@ describe('resizable', () => {
       fixture.detectChanges();
 
       afterNextFrameRender(() => {
+        fixture.changeDetectorRef.markForCheck();
         fixture.detectChanges();
         expect(testComponent.width).toBe(200);
         expect(testComponent.height).toBe(200);
@@ -680,6 +661,7 @@ describe('resizable', () => {
     it('should element ref bounds work', done => {
       const rect = resizableEle.getBoundingClientRect();
       testComponent.bounds = testComponent.boxRef;
+      fixture.changeDetectorRef.markForCheck();
       fixture.detectChanges();
       const handle = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
       mouseMoveTrigger(
@@ -696,6 +678,7 @@ describe('resizable', () => {
       fixture.detectChanges();
 
       afterNextFrameRender(() => {
+        fixture.changeDetectorRef.markForCheck();
         fixture.detectChanges();
         expect(testComponent.width).toBe(256);
         expect(testComponent.height).toBe(256);
@@ -706,6 +689,7 @@ describe('resizable', () => {
     it('should window bounds work', done => {
       const rect = resizableEle.getBoundingClientRect();
       testComponent.bounds = 'window';
+      fixture.changeDetectorRef.markForCheck();
       fixture.detectChanges();
       const handle = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
       mouseMoveTrigger(
@@ -722,11 +706,13 @@ describe('resizable', () => {
       fixture.detectChanges();
 
       afterNextFrameRender(() => {
+        fixture.changeDetectorRef.markForCheck();
         fixture.detectChanges();
         expect(testComponent.width).toBe(300);
         expect(testComponent.height).toBe(300);
         testComponent.maxHeight = window.innerHeight * 2;
         testComponent.maxWidth = window.innerWidth * 2;
+        fixture.changeDetectorRef.markForCheck();
         fixture.detectChanges();
         mouseMoveTrigger(
           handle,
@@ -742,6 +728,7 @@ describe('resizable', () => {
         fixture.detectChanges();
 
         afterNextFrameRender(() => {
+          fixture.changeDetectorRef.markForCheck();
           fixture.detectChanges();
           expect(testComponent.width).toBe(window.innerWidth);
           expect(testComponent.height).toBe(window.innerHeight);
@@ -800,17 +787,56 @@ function afterNextFrameRender(callbackFn: () => void): void {
       width: 200px;
       height: 200px;
     }
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestResizableBoundsComponent {
   @ViewChild('boxRef', { static: false }) boxRef!: ElementRef<HTMLDivElement>;
-  bounds: 'window' | 'parent' | ElementRef = 'parent';
-  maxWidth = 300;
-  maxHeight = 300;
-  width = 100;
-  height = 100;
+  private readonly boundsSignal = signal<'window' | 'parent' | ElementRef>('parent');
+  private readonly maxWidthSignal = signal(300);
+  private readonly maxHeightSignal = signal(300);
+  private readonly widthSignal = signal(100);
+  private readonly heightSignal = signal(100);
   id = -1;
+
+  get bounds(): 'window' | 'parent' | ElementRef {
+    return this.boundsSignal();
+  }
+
+  set bounds(value: 'window' | 'parent' | ElementRef) {
+    this.boundsSignal.set(value);
+  }
+
+  get maxWidth(): number {
+    return this.maxWidthSignal();
+  }
+
+  set maxWidth(value: number) {
+    this.maxWidthSignal.set(value);
+  }
+
+  get maxHeight(): number {
+    return this.maxHeightSignal();
+  }
+
+  set maxHeight(value: number) {
+    this.maxHeightSignal.set(value);
+  }
+
+  get width(): number {
+    return this.widthSignal();
+  }
+
+  set width(value: number) {
+    this.widthSignal.set(value);
+  }
+
+  get height(): number {
+    return this.heightSignal();
+  }
+
+  set height(value: number) {
+    this.heightSignal.set(value);
+  }
 
   onResize({ width, height }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
