@@ -7,7 +7,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   selector: 'nz-demo-radio-radiogroup-with-name',
   imports: [FormsModule, NzRadioModule],
   template: `
-    <nz-radio-group [(ngModel)]="radioValue" nzName="radiogroup">
+    <nz-radio-group [(ngModel)]="value" nzName="radiogroup">
       <label nz-radio nzValue="A">A</label>
       <label nz-radio nzValue="B">B</label>
       <label nz-radio nzValue="C">C</label>
@@ -16,5 +16,5 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoRadioRadiogroupWithNameComponent {
-  readonly radioValue = signal('A');
+  readonly value = signal('A');
 }

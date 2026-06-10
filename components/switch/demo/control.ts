@@ -6,21 +6,21 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 @Component({
   selector: 'nz-demo-switch-control',
   imports: [FormsModule, NzSwitchModule],
-  template: `
-    <nz-switch [(ngModel)]="switchValue" [nzControl]="true" (click)="clickSwitch()" [nzLoading]="loading()" />
-  `
+  template: `<nz-switch [(ngModel)]="value" nzControl (click)="clickSwitch()" [nzLoading]="loading()" />`
 })
 export class NzDemoSwitchControlComponent {
-  readonly switchValue = signal(false);
+  readonly value = signal(false);
   readonly loading = signal(false);
 
   clickSwitch(): void {
-    if (!this.loading()) {
-      this.loading.set(true);
-      setTimeout(() => {
-        this.switchValue.update(value => !value);
-        this.loading.set(false);
-      }, 3000);
+    if (this.loading()) {
+      return;
     }
+
+    this.loading.set(true);
+    setTimeout(() => {
+      this.value.update(value => !value);
+      this.loading.set(false);
+    }, 3000);
   }
 }

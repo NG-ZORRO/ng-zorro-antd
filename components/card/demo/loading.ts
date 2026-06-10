@@ -11,7 +11,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-card-loading',
   imports: [FormsModule, NzAvatarModule, NzCardModule, NzIconModule, NzSwitchModule, NzSkeletonModule],
   template: `
-    <nz-switch [ngModel]="loading()" (ngModelChange)="loading.set($event)" />
+    <nz-switch [(ngModel)]="loading" />
     <nz-card style="width: 300px;margin-top: 16px" [nzLoading]="loading()">
       <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="Card title" nzDescription="This is the description" />
     </nz-card>

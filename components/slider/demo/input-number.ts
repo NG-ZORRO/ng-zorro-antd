@@ -11,25 +11,19 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   template: `
     <nz-row nzGutter="8">
       <nz-col nzSpan="12">
-        <nz-slider [nzMin]="1" [nzMax]="20" [ngModel]="value1()" (ngModelChange)="value1.set($event)" />
+        <nz-slider [nzMin]="1" [nzMax]="20" [(ngModel)]="value1" />
       </nz-col>
       <div nz-col nzSpan="4">
-        <nz-input-number [nzMin]="1" [nzMax]="20" [ngModel]="value1()" (ngModelChange)="value1.set($event)" />
+        <nz-input-number [nzMin]="1" [nzMax]="20" [(ngModel)]="value1" />
       </div>
     </nz-row>
 
     <nz-row nzGutter="8">
       <nz-col nzSpan="12">
-        <nz-slider [nzMin]="0" [nzMax]="1" [nzStep]="0.01" [ngModel]="value2()" (ngModelChange)="value2.set($event)" />
+        <nz-slider [nzMin]="0" [nzMax]="1" [nzStep]="0.01" [(ngModel)]="value2" />
       </nz-col>
       <nz-col nzSpan="4">
-        <nz-input-number
-          [nzMin]="0"
-          [nzMax]="1"
-          [nzStep]="0.01"
-          [ngModel]="value2()"
-          (ngModelChange)="value2.set($event)"
-        />
+        <nz-input-number [nzMin]="0" [nzMax]="1" [nzStep]="0.01" [(ngModel)]="value2" />
       </nz-col>
     </nz-row>
   `

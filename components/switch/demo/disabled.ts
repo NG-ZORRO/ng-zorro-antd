@@ -8,13 +8,17 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-switch-disabled',
   imports: [FormsModule, NzButtonModule, NzSwitchModule],
   template: `
-    <nz-switch [ngModel]="switchValue()" (ngModelChange)="switchValue.set($event)" [nzDisabled]="isDisabled()" />
+    <nz-switch [(ngModel)]="value" [nzDisabled]="disabled()" />
     <br />
     <br />
-    <button nz-button nzType="primary" (click)="isDisabled.update(value => !value)">Toggle disabled</button>
+    <button nz-button nzType="primary" (click)="toggleDisabled()">Toggle disabled</button>
   `
 })
 export class NzDemoSwitchDisabledComponent {
-  readonly switchValue = signal(false);
-  readonly isDisabled = signal(true);
+  readonly value = signal(false);
+  readonly disabled = signal(true);
+
+  toggleDisabled(): void {
+    this.disabled.update(value => !value);
+  }
 }

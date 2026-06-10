@@ -1,19 +1,16 @@
-import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 
 import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-async',
-  imports: [FormsModule, NzTreeSelectModule],
+  imports: [NzTreeSelectModule],
   template: `
     <nz-tree-select
       style="width: 250px"
       nzPlaceHolder="Please select"
       [nzExpandedKeys]="expandKeys"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event)"
       [nzDropdownMatchSelectWidth]="true"
       [nzDropdownStyle]="{ 'max-height': '300px' }"
       [nzNodes]="nodes"
@@ -24,7 +21,6 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 })
 export class NzDemoTreeSelectAsyncComponent {
   readonly expandKeys = ['0-0'];
-  readonly value = signal<string | undefined>(undefined);
   readonly nodes = [
     {
       title: 'Node1',

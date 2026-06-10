@@ -1,5 +1,4 @@
-import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
@@ -13,14 +12,8 @@ function alphabet(): string[] {
 
 @Component({
   selector: 'nz-demo-select-tags',
-  imports: [FormsModule, NzSelectModule],
-  template: `
-    <nz-select nzMode="tags" nzPlaceHolder="Tag Mode" [(ngModel)]="listOfTagOptions">
-      @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option" />
-      }
-    </nz-select>
-  `,
+  imports: [NzSelectModule],
+  template: `<nz-select [nzOptions]="options" nzMode="tags" nzPlaceHolder="Tag Mode" />`,
   styles: `
     nz-select {
       width: 100%;
@@ -28,6 +21,5 @@ function alphabet(): string[] {
   `
 })
 export class NzDemoSelectTagsComponent {
-  readonly listOfOption: string[] = alphabet();
-  readonly listOfTagOptions = signal<string[]>([]);
+  readonly options = alphabet().map(item => ({ label: item, value: item }));
 }

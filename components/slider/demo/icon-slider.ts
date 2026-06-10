@@ -8,9 +8,9 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   selector: 'nz-demo-slider-icon-slider',
   imports: [FormsModule, NzIconModule, NzSliderModule],
   template: `
-    <div class="icon-wrapper test-class">
+    <div class="icon-wrapper">
       <nz-icon nzType="frown" [class.icon-highlight]="preHighLight()" />
-      <nz-slider [nzMin]="0" [nzMax]="20" [ngModel]="sliderValue()" (ngModelChange)="sliderValue.set($event)" />
+      <nz-slider [nzMin]="0" [nzMax]="20" [(ngModel)]="sliderValue" />
       <nz-icon nzType="smile" [class.icon-highlight]="nextHighLight()" />
     </div>
   `,
@@ -31,11 +31,11 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
     }
 
     nz-icon:first-child {
-      left: 0;
+      inset-inline-start: 0;
     }
 
     nz-icon:last-child {
-      right: 0;
+      inset-inline-end: 0;
     }
 
     .icon-highlight {

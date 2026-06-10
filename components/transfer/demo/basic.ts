@@ -17,12 +17,7 @@ import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
       (nzChange)="change($event)"
     />
     <br />
-    <nz-switch
-      [ngModel]="disabled()"
-      (ngModelChange)="disabled.set($event)"
-      nzCheckedChildren="disabled"
-      nzUnCheckedChildren="disabled"
-    />
+    <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled" />
   `
 })
 export class NzDemoTransferBasicComponent {

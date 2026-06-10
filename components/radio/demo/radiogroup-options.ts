@@ -7,17 +7,17 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   selector: 'nz-demo-radio-radiogroup-options',
   imports: [FormsModule, NzRadioModule],
   template: `
-    <nz-radio-group [(ngModel)]="radioValue">
+    <nz-radio-group [(ngModel)]="value">
       @for (o of options; track o.value) {
         <label nz-radio [nzValue]="o.value">{{ o.label }}</label>
       }
     </nz-radio-group>
-    <nz-radio-group [(ngModel)]="radioValue">
+    <nz-radio-group [(ngModel)]="value">
       @for (o of options; track o.value) {
         <label nz-radio [nzValue]="o.value">{{ o.label }}</label>
       }
     </nz-radio-group>
-    <nz-radio-group [(ngModel)]="radioValue">
+    <nz-radio-group [(ngModel)]="value">
       @for (o of options; track o.value) {
         <label nz-radio [nzValue]="o.value">{{ o.label }}</label>
       }
@@ -25,7 +25,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoRadioRadiogroupOptionsComponent {
-  readonly radioValue = signal('Apple');
+  readonly value = signal('Apple');
   readonly options = [
     { label: 'Apple', value: 'Apple' },
     { label: 'Pear', value: 'Pear' },

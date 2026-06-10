@@ -1,4 +1,4 @@
-import { Component, model, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -20,12 +20,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
         </nz-splitter-panel>
       </nz-splitter>
       <nz-flex nzJustify="space-between">
-        <nz-switch
-          nzCheckedChildren="Enabled"
-          nzUnCheckedChildren="Disabled"
-          [ngModel]="resizable()"
-          (ngModelChange)="resizable.set($event)"
-        />
+        <nz-switch nzCheckedChildren="Enabled" nzUnCheckedChildren="Disabled" [(ngModel)]="resizable" />
         <button nz-button (click)="sizes.set(['50%', '50%'])">Reset</button>
       </nz-flex>
     </nz-flex>
@@ -45,7 +40,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   `
 })
 export class NzDemoSplitterControlComponent {
-  readonly resizable = model(true);
+  readonly resizable = signal(true);
   readonly sizes = signal<Array<number | string>>(['50%', '50%']);
 
   setSizes(sizes: Array<number | string>): void {

@@ -1,16 +1,15 @@
-import { Component, model } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 @Component({
   selector: 'nz-demo-tree-select-prefix-and-suffix',
-  imports: [FormsModule, NzTreeSelectModule],
+  imports: [NzTreeSelectModule],
   template: `
-    <nz-tree-select [nzNodes]="nodes" nzSuffixIcon="smile" [(ngModel)]="value" nzDefaultExpandAll />
+    <nz-tree-select [nzNodes]="nodes" nzSuffixIcon="smile" nzDefaultExpandAll />
     <br />
     <br />
-    <nz-tree-select [nzNodes]="nodes" nzPrefix="Prefix" [(ngModel)]="value" nzDefaultExpandAll />
+    <nz-tree-select [nzNodes]="nodes" nzPrefix="Prefix" nzDefaultExpandAll />
   `,
   styles: `
     nz-tree-select {
@@ -19,7 +18,6 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
   `
 })
 export class NzDemoTreeSelectPrefixAndSuffixComponent {
-  readonly value = model();
   readonly nodes = [
     {
       title: 'parent 1',

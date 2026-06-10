@@ -5,11 +5,17 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
 
+interface Tab {
+  name: string;
+  content: string;
+  disabled: boolean;
+}
+
 @Component({
   selector: 'nz-demo-tabs-slide',
   imports: [FormsModule, NzInputNumberModule, NzRadioModule, NzTabsModule],
   template: `
-    <nz-radio-group [(ngModel)]="nzTabPosition" style="margin-bottom: 8px;">
+    <nz-radio-group [(ngModel)]="position" style="margin-bottom: 8px;">
       <label nz-radio-button nzValue="top">Horizontal</label>
       <label nz-radio-button nzValue="left">Vertical</label>
     </nz-radio-group>
@@ -17,7 +23,7 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
 
     <nz-tabs
       style="height:220px;"
-      [nzTabPosition]="nzTabPosition()"
+      [nzTabPosition]="position()"
       [(nzSelectedIndex)]="selectedIndex"
       (nzSelectChange)="log([$event])"
     >
@@ -37,17 +43,16 @@ import { NzTabPosition, NzTabsModule } from 'ng-zorro-antd/tabs';
   `
 })
 export class NzDemoTabsSlideComponent implements OnInit {
-  readonly tabs = signal<Array<{ name: string; content: string; disabled: boolean }>>([]);
-  readonly nzTabPosition = signal<NzTabPosition>('top');
+  readonly tabs = signal<Tab[]>([]);
+  readonly position = signal<NzTabPosition>('top');
   readonly selectedIndex = signal(27);
 
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  log(args: any[]): void {
+  log(args: unknown[]): void {
     console.log(args);
   }
 
   ngOnInit(): void {
-    const tabs: Array<{ name: string; content: string; disabled: boolean }> = [];
+    const tabs: Tab[] = [];
     for (let i = 0; i < 30; i++) {
       tabs.push({
         name: `Tab ${i}`,

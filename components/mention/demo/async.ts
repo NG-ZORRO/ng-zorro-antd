@@ -14,7 +14,7 @@ import { MentionOnSearchTypes, NzMentionModule } from 'ng-zorro-antd/mention';
   `
 })
 export class NzDemoMentionAsyncComponent {
-  readonly inputValue = signal<string | undefined>(undefined);
+  readonly inputValue = signal('');
   readonly loading = signal(false);
   readonly suggestions = signal<string[]>([]);
 

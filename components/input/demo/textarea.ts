@@ -6,8 +6,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 @Component({
   selector: 'nz-demo-input-textarea',
   imports: [FormsModule, NzInputModule],
-  template: `<textarea rows="4" nz-input [(ngModel)]="inputValue"></textarea>`
+  template: `<textarea rows="4" nz-input [(ngModel)]="value"></textarea>`
 })
 export class NzDemoInputTextareaComponent {
-  readonly inputValue = signal<string | undefined>(undefined);
+  readonly value = signal('');
 }

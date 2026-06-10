@@ -19,8 +19,7 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
     <nz-upload
       nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       nzListType="picture-card"
-      [nzFileList]="fileList()"
-      (nzFileListChange)="fileList.set($event)"
+      [(nzFileList)]="fileList"
       [nzShowButton]="fileList().length < 8"
       [nzPreview]="handlePreview"
     >

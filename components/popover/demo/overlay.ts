@@ -17,7 +17,9 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
       [nzPopoverOverlayClickable]="false"
       [nzPopoverVisible]="visible()"
       (nzPopoverVisibleChange)="visibleChange($event)"
-      >Click me</button
+    >
+      Click me
+    </button>
     >
     <ng-template #contentTemplate>
       <button nz-button nzSize="small" nzType="primary" (click)="visibleChange(false)"> Close me </button>

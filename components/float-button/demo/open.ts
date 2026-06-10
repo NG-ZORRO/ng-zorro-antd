@@ -39,7 +39,5 @@ export class NzDemoFloatButtonOpenComponent {
 
   onOpenChange(open: boolean): void {
     console.log(open);
-    // You can set the `isOpen` variable in `(nzOpenChange)` to control the open state.
-    // this.isOpen.set(open);
   }
 }

@@ -65,20 +65,9 @@ import { NzTransferModule, TransferChange, TransferItem, TransferSelectChange } 
         </nz-table>
       </ng-template>
     </nz-transfer>
-    <div style="margin-top: 8px;">
-      <nz-switch
-        [ngModel]="disabled()"
-        (ngModelChange)="disabled.set($event)"
-        nzCheckedChildren="disabled"
-        nzUnCheckedChildren="disabled"
-      />
-      <nz-switch
-        [ngModel]="showSearch()"
-        (ngModelChange)="showSearch.set($event)"
-        nzCheckedChildren="showSearch"
-        nzUnCheckedChildren="showSearch"
-      />
-    </div>
+    <br />
+    <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled" />
+    <nz-switch [(ngModel)]="showSearch" nzCheckedChildren="showSearch" nzUnCheckedChildren="showSearch" />
   `
 })
 export class NzDemoTransferTableTransferComponent {

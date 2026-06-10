@@ -25,7 +25,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     </ng-template>
     <br />
     <span>Expand Icon Position: </span>
-    <nz-select [ngModel]="expandIconPosition()" (ngModelChange)="expandIconPosition.set($event)">
+    <nz-select [(ngModel)]="expandIconPosition">
       <nz-option nzValue="start" nzLabel="start" />
       <nz-option nzValue="end" nzLabel="end" />
     </nz-select>

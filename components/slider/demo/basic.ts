@@ -8,10 +8,10 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-slider-basic',
   imports: [FormsModule, NzSliderModule, NzSwitchModule],
   template: `
-    <nz-slider [ngModel]="value1()" (ngModelChange)="value1.set($event)" [nzDisabled]="disabled()" />
-    <nz-slider nzRange [ngModel]="value2()" (ngModelChange)="value2.set($event)" [nzDisabled]="disabled()" />
+    <nz-slider [(ngModel)]="value1" [nzDisabled]="disabled" />
+    <nz-slider nzRange [(ngModel)]="value2" [nzDisabled]="disabled" />
     Disabled:
-    <nz-switch nzSize="small" [ngModel]="disabled()" (ngModelChange)="disabled.set($event)" />
+    <nz-switch nzSize="small" [(ngModel)]="disabled" />
   `
 })
 export class NzDemoSliderBasicComponent {

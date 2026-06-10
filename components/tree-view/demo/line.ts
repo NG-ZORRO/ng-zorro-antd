@@ -42,7 +42,7 @@ const TREE_DATA: TreeNode[] = [
   imports: [FormsModule, NzIconModule, NzSwitchModule, NzTreeViewModule],
   template: `
     Show Leaf Icon:
-    <nz-switch [ngModel]="showLeafIcon()" (ngModelChange)="showLeafIcon.set($event)" />
+    <nz-switch [(ngModel)]="showLeafIcon" />
 
     <nz-tree-view [nzDataSource]="dataSource" [nzChildrenAccessor]="childrenAccessor">
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodeIndentLine [nzExpandable]="false">

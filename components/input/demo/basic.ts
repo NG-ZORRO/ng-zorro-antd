@@ -6,8 +6,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 @Component({
   selector: 'nz-demo-input-basic',
   imports: [FormsModule, NzInputModule],
-  template: ` <input nz-input placeholder="Basic usage" [(ngModel)]="value" /> `
+  template: `<input nz-input placeholder="Basic usage" [(ngModel)]="value" />`
 })
 export class NzDemoInputBasicComponent {
-  readonly value = signal<string | undefined>(undefined);
+  readonly value = signal('');
 }

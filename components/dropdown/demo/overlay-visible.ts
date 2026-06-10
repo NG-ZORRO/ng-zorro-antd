@@ -15,11 +15,15 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <ul nz-menu>
         <li nz-menu-item>Clicking me will not close the menu.</li>
         <li nz-menu-item>Clicking me will not close the menu also.</li>
-        <li nz-menu-item (click)="visible.set(false)">Clicking me will close the menu</li>
+        <li nz-menu-item (click)="close()">Clicking me will close the menu</li>
       </ul>
     </nz-dropdown-menu>
   `
 })
 export class NzDemoDropdownOverlayVisibleComponent {
   readonly visible = signal(false);
+
+  close(): void {
+    this.visible.set(false);
+  }
 }

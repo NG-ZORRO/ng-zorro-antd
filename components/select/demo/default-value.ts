@@ -17,7 +17,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     </nz-select>
     <br />
     <br />
-    <nz-select [(ngModel)]="selectedValue">
+    <nz-select [(ngModel)]="value">
       @for (option of listOfOption; track option) {
         <nz-option [nzLabel]="option" [nzValue]="option" />
       }
@@ -33,6 +33,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 export class NzDemoSelectDefaultValueComponent {
   readonly listOfOption = ['Option 01', 'Option 02'];
   readonly listOfSelectedValue = signal(['Default 01', 'Default 02']);
-  readonly defaultOption = [...this.listOfSelectedValue()];
-  readonly selectedValue = signal('Default');
+  readonly value = signal('Default');
+
+  get defaultOption(): string[] {
+    return this.listOfSelectedValue();
+  }
 }

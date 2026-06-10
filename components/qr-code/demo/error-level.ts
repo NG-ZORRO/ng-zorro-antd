@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 
+type Level = 'L' | 'M' | 'Q' | 'H';
+
 @Component({
   selector: 'nz-demo-qr-code-error-level',
   imports: [NzQRCodeModule, NzSegmentedModule, FormsModule],
@@ -24,6 +26,6 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   `
 })
 export class NzDemoQrCodeErrorLevelComponent {
-  readonly options: Array<'L' | 'M' | 'Q' | 'H'> = ['L', 'M', 'Q', 'H'];
-  readonly errorLevel = signal<'L' | 'M' | 'Q' | 'H'>('L');
+  readonly options: Level[] = ['L', 'M', 'Q', 'H'];
+  readonly errorLevel = signal<Level>('L');
 }

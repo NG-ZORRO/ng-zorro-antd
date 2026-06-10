@@ -8,7 +8,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   selector: 'nz-demo-carousel-position',
   imports: [FormsModule, NzCarouselModule, NzRadioModule],
   template: `
-    <nz-radio-group [ngModel]="dotPosition()" (ngModelChange)="dotPosition.set($event)">
+    <nz-radio-group [(ngModel)]="dotPosition">
       <label nz-radio-button nzValue="bottom">Bottom</label>
       <label nz-radio-button nzValue="top">Top</label>
       <label nz-radio-button nzValue="left">Left</label>

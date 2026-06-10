@@ -18,12 +18,7 @@ import { NzTransferModule, TransferItem } from 'ng-zorro-antd/transfer';
       (nzChange)="change($event)"
     />
     <br />
-    <nz-switch
-      [ngModel]="disabled()"
-      (ngModelChange)="disabled.set($event)"
-      nzCheckedChildren="disabled"
-      nzUnCheckedChildren="disabled"
-    />
+    <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled" />
   `
 })
 export class NzDemoTransferSearchComponent {
@@ -35,8 +30,7 @@ export class NzDemoTransferSearchComponent {
   }));
   readonly disabled = signal(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filterOption(inputValue: string, item: any): boolean {
+  filterOption(inputValue: string, item: TransferItem): boolean {
     return item.description.indexOf(inputValue) > -1;
   }
 

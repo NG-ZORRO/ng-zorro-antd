@@ -8,7 +8,7 @@ import { NzTimelineMode, NzTimelineModule } from 'ng-zorro-antd/timeline';
   selector: 'nz-demo-timeline-label',
   imports: [FormsModule, NzRadioModule, NzTimelineModule],
   template: `
-    <nz-radio-group [ngModel]="mode()" (ngModelChange)="mode.set($event)">
+    <nz-radio-group [(ngModel)]="mode">
       <label nz-radio nzValue="left">Left</label>
       <label nz-radio nzValue="right">Right</label>
       <label nz-radio nzValue="alternate">Alternative</label>

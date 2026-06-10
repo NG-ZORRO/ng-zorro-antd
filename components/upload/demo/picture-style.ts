@@ -11,8 +11,7 @@ import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
     <nz-upload
       nzAction="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
       nzListType="picture"
-      [nzFileList]="fileList()"
-      (nzFileListChange)="fileList.set($event)"
+      [(nzFileList)]="fileList"
     >
       <button nz-button>
         <nz-icon nzType="upload" />

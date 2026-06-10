@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzVariant } from 'ng-zorro-antd/core/types';
@@ -11,20 +11,17 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   imports: [FormsModule, NzInputModule, NzMentionModule, NzSegmentedModule],
   template: `
     <nz-segmented [nzOptions]="variants" [(ngModel)]="variant" />
+    <br />
+    <br />
     <nz-mention [nzSuggestions]="suggestions" (nzOnSelect)="onSelect($event)" [nzVariant]="variant()">
       <textarea rows="1" placeholder="input here" nzMentionTrigger nz-input [(ngModel)]="inputValue"></textarea>
     </nz-mention>
-  `,
-  styles: `
-    nz-segmented {
-      margin-bottom: 1rem;
-    }
   `
 })
 export class NzDemoMentionVariantComponent {
-  inputValue = model('@afc163');
+  readonly inputValue = signal('@afc163');
   readonly suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
-  variant = model<NzVariant>('outlined');
+  readonly variant = signal<NzVariant>('outlined');
   readonly variants = [
     { label: 'Outlined', value: 'outlined' },
     { label: 'Filled', value: 'filled' },

@@ -7,15 +7,9 @@ import { NzColorPickerModule } from 'ng-zorro-antd/color-picker';
   selector: 'nz-demo-color-picker-format',
   imports: [FormsModule, NzColorPickerModule],
   template: `
-    <div class="format">
-      <nz-color-picker nzFormat="hex" [ngModel]="hex()" (ngModelChange)="hex.set($event)" /> HEX: {{ hex() }}
-    </div>
-    <div class="format">
-      <nz-color-picker nzFormat="hsb" [ngModel]="hsb()" (ngModelChange)="hsb.set($event)" /> HSB: {{ hsb() }}
-    </div>
-    <div class="format">
-      <nz-color-picker nzFormat="rgb" [ngModel]="rgb()" (ngModelChange)="rgb.set($event)" /> RGB: {{ rgb() }}
-    </div>
+    <div class="format"><nz-color-picker nzFormat="hex" [(ngModel)]="hex" /> HEX: {{ hex() }} </div>
+    <div class="format"><nz-color-picker nzFormat="hsb" [(ngModel)]="hsb" /> HSB: {{ hsb() }} </div>
+    <div class="format"><nz-color-picker nzFormat="rgb" [(ngModel)]="rgb" /> RGB: {{ rgb() }} </div>
   `,
   styles: `
     .format {

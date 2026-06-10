@@ -19,7 +19,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     <br />
     <div>
       Loading state:
-      <nz-switch [ngModel]="isSpinning()" (ngModelChange)="isSpinning.set($event)" />
+      <nz-switch [(ngModel)]="isSpinning" />
     </div>
   `
 })

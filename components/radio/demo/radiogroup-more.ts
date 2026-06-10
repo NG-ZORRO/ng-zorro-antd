@@ -8,13 +8,13 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   selector: 'nz-demo-radio-radiogroup-more',
   imports: [FormsModule, NzInputModule, NzRadioModule],
   template: `
-    <nz-radio-group [(ngModel)]="radioValue">
+    <nz-radio-group [(ngModel)]="value">
       <label nz-radio nzValue="A">Option A</label>
       <label nz-radio nzValue="B">Option B</label>
       <label nz-radio nzValue="C">Option C</label>
       <label nz-radio nzValue="M">
         More...
-        @if (radioValue() === 'M') {
+        @if (value() === 'M') {
           <input type="text" nz-input />
         }
       </label>
@@ -34,5 +34,5 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   `
 })
 export class NzDemoRadioRadiogroupMoreComponent {
-  readonly radioValue = signal('A');
+  readonly value = signal('A');
 }

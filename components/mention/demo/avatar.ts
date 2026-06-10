@@ -27,7 +27,7 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
   `
 })
 export class NzDemoMentionAvatarComponent {
-  readonly inputValue = signal<string | undefined>(undefined);
+  readonly inputValue = signal('');
   readonly webFrameworks = [
     { name: 'React', type: 'JavaScript', icon: 'https://zos.alipayobjects.com/rmsportal/LFIeMPzdLcLnEUe.svg' },
     { name: 'Angular', type: 'JavaScript', icon: 'https://zos.alipayobjects.com/rmsportal/PJTbxSvzYWjDZnJ.png' },

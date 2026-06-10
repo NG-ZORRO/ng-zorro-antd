@@ -52,12 +52,7 @@ const options: NzCascaderOption[] = [
   imports: [FormsModule, NzCascaderModule, NzFlexModule, NzSwitchModule],
   template: `
     <div nz-flex nzVertical nzGap="small">
-      <nz-switch
-        [ngModel]="open()"
-        (ngModelChange)="open.set($event)"
-        nzCheckedChildren="open"
-        nzUnCheckedChildren="close"
-      />
+      <nz-switch [(ngModel)]="open" nzCheckedChildren="open" nzUnCheckedChildren="close" />
       <nz-cascader
         [nzOptions]="nzOptions"
         [ngModel]="values"
@@ -79,7 +74,5 @@ export class NzDemoCascaderOpenComponent {
 
   onOpenChange(open: boolean): void {
     console.log(open);
-    // You can set the `open` variable in `(nzOpenChange)` to control the open state.
-    // this.open = open;
   }
 }

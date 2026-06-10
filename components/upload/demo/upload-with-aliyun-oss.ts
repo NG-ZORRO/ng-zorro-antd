@@ -10,8 +10,7 @@ import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd
   template: `
     <nz-upload
       nzName="file"
-      [nzFileList]="files()"
-      (nzFileListChange)="files.set($event)"
+      [(nzFileList)]="files"
       [nzBeforeUpload]="beforeUpload"
       [nzData]="getExtraData"
       [nzAction]="mockOSSData.host"

@@ -13,7 +13,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
   selector: 'nz-demo-carousel-custom',
   imports: [FormsModule, NzCarouselModule, NzRadioModule],
   template: `
-    <nz-radio-group [ngModel]="strategy()" (ngModelChange)="strategy.set($event)">
+    <nz-radio-group [(ngModel)]="strategy">
       <label nz-radio-button nzValue="transform-no-loop">Transform No Loop</label>
       <label nz-radio-button nzValue="flip">Flip</label>
       <label nz-radio-button nzValue="fade">Fade (built-in)</label>

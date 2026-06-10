@@ -22,7 +22,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
   `
 })
 export class NzDemoDatePickerFormatComponent {
-  readonly dateFormat = 'yyyy/MM/dd';
-  readonly monthFormat = 'yyyy/MM';
-  readonly quarterFormat = 'yyyy/[Q]Q';
+  dateFormat = 'yyyy/MM/dd';
+  monthFormat = 'yyyy/MM';
+  quarterFormat = 'yyyy/[Q]Q';
 }

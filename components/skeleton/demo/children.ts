@@ -32,8 +32,6 @@ export class NzDemoSkeletonChildrenComponent {
 
   showSkeleton(): void {
     this.loading.set(true);
-    setTimeout(() => {
-      this.loading.set(false);
-    }, 3000);
+    setTimeout(() => this.loading.set(false), 3000);
   }
 }

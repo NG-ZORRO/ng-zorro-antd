@@ -9,14 +9,14 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention [nzSuggestions]="suggestions" nzStatus="error" style="margin-bottom: 8px;">
-      <textarea rows="1" nz-input placeholder="input here" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+      <textarea rows="1" nz-input placeholder="input here" [(ngModel)]="value" nzMentionTrigger></textarea>
     </nz-mention>
     <nz-mention [nzSuggestions]="suggestions" nzStatus="warning">
-      <textarea rows="1" nz-input placeholder="input here" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
+      <textarea rows="1" nz-input placeholder="input here" [(ngModel)]="value" nzMentionTrigger></textarea>
     </nz-mention>
   `
 })
 export class NzDemoMentionStatusComponent {
-  readonly inputValue = signal('@afc163');
+  readonly value = signal('@afc163');
   readonly suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
 }

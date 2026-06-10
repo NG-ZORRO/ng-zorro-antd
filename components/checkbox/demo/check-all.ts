@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCheckboxModule, NzCheckboxOption } from 'ng-zorro-antd/checkbox';
@@ -11,39 +11,28 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     <label
       nz-checkbox
       [ngModel]="allChecked()"
-      (ngModelChange)="allChecked.set($event); updateAllChecked()"
-      [nzIndeterminate]="value().length > 0 && value().length !== options.length"
+      (ngModelChange)="onAllCheckedChange($event)"
+      [nzIndeterminate]="indeterminate()"
     >
       Check all
     </label>
 
     <nz-divider />
 
-    <nz-checkbox-group
-      [nzOptions]="options"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event); updateSingleChecked()"
-    />
+    <nz-checkbox-group [nzOptions]="options" [(ngModel)]="value" />
   `
 })
 export class NzDemoCheckboxCheckAllComponent {
-  isAllCheckedFirstChange = true;
-  readonly allChecked = signal(false);
-  readonly value = signal<Array<string | number>>(['Apple', 'Orange']);
+  readonly value = signal<Array<NzCheckboxOption['value']>>(['Apple', 'Orange']);
   readonly options: NzCheckboxOption[] = [
     { label: 'Apple', value: 'Apple' },
     { label: 'Pear', value: 'Pear' },
     { label: 'Orange', value: 'Orange' }
   ];
+  readonly allChecked = computed(() => this.value().length === this.options.length);
+  readonly indeterminate = computed(() => this.value().length > 0 && !this.allChecked());
 
-  updateAllChecked(): void {
-    if (!this.isAllCheckedFirstChange) {
-      this.value.set(this.allChecked() ? this.options.map(item => item.value) : []);
-    }
-    this.isAllCheckedFirstChange = false;
-  }
-
-  updateSingleChecked(): void {
-    this.allChecked.set(this.value().length === this.options.length);
+  onAllCheckedChange(checked: boolean): void {
+    this.value.set(checked ? this.options.map(item => item.value) : []);
   }
 }

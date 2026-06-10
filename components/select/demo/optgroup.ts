@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -7,7 +7,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   selector: 'nz-demo-select-optgroup',
   imports: [FormsModule, NzSelectModule],
   template: `
-    <nz-select [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose" nzShowSearch>
+    <nz-select ngModel="lucy" nzAllowClear nzPlaceHolder="Choose" nzShowSearch>
       <nz-option-group nzLabel="Manager">
         <nz-option nzValue="jack" nzLabel="Jack" />
         <nz-option nzValue="lucy" nzLabel="Lucy" />
@@ -23,6 +23,4 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     }
   `
 })
-export class NzDemoSelectOptgroupComponent {
-  readonly selectedValue = signal('lucy');
-}
+export class NzDemoSelectOptgroupComponent {}

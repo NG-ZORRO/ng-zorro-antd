@@ -31,7 +31,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       <nz-input-password [(nzVisible)]="passwordVisible" [style.flex]="1">
         <input nz-input placeholder="input password" [(ngModel)]="password" />
       </nz-input-password>
-      <button nz-button (click)="passwordVisible.set(!passwordVisible())">
+      <button nz-button (click)="togglePasswordVisibility()">
         {{ passwordVisible() ? 'Hide' : 'Show' }}
       </button>
     </nz-flex>
@@ -44,4 +44,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 export class NzDemoInputPasswordInputComponent {
   readonly passwordVisible = signal(false);
   readonly password = signal('');
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible.update(visible => !visible);
+  }
 }

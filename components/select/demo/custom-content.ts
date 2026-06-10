@@ -1,14 +1,13 @@
-import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-custom-content',
-  imports: [FormsModule, NzIconModule, NzSelectModule],
+  imports: [NzIconModule, NzSelectModule],
   template: `
-    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select OS" [(ngModel)]="selectedValue">
+    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select OS">
       <nz-option nzCustomContent nzLabel="Windows" nzValue="windows">
         <nz-icon nzType="windows" />
         Windows
@@ -29,6 +28,4 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     }
   `
 })
-export class NzDemoSelectCustomContentComponent {
-  readonly selectedValue = signal<string | null>(null);
-}
+export class NzDemoSelectCustomContentComponent {}

@@ -51,7 +51,7 @@ export class NzDemoSelectCustomDropdownMenuComponent {
   addItem(input: HTMLInputElement): void {
     const value = input.value;
     if (this.listOfItem().indexOf(value) === -1) {
-      this.listOfItem.update(listOfItem => [...listOfItem, input.value || `New item ${this.index++}`]);
+      this.listOfItem.update(listOfItem => [...listOfItem, value || `New item ${this.index++}`]);
     }
   }
 }

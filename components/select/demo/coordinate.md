@@ -2,7 +2,7 @@
 order: 7
 title:
   zh-CN: 联动
-  en-US: coordinate
+  en-US: Coordinate
 ---
 
 ## zh-CN

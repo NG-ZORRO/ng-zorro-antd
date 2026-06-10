@@ -25,6 +25,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   `
 })
 export class NzDemoInputAllowClearComponent {
-  readonly inputValue = signal<string | null>(null);
-  readonly textValue = signal<string | null>(null);
+  readonly inputValue = signal('');
+  readonly textValue = signal('');
 }

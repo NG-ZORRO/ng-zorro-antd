@@ -7,16 +7,12 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
   selector: 'nz-demo-slider-event',
   imports: [FormsModule, NzSliderModule],
   template: `
-    <nz-slider
-      [ngModel]="singleValue()"
-      (ngModelChange)="singleValue.set($event); onChange($event)"
-      (nzOnAfterChange)="onAfterChange($event)"
-    />
+    <nz-slider [(ngModel)]="singleValue" (ngModelChange)="onChange($event)" (nzOnAfterChange)="onAfterChange($event)" />
     <nz-slider
       nzRange
       [nzStep]="10"
-      [ngModel]="rangeValue()"
-      (ngModelChange)="rangeValue.set($event); onChange($event)"
+      [(ngModel)]="rangeValue"
+      (ngModelChange)="onChange($event)"
       (nzOnAfterChange)="onAfterChange($event)"
     />
   `

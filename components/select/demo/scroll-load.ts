@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -15,21 +14,17 @@ interface MockUser {
 
 @Component({
   selector: 'nz-demo-select-scroll-load',
-  imports: [FormsModule, NzSelectModule, NzSpinModule],
+  imports: [NzSelectModule, NzSpinModule],
   template: `
     <nz-select
-      [(ngModel)]="selectedUser"
+      [nzOptions]="options()"
       (nzScrollToBottom)="loadMore()"
       nzPlaceHolder="Select users"
       nzAllowClear
       [nzDropdownRender]="renderTemplate"
-    >
-      @for (item of optionList(); track item) {
-        <nz-option [nzValue]="item" [nzLabel]="item" />
-      }
-    </nz-select>
+    />
     <ng-template #renderTemplate>
-      @if (isLoading()) {
+      @if (loading()) {
         <nz-spin />
       }
     </ng-template>
@@ -43,29 +38,25 @@ interface MockUser {
 export class NzDemoSelectScrollLoadComponent implements OnInit {
   private readonly http = inject(HttpClient);
 
-  readonly randomUserUrl: string = 'https://api.randomuser.me/?results=10';
-  readonly optionList = signal<string[]>([]);
-  readonly selectedUser = signal<string | null>(null);
-  readonly isLoading = signal(false);
+  readonly options = signal<Array<{ label: string; value: string }>>([]);
+  readonly loading = signal(false);
+
   ngOnInit(): void {
     this.loadMore();
   }
 
   getRandomNameList(): Observable<string[]> {
-    return this.http
-      .get<{ results: MockUser[] }>(`${this.randomUserUrl}`)
-      .pipe(
-        map(res => res.results),
-        catchError(() => of<MockUser[]>([]))
-      )
-      .pipe(map(list => list.map(item => `${item.name.first}`)));
+    return this.http.get<{ results: MockUser[] }>('https://api.randomuser.me/?results=10').pipe(
+      map(res => res.results.map(item => item.name.first)),
+      catchError(() => of<string[]>([]))
+    );
   }
 
   loadMore(): void {
-    this.isLoading.set(true);
+    this.loading.set(true);
     this.getRandomNameList().subscribe(data => {
-      this.isLoading.set(false);
-      this.optionList.update(optionList => [...optionList, ...data]);
+      this.loading.set(false);
+      this.options.update(options => [...options, ...data.map(item => ({ label: item, value: item }))]);
     });
   }
 }

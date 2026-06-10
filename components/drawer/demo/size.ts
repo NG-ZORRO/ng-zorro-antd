@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -16,7 +16,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
       [nzSize]="size()"
       [nzVisible]="visible()"
       nzPlacement="right"
-      [nzTitle]="title()"
+      nzTitle="Drawer {{ size() }}"
       [nzExtra]="extra"
       (nzOnClose)="close()"
     >
@@ -36,7 +36,6 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 export class NzDemoDrawerSizeComponent {
   readonly visible = signal(false);
   readonly size = signal<'large' | 'default'>('default');
-  readonly title = computed(() => `${this.size()} Drawer`);
 
   showDefault(): void {
     this.size.set('default');

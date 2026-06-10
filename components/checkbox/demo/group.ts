@@ -7,18 +7,13 @@ import { NzCheckboxModule, NzCheckboxOption } from 'ng-zorro-antd/checkbox';
   selector: 'nz-demo-checkbox-group',
   imports: [FormsModule, NzCheckboxModule],
   template: `
-    <nz-checkbox-group [nzOptions]="options1" [ngModel]="value()" (ngModelChange)="value.set($event); log($event)" />
+    <nz-checkbox-group [nzOptions]="options1" [(ngModel)]="value" (ngModelChange)="log($event)" />
     <br />
     <br />
-    <nz-checkbox-group [nzOptions]="options2" [ngModel]="value()" (ngModelChange)="value.set($event); log($event)" />
+    <nz-checkbox-group [nzOptions]="options2" [(ngModel)]="value" (ngModelChange)="log($event)" />
     <br />
     <br />
-    <nz-checkbox-group
-      nzDisabled
-      [nzOptions]="options3"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event); log($event)"
-    />
+    <nz-checkbox-group nzDisabled [nzOptions]="options3" [(ngModel)]="value" (ngModelChange)="log($event)" />
   `
 })
 export class NzDemoCheckboxGroupComponent {

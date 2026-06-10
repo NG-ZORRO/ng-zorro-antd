@@ -1,8 +1,8 @@
-import { Component, model } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzFlexModule } from 'ng-zorro-antd/flex';
-import { NzSelectModule, NzSelectOptionInterface } from 'ng-zorro-antd/select';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-prefix-and-suffix',
@@ -49,13 +49,13 @@ import { NzSelectModule, NzSelectOptionInterface } from 'ng-zorro-antd/select';
   `
 })
 export class NzDemoSelectPrefixAndSuffixComponent {
-  readonly options: NzSelectOptionInterface[] = [
+  readonly options = [
     { value: 'jack', label: 'Jack' },
     { value: 'lucy', label: 'Lucy' },
     { value: 'Yiminghe', label: 'yiminghe' },
     { value: 'disabled', label: 'Disabled', disabled: true }
   ];
 
-  readonly value = model('lucy');
-  readonly multipleValue = model(['lucy']);
+  readonly value = signal('lucy');
+  readonly multipleValue = signal(['lucy']);
 }

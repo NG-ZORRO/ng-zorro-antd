@@ -7,11 +7,7 @@ import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
   selector: 'nz-demo-segmented-value',
   imports: [FormsModule, NzSegmentedModule],
   template: `
-    <nz-segmented
-      [nzOptions]="options"
-      [ngModel]="selectedValue()"
-      (ngModelChange)="selectedValue.set($event); handleModelChange($event)"
-    />
+    <nz-segmented [nzOptions]="options" [(ngModel)]="selectedValue" (ngModelChange)="handleModelChange($event)" />
     <br />
     Selected value: {{ selectedValue() }}
   `,

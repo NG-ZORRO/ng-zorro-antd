@@ -10,7 +10,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
   selector: 'nz-demo-button-size',
   imports: [FormsModule, NzButtonModule, NzIconModule, NzRadioModule, NzSpaceModule],
   template: `
-    <nz-radio-group [ngModel]="size()" (ngModelChange)="size.set($event)">
+    <nz-radio-group [(ngModel)]="size">
       <label nz-radio-button nzValue="large">Large</label>
       <label nz-radio-button nzValue="default">Default</label>
       <label nz-radio-button nzValue="small">Small</label>

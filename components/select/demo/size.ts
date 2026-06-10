@@ -23,32 +23,28 @@ function alphabet(): string[] {
     </nz-radio-group>
     <br />
     <br />
-    <nz-select [(ngModel)]="singleValue" [nzSize]="size()">
-      @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option" />
-      }
-    </nz-select>
+    <nz-select [nzOptions]="options" [(ngModel)]="singleValue" [nzSize]="size()" />
     <br />
     <br />
-    <nz-select [(ngModel)]="singleValue" [nzSize]="size()" nzShowSearch>
-      @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option" />
-      }
-    </nz-select>
+    <nz-select [nzOptions]="options" [(ngModel)]="singleValue" [nzSize]="size()" nzShowSearch />
     <br />
     <br />
-    <nz-select [(ngModel)]="multipleValue" [nzSize]="size()" nzMode="multiple" nzPlaceHolder="Please select">
-      @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option" />
-      }
-    </nz-select>
+    <nz-select
+      [nzOptions]="options"
+      [(ngModel)]="multipleValue"
+      [nzSize]="size()"
+      nzMode="multiple"
+      nzPlaceHolder="Please select"
+    />
     <br />
     <br />
-    <nz-select [(ngModel)]="tagValue" [nzSize]="size()" nzMode="tags" nzPlaceHolder="Please select">
-      @for (option of listOfOption; track option) {
-        <nz-option [nzLabel]="option" [nzValue]="option" />
-      }
-    </nz-select>
+    <nz-select
+      [nzOptions]="options"
+      [(ngModel)]="tagValue"
+      [nzSize]="size()"
+      nzMode="tags"
+      nzPlaceHolder="Please select"
+    />
   `,
   styles: `
     nz-select {
@@ -57,7 +53,8 @@ function alphabet(): string[] {
   `
 })
 export class NzDemoSelectSizeComponent {
-  readonly listOfOption: string[] = alphabet();
+  readonly options = alphabet().map(item => ({ label: item, value: item }));
+
   readonly size = signal<NzSelectSizeType>('default');
   readonly singleValue = signal('a10');
   readonly multipleValue = signal(['a10', 'c12']);

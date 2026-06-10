@@ -11,7 +11,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   imports: [FormsModule, NzBadgeModule, NzFlexModule, NzIconModule, NzSwitchModule],
   template: `
     <nz-flex nzGap="small" nzAlign="center">
-      <nz-switch [ngModel]="show()" (ngModelChange)="show.set($event)" />
+      <nz-switch [(ngModel)]="show" />
       <nz-badge nzStandalone nzShowZero [nzCount]="show() ? 11 : 0" [nzStyle]="{ backgroundColor: '#faad14' }" />
       <nz-badge nzStandalone [nzCount]="show() ? 25 : 0" />
       <nz-badge nzStandalone [nzCount]="show() ? iconTemplate : 0" />

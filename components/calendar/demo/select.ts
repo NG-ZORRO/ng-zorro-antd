@@ -10,11 +10,7 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
   imports: [DatePipe, FormsModule, NzAlertModule, NzCalendarModule],
   template: `
     <nz-alert nzMessage="Your selected date: {{ selectedValue() | date: 'yyyy-MM-dd' }}" />
-    <nz-calendar
-      [ngModel]="selectedValue()"
-      (ngModelChange)="selectedValue.set($event)"
-      (nzSelectChange)="selectChange($event)"
-    />
+    <nz-calendar [(ngModel)]="selectedValue" (nzSelectChange)="selectChange($event)" />
   `
 })
 export class NzDemoCalendarSelectComponent {
